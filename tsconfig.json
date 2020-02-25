@@ -7,4 +7,4 @@
     "include": ["./src/backend"],
     "exclude": ["./src/frontend"],
     "lib": ["es2015"]
-  }
+}
