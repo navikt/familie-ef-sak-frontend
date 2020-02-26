@@ -221,6 +221,8 @@ workflows:
 #            - build
       - deploy_docker:
           context: NAIS deployment
+            requires:
+            - build
 #          requires:
 #            - test
 #      - slack/approval-notification:
@@ -241,5 +243,7 @@ workflows:
 #            - deploy_docker
       - deploy_dev:
           context: familie-ci
+          requires:
+            - deploy_docker
 #          requires:
 #            - await-approval
