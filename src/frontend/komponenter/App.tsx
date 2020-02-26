@@ -7,6 +7,7 @@ import { hentInnloggetBruker } from '../api/saksbehandler';
 import { ISaksbehandler } from '../typer/saksbehandler';
 
 import TempHeader from './TempHeader';
+import PersonInfo from './Person/PersonInfo';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -66,7 +67,12 @@ class App extends React.Component<{}, IState> {
                                 exact={true}
                                 path="/soker/finn"
                                 render={() => {
-                                    return <div> Hello saksbehandler </div>;
+                                    return (
+                                        <div>
+                                            {' '}
+                                            Hei saksbehandler : <PersonInfo />{' '}
+                                        </div>
+                                    );
                                 }}
                             />
                         </Switch>

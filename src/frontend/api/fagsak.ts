@@ -8,8 +8,6 @@ import {
 import { Ressurs } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import { axiosRequest } from './axios';
-import { IVilkårResultat } from '../typer/vilkår';
-import { IBarnBeregning } from '../typer/behandle';
 
 export const hentFagsak = (
     id: string,
@@ -58,7 +56,6 @@ export const apiOpprettBehandling = (data: IOpprettBehandlingData) => {
 
 export interface IOpprettVedtakData {
     resultat: VedtakResultat;
-    samletVilkårResultat: IVilkårResultat[];
     begrunnelse: string;
 }
 
@@ -69,10 +66,6 @@ export const apiOpprettVedtak = (fagsakId: number, data: IOpprettVedtakData) => 
         url: `/familie-ef-sak/api/fagsak/${fagsakId}/nytt-vedtak`,
     });
 };
-
-export interface IOpprettBeregningData {
-    barnasBeregning: IBarnBeregning[];
-}
 
 export const apiOpprettBeregning = (fagsakId: number, data: any) => {
     return axiosRequest<IFagsak>({
