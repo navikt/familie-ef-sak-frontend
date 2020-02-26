@@ -221,7 +221,7 @@ workflows:
 #            - build
       - deploy_docker:
           context: NAIS deployment
-            requires:
+          requires:
             - build
 #          requires:
 #            - test
