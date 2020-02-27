@@ -30,10 +30,10 @@ spec:
   vault:
     enabled: true
     paths:
-      - mountPath: /var/run/secrets/nais.io/vault
-        kvPath: /kv/preprod/fss/familie-ef-sak-frontend/default
-      - mountPath: /var/run/secrets/nais.io/azuread
-        kvPath: /azuread/data/dev/creds/familie-ef-sak-frontend
+      - kvPath: /kv/preprod/fss/familie-ef-sak-frontend/default
+        mountPath: /var/run/secrets/nais.io/vault
+      - kvPath: /azuread/data/dev/creds/familie-ef-sak-frontend
+        mountPath: /secrets/azuread/familie-ef-sak-frontend
   webproxy: true
   env:
     - name: APP_VERSION
