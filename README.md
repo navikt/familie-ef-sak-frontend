@@ -11,8 +11,7 @@ Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 
 Appen krever en del environment variabler og legges til i .env fila i root på prosjektet.  
 ```
-    CLIENT_ID='<application_id from aad app>'
-    CLIENT_SECRET='<KEY from aad app>'
+
     COOKIE_KEY1='<any string of length 32>'
     COOKIE_KEY2='<any string of length 32>'
     PASSPORTCOOKIE_KEY1='<any string of length 32>'
@@ -20,11 +19,17 @@ Appen krever en del environment variabler og legges til i .env fila i root på p
     PASSPORTCOOKIE_KEY3='<any string of length 12>'
     PASSPORTCOOKIE_KEY4='<any string of length 12>'
     SESSION_SECRET='<any string of length 32>'
+
+    AZURE_CLIENT_ID='<>'
+    AZURE_CLIENT_SECRET='<>'
     
     ENV=local
     APP_VERSION=0.0.1
 ```
 Disse kan hentes ut fra Secrets i Vault under kv/preprod/fss/familie-ef-sak-frontend/default, med unntak av ENV og APP_VERSION som er gitt over.
+
+AZURE_CLIENT_ID og AZURE_CLIENT_SECRET kan man finne under: /azuread/data/dev/creds/familie-ef-sak-frontend 
+
 
 For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokalt med mindre det gjøres en del endringer i forbindelse med uthenting av environment variabler og URLer for uthenting av informasjon.
 
