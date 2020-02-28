@@ -167,23 +167,23 @@ jobs:
 
 workflows:
   version: 2
-#  build_n_deploy_master:
-#    jobs:
-#      - build:
-#          filters:
-#            branches:
-#              only: master
+  build_n_deploy_master:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
 #      - test:
 #          requires:
 #            - build
-#      - deploy_docker:
-#          context: NAIS deployment
-#          requires:
-#            - test
-#      - deploy_dev:
-#          context: familie-ci
-#          requires:
-#            - deploy_docker
+      - deploy_docker:
+          context: NAIS deployment
+          requires:
+            - build
+      - deploy_dev:
+          context: familie-ci
+          requires:
+            - deploy_docker
 #      - slack/approval-notification:
 #          context: familie-ci
 #          mentions: 'here'
@@ -201,14 +201,14 @@ workflows:
 #              ignore: /pull\/.*/
 #          requires:
 #            - deploy_dev
-#      - github_tag:
-#          context: familie-ci
-#          requires:
-#            - await-approval-dev
-#      - deploy_prod:
-#          context: familie-ci
-#          requires:
-#            - github_tag
+      - github_tag:
+          context: familie-ci
+          requires:
+            - deploy_docker
+      - deploy_prod:
+          context: familie-ci
+          requires:
+            - github_tag
   build_n_deploy_branch:
     jobs:
       - build:
