@@ -29,6 +29,8 @@ spec:
     - https://alenemedbarn.nais.preprod.local
   vault:
     enabled: true
+    - mountPath: /var/run/secrets/nais.io/vault
+      kvPath: /kv/preprod/fss/familie-ef-sak-frontend/default
   webproxy: true
   env:
     - name: APP_VERSION
