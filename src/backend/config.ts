@@ -61,8 +61,10 @@ const hentPassportConfig = () => {
 
     return {
         ...config,
-        clientID: process.env.CLIENT_ID ? process.env.CLIENT_ID : 'invalid',
-        clientSecret: process.env.CLIENT_SECRET ? process.env.CLIENT_SECRET : '',
+        clientID: process.env.CLIENT_ID ? process.env.CLIENT_ID : process.env.AZURE_CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET
+            ? process.env.CLIENT_SECRET
+            : process.env.AZURE_CLIENT_SECRET,
         cookieEncryptionKeys: [
             { key: key1, iv: key3 },
             { key: key2, iv: key4 },
