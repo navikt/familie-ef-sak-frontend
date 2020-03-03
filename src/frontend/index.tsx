@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'development') {
     const environment = window.location.hostname;
 
     init({
-        dsn: 'https://eca7c1c693ca462c905a29bd6327a657@sentry.nav.no/12',
+        dsn: 'https://9354098a42ad42ad883c9359f4c87e8d@sentry.gc.nav.no/21',
         environment,
         release: packageConfig.version,
     });
