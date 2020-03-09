@@ -201,14 +201,14 @@ workflows:
 #              ignore: /pull\/.*/
 #          requires:
 #            - deploy_dev
-      - github_tag:
-          context: familie-ci
-          requires:
-            - deploy_docker
+#      - github_tag:
+#          context: familie-ci
+#          requires:
+#            - deploy_docker
       - deploy_prod:
           context: familie-ci
           requires:
-            - github_tag
+            - deploy_docker
   build_n_deploy_branch:
     jobs:
       - build:
