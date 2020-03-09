@@ -22,7 +22,7 @@ jobs:
             echo "github.com,140.82.118.3 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==" >> ~/.ssh/known_hosts
       - add_ssh_keys:
           fingerprints:
-            - "ac:ce:2f:52:3a:36:b2:30:e4:6a:0e:9d:80:92:2b:be"
+            - "ad:f5:a0:82:b0:72:d0:bc:a6:6c:35:ab:a3:76:f5:ff"
       - checkout
       - setup_remote_docker:
           docker_layer_caching: false
