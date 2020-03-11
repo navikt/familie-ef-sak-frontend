@@ -5,13 +5,13 @@ import { IPerson } from '../typer/person';
 
 export const hentPersoninfo = (
     id: string,
-    innloggetSaksbehandler?: ISaksbehandler
+    innloggetSaksbehandler: ISaksbehandler
 ): Promise<Ressurs<IPerson>> => {
     return axiosRequest<IPerson>(
         {
-            method: 'POST',
+            method: 'GET',
             url: `/familie-ef-sak/api/personinfo/`,
-            data: id,
+            headers: { 'Nav-Personident': id },
         },
         innloggetSaksbehandler
     );
