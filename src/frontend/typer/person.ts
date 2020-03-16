@@ -1,6 +1,6 @@
 // Interface
 export interface IPerson {
-    personInfo: IPersoninfo;
+    personinfo: IPersoninfo;
     personhistorikkInfo: IPersonhistorikkInfo;
 }
 
