@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Knapp } from 'nav-frontend-knapper';
-import InputMedLabelTilVenstre from '../Felleskomponenter/InputMedLabelTilVenstre/InputMedLabelTilVenstre';
 import { hentPersoninfo } from '../../api/personinfo';
 import { IPerson } from '../../typer/person';
 import { hentInnloggetBruker } from '../../api/saksbehandler';
 import { ISaksbehandler } from '../../typer/saksbehandler';
-import { Panel } from 'nav-frontend-paneler';
+import PanelBase from 'nav-frontend-paneler';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
-import { Ressurs } from '../../typer/ressurs';
-// import {Label, Input} from "nav-frontend-skjema";
+import { Ressurs, RessursStatus } from '../../typer/ressurs';
+import { Input } from 'nav-frontend-skjema';
+import classNames from 'classnames';
 
 const PersonInfo = () => {
     const [personinput, settPersoninput] = useState<string>('');
-    const [persondata, settPersondata] = useState<IPerson>();
+    const [persondata, settPersondata] = useState<IPerson | undefined>();
     const [saksbehandler, setSaksbehandler] = useState<ISaksbehandler>();
+    const [melding, settMelding] = useState<string>('');
 
     useEffect(() => {
         return () => {
@@ -56,9 +57,9 @@ const PersonInfo = () => {
 
             return (
                 <>
+                    <p>Navn: {persondata?.personinfo.navn}</p>
                     <Ekspanderbartpanel tittel="Se person informasjon">
                         <h2>Persondata </h2>
-                        <p>Navn: {persondata?.personinfo.navn}</p>
                         <p>Personstatus: {persondata?.personinfo?.personstatus} </p>
                         <p>
                             Sivilstatus: {persondata?.personinfo.sivilstand} (* mer data fra
@@ -77,32 +78,42 @@ const PersonInfo = () => {
     };
 
     return (
-        <Panel>
-            <div style={{ display: 'flex' }}>
-                <InputMedLabelTilVenstre
-                    bredde={'S'}
-                    label={'Finn person'}
-                    value={personinput}
-                    type={'string'}
-                    onChange={(event: any) => {
-                        settPersoninput(event.target.value);
-                    }}
-                />
-                <Knapp
-                    onClick={() => {
-                        hentPersoninfo(personinput, saksbehandler!!).then(
-                            (response: Ressurs<IPerson>) => {
-                                settPersondata(response.data);
-                            }
-                        );
-                    }}
-                >
-                    Finn person
-                </Knapp>
-            </div>
-            {renderEkspanderbartpanel()}
-            {renderJason()}
-        </Panel>
+        <div className={'personinfo'}>
+            <PanelBase>
+                <div className={'personinfo__inputogknapp'}>
+                    <Input
+                        onChange={(event: any) => {
+                            settPersoninput(event.target.value);
+                        }}
+                        value={personinput}
+                        id={'person-info'}
+                        label={'Ident'}
+                        bredde={'XL'}
+                        placeholder={'fnr/dnr'}
+                        feil={melding}
+                    />
+                    <Knapp
+                        onClick={() => {
+                            settPersondata(undefined);
+                            hentPersoninfo(personinput, saksbehandler!!).then(
+                                (response: Ressurs<IPerson>) => {
+                                    if (response.status === RessursStatus.SUKSESS) {
+                                        settPersondata(response.data);
+                                    } else if (response.status === RessursStatus.FEILET) {
+                                        settMelding(response.melding);
+                                    }
+                                }
+                            );
+                        }}
+                        children={'Hent'}
+                    />
+                </div>
+            </PanelBase>
+            <PanelBase className={classNames('personinfo__panel', 'panel--gra')}>
+                {renderEkspanderbartpanel()}
+                {renderJason()}
+            </PanelBase>
+        </div>
     );
 };
 export default PersonInfo;
