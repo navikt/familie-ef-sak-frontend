@@ -67,12 +67,7 @@ class App extends React.Component<{}, IState> {
                                 exact={true}
                                 path="/soker/finn"
                                 render={() => {
-                                    return (
-                                        <div>
-                                            {' '}
-                                            Hei saksbehandler : <PersonInfo />{' '}
-                                        </div>
-                                    );
+                                    return <PersonInfo />;
                                 }}
                             />
                         </Switch>

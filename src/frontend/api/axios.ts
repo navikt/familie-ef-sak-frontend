@@ -15,13 +15,11 @@ export const axiosRequest = async <T>(
         .request(config)
         .then((response: AxiosResponse<Ressurs<T>>) => {
             const responsRessurs: Ressurs<T> = response.data;
-
             return håndterRessurs(responsRessurs, innloggetSaksbehandler);
         })
         .catch((error: AxiosError) => {
             loggFeil(error, innloggetSaksbehandler);
             const responsRessurs: Ressurs<T> = error.response?.data;
-
             return håndterRessurs(responsRessurs, innloggetSaksbehandler);
         });
 };
