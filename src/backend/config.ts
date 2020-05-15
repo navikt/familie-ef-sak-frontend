@@ -8,7 +8,6 @@ const Environment = () => {
             buildPath: '../frontend_development',
             namespace: 'local',
             proxyUrl: 'http://localhost:8093',
-            redisUrl: '127.0.0.1',
         };
     } else if (process.env.ENV === 'e2e') {
         return {
