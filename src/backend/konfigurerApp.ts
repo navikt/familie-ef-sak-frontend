@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const konfigurerAzure = () => {
-    const host = 'familie-ef-sak-frontend';
+    const host = 'alenemedbarn';
     switch (process.env.ENV) {
         case 'local':
             process.env.AAD_LOGOUT_REDIRECT_URL = `https://login.microsoftonline.com/navq.onmicrosoft.com/oauth2/logout?post_logout_redirect_uri=http:\\\\localhost:8000`;

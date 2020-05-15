@@ -25,8 +25,8 @@ spec:
   istio:
     enabled: false
   ingresses:
-    - https://familie-ef-sak-frontend.nais.preprod.local
     - https://alenemedbarn.nais.preprod.local
+    - https://familie-ef-sak-frontend.dev-fss.nais.io
   vault:
     enabled: true
     paths:
