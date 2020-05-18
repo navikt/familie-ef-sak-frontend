@@ -14,12 +14,19 @@
     "build:prod": "tsc & webpack --config ./build_n_deploy/webpack/webpack.prod.js",
     "snyk-protect": "snyk protect",
     "test:ci": "./ci-tests/scripts.sh test",
-    "test:ci-capture": "./ci-tests/scripts.sh capture"
+    "test:ci-capture": "./ci-tests/scripts.sh capture",
+    "lint": "eslint './src/**/*.{js,ts,tsx}'",
+    "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "lint-staged && pretty-quick --staged"
     }
+  },
+  "lint-staged": {
+    "./src/**/*.{js,ts,tsx}": [
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "@navikt/boxed-list-with-links": "^1.0.2",
@@ -96,13 +103,25 @@
     "@types/webpack-dev-middleware": "^2.0.3",
     "@types/webpack-env": "^1.14.1",
     "@types/webpack-hot-middleware": "^2.16.5",
+    "@typescript-eslint/eslint-plugin": "^2.28.0",
+    "@typescript-eslint/parser": "^2.28.0",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^3.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-loader": "^4.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-app": "^6.2.2",
     "fork-ts-checker-webpack-plugin": "^3.1.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^4.2.1",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "lint-staged": "^10.1.7",
     "mini-css-extract-plugin": "^0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
@@ -112,14 +131,11 @@
     "react-hot-loader": "4.12.19",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.2.1",
-    "tslint": "^6.0.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-loader": "^3.5.4",
-    "tslint-react": "^4.1.0",
-    "tslint-react-a11y": "^1.1.0",
-    "typescript": "^3.7.2",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.8.3",
+    "typescript-eslint": "^0.0.1-alpha.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-merge": "^4.2.2"

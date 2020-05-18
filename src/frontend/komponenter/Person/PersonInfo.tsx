@@ -82,7 +82,7 @@ const PersonInfo = () => {
             <PanelBase>
                 <div className={'personinfo__inputogknapp'}>
                     <Input
-                        onChange={(event: any) => {
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             settPersoninput(event.target.value);
                         }}
                         value={personinput}

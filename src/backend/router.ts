@@ -6,9 +6,8 @@ import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 
-/* tslint:disable */
+// eslint-disable-next-line
 const packageJson = require('../package.json');
-/* tslint:enable */
 
 export default (
     authClient: Client,
@@ -21,7 +20,7 @@ export default (
             .end();
     });
     router.get('/error', (_req, res) => {
-        prometheusTellere.error_route.inc();
+        prometheusTellere.errorRoute.inc();
         res.sendFile('error.html', { root: path.join(`assets/`) });
     });
 
@@ -38,7 +37,7 @@ export default (
     // APP
     if (process.env.NODE_ENV === 'development' && middleware) {
         router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
-            prometheusTellere.app_load.inc();
+            prometheusTellere.appLoad.inc();
 
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.write(
@@ -48,7 +47,7 @@ export default (
         });
     } else {
         router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
-            prometheusTellere.app_load.inc();
+            prometheusTellere.appLoad.inc();
 
             res.sendFile('index.html', { root: path.join(__dirname, buildPath) });
         });
