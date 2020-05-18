@@ -5,20 +5,20 @@ import { appConfig, ISessionKonfigurasjon, IApi } from '@navikt/familie-backend'
 const Environment = () => {
     if (process.env.ENV === 'local') {
         return {
-            buildPath: '../frontend_development',
+            buildPath: '../../frontend_development',
             namespace: 'local',
             proxyUrl: 'http://localhost:8093',
         };
     } else if (process.env.ENV === 'e2e') {
         return {
-            buildPath: '../frontend_production',
+            buildPath: '../../frontend_production',
             namespace: 'e2e',
             proxyUrl: 'http://familie-ef-sak:8093',
             redisUrl: 'familie-redis',
         };
     } else if (process.env.ENV === 'preprod') {
         return {
-            buildPath: '../frontend_production',
+            buildPath: '../../frontend_production',
             namespace: 'preprod',
             proxyUrl: 'http://familie-ef-sak',
             redisUrl: 'familie-ef-sak-frontend-redis.default.svc.nais.local',
@@ -26,7 +26,7 @@ const Environment = () => {
     }
 
     return {
-        buildPath: '../frontend_production',
+        buildPath: '../../frontend_production',
         namespace: 'production',
         proxyUrl: 'http://familie-ef-sak',
         redisUrl: 'familie-ef-sak-frontend-redis.default.svc.nais.local',
