@@ -14,8 +14,9 @@ Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 interface IState {
     innloggetSaksbehandler?: ISaksbehandler;
 }
-
+// TODO: Skriv om til FC
 class App extends React.Component<{}, IState> {
+    // eslint-disable-next-line
     public constructor(props: any) {
         super(props);
 
@@ -28,6 +29,7 @@ class App extends React.Component<{}, IState> {
         });
     }
 
+    // eslint-disable-next-line
     public componentDidCatch(error: any, info: any) {
         if (process.env.NODE_ENV !== 'development') {
             configureScope(scope => {
