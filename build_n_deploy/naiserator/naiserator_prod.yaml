@@ -38,9 +38,9 @@ spec:
   env:
     - name: APP_VERSION
       value: "{{version}}"
-    - name: AZURE_CLIENT_ID
+    - name: CLIENT_ID
       value: /run/secrets/nais.io/azuread/client_id
-    - name: AZURE_CLIENT_SECRET
+    - name: CLIENT_SECRET
       value: /run/secrets/nais.io/azuread/client_secret
   resources:
     limits:
