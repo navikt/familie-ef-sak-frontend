@@ -4,12 +4,10 @@ import axe from 'react-axe';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './komponenter/App';
-
-/* tslint:disable */
-const packageConfig = require('../../package.json');
-/* tslint:enable */
-
 import './index.less';
+
+// eslint-disable-next-line
+const packageConfig = require('../../package.json');
 
 if (process.env.NODE_ENV !== 'development') {
     const environment = window.location.hostname;
