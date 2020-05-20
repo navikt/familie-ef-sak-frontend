@@ -24,25 +24,11 @@ const config = merge.strategy({
     module: {
         rules: [
             {
-                test: /\.(css|less)$/,
+                test: /\.(less)$/,
                 use: [
-                    { loader: 'style-loader' },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 2,
-                        },
-                    },
-                    { loader: 'postcss-loader' },
-                    {
-                        loader: 'less-loader',
-                        options: {
-                            globalVars: {
-                                coreModulePath: '"~"',
-                                nodeModulesPath: '"~"',
-                            },
-                        },
-                    },
+                    { loader: require.resolve('style-loader') },
+                    { loader: require.resolve('css-loader') },
+                    { loader: require.resolve('less-loader') },
                 ],
             },
         ],

@@ -7,7 +7,7 @@ export const hentPersoninfo = (
     id: string,
     innloggetSaksbehandler: ISaksbehandler
 ): Promise<Ressurs<IPerson>> => {
-    return axiosRequest<IPerson>(
+    return axiosRequest<IPerson, void>(
         {
             method: 'GET',
             url: `/familie-ef-sak/api/personinfo/`,

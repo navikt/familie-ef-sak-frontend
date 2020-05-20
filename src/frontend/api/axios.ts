@@ -7,8 +7,8 @@ import { slackKanaler } from '../typer/slack';
 axios.defaults.baseURL = window.location.origin;
 export const preferredAxios = axios;
 
-export const axiosRequest = async <T>(
-    config: AxiosRequestConfig,
+export const axiosRequest = async <T, D>(
+    config: AxiosRequestConfig & { data?: D },
     innloggetSaksbehandler?: ISaksbehandler
 ): Promise<Ressurs<T>> => {
     return preferredAxios

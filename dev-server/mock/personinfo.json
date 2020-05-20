@@ -1,0 +1,106 @@
+{
+  "data": {
+    "personinfo": {
+      "personIdent": {
+        "id": "17106521522"
+      },
+      "navn": "TAREMEL SMEKKER",
+      "bostedsadresse": {
+        "gjeldendePostadresseType": "BOSTEDSADRESSE",
+        "mottakerNavn": "TAREMEL SMEKKER",
+        "adresselinje1": "GAMMALSRUDVEGEN 98",
+        "adresselinje2": null,
+        "adresselinje3": null,
+        "adresselinje4": null,
+        "postNr": "2640",
+        "poststed": "VINSTRA",
+        "land": "NOR",
+        "personstatus": "BOSA"
+      },
+      "kjønn": "M",
+      "fødselsdato": "1965-10-17",
+      "dødsdato": null,
+      "personstatus": "BOSA",
+      "sivilstand": "UGIF",
+      "familierelasjoner": [
+        {
+          "personIdent": {
+            "id": "05011377175"
+          },
+          "relasjonsrolle": "BARN",
+          "fødselsdato": null,
+          "harSammeBosted": true
+        }
+      ],
+      "statsborgerskap": {
+        "kode": "NOR"
+      },
+      "utlandsadresse": "GAMMALSRUDVEGEN 98\n2640 VINSTRA\nNOR",
+      "geografiskTilknytning": "3436",
+      "diskresjonskode": null,
+      "adresseLandkode": "NOR",
+      "adresseInfoList": [
+        {
+          "gjeldendePostadresseType": "BOSTEDSADRESSE",
+          "mottakerNavn": "TAREMEL SMEKKER",
+          "adresselinje1": "GAMMALSRUDVEGEN 98",
+          "adresselinje2": null,
+          "adresselinje3": null,
+          "adresselinje4": null,
+          "postNr": "2640",
+          "poststed": "VINSTRA",
+          "land": "NOR",
+          "personstatus": "BOSA"
+        }
+      ],
+      "alder": 42
+    },
+    "personhistorikkInfo": {
+      "personIdent": {
+        "id": "17106521522"
+      },
+      "personstatushistorikk": [
+        {
+          "periode": {
+            "fom": "1965-10-17",
+            "tom": "9999-12-31"
+          },
+          "personstatus": "BOSA"
+        }
+      ],
+      "statsborgerskaphistorikk": [
+        {
+          "periode": {
+            "fom": "1965-10-17",
+            "tom": "9999-12-31"
+          },
+          "tilhørendeLand": {
+            "kode": "NOR"
+          }
+        }
+      ],
+      "adressehistorikk": [
+        {
+          "periode": {
+            "fom": "1965-10-17",
+            "tom": "9999-12-31"
+          },
+          "adresse": {
+            "adresseType": "BOSTEDSADRESSE",
+            "adresselinje1": "GAMMALSRUDVEGEN 98",
+            "adresselinje2": null,
+            "adresselinje3": null,
+            "adresselinje4": null,
+            "postnummer": "2640",
+            "poststed": "VINSTRA",
+            "land": "NOR"
+          }
+        }
+      ]
+    }
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "funksjonellFeilmelding": null,
+  "stacktrace": null
+}

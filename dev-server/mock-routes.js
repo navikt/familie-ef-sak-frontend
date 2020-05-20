@@ -23,6 +23,14 @@ app.get('/user/profile', (req, res) => {
     });
 });
 
+app.get('/familie-ef-sak/api/personinfo', (req, res) => {
+    const filnavn =
+        req.headers['nav-personident'] === '12345678910'
+            ? `personinfo.json`
+            : `feil-personinfo.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
+
 app.get('/familie-ef-sak/api/behandling/2/vedtak-html', (req, res) => {
     setTimeout(
         () =>
