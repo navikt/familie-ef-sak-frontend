@@ -1,13 +1,19 @@
 import { Søk } from '@navikt/familie-header';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { IPerson } from '../../typer/person';
 import { axiosRequest } from '../../api/axios';
 import { ISaksbehandler } from '../../typer/saksbehandler';
-import { byggFeiletRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../typer/ressurs';
+import {
+    byggFeiletRessurs,
+    byggHenterRessurs,
+    byggTomRessurs,
+    Ressurs,
+    RessursStatus,
+} from '../../typer/ressurs';
 import Søkeresultat from './Søkeresultat';
 import styled from 'styled-components';
 import IkkeOppfylt from '../../ikoner/IkkeOppfylt';
+import { ISaksøk } from '../../typer/saksøk';
 
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');
@@ -16,32 +22,39 @@ interface IProps {
     innloggetSaksbehandler: ISaksbehandler;
 }
 
+const FunksjonellFeilmelding = styled.div`
+    padding-left: 0.5rem;
+`;
+
 const StyledResultat = styled.div`
     background-color: #3e3832;
     color: #fff;
-    padding: 10px;
-    font-size: 0.9rem;
+    padding: 0.8rem;
     display: flex;
 `;
 
+interface ISakSøkPersonIdent {
+    personIdent: string;
+}
+
 const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
     const history = useHistory();
-    const [resultat, settResultat] = React.useState<Ressurs<IPerson>>(byggTomRessurs);
-    const slettResultat = (): void => {
-        settResultat(byggTomRessurs);
+    const [resultat, settResultat] = React.useState<Ressurs<ISaksøk>>(byggTomRessurs());
+    const nullstillResultat = (): void => {
+        settResultat(byggTomRessurs());
     };
 
     const søk = (personIdent: string): void => {
-        slettResultat();
-        axiosRequest<IPerson, void>(
+        settResultat(byggHenterRessurs());
+        axiosRequest<ISaksøk, ISakSøkPersonIdent>(
             {
-                method: 'GET',
-                url: `/familie-ef-sak/api/personinfo/`,
-                headers: { 'Nav-Personident': personIdent },
+                method: 'POST',
+                url: `/familie-ef-sak/api/saksoek/`,
+                data: { personIdent: personIdent },
             },
             innloggetSaksbehandler
         )
-            .then((response: Ressurs<IPerson>) => {
+            .then((response: Ressurs<ISaksøk>) => {
                 settResultat(response);
             })
             .catch(error => {
@@ -61,14 +74,16 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
             validator={(process.env.NODE_ENV !== 'development' && fnrValidator) || undefined}
             spinner={resultat.status === RessursStatus.HENTER}
             autoSøk={true}
-            onChange={slettResultat}
+            onChange={nullstillResultat}
             plassholder={'Fødselsnummer'}
         >
             {resultat.status === RessursStatus.IKKE_TILGANG ||
                 (resultat.status === RessursStatus.FEILET && (
                     <StyledResultat>
                         <IkkeOppfylt heigth={20} width={20} />
-                        {resultat.melding}
+                        <FunksjonellFeilmelding>
+                            {resultat.funksjonellFeilmelding}
+                        </FunksjonellFeilmelding>
                     </StyledResultat>
                 ))}
             {resultat.status === RessursStatus.HENTER && <StyledResultat>Søker...</StyledResultat>}
@@ -77,12 +92,12 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
             )}
             {resultat.status === RessursStatus.SUKSESS && (
                 <Søkeresultat
-                    alder={resultat.data.personinfo.alder}
-                    navn={resultat.data.personinfo.navn}
-                    ident={resultat.data.personinfo.personIdent.id}
-                    kjønn={resultat.data.personinfo.kjønn}
+                    alder={20}
+                    navn={resultat.data.navn.visningsnavn}
+                    ident={resultat.data.personIdent}
+                    kjønn={resultat.data.kjønn}
                     onClick={() => {
-                        history.push(`/soker/finn/${resultat.data.personinfo.personIdent.id}`);
+                        history.push(`/sak/${resultat.data.sakId}`);
                     }}
                 />
             )}

@@ -25,9 +25,7 @@ const App: React.FC = () => {
         <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
             <div>
                 <Router>
-                    {innloggetSaksbehandler && (
-                        <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
-                    )}
+                    <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
                     <div className={'container'} role="main">
                         <Switch>
                             <Route

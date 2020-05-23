@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-const delayMs = 20;
+const delayMs = 500;
 const app = express();
+app.use(express.json({ limit: '200mb' }));
+app.use(express.urlencoded({ limit: '200mb', extended: true }));
 
 const lesMockFil = filnavn => {
     try {
@@ -28,6 +30,11 @@ app.get('/familie-ef-sak/api/personinfo', (req, res) => {
         req.headers['nav-personident'] === '12345678910'
             ? `personinfo.json`
             : `feil-personinfo.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/saksoek', (req, res) => {
+    const filnavn = req.body.personIdent === '12345678910' ? `saksøk.json` : `saksøk-feil.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 

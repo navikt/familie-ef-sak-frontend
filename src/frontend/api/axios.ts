@@ -43,6 +43,7 @@ const håndterRessurs = <T>(
             loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
             typetRessurs = {
                 melding: ressurs.melding,
+                funksjonellFeilmelding: ressurs.funksjonellFeilmelding,
                 status: RessursStatus.IKKE_TILGANG,
             };
             break;
@@ -51,12 +52,14 @@ const håndterRessurs = <T>(
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
+                funksjonellFeilmelding: ressurs.funksjonellFeilmelding,
                 status: RessursStatus.FEILET,
             };
             break;
         default:
             typetRessurs = {
                 melding: 'Mest sannsynlig ukjent api feil',
+                funksjonellFeilmelding: 'Mest sannsynlig ukjent api feil',
                 status: RessursStatus.FEILET,
             };
             break;

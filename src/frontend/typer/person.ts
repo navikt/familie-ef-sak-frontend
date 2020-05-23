@@ -1,6 +1,4 @@
 // Interface
-import { kjønnType } from '@navikt/familie-typer';
-
 export enum IDeltagerRolle {
     Barn = 'BARN',
     Forelder = 'FORELDER',
