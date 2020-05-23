@@ -9,9 +9,9 @@ export const hentPersoninfo = (
 ): Promise<Ressurs<IPerson>> => {
     return axiosRequest<IPerson, void>(
         {
-            method: 'GET',
+            method: 'POST',
             url: `/familie-ef-sak/api/personinfo/`,
-            headers: { 'Nav-Personident': id },
+            data: { personIdent: id },
         },
         innloggetSaksbehandler
     );
