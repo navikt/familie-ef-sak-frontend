@@ -49,7 +49,7 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
         axiosRequest<ISaksøk, ISakSøkPersonIdent>(
             {
                 method: 'POST',
-                url: `/familie-ef-sak/api/saksoek/`,
+                url: `/familie-ef-sak/api/saksoek/ident`,
                 data: { personIdent: personIdent },
             },
             innloggetSaksbehandler

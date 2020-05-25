@@ -3,6 +3,7 @@ import { Header } from '@navikt/familie-header';
 import PersonSøk from './PersonSøk';
 import { ISaksbehandler } from '../../typer/saksbehandler';
 import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
+import './headermedsøk.less';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler?: ISaksbehandler;
@@ -24,10 +25,9 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
 }) => {
     return (
         <Header
-            tittel="Alene med barn"
+            tittel="NAV Alene med barn"
             brukerinfo={{
-                navn: (innloggetSaksbehandler && innloggetSaksbehandler.displayName) || 'Ukjent',
-                enhet: (innloggetSaksbehandler && innloggetSaksbehandler.enhet) || 'Ukjent',
+                navn: innloggetSaksbehandler?.displayName || 'Ukjent',
             }}
             brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
             eksterneLenker={eksterneLenker}
