@@ -1,0 +1,17 @@
+{
+  "data": {
+      "sakId": "123-abc-456-efg",
+      "personIdent": "17106521522",
+      "navn": {
+        "fornavn": "TAREMEL",
+        "etternavn": "SMEKKER",
+        "mellomnavn": "",
+        "visningsnavn": "TARMEL SMEKKER"
+      },
+      "kjønn": "MANN"
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "funksjonellFeilmelding": null,
+  "stacktrace": null
+}

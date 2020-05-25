@@ -7,8 +7,8 @@ import { slackKanaler } from '../typer/slack';
 axios.defaults.baseURL = window.location.origin;
 export const preferredAxios = axios;
 
-export const axiosRequest = async <T>(
-    config: AxiosRequestConfig,
+export const axiosRequest = async <T, D>(
+    config: AxiosRequestConfig & { data?: D },
     innloggetSaksbehandler?: ISaksbehandler
 ): Promise<Ressurs<T>> => {
     return preferredAxios
@@ -43,6 +43,7 @@ const håndterRessurs = <T>(
             loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
             typetRessurs = {
                 melding: ressurs.melding,
+                funksjonellFeilmelding: ressurs.funksjonellFeilmelding,
                 status: RessursStatus.IKKE_TILGANG,
             };
             break;
@@ -51,12 +52,14 @@ const håndterRessurs = <T>(
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
+                funksjonellFeilmelding: ressurs.funksjonellFeilmelding,
                 status: RessursStatus.FEILET,
             };
             break;
         default:
             typetRessurs = {
                 melding: 'Mest sannsynlig ukjent api feil',
+                funksjonellFeilmelding: 'Mest sannsynlig ukjent api feil',
                 status: RessursStatus.FEILET,
             };
             break;

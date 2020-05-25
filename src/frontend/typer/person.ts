@@ -1,14 +1,25 @@
 // Interface
+export enum IDeltagerRolle {
+    Barn = 'BARN',
+    Forelder = 'FORELDER',
+    Ukjent = 'UKJENT',
+}
+
 export interface IPerson {
     personinfo: IPersoninfo;
     personhistorikkInfo: IPersonhistorikkInfo;
+}
+
+export enum IKjønnKortType {
+    Mann = 'M',
+    Kvinne = 'K',
 }
 
 export interface IPersoninfo {
     personIdent: IPersonIdent;
     navn: string;
     bostedsadresse?: IAdresseinfo;
-    kjønn?: string;
+    kjønn?: IKjønnKortType;
     fødselsdato: string;
     dødsdato?: string;
     personstatus?: IPersonstatusType;
