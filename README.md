@@ -7,6 +7,7 @@ Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 
 * Installere avhengigheter `yarn`
 * Starte dev-server `yarn start:dev`
+* Starte mock-server `yarn start:mock`
 * Åpne `http://localhost:8000` i nettleseren din
 
 Appen krever en del environment variabler og legges til i .env fila i root på prosjektet.  
@@ -37,7 +38,7 @@ For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokal
 
 
 # Bygg og deploy
-Appen bygges hos circleci, og gir beskjed til nais deploy om å deployere appen i fss området. Alle commits til feature brancher går til dev miljøet og master går til produksjon.
+Appen bygges på github actions, og gir beskjed til nais deploy om å deployere appen i fss området. Alle pull requester går til dev miljøet og master går til produksjon og dev-miljøet.
 
 # Henvendelser
 
