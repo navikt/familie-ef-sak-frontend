@@ -2,6 +2,10 @@
 
 import { kjønnType } from '@navikt/familie-typer';
 
+export interface ISakSøkPersonIdent {
+    personIdent: string;
+}
+
 export interface ISaksøk {
     sakId: string;
     navn: INavn;
@@ -19,6 +23,7 @@ export interface INavn {
 }
 
 export enum Adressebeskyttelse {
+    STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
     STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
     FORTROLIG = 'FORTROLIG',
     UGRADERT = 'UGRADERT',

@@ -1,0 +1,22 @@
+.uimodal {
+    width: 40rem;
+    min-height: 12rem;
+    position: relative;
+
+    &__content {
+        padding: 1rem 2rem;
+
+        &--inner-content {
+            margin-top: 1rem;
+        }
+
+        &--actions {
+            position: absolute;
+            bottom: 2rem;
+
+            .knapp:not(:first-child) {
+                margin-left: 1rem;
+            }
+        }
+    }
+}

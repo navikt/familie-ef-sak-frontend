@@ -7,6 +7,7 @@ import { slackKanaler } from '../typer/slack';
 axios.defaults.baseURL = window.location.origin;
 export const preferredAxios = axios;
 
+// TODO: Slett denne
 export const axiosRequest = async <T, D>(
     config: AxiosRequestConfig & { data?: D },
     innloggetSaksbehandler?: ISaksbehandler
@@ -24,7 +25,7 @@ export const axiosRequest = async <T, D>(
         });
 };
 
-const håndterRessurs = <T>(
+export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,
     innloggetSaksbehandler?: ISaksbehandler
 ): Ressurs<T> => {
@@ -68,7 +69,7 @@ const håndterRessurs = <T>(
     return typetRessurs;
 };
 
-const loggFeil = (
+export const loggFeil = (
     error?: AxiosError,
     innloggetSaksbehandler?: ISaksbehandler,
     feilmelding?: string

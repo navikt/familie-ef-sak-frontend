@@ -1,12 +1,11 @@
 import Modal from 'nav-frontend-modal';
 import * as React from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
+import { AppProvider } from '../context/AppContext';
 import { hentInnloggetBruker } from '../api/saksbehandler';
 import { ISaksbehandler } from '../typer/saksbehandler';
-import PersonInfo from './Person/PersonInfo';
-import { HeaderMedSøk } from './HeaderMedSøk/HeaderMedSøk';
 import ErrorBoundary from './Felleskomponenter/ErrorBoundary/ErrorBoundary';
+import Container from './Container';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -23,29 +22,9 @@ const App: React.FC = () => {
 
     return (
         <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
-            <div>
-                <Router>
-                    <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
-                    <div className={'container'} role="main">
-                        <Switch>
-                            <Route
-                                exact={true}
-                                path={'/'}
-                                render={() => {
-                                    return <Redirect from="/" to="/soker/finn" />;
-                                }}
-                            />
-                            <Route
-                                exact={true}
-                                path="/soker/finn"
-                                render={() => {
-                                    return <PersonInfo />;
-                                }}
-                            />
-                        </Switch>
-                    </div>
-                </Router>
-            </div>
+            <AppProvider autentisertSaksbehandler={innloggetSaksbehandler}>
+                <Container innloggetSaksbehandler={innloggetSaksbehandler} />
+            </AppProvider>
         </ErrorBoundary>
     );
 };
