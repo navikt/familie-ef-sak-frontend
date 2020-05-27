@@ -44,7 +44,7 @@ const SakContainer: React.FunctionComponent = () => {
                 hentSak(sakId);
             } else if (
                 ressurser.sak.status === RessursStatus.SUKSESS &&
-                ressurser.sak.data.id !== sakId
+                ressurser.sakId !== sakId
             ) {
                 hentSak(sakId);
             }
@@ -118,7 +118,7 @@ const SakContainer: React.FunctionComponent = () => {
                 />
             );
         case RessursStatus.FEILET:
-            return <AlertStripe children={ressurser.sak.funksjonellFeilmelding} type={'feil'} />;
+            return <AlertStripe children={ressurser.sak.frontendFeilmelding} type={'feil'} />;
         default:
             return <div />;
     }

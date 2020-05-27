@@ -1,5 +1,5 @@
 // Interface
-import { ITekstFelt, SøknadsFelt } from './søknadsfelter';
+import { IFødselsnummerFelt, ITekstFelt, SøknadsFelt } from './søknadsfelter';
 
 export interface ISak {
     id: number;
@@ -12,6 +12,6 @@ export interface ISøknad {
 }
 
 export interface IPersonalia {
-    fødselsnummer: ITekstFelt;
+    fødselsnummer: SøknadsFelt<IFødselsnummerFelt>;
     navn: ITekstFelt;
 }

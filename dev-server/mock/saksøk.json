@@ -6,7 +6,7 @@
         "fornavn": "TAREMEL",
         "etternavn": "SMEKKER",
         "mellomnavn": "",
-        "visningsnavn": "TARMEL SMEKKER"
+        "visningsnavn": "Fornavn Mellomnavn Etternavn"
       },
       "kjønn": "MANN",
       "folkeregisterpersonstatus": "FORSVUNNET",
@@ -14,6 +14,6 @@
   },
   "status": "SUKSESS",
   "melding": "Innhenting av data var vellykket",
-  "funksjonellFeilmelding": null,
+  "frontendFeilmelding": null,
   "stacktrace": null
 }

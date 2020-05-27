@@ -38,7 +38,7 @@ app.get('/familie-ef-sak/api/sak/:id', (req, res) => {
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
-app.post('/familie-ef-sak/api/saksoek/ident', (req, res) => {
+app.post('/familie-ef-sak/api/saksok/ident', (req, res) => {
     const filnavn = req.body.personIdent === '12345678910' ? `saksøk.json` : `saksøk-feil.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });

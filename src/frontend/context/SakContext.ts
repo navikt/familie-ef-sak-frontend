@@ -7,6 +7,7 @@ import constate from 'constate';
 import { ISaksøk } from '../typer/saksøk';
 
 interface IHovedRessurser {
+    sakId?: string;
     saksøk: Ressurs<ISaksøk>;
     sak: Ressurs<ISak>;
 }
@@ -38,9 +39,10 @@ const [SakProvider, useSakRessurser] = constate(() => {
             });
             axiosRequest<ISaksøk, ISøkPersonIdent>({
                 method: 'POST',
-                url: '/familie-ef-sak/api/saksoek/ident',
+                url: '/familie-ef-sak/api/saksok/ident',
                 data: {
-                    personIdent: sakRessurser.sak.data.søknad.personalia.verdi.fødselsnummer.verdi,
+                    personIdent:
+                        sakRessurser.sak.data.søknad.personalia.verdi.fødselsnummer.verdi.verdi,
                 },
             }).then((sakSøkRessurs: Ressurs<ISaksøk>) => {
                 settSakRessurser({
@@ -66,6 +68,7 @@ const [SakProvider, useSakRessurser] = constate(() => {
                 settSakRessurser({
                     ...sakRessurser,
                     sak: hentetFagsak,
+                    sakId: sakId,
                 });
             })
             .catch((error: AxiosError) => {

@@ -44,7 +44,7 @@ export const håndterRessurs = <T>(
             loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
             typetRessurs = {
                 melding: ressurs.melding,
-                funksjonellFeilmelding: ressurs.funksjonellFeilmelding,
+                frontendFeilmelding: ressurs.frontendFeilmelding,
                 status: RessursStatus.IKKE_TILGANG,
             };
             break;
@@ -53,14 +53,14 @@ export const håndterRessurs = <T>(
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
-                funksjonellFeilmelding: ressurs.funksjonellFeilmelding,
+                frontendFeilmelding: ressurs.frontendFeilmelding,
                 status: RessursStatus.FEILET,
             };
             break;
         default:
             typetRessurs = {
                 melding: 'Mest sannsynlig ukjent api feil',
-                funksjonellFeilmelding: 'Mest sannsynlig ukjent api feil',
+                frontendFeilmelding: 'Mest sannsynlig ukjent api feil',
                 status: RessursStatus.FEILET,
             };
             break;

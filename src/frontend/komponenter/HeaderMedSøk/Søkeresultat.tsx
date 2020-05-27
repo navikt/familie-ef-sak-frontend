@@ -6,8 +6,12 @@ import { kjønnType } from '@navikt/familie-typer';
 import { Folkeregisterpersonstatus } from '../../typer/saksøk';
 import PersonStatusVarsel from '../Felleskomponenter/PersonStatusVarsel';
 import { styles } from '../../typer/styles';
+import './søkeresultat.less';
+const InlineWrapper = styled.div`
+    display: flex;
+`;
 
-const StyledResultat = styled.div`
+const ResultatWrapper = styled.div`
     background-color: ${styles.farger.navMorkGra};
     padding: 10px;
     display: flex;
@@ -40,17 +44,26 @@ const Søkeresultat: React.FC<IProps> = ({
     onClick,
 }) => {
     return (
-        <StyledResultat onClick={onClick} role={'button'}>
-            <FamilieIkonVelger className={'familie-ikon-velger'} alder={alder} kjønn={kjønn} />
-            <ElementTekst>
-                {navn} ({ident})
-            </ElementTekst>
+        <ResultatWrapper onClick={onClick} role={'button'}>
+            <InlineWrapper>
+                <div>
+                    <FamilieIkonVelger
+                        className={'familie-ikon-velger'}
+                        alder={alder}
+                        kjønn={kjønn}
+                    />
+                </div>
+                <ElementTekst>
+                    {navn} ({ident})
+                </ElementTekst>
+            </InlineWrapper>
+
             {folkeregisterpersonstatus && (
                 <PersonStatusWrapper>
                     <PersonStatusVarsel folkeregisterpersonstatus={folkeregisterpersonstatus} />
                 </PersonStatusWrapper>
             )}
-        </StyledResultat>
+        </ResultatWrapper>
     );
 };
 

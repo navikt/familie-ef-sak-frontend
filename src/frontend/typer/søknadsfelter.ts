@@ -32,6 +32,13 @@ export interface ISpørsmålListeFelt extends ITekstListeFelt {
     spørsmålid: string;
     svarid: string[];
 }
+
+export interface IFødselsnummerFelt {
+    erDnummer: boolean;
+    fødselsdato: Date;
+    verdi: string;
+}
+
 export interface SøknadsFelt<T> {
     label: string;
     verdi: T;

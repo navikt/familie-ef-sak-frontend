@@ -47,7 +47,7 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
         axiosRequest<ISaksøk, ISakSøkPersonIdent>(
             {
                 method: 'POST',
-                url: `/familie-ef-sak/api/saksoek/ident`,
+                url: `/familie-ef-sak/api/saksok/ident`,
                 data: { personIdent: personIdent },
             },
             innloggetSaksbehandler
@@ -80,7 +80,7 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                     <StyledResultat>
                         <IkkeOppfylt heigth={20} width={20} />
                         <FunksjonellFeilmelding>
-                            {resultat.funksjonellFeilmelding}
+                            {resultat.frontendFeilmelding}
                         </FunksjonellFeilmelding>
                     </StyledResultat>
                 ))}
