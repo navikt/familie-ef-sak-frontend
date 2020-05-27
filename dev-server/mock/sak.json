@@ -9,7 +9,11 @@
                 "verdi": {
                     "fødselsnummer": {
                         "label": "Fødselsnummer",
-                        "verdi": "12345678910"
+                        "verdi": {
+                            "erDNummer": false,
+                            "fødselsdato": "1979-11-24",
+                            "verdi": "12345678910"
+                        }
                     }
                 }
             }
