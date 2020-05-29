@@ -5,7 +5,6 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './komponenter/App';
 import './index.less';
-import './komponenter/HeaderMedSøk/søkeresultat.less';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');

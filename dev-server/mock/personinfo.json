@@ -101,6 +101,6 @@
   },
   "status": "SUKSESS",
   "melding": "Innhenting av data var vellykket",
-  "funksjonellFeilmelding": null,
+  "frontendFeilmelding": null,
   "stacktrace": null
 }

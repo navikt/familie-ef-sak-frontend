@@ -1,5 +1,5 @@
 {
   "status": "FEILET",
   "melding": "Noe gikk galt",
-  "funksjonellFeilmelding": "Kunne ikke finne personen"
+  "frontendFeilmelding": "Kunne ikke finne personen"
 }

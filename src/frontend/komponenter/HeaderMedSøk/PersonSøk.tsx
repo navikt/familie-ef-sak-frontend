@@ -1,7 +1,6 @@
 import { Søk } from '@navikt/familie-header';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { axiosRequest } from '../../api/axios';
 import { ISaksbehandler } from '../../typer/saksbehandler';
 import {
     byggFeiletRessurs,
@@ -13,7 +12,9 @@ import {
 import Søkeresultat from './Søkeresultat';
 import styled from 'styled-components';
 import IkkeOppfylt from '../../ikoner/IkkeOppfylt';
-import { ISaksøk } from '../../typer/saksøk';
+import { ISaksøk, ISakSøkPersonIdent } from '../../typer/saksøk';
+import { useApp } from '../../context/AppContext';
+import { styles } from '../../typer/styles';
 
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');
@@ -27,18 +28,15 @@ const FunksjonellFeilmelding = styled.div`
 `;
 
 const StyledResultat = styled.div`
-    background-color: #3e3832;
-    color: #fff;
+    background-color: ${styles.farger.navMorkGra};
+    color: ${styles.farger.hvit};
     padding: 0.8rem;
     display: flex;
 `;
 
-interface ISakSøkPersonIdent {
-    personIdent: string;
-}
-
 const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
     const history = useHistory();
+    const { axiosRequest } = useApp();
     const [resultat, settResultat] = React.useState<Ressurs<ISaksøk>>(byggTomRessurs());
     const nullstillResultat = (): void => {
         settResultat(byggTomRessurs());
@@ -49,7 +47,7 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
         axiosRequest<ISaksøk, ISakSøkPersonIdent>(
             {
                 method: 'POST',
-                url: `/familie-ef-sak/api/saksoek/ident`,
+                url: `/familie-ef-sak/api/saksok/ident`,
                 data: { personIdent: personIdent },
             },
             innloggetSaksbehandler
@@ -82,7 +80,7 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                     <StyledResultat>
                         <IkkeOppfylt heigth={20} width={20} />
                         <FunksjonellFeilmelding>
-                            {resultat.funksjonellFeilmelding}
+                            {resultat.frontendFeilmelding}
                         </FunksjonellFeilmelding>
                     </StyledResultat>
                 ))}
@@ -96,6 +94,7 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                     navn={resultat.data.navn.visningsnavn}
                     ident={resultat.data.personIdent}
                     kjønn={resultat.data.kjønn}
+                    folkeregisterpersonstatus={resultat.data.folkeregisterpersonstatus}
                     onClick={() => {
                         history.push(`/sak/${resultat.data.sakId}`);
                     }}

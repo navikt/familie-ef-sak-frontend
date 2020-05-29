@@ -1,17 +1,19 @@
 {
   "data": {
       "sakId": "123-abc-456-efg",
-      "personIdent": "17106521522",
+      "personIdent": "12345678910",
       "navn": {
         "fornavn": "TAREMEL",
         "etternavn": "SMEKKER",
         "mellomnavn": "",
-        "visningsnavn": "TARMEL SMEKKER"
+        "visningsnavn": "Fornavn Mellomnavn Etternavn"
       },
-      "kjønn": "MANN"
+      "kjønn": "MANN",
+      "folkeregisterpersonstatus": "FORSVUNNET",
+      "adressebeskyttelse": "STRENGT_FORTROLIG"
   },
   "status": "SUKSESS",
   "melding": "Innhenting av data var vellykket",
-  "funksjonellFeilmelding": null,
+  "frontendFeilmelding": null,
   "stacktrace": null
 }

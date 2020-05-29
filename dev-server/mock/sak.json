@@ -1,0 +1,25 @@
+{
+    "data": {
+        "saksnummer": "123",
+        "journalpostId": "4567",
+        "opprettetTidspunkt": "2020-02-14T13:24:08.129343",
+        "søknad": {
+            "personalia": {
+                "label": "Personalia",
+                "verdi": {
+                    "fødselsnummer": {
+                        "label": "Fødselsnummer",
+                        "verdi": {
+                            "erDNummer": false,
+                            "fødselsdato": "1979-11-24",
+                            "verdi": "12345678910"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "status": "SUKSESS",
+    "melding": "Innhenting av data var vellykket",
+    "stacktrace": null
+}
