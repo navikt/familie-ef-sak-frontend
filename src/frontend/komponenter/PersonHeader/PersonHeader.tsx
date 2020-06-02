@@ -4,7 +4,7 @@ import { kjønnType } from '@navikt/familie-typer';
 import Element, { Normaltekst } from 'nav-frontend-typografi';
 import * as React from 'react';
 
-import { Adressebeskyttelse, Folkeregisterpersonstatus } from '../../typer/saksøk';
+import { Adressebeskyttelse, Folkeregisterpersonstatus } from '../../typer/personopplysninger';
 import PersonStatusVarsel from '../Felleskomponenter/PersonStatusVarsel';
 import styled from 'styled-components';
 import AdressebeskyttelseVarsel from '../Felleskomponenter/AdressebeskyttelseVarsel';
@@ -34,7 +34,7 @@ export interface IProps {
     kjønn: kjønnType;
     navn: string;
     folkeregisterpersonstatus?: Folkeregisterpersonstatus;
-    adressebeskyttelse: Adressebeskyttelse;
+    adressebeskyttelse?: Adressebeskyttelse;
 }
 
 const PersonHeader: React.FC<IProps> = ({

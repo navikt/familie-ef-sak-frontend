@@ -1,5 +1,5 @@
 import React from 'react';
-import { Folkeregisterpersonstatus } from '../../typer/saksøk';
+import { Folkeregisterpersonstatus } from '../../typer/personopplysninger';
 import { EtikettAdvarsel } from 'nav-frontend-etiketter';
 
 interface IProps {

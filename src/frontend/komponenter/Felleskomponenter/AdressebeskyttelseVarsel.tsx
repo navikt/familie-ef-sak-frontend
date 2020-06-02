@@ -1,5 +1,5 @@
 import React from 'react';
-import { Adressebeskyttelse } from '../../typer/saksøk';
+import { Adressebeskyttelse } from '../../typer/personopplysninger';
 import { EtikettAdvarsel } from 'nav-frontend-etiketter';
 
 interface IProps {

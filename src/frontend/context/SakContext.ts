@@ -4,20 +4,16 @@ import { byggFeiletRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from './AppContext';
 import { ISak } from '../typer/sak';
 import constate from 'constate';
-import { ISaksøk } from '../typer/saksøk';
+import { IPersonopplysninger, IPersonopplysningerPersonIdent } from '../typer/personopplysninger';
 
 interface IHovedRessurser {
     sakId?: string;
-    saksøk: Ressurs<ISaksøk>;
+    personopplysninger: Ressurs<IPersonopplysninger>;
     sak: Ressurs<ISak>;
 }
 
-interface ISøkPersonIdent {
-    personIdent: string;
-}
-
 const initialState: IHovedRessurser = {
-    saksøk: {
+    personopplysninger: {
         status: RessursStatus.IKKE_HENTET,
     },
     sak: {
@@ -33,21 +29,21 @@ const [SakProvider, useSakRessurser] = constate(() => {
         if (sakRessurser.sak.status === RessursStatus.SUKSESS) {
             settSakRessurser({
                 ...sakRessurser,
-                saksøk: {
+                personopplysninger: {
                     status: RessursStatus.HENTER,
                 },
             });
-            axiosRequest<ISaksøk, ISøkPersonIdent>({
+            axiosRequest<IPersonopplysninger, IPersonopplysningerPersonIdent>({
                 method: 'POST',
-                url: '/familie-ef-sak/api/saksok/ident',
+                url: '/familie-ef-sak/api/personopplysninger',
                 data: {
                     personIdent:
                         sakRessurser.sak.data.søknad.personalia.verdi.fødselsnummer.verdi.verdi,
                 },
-            }).then((sakSøkRessurs: Ressurs<ISaksøk>) => {
+            }).then((personopplysningerRessurs: Ressurs<IPersonopplysninger>) => {
                 settSakRessurser({
                     ...sakRessurser,
-                    saksøk: sakSøkRessurs,
+                    personopplysninger: personopplysningerRessurs,
                 });
             });
         }
