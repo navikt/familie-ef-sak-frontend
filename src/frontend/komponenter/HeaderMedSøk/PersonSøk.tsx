@@ -94,7 +94,6 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                     navn={resultat.data.navn.visningsnavn}
                     ident={resultat.data.personIdent}
                     kjønn={resultat.data.kjønn}
-                    folkeregisterpersonstatus={resultat.data.folkeregisterpersonstatus}
                     onClick={() => {
                         history.push(`/sak/${resultat.data.sakId}`);
                     }}

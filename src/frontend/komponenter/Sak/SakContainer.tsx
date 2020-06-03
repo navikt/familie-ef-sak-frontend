@@ -10,6 +10,8 @@ import { useSakRessurser } from '../../context/SakContext';
 import styled from 'styled-components';
 import PersonHeader from '../PersonHeader/PersonHeader';
 import { styles } from '../../typer/styles';
+import Personopplysninger from './Personopplysninger';
+import { IPersonopplysninger } from '../../typer/personopplysninger';
 
 const Container = styled.div`
     display: flex;
@@ -51,57 +53,59 @@ const SakContainer: React.FunctionComponent = () => {
         }
     }, [sakId]);
 
+    function hentetSak(personopplysninger: IPersonopplysninger) {
+        return (
+            <>
+                <PersonHeader
+                    navn={personopplysninger.navn?.visningsnavn || 'Ukjent'}
+                    ident={personopplysninger.personIdent}
+                    alder={40}
+                    kjønn={personopplysninger.kjønn || kjønnType.UKJENT}
+                    folkeregisterpersonstatus={personopplysninger.folkeregisterpersonstatus}
+                    adressebeskyttelse={personopplysninger.adressebeskyttelse}
+                />
+                <Container>
+                    <VenstreMenyWrapper>
+                        <Venstremeny />
+                    </VenstreMenyWrapper>
+                    <InnholdWrapper>
+                        <Switch>
+                            <Route
+                                exact={true}
+                                path="/sak/:sakId"
+                                render={() => {
+                                    return <Personopplysninger data={personopplysninger} />;
+                                }}
+                            />
+                            <Route
+                                exact={true}
+                                path="/sak/:sakId/personopplysninger"
+                                render={() => {
+                                    return <div>Perosnopplysninger her</div>;
+                                }}
+                            />
+                            <Route
+                                exact={true}
+                                path="/sak/:sakId/medlemskap"
+                                render={() => {
+                                    return <div>Her kommer info om medlemskap</div>;
+                                }}
+                            />
+                        </Switch>
+                    </InnholdWrapper>
+                    <HøyreMenyWrapper>
+                        <Høyremeny />
+                    </HøyreMenyWrapper>
+                </Container>
+            </>
+        );
+    }
+
     switch (ressurser.sak.status) {
         case RessursStatus.SUKSESS:
-            switch (ressurser.saksøk.status) {
+            switch (ressurser.personopplysninger.status) {
                 case RessursStatus.SUKSESS:
-                    return (
-                        <>
-                            <PersonHeader
-                                navn={ressurser.saksøk?.data?.navn?.visningsnavn || 'Ukjent'}
-                                ident={ressurser.saksøk.data.personIdent}
-                                alder={40}
-                                kjønn={ressurser.saksøk?.data?.kjønn || kjønnType.UKJENT}
-                                folkeregisterpersonstatus={
-                                    ressurser.saksøk?.data?.folkeregisterpersonstatus
-                                }
-                                adressebeskyttelse={ressurser.saksøk?.data?.adressebeskyttelse}
-                            />
-                            <Container>
-                                <VenstreMenyWrapper>
-                                    <Venstremeny />
-                                </VenstreMenyWrapper>
-                                <InnholdWrapper>
-                                    <Switch>
-                                        <Route
-                                            exact={true}
-                                            path="/sak/:sakId"
-                                            render={() => {
-                                                return <div>Overordnet info om saken</div>;
-                                            }}
-                                        />
-                                        <Route
-                                            exact={true}
-                                            path="/sak/:sakId/personopplysninger"
-                                            render={() => {
-                                                return <div>Perosnopplysninger her</div>;
-                                            }}
-                                        />
-                                        <Route
-                                            exact={true}
-                                            path="/sak/:sakId/medlemskap"
-                                            render={() => {
-                                                return <div>Her kommer info om medlemskap</div>;
-                                            }}
-                                        />
-                                    </Switch>
-                                </InnholdWrapper>
-                                <HøyreMenyWrapper>
-                                    <Høyremeny />
-                                </HøyreMenyWrapper>
-                            </Container>
-                        </>
-                    );
+                    return hentetSak(ressurser.personopplysninger.data);
                 case RessursStatus.HENTER:
                     return <SystemetLaster />;
                 default:
