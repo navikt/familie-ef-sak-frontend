@@ -280,10 +280,10 @@
     framer-motion "^1.8.3"
     react-tooltip "^3.11.4"
 
-"@navikt/familie-header@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@navikt/familie-header/-/familie-header-2.0.0.tgz#03cc3bf8faddb8441d7d398b13cc26f459b626ef"
-  integrity sha512-4S97dLKZUEehX0ljcmrCX5ofre0hEYSC4z22jd/TFh06BRyVowSQlXZ4VihQ4yr78ogoX5eBo2mz9rs12vkubg==
+"@navikt/familie-header@^2.0.1":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@navikt/familie-header/-/familie-header-2.0.3.tgz#bdd6ed8a42104124f4bb3d14a7445769312ece52"
+  integrity sha512-CEkkLRyf8gi+MvlwOioZlsuwSWTCpkOdjIbgx0tmmq2XZfVocvPbSDnyJv8WacgOCofLmSAYTjjkWa5OUP7I1Q==
   dependencies:
     "@navikt/boxed-list-with-links" "^1.0.2"
     "@navikt/familie-ikoner" "^3.0.3"
@@ -292,12 +292,12 @@
     classnames "^2.2.6"
     lodash.throttle "^4.1.1"
     nav-frontend-alertstriper "^3.0.13"
-    nav-frontend-alertstriper-style "2.0.11"
+    nav-frontend-alertstriper-style "2.0.14"
     nav-frontend-core "^4.0.12"
     nav-frontend-ikoner-assets "2.0.1"
     nav-frontend-js-utils "1.0.8"
     nav-frontend-paneler "^1.0.24"
-    nav-frontend-paneler-style "0.3.18"
+    nav-frontend-paneler-style "0.3.19"
     nav-frontend-popover "0.0.23"
     nav-frontend-popover-style "0.0.3"
     nav-frontend-typografi "^2.0.17"
@@ -5566,12 +5566,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-nav-frontend-alertstriper-style@2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/nav-frontend-alertstriper-style/-/nav-frontend-alertstriper-style-2.0.11.tgz#d3561213fc33d92da47b8de526ba02bfa1718bbf"
-  integrity sha512-iwyOxMtXLhdfFlI7+rBs0aFJFYWkkjPByeMYTE/fzDsnCmcM1u5qLASwfwyOtSP+xaImoWCVHN6sJh6YRL6t1g==
-
-nav-frontend-alertstriper-style@^2.0.11:
+nav-frontend-alertstriper-style@2.0.14, nav-frontend-alertstriper-style@^2.0.11:
   version "2.0.14"
   resolved "https://registry.yarnpkg.com/nav-frontend-alertstriper-style/-/nav-frontend-alertstriper-style-2.0.14.tgz#66edde2d6eb0bbc06051b07080b0444ac08f6503"
   integrity sha512-2/bXQ2aSbXKFk6K7GQX0IsR7iqLHNtRBccZiejTO6tb5pZ/74L0GBYULxkY3dLAlKr2ImxEPtjora6rYTraYGw==
@@ -5666,12 +5661,7 @@ nav-frontend-modal@^1.0.34:
   resolved "https://registry.yarnpkg.com/nav-frontend-modal/-/nav-frontend-modal-1.0.34.tgz#8374942631cd8a610e2c5657659503927e189d5c"
   integrity sha512-qbJf1pD5O0FFSWSchQ6feFfpfTG/0ijZjNR8dOPyBAH7WH6bpKHCHrPIPi7BtKYEkwN+Jo+ABzc+jkoABb8zOA==
 
-nav-frontend-paneler-style@0.3.18:
-  version "0.3.18"
-  resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-0.3.18.tgz#a01b14b2759383a00c37057d936287954b45c249"
-  integrity sha512-YDqgkS8QdSr9ScBiogm5h8yIBzcMFnWvQ4alF0OyXFw1gDSSVpE15uHsJZtR0+mz4ORWCx+0aT/ivdbT6eEcUg==
-
-nav-frontend-paneler-style@^0.3.18:
+nav-frontend-paneler-style@0.3.19, nav-frontend-paneler-style@^0.3.18:
   version "0.3.19"
   resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-0.3.19.tgz#7d6c2638eaae3d3e78942ade2b9dd77aa4dbfa95"
   integrity sha512-S3ikh+s/1ta86YKSqw/1m6r2j4vD5E9MpyD2XgDKXcaO0JaHDBc/WKRuJGbCtnKHdkm0NdFpOk9Hp77Y2bNZiQ==
