@@ -7,6 +7,7 @@ import { useApp } from '../context/AppContext';
 import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
 import { SakProvider } from '../context/SakContext';
 import SakContainer from './Sak/SakContainer';
+import SakListeContainer from './Sak/SakListeContainer';
 
 interface IProps {
     innloggetSaksbehandler?: ISaksbehandler;
@@ -23,19 +24,17 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                     <div className={'container'} role="main">
                         <SakProvider>
                             <Switch>
-                                <Route
-                                    exact={true}
-                                    path={'/'}
-                                    render={() => {
-                                        return <Redirect from="/" to="/soker/finn" />;
-                                    }}
-                                />
+                                <Redirect exact={true} from="/" to="/sak" />
                                 <Route path="/sak/:sakId" component={SakContainer} />
                                 <Route
-                                    exact={true}
-                                    path="/soker/finn"
+                                    path="/sak"
                                     render={() => {
-                                        return <PersonInfo />;
+                                        return (
+                                            <div>
+                                                <PersonInfo />
+                                                <SakListeContainer />
+                                            </div>
+                                        );
                                     }}
                                 />
                             </Switch>

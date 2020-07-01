@@ -1,7 +1,7 @@
 import { kjønnType } from '@navikt/familie-typer';
 import AlertStripe from 'nav-frontend-alertstriper';
 import * as React from 'react';
-import { Route, Switch, useParams } from 'react-router-dom';
+import { Redirect, Route, Switch, useParams } from 'react-router-dom';
 import { RessursStatus } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import Høyremeny from '../Høyremeny/Høyremeny';
@@ -12,6 +12,7 @@ import PersonHeader from '../PersonHeader/PersonHeader';
 import { styles } from '../../typer/styles';
 import Personopplysninger from './Personopplysninger';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
+import AnyData from './AnyData';
 
 const Container = styled.div`
     display: flex;
@@ -70,18 +71,24 @@ const SakContainer: React.FunctionComponent = () => {
                     </VenstreMenyWrapper>
                     <InnholdWrapper>
                         <Switch>
+                            <Redirect
+                                exact={true}
+                                from="/sak/:sakId/"
+                                to="/sak/:sakId/personopplysninger"
+                            />
                             <Route
                                 exact={true}
-                                path="/sak/:sakId"
+                                path="/sak/:sakId/personopplysninger"
                                 render={() => {
                                     return <Personopplysninger data={personopplysninger} />;
                                 }}
                             />
                             <Route
                                 exact={true}
-                                path="/sak/:sakId/personopplysninger"
+                                path="/sak/:sakId/overgangsstonad"
                                 render={() => {
-                                    return <div>Perosnopplysninger her</div>;
+                                    // TODO endre til Overgangsstønad og hent data for overgangsstønad
+                                    return <AnyData data={personopplysninger} />;
                                 }}
                             />
                             <Route
