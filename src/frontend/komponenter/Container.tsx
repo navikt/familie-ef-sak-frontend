@@ -30,10 +30,10 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                                     path="/sak"
                                     render={() => {
                                         return (
-                                            <div>
+                                            <>
                                                 <PersonInfo />
                                                 <SakListeContainer />
-                                            </div>
+                                            </>
                                         );
                                     }}
                                 />
