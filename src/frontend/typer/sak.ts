@@ -6,7 +6,7 @@ export interface ISak {
     id: number;
     saksnummer: string;
     søknad: ISøknad;
-    overgangsstonad?: IOvergangsstønad;
+    overgangsstønad?: IOvergangsstønad;
 }
 
 export interface ISøknad {

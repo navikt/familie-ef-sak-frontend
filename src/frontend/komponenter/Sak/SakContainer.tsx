@@ -13,6 +13,7 @@ import { styles } from '../../typer/styles';
 import Personopplysninger from './Personopplysninger';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
 import AnyData from './AnyData';
+import { ISak } from '../../typer/sak';
 
 const Container = styled.div`
     display: flex;
@@ -54,7 +55,7 @@ const SakContainer: React.FunctionComponent = () => {
         }
     }, [sakId]);
 
-    function hentetSak(personopplysninger: IPersonopplysninger) {
+    function hentetSak(sak: ISak, personopplysninger: IPersonopplysninger) {
         return (
             <>
                 <PersonHeader
@@ -88,7 +89,7 @@ const SakContainer: React.FunctionComponent = () => {
                                 path="/sak/:sakId/overgangsstonad"
                                 render={() => {
                                     // TODO endre til Overgangsstønad og hent data for overgangsstønad
-                                    return <AnyData data={personopplysninger} />;
+                                    return <AnyData data={sak.overgangsstønad} />;
                                 }}
                             />
                             <Route
@@ -112,7 +113,7 @@ const SakContainer: React.FunctionComponent = () => {
         case RessursStatus.SUKSESS:
             switch (ressurser.personopplysninger.status) {
                 case RessursStatus.SUKSESS:
-                    return hentetSak(ressurser.personopplysninger.data);
+                    return hentetSak(ressurser.sak.data, ressurser.personopplysninger.data);
                 case RessursStatus.HENTER:
                     return <SystemetLaster />;
                 default:
