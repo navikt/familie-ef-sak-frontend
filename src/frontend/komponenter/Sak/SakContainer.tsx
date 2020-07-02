@@ -10,7 +10,6 @@ import { useSakRessurser } from '../../context/SakContext';
 import styled from 'styled-components';
 import PersonHeader from '../PersonHeader/PersonHeader';
 import { styles } from '../../typer/styles';
-import Personopplysninger from './Personopplysninger';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
 import AnyData from './AnyData';
 import { ISak } from '../../typer/sak';
@@ -81,14 +80,13 @@ const SakContainer: React.FunctionComponent = () => {
                                 exact={true}
                                 path="/sak/:sakId/personopplysninger"
                                 render={() => {
-                                    return <Personopplysninger data={personopplysninger} />;
+                                    return <AnyData data={personopplysninger} />;
                                 }}
                             />
                             <Route
                                 exact={true}
                                 path="/sak/:sakId/overgangsstonad"
                                 render={() => {
-                                    // TODO endre til Overgangsstønad og hent data for overgangsstønad
                                     return <AnyData data={sak.overgangsstønad} />;
                                 }}
                             />
