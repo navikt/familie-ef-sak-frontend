@@ -1,7 +1,7 @@
 import { kjønnType } from '@navikt/familie-typer';
 import AlertStripe from 'nav-frontend-alertstriper';
 import * as React from 'react';
-import { Route, Switch, useParams } from 'react-router-dom';
+import { Redirect, Route, Switch, useParams } from 'react-router-dom';
 import { RessursStatus } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import Høyremeny from '../Høyremeny/Høyremeny';
@@ -10,8 +10,9 @@ import { useSakRessurser } from '../../context/SakContext';
 import styled from 'styled-components';
 import PersonHeader from '../PersonHeader/PersonHeader';
 import { styles } from '../../typer/styles';
-import Personopplysninger from './Personopplysninger';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
+import AnyData from './AnyData';
+import { ISak } from '../../typer/sak';
 
 const Container = styled.div`
     display: flex;
@@ -53,7 +54,7 @@ const SakContainer: React.FunctionComponent = () => {
         }
     }, [sakId]);
 
-    function hentetSak(personopplysninger: IPersonopplysninger) {
+    function hentetSak(sak: ISak, personopplysninger: IPersonopplysninger) {
         return (
             <>
                 <PersonHeader
@@ -70,18 +71,23 @@ const SakContainer: React.FunctionComponent = () => {
                     </VenstreMenyWrapper>
                     <InnholdWrapper>
                         <Switch>
-                            <Route
+                            <Redirect
                                 exact={true}
-                                path="/sak/:sakId"
-                                render={() => {
-                                    return <Personopplysninger data={personopplysninger} />;
-                                }}
+                                from="/sak/:sakId/"
+                                to="/sak/:sakId/personopplysninger"
                             />
                             <Route
                                 exact={true}
                                 path="/sak/:sakId/personopplysninger"
                                 render={() => {
-                                    return <div>Perosnopplysninger her</div>;
+                                    return <AnyData data={personopplysninger} />;
+                                }}
+                            />
+                            <Route
+                                exact={true}
+                                path="/sak/:sakId/overgangsstonad"
+                                render={() => {
+                                    return <AnyData data={sak.overgangsstønad} />;
                                 }}
                             />
                             <Route
@@ -105,7 +111,7 @@ const SakContainer: React.FunctionComponent = () => {
         case RessursStatus.SUKSESS:
             switch (ressurser.personopplysninger.status) {
                 case RessursStatus.SUKSESS:
-                    return hentetSak(ressurser.personopplysninger.data);
+                    return hentetSak(ressurser.sak.data, ressurser.personopplysninger.data);
                 case RessursStatus.HENTER:
                     return <SystemetLaster />;
                 default:
