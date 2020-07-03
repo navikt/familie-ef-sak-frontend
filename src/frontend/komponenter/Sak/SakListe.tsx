@@ -20,7 +20,7 @@ const SakListe: React.FunctionComponent = () => {
         if (ressurser.saker.status === RessursStatus.IKKE_HENTET) {
             hentSakListe();
         }
-    });
+    }, []);
     switch (ressurser.saker.status) {
         case RessursStatus.SUKSESS:
             if (ressurser.saker.data.saker.length) {
