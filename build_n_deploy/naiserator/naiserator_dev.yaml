@@ -27,6 +27,7 @@ spec:
   ingresses:
     - https://alenemedbarn.dev-fss.nais.io
     - https://familie-ef-sak-frontend.dev-fss.nais.io
+    - https://ensligmorellerfar.dev-fss.nais.io
   vault:
     enabled: true
     paths:
