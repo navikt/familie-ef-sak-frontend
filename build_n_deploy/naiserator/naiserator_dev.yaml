@@ -26,7 +26,6 @@ spec:
     enabled: false
   ingresses:
     - https://ensligmorellerfar.dev-fss.nais.io
-    - https://ensligmorellerfar.dev.nav.no
   vault:
     enabled: true
     paths:
