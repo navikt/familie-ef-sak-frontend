@@ -1,29 +1,11 @@
 import { captureException, configureScope, withScope } from '@sentry/core';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import { slackKanaler } from '../typer/slack';
 
 axios.defaults.baseURL = window.location.origin;
 export const preferredAxios = axios;
-
-// TODO: Slett denne
-export const axiosRequest = async <T, D>(
-    config: AxiosRequestConfig & { data?: D },
-    innloggetSaksbehandler?: ISaksbehandler
-): Promise<Ressurs<T>> => {
-    return preferredAxios
-        .request(config)
-        .then((response: AxiosResponse<Ressurs<T>>) => {
-            const responsRessurs: Ressurs<T> = response.data;
-            return håndterRessurs(responsRessurs, innloggetSaksbehandler);
-        })
-        .catch((error: AxiosError) => {
-            loggFeil(error, innloggetSaksbehandler);
-            const responsRessurs: Ressurs<T> = error.response?.data;
-            return håndterRessurs(responsRessurs, innloggetSaksbehandler);
-        });
-};
 
 export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,

@@ -23,6 +23,7 @@ const AnyData: React.FC<IProps> = ({ data }) => {
         // @ts-ignore
         return <Key style={keyStyles[index]}>{key}</Key>;
     }
+    // eslint-disable-next-line
     function getData(obj: any, index = 0) {
         return Object.keys(obj).map(key => {
             const value = obj[key];
