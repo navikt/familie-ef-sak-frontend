@@ -55,7 +55,7 @@ export const loggFeil = (
     error?: AxiosError,
     innloggetSaksbehandler?: ISaksbehandler,
     feilmelding?: string
-) => {
+): void => {
     if (process.env.NODE_ENV === 'development') {
         configureScope((scope) => {
             scope.setUser({
@@ -91,14 +91,14 @@ export const loggFeil = (
     }
 };
 
-export const slackNotify = (melding: string, kanal: string) => {
-    return preferredAxios.post(`/slack/notify/${kanal}`, {
+export const slackNotify = (melding: string, kanal: string): void => {
+    preferredAxios.post(`/slack/notify/${kanal}`, {
         melding,
     });
 };
 
-export const apiLoggFeil = (melding: string) => {
-    return preferredAxios.post('/logg-feil', {
+export const apiLoggFeil = (melding: string): void => {
+    preferredAxios.post('/logg-feil', {
         melding,
     });
 };

@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const rootElement = document.getElementById('app');
-const renderApp = (Component: React.ComponentType<{}>): void => {
+const renderApp = (Component: React.ComponentType): void => {
     ReactDOM.render(
         <AppContainer>
             <Component />
