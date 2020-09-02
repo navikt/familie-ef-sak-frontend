@@ -2,7 +2,8 @@ import { init } from '@sentry/browser';
 import * as React from 'react';
 import axe from 'react-axe';
 import * as ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
+import { hot } from 'react-hot-loader';
+
 import App from './komponenter/App';
 import './index.less';
 
@@ -25,19 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const rootElement = document.getElementById('app');
 const renderApp = (Component: React.ComponentType): void => {
-    ReactDOM.render(
-        <AppContainer>
-            <Component />
-        </AppContainer>,
-        rootElement
-    );
+    ReactDOM.render(<Component />, rootElement);
 };
 
-renderApp(App);
-
-if (module.hot) {
-    module.hot.accept('./komponenter/App', () => {
-        const NewApp = require('./komponenter/App').default;
-        renderApp(NewApp);
-    });
-}
+renderApp(hot(module)(App));

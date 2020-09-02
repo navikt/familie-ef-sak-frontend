@@ -12,7 +12,7 @@ const config = merge.strategy({
         'familie-ef-sak': [
             'babel-polyfill',
             'react-hot-loader/patch',
-            'webpack-hot-middleware/client?reload=true',
+            'webpack-hot-middleware/client?reload=true&overlay=false',
         ],
     },
     output: {
