@@ -25,7 +25,7 @@ const AnyData: React.FC<IProps> = ({ data }) => {
     }
     // eslint-disable-next-line
     function getData(obj: any, index = 0) {
-        return Object.keys(obj).map(key => {
+        return Object.keys(obj).map((key) => {
             const value = obj[key];
             if (!value) {
                 return null;

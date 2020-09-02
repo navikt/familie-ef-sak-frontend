@@ -55,7 +55,7 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
             .then((response: Ressurs<ISaksøk>) => {
                 settResultat(response);
             })
-            .catch(error => {
+            .catch((error) => {
                 settResultat(
                     byggFeiletRessurs('En ukjent feil oppstod ved henting av person', error)
                 );

@@ -34,7 +34,7 @@ const SakListe: React.FunctionComponent = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {ressurser.saker.data.saker.map(sak => (
+                            {ressurser.saker.data.saker.map((sak) => (
                                 <tr
                                     key={sak.sakId}
                                     role={'button'}
