@@ -34,12 +34,6 @@ const config = merge.strategy({
                     { loader: 'postcss-loader' },
                     {
                         loader: 'less-loader',
-                        options: {
-                            globalVars: {
-                                coreModulePath: '"~"',
-                                nodeModulesPath: '"~"',
-                            },
-                        },
                     },
                 ],
             },
