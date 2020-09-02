@@ -29,11 +29,13 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
 
     if (process.env.NODE_ENV === 'development') {
         const compiler = webpack(config);
+        // @ts-ignore
         middleware = webpackDevMiddleware(compiler, {
             publicPath: config.output.publicPath,
         });
 
         app.use(middleware);
+        // @ts-ignore
         app.use(webpackHotMiddleware(compiler));
     } else {
         app.use('/assets', express.static(path.join(__dirname, '../../frontend_production')));
