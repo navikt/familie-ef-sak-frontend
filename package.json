@@ -14,7 +14,8 @@
     "build:prod": "tsc & webpack --config ./build_n_deploy/webpack/webpack.prod.js",
     "snyk-protect": "snyk protect",
     "lint": "eslint './src/**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix"
+    "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
+    "prepare": "yarn run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -104,7 +105,8 @@
     "redis": "^2.8.0",
     "request-promise": "^4.2.6",
     "styled-components": "^5.1.1",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "snyk": "^1.388.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.10.4",
@@ -150,5 +152,6 @@
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-merge": "^4.2.2"
-  }
+  },
+  "snyk": true
 }
