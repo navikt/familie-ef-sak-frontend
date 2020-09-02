@@ -1,6 +1,5 @@
 import { HeaderMedSøk } from './HeaderMedSøk/HeaderMedSøk';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import PersonInfo from './Person/PersonInfo';
 import * as React from 'react';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import { useApp } from '../context/AppContext';
@@ -31,7 +30,6 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                                     render={() => {
                                         return (
                                             <>
-                                                <PersonInfo />
                                                 <SakListeContainer />
                                             </>
                                         );
