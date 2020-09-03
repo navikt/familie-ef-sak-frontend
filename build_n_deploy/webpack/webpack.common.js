@@ -55,9 +55,7 @@ module.exports = {
             inject: 'body',
             alwaysWriteToDisk: true,
         }),
-        new TypeScriptTypeChecker({
-            tsconfig: path.join(__dirname, '../../tsconfig.json'),
-        }),
+        new TypeScriptTypeChecker(),
         new webpack.NoEmitOnErrorsPlugin(),
         new OptimizeCssAssetsPlugin(),
     ],

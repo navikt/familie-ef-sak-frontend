@@ -55,9 +55,9 @@ export const loggFeil = (
     error?: AxiosError,
     innloggetSaksbehandler?: ISaksbehandler,
     feilmelding?: string
-) => {
+): void => {
     if (process.env.NODE_ENV === 'development') {
-        configureScope(scope => {
+        configureScope((scope) => {
             scope.setUser({
                 username: innloggetSaksbehandler
                     ? innloggetSaksbehandler.displayName
@@ -67,7 +67,7 @@ export const loggFeil = (
 
         const response: AxiosResponse | undefined = error ? error.response : undefined;
         if (response) {
-            withScope(scope => {
+            withScope((scope) => {
                 scope.setExtra('nav-call-id', response.headers['nav-call-id']);
                 scope.setExtra('status text', response.statusText);
                 scope.setExtra('status', response.status);
@@ -91,14 +91,14 @@ export const loggFeil = (
     }
 };
 
-export const slackNotify = (melding: string, kanal: string) => {
-    return preferredAxios.post(`/slack/notify/${kanal}`, {
+export const slackNotify = (melding: string, kanal: string): void => {
+    preferredAxios.post(`/slack/notify/${kanal}`, {
         melding,
     });
 };
 
-export const apiLoggFeil = (melding: string) => {
-    return preferredAxios.post('/logg-feil', {
+export const apiLoggFeil = (melding: string): void => {
+    preferredAxios.post('/logg-feil', {
         melding,
     });
 };

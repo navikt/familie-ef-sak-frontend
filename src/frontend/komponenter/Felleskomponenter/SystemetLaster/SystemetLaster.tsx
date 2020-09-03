@@ -2,6 +2,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Systemtittel } from 'nav-frontend-typografi';
 import * as React from 'react';
 import styled from 'styled-components';
+import { FC } from 'react';
 
 const StyledSystemetLaster = styled.div`
     position: absolute;
@@ -24,7 +25,7 @@ const StyledSpinner = styled.div`
     width: 10rem;
 `;
 
-const SystemetLaster = () => {
+const SystemetLaster: FC = () => {
     return (
         <StyledSystemetLaster>
             <StyledWrapper>

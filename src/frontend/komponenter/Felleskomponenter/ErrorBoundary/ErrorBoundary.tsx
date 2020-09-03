@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component<IProps> {
         // eslint-disable-next-line: no-console
         console.log(error, info);
         if (process.env.NODE_ENV !== 'development') {
-            configureScope(scope => {
+            configureScope((scope) => {
                 scope.setUser({
                     username: this.props.innloggetSaksbehandler
                         ? this.props.innloggetSaksbehandler.displayName
@@ -27,8 +27,8 @@ class ErrorBoundary extends React.Component<IProps> {
                 });
             });
 
-            withScope(scope => {
-                Object.keys(info).forEach(key => {
+            withScope((scope) => {
+                Object.keys(info).forEach((key) => {
                     scope.setExtra(key, info[key]);
                     captureException(error);
                 });

@@ -25,21 +25,21 @@ const AnyData: React.FC<IProps> = ({ data }) => {
     }
     // eslint-disable-next-line
     function getData(obj: any, index = 0) {
-        return Object.keys(obj).map(key => {
+        return Object.keys(obj).map((key, idx) => {
             const value = obj[key];
             if (!value) {
                 return null;
             } else if (Array.isArray(value)) {
                 const values = Array.from(value);
                 return (
-                    <Inline>
+                    <Inline key={idx}>
                         {formatKey(key, index)}
                         {values.map((val, i) => {
                             if (typeof val !== 'object') {
-                                return <Inline>{val}</Inline>;
+                                return <Inline key={i}>{val}</Inline>;
                             } else {
                                 return (
-                                    <Inline>
+                                    <Inline key={i}>
                                         {formatKey(`${key} - ${i}`)}
                                         <div>{getData(val, index + 1)}</div>
                                     </Inline>
@@ -50,14 +50,14 @@ const AnyData: React.FC<IProps> = ({ data }) => {
                 );
             } else if (typeof value === 'object') {
                 return (
-                    <Inline>
+                    <Inline key={idx}>
                         {formatKey(key, index)}
                         <div>{getData(value, index + 1)}</div>
                     </Inline>
                 );
             } else {
                 return (
-                    <Inline>
+                    <Inline key={idx}>
                         {key}: {value}
                     </Inline>
                 );
