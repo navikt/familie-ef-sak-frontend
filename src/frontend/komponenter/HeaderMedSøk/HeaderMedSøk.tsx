@@ -25,7 +25,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
 }) => {
     return (
         <Header
-            tittel="NAV Alene med barn"
+            tittel="NAV Enslig mor eller far"
             brukerinfo={{
                 navn: innloggetSaksbehandler?.displayName || 'Ukjent',
             }}
