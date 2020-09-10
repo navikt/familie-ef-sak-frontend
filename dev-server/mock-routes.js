@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json({ limit: '200mb' }));
 app.use(express.urlencoded({ limit: '200mb', extended: true }));
 
-const lesMockFil = filnavn => {
+const lesMockFil = (filnavn) => {
     try {
         return fs.readFileSync(path.join(__dirname, '/mock/' + filnavn), 'UTF-8');
     } catch (err) {
@@ -25,11 +25,9 @@ app.get('/user/profile', (req, res) => {
     });
 });
 
-app.get('/familie-ef-sak/api/personinfo', (req, res) => {
+app.post('/familie-ef-sak/api/personopplysninger', (req, res) => {
     const filnavn =
-        req.headers['nav-personident'] === '12345678910'
-            ? `personinfo.json`
-            : `feil-personinfo.json`;
+        req.body['personIdent'] === '12345678910' ? `personinfo.json` : `feil-personinfo.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
