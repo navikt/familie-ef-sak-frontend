@@ -60,4 +60,6 @@ app.post('/familie-ef-sak/api/fagsak/1/nytt-vedtak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
 });
 
+app.get('/api/oppgave/hent-sak/hent-oppgaver');
+
 module.exports = app;
