@@ -1,6 +1,5 @@
 import React from 'react';
 import cls from 'classnames';
-import './page.less';
 
 interface SideProps {
     children: React.ReactNode;
