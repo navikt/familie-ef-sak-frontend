@@ -7,12 +7,11 @@ import { Oppgavetype, oppgaveTypeTilTekst } from './oppgave';
 import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
 
 const StyledDiv = styled.div`
-    margin: 0 auto;
-    max-width: 1920px;
     display: flex;
+    flex-direction: column;
 `;
 
-interface OppgaveRequest {
+interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
     enhet?: string;
@@ -24,16 +23,20 @@ interface OppgaveRequest {
     frist?: Date;
 }
 
-const initOppgaveRequest = {} as OppgaveRequest;
+interface IOppgaveFiltrering {
+    hentOppgaver: any;
+}
 
-const OppgaveFiltering: React.FC = () => {
-    const [oppgaveRequest, setOppgaveRequest] = useState<OppgaveRequest>(initOppgaveRequest);
+const initOppgaveRequest = {} as IOppgaveRequest;
+
+const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
+    const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
 
     return (
         <StyledDiv>
             <Datovelger
                 onChange={(dato) =>
-                    setOppgaveRequest((prevState: OppgaveRequest) => ({
+                    setOppgaveRequest((prevState: IOppgaveRequest) => ({
                         ...prevState,
                         opprettet: dato,
                     }))
@@ -43,7 +46,7 @@ const OppgaveFiltering: React.FC = () => {
             <Select
                 label="Oppgavetype"
                 onChange={(event) =>
-                    setOppgaveRequest((prevState: OppgaveRequest) => ({
+                    setOppgaveRequest((prevState: IOppgaveRequest) => ({
                         ...prevState,
                         oppgavetype: event.target.value as Oppgavetype,
                     }))
@@ -56,7 +59,7 @@ const OppgaveFiltering: React.FC = () => {
             <Select
                 label="Behandlingstema"
                 onChange={(event) =>
-                    setOppgaveRequest((prevState: OppgaveRequest) => ({
+                    setOppgaveRequest((prevState: IOppgaveRequest) => ({
                         ...prevState,
                         behandlingstema: event.target.value as Behandlingstema,
                     }))
@@ -66,6 +69,7 @@ const OppgaveFiltering: React.FC = () => {
                     <option value={val}>{tekst}</option>
                 ))}
             </Select>
+            <Knapp onClick={hentOppgaver}>Hent oppgaver</Knapp>
         </StyledDiv>
     );
 };
