@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Datovelger } from 'nav-datovelger';
 import styled from 'styled-components';
+import { Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
 import { Oppgavetype, oppgaveTypeTilTekst } from './oppgave';
 import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';

@@ -1,0 +1,82 @@
+{
+	"data": {
+		"antallTreffTotalt": 7572,
+		"oppgaver": [{
+			"id": 45060,
+			"identer": [{
+				"ident": "20029524018",
+				"gruppe": "FOLKEREGISTERIDENT"
+			}, {
+				"ident": "2195875492274",
+				"gruppe": "AKTOERID"
+			}],
+			"tildeltEnhetsnr": "4833",
+			"saksreferanse": "1024923",
+			"aktoerId": "2195875492274",
+			"beskrivelse": "Det har gått mindre enn fem måneder siden forrige barn ble født.\n----- Opprettet av familie-ba-sak 2020-09-24T21:09:24.913845 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024923",
+			"tema": "BAR",
+			"behandlingstema": "ab0180",
+			"oppgavetype": "BEH_SAK",
+			"versjon": 1,
+			"fristFerdigstillelse": "2020-09-24",
+			"aktivDato": "2020-09-24",
+			"opprettetTidspunkt": "2020-09-24T21:09:24.96+02:00",
+			"opprettetAv": "srvfamilie-ks-opps",
+			"prioritet": "NORM",
+			"status": "OPPRETTET",
+			"metadata": {}
+		}, {
+			"id": 45059,
+			"identer": [{
+				"ident": "12060078082",
+				"gruppe": "FOLKEREGISTERIDENT"
+			}, {
+				"ident": "2215826550106",
+				"gruppe": "AKTOERID"
+			}],
+			"tildeltEnhetsnr": "4833",
+			"saksreferanse": "1024921",
+			"aktoerId": "2215826550106",
+			"beskrivelse": "Det er registrert dødsdato på mor.\n----- Opprettet av familie-ba-sak 2020-09-24T21:06:54.912747 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024921",
+			"tema": "BAR",
+			"behandlingstema": "ab0180",
+			"oppgavetype": "BEH_SAK",
+			"versjon": 1,
+			"fristFerdigstillelse": "2020-09-24",
+			"aktivDato": "2020-09-24",
+			"opprettetTidspunkt": "2020-09-24T21:06:54.971+02:00",
+			"opprettetAv": "srvfamilie-ks-opps",
+			"prioritet": "NORM",
+			"status": "OPPRETTET",
+			"metadata": {}
+		}, {
+			"id": 45058,
+			"identer": [{
+				"ident": "18029526636",
+				"gruppe": "FOLKEREGISTERIDENT"
+			}, {
+				"ident": "2926951485035",
+				"gruppe": "AKTOERID"
+			}],
+			"tildeltEnhetsnr": "4833",
+			"saksreferanse": "1024910",
+			"aktoerId": "2926951485035",
+			"beskrivelse": "Vurdert og satt automatisk\n\t- Mor har ikke lovlig opphold - EØS borger. Mor er ikke registrert med arbeidsforhold. Det er ikke registrert medforelder på barnet. Mor har ikke hatt bostedsadresse i Norge i mer enn fem år.\n----- Opprettet av familie-ba-sak 2020-09-24T21:04:24.623183 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024910",
+			"tema": "BAR",
+			"behandlingstema": "ab0180",
+			"oppgavetype": "BEH_SAK",
+			"versjon": 1,
+			"fristFerdigstillelse": "2020-09-24",
+			"aktivDato": "2020-09-24",
+			"opprettetTidspunkt": "2020-09-24T21:04:24.656+02:00",
+			"opprettetAv": "srvfamilie-ks-opps",
+			"prioritet": "NORM",
+			"status": "OPPRETTET",
+			"metadata": {}
+		}]
+	},
+	"status": "SUKSESS",
+	"melding": "Finn oppgaver OK",
+	"frontendFeilmelding": null,
+	"stacktrace": null
+}
