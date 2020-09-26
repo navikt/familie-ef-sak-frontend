@@ -105,7 +105,7 @@
     "redis": "^2.8.0",
     "request-promise": "^4.2.6",
     "snyk": "^1.388.0",
-    "styled-components": "^5.1.1",
+    "styled-components": "^5.2.0",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
