@@ -3,7 +3,7 @@ import { Datovelger } from 'nav-datovelger';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
-import { Oppgavetype, oppgaveTypeTilTekst } from './oppgave';
+import { Oppgavetype, oppgaveTypeTilTekst } from './oppgavetema';
 import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
 
 const StyledDiv = styled.div`

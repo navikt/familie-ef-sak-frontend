@@ -4,41 +4,9 @@ import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { OppgaveResurs } from '../../sider/Oppgavebenk';
-
-interface IOppgave {
-    id: number;
-    identer: any[];
-    tildeltEnhetsnr?: string;
-    endretAvEnhetsnr?: string;
-    eksisterendeOppgaveId?: string;
-    opprettetAvEnhetsnr?: string;
-    journalpostId?: string;
-    journalpostkilde?: string;
-    behandlesAvApplikasjon?: string;
-    saksreferanse?: string;
-    bnr?: string;
-    samhandlernr?: string;
-    aktoerId?: string;
-    orgnr?: string;
-    tilordnetRessurs?: string;
-    beskrivelse?: string;
-    temagruppe?: string;
-    tema?: string; // TEMA???
-    behandlingstema?: string;
-    oppgavetype?: string;
-    behandlingstype?: string;
-    versjon?: number;
-    mappeId?: string;
-    fristFerdigstillelse?: string;
-    aktivDato?: string;
-    opprettetTidspunkt?: string;
-    opprettetAv?: string;
-    endretAv?: string;
-    ferdigstiltTidspunkt?: string;
-    endretTidspunkt?: string;
-    prioritet?: string; //OppgavePrioritet
-    status?: string; //StatusEnum
-}
+import OppgaveRad from './OppgaveRad';
+import { IOppgave } from './oppgave';
+import 'nav-frontend-tabell-style';
 
 export interface IOppgaverResponse {
     antallTreffTotalt: number;
@@ -62,8 +30,9 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
     }
 
     const { data } = oppgaveResurs as RessursSuksess<IOppgaverResponse>;
+
     return (
-        <table>
+        <table className="tabell tabell--stripet">
             <thead>
                 <tr>
                     <td>Reg.dato</td>
@@ -80,11 +49,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
             </thead>
             <tbody>
                 {data.oppgaver.map((v) => (
-                    <tr>
-                        {Object.values(v).map((value) => (
-                            <td>{value}</td>
-                        ))}
-                    </tr>
+                    <OppgaveRad oppgave={v} />
                 ))}
             </tbody>
         </table>
