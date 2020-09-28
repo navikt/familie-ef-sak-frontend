@@ -1,3 +1,5 @@
+import { Oppgavetype, Prioritet } from './oppgavetema';
+
 export interface IOppgave {
     id: number;
     identer: any[];
@@ -18,7 +20,7 @@ export interface IOppgave {
     temagruppe?: string;
     tema?: string; // TEMA???
     behandlingstema?: string;
-    oppgavetype?: string;
+    oppgavetype?: Oppgavetype;
     behandlingstype?: string;
     versjon?: number;
     mappeId?: string;
@@ -29,6 +31,6 @@ export interface IOppgave {
     endretAv?: string;
     ferdigstiltTidspunkt?: string;
     endretTidspunkt?: string;
-    prioritet?: string; //OppgavePrioritet
+    prioritet?: Prioritet; //OppgavePrioritet
     status?: string; //StatusEnum
 }

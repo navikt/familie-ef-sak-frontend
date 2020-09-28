@@ -43,3 +43,15 @@ export const oppgaveTypeTilTekst: OppgaveTekstNokkelPar = {
     VUR_KONS_YTE: 'Vurder konsekvens for ytelse',
     VUR_SVAR: 'Vurder svar',
 };
+
+export type Prioritet = 'HOY' | 'NORM' | 'LAV';
+
+export type PrioritetNokkelPar = {
+    [s in Prioritet]: string;
+};
+
+export const prioritetTilTekst: PrioritetNokkelPar = {
+    HOY: 'Høy',
+    NORM: 'Normal',
+    LAV: 'Lav',
+};
