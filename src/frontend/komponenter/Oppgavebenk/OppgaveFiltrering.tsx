@@ -11,7 +11,7 @@ const StyledDiv = styled.div`
     flex-direction: column;
 `;
 
-interface IOppgaveRequest {
+export interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
     enhet?: string;
@@ -24,7 +24,7 @@ interface IOppgaveRequest {
 }
 
 interface IOppgaveFiltrering {
-    hentOppgaver: any;
+    hentOppgaver: (data: IOppgaveRequest) => void;
 }
 
 const initOppgaveRequest = {} as IOppgaveRequest;
@@ -45,31 +45,37 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
             />
             <Select
                 label="Oppgavetype"
-                onChange={(event) =>
+                onChange={(event) => {
+                    event.persist();
                     setOppgaveRequest((prevState: IOppgaveRequest) => ({
                         ...prevState,
                         oppgavetype: event.target.value as Oppgavetype,
-                    }))
-                }
+                    }));
+                }}
             >
                 {Object.entries(oppgaveTypeTilTekst).map(([val, tekst]) => (
-                    <option value={val}>{tekst}</option>
+                    <option key={val} value={val}>
+                        {tekst}
+                    </option>
                 ))}
             </Select>
             <Select
                 label="Behandlingstema"
-                onChange={(event) =>
+                onChange={(event) => {
+                    event.persist();
                     setOppgaveRequest((prevState: IOppgaveRequest) => ({
                         ...prevState,
                         behandlingstema: event.target.value as Behandlingstema,
-                    }))
-                }
+                    }));
+                }}
             >
                 {Object.entries(behandlingstemaTilTekst).map(([val, tekst]) => (
-                    <option value={val}>{tekst}</option>
+                    <option key={val} value={val}>
+                        {tekst}
+                    </option>
                 ))}
             </Select>
-            <Knapp onClick={hentOppgaver}>Hent oppgaver</Knapp>
+            <Knapp onClick={() => hentOppgaver(oppgaveRequest)}>Hent oppgaver</Knapp>
         </StyledDiv>
     );
 };

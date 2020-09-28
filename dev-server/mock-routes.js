@@ -60,7 +60,7 @@ app.post('/familie-ef-sak/api/fagsak/1/nytt-vedtak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
 });
 
-app.get('/familie-ef-sak/api/oppgave/hent-oppgave', (req, res) => {
+app.post('/familie-ef-sak/api/oppgave/soek', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`hent-oppgave.json`)), delayMs);
 });
 

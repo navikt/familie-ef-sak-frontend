@@ -1,13 +1,13 @@
 import { OppgaveRequestProvider } from '../context/OppgaveRequestProvider';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../../frontend/context/AppContext';
-import OppgaveFiltering from '../komponenter/Oppgavebenk/OppgaveFiltrering';
-import OppgaveTabell from '../komponenter/Oppgavebenk/OppgaveTabell';
+import OppgaveFiltering, { IOppgaveRequest } from '../komponenter/Oppgavebenk/OppgaveFiltrering';
+import OppgaveTabell, { IOppgaverResponse } from '../komponenter/Oppgavebenk/OppgaveTabell';
 import styled from 'styled-components';
+import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 
 const Side = styled.div`
     padding: 0.5rem;
-    height: ~'calc(' 100vh ~'-' 30px ~'-' 1.1rem~ ')';
     width: 100vw;
     overflow: auto;
 
@@ -16,24 +16,28 @@ const Side = styled.div`
     }
 `;
 
-export const OppgaveBenk: React.FC = () => {
-    const { axiosRequest } = useApp();
-    const [oppgaver, settOppgaver] = useState([]);
+export type OppgaveResurs = Ressurs<IOppgaverResponse>;
 
-    const hentOppgaver = () => {
-        axiosRequest<any>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/oppgave/hent-oppgave`,
-        }).then((res: any) => {
-            settOppgaver(res.data.oppgaver);
-        });
+export const OppgaveBenk: React.FC = () => {
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveResurs>(byggTomRessurs());
+
+    const hentOppgaver = (data: IOppgaveRequest) => {
+        axiosRequest<IOppgaverResponse, IOppgaveRequest>(
+            {
+                method: 'POST',
+                url: `/familie-ef-sak/api/oppgave/soek`,
+                data,
+            },
+            innloggetSaksbehandler
+        ).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
     };
 
     return (
         <OppgaveRequestProvider>
             <Side>
                 <OppgaveFiltering hentOppgaver={hentOppgaver} />
-                <OppgaveTabell oppgaver={oppgaver} />
+                <OppgaveTabell oppgaveResurs={oppgaveResurs} />
             </Side>
         </OppgaveRequestProvider>
     );
