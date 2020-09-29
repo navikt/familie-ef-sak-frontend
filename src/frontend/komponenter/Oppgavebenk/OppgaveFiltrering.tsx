@@ -54,6 +54,8 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
     const { innloggetSaksbehandler } = useApp();
 
+    console.log('request', oppgaveRequest);
+
     return (
         <>
             <FlexDiv>
@@ -82,6 +84,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         }));
                     }}
                 >
+                    <option value="">Alle</option>
                     {Object.entries(oppgaveTypeTilTekst).map(([val, tekst]) => (
                         <option key={val} value={val}>
                             {tekst}
@@ -99,6 +102,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         }));
                     }}
                 >
+                    <option value="">Alle</option>
                     {Object.entries(behandlingstemaTilTekst).map(([val, tekst]) => (
                         <option key={val} value={val}>
                             {tekst}
@@ -130,11 +134,10 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         }));
                     }}
                 >
-                    {Object.entries(behandlingstemaTilTekst).map(([val, tekst]) => (
-                        <option key={val} value={val}>
-                            {tekst}
-                        </option>
-                    ))}
+                    <option value="">Alle enheter</option>
+                    <option value="4415">4415 Molde</option>
+                    <option value="4408">4408 Skien</option>
+                    <option value="1505">1505 Kristiansand</option>
                 </Select>
 
                 <Select
@@ -142,12 +145,24 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     label="Saksbehandler"
                     onChange={(event) => {
                         event.persist();
-                        setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                            ...prevState,
-                            behandlingstema: event.target.value as Behandlingstema,
-                        }));
+
+                        const behandlingstema = event.target.value;
+
+                        setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            if (behandlingstema === '') {
+                                const { behandlingstema, ...rest } = prevState;
+
+                                return rest;
+                            }
+
+                            return {
+                                ...prevState,
+                                behandlingstema: behandlingstema as Behandlingstema,
+                            };
+                        });
                     }}
                 >
+                    <option value="">Alle</option>
                     <option value="Fordelte">Fordelte</option>
                     <option value="Ufordelte">Ufordelte</option>
                     {innloggetSaksbehandler && (

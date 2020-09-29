@@ -5,6 +5,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { OppgaveResurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
+import Lenke from 'nav-frontend-lenker';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
 
@@ -35,16 +36,36 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
         <table className="tabell tabell--stripet">
             <thead>
                 <tr>
-                    <td>Reg.dato</td>
-                    <td>Oppgavetype</td>
-                    <td>Gjelder</td>
-                    <td>Frist</td>
-                    <td>Prioritet</td>
-                    <td>Beskrivelse</td>
-                    <td>Bruker</td>
-                    <td>Enhet</td>
-                    <td>Saksbehandler</td>
-                    <td>Handlinger</td>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Reg.dato</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Oppgavetype</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Gjelder</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Frist</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Prioritet</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Beskrivelse</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Bruker</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Enhet</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Saksbehandler</Lenke>
+                    </th>
+                    <th role="columnheader" aria-sort="none">
+                        <Lenke href="#">Handlinger</Lenke>
+                    </th>
                 </tr>
             </thead>
             <tbody>
