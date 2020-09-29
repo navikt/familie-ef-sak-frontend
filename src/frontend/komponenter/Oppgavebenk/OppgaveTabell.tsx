@@ -35,6 +35,11 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
 
     const { data } = oppgaveResurs as RessursSuksess<IOppgaverResponse>;
 
+    const sliceOppgaveListe = data.oppgaver.slice(
+        (valgtSide - 1) * SIDE_STORRELSE,
+        valgtSide * SIDE_STORRELSE
+    );
+
     return (
         <>
             <Paginering
@@ -60,7 +65,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.oppgaver.map((v) => (
+                    {sliceOppgaveListe.map((v) => (
                         <OppgaveRad oppgave={v} />
                     ))}
                 </tbody>
