@@ -6,6 +6,9 @@ import { Select } from 'nav-frontend-skjema';
 import { Oppgavetype, oppgaveTypeTilTekst } from './oppgavetema';
 import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
 import { useApp } from '../../context/AppContext';
+import { Enhetsmappe, enhetsmappeTilTekst } from './enhetsmappe';
+import CustomSelect from './CustomSelect';
+import { Enhet, enhetTilTekst } from './enhet';
 
 const FlexDiv = styled.div`
     display: flex;
@@ -35,8 +38,8 @@ const DatolabelStyle = styled.label`
 export interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
-    enhet?: string;
-    enhetsmappe?: string;
+    enhet?: Enhet;
+    enhetsmappe?: Enhetsmappe;
     saksbehandler?: string;
     journalpostId?: string;
     tilordnetRessurs?: string;
@@ -52,7 +55,7 @@ interface IOppgaveFiltrering {
 const oppdaterFilter = (
     object: IOppgaveRequest,
     key: keyof IOppgaveRequest,
-    val?: string
+    val?: string | number
 ): IOppgaveRequest => {
     if (!val || val === '') {
         const { [key]: dummy, ...remainder } = object;
@@ -70,6 +73,11 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
     const { innloggetSaksbehandler } = useApp();
 
+    const settOppgave = (key: keyof IOppgaveRequest) => {
+        return (val?: string | number) =>
+            setOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
+    };
+
     return (
         <>
             <FlexDiv>
@@ -78,106 +86,40 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         Reg. dato
                     </DatolabelStyle>
                     <Datovelger
-                        onChange={(dato) =>
-                            setOppgaveRequest((prevState: IOppgaveRequest) =>
-                                oppdaterFilter(prevState, 'opprettet', dato)
-                            )
-                        }
+                        onChange={settOppgave('opprettet')}
                         valgtDato={oppgaveRequest.opprettet}
                     />
                 </div>
-                <Select
-                    value={oppgaveRequest.oppgavetype || ''}
-                    className="flex-item"
+                <CustomSelect
+                    onChange={settOppgave('oppgavetype')}
                     label="Oppgavetype"
-                    onChange={(event) => {
-                        event.persist();
-                        const oppgavetype = event.target.value;
-                        setOppgaveRequest((prevState: IOppgaveRequest) =>
-                            oppdaterFilter(prevState, 'oppgavetype', oppgavetype)
-                        );
-                    }}
-                >
-                    <option value="">Alle</option>
-                    {Object.entries(oppgaveTypeTilTekst).map(([val, tekst]) => (
-                        <option key={val} value={val}>
-                            {tekst}
-                        </option>
-                    ))}
-                </Select>
-                <Select
-                    value={oppgaveRequest.behandlingstema || ''}
-                    className="flex-item"
+                    options={oppgaveTypeTilTekst}
+                    value={oppgaveRequest.oppgavetype}
+                />
+                <CustomSelect
+                    onChange={settOppgave('behandlingstema')}
                     label="Gjelder"
-                    onChange={(event) => {
-                        event.persist();
-                        const behandlingstema = event.target.value;
-                        setOppgaveRequest((prevState: IOppgaveRequest) =>
-                            oppdaterFilter(prevState, 'behandlingstema', behandlingstema)
-                        );
-                    }}
-                >
-                    <option value="">Alle</option>
-                    {Object.entries(behandlingstemaTilTekst).map(([val, tekst]) => (
-                        <option key={val} value={val}>
-                            {tekst}
-                        </option>
-                    ))}
-                </Select>
+                    options={behandlingstemaTilTekst}
+                    value={oppgaveRequest.behandlingstema}
+                />
                 <div className="skjemaelement flex-item">
                     <DatolabelStyle className="skjemaelement__label" htmlFor="frist">
                         Frist
                     </DatolabelStyle>
-                    <Datovelger
-                        onChange={(dato) =>
-                            setOppgaveRequest((prevState: IOppgaveRequest) =>
-                                oppdaterFilter(prevState, 'frist', dato)
-                            )
-                        }
-                        valgtDato={oppgaveRequest.frist}
-                    />
+                    <Datovelger onChange={settOppgave('frist')} valgtDato={oppgaveRequest.frist} />
                 </div>
-                <Select
-                    value={oppgaveRequest.enhet || ''}
-                    className="flex-item"
+                <CustomSelect
+                    onChange={settOppgave('enhet')}
                     label="Enhet"
-                    onChange={(event) => {
-                        event.persist();
-                        const enhet = event.target.value;
-                        setOppgaveRequest((prevState: IOppgaveRequest) =>
-                            oppdaterFilter(prevState, 'enhet', enhet)
-                        );
-                    }}
-                >
-                    <option value="">Alle enheter</option>
-                    <option value="4415">4415 Molde</option>
-                    <option value="4408">4408 Skien</option>
-                    <option value="1505">1505 Kristiansand</option>
-                </Select>
-                <Select
-                    value={oppgaveRequest.enhetsmappe || ''}
-                    className="flex-item"
+                    options={enhetTilTekst}
+                    value={oppgaveRequest.enhet}
+                />
+                <CustomSelect
+                    onChange={settOppgave('enhetsmappe')}
                     label="Enhetsmappe"
-                    onChange={(event) => {
-                        event.persist();
-                        const enhetsmappe = event.target.value;
-                        setOppgaveRequest((prevState: IOppgaveRequest) =>
-                            oppdaterFilter(prevState, 'enhetsmappe', enhetsmappe)
-                        );
-                    }}
-                >
-                    <option value="">Alle enhetsmapper</option>
-                    <option value="100000035">10 Søknader - Klar til behandling</option>
-                    <option value="100000036">20 Avventer dokumentasjon</option>
-                    <option value="100000037">30 Klager - Klar til behandling</option>
-                    <option value="100000038">40 Revurdering - Klar til behandling</option>
-                    <option value="100000039">41 Revurdering</option>
-                    <option value="100024196">42 Oppfølging av skolesaker</option>
-                    <option value="100000266">50 Tilbakekreving - Klar til behandling</option>
-                    <option value="100024195">70 Flyttesaker</option>
-                    <option value="100025358">81 EØS medlemskap</option>
-                    <option value="100025133">90 Corona</option>
-                </Select>
+                    options={enhetsmappeTilTekst}
+                    value={oppgaveRequest.enhetsmappe}
+                />
 
                 <Select
                     value={oppgaveRequest.saksbehandler || ''}
