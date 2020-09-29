@@ -26,6 +26,7 @@ interface Props {
 const Paginering: React.FC<Props> = ({ sideStorrelse, antallTotalt, valgtSide, settValgtSide }) => {
     const antallSider: number = Math.ceil(antallTotalt / sideStorrelse);
     const erPaForsteSide: boolean = valgtSide === 1;
+    const erPaSisteSide: boolean = valgtSide === antallSider;
 
     return (
         <StyledDiv>
@@ -33,15 +34,13 @@ const Paginering: React.FC<Props> = ({ sideStorrelse, antallTotalt, valgtSide, s
                 <NavFrontendChevron type="venstre" />
             </PagineringKnapp>
             <PagineringKnapp onClick={() => settValgtSide(1)}>1</PagineringKnapp>
-            {!erPaForsteSide && (
-                <PagineringKnapp onClick={() => settValgtSide(valgtSide + 1)}>
-                    {valgtSide}
+            {!erPaForsteSide && <PagineringKnapp>{valgtSide}</PagineringKnapp>}
+            {antallSider > 1 && (
+                <PagineringKnapp onClick={() => settValgtSide(antallSider)}>
+                    {antallSider}
                 </PagineringKnapp>
             )}
-            <PagineringKnapp onClick={() => settValgtSide(antallSider)}>
-                {antallSider}
-            </PagineringKnapp>
-            <PagineringKnapp>
+            <PagineringKnapp disabled={erPaSisteSide} onClick={() => settValgtSide(valgtSide + 1)}>
                 <NavFrontendChevron type="høyre" />
             </PagineringKnapp>
         </StyledDiv>
