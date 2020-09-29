@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Datovelger } from 'nav-datovelger';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
 import { Oppgavetype, oppgaveTypeTilTekst } from './oppgavetema';
@@ -32,10 +32,6 @@ const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;
 `;
 
-interface Dictionary<T> {
-    [Key: string]: T;
-}
-
 export interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
@@ -52,11 +48,11 @@ interface IOppgaveFiltrering {
     hentOppgaver: (data: IOppgaveRequest) => void;
 }
 
-const oppdaterFeldtIObjekt = (
-    object: Dictionary<any>,
-    key: string,
+const oppdaterFilter = (
+    object: IOppgaveRequest,
+    key: keyof IOppgaveRequest,
     val?: string
-): Dictionary<any> => {
+): IOppgaveRequest => {
     if (!val || val === '') {
         const { [key]: dummy, ...remainder } = object;
         return remainder;
@@ -83,7 +79,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     <Datovelger
                         onChange={(dato) =>
                             setOppgaveRequest((prevState: IOppgaveRequest) =>
-                                oppdaterFeldtIObjekt(prevState, 'opprettet', dato)
+                                oppdaterFilter(prevState, 'opprettet', dato)
                             )
                         }
                         valgtDato={oppgaveRequest.opprettet}
@@ -94,21 +90,10 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     label="Oppgavetype"
                     onChange={(event) => {
                         event.persist();
-
                         const oppgavetype = event.target.value;
-
-                        setOppgaveRequest((prevState: IOppgaveRequest) => {
-                            if (oppgavetype === '') {
-                                const { oppgavetype, ...rest } = prevState;
-
-                                return rest;
-                            }
-
-                            return {
-                                ...prevState,
-                                oppgavetype: oppgavetype as Oppgavetype,
-                            };
-                        });
+                        setOppgaveRequest((prevState: IOppgaveRequest) =>
+                            oppdaterFilter(prevState, 'oppgavetype', oppgavetype)
+                        );
                     }}
                 >
                     <option value="">Alle</option>
@@ -125,7 +110,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         event.persist();
                         const behandlingstema = event.target.value;
                         setOppgaveRequest((prevState: IOppgaveRequest) =>
-                            oppdaterFeldtIObjekt(prevState, 'behandlingstema', behandlingstema)
+                            oppdaterFilter(prevState, 'behandlingstema', behandlingstema)
                         );
                     }}
                 >
@@ -143,7 +128,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     <Datovelger
                         onChange={(dato) =>
                             setOppgaveRequest((prevState: IOppgaveRequest) =>
-                                oppdaterFeldtIObjekt(prevState, 'frist', dato)
+                                oppdaterFilter(prevState, 'frist', dato)
                             )
                         }
                         valgtDato={oppgaveRequest.frist}
@@ -156,7 +141,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         event.persist();
                         const enhet = event.target.value;
                         setOppgaveRequest((prevState: IOppgaveRequest) =>
-                            oppdaterFeldtIObjekt(prevState, 'enhet', enhet)
+                            oppdaterFilter(prevState, 'enhet', enhet)
                         );
                     }}
                 >
