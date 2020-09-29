@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Datovelger } from 'nav-datovelger';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
 import { Oppgavetype, oppgaveTypeTilTekst } from './oppgavetema';
@@ -36,6 +36,7 @@ export interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
     enhet?: string;
+    enhetsmappe?: string;
     saksbehandler?: string;
     journalpostId?: string;
     tilordnetRessurs?: string;
@@ -152,6 +153,30 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     <option value="4415">4415 Molde</option>
                     <option value="4408">4408 Skien</option>
                     <option value="1505">1505 Kristiansand</option>
+                </Select>
+                <Select
+                    value={oppgaveRequest.enhetsmappe || ''}
+                    className="flex-item"
+                    label="Enhetsmappe"
+                    onChange={(event) => {
+                        event.persist();
+                        const enhetsmappe = event.target.value;
+                        setOppgaveRequest((prevState: IOppgaveRequest) =>
+                            oppdaterFilter(prevState, 'enhetsmappe', enhetsmappe)
+                        );
+                    }}
+                >
+                    <option value="">Alle enhetsmapper</option>
+                    <option value="100000035">10 Søknader - Klar til behandling</option>
+                    <option value="100000036">20 Avventer dokumentasjon</option>
+                    <option value="100000037">30 Klager - Klar til behandling</option>
+                    <option value="100000038">40 Revurdering - Klar til behandling</option>
+                    <option value="100000039">41 Revurdering</option>
+                    <option value="100024196">42 Oppfølging av skolesaker</option>
+                    <option value="100000266">50 Tilbakekreving - Klar til behandling</option>
+                    <option value="100024195">70 Flyttesaker</option>
+                    <option value="100025358">81 EØS medlemskap</option>
+                    <option value="100025133">90 Corona</option>
                 </Select>
 
                 <Select

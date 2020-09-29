@@ -3,6 +3,7 @@ import parseISO from 'date-fns/parseJSON';
 import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { parse } from 'date-fns';
+import { enhetsmappeTilTekst } from './enhetsmappe';
 
 interface Props {
     oppgave: IOppgave;
@@ -23,6 +24,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
             datoFormat
         );
     const prioritet = oppgave.prioritet && prioritetTilTekst[oppgave.prioritet];
+    const enhetsmappe = oppgave.mappeId && enhetsmappeTilTekst[oppgave.mappeId];
     return (
         <tr>
             <td>{regDato}</td>
@@ -33,6 +35,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
             <td>{oppgave.beskrivelse}</td>
             <td>{oppgave.identer[0].ident}</td> {/* TODO: VIL DETTE ALLTID FUNKE? */}
             <td>{oppgave.tildeltEnhetsnr}</td>
+            <td>{enhetsmappe}</td>
             <td>Saksbehandler</td>
             <td>Handlinger</td>
         </tr>

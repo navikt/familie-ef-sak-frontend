@@ -54,6 +54,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                         <td>Beskrivelse</td>
                         <td>Bruker</td>
                         <td>Enhet</td>
+                        <td>Enhetsmappe</td>
                         <td>Saksbehandler</td>
                         <td>Handlinger</td>
                     </tr>
