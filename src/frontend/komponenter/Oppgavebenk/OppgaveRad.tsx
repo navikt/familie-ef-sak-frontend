@@ -12,10 +12,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
     const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
     const regDato =
         oppgave.opprettetTidspunkt &&
-        parse(oppgave.opprettetTidspunkt, 'yyyy-MM-dd', new Date()).toLocaleDateString(
-            'no-NO',
-            datoFormat
-        );
+        parseISO(oppgave.opprettetTidspunkt).toLocaleDateString('no-NO', datoFormat);
 
     const oppgavetype = oppgave.oppgavetype && oppgaveTypeTilTekst[oppgave.oppgavetype];
 
