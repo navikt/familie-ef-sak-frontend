@@ -32,6 +32,10 @@ const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;
 `;
 
+interface Dictionary<T> {
+    [Key: string]: T;
+}
+
 export interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
@@ -48,13 +52,26 @@ interface IOppgaveFiltrering {
     hentOppgaver: (data: IOppgaveRequest) => void;
 }
 
+const oppdaterFeldtIObjekt = (
+    object: Dictionary<any>,
+    key: string,
+    val?: string
+): Dictionary<any> => {
+    if (!val || val === '') {
+        const { [key]: dummy, ...remainder } = object;
+        return remainder;
+    }
+    return {
+        ...object,
+        [key]: val,
+    };
+};
+
 const initOppgaveRequest = {} as IOppgaveRequest;
 
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
     const { innloggetSaksbehandler } = useApp();
-
-    console.log('request', oppgaveRequest);
 
     return (
         <>
@@ -65,10 +82,9 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     </DatolabelStyle>
                     <Datovelger
                         onChange={(dato) =>
-                            setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                                ...prevState,
-                                opprettet: dato,
-                            }))
+                            setOppgaveRequest((prevState: IOppgaveRequest) =>
+                                oppdaterFeldtIObjekt(prevState, 'opprettet', dato)
+                            )
                         }
                         valgtDato={oppgaveRequest.opprettet}
                     />
@@ -78,10 +94,10 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     label="Oppgavetype"
                     onChange={(event) => {
                         event.persist();
-                        setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                            ...prevState,
-                            oppgavetype: event.target.value as Oppgavetype,
-                        }));
+                        const oppgavetype = event.target.value;
+                        setOppgaveRequest((prevState: IOppgaveRequest) =>
+                            oppdaterFeldtIObjekt(prevState, 'oppgavetype', oppgavetype)
+                        );
                     }}
                 >
                     <option value="">Alle</option>
@@ -96,10 +112,10 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     label="Gjelder"
                     onChange={(event) => {
                         event.persist();
-                        setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                            ...prevState,
-                            behandlingstema: event.target.value as Behandlingstema,
-                        }));
+                        const behandlingstema = event.target.value;
+                        setOppgaveRequest((prevState: IOppgaveRequest) =>
+                            oppdaterFeldtIObjekt(prevState, 'behandlingstema', behandlingstema)
+                        );
                     }}
                 >
                     <option value="">Alle</option>
@@ -115,12 +131,11 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     </DatolabelStyle>
                     <Datovelger
                         onChange={(dato) =>
-                            setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                                ...prevState,
-                                frist: dato,
-                            }))
+                            setOppgaveRequest((prevState: IOppgaveRequest) =>
+                                oppdaterFeldtIObjekt(prevState, 'frist', dato)
+                            )
                         }
-                        valgtDato={oppgaveRequest.opprettet}
+                        valgtDato={oppgaveRequest.frist}
                     />
                 </div>
                 <Select
@@ -128,10 +143,10 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     label="Enhet"
                     onChange={(event) => {
                         event.persist();
-                        setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                            ...prevState,
-                            behandlingstema: event.target.value as Behandlingstema,
-                        }));
+                        const enhet = event.target.value;
+                        setOppgaveRequest((prevState: IOppgaveRequest) =>
+                            oppdaterFeldtIObjekt(prevState, 'enhet', enhet)
+                        );
                     }}
                 >
                     <option value="">Alle enheter</option>
@@ -145,21 +160,29 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     label="Saksbehandler"
                     onChange={(event) => {
                         event.persist();
-
-                        const behandlingstema = event.target.value;
-
-                        setOppgaveRequest((prevState: IOppgaveRequest) => {
-                            if (behandlingstema === '') {
-                                const { behandlingstema, ...rest } = prevState;
-
+                        const val = event.target.value;
+                        if (val === '') {
+                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                                const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return rest;
-                            }
-
-                            return {
-                                ...prevState,
-                                behandlingstema: behandlingstema as Behandlingstema,
-                            };
-                        });
+                            });
+                        } else if (val === 'Fordelte' || val === 'Ufordelte') {
+                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                                const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
+                                return {
+                                    ...rest,
+                                    tildeltRessurs: val === 'Fordelte',
+                                };
+                            });
+                        } else {
+                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                                const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
+                                return {
+                                    ...rest,
+                                    tilordnetRessurs: val,
+                                };
+                            });
+                        }
                     }}
                 >
                     <option value="">Alle</option>
