@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Datovelger } from 'nav-datovelger';
 import styled from 'styled-components';
-import { Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
 import { Oppgavetype, oppgaveTypeTilTekst } from './oppgavetema';
 import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
+import { useApp } from '../../context/AppContext';
 
 const StyledDiv = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+const DatolabelStyle = styled.label`
+    margin-bottom: 0.5em;
 `;
 
 export interface IOppgaveRequest {
@@ -20,7 +25,7 @@ export interface IOppgaveRequest {
     tilordnetRessurs?: string;
     tildeltRessurs?: boolean;
     opprettet?: string;
-    frist?: Date;
+    frist?: string;
 }
 
 interface IOppgaveFiltrering {
@@ -31,18 +36,24 @@ const initOppgaveRequest = {} as IOppgaveRequest;
 
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
+    const { innloggetSaksbehandler } = useApp();
 
     return (
         <StyledDiv>
-            <Datovelger
-                onChange={(dato) =>
-                    setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                        ...prevState,
-                        opprettet: dato,
-                    }))
-                }
-                valgtDato={oppgaveRequest.opprettet}
-            />
+            <div className="skjemaelement">
+                <DatolabelStyle className="skjemaelement__label" htmlFor="regdato">
+                    Reg. dato
+                </DatolabelStyle>
+                <Datovelger
+                    onChange={(dato) =>
+                        setOppgaveRequest((prevState: IOppgaveRequest) => ({
+                            ...prevState,
+                            opprettet: dato,
+                        }))
+                    }
+                    valgtDato={oppgaveRequest.opprettet}
+                />
+            </div>
             <Select
                 label="Oppgavetype"
                 onChange={(event) => {
@@ -60,7 +71,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 ))}
             </Select>
             <Select
-                label="Behandlingstema"
+                label="Gjelder"
                 onChange={(event) => {
                     event.persist();
                     setOppgaveRequest((prevState: IOppgaveRequest) => ({
@@ -75,7 +86,59 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     </option>
                 ))}
             </Select>
-            <Knapp onClick={() => hentOppgaver(oppgaveRequest)}>Hent oppgaver</Knapp>
+            <div className="skjemaelement">
+                <DatolabelStyle className="skjemaelement__label" htmlFor="frist">
+                    Frist
+                </DatolabelStyle>
+                <Datovelger
+                    onChange={(dato) =>
+                        setOppgaveRequest((prevState: IOppgaveRequest) => ({
+                            ...prevState,
+                            frist: dato,
+                        }))
+                    }
+                    valgtDato={oppgaveRequest.opprettet}
+                />
+            </div>
+            <Select
+                label="Enhet"
+                onChange={(event) => {
+                    event.persist();
+                    setOppgaveRequest((prevState: IOppgaveRequest) => ({
+                        ...prevState,
+                        behandlingstema: event.target.value as Behandlingstema,
+                    }));
+                }}
+            >
+                {Object.entries(behandlingstemaTilTekst).map(([val, tekst]) => (
+                    <option key={val} value={val}>
+                        {tekst}
+                    </option>
+                ))}
+            </Select>
+
+            <Select
+                label="Enhet"
+                onChange={(event) => {
+                    event.persist();
+                    setOppgaveRequest((prevState: IOppgaveRequest) => ({
+                        ...prevState,
+                        behandlingstema: event.target.value as Behandlingstema,
+                    }));
+                }}
+            >
+                <option value="Fordelte">Fordelte</option>
+                <option value="Ufordelte">Ufordelte</option>
+                {innloggetSaksbehandler && (
+                    <option value={innloggetSaksbehandler.identifier}>
+                        {`${innloggetSaksbehandler.firstName} ${innloggetSaksbehandler.lastName}`}
+                    </option>
+                )}
+            </Select>
+            <Hovedknapp onClick={() => hentOppgaver(oppgaveRequest)}>Hent oppgaver</Hovedknapp>
+            <Knapp onClick={() => setOppgaveRequest(initOppgaveRequest)}>
+                Tilbakestill filtrering
+            </Knapp>
         </StyledDiv>
     );
 };
