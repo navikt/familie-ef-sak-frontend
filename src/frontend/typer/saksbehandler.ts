@@ -4,6 +4,7 @@ export interface ISaksbehandler {
     firstName: string;
     groups?: string[];
     identifier: string;
+    navIdent: string;
     lastName: string;
     enhet: string;
 }

@@ -21,7 +21,10 @@ app.get('/familie-ef-sak/api/fagsak/1', (req, res) => {
 
 app.get('/user/profile', (req, res) => {
     res.send({
-        displayName: 'Test Testersen',
+        displayName: 'James Bond',
+        email: 'james@bond.com',
+        enhet: '39012',
+        navIdent: 'Z007',
     });
 });
 
