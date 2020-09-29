@@ -86,6 +86,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     />
                 </div>
                 <Select
+                    value={oppgaveRequest.oppgavetype || ''}
                     className="flex-item"
                     label="Oppgavetype"
                     onChange={(event) => {
@@ -104,6 +105,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     ))}
                 </Select>
                 <Select
+                    value={oppgaveRequest.behandlingstema || ''}
                     className="flex-item"
                     label="Gjelder"
                     onChange={(event) => {
@@ -135,6 +137,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     />
                 </div>
                 <Select
+                    value={oppgaveRequest.enhet || ''}
                     className="flex-item"
                     label="Enhet"
                     onChange={(event) => {
@@ -152,6 +155,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 </Select>
 
                 <Select
+                    value={oppgaveRequest.saksbehandler || ''}
                     className="flex-item"
                     label="Saksbehandler"
                     onChange={(event) => {
@@ -196,7 +200,13 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 <Hovedknapp className="flex-item" onClick={() => hentOppgaver(oppgaveRequest)}>
                     Hent oppgaver
                 </Hovedknapp>
-                <Knapp className="flex-item" onClick={() => setOppgaveRequest(initOppgaveRequest)}>
+                <Knapp
+                    className="flex-item"
+                    onClick={() => {
+                        setOppgaveRequest(initOppgaveRequest);
+                        hentOppgaver(oppgaveRequest);
+                    }}
+                >
                     Tilbakestill filtrering
                 </Knapp>
             </KnappWrapper>
