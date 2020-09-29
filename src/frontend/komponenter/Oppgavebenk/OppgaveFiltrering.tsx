@@ -78,10 +78,21 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     label="Oppgavetype"
                     onChange={(event) => {
                         event.persist();
-                        setOppgaveRequest((prevState: IOppgaveRequest) => ({
-                            ...prevState,
-                            oppgavetype: event.target.value as Oppgavetype,
-                        }));
+
+                        const oppgavetype = event.target.value;
+
+                        setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            if (oppgavetype === '') {
+                                const { oppgavetype, ...rest } = prevState;
+
+                                return rest;
+                            }
+
+                            return {
+                                ...prevState,
+                                oppgavetype: oppgavetype as Oppgavetype,
+                            };
+                        });
                     }}
                 >
                     <option value="">Alle</option>
