@@ -1,5 +1,3 @@
-import { Dictionary } from '../../typer/utils';
-
 export type Oppgavetype =
     | 'BEH_SAK'
     | 'JFR'
@@ -21,7 +19,7 @@ export type Oppgavetype =
     | 'VUR_KONS_YTE'
     | 'VUR_SVAR';
 
-export const oppgaveTypeTilTekst: Dictionary<string> = {
+export const oppgaveTypeTilTekst: Record<Oppgavetype, string> = {
     BEH_SAK: 'Behandle sak',
     BEH_SED: 'Behandle SED',
     BEH_UND_VED: 'Behandle underkjent vedtak',

@@ -1,5 +1,3 @@
-import { Dictionary } from '../../typer/utils';
-
 export type Enhetsmappe =
     | 100000035
     | 100000036
@@ -12,7 +10,7 @@ export type Enhetsmappe =
     | 100025358
     | 100025133;
 
-export const enhetsmappeTilTekst: Dictionary<string> = {
+export const enhetsmappeTilTekst: Record<Enhetsmappe, string> = {
     100000035: '10 Søknader - Klar til behandling',
     100000036: '20 Avventer dokumentasjon',
     100000037: '30 Klager - Klar til behandling',
