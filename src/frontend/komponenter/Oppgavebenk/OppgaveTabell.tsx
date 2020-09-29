@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RessursStatus, RessursSuksess } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -7,6 +7,9 @@ import { OppgaveResurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
+import Paginering from './Paginering';
+
+const SIDE_STORRELSE = 15;
 
 export interface IOppgaverResponse {
     antallTreffTotalt: number;
@@ -18,6 +21,7 @@ interface Props {
 }
 
 const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
+    const [valgtSide, settValgtSide] = useState<number>(1);
     const { status } = oppgaveResurs;
     if (status === RessursStatus.HENTER) {
         return <SystemetLaster />;
@@ -32,27 +36,35 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
     const { data } = oppgaveResurs as RessursSuksess<IOppgaverResponse>;
 
     return (
-        <table className="tabell tabell--stripet">
-            <thead>
-                <tr>
-                    <td>Reg.dato</td>
-                    <td>Oppgavetype</td>
-                    <td>Gjelder</td>
-                    <td>Frist</td>
-                    <td>Prioritet</td>
-                    <td>Beskrivelse</td>
-                    <td>Bruker</td>
-                    <td>Enhet</td>
-                    <td>Saksbehandler</td>
-                    <td>Handlinger</td>
-                </tr>
-            </thead>
-            <tbody>
-                {data.oppgaver.map((v) => (
-                    <OppgaveRad oppgave={v} />
-                ))}
-            </tbody>
-        </table>
+        <>
+            <Paginering
+                antallTotalt={data.oppgaver.length}
+                settValgtSide={settValgtSide}
+                sideStorrelse={SIDE_STORRELSE}
+                valgtSide={valgtSide}
+            />
+            <table className="tabell tabell--stripet">
+                <thead>
+                    <tr>
+                        <td>Reg.dato</td>
+                        <td>Oppgavetype</td>
+                        <td>Gjelder</td>
+                        <td>Frist</td>
+                        <td>Prioritet</td>
+                        <td>Beskrivelse</td>
+                        <td>Bruker</td>
+                        <td>Enhet</td>
+                        <td>Saksbehandler</td>
+                        <td>Handlinger</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.oppgaver.map((v) => (
+                        <OppgaveRad oppgave={v} />
+                    ))}
+                </tbody>
+            </table>
+        </>
     );
 };
 
