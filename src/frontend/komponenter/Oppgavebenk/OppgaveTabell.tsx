@@ -8,6 +8,7 @@ import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
 import Paginering from './Paginering';
+import OppgaveSorteringsHeader, { Rekkefolge } from './OppgaveSorteringHeader';
 
 const SIDE_STORRELSE = 15;
 
@@ -20,8 +21,18 @@ interface Props {
     oppgaveResurs: OppgaveResurs;
 }
 
+interface Sortering {
+    rekkefolge: Rekkefolge;
+    sorteringsfelt: string | null;
+}
+
 const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
     const [valgtSide, settValgtSide] = useState<number>(1);
+    const [sortering, settSortering] = useState<Sortering>({
+        rekkefolge: 'none',
+        sorteringsfelt: null,
+    });
+
     const { status } = oppgaveResurs;
     if (status === RessursStatus.HENTER) {
         return <SystemetLaster />;
@@ -32,6 +43,26 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
     } else if (status === RessursStatus.IKKE_HENTET) {
         return <Normaltekst> Du må gjøre ett søk før att få opp træff!!!</Normaltekst>; //TODO FIKS TEKST
     }
+
+    const settNoe = (sorteringsfelt: string) => {
+        let valgtRekkefolge: Rekkefolge;
+
+        if (sorteringsfelt !== sortering.sorteringsfelt) {
+            valgtRekkefolge = 'ascending';
+        } else {
+            valgtRekkefolge =
+                sortering.rekkefolge === 'ascending'
+                    ? 'descending'
+                    : sortering.rekkefolge === 'descending'
+                    ? 'none'
+                    : 'ascending';
+        }
+
+        settSortering({
+            sorteringsfelt,
+            rekkefolge: valgtRekkefolge,
+        });
+    };
 
     const { data } = oppgaveResurs as RessursSuksess<IOppgaverResponse>;
 
@@ -51,17 +82,65 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
             <table className="tabell tabell--stripet">
                 <thead>
                     <tr>
-                        <td>Reg.dato</td>
-                        <td>Oppgavetype</td>
-                        <td>Gjelder</td>
-                        <td>Frist</td>
-                        <td>Prioritet</td>
-                        <td>Beskrivelse</td>
-                        <td>Bruker</td>
-                        <td>Enhet</td>
-                        <td>Enhetsmappe</td>
-                        <td>Saksbehandler</td>
-                        <td>Handlinger</td>
+                        <OppgaveSorteringsHeader
+                            tekst="Reg.dato"
+                            rekkefolge={
+                                sortering.sorteringsfelt === 'opprettetDato'
+                                    ? sortering.rekkefolge
+                                    : 'none'
+                            }
+                            onClick={() => settNoe('opprettetDato')}
+                        />
+                        <th role="columnheader" aria-sort="none">
+                            Oppgavetype
+                        </th>
+                        <th
+                            role="columnheader"
+                            aria-sort="descending"
+                            className="tabell__th--sortert-desc"
+                        >
+                            Gjelder
+                        </th>
+                        <th role="columnheader" aria-sort="none">
+                            Frist
+                        </th>
+                        <th role="columnheader" aria-sort="none">
+                            Prioritet
+                        </th>
+                        <th role="columnheader" aria-sort="none">
+                            Beskrivelse
+                        </th>
+                        <th role="columnheader" aria-sort="none">
+                            Bruker
+                        </th>
+                        <th
+                            role="columnheader"
+                            aria-sort="descending"
+                            className="tabell__th--sortert-desc"
+                        >
+                            Enhet
+                        </th>
+                        <th
+                            role="columnheader"
+                            aria-sort="descending"
+                            className="tabell__th--sortert-desc"
+                        >
+                            Enhetsmappe
+                        </th>
+                        <th
+                            role="columnheader"
+                            aria-sort="descending"
+                            className="tabell__th--sortert-desc"
+                        >
+                            Saksbehandler
+                        </th>
+                        <th
+                            role="columnheader"
+                            aria-sort="descending"
+                            className="tabell__th--sortert-desc"
+                        >
+                            Handlinger
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
