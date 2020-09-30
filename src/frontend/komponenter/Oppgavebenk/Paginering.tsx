@@ -12,8 +12,12 @@ const StyledDiv = styled.div`
 const PagineringKnapp = styled.button`
     margin: 0 1px;
     position: relative;
-    padding: 0.25rem 0rem;
+    padding: 0.25rem 0.5rem;
     1px solid transparent;
+    
+    &:disabled {
+      background-color: pink;   
+    }
 `;
 
 interface Props {
@@ -34,7 +38,7 @@ const Paginering: React.FC<Props> = ({ sideStorrelse, antallTotalt, valgtSide, s
                 <NavFrontendChevron type="venstre" />
             </PagineringKnapp>
             <PagineringKnapp onClick={() => settValgtSide(1)}>1</PagineringKnapp>
-            {!erPaForsteSide && <PagineringKnapp>{valgtSide}</PagineringKnapp>}
+            {!erPaForsteSide && !erPaSisteSide && <PagineringKnapp>{valgtSide}</PagineringKnapp>}
             {antallSider > 1 && (
                 <PagineringKnapp onClick={() => settValgtSide(antallSider)}>
                     {antallSider}

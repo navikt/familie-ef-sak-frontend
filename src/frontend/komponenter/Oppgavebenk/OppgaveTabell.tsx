@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { RessursStatus, RessursSuksess } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -10,9 +10,8 @@ import 'nav-frontend-tabell-style';
 import Paginering from './Paginering';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/useSorteringState';
-import { useSorteringMemo } from '../../hooks/useMemoSortering';
-
-const SIDE_STORRELSE = 15;
+import { usePagineringState } from '../../hooks/usePaginerState';
+const SIDE_STORRELSE = 1;
 
 export interface IOppgaverResponse {
     antallTreffTotalt: number;
@@ -24,15 +23,18 @@ interface Props {
 }
 
 const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
-    const [valgtSide, settValgtSide] = useState<number>(1);
-    const { sortConfig, settSortering } = useSorteringState<IOppgave>();
     const { status } = oppgaveResurs;
-
-    const sortertListe = useSorteringMemo(
+    const oppgaveListe =
         status === RessursStatus.SUKSESS
             ? (oppgaveResurs as RessursSuksess<IOppgaverResponse>).data.oppgaver
-            : [],
-        sortConfig
+            : [];
+
+    const { sortertListe, settSortering, sortConfig } = useSorteringState<IOppgave>(oppgaveListe);
+
+    const { valgtSide, settValgtSide, slicedListe } = usePagineringState(
+        status === RessursStatus.SUKSESS ? sortertListe : [],
+        1,
+        SIDE_STORRELSE
     );
 
     if (status === RessursStatus.HENTER) {
@@ -44,11 +46,6 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
     } else if (status === RessursStatus.IKKE_HENTET) {
         return <Normaltekst> Du må gjøre ett søk før att få opp træff!!!</Normaltekst>; //TODO FIKS TEKST
     }
-
-    const sliceOppgaveListe = sortertListe.slice(
-        (valgtSide - 1) * SIDE_STORRELSE,
-        valgtSide * SIDE_STORRELSE
-    );
 
     return (
         <>
@@ -63,63 +60,83 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                     <tr>
                         <OppgaveSorteringsHeader
                             tekst="Reg.dato"
-                            rekkefolge="ascending"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'opprettetTidspunkt'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
                             onClick={() => settSortering('opprettetTidspunkt')}
                         />
-                        <th role="columnheader" aria-sort="none">
-                            Oppgavetype
-                        </th>
-                        <th
-                            role="columnheader"
-                            aria-sort="descending"
-                            className="tabell__th--sortert-desc"
-                        >
-                            Gjelder
-                        </th>
-                        <th role="columnheader" aria-sort="none">
-                            Frist
-                        </th>
-                        <th role="columnheader" aria-sort="none">
-                            Prioritet
-                        </th>
-                        <th role="columnheader" aria-sort="none">
-                            Beskrivelse
-                        </th>
-                        <th role="columnheader" aria-sort="none">
-                            Bruker
-                        </th>
-                        <th
-                            role="columnheader"
-                            aria-sort="descending"
-                            className="tabell__th--sortert-desc"
-                        >
-                            Enhet
-                        </th>
-                        <th
-                            role="columnheader"
-                            aria-sort="descending"
-                            className="tabell__th--sortert-desc"
-                        >
-                            Enhetsmappe
-                        </th>
-                        <th
-                            role="columnheader"
-                            aria-sort="descending"
-                            className="tabell__th--sortert-desc"
-                        >
-                            Saksbehandler
-                        </th>
-                        <th
-                            role="columnheader"
-                            aria-sort="descending"
-                            className="tabell__th--sortert-desc"
-                        >
-                            Handlinger
-                        </th>
+                        <OppgaveSorteringsHeader
+                            tekst="Oppgavetype"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'oppgavetype'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
+                            onClick={() => settSortering('oppgavetype')}
+                        />
+                        <OppgaveSorteringsHeader
+                            tekst="Gjelder"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'behandlingstema'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
+                            onClick={() => settSortering('behandlingstema')}
+                        />
+                        <OppgaveSorteringsHeader
+                            tekst="Frist"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'fristFerdigstillelse'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
+                            onClick={() => settSortering('fristFerdigstillelse')}
+                        />
+                        <OppgaveSorteringsHeader
+                            tekst="Prioritet"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'prioritet'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
+                            onClick={() => settSortering('prioritet')}
+                        />
+                        <th role="columnheader">Beskrivelse</th>
+                        <th role="columnheader">Bruker</th>
+                        <OppgaveSorteringsHeader
+                            tekst="Enhet"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'tildeltEnhetsnr'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
+                            onClick={() => settSortering('tildeltEnhetsnr')}
+                        />
+                        <OppgaveSorteringsHeader
+                            tekst="Enhetsmappe"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'mappeId'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
+                            onClick={() => settSortering('mappeId')}
+                        />
+                        <OppgaveSorteringsHeader
+                            tekst="Saksbehandler"
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === 'samhandlernr'
+                                    ? sortConfig.rekkefolge
+                                    : undefined
+                            }
+                            onClick={() => settSortering('samhandlernr')}
+                        />
+                        <th role="columnheader">Handlinger</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {sliceOppgaveListe.map((v) => (
+                    {slicedListe.map((v) => (
                         <OppgaveRad oppgave={v} />
                     ))}
                 </tbody>
