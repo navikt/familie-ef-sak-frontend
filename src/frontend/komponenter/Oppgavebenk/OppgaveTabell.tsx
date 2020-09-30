@@ -11,7 +11,7 @@ import Paginering from './Paginering';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/useSorteringState';
 import { usePagineringState } from '../../hooks/usePaginerState';
-const SIDE_STORRELSE = 1;
+const SIDE_STORRELSE = 15;
 
 export interface IOppgaverResponse {
     antallTreffTotalt: number;
