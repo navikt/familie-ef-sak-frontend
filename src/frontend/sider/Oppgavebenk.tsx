@@ -1,4 +1,3 @@
-import { OppgaveRequestProvider } from '../context/OppgaveRequestProvider';
 import React, { useState } from 'react';
 import { useApp } from '../../frontend/context/AppContext';
 import OppgaveFiltering, { IOppgaveRequest } from '../komponenter/Oppgavebenk/OppgaveFiltrering';
@@ -35,11 +34,9 @@ export const OppgaveBenk: React.FC = () => {
     };
 
     return (
-        <OppgaveRequestProvider>
-            <Side>
-                <OppgaveFiltering hentOppgaver={hentOppgaver} />
-                <OppgaveTabell oppgaveResurs={oppgaveResurs} />
-            </Side>
-        </OppgaveRequestProvider>
+        <Side>
+            <OppgaveFiltering hentOppgaver={hentOppgaver} />
+            <OppgaveTabell oppgaveResurs={oppgaveResurs} />
+        </Side>
     );
 };

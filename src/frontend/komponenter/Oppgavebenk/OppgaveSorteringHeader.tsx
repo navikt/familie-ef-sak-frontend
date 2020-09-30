@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
-
-export type Rekkefolge = 'none' | 'descending' | 'ascending';
+import { Rekkefolge } from '../../hooks/useSorteringState';
 
 interface Props {
     rekkefolge: Rekkefolge;
