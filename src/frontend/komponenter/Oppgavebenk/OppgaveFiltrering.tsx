@@ -115,7 +115,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     value={oppgaveRequest.enhet}
                 />
                 <CustomSelect
-                    onChange={(val) => settOppgave('enhetsmappe')((val as unknown) as number)}
+                    onChange={(val) => settOppgave('enhetsmappe')(parseInt(val))}
                     label="Enhetsmappe"
                     options={enhetsmappeTilTekst}
                     value={oppgaveRequest.enhetsmappe}
