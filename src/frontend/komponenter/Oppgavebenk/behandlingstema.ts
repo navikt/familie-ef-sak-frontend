@@ -7,11 +7,7 @@ export type Behandlingstema =
     | 'ab0028'
     | 'ab0071';
 
-export type BehandlingstemaTekstNokkelPar = {
-    [s in Behandlingstema]: string;
-};
-
-export const behandlingstemaTilTekst: BehandlingstemaTekstNokkelPar = {
+export const behandlingstemaTilTekst: Record<Behandlingstema, string> = {
     ab0028: 'Barnetrygd',
     ab0058: 'BarnetrygdEØS',
     ab0071: 'OrdinærBarnetrygd',

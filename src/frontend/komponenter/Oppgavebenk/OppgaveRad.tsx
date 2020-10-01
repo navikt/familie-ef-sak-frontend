@@ -4,6 +4,7 @@ import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { parse } from 'date-fns';
 import { enhetsmappeTilTekst } from './enhetsmappe';
+import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
 
 interface Props {
     oppgave: IOppgave;
@@ -25,18 +26,21 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
         );
     const prioritet = oppgave.prioritet && prioritetTilTekst[oppgave.prioritet];
     const enhetsmappe = oppgave.mappeId && enhetsmappeTilTekst[oppgave.mappeId];
+    const behandlingstema =
+        oppgave.behandlingstema &&
+        behandlingstemaTilTekst[oppgave.behandlingstema as Behandlingstema];
     return (
         <tr>
             <td>{regDato}</td>
             <td>{oppgavetype}</td>
-            <td>Gjelder</td>
+            <td>{behandlingstema}</td>
             <td>{fristFerdigstillelseDato}</td>
             <td>{prioritet}</td>
             <td>{oppgave.beskrivelse}</td>
             <td>{oppgave.identer[0].ident}</td> {/* TODO: VIL DETTE ALLTID FUNKE? */}
             <td>{oppgave.tildeltEnhetsnr}</td>
             <td>{enhetsmappe}</td>
-            <td>Saksbehandler</td>
+            <td>{oppgave.tilordnetRessurs}</td>
             <td>Handlinger</td>
         </tr>
     );
