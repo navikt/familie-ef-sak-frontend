@@ -40,7 +40,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
             <td>{oppgave.identer[0].ident}</td> {/* TODO: VIL DETTE ALLTID FUNKE? */}
             <td>{oppgave.tildeltEnhetsnr}</td>
             <td>{enhetsmappe}</td>
-            <td>{oppgave.tilordnetRessurs}</td>
+            <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
             <td>Handlinger</td>
         </tr>
     );
