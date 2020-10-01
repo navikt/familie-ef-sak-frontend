@@ -171,7 +171,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     className="flex-item"
                     onClick={() => {
                         setOppgaveRequest(initOppgaveRequest);
-                        hentOppgaver(oppgaveRequest);
+                        hentOppgaver({});
                     }}
                 >
                     Tilbakestill filtrering
