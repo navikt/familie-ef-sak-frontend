@@ -25,6 +25,12 @@ export function useSorteringState<T>(liste: T[], config: OrNothing<SorteringConf
                         : compareDesc(new Date(dateStringA), new Date(dateStringB));
                 }
 
+                if (!a[sortConfig?.sorteringsfelt]) {
+                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
+                }
+                if (!b[sortConfig?.sorteringsfelt]) {
+                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
+                }
                 if (a[sortConfig?.sorteringsfelt] < b[sortConfig?.sorteringsfelt]) {
                     return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
                 }
