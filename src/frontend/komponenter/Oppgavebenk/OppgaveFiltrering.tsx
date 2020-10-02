@@ -80,7 +80,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
-            ? 'alle'
+            ? 'Alle'
             : oppgaveRequest.tilordnetRessurs
             ? oppgaveRequest.tilordnetRessurs
             : oppgaveRequest.tildeltRessurs

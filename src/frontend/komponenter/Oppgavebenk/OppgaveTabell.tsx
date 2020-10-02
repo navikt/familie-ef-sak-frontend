@@ -11,6 +11,7 @@ import Paginering from './Paginering';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/useSorteringState';
 import { usePagineringState } from '../../hooks/usePaginerState';
+import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 const SIDE_STORRELSE = 15;
 
 export interface IOppgaverResponse {
@@ -58,81 +59,21 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
             <table className="tabell tabell--stripet">
                 <thead>
                     <tr>
-                        <OppgaveSorteringsHeader
-                            tekst="Reg.dato"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'opprettetTidspunkt'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('opprettetTidspunkt')}
-                        />
-                        <OppgaveSorteringsHeader
-                            tekst="Oppgavetype"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'oppgavetype'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('oppgavetype')}
-                        />
-                        <OppgaveSorteringsHeader
-                            tekst="Gjelder"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'behandlingstema'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('behandlingstema')}
-                        />
-                        <OppgaveSorteringsHeader
-                            tekst="Frist"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'fristFerdigstillelse'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('fristFerdigstillelse')}
-                        />
-                        <OppgaveSorteringsHeader
-                            tekst="Prioritet"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'prioritet'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('prioritet')}
-                        />
-                        <th role="columnheader">Beskrivelse</th>
-                        <th role="columnheader">Bruker</th>
-                        <OppgaveSorteringsHeader
-                            tekst="Enhet"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'tildeltEnhetsnr'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('tildeltEnhetsnr')}
-                        />
-                        <OppgaveSorteringsHeader
-                            tekst="Enhetsmappe"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'mappeId'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('mappeId')}
-                        />
-                        <OppgaveSorteringsHeader
-                            tekst="Saksbehandler"
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === 'tilordnetRessurs'
-                                    ? sortConfig.rekkefolge
-                                    : undefined
-                            }
-                            onClick={() => settSortering('tilordnetRessurs')}
-                        />
-                        <th role="columnheader">Handlinger</th>
+                        {OppgaveHeaderConfig.map((header) =>
+                            header.erSorterbar ? (
+                                <OppgaveSorteringsHeader
+                                    tekst={header.tekst}
+                                    rekkefolge={
+                                        sortConfig?.sorteringsfelt === header.feltNavn
+                                            ? sortConfig?.rekkefolge
+                                            : undefined
+                                    }
+                                    onClick={() => settSortering(header.feltNavn as keyof IOppgave)}
+                                />
+                            ) : (
+                                <th role="columnheader">{header.feltNavn}</th>
+                            )
+                        )}
                     </tr>
                 </thead>
                 <tbody>

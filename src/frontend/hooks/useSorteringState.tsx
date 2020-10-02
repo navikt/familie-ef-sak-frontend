@@ -21,7 +21,7 @@ export function useSorteringState<T>(liste: T[], config: OrNothing<SorteringConf
                     return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
                 }
                 if (b[sortConfig?.sorteringsfelt] === undefined) {
-                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
+                    return sortConfig?.rekkefolge === 'ascending' ? 1 : -1;
                 }
                 if (erEttDatoFelt(a[sortConfig?.sorteringsfelt], b[sortConfig?.sorteringsfelt])) {
                     const dateStringA = (a[sortConfig?.sorteringsfelt] as unknown) as string;
