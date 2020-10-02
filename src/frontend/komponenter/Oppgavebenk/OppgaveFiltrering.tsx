@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Datovelger } from 'nav-datovelger';
 import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
@@ -9,8 +8,9 @@ import { useApp } from '../../context/AppContext';
 import { Enhetsmappe, enhetsmappeTilTekst } from './enhetsmappe';
 import CustomSelect from './CustomSelect';
 import { Enhet, enhetTilTekst } from './enhet';
+import DatoPeriode from './DatoPeriode';
 
-const FlexDiv = styled.div`
+export const FlexDiv = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -31,10 +31,6 @@ const KnappWrapper = styled.div`
     }
 `;
 
-const DatolabelStyle = styled.label`
-    margin-bottom: 0.5em;
-`;
-
 export interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
@@ -44,8 +40,10 @@ export interface IOppgaveRequest {
     journalpostId?: string;
     tilordnetRessurs?: string;
     tildeltRessurs?: boolean;
-    opprettet?: string;
-    frist?: string;
+    opprettetFom?: string;
+    opprettetTom?: string;
+    fristFom?: string;
+    fristTom?: string;
 }
 
 interface IOppgaveFiltrering {
@@ -90,15 +88,14 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     return (
         <>
             <FlexDiv>
-                <div className="skjemaelement flex-item">
-                    <DatolabelStyle className="skjemaelement__label" htmlFor="regdato">
-                        Reg. dato
-                    </DatolabelStyle>
-                    <Datovelger
-                        onChange={settOppgave('opprettet')}
-                        valgtDato={oppgaveRequest.opprettet}
-                    />
-                </div>
+                <DatoPeriode
+                    valgtDatoFra={oppgaveRequest.opprettetFom}
+                    valgtDatoTil={oppgaveRequest.opprettetTom}
+                    settDatoFra={settOppgave('opprettetFom')}
+                    settDatoTil={settOppgave('opprettetTom')}
+                    datoFraTekst="Reg.dato fra"
+                    datoTilTekst="Reg.dato til"
+                />
                 <CustomSelect
                     onChange={settOppgave('oppgavetype')}
                     label="Oppgavetype"
@@ -111,12 +108,14 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     options={behandlingstemaTilTekst}
                     value={oppgaveRequest.behandlingstema}
                 />
-                <div className="skjemaelement flex-item">
-                    <DatolabelStyle className="skjemaelement__label" htmlFor="frist">
-                        Frist
-                    </DatolabelStyle>
-                    <Datovelger onChange={settOppgave('frist')} valgtDato={oppgaveRequest.frist} />
-                </div>
+                <DatoPeriode
+                    valgtDatoFra={oppgaveRequest.fristFom}
+                    valgtDatoTil={oppgaveRequest.fristTom}
+                    settDatoFra={settOppgave('fristFom')}
+                    settDatoTil={settOppgave('fristTom')}
+                    datoFraTekst="Frist fra"
+                    datoTilTekst="Frist til"
+                />
                 <CustomSelect
                     onChange={settOppgave('enhet')}
                     label="Enhet"
