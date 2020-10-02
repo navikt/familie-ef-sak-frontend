@@ -126,11 +126,11 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                         <OppgaveSorteringsHeader
                             tekst="Saksbehandler"
                             rekkefolge={
-                                sortConfig?.sorteringsfelt === 'samhandlernr'
+                                sortConfig?.sorteringsfelt === 'opprettetAv'
                                     ? sortConfig.rekkefolge
                                     : undefined
                             }
-                            onClick={() => settSortering('samhandlernr')}
+                            onClick={() => settSortering('opprettetAv')}
                         />
                         <th role="columnheader">Handlinger</th>
                     </tr>
