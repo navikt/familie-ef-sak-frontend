@@ -17,10 +17,10 @@ export function useSorteringState<T>(liste: T[], config: OrNothing<SorteringConf
         const listeKopi = [...liste];
         if (sortConfig) {
             listeKopi.sort((a, b) => {
-                if (!a[sortConfig?.sorteringsfelt]) {
+                if (a[sortConfig?.sorteringsfelt] === undefined) {
                     return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
                 }
-                if (!b[sortConfig?.sorteringsfelt]) {
+                if (b[sortConfig?.sorteringsfelt] === undefined) {
                     return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
                 }
                 if (erEttDatoFelt(a[sortConfig?.sorteringsfelt], b[sortConfig?.sorteringsfelt])) {
