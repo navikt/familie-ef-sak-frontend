@@ -78,6 +78,15 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
             setOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
     };
 
+    const saksbehandlerTekst =
+        oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
+            ? 'alle'
+            : oppgaveRequest.tilordnetRessurs
+            ? oppgaveRequest.tilordnetRessurs
+            : oppgaveRequest.tildeltRessurs
+            ? 'Fordelte'
+            : 'Ufordelte';
+
     return (
         <>
             <FlexDiv>
@@ -122,7 +131,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 />
 
                 <Select
-                    value={oppgaveRequest.saksbehandler || ''}
+                    value={saksbehandlerTekst}
                     className="flex-item"
                     label="Saksbehandler"
                     onChange={(event) => {
