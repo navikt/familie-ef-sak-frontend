@@ -48,8 +48,8 @@ export interface ITelefonnummer {
 
 export interface IStatsborgerskap {
     land: string;
-    gyldigFraOgMed?: string;
-    gyldigTilOgMed?: string;
+    gyldigFraOgMedDato?: string;
+    gyldigTilOgMedDato?: string;
 }
 
 export interface ISivilstand {

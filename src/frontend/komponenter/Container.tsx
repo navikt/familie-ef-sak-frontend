@@ -7,6 +7,7 @@ import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
 import { SakProvider } from '../context/SakContext';
 import SakContainer from './Sak/SakContainer';
 import SakListeContainer from './Sak/SakListeContainer';
+import BehandlingContainer from './Behandling/BehandlingContainer';
 
 interface IProps {
     innloggetSaksbehandler?: ISaksbehandler;
@@ -24,6 +25,10 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                         <SakProvider>
                             <Switch>
                                 <Redirect exact={true} from="/" to="/sak" />
+                                <Route
+                                    path="/behandling/:behandlingId"
+                                    component={BehandlingContainer}
+                                />
                                 <Route path="/sak/:sakId" component={SakContainer} />
                                 <Route
                                     path="/sak"
