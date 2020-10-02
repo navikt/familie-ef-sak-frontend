@@ -8,11 +8,11 @@ export type Behandlingstema =
     | 'ab0071';
 
 export const behandlingstemaTilTekst: Record<Behandlingstema, string> = {
-    ab0028: 'Barnetrygd',
+    ab0270: 'Barnetrygd',
     ab0058: 'BarnetrygdEØS',
-    ab0071: 'OrdinærBarnetrygd',
+    ab0071: 'Overgangsstønad',
     ab0096: 'UtvidetBarnetrygd',
     ab0177: 'Skolepenger',
-    ab0180: 'Barnetilsyn',
-    ab0270: 'Overgangsstønad',
+    ab0180: 'OrdinærBarnetrygd',
+    ab0028: 'Barnetilsyn',
 };
