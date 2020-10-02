@@ -17,19 +17,18 @@ export function useSorteringState<T>(liste: T[], config: OrNothing<SorteringConf
         const listeKopi = [...liste];
         if (sortConfig) {
             listeKopi.sort((a, b) => {
+                if (!a[sortConfig?.sorteringsfelt]) {
+                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
+                }
+                if (!b[sortConfig?.sorteringsfelt]) {
+                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
+                }
                 if (erEttDatoFelt(a[sortConfig?.sorteringsfelt], b[sortConfig?.sorteringsfelt])) {
                     const dateStringA = (a[sortConfig?.sorteringsfelt] as unknown) as string;
                     const dateStringB = (b[sortConfig?.sorteringsfelt] as unknown) as string;
                     return sortConfig?.rekkefolge === 'ascending'
                         ? compareAsc(new Date(dateStringA), new Date(dateStringB))
                         : compareDesc(new Date(dateStringA), new Date(dateStringB));
-                }
-
-                if (!a[sortConfig?.sorteringsfelt]) {
-                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
-                }
-                if (!b[sortConfig?.sorteringsfelt]) {
-                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
                 }
                 if (a[sortConfig?.sorteringsfelt] < b[sortConfig?.sorteringsfelt]) {
                     return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
