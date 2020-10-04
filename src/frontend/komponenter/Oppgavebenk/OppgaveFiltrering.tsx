@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
-import { Oppgavetype, oppgaveTypeTilTekst } from './oppgavetema';
-import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
+import { oppgaveTypeTilTekst } from './oppgavetema';
+import { behandlingstemaTilTekst } from './behandlingstema';
 import { useApp } from '../../context/AppContext';
-import { Enhetsmappe, enhetsmappeTilTekst } from './enhetsmappe';
+import { enhetsmappeTilTekst } from './enhetsmappe';
 import CustomSelect from './CustomSelect';
-import { Enhet, enhetTilTekst } from './enhet';
+import { enhetTilTekst } from './enhet';
 import DatoPeriode from './DatoPeriode';
+import { datoFeil, oppdaterFilter } from '../../utils/utils';
+import { IOppgaveRequest } from './oppgaverequest';
+import { OrNothing } from '../../hooks/useSorteringState';
 
 export const FlexDiv = styled.div`
     display: flex;
@@ -31,50 +34,39 @@ const KnappWrapper = styled.div`
     }
 `;
 
-export interface IOppgaveRequest {
-    behandlingstema?: Behandlingstema;
-    oppgavetype?: Oppgavetype;
-    enhet?: Enhet;
-    enhetsmappe?: Enhetsmappe;
-    saksbehandler?: string;
-    journalpostId?: string;
-    tilordnetRessurs?: string;
-    tildeltRessurs?: boolean;
-    opprettetFom?: string;
-    opprettetTom?: string;
-    fristFom?: string;
-    fristTom?: string;
-}
-
 interface IOppgaveFiltrering {
     hentOppgaver: (data: IOppgaveRequest) => void;
 }
 
-const oppdaterFilter = (
-    object: IOppgaveRequest,
-    key: keyof IOppgaveRequest,
-    val?: string | number
-): IOppgaveRequest => {
-    if (!val || val === '') {
-        const { [key]: dummy, ...remainder } = object;
-        return remainder;
-    }
-    return {
-        ...object,
-        [key]: val,
-    };
-};
-
+interface Feil {
+    opprettetPeriodeFeil: OrNothing<string>;
+    fristPeriodeFeil: OrNothing<string>;
+}
 const initOppgaveRequest = {} as IOppgaveRequest;
+const initFeilObjekt = {} as Feil;
 
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
+    const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
     const { innloggetSaksbehandler } = useApp();
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
             setOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
     };
+
+    useEffect(() => {
+        const fristPeriodeFeil = datoFeil(oppgaveRequest.fristFom, oppgaveRequest.fristTom);
+        settPerioderFeil((prevState) => ({ ...prevState, fristPeriodeFeil }));
+    }, [oppgaveRequest.fristTom, oppgaveRequest.fristFom]);
+
+    useEffect(() => {
+        const opprettetPeriodeFeil = datoFeil(
+            oppgaveRequest.opprettetFom,
+            oppgaveRequest.opprettetTom
+        );
+        settPerioderFeil((prevState) => ({ ...prevState, opprettetPeriodeFeil }));
+    }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
@@ -95,6 +87,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     settDatoTil={settOppgave('opprettetTom')}
                     datoFraTekst="Reg.dato fra"
                     datoTilTekst="Reg.dato til"
+                    datoFeil={periodeFeil.opprettetPeriodeFeil}
                 />
                 <CustomSelect
                     onChange={settOppgave('oppgavetype')}
@@ -115,6 +108,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     settDatoTil={settOppgave('fristTom')}
                     datoFraTekst="Frist fra"
                     datoTilTekst="Frist til"
+                    datoFeil={periodeFeil.fristPeriodeFeil}
                 />
                 <CustomSelect
                     onChange={settOppgave('enhet')}
@@ -172,7 +166,15 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
             </FlexDiv>
 
             <KnappWrapper>
-                <Hovedknapp className="flex-item" onClick={() => hentOppgaver(oppgaveRequest)}>
+                <Hovedknapp
+                    className="flex-item"
+                    onClick={() => {
+                        if (Object.values(periodeFeil).some((val?: string) => val)) {
+                            return;
+                        }
+                        hentOppgaver(oppgaveRequest);
+                    }}
+                >
                     Hent oppgaver
                 </Hovedknapp>
                 <Knapp

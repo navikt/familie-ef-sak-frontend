@@ -2,9 +2,8 @@ import { Datovelger } from 'nav-datovelger';
 import React from 'react';
 import styled from 'styled-components';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
-import { OrNothing } from '../../hooks/useSorteringState';
-import { isBefore } from 'date-fns';
 import { FlexDiv } from './OppgaveFiltrering';
+import { OrNothing } from '../../hooks/useSorteringState';
 
 const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;
@@ -17,17 +16,8 @@ interface Props {
     valgtDatoTil?: string;
     settDatoFra: (datoFra?: string) => void;
     settDatoTil: (datoTil?: string) => void;
+    datoFeil: OrNothing<string>;
 }
-
-const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothing<string> => {
-    if (!valgtDatoFra || !valgtDatoTil) {
-        return null;
-    }
-    if (isBefore(new Date(valgtDatoTil), new Date(valgtDatoFra))) {
-        return 'Til dato må vare etter til fra dato';
-    }
-    return null;
-};
 
 const DatoPeriode: React.FC<Props> = ({
     datoFraTekst,
@@ -36,8 +26,8 @@ const DatoPeriode: React.FC<Props> = ({
     valgtDatoTil,
     settDatoFra,
     settDatoTil,
+    datoFeil,
 }) => {
-    const harDatoFeil = datoFeil(valgtDatoFra, valgtDatoTil);
     return (
         <FlexDiv>
             <div className="skjemaelement flex-item">
@@ -51,7 +41,7 @@ const DatoPeriode: React.FC<Props> = ({
                     {datoTilTekst}
                 </DatolabelStyle>
                 <Datovelger onChange={settDatoTil} valgtDato={valgtDatoTil} />
-                {harDatoFeil && <SkjemaelementFeilmelding>{harDatoFeil}</SkjemaelementFeilmelding>}
+                {datoFeil && <SkjemaelementFeilmelding>{datoFeil}</SkjemaelementFeilmelding>}
             </div>
         </FlexDiv>
     );
