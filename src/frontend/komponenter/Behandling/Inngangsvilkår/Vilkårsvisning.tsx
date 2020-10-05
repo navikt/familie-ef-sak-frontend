@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import GrønnHake from '../../../ikoner/GrønnHake';
 import Advarsel from '../../../ikoner/Advarsel';
 import { IInngangsvilkår } from './vilkår';
@@ -10,7 +10,10 @@ import Søknad from '../../../ikoner/Søknad';
 
 const StyledTabell = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, max-content);
+    grid-template-columns: repeat(
+        ${(props: { kolonner?: number }) => props.kolonner || 3},
+        max-content
+    );
     grid-auto-rows: min-content;
     grid-gap: 1rem;
 
@@ -20,7 +23,7 @@ const StyledTabell = styled.div`
     }
 
     .tittel {
-        grid-column: 2/4;
+        grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};
         padding-bottom: 1rem;
     }
 `;
@@ -52,7 +55,7 @@ const Vilkårsvisning: FC<Props> = ({ inngangsvilkår }) => {
         <>
             <StyledTabell>
                 {erVurdert ? <GrønnHake /> : <Advarsel />}
-                <Element className="tittel">Medlemskap</Element>
+                <Undertittel className="tittel">Medlemskap</Undertittel>
 
                 <RegisterGrunnlag />
                 <Normaltekst>Statsborgerskap</Normaltekst>
@@ -72,9 +75,10 @@ const Vilkårsvisning: FC<Props> = ({ inngangsvilkår }) => {
                     apneTekst={'Vis info om medlemskap'}
                     lukkTekst={'Lukk info om medlemskap'}
                 >
-                    <StyledTabell>
-                        <Normaltekst>ddd</Normaltekst>
-                        <Normaltekst>ddd</Normaltekst>
+                    <StyledTabell kolonner={4}>
+                        <RegisterGrunnlag />
+                        <Element className="tittel">Medlemskap</Element>
+                        <div />
                         <Normaltekst>ddd</Normaltekst>
                     </StyledTabell>
                 </Lesmerpanel>
