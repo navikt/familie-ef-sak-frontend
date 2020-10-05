@@ -28,7 +28,7 @@ const Medlemskap: FC<Props> = ({ medlemskap }) => {
     const finnesUtenlandsperioder = søknadGrunnlag.utenlandsopphold.length > 0;
 
     return (
-        <StyledSkillelinje>
+        <>
             <StyledTabell>
                 {erVurdert ? <GrønnHake /> : <Advarsel />}
                 <Undertittel className="tittel">Medlemskap</Undertittel>
@@ -61,7 +61,8 @@ const Medlemskap: FC<Props> = ({ medlemskap }) => {
                     )}
                 </Lesmerpanel>
             </StyledLesmerpanel>
-        </StyledSkillelinje>
+            <StyledSkillelinje />
+        </>
     );
 };
 export default Medlemskap;
