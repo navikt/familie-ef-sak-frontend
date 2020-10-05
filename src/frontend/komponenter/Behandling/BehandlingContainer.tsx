@@ -2,16 +2,16 @@ import * as React from 'react';
 import { FC } from 'react';
 import { useParams } from 'react-router';
 import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
-import Vilkårsvisning from './Inngangsvilkår/Vilkårsvisning';
+
+interface Params {
+    behandlingId: string;
+}
 
 const BehandlingContainer: FC = () => {
-    const { behandlingId } = useParams();
+    const { behandlingId } = useParams<Params>();
 
-    console.log(behandlingId);
     return (
         <>
-            cake
-            <Vilkårsvisning />
             <Inngangsvilkår behandlingId={behandlingId} />
         </>
     );

@@ -41,9 +41,11 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
     return (
         <>
-            <Vilkårsvisning />
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
-                <AnyData data={inngangsvilkår.data} />
+                <>
+                    <Vilkårsvisning inngangsvilkår={inngangsvilkår.data} />
+                    <AnyData data={inngangsvilkår.data} />
+                </>
             )}
         </>
     );
