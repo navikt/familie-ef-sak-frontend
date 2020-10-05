@@ -6,6 +6,7 @@ import Advarsel from '../../../ikoner/Advarsel';
 import { IInngangsvilkår } from './vilkår';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import Register from '../../../ikoner/Register';
+import Søknad from '../../../ikoner/Søknad';
 
 const StyledTabell = styled.div`
     display: grid;
@@ -38,6 +39,9 @@ const BooleanTekst = (props: { value: boolean }) => (
     <Normaltekst>{props.value ? 'Ja' : 'Nei'}</Normaltekst>
 );
 
+const RegisterGrunnlag = () => <Register width={17} heigth={15} />;
+const SøknadGrunnlag = () => <Søknad width={15} heigth={21} />;
+
 const Vilkårsvisning: FC<Props> = ({ inngangsvilkår }) => {
     const erVurdert = false;
 
@@ -50,15 +54,15 @@ const Vilkårsvisning: FC<Props> = ({ inngangsvilkår }) => {
                 {erVurdert ? <GrønnHake /> : <Advarsel />}
                 <Element className="tittel">Medlemskap</Element>
 
-                <Register width={13} heigth={13} />
+                <RegisterGrunnlag />
                 <Normaltekst>Statsborgerskap</Normaltekst>
                 <Normaltekst>{registerGrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
 
-                <Normaltekst>ddd</Normaltekst>
+                <SøknadGrunnlag />
                 <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
                 <BooleanTekst value={søknadGrunnlag.oppholderDuDegINorge} />
 
-                <Normaltekst>ddd</Normaltekst>
+                <SøknadGrunnlag />
                 <Normaltekst>Har bodd i Norge siste tre år</Normaltekst>
                 <BooleanTekst value={søknadGrunnlag.bosattNorgeSisteÅrene} />
             </StyledTabell>
