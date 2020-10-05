@@ -21,7 +21,10 @@ app.get('/familie-ef-sak/api/fagsak/1', (req, res) => {
 
 app.get('/user/profile', (req, res) => {
     res.send({
-        displayName: 'Test Testersen',
+        displayName: 'James Bond',
+        email: 'james@bond.com',
+        enhet: '39012',
+        navIdent: 'Z007',
     });
 });
 
@@ -58,6 +61,10 @@ app.post('/familie-ef-sak/api/behandling/opprett', (req, res) => {
 
 app.post('/familie-ef-sak/api/fagsak/1/nytt-vedtak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/oppgave/soek', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`hent-oppgave.json`)), delayMs);
 });
 
 module.exports = app;
