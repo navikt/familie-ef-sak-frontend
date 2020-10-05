@@ -1,40 +1,33 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { IUtenlandsopphold } from '../vilkår';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { formaterIsoDato } from '../../../../utils/formatter';
-import { SøknadGrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import TabellVisning, { TabellIkone } from '../../TabellVisning';
 
 interface Props {
     utenlandsopphold: IUtenlandsopphold[];
 }
 
-const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => {
-    return (
-        <>
-            <StyledTabell kolonner={4}>
-                <SøknadGrunnlag />
-                <Element className="tittel">Utenlandsperioder</Element>
-                <Element className="førsteDataKolonne">Årsak</Element>
-                <Element>Fra</Element>
-                <Element>Til</Element>
-                {utenlandsopphold.map((utenlandsopphold) => (
-                    <>
-                        <Normaltekst className="førsteDataKolonne">
-                            {utenlandsopphold.årsak}
-                        </Normaltekst>
-                        <Normaltekst className="kolonne">
-                            {utenlandsopphold.fraDato && formaterIsoDato(utenlandsopphold.fraDato)}
-                        </Normaltekst>
-                        <Normaltekst className="kolonne">
-                            {utenlandsopphold.tilDato && formaterIsoDato(utenlandsopphold.tilDato)}
-                        </Normaltekst>
-                    </>
-                ))}
-            </StyledTabell>
-        </>
-    );
-};
+const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
+    <TabellVisning
+        ikone={TabellIkone.SØKNAD}
+        tittel="Utenlandsperioder"
+        data={utenlandsopphold}
+        headerValues={[
+            {
+                header: 'Årsak',
+                value: (d: IUtenlandsopphold) => d.årsak,
+            },
+            {
+                header: 'Fra',
+                value: (d: IUtenlandsopphold) => d.fraDato && formaterIsoDato(d.fraDato),
+            },
+            {
+                header: 'Til',
+                value: (d: IUtenlandsopphold) => d.tilDato && formaterIsoDato(d.tilDato),
+            },
+        ]}
+    />
+);
 
 export default Utenlandsopphold;
