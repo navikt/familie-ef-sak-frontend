@@ -1,13 +1,7 @@
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
-export enum datoformat {
-    MÅNED = 'MM.YY',
-    DATO = 'DD.MM.YY',
-    DATO_TID = 'DD.MM.YY HH:mm',
-    TID = 'HH:mm',
-}
+export const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
 
-export const formaterIsoDato = (dato: string, tilFormat: datoformat) => {
-    const momentDato = moment(dato);
-    return momentDato.isValid() ? momentDato.format(tilFormat) : dato ? dato : '';
+export const formaterIsoDato = (dato: string) => {
+    return parseISO(dato).toLocaleDateString('no-NO', datoFormat);
 };

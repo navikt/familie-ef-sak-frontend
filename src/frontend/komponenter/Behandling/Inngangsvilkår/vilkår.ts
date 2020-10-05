@@ -13,7 +13,7 @@ export interface IVurdering {
     begrunnelse: string;
     unntak: string;
     endretAv: string;
-    endretTid: Date;
+    endretTid: string;
 }
 
 export interface IMedlemskap {
@@ -34,14 +34,14 @@ export interface IMedlemskapRegisterGrunnlag {
 }
 
 export interface IUtenlandsopphold {
-    fraDato: Date;
-    tilDato: Date;
+    fraDato: string;
+    tilDato: string;
     årsak: string;
 }
 
 export interface IOppholdstatus {
-    fraDato?: Date;
-    tilDato?: Date;
+    fraDato?: string;
+    tilDato?: string;
     oppholdstillatelse: Oppholdstatus;
 }
 
