@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { IUtenlandsopphold } from '../vilkår';
-import { formaterIsoDato } from '../../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import TabellVisning, { TabellIkone } from '../../TabellVisning';
 
 interface Props {
@@ -16,15 +16,15 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
         headerValues={[
             {
                 header: 'Årsak',
-                value: (d: IUtenlandsopphold) => d.årsak,
+                value: (d) => d.årsak,
             },
             {
                 header: 'Fra',
-                value: (d: IUtenlandsopphold) => d.fraDato && formaterIsoDato(d.fraDato),
+                value: (d) => formaterNullableIsoDato(d.fraDato),
             },
             {
                 header: 'Til',
-                value: (d: IUtenlandsopphold) => d.tilDato && formaterIsoDato(d.tilDato),
+                value: (d) => formaterNullableIsoDato(d.tilDato),
             },
         ]}
     />

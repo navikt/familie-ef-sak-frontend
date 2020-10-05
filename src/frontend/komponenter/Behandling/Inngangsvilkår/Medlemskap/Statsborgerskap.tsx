@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { formaterIsoDato } from '../../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { IStatsborgerskap } from '../../../../typer/personopplysninger';
 import TabellVisning, { TabellIkone } from '../../TabellVisning';
 
@@ -16,17 +16,15 @@ const Statsborgerskap: FC<Props> = ({ statsborgerskap }) => (
         headerValues={[
             {
                 header: 'Land',
-                value: (d: IStatsborgerskap) => d.land,
+                value: (d) => d.land,
             },
             {
                 header: 'Fra',
-                value: (d: IStatsborgerskap) =>
-                    d.gyldigFraOgMedDato && formaterIsoDato(d.gyldigFraOgMedDato),
+                value: (d) => formaterNullableIsoDato(d.gyldigFraOgMedDato),
             },
             {
                 header: 'Til',
-                value: (d: IStatsborgerskap) =>
-                    d.gyldigTilOgMedDato && formaterIsoDato(d.gyldigTilOgMedDato),
+                value: (d) => formaterNullableIsoDato(d.gyldigTilOgMedDato),
             },
         ]}
     />
