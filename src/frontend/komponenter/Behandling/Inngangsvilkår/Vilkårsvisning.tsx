@@ -39,8 +39,8 @@ const BooleanTekst = (props: { value: boolean }) => (
     <Normaltekst>{props.value ? 'Ja' : 'Nei'}</Normaltekst>
 );
 
-const RegisterGrunnlag = () => <Register width={17} heigth={15} />;
-const SøknadGrunnlag = () => <Søknad width={15} heigth={21} />;
+const RegisterGrunnlag = () => <Register width={16} heigth={14} />;
+const SøknadGrunnlag = () => <Søknad width={13} heigth={19} />;
 
 const Vilkårsvisning: FC<Props> = ({ inngangsvilkår }) => {
     const erVurdert = false;
