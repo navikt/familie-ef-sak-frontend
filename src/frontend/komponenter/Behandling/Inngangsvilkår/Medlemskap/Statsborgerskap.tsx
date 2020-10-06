@@ -1,38 +1,33 @@
 import * as React from 'react';
-import { RegisterGrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { formaterIsoDato } from '../../../../utils/formatter';
 import { FC } from 'react';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { IStatsborgerskap } from '../../../../typer/personopplysninger';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import TabellVisning, { TabellIkon } from '../../TabellVisning';
 
 interface Props {
     statsborgerskap: IStatsborgerskap[];
 }
 
-const Statsborgerskap: FC<Props> = ({ statsborgerskap }) => {
-    return (
-        <StyledTabell kolonner={4}>
-            <RegisterGrunnlag />
-            <Element className="tittel">Statsborgerskap</Element>
-            <Element className="førsteDataKolonne">Land</Element>
-            <Element>Fra</Element>
-            <Element>Til</Element>
-            {statsborgerskap.map((statsborgerskap) => (
-                <>
-                    <Normaltekst className="førsteDataKolonne">{statsborgerskap.land}</Normaltekst>
-                    <Normaltekst className="kolonne">
-                        {statsborgerskap.gyldigFraOgMedDato &&
-                            formaterIsoDato(statsborgerskap.gyldigFraOgMedDato)}
-                    </Normaltekst>
-                    <Normaltekst className="kolonne">
-                        {statsborgerskap.gyldigTilOgMedDato &&
-                            formaterIsoDato(statsborgerskap.gyldigTilOgMedDato)}
-                    </Normaltekst>
-                </>
-            ))}
-        </StyledTabell>
-    );
-};
+const Statsborgerskap: FC<Props> = ({ statsborgerskap }) => (
+    <TabellVisning
+        ikon={TabellIkon.REGISTER}
+        tittel="Statsborgerskap"
+        items={statsborgerskap}
+        headerValues={[
+            {
+                header: 'Land',
+                value: (d) => d.land,
+            },
+            {
+                header: 'Fra',
+                value: (d) => formaterNullableIsoDato(d.gyldigFraOgMedDato),
+            },
+            {
+                header: 'Til',
+                value: (d) => formaterNullableIsoDato(d.gyldigTilOgMedDato),
+            },
+        ]}
+    />
+);
 
 export default Statsborgerskap;

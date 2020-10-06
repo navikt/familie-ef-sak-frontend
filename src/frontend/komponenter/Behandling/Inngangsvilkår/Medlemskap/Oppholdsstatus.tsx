@@ -1,37 +1,33 @@
 import * as React from 'react';
-import { RegisterGrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { formaterIsoDato } from '../../../../utils/formatter';
-import { IOppholdstatus } from '../vilkår';
 import { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { IOppholdstatus } from '../vilkår';
+import TabellVisning, { TabellIkon } from '../../TabellVisning';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     oppholdsstatus: IOppholdstatus[];
 }
-const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => {
-    return (
-        <StyledTabell kolonner={4}>
-            <RegisterGrunnlag />
-            <Element className="tittel">Oppholdsstatus</Element>
-            <Element className="førsteDataKolonne">Oppholdstillatelse</Element>
-            <Element>Fra</Element>
-            <Element>Til</Element>
-            {oppholdsstatus.map((oppholdsstatus) => (
-                <>
-                    <Normaltekst className="førsteDataKolonne">
-                        {oppholdsstatus.oppholdstillatelse}
-                    </Normaltekst>
-                    <Normaltekst className="kolonne">
-                        {oppholdsstatus.fraDato && formaterIsoDato(oppholdsstatus.fraDato)}
-                    </Normaltekst>
-                    <Normaltekst className="kolonne">
-                        {oppholdsstatus.tilDato && formaterIsoDato(oppholdsstatus.tilDato)}
-                    </Normaltekst>
-                </>
-            ))}
-        </StyledTabell>
-    );
-};
+
+const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => (
+    <TabellVisning
+        ikon={TabellIkon.REGISTER}
+        tittel="Oppholdsstatus"
+        items={oppholdsstatus}
+        headerValues={[
+            {
+                header: 'Oppholdstillatelse',
+                value: (d) => d.oppholdstillatelse,
+            },
+            {
+                header: 'Fra',
+                value: (d) => formaterNullableIsoDato(d.fraDato),
+            },
+            {
+                header: 'Til',
+                value: (d) => formaterNullableIsoDato(d.tilDato),
+            },
+        ]}
+    />
+);
 
 export default Oppholdsstatus;
