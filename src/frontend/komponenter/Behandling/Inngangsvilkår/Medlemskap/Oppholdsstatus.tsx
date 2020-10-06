@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { IOppholdstatus } from '../vilkår';
-import TabellVisning, { TabellIkone } from '../../TabellVisning';
+import TabellVisning, { TabellIkon } from '../../TabellVisning';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => (
     <TabellVisning
-        ikone={TabellIkone.REGISTER}
+        ikon={TabellIkon.REGISTER}
         tittel="Oppholdsstatus"
         items={oppholdsstatus}
         headerValues={[

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import { IUtenlandsopphold } from '../vilkår';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
-import TabellVisning, { TabellIkone } from '../../TabellVisning';
+import TabellVisning, { TabellIkon } from '../../TabellVisning';
 
 interface Props {
     utenlandsopphold: IUtenlandsopphold[];
@@ -10,7 +10,7 @@ interface Props {
 
 const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
     <TabellVisning
-        ikone={TabellIkone.SØKNAD}
+        ikon={TabellIkon.SØKNAD}
         tittel="Utenlandsperioder"
         items={utenlandsopphold}
         headerValues={[

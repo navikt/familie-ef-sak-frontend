@@ -3,13 +3,13 @@ import { RegisterGrunnlag, SøknadGrunnlag } from '../Felleskomponenter/Visning/
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { StyledTabell } from '../Felleskomponenter/Visning/StyledTabell';
 
-export enum TabellIkone {
+export enum TabellIkon {
     REGISTER = 'REGISTER',
     SØKNAD = 'SØKNAD',
 }
 
 export interface Kolonndata<T> {
-    ikone: TabellIkone;
+    ikon: TabellIkon;
     tittel: string;
     items: T[];
     headerValues: HeaderValue<T>[];
@@ -20,20 +20,20 @@ export interface HeaderValue<T> {
     value: (data: T) => string | undefined;
 }
 
-const mapIkone = (ikone: TabellIkone) => {
-    switch (ikone) {
-        case TabellIkone.REGISTER:
+const mapIkon = (ikon: TabellIkon) => {
+    switch (ikon) {
+        case TabellIkon.REGISTER:
             return <RegisterGrunnlag />;
-        case TabellIkone.SØKNAD:
+        case TabellIkon.SØKNAD:
             return <SøknadGrunnlag />;
     }
 };
 
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
-    const { ikone, tittel, items, headerValues } = props;
+    const { ikon, tittel, items, headerValues } = props;
     return (
         <StyledTabell kolonner={headerValues.length + 1}>
-            {mapIkone(ikone)}
+            {mapIkon(ikon)}
             <Element className="tittel" tag="h3">
                 {tittel}
             </Element>
