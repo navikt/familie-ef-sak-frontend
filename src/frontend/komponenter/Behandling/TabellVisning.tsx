@@ -29,11 +29,14 @@ const mapIkone = (ikone: TabellIkone) => {
     }
 };
 
-const TabellVisning: React.FC<Kolonndata<any>> = ({ ikone, tittel, items, headerValues }) => {
+function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
+    const { ikone, tittel, items, headerValues } = props;
     return (
         <StyledTabell kolonner={headerValues.length + 1}>
             {mapIkone(ikone)}
-            <Element className="tittel">{tittel}</Element>
+            <Element className="tittel" tag="h3">
+                {tittel}
+            </Element>
             {headerValues.map((headerValue, index) => (
                 <Element className={index === 0 ? 'førsteDataKolonne' : ''}>
                     {headerValue.header}
@@ -48,6 +51,6 @@ const TabellVisning: React.FC<Kolonndata<any>> = ({ ikone, tittel, items, header
             )}
         </StyledTabell>
     );
-};
+}
 
 export default TabellVisning;
