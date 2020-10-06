@@ -12,7 +12,7 @@ const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => (
     <TabellVisning
         ikone={TabellIkone.REGISTER}
         tittel="Oppholdsstatus"
-        data={oppholdsstatus}
+        items={oppholdsstatus}
         headerValues={[
             {
                 header: 'Oppholdstillatelse',

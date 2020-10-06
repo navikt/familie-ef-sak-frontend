@@ -12,7 +12,7 @@ const Statsborgerskap: FC<Props> = ({ statsborgerskap }) => (
     <TabellVisning
         ikone={TabellIkone.REGISTER}
         tittel="Statsborgerskap"
-        data={statsborgerskap}
+        items={statsborgerskap}
         headerValues={[
             {
                 header: 'Land',

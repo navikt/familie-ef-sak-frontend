@@ -12,7 +12,7 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
     <TabellVisning
         ikone={TabellIkone.SØKNAD}
         tittel="Utenlandsperioder"
-        data={utenlandsopphold}
+        items={utenlandsopphold}
         headerValues={[
             {
                 header: 'Årsak',

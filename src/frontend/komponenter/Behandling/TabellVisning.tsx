@@ -11,7 +11,7 @@ export enum TabellIkone {
 export interface Kolonndata<T> {
     ikone: TabellIkone;
     tittel: string;
-    data: T[];
+    items: T[];
     headerValues: HeaderValue<T>[];
 }
 
@@ -29,7 +29,7 @@ const mapIkone = (ikone: TabellIkone) => {
     }
 };
 
-const TabellVisning: React.FC<Kolonndata<any>> = ({ ikone, tittel, data, headerValues }) => {
+const TabellVisning: React.FC<Kolonndata<any>> = ({ ikone, tittel, items, headerValues }) => {
     return (
         <StyledTabell kolonner={headerValues.length + 1}>
             {mapIkone(ikone)}
@@ -39,7 +39,7 @@ const TabellVisning: React.FC<Kolonndata<any>> = ({ ikone, tittel, data, headerV
                     {headerValue.header}
                 </Element>
             ))}
-            {data.map((item) =>
+            {items.map((item) =>
                 headerValues.map((headerValue, index) => (
                     <Normaltekst className={index === 0 ? 'førsteDataKolonne' : 'kolonne'}>
                         {headerValue.value(item)}
