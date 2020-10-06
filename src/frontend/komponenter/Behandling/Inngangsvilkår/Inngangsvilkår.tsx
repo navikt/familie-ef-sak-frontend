@@ -1,10 +1,17 @@
 import React, { FC, useState } from 'react';
-import Vilkårsvisning from './Vilkårsvisning';
 import { IInngangsvilkår } from './vilkår';
 import { byggFeiletRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { AxiosError } from 'axios';
 import { useApp } from '../../../context/AppContext';
-import AnyData from '../../Sak/AnyData';
+import Medlemskap from './Medlemskap/Medlemskap';
+import styled from 'styled-components';
+
+const StyledInngangsvilkår = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-auto-rows: auto;
+    grid-gap: 3rem;
+`;
 
 interface Props {
     behandlingId: string;
@@ -42,10 +49,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     return (
         <>
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
-                <>
-                    <Vilkårsvisning inngangsvilkår={inngangsvilkår.data} />
-                    <AnyData data={inngangsvilkår.data} />
-                </>
+                <StyledInngangsvilkår>
+                    <Medlemskap medlemskap={inngangsvilkår.data.medlemskap} />
+                    <Medlemskap medlemskap={inngangsvilkår.data.medlemskap} />
+                </StyledInngangsvilkår>
             )}
         </>
     );
