@@ -12,19 +12,19 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
     <TabellVisning
         ikon={TabellIkon.SØKNAD}
         tittel="Utenlandsperioder"
-        items={utenlandsopphold}
-        headerValues={[
+        verdier={utenlandsopphold}
+        kolonner={[
             {
-                header: 'Årsak',
-                value: (d) => d.årsak,
+                overskrift: 'Årsak',
+                tekstVerdi: (d) => d.årsak,
             },
             {
-                header: 'Fra',
-                value: (d) => formaterNullableIsoDato(d.fraDato),
+                overskrift: 'Fra',
+                tekstVerdi: (d) => formaterNullableIsoDato(d.fraDato),
             },
             {
-                header: 'Til',
-                value: (d) => formaterNullableIsoDato(d.tilDato),
+                overskrift: 'Til',
+                tekstVerdi: (d) => formaterNullableIsoDato(d.tilDato),
             },
         ]}
     />

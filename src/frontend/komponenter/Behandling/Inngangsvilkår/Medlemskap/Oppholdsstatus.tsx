@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IOppholdstatus } from '../vilkår';
+import { IOppholdstatus, oppholdsstatusTypeTilTekst } from '../vilkår';
 import TabellVisning, { TabellIkon } from '../../TabellVisning';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
@@ -12,19 +12,19 @@ const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => (
     <TabellVisning
         ikon={TabellIkon.REGISTER}
         tittel="Oppholdsstatus"
-        items={oppholdsstatus}
-        headerValues={[
+        verdier={oppholdsstatus}
+        kolonner={[
             {
-                header: 'Oppholdstillatelse',
-                value: (d) => d.oppholdstillatelse,
+                overskrift: 'Oppholdstillatelse',
+                tekstVerdi: (d) => oppholdsstatusTypeTilTekst[d.oppholdstillatelse],
             },
             {
-                header: 'Fra',
-                value: (d) => formaterNullableIsoDato(d.fraDato),
+                overskrift: 'Fra',
+                tekstVerdi: (d) => formaterNullableIsoDato(d.fraDato),
             },
             {
-                header: 'Til',
-                value: (d) => formaterNullableIsoDato(d.tilDato),
+                overskrift: 'Til',
+                tekstVerdi: (d) => formaterNullableIsoDato(d.tilDato),
             },
         ]}
     />

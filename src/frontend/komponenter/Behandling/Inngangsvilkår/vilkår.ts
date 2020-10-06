@@ -45,19 +45,20 @@ export interface IOppholdstatus {
     oppholdstillatelse: Oppholdstatus;
 }
 
-export const enum Oppholdstatus {
-    MIDLERTIDIG = 'MIDLERTIDIG',
-    PERMANENT = 'PERMANENT',
-    UKJENT = 'UKJENT',
-}
+export type Oppholdstatus = 'MIDLERTIDIG' | 'PERMANENT' | 'UKJENT';
 
-export const enum VilkårResultat {
-    JA = 'JA',
-    NEI = 'NEI',
-    IKKE_VURDERT = 'IKKE_VURDERT',
-}
+export const oppholdsstatusTypeTilTekst: Record<Oppholdstatus, string> = {
+    MIDLERTIDIG: 'Midlertidig',
+    PERMANENT: 'Permanent',
+    UKJENT: 'Ukjent',
+};
 
-export const enum VilkårType {
-    FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
-    LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
-}
+export type VilkårResultat = 'JA' | 'NEI' | 'IKKE_VURDERT';
+
+export const vilkårsResultatTypeTilTekst: Record<VilkårResultat, string> = {
+    JA: 'Ja',
+    NEI: 'Nei',
+    IKKE_VURDERT: 'Ikke vurdert',
+};
+
+export type VilkårType = 'FORUTGÅENDE_MEDLEMSKAP' | 'LOVLIG_OPPHOLD';

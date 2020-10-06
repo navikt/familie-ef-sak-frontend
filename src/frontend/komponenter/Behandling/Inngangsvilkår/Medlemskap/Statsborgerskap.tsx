@@ -12,19 +12,19 @@ const Statsborgerskap: FC<Props> = ({ statsborgerskap }) => (
     <TabellVisning
         ikon={TabellIkon.REGISTER}
         tittel="Statsborgerskap"
-        items={statsborgerskap}
-        headerValues={[
+        verdier={statsborgerskap}
+        kolonner={[
             {
-                header: 'Land',
-                value: (d) => d.land,
+                overskrift: 'Land',
+                tekstVerdi: (d) => d.land,
             },
             {
-                header: 'Fra',
-                value: (d) => formaterNullableIsoDato(d.gyldigFraOgMedDato),
+                overskrift: 'Fra',
+                tekstVerdi: (d) => formaterNullableIsoDato(d.gyldigFraOgMedDato),
             },
             {
-                header: 'Til',
-                value: (d) => formaterNullableIsoDato(d.gyldigTilOgMedDato),
+                overskrift: 'Til',
+                tekstVerdi: (d) => formaterNullableIsoDato(d.gyldigTilOgMedDato),
             },
         ]}
     />

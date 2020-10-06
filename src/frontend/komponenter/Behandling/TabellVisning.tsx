@@ -11,13 +11,13 @@ export enum TabellIkon {
 export interface Kolonndata<T> {
     ikon: TabellIkon;
     tittel: string;
-    items: T[];
-    headerValues: HeaderValue<T>[];
+    verdier: T[];
+    kolonner: Kolonner<T>[];
 }
 
-export interface HeaderValue<T> {
-    header: string;
-    value: (data: T) => string | undefined;
+export interface Kolonner<T> {
+    overskrift: string;
+    tekstVerdi: (data: T) => string | undefined;
 }
 
 const mapIkon = (ikon: TabellIkon) => {
@@ -30,22 +30,22 @@ const mapIkon = (ikon: TabellIkon) => {
 };
 
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
-    const { ikon, tittel, items, headerValues } = props;
+    const { ikon, tittel, verdier, kolonner } = props;
     return (
-        <StyledTabell kolonner={headerValues.length + 1}>
+        <StyledTabell kolonner={kolonner.length + 1}>
             {mapIkon(ikon)}
             <Element className="tittel" tag="h3">
                 {tittel}
             </Element>
-            {headerValues.map((headerValue, index) => (
+            {kolonner.map((headerValue, index) => (
                 <Element className={index === 0 ? 'førsteDataKolonne' : ''}>
-                    {headerValue.header}
+                    {headerValue.overskrift}
                 </Element>
             ))}
-            {items.map((item) =>
-                headerValues.map((headerValue, index) => (
+            {verdier.map((item) =>
+                kolonner.map((headerValue, index) => (
                     <Normaltekst className={index === 0 ? 'førsteDataKolonne' : 'kolonne'}>
-                        {headerValue.value(item)}
+                        {headerValue.tekstVerdi(item)}
                     </Normaltekst>
                 ))
             )}
