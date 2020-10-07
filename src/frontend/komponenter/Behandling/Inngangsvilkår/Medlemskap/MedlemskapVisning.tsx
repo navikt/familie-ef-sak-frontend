@@ -20,10 +20,9 @@ import { StyledSkillelinje } from '../../../Felleskomponenter/Visning/StyledSkil
 interface Props {
     medlemskap: IMedlemskap;
     className?: string;
+    erOppfylt: boolean;
 }
-const MedlemskapVisning: FC<Props> = ({ medlemskap, className }) => {
-    const erVurdert = false;
-
+const MedlemskapVisning: FC<Props> = ({ medlemskap, className, erOppfylt }) => {
     const { registerGrunnlag, søknadGrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registerGrunnlag.oppholdstatus.length > 0;
@@ -32,7 +31,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, className }) => {
     return (
         <div className={className}>
             <StyledTabell>
-                {erVurdert ? <GrønnHake /> : <Advarsel />}
+                {erOppfylt ? <GrønnHake /> : <Advarsel />}
                 <Undertittel className="tittel">Medlemskap</Undertittel>
 
                 <RegisterGrunnlag />

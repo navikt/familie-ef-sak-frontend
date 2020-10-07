@@ -4,6 +4,7 @@ import { IMedlemskap, IVurdering } from '../vilkår';
 import MedlemskapVisning from './MedlemskapVisning';
 import styled from 'styled-components';
 import Vurdering from '../../Vurdering/Vurdering';
+import { alleErOppfylte } from '../../Vurdering/VurderingUtil';
 
 const StyledMedlemskap = styled.div`
     display: contents;
@@ -25,12 +26,18 @@ interface Props {
 const Medlemskap: FC<Props> = ({ medlemskap, vurderinger, oppdaterVurdering }) => {
     return (
         <StyledMedlemskap>
-            <MedlemskapVisning className="visning" medlemskap={medlemskap} />
-            <Vurdering
-                className="vurdering"
-                vurdering={vurderinger[0]}
-                oppdaterVurdering={oppdaterVurdering}
+            <MedlemskapVisning
+                className="visning"
+                medlemskap={medlemskap}
+                erOppfylt={alleErOppfylte(vurderinger)}
             />
+            {vurderinger.map((vurdering) => (
+                <Vurdering
+                    className="vurdering"
+                    vurdering={vurdering}
+                    oppdaterVurdering={oppdaterVurdering}
+                />
+            ))}
         </StyledMedlemskap>
     );
 };

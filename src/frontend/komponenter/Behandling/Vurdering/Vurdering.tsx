@@ -6,7 +6,6 @@ import {
     unntakTypeTilTekst,
     VilkårResultat,
     vilkårsResultatTypeTilTekst,
-    VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import { Radio, RadioGruppe, Select, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -14,6 +13,7 @@ import styled from 'styled-components';
 import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import Lenke from 'nav-frontend-lenker';
+import { VurderingConfig } from './VurderingConfig';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -27,23 +27,6 @@ const StyledVurdering = styled.div`
     }
 `;
 
-interface IVilkårConfig {
-    vilkår: string;
-    unntak?: UnntakType[];
-}
-type IVurderingConfig = {
-    [key in VilkårType]: IVilkårConfig;
-};
-const VurderingConfig: IVurderingConfig = {
-    FORUTGÅENDE_MEDLEMSKAP: {
-        vilkår: 'Vilkår for vurdering om utenlandsopphold er oppfylt',
-        unntak: [
-            UnntakType.ARBEID_NORSK_ARBEIDSGIVER,
-            UnntakType.UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER,
-        ],
-    },
-};
-
 interface Props {
     vurdering: IVurdering;
     className?: string;
@@ -56,12 +39,16 @@ interface Props {
  * Valideringer når man klikker på endre-knappen
  */
 const Vurdering: FC<Props> = ({ vurdering, className, oppdaterVurdering }) => {
-    const config = VurderingConfig[vurdering.vilkårType];
     const [vurderingState, setVurderingState] = useState<IVurdering>(vurdering);
     const [lagret, setLagret] = useState<boolean>(
         vurdering.resultat !== VilkårResultat.IKKE_VURDERT
     );
     const [feilet, setFeilet] = useState<string | undefined>(undefined);
+
+    const config = VurderingConfig[vurdering.vilkårType];
+    if (!config) {
+        return <div className={className}>Savner config for {vurdering.vilkårType}</div>;
+    }
     if (lagret) {
         return (
             <StyledVurdering className={className}>
@@ -108,7 +95,7 @@ const Vurdering: FC<Props> = ({ vurdering, className, oppdaterVurdering }) => {
                     onChange={(e) => {
                         setVurderingState({
                             ...vurderingState,
-                            unntak: e.target.value,
+                            unntak: e.target.value as UnntakType,
                         });
                     }}
                 >

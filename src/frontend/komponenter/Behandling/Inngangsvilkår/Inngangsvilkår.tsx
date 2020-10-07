@@ -4,6 +4,8 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import Medlemskap from './Medlemskap/Medlemskap';
 import styled from 'styled-components';
+import { filtrerVurderinger } from '../Vurdering/VurderingUtil';
+import { VilkårDel } from '../Vurdering/VurderingConfig';
 
 const StyledInngangsvilkår = styled.div`
     display: grid;
@@ -80,7 +82,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                 <StyledInngangsvilkår>
                     <Medlemskap
                         medlemskap={inngangsvilkår.data.medlemskap}
-                        vurderinger={inngangsvilkår.data.vurderinger}
+                        vurderinger={filtrerVurderinger(
+                            inngangsvilkår.data.vurderinger,
+                            VilkårDel.MEDLEMSKAP
+                        )}
                         oppdaterVurdering={oppdaterVurdering}
                     />
                     <Medlemskap
