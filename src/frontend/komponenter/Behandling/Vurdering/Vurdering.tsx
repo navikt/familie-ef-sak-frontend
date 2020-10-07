@@ -71,13 +71,13 @@ const Vurdering: FC<Props> = ({ vurdering, className, oppdaterVurdering }) => {
                     <span>Rediger</span>
                 </Lenke>
                 <Normaltekst>{config.vilkår}</Normaltekst>
-                <Element>Unntak</Element>
                 {vurderingState.unntak && (
                     <>
-                        <Normaltekst>{vurderingState.unntak}</Normaltekst>
-                        <Element>Begrunnelse</Element>
+                        <Element>Unntak</Element>
+                        <Normaltekst>{unntakTypeTilTekst[vurderingState.unntak]}</Normaltekst>
                     </>
                 )}
+                <Element>Begrunnelse</Element>
                 <Normaltekst>{vurderingState.begrunnelse}</Normaltekst>
             </StyledVurdering>
         );

@@ -11,7 +11,7 @@ export interface IVurdering {
     behandlingId: string;
     vilkårType: VilkårType;
     begrunnelse: string;
-    unntak: string;
+    unntak: UnntakType;
     endretAv: string;
     endretTid: string;
 }
