@@ -53,7 +53,11 @@ export const oppholdsstatusTypeTilTekst: Record<Oppholdstatus, string> = {
     UKJENT: 'Ukjent',
 };
 
-export type VilkårResultat = 'JA' | 'NEI' | 'IKKE_VURDERT';
+export enum VilkårResultat {
+    JA = 'JA',
+    NEI = 'NEI',
+    IKKE_VURDERT = 'IKKE_VURDERT',
+}
 
 export const vilkårsResultatTypeTilTekst: Record<VilkårResultat, string> = {
     JA: 'Ja',
@@ -62,3 +66,13 @@ export const vilkårsResultatTypeTilTekst: Record<VilkårResultat, string> = {
 };
 
 export type VilkårType = 'FORUTGÅENDE_MEDLEMSKAP' | 'LOVLIG_OPPHOLD';
+
+export enum UnntakType {
+    ARBEID_NORSK_ARBEIDSGIVER = 'ARBEID_NORSK_ARBEIDSGIVER',
+    UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER = 'UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER',
+}
+
+export const unntakTypeTilTekst: Record<UnntakType, string> = {
+    ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
+    UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
+};

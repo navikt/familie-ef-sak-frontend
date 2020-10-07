@@ -3,7 +3,7 @@ import { IMedlemskap, IVurdering } from '../vilkår';
 import { FC } from 'react';
 import MedlemskapVisning from './MedlemskapVisning';
 import styled from 'styled-components';
-import MedlemskapVurdering from './MedlemskapVurdering';
+import Vurdering from '../../Vurdering/Vurdering';
 
 const StyledMedlemskap = styled.div`
     display: contents;
@@ -25,7 +25,7 @@ const Medlemskap: FC<Props> = ({ medlemskap, vurderinger }) => {
     return (
         <StyledMedlemskap>
             <MedlemskapVisning className="visning" medlemskap={medlemskap} />
-            <MedlemskapVurdering className="vurdering" vurderinger={vurderinger} />
+            <Vurdering className="vurdering" vurdering={vurderinger[0]} />
         </StyledMedlemskap>
     );
 };
