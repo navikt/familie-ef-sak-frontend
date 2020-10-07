@@ -5,7 +5,7 @@ import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { SvarType } from '../../../../utils/standardSvar';
 
 interface Props {
-    vurderinger?: IVurdering[];
+    vurderinger: IVurdering[];
     className?: string;
     svarRadioButton?: SvarType;
     onChangeRadioButton?: (valgtSvar: ChangeEvent<HTMLInputElement>) => void;

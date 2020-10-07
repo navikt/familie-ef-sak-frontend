@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IMedlemskap } from '../vilkår';
+import { IMedlemskap, IVurdering } from '../vilkår';
 import { FC } from 'react';
 import MedlemskapVisning from './MedlemskapVisning';
 import styled from 'styled-components';
@@ -18,13 +18,14 @@ const StyledMedlemskap = styled.div`
 
 interface Props {
     medlemskap: IMedlemskap;
+    vurderinger: IVurdering[];
 }
 
-const Medlemskap: FC<Props> = ({ medlemskap }) => {
+const Medlemskap: FC<Props> = ({ medlemskap, vurderinger }) => {
     return (
         <StyledMedlemskap>
             <MedlemskapVisning className="visning" medlemskap={medlemskap} />
-            <MedlemskapVurdering className="vurdering" />
+            <MedlemskapVurdering className="vurdering" vurderinger={vurderinger} />
         </StyledMedlemskap>
     );
 };

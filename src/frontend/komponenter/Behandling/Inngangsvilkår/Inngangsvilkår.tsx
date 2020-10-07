@@ -50,8 +50,14 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <>
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
                 <StyledInngangsvilkår>
-                    <Medlemskap medlemskap={inngangsvilkår.data.medlemskap} />
-                    <Medlemskap medlemskap={inngangsvilkår.data.medlemskap} />
+                    <Medlemskap
+                        medlemskap={inngangsvilkår.data.medlemskap}
+                        vurderinger={inngangsvilkår.data.vurderinger}
+                    />
+                    <Medlemskap
+                        medlemskap={inngangsvilkår.data.medlemskap}
+                        vurderinger={inngangsvilkår.data.vurderinger}
+                    />
                 </StyledInngangsvilkår>
             )}
         </>
