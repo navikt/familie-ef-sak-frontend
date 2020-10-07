@@ -118,7 +118,7 @@ const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
                     });
                 }}
             />
-            {feilet && <Feilmelding>{feilet}</Feilmelding>}
+            {feilet && <Feilmelding>Oppdatering av vilkår feilet: {feilet}</Feilmelding>}
             <Hovedknapp
                 onClick={() => {
                     oppdaterVurdering(vurderingState)
