@@ -27,6 +27,7 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                                 <Route path="/sak/:sakId" component={SakContainer} />
                                 <Route path="/sak" component={SakListeContainer} />
                                 <Route path="/oppgavebenk" component={OppgaveBenk} />
+                                <Route path="/journalfor/:journalpostId" component={OppgaveBenk} />
                                 <Redirect to="/sak" />
                             </Switch>
                         </SakProvider>

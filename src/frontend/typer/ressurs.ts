@@ -10,14 +10,15 @@ export type RessursSuksess<T> = {
     data: T;
     status: RessursStatus.SUKSESS;
 };
+export type RessursLaster = {
+    status: RessursStatus.HENTER;
+};
 
 export type Ressurs<T> =
     | {
           status: RessursStatus.IKKE_HENTET;
       }
-    | {
-          status: RessursStatus.HENTER;
-      }
+    | RessursLaster
     | RessursSuksess<T>
     | {
           melding: string;
