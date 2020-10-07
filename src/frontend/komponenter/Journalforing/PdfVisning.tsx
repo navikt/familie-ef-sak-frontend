@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-// import { Document, Page, pdfjs } from 'react-pdf';
 import Paginering from '../Paginering/Paginering';
-// @ts-ignore
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { Ressurs, RessursStatus } from '../../typer/ressurs';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import styled from 'styled-components';
 
 interface PdfVisningProps {
     pdfFilInnhold: Ressurs<string>;
 }
+
+const MittStilltDiv = styled.div`
+    width: 50%;
+    margin: 0 auto;
+`;
 
 const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
     const [numPages, setNumPages] = useState<number>(0);
@@ -30,21 +34,9 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
             return <NavFrontendSpinner />;
         case RessursStatus.SUKSESS:
             return (
-                <div>
-                    <p>
-                        <Paginering
-                            sideStorrelse={1}
-                            antallTotalt={numPages}
-                            valgtSide={pageNumber}
-                            settValgtSide={setPageNumber}
-                        />
-                    </p>
+                <>
                     <Document
-                        file={
-                            pdfFilInnhold.status === RessursStatus.SUKSESS
-                                ? `data:application/pdf;base64,${pdfFilInnhold.data}`
-                                : undefined
-                        }
+                        file={`data:application/pdf;base64,${pdfFilInnhold.data}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         error={
                             <AlertStripeFeil children={'Ukjent feil ved henting av dokument.'} />
@@ -52,17 +44,25 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         noData={<AlertStripeFeil children={'Dokumentet er tomt.'} />}
                         loading={<NavFrontendSpinner />}
                     >
+                        <MittStilltDiv>
+                            <Paginering
+                                sideStorrelse={1}
+                                antallTotalt={numPages}
+                                valgtSide={pageNumber}
+                                settValgtSide={setPageNumber}
+                            />
+                        </MittStilltDiv>
                         <Page pageNumber={pageNumber} />
                     </Document>
-                    <p>
+                    <MittStilltDiv>
                         <Paginering
                             sideStorrelse={1}
                             antallTotalt={numPages}
                             valgtSide={pageNumber}
                             settValgtSide={setPageNumber}
                         />
-                    </p>
-                </div>
+                    </MittStilltDiv>
+                </>
             );
     }
 };

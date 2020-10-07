@@ -39,13 +39,15 @@ export interface IJournalpost {
     behandlingstema?: Behandlingstema;
     tittel: string;
     sak?: string;
-    bruker: {
-        id: string;
-        type: BrukerId;
-    };
+    bruker: BrukerInfo;
     journalforendeEnhet?: string;
     kanal?: string;
     dokumenter: DokumentInfo[];
     relevanteDatoer: RelevantDato[];
     datoMottatt: string;
+}
+
+export interface BrukerInfo {
+    id: string;
+    type: BrukerId;
 }
