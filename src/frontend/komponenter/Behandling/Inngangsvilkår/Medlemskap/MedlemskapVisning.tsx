@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IMedlemskap } from '../vilkår';
 import { FC } from 'react';
+import { IMedlemskap } from '../vilkår';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import GrønnHake from '../../../../ikoner/GrønnHake';
 import Advarsel from '../../../../ikoner/Advarsel';
@@ -19,17 +19,17 @@ import { StyledSkillelinje } from '../../../Felleskomponenter/Visning/StyledSkil
 
 interface Props {
     medlemskap: IMedlemskap;
-    className?: string;
     erOppfylt: boolean;
 }
-const MedlemskapVisning: FC<Props> = ({ medlemskap, className, erOppfylt }) => {
+
+const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
     const { registerGrunnlag, søknadGrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registerGrunnlag.oppholdstatus.length > 0;
     const finnesUtenlandsperioder = søknadGrunnlag.utenlandsopphold.length > 0;
 
     return (
-        <div className={className}>
+        <>
             <StyledTabell>
                 {erOppfylt ? <GrønnHake /> : <Advarsel />}
                 <Undertittel className="tittel">Medlemskap</Undertittel>
@@ -63,7 +63,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, className, erOppfylt }) => {
                 </Lesmerpanel>
             </StyledLesmerpanel>
             <StyledSkillelinje />
-        </div>
+        </>
     );
 };
 export default MedlemskapVisning;

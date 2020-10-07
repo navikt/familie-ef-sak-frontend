@@ -29,7 +29,6 @@ const StyledVurdering = styled.div`
 
 interface Props {
     vurdering: IVurdering;
-    className?: string;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<void>;
 }
 
@@ -38,7 +37,7 @@ interface Props {
  * Styling av StyledVurdering
  * Valideringer når man klikker på endre-knappen
  */
-const Vurdering: FC<Props> = ({ vurdering, className, oppdaterVurdering }) => {
+const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
     const [vurderingState, setVurderingState] = useState<IVurdering>(vurdering);
     const [lagret, setLagret] = useState<boolean>(
         vurdering.resultat !== VilkårResultat.IKKE_VURDERT
@@ -47,11 +46,11 @@ const Vurdering: FC<Props> = ({ vurdering, className, oppdaterVurdering }) => {
 
     const config = VurderingConfig[vurdering.vilkårType];
     if (!config) {
-        return <div className={className}>Savner config for {vurdering.vilkårType}</div>;
+        return <div>Savner config for {vurdering.vilkårType}</div>;
     }
     if (lagret) {
         return (
-            <StyledVurdering className={className}>
+            <StyledVurdering>
                 <Undertittel>Manuelt behandlet</Undertittel>
                 <Lenke href="#" onClick={() => setLagret(false)}>
                     <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
@@ -70,7 +69,7 @@ const Vurdering: FC<Props> = ({ vurdering, className, oppdaterVurdering }) => {
         );
     }
     return (
-        <StyledEndreVurdering className={className}>
+        <StyledEndreVurdering>
             <RadioGruppe legend={config.vilkår}>
                 {[VilkårResultat.JA, VilkårResultat.NEI].map((vilkårResultat) => (
                     <Radio

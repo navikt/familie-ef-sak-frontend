@@ -2,10 +2,10 @@ import React, { FC, useState } from 'react';
 import { IInngangsvilkår, IVurdering } from './vilkår';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
-import Medlemskap from './Medlemskap/Medlemskap';
 import styled from 'styled-components';
-import { filtrerVurderinger } from '../Vurdering/VurderingUtil';
 import { VilkårDel } from '../Vurdering/VurderingConfig';
+import VisningOgVurdering from '../Vurdering/VisningOgVurdering';
+import MedlemskapVisning from './Medlemskap/MedlemskapVisning';
 
 const StyledInngangsvilkår = styled.div`
     display: grid;
@@ -75,23 +75,31 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             }
         }
     }, [behandlingId]);
-
     return (
         <>
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
                 <StyledInngangsvilkår>
-                    <Medlemskap
-                        medlemskap={inngangsvilkår.data.medlemskap}
-                        vurderinger={filtrerVurderinger(
-                            inngangsvilkår.data.vurderinger,
-                            VilkårDel.MEDLEMSKAP
-                        )}
-                        oppdaterVurdering={oppdaterVurdering}
-                    />
-                    <Medlemskap
-                        medlemskap={inngangsvilkår.data.medlemskap}
+                    <VisningOgVurdering
+                        vilkårDel={VilkårDel.MEDLEMSKAP}
                         vurderinger={inngangsvilkår.data.vurderinger}
                         oppdaterVurdering={oppdaterVurdering}
+                        visning={(erOppfylt) => (
+                            <MedlemskapVisning
+                                medlemskap={inngangsvilkår.data.medlemskap}
+                                erOppfylt={erOppfylt}
+                            />
+                        )}
+                    />
+                    <VisningOgVurdering
+                        vilkårDel={VilkårDel.MEDLEMSKAP}
+                        vurderinger={inngangsvilkår.data.vurderinger}
+                        oppdaterVurdering={oppdaterVurdering}
+                        visning={(erOppfylt) => (
+                            <MedlemskapVisning
+                                medlemskap={inngangsvilkår.data.medlemskap}
+                                erOppfylt={erOppfylt}
+                            />
+                        )}
                     />
                 </StyledInngangsvilkår>
             )}
