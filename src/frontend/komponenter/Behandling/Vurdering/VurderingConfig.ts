@@ -1,5 +1,9 @@
 import { UnntakType, VilkårType } from '../Inngangsvilkår/vilkår';
 
+/**
+ * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
+ * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk
+ */
 export enum VilkårDel {
     MEDLEMSKAP = 'MEDLEMSKAP',
 }
