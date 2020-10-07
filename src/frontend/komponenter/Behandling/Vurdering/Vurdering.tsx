@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChangeEvent, FC, useState } from 'react';
+import { FC, useState } from 'react';
 import {
     IVurdering,
     UnntakType,
@@ -11,7 +11,7 @@ import {
 import { Radio, RadioGruppe, Select, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import Lenke from 'nav-frontend-lenker';
 
@@ -27,12 +27,12 @@ const StyledVurdering = styled.div`
     }
 `;
 
-type Config = {
+interface IVilkårConfig {
     vilkår: string;
     unntak?: UnntakType[];
-};
+}
 type IVurderingConfig = {
-    [key in VilkårType]: Config;
+    [key in VilkårType]: IVilkårConfig;
 };
 const VurderingConfig: IVurderingConfig = {
     FORUTGÅENDE_MEDLEMSKAP: {
@@ -47,21 +47,21 @@ const VurderingConfig: IVurderingConfig = {
 interface Props {
     vurdering: IVurdering;
     className?: string;
-    onChangeRadioButton?: (valgtSvar: ChangeEvent<HTMLInputElement>) => void;
+    oppdaterVurdering: (vurdering: IVurdering) => Promise<void>;
 }
 
 /**
  * Hva skal skje hvis Resultat == Nei? Då trenger man vel ikke fortsette med denne behandlingen?
  * Styling av StyledVurdering
  * Valideringer når man klikker på endre-knappen
- * Propagere opp endringer fra endre-knappen
  */
-const Vurdering: FC<Props> = ({ vurdering, className }) => {
+const Vurdering: FC<Props> = ({ vurdering, className, oppdaterVurdering }) => {
     const config = VurderingConfig[vurdering.vilkårType];
     const [vurderingState, setVurderingState] = useState<IVurdering>(vurdering);
     const [lagret, setLagret] = useState<boolean>(
         vurdering.resultat !== VilkårResultat.IKKE_VURDERT
     );
+    const [feilet, setFeilet] = useState<string | undefined>(undefined);
     if (lagret) {
         return (
             <StyledVurdering className={className}>
@@ -132,9 +132,17 @@ const Vurdering: FC<Props> = ({ vurdering, className }) => {
                     });
                 }}
             />
+            {feilet && <Feilmelding>{feilet}</Feilmelding>}
             <Hovedknapp
                 onClick={() => {
-                    setLagret(true);
+                    oppdaterVurdering(vurderingState)
+                        .then(() => {
+                            setFeilet(undefined);
+                            setLagret(true);
+                        })
+                        .catch((e: Error) => {
+                            setFeilet(e.message);
+                        });
                 }}
             >
                 Lagre

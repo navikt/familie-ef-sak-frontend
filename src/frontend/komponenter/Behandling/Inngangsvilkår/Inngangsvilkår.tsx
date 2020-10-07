@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
-import { IInngangsvilkår } from './vilkår';
-import { byggFeiletRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { AxiosError } from 'axios';
+import { IInngangsvilkår, IVurdering } from './vilkår';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import Medlemskap from './Medlemskap/Medlemskap';
 import styled from 'styled-components';
@@ -27,15 +26,44 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         axiosRequest<IInngangsvilkår, void>({
             method: 'GET',
             url: `/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar`,
-        })
-            .then((hentetInngangsvilkår: Ressurs<IInngangsvilkår>) => {
-                settInngangsvilkår(hentetInngangsvilkår);
-            })
-            .catch((error: AxiosError) => {
-                settInngangsvilkår(
-                    byggFeiletRessurs('Ukjent ved innhenting av inngangsvilkår', error)
-                );
-            });
+        }).then((hentetInngangsvilkår: Ressurs<IInngangsvilkår>) => {
+            settInngangsvilkår(hentetInngangsvilkår);
+        });
+    };
+
+    const oppdaterVurdering = (vurdering: IVurdering) => {
+        return axiosRequest<string, IVurdering>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/vurdering/inngangsvilkar`,
+            data: vurdering,
+        }).then((respons: Ressurs<string>) => {
+            if (
+                inngangsvilkår.status === RessursStatus.SUKSESS &&
+                respons.status === RessursStatus.SUKSESS
+            ) {
+                const oppdaterVurderinger = () => {
+                    return inngangsvilkår.data.vurderinger.map((tidligereVurdering) => {
+                        if (tidligereVurdering.id === vurdering.id) {
+                            return vurdering;
+                        } else {
+                            return tidligereVurdering;
+                        }
+                    });
+                };
+                settInngangsvilkår({
+                    ...inngangsvilkår,
+                    data: {
+                        ...inngangsvilkår.data,
+                        vurderinger: oppdaterVurderinger(),
+                    },
+                });
+            } else if (
+                respons.status === RessursStatus.IKKE_TILGANG ||
+                respons.status === RessursStatus.FEILET
+            ) {
+                throw new Error(respons.frontendFeilmelding);
+            } else throw new Error(`Response fra servern: ${respons.status}`);
+        });
     };
 
     React.useEffect(() => {
@@ -53,10 +81,12 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     <Medlemskap
                         medlemskap={inngangsvilkår.data.medlemskap}
                         vurderinger={inngangsvilkår.data.vurderinger}
+                        oppdaterVurdering={oppdaterVurdering}
                     />
                     <Medlemskap
                         medlemskap={inngangsvilkår.data.medlemskap}
                         vurderinger={inngangsvilkår.data.vurderinger}
+                        oppdaterVurdering={oppdaterVurdering}
                     />
                 </StyledInngangsvilkår>
             )}
