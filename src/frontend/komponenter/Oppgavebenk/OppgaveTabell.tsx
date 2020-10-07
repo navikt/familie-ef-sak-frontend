@@ -7,7 +7,7 @@ import { OppgaveResurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
-import Paginering from './Paginering';
+import Paginering from '../Paginering/Paginering';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/useSorteringState';
 import { usePagineringState } from '../../hooks/usePaginerState';

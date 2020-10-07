@@ -34,6 +34,16 @@ app.post('/familie-ef-sak/api/personopplysninger', (req, res) => {
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
+app.get('/familie-ef-sak/api/journalpost/:id', (req, res) => {
+    const filnavn = `journalforing.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
+
+app.get('/familie-ef-sak/api/journalpost/:id/dokument/:dokumentInfoId', (req, res) => {
+    const filnavn = `journalforing-dokument.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
+
 app.get('/familie-ef-sak/api/sak/:id', (req, res) => {
     const filnavn = `sak.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);

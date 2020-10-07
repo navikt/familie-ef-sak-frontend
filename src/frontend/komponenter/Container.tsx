@@ -8,6 +8,7 @@ import { SakProvider } from '../context/SakContext';
 import SakContainer from './Sak/SakContainer';
 import SakListeContainer from './Sak/SakListeContainer';
 import { OppgaveBenk } from '../sider/Oppgavebenk';
+import { Journalforing } from '../sider/Journalforing';
 
 interface IProps {
     innloggetSaksbehandler?: ISaksbehandler;
@@ -27,7 +28,10 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                                 <Route path="/sak/:sakId" component={SakContainer} />
                                 <Route path="/sak" component={SakListeContainer} />
                                 <Route path="/oppgavebenk" component={OppgaveBenk} />
-                                <Route path="/journalfor/:journalpostId" component={OppgaveBenk} />
+                                <Route
+                                    path="/journalfor/:journalpostId"
+                                    component={Journalforing}
+                                />
                                 <Redirect to="/sak" />
                             </Switch>
                         </SakProvider>
