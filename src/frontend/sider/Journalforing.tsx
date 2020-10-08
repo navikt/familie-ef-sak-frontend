@@ -25,16 +25,6 @@ const Kolonner = styled.div`
     flex-wrap: wrap;
 `;
 
-const VenstreKolonne = styled.div`
-    width: 50%;
-    float: left;
-`;
-
-const HoyreKolonne = styled.div`
-    width: 50%;
-    float: right;
-`;
-
 export const Journalforing: React.FC = () => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const { journalpostId } = useParams<{ journalpostId: string }>();

@@ -35,6 +35,14 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
         case RessursStatus.SUKSESS:
             return (
                 <>
+                    <MittStilltDiv>
+                        <Paginering
+                            sideStorrelse={1}
+                            antallTotalt={numPages}
+                            valgtSide={pageNumber}
+                            settValgtSide={setPageNumber}
+                        />
+                    </MittStilltDiv>
                     <Document
                         file={`data:application/pdf;base64,${pdfFilInnhold.data}`}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -44,14 +52,6 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         noData={<AlertStripeFeil children={'Dokumentet er tomt.'} />}
                         loading={<NavFrontendSpinner />}
                     >
-                        <MittStilltDiv>
-                            <Paginering
-                                sideStorrelse={1}
-                                antallTotalt={numPages}
-                                valgtSide={pageNumber}
-                                settValgtSide={setPageNumber}
-                            />
-                        </MittStilltDiv>
                         <Page pageNumber={pageNumber} />
                     </Document>
                     <MittStilltDiv>
