@@ -63,12 +63,8 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                         return prevInngangsvilkår;
                     }
                 });
-            } else if (
-                respons.status === RessursStatus.IKKE_TILGANG ||
-                respons.status === RessursStatus.FEILET
-            ) {
-                throw new Error(respons.frontendFeilmelding);
-            } else throw new Error(`Response fra servern: ${respons.status}`);
+            }
+            return respons;
         });
     };
 

@@ -6,6 +6,7 @@ import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { navLysGra } from '@navikt/familie-header';
+import { Ressurs } from '@navikt/familie-typer';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
@@ -30,7 +31,7 @@ const StyledVurderinger = styled.div`
 interface Props {
     vilkårDel: VilkårDel;
     vurderinger: IVurdering[];
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<void>;
+    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     visning: (erOppfylt: boolean) => ReactChild;
 }
 

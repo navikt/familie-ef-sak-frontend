@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC, useState } from 'react';
 import { Radio, RadioGruppe, Select, Textarea } from 'nav-frontend-skjema';
 import {
     IVurdering,
@@ -9,10 +10,10 @@ import {
 } from '../Inngangsvilkår/vilkår';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { FC, useState } from 'react';
 import { IVilkårConfig } from './VurderingConfig';
 import styled from 'styled-components';
 import { erGyldigVurdering } from './VurderingUtil';
+import { Ressurs, RessursStatus } from '@navikt/familie-typer';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -23,7 +24,7 @@ const StyledEndreVurdering = styled.div`
 interface Props {
     config: IVilkårConfig;
     data: IVurdering;
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<void>;
+    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
 const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedigeringsmodus }) => {
@@ -91,16 +92,23 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                 onClick={() => {
                     if (erGyldigVurdering(vurdering)) {
                         settOppdatererVurdering(true);
-                        oppdaterVurdering(vurdering)
-                            .then(() => {
+                        oppdaterVurdering(vurdering).then((ressurs) => {
+                            if (ressurs.status === RessursStatus.SUKSESS) {
                                 settOppdatererVurdering(false);
                                 setFeilmelding(undefined);
                                 settRedigeringsmodus(false);
-                            })
-                            .catch((e: Error) => {
+                            } else {
                                 settOppdatererVurdering(false);
-                                setFeilmelding(e.message);
-                            });
+                                if (
+                                    ressurs.status === RessursStatus.FEILET ||
+                                    ressurs.status === RessursStatus.IKKE_TILGANG
+                                ) {
+                                    setFeilmelding(ressurs.frontendFeilmelding);
+                                } else {
+                                    setFeilmelding(`Ressurs har status ${ressurs.status}`);
+                                }
+                            }
+                        });
                     } else {
                         setFeilmelding('Du må fylle i alle verdier');
                     }

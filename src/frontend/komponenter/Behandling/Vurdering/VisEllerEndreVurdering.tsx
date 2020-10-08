@@ -4,10 +4,11 @@ import { IVurdering, VilkårResultat } from '../Inngangsvilkår/vilkår';
 import { VurderingConfig } from './VurderingConfig';
 import VisVurdering from './VisVurdering';
 import EndreVurdering from './EndreVurdering';
+import { Ressurs } from '@navikt/familie-typer';
 
 interface Props {
     vurdering: IVurdering;
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<void>;
+    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
 }
 
 const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
