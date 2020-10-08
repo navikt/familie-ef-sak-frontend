@@ -10,6 +10,8 @@ interface DataFetcherProps<T, D> {
     children: (data: T) => React.ReactElement;
 }
 
+//OBS ATT CONFIGEN MÅSTE VARA MEMOIZED!
+
 function DataFetcher<T, D>(props: DataFetcherProps<T, D>) {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const [response, setResponse] = useState<Ressurs<T>>({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import { IJournalpost } from '../komponenter/Journalforing/journalforing';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
@@ -32,10 +32,13 @@ export const Journalforing: React.FC = () => {
         status: RessursStatus.IKKE_HENTET,
     });
 
-    const config: AxiosRequestConfig = {
-        method: 'GET',
-        url: `/familie-ef-sak/api/journalpost/${journalpostId}`,
-    };
+    const config: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/journalpost/${journalpostId}`,
+        }),
+        [journalpostId]
+    );
 
     const hentDokument = (dokumentInfoId: string) => {
         axiosRequest<string, null>(

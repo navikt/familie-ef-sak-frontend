@@ -20,9 +20,9 @@ function CustomSelect<U extends string>(props: Props<U>): ReactElement {
             }}
         >
             <option value="">Alle</option>
-            {Object.entries(props.options).map(([val, tekst]) => (
+            {Object.entries<string>(props.options).map<ReactElement>(([val, tekst]) => (
                 <option key={val} value={val}>
-                    {tekst as string}
+                    {tekst}
                 </option>
             ))}
         </Select>
