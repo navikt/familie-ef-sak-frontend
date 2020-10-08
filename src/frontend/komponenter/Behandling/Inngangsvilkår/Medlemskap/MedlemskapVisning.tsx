@@ -15,7 +15,6 @@ import Statsborgerskap from './Statsborgerskap';
 import Oppholdsstatus from './Oppholdsstatus';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import { StyledSkillelinje } from '../../../Felleskomponenter/Visning/StyledSkillelinje';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -66,7 +65,6 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
                     )}
                 </Lesmerpanel>
             </StyledLesmerpanel>
-            <StyledSkillelinje />
         </>
     );
 };

@@ -5,16 +5,20 @@ import { IVurdering } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
+import { navLysGra } from '@navikt/familie-header';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
+`;
 
-    > div:first-child {
-        grid-column: 1/2;
-    }
-    > div:not(:first-child) {
-        grid-column: 2/3;
-    }
+const StyledVisning = styled.div`
+    min-width: 600px;
+`;
+
+const StyledSkillelinje = styled.div`
+    height: 2px;
+    border: solid 1px ${navLysGra};
+    grid-column: 1/3;
 `;
 
 const StyledVurderinger = styled.div`
@@ -35,7 +39,7 @@ const Vurdering: FC<Props> = ({ vilkårDel, vurderinger, oppdaterVurdering, visn
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
     return (
         <StyledVilkårOgVurdering>
-            <div>{visning(erOppfylte)}</div>
+            <StyledVisning>{visning(erOppfylte)}</StyledVisning>
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
@@ -44,6 +48,7 @@ const Vurdering: FC<Props> = ({ vilkårDel, vurderinger, oppdaterVurdering, visn
                     />
                 ))}
             </StyledVurderinger>
+            <StyledSkillelinje />
         </StyledVilkårOgVurdering>
     );
 };

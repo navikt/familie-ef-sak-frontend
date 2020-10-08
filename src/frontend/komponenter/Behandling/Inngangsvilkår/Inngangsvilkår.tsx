@@ -8,6 +8,7 @@ import { VilkårDel } from '../Vurdering/VurderingConfig';
 import MedlemskapVisning from './Medlemskap/MedlemskapVisning';
 
 const StyledInngangsvilkår = styled.div`
+    margin: 2rem;
     display: grid;
     grid-template-columns: repeat(2, max-content);
     grid-auto-rows: auto;
