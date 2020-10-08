@@ -22,6 +22,10 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
     ) {
         return false;
     } else if (vurdering.resultat === VilkårResultat.JA) {
-        return !!vurdering.unntak;
+        if (VurderingConfig[vurdering.vilkårType].unntak) {
+            return !!vurdering.unntak;
+        } else {
+            return true;
+        }
     } else return vurdering.resultat === VilkårResultat.NEI;
 };
