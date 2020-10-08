@@ -13,3 +13,15 @@ export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: Vilkå
         }
         return config.vilkårDel === vilkårDel;
     });
+
+export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
+    if (
+        vurdering.resultat === VilkårResultat.IKKE_VURDERT ||
+        !vurdering.begrunnelse ||
+        vurdering.begrunnelse.trim().length === 0
+    ) {
+        return false;
+    } else if (vurdering.resultat === VilkårResultat.JA) {
+        return !!vurdering.unntak;
+    } else return vurdering.resultat === VilkårResultat.NEI;
+};

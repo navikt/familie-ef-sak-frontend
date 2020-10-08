@@ -42,7 +42,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) =>
         <StyledVurdering>
             <BrukerMedBlyantIkon />
             <Undertittel>Manuelt behandlet</Undertittel>
-            <StyledKnapp className={'lenke'} onClick={() => settRedigeringsmodus(false)}>
+            <StyledKnapp className={'lenke'} onClick={() => settRedigeringsmodus(true)}>
                 <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
                 <span>Rediger</span>
             </StyledKnapp>

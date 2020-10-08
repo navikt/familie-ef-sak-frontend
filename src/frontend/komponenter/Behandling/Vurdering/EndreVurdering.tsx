@@ -12,6 +12,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { FC, useState } from 'react';
 import { IVilkårConfig } from './VurderingConfig';
 import styled from 'styled-components';
+import { erGyldigVurdering } from './VurderingUtil';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -26,21 +27,9 @@ interface Props {
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
 const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedigeringsmodus }) => {
-    const [feilet, setFeilet] = useState<string | undefined>(undefined);
+    const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
     const [vurdering, settVurdering] = useState<IVurdering>(data);
-
-    const erGyldigVurdering = (vurdering: IVurdering): boolean => {
-        if (
-            vurdering.resultat === VilkårResultat.IKKE_VURDERT ||
-            !vurdering.begrunnelse ||
-            vurdering.begrunnelse.trim().length === 0
-        ) {
-            return false;
-        } else if (vurdering.resultat === VilkårResultat.JA) {
-            return !!vurdering.unntak;
-        } else return vurdering.resultat === VilkårResultat.NEI;
-    };
 
     return (
         <StyledEndreVurdering>
@@ -51,14 +40,14 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                         label={vilkårsResultatTypeTilTekst[vilkårResultat]}
                         name={vurdering.vilkårType}
                         onChange={() => {
-                            const skalResetteUnntak = () =>
+                            const oppdaterUnntak = () =>
                                 vilkårResultat === VilkårResultat.NEI
                                     ? undefined
                                     : vurdering.unntak;
                             settVurdering({
                                 ...vurdering,
                                 resultat: vilkårResultat,
-                                unntak: skalResetteUnntak(),
+                                unntak: oppdaterUnntak(),
                             });
                         }}
                         value={vilkårResultat}
@@ -97,7 +86,7 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     });
                 }}
             />
-            {feilet && <Feilmelding>Oppdatering av vilkår feilet: {feilet}</Feilmelding>}
+            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             <Hovedknapp
                 onClick={() => {
                     if (erGyldigVurdering(vurdering)) {
@@ -105,15 +94,15 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                         oppdaterVurdering(vurdering)
                             .then(() => {
                                 settOppdatererVurdering(false);
-                                setFeilet(undefined);
-                                settRedigeringsmodus(true);
+                                setFeilmelding(undefined);
+                                settRedigeringsmodus(false);
                             })
                             .catch((e: Error) => {
                                 settOppdatererVurdering(false);
-                                setFeilet(e.message);
+                                setFeilmelding(e.message);
                             });
                     } else {
-                        setFeilet('Du må fylle i alle verdier');
+                        setFeilmelding('Du må fylle i alle verdier');
                     }
                 }}
                 disabled={oppdatererVurdering}

@@ -12,7 +12,7 @@ interface Props {
 
 const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
-        vurdering.resultat !== VilkårResultat.IKKE_VURDERT
+        vurdering.resultat === VilkårResultat.IKKE_VURDERT
     );
 
     const config = VurderingConfig[vurdering.vilkårType];
@@ -20,16 +20,16 @@ const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => 
         return <div>Savner config for {vurdering.vilkårType}</div>;
     }
     return redigeringsmodus ? (
-        <VisVurdering
-            config={config}
-            vurdering={vurdering}
-            settRedigeringsmodus={settRedigeringsmodus}
-        />
-    ) : (
         <EndreVurdering
             config={config}
             data={vurdering}
             oppdaterVurdering={oppdaterVurdering}
+            settRedigeringsmodus={settRedigeringsmodus}
+        />
+    ) : (
+        <VisVurdering
+            config={config}
+            vurdering={vurdering}
             settRedigeringsmodus={settRedigeringsmodus}
         />
     );

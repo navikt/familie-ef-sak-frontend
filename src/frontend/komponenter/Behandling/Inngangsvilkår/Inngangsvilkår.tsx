@@ -44,21 +44,24 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                 inngangsvilkår.status === RessursStatus.SUKSESS &&
                 respons.status === RessursStatus.SUKSESS
             ) {
-                const oppdaterVurderinger = () => {
-                    return inngangsvilkår.data.vurderinger.map((tidligereVurdering) => {
-                        if (tidligereVurdering.id === vurdering.id) {
-                            return vurdering;
-                        } else {
-                            return tidligereVurdering;
-                        }
-                    });
-                };
-                settInngangsvilkår({
-                    ...inngangsvilkår,
-                    data: {
-                        ...inngangsvilkår.data,
-                        vurderinger: oppdaterVurderinger(),
-                    },
+                settInngangsvilkår((prevInngangsvilkår) => {
+                    if (prevInngangsvilkår.status === RessursStatus.SUKSESS) {
+                        return {
+                            ...prevInngangsvilkår,
+                            data: {
+                                ...prevInngangsvilkår.data,
+                                vurderinger: prevInngangsvilkår.data.vurderinger.map(
+                                    (tidligereVurdering) => {
+                                        return tidligereVurdering.id === vurdering.id
+                                            ? vurdering
+                                            : tidligereVurdering;
+                                    }
+                                ),
+                            },
+                        };
+                    } else {
+                        return prevInngangsvilkår;
+                    }
                 });
             } else if (
                 respons.status === RessursStatus.IKKE_TILGANG ||
