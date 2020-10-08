@@ -3,7 +3,7 @@ import { IInngangsvilkår, IVurdering } from './vilkår';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
-import VisningOgVurdering from '../Vurdering/VisningOgVurdering';
+import Vurdering from '../Vurdering/Vurdering';
 import { VilkårDel } from '../Vurdering/VurderingConfig';
 import MedlemskapVisning from './Medlemskap/MedlemskapVisning';
 
@@ -79,7 +79,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <>
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
                 <StyledInngangsvilkår>
-                    <VisningOgVurdering
+                    <Vurdering
                         vilkårDel={VilkårDel.MEDLEMSKAP}
                         vurderinger={inngangsvilkår.data.vurderinger}
                         oppdaterVurdering={oppdaterVurdering}
@@ -90,7 +90,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             />
                         )}
                     />
-                    <VisningOgVurdering
+                    <Vurdering
                         vilkårDel={VilkårDel.MEDLEMSKAP}
                         vurderinger={inngangsvilkår.data.vurderinger}
                         oppdaterVurdering={oppdaterVurdering}

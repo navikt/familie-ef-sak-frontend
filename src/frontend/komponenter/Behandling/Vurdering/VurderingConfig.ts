@@ -8,7 +8,7 @@ export enum VilkårDel {
     MEDLEMSKAP = 'MEDLEMSKAP',
 }
 
-interface IVilkårConfig {
+export interface IVilkårConfig {
     vilkårDel: VilkårDel;
     vilkår: string;
     unntak?: UnntakType[];
