@@ -12,10 +12,20 @@ import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
 import { useApp } from '../context/AppContext';
 
 const SideLayout = styled.div`
-    margin: 0 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
 `;
 
-const VensteKolonne = styled.div`
+const Kolonner = styled.div`
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+`;
+
+const VenstreKolonne = styled.div`
     width: 50%;
     float: left;
 `;
@@ -54,14 +64,16 @@ export const Journalforing: React.FC = () => {
         <DataFetcher config={config}>
             {(data: IJournalpost) => (
                 <SideLayout>
-                    <Sidetittel>Manuell Journalføring</Sidetittel>
-                    <VensteKolonne>
-                        <Brukerinfo bruker={data.bruker} />
-                        <DokumentVisning journalPost={data} hentDokument={hentDokument} />
-                    </VensteKolonne>
-                    <HoyreKolonne>
-                        <PdfVisning pdfFilInnhold={valgtDokument} />
-                    </HoyreKolonne>
+                    <Sidetittel>Registrere journalpost</Sidetittel>
+                    <Kolonner>
+                        <div>
+                            <Brukerinfo bruker={data.bruker} />
+                            <DokumentVisning journalPost={data} hentDokument={hentDokument} />
+                        </div>
+                        <div>
+                            <PdfVisning pdfFilInnhold={valgtDokument} />
+                        </div>
+                    </Kolonner>
                 </SideLayout>
             )}
         </DataFetcher>

@@ -1,5 +1,7 @@
 import { Knapp } from 'nav-frontend-knapper';
 import React, { useState } from 'react';
+import styled from 'styled-components';
+import CreatableSelect from 'react-select/creatable';
 
 /*
 'Uttalelse tilbakekreving',
@@ -37,6 +39,10 @@ import React, { useState } from 'react';
 
 */
 
+const StyledKnapper = styled.div``;
+
+const options = [{ value: 'label' }, { yo: 'halla' }];
+
 const EndreDokumentTittel: React.FC<{
     endreDokumentNavn: (nyttDokumentNavn: string) => void;
     avbrytEndring: () => void;
@@ -44,27 +50,29 @@ const EndreDokumentTittel: React.FC<{
     const [nyttDokumentNavn, settNyttDokumentNavn] = useState('');
 
     return (
-        <div>
-            <input type={'text'} onChange={(e) => settNyttDokumentNavn(e.target.value)} />
-            <Knapp
-                kompakt
-                onClick={() => {
-                    props.endreDokumentNavn(nyttDokumentNavn);
-                    settNyttDokumentNavn('');
-                }}
-            >
-                Lagre
-            </Knapp>
-            <Knapp
-                kompakt
-                onClick={() => {
-                    props.avbrytEndring();
-                    settNyttDokumentNavn('');
-                }}
-            >
-                Avbryt
-            </Knapp>
-        </div>
+        <>
+            <CreatableSelect options={options} />
+            <StyledKnapper>
+                <Knapp
+                    kompakt
+                    onClick={() => {
+                        props.endreDokumentNavn(nyttDokumentNavn);
+                        settNyttDokumentNavn('');
+                    }}
+                >
+                    Lagre
+                </Knapp>
+                <Knapp
+                    kompakt
+                    onClick={() => {
+                        props.avbrytEndring();
+                        settNyttDokumentNavn('');
+                    }}
+                >
+                    Avbryt
+                </Knapp>
+            </StyledKnapper>
+        </>
     );
 };
 
