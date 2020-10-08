@@ -37,8 +37,8 @@ const VisningOgVurdering: FC<Props> = ({ vilkårDel, vurderinger, oppdaterVurder
         <StyledVilkårOgVurdering>
             <div>{visning(erOppfylte)}</div>
             <StyledVurderinger>
-                {vurderinger.map((vurdering) => (
-                    <Vurdering vurdering={vurdering} oppdaterVurdering={oppdaterVurdering} />
+                {filtrerteVurderinger.map((vurdering) => (
+                    <Vurdering data={vurdering} oppdaterVurdering={oppdaterVurdering} />
                 ))}
             </StyledVurderinger>
         </StyledVilkårOgVurdering>

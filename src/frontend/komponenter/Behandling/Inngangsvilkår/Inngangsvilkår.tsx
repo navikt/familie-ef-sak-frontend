@@ -3,8 +3,8 @@ import { IInngangsvilkår, IVurdering } from './vilkår';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
-import { VilkårDel } from '../Vurdering/VurderingConfig';
 import VisningOgVurdering from '../Vurdering/VisningOgVurdering';
+import { VilkårDel } from '../Vurdering/VurderingConfig';
 import MedlemskapVisning from './Medlemskap/MedlemskapVisning';
 
 const StyledInngangsvilkår = styled.div`
@@ -83,7 +83,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                         vilkårDel={VilkårDel.MEDLEMSKAP}
                         vurderinger={inngangsvilkår.data.vurderinger}
                         oppdaterVurdering={oppdaterVurdering}
-                        visning={(erOppfylt) => (
+                        visning={(erOppfylt: boolean) => (
                             <MedlemskapVisning
                                 medlemskap={inngangsvilkår.data.medlemskap}
                                 erOppfylt={erOppfylt}
@@ -94,7 +94,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                         vilkårDel={VilkårDel.MEDLEMSKAP}
                         vurderinger={inngangsvilkår.data.vurderinger}
                         oppdaterVurdering={oppdaterVurdering}
-                        visning={(erOppfylt) => (
+                        visning={(erOppfylt: boolean) => (
                             <MedlemskapVisning
                                 medlemskap={inngangsvilkår.data.medlemskap}
                                 erOppfylt={erOppfylt}

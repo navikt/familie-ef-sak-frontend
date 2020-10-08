@@ -28,7 +28,7 @@ const StyledVurdering = styled.div`
 `;
 
 interface Props {
-    vurdering: IVurdering;
+    data: IVurdering;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<void>;
 }
 
@@ -38,9 +38,9 @@ interface Props {
  * Valideringer når man klikker på endre-knappen
  * Burde feilhåndteringen håndteres på ett sted, eks att man har 1 komponent høgst opp på siden som viser feilmeldinger?
  */
-const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
-    const [vurderingState, setVurderingState] = useState<IVurdering>(vurdering);
-    const [lagret, setLagret] = useState<boolean>(
+const Vurdering: FC<Props> = ({ data, oppdaterVurdering }) => {
+    const [vurdering, settVurdering] = useState<IVurdering>(data);
+    const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
         vurdering.resultat !== VilkårResultat.IKKE_VURDERT
     );
     const [feilet, setFeilet] = useState<string | undefined>(undefined);
@@ -50,23 +50,23 @@ const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
     if (!config) {
         return <div>Savner config for {vurdering.vilkårType}</div>;
     }
-    if (lagret) {
+    if (redigeringsmodus) {
         return (
             <StyledVurdering>
                 <Undertittel>Manuelt behandlet</Undertittel>
-                <Lenke href="#" onClick={() => setLagret(false)}>
+                <Lenke href="#" onClick={() => settRedigeringsmodus(false)}>
                     <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
                     <span>Rediger</span>
                 </Lenke>
                 <Normaltekst>{config.vilkår}</Normaltekst>
-                {vurderingState.unntak && (
+                {vurdering.unntak && (
                     <>
                         <Element>Unntak</Element>
-                        <Normaltekst>{unntakTypeTilTekst[vurderingState.unntak]}</Normaltekst>
+                        <Normaltekst>{unntakTypeTilTekst[vurdering.unntak]}</Normaltekst>
                     </>
                 )}
                 <Element>Begrunnelse</Element>
-                <Normaltekst>{vurderingState.begrunnelse}</Normaltekst>
+                <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
             </StyledVurdering>
         );
     }
@@ -77,25 +77,25 @@ const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
                     <Radio
                         key={vilkårResultat}
                         label={vilkårsResultatTypeTilTekst[vilkårResultat]}
-                        name={vurderingState.vilkårType}
+                        name={vurdering.vilkårType}
                         onChange={() => {
-                            setVurderingState({
-                                ...vurderingState,
+                            settVurdering({
+                                ...vurdering,
                                 resultat: vilkårResultat,
                             });
                         }}
                         value={vilkårResultat}
-                        checked={vurderingState.resultat === vilkårResultat}
+                        checked={vurdering.resultat === vilkårResultat}
                     />
                 ))}
             </RadioGruppe>
             {config.unntak && (
                 <Select
                     label="Unntak"
-                    value={vurderingState.unntak || undefined}
+                    value={vurdering.unntak || undefined}
                     onChange={(e) => {
-                        setVurderingState({
-                            ...vurderingState,
+                        settVurdering({
+                            ...vurdering,
                             unntak: e.target.value as UnntakType,
                         });
                     }}
@@ -112,10 +112,10 @@ const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
                 label="Begrunnelse"
                 maxLength={0}
                 placeholder="Skriv inn tekst"
-                value={vurderingState.begrunnelse || ''}
+                value={vurdering.begrunnelse || ''}
                 onChange={(e) => {
-                    setVurderingState({
-                        ...vurderingState,
+                    settVurdering({
+                        ...vurdering,
                         begrunnelse: e.target.value,
                     });
                 }}
@@ -124,11 +124,11 @@ const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
             <Hovedknapp
                 onClick={() => {
                     setOppdatererVurdering(true);
-                    oppdaterVurdering(vurderingState)
+                    oppdaterVurdering(vurdering)
                         .then(() => {
                             setOppdatererVurdering(false);
                             setFeilet(undefined);
-                            setLagret(true);
+                            settRedigeringsmodus(true);
                         })
                         .catch((e: Error) => {
                             setOppdatererVurdering(false);
