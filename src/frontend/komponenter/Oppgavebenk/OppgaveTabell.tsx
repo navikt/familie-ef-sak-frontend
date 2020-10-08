@@ -1,8 +1,7 @@
 import React from 'react';
 import { RessursStatus, RessursSuksess } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { OppgaveResurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
@@ -12,6 +11,7 @@ import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/useSorteringState';
 import { usePagineringState } from '../../hooks/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
+
 const SIDE_STORRELSE = 15;
 
 export interface IOppgaverResponse {
@@ -30,7 +30,10 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
             ? (oppgaveResurs as RessursSuksess<IOppgaverResponse>).data.oppgaver
             : [];
 
-    const { sortertListe, settSortering, sortConfig } = useSorteringState<IOppgave>(oppgaveListe);
+    const { sortertListe, settSortering, sortConfig } = useSorteringState<IOppgave>(oppgaveListe, {
+        sorteringsfelt: 'fristFerdigstillelse',
+        rekkefolge: 'ascending',
+    });
 
     const { valgtSide, settValgtSide, slicedListe } = usePagineringState(
         status === RessursStatus.SUKSESS ? sortertListe : [],
@@ -45,7 +48,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
     } else if (status === RessursStatus.FEILET) {
         return <AlertStripeFeil children="Noe gikk galt" />;
     } else if (status === RessursStatus.IKKE_HENTET) {
-        return <Normaltekst> Du må gjøre ett søk før att få opp træff!!!</Normaltekst>; //TODO FIKS TEKST
+        return <AlertStripeInfo> Du må gjøre ett søk for å se oppgaver i listen.</AlertStripeInfo>; //TODO FIKS TEKST
     }
 
     return (
@@ -71,7 +74,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                                     onClick={() => settSortering(header.feltNavn as keyof IOppgave)}
                                 />
                             ) : (
-                                <th role="columnheader">{header.feltNavn}</th>
+                                <th role="columnheader">{header.tekst}</th>
                             )
                         )}
                     </tr>
