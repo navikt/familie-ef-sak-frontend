@@ -14,6 +14,8 @@ import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typ
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import Lenke from 'nav-frontend-lenker';
 import { VurderingConfig } from './VurderingConfig';
+import { navLillaLighten20 } from '../../../utils/farger';
+import BrukerMedBlyant from '../../../ikoner/BrukerMedBlyant';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -25,6 +27,18 @@ const StyledVurdering = styled.div`
     > *:not(:first-child) {
         margin-top: 5px;
     }
+`;
+
+const StyledVurderingTittel = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-auto-rows: auto;
+    #grid-gap: 3rem;
+`;
+
+const StyledVurderinger = styled.div`
+    border-left: 3px solid ${navLillaLighten20}};
+    padding-left: 10px;
 `;
 
 const erGyldigVurdering = (vurdering: IVurdering): boolean => {
@@ -62,20 +76,25 @@ const Vurdering: FC<Props> = ({ data, oppdaterVurdering }) => {
     if (redigeringsmodus) {
         return (
             <StyledVurdering>
-                <Undertittel>Manuelt behandlet</Undertittel>
-                <Lenke href="#" onClick={() => settRedigeringsmodus(false)}>
-                    <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
-                    <span>Rediger</span>
-                </Lenke>
-                <Normaltekst>{config.vilkår}</Normaltekst>
-                {vurdering.unntak && (
-                    <>
-                        <Element>Unntak</Element>
-                        <Normaltekst>{unntakTypeTilTekst[vurdering.unntak]}</Normaltekst>
-                    </>
-                )}
-                <Element>Begrunnelse</Element>
-                <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                <StyledVurderingTittel>
+                    <BrukerMedBlyant width={21} heigth={21} />
+                    <Undertittel>Manuelt behandlet</Undertittel>
+                    <Lenke href="#" onClick={() => settRedigeringsmodus(false)}>
+                        <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
+                        <span>Rediger</span>
+                    </Lenke>
+                </StyledVurderingTittel>
+                <StyledVurderinger>
+                    <Normaltekst>{config.vilkår}</Normaltekst>
+                    {vurdering.unntak && (
+                        <>
+                            <Element>Unntak</Element>
+                            <Normaltekst>{unntakTypeTilTekst[vurdering.unntak]}</Normaltekst>
+                        </>
+                    )}
+                    <Element>Begrunnelse</Element>
+                    <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                </StyledVurderinger>
             </StyledVurdering>
         );
     }

@@ -31,7 +31,11 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
     return (
         <>
             <StyledTabell>
-                {erOppfylt ? <GrønnHake /> : <Advarsel />}
+                {erOppfylt ? (
+                    <GrønnHake heigth={21} width={21} />
+                ) : (
+                    <Advarsel heigth={21} width={21} />
+                )}
                 <Undertittel className="tittel">Medlemskap</Undertittel>
 
                 <RegisterGrunnlag />
