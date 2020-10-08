@@ -10,8 +10,8 @@ export interface IVurdering {
     resultat: VilkårResultat;
     behandlingId: string;
     vilkårType: VilkårType;
-    begrunnelse: string;
-    unntak: UnntakType;
+    begrunnelse?: string;
+    unntak?: UnntakType;
     endretAv: string;
     endretTid: string;
 }

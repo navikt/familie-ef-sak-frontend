@@ -27,16 +27,25 @@ const StyledVurdering = styled.div`
     }
 `;
 
+const erGyldigVurdering = (vurdering: IVurdering): boolean => {
+    if (
+        vurdering.resultat === VilkårResultat.IKKE_VURDERT ||
+        !vurdering.begrunnelse ||
+        vurdering.begrunnelse.trim().length === 0
+    ) {
+        return false;
+    } else if (vurdering.resultat === VilkårResultat.JA) {
+        return !!vurdering.unntak;
+    } else return vurdering.resultat === VilkårResultat.NEI;
+};
+
 interface Props {
     data: IVurdering;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<void>;
 }
 
 /**
- * Hva skal skje hvis Resultat == Nei? Då trenger man vel ikke fortsette med denne behandlingen?
- * Styling av StyledVurdering
- * Valideringer når man klikker på endre-knappen
- * Burde feilhåndteringen håndteres på ett sted, eks att man har 1 komponent høgst opp på siden som viser feilmeldinger?
+ * TODO Styling av StyledVurdering
  */
 const Vurdering: FC<Props> = ({ data, oppdaterVurdering }) => {
     const [vurdering, settVurdering] = useState<IVurdering>(data);
@@ -79,9 +88,14 @@ const Vurdering: FC<Props> = ({ data, oppdaterVurdering }) => {
                         label={vilkårsResultatTypeTilTekst[vilkårResultat]}
                         name={vurdering.vilkårType}
                         onChange={() => {
+                            const skalResetteUnntak = () =>
+                                vilkårResultat === VilkårResultat.NEI
+                                    ? undefined
+                                    : vurdering.unntak;
                             settVurdering({
                                 ...vurdering,
                                 resultat: vilkårResultat,
+                                unntak: skalResetteUnntak(),
                             });
                         }}
                         value={vilkårResultat}
@@ -89,7 +103,7 @@ const Vurdering: FC<Props> = ({ data, oppdaterVurdering }) => {
                     />
                 ))}
             </RadioGruppe>
-            {config.unntak && (
+            {config.unntak && vurdering.resultat !== VilkårResultat.NEI && (
                 <Select
                     label="Unntak"
                     value={vurdering.unntak || undefined}
@@ -123,17 +137,21 @@ const Vurdering: FC<Props> = ({ data, oppdaterVurdering }) => {
             {feilet && <Feilmelding>Oppdatering av vilkår feilet: {feilet}</Feilmelding>}
             <Hovedknapp
                 onClick={() => {
-                    setOppdatererVurdering(true);
-                    oppdaterVurdering(vurdering)
-                        .then(() => {
-                            setOppdatererVurdering(false);
-                            setFeilet(undefined);
-                            settRedigeringsmodus(true);
-                        })
-                        .catch((e: Error) => {
-                            setOppdatererVurdering(false);
-                            setFeilet(e.message);
-                        });
+                    if (erGyldigVurdering(vurdering)) {
+                        setOppdatererVurdering(true);
+                        oppdaterVurdering(vurdering)
+                            .then(() => {
+                                setOppdatererVurdering(false);
+                                setFeilet(undefined);
+                                settRedigeringsmodus(true);
+                            })
+                            .catch((e: Error) => {
+                                setOppdatererVurdering(false);
+                                setFeilet(e.message);
+                            });
+                    } else {
+                        setFeilet('Du må fylle i alle verdier');
+                    }
                 }}
                 disabled={oppdatererVurdering}
             >
