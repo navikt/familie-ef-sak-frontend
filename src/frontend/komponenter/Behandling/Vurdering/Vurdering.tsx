@@ -36,6 +36,7 @@ interface Props {
  * Hva skal skje hvis Resultat == Nei? Då trenger man vel ikke fortsette med denne behandlingen?
  * Styling av StyledVurdering
  * Valideringer når man klikker på endre-knappen
+ * Burde feilhåndteringen håndteres på ett sted, eks att man har 1 komponent høgst opp på siden som viser feilmeldinger?
  */
 const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
     const [vurderingState, setVurderingState] = useState<IVurdering>(vurdering);
@@ -43,6 +44,7 @@ const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
         vurdering.resultat !== VilkårResultat.IKKE_VURDERT
     );
     const [feilet, setFeilet] = useState<string | undefined>(undefined);
+    const [oppdatererVurdering, setOppdatererVurdering] = useState<boolean>(false);
 
     const config = VurderingConfig[vurdering.vilkårType];
     if (!config) {
@@ -121,15 +123,19 @@ const Vurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
             {feilet && <Feilmelding>Oppdatering av vilkår feilet: {feilet}</Feilmelding>}
             <Hovedknapp
                 onClick={() => {
+                    setOppdatererVurdering(true);
                     oppdaterVurdering(vurderingState)
                         .then(() => {
+                            setOppdatererVurdering(false);
                             setFeilet(undefined);
                             setLagret(true);
                         })
                         .catch((e: Error) => {
+                            setOppdatererVurdering(false);
                             setFeilet(e.message);
                         });
                 }}
+                disabled={oppdatererVurdering}
             >
                 Lagre
             </Hovedknapp>
