@@ -8,7 +8,7 @@ export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: Vilkå
     vurderinger.filter((vurdering) => {
         const config = VurderingConfig[vurdering.vilkårType];
         if (!config) {
-            console.error('Savner config');
+            console.error(`Savner config til ${vurdering.vilkårType}`);
             return false;
         }
         return config.vilkårDel === vilkårDel;
