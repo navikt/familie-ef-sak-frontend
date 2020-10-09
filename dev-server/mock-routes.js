@@ -77,4 +77,8 @@ app.post('/familie-ef-sak/api/oppgave/soek', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`hent-oppgave.json`)), delayMs);
 });
 
+app.post('/familie-ef-sak/api/fagsak', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`behandlingstyper.json`)), delayMs);
+});
+
 module.exports = app;

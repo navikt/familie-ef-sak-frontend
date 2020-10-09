@@ -1,4 +1,4 @@
-import { Behandlingstema } from '../Oppgavebenk/behandlingstema';
+import { Behandlingstema } from '../komponenter/Oppgavebenk/behandlingstema';
 
 type Journalposttype = 'I' | 'U' | 'N';
 type Journalstatus =

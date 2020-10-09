@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
-import { IJournalpost } from '../komponenter/Journalforing/journalforing';
+import { IJournalpost } from '../typer/journalforing';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../komponenter/Journalforing/PdfVisning';
+import Behandling from '../komponenter/Journalforing/Behandling';
 import DataFetcher from '../komponenter/Felleskomponenter/DataFetcher/DataFetcher';
 import { AxiosRequestConfig } from 'axios';
 import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
@@ -62,6 +63,10 @@ export const Journalforing: React.FC = () => {
                         <div>
                             <Brukerinfo bruker={data.bruker} />
                             <DokumentVisning journalPost={data} hentDokument={hentDokument} />
+                            <Behandling
+                                personIdent={data.bruker.id}
+                                behandlingstema={data.behandlingstema}
+                            />
                         </div>
                         <div>
                             <PdfVisning pdfFilInnhold={valgtDokument} />

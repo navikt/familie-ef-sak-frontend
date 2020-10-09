@@ -1,30 +1,24 @@
 import React from 'react';
-import parseISO from 'date-fns/parseJSON';
 import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
-import { parse } from 'date-fns';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
 import { Link } from 'react-router-dom';
+import { parseISO, parse } from 'date-fns';
+import { tilLokalDatoStreng } from '../../utils/date';
 
 interface Props {
     oppgave: IOppgave;
 }
 
 const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
-    const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    const regDato =
-        oppgave.opprettetTidspunkt &&
-        parseISO(oppgave.opprettetTidspunkt).toLocaleDateString('no-NO', datoFormat);
+    const regDato = oppgave.opprettetTidspunkt && tilLokalDatoStreng(oppgave.opprettetTidspunkt);
 
     const oppgavetype = oppgave.oppgavetype && oppgaveTypeTilTekst[oppgave.oppgavetype];
 
     const fristFerdigstillelseDato =
-        oppgave.fristFerdigstillelse &&
-        parse(oppgave.fristFerdigstillelse, 'yyyy-MM-dd', new Date()).toLocaleDateString(
-            'no-NO',
-            datoFormat
-        );
+        oppgave.fristFerdigstillelse && tilLokalDatoStreng(oppgave.fristFerdigstillelse);
+
     const prioritet = oppgave.prioritet && prioritetTilTekst[oppgave.prioritet];
     const enhetsmappe = oppgave.mappeId && enhetsmappeTilTekst[oppgave.mappeId];
     const behandlingstema =

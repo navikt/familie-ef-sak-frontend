@@ -62,6 +62,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                         {OppgaveHeaderConfig.map((header) =>
                             header.erSorterbar ? (
                                 <OppgaveSorteringsHeader
+                                    key={header.tekst}
                                     tekst={header.tekst}
                                     rekkefolge={
                                         sortConfig?.sorteringsfelt === header.feltNavn
@@ -71,14 +72,16 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                                     onClick={() => settSortering(header.feltNavn as keyof IOppgave)}
                                 />
                             ) : (
-                                <th role="columnheader">{header.feltNavn}</th>
+                                <th key={header.tekst} role="columnheader">
+                                    {header.tekst}
+                                </th>
                             )
                         )}
                     </tr>
                 </thead>
                 <tbody>
                     {slicedListe.map((v) => (
-                        <OppgaveRad oppgave={v} />
+                        <OppgaveRad key={v.id} oppgave={v} />
                     ))}
                 </tbody>
             </table>

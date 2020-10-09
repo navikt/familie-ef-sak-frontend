@@ -30,7 +30,7 @@ module.exports = {
         ],
         '@typescript-eslint/ban-ts-ignore': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
-        'prettier/prettier': 'error',
+        'prettier/prettier': 'warn',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/no-var-requires': 'warn',
         '@typescript-eslint/explicit-function-return-type': 'off',

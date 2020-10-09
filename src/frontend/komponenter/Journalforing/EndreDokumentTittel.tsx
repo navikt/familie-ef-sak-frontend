@@ -2,7 +2,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
-import { dokumentTitler } from './tittelconfig';
+import { dokumentTitler } from './konstanter/dokumenttitler';
 
 const StyledKnapper = styled.div`
     display: flex;

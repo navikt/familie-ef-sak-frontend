@@ -16,3 +16,16 @@ export const behandlingstemaTilTekst: Record<Behandlingstema, string> = {
     ab0180: 'OrdinærBarnetrygd',
     ab0028: 'Barnetilsyn',
 };
+
+export const behandlingstemaTilStønadstype = (behandlingstema: Behandlingstema | undefined) => {
+    switch (behandlingstema) {
+        case 'ab0071':
+            return 'OVERGANGSSTØNAD';
+        case 'ab0177':
+            return 'SKOLEPENGER';
+        case 'ab0028':
+            return 'BARNETILSYN';
+        default:
+            return '';
+    }
+};
