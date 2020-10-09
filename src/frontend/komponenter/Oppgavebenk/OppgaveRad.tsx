@@ -5,6 +5,7 @@ import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { parse } from 'date-fns';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
+import { Link } from 'react-router-dom';
 
 interface Props {
     oppgave: IOppgave;
@@ -41,7 +42,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
             <td>{oppgave.tildeltEnhetsnr}</td>
             <td>{enhetsmappe}</td>
             <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
-            <td>Handlinger</td>
+            <td>
+                <Link to={`/journalfor/${oppgave.journalpostId}`}>Gå til journalpost</Link>
+            </td>
         </tr>
     );
 };

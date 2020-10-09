@@ -1,4 +1,4 @@
-export const dokumentTitler = [
+export const dokumentTitler: { value: string; label: string }[] = [
     { value: 'Uttalelse tilbakekreving', label: 'Uttalelse tilbakekreving' },
     { value: 'Uttalelse', label: 'Uttalelse' },
     {
