@@ -10,6 +10,7 @@ import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
 import { useApp } from '../context/AppContext';
+import { behandlingstemaTilTekst } from '../komponenter/Oppgavebenk/behandlingstema';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -54,7 +55,9 @@ export const Journalforing: React.FC = () => {
         <DataFetcher config={config}>
             {(data: IJournalpost) => (
                 <SideLayout>
-                    <Sidetittel>Registrere journalpost</Sidetittel>
+                    <Sidetittel>{`Registrere journalpost: ${
+                        data.behandlingstema ? behandlingstemaTilTekst[data.behandlingstema] : ''
+                    }`}</Sidetittel>
                     <Kolonner>
                         <div>
                             <Brukerinfo bruker={data.bruker} />
