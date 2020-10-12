@@ -112,7 +112,7 @@
     "react-router-dom": "^5.1.2",
     "redis": "^2.8.0",
     "request-promise": "^4.2.6",
-    "snyk": "^1.388.0",
+    "snyk": "^1.389.0",
     "styled-components": "^5.1.1",
     "uuid": "^8.3.0"
   },
