@@ -6,14 +6,31 @@ import { AxiosRequestConfig } from 'axios';
 import DataFetcher from '../../komponenter/Felleskomponenter/DataFetcher/DataFetcher';
 import { tilLokalDatoStreng } from '../../utils/date';
 import { behandlingstemaTilStønadstype, Behandlingstema } from '../Oppgavebenk/behandlingstema';
+import { Flatknapp } from 'nav-frontend-knapper';
+import LeggtilSirkel from '../../ikoner/LeggtilSirkel';
+import styled from 'styled-components';
 
 interface Props {
     personIdent: string;
     behandlingstema?: Behandlingstema;
 }
 
+enum Behandlingstype {
+    'FØRSTEGANGSBEHANDLING' = 'FØRSTEGANGSBEHANDLING',
+    'REVURDERING' = 'REVURDERING',
+}
+
+interface INyBehandling {
+    behandlingstype: Behandlingstype;
+}
+
+const StyledNyBehandlingRad = styled.tr`
+    background-color: #cce1f3;
+`;
+
 const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
     const [valgtBehandling, settValgtBehandling] = useState<string>('');
+    const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
 
     const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
 
@@ -66,8 +83,39 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
                                         <td>{tilLokalDatoStreng(behandling.sistEndret)}</td>
                                     </tr>
                                 ))}
+                                {nyBehandling && (
+                                    <StyledNyBehandlingRad>
+                                        <td>
+                                            <Checkbox
+                                                onChange={håndterCheck('ny')}
+                                                checked={'ny' === valgtBehandling}
+                                                label={'ny'}
+                                            />
+                                        </td>
+                                        <td>{nyBehandling.behandlingstype}</td>
+                                        <td>NY</td>
+                                        <td>–</td>
+                                    </StyledNyBehandlingRad>
+                                )}
                             </tbody>
                         </table>
+                        {data.behandlinger.every(
+                            (behandling: any) => behandling.status !== 'UTREDES'
+                        ) &&
+                            !nyBehandling && (
+                                <Flatknapp
+                                    onClick={() => {
+                                        settNyBehandling({
+                                            behandlingstype: data.behandlinger.length
+                                                ? Behandlingstype.REVURDERING
+                                                : Behandlingstype.FØRSTEGANGSBEHANDLING,
+                                        });
+                                    }}
+                                >
+                                    <LeggtilSirkel />
+                                    <span>Opprett ny behandling</span>
+                                </Flatknapp>
+                            )}
                     </>
                 );
             }}
