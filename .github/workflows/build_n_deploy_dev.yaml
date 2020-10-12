@@ -2,10 +2,8 @@ name: Build, push, and deploy app to dev
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-
+    branches-ignore:
+      - 'master'
 env:
   IMAGE: docker.pkg.github.com/${{ github.repository }}/familie-ef-sak-frontend:${{ github.sha }}
 

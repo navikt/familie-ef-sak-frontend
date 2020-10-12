@@ -6,6 +6,11 @@ export enum RessursStatus {
     SUKSESS = 'SUKSESS',
 }
 
+export type RessursSuksess<T> = {
+    data: T;
+    status: RessursStatus.SUKSESS;
+};
+
 export type Ressurs<T> =
     | {
           status: RessursStatus.IKKE_HENTET;
@@ -13,10 +18,7 @@ export type Ressurs<T> =
     | {
           status: RessursStatus.HENTER;
       }
-    | {
-          data: T;
-          status: RessursStatus.SUKSESS;
-      }
+    | RessursSuksess<T>
     | {
           melding: string;
           frontendFeilmelding: string;
