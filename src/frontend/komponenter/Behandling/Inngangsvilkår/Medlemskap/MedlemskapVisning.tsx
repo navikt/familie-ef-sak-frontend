@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IMedlemskap } from '../vilkår';
 import { FC } from 'react';
+import { IMedlemskap } from '../vilkår';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import GrønnHake from '../../../../ikoner/GrønnHake';
 import Advarsel from '../../../../ikoner/Advarsel';
@@ -15,13 +15,13 @@ import Statsborgerskap from './Statsborgerskap';
 import Oppholdsstatus from './Oppholdsstatus';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import { StyledSkillelinje } from '../../../Felleskomponenter/Visning/StyledSkillelinje';
+
 interface Props {
     medlemskap: IMedlemskap;
+    erOppfylt: boolean;
 }
-const Medlemskap: FC<Props> = ({ medlemskap }) => {
-    const erVurdert = false;
 
+const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
     const { registerGrunnlag, søknadGrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registerGrunnlag.oppholdstatus.length > 0;
@@ -30,7 +30,11 @@ const Medlemskap: FC<Props> = ({ medlemskap }) => {
     return (
         <>
             <StyledTabell>
-                {erVurdert ? <GrønnHake /> : <Advarsel />}
+                {erOppfylt ? (
+                    <GrønnHake heigth={21} width={21} />
+                ) : (
+                    <Advarsel heigth={21} width={21} />
+                )}
                 <Undertittel className="tittel">Medlemskap</Undertittel>
 
                 <RegisterGrunnlag />
@@ -61,8 +65,7 @@ const Medlemskap: FC<Props> = ({ medlemskap }) => {
                     )}
                 </Lesmerpanel>
             </StyledLesmerpanel>
-            <StyledSkillelinje />
         </>
     );
 };
-export default Medlemskap;
+export default MedlemskapVisning;

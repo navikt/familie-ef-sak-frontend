@@ -7,7 +7,7 @@ export const StyledTabell = styled.div`
         max-content
     );
     grid-auto-rows: min-content;
-    grid-gap: 1rem;
+    grid-gap: 0.5rem;
     margin-bottom: 3rem;
 
     svg {
