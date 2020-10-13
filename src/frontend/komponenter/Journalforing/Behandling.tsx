@@ -9,15 +9,11 @@ import { behandlingstemaTilStønadstype, Behandlingstema } from '../Oppgavebenk/
 import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilSirkel from '../../ikoner/LeggtilSirkel';
 import styled from 'styled-components';
+import { Behandlingstype } from '../../typer/behandlingtype';
 
 interface Props {
     personIdent: string;
     behandlingstema?: Behandlingstema;
-}
-
-enum Behandlingstype {
-    'FØRSTEGANGSBEHANDLING' = 'FØRSTEGANGSBEHANDLING',
-    'REVURDERING' = 'REVURDERING',
 }
 
 interface INyBehandling {

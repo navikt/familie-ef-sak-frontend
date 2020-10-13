@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useHistory, useLocation } from 'react-router';
 import { IJournalpost } from '../typer/journalforing';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
@@ -13,6 +14,8 @@ import { useApp } from '../context/AppContext';
 import { behandlingstemaTilTekst } from '../komponenter/Oppgavebenk/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
+import { Behandlingstype } from '../typer/behandlingtype';
+import queryString from 'querystring';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -32,13 +35,44 @@ const FlexKnapper = styled.div`
     display: flex;
     justify-content: space-between;
 `;
+/*
+
+data class JournalføringRequest (val dokumentTitler: Map<String, String>, val fagsakId: UUID, val oppgaveId: String, val behandling: JournalFøringBehandlingRequest )
+
+data class JournalFøringBehandlingRequest (val behandlingsId: UUID?, val behandlingType: BehandlingType?)
+
+ */
+
+interface Behandling {
+    behandlingsId?: string;
+    behandligType?: Behandlingstype;
+}
+
+interface JournalføringRequest {
+    dokumentTitler: Record<string, string>;
+    fagsakId: string;
+    oppgaveId: string;
+    behandling: {
+        behandlingsId?: string;
+        behandligType?: Behandlingstype;
+    };
+}
 
 export const Journalforing: React.FC = () => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
-    const { journalpostId } = useParams<{ journalpostId: string }>();
+
+    const location = useLocation();
+    const history = useHistory();
+
+    const queryParams = queryString.parse(location.search);
+    const journalpostId = queryParams.journalpostId;
+    const oppgaveId = queryParams.oppgaveId;
+
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>({
         status: RessursStatus.IKKE_HENTET,
     });
+
+    const [valgtBehandling, settValgtBehandling] = useState<>();
 
     const config: AxiosRequestConfig = useMemo(
         () => ({
@@ -58,6 +92,19 @@ export const Journalforing: React.FC = () => {
         ).then((res: Ressurs<string>) => settValgtDokument(res));
     };
 
+    const fullførJournalføring = (data: JournalføringRequest) => {
+        axiosRequest<string, JournalføringRequest>(
+            {
+                method: 'POST',
+                url: `/familie-ef-sak/api/journalpost/${journalpostId}/`,
+                data,
+            },
+            innloggetSaksbehandler
+        ).then((_: Ressurs<string>) => {
+            history.push('/oppgavebenk');
+        });
+    };
+
     return (
         <DataFetcher config={config}>
             {(data: IJournalpost) => (
@@ -75,7 +122,9 @@ export const Journalforing: React.FC = () => {
                             />
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                                <Hovedknapp>Journalfør</Hovedknapp>
+                                <Hovedknapp onClick={() => fullførJournalføring()}>
+                                    Journalfør
+                                </Hovedknapp>
                             </FlexKnapper>
                         </div>
                         <div>
