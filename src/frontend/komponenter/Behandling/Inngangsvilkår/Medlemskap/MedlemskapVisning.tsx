@@ -2,9 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import { IMedlemskap } from '../vilkår';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import GrønnHake from '../../../../ikoner/GrønnHake';
-import Advarsel from '../../../../ikoner/Advarsel';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     RegisterGrunnlag,
     SøknadGrunnlag,
@@ -15,6 +13,8 @@ import Statsborgerskap from './Statsborgerskap';
 import Oppholdsstatus from './Oppholdsstatus';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
+import IkkeOppfylt from '../../../../ikoner/IkkeOppfylt';
+import Oppfylt from '../../../../ikoner/Oppfylt';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -31,11 +31,14 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
         <>
             <StyledTabell>
                 {erOppfylt ? (
-                    <GrønnHake heigth={21} width={21} />
+                    <Oppfylt heigth={21} width={21} />
                 ) : (
-                    <Advarsel heigth={21} width={21} />
+                    <IkkeOppfylt heigth={21} width={21} />
                 )}
-                <Undertittel className="tittel">Medlemskap</Undertittel>
+                <div className="tittel">
+                    <Undertittel>Medlemskap og opphold i Norge</Undertittel>
+                    <EtikettLiten>§15-2 og §15-3 </EtikettLiten>
+                </div>
 
                 <RegisterGrunnlag />
                 <Normaltekst>Statsborgerskap</Normaltekst>

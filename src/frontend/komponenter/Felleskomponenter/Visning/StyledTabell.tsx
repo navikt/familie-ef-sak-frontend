@@ -1,9 +1,10 @@
 import styled from 'styled-components';
+import { navGra60 } from '../../../utils/farger';
 
 export const StyledTabell = styled.div`
     display: grid;
     grid-template-columns: repeat(
-        ${(props: { kolonner?: number }) => props.kolonner || 3},
+        ${(props: { kolonner?: number }) => props.kolonner || 4},
         max-content
     );
     grid-auto-rows: min-content;
@@ -18,6 +19,15 @@ export const StyledTabell = styled.div`
 
     .tittel {
         grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};
+
+        display: flex;
+        align-items: center;
+        .typo-undertittel {
+            margin-right: 1rem;
+        }
+        .typo-etikett-liten {
+            color: ${navGra60};
+        }
     }
 
     .førsteDataKolonne {
