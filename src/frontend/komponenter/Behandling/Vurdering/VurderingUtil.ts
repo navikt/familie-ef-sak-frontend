@@ -1,7 +1,7 @@
 import { IVurdering, VilkårResultat } from '../Inngangsvilkår/vilkår';
 import { VilkårDel, VurderingConfig } from './VurderingConfig';
 
-export const alleErOppfylte = (vurderinger: IVurdering[]) =>
+export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== VilkårResultat.JA).length === 0;
 
 export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: VilkårDel): IVurdering[] =>
@@ -46,13 +46,9 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
     const indexForFørsteIkkeVurderteDelvilkår = vurdering.delvilkårVurderinger.findIndex(
         (value) => value.resultat === VilkårResultat.IKKE_VURDERT
     );
-    if (
+    return !(
         indexForFørsteIkkeVurderteDelvilkår === 0 ||
         vurdering.delvilkårVurderinger[indexForFørsteIkkeVurderteDelvilkår - 1].resultat !==
             VilkårResultat.JA
-    ) {
-        return false;
-    } else {
-        return true;
-    }
+    );
 };
