@@ -86,7 +86,7 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
 };
 
 export enum UnntakType {
-    UNDEFINED = 'UNDEFINED',
+    UNDEFINED = 'UNDEFINED', //hvis man ikke har med denne så blir e.target.value "Velg her..."
     ARBEID_NORSK_ARBEIDSGIVER = 'ARBEID_NORSK_ARBEIDSGIVER',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER = 'UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER',
 }
