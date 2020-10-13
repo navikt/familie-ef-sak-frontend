@@ -17,15 +17,23 @@ export const behandlingstemaTilTekst: Record<Behandlingstema, string> = {
     ab0028: 'Barnetilsyn',
 };
 
-export const behandlingstemaTilStønadstype = (behandlingstema: Behandlingstema | undefined) => {
+export enum Stønadstype {
+    OVERGANGSSTØNAD = 'OVERGANGSSTØNAD',
+    SKOLEPENGER = 'SKOLEPENGER',
+    BARNETILSYN = 'BARNETILSYN',
+}
+
+export const behandlingstemaTilStønadstype = (
+    behandlingstema: Behandlingstema | undefined
+): Stønadstype | undefined => {
     switch (behandlingstema) {
         case 'ab0071':
-            return 'OVERGANGSSTØNAD';
+            return Stønadstype.OVERGANGSSTØNAD;
         case 'ab0177':
-            return 'SKOLEPENGER';
+            return Stønadstype.SKOLEPENGER;
         case 'ab0028':
-            return 'BARNETILSYN';
+            return Stønadstype.BARNETILSYN;
         default:
-            return '';
+            return undefined;
     }
 };

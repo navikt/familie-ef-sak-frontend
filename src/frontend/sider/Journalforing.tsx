@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { Redirect, useHistory } from 'react-router';
 import { IJournalpost } from '../typer/journalforing';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
@@ -11,11 +11,11 @@ import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
 import { useApp } from '../context/AppContext';
-import { behandlingstemaTilTekst } from '../komponenter/Oppgavebenk/behandlingstema';
+import { behandlingstemaTilTekst } from '../typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
-import { Behandlingstype } from '../typer/behandlingtype';
-import queryString from 'querystring';
+import { BehandlingType } from '../typer/behandlingtype';
+import { useGetQueryParams } from '../hooks/useGetQueryParams';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -35,44 +35,36 @@ const FlexKnapper = styled.div`
     display: flex;
     justify-content: space-between;
 `;
-/*
 
-data class JournalføringRequest (val dokumentTitler: Map<String, String>, val fagsakId: UUID, val oppgaveId: String, val behandling: JournalFøringBehandlingRequest )
-
-data class JournalFøringBehandlingRequest (val behandlingsId: UUID?, val behandlingType: BehandlingType?)
-
- */
-
-interface Behandling {
+interface BehandlingRequest {
     behandlingsId?: string;
-    behandligType?: Behandlingstype;
+    behandligType?: BehandlingType;
 }
 
 interface JournalføringRequest {
-    dokumentTitler: Record<string, string>;
+    dokumentTitler?: Record<string, string>;
     fagsakId: string;
     oppgaveId: string;
-    behandling: {
-        behandlingsId?: string;
-        behandligType?: Behandlingstype;
-    };
+    behandling: BehandlingRequest;
 }
+
+const JOURNALPOST_QUERY_STRING = 'journalpostId';
+const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 export const Journalforing: React.FC = () => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
-
-    const location = useLocation();
     const history = useHistory();
 
-    const queryParams = queryString.parse(location.search);
-    const journalpostId = queryParams.journalpostId;
-    const oppgaveId = queryParams.oppgaveId;
+    const oppgaveIdParam = useGetQueryParams(OPPGAVEID_QUERY_STRING);
+    const journalpostId = useGetQueryParams(JOURNALPOST_QUERY_STRING);
+
+    const [oppgaveId] = useState<string>(oppgaveIdParam || '');
+    const [fagsakId, settFagsakId] = useState<string>('');
+    const [behandling, settBehandling] = useState<BehandlingRequest>({});
 
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>({
         status: RessursStatus.IKKE_HENTET,
     });
-
-    const [valgtBehandling, settValgtBehandling] = useState<>();
 
     const config: AxiosRequestConfig = useMemo(
         () => ({
@@ -82,6 +74,9 @@ export const Journalforing: React.FC = () => {
         [journalpostId]
     );
 
+    if (!oppgaveIdParam || !journalpostId) {
+        return <Redirect to="/oppgavebenk" />;
+    }
     const hentDokument = (dokumentInfoId: string) => {
         axiosRequest<string, null>(
             {
@@ -92,7 +87,13 @@ export const Journalforing: React.FC = () => {
         ).then((res: Ressurs<string>) => settValgtDokument(res));
     };
 
-    const fullførJournalføring = (data: JournalføringRequest) => {
+    const fullførJournalføring = () => {
+        const data: JournalføringRequest = {
+            oppgaveId,
+            fagsakId,
+            behandling,
+        };
+
         axiosRequest<string, JournalføringRequest>(
             {
                 method: 'POST',
@@ -115,16 +116,19 @@ export const Journalforing: React.FC = () => {
                     <Kolonner>
                         <div>
                             <Brukerinfo bruker={data.bruker} />
-                            <DokumentVisning journalPost={data} hentDokument={hentDokument} />
+                            <DokumentVisning
+                                journalPost={data}
+                                hentDokument={hentDokument}
+                                settFagsakId={settFagsakId}
+                            />
                             <Behandling
+                                settBehandling={settBehandling}
                                 personIdent={data.bruker.id}
                                 behandlingstema={data.behandlingstema}
                             />
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                                <Hovedknapp onClick={() => fullførJournalføring()}>
-                                    Journalfør
-                                </Hovedknapp>
+                                <Hovedknapp onClick={fullførJournalføring}>Journalfør</Hovedknapp>
                             </FlexKnapper>
                         </div>
                         <div>

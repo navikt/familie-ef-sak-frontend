@@ -1,4 +1,4 @@
-export enum Behandlingstatus {
+export enum BehandlingStatus {
     OPPRETTET = 'OPPRETTET',
     UTREDES = 'UTREDES',
     FATTER_VEDTAK = 'FATTER_VEDTAK',

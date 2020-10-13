@@ -5,11 +5,12 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { AxiosRequestConfig } from 'axios';
 import DataFetcher from '../../komponenter/Felleskomponenter/DataFetcher/DataFetcher';
 import { tilLokalDatoStreng } from '../../utils/date';
-import { behandlingstemaTilStønadstype, Behandlingstema } from '../Oppgavebenk/behandlingstema';
+import { behandlingstemaTilStønadstype, Behandlingstema } from '../../typer/behandlingstema';
 import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilSirkel from '../../ikoner/LeggtilSirkel';
 import styled from 'styled-components';
-import { Behandlingstype } from '../../typer/behandlingtype';
+import { BehandlingType } from '../../typer/behandlingtype';
+import { BehandlingDto, Fagsak } from '../../typer/fagsak';
 
 interface Props {
     personIdent: string;
@@ -17,7 +18,7 @@ interface Props {
 }
 
 interface INyBehandling {
-    behandlingstype: Behandlingstype;
+    behandlingstype: BehandlingType;
 }
 
 const StyledNyBehandlingRad = styled.tr`
@@ -40,7 +41,7 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
     );
 
     const håndterCheck = (behandlingId: string) => {
-        return (e: any) => {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
             if (e.target.checked) {
                 settValgtBehandling(behandlingId);
             } else {
@@ -51,7 +52,7 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
 
     return (
         <DataFetcher config={config}>
-            {(data: any) => {
+            {(data: Fagsak) => {
                 return (
                     <>
                         <Systemtittel>Behandling</Systemtittel>
@@ -65,7 +66,7 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.behandlinger.map((behandling: any) => (
+                                {data.behandlinger.map((behandling: BehandlingDto) => (
                                     <tr key={behandling.id}>
                                         <td>
                                             <Checkbox
@@ -96,15 +97,15 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
                             </tbody>
                         </table>
                         {data.behandlinger.every(
-                            (behandling: any) => behandling.status !== 'UTREDES'
+                            (behandling: BehandlingDto) => behandling.status !== 'UTREDES'
                         ) &&
                             !nyBehandling && (
                                 <Flatknapp
                                     onClick={() => {
                                         settNyBehandling({
                                             behandlingstype: data.behandlinger.length
-                                                ? Behandlingstype.REVURDERING
-                                                : Behandlingstype.FØRSTEGANGSBEHANDLING,
+                                                ? BehandlingType.REVURDERING
+                                                : BehandlingType.FØRSTEGANGSBEHANDLING,
                                         });
                                     }}
                                 >

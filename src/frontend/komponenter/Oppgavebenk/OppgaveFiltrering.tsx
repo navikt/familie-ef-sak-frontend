@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
 import { oppgaveTypeTilTekst } from './oppgavetema';
-import { behandlingstemaTilTekst } from './behandlingstema';
+import { behandlingstemaTilTekst } from '../../typer/behandlingstema';
 import { useApp } from '../../context/AppContext';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import CustomSelect from './CustomSelect';

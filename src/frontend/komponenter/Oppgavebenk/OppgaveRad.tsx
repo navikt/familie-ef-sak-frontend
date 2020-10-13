@@ -2,7 +2,7 @@ import React from 'react';
 import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { enhetsmappeTilTekst } from './enhetsmappe';
-import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
+import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
 import { Link } from 'react-router-dom';
 import { tilLokalDatoStreng } from '../../utils/date';
 
