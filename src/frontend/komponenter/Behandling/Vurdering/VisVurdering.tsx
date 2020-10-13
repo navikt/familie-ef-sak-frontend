@@ -7,28 +7,39 @@ import { IVurdering, unntakTypeTilTekst } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { navLillaLighten20 } from '../../../utils/farger';
 import { IVilkårConfig } from './VurderingConfig';
+import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
+import Oppfylt from '../../../ikoner/Oppfylt';
 
 const StyledVurdering = styled.div`
     display: grid;
     grid-template-columns: repeat(4, max-content);
-    grid-template-rows: repeat(2, max-content);
+    grid-template-rows: repeat(3, max-content);
     grid-gap: 1rem;
 `;
 
 const StyledKnapp = styled.button``;
 
-const StyledTekst = styled.div`
-    grid-column: 2/4;
-
-    p {
-        margin-top: 5px;
-    }
-`;
-
 const StyledStrek = styled.span`
     border-left: 3px solid ${navLillaLighten20};
     margin-left: 0.55rem;
     grid-column: 1/2;
+`;
+
+const StyledVilkår = styled.div`
+    grid-column: 2/4;
+
+    .typo-normal {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+`;
+
+const StyledIkonOgTittel = styled.span`
+    margin-bottom: 1.5rem;
+    display: flex;
+    svg {
+        margin-right: 1rem;
+    }
 `;
 
 interface Props {
@@ -38,6 +49,8 @@ interface Props {
 }
 
 const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) => {
+    const erOppfylt = true;
+
     return (
         <StyledVurdering>
             <BrukerMedBlyantIkon />
@@ -48,8 +61,17 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) =>
             </StyledKnapp>
 
             <StyledStrek />
-            <StyledTekst>
-                <Normaltekst>{config.vilkår}</Normaltekst>
+
+            <StyledVilkår>
+                <StyledIkonOgTittel>
+                    {erOppfylt ? (
+                        <Oppfylt heigth={21} width={21} />
+                    ) : (
+                        <IkkeOppfylt heigth={21} width={21} />
+                    )}
+                    <Element>Vilkårstittel</Element>
+                </StyledIkonOgTittel>
+
                 {vurdering.unntak && (
                     <>
                         <Element>Unntak</Element>
@@ -58,7 +80,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) =>
                 )}
                 <Element>Begrunnelse</Element>
                 <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
-            </StyledTekst>
+            </StyledVilkår>
         </StyledVurdering>
     );
 };
