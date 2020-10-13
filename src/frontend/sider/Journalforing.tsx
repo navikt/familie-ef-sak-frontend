@@ -36,16 +36,16 @@ const FlexKnapper = styled.div`
     justify-content: space-between;
 `;
 
-interface BehandlingRequest {
+export interface BehandlingRequest {
     behandlingsId?: string;
-    behandligType?: BehandlingType;
+    behandlingType?: BehandlingType;
 }
 
 interface JournalføringRequest {
     dokumentTitler?: Record<string, string>;
     fagsakId: string;
     oppgaveId: string;
-    behandling: BehandlingRequest;
+    behandling?: BehandlingRequest;
 }
 
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
@@ -60,7 +60,7 @@ export const Journalforing: React.FC = () => {
 
     const [oppgaveId] = useState<string>(oppgaveIdParam || '');
     const [fagsakId, settFagsakId] = useState<string>('');
-    const [behandling, settBehandling] = useState<BehandlingRequest>({});
+    const [behandling, settBehandling] = useState<BehandlingRequest>();
 
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>({
         status: RessursStatus.IKKE_HENTET,
@@ -116,13 +116,10 @@ export const Journalforing: React.FC = () => {
                     <Kolonner>
                         <div>
                             <Brukerinfo bruker={data.bruker} />
-                            <DokumentVisning
-                                journalPost={data}
-                                hentDokument={hentDokument}
-                                settFagsakId={settFagsakId}
-                            />
+                            <DokumentVisning journalPost={data} hentDokument={hentDokument} />
                             <Behandling
                                 settBehandling={settBehandling}
+                                behandling={behandling}
                                 personIdent={data.bruker.id}
                                 behandlingstema={data.behandlingstema}
                             />

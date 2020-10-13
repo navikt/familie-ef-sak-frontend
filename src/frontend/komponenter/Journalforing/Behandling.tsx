@@ -11,23 +11,31 @@ import LeggtilSirkel from '../../ikoner/LeggtilSirkel';
 import styled from 'styled-components';
 import { BehandlingType } from '../../typer/behandlingtype';
 import { BehandlingDto, Fagsak } from '../../typer/fagsak';
+import { BehandlingRequest } from '../../sider/Journalforing';
 
 interface Props {
     personIdent: string;
     behandlingstema?: Behandlingstema;
+    settBehandling: (behandling?: BehandlingRequest) => void;
+    behandling?: BehandlingRequest;
 }
 
 interface INyBehandling {
-    behandlingstype: BehandlingType;
+    behandlingType: BehandlingType;
 }
 
 const StyledNyBehandlingRad = styled.tr`
     background-color: #cce1f3;
 `;
 
-const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
-    const [valgtBehandling, settValgtBehandling] = useState<string>('');
+const Behandling: React.FC<Props> = ({
+    behandling,
+    settBehandling,
+    personIdent,
+    behandlingstema,
+}) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
+    const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
 
     const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
 
@@ -40,12 +48,23 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
         [stønadstype, personIdent]
     );
 
-    const håndterCheck = (behandlingId: string) => {
+    const håndterCheck = (behandlingsId: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
             if (e.target.checked) {
-                settValgtBehandling(behandlingId);
+                if (behandlingsId === 'ny') {
+                    settBehandling({
+                        behandlingType: nyBehandling?.behandlingType,
+                    });
+                    settHarValgtNyBehandling(true);
+                } else {
+                    settBehandling({
+                        behandlingsId,
+                    });
+                    settHarValgtNyBehandling(false);
+                }
             } else {
-                settValgtBehandling('');
+                settBehandling(undefined);
+                settHarValgtNyBehandling(false);
             }
         };
     };
@@ -66,18 +85,20 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.behandlinger.map((behandling: BehandlingDto) => (
-                                    <tr key={behandling.id}>
+                                {data.behandlinger.map((behandlingsEl: BehandlingDto) => (
+                                    <tr key={behandlingsEl.id}>
                                         <td>
                                             <Checkbox
-                                                onChange={håndterCheck(behandling.id)}
-                                                checked={behandling.id === valgtBehandling}
-                                                label={behandling.type}
+                                                onChange={håndterCheck(behandlingsEl.id)}
+                                                checked={
+                                                    behandlingsEl.id === behandling?.behandlingsId
+                                                }
+                                                label={behandlingsEl.type}
                                             />
                                         </td>
-                                        <td>{behandling.type}</td>
-                                        <td>{behandling.status}</td>
-                                        <td>{tilLokalDatoStreng(behandling.sistEndret)}</td>
+                                        <td>{behandlingsEl.type}</td>
+                                        <td>{behandlingsEl.status}</td>
+                                        <td>{tilLokalDatoStreng(behandlingsEl.sistEndret)}</td>
                                     </tr>
                                 ))}
                                 {nyBehandling && (
@@ -85,11 +106,11 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
                                         <td>
                                             <Checkbox
                                                 onChange={håndterCheck('ny')}
-                                                checked={'ny' === valgtBehandling}
+                                                checked={harValgtNyBehandling}
                                                 label={'ny'}
                                             />
                                         </td>
-                                        <td>{nyBehandling.behandlingstype}</td>
+                                        <td>{nyBehandling.behandlingType}</td>
                                         <td>NY</td>
                                         <td>–</td>
                                     </StyledNyBehandlingRad>
@@ -103,7 +124,7 @@ const Behandling: React.FC<Props> = ({ personIdent, behandlingstema }) => {
                                 <Flatknapp
                                     onClick={() => {
                                         settNyBehandling({
-                                            behandlingstype: data.behandlinger.length
+                                            behandlingType: data.behandlinger.length
                                                 ? BehandlingType.REVURDERING
                                                 : BehandlingType.FØRSTEGANGSBEHANDLING,
                                         });
