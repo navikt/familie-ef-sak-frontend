@@ -28,11 +28,7 @@ const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => 
             settRedigeringsmodus={settRedigeringsmodus}
         />
     ) : (
-        <VisVurdering
-            config={config}
-            vurdering={vurdering}
-            settRedigeringsmodus={settRedigeringsmodus}
-        />
+        <VisVurdering vurdering={vurdering} settRedigeringsmodus={settRedigeringsmodus} />
     );
 };
 export default VisEllerEndreVurdering;

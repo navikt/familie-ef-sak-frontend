@@ -3,10 +3,16 @@ import { FC } from 'react';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
-import { IVurdering, unntakTypeTilTekst } from '../Inngangsvilkår/vilkår';
+import {
+    delvilkårTypeTilTekst,
+    IVurdering,
+    unntakTypeTilTekst,
+    VilkårResultat,
+    vilkårsResultatTypeTilTekst,
+    vilkårTypeTilTekst,
+} from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { navLillaLighten20 } from '../../../utils/farger';
-import { IVilkårConfig } from './VurderingConfig';
 import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
 import Oppfylt from '../../../ikoner/Oppfylt';
 
@@ -29,8 +35,8 @@ const StyledVilkår = styled.div`
     grid-column: 2/4;
 
     .typo-normal {
-        margin-top: 0.5rem;
-        margin-bottom: 1rem;
+        margin-top: 0.25rem;
+        margin-bottom: 1.5rem;
     }
 `;
 
@@ -44,13 +50,10 @@ const StyledIkonOgTittel = styled.span`
 
 interface Props {
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
-    config: IVilkårConfig;
     vurdering: IVurdering;
 }
 
-const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) => {
-    const erOppfylt = true;
-
+const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
     return (
         <StyledVurdering>
             <BrukerMedBlyantIkon />
@@ -64,13 +67,27 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) =>
 
             <StyledVilkår>
                 <StyledIkonOgTittel>
-                    {erOppfylt ? (
+                    {vurdering.resultat === VilkårResultat.JA ? (
                         <Oppfylt heigth={21} width={21} />
                     ) : (
                         <IkkeOppfylt heigth={21} width={21} />
                     )}
-                    <Element>Vilkårstittel</Element>
+                    <Element>{vilkårTypeTilTekst[vurdering.vilkårType]}</Element>
                 </StyledIkonOgTittel>
+
+                {vurdering.delvilkårVurderinger
+                    .filter(
+                        (delvilkårvurdering) =>
+                            delvilkårvurdering.resultat !== VilkårResultat.IKKE_VURDERT
+                    )
+                    .map((delvilkårvurdering) => (
+                        <>
+                            <Element>{delvilkårTypeTilTekst[delvilkårvurdering.type]}</Element>
+                            <Normaltekst>
+                                {vilkårsResultatTypeTilTekst[delvilkårvurdering.resultat]}
+                            </Normaltekst>
+                        </>
+                    ))}
 
                 {vurdering.unntak && (
                     <>

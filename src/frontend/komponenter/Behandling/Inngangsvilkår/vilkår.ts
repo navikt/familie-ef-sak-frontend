@@ -73,6 +73,11 @@ export const vilkårsResultatTypeTilTekst: Record<VilkårResultat, string> = {
 
 export type VilkårType = 'FORUTGÅENDE_MEDLEMSKAP' | 'LOVLIG_OPPHOLD';
 
+export const vilkårTypeTilTekst: Record<VilkårType, string> = {
+    FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
+    LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
+};
+
 export enum DelvilkårType {
     TRE_ÅRS_MEDLEMSKAP = 'TRE_ÅRS_MEDLEMSKAP',
     DOKUMENTERT_FLYKTNINGSTATUS = 'DOKUMENTERT_FLYKTNINGSTATUS',
