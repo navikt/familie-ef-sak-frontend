@@ -28,13 +28,14 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
     return {
         ...vurdering,
         delvilkårVurderinger: vurdering.delvilkårVurderinger.map((delvilkår) => {
+            const skalResetteDelvikårEtterDetSisteSomSKalVises =
+                harPassertSisteDelvilkårSomSkalVises &&
+                delvilkår.resultat !== VilkårResultat.IKKE_VURDERT;
+
             if (delvilkår.type === oppdatertDelvilkår.type) {
                 harPassertSisteDelvilkårSomSkalVises = true;
                 return oppdatertDelvilkår;
-            } else if (
-                harPassertSisteDelvilkårSomSkalVises &&
-                delvilkår.resultat !== VilkårResultat.IKKE_VURDERT
-            ) {
+            } else if (skalResetteDelvikårEtterDetSisteSomSKalVises) {
                 return { type: delvilkår.type, resultat: VilkårResultat.IKKE_VURDERT };
             } else {
                 return delvilkår;
