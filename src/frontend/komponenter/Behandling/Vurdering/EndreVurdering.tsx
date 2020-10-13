@@ -40,6 +40,10 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
                 return delvilkår;
             }
         }),
+        resultat:
+            oppdatertDelvilkår.resultat === VilkårResultat.JA
+                ? VilkårResultat.JA
+                : vurdering.resultat,
         unntak: undefined,
     };
 };
@@ -101,13 +105,14 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     label="Unntak"
                     value={vurdering.unntak || undefined}
                     onChange={(e) => {
+                        const unntakType = e.target.value as UnntakType;
                         settVurdering({
                             ...vurdering,
-                            unntak: e.target.value as UnntakType,
+                            unntak: unntakType === UnntakType.UNDEFINED ? undefined : unntakType,
                         });
                     }}
                 >
-                    <option value={undefined}>Velg...</option>
+                    <option value={UnntakType.UNDEFINED}>Velg...</option>
                     {config.unntak.map((unntak) => (
                         <option key={unntak} value={unntak}>
                             {unntakTypeTilTekst[unntak]}

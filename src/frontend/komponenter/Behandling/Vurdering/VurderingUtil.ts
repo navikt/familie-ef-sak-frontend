@@ -15,17 +15,44 @@ export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: Vilkå
     });
 
 export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
-    if (
-        vurdering.resultat === VilkårResultat.IKKE_VURDERT ||
-        !vurdering.begrunnelse ||
-        vurdering.begrunnelse.trim().length === 0
-    ) {
+    // Må alltid ha med begrunnelse
+    if (!vurdering.begrunnelse || vurdering.begrunnelse.trim().length === 0) {
         return false;
-    } else if (vurdering.resultat === VilkårResultat.JA) {
+    }
+
+    // Må ha satt resulat på vurderingen => vi har vurdert å flytte resultat på vurderingen til backend
+    if (vurdering.resultat === VilkårResultat.IKKE_VURDERT) {
+        return false;
+    }
+
+    // Hvis siste delvurdering er nei: valider unntak hvis det er definert unntak
+    const sisteDelvurdering =
+        vurdering.delvilkårVurderinger[vurdering.delvilkårVurderinger.length - 1];
+    const alleDelvurderingerErVurdert =
+        vurdering.delvilkårVurderinger.filter(
+            (delvurdering) => delvurdering.resultat === VilkårResultat.IKKE_VURDERT
+        ).length === 0;
+    if (alleDelvurderingerErVurdert && sisteDelvurdering.resultat === VilkårResultat.NEI) {
         if (VurderingConfig[vurdering.vilkårType].unntak) {
             return !!vurdering.unntak;
         } else {
             return true;
         }
-    } else return vurdering.resultat === VilkårResultat.NEI;
+    } else if (alleDelvurderingerErVurdert) {
+        return true;
+    }
+
+    // Valider att siste vurderte delvilkår har resultat == JA
+    const indexForFørsteIkkeVurderteDelvilkår = vurdering.delvilkårVurderinger.findIndex(
+        (value) => value.resultat === VilkårResultat.IKKE_VURDERT
+    );
+    if (
+        indexForFørsteIkkeVurderteDelvilkår === 0 ||
+        vurdering.delvilkårVurderinger[indexForFørsteIkkeVurderteDelvilkår - 1].resultat !==
+            VilkårResultat.JA
+    ) {
+        return false;
+    } else {
+        return true;
+    }
 };

@@ -86,11 +86,13 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
 };
 
 export enum UnntakType {
+    UNDEFINED = 'UNDEFINED',
     ARBEID_NORSK_ARBEIDSGIVER = 'ARBEID_NORSK_ARBEIDSGIVER',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER = 'UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER',
 }
 
 export const unntakTypeTilTekst: Record<UnntakType, string> = {
+    UNDEFINED: 'Skal ikke vises',
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
 };
