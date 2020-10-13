@@ -12,8 +12,14 @@ export interface IVurdering {
     vilkårType: VilkårType;
     begrunnelse?: string;
     unntak?: UnntakType;
+    delvilkårVurderinger: IDelvilkår[];
     endretAv: string;
     endretTid: string;
+}
+
+export interface IDelvilkår {
+    type: DelvilkårType;
+    resultat: VilkårResultat;
 }
 
 export interface IMedlemskap {
@@ -66,6 +72,18 @@ export const vilkårsResultatTypeTilTekst: Record<VilkårResultat, string> = {
 };
 
 export type VilkårType = 'FORUTGÅENDE_MEDLEMSKAP' | 'LOVLIG_OPPHOLD';
+
+export enum DelvilkårType {
+    TRE_ÅRS_MEDLEMSKAP = 'TRE_ÅRS_MEDLEMSKAP',
+    DOKUMENTERT_FLYKTNINGSTATUS = 'DOKUMENTERT_FLYKTNINGSTATUS',
+    BOR_OG_OPPHOLDER_SEG_I_NORGE = 'BOR_OG_OPPHOLDER_SEG_I_NORGE',
+}
+
+export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
+    TRE_ÅRS_MEDLEMSKAP: 'Har bruker vært medlem i folketrygden i de siste 3 årene?',
+    DOKUMENTERT_FLYKTNINGSTATUS: 'Er flyktningstatus dokumentert?',
+    BOR_OG_OPPHOLDER_SEG_I_NORGE: 'Bor og oppholder bruker og barna seg i Norge?',
+};
 
 export enum UnntakType {
     ARBEID_NORSK_ARBEIDSGIVER = 'ARBEID_NORSK_ARBEIDSGIVER',

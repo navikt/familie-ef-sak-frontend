@@ -2,6 +2,8 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { Radio, RadioGruppe, Select, Textarea } from 'nav-frontend-skjema';
 import {
+    delvilkårTypeTilTekst,
+    IDelvilkår,
     IVurdering,
     UnntakType,
     unntakTypeTilTekst,
@@ -21,6 +23,15 @@ const StyledEndreVurdering = styled.div`
     }
 `;
 
+const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilkår): IVurdering => {
+    return {
+        ...vurdering,
+        delvilkårVurderinger: vurdering.delvilkårVurderinger.map((delvilkår) =>
+            delvilkår.type === oppdatertDelvilkår.type ? oppdatertDelvilkår : delvilkår
+        ),
+    };
+};
+
 interface Props {
     config: IVilkårConfig;
     data: IVurdering;
@@ -31,10 +42,45 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
     const [vurdering, settVurdering] = useState<IVurdering>(data);
-
+    const delvilkårSomManglerVurdering: IDelvilkår[] = vurdering.delvilkårVurderinger.filter(
+        (delvilkår) => delvilkår.resultat === VilkårResultat.IKKE_VURDERT
+    );
+    const nesteDelvilkår =
+        delvilkårSomManglerVurdering.length > 0 ? delvilkårSomManglerVurdering[0] : null;
+    let erPåDelvilkårSomSkalVurderes = false;
     return (
         <StyledEndreVurdering>
-            <RadioGruppe legend={config.vilkår}>
+            {nesteDelvilkår &&
+                vurdering.delvilkårVurderinger.map((delvilkår) => {
+                    if (erPåDelvilkårSomSkalVurderes) {
+                        return null;
+                    }
+                    if (nesteDelvilkår.type === delvilkår.type) {
+                        erPåDelvilkårSomSkalVurderes = true;
+                    }
+                    return (
+                        <RadioGruppe legend={delvilkårTypeTilTekst[delvilkår.type]}>
+                            {[VilkårResultat.JA, VilkårResultat.NEI].map((vilkårResultat) => (
+                                <Radio
+                                    key={vilkårResultat}
+                                    label={vilkårsResultatTypeTilTekst[vilkårResultat]}
+                                    name={delvilkår.type}
+                                    onChange={() =>
+                                        settVurdering(
+                                            oppdaterDelvilkår(vurdering, {
+                                                type: delvilkår.type,
+                                                resultat: vilkårResultat,
+                                            })
+                                        )
+                                    }
+                                    value={vilkårResultat}
+                                    checked={delvilkår.resultat === vilkårResultat}
+                                />
+                            ))}
+                        </RadioGruppe>
+                    );
+                })}
+            {/*            <RadioGruppe legend={config.vilkår}>
                 {[VilkårResultat.JA, VilkårResultat.NEI].map((vilkårResultat) => (
                     <Radio
                         key={vilkårResultat}
@@ -55,7 +101,7 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                         checked={vurdering.resultat === vilkårResultat}
                     />
                 ))}
-            </RadioGruppe>
+            </RadioGruppe>*/}
             {config.unntak && vurdering.resultat !== VilkårResultat.NEI && (
                 <Select
                     label="Unntak"
