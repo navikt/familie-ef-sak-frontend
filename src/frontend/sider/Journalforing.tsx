@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router';
 import { IJournalpost } from '../typer/journalforing';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
@@ -12,6 +11,8 @@ import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
 import { useApp } from '../context/AppContext';
 import { behandlingstemaTilTekst } from '../komponenter/Oppgavebenk/behandlingstema';
+import { Hovedknapp } from 'nav-frontend-knapper';
+import { Link } from 'react-router-dom';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -25,6 +26,11 @@ const Kolonner = styled.div`
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
+`;
+
+const FlexKnapper = styled.div`
+    display: flex;
+    justify-content: space-between;
 `;
 
 export const Journalforing: React.FC = () => {
@@ -67,6 +73,10 @@ export const Journalforing: React.FC = () => {
                                 personIdent={data.bruker.id}
                                 behandlingstema={data.behandlingstema}
                             />
+                            <FlexKnapper>
+                                <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
+                                <Hovedknapp>Journalfør</Hovedknapp>
+                            </FlexKnapper>
                         </div>
                         <div>
                             <PdfVisning pdfFilInnhold={valgtDokument} />
