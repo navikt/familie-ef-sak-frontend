@@ -25,22 +25,23 @@ const StyledEndreVurdering = styled.div`
 
 const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilkår): IVurdering => {
     let harPassertSisteDelvilkårSomSkalVises = false;
+    const delvilkårVurderinger = vurdering.delvilkårVurderinger.map((delvilkår) => {
+        const skalResetteDelvikårEtterDetSisteSomSKalVises =
+            harPassertSisteDelvilkårSomSkalVises &&
+            delvilkår.resultat !== VilkårResultat.IKKE_VURDERT;
+
+        if (delvilkår.type === oppdatertDelvilkår.type) {
+            harPassertSisteDelvilkårSomSkalVises = true;
+            return oppdatertDelvilkår;
+        } else if (skalResetteDelvikårEtterDetSisteSomSKalVises) {
+            return { type: delvilkår.type, resultat: VilkårResultat.IKKE_VURDERT };
+        } else {
+            return delvilkår;
+        }
+    });
     return {
         ...vurdering,
-        delvilkårVurderinger: vurdering.delvilkårVurderinger.map((delvilkår) => {
-            const skalResetteDelvikårEtterDetSisteSomSKalVises =
-                harPassertSisteDelvilkårSomSkalVises &&
-                delvilkår.resultat !== VilkårResultat.IKKE_VURDERT;
-
-            if (delvilkår.type === oppdatertDelvilkår.type) {
-                harPassertSisteDelvilkårSomSkalVises = true;
-                return oppdatertDelvilkår;
-            } else if (skalResetteDelvikårEtterDetSisteSomSKalVises) {
-                return { type: delvilkår.type, resultat: VilkårResultat.IKKE_VURDERT };
-            } else {
-                return delvilkår;
-            }
-        }),
+        delvilkårVurderinger: delvilkårVurderinger,
         resultat:
             oppdatertDelvilkår.resultat === VilkårResultat.JA
                 ? VilkårResultat.JA
