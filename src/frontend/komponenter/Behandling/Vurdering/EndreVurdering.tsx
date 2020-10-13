@@ -48,6 +48,16 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
     };
 };
 
+const oppdaterVilkår = (unntakType: UnntakType | undefined): VilkårResultat => {
+    if (!unntakType) {
+        return VilkårResultat.IKKE_VURDERT;
+    } else if (unntakType === UnntakType.HAR_IKKE_UNNTAK) {
+        return VilkårResultat.NEI;
+    } else {
+        return VilkårResultat.JA;
+    }
+};
+
 interface Props {
     config: IVilkårConfig;
     data: IVurdering;
@@ -105,14 +115,16 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     label="Unntak"
                     value={vurdering.unntak || undefined}
                     onChange={(e) => {
-                        const unntakType = e.target.value as UnntakType;
+                        const unntak = !e.target.value ? undefined : (e.target.value as UnntakType);
                         settVurdering({
                             ...vurdering,
-                            unntak: unntakType === UnntakType.UNDEFINED ? undefined : unntakType,
+                            unntak: unntak,
+                            resultat: oppdaterVilkår(unntak),
                         });
                     }}
                 >
-                    <option value={UnntakType.UNDEFINED}>Velg...</option>
+                    <option value="">Velg...</option>
+                    <option value={UnntakType.HAR_IKKE_UNNTAK}>Har ikke unntak</option>
                     {config.unntak.map((unntak) => (
                         <option key={unntak} value={unntak}>
                             {unntakTypeTilTekst[unntak]}
