@@ -23,6 +23,10 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
     const behandlingstema =
         oppgave.behandlingstema &&
         behandlingstemaTilTekst[oppgave.behandlingstema as Behandlingstema];
+    const kanJournalføres =
+        oppgavetype === 'JFR' &&
+        oppgave.behandlingstema &&
+        ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);
     return (
         <tr>
             <td>{regDato}</td>
@@ -36,11 +40,13 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
             <td>{enhetsmappe}</td>
             <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
             <td>
-                <Link
-                    to={`/journalfor?journalpostId${oppgave.journalpostId}&oppgaveId=${oppgave.id}`}
-                >
-                    Gå til journalpost
-                </Link>
+                {kanJournalføres && (
+                    <Link
+                        to={`/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`}
+                    >
+                        Gå til journalpost
+                    </Link>
+                )}
             </td>
         </tr>
     );
