@@ -1,11 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Redirect, useHistory } from 'react-router';
 import { IJournalpost } from '../typer/journalforing';
-import { Ressurs, RessursStatus } from '../typer/ressurs';
+import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../komponenter/Journalforing/PdfVisning';
 import Behandling from '../komponenter/Journalforing/Behandling';
-import DataFetcher from '../komponenter/Felleskomponenter/DataFetcher/DataFetcher';
 import { AxiosRequestConfig } from 'axios';
 import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
@@ -16,6 +15,9 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
 import { BehandlingType } from '../typer/behandlingtype';
 import { useGetQueryParams } from '../hooks/useGetQueryParams';
+import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { SkjemaGruppe } from 'nav-frontend-skjema';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -62,6 +64,9 @@ export const Journalforing: React.FC = () => {
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<Record<string, string>>();
+    const [journalpost, settJournalpost] = useState<Ressurs<IJournalpost>>(byggTomRessurs());
+    const [forsøktJournalført, settForsøktJournalført] = useState<boolean>(false);
+    const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
 
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>({
         status: RessursStatus.IKKE_HENTET,
@@ -74,6 +79,26 @@ export const Journalforing: React.FC = () => {
         }),
         [journalpostId]
     );
+
+    const hentData = useCallback(() => {
+        settJournalpost({ status: RessursStatus.HENTER });
+        axiosRequest<IJournalpost, null>(
+            hentJournalpostConfig,
+            innloggetSaksbehandler
+        ).then((res: Ressurs<IJournalpost>) => settJournalpost(res));
+    }, [hentJournalpostConfig]);
+
+    useEffect(() => {
+        if (oppgaveId && journalpostId) {
+            hentData();
+        }
+    }, [oppgaveId, journalpostId]);
+
+    useEffect(() => {
+        if (innsending.status === RessursStatus.SUKSESS) {
+            history.push('/oppgavebenk');
+        }
+    }, [innsending]);
 
     if (!oppgaveIdParam || !journalpostId) {
         return <Redirect to="/oppgavebenk" />;
@@ -89,13 +114,18 @@ export const Journalforing: React.FC = () => {
     };
 
     const fullførJournalføring = () => {
+        settForsøktJournalført(true);
+        if (!behandling || innsending.status === RessursStatus.HENTER) {
+            return;
+        }
+        settInnsending(byggHenterRessurs());
         const data: JournalføringRequest = {
             oppgaveId,
             fagsakId,
             behandling,
             dokumentTitler,
         };
-
+        console.log('data:', data);
         axiosRequest<string, JournalføringRequest>(
             {
                 method: 'POST',
@@ -103,13 +133,13 @@ export const Journalforing: React.FC = () => {
                 data,
             },
             innloggetSaksbehandler
-        ).then((_: Ressurs<string>) => {
-            history.push('/oppgavebenk');
+        ).then((response: Ressurs<string>) => {
+            settInnsending(response);
         });
     };
 
     return (
-        <DataFetcher config={hentJournalpostConfig}>
+        <DataViewer response={journalpost}>
             {(data: IJournalpost) => (
                 <SideLayout>
                     <Sidetittel>{`Registrere journalpost: ${
@@ -121,18 +151,35 @@ export const Journalforing: React.FC = () => {
                             <DokumentVisning
                                 journalPost={data}
                                 hentDokument={hentDokument}
+                                dokumentTitler={dokumentTitler}
                                 settDokumentTitler={settDokumentTitler}
                             />
-                            <Behandling
-                                settBehandling={settBehandling}
-                                behandling={behandling}
-                                personIdent={data.bruker.id}
-                                behandlingstema={data.behandlingstema}
-                                settFagsakId={settFagsakId}
-                            />
+                            <SkjemaGruppe
+                                feil={
+                                    forsøktJournalført &&
+                                    !behandling &&
+                                    'Du må velge en behandling for å journalføre'
+                                }
+                            >
+                                <Behandling
+                                    settBehandling={settBehandling}
+                                    behandling={behandling}
+                                    personIdent={data.bruker.id}
+                                    behandlingstema={data.behandlingstema}
+                                    settFagsakId={settFagsakId}
+                                />
+                            </SkjemaGruppe>
+                            {innsending.status === RessursStatus.FEILET && (
+                                <AlertStripeFeil>{innsending.frontendFeilmelding}</AlertStripeFeil>
+                            )}
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                                <Hovedknapp onClick={fullførJournalføring}>Journalfør</Hovedknapp>
+                                <Hovedknapp
+                                    onClick={fullførJournalføring}
+                                    spinner={innsending.status === RessursStatus.HENTER}
+                                >
+                                    Journalfør
+                                </Hovedknapp>
                             </FlexKnapper>
                         </div>
                         <div>
@@ -141,6 +188,6 @@ export const Journalforing: React.FC = () => {
                     </Kolonner>
                 </SideLayout>
             )}
-        </DataFetcher>
+        </DataViewer>
     );
 };

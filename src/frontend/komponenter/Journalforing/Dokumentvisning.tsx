@@ -10,6 +10,7 @@ interface DokumentVisningProps {
     journalPost: IJournalpost;
     hentDokument: (dokumentInfoId: string) => void;
     settDokumentTitler: any;
+    dokumentTitler?: Record<string, string>;
 }
 
 const StyledListe = styled.ul`
@@ -36,13 +37,17 @@ const StyledDokumentRad = styled.div`
 const DokumentVisning: React.FC<DokumentVisningProps> = ({
     journalPost,
     hentDokument,
+    dokumentTitler,
     settDokumentTitler,
 }) => {
     const [dokumentForRedigering, settDokumentForRedigering] = useState<OrNothing<string>>();
 
     const endreDokumentNavn = (dokumentInfoId: string) => {
         return (nyttDokumentNavn: string) => {
-            settDokumentTitler((prevState: Record<string, string>) => ({ ...prevState }));
+            settDokumentTitler((prevState: Record<string, string>) => ({
+                ...prevState,
+                [dokumentInfoId]: nyttDokumentNavn,
+            }));
             settDokumentForRedigering(null);
         };
     };
@@ -61,7 +66,11 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
                                 />
                             ) : (
                                 <VisDokumentTittel
-                                    dokumentTittel={dokument.tittel}
+                                    dokumentTittel={
+                                        (dokumentTitler &&
+                                            dokumentTitler[dokument.dokumentInfoId]) ||
+                                        dokument.tittel
+                                    }
                                     hentDokument={() => hentDokument(dokument.dokumentInfoId)}
                                     settDokumentForRedigering={() =>
                                         settDokumentForRedigering(dokument.dokumentInfoId)

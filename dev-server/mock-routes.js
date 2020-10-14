@@ -81,4 +81,16 @@ app.post('/familie-ef-sak/api/fagsak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`behandlinger.json`)), delayMs);
 });
 
+app.post('/familie-ef-sak/api/journalpost/:journalpostId', (req, res) => {
+    setTimeout(
+        () =>
+            res.send({
+                status: 'FEILET',
+                frontendFeilmelding: 'Noe gikk galt. Hjelp!?',
+                errorMessage: 'teknisk feil',
+            }),
+        delayMs
+    );
+});
+
 module.exports = app;

@@ -1,9 +1,8 @@
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
 import { AxiosRequestConfig } from 'axios';
-import DataFetcher from '../../komponenter/Felleskomponenter/DataFetcher/DataFetcher';
 import { tilLokalDatoStreng } from '../../utils/date';
 import { behandlingstemaTilStønadstype, Behandlingstema } from '../../typer/behandlingstema';
 import { Flatknapp } from 'nav-frontend-knapper';
@@ -12,6 +11,9 @@ import styled from 'styled-components';
 import { BehandlingType } from '../../typer/behandlingtype';
 import { BehandlingDto, Fagsak } from '../../typer/fagsak';
 import { BehandlingRequest } from '../../sider/Journalforing';
+import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import { useDataHenter } from '../../hooks/useDataHenter';
+import { RessursStatus } from '../../typer/ressurs';
 
 interface Props {
     personIdent: string;
@@ -71,10 +73,17 @@ const Behandling: React.FC<Props> = ({
         };
     };
 
+    const fagsak = useDataHenter<Fagsak, { personIdent: string; stønadstype: string }>(config);
+
+    useEffect(() => {
+        if (fagsak.status === RessursStatus.SUKSESS) {
+            settFagsakId(fagsak.data.id);
+        }
+    }, [fagsak]);
+
     return (
-        <DataFetcher config={config}>
+        <DataViewer response={fagsak}>
             {(data: Fagsak) => {
-                settFagsakId(data.id);
                 return (
                     <>
                         <Systemtittel>Behandling</Systemtittel>
@@ -140,7 +149,7 @@ const Behandling: React.FC<Props> = ({
                     </>
                 );
             }}
-        </DataFetcher>
+        </DataViewer>
     );
 };
 
