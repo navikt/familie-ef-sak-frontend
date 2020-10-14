@@ -31,7 +31,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
             <td>{fristFerdigstillelseDato}</td>
             <td>{prioritet}</td>
             <td>{oppgave.beskrivelse}</td>
-            <td>{oppgave.identer[0].ident}</td> {/* TODO: VIL DETTE ALLTID FUNKE? */}
+            <td>{oppgave.identer && oppgave.identer[0].ident}</td>
             <td>{oppgave.tildeltEnhetsnr}</td>
             <td>{enhetsmappe}</td>
             <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
