@@ -1,14 +1,15 @@
 import EndreDokumentTittel from './EndreDokumentTittel';
 import React, { useState } from 'react';
-import { IJournalpost } from './journalforing';
-import { OrNothing } from '../../hooks/useSorteringState';
 import styled from 'styled-components';
 import { Systemtittel } from 'nav-frontend-typografi';
 import VisDokumentTittel from './VisDokumentTittel';
+import { IJournalpost } from '../../typer/journalforing';
+import { OrNothing } from '../../hooks/useSorteringState';
 
 interface DokumentVisningProps {
     journalPost: IJournalpost;
     hentDokument: (dokumentInfoId: string) => void;
+    settDokumentTitler: any;
 }
 
 const StyledListe = styled.ul`
@@ -32,22 +33,16 @@ const StyledDokumentRad = styled.div`
     justify-content: space-between;
 `;
 
-const DokumentVisning: React.FC<DokumentVisningProps> = ({ journalPost, hentDokument }) => {
-    const [journalPostKopi, settJournalPostKopi] = useState<IJournalpost>(journalPost);
-
+const DokumentVisning: React.FC<DokumentVisningProps> = ({
+    journalPost,
+    hentDokument,
+    settDokumentTitler,
+}) => {
     const [dokumentForRedigering, settDokumentForRedigering] = useState<OrNothing<string>>();
 
     const endreDokumentNavn = (dokumentInfoId: string) => {
         return (nyttDokumentNavn: string) => {
-            settJournalPostKopi({
-                ...journalPostKopi,
-                dokumenter: journalPostKopi.dokumenter.map((dokument) => {
-                    if (dokument.dokumentInfoId === dokumentInfoId) {
-                        return { ...dokument, tittel: nyttDokumentNavn };
-                    }
-                    return dokument;
-                }),
-            });
+            settDokumentTitler((prevState: Record<string, string>) => ({ ...prevState }));
             settDokumentForRedigering(null);
         };
     };
@@ -56,7 +51,7 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({ journalPost, hentDoku
         <StyledDiv>
             <Systemtittel>Dokumenter</Systemtittel>
             <StyledListe>
-                {journalPostKopi.dokumenter.map((dokument) => (
+                {journalPost.dokumenter.map((dokument) => (
                     <StyledListeElement key={dokument.dokumentInfoId}>
                         <StyledDokumentRad>
                             {dokumentForRedigering === dokument.dokumentInfoId ? (

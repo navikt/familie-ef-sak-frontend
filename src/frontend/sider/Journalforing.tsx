@@ -61,12 +61,13 @@ export const Journalforing: React.FC = () => {
     const [oppgaveId] = useState<string>(oppgaveIdParam || '');
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
+    const [dokumentTitler, settDokumentTitler] = useState<Record<string, string>>();
 
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>({
         status: RessursStatus.IKKE_HENTET,
     });
 
-    const config: AxiosRequestConfig = useMemo(
+    const hentJournalpostConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
             url: `/familie-ef-sak/api/journalpost/${journalpostId}`,
@@ -92,6 +93,7 @@ export const Journalforing: React.FC = () => {
             oppgaveId,
             fagsakId,
             behandling,
+            dokumentTitler,
         };
 
         axiosRequest<string, JournalføringRequest>(
@@ -107,7 +109,7 @@ export const Journalforing: React.FC = () => {
     };
 
     return (
-        <DataFetcher config={config}>
+        <DataFetcher config={hentJournalpostConfig}>
             {(data: IJournalpost) => (
                 <SideLayout>
                     <Sidetittel>{`Registrere journalpost: ${
@@ -116,12 +118,17 @@ export const Journalforing: React.FC = () => {
                     <Kolonner>
                         <div>
                             <Brukerinfo bruker={data.bruker} />
-                            <DokumentVisning journalPost={data} hentDokument={hentDokument} />
+                            <DokumentVisning
+                                journalPost={data}
+                                hentDokument={hentDokument}
+                                settDokumentTitler={settDokumentTitler}
+                            />
                             <Behandling
                                 settBehandling={settBehandling}
                                 behandling={behandling}
                                 personIdent={data.bruker.id}
                                 behandlingstema={data.behandlingstema}
+                                settFagsakId={settFagsakId}
                             />
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>

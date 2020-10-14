@@ -17,6 +17,7 @@ interface Props {
     personIdent: string;
     behandlingstema?: Behandlingstema;
     settBehandling: (behandling?: BehandlingRequest) => void;
+    settFagsakId: (fagsakId: string) => void;
     behandling?: BehandlingRequest;
 }
 
@@ -32,6 +33,7 @@ const Behandling: React.FC<Props> = ({
     behandling,
     settBehandling,
     personIdent,
+    settFagsakId,
     behandlingstema,
 }) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
@@ -72,6 +74,7 @@ const Behandling: React.FC<Props> = ({
     return (
         <DataFetcher config={config}>
             {(data: Fagsak) => {
+                settFagsakId(data.id);
                 return (
                     <>
                         <Systemtittel>Behandling</Systemtittel>
