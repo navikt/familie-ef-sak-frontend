@@ -7,5 +7,7 @@ export const styles = {
         navGra20: '#c6c2bf',
         navLysGra: '#e9e7e7',
         hvit: '#ffffff',
+        navBla: '#0067C5',
+        fokusFarge: '#254B6D',
     },
 };

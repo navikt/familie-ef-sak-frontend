@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 import { dokumentTitler } from './konstanter/dokumenttitler';
+import { styles } from '../../typer/styles';
 
 const StyledKnapper = styled.div`
     display: flex;
@@ -23,21 +24,21 @@ const StyledDiv = styled.div`
 const StyledCreatableSelect = styled(CreatableSelect)``;
 
 const customStyles = {
-    container: (styles: Record<string, string>, state: Record<string, string>) => ({
-        ...styles,
+    container: (defaultStyles: Record<string, string>, state: Record<string, string>) => ({
+        ...defaultStyles,
         backgroundColor: '#fff',
         borderRadius: 4,
-        boxShadow: state.isFocused ? '0 0 0 3px #254b6d' : '',
-        border: '1px solid #78706a',
+        boxShadow: state.isFocused ? `0 0 0 3px ${styles.farger.fokusFarge}` : '',
+        border: `1px solid ${styles.farger.navGra60}`,
     }),
-    control: (styles: Record<string, string>) => ({
-        ...styles,
-        borderColor: '#b7b1a9',
+    control: (defaultStyles: Record<string, string>) => ({
+        ...defaultStyles,
+        borderColor: styles.farger.navGra40,
         outline: 'none',
         border: 'none',
         backgroundColor: '#fff',
         ':hover': {
-            borderColor: '#0067c5',
+            borderColor: styles.farger.navBla,
         },
     }),
 };
