@@ -4,9 +4,6 @@ import * as React from 'react';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import { useApp } from '../context/AppContext';
 import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
-import { SakProvider } from '../context/SakContext';
-import SakContainer from './Sak/SakContainer';
-import SakListeContainer from './Sak/SakListeContainer';
 import BehandlingContainer from './Behandling/BehandlingContainer';
 import { OppgaveBenk } from '../sider/Oppgavebenk';
 
@@ -23,19 +20,14 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                 <>
                     <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
                     <div className={'container'} role="main">
-                        <SakProvider>
-                            <Switch>
-                                <Redirect exact={true} from="/" to="/sak" />
-                                <Route
-                                    path="/behandling/:behandlingId"
-                                    component={BehandlingContainer}
-                                />
-                                <Route path="/sak/:sakId" component={SakContainer} />
-                                <Route path="/sak" component={SakListeContainer} />
-                                <Route path="/oppgavebenk" component={OppgaveBenk} />
-                                <Redirect to="/sak" />
-                            </Switch>
-                        </SakProvider>
+                        <Switch>
+                            <Redirect exact={true} from="/" to="/oppgavebenk" />
+                            <Route
+                                path="/behandling/:behandlingId"
+                                component={BehandlingContainer}
+                            />
+                            <Route path="/oppgavebenk" component={OppgaveBenk} />
+                        </Switch>
                     </div>
                 </>
             ) : (
