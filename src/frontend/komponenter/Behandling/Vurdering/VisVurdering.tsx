@@ -7,8 +7,8 @@ import {
     delvilkårTypeTilTekst,
     IVurdering,
     unntakTypeTilTekst,
-    VilkårResultat,
-    vilkårsResultatTypeTilTekst,
+    Vilkårsresultat,
+    vilkårsresultatTypeTilTekst,
     vilkårTypeTilTekst,
 } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
@@ -67,7 +67,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
 
             <StyledVilkår>
                 <StyledIkonOgTittel>
-                    {vurdering.resultat === VilkårResultat.JA ? (
+                    {vurdering.resultat === Vilkårsresultat.JA ? (
                         <Oppfylt heigth={21} width={21} />
                     ) : (
                         <IkkeOppfylt heigth={21} width={21} />
@@ -75,16 +75,16 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
                     <Element>{vilkårTypeTilTekst[vurdering.vilkårType]}</Element>
                 </StyledIkonOgTittel>
 
-                {vurdering.delvilkårVurderinger
+                {vurdering.delvilkårsvurderinger
                     .filter(
-                        (delvilkårvurdering) =>
-                            delvilkårvurdering.resultat !== VilkårResultat.IKKE_VURDERT
+                        (delvilkårsvurdering) =>
+                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_VURDERT
                     )
-                    .map((delvilkårvurdering) => (
+                    .map((delvilkårsvurdering) => (
                         <>
-                            <Element>{delvilkårTypeTilTekst[delvilkårvurdering.type]}</Element>
+                            <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
                             <Normaltekst>
-                                {vilkårsResultatTypeTilTekst[delvilkårvurdering.resultat]}
+                                {vilkårsresultatTypeTilTekst[delvilkårsvurdering.resultat]}
                             </Normaltekst>
                         </>
                     ))}

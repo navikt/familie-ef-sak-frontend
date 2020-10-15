@@ -1,8 +1,8 @@
-import { IVurdering, VilkårResultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { VilkårDel, VurderingConfig } from './VurderingConfig';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
-    vurderinger.filter((vurdering) => vurdering.resultat !== VilkårResultat.JA).length === 0;
+    vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
 
 export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: VilkårDel): IVurdering[] =>
     vurderinger.filter((vurdering) => {
@@ -21,18 +21,18 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
     }
 
     // Må ha satt resulat på vurderingen => vi har vurdert å flytte resultat på vurderingen til backend
-    if (vurdering.resultat === VilkårResultat.IKKE_VURDERT) {
+    if (vurdering.resultat === Vilkårsresultat.IKKE_VURDERT) {
         return false;
     }
 
     // Hvis siste delvurdering er nei: valider unntak hvis det er definert unntak
     const sisteDelvurdering =
-        vurdering.delvilkårVurderinger[vurdering.delvilkårVurderinger.length - 1];
+        vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
     const alleDelvurderingerErVurdert =
-        vurdering.delvilkårVurderinger.filter(
-            (delvurdering) => delvurdering.resultat === VilkårResultat.IKKE_VURDERT
+        vurdering.delvilkårsvurderinger.filter(
+            (delvurdering) => delvurdering.resultat === Vilkårsresultat.IKKE_VURDERT
         ).length === 0;
-    if (alleDelvurderingerErVurdert && sisteDelvurdering.resultat === VilkårResultat.NEI) {
+    if (alleDelvurderingerErVurdert && sisteDelvurdering.resultat === Vilkårsresultat.NEI) {
         if (VurderingConfig[vurdering.vilkårType].unntak) {
             return !!vurdering.unntak;
         } else {
@@ -43,12 +43,12 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
     }
 
     // Valider att siste vurderte delvilkår har resultat == JA
-    const indexForFørsteIkkeVurderteDelvilkår = vurdering.delvilkårVurderinger.findIndex(
-        (value) => value.resultat === VilkårResultat.IKKE_VURDERT
+    const indexForFørsteIkkeVurderteDelvilkår = vurdering.delvilkårsvurderinger.findIndex(
+        (value) => value.resultat === Vilkårsresultat.IKKE_VURDERT
     );
     return !(
         indexForFørsteIkkeVurderteDelvilkår === 0 ||
-        vurdering.delvilkårVurderinger[indexForFørsteIkkeVurderteDelvilkår - 1].resultat !==
-            VilkårResultat.JA
+        vurdering.delvilkårsvurderinger[indexForFørsteIkkeVurderteDelvilkår - 1].resultat !==
+            Vilkårsresultat.JA
     );
 };

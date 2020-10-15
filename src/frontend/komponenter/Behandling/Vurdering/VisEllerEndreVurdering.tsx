@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVurdering, VilkårResultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { VurderingConfig } from './VurderingConfig';
 import VisVurdering from './VisVurdering';
 import EndreVurdering from './EndreVurdering';
@@ -13,7 +13,7 @@ interface Props {
 
 const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
-        vurdering.resultat === VilkårResultat.IKKE_VURDERT
+        vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
     );
 
     const config = VurderingConfig[vurdering.vilkårType];

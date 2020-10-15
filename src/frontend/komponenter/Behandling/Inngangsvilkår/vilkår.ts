@@ -7,33 +7,33 @@ export interface IInngangsvilkår {
 
 export interface IVurdering {
     id: string;
-    resultat: VilkårResultat;
+    resultat: Vilkårsresultat;
     behandlingId: string;
     vilkårType: VilkårType;
     begrunnelse?: string;
     unntak?: UnntakType;
-    delvilkårVurderinger: IDelvilkår[];
+    delvilkårsvurderinger: IDelvilkår[];
     endretAv: string;
     endretTid: string;
 }
 
 export interface IDelvilkår {
     type: DelvilkårType;
-    resultat: VilkårResultat;
+    resultat: Vilkårsresultat;
 }
 
 export interface IMedlemskap {
-    søknadGrunnlag: IMedlemskapSøknadGrunnlag;
-    registerGrunnlag: IMedlemskapRegisterGrunnlag;
+    søknadsgrunnlag: IMedlemskapSøknadsgrunnlag;
+    registergrunnlag: IMedlemskapRegistergrunnlag;
 }
 
-export interface IMedlemskapSøknadGrunnlag {
+export interface IMedlemskapSøknadsgrunnlag {
     bosattNorgeSisteÅrene: boolean;
     oppholderDuDegINorge: boolean;
     utenlandsopphold: IUtenlandsopphold[];
 }
 
-export interface IMedlemskapRegisterGrunnlag {
+export interface IMedlemskapRegistergrunnlag {
     nåværendeStatsborgerskap: string[];
     oppholdstatus: IOppholdstatus[];
     statsborgerskap: IStatsborgerskap[];
@@ -59,13 +59,13 @@ export const oppholdsstatusTypeTilTekst: Record<Oppholdstatus, string> = {
     UKJENT: 'Ukjent',
 };
 
-export enum VilkårResultat {
+export enum Vilkårsresultat {
     JA = 'JA',
     NEI = 'NEI',
     IKKE_VURDERT = 'IKKE_VURDERT',
 }
 
-export const vilkårsResultatTypeTilTekst: Record<VilkårResultat, string> = {
+export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
     JA: 'Ja',
     NEI: 'Nei',
     IKKE_VURDERT: 'Ikke vurdert',

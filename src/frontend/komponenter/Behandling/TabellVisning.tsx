@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RegisterGrunnlag, SøknadGrunnlag } from '../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Registergrunnlag, Søknadsgrunnlag } from '../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { StyledTabell } from '../Felleskomponenter/Visning/StyledTabell';
 
@@ -23,9 +23,9 @@ export interface Kolonner<T> {
 const mapIkon = (ikon: TabellIkon) => {
     switch (ikon) {
         case TabellIkon.REGISTER:
-            return <RegisterGrunnlag />;
+            return <Registergrunnlag />;
         case TabellIkon.SØKNAD:
-            return <SøknadGrunnlag />;
+            return <Søknadsgrunnlag />;
     }
 };
 

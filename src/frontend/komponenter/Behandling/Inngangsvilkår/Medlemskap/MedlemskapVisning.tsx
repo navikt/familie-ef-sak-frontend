@@ -4,8 +4,8 @@ import { IMedlemskap } from '../vilkår';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
-    RegisterGrunnlag,
-    SøknadGrunnlag,
+    Registergrunnlag,
+    Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
@@ -22,10 +22,10 @@ interface Props {
 }
 
 const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
-    const { registerGrunnlag, søknadGrunnlag } = medlemskap;
+    const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
-    const finnesOppholdsstatus = registerGrunnlag.oppholdstatus.length > 0;
-    const finnesUtenlandsperioder = søknadGrunnlag.utenlandsopphold.length > 0;
+    const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
+    const finnesUtenlandsperioder = søknadsgrunnlag.utenlandsopphold.length > 0;
 
     return (
         <>
@@ -40,17 +40,17 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
                     <EtikettLiten>§15-2 og §15-3 </EtikettLiten>
                 </div>
 
-                <RegisterGrunnlag />
+                <Registergrunnlag />
                 <Normaltekst>Statsborgerskap</Normaltekst>
-                <Normaltekst>{registerGrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
+                <Normaltekst>{registergrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
 
-                <SøknadGrunnlag />
+                <Søknadsgrunnlag />
                 <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
-                <BooleanTekst value={søknadGrunnlag.oppholderDuDegINorge} />
+                <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
 
-                <SøknadGrunnlag />
+                <Søknadsgrunnlag />
                 <Normaltekst>Har bodd i Norge siste tre år</Normaltekst>
-                <BooleanTekst value={søknadGrunnlag.bosattNorgeSisteÅrene} />
+                <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
             </StyledTabell>
 
             <StyledLesmerpanel>
@@ -58,13 +58,13 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
                     apneTekst={'Vis info om medlemskap'}
                     lukkTekst={'Lukk info om medlemskap'}
                 >
-                    <Statsborgerskap statsborgerskap={registerGrunnlag.statsborgerskap} />
+                    <Statsborgerskap statsborgerskap={registergrunnlag.statsborgerskap} />
                     {finnesOppholdsstatus && (
-                        <Oppholdsstatus oppholdsstatus={registerGrunnlag.oppholdstatus} />
+                        <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
                     )}
 
                     {finnesUtenlandsperioder && (
-                        <Utenlandsopphold utenlandsopphold={søknadGrunnlag.utenlandsopphold} />
+                        <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
                     )}
                 </Lesmerpanel>
             </StyledLesmerpanel>
