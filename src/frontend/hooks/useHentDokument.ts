@@ -1,8 +1,9 @@
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
+import { OrNothing } from './felles/useSorteringState';
 
-export const useHentDokument = (journalpostIdParam?: string) => {
+export const useHentDokument = (journalpostIdParam: OrNothing<string>) => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>(byggTomRessurs());
 

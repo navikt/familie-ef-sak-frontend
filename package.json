@@ -105,7 +105,6 @@
     "passport-azure-ad": "^4.1.0",
     "prom-client": "^11.5.3",
     "prop-types": "^15.7.2",
-    "query-string": "^6.13.5",
     "react": "^16.13.1",
     "react-collapse": "^5.0.1",
     "react-day-picker": "^7.4.8",

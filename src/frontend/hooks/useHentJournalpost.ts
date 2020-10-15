@@ -3,8 +3,9 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { IJournalpost } from '../typer/journalforing';
 import { AxiosRequestConfig } from 'axios';
+import { OrNothing } from './felles/useSorteringState';
 
-export const useHentJournalpost = (journalpostIdParam?: string) => {
+export const useHentJournalpost = (journalpostIdParam: OrNothing<string>) => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const [journalpost, settJournalpost] = useState<Ressurs<IJournalpost>>(byggTomRessurs());
 

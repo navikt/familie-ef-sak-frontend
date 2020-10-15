@@ -43,8 +43,9 @@ const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 export const Journalforing: React.FC = () => {
     const history = useHistory();
-    const oppgaveIdParam = useGetQueryParams(OPPGAVEID_QUERY_STRING);
-    const journalpostIdParam = useGetQueryParams(JOURNALPOST_QUERY_STRING);
+    const query = useGetQueryParams();
+    const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
+    const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
 
     const journalpostState: JournalføringStateRequest = useJournalføringState();
     const { hentJournalPost, journalpost } = useHentJournalpost(journalpostIdParam);
