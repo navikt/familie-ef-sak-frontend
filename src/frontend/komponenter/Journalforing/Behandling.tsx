@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
 import { AxiosRequestConfig } from 'axios';
-import { tilLokalDatoStreng } from '../../utils/date';
 import { behandlingstemaTilStønadstype, Behandlingstema } from '../../typer/behandlingstema';
 import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilSirkel from '../../ikoner/LeggtilSirkel';
@@ -14,6 +13,7 @@ import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import { RessursStatus } from '../../typer/ressurs';
 import { BehandlingRequest } from '../../hooks/useJournalføringState';
+import { formaterIsoDato } from '../../utils/formatter';
 
 interface Props {
     personIdent: string;
@@ -110,7 +110,7 @@ const Behandling: React.FC<Props> = ({
                                         </td>
                                         <td>{behandlingsEl.type}</td>
                                         <td>{behandlingsEl.status}</td>
-                                        <td>{tilLokalDatoStreng(behandlingsEl.sistEndret)}</td>
+                                        <td>{formaterIsoDato(behandlingsEl.sistEndret)}</td>
                                     </tr>
                                 ))}
                                 {nyBehandling && (

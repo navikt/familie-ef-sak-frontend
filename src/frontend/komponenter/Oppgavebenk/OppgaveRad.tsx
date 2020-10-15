@@ -4,19 +4,19 @@ import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
 import { Link } from 'react-router-dom';
-import { tilLokalDatoStreng } from '../../utils/date';
+import { formaterIsoDato } from '../../utils/formatter';
 
 interface Props {
     oppgave: IOppgave;
 }
 
 const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
-    const regDato = oppgave.opprettetTidspunkt && tilLokalDatoStreng(oppgave.opprettetTidspunkt);
+    const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
 
     const oppgavetype = oppgave.oppgavetype && oppgaveTypeTilTekst[oppgave.oppgavetype];
 
     const fristFerdigstillelseDato =
-        oppgave.fristFerdigstillelse && tilLokalDatoStreng(oppgave.fristFerdigstillelse);
+        oppgave.fristFerdigstillelse && formaterIsoDato(oppgave.fristFerdigstillelse);
 
     const prioritet = oppgave.prioritet && prioritetTilTekst[oppgave.prioritet];
     const enhetsmappe = oppgave.mappeId && enhetsmappeTilTekst[oppgave.mappeId];
