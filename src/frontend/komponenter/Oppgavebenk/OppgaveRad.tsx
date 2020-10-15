@@ -23,8 +23,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
     const behandlingstema =
         oppgave.behandlingstema &&
         behandlingstemaTilTekst[oppgave.behandlingstema as Behandlingstema];
+
     const kanJournalføres =
-        oppgavetype === 'JFR' &&
+        oppgave.oppgavetype === 'JFR' &&
         oppgave.behandlingstema &&
         ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);
     return (
