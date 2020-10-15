@@ -17,13 +17,7 @@ const StyledNavLink = styled(NavLink)`
     border-left: 5px solid white;
     padding: 0.5rem 4rem 0.5rem 2rem;
     text-decoration: none;
-
-    :hover,
-    :active,
-    :visited,
-    :focus {
-        color: inherit;
-    }
+    color: inherit;
 
     :hover {
         border-left: 5px solid ${styles.farger.navBlaLighten20};
