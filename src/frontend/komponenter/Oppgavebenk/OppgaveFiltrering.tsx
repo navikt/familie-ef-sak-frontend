@@ -42,13 +42,17 @@ interface Feil {
     opprettetPeriodeFeil: OrNothing<string>;
     fristPeriodeFeil: OrNothing<string>;
 }
-const initOppgaveRequest = {} as IOppgaveRequest;
+
 const initFeilObjekt = {} as Feil;
 
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
+    const { innloggetSaksbehandler } = useApp();
+    const initOppgaveRequest = innloggetSaksbehandler
+        ? { tilordnetRessurs: innloggetSaksbehandler.navIdent }
+        : ({} as IOppgaveRequest);
+
     const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
-    const { innloggetSaksbehandler } = useApp();
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
@@ -181,7 +185,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     className="flex-item"
                     onClick={() => {
                         setOppgaveRequest(initOppgaveRequest);
-                        hentOppgaver({});
+                        hentOppgaver(initOppgaveRequest);
                     }}
                 >
                     Tilbakestill filtrering
