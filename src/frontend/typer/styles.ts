@@ -1,5 +1,7 @@
 export const styles = {
     farger: {
+        navBla: '#0067C5',
+        navBlaLighten20: '#3385D1',
         navMorkGra: '#3e3832',
         navGra80: '#59514b',
         navGra60: '#78706a',
