@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AxiosRequestConfig } from 'axios';
-import { Ressurs, RessursStatus } from '../typer/ressurs';
-import { useApp } from '../context/AppContext';
+import { Ressurs, RessursStatus } from '../../typer/ressurs';
+import { useApp } from '../../context/AppContext';
 
 type Props<D> = AxiosRequestConfig & { data?: D };
 

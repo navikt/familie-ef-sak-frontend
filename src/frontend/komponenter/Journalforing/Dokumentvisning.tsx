@@ -1,15 +1,15 @@
 import EndreDokumentTittel from './EndreDokumentTittel';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { Systemtittel } from 'nav-frontend-typografi';
 import VisDokumentTittel from './VisDokumentTittel';
 import { IJournalpost } from '../../typer/journalforing';
-import { OrNothing } from '../../hooks/useSorteringState';
+import { OrNothing } from '../../hooks/felles/useSorteringState';
 
 interface DokumentVisningProps {
     journalPost: IJournalpost;
     hentDokument: (dokumentInfoId: string) => void;
-    settDokumentTitler: any;
+    settDokumentTitler: Dispatch<SetStateAction<Record<string, string> | undefined>>;
     dokumentTitler?: Record<string, string>;
 }
 
@@ -44,7 +44,7 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
 
     const endreDokumentNavn = (dokumentInfoId: string) => {
         return (nyttDokumentNavn: string) => {
-            settDokumentTitler((prevState: Record<string, string>) => ({
+            settDokumentTitler((prevState: Record<string, string> | undefined) => ({
                 ...prevState,
                 [dokumentInfoId]: nyttDokumentNavn,
             }));

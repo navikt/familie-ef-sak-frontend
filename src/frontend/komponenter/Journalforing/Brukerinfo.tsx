@@ -1,6 +1,6 @@
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import React from 'react';
-import { BrukerInfo } from './journalforing';
+import { BrukerInfo } from '../../typer/journalforing';
 
 interface BrukerinfoProps {
     bruker: BrukerInfo;

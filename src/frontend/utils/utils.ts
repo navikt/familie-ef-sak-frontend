@@ -1,4 +1,4 @@
-import { OrNothing } from '../hooks/useSorteringState';
+import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../komponenter/Oppgavebenk/oppgaverequest';
 

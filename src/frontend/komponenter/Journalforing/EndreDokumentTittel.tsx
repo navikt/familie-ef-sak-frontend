@@ -23,14 +23,14 @@ const StyledDiv = styled.div`
 const StyledCreatableSelect = styled(CreatableSelect)``;
 
 const customStyles = {
-    container: (styles: any, state: any) => ({
+    container: (styles: Record<string, string>, state: Record<string, string>) => ({
         ...styles,
         backgroundColor: '#fff',
         borderRadius: 4,
         boxShadow: state.isFocused ? '0 0 0 3px #254b6d' : '',
         border: '1px solid #78706a',
     }),
-    control: (styles: any) => ({
+    control: (styles: Record<string, string>) => ({
         ...styles,
         borderColor: '#b7b1a9',
         outline: 'none',

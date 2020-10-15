@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { FlexDiv } from './OppgaveFiltrering';
-import { OrNothing } from '../../hooks/useSorteringState';
+import { OrNothing } from '../../hooks/felles/useSorteringState';
 
 const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;

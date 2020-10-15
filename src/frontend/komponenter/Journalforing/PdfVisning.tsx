@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import Paginering from '../Paginering/Paginering';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import { Ressurs, RessursStatus } from '../../typer/ressurs';
+import { Ressurs } from '../../typer/ressurs';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import styled from 'styled-components';
+import { Page, Document, pdfjs } from 'react-pdf';
+import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface PdfVisningProps {
     pdfFilInnhold: Ressurs<string>;
@@ -23,17 +26,9 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
         setNumPages(numPages);
     }
 
-    switch (pdfFilInnhold.status) {
-        case RessursStatus.IKKE_HENTET:
-            return null;
-        case RessursStatus.FEILET:
-            return <AlertStripeFeil>Noe gikk galt ved lasting av dokument</AlertStripeFeil>;
-        case RessursStatus.IKKE_TILGANG:
-            return <AlertStripeFeil>Du har ikke tilgang til dette dokumentet</AlertStripeFeil>;
-        case RessursStatus.HENTER:
-            return <NavFrontendSpinner />;
-        case RessursStatus.SUKSESS:
-            return (
+    return (
+        <DataViewer response={pdfFilInnhold}>
+            {(data) => (
                 <>
                     <MittStilltDiv>
                         <Paginering
@@ -44,7 +39,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         />
                     </MittStilltDiv>
                     <Document
-                        file={`data:application/pdf;base64,${pdfFilInnhold.data}`}
+                        file={`data:application/pdf;base64,${data}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         error={
                             <AlertStripeFeil children={'Ukjent feil ved henting av dokument.'} />
@@ -63,8 +58,9 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         />
                     </MittStilltDiv>
                 </>
-            );
-    }
+            )}
+        </DataViewer>
+    );
 };
 
 export default PdfVisning;

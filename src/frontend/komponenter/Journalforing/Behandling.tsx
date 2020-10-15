@@ -12,7 +12,7 @@ import { BehandlingType } from '../../typer/behandlingtype';
 import { BehandlingDto, Fagsak } from '../../typer/fagsak';
 import { BehandlingRequest } from '../../sider/Journalforing';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import { useDataHenter } from '../../hooks/useDataHenter';
+import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import { RessursStatus } from '../../typer/ressurs';
 
 interface Props {

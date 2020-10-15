@@ -1,23 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router';
 import { IJournalpost } from '../typer/journalforing';
-import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
+import { RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../komponenter/Journalforing/PdfVisning';
 import Behandling from '../komponenter/Journalforing/Behandling';
-import { AxiosRequestConfig } from 'axios';
 import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
-import { useApp } from '../context/AppContext';
 import { behandlingstemaTilTekst } from '../typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
-import { BehandlingType } from '../typer/behandlingtype';
-import { useGetQueryParams } from '../hooks/useGetQueryParams';
+import { useGetQueryParams } from '../hooks/felles/useGetQueryParams';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
+import { useJournalføringState } from '../hooks/useJournalføringState';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -38,59 +36,33 @@ const FlexKnapper = styled.div`
     justify-content: space-between;
 `;
 
-export interface BehandlingRequest {
-    behandlingsId?: string;
-    behandlingType?: BehandlingType;
-}
-
-interface JournalføringRequest {
-    dokumentTitler?: Record<string, string>;
-    fagsakId: string;
-    oppgaveId: string;
-    behandling?: BehandlingRequest;
-}
-
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 export const Journalforing: React.FC = () => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
     const history = useHistory();
-
     const oppgaveIdParam = useGetQueryParams(OPPGAVEID_QUERY_STRING);
     const journalpostId = useGetQueryParams(JOURNALPOST_QUERY_STRING);
 
-    const [oppgaveId] = useState<string>(oppgaveIdParam || '');
-    const [fagsakId, settFagsakId] = useState<string>('');
-    const [behandling, settBehandling] = useState<BehandlingRequest>();
-    const [dokumentTitler, settDokumentTitler] = useState<Record<string, string>>();
-    const [journalpost, settJournalpost] = useState<Ressurs<IJournalpost>>(byggTomRessurs());
-    const [forsøktJournalført, settForsøktJournalført] = useState<boolean>(false);
-    const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
-
-    const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>({
-        status: RessursStatus.IKKE_HENTET,
-    });
-
-    const hentJournalpostConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/journalpost/${journalpostId}`,
-        }),
-        [journalpostId]
-    );
-
-    const hentData = useCallback(() => {
-        settJournalpost({ status: RessursStatus.HENTER });
-        axiosRequest<IJournalpost, null>(
-            hentJournalpostConfig,
-            innloggetSaksbehandler
-        ).then((res: Ressurs<IJournalpost>) => settJournalpost(res));
-    }, [hentJournalpostConfig]);
+    const {
+        oppgaveId,
+        settFagsakId,
+        behandling,
+        settBehandling,
+        dokumentTitler,
+        settDokumentTitler,
+        journalpost,
+        valgtDokument,
+        forsøktJournalført,
+        innsending,
+        hentDokument,
+        hentJournalPost,
+        fullførJournalføring,
+    } = useJournalføringState(oppgaveIdParam, journalpostId);
 
     useEffect(() => {
         if (oppgaveId && journalpostId) {
-            hentData();
+            hentJournalPost();
         }
     }, [oppgaveId, journalpostId]);
 
@@ -103,40 +75,6 @@ export const Journalforing: React.FC = () => {
     if (!oppgaveIdParam || !journalpostId) {
         return <Redirect to="/oppgavebenk" />;
     }
-    const hentDokument = (dokumentInfoId: string) => {
-        axiosRequest<string, null>(
-            {
-                method: 'GET',
-                url: `/familie-ef-sak/api/journalpost/${journalpostId}/dokument/${dokumentInfoId}`,
-            },
-            innloggetSaksbehandler
-        ).then((res: Ressurs<string>) => settValgtDokument(res));
-    };
-
-    const fullførJournalføring = () => {
-        settForsøktJournalført(true);
-        if (!behandling || innsending.status === RessursStatus.HENTER) {
-            return;
-        }
-        settInnsending(byggHenterRessurs());
-        const data: JournalføringRequest = {
-            oppgaveId,
-            fagsakId,
-            behandling,
-            dokumentTitler,
-        };
-        console.log('data:', data);
-        axiosRequest<string, JournalføringRequest>(
-            {
-                method: 'POST',
-                url: `/familie-ef-sak/api/journalpost/${journalpostId}/`,
-                data,
-            },
-            innloggetSaksbehandler
-        ).then((response: Ressurs<string>) => {
-            settInnsending(response);
-        });
-    };
 
     return (
         <DataViewer response={journalpost}>

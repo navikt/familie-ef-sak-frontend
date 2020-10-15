@@ -11,7 +11,7 @@ import { enhetTilTekst } from './enhet';
 import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../utils/utils';
 import { IOppgaveRequest } from './oppgaverequest';
-import { OrNothing } from '../../hooks/useSorteringState';
+import { OrNothing } from '../../hooks/felles/useSorteringState';
 
 export const FlexDiv = styled.div`
     display: flex;
