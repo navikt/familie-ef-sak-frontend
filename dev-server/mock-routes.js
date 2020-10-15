@@ -85,7 +85,7 @@ app.post('/familie-ef-sak/api/journalpost/:journalpostId', (req, res) => {
     setTimeout(
         () =>
             res.send({
-                status: 'FEILET',
+                status: 'SUKSESS',
                 frontendFeilmelding: 'Noe gikk galt. Hjelp!?',
                 errorMessage: 'teknisk feil',
             }),

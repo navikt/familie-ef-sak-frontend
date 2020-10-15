@@ -15,7 +15,9 @@ import { useGetQueryParams } from '../hooks/felles/useGetQueryParams';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { useJournalføringState } from '../hooks/useJournalføringState';
+import { JournalføringStateRequest, useJournalføringState } from '../hooks/useJournalføringState';
+import { useHentJournalpost } from '../hooks/useHentJournalpost';
+import { useHentDokument } from '../hooks/useHentDokument';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -42,40 +44,27 @@ const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 export const Journalforing: React.FC = () => {
     const history = useHistory();
     const oppgaveIdParam = useGetQueryParams(OPPGAVEID_QUERY_STRING);
-    const journalpostId = useGetQueryParams(JOURNALPOST_QUERY_STRING);
+    const journalpostIdParam = useGetQueryParams(JOURNALPOST_QUERY_STRING);
 
-    const {
-        oppgaveId,
-        settFagsakId,
-        behandling,
-        settBehandling,
-        dokumentTitler,
-        settDokumentTitler,
-        journalpost,
-        valgtDokument,
-        forsøktJournalført,
-        innsending,
-        hentDokument,
-        hentJournalPost,
-        fullførJournalføring,
-    } = useJournalføringState(oppgaveIdParam, journalpostId);
+    const journalpostState: JournalføringStateRequest = useJournalføringState();
+    const { hentJournalPost, journalpost } = useHentJournalpost(journalpostIdParam);
+    const { hentDokument, valgtDokument } = useHentDokument(journalpostIdParam);
 
     useEffect(() => {
-        if (oppgaveId && journalpostId) {
+        if (oppgaveIdParam && journalpostIdParam) {
             hentJournalPost();
         }
-    }, [oppgaveId, journalpostId]);
+    }, [oppgaveIdParam, journalpostIdParam]);
 
     useEffect(() => {
-        if (innsending.status === RessursStatus.SUKSESS) {
+        if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
             history.push('/oppgavebenk');
         }
-    }, [innsending]);
+    }, [journalpostState.innsending]);
 
-    if (!oppgaveIdParam || !journalpostId) {
+    if (!oppgaveIdParam || !journalpostIdParam) {
         return <Redirect to="/oppgavebenk" />;
     }
-
     return (
         <DataViewer response={journalpost}>
             {(data: IJournalpost) => (
@@ -89,32 +78,38 @@ export const Journalforing: React.FC = () => {
                             <DokumentVisning
                                 journalPost={data}
                                 hentDokument={hentDokument}
-                                dokumentTitler={dokumentTitler}
-                                settDokumentTitler={settDokumentTitler}
+                                dokumentTitler={journalpostState.dokumentTitler}
+                                settDokumentTitler={journalpostState.settDokumentTitler}
                             />
                             <SkjemaGruppe
                                 feil={
-                                    forsøktJournalført &&
-                                    !behandling &&
+                                    journalpostState.forsøktJournalført &&
+                                    !journalpostState.behandling &&
                                     'Du må velge en behandling for å journalføre'
                                 }
                             >
                                 <Behandling
-                                    settBehandling={settBehandling}
-                                    behandling={behandling}
+                                    settBehandling={journalpostState.settBehandling}
+                                    behandling={journalpostState.behandling}
                                     personIdent={data.bruker.id}
                                     behandlingstema={data.behandlingstema}
-                                    settFagsakId={settFagsakId}
+                                    settFagsakId={journalpostState.settFagsakId}
                                 />
                             </SkjemaGruppe>
-                            {innsending.status === RessursStatus.FEILET && (
-                                <AlertStripeFeil>{innsending.frontendFeilmelding}</AlertStripeFeil>
+                            {journalpostState.innsending.status === RessursStatus.FEILET && (
+                                <AlertStripeFeil>
+                                    {journalpostState.innsending.frontendFeilmelding}
+                                </AlertStripeFeil>
                             )}
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
-                                    onClick={fullførJournalføring}
-                                    spinner={innsending.status === RessursStatus.HENTER}
+                                    onClick={() =>
+                                        journalpostState.fullførJournalføring(journalpostIdParam!)
+                                    }
+                                    spinner={
+                                        journalpostState.innsending.status === RessursStatus.HENTER
+                                    }
                                 >
                                     Journalfør
                                 </Hovedknapp>
