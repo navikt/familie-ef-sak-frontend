@@ -12,9 +12,9 @@ import {
     vilkårTypeTilTekst,
 } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { navLillaLighten20 } from '../../../utils/farger';
 import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
 import Oppfylt from '../../../ikoner/Oppfylt';
+import { styles } from '../../../typer/styles';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -26,7 +26,7 @@ const StyledVurdering = styled.div`
 const StyledKnapp = styled.button``;
 
 const StyledStrek = styled.span`
-    border-left: 3px solid ${navLillaLighten20};
+    border-left: 3px solid ${styles.farger.navLillaLighten20};
     margin-left: 0.55rem;
     grid-column: 1/2;
 `;

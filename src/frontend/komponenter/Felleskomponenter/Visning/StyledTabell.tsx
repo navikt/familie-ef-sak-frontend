@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { navGra60 } from '../../../utils/farger';
+import { styles } from '../../../typer/styles';
 
 export const StyledTabell = styled.div`
     display: grid;
@@ -26,7 +26,7 @@ export const StyledTabell = styled.div`
             margin-right: 1rem;
         }
         .typo-etikett-liten {
-            color: ${navGra60};
+            color: ${styles.farger.navGra60};
         }
     }
 
