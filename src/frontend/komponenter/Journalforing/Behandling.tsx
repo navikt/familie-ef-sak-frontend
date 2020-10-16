@@ -2,9 +2,8 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import React, { useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
-import { Behandlingstema } from '../../typer/behandlingstema';
 import { Flatknapp } from 'nav-frontend-knapper';
-import LeggtilSirkel from '../../ikoner/LeggtilSirkel';
+import LeggtilMedSirkel from '../../ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
 import { BehandlingType } from '../../typer/behandlingtype';
 import { BehandlingDto, Fagsak } from '../../typer/fagsak';
@@ -14,10 +13,7 @@ import { formaterIsoDato } from '../../utils/formatter';
 import { Ressurs } from '../../typer/ressurs';
 
 interface Props {
-    personIdent: string;
-    behandlingstema?: Behandlingstema;
     settBehandling: (behandling?: BehandlingRequest) => void;
-    settFagsakId: (fagsakId: string) => void;
     behandling?: BehandlingRequest;
     fagsak: Ressurs<Fagsak>;
 }
@@ -116,7 +112,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                         });
                                     }}
                                 >
-                                    <LeggtilSirkel />
+                                    <LeggtilMedSirkel />
                                     <span>Opprett ny behandling</span>
                                 </Flatknapp>
                             )}

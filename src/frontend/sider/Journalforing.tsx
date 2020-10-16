@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router';
 import { IJournalpost } from '../typer/journalforing';
 import { RessursStatus } from '../typer/ressurs';
@@ -18,9 +18,7 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { JournalføringStateRequest, useJournalføringState } from '../hooks/useJournalføringState';
 import { useHentJournalpost } from '../hooks/useHentJournalpost';
 import { useHentDokument } from '../hooks/useHentDokument';
-import { useDataHenter } from '../hooks/felles/useDataHenter';
-import { Fagsak } from '../typer/fagsak';
-import { AxiosRequestConfig } from 'axios';
+import { useHentFagsak } from '../hooks/useHentFagsak';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -53,6 +51,7 @@ export const Journalforing: React.FC = () => {
     const journalpostState: JournalføringStateRequest = useJournalføringState();
     const { hentJournalPost, journalpost } = useHentJournalpost(journalpostIdParam);
     const { hentDokument, valgtDokument } = useHentDokument(journalpostIdParam);
+    const { hentFagsak, fagsak } = useHentFagsak();
 
     useEffect(() => {
         if (oppgaveIdParam && journalpostIdParam) {
@@ -66,18 +65,12 @@ export const Journalforing: React.FC = () => {
         }
     }, [journalpostState.innsending]);
 
-    const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
-
-    const config: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'POST',
-            url: `/familie-ef-sak/api/fagsak`,
-            data: { personIdent, stønadstype },
-        }),
-        [stønadstype, personIdent]
-    );
-
-    const fagsak = useDataHenter<Fagsak, { personIdent: string; stønadstype: string }>(config);
+    useEffect(() => {
+        if (journalpost.status === RessursStatus.SUKSESS) {
+            const stønadstype = behandlingstemaTilStønadstype(journalpost.data.behandlingstema);
+            stønadstype && hentFagsak(journalpost.data.bruker.id, stønadstype);
+        }
+    }, [journalpost]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
@@ -114,9 +107,7 @@ export const Journalforing: React.FC = () => {
                                 <Behandling
                                     settBehandling={journalpostState.settBehandling}
                                     behandling={journalpostState.behandling}
-                                    personIdent={data.bruker.id}
-                                    behandlingstema={data.behandlingstema}
-                                    settFagsakId={journalpostState.settFagsakId}
+                                    fagsak={fagsak}
                                 />
                             </SkjemaGruppe>
                             {journalpostState.innsending.status === RessursStatus.FEILET && (
