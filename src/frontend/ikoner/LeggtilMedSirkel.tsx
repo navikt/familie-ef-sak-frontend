@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-interface ILeggtilSirkel {
+interface ILeggTilMedSirkel {
     className?: string;
     heigth?: number;
     width?: number;
 }
 
-const LeggtilSirkel: React.FC<ILeggtilSirkel> = ({ className, heigth, width }) => {
+const LeggTilMedSirkel: React.FC<ILeggTilMedSirkel> = ({ className, heigth, width }) => {
     return (
         <svg
             aria-labelledby={'leggtilSirkel'}
@@ -32,4 +32,4 @@ const LeggtilSirkel: React.FC<ILeggtilSirkel> = ({ className, heigth, width }) =
     );
 };
 
-export default LeggtilSirkel;
+export default LeggTilMedSirkel;
