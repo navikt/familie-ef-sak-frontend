@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Redirect, useHistory } from 'react-router';
 import { IJournalpost } from '../typer/journalforing';
 import { RessursStatus } from '../typer/ressurs';
@@ -8,7 +8,7 @@ import Behandling from '../komponenter/Journalforing/Behandling';
 import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
-import { behandlingstemaTilTekst } from '../typer/behandlingstema';
+import { behandlingstemaTilStønadstype, behandlingstemaTilTekst } from '../typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
 import { useGetQueryParams } from '../hooks/felles/useGetQueryParams';
@@ -18,6 +18,9 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { JournalføringStateRequest, useJournalføringState } from '../hooks/useJournalføringState';
 import { useHentJournalpost } from '../hooks/useHentJournalpost';
 import { useHentDokument } from '../hooks/useHentDokument';
+import { useDataHenter } from '../hooks/felles/useDataHenter';
+import { Fagsak } from '../typer/fagsak';
+import { AxiosRequestConfig } from 'axios';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -62,6 +65,25 @@ export const Journalforing: React.FC = () => {
             history.push('/oppgavebenk');
         }
     }, [journalpostState.innsending]);
+
+    const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
+
+    const config: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'POST',
+            url: `/familie-ef-sak/api/fagsak`,
+            data: { personIdent, stønadstype },
+        }),
+        [stønadstype, personIdent]
+    );
+
+    const fagsak = useDataHenter<Fagsak, { personIdent: string; stønadstype: string }>(config);
+
+    useEffect(() => {
+        if (fagsak.status === RessursStatus.SUKSESS) {
+            journalpostState.settFagsakId(fagsak.data.id);
+        }
+    }, [fagsak]);
 
     if (!oppgaveIdParam || !journalpostIdParam) {
         return <Redirect to="/oppgavebenk" />;

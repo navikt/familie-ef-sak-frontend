@@ -1,19 +1,17 @@
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
-import { AxiosRequestConfig } from 'axios';
-import { behandlingstemaTilStønadstype, Behandlingstema } from '../../typer/behandlingstema';
+import { Behandlingstema } from '../../typer/behandlingstema';
 import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilSirkel from '../../ikoner/LeggtilSirkel';
 import styled from 'styled-components';
 import { BehandlingType } from '../../typer/behandlingtype';
 import { BehandlingDto, Fagsak } from '../../typer/fagsak';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import { useDataHenter } from '../../hooks/felles/useDataHenter';
-import { RessursStatus } from '../../typer/ressurs';
 import { BehandlingRequest } from '../../hooks/useJournalføringState';
 import { formaterIsoDato } from '../../utils/formatter';
+import { Ressurs } from '../../typer/ressurs';
 
 interface Props {
     personIdent: string;
@@ -21,6 +19,7 @@ interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;
     settFagsakId: (fagsakId: string) => void;
     behandling?: BehandlingRequest;
+    fagsak: Ressurs<Fagsak>;
 }
 
 interface INyBehandling {
@@ -31,26 +30,9 @@ const StyledNyBehandlingRad = styled.tr`
     background-color: #cce1f3;
 `;
 
-const Behandling: React.FC<Props> = ({
-    behandling,
-    settBehandling,
-    personIdent,
-    settFagsakId,
-    behandlingstema,
-}) => {
+const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
     const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
-
-    const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
-
-    const config: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'POST',
-            url: `/familie-ef-sak/api/fagsak`,
-            data: { personIdent, stønadstype },
-        }),
-        [stønadstype, personIdent]
-    );
 
     const håndterCheck = (behandlingsId: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,14 +54,6 @@ const Behandling: React.FC<Props> = ({
             }
         };
     };
-
-    const fagsak = useDataHenter<Fagsak, { personIdent: string; stønadstype: string }>(config);
-
-    useEffect(() => {
-        if (fagsak.status === RessursStatus.SUKSESS) {
-            settFagsakId(fagsak.data.id);
-        }
-    }, [fagsak]);
 
     return (
         <DataViewer response={fagsak}>
