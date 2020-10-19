@@ -11,6 +11,7 @@ import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/useSorteringState';
 import { usePagineringState } from '../../hooks/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
+import navFarger from 'nav-frontend-core';
 
 const SIDE_STORRELSE = 15;
 
@@ -50,6 +51,10 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
     } else if (status === RessursStatus.IKKE_HENTET) {
         return <AlertStripeInfo> Du må gjøre ett søk for å se oppgaver i listen.</AlertStripeInfo>; //TODO FIKS TEKST
     }
+
+    console.log('wtf');
+    console.log(navFarger.navBla);
+    console.log('wtf');
 
     return (
         <>

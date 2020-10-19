@@ -27,7 +27,14 @@ const config = mergeWithCustomize({
                 test: /\.(less)$/,
                 use: [
                     { loader: require.resolve('style-loader') },
-                    { loader: require.resolve('css-loader') },
+                    {
+                        loader: require.resolve('css-loader'),
+                        options: {
+                            modules: {
+                                compileType: 'icss',
+                            },
+                        },
+                    },
                     { loader: require.resolve('less-loader') },
                 ],
             },
