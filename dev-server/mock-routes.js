@@ -44,16 +44,6 @@ app.get('/familie-ef-sak/api/journalpost/:id/dokument/:dokumentInfoId', (req, re
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
-app.get('/familie-ef-sak/api/sak/:id', (req, res) => {
-    const filnavn = `sak.json`;
-    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
-});
-
-app.post('/familie-ef-sak/api/saksok/ident', (req, res) => {
-    const filnavn = req.body.personIdent === '12345678910' ? `saksøk.json` : `saksøk-feil.json`;
-    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
-});
-
 app.get('/familie-ef-sak/api/behandling/2/vedtak-html', (req, res) => {
     setTimeout(
         () =>
