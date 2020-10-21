@@ -1,6 +1,6 @@
 import { Oppgavetype, Prioritet } from './oppgavetema';
 import { Enhetsmappe } from './enhetsmappe';
-import { Behandlingstema } from './behandlingstema';
+import { Behandlingstema } from '../../typer/behandlingstema';
 
 export interface IOppgave {
     id: number;

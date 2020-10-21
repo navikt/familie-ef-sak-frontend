@@ -6,10 +6,10 @@ import { OppgaveResurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
-import Paginering from './Paginering';
+import Paginering from '../Paginering/Paginering';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
-import { useSorteringState } from '../../hooks/useSorteringState';
-import { usePagineringState } from '../../hooks/usePaginerState';
+import { useSorteringState } from '../../hooks/felles/useSorteringState';
+import { usePagineringState } from '../../hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 
 const SIDE_STORRELSE = 15;
@@ -65,6 +65,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                         {OppgaveHeaderConfig.map((header) =>
                             header.erSorterbar ? (
                                 <OppgaveSorteringsHeader
+                                    key={header.tekst}
                                     tekst={header.tekst}
                                     rekkefolge={
                                         sortConfig?.sorteringsfelt === header.feltNavn
@@ -74,14 +75,16 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                                     onClick={() => settSortering(header.feltNavn as keyof IOppgave)}
                                 />
                             ) : (
-                                <th role="columnheader">{header.tekst}</th>
+                                <th key={header.tekst} role="columnheader">
+                                    {header.tekst}
+                                </th>
                             )
                         )}
                     </tr>
                 </thead>
                 <tbody>
                     {slicedListe.map((v) => (
-                        <OppgaveRad oppgave={v} />
+                        <OppgaveRad key={v.id} oppgave={v} />
                     ))}
                 </tbody>
             </table>

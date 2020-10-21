@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useApp } from '../../frontend/context/AppContext';
-import OppgaveFiltering, { IOppgaveRequest } from '../komponenter/Oppgavebenk/OppgaveFiltrering';
+import OppgaveFiltering from '../komponenter/Oppgavebenk/OppgaveFiltrering';
 import OppgaveTabell, { IOppgaverResponse } from '../komponenter/Oppgavebenk/OppgaveTabell';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs } from '../typer/ressurs';
+import { IOppgaveRequest } from '../komponenter/Oppgavebenk/oppgaverequest';
 
 const Side = styled.div`
     padding: 0.5rem;

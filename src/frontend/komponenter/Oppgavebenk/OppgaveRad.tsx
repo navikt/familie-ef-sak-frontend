@@ -1,34 +1,33 @@
 import React from 'react';
-import parseISO from 'date-fns/parseJSON';
 import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
-import { parse } from 'date-fns';
 import { enhetsmappeTilTekst } from './enhetsmappe';
-import { Behandlingstema, behandlingstemaTilTekst } from './behandlingstema';
+import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
+import { Link } from 'react-router-dom';
+import { formaterIsoDato } from '../../utils/formatter';
 
 interface Props {
     oppgave: IOppgave;
 }
 
 const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
-    const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    const regDato =
-        oppgave.opprettetTidspunkt &&
-        parseISO(oppgave.opprettetTidspunkt).toLocaleDateString('no-NO', datoFormat);
+    const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
 
     const oppgavetype = oppgave.oppgavetype && oppgaveTypeTilTekst[oppgave.oppgavetype];
 
     const fristFerdigstillelseDato =
-        oppgave.fristFerdigstillelse &&
-        parse(oppgave.fristFerdigstillelse, 'yyyy-MM-dd', new Date()).toLocaleDateString(
-            'no-NO',
-            datoFormat
-        );
+        oppgave.fristFerdigstillelse && formaterIsoDato(oppgave.fristFerdigstillelse);
+
     const prioritet = oppgave.prioritet && prioritetTilTekst[oppgave.prioritet];
     const enhetsmappe = oppgave.mappeId && enhetsmappeTilTekst[oppgave.mappeId];
     const behandlingstema =
         oppgave.behandlingstema &&
         behandlingstemaTilTekst[oppgave.behandlingstema as Behandlingstema];
+
+    const kanJournalføres =
+        oppgave.oppgavetype === 'JFR' &&
+        oppgave.behandlingstema &&
+        ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);
     return (
         <tr>
             <td>{regDato}</td>
@@ -37,11 +36,19 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
             <td>{fristFerdigstillelseDato}</td>
             <td>{prioritet}</td>
             <td>{oppgave.beskrivelse}</td>
-            <td>{oppgave.identer[0].ident}</td> {/* TODO: VIL DETTE ALLTID FUNKE? */}
+            <td>{oppgave.identer && oppgave.identer[0].ident}</td>
             <td>{oppgave.tildeltEnhetsnr}</td>
             <td>{enhetsmappe}</td>
             <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
-            <td>Handlinger</td>
+            <td>
+                {kanJournalføres && (
+                    <Link
+                        to={`/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`}
+                    >
+                        Gå til journalpost
+                    </Link>
+                )}
+            </td>
         </tr>
     );
 };
