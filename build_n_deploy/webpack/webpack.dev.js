@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const { mergeWithCustomize } = require('webpack-merge');
 const common = require('./webpack.common');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -46,6 +47,14 @@ const config = mergeWithCustomize({
             'process.env.NODE_ENV': JSON.stringify('development'),
         }),
         new webpack.HotModuleReplacementPlugin(),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.join(__dirname, '../../assets'),
+                    to: path.join(__dirname, '../../frontend_development'),
+                },
+            ],
+        }),
     ],
 });
 

@@ -131,6 +131,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "babel-polyfill": "^6.26.0",
+    "copy-webpack-plugin": "^6.2.1",
     "css-loader": "^4.2.2",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",

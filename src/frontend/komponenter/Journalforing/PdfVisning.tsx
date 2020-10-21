@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Page, Document, pdfjs } from 'react-pdf';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.js';
 
 interface PdfVisningProps {
     pdfFilInnhold: Ressurs<string>;

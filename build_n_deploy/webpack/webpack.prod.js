@@ -4,6 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -50,6 +51,14 @@ const config = mergeWithCustomize({
         new webpack.NoEmitOnErrorsPlugin(),
         new MiniCssExtractPlugin({
             filename: 'familie-ef-sak-frontend.css',
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.join(__dirname, '../../assets'),
+                    to: path.join(__dirname, '../../frontend_production'),
+                },
+            ],
         }),
     ],
     optimization: {
