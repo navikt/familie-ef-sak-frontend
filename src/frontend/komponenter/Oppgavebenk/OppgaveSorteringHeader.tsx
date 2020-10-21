@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Rekkefolge } from '../../hooks/useSorteringState';
+import { Rekkefolge } from '../../hooks/felles/useSorteringState';
 import classNames from 'classnames';
 
 interface Props {

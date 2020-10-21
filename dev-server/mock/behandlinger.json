@@ -1,0 +1,24 @@
+{
+    "data": {
+        "id": "e4365f83-eb8c-4b81-b982-33e55648661d",
+        "personIdent": "23118612345",
+        "stønadstype": "BARNETILSYN",
+        "behandlinger": [
+            {
+                "id": "ad983bff-d807-4ade-928e-1093e16ec2ac",
+                "type": "FØRSTEGANGSBEHANDLING",
+                "aktiv": false,
+                "status": "FERDIGSTILT",
+                "sistEndret": "2020-10-09"
+            },
+            {
+                "id": "e1e7326c-a043-4370-8d29-8d1099ff6346",
+                "type": "REVURDERING",
+                "aktiv": true,
+                "status": "UTREDES",
+                "sistEndret": "2020-10-09"
+            }
+        ]
+    },
+    "status": "SUKSESS"
+}

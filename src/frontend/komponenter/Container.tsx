@@ -6,6 +6,7 @@ import { useApp } from '../context/AppContext';
 import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
 import BehandlingContainer from './Behandling/BehandlingContainer';
 import { OppgaveBenk } from '../sider/Oppgavebenk';
+import { Journalforing } from '../sider/Journalforing';
 
 interface IProps {
     innloggetSaksbehandler?: ISaksbehandler;
@@ -27,6 +28,8 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                                 component={BehandlingContainer}
                             />
                             <Route path="/oppgavebenk" component={OppgaveBenk} />
+                            <Route path="/journalfor" component={Journalforing} />
+                            <Redirect to="/sak" />
                         </Switch>
                     </div>
                 </>
