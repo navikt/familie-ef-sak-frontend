@@ -1,5 +1,5 @@
 import { Stønadstype } from './behandlingstema';
-import { BehandlingType } from './behandlingtype';
+import { Behandlingstype } from './behandlingstype';
 import { BehandlingStatus } from './behandlingstatus';
 
 export interface Fagsak {
@@ -11,7 +11,7 @@ export interface Fagsak {
 
 export interface BehandlingDto {
     id: string;
-    type: BehandlingType;
+    type: Behandlingstype;
     aktiv: boolean;
     status: BehandlingStatus;
     sistEndret: string;

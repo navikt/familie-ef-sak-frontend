@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { BehandlingType } from '../typer/behandlingtype';
+import { Behandlingstype } from '../typer/behandlingstype';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
-    behandlingType?: BehandlingType;
+    behandlingstype?: Behandlingstype;
 }
 
 interface JournalføringRequest {

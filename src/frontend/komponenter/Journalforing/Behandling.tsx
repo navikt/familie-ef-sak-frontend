@@ -5,7 +5,7 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilMedSirkel from '../../ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
-import { BehandlingType } from '../../typer/behandlingtype';
+import { Behandlingstype } from '../../typer/behandlingstype';
 import { BehandlingDto, Fagsak } from '../../typer/fagsak';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { BehandlingRequest } from '../../hooks/useJournalføringState';
@@ -19,7 +19,7 @@ interface Props {
 }
 
 interface INyBehandling {
-    behandlingType: BehandlingType;
+    behandlingstype: Behandlingstype;
 }
 
 const StyledNyBehandlingRad = styled.tr`
@@ -35,7 +35,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
             if (e.target.checked) {
                 if (behandlingsId === 'ny') {
                     settBehandling({
-                        behandlingType: nyBehandling?.behandlingType,
+                        behandlingstype: nyBehandling?.behandlingstype,
                     });
                     settHarValgtNyBehandling(true);
                 } else {
@@ -92,7 +92,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                                 label={'ny'}
                                             />
                                         </td>
-                                        <td>{nyBehandling.behandlingType}</td>
+                                        <td>{nyBehandling.behandlingstype}</td>
                                         <td>NY</td>
                                         <td>–</td>
                                     </StyledNyBehandlingRad>
@@ -106,9 +106,9 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                 <Flatknapp
                                     onClick={() => {
                                         settNyBehandling({
-                                            behandlingType: data.behandlinger.length
-                                                ? BehandlingType.REVURDERING
-                                                : BehandlingType.FØRSTEGANGSBEHANDLING,
+                                            behandlingstype: data.behandlinger.length
+                                                ? Behandlingstype.REVURDERING
+                                                : Behandlingstype.FØRSTEGANGSBEHANDLING,
                                         });
                                     }}
                                 >
