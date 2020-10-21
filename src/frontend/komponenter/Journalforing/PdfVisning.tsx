@@ -13,7 +13,7 @@ interface PdfVisningProps {
     pdfFilInnhold: Ressurs<string>;
 }
 
-const MittStilltDiv = styled.div`
+const MidtstiltInnhold = styled.div`
     width: 50%;
     margin: 0 auto;
 `;
@@ -30,14 +30,14 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
         <DataViewer response={pdfFilInnhold}>
             {(data) => (
                 <>
-                    <MittStilltDiv>
+                    <MidtstiltInnhold>
                         <Paginering
                             sideStorrelse={1}
                             antallTotalt={numPages}
                             valgtSide={pageNumber}
                             settValgtSide={setPageNumber}
                         />
-                    </MittStilltDiv>
+                    </MidtstiltInnhold>
                     <Document
                         file={`data:application/pdf;base64,${data}`}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -49,14 +49,14 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                     >
                         <Page pageNumber={pageNumber} />
                     </Document>
-                    <MittStilltDiv>
+                    <MidtstiltInnhold>
                         <Paginering
                             sideStorrelse={1}
                             antallTotalt={numPages}
                             valgtSide={pageNumber}
                             settValgtSide={setPageNumber}
                         />
-                    </MittStilltDiv>
+                    </MidtstiltInnhold>
                 </>
             )}
         </DataViewer>

@@ -81,7 +81,7 @@ app.post('/familie-ef-sak/api/fagsak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`behandlinger.json`)), delayMs);
 });
 
-app.post('/familie-ef-sak/api/journalpost/:journalpostId', (req, res) => {
+app.post('/familie-ef-sak/api/journalpost/:journalpostId/fullfor', (req, res) => {
     setTimeout(
         () =>
             res.send({

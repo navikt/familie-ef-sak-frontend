@@ -28,6 +28,7 @@ const config = mergeWithCustomize({
                     {
                         loader: 'css-loader',
                         options: {
+                            compileType: 'icss',
                             importLoaders: 2,
                         },
                     },

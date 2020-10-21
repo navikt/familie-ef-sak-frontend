@@ -34,6 +34,8 @@ const Kolonner = styled.div`
     flex-wrap: wrap;
 `;
 
+const Venstrekolonne = styled.div``;
+const Høyrekolonne = styled.div``;
 const FlexKnapper = styled.div`
     display: flex;
     justify-content: space-between;
@@ -89,7 +91,7 @@ export const Journalforing: React.FC = () => {
                         data.behandlingstema ? behandlingstemaTilTekst[data.behandlingstema] : ''
                     }`}</Sidetittel>
                     <Kolonner>
-                        <div>
+                        <Venstrekolonne>
                             <Brukerinfo bruker={data.bruker} />
                             <DokumentVisning
                                 journalPost={data}
@@ -128,10 +130,10 @@ export const Journalforing: React.FC = () => {
                                     Journalfør
                                 </Hovedknapp>
                             </FlexKnapper>
-                        </div>
-                        <div>
+                        </Venstrekolonne>
+                        <Høyrekolonne>
                             <PdfVisning pdfFilInnhold={valgtDokument} />
-                        </div>
+                        </Høyrekolonne>
                     </Kolonner>
                 </SideLayout>
             )}

@@ -56,7 +56,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         axiosRequest<string, JournalføringRequest>(
             {
                 method: 'POST',
-                url: `/familie-ef-sak/api/journalpost/${journalpostId}/`,
+                url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor`,
                 data,
             },
             innloggetSaksbehandler

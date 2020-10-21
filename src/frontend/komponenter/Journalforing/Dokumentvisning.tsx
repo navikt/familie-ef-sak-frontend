@@ -19,7 +19,7 @@ const StyledListe = styled.ul`
     padding-left: 0;
 `;
 
-const StyledDiv = styled.div`
+const StyledDokumentWrapper = styled.div`
     margin-top: 1rem;
 `;
 
@@ -53,7 +53,7 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
     };
 
     return (
-        <StyledDiv>
+        <StyledDokumentWrapper>
             <Systemtittel>Dokumenter</Systemtittel>
             <StyledListe>
                 {journalPost.dokumenter.map((dokument) => (
@@ -81,7 +81,7 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
                     </StyledListeElement>
                 ))}
             </StyledListe>
-        </StyledDiv>
+        </StyledDokumentWrapper>
     );
 };
 
