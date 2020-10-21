@@ -58,6 +58,7 @@ export const Journalforing: React.FC = () => {
     useEffect(() => {
         if (oppgaveIdParam && journalpostIdParam) {
             hentJournalPost();
+            journalpostState.settOppgaveId(oppgaveIdParam);
         }
     }, [oppgaveIdParam, journalpostIdParam]);
 
