@@ -71,7 +71,7 @@ export const Journalforing: React.FC = () => {
     useEffect(() => {
         if (journalpost.status === RessursStatus.SUKSESS) {
             const stønadstype = behandlingstemaTilStønadstype(journalpost.data.behandlingstema);
-            stønadstype && hentFagsak(journalpost.data.bruker.id, stønadstype);
+            stønadstype && hentFagsak(journalpost.data.bruker, stønadstype);
         }
     }, [journalpost]);
 
