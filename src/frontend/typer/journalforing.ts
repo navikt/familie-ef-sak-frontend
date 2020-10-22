@@ -47,6 +47,11 @@ export interface IJournalpost {
     datoMottatt: string;
 }
 
+export interface IJojurnalpostResponse {
+    journalpost: IJournalpost;
+    personIdent: string;
+}
+
 export interface BrukerInfo {
     id: string;
     type: BrukerId;

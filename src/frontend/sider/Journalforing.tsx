@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router';
-import { IJournalpost } from '../typer/journalforing';
+import { IJojurnalpostResponse, IJournalpost } from '../typer/journalforing';
 import { RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../komponenter/Journalforing/PdfVisning';
@@ -51,7 +51,7 @@ export const Journalforing: React.FC = () => {
     const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
 
     const journalpostState: JournalføringStateRequest = useJournalføringState();
-    const { hentJournalPost, journalpost } = useHentJournalpost(journalpostIdParam);
+    const { hentJournalPost, journalResponse } = useHentJournalpost(journalpostIdParam);
     const { hentDokument, valgtDokument } = useHentDokument(journalpostIdParam);
     const { hentFagsak, fagsak } = useHentFagsak();
 
@@ -69,11 +69,13 @@ export const Journalforing: React.FC = () => {
     }, [journalpostState.innsending]);
 
     useEffect(() => {
-        if (journalpost.status === RessursStatus.SUKSESS) {
-            const stønadstype = behandlingstemaTilStønadstype(journalpost.data.behandlingstema);
-            stønadstype && hentFagsak(journalpost.data.bruker.id, stønadstype);
+        if (journalResponse.status === RessursStatus.SUKSESS) {
+            const stønadstype = behandlingstemaTilStønadstype(
+                journalResponse.data.journalpost.behandlingstema
+            );
+            stønadstype && hentFagsak(journalResponse.data.personIdent, stønadstype);
         }
-    }, [journalpost]);
+    }, [journalResponse]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
@@ -85,17 +87,19 @@ export const Journalforing: React.FC = () => {
         return <Redirect to="/oppgavebenk" />;
     }
     return (
-        <DataViewer response={journalpost}>
-            {(data: IJournalpost) => (
+        <DataViewer response={journalResponse}>
+            {(data: IJojurnalpostResponse) => (
                 <SideLayout>
                     <Sidetittel>{`Registrere journalpost: ${
-                        data.behandlingstema ? behandlingstemaTilTekst[data.behandlingstema] : ''
+                        data.journalpost.behandlingstema
+                            ? behandlingstemaTilTekst[data.journalpost.behandlingstema]
+                            : ''
                     }`}</Sidetittel>
                     <Kolonner>
                         <Venstrekolonne>
-                            <Brukerinfo bruker={data.bruker} />
+                            <Brukerinfo personIdent={data.personIdent} />
                             <DokumentVisning
-                                journalPost={data}
+                                journalPost={data.journalpost}
                                 hentDokument={hentDokument}
                                 dokumentTitler={journalpostState.dokumentTitler}
                                 settDokumentTitler={journalpostState.settDokumentTitler}
