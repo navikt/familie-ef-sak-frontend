@@ -19,6 +19,7 @@ import { JournalføringStateRequest, useJournalføringState } from '../hooks/use
 import { useHentJournalpost } from '../hooks/useHentJournalpost';
 import { useHentDokument } from '../hooks/useHentDokument';
 import { useHentFagsak } from '../hooks/useHentFagsak';
+import { useApp } from '../context/AppContext';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -45,6 +46,7 @@ const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 export const Journalforing: React.FC = () => {
+    const { innloggetSaksbehandler } = useApp();
     const history = useHistory();
     const query = useGetQueryParams();
     const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
@@ -126,7 +128,10 @@ export const Journalforing: React.FC = () => {
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
                                     onClick={() =>
-                                        journalpostState.fullførJournalføring(journalpostIdParam!)
+                                        journalpostState.fullførJournalføring(
+                                            journalpostIdParam!,
+                                            innloggetSaksbehandler.enhet || '9999'
+                                        )
                                     }
                                     spinner={
                                         journalpostState.innsending.status === RessursStatus.HENTER
