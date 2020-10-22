@@ -1,6 +1,7 @@
 {
   "status": "SUKSESS",
   "data": {
+    "journalpost": {
       "journalpostId": "453632000",
       "journalposttype": "I",
       "journalstatus": "MOTTATT",
@@ -51,5 +52,7 @@
         }
       ],
       "datoMottatt": "2020-09-24T11:11:49"
+  },
+  "personIdent": "12345678922"
   }
 }
