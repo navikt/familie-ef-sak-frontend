@@ -6,16 +6,14 @@ import { useApp } from '../../context/AppContext';
 type Props<D> = AxiosRequestConfig & { data?: D };
 
 export const useDataHenter = <T, D>(config: Props<D>): Ressurs<T> => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
     const [response, setResponse] = useState<Ressurs<T>>({
         status: RessursStatus.IKKE_HENTET,
     });
 
     const hentData = useCallback(() => {
         setResponse({ status: RessursStatus.HENTER });
-        axiosRequest<T, D>(config, innloggetSaksbehandler).then((res: Ressurs<T>) =>
-            setResponse(res)
-        );
+        axiosRequest<T, D>(config).then((res: Ressurs<T>) => setResponse(res));
     }, [config]);
 
     useEffect(() => {

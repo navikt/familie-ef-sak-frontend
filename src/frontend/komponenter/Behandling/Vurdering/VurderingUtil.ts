@@ -1,7 +1,7 @@
 import { IVurdering, VilkårResultat } from '../Inngangsvilkår/vilkår';
 import { VilkårDel, VurderingConfig } from './VurderingConfig';
 
-export const alleErOppfylte = (vurderinger: IVurdering[]) =>
+export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== VilkårResultat.JA).length === 0;
 
 export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: VilkårDel): IVurdering[] =>

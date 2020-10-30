@@ -32,7 +32,7 @@ export interface JournalføringStateRequest {
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
     const [oppgaveId, settOppgaveId] = useState<string>('');
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
@@ -53,14 +53,11 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             dokumentTitler,
         };
         settInnsending(byggHenterRessurs());
-        axiosRequest<string, JournalføringRequest>(
-            {
-                method: 'POST',
-                url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor?journalfoerendeEnhet=${journalførendeEnhet}`,
-                data,
-            },
-            innloggetSaksbehandler
-        ).then((resp) => settInnsending(resp));
+        axiosRequest<string, JournalføringRequest>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor?journalfoerendeEnhet=${journalførendeEnhet}`,
+            data,
+        }).then((resp) => settInnsending(resp));
     };
 
     return {

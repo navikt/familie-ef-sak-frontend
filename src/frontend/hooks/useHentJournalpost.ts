@@ -6,7 +6,7 @@ import { AxiosRequestConfig } from 'axios';
 import { OrNothing } from './felles/useSorteringState';
 
 export const useHentJournalpost = (journalpostIdParam: OrNothing<string>) => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
     const [journalResponse, settJournalResponse] = useState<Ressurs<IJojurnalpostResponse>>(
         byggTomRessurs()
     );
@@ -19,8 +19,7 @@ export const useHentJournalpost = (journalpostIdParam: OrNothing<string>) => {
     const hentJournalPost = useCallback(() => {
         settJournalResponse(byggHenterRessurs());
         axiosRequest<IJojurnalpostResponse, null>(
-            hentJournalpostConfig,
-            innloggetSaksbehandler
+            hentJournalpostConfig
         ).then((res: Ressurs<IJojurnalpostResponse>) => settJournalResponse(res));
     }, [hentJournalpostConfig]);
 
