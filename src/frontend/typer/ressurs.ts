@@ -4,6 +4,7 @@ export enum RessursStatus {
     IKKE_HENTET = 'IKKE_HENTET',
     IKKE_TILGANG = 'IKKE_TILGANG',
     SUKSESS = 'SUKSESS',
+    FUNKSJONELL_FEIL = 'FUNKSJONELL_FEIL',
 }
 
 export type RessursSuksess<T> = {
@@ -30,6 +31,11 @@ export type Ressurs<T> =
           melding: string;
           frontendFeilmelding: string;
           status: RessursStatus.FEILET;
+      }
+    | {
+          melding: string;
+          frontendFeilmelding: string;
+          status: RessursStatus.FUNKSJONELL_FEIL;
       };
 
 export const byggTomRessurs = <T>(): Ressurs<T> => {
