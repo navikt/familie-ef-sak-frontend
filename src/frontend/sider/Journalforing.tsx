@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router';
-import { IJojurnalpostResponse, IJournalpost } from '../typer/journalforing';
+import { IJojurnalpostResponse } from '../typer/journalforing';
 import { RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../komponenter/Journalforing/PdfVisning';
@@ -129,8 +129,8 @@ export const Journalforing: React.FC = () => {
                                 <Hovedknapp
                                     onClick={() =>
                                         journalpostState.fullførJournalføring(
-                                            journalpostIdParam!,
-                                            innloggetSaksbehandler.enhet || '9999'
+                                            journalpostIdParam,
+                                            innloggetSaksbehandler?.enhet || '9999'
                                         )
                                     }
                                     spinner={

@@ -1,7 +1,6 @@
 import { Søk } from '@navikt/familie-header';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { ISaksbehandler } from '../../typer/saksbehandler';
 import {
     byggFeiletRessurs,
     byggHenterRessurs,
@@ -19,10 +18,6 @@ import { styles } from '../../typer/styles';
 // eslint-disable-next-line
 const validator = require('@navikt/fnrvalidator');
 
-interface IProps {
-    innloggetSaksbehandler: ISaksbehandler;
-}
-
 const FunksjonellFeilmelding = styled.div`
     padding-left: 0.5rem;
 `;
@@ -34,7 +29,7 @@ const StyledResultat = styled.div`
     display: flex;
 `;
 
-const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
+const PersonSøk: React.FC = () => {
     const history = useHistory();
     const { axiosRequest } = useApp();
     const [resultat, settResultat] = React.useState<Ressurs<ISaksøk>>(byggTomRessurs());
@@ -44,14 +39,11 @@ const PersonSøk: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
 
     const søk = (personIdent: string): void => {
         settResultat(byggHenterRessurs());
-        axiosRequest<ISaksøk, ISakSøkPersonIdent>(
-            {
-                method: 'POST',
-                url: `/familie-ef-sak/api/saksok/ident`,
-                data: { personIdent: personIdent },
-            },
-            innloggetSaksbehandler
-        )
+        axiosRequest<ISaksøk, ISakSøkPersonIdent>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/saksok/ident`,
+            data: { personIdent: personIdent },
+        })
             .then((response: Ressurs<ISaksøk>) => {
                 settResultat(response);
             })

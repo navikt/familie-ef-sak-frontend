@@ -1,6 +1,10 @@
 import { Normaltekst } from 'nav-frontend-typografi';
-import React from 'react';
+import React, { FC } from 'react';
 
-export const BooleanTekst = (props: { value: boolean }) => (
+interface BooleanTekstProps {
+    value: boolean;
+}
+
+export const BooleanTekst: FC<BooleanTekstProps> = (props: { value: boolean }) => (
     <Normaltekst>{props.value ? 'Ja' : 'Nei'}</Normaltekst>
 );

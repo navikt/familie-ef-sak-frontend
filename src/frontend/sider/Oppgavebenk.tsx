@@ -20,18 +20,15 @@ const Side = styled.div`
 export type OppgaveResurs = Ressurs<IOppgaverResponse>;
 
 export const OppgaveBenk: React.FC = () => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
     const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveResurs>(byggTomRessurs());
 
     const hentOppgaver = (data: IOppgaveRequest) => {
-        axiosRequest<IOppgaverResponse, IOppgaveRequest>(
-            {
-                method: 'POST',
-                url: `/familie-ef-sak/api/oppgave/soek`,
-                data,
-            },
-            innloggetSaksbehandler
-        ).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
+        axiosRequest<IOppgaverResponse, IOppgaveRequest>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/oppgave/soek`,
+            data,
+        }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
     };
 
     return (
