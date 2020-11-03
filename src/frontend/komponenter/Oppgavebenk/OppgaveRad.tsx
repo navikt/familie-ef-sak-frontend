@@ -104,6 +104,12 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
                 {kanJournalføres && (
                     <Link
                         to={`/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`}
+                        onClick={() =>
+                            settOppgaveTilSaksbehandler(
+                                oppgave.id,
+                                innloggetSaksbehandler?.navIdent
+                            )
+                        }
                     >
                         Gå til journalpost
                     </Link>
