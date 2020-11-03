@@ -97,6 +97,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                     tittel: 'Ugyldig oppgave',
                     lukkKnapp: true,
                     visModal: !!feilmelding,
+                    onClose: () => settFeilmelding(''),
                 }}
             >
                 <Normaltekst>{feilmelding}</Normaltekst>

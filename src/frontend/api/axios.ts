@@ -39,6 +39,13 @@ export const håndterRessurs = <T>(
                 status: RessursStatus.FEILET,
             };
             break;
+        case RessursStatus.FUNKSJONELL_FEIL:
+            typetRessurs = {
+                melding: ressurs.melding,
+                frontendFeilmelding: ressurs.frontendFeilmelding,
+                status: RessursStatus.FUNKSJONELL_FEIL,
+            };
+            break;
         default:
             typetRessurs = {
                 melding: 'Mest sannsynlig ukjent api feil',

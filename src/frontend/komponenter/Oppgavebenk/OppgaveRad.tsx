@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { formaterIsoDato } from '../../utils/formatter';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../context/AppContext';
@@ -21,8 +21,8 @@ interface OppgaveDto {
 
 const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
     const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
-    const { axiosRequest } = useApp();
-    const [redirectTilSaksbehandling, settRedirectTilSaksbehandling] = useState<boolean>(false);
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const history = useHistory();
 
     const oppgavetype = oppgave.oppgavetype && oppgaveTypeTilTekst[oppgave.oppgavetype];
 
@@ -41,20 +41,49 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
         ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);
 
     const kanBehandles =
-        oppgave.oppgavetype ===
-        'BEH_SAK'; /*&&
+        oppgave.oppgavetype === 'BEH_SAK' &&
         oppgave.behandlingstema &&
-        ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);*/
+        ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);
 
-    const sjekkGyldigOppgave = () => {
+    const gåTilBehandleSakOppgave = () => {
         axiosRequest<OppgaveDto, { oppgaveId: string }>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}`,
         }).then((res: Ressurs<OppgaveDto>) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                settRedirectTilSaksbehandling(true);
-            } else if (res.status === RessursStatus.FUNKSJONELL_FEIL) {
-                settFeilmelding(res.frontendFeilmelding);
+            switch (res.status) {
+                case RessursStatus.SUKSESS:
+                    settOppgaveTilSaksbehandler(oppgave.id, innloggetSaksbehandler?.navIdent).then(
+                        (erOppgaveOppdatert: boolean) => {
+                            if (erOppgaveOppdatert) {
+                                history.push(`/behandling/${res.data.behandlingId}`);
+                            }
+                        }
+                    );
+                    break;
+                case RessursStatus.FUNKSJONELL_FEIL:
+                case RessursStatus.IKKE_TILGANG:
+                case RessursStatus.FEILET:
+                    settFeilmelding(res.frontendFeilmelding);
+                    break;
+                default:
+                    break;
+            }
+        });
+    };
+
+    const settOppgaveTilSaksbehandler = (oppgaveId: number, saksbehandlerId?: string) => {
+        return axiosRequest<string, null>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/oppgave/${oppgaveId}/fordel?saksbehandler=${saksbehandlerId}`,
+        }).then((res: Ressurs<string>) => {
+            switch (res.status) {
+                case RessursStatus.FUNKSJONELL_FEIL:
+                case RessursStatus.IKKE_TILGANG:
+                case RessursStatus.FEILET:
+                    settFeilmelding(res.frontendFeilmelding);
+                    return false;
+                default:
+                    return true;
             }
         });
     };
@@ -79,11 +108,8 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
                         Gå til journalpost
                     </Link>
                 )}
-                {kanBehandles && <Flatknapp onClick={sjekkGyldigOppgave}>Behandle sak</Flatknapp>}
-                {redirectTilSaksbehandling && (
-                    <Redirect
-                        to={`/saksbehandling?oppgaveId=${oppgave.id}`}
-                    /> /* TODO Mangler riktig path*/
+                {kanBehandles && (
+                    <Flatknapp onClick={gåTilBehandleSakOppgave}>Behandle sak</Flatknapp>
                 )}
             </td>
         </tr>
