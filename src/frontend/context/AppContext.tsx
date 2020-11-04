@@ -19,9 +19,9 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
     useEffect(() => {
         settInnloggetSaksbehandler(autentisertSaksbehandler);
     }, [autentisertSaksbehandler]);
+
     const axiosRequest = async <T, D>(
-        config: AxiosRequestConfig & { data?: D },
-        innloggetSaksbehandler?: ISaksbehandler
+        config: AxiosRequestConfig & { data?: D }
     ): Promise<Ressurs<T>> => {
         return preferredAxios
             .request(config)

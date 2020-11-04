@@ -32,9 +32,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
             brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
             eksterneLenker={eksterneLenker}
         >
-            {innloggetSaksbehandler && (
-                <PersonSøk innloggetSaksbehandler={innloggetSaksbehandler} />
-            )}
+            {innloggetSaksbehandler && <PersonSøk />}
         </Header>
     );
 };

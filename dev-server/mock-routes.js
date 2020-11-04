@@ -34,13 +34,13 @@ app.post('/familie-ef-sak/api/personopplysninger', (req, res) => {
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
-app.get('/familie-ef-sak/api/sak/:id', (req, res) => {
-    const filnavn = `sak.json`;
+app.get('/familie-ef-sak/api/journalpost/:id', (req, res) => {
+    const filnavn = `journalforing.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
-app.post('/familie-ef-sak/api/saksok/ident', (req, res) => {
-    const filnavn = req.body.personIdent === '12345678910' ? `saksøk.json` : `saksøk-feil.json`;
+app.get('/familie-ef-sak/api/journalpost/:id/dokument/:dokumentInfoId', (req, res) => {
+    const filnavn = `journalforing-dokument.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
@@ -65,6 +65,22 @@ app.post('/familie-ef-sak/api/fagsak/1/nytt-vedtak', (req, res) => {
 
 app.post('/familie-ef-sak/api/oppgave/soek', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`hent-oppgave.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/fagsak', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`behandlinger.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/journalpost/:journalpostId/fullfor', (req, res) => {
+    setTimeout(
+        () =>
+            res.send({
+                status: 'SUKSESS',
+                frontendFeilmelding: 'Noe gikk galt. Hjelp!?',
+                errorMessage: 'teknisk feil',
+            }),
+        delayMs
+    );
 });
 
 module.exports = app;

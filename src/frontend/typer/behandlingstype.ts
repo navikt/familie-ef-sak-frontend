@@ -1,0 +1,4 @@
+export enum Behandlingstype {
+    FØRSTEGANGSBEHANDLING = 'FØRSTEGANGSBEHANDLING',
+    REVURDERING = 'REVURDERING',
+}

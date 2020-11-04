@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Select } from 'nav-frontend-skjema';
 import { oppgaveTypeTilTekst } from './oppgavetema';
-import { behandlingstemaTilTekst } from './behandlingstema';
+import { behandlingstemaTilTekst } from '../../typer/behandlingstema';
 import { useApp } from '../../context/AppContext';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import CustomSelect from './CustomSelect';
@@ -11,7 +11,7 @@ import { enhetTilTekst } from './enhet';
 import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../utils/utils';
 import { IOppgaveRequest } from './oppgaverequest';
-import { OrNothing } from '../../hooks/useSorteringState';
+import { OrNothing } from '../../hooks/felles/useSorteringState';
 
 export const FlexDiv = styled.div`
     display: flex;

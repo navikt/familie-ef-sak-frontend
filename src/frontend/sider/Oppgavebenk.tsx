@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useApp } from '../../frontend/context/AppContext';
-import OppgaveFiltering, { IOppgaveRequest } from '../komponenter/Oppgavebenk/OppgaveFiltrering';
+import OppgaveFiltering from '../komponenter/Oppgavebenk/OppgaveFiltrering';
 import OppgaveTabell, { IOppgaverResponse } from '../komponenter/Oppgavebenk/OppgaveTabell';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs } from '../typer/ressurs';
+import { IOppgaveRequest } from '../komponenter/Oppgavebenk/oppgaverequest';
 
 const Side = styled.div`
     padding: 0.5rem;
@@ -19,18 +20,15 @@ const Side = styled.div`
 export type OppgaveResurs = Ressurs<IOppgaverResponse>;
 
 export const OppgaveBenk: React.FC = () => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
     const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveResurs>(byggTomRessurs());
 
     const hentOppgaver = (data: IOppgaveRequest) => {
-        axiosRequest<IOppgaverResponse, IOppgaveRequest>(
-            {
-                method: 'POST',
-                url: `/familie-ef-sak/api/oppgave/soek`,
-                data,
-            },
-            innloggetSaksbehandler
-        ).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
+        axiosRequest<IOppgaverResponse, IOppgaveRequest>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/oppgave/soek`,
+            data,
+        }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
     };
 
     return (
