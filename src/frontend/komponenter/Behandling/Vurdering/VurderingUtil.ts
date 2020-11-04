@@ -14,6 +14,17 @@ export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: Vilkå
         return config.vilkårDel === vilkårDel;
     });
 
+const sistVurdertDelvilkårErOppfylt = (vurdering: IVurdering) => {
+    const indexForFørsteIkkeVurderteDelvilkår = vurdering.delvilkårsvurderinger.findIndex(
+        (value) => value.resultat === Vilkårsresultat.IKKE_VURDERT
+    );
+    return !(
+        indexForFørsteIkkeVurderteDelvilkår === 0 ||
+        vurdering.delvilkårsvurderinger[indexForFørsteIkkeVurderteDelvilkår - 1].resultat !==
+            Vilkårsresultat.JA
+    );
+};
+
 export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
     // Må alltid ha med begrunnelse
     if (!vurdering.begrunnelse || vurdering.begrunnelse.trim().length === 0) {
@@ -28,10 +39,9 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
     // Hvis siste delvurdering er nei: valider unntak hvis det er definert unntak
     const sisteDelvurdering =
         vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
-    const alleDelvurderingerErVurdert =
-        vurdering.delvilkårsvurderinger.filter(
-            (delvurdering) => delvurdering.resultat === Vilkårsresultat.IKKE_VURDERT
-        ).length === 0;
+    const alleDelvurderingerErVurdert = !vurdering.delvilkårsvurderinger.some(
+        (delvurdering) => delvurdering.resultat === Vilkårsresultat.IKKE_VURDERT
+    );
     if (alleDelvurderingerErVurdert && sisteDelvurdering.resultat === Vilkårsresultat.NEI) {
         if (VurderingConfig[vurdering.vilkårType].unntak) {
             return !!vurdering.unntak;
@@ -42,13 +52,5 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
         return true;
     }
 
-    // Valider att siste vurderte delvilkår har resultat == JA
-    const indexForFørsteIkkeVurderteDelvilkår = vurdering.delvilkårsvurderinger.findIndex(
-        (value) => value.resultat === Vilkårsresultat.IKKE_VURDERT
-    );
-    return !(
-        indexForFørsteIkkeVurderteDelvilkår === 0 ||
-        vurdering.delvilkårsvurderinger[indexForFørsteIkkeVurderteDelvilkår - 1].resultat !==
-            Vilkårsresultat.JA
-    );
+    return sistVurdertDelvilkårErOppfylt(vurdering);
 };

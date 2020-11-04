@@ -26,14 +26,14 @@ const StyledEndreVurdering = styled.div`
 const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilkår): IVurdering => {
     let harPassertSisteDelvilkårSomSkalVises = false;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.map((delvilkår) => {
-        const skalResetteDelvikårEtterDetSisteSomSKalVises =
+        const skalNullstillePåfølgendeDelvilkår =
             harPassertSisteDelvilkårSomSkalVises &&
             delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT;
 
         if (delvilkår.type === oppdatertDelvilkår.type) {
             harPassertSisteDelvilkårSomSkalVises = true;
             return oppdatertDelvilkår;
-        } else if (skalResetteDelvikårEtterDetSisteSomSKalVises) {
+        } else if (skalNullstillePåfølgendeDelvilkår) {
             return { type: delvilkår.type, resultat: Vilkårsresultat.IKKE_VURDERT };
         } else {
             return delvilkår;
@@ -50,7 +50,7 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
     };
 };
 
-const oppdaterVilkår = (unntakType: UnntakType | undefined): Vilkårsresultat => {
+const hentResultatForUnntak = (unntakType: UnntakType | undefined): Vilkårsresultat => {
     if (!unntakType) {
         return Vilkårsresultat.IKKE_VURDERT;
     } else if (unntakType === UnntakType.HAR_IKKE_UNNTAK) {
@@ -70,11 +70,10 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
     const [vurdering, settVurdering] = useState<IVurdering>(data);
-    const delvilkårSomManglerVurdering: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
+
+    const nesteDelvilkårSomManglerVurdering = vurdering.delvilkårsvurderinger.find(
         (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
-    const nesteDelvilkår =
-        delvilkårSomManglerVurdering.length > 0 ? delvilkårSomManglerVurdering[0] : null;
     let harPassertSisteDelvilkårSomSkalVises = false;
     const sisteDelvilkår: IDelvilkår =
         vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
@@ -85,7 +84,7 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     return null;
                 }
                 if (
-                    nesteDelvilkår?.type === delvilkår.type ||
+                    nesteDelvilkårSomManglerVurdering?.type === delvilkår.type ||
                     delvilkår.resultat === Vilkårsresultat.JA
                 ) {
                     harPassertSisteDelvilkårSomSkalVises = true;
@@ -121,7 +120,7 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                         settVurdering({
                             ...vurdering,
                             unntak: unntak,
-                            resultat: oppdaterVilkår(unntak),
+                            resultat: hentResultatForUnntak(unntak),
                         });
                     }}
                 >
