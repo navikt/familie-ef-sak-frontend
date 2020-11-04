@@ -3,6 +3,7 @@
 		"antallTreffTotalt": 7572,
 		"oppgaver": [{
 			"id": 45060,
+			"journalpostId": "12345",
 			"identer": [{
 				"ident": "11111111111",
 				"gruppe": "FOLKEREGISTERIDENT"
@@ -28,6 +29,7 @@
 			"metadata": {}
 		}, {
 			"id": 45059,
+			"journalpostId": "12345",
 			"identer": [{
 				"ident": "11111111111",
 				"gruppe": "FOLKEREGISTERIDENT"
@@ -53,6 +55,7 @@
 			"metadata": {}
 		}, {
 			"id": 45058,
+			"journalpostId": "12345",
 			"identer": [{
 				"ident": "11111111111",
 				"gruppe": "FOLKEREGISTERIDENT"

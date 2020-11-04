@@ -3,7 +3,7 @@ import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { formaterIsoDato } from '../../utils/formatter';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../context/AppContext';
@@ -88,6 +88,18 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
         });
     };
 
+    const gåTilJournalføring = () => {
+        settOppgaveTilSaksbehandler(oppgave.id, innloggetSaksbehandler?.navIdent).then(
+            (erOppgaveOppdatert: boolean) => {
+                if (erOppgaveOppdatert) {
+                    history.push(
+                        `/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`
+                    );
+                }
+            }
+        );
+    };
+
     return (
         <tr>
             <td>{regDato}</td>
@@ -102,11 +114,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
             <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
             <td>
                 {kanJournalføres && (
-                    <Link
-                        to={`/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`}
-                    >
-                        Gå til journalpost
-                    </Link>
+                    <Flatknapp onClick={gåTilJournalføring}>Gå til journalpost</Flatknapp>
                 )}
                 {kanBehandles && (
                     <Flatknapp onClick={gåTilBehandleSakOppgave}>Behandle sak</Flatknapp>
