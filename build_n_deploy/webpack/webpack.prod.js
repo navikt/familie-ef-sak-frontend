@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -59,6 +60,12 @@ const config = mergeWithCustomize({
                     to: path.join(__dirname, '../../frontend_production'),
                 },
             ],
+        }),
+        new CompressionPlugin({
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8,
         }),
     ],
     optimization: {
