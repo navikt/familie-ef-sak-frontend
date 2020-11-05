@@ -83,4 +83,8 @@ app.post('/familie-ef-sak/api/journalpost/:journalpostId/fullfor', (req, res) =>
     );
 });
 
+app.post('/familie-ef-sak/api/oppgave/:oppgaveId/fordel', (req, res) => {
+    setTimeout(() => res.send({ data: 45060, status: 'SUKSESS' }), delayMs);
+});
+
 module.exports = app;

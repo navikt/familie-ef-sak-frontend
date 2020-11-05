@@ -3,6 +3,7 @@
 		"antallTreffTotalt": 7572,
 		"oppgaver": [{
 			"id": 45060,
+			"journalpostId": "12345",
 			"identer": [{
 				"ident": "11111111111",
 				"gruppe": "FOLKEREGISTERIDENT"
@@ -14,7 +15,7 @@
 			"saksreferanse": "1024923",
 			"aktoerId": "2195875492274",
 			"beskrivelse": "Det har gått mindre enn fem måneder siden forrige barn ble født.\n----- Opprettet av familie-ba-sak 2020-09-24T21:09:24.913845 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024923",
-			"tema": "BAR",
+			"tema": "ENF",
 			"behandlingstema": "ab0071",
 			"oppgavetype": "JFR",
 			"versjon": 1,
@@ -28,6 +29,7 @@
 			"metadata": {}
 		}, {
 			"id": 45059,
+			"journalpostId": "12345",
 			"identer": [{
 				"ident": "11111111111",
 				"gruppe": "FOLKEREGISTERIDENT"
@@ -39,8 +41,8 @@
 			"saksreferanse": "1024921",
 			"aktoerId": "2215826550106",
 			"beskrivelse": "Det er registrert dødsdato på mor.\n----- Opprettet av familie-ba-sak 2020-09-24T21:06:54.912747 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024921",
-			"tema": "BAR",
-			"behandlingstema": "ab0180",
+			"tema": "ENF",
+			"behandlingstema": "ab0071",
 			"oppgavetype": "BEH_SAK",
 			"versjon": 1,
 			"fristFerdigstillelse": "2020-09-24",
@@ -53,6 +55,7 @@
 			"metadata": {}
 		}, {
 			"id": 45058,
+			"journalpostId": "12345",
 			"identer": [{
 				"ident": "11111111111",
 				"gruppe": "FOLKEREGISTERIDENT"
@@ -64,8 +67,8 @@
 			"saksreferanse": "1024910",
 			"aktoerId": "2926951485035",
 			"beskrivelse": "Vurdert og satt automatisk\n\t- Mor har ikke lovlig opphold - EØS borger. Mor er ikke registrert med arbeidsforhold. Det er ikke registrert medforelder på barnet. Mor har ikke hatt bostedsadresse i Norge i mer enn fem år.\n----- Opprettet av familie-ba-sak 2020-09-24T21:04:24.623183 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024910",
-			"tema": "BAR",
-			"behandlingstema": "ab0180",
+			"tema": "ENF",
+			"behandlingstema": "ab0071",
 			"oppgavetype": "BEH_SAK",
 			"versjon": 1,
 			"fristFerdigstillelse": "2020-09-24",
