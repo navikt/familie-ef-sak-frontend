@@ -1,8 +1,8 @@
-import { IVurdering, VilkårResultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { VilkårDel, VurderingConfig } from './VurderingConfig';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
-    vurderinger.filter((vurdering) => vurdering.resultat !== VilkårResultat.JA).length === 0;
+    vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
 
 export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: VilkårDel): IVurdering[] =>
     vurderinger.filter((vurdering) => {
@@ -14,18 +14,43 @@ export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: Vilkå
         return config.vilkårDel === vilkårDel;
     });
 
+const sistVurdertDelvilkårErOppfylt = (vurdering: IVurdering) => {
+    const indexForFørsteIkkeVurderteDelvilkår = vurdering.delvilkårsvurderinger.findIndex(
+        (value) => value.resultat === Vilkårsresultat.IKKE_VURDERT
+    );
+    return !(
+        indexForFørsteIkkeVurderteDelvilkår === 0 ||
+        vurdering.delvilkårsvurderinger[indexForFørsteIkkeVurderteDelvilkår - 1].resultat !==
+            Vilkårsresultat.JA
+    );
+};
+
 export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
-    if (
-        vurdering.resultat === VilkårResultat.IKKE_VURDERT ||
-        !vurdering.begrunnelse ||
-        vurdering.begrunnelse.trim().length === 0
-    ) {
+    // Må alltid ha med begrunnelse
+    if (!vurdering.begrunnelse || vurdering.begrunnelse.trim().length === 0) {
         return false;
-    } else if (vurdering.resultat === VilkårResultat.JA) {
+    }
+
+    // Må ha satt resulat på vurderingen => vi har vurdert å flytte resultat på vurderingen til backend
+    if (vurdering.resultat === Vilkårsresultat.IKKE_VURDERT) {
+        return false;
+    }
+
+    // Hvis siste delvurdering er nei: valider unntak hvis det er definert unntak
+    const sisteDelvurdering =
+        vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
+    const alleDelvurderingerErVurdert = !vurdering.delvilkårsvurderinger.some(
+        (delvurdering) => delvurdering.resultat === Vilkårsresultat.IKKE_VURDERT
+    );
+    if (alleDelvurderingerErVurdert && sisteDelvurdering.resultat === Vilkårsresultat.NEI) {
         if (VurderingConfig[vurdering.vilkårType].unntak) {
             return !!vurdering.unntak;
         } else {
             return true;
         }
-    } else return vurdering.resultat === VilkårResultat.NEI;
+    } else if (alleDelvurderingerErVurdert) {
+        return true;
+    }
+
+    return sistVurdertDelvilkårErOppfylt(vurdering);
 };

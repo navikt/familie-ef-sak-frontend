@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { navLillaLighten20 } from '../utils/farger';
+import { styles } from '../typer/styles';
 
 interface IBrukerMedBlyant {
     className?: string;
@@ -28,7 +28,7 @@ const BrukerMedBlyant: React.FunctionComponent<IBrukerMedBlyant> = ({
                     fill-rule="evenodd"
                     clip-rule="evenodd"
                     d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20Z"
-                    fill={navLillaLighten20}
+                    fill={styles.farger.navLillaLighten20}
                 />
                 <path
                     fill-rule="evenodd"

@@ -3,41 +3,57 @@ import { FC } from 'react';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
-import { IVurdering, unntakTypeTilTekst } from '../Inngangsvilkår/vilkår';
+import {
+    delvilkårTypeTilTekst,
+    IVurdering,
+    unntakTypeTilTekst,
+    Vilkårsresultat,
+    vilkårsresultatTypeTilTekst,
+    vilkårTypeTilTekst,
+} from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { navLillaLighten20 } from '../../../utils/farger';
-import { IVilkårConfig } from './VurderingConfig';
+import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
+import Oppfylt from '../../../ikoner/Oppfylt';
+import { styles } from '../../../typer/styles';
 
 const StyledVurdering = styled.div`
     display: grid;
     grid-template-columns: repeat(4, max-content);
-    grid-template-rows: repeat(2, max-content);
+    grid-template-rows: repeat(3, max-content);
     grid-gap: 1rem;
 `;
 
 const StyledKnapp = styled.button``;
 
-const StyledTekst = styled.div`
-    grid-column: 2/4;
-
-    p {
-        margin-top: 5px;
-    }
-`;
-
 const StyledStrek = styled.span`
-    border-left: 3px solid ${navLillaLighten20};
+    border-left: 3px solid ${styles.farger.navLillaLighten20};
     margin-left: 0.55rem;
     grid-column: 1/2;
 `;
 
+const StyledVilkår = styled.div`
+    grid-column: 2/4;
+
+    .typo-normal {
+        margin-top: 0.25rem;
+        margin-bottom: 1.5rem;
+    }
+`;
+
+const StyledIkonOgTittel = styled.span`
+    margin-bottom: 1.5rem;
+    display: flex;
+    svg {
+        margin-right: 1rem;
+    }
+`;
+
 interface Props {
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
-    config: IVilkårConfig;
     vurdering: IVurdering;
 }
 
-const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) => {
+const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
     return (
         <StyledVurdering>
             <BrukerMedBlyantIkon />
@@ -48,8 +64,31 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) =>
             </StyledKnapp>
 
             <StyledStrek />
-            <StyledTekst>
-                <Normaltekst>{config.vilkår}</Normaltekst>
+
+            <StyledVilkår>
+                <StyledIkonOgTittel>
+                    {vurdering.resultat === Vilkårsresultat.JA ? (
+                        <Oppfylt heigth={21} width={21} />
+                    ) : (
+                        <IkkeOppfylt heigth={21} width={21} />
+                    )}
+                    <Element>{vilkårTypeTilTekst[vurdering.vilkårType]}</Element>
+                </StyledIkonOgTittel>
+
+                {vurdering.delvilkårsvurderinger
+                    .filter(
+                        (delvilkårsvurdering) =>
+                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_VURDERT
+                    )
+                    .map((delvilkårsvurdering) => (
+                        <>
+                            <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
+                            <Normaltekst>
+                                {vilkårsresultatTypeTilTekst[delvilkårsvurdering.resultat]}
+                            </Normaltekst>
+                        </>
+                    ))}
+
                 {vurdering.unntak && (
                     <>
                         <Element>Unntak</Element>
@@ -58,7 +97,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, config, vurdering }) =>
                 )}
                 <Element>Begrunnelse</Element>
                 <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
-            </StyledTekst>
+            </StyledVilkår>
         </StyledVurdering>
     );
 };

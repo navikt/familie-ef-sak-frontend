@@ -1,6 +1,12 @@
 import { useMemo, useState } from 'react';
 
-export function usePagineringState<T>(liste: T[], side = 1, sideStorrelse = 15) {
+interface IPaginering<T> {
+    valgtSide: number;
+    settValgtSide: (valgtSide: number) => void;
+    slicedListe: T[];
+}
+
+export function usePagineringState<T>(liste: T[], side = 1, sideStorrelse = 15): IPaginering<T> {
     const [valgtSide, settValgtSide] = useState<number>(side);
 
     //MAYBE OVERKILL MED USEMEMO HER

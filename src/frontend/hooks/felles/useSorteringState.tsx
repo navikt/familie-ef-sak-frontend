@@ -10,7 +10,16 @@ export interface SorteringConfig<T> {
     sorteringsfelt: keyof T;
 }
 
-export function useSorteringState<T>(liste: T[], config: OrNothing<SorteringConfig<T>> = null) {
+interface ISortering<T> {
+    sortertListe: T[];
+    settSortering: (sorteringfelt: keyof T) => void;
+    sortConfig: OrNothing<SorteringConfig<T>>;
+}
+
+export function useSorteringState<T>(
+    liste: T[],
+    config: OrNothing<SorteringConfig<T>> = null
+): ISortering<T> {
     const [sortConfig, setSortConfig] = useState<OrNothing<SorteringConfig<T>>>(config);
 
     const sortertListe = useMemo(() => {

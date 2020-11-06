@@ -1,4 +1,4 @@
-import { UnntakType, VilkårType } from '../Inngangsvilkår/vilkår';
+import { DelvilkårType, UnntakType, VilkårType } from '../Inngangsvilkår/vilkår';
 
 /**
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
@@ -10,8 +10,8 @@ export enum VilkårDel {
 
 export interface IVilkårConfig {
     vilkårDel: VilkårDel;
-    vilkår: string;
     unntak?: UnntakType[];
+    delvilkår: DelvilkårType[];
 }
 
 type IVurderingConfig = {
@@ -21,10 +21,15 @@ type IVurderingConfig = {
 export const VurderingConfig: IVurderingConfig = {
     FORUTGÅENDE_MEDLEMSKAP: {
         vilkårDel: VilkårDel.MEDLEMSKAP,
-        vilkår: 'Vilkår for vurdering om utenlandsopphold er oppfylt',
         unntak: [
             UnntakType.ARBEID_NORSK_ARBEIDSGIVER,
             UnntakType.UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER,
         ],
+        delvilkår: [DelvilkårType.TRE_ÅRS_MEDLEMSKAP, DelvilkårType.DOKUMENTERT_FLYKTNINGSTATUS],
+    },
+    LOVLIG_OPPHOLD: {
+        vilkårDel: VilkårDel.MEDLEMSKAP,
+        unntak: [],
+        delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
     },
 };

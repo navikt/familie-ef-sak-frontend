@@ -2,12 +2,10 @@ import * as React from 'react';
 import { FC } from 'react';
 import { IMedlemskap } from '../vilkår';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import GrønnHake from '../../../../ikoner/GrønnHake';
-import Advarsel from '../../../../ikoner/Advarsel';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
-    RegisterGrunnlag,
-    SøknadGrunnlag,
+    Registergrunnlag,
+    Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
@@ -15,6 +13,8 @@ import Statsborgerskap from './Statsborgerskap';
 import Oppholdsstatus from './Oppholdsstatus';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
+import IkkeOppfylt from '../../../../ikoner/IkkeOppfylt';
+import Oppfylt from '../../../../ikoner/Oppfylt';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -22,32 +22,35 @@ interface Props {
 }
 
 const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
-    const { registerGrunnlag, søknadGrunnlag } = medlemskap;
+    const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
-    const finnesOppholdsstatus = registerGrunnlag.oppholdstatus.length > 0;
-    const finnesUtenlandsperioder = søknadGrunnlag.utenlandsopphold.length > 0;
+    const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
+    const finnesUtenlandsperioder = søknadsgrunnlag.utenlandsopphold.length > 0;
 
     return (
         <>
             <StyledTabell>
                 {erOppfylt ? (
-                    <GrønnHake heigth={21} width={21} />
+                    <Oppfylt heigth={21} width={21} />
                 ) : (
-                    <Advarsel heigth={21} width={21} />
+                    <IkkeOppfylt heigth={21} width={21} />
                 )}
-                <Undertittel className="tittel">Medlemskap</Undertittel>
+                <div className="tittel">
+                    <Undertittel>Medlemskap og opphold i Norge</Undertittel>
+                    <EtikettLiten>§15-2 og §15-3 </EtikettLiten>
+                </div>
 
-                <RegisterGrunnlag />
+                <Registergrunnlag />
                 <Normaltekst>Statsborgerskap</Normaltekst>
-                <Normaltekst>{registerGrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
+                <Normaltekst>{registergrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
 
-                <SøknadGrunnlag />
+                <Søknadsgrunnlag />
                 <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
-                <BooleanTekst value={søknadGrunnlag.oppholderDuDegINorge} />
+                <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
 
-                <SøknadGrunnlag />
+                <Søknadsgrunnlag />
                 <Normaltekst>Har bodd i Norge siste tre år</Normaltekst>
-                <BooleanTekst value={søknadGrunnlag.bosattNorgeSisteÅrene} />
+                <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
             </StyledTabell>
 
             <StyledLesmerpanel>
@@ -55,13 +58,13 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
                     apneTekst={'Vis info om medlemskap'}
                     lukkTekst={'Lukk info om medlemskap'}
                 >
-                    <Statsborgerskap statsborgerskap={registerGrunnlag.statsborgerskap} />
+                    <Statsborgerskap statsborgerskap={registergrunnlag.statsborgerskap} />
                     {finnesOppholdsstatus && (
-                        <Oppholdsstatus oppholdsstatus={registerGrunnlag.oppholdstatus} />
+                        <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
                     )}
 
                     {finnesUtenlandsperioder && (
-                        <Utenlandsopphold utenlandsopphold={søknadGrunnlag.utenlandsopphold} />
+                        <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
                     )}
                 </Lesmerpanel>
             </StyledLesmerpanel>
