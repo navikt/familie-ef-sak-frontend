@@ -14,6 +14,8 @@ function DataViewer<T>(props: DataViewerProps<T>) {
         return <SystemetLaster />;
     } else if (response.status === RessursStatus.IKKE_TILGANG) {
         return <AlertStripeFeil children="Ikke tilgang!" />;
+    } else if (response.status === RessursStatus.FUNKSJONELL_FEIL) {
+        return <AlertStripeFeil children={response.frontendFeilmelding} />;
     } else if (response.status === RessursStatus.FEILET) {
         return <AlertStripeFeil children="Noe gikk galt" />;
     } else if (response.status === RessursStatus.IKKE_HENTET) {

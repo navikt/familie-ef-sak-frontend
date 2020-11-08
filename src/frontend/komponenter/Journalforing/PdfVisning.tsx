@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Paginering from '../Paginering/Paginering';
 import { Ressurs } from '../../typer/ressurs';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import styled from 'styled-components';
 import { Page, Document, pdfjs } from 'react-pdf';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import Pagination from 'paginering';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.js';
 
@@ -31,11 +31,11 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
             {(data) => (
                 <>
                     <MidtstiltInnhold>
-                        <Paginering
-                            sideStorrelse={1}
-                            antallTotalt={numPages}
-                            valgtSide={pageNumber}
-                            settValgtSide={setPageNumber}
+                        <Pagination
+                            numberOfItems={numPages}
+                            onChange={setPageNumber}
+                            itemsPerPage={1}
+                            currentPage={pageNumber}
                         />
                     </MidtstiltInnhold>
                     <Document
@@ -50,11 +50,11 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         <Page pageNumber={pageNumber} />
                     </Document>
                     <MidtstiltInnhold>
-                        <Paginering
-                            sideStorrelse={1}
-                            antallTotalt={numPages}
-                            valgtSide={pageNumber}
-                            settValgtSide={setPageNumber}
+                        <Pagination
+                            numberOfItems={numPages}
+                            onChange={setPageNumber}
+                            itemsPerPage={1}
+                            currentPage={pageNumber}
                         />
                     </MidtstiltInnhold>
                 </>

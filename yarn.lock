@@ -3696,6 +3696,16 @@ css-what@^3.2.1:
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-3.2.1.tgz#f4a8f12421064621b456755e34a03a2c22df5da1"
   integrity sha512-WwOrosiQTvyms+Ti5ZC5vGEK0Vod3FTt1ca+payZqvKuGJF+dq7bG63DstxtN0dpm6FxY27a/zS3Wten+gEtGw==
 
+css@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/css/-/css-2.2.4.tgz#c646755c73971f2bba6a601e2cf2fd71b1298929"
+  integrity sha512-oUnjmWpy0niI3x/mPL8dVEI1l7MnG3+HHyRPHf+YFSbK+svOhXpmSOcDURUh2aOCgl2grzrOPt1nHLuCVFULLw==
+  dependencies:
+    inherits "^2.0.3"
+    source-map "^0.6.1"
+    source-map-resolve "^0.5.2"
+    urix "^0.1.0"
+
 cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
@@ -6444,6 +6454,13 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
+jest-styled-components@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-7.0.3.tgz#cc0b031f910484e68f175568682f3969ff774b2c"
+  integrity sha512-jj9sWyshehUnB0P9WFUaq9Bkh6RKYO8aD8lf3gUrXRwg/MRddTFk7U9D9pC4IAI3v9fbz4vmrMxwaecTpG8NKA==
+  dependencies:
+    css "^2.2.4"
+
 jose@^1.25.2:
   version "1.27.0"
   resolved "https://registry.yarnpkg.com/jose/-/jose-1.27.0.tgz#2b2b70978efdeeb0a0804e930a07992aede1ab91"
@@ -6732,6 +6749,13 @@ less-loader@^7.0.0:
     klona "^2.0.3"
     loader-utils "^2.0.0"
     schema-utils "^2.7.0"
+
+less-vars-to-js@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/less-vars-to-js/-/less-vars-to-js-1.3.0.tgz#c322cf43a3c8fc3fab655da3e51a14c1499ab571"
+  integrity sha512-xeiLLn/IMCGtdyCkYQnW8UuzoW2oYMCKg9boZRaGI58fLz5r90bNJDlqGzmVt/1Uqk75/DxIVtQSNCMkE5fRZQ==
+  dependencies:
+    strip-json-comments "^2.0.1"
 
 less@^3.12.2:
   version "3.12.2"
@@ -7604,6 +7628,11 @@ nav-frontend-core@^4.0.11, nav-frontend-core@^4.0.12:
   resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-4.0.12.tgz#e0577ddec4f81f1f411a0a0c3fad8e5fa215bbba"
   integrity sha512-xgkTQ2PzN8qYMkLZ+5qj5Dy6kpMHbfAW/y8suvsiLNAGq/KD/gTCzrGb6ypQ6i0CKMQO7cy9w8Kc8/MmhVpSNw==
 
+nav-frontend-core@^5.0.1, nav-frontend-core@^5.0.8:
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-5.0.8.tgz#ee735886dce11f6ba2f56f0147881eed5b18af47"
+  integrity sha512-2NsEnm+vnMVhXO8Jo4RsGLGJUHpfOziTaUtCWJqaQt0gCscRSTkPkFSBQGlR0bxs9QFkO4TEW514EVBOBsmR1g==
+
 nav-frontend-core@^5.0.3:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-5.0.3.tgz#cf8acf4656862e4b69084275764b4d8058baa5e1"
@@ -7644,6 +7673,13 @@ nav-frontend-js-utils@^1.0.11:
   resolved "https://registry.yarnpkg.com/nav-frontend-js-utils/-/nav-frontend-js-utils-1.0.11.tgz#769cca01f65518ca0b365416d2b7d9887a88100e"
   integrity sha512-Ca5IOU9cklznoymF0BwWkVGVRmjrQ/2NgySrz9+6otYHuZ060mEoiZwz302sVoap3HRjMGYYP3JleugXjO/ywQ==
 
+nav-frontend-js-utils@^1.0.14:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/nav-frontend-js-utils/-/nav-frontend-js-utils-1.0.15.tgz#d5dc090ad6194f595175048a2717615eba8aed53"
+  integrity sha512-ZVejqv71eVS7SSkIP4c5/kEloTq79Q0WrTDr+4tmP2tVv+c2rFYMYGhYkLozZ8yDF/6eM7yheutnYxtYsctayQ==
+  dependencies:
+    lodash.throttle "^4.1.1"
+
 nav-frontend-js-utils@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/nav-frontend-js-utils/-/nav-frontend-js-utils-1.0.8.tgz#1c1ecec8d90b125157097b22b227ef0b53045432"
@@ -7653,6 +7689,16 @@ nav-frontend-knapper-style@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/nav-frontend-knapper-style/-/nav-frontend-knapper-style-1.0.1.tgz#5add853d28a5c5f9848aebdb2abefc99fe20e396"
   integrity sha512-J8HO93X/jiS9Jbvmr/byTjdgA69PLUYE/OF5Plc67/ZBDuJOoMhxnShr+EgFA6EXRrdq+D9SSfceFX1bRx9dWw==
+
+nav-frontend-knapper-style@^1.0.5:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/nav-frontend-knapper-style/-/nav-frontend-knapper-style-1.0.8.tgz#fe49e1ec2f30d98a0177f1c4ac89e4ea57f71bb4"
+  integrity sha512-e4BomkEF3XPG7Iy5x2FaqlWWGPlaufgcByQPgyIo+/G7Cnutev6ZGBptBXZEDy71sst0HmOMGVdBuQOQ2cuiew==
+
+nav-frontend-knapper@^2.0.16:
+  version "2.0.20"
+  resolved "https://registry.yarnpkg.com/nav-frontend-knapper/-/nav-frontend-knapper-2.0.20.tgz#051203bad6b6c819f341c31be8aa68abd877b257"
+  integrity sha512-sTDTxGgpguK5DVcGmvghBvJGueii/YhLyu0oR93nUVwJs5Agv+UlAGzzMRX9Y/YVEF66UHxH5shevBYPKNjLFQ==
 
 nav-frontend-knapper@^2.0.9:
   version "2.0.9"
@@ -7768,6 +7814,13 @@ nav-frontend-typografi-style@^1.0.23:
   dependencies:
     nav-frontend-core "^5.0.3"
 
+nav-frontend-typografi-style@^1.0.26:
+  version "1.0.29"
+  resolved "https://registry.yarnpkg.com/nav-frontend-typografi-style/-/nav-frontend-typografi-style-1.0.29.tgz#049d8f1a98432f79f3c33d62bd6ddf57994b1f8a"
+  integrity sha512-jgw4jjHSapdtHxk7WTZ4UJ1g4R7jmfwj4NYeFXrA+xRyx98w7YDGWYLxb0BVJVmypW8+OytQ4XnrxSUcfe3Crg==
+  dependencies:
+    nav-frontend-core "^5.0.8"
+
 nav-frontend-typografi@^2.0.16, nav-frontend-typografi@^2.0.17:
   version "2.0.19"
   resolved "https://registry.yarnpkg.com/nav-frontend-typografi/-/nav-frontend-typografi-2.0.19.tgz#4175aab1d52656c1d8ea9df6e176497debf78895"
@@ -7777,6 +7830,14 @@ nav-frontend-typografi@^2.0.27:
   version "2.0.27"
   resolved "https://registry.yarnpkg.com/nav-frontend-typografi/-/nav-frontend-typografi-2.0.27.tgz#66dd2e57e268969f0fbee55a3d12381ae8faf68a"
   integrity sha512-JRGRuaYYUTKJYU7mHT/G2bcMWJVsw2HOMrfVCDXJqJiT/enTA1/hiBPP63+fBu+onL0Kef2JfgdJURCwvrk/0w==
+
+nav-styled-component-theme@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/nav-styled-component-theme/-/nav-styled-component-theme-1.0.7.tgz#d6b1197c97e6be76b96e4193543584ba20c95d93"
+  integrity sha512-hO37xViaYIMis4CiTHOkvkA/JBsDzPHeo1iaWLHUZvZMEeIuKA6AxQ0domBzFBICzoKSA5e2LVCSCEqW92JoOQ==
+  dependencies:
+    less-vars-to-js "^1.3.0"
+    nav-frontend-core "^5.0.1"
 
 nconf@^0.10.0:
   version "0.10.0"
@@ -8339,6 +8400,22 @@ package-json@^6.3.0:
     registry-auth-token "^4.0.0"
     registry-url "^5.0.0"
     semver "^6.2.0"
+
+paginering@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/paginering/-/paginering-1.0.6.tgz#f296c32e0377942a4e86723f79279727be07980c"
+  integrity sha512-lVAjt+SNbgi8S86t4GMNa5a7zIUyFDIG53cVKl6fcEEkW29EQpcCOTB1fbAB+s3McY+mla6iiinr/Hn6Q6e4UQ==
+  dependencies:
+    classnames "^2.2.6"
+    jest-styled-components "^7.0.3"
+    lodash "^4.17.20"
+    lodash.throttle "^4.1.1"
+    nav-frontend-js-utils "^1.0.14"
+    nav-frontend-knapper "^2.0.16"
+    nav-frontend-knapper-style "^1.0.5"
+    nav-frontend-typografi-style "^1.0.26"
+    nav-styled-component-theme "^1.0.7"
+    prop-types "^15.7.2"
 
 pako@~0.2.0:
   version "0.2.9"
@@ -10751,7 +10828,7 @@ source-list-map@^2.0.0:
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
   integrity sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==
 
-source-map-resolve@^0.5.0:
+source-map-resolve@^0.5.0, source-map-resolve@^0.5.2:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/source-map-resolve/-/source-map-resolve-0.5.3.tgz#190866bece7553e1f8f267a2ee82c606b5509a1a"
   integrity sha512-Htz+RnsXWk5+P2slx5Jh3Q66vhQj1Cllm0zvnaY98+NFx+Dv2CF/f5O/t8x+KaNdrdIAsruNzoh/KpialbqAnw==
@@ -11126,15 +11203,15 @@ strip-final-newline@^2.0.0:
   resolved "https://registry.yarnpkg.com/strip-final-newline/-/strip-final-newline-2.0.0.tgz#89b852fb2fcbe936f6f4b3187afb0a12c1ab58ad"
   integrity sha512-BrpvfNAE3dcvq7ll3xVumzjKjZQ5tI1sEUIKr3Uoks0XUl45St3FlatVqef9prk4jRDzhW6WZg+3bk93y6pLjA==
 
+strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
+  integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
+
 strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
-
-strip-json-comments@~2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
-  integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
 style-loader@^1.0.0:
   version "1.2.1"
