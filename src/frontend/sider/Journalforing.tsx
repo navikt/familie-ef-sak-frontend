@@ -9,7 +9,7 @@ import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
 import { behandlingstemaTilStønadstype, behandlingstemaTilTekst } from '../typer/behandlingstema';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
 import { useGetQueryParams } from '../hooks/felles/useGetQueryParams';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
@@ -54,7 +54,13 @@ export const Journalforing: React.FC = () => {
 
     const journalpostState: JournalføringStateRequest = useJournalføringState();
     const { hentJournalPost, journalResponse } = useHentJournalpost(journalpostIdParam);
-    const { hentDokument, valgtDokument } = useHentDokument(journalpostIdParam);
+    const {
+        hentDokument,
+        valgtDokument,
+        hentFørsteDokument,
+        hentNesteDokument,
+        hentForrigeDokument,
+    } = useHentDokument(journalpostIdParam);
     const { hentFagsak, fagsak } = useHentFagsak();
 
     useEffect(() => {
@@ -76,6 +82,7 @@ export const Journalforing: React.FC = () => {
                 journalResponse.data.journalpost.behandlingstema
             );
             stønadstype && hentFagsak(journalResponse.data.personIdent, stønadstype);
+            hentFørsteDokument(journalResponse.data.journalpost);
         }
     }, [journalResponse]);
 
@@ -142,6 +149,14 @@ export const Journalforing: React.FC = () => {
                             </FlexKnapper>
                         </Venstrekolonne>
                         <Høyrekolonne>
+                            <FlexKnapper>
+                                <Knapp onClick={() => hentForrigeDokument(data.journalpost)} mini>
+                                    Forrige Dokument
+                                </Knapp>
+                                <Knapp onClick={() => hentNesteDokument(data.journalpost)} mini>
+                                    Neste Dokument
+                                </Knapp>
+                            </FlexKnapper>
                             <PdfVisning pdfFilInnhold={valgtDokument} />
                         </Høyrekolonne>
                     </Kolonner>

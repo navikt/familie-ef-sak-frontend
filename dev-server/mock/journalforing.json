@@ -39,7 +39,20 @@
             }
           ],
           "logiskeVedlegg": []
+        },
+        {
+          "dokumentInfoId": "454011937",
+          "tittel": "NAV 33-00.15 Test dokument 2",
+          "brevkode": "NAV 33-00.15",
+          "dokumentstatus": null,
+          "dokumentvarianter": [
+            {
+              "variantformat": "ARKIV"
+            }
+          ],
+          "logiskeVedlegg": []
         }
+
       ],
       "relevanteDatoer": [
         {

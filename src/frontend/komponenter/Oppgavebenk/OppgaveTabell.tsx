@@ -6,13 +6,13 @@ import { OppgaveResurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
-import Paginering from '../Paginering/Paginering';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/felles/useSorteringState';
 import { usePagineringState } from '../../hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import UIModalWrapper from '../Felleskomponenter/Modal/UIModalWrapper';
 import { Normaltekst } from 'nav-frontend-typografi';
+import Pagination from 'paginering';
 
 const SIDE_STORRELSE = 15;
 
@@ -57,11 +57,11 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
 
     return (
         <>
-            <Paginering
-                antallTotalt={sortertListe.length}
-                settValgtSide={settValgtSide}
-                sideStorrelse={SIDE_STORRELSE}
-                valgtSide={valgtSide}
+            <Pagination
+                numberOfItems={sortertListe.length}
+                onChange={settValgtSide}
+                itemsPerPage={SIDE_STORRELSE}
+                currentPage={valgtSide}
             />
             <table className="tabell tabell--stripet">
                 <thead>

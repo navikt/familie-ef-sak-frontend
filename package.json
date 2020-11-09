@@ -101,6 +101,7 @@
     "nav-frontend-typografi": "^2.0.27",
     "nav-frontend-typografi-style": "^1.0.23",
     "node-fetch": "^2.6.1",
+    "paginering": "^1.0.6",
     "passport": "^0.4.0",
     "passport-azure-ad": "^4.1.0",
     "prom-client": "^11.5.3",
