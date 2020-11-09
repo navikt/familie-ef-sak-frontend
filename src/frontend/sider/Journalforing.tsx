@@ -137,7 +137,8 @@ export const Journalforing: React.FC = () => {
                                     onClick={() =>
                                         journalpostState.fullførJournalføring(
                                             journalpostIdParam,
-                                            innloggetSaksbehandler?.enhet || '9999'
+                                            innloggetSaksbehandler?.enhet || '9999',
+                                            innloggetSaksbehandler.navIdent
                                         )
                                     }
                                     spinner={
