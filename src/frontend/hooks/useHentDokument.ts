@@ -47,9 +47,8 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>) => {
 
     const hentNesteDokument = useCallback(
         (journalpost: IJournalpost) => {
-            const nesteIndeks = indeksForValgtDokument(journalpost) + 1;
             const nesteEllerFørsteIndeks =
-                journalpost.dokumenter.length > nesteIndeks ? nesteIndeks : 0;
+                (indeksForValgtDokument(journalpost) + 1) % journalpost.dokumenter.length;
             hentDokumentForIndex(journalpost, nesteEllerFørsteIndeks);
         },
         [journalpostIdParam, valgtDokumentInfoId]
@@ -57,9 +56,9 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>) => {
 
     const hentForrigeDokument = useCallback(
         (journalpost: IJournalpost) => {
-            const forrigeIndeks = indeksForValgtDokument(journalpost) - 1;
             const forrigeEllerSisteIndeks =
-                forrigeIndeks >= 0 ? forrigeIndeks : journalpost.dokumenter.length - 1;
+                (indeksForValgtDokument(journalpost) - 1 + journalpost.dokumenter.length) %
+                journalpost.dokumenter.length;
             hentDokumentForIndex(journalpost, forrigeEllerSisteIndeks);
         },
         [journalpostIdParam, valgtDokumentInfoId]
