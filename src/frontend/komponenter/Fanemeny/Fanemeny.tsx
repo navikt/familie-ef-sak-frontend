@@ -1,26 +1,32 @@
 import * as React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
 import { IBehandlingParams } from '../../typer/routing';
 import { sider } from './sider';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { NavLink } from 'react-router-dom';
 import { styles } from '../../typer/styles';
-import { Normaltekst } from 'nav-frontend-typografi';
 
-const StyledVenstremeny = styled.nav`
+const StyledFanemeny = styled.div`
+    width: 100%;
     display: flex;
-    flex: 1;
-    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 `;
 
 const StyledNavLink = styled(NavLink)`
-    border-left: 5px solid white;
-    padding: 0.5rem 4rem 0.5rem 2rem;
-    text-decoration: none;
+    border-bottom: 5px solid white;
     color: inherit;
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
     :hover {
-        border-left: 5px solid ${styles.farger.navBlaLighten20};
+        border-bottom: 5px solid ${styles.farger.navBlaLighten20};
+
         .typo-normal {
             color: ${styles.farger.navBla};
         }
@@ -28,18 +34,18 @@ const StyledNavLink = styled(NavLink)`
 
     &.aktiv {
         background-color: ${styles.farger.navLysGra};
-        border-left: 5px solid ${styles.farger.navBla};
+        border-bottom: 5px solid ${styles.farger.navBla};
 
         .typo-normal {
             font-weight: bold;
         }
     }
 `;
-
-const Venstremeny: React.FC = () => {
+const Fanemeny: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
+
     return (
-        <StyledVenstremeny>
+        <StyledFanemeny>
             {sider.map((side) => (
                 <StyledNavLink
                     to={`/behandling/${behandlingId}/${side.href}`}
@@ -48,8 +54,8 @@ const Venstremeny: React.FC = () => {
                     <Normaltekst>{side.navn}</Normaltekst>
                 </StyledNavLink>
             ))}
-        </StyledVenstremeny>
+        </StyledFanemeny>
     );
 };
 
-export default Venstremeny;
+export default Fanemeny;
