@@ -28,7 +28,11 @@ export interface JournalføringStateRequest {
     settForsøktJournalført: Dispatch<SetStateAction<boolean>>;
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
-    fullførJournalføring: (journalpostId: string, journalførendeEnhet: string) => void;
+    fullførJournalføring: (
+        journalpostId: string,
+        journalførendeEnhet: string,
+        navIdent: string
+    ) => void;
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
@@ -40,7 +44,11 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [forsøktJournalført, settForsøktJournalført] = useState<boolean>(false);
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
 
-    const fullførJournalføring = (journalpostId: string, journalførendeEnhet: string) => {
+    const fullførJournalføring = (
+        journalpostId: string,
+        journalførendeEnhet: string,
+        navIdent: string
+    ) => {
         settForsøktJournalført(true);
         if (!behandling || innsending.status === RessursStatus.HENTER) {
             return;
@@ -55,7 +63,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
             method: 'POST',
-            url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor?journalfoerendeEnhet=${journalførendeEnhet}`,
+            url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor?journalfoerendeEnhet=${journalførendeEnhet}&navIdent=${navIdent}`,
             data,
         }).then((resp) => settInnsending(resp));
     };
