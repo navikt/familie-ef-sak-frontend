@@ -13,6 +13,8 @@ interface JournalføringRequest {
     fagsakId: string;
     oppgaveId: string;
     behandling?: BehandlingRequest;
+    journalførendeEnhet: string;
+    navIdent: string;
 }
 
 export interface JournalføringStateRequest {
@@ -59,11 +61,13 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             fagsakId,
             behandling,
             dokumentTitler,
+            journalførendeEnhet,
+            navIdent,
         };
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
             method: 'POST',
-            url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor?journalfoerendeEnhet=${journalførendeEnhet}&navIdent=${navIdent}`,
+            url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor`,
             data,
         }).then((resp) => settInnsending(resp));
     };
