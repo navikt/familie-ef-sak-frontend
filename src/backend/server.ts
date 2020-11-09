@@ -8,7 +8,6 @@ import backend, {
     info,
 } from '@navikt/familie-backend';
 import bodyParser from 'body-parser';
-import express from 'express';
 import path from 'path';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -18,7 +17,7 @@ import { sessionConfig } from './config';
 import { prometheusTellere } from './metrikker';
 import { attachToken, doProxy } from './proxy';
 import setupRouter from './router';
-
+import expressStaticGzip from 'express-static-gzip';
 // eslint-disable-next-line
 const config = require('../../build_n_deploy/webpack/webpack.dev');
 
@@ -38,7 +37,10 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         // @ts-ignore
         app.use(webpackHotMiddleware(compiler));
     } else {
-        app.use('/assets', express.static(path.join(__dirname, '../../frontend_production')));
+        app.use(
+            '/assets',
+            expressStaticGzip(path.join(__dirname, '../../frontend_production'), {})
+        );
     }
 
     app.use(
