@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { FC } from 'react';
-import { Redirect, Route, Switch, useParams } from 'react-router';
-import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
-import Venstremeny from '../Venstremeny/Venstremeny';
-import styled from 'styled-components';
-import { styles } from '../../typer/styles';
+import Fanemeny from '../Fanemeny/Fanemeny';
 import Høyremeny from '../Høyremeny/Høyremeny';
+import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
+import navFarger from 'nav-frontend-core';
+import styled from 'styled-components';
+import { FC } from 'react';
 import { IBehandlingParams } from '../../typer/routing';
+import { Redirect, Route, Switch, useParams } from 'react-router';
+import { styles } from '../../typer/styles';
 
 const Container = styled.div`
     display: flex;
@@ -26,9 +27,16 @@ const HøyreMenyWrapper = styled.div`
 `;
 
 const InnholdWrapper = styled.div`
-    padding: 1rem;
     flex: 1;
     overflow: auto;
+`;
+
+const FanemenyWrapper = styled.div`
+    border-bottom: ${navFarger.navGra40} solid 2px;
+`;
+
+const StyledSwitch = styled(Switch)`
+    padding: 1rem;
 `;
 
 const BehandlingContainer: FC = () => {
@@ -37,11 +45,12 @@ const BehandlingContainer: FC = () => {
     return (
         <>
             <Container>
-                <VenstreMenyWrapper>
-                    <Venstremeny />
-                </VenstreMenyWrapper>
+                <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
                 <InnholdWrapper>
-                    <Switch>
+                    <FanemenyWrapper>
+                        <Fanemeny />
+                    </FanemenyWrapper>
+                    <StyledSwitch>
                         <Redirect
                             exact={true}
                             from="/behandling/:behandlingId/"
@@ -54,7 +63,7 @@ const BehandlingContainer: FC = () => {
                                 return <Inngangsvilkår behandlingId={behandlingId} />;
                             }}
                         />
-                    </Switch>
+                    </StyledSwitch>
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
                     <Høyremeny />

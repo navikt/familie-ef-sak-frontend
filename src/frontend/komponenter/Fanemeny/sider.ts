@@ -7,6 +7,8 @@ export interface ISide {
 export enum SideId {
     PERSONOPPLYSNINGER = 'PERSONOPPLYSNINGER',
     INNGANGSVILKÅR = 'INNGANGSVILKÅR',
+    INNTEKT = 'INNTEKT',
+    UTBETALINGSOVERSIKT = 'UTBETALINGSOVERSIKT',
 }
 
 export const sider: ISide[] = [
@@ -19,5 +21,15 @@ export const sider: ISide[] = [
         id: SideId.INNGANGSVILKÅR,
         href: 'inngangsvilkar',
         navn: 'Inngangsvilkår',
+    },
+    {
+        id: SideId.INNTEKT,
+        href: 'inntekt',
+        navn: 'Inntekt',
+    },
+    {
+        id: SideId.UTBETALINGSOVERSIKT,
+        href: 'utbetalingsoversikt',
+        navn: 'Utbetalingsoversikt',
     },
 ];
