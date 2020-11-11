@@ -18,6 +18,22 @@ export interface IPersonopplysninger {
     sivilstand: ISivilstand[];
     adresse: IAdresse[];
     fullmakt: IFullmakt[];
+    barn: IBarn[];
+    innflyttingTilNorge: IInnflyttingTilNorge[];
+    utflyttingFraNorge: IUtflyttingFraNorge[];
+}
+
+export interface IBarn {
+    navn: string;
+    personIdent: string;
+    annenForelder?: IAnnenForelder;
+    adresse: IAdresse[];
+    borHosSøker: boolean;
+}
+
+export interface IAnnenForelder {
+    personIdent: string;
+    navn: string;
 }
 
 export interface IAdresse {
@@ -57,6 +73,23 @@ export interface ISivilstand {
     gyldigFraOgMed?: string;
     relatertVedSivilstand?: string;
     navn?: string;
+}
+
+export interface IInnflyttingTilNorge {
+    fraflyttingsland?: string;
+    fraflyttingsstedIUtlandet?: string;
+    folkeregistermetadata: IFolkeregisterMetadata;
+}
+
+export interface IUtflyttingFraNorge {
+    tilflyttingsland?: string;
+    tilflyttingsstedIUtlandet?: string;
+    folkeregistermetadata: IFolkeregisterMetadata;
+}
+
+export interface IFolkeregisterMetadata {
+    gyldighetstidspunkt: string;
+    ophørstidspunkt: string;
 }
 
 export enum Adressebeskyttelse {

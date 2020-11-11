@@ -8,6 +8,7 @@ import { FC } from 'react';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
 import { styles } from '../../typer/styles';
+import Personopplysninger from './Personopplysninger/Personopplysninger';
 
 const Container = styled.div`
     display: flex;
@@ -55,6 +56,13 @@ const BehandlingContainer: FC = () => {
                             exact={true}
                             from="/behandling/:behandlingId/"
                             to="/behandling/:behandlingId/inngangsvilkar"
+                        />
+                        <Route
+                            exact={true}
+                            path="/behandling/:behandlingId/personopplysninger"
+                            render={() => {
+                                return <Personopplysninger id={'1234'} />;
+                            }}
                         />
                         <Route
                             exact={true}

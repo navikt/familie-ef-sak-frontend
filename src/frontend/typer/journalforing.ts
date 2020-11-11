@@ -56,3 +56,7 @@ export interface BrukerInfo {
     id: string;
     type: BrukerId;
 }
+
+export interface IPersonopplysninger {
+    personIdent: string;
+}
