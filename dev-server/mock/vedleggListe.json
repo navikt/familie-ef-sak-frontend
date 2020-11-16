@@ -1,0 +1,56 @@
+{
+  "data": [
+    {
+      "dokumentinfoId": "12345",
+      "filnavn": null,
+      "tittel": "Søknad om overgangsstønad - dokument 1",
+      "journalpostId": "1234",
+      "dato": "2020-11-16",
+      "journalposttype": "I"
+    },
+    {
+      "dokumentinfoId": "12345",
+      "filnavn": null,
+      "tittel": "Søknad om barnetilsyn - dokument 1",
+      "journalpostId": "1234",
+      "dato": "2020-11-16",
+      "journalposttype": "I"
+    },
+    {
+      "dokumentinfoId": "12345",
+      "filnavn": null,
+      "tittel": "Samboeravtale",
+      "journalpostId": "1234",
+      "dato": "2020-11-16",
+      "journalposttype": "I"
+    },
+    {
+      "dokumentinfoId": "12345",
+      "filnavn": null,
+      "tittel": "EtFrykteligLangtDokumentNavnSomTroligIkkeBrekkerOgØdeleggerGUI",
+      "journalpostId": "1234",
+      "dato": "2020-11-16",
+      "journalposttype": "I"
+    },
+    {
+      "dokumentinfoId": "12345",
+      "filnavn": null,
+      "tittel": "Søknad om overgangsstønad - dokument 2",
+      "journalpostId": "1234",
+      "dato": "2020-10-12",
+      "journalposttype": "N"
+    },
+    {
+      "dokumentinfoId": "12345",
+      "filnavn": null,
+      "tittel": "Søknad om overgangsstønad - dokument 3",
+      "journalpostId": "1234",
+      "dato": "2020-10-12",
+      "journalposttype": "U"
+    }
+  ],
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}

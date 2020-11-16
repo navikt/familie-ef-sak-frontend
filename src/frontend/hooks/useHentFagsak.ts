@@ -4,7 +4,11 @@ import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { Stønadstype } from '../typer/behandlingstema';
 import { Fagsak } from '../typer/fagsak';
 
-export const useHentFagsak = () => {
+interface HentFagsakResponse {
+    hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
+    fagsak: Ressurs<Fagsak>;
+}
+export const useHentFagsak = (): HentFagsakResponse => {
     const { axiosRequest } = useApp();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
 
