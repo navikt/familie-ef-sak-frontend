@@ -18,6 +18,7 @@ export interface IPersonopplysninger {
     sivilstand: ISivilstand[];
     adresse: IAdresse[];
     fullmakt: IFullmakt[];
+    navEnhet: string;
     barn: IBarn[];
     innflyttingTilNorge: IInnflyttingTilNorge[];
     utflyttingFraNorge: IUtflyttingFraNorge[];

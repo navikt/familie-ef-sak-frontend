@@ -11,7 +11,7 @@ const Bygning: React.FC<IBygning> = ({ className, heigth, width }) => {
         <svg
             aria-labelledby={'bygning'}
             className={className}
-            height={heigth}
+            height={heigth || 24}
             width={width}
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

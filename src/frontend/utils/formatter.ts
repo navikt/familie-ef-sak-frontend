@@ -8,3 +8,6 @@ export const formaterNullableIsoDato = (dato?: string): string | undefined =>
 export const formaterIsoDato = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoFormat);
 };
+
+export const formatertFødselsnummer = (fødselsnummer: string) =>
+    fødselsnummer.substring(0, 6) + ' ' + fødselsnummer.substring(6);
