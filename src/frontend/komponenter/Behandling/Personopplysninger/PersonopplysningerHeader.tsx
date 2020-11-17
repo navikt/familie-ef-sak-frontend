@@ -78,7 +78,7 @@ export const PersonopplysningerHeader: React.FC<{ telefon?: ITelefonnummer; navE
                 </StyledNavEnhetWrapper>
             </StyledGridDiv>
             <StyledInnholdWrapper>
-                {telefon ? `+${telefon.landskode} ${telefon.nummer}` : '-'}
+                {telefon ? `${telefon.landskode} ${telefon.nummer}` : '-'}
             </StyledInnholdWrapper>
         </TabellWrapper>
     );

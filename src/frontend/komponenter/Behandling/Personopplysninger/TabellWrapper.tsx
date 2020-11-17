@@ -22,10 +22,10 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
             padding-left: 0;
         }
     }
-    #første-tabell {
+    .første-tabell {
         grid-area: første-tabell;
     }
-    #andre-tabell {
+    .andre-tabell {
         grid-area: andre-tabell;
     }
 `;
