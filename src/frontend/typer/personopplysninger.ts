@@ -13,6 +13,7 @@ export interface IPersonopplysninger {
     adressebeskyttelse?: Adressebeskyttelse;
     folkeregisterpersonstatus?: Folkeregisterpersonstatus;
     dødsdato?: string;
+    fødselsdato?: string;
     telefonnummer?: ITelefonnummer;
     statsborgerskap: IStatsborgerskap[];
     sivilstand: ISivilstand[];
@@ -30,6 +31,7 @@ export interface IBarn {
     annenForelder?: IAnnenForelder;
     adresse: IAdresse[];
     borHosSøker: boolean;
+    fødselsdato?: string;
 }
 
 export interface IAnnenForelder {
