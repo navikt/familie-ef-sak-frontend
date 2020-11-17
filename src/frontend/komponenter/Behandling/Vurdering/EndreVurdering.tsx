@@ -90,7 +90,10 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     harPassertSisteDelvilkårSomSkalVises = true;
                 }
                 return (
-                    <RadioGruppe legend={delvilkårTypeTilTekst[delvilkår.type]}>
+                    <RadioGruppe
+                        key={delvilkår.type}
+                        legend={delvilkårTypeTilTekst[delvilkår.type]}
+                    >
                         {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
                             <Radio
                                 key={vilkårsresultat}

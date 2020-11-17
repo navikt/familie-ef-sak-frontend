@@ -48,6 +48,7 @@ const Fanemeny: FC = () => {
         <StyledFanemeny>
             {sider.map((side) => (
                 <StyledNavLink
+                    key={side.navn}
                     to={`/behandling/${behandlingId}/${side.href}`}
                     activeClassName="aktiv"
                 >

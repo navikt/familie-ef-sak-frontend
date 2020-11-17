@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IMedlemskap } from '../vilkår';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
@@ -13,8 +12,8 @@ import Statsborgerskap from './Statsborgerskap';
 import Oppholdsstatus from './Oppholdsstatus';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import IkkeOppfylt from '../../../../ikoner/IkkeOppfylt';
-import Oppfylt from '../../../../ikoner/Oppfylt';
+import VilkårOppfylt from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { IMedlemskap } from './typer';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -30,11 +29,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
     return (
         <>
             <StyledTabell>
-                {erOppfylt ? (
-                    <Oppfylt heigth={21} width={21} />
-                ) : (
-                    <IkkeOppfylt heigth={21} width={21} />
-                )}
+                <VilkårOppfylt erOppfylt={erOppfylt} />
                 <div className="tittel">
                     <Undertittel>Medlemskap og opphold i Norge</Undertittel>
                     <EtikettLiten>§15-2 og §15-3 </EtikettLiten>

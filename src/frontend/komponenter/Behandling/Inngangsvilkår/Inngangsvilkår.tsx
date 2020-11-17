@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
 import { VilkårDel } from '../Vurdering/VurderingConfig';
 import MedlemskapVisning from './Medlemskap/MedlemskapVisning';
+import SivilstandVisning from './Sivilstand/SivilstandVisning';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -91,12 +92,12 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                         )}
                     />
                     <Vurdering
-                        vilkårDel={VilkårDel.MEDLEMSKAP}
+                        vilkårDel={VilkårDel.SIVILSTAND}
                         vurderinger={inngangsvilkår.data.vurderinger}
                         oppdaterVurdering={oppdaterVurdering}
                         visning={(erOppfylt: boolean) => (
-                            <MedlemskapVisning
-                                medlemskap={inngangsvilkår.data.medlemskap}
+                            <SivilstandVisning
+                                sivilstand={inngangsvilkår.data.sivilstand}
                                 erOppfylt={erOppfylt}
                             />
                         )}

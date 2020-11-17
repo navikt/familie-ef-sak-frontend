@@ -53,7 +53,7 @@ export interface IStatsborgerskap {
 }
 
 export interface ISivilstand {
-    type: Sivilstand;
+    type: SivilstandType;
     gyldigFraOgMed?: string;
     relatertVedSivilstand?: string;
     navn?: string;
@@ -85,7 +85,7 @@ export enum Folkeregisterpersonstatus {
     UKJENT = 'UKJENT',
 }
 
-export enum Sivilstand {
+export enum SivilstandType {
     UOPPGITT = 'UOPPGITT',
     UGIFT = 'UGIFT',
     GIFT = 'GIFT',

@@ -20,9 +20,9 @@ const Søknad: React.FunctionComponent<ISøknad> = ({ className, heigth, width }
             <title id={'søknad'}>Søknad ikon</title>
             <g
                 stroke="#000"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-miterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeMiterlimit="10"
                 fill="none"
             >
                 <path d="M20.5 23.5h-17v-23h11l6 6zM14.5.5v6h6M7.5 7.5h4.5M7.5 10.5h9M7.5 13.5h9M7.5 16.5h9M7.5 19.5h9" />

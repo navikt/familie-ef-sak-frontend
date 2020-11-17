@@ -44,6 +44,7 @@ const Vurdering: FC<Props> = ({ vilkårDel, vurderinger, oppdaterVurdering, visn
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
+                        key={vurdering.id}
                         vurdering={vurdering}
                         oppdaterVurdering={oppdaterVurdering}
                     />

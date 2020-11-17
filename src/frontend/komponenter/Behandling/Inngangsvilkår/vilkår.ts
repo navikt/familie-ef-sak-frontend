@@ -1,8 +1,10 @@
-import { IStatsborgerskap } from '../../../typer/personopplysninger';
+import { IMedlemskap } from './Medlemskap/typer';
+import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 
 export interface IInngangsvilkår {
-    medlemskap: IMedlemskap;
     vurderinger: IVurdering[];
+    medlemskap: IMedlemskap;
+    sivilstand: ISivilstandInngangsvilkår;
 }
 
 export interface IVurdering {
@@ -21,43 +23,6 @@ export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
 }
-
-export interface IMedlemskap {
-    søknadsgrunnlag: IMedlemskapSøknadsgrunnlag;
-    registergrunnlag: IMedlemskapRegistergrunnlag;
-}
-
-export interface IMedlemskapSøknadsgrunnlag {
-    bosattNorgeSisteÅrene: boolean;
-    oppholderDuDegINorge: boolean;
-    utenlandsopphold: IUtenlandsopphold[];
-}
-
-export interface IMedlemskapRegistergrunnlag {
-    nåværendeStatsborgerskap: string[];
-    oppholdstatus: IOppholdstatus[];
-    statsborgerskap: IStatsborgerskap[];
-}
-
-export interface IUtenlandsopphold {
-    fraDato: string;
-    tilDato: string;
-    årsak: string;
-}
-
-export interface IOppholdstatus {
-    fraDato?: string;
-    tilDato?: string;
-    oppholdstillatelse: Oppholdstatus;
-}
-
-export type Oppholdstatus = 'MIDLERTIDIG' | 'PERMANENT' | 'UKJENT';
-
-export const oppholdsstatusTypeTilTekst: Record<Oppholdstatus, string> = {
-    MIDLERTIDIG: 'Midlertidig',
-    PERMANENT: 'Permanent',
-    UKJENT: 'Ukjent',
-};
 
 export enum Vilkårsresultat {
     JA = 'JA',

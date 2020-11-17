@@ -6,6 +6,7 @@ import { DelvilkårType, UnntakType, VilkårType } from '../Inngangsvilkår/vilk
  */
 export enum VilkårDel {
     MEDLEMSKAP = 'MEDLEMSKAP',
+    SIVILSTAND = 'SIVILSTAND',
 }
 
 export interface IVilkårConfig {
