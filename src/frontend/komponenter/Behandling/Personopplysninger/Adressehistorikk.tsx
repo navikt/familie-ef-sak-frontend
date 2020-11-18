@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TabellHeader from './TabellHeader';
+import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../../ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../../typer/personopplysninger';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
@@ -20,7 +20,7 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     const [visBeboereModal, settVisBeboereModal] = useState(false);
     return (
         <TabellWrapper>
-            <TabellHeader Ikon={Bygning} tittel={'Adressehistorikk'} />
+            <TabellOverskrift Ikon={Bygning} tittel={'Adressehistorikk'} />
             <table className="tabell">
                 <KolonneTitler titler={['Adresse', 'Adressetype', 'Fra', 'Til']} />
                 <tbody>

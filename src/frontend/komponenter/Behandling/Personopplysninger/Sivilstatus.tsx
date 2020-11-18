@@ -1,5 +1,5 @@
 import React from 'react';
-import TabellHeader from './TabellHeader';
+import TabellOverskrift from './TabellOverskrift';
 import Hjerte from '../../../ikoner/Hjerte';
 import { formatertFødselsnummer } from '../../../utils/formatter';
 import { KolonneTitler, TabellWrapper } from './TabellWrapper';
@@ -8,7 +8,7 @@ import { ISivilstand } from '../../../typer/personopplysninger';
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
         <TabellWrapper>
-            <TabellHeader Ikon={Hjerte} tittel={'Sivilstatus'} />
+            <TabellOverskrift Ikon={Hjerte} tittel={'Sivilstatus'} />
             <table className="tabell">
                 <KolonneTitler titler={['Status', 'Dato', 'Navn', 'Fødselsnummer']} />
                 <tbody>

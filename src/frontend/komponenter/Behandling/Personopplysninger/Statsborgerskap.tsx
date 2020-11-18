@@ -1,5 +1,5 @@
 import React from 'react';
-import TabellHeader from './TabellHeader';
+import TabellOverskrift from './TabellOverskrift';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { Folkeregisterpersonstatus, IStatsborgerskap } from '../../../typer/personopplysninger';
 import Pass from '../../../ikoner/Pass';
@@ -10,7 +10,7 @@ const Statsborgerskap: React.FC<{
 }> = ({ statsborgerskap, folkeregisterPersonstatus }) => {
     return (
         <TabellWrapper>
-            <TabellHeader Ikon={Pass} tittel={'Statsborgerskap'} />
+            <TabellOverskrift Ikon={Pass} tittel={'Statsborgerskap'} />
             <table className="tabell">
                 <KolonneTitler titler={['Land', 'Fra', 'Til', 'Personstatus']} />
                 <tbody>

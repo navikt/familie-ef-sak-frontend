@@ -16,7 +16,7 @@ const StyledIkon = styled.div`
     justify-self: left;
 `;
 
-const TabellHeader: React.FC<Props> = ({ Ikon, tittel }) => {
+const TabellOverskrift: React.FC<Props> = ({ Ikon, tittel }) => {
     return (
         <>
             <StyledIkon>
@@ -27,4 +27,4 @@ const TabellHeader: React.FC<Props> = ({ Ikon, tittel }) => {
     );
 };
 
-export default TabellHeader;
+export default TabellOverskrift;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IBarn } from '../../../typer/personopplysninger';
-import TabellHeader from './TabellHeader';
+import TabellOverskrift from './TabellOverskrift';
 import LiteBarn from '../../../ikoner/LiteBarn';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
@@ -15,7 +15,7 @@ const SpanMedVenstreMargin = styled.span`
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
         <TabellWrapper>
-            <TabellHeader Ikon={LiteBarn} tittel={'Barn'} />
+            <TabellOverskrift Ikon={LiteBarn} tittel={'Barn'} />
             <table className="tabell">
                 <KolonneTitler
                     titler={['Navn', 'Fødselsnummer', 'Annen forelder', 'Bor med bruker']}

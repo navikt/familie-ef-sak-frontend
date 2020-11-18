@@ -2,10 +2,6 @@
 
 import { kjønnType } from '@navikt/familie-typer';
 
-export interface IPersonopplysningerPersonIdent {
-    personIdent: string;
-}
-
 export interface IPersonopplysninger {
     personIdent: string;
     navn: INavn;

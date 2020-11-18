@@ -1,5 +1,5 @@
 import React from 'react';
-import TabellHeader from './TabellHeader';
+import TabellOverskrift from './TabellOverskrift';
 import SkrivendeBlyant from '../../../ikoner/SkrivendeBlyant';
 import { BredTd, KolonneTitler, IngenData, TabellWrapper } from './TabellWrapper';
 import { IFullmakt } from '../../../typer/personopplysninger';
@@ -7,7 +7,7 @@ import { IFullmakt } from '../../../typer/personopplysninger';
 const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
         <TabellWrapper>
-            <TabellHeader Ikon={SkrivendeBlyant} tittel={'Fullmakter'} />
+            <TabellOverskrift Ikon={SkrivendeBlyant} tittel={'Fullmakter'} />
             {(fullmakter.length != 0 && (
                 <table className="tabell">
                     <KolonneTitler titler={['Fullmektig', 'Fødselsnummer', 'Fra', 'Til']} />
