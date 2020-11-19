@@ -14,7 +14,7 @@ interface JournalføringRequest {
     oppgaveId: string;
     behandling?: BehandlingRequest;
     journalførendeEnhet: string;
-    navIdent: string;
+    navIdent?: string;
 }
 
 export interface JournalføringStateRequest {
@@ -33,7 +33,7 @@ export interface JournalføringStateRequest {
     fullførJournalføring: (
         journalpostId: string,
         journalførendeEnhet: string,
-        navIdent: string
+        navIdent?: string
     ) => void;
 }
 
@@ -49,7 +49,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const fullførJournalføring = (
         journalpostId: string,
         journalførendeEnhet: string,
-        navIdent: string
+        navIdent?: string
     ) => {
         settForsøktJournalført(true);
         if (!behandling || innsending.status === RessursStatus.HENTER) {

@@ -4,7 +4,14 @@ import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { OrNothing } from './felles/useSorteringState';
 import { IJournalpost } from '../typer/journalforing';
 
-export const useHentDokument = (journalpostIdParam: OrNothing<string>) => {
+interface HentDokumentResponse {
+    hentDokument: (dokumentinfoId: string) => void;
+    valgtDokument: Ressurs<string>;
+    hentFørsteDokument: (journalpost: IJournalpost) => void;
+    hentNesteDokument: (journalpost: IJournalpost) => void;
+    hentForrigeDokument: (journalpost: IJournalpost) => void;
+}
+export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDokumentResponse => {
     const { axiosRequest } = useApp();
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>(byggTomRessurs());
     const [valgtDokumentInfoId, settDokumentInfoId] = useState<string | undefined>();
