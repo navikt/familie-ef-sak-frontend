@@ -8,3 +8,9 @@ patch:
         patched: '2020-09-02T12:37:22.132Z'
     - snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > lodash:
         patched: '2020-09-03T13:38:53.384Z'
+    - '@navikt/familie-dokumentliste > styled-components > babel-plugin-styled-components > lodash':
+        patched: '2020-11-19T09:42:43.301Z'
+    - '@navikt/familie-dokumentliste > styled-components > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-11-19T09:42:43.301Z'
+    - '@navikt/familie-dokumentliste > styled-components > babel-plugin-styled-components > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-11-19T09:42:43.301Z'
