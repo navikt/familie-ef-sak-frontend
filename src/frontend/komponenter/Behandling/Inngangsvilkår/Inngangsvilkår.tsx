@@ -45,7 +45,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                 inngangsvilkår.status === RessursStatus.SUKSESS &&
                 respons.status === RessursStatus.SUKSESS
             ) {
-                settInngangsvilkår((prevInngangsvilkår) => {
+                settInngangsvilkår((prevInngangsvilkår: Ressurs<IInngangsvilkår>) => {
                     if (prevInngangsvilkår.status === RessursStatus.SUKSESS) {
                         return {
                             ...prevInngangsvilkår,

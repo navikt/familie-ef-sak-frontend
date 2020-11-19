@@ -33,4 +33,13 @@ export const VurderingConfig: IVurderingConfig = {
         unntak: [],
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
     },
+    SIVILSTAND: {
+        vilkårDel: VilkårDel.SIVILSTAND,
+        unntak: [],
+        delvilkår: [
+            DelvilkårType.DOKUMENTERT_EKTESKAP,
+            DelvilkårType.DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE,
+            DelvilkårType.KRAV_SIVILSTAND,
+        ],
+    },
 };
