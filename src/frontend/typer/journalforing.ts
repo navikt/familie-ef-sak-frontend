@@ -1,6 +1,6 @@
 import { Behandlingstema } from './behandlingstema';
 
-type Journalposttype = 'I' | 'U' | 'N';
+export type Journalposttype = 'I' | 'U' | 'N';
 type Journalstatus =
     | 'MOTTATT'
     | 'JOURNALFOERT'
