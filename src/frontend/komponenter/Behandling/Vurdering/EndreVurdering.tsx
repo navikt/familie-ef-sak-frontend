@@ -1,64 +1,21 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { Radio, RadioGruppe, Select, Textarea } from 'nav-frontend-skjema';
-import {
-    delvilkårTypeTilTekst,
-    IDelvilkår,
-    IVurdering,
-    UnntakType,
-    unntakTypeTilTekst,
-    Vilkårsresultat,
-    vilkårsresultatTypeTilTekst,
-} from '../Inngangsvilkår/vilkår';
+import { Textarea } from 'nav-frontend-skjema';
+import { IDelvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { IVilkårConfig } from './VurderingConfig';
 import styled from 'styled-components';
 import { erGyldigVurdering } from './VurderingUtil';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
+import Unntak from './Unntak';
+import Delvilkår from './Delvilkår';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
         margin-top: 10px;
     }
 `;
-
-const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilkår): IVurdering => {
-    let harPassertSisteDelvilkårSomSkalVises = false;
-    const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.map((delvilkår) => {
-        const skalNullstillePåfølgendeDelvilkår =
-            harPassertSisteDelvilkårSomSkalVises &&
-            delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT;
-
-        if (delvilkår.type === oppdatertDelvilkår.type) {
-            harPassertSisteDelvilkårSomSkalVises = true;
-            return oppdatertDelvilkår;
-        } else if (skalNullstillePåfølgendeDelvilkår) {
-            return { type: delvilkår.type, resultat: Vilkårsresultat.IKKE_VURDERT };
-        } else {
-            return delvilkår;
-        }
-    });
-    return {
-        ...vurdering,
-        delvilkårsvurderinger: delvilkårsvurderinger,
-        resultat:
-            oppdatertDelvilkår.resultat === Vilkårsresultat.JA
-                ? Vilkårsresultat.JA
-                : vurdering.resultat,
-        unntak: undefined,
-    };
-};
-
-const hentResultatForUnntak = (unntakType: UnntakType | undefined): Vilkårsresultat => {
-    if (!unntakType) {
-        return Vilkårsresultat.IKKE_VURDERT;
-    } else if (unntakType === UnntakType.HAR_IKKE_UNNTAK) {
-        return Vilkårsresultat.NEI;
-    } else {
-        return Vilkårsresultat.JA;
-    }
-};
 
 interface Props {
     config: IVilkårConfig;
@@ -90,51 +47,21 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     harPassertSisteDelvilkårSomSkalVises = true;
                 }
                 return (
-                    <RadioGruppe
+                    <Delvilkår
                         key={delvilkår.type}
-                        legend={delvilkårTypeTilTekst[delvilkår.type]}
-                    >
-                        {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
-                            <Radio
-                                key={vilkårsresultat}
-                                label={vilkårsresultatTypeTilTekst[vilkårsresultat]}
-                                name={delvilkår.type}
-                                onChange={() =>
-                                    settVurdering(
-                                        oppdaterDelvilkår(vurdering, {
-                                            type: delvilkår.type,
-                                            resultat: vilkårsresultat,
-                                        })
-                                    )
-                                }
-                                value={vilkårsresultat}
-                                checked={delvilkår.resultat === vilkårsresultat}
-                            />
-                        ))}
-                    </RadioGruppe>
+                        delvilkår={delvilkår}
+                        vurdering={vurdering}
+                        settVurdering={settVurdering}
+                    />
                 );
             })}
             {config.unntak && sisteDelvilkår.resultat === Vilkårsresultat.NEI && (
-                <Select
-                    label="Unntak"
-                    value={vurdering.unntak || undefined}
-                    onChange={(e) => {
-                        const unntak = !e.target.value ? undefined : (e.target.value as UnntakType);
-                        settVurdering({
-                            ...vurdering,
-                            unntak: unntak,
-                            resultat: hentResultatForUnntak(unntak),
-                        });
-                    }}
-                >
-                    <option value="">Velg...</option>
-                    <option value={UnntakType.HAR_IKKE_UNNTAK}>Har ikke unntak</option>
-                    {config.unntak.map((unntak) => (
-                        <option key={unntak} value={unntak}>
-                            {unntakTypeTilTekst[unntak]}
-                        </option>
-                    ))}
-                </Select>
+                <Unntak
+                    key={vurdering.id}
+                    vurdering={vurdering}
+                    settVurdering={settVurdering}
+                    unntak={config.unntak}
+                />
             )}
             <Textarea
                 label="Begrunnelse"

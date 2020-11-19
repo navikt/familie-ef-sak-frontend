@@ -25,6 +25,7 @@ export const VurderingConfig: IVurderingConfig = {
         unntak: [
             UnntakType.ARBEID_NORSK_ARBEIDSGIVER,
             UnntakType.UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER,
+            UnntakType.IKKE_OPPFYLT,
         ],
         delvilkår: [DelvilkårType.TRE_ÅRS_MEDLEMSKAP, DelvilkårType.DOKUMENTERT_FLYKTNINGSTATUS],
     },

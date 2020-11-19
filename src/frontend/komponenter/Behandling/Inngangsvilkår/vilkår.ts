@@ -74,13 +74,13 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
 // ------ UNNTAK
 
 export enum UnntakType {
-    HAR_IKKE_UNNTAK = 'HAR_IKKE_UNNTAK',
+    IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     ARBEID_NORSK_ARBEIDSGIVER = 'ARBEID_NORSK_ARBEIDSGIVER',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER = 'UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER',
 }
 
 export const unntakTypeTilTekst: Record<UnntakType, string> = {
-    HAR_IKKE_UNNTAK: 'Har ikke unntak',
+    IKKE_OPPFYLT: 'Nei',
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
 };
