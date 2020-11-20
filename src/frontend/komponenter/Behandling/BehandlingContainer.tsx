@@ -23,6 +23,7 @@ const VenstreMenyWrapper = styled.div`
 const HøyreMenyWrapper = styled.div`
     border-left: 2px solid ${styles.farger.navGra40};
     overflow-x: hidden;
+    max-width: 20rem;
     overflow-y: scroll;
 `;
 
@@ -66,7 +67,7 @@ const BehandlingContainer: FC = () => {
                     </StyledSwitch>
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
-                    <Høyremeny />
+                    <Høyremeny behandlingId={behandlingId} />
                 </HøyreMenyWrapper>
             </Container>
         </>

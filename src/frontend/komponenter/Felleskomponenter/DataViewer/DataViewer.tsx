@@ -8,6 +8,7 @@ interface DataViewerProps<T> {
     children: (data: T) => React.ReactElement;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function DataViewer<T>(props: DataViewerProps<T>) {
     const { response, children } = props;
     if (response.status === RessursStatus.HENTER) {

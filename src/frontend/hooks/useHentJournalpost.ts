@@ -5,7 +5,14 @@ import { IJojurnalpostResponse } from '../typer/journalforing';
 import { AxiosRequestConfig } from 'axios';
 import { OrNothing } from './felles/useSorteringState';
 
-export const useHentJournalpost = (journalpostIdParam: OrNothing<string>) => {
+interface HentJournalpostResponse {
+    hentJournalPost: () => void;
+    journalResponse: Ressurs<IJojurnalpostResponse>;
+}
+
+export const useHentJournalpost = (
+    journalpostIdParam: OrNothing<string>
+): HentJournalpostResponse => {
     const { axiosRequest } = useApp();
     const [journalResponse, settJournalResponse] = useState<Ressurs<IJojurnalpostResponse>>(
         byggTomRessurs()
