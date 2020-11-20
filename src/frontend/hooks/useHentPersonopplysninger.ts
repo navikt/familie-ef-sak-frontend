@@ -9,12 +9,12 @@ export const useHentPersonopplysninger = () => {
         Ressurs<IPersonopplysninger>
     >(byggTomRessurs());
 
-    const hentPersonopplysninger = useCallback((personIdent: string) => {
+    const hentPersonopplysninger = useCallback((behandlingId: string) => {
         settPersonopplysningerResponse(byggHenterRessurs());
-        axiosRequest<IPersonopplysninger, { personIdent: string }>({
+        axiosRequest<IPersonopplysninger, { behandlingId: string }>({
             method: 'POST',
             url: `/familie-ef-sak/api/personopplysninger/dummy`,
-            data: { personIdent },
+            data: { behandlingId },
         }).then((res: Ressurs<IPersonopplysninger>) => settPersonopplysningerResponse(res));
     }, []);
 

@@ -10,12 +10,12 @@ import Fullmakter from './Fullmakter';
 import Statsborgerskap from './Statsborgerskap';
 import { PersonopplysningerHeader } from './PersonopplysningerHeader';
 
-const Personopplysninger: React.FC<{ personIdent: string }> = ({ personIdent }) => {
+const Personopplysninger: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { hentPersonopplysninger, personopplysningerResponse } = useHentPersonopplysninger();
 
     useEffect(() => {
-        hentPersonopplysninger(personIdent);
-    }, [personIdent]);
+        hentPersonopplysninger(behandlingId);
+    }, [behandlingId]);
 
     if (personopplysningerResponse.status === RessursStatus.SUKSESS) {
         const {

@@ -61,7 +61,7 @@ const BehandlingContainer: FC = () => {
                             exact={true}
                             path="/behandling/:behandlingId/personopplysninger"
                             render={() => {
-                                return <Personopplysninger personIdent={'1234'} />;
+                                return <Personopplysninger behandlingId={behandlingId} />;
                             }}
                         />
                         <Route
