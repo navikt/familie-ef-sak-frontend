@@ -24,7 +24,7 @@ interface Props {
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
 const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedigeringsmodus }) => {
-    const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
+    const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
     const [vurdering, settVurdering] = useState<IVurdering>(data);
 
@@ -32,11 +32,11 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
         (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
     let harPassertSisteDelvilkårSomSkalVises = false;
-    let harPassertSisteDelvilkårOgUnntakSomSkalVises = false;
+    const harPassertSisteDelvilkårOgUnntakSomSkalVises = false;
     const sisteDelvilkår: IDelvilkår =
         vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
 
-    console.log(config.unntak,  sisteDelvilkår.resultat );
+    console.log(config.unntak, sisteDelvilkår.resultat);
     return (
         <StyledEndreVurdering>
             {vurdering.delvilkårsvurderinger.map((delvilkår) => {
@@ -66,7 +66,7 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     unntak={config.unntak}
                 />
             )}
-            {((vurdering.unntak === UnntakType.IKKE_OPPFYLT) && (
+            {vurdering.unntak === UnntakType.IKKE_OPPFYLT && (
                 <Textarea
                     label="Begrunnelse (hvis aktuelt)"
                     maxLength={0}
@@ -89,7 +89,7 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                             oppdaterVurdering(vurdering).then((ressurs) => {
                                 if (ressurs.status === RessursStatus.SUKSESS) {
                                     settOppdatererVurdering(false);
-                                    setFeilmelding(undefined);
+                                    settFeilmelding(undefined);
                                     settRedigeringsmodus(false);
                                 } else {
                                     settOppdatererVurdering(false);
@@ -97,14 +97,14 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                                         ressurs.status === RessursStatus.FEILET ||
                                         ressurs.status === RessursStatus.IKKE_TILGANG
                                     ) {
-                                        setFeilmelding(ressurs.frontendFeilmelding);
+                                        settFeilmelding(ressurs.frontendFeilmelding);
                                     } else {
-                                        setFeilmelding(`Ressurs har status ${ressurs.status}`);
+                                        settFeilmelding(`Ressurs har status ${ressurs.status}`);
                                     }
                                 }
                             });
                         } else {
-                            setFeilmelding('Du må fylle i alle verdier');
+                            settFeilmelding('Du må fylle i alle verdier');
                         }
                     }}
                     disabled={oppdatererVurdering}
