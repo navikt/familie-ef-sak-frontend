@@ -1,0 +1,120 @@
+{
+  "data":{
+    "personIdent":"12345678910",
+    "navn":{
+      "fornavn":"Olav",
+      "mellomnavn":"mellomnavn",
+      "etternavn":"Olavsen",
+      "visningsnavn":"Olav mellomnavn Olavsen"
+    },
+    "kjønn":"MANN",
+    "adressebeskyttelse":"UGRADERT",
+    "folkeregisterpersonstatus":"BOSATT",
+    "dødsdato":null,
+    "telefonnummer":{
+      "landskode":"+47",
+      "nummer":"  22228888"
+    },
+    "statsborgerskap":[
+      {
+        "land":"Danmark",
+        "gyldigFraOgMedDato":"1970-01-01",
+        "gyldigTilOgMedDato":"1998-03-20"
+      },
+      {
+        "land":"Norge",
+        "gyldigFraOgMedDato":"1998-03-20",
+        "gyldigTilOgMedDato":null
+      }
+    ],
+    "sivilstand":[
+      {
+        "type":"SEPARERT",
+        "gyldigFraOgMed":"20.20.2015",
+        "relatertVedSivilstand":"66666999999",
+        "navn":"Annen Forelder"
+      }
+    ],
+    "adresse":[
+      {
+        "visningsadresse":"Moldegata 15",
+        "type":"BOSTEDADRESSE",
+        "gyldigFraOgMed":"1970-01-01",
+        "gyldigTilOgMed":null
+      },
+      {
+        "visningsadresse":"Holtevegen 355",
+        "type":"KONTAKTADRESSE",
+        "gyldigFraOgMed":"1970-01-01",
+        "gyldigTilOgMed":null
+      }
+    ],
+    "fullmakt":[
+
+    ],
+    "egenAnsatt":false,
+    "navEnhet":"0806 Skien",
+    "barn":[
+      {
+        "personIdent":"05101822222",
+        "navn":"Mari Olavsdottir",
+        "annenForelder":{
+          "personIdent":"66666999999",
+          "navn":"Annen Forelder Navn"
+        },
+        "adresse":[
+          {
+            "visningsadresse":"Moldegata 15",
+            "type":"BOSTEDADRESSE",
+            "gyldigFraOgMed":"1970-01-01",
+            "gyldigTilOgMed":null
+          }
+        ],
+        "borHosSøker":true,
+        "fødselsdato":"2018-12-02"
+      },
+      {
+        "personIdent":"01030122222",
+        "navn":"Nils Olavsson",
+        "annenForelder":{
+          "personIdent":"66666999999",
+          "navn":"Annen Forelder Navn"
+        },
+        "adresse":[
+          {
+            "visningsadresse":"Moldegata 15",
+            "type":"BOSTEDADRESSE",
+            "gyldigFraOgMed":"1970-01-01",
+            "gyldigTilOgMed":null
+          }
+        ],
+        "borHosSøker":false,
+        "fødselsdato":"2000-12-02"
+      }
+    ],
+    "innflyttingTilNorge":[
+      {
+        "fraflyttingsland":"Sverige",
+        "fraflyttingsstedIUtlandet":null,
+        "folkeregistermetadata":{
+          "gyldighetstidspunkt":"1993-08-10T10:10:00",
+          "opphoerstidspunkt":null
+        }
+      }
+    ],
+    "utflyttingFraNorge":[
+      {
+        "tilflyttingsland":"Narnia",
+        "tilflyttingsstedIUtlandet":null,
+        "folkeregistermetadata":{
+          "gyldighetstidspunkt":"1998-08-10T10:10:00",
+          "opphoerstidspunkt":null
+        }
+      }
+    ]
+  },
+  "status":"SUKSESS",
+  "melding":"Innhenting av data var vellykket",
+  "frontendFeilmelding":null,
+  "stacktrace":null
+}

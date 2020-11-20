@@ -13,7 +13,7 @@ export const useHentPersonopplysninger = () => {
         settPersonopplysningerResponse(byggHenterRessurs());
         axiosRequest<IPersonopplysninger, { behandlingId: string }>({
             method: 'POST',
-            url: `/familie-ef-sak/api/personopplysninger/dummy`,
+            url: `/familie-ef-sak/api/personopplysninger/behandling`,
             data: { behandlingId },
         }).then((res: Ressurs<IPersonopplysninger>) => settPersonopplysningerResponse(res));
     }, []);

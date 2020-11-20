@@ -28,9 +28,11 @@ app.get('/user/profile', (req, res) => {
     });
 });
 
-app.post('/familie-ef-sak/api/personopplysninger', (req, res) => {
+app.post('/familie-ef-sak/api/personopplysninger/behandling', (req, res) => {
     const filnavn =
-        req.body['personIdent'] === '12345678910' ? `personinfo.json` : `feil-personinfo.json`;
+        req.body['behandlingId'] === '12345678910'
+            ? `personopplysninger.json`
+            : `feil-personinfo.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
