@@ -8,7 +8,7 @@ import { Adressebeskyttelse, Folkeregisterpersonstatus } from '../../typer/perso
 import PersonStatusVarsel from '../Felleskomponenter/PersonStatusVarsel';
 import styled from 'styled-components';
 import AdressebeskyttelseVarsel from '../Felleskomponenter/AdressebeskyttelseVarsel';
-import { styles } from '../../typer/styles';
+import navFarger from 'nav-frontend-core';
 
 const StyledFamilieIkonVelger = styled(FamilieIkonVelger)`
     height: auto;
@@ -21,7 +21,7 @@ const PersonHeaderWrapper = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: ${styles.farger.navLysGra};
+    background-color: ${navFarger.navLysGra};
 `;
 
 const ElementWrapper = styled.div`

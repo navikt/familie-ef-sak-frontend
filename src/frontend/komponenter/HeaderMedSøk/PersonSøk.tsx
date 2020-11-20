@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import IkkeOppfylt from '../../ikoner/IkkeOppfylt';
 import { ISaksøk, ISakSøkPersonIdent } from '../../typer/saksøk';
 import { useApp } from '../../context/AppContext';
+import navFarger from 'nav-frontend-core';
 import { styles } from '../../typer/styles';
 
 // eslint-disable-next-line
@@ -23,7 +24,7 @@ const FunksjonellFeilmelding = styled.div`
 `;
 
 const StyledResultat = styled.div`
-    background-color: ${styles.farger.navMorkGra};
+    background-color: ${navFarger.navMorkGra};
     color: ${styles.farger.hvit};
     padding: 0.8rem;
     display: flex;

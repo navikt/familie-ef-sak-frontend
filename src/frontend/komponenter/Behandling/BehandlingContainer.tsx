@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { FC } from 'react';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
-import { styles } from '../../typer/styles';
 import Personopplysninger from './Personopplysninger/Personopplysninger';
 import navFarger from 'nav-frontend-core';
 
@@ -17,12 +16,12 @@ const Container = styled.div`
 
 const VenstreMenyWrapper = styled.div`
     min-width: 10rem;
-    border-right: 2px solid ${styles.farger.navGra40};
+    border-right: 2px solid ${navFarger.navGra40};
     overflow: hidden;
 `;
 
 const HøyreMenyWrapper = styled.div`
-    border-left: 2px solid ${styles.farger.navGra40};
+    border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
     overflow-y: scroll;
 `;
