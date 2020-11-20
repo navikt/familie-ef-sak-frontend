@@ -14,7 +14,7 @@ const StyledGridDiv = styled.div`
     grid-area: tittel;
 `;
 
-const StyledTelefonIkonWrapper = styled.div`
+const StyledTelefonIkon = styled(Telefon)`
     justify-self: left;
     align-self: flex-end;
 
@@ -51,11 +51,10 @@ const StyledNavkontorTittel = styled(Undertittel)`
     align-items: center;
 `;
 
-const StyledNavIkonWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+const StyledNavIkon = styled(SvartNavIkon)`
     padding-right: 1rem;
+    justify-self: flex-end;
+    align-self: center;
 `;
 
 export const PersonopplysningerHeader: React.FC<{ telefon?: ITelefonnummer; navEnhet: string }> = ({
@@ -64,15 +63,11 @@ export const PersonopplysningerHeader: React.FC<{ telefon?: ITelefonnummer; navE
 }) => {
     return (
         <TabellWrapper>
-            <StyledTelefonIkonWrapper>
-                <Telefon />
-            </StyledTelefonIkonWrapper>
+            <StyledTelefonIkon />
             <StyledGridDiv>
                 <StyledTittel>Telefonnummer</StyledTittel>
                 <StyledNavEnhetWrapper>
-                    <StyledNavIkonWrapper>
-                        <SvartNavIkon />
-                    </StyledNavIkonWrapper>
+                    <StyledNavIkon />
                     <StyledNavkontorTittel>NAV-Kontor</StyledNavkontorTittel>
                     <StyledEnhet>{navEnhet}</StyledEnhet>
                 </StyledNavEnhetWrapper>

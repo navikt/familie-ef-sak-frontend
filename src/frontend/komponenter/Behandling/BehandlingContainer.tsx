@@ -2,13 +2,13 @@ import * as React from 'react';
 import Fanemeny from '../Fanemeny/Fanemeny';
 import Høyremeny from '../Høyremeny/Høyremeny';
 import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
-import navFarger from 'nav-frontend-core';
 import styled from 'styled-components';
 import { FC } from 'react';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
 import { styles } from '../../typer/styles';
 import Personopplysninger from './Personopplysninger/Personopplysninger';
+import navFarger from 'nav-frontend-core';
 
 const Container = styled.div`
     display: flex;
