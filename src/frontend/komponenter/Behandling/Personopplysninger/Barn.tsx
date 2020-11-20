@@ -9,7 +9,7 @@ import { formaterFødselsnummer } from '../../../utils/formatter';
 import styled from 'styled-components';
 
 const SpanMedVenstreMargin = styled.span`
-    margin-left: 4rem;
+    margin-left: 15%;
 `;
 
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {

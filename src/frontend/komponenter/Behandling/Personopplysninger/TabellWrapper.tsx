@@ -21,6 +21,7 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
         td {
             padding-left: 0;
         }
+        table-layout: fixed;
     }
     .første-tabell {
         grid-area: første-tabell;

@@ -3,12 +3,12 @@ import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../../ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../../typer/personopplysninger';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
-import { KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 
 const StyledKnapp = styled(Knapp)`
-    margin-left: 8rem;
+    margin-left: 1rem;
 `;
 
 const StyledFlexDiv = styled.div`
@@ -27,14 +27,17 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                     {adresser.map((adresse, indeks) => {
                         return (
                             <tr key={indeks}>
-                                <td>{adresse.visningsadresse}</td>
-                                <td>{adresse.type}</td>
-                                <td>{adresse.gyldigFraOgMed}</td>
-                                <td>
+                                <BredTd>{adresse.visningsadresse}</BredTd>
+                                <BredTd>{adresse.type}</BredTd>
+                                <BredTd>{adresse.gyldigFraOgMed}</BredTd>
+                                <BredTd>
                                     <StyledFlexDiv>
                                         <div>{adresse.gyldigTilOgMed}</div>
                                         {adresse.type === AdresseType.BOSTEDADRESSE && (
-                                            <StyledKnapp onClick={() => settVisBeboereModal(true)}>
+                                            <StyledKnapp
+                                                onClick={() => settVisBeboereModal(true)}
+                                                mini
+                                            >
                                                 Se Beboere
                                             </StyledKnapp>
                                         )}
@@ -46,10 +49,10 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                                                 onClose: () => settVisBeboereModal(false),
                                             }}
                                         >
-                                            {/*Ikke implementert. Venter på adressesøk i PDL*/}
+                                            *Ikke implementert. Venter på adressesøk i PDL*
                                         </UIModalWrapper>
                                     </StyledFlexDiv>
-                                </td>
+                                </BredTd>
                             </tr>
                         );
                     })}
