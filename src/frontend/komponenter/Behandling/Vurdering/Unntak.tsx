@@ -26,27 +26,25 @@ const Unntak: FC<Props> = ({ vurdering, settVurdering, unntak }) => {
     };
 
     return (
-        <>
-            <RadioGruppe key={vurdering.id} legend={'Er unntak fra hovedregelen oppfylt?'}>
-                {unntak.map((unntakType) => (
-                    <Radio
-                        key={unntakType}
-                        label={unntakTypeTilTekst[unntakType]}
-                        name={unntakType}
-                        value={unntakTypeTilTekst[unntakType]}
-                        checked={vurdering.unntak === unntakTypeTilTekst[unntakType]}
-                        onChange={(e) => {
-                            const unntak = e.target.value as UnntakType;
-                            settVurdering({
-                                ...vurdering,
-                                unntak: unntak,
-                                resultat: hentResultatForUnntak(unntak),
-                            });
-                        }}
-                    />
-                ))}
-            </RadioGruppe>
-        </>
+        <RadioGruppe key={vurdering.id} legend={'Er unntak fra hovedregelen oppfylt?'}>
+            {unntak.map((unntakType) => (
+                <Radio
+                    key={unntakType}
+                    label={unntakTypeTilTekst[unntakType]}
+                    name={unntakType}
+                    value={unntakTypeTilTekst[unntakType]}
+                    checked={vurdering.unntak === unntakTypeTilTekst[unntakType]}
+                    onChange={(e) => {
+                        const unntak = e.target.value as UnntakType;
+                        settVurdering({
+                            ...vurdering,
+                            unntak: unntak,
+                            resultat: hentResultatForUnntak(unntak),
+                        });
+                    }}
+                />
+            ))}
+        </RadioGruppe>
     );
 };
 export default Unntak;

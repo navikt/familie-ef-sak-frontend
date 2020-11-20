@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { Textarea } from 'nav-frontend-skjema';
-import { IDelvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { IVilkårConfig } from './VurderingConfig';
@@ -32,8 +32,11 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
         (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
     let harPassertSisteDelvilkårSomSkalVises = false;
+    let harPassertSisteDelvilkårOgUnntakSomSkalVises = false;
     const sisteDelvilkår: IDelvilkår =
         vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
+
+    console.log(config.unntak,  sisteDelvilkår.resultat );
     return (
         <StyledEndreVurdering>
             {vurdering.delvilkårsvurderinger.map((delvilkår) => {
@@ -55,7 +58,7 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     />
                 );
             })}
-            {config.unntak && sisteDelvilkår.resultat === Vilkårsresultat.NEI && (
+            {config.unntak && sisteDelvilkår.resultat && (
                 <Unntak
                     key={vurdering.id}
                     vurdering={vurdering}
@@ -63,48 +66,52 @@ const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedige
                     unntak={config.unntak}
                 />
             )}
-            <Textarea
-                label="Begrunnelse"
-                maxLength={0}
-                placeholder="Skriv inn tekst"
-                value={vurdering.begrunnelse || ''}
-                onChange={(e) => {
-                    settVurdering({
-                        ...vurdering,
-                        begrunnelse: e.target.value,
-                    });
-                }}
-            />
-            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
-            <Hovedknapp
-                onClick={() => {
-                    if (erGyldigVurdering(vurdering)) {
-                        settOppdatererVurdering(true);
-                        oppdaterVurdering(vurdering).then((ressurs) => {
-                            if (ressurs.status === RessursStatus.SUKSESS) {
-                                settOppdatererVurdering(false);
-                                setFeilmelding(undefined);
-                                settRedigeringsmodus(false);
-                            } else {
-                                settOppdatererVurdering(false);
-                                if (
-                                    ressurs.status === RessursStatus.FEILET ||
-                                    ressurs.status === RessursStatus.IKKE_TILGANG
-                                ) {
-                                    setFeilmelding(ressurs.frontendFeilmelding);
-                                } else {
-                                    setFeilmelding(`Ressurs har status ${ressurs.status}`);
-                                }
-                            }
+            {((vurdering.unntak === UnntakType.IKKE_OPPFYLT) && (
+                <Textarea
+                    label="Begrunnelse (hvis aktuelt)"
+                    maxLength={0}
+                    placeholder="Skriv inn tekst"
+                    value={vurdering.begrunnelse || ''}
+                    onChange={(e) => {
+                        settVurdering({
+                            ...vurdering,
+                            begrunnelse: e.target.value,
                         });
-                    } else {
-                        setFeilmelding('Du må fylle i alle verdier');
-                    }
-                }}
-                disabled={oppdatererVurdering}
-            >
-                Lagre
-            </Hovedknapp>
+                    }}
+                />
+            )}
+            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
+            {harPassertSisteDelvilkårOgUnntakSomSkalVises && (
+                <Hovedknapp
+                    onClick={() => {
+                        if (erGyldigVurdering(vurdering)) {
+                            settOppdatererVurdering(true);
+                            oppdaterVurdering(vurdering).then((ressurs) => {
+                                if (ressurs.status === RessursStatus.SUKSESS) {
+                                    settOppdatererVurdering(false);
+                                    setFeilmelding(undefined);
+                                    settRedigeringsmodus(false);
+                                } else {
+                                    settOppdatererVurdering(false);
+                                    if (
+                                        ressurs.status === RessursStatus.FEILET ||
+                                        ressurs.status === RessursStatus.IKKE_TILGANG
+                                    ) {
+                                        setFeilmelding(ressurs.frontendFeilmelding);
+                                    } else {
+                                        setFeilmelding(`Ressurs har status ${ressurs.status}`);
+                                    }
+                                }
+                            });
+                        } else {
+                            setFeilmelding('Du må fylle i alle verdier');
+                        }
+                    }}
+                    disabled={oppdatererVurdering}
+                >
+                    Lagre
+                </Hovedknapp>
+            )}
         </StyledEndreVurdering>
     );
 };
