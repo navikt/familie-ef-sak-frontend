@@ -10,21 +10,21 @@ interface Props {
 }
 
 const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer }) => {
-    if (innvandringer.length == 0 && utvandringer.length == 0) {
+    if (innvandringer.length === 0 && utvandringer.length === 0) {
         return (
             <TabellWrapper>
                 <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />
                 <IngenData />
             </TabellWrapper>
         );
-    } else if (innvandringer.length == 0) {
+    } else if (innvandringer.length === 0) {
         return (
             <TabellWrapper>
                 <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />
                 <Utvandring utvandringer={utvandringer} />
             </TabellWrapper>
         );
-    } else if (utvandringer.length == 0) {
+    } else if (utvandringer.length === 0) {
         return (
             <TabellWrapper>
                 <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />

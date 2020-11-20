@@ -9,5 +9,5 @@ export const formaterIsoDato = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoFormat);
 };
 
-export const formatertFødselsnummer = (fødselsnummer: string) =>
+export const formaterFødselsnummer = (fødselsnummer: string) =>
     fødselsnummer.substring(0, 6) + ' ' + fødselsnummer.substring(6);

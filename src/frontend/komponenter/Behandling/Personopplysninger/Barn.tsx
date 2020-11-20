@@ -5,7 +5,7 @@ import LiteBarn from '../../../ikoner/LiteBarn';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import { EtikettLiten } from 'nav-frontend-typografi';
-import { formatertFødselsnummer } from '../../../utils/formatter';
+import { formaterFødselsnummer } from '../../../utils/formatter';
 import styled from 'styled-components';
 
 const SpanMedVenstreMargin = styled.span`
@@ -31,7 +31,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                 />
                                 <BredTd>
                                     {barn.annenForelder &&
-                                        formatertFødselsnummer(barn.annenForelder.personIdent)}
+                                        formaterFødselsnummer(barn.annenForelder.personIdent)}
                                     {', '}
                                     {barn.annenForelder && barn.annenForelder.navn}
                                 </BredTd>
@@ -65,7 +65,7 @@ const FødselsnummerBarn: React.FC<{ fødselsnummer: string; fødselsdato?: stri
         : NaN;
     return (
         <BredTd>
-            {formatertFødselsnummer(fødselsnummer)}
+            {formaterFødselsnummer(fødselsnummer)}
             <SpanMedVenstreMargin>
                 {!isNaN(alder) && alder < 18 ? (
                     <EtikettSuksess>

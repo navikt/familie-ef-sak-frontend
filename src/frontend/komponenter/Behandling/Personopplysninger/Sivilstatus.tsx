@@ -1,7 +1,7 @@
 import React from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Hjerte from '../../../ikoner/Hjerte';
-import { formatertFødselsnummer } from '../../../utils/formatter';
+import { formaterFødselsnummer } from '../../../utils/formatter';
 import { KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { ISivilstand } from '../../../typer/personopplysninger';
 
@@ -20,7 +20,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                 <td>{sivilstand.navn}</td>
                                 <td>
                                     {sivilstand.relatertVedSivilstand &&
-                                        formatertFødselsnummer(sivilstand.relatertVedSivilstand)}
+                                        formaterFødselsnummer(sivilstand.relatertVedSivilstand)}
                                 </td>
                             </tr>
                         );
