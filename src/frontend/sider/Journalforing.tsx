@@ -138,7 +138,7 @@ export const Journalforing: React.FC = () => {
                                         journalpostState.fullførJournalføring(
                                             journalpostIdParam,
                                             innloggetSaksbehandler?.enhet || '9999',
-                                            innloggetSaksbehandler.navIdent
+                                            innloggetSaksbehandler?.navIdent
                                         )
                                     }
                                     spinner={
