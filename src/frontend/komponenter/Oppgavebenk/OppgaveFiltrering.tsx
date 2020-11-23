@@ -52,6 +52,9 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
         : ({} as IOppgaveRequest);
 
     const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
+    const [requestFraLocalStorage, settRequestFraLocalStorage] = useState<IOppgaveRequest>(
+        initOppgaveRequest
+    );
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
@@ -71,6 +74,24 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
         );
         settPerioderFeil((prevState) => ({ ...prevState, opprettetPeriodeFeil }));
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
+
+    useEffect(() => {
+        try {
+            const request = localStorage.getItem('oppgaveFiltreringRequest');
+            const parsed = request ? JSON.parse(request) : {};
+            localStorage.setItem('oppgaveFiltreringRequest', JSON.stringify({}));
+            settRequestFraLocalStorage({
+                ...requestFraLocalStorage,
+                ident: parsed.personIdent,
+            });
+        } catch {
+            /* Gjør ingenting */
+        }
+    }, []);
+
+    useEffect(() => {
+        hentOppgaver(requestFraLocalStorage);
+    }, [requestFraLocalStorage]);
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
@@ -169,6 +190,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 </Select>
 
                 <Input
+                    defaultValue={oppgaveRequest.ident}
                     label="Personident"
                     inputMode="numeric"
                     pattern="[0-9]*"

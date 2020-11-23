@@ -72,7 +72,23 @@ export const Journalforing: React.FC = () => {
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
-            history.push('/oppgavebenk');
+            try {
+                const localStorageRequest = localStorage.getItem('oppgavefiltreringRequest');
+                const parsedRequest = localStorageRequest ? JSON.parse(localStorageRequest) : {};
+
+                localStorage.setItem(
+                    'oppgaveFiltreringRequest',
+                    JSON.stringify({
+                        ...parsedRequest,
+                        personIdent:
+                            journalResponse.status === RessursStatus.SUKSESS
+                                ? journalResponse.data.personIdent
+                                : undefined,
+                    })
+                );
+            } finally {
+                history.push('/oppgavebenk');
+            }
         }
     }, [journalpostState.innsending]);
 
