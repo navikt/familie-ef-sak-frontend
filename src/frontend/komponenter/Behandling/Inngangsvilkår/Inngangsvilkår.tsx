@@ -79,6 +79,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                 <StyledInngangsvilkår>
                     {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
                         <Vurdering
+                            key={vilkårGruppe}
                             vilkårGruppe={vilkårGruppe as VilkårGruppe}
                             inngangsvilkår={inngangsvilkår.data}
                             oppdaterVurdering={oppdaterVurdering}
