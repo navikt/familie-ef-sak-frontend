@@ -3,7 +3,7 @@ import { IBarn } from '../../../typer/personopplysninger';
 import TabellOverskrift from './TabellOverskrift';
 import LiteBarn from '../../../ikoner/LiteBarn';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
-import { EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
+import { EtikettInfo, EtikettSuksess, EtikettFokus } from 'nav-frontend-etiketter';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import { formaterFødselsnummer } from '../../../utils/formatter';
 import styled from 'styled-components';
@@ -56,14 +56,20 @@ const FødselsnummerBarn: React.FC<{ fødselsnummer: string; fødselsdato?: stri
         <BredTd>
             {formaterFødselsnummer(fødselsnummer)}
             <SpanMedVenstreMargin>
-                {!isNaN(alder) && alder < 18 ? (
-                    <EtikettSuksess>
-                        <EtikettLiten>{alder} år</EtikettLiten>
-                    </EtikettSuksess>
+                {!isNaN(alder) ? (
+                    alder < 18 ? (
+                        <EtikettSuksess>
+                            <EtikettLiten>{alder} år</EtikettLiten>
+                        </EtikettSuksess>
+                    ) : (
+                        <EtikettInfo>
+                            <EtikettLiten>Over 18 år</EtikettLiten>
+                        </EtikettInfo>
+                    )
                 ) : (
-                    <EtikettInfo>
-                        <EtikettLiten>Over 18 år</EtikettLiten>
-                    </EtikettInfo>
+                    <EtikettFokus>
+                        <EtikettLiten>Ukjent alder</EtikettLiten>
+                    </EtikettFokus>
                 )}
             </SpanMedVenstreMargin>
         </BredTd>
