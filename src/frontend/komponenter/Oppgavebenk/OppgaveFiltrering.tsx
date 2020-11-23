@@ -79,7 +79,6 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
         try {
             const request = localStorage.getItem('oppgaveFiltreringRequest');
             const parsed = request ? JSON.parse(request) : {};
-            localStorage.setItem('oppgaveFiltreringRequest', JSON.stringify({}));
             settRequestFraLocalStorage({
                 ...requestFraLocalStorage,
                 ident: parsed.personIdent,
@@ -190,7 +189,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 </Select>
 
                 <Input
-                    defaultValue={oppgaveRequest.ident}
+                    defaultValue={oppgaveRequest.ident || requestFraLocalStorage.ident}
                     label="Personident"
                     inputMode="numeric"
                     pattern="[0-9]*"
