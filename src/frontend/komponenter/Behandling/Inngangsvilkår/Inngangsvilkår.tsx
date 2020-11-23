@@ -1,10 +1,9 @@
 import React, { FC, useState } from 'react';
-import { IInngangsvilkår, IVurdering } from './vilkår';
+import { IInngangsvilkår, IVurdering, VilkårGruppe } from './vilkår';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
-import { VilkårGruppe } from '../Vurdering/VurderingConfig';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;

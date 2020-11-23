@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVilkårData, IVurdering } from '../Inngangsvilkår/vilkår';
+import { IVilkårdata, IVurdering } from '../Inngangsvilkår/vilkår';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { erGyldigVurdering } from './VurderingUtil';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
-import { IVilkårConfig } from './VurderingConfig';
+import { IVilkårConfig } from './config/VurderingConfig';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -17,7 +17,7 @@ const StyledEndreVurdering = styled.div`
 interface Props {
     config: IVilkårConfig;
     data: IVurdering;
-    vilkårData: IVilkårData;
+    vilkårdata: IVilkårdata;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
@@ -25,7 +25,7 @@ interface Props {
 const EndreVurdering: FC<Props> = ({
     config,
     data,
-    vilkårData,
+    vilkårdata,
     oppdaterVurdering,
     settRedigeringsmodus,
 }) => {
@@ -38,7 +38,7 @@ const EndreVurdering: FC<Props> = ({
                 config,
                 vurdering,
                 settVurdering,
-                vilkårData,
+                vilkårdata,
                 lagreKnapp: (visLagreKnapp) =>
                     (visLagreKnapp && (
                         <Hovedknapp

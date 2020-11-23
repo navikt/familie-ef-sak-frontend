@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IVilkårConfig, VurderingProps } from './VurderingConfig';
+import { IVilkårConfig } from './config/VurderingConfig';
 import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
-import { DelvilkårConfig } from './DelvilkårConfig';
+import { DelvilkårConfig } from './config/DelvilkårConfig';
+import { VurderingProps } from './VurderingProps';
 
 // TODO skrive om denne til å være unik for hver type av vurdering? Eller ha en generell og sen en for hver type?
 
@@ -39,13 +40,13 @@ const skalViseLagreKnapp = (
 const GenerellVurdering: FC<{
     props: VurderingProps;
 }> = ({ props }) => {
-    const { config, vurdering, vilkårData, settVurdering, lagreKnapp } = props;
+    const { config, vurdering, vilkårdata, settVurdering, lagreKnapp } = props;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.filter((delvilkår) => {
         const delvilkårConfig = DelvilkårConfig[delvilkår.type];
         return (
             delvilkårConfig == null ||
             delvilkårConfig.skalVises == null ||
-            delvilkårConfig.skalVises(vilkårData)
+            delvilkårConfig.skalVises(vilkårdata)
         );
     });
     const nesteDelvilkårSomManglerVurdering = delvilkårsvurderinger.find(

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { VilkårGruppe, VilkårGruppeConfig } from './VurderingConfig';
-import { IInngangsvilkår, IVurdering } from '../Inngangsvilkår/vilkår';
+import { VilkårGruppeConfig } from './config/VurderingConfig';
+import { IInngangsvilkår, IVurdering, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
@@ -46,13 +46,13 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurderin
 
     return (
         <StyledVilkårOgVurdering>
-            <StyledVisning>{config.visning(erOppfylte, inngangsvilkår.vilkårData)}</StyledVisning>
+            <StyledVisning>{config.visning(erOppfylte, inngangsvilkår.vilkårdata)}</StyledVisning>
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
                         key={vurdering.id}
                         vurdering={vurdering}
-                        vilkårData={inngangsvilkår.vilkårData}
+                        vilkårdata={inngangsvilkår.vilkårdata}
                         oppdaterVurdering={oppdaterVurdering}
                     />
                 ))}
