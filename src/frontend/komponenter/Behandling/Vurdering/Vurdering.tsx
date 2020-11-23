@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { VilkårGruppeConfig } from './config/VurderingConfig';
+import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { IInngangsvilkår, IVurdering, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';

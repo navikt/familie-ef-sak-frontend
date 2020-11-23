@@ -6,7 +6,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { erGyldigVurdering } from './VurderingUtil';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
-import { IVilkårConfig } from './config/VurderingConfig';
+import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {

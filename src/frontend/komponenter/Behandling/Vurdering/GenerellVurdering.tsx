@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IVilkårConfig } from './config/VurderingConfig';
+import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
-import { DelvilkårConfig } from './config/DelvilkårConfig';
+import { DelvilkårConfig } from '../Inngangsvilkår/config/DelvilkårConfig';
 import { VurderingProps } from './VurderingProps';
 
 // TODO skrive om denne til å være unik for hver type av vurdering? Eller ha en generell og sen en for hver type?

@@ -4,7 +4,7 @@ import { IVilkårdata, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/v
 import VisVurdering from './VisVurdering';
 import EndreVurdering from './EndreVurdering';
 import { Ressurs } from '@navikt/familie-typer';
-import { VurderingConfig } from './config/VurderingConfig';
+import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
 interface Props {
     vurdering: IVurdering;

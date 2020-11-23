@@ -1,4 +1,4 @@
-import { DelvilkårType, IVilkårdata } from '../../Inngangsvilkår/vilkår';
+import { DelvilkårType, IVilkårdata } from '../vilkår';
 
 interface IDelvilkårConfig {
     harBegrunnelse?: boolean;

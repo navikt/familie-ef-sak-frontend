@@ -1,16 +1,10 @@
 import * as React from 'react';
 import { ReactChild } from 'react';
-import {
-    DelvilkårType,
-    IVilkårdata,
-    UnntakType,
-    VilkårGruppe,
-    VilkårType,
-} from '../../Inngangsvilkår/vilkår';
-import GenerellVurdering from '../GenerellVurdering';
-import MedlemskapVisning from '../../Inngangsvilkår/Medlemskap/MedlemskapVisning';
-import SivilstandVisning from '../../Inngangsvilkår/Sivilstand/SivilstandVisning';
-import { VurderingProps } from '../VurderingProps';
+import { DelvilkårType, IVilkårdata, UnntakType, VilkårGruppe, VilkårType } from '../vilkår';
+import GenerellVurdering from '../../Vurdering/GenerellVurdering';
+import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
+import SivilstandVisning from '../Sivilstand/SivilstandVisning';
+import { VurderingProps } from '../../Vurdering/VurderingProps';
 
 type IVurderingConfig<TYPE extends VilkårType | DelvilkårType | VilkårGruppe, CONFIG> = {
     [key in TYPE]: CONFIG;

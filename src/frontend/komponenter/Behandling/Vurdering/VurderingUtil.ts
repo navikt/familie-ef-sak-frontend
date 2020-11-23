@@ -1,5 +1,5 @@
 import { IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { VurderingConfig } from './config/VurderingConfig';
+import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
