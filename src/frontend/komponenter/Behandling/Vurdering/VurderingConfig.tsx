@@ -2,13 +2,22 @@ import * as React from 'react';
 import { Dispatch, ReactChild, SetStateAction } from 'react';
 import {
     DelvilkårType,
-    IInngangsvilkår,
+    IVilkårData,
     IVurdering,
     UnntakType,
     VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import GenerellVurdering from './GenerellVurdering';
 import MedlemskapVisning from '../Inngangsvilkår/Medlemskap/MedlemskapVisning';
+import SivilstandVisning from '../Inngangsvilkår/Sivilstand/SivilstandVisning';
+
+export interface VurderingProps {
+    config: IVilkårConfig;
+    vilkårData: IVilkårData;
+    vurdering: IVurdering;
+    settVurdering: Dispatch<SetStateAction<IVurdering>>;
+    lagreKnapp: (visLagreKnapp: boolean) => ReactChild | undefined;
+}
 
 /**
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
@@ -20,7 +29,7 @@ export enum VilkårGruppe {
 }
 
 export interface IVilkårGruppeConfig {
-    visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkår) => ReactChild;
+    visning: (erOppfylt: boolean, inngangsvilkår: IVilkårData) => ReactChild;
 }
 
 type VilkårGruppeConfig = {
@@ -29,13 +38,13 @@ type VilkårGruppeConfig = {
 
 export const VilkårGruppeConfig: VilkårGruppeConfig = {
     MEDLEMSKAP: {
-        visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkår): ReactChild => (
-            <MedlemskapVisning erOppfylt={erOppfylt} medlemskap={inngangsvilkår.medlemskap} />
+        visning: (erOppfylt: boolean, vilkårData: IVilkårData): ReactChild => (
+            <MedlemskapVisning erOppfylt={erOppfylt} medlemskap={vilkårData.medlemskap} />
         ),
     },
     SIVILSTAND: {
-        visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkår): ReactChild => (
-            <MedlemskapVisning erOppfylt={erOppfylt} medlemskap={inngangsvilkår.medlemskap} /> //TODO
+        visning: (erOppfylt: boolean, vilkårData: IVilkårData): ReactChild => (
+            <SivilstandVisning erOppfylt={erOppfylt} sivilstand={vilkårData.sivilstand} />
         ),
     },
 };
@@ -50,13 +59,6 @@ export interface IVilkårConfig {
 type IVurderingConfig = {
     [key in VilkårType]: IVilkårConfig;
 };
-
-export interface VurderingProps {
-    config: IVilkårConfig;
-    vurdering: IVurdering;
-    settVurdering: Dispatch<SetStateAction<IVurdering>>;
-    lagreKnapp: (visLagreKnapp: boolean) => ReactChild | undefined;
-}
 
 //TODO burde vi legge till validering i config?
 
@@ -73,13 +75,13 @@ export const VurderingConfig: IVurderingConfig = {
     },
     LOVLIG_OPPHOLD: {
         vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
-        vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />, //TODO ?
+        vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [],
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
     },
     SIVILSTAND: {
         vilkårGruppe: VilkårGruppe.SIVILSTAND,
-        vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />, //TODO
+        vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [],
         delvilkår: [
             DelvilkårType.DOKUMENTERT_EKTESKAP,

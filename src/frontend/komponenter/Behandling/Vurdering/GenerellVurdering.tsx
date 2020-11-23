@@ -5,6 +5,7 @@ import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngan
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
+import { DelvilkårConfig } from './DelvilkårConfig';
 
 // TODO skrive om denne til å være unik for hver type av vurdering? Eller ha en generell og sen en for hver type?
 
@@ -38,16 +39,23 @@ const skalViseLagreKnapp = (
 const GenerellVurdering: FC<{
     props: VurderingProps;
 }> = ({ props }) => {
-    const { config, vurdering, settVurdering, lagreKnapp } = props;
-    const nesteDelvilkårSomManglerVurdering = vurdering.delvilkårsvurderinger.find(
+    const { config, vurdering, vilkårData, settVurdering, lagreKnapp } = props;
+    const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.filter((delvilkår) => {
+        const delvilkårConfig = DelvilkårConfig[delvilkår.type];
+        return (
+            delvilkårConfig == null ||
+            delvilkårConfig.skalVises == null ||
+            delvilkårConfig.skalVises(vilkårData)
+        );
+    });
+    const nesteDelvilkårSomManglerVurdering = delvilkårsvurderinger.find(
         (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
     let harPassertSisteDelvilkårSomSkalVises = false;
-    const sisteDelvilkår: IDelvilkår =
-        vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
+    const sisteDelvilkår: IDelvilkår = delvilkårsvurderinger[delvilkårsvurderinger.length - 1];
     return (
         <>
-            {vurdering.delvilkårsvurderinger.map((delvilkår) => {
+            {delvilkårsvurderinger.map((delvilkår) => {
                 if (harPassertSisteDelvilkårSomSkalVises) {
                     return null;
                 }

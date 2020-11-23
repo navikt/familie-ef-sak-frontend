@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVilkårData, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import VisVurdering from './VisVurdering';
 import EndreVurdering from './EndreVurdering';
 import { Ressurs } from '@navikt/familie-typer';
@@ -8,10 +8,11 @@ import { VurderingConfig } from './VurderingConfig';
 
 interface Props {
     vurdering: IVurdering;
+    vilkårData: IVilkårData;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
 }
 
-const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
+const VisEllerEndreVurdering: FC<Props> = ({ vurdering, vilkårData, oppdaterVurdering }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
         vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
     );
@@ -24,6 +25,7 @@ const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => 
         <EndreVurdering
             config={config}
             data={vurdering}
+            vilkårData={vilkårData}
             oppdaterVurdering={oppdaterVurdering}
             settRedigeringsmodus={settRedigeringsmodus}
         />

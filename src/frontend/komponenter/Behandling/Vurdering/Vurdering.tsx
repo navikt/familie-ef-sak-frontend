@@ -46,12 +46,13 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurderin
 
     return (
         <StyledVilkårOgVurdering>
-            <StyledVisning>{config.visning(erOppfylte, inngangsvilkår)}</StyledVisning>
+            <StyledVisning>{config.visning(erOppfylte, inngangsvilkår.vilkårData)}</StyledVisning>
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
                         key={vurdering.id}
                         vurdering={vurdering}
+                        vilkårData={inngangsvilkår.vilkårData}
                         oppdaterVurdering={oppdaterVurdering}
                     />
                 ))}
