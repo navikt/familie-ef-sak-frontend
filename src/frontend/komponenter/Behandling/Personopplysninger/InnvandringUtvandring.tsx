@@ -35,16 +35,19 @@ const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer })
         return (
             <TabellWrapper erDobbelTabell>
                 <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />
-                <Innvandring innvandringer={innvandringer} />
-                <Utvandring utvandringer={utvandringer} />
+                <Innvandring innvandringer={innvandringer} dobbelTabell />
+                <Utvandring utvandringer={utvandringer} dobbelTabell />
             </TabellWrapper>
         );
     }
 };
 
-const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innvandringer }) => {
+const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[]; dobbelTabell?: boolean }> = ({
+    innvandringer,
+    dobbelTabell,
+}) => {
     return (
-        <table className="tabell første-tabell">
+        <table className={dobbelTabell ? 'tabell første-tabell' : 'tabell'}>
             <KolonneTitler titler={['Innvandret fra', 'Dato', '', '']} />
             <tbody>
                 {innvandringer.map((innflytting, indeks) => {
@@ -62,9 +65,12 @@ const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innv
     );
 };
 
-const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[] }> = ({ utvandringer }) => {
+const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[]; dobbelTabell?: boolean }> = ({
+    utvandringer,
+    dobbelTabell,
+}) => {
     return (
-        <table className="tabell andre-tabell">
+        <table className={dobbelTabell ? 'tabell andre-tabell' : 'tabell'}>
             <KolonneTitler titler={['Utvandret til', 'Dato', '', '']} />
             <tbody>
                 {utvandringer.map((utflytting, indeks) => {
