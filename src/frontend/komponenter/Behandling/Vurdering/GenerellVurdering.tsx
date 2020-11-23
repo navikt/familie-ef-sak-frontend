@@ -1,13 +1,39 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { VurderingProps } from './VurderingConfig';
-import { IDelvilkår, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVilkårConfig, VurderingProps } from './VurderingConfig';
+import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
 
 // TODO skrive om denne til å være unik for hver type av vurdering? Eller ha en generell og sen en for hver type?
-// TODO lagreknapp virker ikke med unntak
+
+const skalViseLagreKnapp = (
+    vurdering: IVurdering,
+    sisteDelvilkår: IDelvilkår,
+    config: IVilkårConfig
+): boolean => {
+    const besvarteDelvilkår = vurdering.delvilkårsvurderinger.filter(
+        (delvilkår) =>
+            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
+    );
+    const sisteBesvarteDelvilkår =
+        besvarteDelvilkår.length > 0 ? besvarteDelvilkår[besvarteDelvilkår.length - 1] : undefined;
+    if (sisteBesvarteDelvilkår?.resultat === Vilkårsresultat.JA) {
+        return true;
+    }
+    if (
+        sisteDelvilkår === sisteBesvarteDelvilkår &&
+        sisteDelvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
+    ) {
+        if (config.unntak.length === 0) {
+            return true;
+        } else {
+            return !!vurdering.unntak;
+        }
+    }
+    return false;
+};
 
 const GenerellVurdering: FC<{
     props: VurderingProps;
@@ -17,7 +43,6 @@ const GenerellVurdering: FC<{
         (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
     let harPassertSisteDelvilkårSomSkalVises = false;
-    const skalViseLagreKnapp = true;
     const sisteDelvilkår: IDelvilkår =
         vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
     return (
@@ -75,7 +100,7 @@ const GenerellVurdering: FC<{
                     });
                 }}
             />
-            {lagreKnapp(skalViseLagreKnapp)}
+            {lagreKnapp(skalViseLagreKnapp(vurdering, sisteDelvilkår, config))}
         </>
     );
 };

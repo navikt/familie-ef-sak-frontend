@@ -14,20 +14,20 @@ import MedlemskapVisning from '../Inngangsvilkår/Medlemskap/MedlemskapVisning';
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
  * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk
  */
-export enum VilkårDel {
+export enum VilkårGruppe {
     MEDLEMSKAP = 'MEDLEMSKAP',
     SIVILSTAND = 'SIVILSTAND',
 }
 
-export interface IVilkårDelConfig {
+export interface IVilkårGruppeConfig {
     visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkår) => ReactChild;
 }
 
-type VilkårDelConfig = {
-    [key in VilkårDel]: IVilkårDelConfig;
+type VilkårGruppeConfig = {
+    [key in VilkårGruppe]: IVilkårGruppeConfig;
 };
 
-export const VilkårDelConfig: VilkårDelConfig = {
+export const VilkårGruppeConfig: VilkårGruppeConfig = {
     MEDLEMSKAP: {
         visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkår): ReactChild => (
             <MedlemskapVisning erOppfylt={erOppfylt} medlemskap={inngangsvilkår.medlemskap} />
@@ -41,7 +41,7 @@ export const VilkårDelConfig: VilkårDelConfig = {
 };
 
 export interface IVilkårConfig {
-    vilkårDel: VilkårDel;
+    vilkårGruppe: VilkårGruppe;
     vurdering: (props: VurderingProps) => ReactChild;
     unntak: UnntakType[];
     delvilkår: DelvilkårType[];
@@ -62,7 +62,7 @@ export interface VurderingProps {
 
 export const VurderingConfig: IVurderingConfig = {
     FORUTGÅENDE_MEDLEMSKAP: {
-        vilkårDel: VilkårDel.MEDLEMSKAP,
+        vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
         vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [
             UnntakType.ARBEID_NORSK_ARBEIDSGIVER,
@@ -72,13 +72,13 @@ export const VurderingConfig: IVurderingConfig = {
         delvilkår: [DelvilkårType.TRE_ÅRS_MEDLEMSKAP, DelvilkårType.DOKUMENTERT_FLYKTNINGSTATUS],
     },
     LOVLIG_OPPHOLD: {
-        vilkårDel: VilkårDel.MEDLEMSKAP,
+        vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
         vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />, //TODO ?
         unntak: [],
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
     },
     SIVILSTAND: {
-        vilkårDel: VilkårDel.SIVILSTAND,
+        vilkårGruppe: VilkårGruppe.SIVILSTAND,
         vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />, //TODO
         unntak: [],
         delvilkår: [

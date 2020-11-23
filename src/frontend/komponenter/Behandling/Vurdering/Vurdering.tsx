@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { VilkårDel, VilkårDelConfig } from './VurderingConfig';
+import { VilkårGruppe, VilkårGruppeConfig } from './VurderingConfig';
 import { IInngangsvilkår, IVurdering } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
@@ -29,19 +29,19 @@ const StyledVurderinger = styled.div`
 `;
 
 interface Props {
-    vilkårDel: VilkårDel;
+    vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IInngangsvilkår;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
 }
 
-const Vurdering: FC<Props> = ({ vilkårDel, inngangsvilkår, oppdaterVurdering }) => {
+const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurdering }) => {
     const vurderinger = inngangsvilkår.vurderinger;
-    const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårDel);
+    const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
 
-    const config = VilkårDelConfig[vilkårDel];
+    const config = VilkårGruppeConfig[vilkårGruppe];
     if (!config) {
-        return <div>Savner config for {vilkårDel}</div>;
+        return <div>Savner config for {vilkårGruppe}</div>;
     }
 
     return (

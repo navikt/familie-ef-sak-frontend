@@ -1,17 +1,20 @@
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { VilkårDel, VurderingConfig } from './VurderingConfig';
+import { VilkårGruppe, VurderingConfig } from './VurderingConfig';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
 
-export const filtrerVurderinger = (vurderinger: IVurdering[], vilkårDel: VilkårDel): IVurdering[] =>
+export const filtrerVurderinger = (
+    vurderinger: IVurdering[],
+    vilkårGruppe: VilkårGruppe
+): IVurdering[] =>
     vurderinger.filter((vurdering) => {
         const config = VurderingConfig[vurdering.vilkårType];
         if (!config) {
             console.error(`Savner config til ${vurdering.vilkårType}`);
             return false;
         }
-        return config.vilkårDel === vilkårDel;
+        return config.vilkårGruppe === vilkårGruppe;
     });
 
 const sistVurdertDelvilkårErOppfylt = (vurdering: IVurdering) => {
@@ -43,7 +46,7 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
         (delvurdering) => delvurdering.resultat === Vilkårsresultat.IKKE_VURDERT
     );
     if (alleDelvurderingerErVurdert && sisteDelvurdering.resultat === Vilkårsresultat.NEI) {
-        return VurderingConfig[vurdering.vilkårType].unntak.length == 0;
+        return VurderingConfig[vurdering.vilkårType].unntak.length > 0 && !!vurdering.unntak;
     } else if (alleDelvurderingerErVurdert) {
         return true;
     }

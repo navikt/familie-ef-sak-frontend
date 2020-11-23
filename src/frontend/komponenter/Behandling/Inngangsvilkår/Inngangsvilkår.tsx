@@ -4,7 +4,7 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
-import { VilkårDel } from '../Vurdering/VurderingConfig';
+import { VilkårGruppe } from '../Vurdering/VurderingConfig';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -78,9 +78,9 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <>
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
                 <StyledInngangsvilkår>
-                    {Object.keys(VilkårDel).map((vilkårDel) => (
+                    {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
                         <Vurdering
-                            vilkårDel={vilkårDel as VilkårDel}
+                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
                             inngangsvilkår={inngangsvilkår.data}
                             oppdaterVurdering={oppdaterVurdering}
                         />
