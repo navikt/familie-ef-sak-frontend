@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { VurderingConfig } from './VurderingConfig';
 import VisVurdering from './VisVurdering';
 import EndreVurdering from './EndreVurdering';
 import { Ressurs } from '@navikt/familie-typer';
+import { VurderingConfig } from './VurderingConfig';
 
 interface Props {
     vurdering: IVurdering;

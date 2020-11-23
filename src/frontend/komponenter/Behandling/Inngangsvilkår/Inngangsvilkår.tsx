@@ -5,8 +5,6 @@ import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
 import { VilkårDel } from '../Vurdering/VurderingConfig';
-import MedlemskapVisning from './Medlemskap/MedlemskapVisning';
-import SivilstandVisning from './Sivilstand/SivilstandVisning';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -35,7 +33,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         });
     };
 
-    const oppdaterVurdering = (vurdering: IVurdering) => {
+    const oppdaterVurdering = (vurdering: IVurdering): Promise<Ressurs<string>> => {
         return axiosRequest<string, IVurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/inngangsvilkar`,
@@ -80,28 +78,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <>
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
                 <StyledInngangsvilkår>
-                    <Vurdering
-                        vilkårDel={VilkårDel.MEDLEMSKAP}
-                        vurderinger={inngangsvilkår.data.vurderinger}
-                        oppdaterVurdering={oppdaterVurdering}
-                        visning={(erOppfylt: boolean) => (
-                            <MedlemskapVisning
-                                medlemskap={inngangsvilkår.data.medlemskap}
-                                erOppfylt={erOppfylt}
-                            />
-                        )}
-                    />
-                    <Vurdering
-                        vilkårDel={VilkårDel.SIVILSTAND}
-                        vurderinger={inngangsvilkår.data.vurderinger}
-                        oppdaterVurdering={oppdaterVurdering}
-                        visning={(erOppfylt: boolean) => (
-                            <SivilstandVisning
-                                sivilstand={inngangsvilkår.data.sivilstand}
-                                erOppfylt={erOppfylt}
-                            />
-                        )}
-                    />
+                    {Object.keys(VilkårDel).map((vilkårDel) => (
+                        <Vurdering
+                            vilkårDel={vilkårDel as VilkårDel}
+                            inngangsvilkår={inngangsvilkår.data}
+                            oppdaterVurdering={oppdaterVurdering}
+                        />
+                    ))}
                 </StyledInngangsvilkår>
             )}
         </>

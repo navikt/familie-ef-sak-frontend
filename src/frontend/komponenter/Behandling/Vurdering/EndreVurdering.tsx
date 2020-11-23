@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { Textarea } from 'nav-frontend-skjema';
-import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering } from '../Inngangsvilkår/vilkår';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { IVilkårConfig } from './VurderingConfig';
 import styled from 'styled-components';
 import { erGyldigVurdering } from './VurderingUtil';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
-import Unntak from './Unntak';
-import Delvilkår from './Delvilkår';
+import { IVilkårConfig } from './VurderingConfig';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -23,95 +20,54 @@ interface Props {
     oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
+
 const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedigeringsmodus }) => {
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
     const [vurdering, settVurdering] = useState<IVurdering>(data);
-
-    const nesteDelvilkårSomManglerVurdering = vurdering.delvilkårsvurderinger.find(
-        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
-    );
-    let harPassertSisteDelvilkårSomSkalVises = false;
-    let harPassertSisteDelvilkårOgUnntakSomSkalVises = false;
-    const sisteDelvilkår: IDelvilkår =
-        vurdering.delvilkårsvurderinger[vurdering.delvilkårsvurderinger.length - 1];
-
-    console.log(config.unntak,  sisteDelvilkår.resultat );
     return (
         <StyledEndreVurdering>
-            {vurdering.delvilkårsvurderinger.map((delvilkår) => {
-                if (harPassertSisteDelvilkårSomSkalVises) {
-                    return null;
-                }
-                if (
-                    nesteDelvilkårSomManglerVurdering?.type === delvilkår.type ||
-                    delvilkår.resultat === Vilkårsresultat.JA
-                ) {
-                    harPassertSisteDelvilkårSomSkalVises = true;
-                }
-                return (
-                    <Delvilkår
-                        key={delvilkår.type}
-                        delvilkår={delvilkår}
-                        vurdering={vurdering}
-                        settVurdering={settVurdering}
-                    />
-                );
-            })}
-            {config.unntak && sisteDelvilkår.resultat && (
-                <Unntak
-                    key={vurdering.id}
-                    vurdering={vurdering}
-                    settVurdering={settVurdering}
-                    unntak={config.unntak}
-                />
-            )}
-            {((vurdering.unntak === UnntakType.IKKE_OPPFYLT) && (
-                <Textarea
-                    label="Begrunnelse (hvis aktuelt)"
-                    maxLength={0}
-                    placeholder="Skriv inn tekst"
-                    value={vurdering.begrunnelse || ''}
-                    onChange={(e) => {
-                        settVurdering({
-                            ...vurdering,
-                            begrunnelse: e.target.value,
-                        });
-                    }}
-                />
-            )}
-            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
-            {harPassertSisteDelvilkårOgUnntakSomSkalVises && (
-                <Hovedknapp
-                    onClick={() => {
-                        if (erGyldigVurdering(vurdering)) {
-                            settOppdatererVurdering(true);
-                            oppdaterVurdering(vurdering).then((ressurs) => {
-                                if (ressurs.status === RessursStatus.SUKSESS) {
-                                    settOppdatererVurdering(false);
-                                    setFeilmelding(undefined);
-                                    settRedigeringsmodus(false);
+            {config.vurdering({
+                config,
+                vurdering,
+                settVurdering,
+                lagreKnapp: (visLagreKnapp) =>
+                    (visLagreKnapp && (
+                        <Hovedknapp
+                            onClick={() => {
+                                if (erGyldigVurdering(vurdering)) {
+                                    settOppdatererVurdering(true);
+                                    oppdaterVurdering(vurdering).then((ressurs) => {
+                                        if (ressurs.status === RessursStatus.SUKSESS) {
+                                            settOppdatererVurdering(false);
+                                            setFeilmelding(undefined);
+                                            settRedigeringsmodus(false);
+                                        } else {
+                                            settOppdatererVurdering(false);
+                                            if (
+                                                ressurs.status === RessursStatus.FEILET ||
+                                                ressurs.status === RessursStatus.IKKE_TILGANG
+                                            ) {
+                                                setFeilmelding(ressurs.frontendFeilmelding);
+                                            } else {
+                                                setFeilmelding(
+                                                    `Ressurs har status ${ressurs.status}`
+                                                );
+                                            }
+                                        }
+                                    });
                                 } else {
-                                    settOppdatererVurdering(false);
-                                    if (
-                                        ressurs.status === RessursStatus.FEILET ||
-                                        ressurs.status === RessursStatus.IKKE_TILGANG
-                                    ) {
-                                        setFeilmelding(ressurs.frontendFeilmelding);
-                                    } else {
-                                        setFeilmelding(`Ressurs har status ${ressurs.status}`);
-                                    }
+                                    setFeilmelding('Du må fylle i alle verdier');
                                 }
-                            });
-                        } else {
-                            setFeilmelding('Du må fylle i alle verdier');
-                        }
-                    }}
-                    disabled={oppdatererVurdering}
-                >
-                    Lagre
-                </Hovedknapp>
-            )}
+                            }}
+                            disabled={oppdatererVurdering}
+                        >
+                            Lagre
+                        </Hovedknapp>
+                    )) ||
+                    undefined,
+            })}
+            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
         </StyledEndreVurdering>
     );
 };

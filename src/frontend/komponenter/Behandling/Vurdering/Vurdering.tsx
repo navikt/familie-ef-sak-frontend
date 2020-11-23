@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FC, ReactChild } from 'react';
-import { VilkårDel } from './VurderingConfig';
-import { IVurdering } from '../Inngangsvilkår/vilkår';
+import { FC } from 'react';
+import { VilkårDel, VilkårDelConfig } from './VurderingConfig';
+import { IInngangsvilkår, IVurdering } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
@@ -30,17 +30,23 @@ const StyledVurderinger = styled.div`
 
 interface Props {
     vilkårDel: VilkårDel;
-    vurderinger: IVurdering[];
+    inngangsvilkår: IInngangsvilkår;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
-    visning: (erOppfylt: boolean) => ReactChild;
 }
 
-const Vurdering: FC<Props> = ({ vilkårDel, vurderinger, oppdaterVurdering, visning }) => {
+const Vurdering: FC<Props> = ({ vilkårDel, inngangsvilkår, oppdaterVurdering }) => {
+    const vurderinger = inngangsvilkår.vurderinger;
     const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårDel);
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
+
+    const config = VilkårDelConfig[vilkårDel];
+    if (!config) {
+        return <div>Savner config for {vilkårDel}</div>;
+    }
+
     return (
         <StyledVilkårOgVurdering>
-            <StyledVisning>{visning(erOppfylte)}</StyledVisning>
+            <StyledVisning>{config.visning(erOppfylte, inngangsvilkår)}</StyledVisning>
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IOppholdstatus, oppholdsstatusTypeTilTekst } from '../vilkår';
 import TabellVisning, { TabellIkon } from '../../TabellVisning';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { IOppholdstatus, oppholdsstatusTypeTilTekst } from './typer';
 
 interface Props {
     oppholdsstatus: IOppholdstatus[];
