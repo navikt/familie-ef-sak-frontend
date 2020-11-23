@@ -7,6 +7,7 @@ import { EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import { formaterFødselsnummer } from '../../../utils/formatter';
 import styled from 'styled-components';
+import { differenceInYears } from 'date-fns';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -49,20 +50,8 @@ const FødselsnummerBarn: React.FC<{ fødselsnummer: string; fødselsdato?: stri
     fødselsnummer,
     fødselsdato,
 }) => {
-    const alder = fødselsdato
-        ? Math.floor(
-              Math.abs(
-                  (Date.now() -
-                      new Date(
-                          parseInt(fødselsdato.substring(0, 4)),
-                          parseInt(fødselsdato.substring(5, 7)),
-                          parseInt(fødselsdato.substring(8, 10))
-                      ).getTime()) /
-                      (1000 * 3600 * 24) /
-                      365.25
-              )
-          )
-        : NaN;
+    const alder = fødselsdato ? differenceInYears(new Date(), new Date(fødselsdato)) : NaN;
+
     return (
         <BredTd>
             {formaterFødselsnummer(fødselsnummer)}
