@@ -66,9 +66,9 @@ const BehandlingContainer: FC = () => {
                         />
                     </StyledSwitch>
                 </InnholdWrapper>
-                <HøyreMenyWrapper>
+                {/*<HøyreMenyWrapper>
                     <Høyremeny behandlingId={behandlingId} />
-                </HøyreMenyWrapper>
+                </HøyreMenyWrapper>*/}
             </Container>
         </>
     );

@@ -3,6 +3,10 @@ import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
+    grunnlag: IInngangsvilkårGrunnlag;
+}
+
+export interface IInngangsvilkårGrunnlag {
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
 }
@@ -84,3 +88,13 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
 };
+
+// ------ VILKÅRGRUPPE
+/**
+ * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
+ * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk
+ */
+export enum VilkårGruppe {
+    MEDLEMSKAP = 'MEDLEMSKAP',
+    SIVILSTAND = 'SIVILSTAND',
+}
