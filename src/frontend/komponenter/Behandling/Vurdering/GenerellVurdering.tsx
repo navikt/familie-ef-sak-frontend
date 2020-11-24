@@ -40,13 +40,13 @@ const skalViseLagreKnapp = (
 const GenerellVurdering: FC<{
     props: VurderingProps;
 }> = ({ props }) => {
-    const { config, vurdering, vilkårdata, settVurdering, lagreKnapp } = props;
+    const { config, vurdering, grunnlag, settVurdering, lagreKnapp } = props;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.filter((delvilkår) => {
         const delvilkårConfig = DelvilkårConfig[delvilkår.type];
         return (
             delvilkårConfig == null ||
             delvilkårConfig.skalVises == null ||
-            delvilkårConfig.skalVises(vilkårdata)
+            delvilkårConfig.skalVises(grunnlag)
         );
     });
     const nesteDelvilkårSomManglerVurdering = delvilkårsvurderinger.find(

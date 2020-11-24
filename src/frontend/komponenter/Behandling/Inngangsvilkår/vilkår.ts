@@ -3,10 +3,10 @@ import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
-    vilkårdata: IVilkårdata;
+    grunnlag: IInngangsvilkårGrunnlag;
 }
 
-export interface IVilkårdata {
+export interface IInngangsvilkårGrunnlag {
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
 }
