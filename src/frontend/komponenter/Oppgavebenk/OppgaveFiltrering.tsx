@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Select } from 'nav-frontend-skjema';
+import { Input, Select } from 'nav-frontend-skjema';
 import { oppgaveTypeTilTekst } from './oppgavetema';
 import { behandlingstemaTilTekst } from '../../typer/behandlingstema';
 import { useApp } from '../../context/AppContext';
@@ -167,6 +167,15 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         </option>
                     )}
                 </Select>
+
+                <Input
+                    label="Personident"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    onChange={(e) => {
+                        settOppgave('ident')(e.target.value);
+                    }}
+                />
             </FlexDiv>
 
             <KnappWrapper>
