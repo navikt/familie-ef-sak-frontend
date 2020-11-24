@@ -7,7 +7,6 @@ import Adressehistorikk from './Adressehistorikk';
 import Sivilstatus from './Sivilstatus';
 import Fullmakter from './Fullmakter';
 import Statsborgerskap from './Statsborgerskap';
-import { PersonopplysningerHeader } from './PersonopplysningerHeader';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
 const Personopplysninger: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
@@ -29,12 +28,9 @@ const Personopplysninger: React.FC<{ behandlingId: string }> = ({ behandlingId }
                     innflyttingTilNorge,
                     utflyttingFraNorge,
                     fullmakt,
-                    telefonnummer,
-                    navEnhet,
                 } = data;
                 return (
                     <>
-                        <PersonopplysningerHeader telefon={telefonnummer} navEnhet={navEnhet} />
                         <Adressehistorikk adresser={adresse} />
                         <Sivilstatus sivilstander={sivilstand} />
                         <Barn barn={barn} />

@@ -95,21 +95,13 @@
     "innflyttingTilNorge":[
       {
         "fraflyttingsland":"Sverige",
-        "fraflyttingsstedIUtlandet":null,
-        "folkeregistermetadata":{
-          "gyldighetstidspunkt":"1993-08-10T10:10:00",
-          "opphoerstidspunkt":null
-        }
+        "fraflyttingsstedIUtlandet":null
       }
     ],
     "utflyttingFraNorge":[
       {
         "tilflyttingsland":"Narnia",
-        "tilflyttingsstedIUtlandet":null,
-        "folkeregistermetadata":{
-          "gyldighetstidspunkt":"1998-08-10T10:10:00",
-          "opphoerstidspunkt":null
-        }
+        "tilflyttingsstedIUtlandet":null
       }
     ]
   },

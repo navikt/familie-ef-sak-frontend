@@ -77,18 +77,11 @@ export interface ISivilstand {
 export interface IInnflyttingTilNorge {
     fraflyttingsland?: string;
     fraflyttingsstedIUtlandet?: string;
-    folkeregistermetadata: IFolkeregisterMetadata;
 }
 
 export interface IUtflyttingFraNorge {
     tilflyttingsland?: string;
     tilflyttingsstedIUtlandet?: string;
-    folkeregistermetadata: IFolkeregisterMetadata;
-}
-
-export interface IFolkeregisterMetadata {
-    gyldighetstidspunkt: string;
-    ophørstidspunkt: string;
 }
 
 export enum Adressebeskyttelse {
