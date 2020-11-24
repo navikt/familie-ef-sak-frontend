@@ -95,13 +95,16 @@
     "innflyttingTilNorge":[
       {
         "fraflyttingsland":"Sverige",
-        "fraflyttingsstedIUtlandet":null
+        "fraflyttingsstedIUtlandet":null,
+        "fraflyttingssted" : "Stockholm"
+
       }
     ],
     "utflyttingFraNorge":[
       {
         "tilflyttingsland":"Narnia",
-        "tilflyttingsstedIUtlandet":null
+        "tilflyttingsstedIUtlandet":null,
+        "tilflyttingssted" : "Klesskapet"
       }
     ]
   },

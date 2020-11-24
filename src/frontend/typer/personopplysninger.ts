@@ -76,12 +76,12 @@ export interface ISivilstand {
 
 export interface IInnflyttingTilNorge {
     fraflyttingsland?: string;
-    fraflyttingsstedIUtlandet?: string;
+    fraflyttingssted?: string;
 }
 
 export interface IUtflyttingFraNorge {
     tilflyttingsland?: string;
-    tilflyttingsstedIUtlandet?: string;
+    tilflyttingssted?: string;
 }
 
 export enum Adressebeskyttelse {

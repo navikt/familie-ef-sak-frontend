@@ -53,7 +53,12 @@ const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[]; dobbelTabel
                 {innvandringer.map((innflytting, indeks) => {
                     return (
                         <tr key={indeks}>
-                            <BredTd>{innflytting.fraflyttingsland}</BredTd>
+                            <BredTd>
+                                {innflytting.fraflyttingsland +
+                                    (innflytting.fraflyttingssted
+                                        ? ', ' + innflytting.fraflyttingssted
+                                        : '')}
+                            </BredTd>
                             <BredTd />
                             <BredTd />
                             <BredTd />
@@ -74,9 +79,15 @@ const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[]; dobbelTabell?:
             <KolonneTitler titler={['Utvandret til', '', '', '']} />
             <tbody>
                 {utvandringer.map((utflytting, indeks) => {
+                    console.log(utflytting.tilflyttingssted);
                     return (
                         <tr key={indeks}>
-                            <BredTd>{utflytting.tilflyttingsland}</BredTd>
+                            <BredTd>
+                                {utflytting.tilflyttingsland +
+                                    (utflytting.tilflyttingssted
+                                        ? ', ' + utflytting.tilflyttingssted
+                                        : '')}
+                            </BredTd>
                             <BredTd />
                             <BredTd />
                             <BredTd />
