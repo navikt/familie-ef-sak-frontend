@@ -28,9 +28,8 @@ app.get('/user/profile', (req, res) => {
     });
 });
 
-app.post('/familie-ef-sak/api/personopplysninger', (req, res) => {
-    const filnavn =
-        req.body['personIdent'] === '12345678910' ? `personinfo.json` : `feil-personinfo.json`;
+app.get('/familie-ef-sak/api/personopplysninger/behandling/12345678910', (req, res) => {
+    const filnavn = `personopplysninger.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
@@ -89,6 +88,11 @@ app.post('/familie-ef-sak/api/journalpost/:journalpostId/fullfor', (req, res) =>
             }),
         delayMs
     );
+});
+
+app.post('/logg-feil', (req, res) => {
+    console.error(req.body.melding);
+    res.status(200).send();
 });
 
 app.post('/familie-ef-sak/api/oppgave/:oppgaveId/fordel', (req, res) => {

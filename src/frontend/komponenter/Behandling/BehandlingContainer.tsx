@@ -2,12 +2,12 @@ import * as React from 'react';
 import Fanemeny from '../Fanemeny/Fanemeny';
 import Høyremeny from '../Høyremeny/Høyremeny';
 import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
-import navFarger from 'nav-frontend-core';
 import styled from 'styled-components';
 import { FC } from 'react';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
-import { styles } from '../../typer/styles';
+import Personopplysninger from './Personopplysninger/Personopplysninger';
+import navFarger from 'nav-frontend-core';
 
 const Container = styled.div`
     display: flex;
@@ -16,12 +16,12 @@ const Container = styled.div`
 
 const VenstreMenyWrapper = styled.div`
     min-width: 10rem;
-    border-right: 2px solid ${styles.farger.navGra40};
+    border-right: 2px solid ${navFarger.navGra40};
     overflow: hidden;
 `;
 
 const HøyreMenyWrapper = styled.div`
-    border-left: 2px solid ${styles.farger.navGra40};
+    border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
     max-width: 20rem;
     overflow-y: scroll;
@@ -56,6 +56,13 @@ const BehandlingContainer: FC = () => {
                             exact={true}
                             from="/behandling/:behandlingId/"
                             to="/behandling/:behandlingId/inngangsvilkar"
+                        />
+                        <Route
+                            exact={true}
+                            path="/behandling/:behandlingId/personopplysninger"
+                            render={() => {
+                                return <Personopplysninger behandlingId={behandlingId} />;
+                            }}
                         />
                         <Route
                             exact={true}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useApp } from '../../frontend/context/AppContext';
+import { useApp } from '../context/AppContext';
 import OppgaveFiltering from '../komponenter/Oppgavebenk/OppgaveFiltrering';
 import OppgaveTabell, { IOppgaverResponse } from '../komponenter/Oppgavebenk/OppgaveTabell';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { IOppgaveRequest } from '../komponenter/Oppgavebenk/oppgaverequest';
+import { OpprettDummyBehandling } from './OpprettDummyBehandling';
 
 const Side = styled.div`
     padding: 0.5rem;
@@ -33,6 +34,7 @@ export const OppgaveBenk: React.FC = () => {
 
     return (
         <Side>
+            {process.env.ENV !== 'production' && <OpprettDummyBehandling />}
             <OppgaveFiltering hentOppgaver={hentOppgaver} />
             <OppgaveTabell oppgaveResurs={oppgaveResurs} />
         </Side>
