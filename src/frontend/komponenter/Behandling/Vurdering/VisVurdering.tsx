@@ -14,7 +14,7 @@ import {
 import styled from 'styled-components';
 import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
 import Oppfylt from '../../../ikoner/Oppfylt';
-import { styles } from '../../../typer/styles';
+import navFarger from 'nav-frontend-core';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -26,7 +26,7 @@ const StyledVurdering = styled.div`
 const StyledKnapp = styled.button``;
 
 const StyledStrek = styled.span`
-    border-left: 3px solid ${styles.farger.navLillaLighten20};
+    border-left: 3px solid ${navFarger.navLillaLighten20};
     margin-left: 0.55rem;
     grid-column: 1/2;
 `;

@@ -2,10 +2,6 @@
 
 import { kjønnType } from '@navikt/familie-typer';
 
-export interface IPersonopplysningerPersonIdent {
-    personIdent: string;
-}
-
 export interface IPersonopplysninger {
     personIdent: string;
     navn: INavn;
@@ -13,11 +9,30 @@ export interface IPersonopplysninger {
     adressebeskyttelse?: Adressebeskyttelse;
     folkeregisterpersonstatus?: Folkeregisterpersonstatus;
     dødsdato?: string;
+    fødselsdato?: string;
     telefonnummer?: ITelefonnummer;
     statsborgerskap: IStatsborgerskap[];
     sivilstand: ISivilstand[];
     adresse: IAdresse[];
     fullmakt: IFullmakt[];
+    navEnhet: string;
+    barn: IBarn[];
+    innflyttingTilNorge: IInnflyttingTilNorge[];
+    utflyttingFraNorge: IUtflyttingFraNorge[];
+}
+
+export interface IBarn {
+    navn: string;
+    personIdent: string;
+    annenForelder?: IAnnenForelder;
+    adresse: IAdresse[];
+    borHosSøker: boolean;
+    fødselsdato?: string;
+}
+
+export interface IAnnenForelder {
+    personIdent: string;
+    navn: string;
 }
 
 export interface IAdresse {
@@ -57,6 +72,16 @@ export interface ISivilstand {
     gyldigFraOgMed?: string;
     relatertVedSivilstand?: string;
     navn?: string;
+}
+
+export interface IInnflyttingTilNorge {
+    fraflyttingsland?: string;
+    fraflyttingssted?: string;
+}
+
+export interface IUtflyttingFraNorge {
+    tilflyttingsland?: string;
+    tilflyttingssted?: string;
 }
 
 export enum Adressebeskyttelse {

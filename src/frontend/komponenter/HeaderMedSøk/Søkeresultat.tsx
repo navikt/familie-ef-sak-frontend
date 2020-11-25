@@ -3,14 +3,16 @@ import styled from 'styled-components';
 import { Element } from 'nav-frontend-typografi';
 import { FamilieIkonVelger } from '@navikt/familie-ikoner';
 import { kjønnType } from '@navikt/familie-typer';
-import { styles } from '../../typer/styles';
 import './søkeresultat.less';
+import navFarger from 'nav-frontend-core';
+import { styles } from '../../typer/styles';
+
 const InlineWrapper = styled.div`
     display: flex;
 `;
 
 const ResultatWrapper = styled.div`
-    background-color: ${styles.farger.navMorkGra};
+    background-color: ${navFarger.navMorkGra};
     padding: 10px;
     display: flex;
     flex-flow: wrap;

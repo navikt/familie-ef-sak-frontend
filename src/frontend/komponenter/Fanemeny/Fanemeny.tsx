@@ -6,7 +6,7 @@ import { IBehandlingParams } from '../../typer/routing';
 import { sider } from './sider';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { NavLink } from 'react-router-dom';
-import { styles } from '../../typer/styles';
+import navFarger from 'nav-frontend-core';
 
 const StyledFanemeny = styled.div`
     width: 100%;
@@ -25,16 +25,16 @@ const StyledNavLink = styled(NavLink)`
     padding-bottom: 1rem;
 
     :hover {
-        border-bottom: 5px solid ${styles.farger.navBlaLighten20};
+        border-bottom: 5px solid ${navFarger.navBlaLighten20};
 
         .typo-normal {
-            color: ${styles.farger.navBla};
+            color: ${navFarger.navBla};
         }
     }
 
     &.aktiv {
-        background-color: ${styles.farger.navLysGra};
-        border-bottom: 5px solid ${styles.farger.navBla};
+        background-color: ${navFarger.navLysGra};
+        border-bottom: 5px solid ${navFarger.navBla};
 
         .typo-normal {
             font-weight: bold;
