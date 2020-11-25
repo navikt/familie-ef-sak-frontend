@@ -5,7 +5,6 @@ import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngan
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
-import { DelvilkårConfig } from '../Inngangsvilkår/config/DelvilkårConfig';
 import { VurderingProps } from './VurderingProps';
 
 // TODO skrive om denne til å være unik for hver type av vurdering? Eller ha en generell og sen en for hver type?
@@ -40,15 +39,8 @@ const skalViseLagreKnapp = (
 const GenerellVurdering: FC<{
     props: VurderingProps;
 }> = ({ props }) => {
-    const { config, vurdering, grunnlag, settVurdering, lagreKnapp } = props;
-    const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.filter((delvilkår) => {
-        const delvilkårConfig = DelvilkårConfig[delvilkår.type];
-        return (
-            delvilkårConfig == null ||
-            delvilkårConfig.skalVises == null ||
-            delvilkårConfig.skalVises(grunnlag)
-        );
-    });
+    const { config, vurdering, settVurdering, lagreKnapp } = props;
+    const delvilkårsvurderinger = vurdering.delvilkårsvurderinger;
     const nesteDelvilkårSomManglerVurdering = delvilkårsvurderinger.find(
         (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
