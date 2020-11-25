@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Høyremeny from '../Høyremeny/Høyremeny';
 import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
 import navFarger from 'nav-frontend-core';
 import styled from 'styled-components';
@@ -18,13 +17,6 @@ const VenstreMenyWrapper = styled.div`
     min-width: 10rem;
     border-right: 2px solid ${styles.farger.navGra40};
     overflow: hidden;
-`;
-
-const HøyreMenyWrapper = styled.div`
-    border-left: 2px solid ${styles.farger.navGra40};
-    overflow-x: hidden;
-    max-width: 20rem;
-    overflow-y: scroll;
 `;
 
 const InnholdWrapper = styled.div`
