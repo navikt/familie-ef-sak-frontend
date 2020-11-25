@@ -1,0 +1,145 @@
+{
+  "data": {
+    "vurderinger": [
+      {
+        "id": "6366859d-60d7-460e-8a4c-a792f803e9e2",
+        "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
+        "resultat": "IKKE_VURDERT",
+        "vilkårType": "FORUTGÅENDE_MEDLEMSKAP",
+        "begrunnelse": null,
+        "unntak": null,
+        "endretAv": "F_Z994230.E_Z994230@trygdeetaten.no",
+        "endretTid": "2020-11-25T12:17:01.514",
+        "delvilkårsvurderinger": [
+          {
+            "type": "TRE_ÅRS_MEDLEMSKAP",
+            "resultat": "IKKE_VURDERT"
+          },
+          {
+            "type": "DOKUMENTERT_FLYKTNINGSTATUS",
+            "resultat": "IKKE_VURDERT"
+          }
+        ]
+      },
+      {
+        "id": "9859d404-475c-4948-873f-f586fb130539",
+        "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
+        "resultat": "IKKE_VURDERT",
+        "vilkårType": "LOVLIG_OPPHOLD",
+        "begrunnelse": null,
+        "unntak": null,
+        "endretAv": "F_Z994230.E_Z994230@trygdeetaten.no",
+        "endretTid": "2020-11-25T12:17:01.514",
+        "delvilkårsvurderinger": [
+          {
+            "type": "BOR_OG_OPPHOLDER_SEG_I_NORGE",
+            "resultat": "IKKE_VURDERT"
+          }
+        ]
+      },
+      {
+        "id": "90816ac7-6aaf-475c-a305-2ce57d109824",
+        "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
+        "resultat": "IKKE_VURDERT",
+        "vilkårType": "SIVILSTAND",
+        "begrunnelse": null,
+        "unntak": null,
+        "endretAv": "F_Z994230.E_Z994230@trygdeetaten.no",
+        "endretTid": "2020-11-25T12:17:01.514",
+        "delvilkårsvurderinger": [
+          {
+            "type": "DOKUMENTERT_EKTESKAP",
+            "resultat": "IKKE_VURDERT"
+          },
+          {
+            "type": "DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE",
+            "resultat": "IKKE_VURDERT"
+          },
+          {
+            "type": "KRAV_SIVILSTAND",
+            "resultat": "IKKE_VURDERT"
+          }
+        ]
+      }
+    ],
+    "grunnlag": {
+      "medlemskap": {
+        "søknadsgrunnlag": {
+          "bosattNorgeSisteÅrene": true,
+          "oppholderDuDegINorge": true,
+          "utenlandsopphold": [
+            {
+              "fraDato": "2012-12-04",
+              "tilDato": "2012-12-18",
+              "årsak": "Granca, Granca, Granca"
+            }
+          ]
+        },
+        "registergrunnlag": {
+          "nåværendeStatsborgerskap": [
+            "Norge"
+          ],
+          "statsborgerskap": [
+            {
+              "land": "Norge",
+              "gyldigFraOgMedDato": "2020-01-01",
+              "gyldigTilOgMedDato": null
+            },
+            {
+              "land": "Sverige",
+              "gyldigFraOgMedDato": "2017-01-01",
+              "gyldigTilOgMedDato": "2020-01-01"
+            }
+          ],
+          "oppholdstatus": [
+            {
+              "oppholdstillatelse": "PERMANENT",
+              "fraDato": "2020-01-01",
+              "tilDato": null
+            }
+          ],
+          "bostedsadresse": [
+            {
+              "visningsadresse": "c/o CONAVN, Charlies vei 13 b, 0575 Oslo",
+              "type": "BOSTEDADRESSE",
+              "gyldigFraOgMed": "2020-01-01",
+              "gyldigTilOgMed": "2020-01-01"
+            }
+          ],
+          "innflytting": [
+            {
+              "fraflyttingsland": "Sverige",
+              "dato": "2020-11-25"
+            }
+          ],
+          "utflytting": [
+            {
+              "tilflyttingsland": "Sverige",
+              "dato": "2020-11-25"
+            }
+          ],
+          "folkeregisterpersonstatus": "BOSATT"
+        }
+      },
+      "sivilstand": {
+        "søknadsgrunnlag": {
+          "samlivsbruddsdato": "2014-10-03",
+          "endringSamværsordningDato": "2013-04-17",
+          "fraflytningsdato": "2014-10-04",
+          "erUformeltGift": true,
+          "erUformeltSeparertEllerSkilt": true,
+          "datoSøktSeparasjon": "2015-12-23",
+          "søktOmSkilsmisseSeparasjon": true
+        },
+        "registergrunnlag": {
+          "type": "SKILT",
+          "gyldigFraOgMed": "2020-01-01"
+        }
+      }
+    }
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}
