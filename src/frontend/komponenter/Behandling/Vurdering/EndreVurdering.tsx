@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IInngangsvilkårGrunnlag, IVurdering } from '../Inngangsvilkår/vilkår';
+import { IVurdering } from '../Inngangsvilkår/vilkår';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -17,18 +17,11 @@ const StyledEndreVurdering = styled.div`
 interface Props {
     config: IVilkårConfig;
     data: IVurdering;
-    grunnlag: IInngangsvilkårGrunnlag;
     oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
 
-const EndreVurdering: FC<Props> = ({
-    config,
-    data,
-    grunnlag,
-    oppdaterVurdering,
-    settRedigeringsmodus,
-}) => {
+const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedigeringsmodus }) => {
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
     const [vurdering, settVurdering] = useState<IVurdering>(data);
@@ -38,7 +31,6 @@ const EndreVurdering: FC<Props> = ({
                 config,
                 vurdering,
                 settVurdering,
-                grunnlag,
                 lagreKnapp: (visLagreKnapp) =>
                     (visLagreKnapp && (
                         <Hovedknapp

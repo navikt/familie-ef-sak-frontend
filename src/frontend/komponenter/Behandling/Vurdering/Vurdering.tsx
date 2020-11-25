@@ -52,7 +52,6 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurderin
                     <VisEllerEndreVurdering
                         key={vurdering.id}
                         vurdering={vurdering}
-                        grunnlag={inngangsvilkår.grunnlag}
                         oppdaterVurdering={oppdaterVurdering}
                     />
                 ))}

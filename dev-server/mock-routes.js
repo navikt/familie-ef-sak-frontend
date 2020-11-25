@@ -44,6 +44,11 @@ app.get('/familie-ef-sak/api/vedlegg/:id', (req, res) => {
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
+app.get('/familie-ef-sak/api/vurdering/:id/inngangsvilkar', (req, res) => {
+    const filnavn = `inngangsvilkår-1.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
+
 app.get('/familie-ef-sak/api/journalpost/:id/dokument/:dokumentInfoId', (req, res) => {
     const filnavn = `journalforing-dokument.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);

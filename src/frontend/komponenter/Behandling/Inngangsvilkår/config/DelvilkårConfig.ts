@@ -1,8 +1,7 @@
-import { DelvilkårType, IInngangsvilkårGrunnlag } from '../vilkår';
+import { DelvilkårType } from '../vilkår';
 
 interface IDelvilkårConfig {
     harBegrunnelse?: boolean;
-    skalVises?: (grunnlag: IInngangsvilkårGrunnlag) => boolean;
 }
 
 type DelvilkårConfig = {
@@ -10,13 +9,7 @@ type DelvilkårConfig = {
 };
 
 export const DelvilkårConfig: DelvilkårConfig = {
-    DOKUMENTERT_EKTESKAP: {
-        skalVises: (grunnlag: IInngangsvilkårGrunnlag): boolean =>
-            grunnlag.sivilstand.søknadsgrunnlag.erUformeltGift === true,
-    },
-    DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE: {
-        skalVises: (grunnlag: IInngangsvilkårGrunnlag): boolean =>
-            grunnlag.sivilstand.søknadsgrunnlag.erUformeltSeparertEllerSkilt === true,
-    },
+    DOKUMENTERT_EKTESKAP: {},
+    DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE: {},
     KRAV_SIVILSTAND: {},
 };
