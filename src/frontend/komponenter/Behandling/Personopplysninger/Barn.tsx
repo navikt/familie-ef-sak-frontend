@@ -32,9 +32,9 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                 />
                                 <BredTd>
                                     {barn.annenForelder &&
-                                        formaterFødselsnummer(barn.annenForelder.personIdent)}
-                                    {', '}
-                                    {barn.annenForelder && barn.annenForelder.navn}
+                                        formaterFødselsnummer(barn.annenForelder.personIdent) +
+                                            ', ' +
+                                            barn.annenForelder.navn}
                                 </BredTd>
                                 <BredTd>{barn.borHosSøker ? 'Ja' : '-'}</BredTd>
                             </tr>
