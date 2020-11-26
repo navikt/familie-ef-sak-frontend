@@ -14,17 +14,17 @@ interface Props {
     settVurdering: (vurdering: IVurdering) => void;
 }
 
-const Unntak: FC<Props> = ({ vurdering, settVurdering, unntak }) => {
-    const hentResultatForUnntak = (unntakType: UnntakType | undefined): Vilkårsresultat => {
-        if (!unntakType) {
-            return Vilkårsresultat.IKKE_VURDERT;
-        } else if (unntakType === UnntakType.IKKE_OPPFYLT) {
-            return Vilkårsresultat.NEI;
-        } else {
-            return Vilkårsresultat.JA;
-        }
-    };
+const vilkårsResultatForUnntak = (unntakType: UnntakType | undefined): Vilkårsresultat => {
+    if (!unntakType) {
+        return Vilkårsresultat.IKKE_VURDERT;
+    } else if (unntakType === UnntakType.IKKE_OPPFYLT) {
+        return Vilkårsresultat.NEI;
+    } else {
+        return Vilkårsresultat.JA;
+    }
+};
 
+const Unntak: FC<Props> = ({ vurdering, settVurdering, unntak }) => {
     return (
         <RadioGruppe key={vurdering.id} legend={'Er unntak fra hovedregelen oppfylt?'}>
             {unntak.map((unntakType) => (
@@ -38,7 +38,7 @@ const Unntak: FC<Props> = ({ vurdering, settVurdering, unntak }) => {
                         settVurdering({
                             ...vurdering,
                             unntak: unntakType,
-                            resultat: hentResultatForUnntak(unntakType),
+                            resultat: vilkårsResultatForUnntak(unntakType),
                         });
                     }}
                 />

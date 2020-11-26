@@ -1,36 +1,11 @@
 import * as React from 'react';
 import { ReactChild } from 'react';
-import {
-    DelvilkårType,
-    IInngangsvilkårGrunnlag,
-    UnntakType,
-    VilkårGruppe,
-    VilkårType,
-} from '../vilkår';
+import { DelvilkårType, UnntakType, VilkårGruppe, VilkårType } from '../vilkår';
 import GenerellVurdering from '../../Vurdering/GenerellVurdering';
-import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
-import SivilstandVisning from '../Sivilstand/SivilstandVisning';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 
-type IVurderingConfig<TYPE extends VilkårType | DelvilkårType | VilkårGruppe, CONFIG> = {
+export type IVurderingConfig<TYPE extends VilkårType | VilkårGruppe, CONFIG> = {
     [key in TYPE]: CONFIG;
-};
-
-export interface IVilkårGruppeConfig {
-    visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkårGrunnlag) => ReactChild;
-}
-
-export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppeConfig> = {
-    MEDLEMSKAP: {
-        visning: (erOppfylt: boolean, grunnlag: IInngangsvilkårGrunnlag): ReactChild => (
-            <MedlemskapVisning erOppfylt={erOppfylt} medlemskap={grunnlag.medlemskap} />
-        ),
-    },
-    SIVILSTAND: {
-        visning: (erOppfylt: boolean, grunnlag: IInngangsvilkårGrunnlag): ReactChild => (
-            <SivilstandVisning erOppfylt={erOppfylt} sivilstand={grunnlag.sivilstand} />
-        ),
-    },
 };
 
 export interface IVilkårConfig {

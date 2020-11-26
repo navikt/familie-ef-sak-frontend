@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { IInngangsvilkår, IVurdering, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { navLysGra } from '@navikt/familie-header';
 import { Ressurs } from '@navikt/familie-typer';
+import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
