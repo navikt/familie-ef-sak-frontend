@@ -46,7 +46,10 @@ export const erGyldigVurdering = (vurdering: IVurdering): boolean => {
         (delvurdering) => delvurdering.resultat === Vilkårsresultat.IKKE_VURDERT
     );
     if (alleDelvurderingerErVurdert && sisteDelvurdering.resultat === Vilkårsresultat.NEI) {
-        return VurderingConfig[vurdering.vilkårType].unntak.length > 0 && !!vurdering.unntak;
+        const vilkårTypeHarIkkeUnntak = VurderingConfig[vurdering.vilkårType].unntak.length === 0;
+        const harValgtUnntak = !!vurdering.unntak;
+
+        return vilkårTypeHarIkkeUnntak || harValgtUnntak;
     } else if (alleDelvurderingerErVurdert) {
         return true;
     }
