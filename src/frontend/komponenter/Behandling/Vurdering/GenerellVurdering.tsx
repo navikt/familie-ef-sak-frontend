@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
-import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IDelvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
 import { VurderingProps } from './VurderingProps';
-
-// TODO skrive om denne til å være unik for hver type av vurdering? Eller ha en generell og sen en for hver type?
 
 const skalViseLagreKnapp = (
     vurdering: IVurdering,
@@ -73,20 +71,6 @@ const GenerellVurdering: FC<{
                     vurdering={vurdering}
                     settVurdering={settVurdering}
                     unntak={config.unntak}
-                />
-            )}
-            {vurdering.unntak === UnntakType.IKKE_OPPFYLT && (
-                <Textarea
-                    label="Begrunnelse (hvis aktuelt)" //TODO (hvis aktuell = config)
-                    maxLength={0}
-                    placeholder="Skriv inn tekst"
-                    value={vurdering.begrunnelse || ''}
-                    onChange={(e) => {
-                        settVurdering({
-                            ...vurdering,
-                            begrunnelse: e.target.value,
-                        });
-                    }}
                 />
             )}
             <Textarea

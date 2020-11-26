@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { FC } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import {
@@ -6,7 +7,6 @@ import {
     unntakTypeTilTekst,
     Vilkårsresultat,
 } from '../Inngangsvilkår/vilkår';
-import * as React from 'react';
 
 interface Props {
     unntak: UnntakType[];
@@ -33,13 +33,12 @@ const Unntak: FC<Props> = ({ vurdering, settVurdering, unntak }) => {
                     label={unntakTypeTilTekst[unntakType]}
                     name={unntakType}
                     value={unntakTypeTilTekst[unntakType]}
-                    checked={vurdering.unntak === unntakTypeTilTekst[unntakType]}
-                    onChange={(e) => {
-                        const unntak = e.target.value as UnntakType;
+                    checked={vurdering.unntak === unntakType}
+                    onChange={() => {
                         settVurdering({
                             ...vurdering,
-                            unntak: unntak,
-                            resultat: hentResultatForUnntak(unntak),
+                            unntak: unntakType,
+                            resultat: hentResultatForUnntak(unntakType),
                         });
                     }}
                 />
