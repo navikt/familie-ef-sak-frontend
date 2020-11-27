@@ -36,10 +36,6 @@ const FanemenyWrapper = styled.div`
     border-bottom: ${navFarger.navGra40} solid 2px;
 `;
 
-const StyledSwitch = styled(Switch)`
-    padding: 1rem;
-`;
-
 const BehandlingContainer: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
 
@@ -51,7 +47,7 @@ const BehandlingContainer: FC = () => {
                     <FanemenyWrapper>
                         <Fanemeny />
                     </FanemenyWrapper>
-                    <StyledSwitch>
+                    <Switch>
                         <Redirect
                             exact={true}
                             from="/behandling/:behandlingId/"
@@ -71,7 +67,7 @@ const BehandlingContainer: FC = () => {
                                 return <Inngangsvilkår behandlingId={behandlingId} />;
                             }}
                         />
-                    </StyledSwitch>
+                    </Switch>
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
                     <Høyremeny behandlingId={behandlingId} />

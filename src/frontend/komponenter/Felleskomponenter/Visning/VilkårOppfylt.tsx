@@ -7,16 +7,7 @@ interface Props {
 }
 
 const VilkårOppfylt: FC<Props> = ({ erOppfylt }) => {
-    return (
-        <>
-            {' '}
-            {erOppfylt ? (
-                <Oppfylt heigth={21} width={21} />
-            ) : (
-                <IkkeOppfylt heigth={21} width={21} />
-            )}
-        </>
-    );
+    return erOppfylt ? <Oppfylt heigth={21} width={21} /> : <IkkeOppfylt heigth={21} width={21} />;
 };
 
 export default VilkårOppfylt;

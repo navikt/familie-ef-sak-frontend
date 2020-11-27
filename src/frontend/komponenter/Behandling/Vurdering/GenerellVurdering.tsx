@@ -8,29 +8,32 @@ import { Textarea } from 'nav-frontend-skjema';
 import { VurderingProps } from './VurderingProps';
 import LagreVurderingKnapp from './LagreVurderingKnapp';
 
-const skalViseLagreKnapp = (
-    vurdering: IVurdering,
-    sisteDelvilkår: IDelvilkår,
-    config: IVilkårConfig
-): boolean => {
-    const besvarteDelvilkår = vurdering.delvilkårsvurderinger.filter(
+const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
+    const { begrunnelse, delvilkårsvurderinger } = vurdering;
+    // Må alltid ha med begrunnelse
+    if (!begrunnelse || begrunnelse.trim().length === 0) {
+        return false;
+    }
+    const besvarteDelvilkår = delvilkårsvurderinger.filter(
         (delvilkår) =>
             delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
     );
-    const sisteBesvarteDelvilkår =
-        besvarteDelvilkår.length > 0 ? besvarteDelvilkår[besvarteDelvilkår.length - 1] : undefined;
-    if (sisteBesvarteDelvilkår?.resultat === Vilkårsresultat.JA) {
-        return true;
+    //Må ha besvart minimum 1 delvilkår
+    if (besvarteDelvilkår.length === 0) {
+        return false;
     }
-    if (
-        sisteDelvilkår === sisteBesvarteDelvilkår &&
-        sisteDelvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
-    ) {
-        if (config.unntak.length === 0) {
-            return true;
-        } else {
-            return !!vurdering.unntak;
-        }
+    const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
+
+    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
+    const harBesvaretPåAlleDelvilkår =
+        delvilkårsvurderinger[delvilkårsvurderinger.length - 1].resultat !==
+        Vilkårsresultat.IKKE_VURDERT;
+
+    if (vurderingErOppfylt) {
+        return true;
+    } else if (harBesvaretPåAlleDelvilkår) {
+        const harUnntak = config.unntak.length !== 0;
+        return harUnntak ? !!vurdering.unntak : true;
     }
     return false;
 };
@@ -44,7 +47,7 @@ const skalViseLagreKnapp = (
  * * Må vise første delvilkåret (som kan være IKKE_VURDERT)
  * @param delvilkårsvurderinger
  */
-const delvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) => {
+const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
         (delvilkår) =>
             delvilkår.resultat === Vilkårsresultat.JA ||
@@ -65,12 +68,12 @@ const delvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) => {
 const GenerellVurdering: FC<{
     props: VurderingProps;
 }> = ({ props }) => {
-    const { config, vurdering, settVurdering, oppdaterVurdering, settRedigeringsmodus } = props;
+    const { config, vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger;
     const sisteDelvilkår: IDelvilkår = delvilkårsvurderinger[delvilkårsvurderinger.length - 1];
     return (
         <>
-            {delvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
+            {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
                 return (
                     <Delvilkår
                         key={delvilkår.type}
@@ -100,11 +103,10 @@ const GenerellVurdering: FC<{
                     });
                 }}
             />
-            {skalViseLagreKnapp(vurdering, sisteDelvilkår, config) && (
+            {skalViseLagreKnapp(vurdering, config) && (
                 <LagreVurderingKnapp
-                    vurdering={vurdering}
-                    oppdaterVurdering={oppdaterVurdering}
-                    settRedigeringsmodus={settRedigeringsmodus}
+                    lagreVurdering={oppdaterVurdering}
+                    disabled={lagreknappDisabled}
                 />
             )}
         </>

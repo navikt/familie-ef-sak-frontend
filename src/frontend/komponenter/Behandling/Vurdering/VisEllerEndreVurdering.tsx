@@ -8,10 +8,10 @@ import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
 interface Props {
     vurdering: IVurdering;
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
 }
 
-const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => {
+const VisEllerEndreVurdering: FC<Props> = ({ vurdering, lagreVurdering }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
         vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
     );
@@ -24,7 +24,7 @@ const VisEllerEndreVurdering: FC<Props> = ({ vurdering, oppdaterVurdering }) => 
         <EndreVurdering
             config={config}
             data={vurdering}
-            oppdaterVurdering={oppdaterVurdering}
+            lagreVurdering={lagreVurdering}
             settRedigeringsmodus={settRedigeringsmodus}
         />
     ) : (

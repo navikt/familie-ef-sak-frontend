@@ -31,10 +31,10 @@ const StyledVurderinger = styled.div`
 interface Props {
     vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IInngangsvilkår;
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
 }
 
-const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurdering }) => {
+const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }) => {
     const vurderinger = inngangsvilkår.vurderinger;
     const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
@@ -52,7 +52,7 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurderin
                     <VisEllerEndreVurdering
                         key={vurdering.id}
                         vurdering={vurdering}
-                        oppdaterVurdering={oppdaterVurdering}
+                        lagreVurdering={lagreVurdering}
                     />
                 ))}
             </StyledVurderinger>

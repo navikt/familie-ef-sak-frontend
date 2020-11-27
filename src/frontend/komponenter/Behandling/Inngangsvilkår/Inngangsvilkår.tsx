@@ -45,7 +45,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         });
     };
 
-    const oppdaterVurdering = (vurdering: IVurdering): Promise<Ressurs<string>> => {
+    const lagreVurdering = (vurdering: IVurdering): Promise<Ressurs<string>> => {
         return axiosRequest<string, IVurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/inngangsvilkar`,
@@ -79,7 +79,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             key={vilkårGruppe}
                             vilkårGruppe={vilkårGruppe as VilkårGruppe}
                             inngangsvilkår={inngangsvilkår.data}
-                            oppdaterVurdering={oppdaterVurdering}
+                            lagreVurdering={lagreVurdering}
                         />
                     ))}
                 </StyledInngangsvilkår>

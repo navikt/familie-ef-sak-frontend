@@ -10,7 +10,7 @@ export type IVurderingConfig<TYPE extends VilkårType | VilkårGruppe, CONFIG> =
 
 export interface IVilkårConfig {
     vilkårGruppe: VilkårGruppe;
-    vurdering: (props: VurderingProps) => ReactChild;
+    renderVurdering: (props: VurderingProps) => ReactChild;
     unntak: UnntakType[];
     delvilkår: DelvilkårType[];
 }
@@ -18,7 +18,7 @@ export interface IVilkårConfig {
 export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
     FORUTGÅENDE_MEDLEMSKAP: {
         vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
-        vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
+        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [
             UnntakType.ARBEID_NORSK_ARBEIDSGIVER,
             UnntakType.UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER,
@@ -28,13 +28,13 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
     },
     LOVLIG_OPPHOLD: {
         vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
-        vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
+        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [],
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
     },
     SIVILSTAND: {
         vilkårGruppe: VilkårGruppe.SIVILSTAND,
-        vurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
+        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [],
         delvilkår: [
             DelvilkårType.DOKUMENTERT_EKTESKAP,
