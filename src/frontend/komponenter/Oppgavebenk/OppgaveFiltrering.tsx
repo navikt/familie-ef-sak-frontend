@@ -45,21 +45,32 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
+const filterVersjon = 'v1';
+const filterVersjonKey = 'filterVersjon';
+const oppgaveRequestKey = 'oppgaveFiltreringRequest';
+
+export const persisterRequestTilLocalStorage = (request: IOppgaveRequest) => {
+    try {
+        localStorage.setItem(filterVersjonKey, filterVersjon);
+        localStorage.setItem(oppgaveRequestKey, JSON.stringify(request));
+    } finally {
+        /* Gjør ingenting */
+    }
+};
+
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const { innloggetSaksbehandler } = useApp();
     const initOppgaveRequest = innloggetSaksbehandler
         ? { tilordnetRessurs: innloggetSaksbehandler.navIdent }
         : ({} as IOppgaveRequest);
 
-    const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
-    const [requestFraLocalStorage, settRequestFraLocalStorage] = useState<IOppgaveRequest>(
-        initOppgaveRequest
-    );
+    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
+    const [requestFraLocalStorage, settRequestFraLocalStorage] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
-            setOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
+            settOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
     };
 
     useEffect(() => {
@@ -77,20 +88,19 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
 
     useEffect(() => {
         try {
-            const request = localStorage.getItem('oppgaveFiltreringRequest');
-            const parsed = request ? JSON.parse(request) : {};
-            settRequestFraLocalStorage({
-                ...requestFraLocalStorage,
-                ident: parsed.personIdent,
-            });
+            if (localStorage.getItem(filterVersjonKey) !== filterVersjon) {
+                localStorage.setItem(filterVersjonKey, filterVersjon);
+                localStorage.setItem(oppgaveRequestKey, JSON.stringify({}));
+            } else {
+                const request = localStorage.getItem(oppgaveRequestKey);
+                const parsed = request ? JSON.parse(request) : {};
+                hentOppgaver(parsed);
+                settOppgaveRequest(parsed);
+            }
         } catch {
             /* Gjør ingenting */
         }
     }, []);
-
-    useEffect(() => {
-        hentOppgaver(requestFraLocalStorage);
-    }, [requestFraLocalStorage]);
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
@@ -155,12 +165,12 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         event.persist();
                         const val = event.target.value;
                         if (val === '') {
-                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return rest;
                             });
                         } else if (val === 'Fordelte' || val === 'Ufordelte') {
-                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return {
                                     ...rest,
@@ -168,7 +178,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                                 };
                             });
                         } else {
-                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return {
                                     ...rest,
@@ -189,7 +199,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 </Select>
 
                 <Input
-                    defaultValue={oppgaveRequest.ident || requestFraLocalStorage.ident}
+                    defaultValue={oppgaveRequest.ident}
                     label="Personident"
                     inputMode="numeric"
                     pattern="[0-9]*"
@@ -206,6 +216,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         if (Object.values(periodeFeil).some((val?: string) => val)) {
                             return;
                         }
+                        persisterRequestTilLocalStorage(oppgaveRequest);
                         hentOppgaver(oppgaveRequest);
                     }}
                 >
@@ -214,7 +225,8 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 <Knapp
                     className="flex-item"
                     onClick={() => {
-                        setOppgaveRequest(initOppgaveRequest);
+                        settOppgaveRequest(initOppgaveRequest);
+                        persisterRequestTilLocalStorage({});
                         hentOppgaver(initOppgaveRequest);
                     }}
                 >

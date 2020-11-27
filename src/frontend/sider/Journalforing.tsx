@@ -20,6 +20,7 @@ import { useHentJournalpost } from '../hooks/useHentJournalpost';
 import { useHentDokument } from '../hooks/useHentDokument';
 import { useHentFagsak } from '../hooks/useHentFagsak';
 import { useApp } from '../context/AppContext';
+import { persisterRequestTilLocalStorage } from '../komponenter/Oppgavebenk/OppgaveFiltrering';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -73,19 +74,16 @@ export const Journalforing: React.FC = () => {
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
             try {
-                const localStorageRequest = localStorage.getItem('oppgavefiltreringRequest');
+                const localStorageRequest = localStorage.getItem('oppgaveFiltreringRequest');
                 const parsedRequest = localStorageRequest ? JSON.parse(localStorageRequest) : {};
 
-                localStorage.setItem(
-                    'oppgaveFiltreringRequest',
-                    JSON.stringify({
-                        ...parsedRequest,
-                        personIdent:
-                            journalResponse.status === RessursStatus.SUKSESS
-                                ? journalResponse.data.personIdent
-                                : undefined,
-                    })
-                );
+                persisterRequestTilLocalStorage({
+                    ...parsedRequest,
+                    ident:
+                        journalResponse.status === RessursStatus.SUKSESS
+                            ? journalResponse.data.personIdent
+                            : undefined,
+                });
             } finally {
                 history.push('/oppgavebenk');
             }
