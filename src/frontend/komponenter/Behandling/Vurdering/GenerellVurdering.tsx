@@ -6,6 +6,7 @@ import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
 import { VurderingProps } from './VurderingProps';
+import LagreVurderingKnapp from './LagreVurderingKnapp';
 
 const skalViseLagreKnapp = (
     vurdering: IVurdering,
@@ -34,28 +35,42 @@ const skalViseLagreKnapp = (
     return false;
 };
 
+/**
+ * Denne skal filtrere ut slik att den viser alle frem till første JA eller første IKKE_VURDERT
+ * Denne virker ikke for sivilstand då sivilstand skal vise delvilkår oberoende på tidligere svar?
+ * Hvis du svarer:
+ * * JA -> ikke vis flere delvilkår
+ * * NEI -> vis neste delvilkår
+ * * Må vise første delvilkåret (som kan være IKKE_VURDERT)
+ * @param delvilkårsvurderinger
+ */
+const delvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) => {
+    const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
+        (delvilkår) =>
+            delvilkår.resultat === Vilkårsresultat.JA ||
+            delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
+    );
+
+    // hvis man ikke finner en, så har man ikke besvart på første delvilkåret
+    if (sisteDelvilkårSomSkalVises === -1) {
+        return delvilkårsvurderinger;
+    }
+    return delvilkårsvurderinger.slice(
+        0,
+        // hvis siste delvilkåret er besvart kan vi ikke ta index + 1
+        Math.min(sisteDelvilkårSomSkalVises + 1, delvilkårsvurderinger.length)
+    );
+};
+
 const GenerellVurdering: FC<{
     props: VurderingProps;
 }> = ({ props }) => {
-    const { config, vurdering, settVurdering, lagreKnapp } = props;
+    const { config, vurdering, settVurdering, oppdaterVurdering, settRedigeringsmodus } = props;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger;
-    const nesteDelvilkårSomManglerVurdering = delvilkårsvurderinger.find(
-        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
-    );
-    let harPassertSisteDelvilkårSomSkalVises = false;
     const sisteDelvilkår: IDelvilkår = delvilkårsvurderinger[delvilkårsvurderinger.length - 1];
     return (
         <>
-            {delvilkårsvurderinger.map((delvilkår) => {
-                if (harPassertSisteDelvilkårSomSkalVises) {
-                    return null;
-                }
-                if (
-                    nesteDelvilkårSomManglerVurdering?.type === delvilkår.type ||
-                    delvilkår.resultat === Vilkårsresultat.JA
-                ) {
-                    harPassertSisteDelvilkårSomSkalVises = true;
-                }
+            {delvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
                 return (
                     <Delvilkår
                         key={delvilkår.type}
@@ -85,7 +100,13 @@ const GenerellVurdering: FC<{
                     });
                 }}
             />
-            {lagreKnapp(skalViseLagreKnapp(vurdering, sisteDelvilkår, config))}
+            {skalViseLagreKnapp(vurdering, sisteDelvilkår, config) && (
+                <LagreVurderingKnapp
+                    vurdering={vurdering}
+                    oppdaterVurdering={oppdaterVurdering}
+                    settRedigeringsmodus={settRedigeringsmodus}
+                />
+            )}
         </>
     );
 };
