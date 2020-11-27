@@ -3,9 +3,9 @@ import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import VilkårOppfylt from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { hentSivilstatus } from './helper';
 import { ISivilstandInngangsvilkår } from './typer';
 import Søknadsinformasjon from './Søknadsinformasjon';
+import { sivilstandTilTekst } from '../../../../typer/personopplysninger';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -14,8 +14,8 @@ interface Props {
 const SivilstandVisning: FC<Props> = ({ sivilstand, erOppfylt }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
-        ? `${hentSivilstatus(registergrunnlag.type)}. ${registergrunnlag.gyldigFraOgMed}`
-        : hentSivilstatus(registergrunnlag.type);
+        ? `${sivilstandTilTekst[registergrunnlag.type]}. ${registergrunnlag.gyldigFraOgMed}`
+        : sivilstandTilTekst[registergrunnlag.type];
 
     return (
         <>

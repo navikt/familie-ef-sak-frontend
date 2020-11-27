@@ -122,3 +122,16 @@ export enum SivilstandType {
     SKILT_PARTNER = 'SKILT_PARTNER',
     GJENLEVENDE_PARTNER = 'GJENLEVENDE_PARTNER',
 }
+
+export const sivilstandTilTekst: Record<SivilstandType, string> = {
+    UOPPGITT: 'Ikke oppgitt',
+    UGIFT: 'Ugift',
+    GIFT: 'Gift',
+    ENKE_ELLER_ENKEMANN: 'Enke/Enkemann',
+    SKILT: 'Skilt',
+    SKILT_PARTNER: 'Skilt partner',
+    SEPARERT: 'Separert',
+    SEPARERT_PARTNER: 'Separert partner',
+    REGISTRERT_PARTNER: 'Registrert partner',
+    GJENLEVENDE_PARTNER: 'Gjenlevende partner',
+};
