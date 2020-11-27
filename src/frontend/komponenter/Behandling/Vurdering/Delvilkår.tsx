@@ -31,14 +31,10 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
             return delvilkår;
         }
     });
-
     return {
         ...vurdering,
         delvilkårsvurderinger: delvilkårsvurderinger,
-        resultat:
-            oppdatertDelvilkår.resultat === Vilkårsresultat.JA
-                ? Vilkårsresultat.JA
-                : vurdering.resultat,
+        resultat: oppdatertDelvilkår.resultat,
         unntak: undefined,
     };
 };
