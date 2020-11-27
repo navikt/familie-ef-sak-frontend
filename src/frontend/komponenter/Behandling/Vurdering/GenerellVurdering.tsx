@@ -54,15 +54,11 @@ const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) =>
             delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
 
-    // hvis man ikke finner en, så har man ikke besvart på første delvilkåret
+    // Hvis siste delvilkåret NEI på siste dekvilkåret så skal man returnere alle
     if (sisteDelvilkårSomSkalVises === -1) {
         return delvilkårsvurderinger;
     }
-    return delvilkårsvurderinger.slice(
-        0,
-        // hvis siste delvilkåret er besvart kan vi ikke ta index + 1
-        Math.min(sisteDelvilkårSomSkalVises + 1, delvilkårsvurderinger.length)
-    );
+    return delvilkårsvurderinger.slice(0, sisteDelvilkårSomSkalVises + 1);
 };
 
 const GenerellVurdering: FC<{
