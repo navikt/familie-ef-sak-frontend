@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { IInngangsvilkår, IVurdering, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { navLysGra } from '@navikt/familie-header';
 import { Ressurs } from '@navikt/familie-typer';
+import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
@@ -31,10 +31,10 @@ const StyledVurderinger = styled.div`
 interface Props {
     vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IInngangsvilkår;
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
 }
 
-const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurdering }) => {
+const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }) => {
     const vurderinger = inngangsvilkår.vurderinger;
     const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
@@ -52,7 +52,7 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, oppdaterVurderin
                     <VisEllerEndreVurdering
                         key={vurdering.id}
                         vurdering={vurdering}
-                        oppdaterVurdering={oppdaterVurdering}
+                        lagreVurdering={lagreVurdering}
                     />
                 ))}
             </StyledVurderinger>

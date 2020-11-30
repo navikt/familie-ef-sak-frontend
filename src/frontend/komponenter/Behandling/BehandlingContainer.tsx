@@ -1,12 +1,13 @@
 import * as React from 'react';
-import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
-import navFarger from 'nav-frontend-core';
-import styled from 'styled-components';
 import { FC } from 'react';
+import Høyremeny from '../Høyremeny/Høyremeny';
+import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
+import styled from 'styled-components';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
-import { styles } from '../../typer/styles';
 import Fanemeny from '../Fanemeny/Fanemeny';
+import Personopplysninger from './Personopplysninger/Personopplysninger';
+import navFarger from 'nav-frontend-core';
 
 const Container = styled.div`
     display: flex;
@@ -15,8 +16,15 @@ const Container = styled.div`
 
 const VenstreMenyWrapper = styled.div`
     min-width: 10rem;
-    border-right: 2px solid ${styles.farger.navGra40};
+    border-right: 2px solid ${navFarger.navGra40};
     overflow: hidden;
+`;
+
+const HøyreMenyWrapper = styled.div`
+    border-left: 2px solid ${navFarger.navGra40};
+    overflow-x: hidden;
+    max-width: 20rem;
+    overflow-y: scroll;
 `;
 
 const InnholdWrapper = styled.div`
@@ -26,10 +34,6 @@ const InnholdWrapper = styled.div`
 
 const FanemenyWrapper = styled.div`
     border-bottom: ${navFarger.navGra40} solid 2px;
-`;
-
-const StyledSwitch = styled(Switch)`
-    padding: 1rem;
 `;
 
 const BehandlingContainer: FC = () => {
@@ -43,11 +47,18 @@ const BehandlingContainer: FC = () => {
                     <FanemenyWrapper>
                         <Fanemeny />
                     </FanemenyWrapper>
-                    <StyledSwitch>
+                    <Switch>
                         <Redirect
                             exact={true}
                             from="/behandling/:behandlingId/"
                             to="/behandling/:behandlingId/inngangsvilkar"
+                        />
+                        <Route
+                            exact={true}
+                            path="/behandling/:behandlingId/personopplysninger"
+                            render={() => {
+                                return <Personopplysninger behandlingId={behandlingId} />;
+                            }}
                         />
                         <Route
                             exact={true}
@@ -56,11 +67,11 @@ const BehandlingContainer: FC = () => {
                                 return <Inngangsvilkår behandlingId={behandlingId} />;
                             }}
                         />
-                    </StyledSwitch>
+                    </Switch>
                 </InnholdWrapper>
-                {/*<HøyreMenyWrapper>
+                <HøyreMenyWrapper>
                     <Høyremeny behandlingId={behandlingId} />
-                </HøyreMenyWrapper>*/}
+                </HøyreMenyWrapper>
             </Container>
         </>
     );

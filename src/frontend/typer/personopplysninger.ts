@@ -2,10 +2,6 @@
 
 import { kjønnType } from '@navikt/familie-typer';
 
-export interface IPersonopplysningerPersonIdent {
-    personIdent: string;
-}
-
 export interface IPersonopplysninger {
     personIdent: string;
     navn: INavn;
@@ -13,11 +9,30 @@ export interface IPersonopplysninger {
     adressebeskyttelse?: Adressebeskyttelse;
     folkeregisterpersonstatus?: Folkeregisterpersonstatus;
     dødsdato?: string;
+    fødselsdato?: string;
     telefonnummer?: ITelefonnummer;
     statsborgerskap: IStatsborgerskap[];
     sivilstand: ISivilstand[];
     adresse: IAdresse[];
     fullmakt: IFullmakt[];
+    navEnhet: string;
+    barn: IBarn[];
+    innflyttingTilNorge: IInnflyttingTilNorge[];
+    utflyttingFraNorge: IUtflyttingFraNorge[];
+}
+
+export interface IBarn {
+    navn: string;
+    personIdent: string;
+    annenForelder?: IAnnenForelder;
+    adresse: IAdresse[];
+    borHosSøker: boolean;
+    fødselsdato?: string;
+}
+
+export interface IAnnenForelder {
+    personIdent: string;
+    navn: string;
 }
 
 export interface IAdresse {
@@ -59,6 +74,16 @@ export interface ISivilstand {
     navn?: string;
 }
 
+export interface IInnflyttingTilNorge {
+    fraflyttingsland?: string;
+    fraflyttingssted?: string;
+}
+
+export interface IUtflyttingFraNorge {
+    tilflyttingsland?: string;
+    tilflyttingssted?: string;
+}
+
 export enum Adressebeskyttelse {
     STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
     STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
@@ -97,3 +122,16 @@ export enum SivilstandType {
     SKILT_PARTNER = 'SKILT_PARTNER',
     GJENLEVENDE_PARTNER = 'GJENLEVENDE_PARTNER',
 }
+
+export const sivilstandTilTekst: Record<SivilstandType, string> = {
+    UOPPGITT: 'Ikke oppgitt',
+    UGIFT: 'Ugift',
+    GIFT: 'Gift',
+    ENKE_ELLER_ENKEMANN: 'Enke/Enkemann',
+    SKILT: 'Skilt',
+    SKILT_PARTNER: 'Skilt partner',
+    SEPARERT: 'Separert',
+    SEPARERT_PARTNER: 'Separert partner',
+    REGISTRERT_PARTNER: 'Registrert partner',
+    GJENLEVENDE_PARTNER: 'Gjenlevende partner',
+};

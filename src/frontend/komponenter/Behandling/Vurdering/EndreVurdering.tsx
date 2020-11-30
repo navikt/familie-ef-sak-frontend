@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { IVurdering } from '../Inngangsvilkår/vilkår';
-import { Feilmelding } from 'nav-frontend-typografi';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
-import { erGyldigVurdering } from './VurderingUtil';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
+import { Feilmelding } from 'nav-frontend-typografi';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -17,55 +15,43 @@ const StyledEndreVurdering = styled.div`
 interface Props {
     config: IVilkårConfig;
     data: IVurdering;
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
 
-const EndreVurdering: FC<Props> = ({ config, data, oppdaterVurdering, settRedigeringsmodus }) => {
+const EndreVurdering: FC<Props> = ({ config, data, lagreVurdering, settRedigeringsmodus }) => {
+    const [vurdering, settVurdering] = useState<IVurdering>(data);
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
-    const [vurdering, settVurdering] = useState<IVurdering>(data);
+
+    const oppdaterVurdering: () => void = () => {
+        settOppdatererVurdering(true);
+        lagreVurdering(vurdering)
+            .then((ressurs) => {
+                if (ressurs.status === RessursStatus.SUKSESS) {
+                    setFeilmelding(undefined);
+                    settRedigeringsmodus(false);
+                } else {
+                    if (
+                        ressurs.status === RessursStatus.FEILET ||
+                        ressurs.status === RessursStatus.IKKE_TILGANG
+                    ) {
+                        setFeilmelding(ressurs.frontendFeilmelding);
+                    } else {
+                        setFeilmelding(`Ressurs har status ${ressurs.status}`);
+                    }
+                }
+            })
+            .finally(() => settOppdatererVurdering(false));
+    };
     return (
         <StyledEndreVurdering>
-            {config.vurdering({
+            {config.renderVurdering({
                 config,
                 vurdering,
                 settVurdering,
-                lagreKnapp: (visLagreKnapp) =>
-                    (visLagreKnapp && (
-                        <Hovedknapp
-                            onClick={() => {
-                                if (erGyldigVurdering(vurdering)) {
-                                    settOppdatererVurdering(true);
-                                    oppdaterVurdering(vurdering).then((ressurs) => {
-                                        if (ressurs.status === RessursStatus.SUKSESS) {
-                                            settOppdatererVurdering(false);
-                                            setFeilmelding(undefined);
-                                            settRedigeringsmodus(false);
-                                        } else {
-                                            settOppdatererVurdering(false);
-                                            if (
-                                                ressurs.status === RessursStatus.FEILET ||
-                                                ressurs.status === RessursStatus.IKKE_TILGANG
-                                            ) {
-                                                setFeilmelding(ressurs.frontendFeilmelding);
-                                            } else {
-                                                setFeilmelding(
-                                                    `Ressurs har status ${ressurs.status}`
-                                                );
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    setFeilmelding('Du må fylle i alle verdier');
-                                }
-                            }}
-                            disabled={oppdatererVurdering}
-                        >
-                            Lagre
-                        </Hovedknapp>
-                    )) ||
-                    undefined,
+                oppdaterVurdering,
+                lagreknappDisabled: oppdatererVurdering,
             })}
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
         </StyledEndreVurdering>

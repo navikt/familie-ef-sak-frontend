@@ -16,4 +16,5 @@ export interface IOppgaveRequest {
     opprettetTom?: string;
     fristFom?: string;
     fristTom?: string;
+    ident?: string;
 }

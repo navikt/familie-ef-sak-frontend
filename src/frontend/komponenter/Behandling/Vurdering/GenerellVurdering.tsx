@@ -1,63 +1,75 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
-import { IDelvilkår, IVurdering, UnntakType, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IDelvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
 import { VurderingProps } from './VurderingProps';
+import LagreVurderingKnapp from './LagreVurderingKnapp';
 
-// TODO skrive om denne til å være unik for hver type av vurdering? Eller ha en generell og sen en for hver type?
-
-const skalViseLagreKnapp = (
-    vurdering: IVurdering,
-    sisteDelvilkår: IDelvilkår,
-    config: IVilkårConfig
-): boolean => {
-    const besvarteDelvilkår = vurdering.delvilkårsvurderinger.filter(
+const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
+    const { begrunnelse, delvilkårsvurderinger } = vurdering;
+    // Må alltid ha med begrunnelse
+    if (!begrunnelse || begrunnelse.trim().length === 0) {
+        return false;
+    }
+    const besvarteDelvilkår = delvilkårsvurderinger.filter(
         (delvilkår) =>
             delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
     );
-    const sisteBesvarteDelvilkår =
-        besvarteDelvilkår.length > 0 ? besvarteDelvilkår[besvarteDelvilkår.length - 1] : undefined;
-    if (sisteBesvarteDelvilkår?.resultat === Vilkårsresultat.JA) {
-        return true;
+    //Må ha besvart minimum 1 delvilkår
+    if (besvarteDelvilkår.length === 0) {
+        return false;
     }
-    if (
-        sisteDelvilkår === sisteBesvarteDelvilkår &&
-        sisteDelvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
-    ) {
-        if (config.unntak.length === 0) {
-            return true;
-        } else {
-            return !!vurdering.unntak;
-        }
+    const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
+
+    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
+    const harBesvaretPåAlleDelvilkår =
+        delvilkårsvurderinger[delvilkårsvurderinger.length - 1].resultat !==
+        Vilkårsresultat.IKKE_VURDERT;
+
+    if (vurderingErOppfylt) {
+        return true;
+    } else if (harBesvaretPåAlleDelvilkår) {
+        const harUnntak = config.unntak.length !== 0;
+        return harUnntak ? !!vurdering.unntak : true;
     }
     return false;
+};
+
+/**
+ * Denne skal filtrere ut slik att den viser alle frem till første JA eller første IKKE_VURDERT
+ * Denne virker ikke for sivilstand då sivilstand skal vise delvilkår oberoende på tidligere svar?
+ * Hvis du svarer:
+ * * JA -> ikke vis flere delvilkår
+ * * NEI -> vis neste delvilkår
+ * * Må vise første delvilkåret (som kan være IKKE_VURDERT)
+ * @param delvilkårsvurderinger
+ */
+const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) => {
+    const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
+        (delvilkår) =>
+            delvilkår.resultat === Vilkårsresultat.JA ||
+            delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
+    );
+
+    // Hvis siste delvilkåret NEI på siste dekvilkåret så skal man returnere alle
+    if (sisteDelvilkårSomSkalVises === -1) {
+        return delvilkårsvurderinger;
+    }
+    return delvilkårsvurderinger.slice(0, sisteDelvilkårSomSkalVises + 1);
 };
 
 const GenerellVurdering: FC<{
     props: VurderingProps;
 }> = ({ props }) => {
-    const { config, vurdering, settVurdering, lagreKnapp } = props;
+    const { config, vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger;
-    const nesteDelvilkårSomManglerVurdering = delvilkårsvurderinger.find(
-        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
-    );
-    let harPassertSisteDelvilkårSomSkalVises = false;
     const sisteDelvilkår: IDelvilkår = delvilkårsvurderinger[delvilkårsvurderinger.length - 1];
     return (
         <>
-            {delvilkårsvurderinger.map((delvilkår) => {
-                if (harPassertSisteDelvilkårSomSkalVises) {
-                    return null;
-                }
-                if (
-                    nesteDelvilkårSomManglerVurdering?.type === delvilkår.type ||
-                    delvilkår.resultat === Vilkårsresultat.JA
-                ) {
-                    harPassertSisteDelvilkårSomSkalVises = true;
-                }
+            {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
                 return (
                     <Delvilkår
                         key={delvilkår.type}
@@ -75,20 +87,6 @@ const GenerellVurdering: FC<{
                     unntak={config.unntak}
                 />
             )}
-            {vurdering.unntak === UnntakType.IKKE_OPPFYLT && (
-                <Textarea
-                    label="Begrunnelse (hvis aktuelt)" //TODO (hvis aktuell = config)
-                    maxLength={0}
-                    placeholder="Skriv inn tekst"
-                    value={vurdering.begrunnelse || ''}
-                    onChange={(e) => {
-                        settVurdering({
-                            ...vurdering,
-                            begrunnelse: e.target.value,
-                        });
-                    }}
-                />
-            )}
             <Textarea
                 label="Begrunnelse"
                 maxLength={0}
@@ -101,7 +99,12 @@ const GenerellVurdering: FC<{
                     });
                 }}
             />
-            {lagreKnapp(skalViseLagreKnapp(vurdering, sisteDelvilkår, config))}
+            {skalViseLagreKnapp(vurdering, config) && (
+                <LagreVurderingKnapp
+                    lagreVurdering={oppdaterVurdering}
+                    disabled={lagreknappDisabled}
+                />
+            )}
         </>
     );
 };
