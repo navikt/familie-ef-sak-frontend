@@ -10,11 +10,6 @@ interface Props {
     søknad: ISivilstandSøknadsgrunnlag;
 }
 
-/**
- * TODO Eks om sivilstandtype = gift men att man har erUformeltGift... Ska vi inte vurdere delvilkåret då?
- * Før just nu får man delvilkåret men erUformeltGift visas inte om man inte har riktig sivilstandtype
- */
-
 const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
     switch (sivilstandtype) {
         case SivilstandType.UGIFT:
