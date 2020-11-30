@@ -106,7 +106,12 @@
         "tilflyttingsstedIUtlandet":null,
         "tilflyttingssted" : "Klesskapet"
       }
-    ]
+    ],
+    "oppholdstillatelse" : [ {
+      "oppholdstillatelse" : "PERMANENT",
+      "fraDato" : "2020-01-01",
+      "tilDato" : null
+    } ]
   },
   "status":"SUKSESS",
   "melding":"Innhenting av data var vellykket",
