@@ -45,13 +45,10 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
-const filterVersjon = 'v1';
-const filterVersjonKey = 'filterVersjon';
 const oppgaveRequestKey = 'oppgaveFiltreringRequest';
 
 export const persisterRequestTilLocalStorage = (request: IOppgaveRequest) => {
     try {
-        localStorage.setItem(filterVersjonKey, filterVersjon);
         localStorage.setItem(oppgaveRequestKey, JSON.stringify(request));
     } finally {
         /* Gjør ingenting */
@@ -65,7 +62,6 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
         : ({} as IOppgaveRequest);
 
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
-    const [requestFraLocalStorage, settRequestFraLocalStorage] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
@@ -88,19 +84,14 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
 
     useEffect(() => {
         try {
-            if (localStorage.getItem(filterVersjonKey) !== filterVersjon) {
-                localStorage.setItem(filterVersjonKey, filterVersjon);
-                localStorage.setItem(oppgaveRequestKey, JSON.stringify({}));
-            } else {
-                const request = localStorage.getItem(oppgaveRequestKey);
-                const parsed = request ? JSON.parse(request) : {};
-                hentOppgaver(parsed);
-                settOppgaveRequest(parsed);
-            }
+            const request = localStorage.getItem(oppgaveRequestKey);
+            const parsed = request ? JSON.parse(request) : {};
+            hentOppgaver(parsed);
+            //settOppgaveRequest(parsed);
         } catch {
             /* Gjør ingenting */
         }
-    }, []);
+    }, []); // TODO legg å hentOppgaver og oppgaveRequest i dependency-array
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined

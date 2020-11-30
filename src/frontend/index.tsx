@@ -24,6 +24,12 @@ if (process.env.NODE_ENV !== 'production') {
     axe(React, ReactDOM, 1000);
 }
 
+if (window.localStorage.getItem('oppgaveRequestVersjon') !== 'v1') {
+    // Todo: wrap in try catch?
+    localStorage.setItem('oppgaveRequestVersjon', 'v1');
+    localStorage.removeItem('oppgaveRequest');
+}
+
 const rootElement = document.getElementById('app');
 const renderApp = (Component: React.ComponentType): void => {
     ReactDOM.render(<Component />, rootElement);
