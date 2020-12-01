@@ -1,42 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
-import { IDelvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IDelvilkår, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import Delvilkår from './Delvilkår';
 import Unntak from './Unntak';
 import { Textarea } from 'nav-frontend-skjema';
 import { VurderingProps } from './VurderingProps';
 import LagreVurderingKnapp from './LagreVurderingKnapp';
-
-const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
-    const { begrunnelse, delvilkårsvurderinger } = vurdering;
-    // Må alltid ha med begrunnelse
-    if (!begrunnelse || begrunnelse.trim().length === 0) {
-        return false;
-    }
-    const besvarteDelvilkår = delvilkårsvurderinger.filter(
-        (delvilkår) =>
-            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
-    );
-    //Må ha besvart minimum 1 delvilkår
-    if (besvarteDelvilkår.length === 0) {
-        return false;
-    }
-    const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
-
-    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
-    const harBesvaretPåAlleDelvilkår = delvilkårsvurderinger.every(
-        (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
-    );
-
-    if (vurderingErOppfylt) {
-        return true;
-    } else if (harBesvaretPåAlleDelvilkår) {
-        const harUnntak = config.unntak.length !== 0;
-        return harUnntak ? !!vurdering.unntak : true;
-    }
-    return false;
-};
+import { skalViseLagreKnapp } from './VurderingUtil';
 
 /**
  * Denne skal filtrere ut slik att den viser alle frem till første JA eller første IKKE_VURDERT

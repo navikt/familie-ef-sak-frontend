@@ -2,43 +2,12 @@ import * as React from 'react';
 import { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
-import { DelvilkårType, IDelvilkår, IVurdering, Vilkårsresultat } from '../vilkår';
+import { DelvilkårType, IDelvilkår, Vilkårsresultat } from '../vilkår';
 import { ISivilstandInngangsvilkår } from './typer';
 import { SivilstandType } from '../../../../typer/personopplysninger';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
-import { IVilkårConfig } from '../config/VurderingConfig';
-
-const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
-    const { begrunnelse, delvilkårsvurderinger } = vurdering;
-
-    if (!begrunnelse || begrunnelse.trim().length === 0) {
-        return false;
-    }
-
-    const besvarteDelvilkår = delvilkårsvurderinger.filter(
-        (delvilkår) =>
-            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
-    );
-    if (besvarteDelvilkår.length === 0) {
-        return false;
-    }
-
-    const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
-
-    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
-    const harBesvaretPåAlleDelvilkår = delvilkårsvurderinger.every(
-        (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
-    );
-
-    if (vurderingErOppfylt) {
-        return true;
-    } else if (harBesvaretPåAlleDelvilkår) {
-        const harUnntak = config.unntak.length !== 0;
-        return harUnntak ? !!vurdering.unntak : true;
-    }
-    return false;
-};
+import { skalViseLagreKnapp } from '../../Vurdering/VurderingUtil';
 
 const filtrerBortUaktuelleDelvilkår = (
     delvilkårsvurderinger: IDelvilkår[],

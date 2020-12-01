@@ -1,5 +1,5 @@
 import { IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
+import { IVilkårConfig, VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
@@ -16,3 +16,33 @@ export const filtrerVurderinger = (
         }
         return config.vilkårGruppe === vilkårGruppe;
     });
+
+export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
+    const { begrunnelse, delvilkårsvurderinger } = vurdering;
+    // Må alltid ha med begrunnelse
+    if (!begrunnelse || begrunnelse.trim().length === 0) {
+        return false;
+    }
+    const besvarteDelvilkår = delvilkårsvurderinger.filter(
+        (delvilkår) =>
+            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
+    );
+    //Må ha besvart minimum 1 delvilkår
+    if (besvarteDelvilkår.length === 0) {
+        return false;
+    }
+    const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
+
+    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
+    const harBesvaretPåAlleDelvilkår = delvilkårsvurderinger.every(
+        (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
+    );
+
+    if (vurderingErOppfylt) {
+        return true;
+    } else if (harBesvaretPåAlleDelvilkår) {
+        const harUnntak = config.unntak.length !== 0;
+        return harUnntak ? !!vurdering.unntak : true;
+    }
+    return false;
+};
