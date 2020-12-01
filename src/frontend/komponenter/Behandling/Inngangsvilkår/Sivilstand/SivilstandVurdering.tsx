@@ -2,18 +2,44 @@ import * as React from 'react';
 import { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
-import { DelvilkårType, IDelvilkår } from '../vilkår';
+import { DelvilkårType, IDelvilkår, IVurdering, Vilkårsresultat } from '../vilkår';
 import { ISivilstandInngangsvilkår } from './typer';
 import { SivilstandType } from '../../../../typer/personopplysninger';
 import Delvilkår from '../../Vurdering/Delvilkår';
+import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
+import { IVilkårConfig } from '../config/VurderingConfig';
 
-/**
- * ANTAGELSE:
- * - Har delvilkår som skal vurderes
- *
- * Vis delvilkår ut ifra hvilken sivilstatus og om de har svart ja
- * på oppfølgingsspørsmålene som kommer med sivilstatusen.
- */
+const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
+    const { begrunnelse, delvilkårsvurderinger } = vurdering;
+
+    if (!begrunnelse || begrunnelse.trim().length === 0) {
+        return false;
+    }
+
+    const besvarteDelvilkår = delvilkårsvurderinger.filter(
+        (delvilkår) =>
+            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
+    );
+    if (besvarteDelvilkår.length === 0) {
+        return false;
+    }
+
+    const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
+
+    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
+    const harBesvaretPåAlleDelvilkår = delvilkårsvurderinger.every(
+        (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
+    );
+
+    if (vurderingErOppfylt) {
+        return true;
+    } else if (harBesvaretPåAlleDelvilkår) {
+        const harUnntak = config.unntak.length !== 0;
+        return harUnntak ? !!vurdering.unntak : true;
+    }
+    return false;
+};
+
 const filtrerBortUaktuelleDelvilkår = (
     delvilkårsvurderinger: IDelvilkår[],
     sivilstandInngangsvilkår: ISivilstandInngangsvilkår
@@ -42,13 +68,17 @@ const filtrerBortUaktuelleDelvilkår = (
     });
 };
 
-// const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[], sivilstandInngangsvilkår: ISivilstandInngangsvilkår) => {
-//     const {søknadsgrunnlag, registergrunnlag} = sivilstandInngangsvilkår;
-//
-//
-//     const delvilkårSomSkalVises = delvilkårsvurderinger;
-//     return delvilkårSomSkalVises;
-// }
+const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
+    const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
+        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
+    );
+
+    // Hvis siste delvilkåret NEI på siste dekvilkåret så skal man returnere alle
+    if (sisteDelvilkårSomSkalVises === -1) {
+        return delvilkårsvurderinger;
+    }
+    return delvilkårsvurderinger.slice(0, sisteDelvilkårSomSkalVises + 1);
+};
 
 const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     const {
@@ -66,36 +96,36 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
 
     return (
         <>
-            {delvilkårsvurderinger.map((delvilkår) => {
+            {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
                 return (
-                    <Delvilkår
-                        key={delvilkår.type}
-                        delvilkår={delvilkår}
-                        vurdering={vurdering}
-                        settVurdering={settVurdering}
-                    />
+                    <>
+                        <Delvilkår
+                            key={delvilkår.type}
+                            delvilkår={delvilkår}
+                            vurdering={vurdering}
+                            settVurdering={settVurdering}
+                        />
+                        {delvilkår.type === DelvilkårType.KRAV_SIVILSTAND && (
+                            <Begrunnelse
+                                value={vurdering.begrunnelse || ''}
+                                onChange={(e) => {
+                                    settVurdering({
+                                        ...vurdering,
+                                        begrunnelse: e.target.value,
+                                    });
+                                }}
+                            />
+                        )}
+                    </>
                 );
             })}
-            {/**
-             Begrunnelse skal bare dukke opp dersom det ikke er noen delvilkår å svare på,
-             eller hvis saksbehandler har svart NEI på "Er delvilkår oppfylt?"
-             KAN HENDE VI FÅR TIL NOE I BACKEND, VENT MED DENNE
-             */}
-            <Begrunnelse
-                value={vurdering.begrunnelse || ''}
-                onChange={(e) => {
-                    settVurdering({
-                        ...vurdering,
-                        begrunnelse: e.target.value,
-                    });
-                }}
-            />
-            {/**
-             Valider ut ifra status og svar, og vis lagre knappen kun
-             hvis alt er validert riktig
 
-             VIS LAGRE KNAPP
-             */}
+            {skalViseLagreKnapp(vurdering, config) && (
+                <LagreVurderingKnapp
+                    lagreVurdering={oppdaterVurdering}
+                    disabled={lagreknappDisabled}
+                />
+            )}
         </>
     );
 };
