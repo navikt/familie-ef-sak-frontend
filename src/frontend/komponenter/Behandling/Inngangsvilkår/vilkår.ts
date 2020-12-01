@@ -1,8 +1,14 @@
-import { IStatsborgerskap } from '../../../typer/personopplysninger';
+import { IMedlemskap } from './Medlemskap/typer';
+import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 
 export interface IInngangsvilkår {
-    medlemskap: IMedlemskap;
     vurderinger: IVurdering[];
+    grunnlag: IInngangsvilkårGrunnlag;
+}
+
+export interface IInngangsvilkårGrunnlag {
+    medlemskap: IMedlemskap;
+    sivilstand: ISivilstandInngangsvilkår;
 }
 
 export interface IVurdering {
@@ -22,43 +28,6 @@ export interface IDelvilkår {
     resultat: Vilkårsresultat;
 }
 
-export interface IMedlemskap {
-    søknadsgrunnlag: IMedlemskapSøknadsgrunnlag;
-    registergrunnlag: IMedlemskapRegistergrunnlag;
-}
-
-export interface IMedlemskapSøknadsgrunnlag {
-    bosattNorgeSisteÅrene: boolean;
-    oppholderDuDegINorge: boolean;
-    utenlandsopphold: IUtenlandsopphold[];
-}
-
-export interface IMedlemskapRegistergrunnlag {
-    nåværendeStatsborgerskap: string[];
-    oppholdstatus: IOppholdstatus[];
-    statsborgerskap: IStatsborgerskap[];
-}
-
-export interface IUtenlandsopphold {
-    fraDato: string;
-    tilDato: string;
-    årsak: string;
-}
-
-export interface IOppholdstatus {
-    fraDato?: string;
-    tilDato?: string;
-    oppholdstillatelse: Oppholdstatus;
-}
-
-export type Oppholdstatus = 'MIDLERTIDIG' | 'PERMANENT' | 'UKJENT';
-
-export const oppholdsstatusTypeTilTekst: Record<Oppholdstatus, string> = {
-    MIDLERTIDIG: 'Midlertidig',
-    PERMANENT: 'Permanent',
-    UKJENT: 'Ukjent',
-};
-
 export enum Vilkårsresultat {
     JA = 'JA',
     NEI = 'NEI',
@@ -71,33 +40,61 @@ export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
     IKKE_VURDERT: 'Ikke vurdert',
 };
 
-export type VilkårType = 'FORUTGÅENDE_MEDLEMSKAP' | 'LOVLIG_OPPHOLD';
+export enum Vilkår {
+    FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
+    LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
+    SIVILSTAND = 'SIVILSTAND',
+}
+
+export type VilkårType = Vilkår.FORUTGÅENDE_MEDLEMSKAP | Vilkår.LOVLIG_OPPHOLD | Vilkår.SIVILSTAND;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
     LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
+    SIVILSTAND: 'Vilkår om sivilstand',
 };
+
+// ------- DELVILKÅR
 
 export enum DelvilkårType {
     TRE_ÅRS_MEDLEMSKAP = 'TRE_ÅRS_MEDLEMSKAP',
     DOKUMENTERT_FLYKTNINGSTATUS = 'DOKUMENTERT_FLYKTNINGSTATUS',
     BOR_OG_OPPHOLDER_SEG_I_NORGE = 'BOR_OG_OPPHOLDER_SEG_I_NORGE',
+    DOKUMENTERT_EKTESKAP = 'DOKUMENTERT_EKTESKAP',
+    DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE = 'DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE',
+    KRAV_SIVILSTAND = 'KRAV_SIVILSTAND',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     TRE_ÅRS_MEDLEMSKAP: 'Har bruker vært medlem i folketrygden i de siste 3 årene?',
     DOKUMENTERT_FLYKTNINGSTATUS: 'Er flyktningstatus dokumentert?',
     BOR_OG_OPPHOLDER_SEG_I_NORGE: 'Bor og oppholder bruker og barna seg i Norge?',
+    DOKUMENTERT_EKTESKAP: 'Foreligger det dokumentasjon på ekteskap?',
+    DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:
+        'Foreligger det dokumentasjon på separasjon eller skilsmisse?',
+    KRAV_SIVILSTAND: 'Er krav for sivilstand oppfylt?',
 };
 
+// ------ UNNTAK
+
 export enum UnntakType {
-    HAR_IKKE_UNNTAK = 'HAR_IKKE_UNNTAK',
+    IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     ARBEID_NORSK_ARBEIDSGIVER = 'ARBEID_NORSK_ARBEIDSGIVER',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER = 'UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER',
 }
 
 export const unntakTypeTilTekst: Record<UnntakType, string> = {
-    HAR_IKKE_UNNTAK: 'Har ikke unntak',
+    IKKE_OPPFYLT: 'Nei',
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
 };
+
+// ------ VILKÅRGRUPPE
+/**
+ * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
+ * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk
+ */
+export enum VilkårGruppe {
+    MEDLEMSKAP = 'MEDLEMSKAP',
+    SIVILSTAND = 'SIVILSTAND',
+}

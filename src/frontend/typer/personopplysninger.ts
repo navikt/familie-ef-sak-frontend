@@ -69,7 +69,7 @@ export interface IStatsborgerskap {
 }
 
 export interface ISivilstand {
-    type: Sivilstand;
+    type: SivilstandType;
     gyldigFraOgMed?: string;
     relatertVedSivilstand?: string;
     navn?: string;
@@ -117,7 +117,7 @@ export enum Folkeregisterpersonstatus {
     UKJENT = 'UKJENT',
 }
 
-export enum Sivilstand {
+export enum SivilstandType {
     UOPPGITT = 'UOPPGITT',
     UGIFT = 'UGIFT',
     GIFT = 'GIFT',
@@ -130,8 +130,22 @@ export enum Sivilstand {
     GJENLEVENDE_PARTNER = 'GJENLEVENDE_PARTNER',
 }
 
+export const sivilstandTilTekst: Record<SivilstandType, string> = {
+    UOPPGITT: 'Ikke oppgitt',
+    UGIFT: 'Ugift',
+    GIFT: 'Gift',
+    ENKE_ELLER_ENKEMANN: 'Enke/Enkemann',
+    SKILT: 'Skilt',
+    SKILT_PARTNER: 'Skilt partner',
+    SEPARERT: 'Separert',
+    SEPARERT_PARTNER: 'Separert partner',
+    REGISTRERT_PARTNER: 'Registrert partner',
+    GJENLEVENDE_PARTNER: 'Gjenlevende partner',
+};
+
 export enum OppholdType {
     MIDLERTIDIG = 'MIDLERTIDIG',
     PERMANENT = 'PERMANENT',
     UKJENT = 'UKJENT',
 }
+

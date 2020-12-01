@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { FC, ReactChild } from 'react';
-import { VilkårDel } from './VurderingConfig';
-import { IVurdering } from '../Inngangsvilkår/vilkår';
+import { FC } from 'react';
+import { IInngangsvilkår, IVurdering, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { navLysGra } from '@navikt/familie-header';
 import { Ressurs } from '@navikt/familie-typer';
+import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
@@ -29,23 +29,30 @@ const StyledVurderinger = styled.div`
 `;
 
 interface Props {
-    vilkårDel: VilkårDel;
-    vurderinger: IVurdering[];
-    oppdaterVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
-    visning: (erOppfylt: boolean) => ReactChild;
+    vilkårGruppe: VilkårGruppe;
+    inngangsvilkår: IInngangsvilkår;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
 }
 
-const Vurdering: FC<Props> = ({ vilkårDel, vurderinger, oppdaterVurdering, visning }) => {
-    const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårDel);
+const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }) => {
+    const vurderinger = inngangsvilkår.vurderinger;
+    const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
+
+    const config = VilkårGruppeConfig[vilkårGruppe];
+    if (!config) {
+        return <div>Savner config for {vilkårGruppe}</div>;
+    }
+
     return (
         <StyledVilkårOgVurdering>
-            <StyledVisning>{visning(erOppfylte)}</StyledVisning>
+            <StyledVisning>{config.visning(erOppfylte, inngangsvilkår.grunnlag)}</StyledVisning>
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
+                        key={vurdering.id}
                         vurdering={vurdering}
-                        oppdaterVurdering={oppdaterVurdering}
+                        lagreVurdering={lagreVurdering}
                     />
                 ))}
             </StyledVurderinger>

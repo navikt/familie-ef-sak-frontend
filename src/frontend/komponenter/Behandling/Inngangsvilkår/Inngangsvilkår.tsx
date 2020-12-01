@@ -1,11 +1,9 @@
 import React, { FC, useState } from 'react';
-import { IInngangsvilkår, IVurdering } from './vilkår';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { IInngangsvilkår, IVurdering, VilkårGruppe } from './vilkår';
+import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
-import { VilkårDel } from '../Vurdering/VurderingConfig';
-import MedlemskapVisning from './Medlemskap/MedlemskapVisning';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -18,6 +16,19 @@ const StyledInngangsvilkår = styled.div`
 interface Props {
     behandlingId: string;
 }
+
+const oppdaterInngangsvilkårMedVurdering = (
+    inngangsvilkår: RessursSuksess<IInngangsvilkår>,
+    vurdering: IVurdering
+) => ({
+    ...inngangsvilkår,
+    data: {
+        ...inngangsvilkår.data,
+        vurderinger: inngangsvilkår.data.vurderinger.map((tidligereVurdering) =>
+            tidligereVurdering.id === vurdering.id ? vurdering : tidligereVurdering
+        ),
+    },
+});
 
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const [inngangsvilkår, settInngangsvilkår] = useState<Ressurs<IInngangsvilkår>>(
@@ -34,35 +45,19 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         });
     };
 
-    const oppdaterVurdering = (vurdering: IVurdering) => {
+    const lagreVurdering = (vurdering: IVurdering): Promise<Ressurs<string>> => {
         return axiosRequest<string, IVurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/inngangsvilkar`,
             data: vurdering,
         }).then((respons: Ressurs<string>) => {
-            if (
-                inngangsvilkår.status === RessursStatus.SUKSESS &&
-                respons.status === RessursStatus.SUKSESS
-            ) {
-                settInngangsvilkår((prevInngangsvilkår) => {
-                    if (prevInngangsvilkår.status === RessursStatus.SUKSESS) {
-                        return {
-                            ...prevInngangsvilkår,
-                            data: {
-                                ...prevInngangsvilkår.data,
-                                vurderinger: prevInngangsvilkår.data.vurderinger.map(
-                                    (tidligereVurdering) => {
-                                        return tidligereVurdering.id === vurdering.id
-                                            ? vurdering
-                                            : tidligereVurdering;
-                                    }
-                                ),
-                            },
-                        };
-                    } else {
-                        return prevInngangsvilkår;
-                    }
-                });
+            if (respons.status === RessursStatus.SUKSESS) {
+                settInngangsvilkår((prevInngangsvilkår: Ressurs<IInngangsvilkår>) =>
+                    oppdaterInngangsvilkårMedVurdering(
+                        prevInngangsvilkår as RessursSuksess<IInngangsvilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
+                        vurdering
+                    )
+                );
             }
             return respons;
         });
@@ -79,28 +74,14 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <>
             {inngangsvilkår.status === RessursStatus.SUKSESS && (
                 <StyledInngangsvilkår>
-                    <Vurdering
-                        vilkårDel={VilkårDel.MEDLEMSKAP}
-                        vurderinger={inngangsvilkår.data.vurderinger}
-                        oppdaterVurdering={oppdaterVurdering}
-                        visning={(erOppfylt: boolean) => (
-                            <MedlemskapVisning
-                                medlemskap={inngangsvilkår.data.medlemskap}
-                                erOppfylt={erOppfylt}
-                            />
-                        )}
-                    />
-                    <Vurdering
-                        vilkårDel={VilkårDel.MEDLEMSKAP}
-                        vurderinger={inngangsvilkår.data.vurderinger}
-                        oppdaterVurdering={oppdaterVurdering}
-                        visning={(erOppfylt: boolean) => (
-                            <MedlemskapVisning
-                                medlemskap={inngangsvilkår.data.medlemskap}
-                                erOppfylt={erOppfylt}
-                            />
-                        )}
-                    />
+                    {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
+                        <Vurdering
+                            key={vilkårGruppe}
+                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                            inngangsvilkår={inngangsvilkår.data}
+                            lagreVurdering={lagreVurdering}
+                        />
+                    ))}
                 </StyledInngangsvilkår>
             )}
         </>

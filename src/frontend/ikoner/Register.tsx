@@ -20,9 +20,9 @@ const Register: React.FunctionComponent<IRegister> = ({ className, heigth, width
             <title id={'register'}>Register ikon</title>
             <g
                 stroke="#000"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-miterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeMiterlimit="10"
                 fill="none"
             >
                 <ellipse cx="10" cy="4.5" rx="9.5" ry="4" />

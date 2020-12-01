@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Fanemeny from '../Fanemeny/Fanemeny';
+import { FC } from 'react';
 import Høyremeny from '../Høyremeny/Høyremeny';
 import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
 import styled from 'styled-components';
-import { FC } from 'react';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
+import Fanemeny from '../Fanemeny/Fanemeny';
 import Personopplysninger from './Personopplysninger/Personopplysninger';
 import navFarger from 'nav-frontend-core';
 
@@ -36,10 +36,6 @@ const FanemenyWrapper = styled.div`
     border-bottom: ${navFarger.navGra40} solid 2px;
 `;
 
-const StyledSwitch = styled(Switch)`
-    padding: 1rem;
-`;
-
 const BehandlingContainer: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
 
@@ -51,7 +47,7 @@ const BehandlingContainer: FC = () => {
                     <FanemenyWrapper>
                         <Fanemeny />
                     </FanemenyWrapper>
-                    <StyledSwitch>
+                    <Switch>
                         <Redirect
                             exact={true}
                             from="/behandling/:behandlingId/"
@@ -71,11 +67,8 @@ const BehandlingContainer: FC = () => {
                                 return <Inngangsvilkår behandlingId={behandlingId} />;
                             }}
                         />
-                    </StyledSwitch>
+                    </Switch>
                 </InnholdWrapper>
-                <HøyreMenyWrapper>
-                    <Høyremeny behandlingId={behandlingId} />
-                </HøyreMenyWrapper>
             </Container>
         </>
     );
