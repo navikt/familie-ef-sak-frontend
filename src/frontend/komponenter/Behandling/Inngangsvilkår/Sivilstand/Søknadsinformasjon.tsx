@@ -18,11 +18,13 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Gift i utlandet</Normaltekst>
-                    {søknad.erUformeltGift && <BooleanTekst value={søknad.erUformeltGift} />}
+                    {søknad.erUformeltGift !== undefined && (
+                        <BooleanTekst value={søknad.erUformeltGift} />
+                    )}
 
                     <Søknadsgrunnlag />
                     <Normaltekst>Skilt eller separert i utlandet</Normaltekst>
-                    {søknad.erUformeltSeparertEllerSkilt && (
+                    {søknad.erUformeltSeparertEllerSkilt !== undefined && (
                         <BooleanTekst value={søknad.erUformeltSeparertEllerSkilt} />
                     )}
                 </>

@@ -51,6 +51,7 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
                         key={vurdering.id}
+                        inngangsvilkår={inngangsvilkår}
                         vurdering={vurdering}
                         lagreVurdering={lagreVurdering}
                     />

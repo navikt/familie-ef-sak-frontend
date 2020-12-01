@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVurdering } from '../Inngangsvilkår/vilkår';
+import { IInngangsvilkår, IVurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
-import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { Feilmelding } from 'nav-frontend-typografi';
+import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -15,11 +15,18 @@ const StyledEndreVurdering = styled.div`
 interface Props {
     config: IVilkårConfig;
     data: IVurdering;
+    inngangsvilkår: IInngangsvilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
 }
 
-const EndreVurdering: FC<Props> = ({ config, data, lagreVurdering, settRedigeringsmodus }) => {
+const EndreVurdering: FC<Props> = ({
+    config,
+    data,
+    lagreVurdering,
+    settRedigeringsmodus,
+    inngangsvilkår,
+}) => {
     const [vurdering, settVurdering] = useState<IVurdering>(data);
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
@@ -51,6 +58,7 @@ const EndreVurdering: FC<Props> = ({ config, data, lagreVurdering, settRedigerin
                 vurdering,
                 settVurdering,
                 oppdaterVurdering,
+                inngangsvilkår,
                 lagreknappDisabled: oppdatererVurdering,
             })}
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}

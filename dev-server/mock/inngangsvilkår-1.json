@@ -126,13 +126,13 @@
           "samlivsbruddsdato": "2014-10-03",
           "endringSamværsordningDato": "2013-04-17",
           "fraflytningsdato": "2014-10-04",
-          "erUformeltGift": true,
-          "erUformeltSeparertEllerSkilt": true,
+          "erUformeltGift": false,
+          "erUformeltSeparertEllerSkilt": false,
           "datoSøktSeparasjon": "2015-12-23",
           "søktOmSkilsmisseSeparasjon": true
         },
         "registergrunnlag": {
-          "type": "SKILT",
+          "type": "UGIFT",
           "gyldigFraOgMed": "2020-01-01"
         }
       }
