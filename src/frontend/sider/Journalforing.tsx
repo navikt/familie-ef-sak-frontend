@@ -20,7 +20,11 @@ import { useHentJournalpost } from '../hooks/useHentJournalpost';
 import { useHentDokument } from '../hooks/useHentDokument';
 import { useHentFagsak } from '../hooks/useHentFagsak';
 import { useApp } from '../context/AppContext';
-import { persisterRequestTilLocalStorage } from '../komponenter/Oppgavebenk/OppgaveFiltrering';
+import {
+    hentFraLocalStorage,
+    lagreTilLocalStorage,
+    oppgaveRequestKey,
+} from '../komponenter/Oppgavebenk/oppgavefilterStorage';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -73,20 +77,16 @@ export const Journalforing: React.FC = () => {
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
-            try {
-                const localStorageRequest = localStorage.getItem('oppgaveFiltreringRequest');
-                const parsedRequest = localStorageRequest ? JSON.parse(localStorageRequest) : {};
+            const lagredeOppgaveFiltreringer = hentFraLocalStorage(oppgaveRequestKey, {});
 
-                persisterRequestTilLocalStorage({
-                    ...parsedRequest,
-                    ident:
-                        journalResponse.status === RessursStatus.SUKSESS
-                            ? journalResponse.data.personIdent
-                            : undefined,
-                });
-            } finally {
-                history.push('/oppgavebenk');
-            }
+            lagreTilLocalStorage(oppgaveRequestKey, {
+                ...lagredeOppgaveFiltreringer,
+                ident:
+                    journalResponse.status === RessursStatus.SUKSESS
+                        ? journalResponse.data.personIdent
+                        : undefined,
+            });
+            history.push('/oppgavebenk');
         }
     }, [journalpostState.innsending]);
 

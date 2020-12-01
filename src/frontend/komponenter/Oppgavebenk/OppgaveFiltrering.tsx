@@ -12,6 +12,11 @@ import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../utils/utils';
 import { IOppgaveRequest } from './oppgaverequest';
 import { OrNothing } from '../../hooks/felles/useSorteringState';
+import {
+    hentFraLocalStorage,
+    lagreTilLocalStorage,
+    oppgaveRequestKey,
+} from './oppgavefilterStorage';
 
 export const FlexDiv = styled.div`
     display: flex;
@@ -45,23 +50,13 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
-const oppgaveRequestKey = 'oppgaveFiltreringRequest';
-
-export const persisterRequestTilLocalStorage = (request: IOppgaveRequest) => {
-    try {
-        localStorage.setItem(oppgaveRequestKey, JSON.stringify(request));
-    } finally {
-        /* Gjør ingenting */
-    }
-};
-
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const { innloggetSaksbehandler } = useApp();
-    const initOppgaveRequest = innloggetSaksbehandler
-        ? { tilordnetRessurs: innloggetSaksbehandler.navIdent }
-        : ({} as IOppgaveRequest);
+    const tomOppgaveRequest = {};
 
-    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
+    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>(
+        hentFraLocalStorage(oppgaveRequestKey, tomOppgaveRequest)
+    );
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
@@ -83,15 +78,8 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
 
     useEffect(() => {
-        try {
-            const request = localStorage.getItem(oppgaveRequestKey);
-            const parsed = request ? JSON.parse(request) : {};
-            hentOppgaver(parsed);
-            //settOppgaveRequest(parsed);
-        } catch {
-            /* Gjør ingenting */
-        }
-    }, []); // TODO legg å hentOppgaver og oppgaveRequest i dependency-array
+        hentOppgaver(oppgaveRequest);
+    }, [hentOppgaver]); // TODO legg å hentOppgaver og oppgaveRequest i dependency-array
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
@@ -190,7 +178,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 </Select>
 
                 <Input
-                    defaultValue={oppgaveRequest.ident}
+                    value={oppgaveRequest.ident || ''}
                     label="Personident"
                     inputMode="numeric"
                     pattern="[0-9]*"
@@ -207,7 +195,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         if (Object.values(periodeFeil).some((val?: string) => val)) {
                             return;
                         }
-                        persisterRequestTilLocalStorage(oppgaveRequest);
+                        lagreTilLocalStorage(oppgaveRequestKey, oppgaveRequest);
                         hentOppgaver(oppgaveRequest);
                     }}
                 >
@@ -216,9 +204,9 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 <Knapp
                     className="flex-item"
                     onClick={() => {
-                        settOppgaveRequest(initOppgaveRequest);
-                        persisterRequestTilLocalStorage({});
-                        hentOppgaver(initOppgaveRequest);
+                        lagreTilLocalStorage(oppgaveRequestKey, tomOppgaveRequest);
+                        settOppgaveRequest(tomOppgaveRequest);
+                        hentOppgaver(tomOppgaveRequest);
                     }}
                 >
                     Tilbakestill filtrering

@@ -6,6 +6,7 @@ import { hot } from 'react-hot-loader';
 
 import App from './komponenter/App';
 import './index.less';
+import { oppgaveRequestKey } from './komponenter/Oppgavebenk/oppgavefilterStorage';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');
@@ -24,12 +25,19 @@ if (process.env.NODE_ENV !== 'production') {
     axe(React, ReactDOM, 1000);
 }
 
-if (window.localStorage.getItem('oppgaveRequestVersjon') !== 'v1') {
-    // Todo: wrap in try catch?
-    localStorage.setItem('oppgaveRequestVersjon', 'v1');
-    localStorage.removeItem('oppgaveRequest');
-}
+// Oppdater denne ved endringer som krever å nullstille localStorage
+const nullstillLocalStorage = () => {
+    try {
+        if (window.localStorage.getItem('oppgaveRequestVersjon') !== 'v1') {
+            localStorage.setItem('oppgaveRequestVersjon', 'v1');
+            localStorage.removeItem(oppgaveRequestKey);
+        }
+    } finally {
+        // Never mind
+    }
+};
 
+nullstillLocalStorage();
 const rootElement = document.getElementById('app');
 const renderApp = (Component: React.ComponentType): void => {
     ReactDOM.render(<Component />, rootElement);
