@@ -79,7 +79,6 @@ const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[]; dobbelTabell?:
             <KolonneTitler titler={['Utvandret til', '', '', '']} />
             <tbody>
                 {utvandringer.map((utflytting, indeks) => {
-                    console.log(utflytting.tilflyttingssted);
                     return (
                         <tr key={indeks}>
                             <BredTd>
