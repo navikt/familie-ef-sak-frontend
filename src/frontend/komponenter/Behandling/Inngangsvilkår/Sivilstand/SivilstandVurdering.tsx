@@ -28,9 +28,19 @@ const filtrerBortUaktuelleDelvilkår = (
                 );
             case DelvilkårType.KRAV_SIVILSTAND:
                 return (
-                    [SivilstandType.UGIFT].includes(registergrunnlag.type) &&
+                    [SivilstandType.UGIFT, SivilstandType.UOPPGITT].includes(
+                        registergrunnlag.type
+                    ) &&
                     (søknadsgrunnlag.erUformeltSeparertEllerSkilt || søknadsgrunnlag.erUformeltGift)
                 );
+
+            case DelvilkårType.SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON:
+                return (
+                    [SivilstandType.GIFT, SivilstandType.REGISTRERT_PARTNER].includes(
+                        registergrunnlag.type
+                    ) && søknadsgrunnlag.søktOmSkilsmisseSeparasjon
+                );
+
             default:
                 return false;
         }

@@ -63,6 +63,7 @@ export enum DelvilkårType {
     DOKUMENTERT_EKTESKAP = 'DOKUMENTERT_EKTESKAP',
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE = 'DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE',
     KRAV_SIVILSTAND = 'KRAV_SIVILSTAND',
+    SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON = 'SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -73,6 +74,7 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:
         'Foreligger det dokumentasjon på separasjon eller skilsmisse?',
     KRAV_SIVILSTAND: 'Er krav for sivilstand oppfylt?',
+    SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
 };
 
 // ------ UNNTAK
