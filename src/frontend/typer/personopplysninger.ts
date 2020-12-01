@@ -19,6 +19,7 @@ export interface IPersonopplysninger {
     barn: IBarn[];
     innflyttingTilNorge: IInnflyttingTilNorge[];
     utflyttingFraNorge: IUtflyttingFraNorge[];
+    oppholdstillatelse: IOppholdstillatelse[];
 }
 
 export interface IBarn {
@@ -84,6 +85,12 @@ export interface IUtflyttingFraNorge {
     tilflyttingssted?: string;
 }
 
+export interface IOppholdstillatelse {
+    oppholdstillatelse: OppholdType;
+    fraDato?: string;
+    tilDato?: string;
+}
+
 export enum Adressebeskyttelse {
     STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
     STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
@@ -135,3 +142,9 @@ export const sivilstandTilTekst: Record<SivilstandType, string> = {
     REGISTRERT_PARTNER: 'Registrert partner',
     GJENLEVENDE_PARTNER: 'Gjenlevende partner',
 };
+
+export enum OppholdType {
+    MIDLERTIDIG = 'MIDLERTIDIG',
+    PERMANENT = 'PERMANENT',
+    UKJENT = 'UKJENT',
+}

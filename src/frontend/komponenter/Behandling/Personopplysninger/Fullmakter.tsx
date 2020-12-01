@@ -18,7 +18,7 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
                                     <BredTd>{fullmakt.navn}</BredTd>
                                     <BredTd>{fullmakt.motpartsPersonident}</BredTd>
                                     <BredTd>{fullmakt.gyldigFraOgMed}</BredTd>
-                                    <BredTd>{fullmakt.gyldigFraOgMed}</BredTd>
+                                    <BredTd>{fullmakt.gyldigTilOgMed}</BredTd>
                                 </tr>
                             );
                         })}

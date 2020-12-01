@@ -25,9 +25,9 @@ const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): bool
     const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
 
     const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
-    const harBesvaretPåAlleDelvilkår =
-        delvilkårsvurderinger[delvilkårsvurderinger.length - 1].resultat !==
-        Vilkårsresultat.IKKE_VURDERT;
+    const harBesvaretPåAlleDelvilkår = delvilkårsvurderinger.every(
+        (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
+    );
 
     if (vurderingErOppfylt) {
         return true;

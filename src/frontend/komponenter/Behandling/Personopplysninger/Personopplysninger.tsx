@@ -8,6 +8,7 @@ import Sivilstatus from './Sivilstatus';
 import Fullmakter from './Fullmakter';
 import Statsborgerskap from './Statsborgerskap';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import Oppholdstillatelse from './Oppholdstillatelse';
 
 const Personopplysninger: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { hentPersonopplysninger, personopplysningerResponse } = useHentPersonopplysninger();
@@ -28,6 +29,7 @@ const Personopplysninger: React.FC<{ behandlingId: string }> = ({ behandlingId }
                     innflyttingTilNorge,
                     utflyttingFraNorge,
                     fullmakt,
+                    oppholdstillatelse,
                 } = data;
                 return (
                     <>
@@ -38,6 +40,7 @@ const Personopplysninger: React.FC<{ behandlingId: string }> = ({ behandlingId }
                             statsborgerskap={statsborgerskap}
                             folkeregisterPersonstatus={folkeregisterpersonstatus}
                         />
+                        <Oppholdstillatelse oppholdstillatelser={oppholdstillatelse} />
                         <InnvandringUtVandring
                             innvandringer={innflyttingTilNorge}
                             utvandringer={utflyttingFraNorge}
