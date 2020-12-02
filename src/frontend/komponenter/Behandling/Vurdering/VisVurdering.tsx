@@ -55,7 +55,7 @@ interface Props {
 
 const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
     return (
-        <StyledVurdering>
+        <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
             <Undertittel>Manuelt behandlet</Undertittel>
             <StyledKnapp className={'lenke'} onClick={() => settRedigeringsmodus(true)}>
@@ -81,12 +81,12 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
                             delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_VURDERT
                     )
                     .map((delvilkårsvurdering) => (
-                        <>
+                        <div key={delvilkårsvurdering.type}>
                             <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
                             <Normaltekst>
                                 {vilkårsresultatTypeTilTekst[delvilkårsvurdering.resultat]}
                             </Normaltekst>
-                        </>
+                        </div>
                     ))}
 
                 {vurdering.unntak && (

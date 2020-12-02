@@ -31,6 +31,7 @@ export interface IDelvilkår {
 export enum Vilkårsresultat {
     JA = 'JA',
     NEI = 'NEI',
+    IKKE_AKTUELT = 'IKKE_AKTUELT',
     IKKE_VURDERT = 'IKKE_VURDERT',
 }
 
@@ -38,6 +39,7 @@ export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
     JA: 'Ja',
     NEI: 'Nei',
     IKKE_VURDERT: 'Ikke vurdert',
+    IKKE_AKTUELT: 'Ikke aktuelt',
 };
 
 export enum Vilkår {

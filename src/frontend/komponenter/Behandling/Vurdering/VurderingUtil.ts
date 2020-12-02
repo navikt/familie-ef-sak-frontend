@@ -34,13 +34,13 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
     const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
 
     const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
-    const harBesvaretPåAlleDelvilkår = delvilkårsvurderinger.every(
+    const harBesvartPåAlleDelvilkår: boolean = delvilkårsvurderinger.every(
         (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
     );
 
     if (vurderingErOppfylt) {
         return true;
-    } else if (harBesvaretPåAlleDelvilkår) {
+    } else if (harBesvartPåAlleDelvilkår) {
         const harUnntak = config.unntak.length !== 0;
         return harUnntak ? !!vurdering.unntak : true;
     }
