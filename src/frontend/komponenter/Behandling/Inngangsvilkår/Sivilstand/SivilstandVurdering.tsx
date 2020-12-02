@@ -26,6 +26,18 @@ const filtrerBortUaktuelleDelvilkår = (
                     [SivilstandType.UGIFT].includes(registergrunnlag.type) &&
                     søknadsgrunnlag.erUformeltSeparertEllerSkilt
                 );
+
+            case DelvilkårType.SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON:
+                return (
+                    [SivilstandType.GIFT, SivilstandType.REGISTRERT_PARTNER].includes(
+                        registergrunnlag.type
+                    ) && søknadsgrunnlag.søktOmSkilsmisseSeparasjon
+                );
+            case DelvilkårType.SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
+                return [SivilstandType.SEPARERT, SivilstandType.SEPARERT_PARTNER].includes(
+                    registergrunnlag.type
+                );
+
             case DelvilkårType.KRAV_SIVILSTAND:
                 return (
                     [SivilstandType.UGIFT, SivilstandType.UOPPGITT].includes(
@@ -34,17 +46,18 @@ const filtrerBortUaktuelleDelvilkår = (
                     (søknadsgrunnlag.erUformeltSeparertEllerSkilt || søknadsgrunnlag.erUformeltGift)
                 );
 
-            case DelvilkårType.SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON:
-                return (
-                    [SivilstandType.GIFT, SivilstandType.REGISTRERT_PARTNER].includes(
-                        registergrunnlag.type
-                    ) && søknadsgrunnlag.søktOmSkilsmisseSeparasjon
-                );
-
             default:
                 return false;
         }
     });
+};
+
+const visBegrunnelse = (delvilkårType: DelvilkårType): boolean => {
+    return (
+        delvilkårType === DelvilkårType.KRAV_SIVILSTAND ||
+        delvilkårType === DelvilkårType.SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON ||
+        delvilkårType === DelvilkårType.SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING
+    );
 };
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
@@ -73,18 +86,20 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         inngangsvilkår.grunnlag.sivilstand
     );
 
+    console.log(delvilkårsvurderinger);
+
     return (
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
                 return (
-                    <>
+                    <div key={delvilkår.type}>
                         <Delvilkår
                             key={delvilkår.type}
                             delvilkår={delvilkår}
                             vurdering={vurdering}
                             settVurdering={settVurdering}
                         />
-                        {delvilkår.type === DelvilkårType.KRAV_SIVILSTAND && (
+                        {visBegrunnelse(delvilkår.type) && (
                             <Begrunnelse
                                 value={vurdering.begrunnelse || ''}
                                 onChange={(e) => {
@@ -95,7 +110,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                                 }}
                             />
                         )}
-                    </>
+                    </div>
                 );
             })}
 

@@ -42,8 +42,9 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         delvilkår: [
             DelvilkårType.DOKUMENTERT_EKTESKAP,
             DelvilkårType.DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE,
-            DelvilkårType.KRAV_SIVILSTAND,
             DelvilkårType.SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON,
+            DelvilkårType.SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING,
+            DelvilkårType.KRAV_SIVILSTAND,
         ],
     },
 };

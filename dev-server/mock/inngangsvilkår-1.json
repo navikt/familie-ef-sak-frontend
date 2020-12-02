@@ -56,11 +56,15 @@
             "resultat": "IKKE_VURDERT"
           },
           {
-            "type": "KRAV_SIVILSTAND",
+            "type": "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON",
             "resultat": "IKKE_VURDERT"
           },
           {
-            "type": "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON",
+            "type": "SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING",
+            "resultat": "IKKE_VURDERT"
+          },
+          {
+            "type": "KRAV_SIVILSTAND",
             "resultat": "IKKE_VURDERT"
           }
         ]
@@ -136,7 +140,7 @@
           "søktOmSkilsmisseSeparasjon": true
         },
         "registergrunnlag": {
-          "type": "GIFT",
+          "type": "SEPARERT",
           "gyldigFraOgMed": "2020-01-01"
         }
       }
