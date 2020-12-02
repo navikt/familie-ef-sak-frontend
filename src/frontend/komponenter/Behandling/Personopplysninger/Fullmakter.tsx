@@ -8,7 +8,7 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={SkrivendeBlyant} tittel={'Fullmakter'} />
-            {(fullmakter.length != 0 && (
+            {(fullmakter.length !== 0 && (
                 <table className="tabell">
                     <KolonneTitler titler={['Fullmektig', 'Fødselsnummer', 'Fra', 'Til']} />
                     <tbody>

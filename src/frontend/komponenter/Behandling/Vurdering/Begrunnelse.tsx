@@ -7,7 +7,7 @@ interface Props {
     maxLength?: number;
     placeholder?: string;
     value: string;
-    onChange: (e: ChangeEvent<HTMLTextAreaElement> | { [p: string]: any }) => void;
+    onChange: (e: ChangeEvent<HTMLTextAreaElement> | { [p: string]: never }) => void;
 }
 
 const Begrunnelse: FC<Props> = ({ label, maxLength, onChange, placeholder, value }) => {

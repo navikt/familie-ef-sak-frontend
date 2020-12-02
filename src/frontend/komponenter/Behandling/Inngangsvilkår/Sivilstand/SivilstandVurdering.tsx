@@ -86,8 +86,6 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         inngangsvilkår.grunnlag.sivilstand
     );
 
-    console.log(delvilkårsvurderinger);
-
     return (
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {

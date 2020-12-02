@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { IInngangsvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import VisVurdering from './VisVurdering';
 import EndreVurdering from './EndreVurdering';
 import { Ressurs } from '../../../typer/ressurs';
+import VisVurdering from './VisVurdering';
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 interface Props {
     vurdering: IVurdering;
@@ -12,19 +13,29 @@ interface Props {
 }
 
 const VisEllerEndreVurdering: FC<Props> = ({ vurdering, lagreVurdering, inngangsvilkår }) => {
-    const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
-        vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
+    const [redigeringsmodus, settRedigeringsmodus] = useState<boolean | undefined>(
+        vurdering.resultat === Vilkårsresultat.IKKE_AKTUELT
+            ? undefined
+            : vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
     );
 
-    return redigeringsmodus ? (
-        <EndreVurdering
-            inngangsvilkår={inngangsvilkår}
-            data={vurdering}
-            lagreVurdering={lagreVurdering}
-            settRedigeringsmodus={settRedigeringsmodus}
-        />
-    ) : (
-        <VisVurdering vurdering={vurdering} settRedigeringsmodus={settRedigeringsmodus} />
-    );
+    const vurderVilkår = () => {
+        settRedigeringsmodus(true);
+    };
+
+    if (redigeringsmodus === undefined) {
+        return <Hovedknapp onChange={() => vurderVilkår()}>Vurder vilkår</Hovedknapp>;
+    } else if (redigeringsmodus) {
+        return (
+            <EndreVurdering
+                inngangsvilkår={inngangsvilkår}
+                data={vurdering}
+                lagreVurdering={lagreVurdering}
+                settRedigeringsmodus={settRedigeringsmodus}
+            />
+        );
+    } else {
+        return <VisVurdering vurdering={vurdering} settRedigeringsmodus={settRedigeringsmodus} />;
+    }
 };
 export default VisEllerEndreVurdering;

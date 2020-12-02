@@ -3,7 +3,10 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { IPersonopplysninger } from '../typer/personopplysninger';
 
-export const useHentPersonopplysninger = () => {
+export const useHentPersonopplysninger = (): {
+    hentPersonopplysninger: (behandlingsid: string) => void;
+    personopplysningerResponse: Ressurs<IPersonopplysninger>;
+} => {
     const { axiosRequest } = useApp();
     const [personopplysningerResponse, settPersonopplysningerResponse] = useState<
         Ressurs<IPersonopplysninger>
