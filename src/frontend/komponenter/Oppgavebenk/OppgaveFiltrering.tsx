@@ -79,7 +79,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
 
     useEffect(() => {
         hentOppgaver(oppgaveRequest);
-    }, [hentOppgaver]); // TODO legg å hentOppgaver og oppgaveRequest i dependency-array
+    }, [hentOppgaver]);
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
