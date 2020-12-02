@@ -58,6 +58,10 @@
           {
             "type": "KRAV_SIVILSTAND",
             "resultat": "IKKE_VURDERT"
+          },
+          {
+            "type": "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON",
+            "resultat": "IKKE_VURDERT"
           }
         ]
       }

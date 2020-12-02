@@ -4,6 +4,7 @@ import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../../..
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
+import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -72,18 +73,20 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [behandlingId]);
     return (
         <>
-            {inngangsvilkår.status === RessursStatus.SUKSESS && (
-                <StyledInngangsvilkår>
-                    {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
-                        <Vurdering
-                            key={vilkårGruppe}
-                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                            inngangsvilkår={inngangsvilkår.data}
-                            lagreVurdering={lagreVurdering}
-                        />
-                    ))}
-                </StyledInngangsvilkår>
-            )}
+            <DataViewer response={inngangsvilkår}>
+                {(data) => (
+                    <StyledInngangsvilkår>
+                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
+                            <Vurdering
+                                key={vilkårGruppe}
+                                vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                inngangsvilkår={data}
+                                lagreVurdering={lagreVurdering}
+                            />
+                        ))}
+                    </StyledInngangsvilkår>
+                )}
+            </DataViewer>
         </>
     );
 };

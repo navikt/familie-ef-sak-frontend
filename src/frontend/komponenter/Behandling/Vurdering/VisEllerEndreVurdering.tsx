@@ -3,8 +3,7 @@ import { FC, useState } from 'react';
 import { IInngangsvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import VisVurdering from './VisVurdering';
 import EndreVurdering from './EndreVurdering';
-import { Ressurs } from '@navikt/familie-typer';
-import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
+import { Ressurs } from '../../../typer/ressurs';
 
 interface Props {
     vurdering: IVurdering;
@@ -17,13 +16,8 @@ const VisEllerEndreVurdering: FC<Props> = ({ vurdering, lagreVurdering, inngangs
         vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
     );
 
-    const config = VurderingConfig[vurdering.vilkårType];
-    if (!config) {
-        return <div>Savner config for {vurdering.vilkårType}</div>;
-    }
     return redigeringsmodus ? (
         <EndreVurdering
-            config={config}
             inngangsvilkår={inngangsvilkår}
             data={vurdering}
             lagreVurdering={lagreVurdering}

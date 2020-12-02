@@ -2,9 +2,9 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { IInngangsvilkår, IVurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { Feilmelding } from 'nav-frontend-typografi';
-import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
+import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -13,7 +13,6 @@ const StyledEndreVurdering = styled.div`
 `;
 
 interface Props {
-    config: IVilkårConfig;
     data: IVurdering;
     inngangsvilkår: IInngangsvilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
@@ -21,7 +20,6 @@ interface Props {
 }
 
 const EndreVurdering: FC<Props> = ({
-    config,
     data,
     lagreVurdering,
     settRedigeringsmodus,
@@ -51,6 +49,12 @@ const EndreVurdering: FC<Props> = ({
             })
             .finally(() => settOppdatererVurdering(false));
     };
+
+    const config = VurderingConfig[vurdering.vilkårType];
+    if (!config) {
+        return <div>Mangler config for {vurdering.vilkårType}</div>;
+    }
+
     return (
         <StyledEndreVurdering>
             {config.renderVurdering({

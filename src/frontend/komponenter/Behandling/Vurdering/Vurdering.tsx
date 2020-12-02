@@ -5,8 +5,8 @@ import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { navLysGra } from '@navikt/familie-header';
-import { Ressurs } from '@navikt/familie-typer';
 import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
+import { Ressurs } from '../../../typer/ressurs';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
@@ -41,7 +41,7 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }
 
     const config = VilkårGruppeConfig[vilkårGruppe];
     if (!config) {
-        return <div>Savner config for {vilkårGruppe}</div>;
+        return <div>Mangler config for {vilkårGruppe}</div>;
     }
 
     return (
