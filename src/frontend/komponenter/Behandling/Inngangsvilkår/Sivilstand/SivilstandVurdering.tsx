@@ -9,6 +9,8 @@ import {
     harBesvartPåAlleDelvilkår,
     skalViseLagreKnappSivilstand,
 } from '../../Vurdering/VurderingUtil';
+import Unntak from '../../Vurdering/Unntak';
+import { SivilstandType } from '../../../../typer/personopplysninger';
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
@@ -23,11 +25,25 @@ const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): I
 };
 
 const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
-    const { config, vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
+    const {
+        config,
+        vurdering,
+        settVurdering,
+        oppdaterVurdering,
+        lagreknappDisabled,
+        inngangsvilkår,
+    } = props;
+
+    const sivilstandType = inngangsvilkår.grunnlag.sivilstand.registergrunnlag.type;
     const delvilkårsvurderinger: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
         (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
-
+    const erEnkeOgHarBesvartAlleDelvilkår: boolean =
+        harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
+        sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN;
+    const visBegrunnelse: boolean =
+        harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
+        (sivilstandType !== SivilstandType.ENKE_ELLER_ENKEMANN || vurdering.unntak !== null);
     return (
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
@@ -42,7 +58,15 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     </div>
                 );
             })}
-            {harBesvartPåAlleDelvilkår(delvilkårsvurderinger) && (
+            {erEnkeOgHarBesvartAlleDelvilkår && (
+                <Unntak
+                    key={vurdering.id}
+                    vurdering={vurdering}
+                    settVurdering={settVurdering}
+                    unntak={config.unntak}
+                />
+            )}
+            {visBegrunnelse && (
                 <Begrunnelse
                     value={vurdering.begrunnelse || ''}
                     onChange={(e) => {

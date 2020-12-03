@@ -38,7 +38,11 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         renderVurdering: (props: VurderingProps): ReactChild => (
             <SivilstandVurdering props={props} />
         ),
-        unntak: [],
+        unntak: [
+            UnntakType.GJENLEVENDE_IKKE_RETT_TIL_YTELSER,
+            UnntakType.GJENLEVENDE_OVERTAR_OMSORG,
+            UnntakType.IKKE_OPPFYLT,
+        ],
         delvilkår: [
             DelvilkårType.DOKUMENTERT_EKTESKAP,
             DelvilkårType.DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE,
