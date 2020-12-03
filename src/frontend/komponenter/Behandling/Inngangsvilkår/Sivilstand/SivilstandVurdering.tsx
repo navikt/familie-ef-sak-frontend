@@ -5,7 +5,10 @@ import Begrunnelse from '../../Vurdering/Begrunnelse';
 import { IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
-import { harBesvartPåAlleDelvilkår, skalViseLagreKnapp } from '../../Vurdering/VurderingUtil';
+import {
+    harBesvartPåAlleDelvilkår,
+    skalViseLagreKnappSivilstand,
+} from '../../Vurdering/VurderingUtil';
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
@@ -50,7 +53,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     }}
                 />
             )}
-            {skalViseLagreKnapp(vurdering, config) && (
+            {skalViseLagreKnappSivilstand(vurdering, config) && (
                 <LagreVurderingKnapp
                     lagreVurdering={oppdaterVurdering}
                     disabled={lagreknappDisabled}

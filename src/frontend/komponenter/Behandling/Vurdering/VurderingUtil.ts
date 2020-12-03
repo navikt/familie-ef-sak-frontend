@@ -18,6 +18,7 @@ export const filtrerVurderinger = (
     });
 export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[]): boolean =>
     !delvilkårsvurderinger.some((delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT);
+
 export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
     // Må alltid ha med begrunnelse
@@ -39,6 +40,31 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
     if (vurderingErOppfylt) {
         return true;
     } else if (harBesvartPåAlleDelvilkår(delvilkårsvurderinger)) {
+        const harUnntak = config.unntak.length !== 0;
+        return harUnntak ? !!vurdering.unntak : true;
+    }
+    return false;
+};
+
+export const skalViseLagreKnappSivilstand = (
+    vurdering: IVurdering,
+    config: IVilkårConfig
+): boolean => {
+    const { begrunnelse, delvilkårsvurderinger } = vurdering;
+    // Må alltid ha med begrunnelse
+    if (!begrunnelse || begrunnelse.trim().length === 0) {
+        return false;
+    }
+    const besvarteDelvilkår = delvilkårsvurderinger.filter(
+        (delvilkår) =>
+            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
+    );
+    //Må ha besvart minimum 1 delvilkår
+    if (besvarteDelvilkår.length === 0) {
+        return false;
+    }
+
+    if (harBesvartPåAlleDelvilkår(delvilkårsvurderinger)) {
         const harUnntak = config.unntak.length !== 0;
         return harUnntak ? !!vurdering.unntak : true;
     }

@@ -14,9 +14,7 @@ interface Props {
 
 const VisEllerEndreVurdering: FC<Props> = ({ vurdering, lagreVurdering, inngangsvilkår }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean | undefined>(
-        vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
-            ? undefined
-            : vurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
+        vurdering.resultat === Vilkårsresultat.IKKE_VURDERT ? undefined : false
     );
 
     if (redigeringsmodus === undefined) {

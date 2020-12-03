@@ -34,6 +34,23 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Søknadsgrunnlag />
+                    <Normaltekst>Alene med barn fordi</Normaltekst>
+                    <Normaltekst>TODO: Innhent fra søknad</Normaltekst>
+
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Tidligere samboer</Normaltekst>
+                    <Normaltekst>TODO: Innhent fra søknad</Normaltekst>
+
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Dato for fraflytting</Normaltekst>
+                    <Normaltekst>{søknad.fraflytningsdato}</Normaltekst>
+                </>
+            );
+        case SivilstandType.SEPARERT:
+        case SivilstandType.SEPARERT_PARTNER:
+            return (
+                <>
+                    <Søknadsgrunnlag />
                     <Normaltekst>Søkt separasjon, skilsmisse eller reist sak</Normaltekst>
                     {søknad.søktOmSkilsmisseSeparasjon && (
                         <BooleanTekst value={søknad.søktOmSkilsmisseSeparasjon} />

@@ -78,7 +78,8 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
                 {vurdering.delvilkårsvurderinger
                     .filter(
                         (delvilkårsvurdering) =>
-                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_VURDERT
+                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_VURDERT &&
+                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
                     )
                     .map((delvilkårsvurdering) => (
                         <div key={delvilkårsvurdering.type}>
