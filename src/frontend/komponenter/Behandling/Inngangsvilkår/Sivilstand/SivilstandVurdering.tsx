@@ -2,18 +2,10 @@ import * as React from 'react';
 import { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
-import { DelvilkårType, IDelvilkår, Vilkårsresultat } from '../vilkår';
+import { IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
-import { skalViseLagreKnapp } from '../../Vurdering/VurderingUtil';
-
-const visBegrunnelse = (delvilkårType: DelvilkårType): boolean => {
-    return (
-        delvilkårType === DelvilkårType.KRAV_SIVILSTAND ||
-        delvilkårType === DelvilkårType.SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON ||
-        delvilkårType === DelvilkårType.SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING
-    );
-};
+import { harBesvartPåAlleDelvilkår, skalViseLagreKnapp } from '../../Vurdering/VurderingUtil';
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
@@ -44,21 +36,20 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                             vurdering={vurdering}
                             settVurdering={settVurdering}
                         />
-                        {visBegrunnelse(delvilkår.type) && (
-                            <Begrunnelse
-                                value={vurdering.begrunnelse || ''}
-                                onChange={(e) => {
-                                    settVurdering({
-                                        ...vurdering,
-                                        begrunnelse: e.target.value,
-                                    });
-                                }}
-                            />
-                        )}
                     </div>
                 );
             })}
-
+            {harBesvartPåAlleDelvilkår(delvilkårsvurderinger) && (
+                <Begrunnelse
+                    value={vurdering.begrunnelse || ''}
+                    onChange={(e) => {
+                        settVurdering({
+                            ...vurdering,
+                            begrunnelse: e.target.value,
+                        });
+                    }}
+                />
+            )}
             {skalViseLagreKnapp(vurdering, config) && (
                 <LagreVurderingKnapp
                     lagreVurdering={oppdaterVurdering}

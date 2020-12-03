@@ -1,4 +1,4 @@
-import { IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IDelvilkår, IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { IVilkårConfig, VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
@@ -16,7 +16,8 @@ export const filtrerVurderinger = (
         }
         return config.vilkårGruppe === vilkårGruppe;
     });
-
+export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[]): boolean =>
+    !delvilkårsvurderinger.some((delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT);
 export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
     // Må alltid ha med begrunnelse
@@ -34,15 +35,10 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
     const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
 
     const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
-    const harBesvartPåAlleDelvilkår: boolean = delvilkårsvurderinger.every(
-        (delvilkår) =>
-            delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT &&
-            delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
-    );
 
     if (vurderingErOppfylt) {
         return true;
-    } else if (harBesvartPåAlleDelvilkår) {
+    } else if (harBesvartPåAlleDelvilkår(delvilkårsvurderinger)) {
         const harUnntak = config.unntak.length !== 0;
         return harUnntak ? !!vurdering.unntak : true;
     }

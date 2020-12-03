@@ -16,7 +16,7 @@ const VisEllerEndreVurdering: FC<Props> = ({ vurdering, lagreVurdering, inngangs
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean | undefined>(
         vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
             ? undefined
-            : vurdering.resultat !== Vilkårsresultat.IKKE_AKTUELT
+            : vurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
 
     if (redigeringsmodus === undefined) {
