@@ -3,54 +3,9 @@ import { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
 import { DelvilkårType, IDelvilkår, Vilkårsresultat } from '../vilkår';
-import { ISivilstandInngangsvilkår } from './typer';
-import { SivilstandType } from '../../../../typer/personopplysninger';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
 import { skalViseLagreKnapp } from '../../Vurdering/VurderingUtil';
-
-const filtrerBortUaktuelleDelvilkår = (
-    delvilkårsvurderinger: IDelvilkår[],
-    sivilstandInngangsvilkår: ISivilstandInngangsvilkår
-): IDelvilkår[] => {
-    const { søknadsgrunnlag, registergrunnlag } = sivilstandInngangsvilkår;
-    return delvilkårsvurderinger.filter((delvilkår) => {
-        switch (delvilkår.type) {
-            case DelvilkårType.DOKUMENTERT_EKTESKAP:
-                return (
-                    [SivilstandType.UGIFT].includes(registergrunnlag.type) &&
-                    søknadsgrunnlag.erUformeltGift
-                );
-            case DelvilkårType.DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:
-                return (
-                    [SivilstandType.UGIFT].includes(registergrunnlag.type) &&
-                    søknadsgrunnlag.erUformeltSeparertEllerSkilt
-                );
-
-            case DelvilkårType.SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON:
-                return (
-                    [SivilstandType.GIFT, SivilstandType.REGISTRERT_PARTNER].includes(
-                        registergrunnlag.type
-                    ) && søknadsgrunnlag.søktOmSkilsmisseSeparasjon
-                );
-            case DelvilkårType.SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
-                return [SivilstandType.SEPARERT, SivilstandType.SEPARERT_PARTNER].includes(
-                    registergrunnlag.type
-                );
-
-            case DelvilkårType.KRAV_SIVILSTAND:
-                return (
-                    [SivilstandType.UGIFT, SivilstandType.UOPPGITT].includes(
-                        registergrunnlag.type
-                    ) &&
-                    (søknadsgrunnlag.erUformeltSeparertEllerSkilt || søknadsgrunnlag.erUformeltGift)
-                );
-
-            default:
-                return false;
-        }
-    });
-};
 
 const visBegrunnelse = (delvilkårType: DelvilkårType): boolean => {
     return (
@@ -73,17 +28,9 @@ const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): I
 };
 
 const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
-    const {
-        config,
-        vurdering,
-        settVurdering,
-        oppdaterVurdering,
-        lagreknappDisabled,
-        inngangsvilkår,
-    } = props;
-    const delvilkårsvurderinger = filtrerBortUaktuelleDelvilkår(
-        vurdering.delvilkårsvurderinger,
-        inngangsvilkår.grunnlag.sivilstand
+    const { config, vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
+    const delvilkårsvurderinger: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
+        (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
 
     return (

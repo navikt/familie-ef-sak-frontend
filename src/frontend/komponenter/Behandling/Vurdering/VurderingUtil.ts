@@ -35,7 +35,9 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
 
     const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
     const harBesvartPåAlleDelvilkår: boolean = delvilkårsvurderinger.every(
-        (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT
+        (delvilkår) =>
+            delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT &&
+            delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
 
     if (vurderingErOppfylt) {
