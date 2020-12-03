@@ -20,6 +20,11 @@ import { useHentJournalpost } from '../hooks/useHentJournalpost';
 import { useHentDokument } from '../hooks/useHentDokument';
 import { useHentFagsak } from '../hooks/useHentFagsak';
 import { useApp } from '../context/AppContext';
+import {
+    hentFraLocalStorage,
+    lagreTilLocalStorage,
+    oppgaveRequestKey,
+} from '../komponenter/Oppgavebenk/oppgavefilterStorage';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -72,6 +77,15 @@ export const Journalforing: React.FC = () => {
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
+            const lagredeOppgaveFiltreringer = hentFraLocalStorage(oppgaveRequestKey, {});
+
+            lagreTilLocalStorage(oppgaveRequestKey, {
+                ...lagredeOppgaveFiltreringer,
+                ident:
+                    journalResponse.status === RessursStatus.SUKSESS
+                        ? journalResponse.data.personIdent
+                        : undefined,
+            });
             history.push('/oppgavebenk');
         }
     }, [journalpostState.innsending]);

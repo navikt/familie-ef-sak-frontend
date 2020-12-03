@@ -6,6 +6,7 @@ import { hot } from 'react-hot-loader';
 
 import App from './komponenter/App';
 import './index.less';
+import { oppgaveRequestKey } from './komponenter/Oppgavebenk/oppgavefilterStorage';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');
@@ -23,6 +24,18 @@ if (process.env.NODE_ENV !== 'development') {
 if (process.env.NODE_ENV !== 'production') {
     axe(React, ReactDOM, 1000);
 }
+
+// Oppdater denne ved endringer som krever å nullstille localStorage
+(function () {
+    try {
+        if (window.localStorage.getItem('oppgaveRequestVersjon') !== 'v1') {
+            localStorage.setItem('oppgaveRequestVersjon', 'v1');
+            localStorage.removeItem(oppgaveRequestKey);
+        }
+    } catch {
+        // Never mind
+    }
+})();
 
 const rootElement = document.getElementById('app');
 const renderApp = (Component: React.ComponentType): void => {

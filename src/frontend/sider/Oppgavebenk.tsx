@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import OppgaveFiltering from '../komponenter/Oppgavebenk/OppgaveFiltrering';
 import OppgaveTabell, { IOppgaverResponse } from '../komponenter/Oppgavebenk/OppgaveTabell';
@@ -24,13 +24,13 @@ export const OppgaveBenk: React.FC = () => {
     const { axiosRequest } = useApp();
     const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveResurs>(byggTomRessurs());
 
-    const hentOppgaver = (data: IOppgaveRequest) => {
+    const hentOppgaver = useCallback((data: IOppgaveRequest) => {
         axiosRequest<IOppgaverResponse, IOppgaveRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/soek`,
             data,
         }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
-    };
+    }, []);
 
     return (
         <Side>

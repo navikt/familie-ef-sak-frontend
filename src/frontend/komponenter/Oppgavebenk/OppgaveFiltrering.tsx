@@ -12,6 +12,11 @@ import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../utils/utils';
 import { IOppgaveRequest } from './oppgaverequest';
 import { OrNothing } from '../../hooks/felles/useSorteringState';
+import {
+    hentFraLocalStorage,
+    lagreTilLocalStorage,
+    oppgaveRequestKey,
+} from './oppgavefilterStorage';
 
 export const FlexDiv = styled.div`
     display: flex;
@@ -47,16 +52,16 @@ const initFeilObjekt = {} as Feil;
 
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const { innloggetSaksbehandler } = useApp();
-    const initOppgaveRequest = innloggetSaksbehandler
-        ? { tilordnetRessurs: innloggetSaksbehandler.navIdent }
-        : ({} as IOppgaveRequest);
+    const tomOppgaveRequest = {};
 
-    const [oppgaveRequest, setOppgaveRequest] = useState<IOppgaveRequest>(initOppgaveRequest);
+    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>(
+        hentFraLocalStorage(oppgaveRequestKey, tomOppgaveRequest)
+    );
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
-            setOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
+            settOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
     };
 
     useEffect(() => {
@@ -71,6 +76,10 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
         );
         settPerioderFeil((prevState) => ({ ...prevState, opprettetPeriodeFeil }));
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
+
+    useEffect(() => {
+        hentOppgaver(oppgaveRequest);
+    }, [hentOppgaver]);
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
@@ -135,12 +144,12 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         event.persist();
                         const val = event.target.value;
                         if (val === '') {
-                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return rest;
                             });
                         } else if (val === 'Fordelte' || val === 'Ufordelte') {
-                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return {
                                     ...rest,
@@ -148,7 +157,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                                 };
                             });
                         } else {
-                            setOppgaveRequest((prevState: IOppgaveRequest) => {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return {
                                     ...rest,
@@ -169,6 +178,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 </Select>
 
                 <Input
+                    value={oppgaveRequest.ident || ''}
                     label="Personident"
                     inputMode="numeric"
                     pattern="[0-9]*"
@@ -185,6 +195,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                         if (Object.values(periodeFeil).some((val?: string) => val)) {
                             return;
                         }
+                        lagreTilLocalStorage(oppgaveRequestKey, oppgaveRequest);
                         hentOppgaver(oppgaveRequest);
                     }}
                 >
@@ -193,8 +204,9 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                 <Knapp
                     className="flex-item"
                     onClick={() => {
-                        setOppgaveRequest(initOppgaveRequest);
-                        hentOppgaver(initOppgaveRequest);
+                        lagreTilLocalStorage(oppgaveRequestKey, tomOppgaveRequest);
+                        settOppgaveRequest(tomOppgaveRequest);
+                        hentOppgaver(tomOppgaveRequest);
                     }}
                 >
                     Tilbakestill filtrering
