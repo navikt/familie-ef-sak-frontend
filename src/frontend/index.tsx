@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Oppdater denne ved endringer som krever å nullstille localStorage
-const nullstillLocalStorage = () => {
+(function () {
     try {
         if (window.localStorage.getItem('oppgaveRequestVersjon') !== 'v1') {
             localStorage.setItem('oppgaveRequestVersjon', 'v1');
@@ -35,9 +35,8 @@ const nullstillLocalStorage = () => {
     } finally {
         // Never mind
     }
-};
+})();
 
-nullstillLocalStorage();
 const rootElement = document.getElementById('app');
 const renderApp = (Component: React.ComponentType): void => {
     ReactDOM.render(<Component />, rootElement);
