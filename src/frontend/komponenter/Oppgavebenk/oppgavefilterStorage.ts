@@ -3,7 +3,7 @@ export const oppgaveRequestKey = 'oppgaveFiltreringRequest';
 export const lagreTilLocalStorage = <T>(key: string, request: T): void => {
     try {
         localStorage.setItem(key, JSON.stringify(request));
-    } finally {
+    } catch {
         // Ingen skade skjedd
     }
 };

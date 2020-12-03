@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
             localStorage.setItem('oppgaveRequestVersjon', 'v1');
             localStorage.removeItem(oppgaveRequestKey);
         }
-    } finally {
+    } catch {
         // Never mind
     }
 })();
