@@ -14,17 +14,13 @@ interface Props {
 
 const VisEllerEndreVurdering: FC<Props> = ({ vurdering, lagreVurdering, inngangsvilkår }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean | undefined>(
-        vurdering.resultat === Vilkårsresultat.IKKE_AKTUELT
+        vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
             ? undefined
-            : vurdering.resultat === Vilkårsresultat.IKKE_VURDERT
+            : vurdering.resultat !== Vilkårsresultat.IKKE_AKTUELT
     );
 
-    const vurderVilkår = () => {
-        settRedigeringsmodus(true);
-    };
-
     if (redigeringsmodus === undefined) {
-        return <Hovedknapp onChange={() => vurderVilkår()}>Vurder vilkår</Hovedknapp>;
+        return <Hovedknapp onClick={() => settRedigeringsmodus(true)}>Vurder vilkår</Hovedknapp>;
     } else if (redigeringsmodus) {
         return (
             <EndreVurdering
