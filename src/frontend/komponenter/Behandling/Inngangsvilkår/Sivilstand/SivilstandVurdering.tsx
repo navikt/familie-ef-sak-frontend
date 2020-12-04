@@ -38,9 +38,11 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     const delvilkårsvurderinger: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
         (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
+
     const erEnkeOgHarBesvartAlleDelvilkår: boolean =
         harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
         sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN;
+
     const visBegrunnelse: boolean =
         harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
         (sivilstandType !== SivilstandType.ENKE_ELLER_ENKEMANN || vurdering.unntak !== null);
@@ -77,7 +79,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     }}
                 />
             )}
-            {skalViseLagreKnappSivilstand(vurdering, config) && (
+            {skalViseLagreKnappSivilstand(vurdering, config, sivilstandType) && (
                 <LagreVurderingKnapp
                     lagreVurdering={oppdaterVurdering}
                     disabled={lagreknappDisabled}
