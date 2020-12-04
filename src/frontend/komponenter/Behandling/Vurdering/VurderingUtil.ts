@@ -22,15 +22,12 @@ export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[
 
 export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
-    // Må alltid ha med begrunnelse
-    if (!begrunnelse || begrunnelse.trim().length === 0) {
+
+    if (manglerBegrunnelse(begrunnelse)) {
         return false;
     }
-    const besvarteDelvilkår = delvilkårsvurderinger.filter(
-        (delvilkår) =>
-            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
-    );
-    //Må ha besvart minimum 1 delvilkår
+    const besvarteDelvilkår = finnBesvarteDelvilkår(delvilkårsvurderinger);
+
     if (besvarteDelvilkår.length === 0) {
         return false;
     }
@@ -49,28 +46,35 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
 
 export const skalViseLagreKnappSivilstand = (
     vurdering: IVurdering,
-    config: IVilkårConfig,
     sivilstandType: SivilstandType
 ): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
-    // Må alltid ha med begrunnelse
-    if (!begrunnelse || begrunnelse.trim().length === 0) {
+
+    if (manglerBegrunnelse(begrunnelse)) {
         return false;
     }
-    const besvarteDelvilkår = delvilkårsvurderinger.filter(
-        (delvilkår) =>
-            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
-    );
-    //Må ha besvart minimum 1 delvilkår
+    const besvarteDelvilkår = finnBesvarteDelvilkår(delvilkårsvurderinger);
+
     if (besvarteDelvilkår.length === 0 && !vurdering.unntak) {
         return false;
     }
+    const erEnkeEllerEnkemann =
+        sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN ||
+        sivilstandType === SivilstandType.GJENLEVENDE_PARTNER;
 
     if (harBesvartPåAlleDelvilkår(delvilkårsvurderinger)) {
-        if (sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN) {
-            const harUnntak = config.unntak.length !== 0;
-            return harUnntak ? !!vurdering.unntak : true;
-        } else return true;
+        return erEnkeEllerEnkemann ? !!vurdering.unntak : true;
     }
     return false;
+};
+
+const manglerBegrunnelse = (begrunnelse: string | undefined) => {
+    return !begrunnelse || begrunnelse.trim().length === 0;
+};
+
+const finnBesvarteDelvilkår = (delvilkårsvurderinger: IDelvilkår[]) => {
+    return delvilkårsvurderinger.filter(
+        (delvilkår) =>
+            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
+    );
 };

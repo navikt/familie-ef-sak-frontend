@@ -5,24 +5,20 @@ import styled from 'styled-components';
 import { FC } from 'react';
 
 const StyledSystemetLaster = styled.div`
-    position: absolute;
     height: 100%;
     width: 100%;
     z-index: 1000;
 `;
 
 const StyledWrapper = styled.div`
-    left: calc(50% - 7.5rem);
-    position: absolute;
-    top: 20%;
-    width: 15rem;
-    text-align: center;
+    padding-top: 2rem;
+    width: 13rem;
+    margin: auto;
 `;
 
 const StyledSpinner = styled.div`
-    margin-top: 3rem;
-    height: 10rem;
-    width: 10rem;
+    margin: auto;
+    width: 4rem;
 `;
 
 const SystemetLaster: FC = () => {

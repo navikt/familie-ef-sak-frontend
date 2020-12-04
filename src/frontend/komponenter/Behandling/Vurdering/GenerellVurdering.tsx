@@ -10,7 +10,6 @@ import { skalViseLagreKnapp } from './VurderingUtil';
 
 /**
  * Denne skal filtrere ut slik att den viser alle frem till første JA eller første IKKE_VURDERT
- * Denne virker ikke for sivilstand då sivilstand skal vise delvilkår oberoende på tidligere svar?
  * Hvis du svarer:
  * * JA -> ikke vis flere delvilkår
  * * NEI -> vis neste delvilkår

@@ -17,7 +17,6 @@ const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): I
         (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
 
-    // Hvis siste delvilkåret NEI på siste dekvilkåret så skal man returnere alle
     if (sisteDelvilkårSomSkalVises === -1) {
         return delvilkårsvurderinger;
     }
@@ -39,13 +38,16 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
 
-    const erEnkeOgHarBesvartAlleDelvilkår: boolean =
-        harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
-        sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN;
+    const erEnkeEllerEnkemann: boolean =
+        sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN ||
+        sivilstandType === SivilstandType.GJENLEVENDE_PARTNER;
+
+    const visUnntak: boolean =
+        harBesvartPåAlleDelvilkår(delvilkårsvurderinger) && erEnkeEllerEnkemann;
 
     const visBegrunnelse: boolean =
         harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
-        (sivilstandType !== SivilstandType.ENKE_ELLER_ENKEMANN || vurdering.unntak !== null);
+        (!erEnkeEllerEnkemann || vurdering.unntak !== null);
     return (
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
@@ -60,7 +62,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     </div>
                 );
             })}
-            {erEnkeOgHarBesvartAlleDelvilkår && (
+            {visUnntak && (
                 <Unntak
                     key={vurdering.id}
                     vurdering={vurdering}
@@ -79,7 +81,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     }}
                 />
             )}
-            {skalViseLagreKnappSivilstand(vurdering, config, sivilstandType) && (
+            {skalViseLagreKnappSivilstand(vurdering, sivilstandType) && (
                 <LagreVurderingKnapp
                     lagreVurdering={oppdaterVurdering}
                     disabled={lagreknappDisabled}
