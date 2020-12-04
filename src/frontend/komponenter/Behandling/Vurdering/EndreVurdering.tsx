@@ -31,23 +31,21 @@ const EndreVurdering: FC<Props> = ({
 
     const oppdaterVurdering: () => void = () => {
         settOppdatererVurdering(true);
-        lagreVurdering(vurdering)
-            .then((ressurs) => {
-                if (ressurs.status === RessursStatus.SUKSESS) {
-                    setFeilmelding(undefined);
-                    settRedigeringsmodus(false);
+        setFeilmelding(undefined);
+        settRedigeringsmodus(false);
+        lagreVurdering(vurdering).then((ressurs) => {
+            if (ressurs.status !== RessursStatus.SUKSESS) {
+                settRedigeringsmodus(true);
+                if (
+                    ressurs.status === RessursStatus.FEILET ||
+                    ressurs.status === RessursStatus.IKKE_TILGANG
+                ) {
+                    setFeilmelding(ressurs.frontendFeilmelding);
                 } else {
-                    if (
-                        ressurs.status === RessursStatus.FEILET ||
-                        ressurs.status === RessursStatus.IKKE_TILGANG
-                    ) {
-                        setFeilmelding(ressurs.frontendFeilmelding);
-                    } else {
-                        setFeilmelding(`Ressurs har status ${ressurs.status}`);
-                    }
+                    setFeilmelding(`Ressurs har status ${ressurs.status}`);
                 }
-            })
-            .finally(() => settOppdatererVurdering(false));
+            }
+        });
     };
 
     const config = VurderingConfig[vurdering.vilkårType];
