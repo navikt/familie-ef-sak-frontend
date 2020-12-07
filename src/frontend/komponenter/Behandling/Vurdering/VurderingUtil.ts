@@ -53,11 +53,6 @@ export const skalViseLagreKnappSivilstand = (
     if (manglerBegrunnelse(begrunnelse)) {
         return false;
     }
-    const besvarteDelvilkår = finnBesvarteDelvilkår(delvilkårsvurderinger);
-
-    if (besvarteDelvilkår.length === 0 && !vurdering.unntak) {
-        return false;
-    }
     const erEnkeEllerEnkemann =
         sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN ||
         sivilstandType === SivilstandType.GJENLEVENDE_PARTNER;
