@@ -23,6 +23,10 @@ export interface IVurdering {
     endretTid: string;
 }
 
+export interface Vurderingsfeilmelding {
+    [Key: string]: string;
+}
+
 export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
@@ -33,6 +37,12 @@ export enum Vilkårsresultat {
     NEI = 'NEI',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_VURDERT = 'IKKE_VURDERT',
+}
+
+export enum Redigeringsmodus {
+    REDIGERING = 'REDIGERING',
+    VISNING = 'VISNING',
+    IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {

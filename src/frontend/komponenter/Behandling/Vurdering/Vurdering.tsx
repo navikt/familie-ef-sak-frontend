@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IInngangsvilkår, IVurdering, VilkårGruppe } from '../Inngangsvilkår/vilkår';
+import {
+    IInngangsvilkår,
+    IVurdering,
+    VilkårGruppe,
+    Vurderingsfeilmelding,
+} from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
@@ -32,9 +37,10 @@ interface Props {
     vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IInngangsvilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    feilmeldinger: Vurderingsfeilmelding;
 }
 
-const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }) => {
+const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering, feilmeldinger }) => {
     const vurderinger = inngangsvilkår.vurderinger;
     const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
@@ -53,6 +59,7 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }
                         key={vurdering.id}
                         inngangsvilkår={inngangsvilkår}
                         vurdering={vurdering}
+                        feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}
                     />
                 ))}

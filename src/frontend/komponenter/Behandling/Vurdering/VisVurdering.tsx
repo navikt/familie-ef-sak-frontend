@@ -6,6 +6,7 @@ import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import {
     delvilkårTypeTilTekst,
     IVurdering,
+    Redigeringsmodus,
     unntakTypeTilTekst,
     Vilkårsresultat,
     vilkårsresultatTypeTilTekst,
@@ -49,7 +50,7 @@ const StyledIkonOgTittel = styled.span`
 `;
 
 interface Props {
-    settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
+    settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
     vurdering: IVurdering;
 }
 
@@ -58,7 +59,10 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
             <Undertittel>Manuelt behandlet</Undertittel>
-            <StyledKnapp className={'lenke'} onClick={() => settRedigeringsmodus(true)}>
+            <StyledKnapp
+                className={'lenke'}
+                onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
+            >
                 <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
                 <span>Rediger</span>
             </StyledKnapp>

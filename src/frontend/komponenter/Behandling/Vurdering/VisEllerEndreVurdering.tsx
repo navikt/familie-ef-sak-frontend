@@ -1,31 +1,62 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IInngangsvilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import {
+    IInngangsvilkår,
+    IVurdering,
+    Redigeringsmodus,
+    Vilkårsresultat,
+} from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
-import { Ressurs } from '../../../typer/ressurs';
 import VisVurdering from './VisVurdering';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { Ressurs } from '../../../typer/ressurs';
 
 interface Props {
     vurdering: IVurdering;
     inngangsvilkår: IInngangsvilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    feilmelding: string | undefined;
 }
 
-const VisEllerEndreVurdering: FC<Props> = ({ vurdering, lagreVurdering, inngangsvilkår }) => {
-    const [redigeringsmodus, settRedigeringsmodus] = useState<boolean | undefined>(
-        vurdering.resultat === Vilkårsresultat.IKKE_VURDERT ? undefined : false
+function utledRedigeringsmodus(
+    feilmelding: string | undefined,
+    vurdering: IVurdering
+): Redigeringsmodus {
+    if (feilmelding !== undefined) {
+        console.log('Redigeringsmodus');
+        return Redigeringsmodus.REDIGERING;
+    }
+    if (vurdering.resultat === Vilkårsresultat.IKKE_VURDERT) {
+        return Redigeringsmodus.IKKE_PÅSTARTET;
+    }
+
+    console.log('Visningsmodus');
+    return Redigeringsmodus.VISNING;
+}
+
+const VisEllerEndreVurdering: FC<Props> = ({
+    vurdering,
+    lagreVurdering,
+    inngangsvilkår,
+    feilmelding,
+}) => {
+    const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
+        utledRedigeringsmodus(feilmelding, vurdering)
     );
 
-    if (redigeringsmodus === undefined) {
-        return <Hovedknapp onClick={() => settRedigeringsmodus(true)}>Vurder vilkår</Hovedknapp>;
-    } else if (redigeringsmodus) {
+    if (redigeringsmodus === Redigeringsmodus.IKKE_PÅSTARTET) {
+        return (
+            <Hovedknapp onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}>
+                Vurder vilkår
+            </Hovedknapp>
+        );
+    } else if (redigeringsmodus === Redigeringsmodus.REDIGERING) {
         return (
             <EndreVurdering
                 inngangsvilkår={inngangsvilkår}
                 data={vurdering}
                 lagreVurdering={lagreVurdering}
-                settRedigeringsmodus={settRedigeringsmodus}
+                feilmelding={feilmelding}
             />
         );
     } else {
