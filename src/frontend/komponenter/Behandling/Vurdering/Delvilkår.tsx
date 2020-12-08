@@ -20,7 +20,8 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.map((delvilkår) => {
         const skalNullstillePåfølgendeDelvilkår =
             harPassertSisteDelvilkårSomSkalVises &&
-            delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT;
+            delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT &&
+            delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL;
 
         if (delvilkår.type === oppdatertDelvilkår.type) {
             harPassertSisteDelvilkårSomSkalVises = true;

@@ -11,6 +11,8 @@ interface Props {
 }
 
 const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
+    const { tidligereSamboer, erUformeltSeparertEllerSkilt, erUformeltGift } = søknad;
+
     switch (sivilstandtype) {
         case SivilstandType.UGIFT:
         case SivilstandType.UOPPGITT:
@@ -18,12 +20,12 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Gift i utlandet</Normaltekst>
-                    {søknad.erUformeltGift && <BooleanTekst value={søknad.erUformeltGift} />}
+                    {erUformeltGift !== undefined && <BooleanTekst value={erUformeltGift} />}
 
                     <Søknadsgrunnlag />
                     <Normaltekst>Skilt eller separert i utlandet</Normaltekst>
-                    {søknad.erUformeltSeparertEllerSkilt && (
-                        <BooleanTekst value={søknad.erUformeltSeparertEllerSkilt} />
+                    {erUformeltSeparertEllerSkilt !== undefined && (
+                        <BooleanTekst value={erUformeltSeparertEllerSkilt} />
                     )}
                 </>
             );
@@ -40,6 +42,27 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     <Søknadsgrunnlag />
                     <Normaltekst>Dato</Normaltekst>
                     <Normaltekst>{søknad.datoSøktSeparasjon}</Normaltekst>
+                </>
+            );
+        case SivilstandType.SEPARERT:
+        case SivilstandType.SEPARERT_PARTNER:
+            return (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Alene med barn fordi</Normaltekst>
+                    <Normaltekst>{søknad.årsakEnslig}</Normaltekst>
+
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Tidligere samboer</Normaltekst>
+                    <Normaltekst>{`${tidligereSamboer?.navn}, ${
+                        tidligereSamboer?.ident
+                            ? tidligereSamboer?.ident
+                            : tidligereSamboer?.fødselsdato
+                    }`}</Normaltekst>
+
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Dato for fraflytting</Normaltekst>
+                    <Normaltekst>{søknad.fraflytningsdato}</Normaltekst>
                 </>
             );
 

@@ -1,4 +1,4 @@
-import { IInngangsvilkårGrunnlag, VilkårGruppe } from '../vilkår';
+import { IDelvilkår, IInngangsvilkårGrunnlag, VilkårGruppe } from '../vilkår';
 import * as React from 'react';
 import { ReactChild } from 'react';
 import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
@@ -7,6 +7,7 @@ import { IVurderingConfig } from './VurderingConfig';
 
 export interface IVilkårGruppeConfig {
     visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkårGrunnlag) => ReactChild;
+    filtrerBortUaktuelleDelvilkår?: () => IDelvilkår[];
 }
 
 export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppeConfig> = {

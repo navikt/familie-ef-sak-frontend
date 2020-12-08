@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IInngangsvilkår, IVurdering, VilkårGruppe } from '../Inngangsvilkår/vilkår';
+import {
+    IInngangsvilkår,
+    IVurdering,
+    VilkårGruppe,
+    Vurderingsfeilmelding,
+} from '../Inngangsvilkår/vilkår';
 import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { navLysGra } from '@navikt/familie-header';
-import { Ressurs } from '@navikt/familie-typer';
 import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
+import { Ressurs } from '../../../typer/ressurs';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
@@ -32,16 +37,17 @@ interface Props {
     vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IInngangsvilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    feilmeldinger: Vurderingsfeilmelding;
 }
 
-const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }) => {
+const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering, feilmeldinger }) => {
     const vurderinger = inngangsvilkår.vurderinger;
     const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
     const erOppfylte = alleErOppfylte(filtrerteVurderinger);
 
     const config = VilkårGruppeConfig[vilkårGruppe];
     if (!config) {
-        return <div>Savner config for {vilkårGruppe}</div>;
+        return <div>Mangler config for {vilkårGruppe}</div>;
     }
 
     return (
@@ -51,7 +57,9 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering }
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
                         key={vurdering.id}
+                        inngangsvilkårgrunnlag={inngangsvilkår.grunnlag}
                         vurdering={vurdering}
+                        feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}
                     />
                 ))}

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVurdering } from '../Inngangsvilkår/vilkår';
+import { IInngangsvilkårGrunnlag, IVurdering, Redigeringsmodus } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { Ressurs, RessursStatus } from '@navikt/familie-typer';
-import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { Feilmelding } from 'nav-frontend-typografi';
+import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -13,37 +13,40 @@ const StyledEndreVurdering = styled.div`
 `;
 
 interface Props {
-    config: IVilkårConfig;
     data: IVurdering;
+    inngangsvilkårgrunnlag: IInngangsvilkårGrunnlag;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
-    settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
+    settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
+    feilmelding: string | undefined;
 }
 
-const EndreVurdering: FC<Props> = ({ config, data, lagreVurdering, settRedigeringsmodus }) => {
+const EndreVurdering: FC<Props> = ({
+    data,
+    lagreVurdering,
+    feilmelding,
+    inngangsvilkårgrunnlag,
+    settRedigeringsmodus,
+}) => {
     const [vurdering, settVurdering] = useState<IVurdering>(data);
-    const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
 
     const oppdaterVurdering: () => void = () => {
-        settOppdatererVurdering(true);
-        lagreVurdering(vurdering)
-            .then((ressurs) => {
-                if (ressurs.status === RessursStatus.SUKSESS) {
-                    setFeilmelding(undefined);
-                    settRedigeringsmodus(false);
-                } else {
-                    if (
-                        ressurs.status === RessursStatus.FEILET ||
-                        ressurs.status === RessursStatus.IKKE_TILGANG
-                    ) {
-                        setFeilmelding(ressurs.frontendFeilmelding);
-                    } else {
-                        setFeilmelding(`Ressurs har status ${ressurs.status}`);
-                    }
+        if (!oppdatererVurdering) {
+            settOppdatererVurdering(true);
+            lagreVurdering(vurdering).then((response) => {
+                settOppdatererVurdering(false);
+                if (response.status === RessursStatus.SUKSESS) {
+                    settRedigeringsmodus(Redigeringsmodus.VISNING);
                 }
-            })
-            .finally(() => settOppdatererVurdering(false));
+            });
+        }
     };
+
+    const config = VurderingConfig[vurdering.vilkårType];
+    if (!config) {
+        return <div>Mangler config for {vurdering.vilkårType}</div>;
+    }
+
     return (
         <StyledEndreVurdering>
             {config.renderVurdering({
@@ -51,6 +54,7 @@ const EndreVurdering: FC<Props> = ({ config, data, lagreVurdering, settRedigerin
                 vurdering,
                 settVurdering,
                 oppdaterVurdering,
+                inngangsvilkårgrunnlag,
                 lagreknappDisabled: oppdatererVurdering,
             })}
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}

@@ -11,7 +11,7 @@ import navFarger from 'nav-frontend-core';
 
 const Container = styled.div`
     display: flex;
-    height: calc(100vh - 8rem);
+    height: calc(100vh - 3rem);
 `;
 
 const VenstreMenyWrapper = styled.div`
@@ -69,6 +69,9 @@ const BehandlingContainer: FC = () => {
                         />
                     </Switch>
                 </InnholdWrapper>
+                <HøyreMenyWrapper>
+                    <Høyremeny behandlingId={behandlingId} />
+                </HøyreMenyWrapper>
             </Container>
         </>
     );

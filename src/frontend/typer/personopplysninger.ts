@@ -148,4 +148,3 @@ export enum OppholdType {
     PERMANENT = 'PERMANENT',
     UKJENT = 'UKJENT',
 }
-

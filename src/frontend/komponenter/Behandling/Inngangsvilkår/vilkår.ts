@@ -23,6 +23,10 @@ export interface IVurdering {
     endretTid: string;
 }
 
+export interface Vurderingsfeilmelding {
+    [Key: string]: string;
+}
+
 export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
@@ -31,13 +35,21 @@ export interface IDelvilkår {
 export enum Vilkårsresultat {
     JA = 'JA',
     NEI = 'NEI',
+    IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_VURDERT = 'IKKE_VURDERT',
+}
+
+export enum Redigeringsmodus {
+    REDIGERING = 'REDIGERING',
+    VISNING = 'VISNING',
+    IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
     JA: 'Ja',
     NEI: 'Nei',
     IKKE_VURDERT: 'Ikke vurdert',
+    IKKE_AKTUELL: 'Ikke aktuell',
 };
 
 export enum Vilkår {
@@ -63,6 +75,8 @@ export enum DelvilkårType {
     DOKUMENTERT_EKTESKAP = 'DOKUMENTERT_EKTESKAP',
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE = 'DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE',
     KRAV_SIVILSTAND = 'KRAV_SIVILSTAND',
+    SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON = 'SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON',
+    SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING = 'SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -73,6 +87,9 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:
         'Foreligger det dokumentasjon på separasjon eller skilsmisse?',
     KRAV_SIVILSTAND: 'Er krav for sivilstand oppfylt?',
+    SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
+    SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
+        'Er det samsvar mellom datoene for separasjon og fraflytting?',
 };
 
 // ------ UNNTAK
@@ -81,12 +98,18 @@ export enum UnntakType {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     ARBEID_NORSK_ARBEIDSGIVER = 'ARBEID_NORSK_ARBEIDSGIVER',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER = 'UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER',
+    GJENLEVENDE_OVERTAR_OMSORG = 'GJENLEVENDE_OVERTAR_OMSORG',
+    GJENLEVENDE_IKKE_RETT_TIL_YTELSER = 'GJENLEVENDE_IKKE_RETT_TIL_YTELSER',
 }
 
 export const unntakTypeTilTekst: Record<UnntakType, string> = {
     IKKE_OPPFYLT: 'Nei',
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
+    GJENLEVENDE_OVERTAR_OMSORG:
+        'Ja, gjenlevende som etter dødsfallet overtar omsorgen for egne særkullsbarn',
+    GJENLEVENDE_IKKE_RETT_TIL_YTELSER:
+        'Ja, gjenlevende som etter dødsfallet får barn som avdøde ikke er mor/far til, og som ikke har rett til ytelser etter kap.17',
 };
 
 // ------ VILKÅRGRUPPE

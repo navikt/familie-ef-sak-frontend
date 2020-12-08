@@ -10,7 +10,7 @@ const Oppholdstillatelse: React.FC<{ oppholdstillatelser: IOppholdstillatelse[] 
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={Pass} tittel={'Oppholdstillatelse'} />
-            {(oppholdstillatelser.length != 0 && (
+            {(oppholdstillatelser.length !== 0 && (
                 <table className="tabell">
                     <KolonneTitler titler={['Type', 'Fra', 'Til', '']} />
                     <tbody>
