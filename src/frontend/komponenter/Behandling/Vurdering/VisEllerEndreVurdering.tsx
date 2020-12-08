@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import {
-    IInngangsvilkår,
+    IInngangsvilkårGrunnlag,
     IVurdering,
     Redigeringsmodus,
     Vilkårsresultat,
@@ -13,7 +13,7 @@ import { Ressurs } from '../../../typer/ressurs';
 
 interface Props {
     vurdering: IVurdering;
-    inngangsvilkår: IInngangsvilkår;
+    inngangsvilkårgrunnlag: IInngangsvilkårGrunnlag;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     feilmelding: string | undefined;
 }
@@ -34,7 +34,7 @@ function utledRedigeringsmodus(
 const VisEllerEndreVurdering: FC<Props> = ({
     vurdering,
     lagreVurdering,
-    inngangsvilkår,
+    inngangsvilkårgrunnlag,
     feilmelding,
 }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
@@ -51,7 +51,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         case Redigeringsmodus.REDIGERING:
             return (
                 <EndreVurdering
-                    inngangsvilkår={inngangsvilkår}
+                    inngangsvilkårgrunnlag={inngangsvilkårgrunnlag}
                     data={vurdering}
                     lagreVurdering={lagreVurdering}
                     feilmelding={feilmelding}

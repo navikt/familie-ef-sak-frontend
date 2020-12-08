@@ -1,4 +1,4 @@
-import { IInngangsvilkår, IVurdering } from '../Inngangsvilkår/vilkår';
+import { IInngangsvilkårGrunnlag, IVurdering } from '../Inngangsvilkår/vilkår';
 import { Dispatch, SetStateAction } from 'react';
 import { IVilkårConfig } from '../Inngangsvilkår/config/VurderingConfig';
 
@@ -9,5 +9,5 @@ export interface VurderingProps {
     settVurdering: Dispatch<SetStateAction<IVurdering>>;
     oppdaterVurdering: () => void;
     lagreknappDisabled: boolean;
-    inngangsvilkår: IInngangsvilkår;
+    inngangsvilkårgrunnlag: IInngangsvilkårGrunnlag;
 }

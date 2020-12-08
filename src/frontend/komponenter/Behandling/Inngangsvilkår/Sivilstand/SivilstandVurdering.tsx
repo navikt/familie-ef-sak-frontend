@@ -30,10 +30,10 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         settVurdering,
         oppdaterVurdering,
         lagreknappDisabled,
-        inngangsvilkår,
+        inngangsvilkårgrunnlag,
     } = props;
 
-    const sivilstandType = inngangsvilkår.grunnlag.sivilstand.registergrunnlag.type;
+    const sivilstandType = inngangsvilkårgrunnlag.sivilstand.registergrunnlag.type;
     const delvilkårsvurderinger: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
         (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
