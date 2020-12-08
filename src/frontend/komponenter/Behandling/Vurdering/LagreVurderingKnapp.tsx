@@ -9,7 +9,7 @@ interface Props {
 
 const LagreVurderingKnapp: FC<Props> = ({ lagreVurdering, disabled }) => {
     return (
-        <Hovedknapp onClick={lagreVurdering} disabled={disabled}>
+        <Hovedknapp mini onClick={lagreVurdering} disabled={disabled}>
             Lagre
         </Hovedknapp>
     );

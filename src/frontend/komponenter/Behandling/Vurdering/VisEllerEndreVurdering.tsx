@@ -8,7 +8,7 @@ import {
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Knapp } from 'nav-frontend-knapper';
 import { Ressurs } from '../../../typer/ressurs';
 
 interface Props {
@@ -44,9 +44,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
-                <Hovedknapp onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}>
+                <Knapp mini onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}>
                     Vurder vilkår
-                </Hovedknapp>
+                </Knapp>
             );
         case Redigeringsmodus.REDIGERING:
             return (
