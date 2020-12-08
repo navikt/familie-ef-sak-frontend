@@ -23,14 +23,11 @@ function utledRedigeringsmodus(
     vurdering: IVurdering
 ): Redigeringsmodus {
     if (feilmelding !== undefined) {
-        console.log('Redigeringsmodus');
         return Redigeringsmodus.REDIGERING;
     }
     if (vurdering.resultat === Vilkårsresultat.IKKE_VURDERT) {
         return Redigeringsmodus.IKKE_PÅSTARTET;
     }
-
-    console.log('Visningsmodus');
     return Redigeringsmodus.VISNING;
 }
 
@@ -57,6 +54,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 data={vurdering}
                 lagreVurdering={lagreVurdering}
                 feilmelding={feilmelding}
+                settRedigeringsmodus={settRedigeringsmodus}
             />
         );
     } else {
