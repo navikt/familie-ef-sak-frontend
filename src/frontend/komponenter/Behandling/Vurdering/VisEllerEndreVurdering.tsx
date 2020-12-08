@@ -41,24 +41,27 @@ const VisEllerEndreVurdering: FC<Props> = ({
         utledRedigeringsmodus(feilmelding, vurdering)
     );
 
-    if (redigeringsmodus === Redigeringsmodus.IKKE_PÅSTARTET) {
-        return (
-            <Hovedknapp onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}>
-                Vurder vilkår
-            </Hovedknapp>
-        );
-    } else if (redigeringsmodus === Redigeringsmodus.REDIGERING) {
-        return (
-            <EndreVurdering
-                inngangsvilkår={inngangsvilkår}
-                data={vurdering}
-                lagreVurdering={lagreVurdering}
-                feilmelding={feilmelding}
-                settRedigeringsmodus={settRedigeringsmodus}
-            />
-        );
-    } else {
-        return <VisVurdering vurdering={vurdering} settRedigeringsmodus={settRedigeringsmodus} />;
+    switch (redigeringsmodus) {
+        case Redigeringsmodus.IKKE_PÅSTARTET:
+            return (
+                <Hovedknapp onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}>
+                    Vurder vilkår
+                </Hovedknapp>
+            );
+        case Redigeringsmodus.REDIGERING:
+            return (
+                <EndreVurdering
+                    inngangsvilkår={inngangsvilkår}
+                    data={vurdering}
+                    lagreVurdering={lagreVurdering}
+                    feilmelding={feilmelding}
+                    settRedigeringsmodus={settRedigeringsmodus}
+                />
+            );
+        case Redigeringsmodus.VISNING:
+            return (
+                <VisVurdering vurdering={vurdering} settRedigeringsmodus={settRedigeringsmodus} />
+            );
     }
 };
 export default VisEllerEndreVurdering;
