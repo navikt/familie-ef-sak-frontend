@@ -40,7 +40,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering)
     );
-
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
@@ -60,7 +59,11 @@ const VisEllerEndreVurdering: FC<Props> = ({
             );
         case Redigeringsmodus.VISNING:
             return (
-                <VisVurdering vurdering={vurdering} settRedigeringsmodus={settRedigeringsmodus} />
+                <VisVurdering
+                    vurdering={vurdering}
+                    settRedigeringsmodus={settRedigeringsmodus}
+                    lagreVurdering={lagreVurdering}
+                />
             );
     }
 };
