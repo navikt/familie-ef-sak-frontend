@@ -74,10 +74,10 @@ const finnBesvarteDelvilkår = (delvilkårsvurderinger: IDelvilkår[]) => {
     );
 };
 
-export const resetVurdering = (vurdering: IVurdering): IVurdering => {
+export const nullstillVurdering = (vurdering: IVurdering): IVurdering => {
     const { delvilkårsvurderinger } = vurdering;
 
-    const resetDelvilkår = (delvilkår: IDelvilkår): IDelvilkår => {
+    const nullstillDelvilkår = (delvilkår: IDelvilkår): IDelvilkår => {
         if (
             delvilkår.resultat === Vilkårsresultat.JA ||
             delvilkår.resultat === Vilkårsresultat.NEI
@@ -89,8 +89,8 @@ export const resetVurdering = (vurdering: IVurdering): IVurdering => {
         } else return delvilkår;
     };
 
-    const resetDelkvilkårsvurderinger: IDelvilkår[] = delvilkårsvurderinger.map((delvilkår) =>
-        resetDelvilkår(delvilkår)
+    const nullstilteDelkvilkårsvurderinger: IDelvilkår[] = delvilkårsvurderinger.map((delvilkår) =>
+        nullstillDelvilkår(delvilkår)
     );
 
     return {
@@ -98,6 +98,6 @@ export const resetVurdering = (vurdering: IVurdering): IVurdering => {
         resultat: Vilkårsresultat.IKKE_VURDERT,
         begrunnelse: null,
         unntak: null,
-        delvilkårsvurderinger: resetDelkvilkårsvurderinger,
+        delvilkårsvurderinger: nullstilteDelkvilkårsvurderinger,
     };
 };

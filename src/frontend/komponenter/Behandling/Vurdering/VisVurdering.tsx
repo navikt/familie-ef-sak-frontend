@@ -18,7 +18,7 @@ import Oppfylt from '../../../ikoner/Oppfylt';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { resetVurdering } from './VurderingUtil';
+import { nullstillVurdering } from './VurderingUtil';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -78,7 +78,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering, lagreVurderi
                 <StyledKnapp
                     className={'lenke'}
                     onClick={() =>
-                        lagreVurdering(resetVurdering(vurdering)).then((response) => {
+                        lagreVurdering(nullstillVurdering(vurdering)).then((response) => {
                             if (response.status === RessursStatus.SUKSESS) {
                                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
                             }
