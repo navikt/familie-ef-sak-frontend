@@ -104,4 +104,8 @@ app.post('/familie-ef-sak/api/oppgave/:oppgaveId/fordel', (req, res) => {
     setTimeout(() => res.send({ data: 45060, status: 'SUKSESS' }), delayMs);
 });
 
+app.get('/familie-ef-sak/api/behandlinghistorikk/:behandlingId', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`behandlinghistorikk.json`)), delayMs);
+});
+
 module.exports = app;

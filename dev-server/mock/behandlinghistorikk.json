@@ -1,0 +1,32 @@
+{
+  "data": [
+      {
+        "id": "30130e5f-465f-4c4b-8772-e1fe5cfa84e7",
+        "behandlingId": "d3c6f6a9-39be-419d-a6bc-3cbca819297e",
+        "steg": "REGISTRERE_OPPLYSNINGER",
+        "endretAvNavn": "Saksbehandlernavn",
+        "endretAvMail": "Saksbehandleremail",
+        "endretTid": "2020-11-24T16:51:06.174"
+      },
+      {
+        "id": "738557b8-62a1-418f-9306-269f7e693003",
+        "behandlingId": "d3c6f6a9-39be-419d-a6bc-3cbca819297e",
+        "steg": "VILKÅRSVURDERE_INNGANGSVILKÅR",
+        "endretAvNavn": "Saksbehandlernavn",
+        "endretAvMail": "Saksbehandleremail",
+        "endretTid": "2020-11-29T16:51:06.187"
+      },
+      {
+        "id": "92816901-86c0-45f9-86df-6f745d2370a2",
+        "behandlingId": "d3c6f6a9-39be-419d-a6bc-3cbca819297e",
+        "steg": "VILKÅRSVURDERE_STØNAD",
+        "endretAvNavn": "Saksbehandlernavn",
+        "endretAvMail": "Saksbehandleremail",
+        "endretTid": "2020-12-12T16:51:06.192"
+      }
+  ],
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}
