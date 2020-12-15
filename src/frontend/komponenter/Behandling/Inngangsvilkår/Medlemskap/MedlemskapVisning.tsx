@@ -2,49 +2,42 @@ import * as React from 'react';
 import { FC } from 'react';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import Statsborgerskap from './Statsborgerskap';
 import Oppholdsstatus from './Oppholdsstatus';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import VilkårOppfylt from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { IMedlemskap } from './typer';
+import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
+import InnflyttingUtflytting from './InnflyttingUtflytting';
 
 interface Props {
     medlemskap: IMedlemskap;
-    erOppfylt: boolean;
+    vilkårStatus: VilkårStatus;
 }
 
-const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
+const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
     const finnesUtenlandsperioder = søknadsgrunnlag.utenlandsopphold.length > 0;
+    const finnesInnflyttingUtflytting =
+        registergrunnlag.innflytting.length > 0 || registergrunnlag.utflytting.length > 0;
 
     return (
         <>
             <StyledTabell>
-                <VilkårOppfylt erOppfylt={erOppfylt} />
+                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
                 <div className="tittel">
-                    <Undertittel>Medlemskap og opphold i Norge</Undertittel>
-                    <EtikettLiten>§15-2 og §15-3 </EtikettLiten>
+                    <Undertittel>Forutgående medlemskap</Undertittel>
+                    <EtikettLiten>§15-2</EtikettLiten>
                 </div>
 
-                <Registergrunnlag />
-                <Normaltekst>Statsborgerskap</Normaltekst>
-                <Normaltekst>{registergrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
-
                 <Søknadsgrunnlag />
-                <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
-                <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
-
-                <Søknadsgrunnlag />
-                <Normaltekst>Har bodd i Norge siste tre år</Normaltekst>
+                <Normaltekst>Har bodd i Norge siste 3 år</Normaltekst>
                 <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
             </StyledTabell>
 
@@ -54,8 +47,19 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
                     lukkTekst={'Lukk info om medlemskap'}
                 >
                     <Statsborgerskap statsborgerskap={registergrunnlag.statsborgerskap} />
+                    <FolkeregisterPersonstatus
+                        status={registergrunnlag.folkeregisterpersonstatus}
+                    />
+
                     {finnesOppholdsstatus && (
                         <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
+                    )}
+
+                    {finnesInnflyttingUtflytting && (
+                        <InnflyttingUtflytting
+                            innflytting={registergrunnlag.innflytting}
+                            utflytting={registergrunnlag.utflytting}
+                        />
                     )}
 
                     {finnesUtenlandsperioder && (

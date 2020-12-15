@@ -6,29 +6,29 @@ interface IOppfylt {
     width?: number;
 }
 
-const Oppfylt: React.StatelessComponent<IOppfylt> = ({ className, heigth, width }) => {
+const IkkeVurdert: React.StatelessComponent<IOppfylt> = ({ className, heigth, width }) => {
     return (
         <svg
-            aria-labelledby={'oppfylt'}
+            aria-labelledby={'ikke vurdert'}
             className={className}
             height={heigth}
             width={width}
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <title id={'oppfylt'}>Oppfylt</title>
-            <g fill="none" fillRule="nonzero">
-                <path
-                    fill="#1C6937"
-                    d="M12 0C5.383 0 0 5.384 0 12s5.383 12 12 12c6.616 0 12-5.384 12-12S18.616 0 12 0z"
-                />
-                <path
-                    fill="#FFF"
-                    d="M9.64 14.441l6.46-5.839a.997.997 0 0 1 1.376.044.923.923 0 0 1-.046 1.334l-7.15 6.464a.993.993 0 0 1-.662.252.992.992 0 0 1-.69-.276l-2.382-2.308a.923.923 0 0 1 0-1.334.997.997 0 0 1 1.377 0l1.717 1.663z"
-                />
-            </g>
+            <title id={'ikke vurdert'}>Ikke vurdert</title>
+            <path
+                fill="#FFA733"
+                d="M12.205.996l-.214.002a12.226 12.226 0 00-8.517 3.658c-2.295 2.32-3.527 5.355-3.472 8.55.115 6.611 5.296 11.79 11.795 11.79l.212-.002c6.726-.116 12.105-5.593 11.99-12.207-.115-6.61-5.296-11.79-11.794-11.79z"
+            ></path>
+            <path
+                fill="#3E3832"
+                fillRule="evenodd"
+                d="M13 6.8a1 1 0 10-2 0v7a1 1 0 102 0v-7zm-1 13h.027a1.5 1.5 0 00-.027-3l-.013.002h-.014A1.498 1.498 0 0012 19.801z"
+                clipRule="evenodd"
+            ></path>
         </svg>
     );
 };
 
-export default Oppfylt;
+export default IkkeVurdert;

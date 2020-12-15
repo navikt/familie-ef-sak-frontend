@@ -28,7 +28,7 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         delvilkår: [DelvilkårType.TRE_ÅRS_MEDLEMSKAP, DelvilkårType.DOKUMENTERT_FLYKTNINGSTATUS],
     },
     LOVLIG_OPPHOLD: {
-        vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
+        vilkårGruppe: VilkårGruppe.LOVLIG_OPPHOLD,
         renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [],
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],

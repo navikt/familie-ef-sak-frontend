@@ -47,8 +47,5 @@ export const base64toBlob = (b64Data: string, contentType = '', sliceSize = 512)
     return blob;
 };
 
-export const toTitleCase = (str: string): string => {
-    return str.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-};
+export const toTitleCase = (str: string): string =>
+    str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());

@@ -4,6 +4,8 @@ import { ReactChild } from 'react';
 import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
 import SivilstandVisning from '../Sivilstand/SivilstandVisning';
 import { IVurderingConfig } from './VurderingConfig';
+import OppholdVisning from '../Opphold/OppholdVisning';
+import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 
 export interface IVilkårGruppeConfig {
     visning: (erOppfylt: boolean, inngangsvilkår: IInngangsvilkårGrunnlag) => ReactChild;
@@ -12,8 +14,16 @@ export interface IVilkårGruppeConfig {
 
 export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppeConfig> = {
     MEDLEMSKAP: {
+        visning: (_erOppfylt: boolean, grunnlag: IInngangsvilkårGrunnlag): ReactChild => (
+            <MedlemskapVisning
+                medlemskap={grunnlag.medlemskap}
+                vilkårStatus={VilkårStatus.IKKE_VURDERT}
+            />
+        ),
+    },
+    LOVLIG_OPPHOLD: {
         visning: (erOppfylt: boolean, grunnlag: IInngangsvilkårGrunnlag): ReactChild => (
-            <MedlemskapVisning erOppfylt={erOppfylt} medlemskap={grunnlag.medlemskap} />
+            <OppholdVisning erOppfylt={erOppfylt} medlemskap={grunnlag.medlemskap} />
         ),
     },
     SIVILSTAND: {

@@ -119,5 +119,6 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
  */
 export enum VilkårGruppe {
     MEDLEMSKAP = 'MEDLEMSKAP',
+    LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
 }

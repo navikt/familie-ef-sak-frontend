@@ -11,11 +11,11 @@ interface Props {
 const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => (
     <TabellVisning
         ikon={TabellIkon.REGISTER}
-        tittel="Oppholdsstatus"
+        tittel="Oppholdtillatelse"
         verdier={oppholdsstatus}
         kolonner={[
             {
-                overskrift: 'Oppholdstillatelse',
+                overskrift: 'Type',
                 tekstVerdi: (d) => oppholdsstatusTypeTilTekst[d.oppholdstillatelse],
             },
             {
