@@ -4,18 +4,27 @@ import { AxiosRequestConfig } from 'axios';
 import { Ressurs } from '../../typer/ressurs';
 import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import { BrukerMedBlyantIkon } from '../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import Moment from 'moment';
 
-interface BehandlingHistorikk {
+export enum Steg {
+    REGISTRERE_OPPLYSNINGER = 'Mottat opplysninger',
+    VILKÅRSVURDERE_INNGANGSVILKÅR = 'Vilkårsvurdering startet',
+    VILKÅRSVURDERE_STØNAD = 'Vilkårsvurere stønad',
+}
+
+interface BehandlingHistorikkProps {
     behandlingId: string;
-    steg: string; //TODO ENUM
+    steg: Steg;
     endretAvNavn: string;
     endretAvMail: string;
     endretTid: string;
+    vedtak: string;
 }
-const stegTilTekst = {
-    REGISTRERE_OPPLYSNINGER: 'Mottat opplysninger',
-    VILKÅRSVURDERE_INNGANGSVILKÅR: 'Vilkårsvurdering startet',
-};
+
+function formatDate(date: string) {
+    return Moment(date).format('DD-MM-YYYY - HH:mm').toString();
+}
 
 const BehandlingHistorikk = (props: { behandlingId: string }) => {
     const behandlingHistorikkLogg: AxiosRequestConfig = useMemo(
@@ -26,18 +35,26 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
         [props.behandlingId]
     );
 
-    const behandlingHistorikk: Ressurs<BehandlingHistorikk[]> = useDataHenter<
-        BehandlingHistorikk[],
+    const behandlingHistorikk: Ressurs<BehandlingHistorikkProps[]> = useDataHenter<
+        BehandlingHistorikkProps[],
         null
     >(behandlingHistorikkLogg);
 
     return (
         <DataViewer response={behandlingHistorikk}>
-            {(data: BehandlingHistorikk[]) => {
+            {(data: BehandlingHistorikkProps[]) => {
                 return (
                     <>
                         {data.map((v) => (
-                            <div>{stegTilTekst[v.steg] || v.steg}</div>
+                            <div>
+                                {v.steg && v.steg}
+                                <br />
+                                <BrukerMedBlyantIkon />
+                                {v.endretAvNavn && v.endretAvNavn}
+                                <br />
+                                {v.endretTid && formatDate(v.endretTid)}
+                                <br />
+                            </div>
                         ))}
                     </>
                 );
