@@ -1,0 +1,42 @@
+.list {
+  border-top: 1px solid #c6c2bf;
+  background: white;
+  list-style: none;
+  margin: 0;
+  padding: 14px 24px;
+}
+
+.tekst() {
+  margin: 2px 0;
+  padding: 0;
+  font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #3e3832;
+}
+
+.hendelsesnavn {
+  .tekst();
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.hendelsesdato {
+  .tekst();
+  font-size: 14px;
+  color: #78706a;
+}
+
+.hendelsesbeskrivelse {
+  .tekst();
+}
+
+.loggItem {
+  position: relative;
+  margin: 0;
+  padding: 14px 0 14px 46px;
+  font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #C6C2BF;
+  }
+}

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {useMemo} from 'react';
-import {AxiosRequestConfig} from 'axios';
-import {Ressurs} from '../../typer/ressurs';
-import {useDataHenter} from '../../hooks/felles/useDataHenter';
+import { useMemo } from 'react';
+import { AxiosRequestConfig } from 'axios';
+import { Ressurs } from '../../typer/ressurs';
+import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import  { LoggItem } from '@navikt/helse-frontend-logg/lib/src/components/LoggItem';
-import { HendelseMedId, Hendelsetype} from '@navikt/helse-frontend-logg/src/types';
+import Moment from 'moment';
+import './LoggItem.less';
 
 export enum Steg {
     REGISTRERE_OPPLYSNINGER = 'Mottat opplysninger',
@@ -19,24 +19,13 @@ interface BehandlingHistorikkProps {
     endretAvNavn: string;
     endretAvMail: string;
     endretTid: string;
-    vedtak: string;
 }
 
-function hendelser(behandlinger: BehandlingHistorikkProps[]) : HendelseMedId[] {
-    const hendelser : HendelseMedId[] =
-        behandlinger.map(it => {
-            const hendelse : HendelseMedId = {
-                id: it.behandlingId,
-                navn: it.steg.toString(),
-                type: Hendelsetype.Meldinger,
-                dato: it.endretTid
-            };
-            return hendelse;
-        });
-    return hendelser;
-    }
-const BehandlingHistorikk = (props: { behandlingId: string }) => {
+function formatDate(date: string) {
+    return Moment(date).format('DD-MM-YYYY - HH:mm').toString();
+}
 
+const BehandlingHistorikk = (props: { behandlingId: string }) => {
     const behandlingHistorikkLogg: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -45,19 +34,23 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
         [props.behandlingId]
     );
 
-    const behandlingHistorikk: Ressurs<BehandlingHistorikkProps[]> = useDataHenter<BehandlingHistorikkProps[],
-        null>(behandlingHistorikkLogg);
-
+    const behandlingHistorikk: Ressurs<BehandlingHistorikkProps[]> = useDataHenter<
+        BehandlingHistorikkProps[],
+        null
+    >(behandlingHistorikkLogg);
 
     return (
         <DataViewer response={behandlingHistorikk}>
             {(data: BehandlingHistorikkProps[]) => {
                 return (
                     <>
-                        {hendelser(data).map((v) => (
-                            <div>
-                                <LoggItem key={v.id} hendelse={v}  />
-                            </div>
+                        {data.map((v) => (
+                            <ul className="list">
+                                <li className="loggitem">
+                                    <p className="hendelsesnavn">{v.steg}</p>
+                                    <p className="hendelsesdato">{formatDate(v.endretTid)}</p>
+                                </li>
+                            </ul>
                         ))}
                     </>
                 );
