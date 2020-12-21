@@ -54,10 +54,6 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
                         <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
                     )}
 
-                    {finnesOppholdsstatus && (
-                        <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
-                    )}
-
                     {finnesInnflyttingUtflytting && (
                         <InnflyttingUtflytting
                             innflytting={registergrunnlag.innflytting}
