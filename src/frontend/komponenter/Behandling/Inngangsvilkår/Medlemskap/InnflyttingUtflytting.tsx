@@ -3,6 +3,7 @@ import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../../../typer/per
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -17,32 +18,36 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                 Innflytting og utflytting
             </Element>
             {['Innflytting fra', 'Dato'].map((kolonneTittel, index) => (
-                <Element className={index === 0 ? 'førsteDataKolonne' : ''}>
+                <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
                     {kolonneTittel}
                 </Element>
             ))}
-            {innflytting.map((innflytting) => (
-                <>
+            {innflytting.map((innflytting, index) => (
+                <React.Fragment key={index}>
                     <Normaltekst className="førsteDataKolonne">
                         {innflytting.fraflyttingsland}
                         {innflytting.fraflyttingssted && ',' + innflytting.fraflyttingssted}
                     </Normaltekst>
-                    <Normaltekst className="kolonne">Todo</Normaltekst>
-                </>
+                    <Normaltekst className="kolonne">
+                        {formaterNullableIsoDato(innflytting.dato)}
+                    </Normaltekst>
+                </React.Fragment>
             ))}
             {['Utflyttet til', 'Dato'].map((kolonneTittel, index) => (
-                <Element className={index === 0 ? 'førsteDataKolonne' : ''}>
+                <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
                     {kolonneTittel}
                 </Element>
             ))}
-            {utflytting.map((utflytting) => (
-                <>
+            {utflytting.map((utflytting, index) => (
+                <React.Fragment key={index}>
                     <Normaltekst className="førsteDataKolonne">
                         {utflytting.tilflyttingsland}
                         {utflytting.tilflyttingssted && ',' + utflytting.tilflyttingssted}
                     </Normaltekst>
-                    <Normaltekst className="kolonne">Todo</Normaltekst>
-                </>
+                    <Normaltekst className="kolonne">
+                        {formaterNullableIsoDato(utflytting.dato)}
+                    </Normaltekst>
+                </React.Fragment>
             ))}
         </StyledTabell>
     );

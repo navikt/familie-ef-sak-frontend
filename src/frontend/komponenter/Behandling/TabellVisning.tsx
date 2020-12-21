@@ -38,14 +38,17 @@ function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T
                 {tittel}
             </Element>
             {kolonner.map((headerValue, index) => (
-                <Element className={index === 0 ? 'førsteDataKolonne' : ''}>
+                <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
                     {headerValue.overskrift}
                 </Element>
             ))}
             {verdier.map((item) =>
                 kolonner.map((headerValue, index) => (
-                    <Normaltekst className={index === 0 ? 'førsteDataKolonne' : 'kolonne'}>
-                        {headerValue.tekstVerdi(item)}
+                    <Normaltekst
+                        className={index === 0 ? 'førsteDataKolonne' : 'kolonne'}
+                        key={index}
+                    >
+                        {headerValue.tekstVerdi(item) || ''}
                     </Normaltekst>
                 ))
             )}

@@ -78,11 +78,13 @@ export interface ISivilstand {
 export interface IInnflyttingTilNorge {
     fraflyttingsland?: string;
     fraflyttingssted?: string;
+    dato?: string;
 }
 
 export interface IUtflyttingFraNorge {
     tilflyttingsland?: string;
     tilflyttingssted?: string;
+    dato?: string;
 }
 
 export interface IOppholdstillatelse {

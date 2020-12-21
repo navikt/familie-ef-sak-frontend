@@ -6,7 +6,7 @@ import {
     VilkårGruppe,
     Vurderingsfeilmelding,
 } from '../Inngangsvilkår/vilkår';
-import { alleErOppfylte, filtrerVurderinger } from './VurderingUtil';
+import { filtrerVurderinger, vilkårStatus } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { navLysGra } from '@navikt/familie-header';
@@ -43,7 +43,7 @@ interface Props {
 const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering, feilmeldinger }) => {
     const vurderinger = inngangsvilkår.vurderinger;
     const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
-    const erOppfylte = alleErOppfylte(filtrerteVurderinger);
+    const status = vilkårStatus(filtrerteVurderinger);
 
     const config = VilkårGruppeConfig[vilkårGruppe];
     if (!config) {
@@ -52,7 +52,7 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering, 
 
     return (
         <StyledVilkårOgVurdering>
-            <StyledVisning>{config.visning(erOppfylte, inngangsvilkår.grunnlag)}</StyledVisning>
+            <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status)}</StyledVisning>
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering

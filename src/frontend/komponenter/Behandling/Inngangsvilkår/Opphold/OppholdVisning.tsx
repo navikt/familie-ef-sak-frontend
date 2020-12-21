@@ -9,27 +9,30 @@ import {
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import VilkårOppfylt from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { IMedlemskap } from '../Medlemskap/typer';
 import Statsborgerskap from '../Medlemskap/Statsborgerskap';
 import Oppholdsstatus from '../Medlemskap/Oppholdsstatus';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
+import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 
 interface Props {
     medlemskap: IMedlemskap;
-    erOppfylt: boolean;
+    vilkårStatus: VilkårStatus;
 }
 
-const OppholdVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
+const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
     const finnesUtenlandsperioder = søknadsgrunnlag.utenlandsopphold.length > 0;
+    const finnesInnflyttingUtflytting =
+        registergrunnlag.innflytting.length > 0 || registergrunnlag.utflytting.length > 0;
 
     return (
         <>
             <StyledTabell>
-                <VilkårOppfylt erOppfylt={erOppfylt} />
+                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Opphold i Norge</Undertittel>
                     <EtikettLiten>§15-3 </EtikettLiten>
@@ -42,20 +45,24 @@ const OppholdVisning: FC<Props> = ({ medlemskap, erOppfylt }) => {
                 <Søknadsgrunnlag />
                 <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
                 <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
-
-                <Søknadsgrunnlag />
-                <Normaltekst>Har bodd i Norge siste tre år</Normaltekst>
-                <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
             </StyledTabell>
 
             <StyledLesmerpanel>
-                <Lesmerpanel
-                    apneTekst={'Vis info om medlemskap'}
-                    lukkTekst={'Lukk info om medlemskap'}
-                >
+                <Lesmerpanel apneTekst={'Vis info om opphold'} lukkTekst={'Lukk info om opphold'}>
                     <Statsborgerskap statsborgerskap={registergrunnlag.statsborgerskap} />
                     {finnesOppholdsstatus && (
                         <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
+                    )}
+
+                    {finnesOppholdsstatus && (
+                        <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
+                    )}
+
+                    {finnesInnflyttingUtflytting && (
+                        <InnflyttingUtflytting
+                            innflytting={registergrunnlag.innflytting}
+                            utflytting={registergrunnlag.utflytting}
+                        />
                     )}
 
                     {finnesUtenlandsperioder && (

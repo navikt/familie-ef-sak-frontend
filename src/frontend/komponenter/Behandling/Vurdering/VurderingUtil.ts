@@ -1,9 +1,22 @@
 import { IDelvilkår, IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { IVilkårConfig, VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { SivilstandType } from '../../../typer/personopplysninger';
+import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
+
+export const vilkårStatus = (vurderinger: IVurdering[]): VilkårStatus => {
+    if (alleErOppfylte(vurderinger)) {
+        return VilkårStatus.OPPFYLT;
+    } else if (
+        vurderinger.some((vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_VURDERT)
+    ) {
+        return VilkårStatus.IKKE_VURDERT;
+    } else {
+        return VilkårStatus.IKKE_OPPFYLT;
+    }
+};
 
 export const filtrerVurderinger = (
     vurderinger: IVurdering[],
@@ -23,7 +36,11 @@ export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[
 export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
 
-    if (manglerBegrunnelse(begrunnelse)) {
+    const begrunnlsePåkrevd =
+        config.begrunnelsePåkrevdHvisOppfylt === undefined
+            ? true
+            : config.begrunnelsePåkrevdHvisOppfylt;
+    if (begrunnlsePåkrevd && manglerBegrunnelse(begrunnelse)) {
         return false;
     }
     const besvarteDelvilkår = finnBesvarteDelvilkår(delvilkårsvurderinger);
@@ -39,7 +56,7 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
         return true;
     } else if (harBesvartPåAlleDelvilkår(delvilkårsvurderinger)) {
         const harUnntak = config.unntak.length !== 0;
-        return harUnntak ? !!vurdering.unntak : true;
+        return harUnntak ? !!vurdering.unntak && !manglerBegrunnelse(begrunnelse) : true;
     }
     return false;
 };
