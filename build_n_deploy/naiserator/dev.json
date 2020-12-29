@@ -1,0 +1,5 @@
+{
+    "ingresses": ["https://ensligmorellerfar.dev.intern.nav.no"],
+    "externals": ["familie-ef-sak.dev-fss.nais.io"],
+    "tenant": "trygdeetaten.no"
+}

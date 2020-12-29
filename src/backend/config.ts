@@ -14,22 +14,20 @@ const Environment = () => {
             buildPath: '../../frontend_production',
             namespace: 'e2e',
             proxyUrl: 'http://familie-ef-sak:8093',
-            redisUrl: 'familie-redis',
+            //Har ikke satt opp redis
         };
     } else if (process.env.ENV === 'preprod') {
         return {
             buildPath: '../../frontend_production',
             namespace: 'preprod',
-            proxyUrl: 'http://familie-ef-sak',
-            redisUrl: 'familie-ef-sak-frontend-redis.default.svc.nais.local',
+            proxyUrl: 'https://familie-ef-sak.dev-fss.nais.io',
         };
     }
 
     return {
         buildPath: '../../frontend_production',
         namespace: 'production',
-        proxyUrl: 'http://familie-ef-sak',
-        redisUrl: 'familie-ef-sak-frontend-redis.default.svc.nais.local',
+        proxyUrl: 'https://familie-ef-sak.prod-fss.nais.io',
     };
 };
 const env = Environment();
@@ -38,7 +36,7 @@ export const sessionConfig: ISessionKonfigurasjon = {
     cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
     navn: 'familie-ef-sak-v1',
     redisPassord: process.env.REDIS_PASSWORD,
-    redisUrl: env.redisUrl,
+    redisUrl: process.env.REDIS_HOST,
     secureCookie: process.env.ENV === 'local' || process.env.ENV === 'e2e' ? false : true,
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
