@@ -24,12 +24,16 @@ spec:
     path: /metrics
   ingresses:
   {{#each ingresses as |url|}}
-    - {{url }}
+    - {{url}}
   {{/each}}
   azure:
     application:
       enabled: true
       tenant: {{tenant}}
+      replyURLs:
+      {{#each ingresses as |url|}}
+        - {{url}}/auth/openid/callback
+      {{/each}}
   resources:
     limits:
       cpu: 2000m
