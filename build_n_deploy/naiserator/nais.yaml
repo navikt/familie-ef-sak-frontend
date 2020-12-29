@@ -28,7 +28,7 @@ spec:
   {{/each}}
   azure:
     application:
-      enabled: true #TODO overskreve CLIENT_ID/CLIENT_SECRET/AAD_DISCOVERY_URL
+      enabled: true
       tenant: {{tenant}}
   resources:
     limits:
@@ -41,10 +41,18 @@ spec:
       rules:
         - application: familie-ef-sak
         - application: familie-ef-sak-frontend-redis
+      external:
+        {{#each externals as |host|}}
+        - host: {{host}}
+        {{/each}}
   envFrom:
     - secret: familie-ef-sak-frontend
   env:
     - name: APP_VERSION
       value: "{{version}}"
     - name: REDIS_HOST
-      value: familie-ef-sak-frontend-redis.teamfamilie.svc.nais.local
+      value: familie-ef-sak-frontend-redis
+    {{#each env}}
+    - name: {{@key}}
+      value: "{{this}}"
+    {{/each}}

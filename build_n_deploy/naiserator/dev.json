@@ -1,5 +1,8 @@
 {
     "ingresses": ["https://ensligmorellerfar.dev.intern.nav.no"],
     "externals": ["familie-ef-sak.dev-fss.nais.io"],
-    "tenant": "trygdeetaten.no"
+    "tenant": "trygdeetaten.no",
+    "env": {
+        "ENV": "preprod"
+    }
 }

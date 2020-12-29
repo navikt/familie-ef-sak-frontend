@@ -1,5 +1,8 @@
 {
     "ingresses": ["https://ensligmorellerfar.intern.nav.no"],
     "externals": ["familie-ef-sak.prod-fss.nais.io"],
-    "tenant": "nav.no"
+    "tenant": "nav.no",
+    "env": {
+        "ENV": "production"
+    }
 }
