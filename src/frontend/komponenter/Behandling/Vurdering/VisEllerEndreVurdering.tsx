@@ -62,7 +62,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 <VisVurdering
                     vurdering={vurdering}
                     settRedigeringsmodus={settRedigeringsmodus}
-                    lagreVurdering={lagreVurdering}
+                    resetVurdering={lagreVurdering}
                 />
             );
     }

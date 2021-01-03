@@ -58,11 +58,11 @@ const StyledIkonOgTittel = styled.span`
 
 interface Props {
     vurdering: IVurdering;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    resetVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
 
-const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering, lagreVurdering }) => {
+const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering, resetVurdering }) => {
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
@@ -78,7 +78,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering, lagreVurderi
                 <StyledKnapp
                     className={'lenke'}
                     onClick={() =>
-                        lagreVurdering(nullstillVurdering(vurdering)).then((response) => {
+                        resetVurdering(nullstillVurdering(vurdering)).then((response) => {
                             if (response.status === RessursStatus.SUKSESS) {
                                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
                             }
