@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import {
     delvilkårTypeTilTekst,
@@ -59,10 +59,16 @@ const StyledIkonOgTittel = styled.span`
 interface Props {
     vurdering: IVurdering;
     resetVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
 
-const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering, resetVurdering }) => {
+const VisVurdering: FC<Props> = ({
+    settRedigeringsmodus,
+    vurdering,
+    resetVurdering,
+    feilmelding,
+}) => {
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
@@ -89,6 +95,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering, resetVurderi
                     <span>Slett</span>
                 </StyledKnapp>
             </StyledRedigerOgSlettKnapp>
+            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
 
             <StyledStrek />
 

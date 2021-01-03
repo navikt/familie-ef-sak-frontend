@@ -63,6 +63,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     vurdering={vurdering}
                     settRedigeringsmodus={settRedigeringsmodus}
                     resetVurdering={lagreVurdering}
+                    feilmelding={feilmelding}
                 />
             );
     }
