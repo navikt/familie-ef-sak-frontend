@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IUtenlandsopphold } from '../vilkår';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import TabellVisning, { TabellIkon } from '../../TabellVisning';
+import { IUtenlandsopphold } from './typer';
 
 interface Props {
     utenlandsopphold: IUtenlandsopphold[];

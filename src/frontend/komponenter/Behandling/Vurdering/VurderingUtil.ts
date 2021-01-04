@@ -63,7 +63,7 @@ export const skalViseLagreKnappSivilstand = (
     return false;
 };
 
-const manglerBegrunnelse = (begrunnelse: string | undefined) => {
+const manglerBegrunnelse = (begrunnelse: string | undefined | null) => {
     return !begrunnelse || begrunnelse.trim().length === 0;
 };
 
@@ -72,4 +72,32 @@ const finnBesvarteDelvilkår = (delvilkårsvurderinger: IDelvilkår[]) => {
         (delvilkår) =>
             delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
     );
+};
+
+export const nullstillVurdering = (vurdering: IVurdering): IVurdering => {
+    const { delvilkårsvurderinger } = vurdering;
+
+    const nullstillDelvilkår = (delvilkår: IDelvilkår): IDelvilkår => {
+        if (
+            delvilkår.resultat === Vilkårsresultat.JA ||
+            delvilkår.resultat === Vilkårsresultat.NEI
+        ) {
+            return {
+                type: delvilkår.type,
+                resultat: Vilkårsresultat.IKKE_VURDERT,
+            };
+        } else return delvilkår;
+    };
+
+    const nullstilteDelkvilkårsvurderinger: IDelvilkår[] = delvilkårsvurderinger.map((delvilkår) =>
+        nullstillDelvilkår(delvilkår)
+    );
+
+    return {
+        ...vurdering,
+        resultat: Vilkårsresultat.IKKE_VURDERT,
+        begrunnelse: null,
+        unntak: null,
+        delvilkårsvurderinger: nullstilteDelkvilkårsvurderinger,
+    };
 };
