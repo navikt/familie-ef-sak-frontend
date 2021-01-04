@@ -14,7 +14,7 @@ interface Props {
 const SivilstandVisning: FC<Props> = ({ sivilstand, erOppfylt }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
-        ? `${sivilstandTilTekst[registergrunnlag.type]}. ${registergrunnlag.gyldigFraOgMed}`
+        ? `${sivilstandTilTekst[registergrunnlag.type]} ${registergrunnlag.gyldigFraOgMed}`
         : sivilstandTilTekst[registergrunnlag.type];
 
     return (
