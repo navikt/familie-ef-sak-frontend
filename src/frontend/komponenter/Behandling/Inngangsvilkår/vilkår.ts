@@ -16,8 +16,8 @@ export interface IVurdering {
     resultat: Vilkårsresultat;
     behandlingId: string;
     vilkårType: VilkårType;
-    begrunnelse?: string;
-    unntak?: UnntakType;
+    begrunnelse?: string | null;
+    unntak?: UnntakType | null;
     delvilkårsvurderinger: IDelvilkår[];
     endretAv: string;
     endretTid: string;
