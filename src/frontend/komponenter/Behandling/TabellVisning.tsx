@@ -42,12 +42,12 @@ function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T
             <Element className="tittel" tag="h3">
                 {tittel}
             </Element>
-            <GridTabell verdier={verdier} kolonner={kolonner} />
+            <Grid verdier={verdier} kolonner={kolonner} />
         </StyledTabell>
     );
 }
 
-export function GridTabell<T>(props: TabellProps<T>): React.ReactElement<TabellProps<T>> {
+export function Grid<T>(props: TabellProps<T>): React.ReactElement<TabellProps<T>> {
     const { verdier, kolonner } = props;
     return (
         <>
