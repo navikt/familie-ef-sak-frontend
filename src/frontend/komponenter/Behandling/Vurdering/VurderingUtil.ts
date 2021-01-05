@@ -36,11 +36,7 @@ export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[
 export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
 
-    const begrunnlsePåkrevd =
-        config.begrunnelsePåkrevdHvisOppfylt === undefined
-            ? true
-            : config.begrunnelsePåkrevdHvisOppfylt;
-    if (begrunnlsePåkrevd && manglerBegrunnelse(begrunnelse)) {
+    if (config.begrunnelsePåkrevdHvisOppfylt && manglerBegrunnelse(begrunnelse)) {
         return false;
     }
     const besvarteDelvilkår = finnBesvarteDelvilkår(delvilkårsvurderinger);

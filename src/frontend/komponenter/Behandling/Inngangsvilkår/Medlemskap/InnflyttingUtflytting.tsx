@@ -1,9 +1,11 @@
 import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../../../typer/personopplysninger';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { slåSammenTekst } from '../../../../utils/utils';
+import { Tabell } from '../../TabellVisning';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -17,38 +19,41 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
             <Element className="tittel" tag="h3">
                 Innflytting og utflytting
             </Element>
-            {['Innflytting fra', 'Dato'].map((kolonneTittel, index) => (
-                <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
-                    {kolonneTittel}
-                </Element>
-            ))}
-            {innflytting.map((innflytting, index) => (
-                <React.Fragment key={index}>
-                    <Normaltekst className="førsteDataKolonne">
-                        {innflytting.fraflyttingsland}
-                        {innflytting.fraflyttingssted && ',' + innflytting.fraflyttingssted}
-                    </Normaltekst>
-                    <Normaltekst className="kolonne">
-                        {formaterNullableIsoDato(innflytting.dato)}
-                    </Normaltekst>
-                </React.Fragment>
-            ))}
-            {['Utflyttet til', 'Dato'].map((kolonneTittel, index) => (
-                <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
-                    {kolonneTittel}
-                </Element>
-            ))}
-            {utflytting.map((utflytting, index) => (
-                <React.Fragment key={index}>
-                    <Normaltekst className="førsteDataKolonne">
-                        {utflytting.tilflyttingsland}
-                        {utflytting.tilflyttingssted && ',' + utflytting.tilflyttingssted}
-                    </Normaltekst>
-                    <Normaltekst className="kolonne">
-                        {formaterNullableIsoDato(utflytting.dato)}
-                    </Normaltekst>
-                </React.Fragment>
-            ))}
+            <Tabell
+                kolonneInfo={[
+                    {
+                        overskrift: 'Innflytting til',
+                        tekstVerdi: (innflytting) =>
+                            slåSammenTekst(
+                                innflytting.fraflyttingsland,
+                                innflytting.fraflyttingssted
+                            ),
+                    },
+                    {
+                        overskrift: 'Dato',
+                        tekstVerdi: (innflytting) =>
+                            formaterNullableIsoDato(innflytting.dato) || '',
+                    },
+                ]}
+                verdier={innflytting}
+            />
+            <Tabell
+                kolonneInfo={[
+                    {
+                        overskrift: 'Utflytting fra',
+                        tekstVerdi: (utflytting) =>
+                            slåSammenTekst(
+                                utflytting.tilflyttingsland,
+                                utflytting.tilflyttingssted
+                            ),
+                    },
+                    {
+                        overskrift: 'Dato',
+                        tekstVerdi: (utflytting) => formaterNullableIsoDato(utflytting.dato) || '',
+                    },
+                ]}
+                verdier={utflytting}
+            />
         </StyledTabell>
     );
 };
