@@ -14,7 +14,7 @@ export interface IVilkårConfig {
     renderVurdering: (props: VurderingProps) => ReactChild;
     unntak: UnntakType[];
     delvilkår: DelvilkårType[];
-    begrunnelsePåkrevdHvisOppfylt?: boolean;
+    begrunnelsePåkrevdHvisOppfylt: boolean;
 }
 
 export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
@@ -62,5 +62,6 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
             DelvilkårType.SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING,
             DelvilkårType.KRAV_SIVILSTAND,
         ],
+        begrunnelsePåkrevdHvisOppfylt: true,
     },
 };
