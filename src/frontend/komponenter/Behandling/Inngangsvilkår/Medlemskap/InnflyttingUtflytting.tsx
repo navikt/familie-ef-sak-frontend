@@ -5,7 +5,7 @@ import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { slåSammenTekst } from '../../../../utils/utils';
-import { Tabell } from '../../TabellVisning';
+import { GridTabell } from '../../TabellVisning';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -19,7 +19,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
             <Element className="tittel" tag="h3">
                 Innflytting og utflytting
             </Element>
-            <Tabell
+            <GridTabell
                 kolonner={[
                     {
                         overskrift: 'Innflytting til',
@@ -37,7 +37,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                 ]}
                 verdier={innflytting}
             />
-            <Tabell
+            <GridTabell
                 kolonner={[
                     {
                         overskrift: 'Utflytting fra',
