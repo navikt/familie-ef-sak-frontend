@@ -36,6 +36,7 @@ const GenerellVurdering: FC<{
     const { config, vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger;
     const sisteDelvilkår: IDelvilkår = delvilkårsvurderinger[delvilkårsvurderinger.length - 1];
+
     return (
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {

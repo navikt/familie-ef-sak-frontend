@@ -14,6 +14,7 @@ export interface IVilkårConfig {
     renderVurdering: (props: VurderingProps) => ReactChild;
     unntak: UnntakType[];
     delvilkår: DelvilkårType[];
+    begrunnelsePåkrevdHvisOppfylt: boolean;
 }
 
 export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
@@ -21,17 +22,28 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
         renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
         unntak: [
+            UnntakType.MEDLEM_MER_ENN_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR,
+            UnntakType.MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR,
+            UnntakType.I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG,
+            UnntakType.ANDRE_FORELDER_MEDLEM_SISTE_3_ÅR,
+            UnntakType.ANDRE_FORELDER_MEDLEM_MINST_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR,
+            UnntakType.ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR,
+            UnntakType.TOTALVURDERING_OPPFYLLER_FORSKRIFT,
+            UnntakType.IKKE_OPPFYLT,
+        ],
+        delvilkår: [DelvilkårType.TRE_ÅRS_MEDLEMSKAP],
+        begrunnelsePåkrevdHvisOppfylt: false,
+    },
+    LOVLIG_OPPHOLD: {
+        vilkårGruppe: VilkårGruppe.LOVLIG_OPPHOLD,
+        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
+        unntak: [
             UnntakType.ARBEID_NORSK_ARBEIDSGIVER,
             UnntakType.UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER,
             UnntakType.IKKE_OPPFYLT,
         ],
-        delvilkår: [DelvilkårType.TRE_ÅRS_MEDLEMSKAP, DelvilkårType.DOKUMENTERT_FLYKTNINGSTATUS],
-    },
-    LOVLIG_OPPHOLD: {
-        vilkårGruppe: VilkårGruppe.MEDLEMSKAP,
-        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
-        unntak: [],
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
+        begrunnelsePåkrevdHvisOppfylt: false,
     },
     SIVILSTAND: {
         vilkårGruppe: VilkårGruppe.SIVILSTAND,
@@ -50,5 +62,6 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
             DelvilkårType.SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING,
             DelvilkårType.KRAV_SIVILSTAND,
         ],
+        begrunnelsePåkrevdHvisOppfylt: true,
     },
 };

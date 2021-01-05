@@ -100,6 +100,13 @@ export enum UnntakType {
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER = 'UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER',
     GJENLEVENDE_OVERTAR_OMSORG = 'GJENLEVENDE_OVERTAR_OMSORG',
     GJENLEVENDE_IKKE_RETT_TIL_YTELSER = 'GJENLEVENDE_IKKE_RETT_TIL_YTELSER',
+    MEDLEM_MER_ENN_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR = 'MEDLEM_MER_ENN_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR',
+    MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR = 'MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR',
+    I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG = 'I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG',
+    ANDRE_FORELDER_MEDLEM_SISTE_3_ÅR = 'ANDRE_FORELDER_MEDLEM_SISTE_3_ÅR',
+    ANDRE_FORELDER_MEDLEM_MINST_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR = 'ANDRE_FORELDER_MEDLEM_MINST_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR',
+    ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR = 'ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR',
+    TOTALVURDERING_OPPFYLLER_FORSKRIFT = 'TOTALVURDERING_OPPFYLLER_FORSKRIFT',
 }
 
 export const unntakTypeTilTekst: Record<UnntakType, string> = {
@@ -110,6 +117,20 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
         'Ja, gjenlevende som etter dødsfallet overtar omsorgen for egne særkullsbarn',
     GJENLEVENDE_IKKE_RETT_TIL_YTELSER:
         'Ja, gjenlevende som etter dødsfallet får barn som avdøde ikke er mor/far til, og som ikke har rett til ytelser etter kap.17',
+    ANDRE_FORELDER_MEDLEM_MINST_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
+        'Medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst tre år (eventuelt fem år) etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
+    ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR:
+        'Medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
+    ANDRE_FORELDER_MEDLEM_SISTE_3_ÅR:
+        'Medlem og bosatt når stønadstilfellet oppstod, den andre forelderen er bosatt og har vært medlem siste tre år',
+    I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG:
+        'Medlem og bosatt når stønadstilfellet oppstod, kom til landet for gjenforening med ektefelle/samboer med felles barn, eller for å gifte seg med en som er bosatt, og hadde gyldig oppholdstillatelse ved ankomst',
+    MEDLEM_MER_ENN_3_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
+        'Medlem i minst tre år (eventuelt fem år) etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 å',
+    MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR:
+        'Medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
+    TOTALVURDERING_OPPFYLLER_FORSKRIFT:
+        'Totalvurdering viser at forholdene går inn under forskriften om kravet om tre års (eventuelt fem års) forutgående medlemskap',
 };
 
 // ------ VILKÅRGRUPPE
@@ -119,5 +140,6 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
  */
 export enum VilkårGruppe {
     MEDLEMSKAP = 'MEDLEMSKAP',
+    LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
 }

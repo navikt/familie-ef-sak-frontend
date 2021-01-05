@@ -15,6 +15,11 @@ export interface Kolonndata<T> {
     kolonner: Kolonner<T>[];
 }
 
+interface TabellProps<T> {
+    verdier: T[];
+    kolonner: Kolonner<T>[];
+}
+
 export interface Kolonner<T> {
     overskrift: string;
     tekstVerdi: (data: T) => string | undefined;
@@ -37,19 +42,31 @@ function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T
             <Element className="tittel" tag="h3">
                 {tittel}
             </Element>
-            {kolonner.map((headerValue, index) => (
-                <Element className={index === 0 ? 'førsteDataKolonne' : ''}>
-                    {headerValue.overskrift}
+            <Tabell verdier={verdier} kolonner={kolonner} />
+        </StyledTabell>
+    );
+}
+
+export function Tabell<T>(props: TabellProps<T>): React.ReactElement<TabellProps<T>> {
+    const { verdier, kolonner } = props;
+    return (
+        <>
+            {kolonner.map((kolonne, index) => (
+                <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
+                    {kolonne.overskrift}
                 </Element>
             ))}
             {verdier.map((item) =>
-                kolonner.map((headerValue, index) => (
-                    <Normaltekst className={index === 0 ? 'førsteDataKolonne' : 'kolonne'}>
-                        {headerValue.tekstVerdi(item)}
+                kolonner.map((kolonne, index) => (
+                    <Normaltekst
+                        className={index === 0 ? 'førsteDataKolonne' : 'kolonne'}
+                        key={index}
+                    >
+                        {kolonne.tekstVerdi(item) || ''}
                     </Normaltekst>
                 ))
             )}
-        </StyledTabell>
+        </>
     );
 }
 
