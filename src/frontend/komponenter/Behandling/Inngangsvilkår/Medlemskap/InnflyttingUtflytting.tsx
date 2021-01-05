@@ -20,7 +20,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                 Innflytting og utflytting
             </Element>
             <Tabell
-                kolonneInfo={[
+                kolonner={[
                     {
                         overskrift: 'Innflytting til',
                         tekstVerdi: (innflytting) =>
@@ -38,7 +38,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                 verdier={innflytting}
             />
             <Tabell
-                kolonneInfo={[
+                kolonner={[
                     {
                         overskrift: 'Utflytting fra',
                         tekstVerdi: (utflytting) =>
