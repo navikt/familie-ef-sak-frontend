@@ -6,7 +6,7 @@ import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import Statsborgerskap from './Statsborgerskap';
-import Oppholdsstatus from './Oppholdsstatus';
+import Oppholdstillatelse from './Oppholdstillatelse';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
@@ -52,7 +52,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
                     />
 
                     {finnesOppholdsstatus && (
-                        <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
+                        <Oppholdstillatelse oppholdsstatus={registergrunnlag.oppholdstatus} />
                     )}
 
                     {finnesInnflyttingUtflytting && (

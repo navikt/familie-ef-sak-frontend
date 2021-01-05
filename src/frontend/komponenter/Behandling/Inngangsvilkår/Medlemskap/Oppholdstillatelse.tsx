@@ -8,10 +8,10 @@ interface Props {
     oppholdsstatus: IOppholdstatus[];
 }
 
-const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => (
+const Oppholdstillatelse: FC<Props> = ({ oppholdsstatus }) => (
     <TabellVisning
         ikon={TabellIkon.REGISTER}
-        tittel="Oppholdtillatelse"
+        tittel="Oppholdstillatelse"
         verdier={oppholdsstatus}
         kolonner={[
             {
@@ -30,4 +30,4 @@ const Oppholdsstatus: FC<Props> = ({ oppholdsstatus }) => (
     />
 );
 
-export default Oppholdsstatus;
+export default Oppholdstillatelse;

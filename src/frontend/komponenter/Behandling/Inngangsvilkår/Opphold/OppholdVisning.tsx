@@ -12,7 +12,7 @@ import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavK
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { IMedlemskap } from '../Medlemskap/typer';
 import Statsborgerskap from '../Medlemskap/Statsborgerskap';
-import Oppholdsstatus from '../Medlemskap/Oppholdsstatus';
+import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 
@@ -51,7 +51,7 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
                 <Lesmerpanel apneTekst={'Vis info om opphold'} lukkTekst={'Lukk info om opphold'}>
                     <Statsborgerskap statsborgerskap={registergrunnlag.statsborgerskap} />
                     {finnesOppholdsstatus && (
-                        <Oppholdsstatus oppholdsstatus={registergrunnlag.oppholdstatus} />
+                        <Oppholdstillatelse oppholdsstatus={registergrunnlag.oppholdstatus} />
                     )}
 
                     {finnesInnflyttingUtflytting && (
