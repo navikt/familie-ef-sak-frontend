@@ -11,6 +11,10 @@ export const StyledTabell = styled.div`
     grid-gap: 0.5rem;
     margin-bottom: 3rem;
 
+    > .typo-normal {
+        padding-right: 2.5rem;
+    }
+
     svg {
         max-height: 24px;
         grid-column: 1/2;
