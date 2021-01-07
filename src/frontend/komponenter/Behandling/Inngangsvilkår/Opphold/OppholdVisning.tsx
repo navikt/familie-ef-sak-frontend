@@ -2,24 +2,26 @@ import * as React from 'react';
 import { FC } from 'react';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import {
+    Registergrunnlag,
+    Søknadsgrunnlag,
+} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import Statsborgerskap from './Statsborgerskap';
-import Oppholdstillatelse from './Oppholdstillatelse';
-import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
-import { IMedlemskap } from './typer';
-import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
-import InnflyttingUtflytting from './InnflyttingUtflytting';
+import { IMedlemskap } from '../Medlemskap/typer';
+import Statsborgerskap from '../Medlemskap/Statsborgerskap';
+import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
+import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
+import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 
 interface Props {
     medlemskap: IMedlemskap;
     vilkårStatus: VilkårStatus;
 }
 
-const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
+const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
@@ -32,25 +34,22 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
             <StyledTabell>
                 <VilkårStatusIkon vilkårStatus={vilkårStatus} />
                 <div className="tittel">
-                    <Undertittel>Forutgående medlemskap</Undertittel>
-                    <EtikettLiten>§15-2</EtikettLiten>
+                    <Undertittel>Opphold i Norge</Undertittel>
+                    <EtikettLiten>§15-3 </EtikettLiten>
                 </div>
 
+                <Registergrunnlag />
+                <Normaltekst>Statsborgerskap</Normaltekst>
+                <Normaltekst>{registergrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
+
                 <Søknadsgrunnlag />
-                <Normaltekst>Har bodd i Norge siste 3 år</Normaltekst>
-                <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
+                <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
+                <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
             </StyledTabell>
 
             <StyledLesmerpanel>
-                <Lesmerpanel
-                    apneTekst={'Vis info om medlemskap'}
-                    lukkTekst={'Lukk info om medlemskap'}
-                >
+                <Lesmerpanel apneTekst={'Vis info om opphold'} lukkTekst={'Lukk info om opphold'}>
                     <Statsborgerskap statsborgerskap={registergrunnlag.statsborgerskap} />
-                    <FolkeregisterPersonstatus
-                        status={registergrunnlag.folkeregisterpersonstatus}
-                    />
-
                     {finnesOppholdsstatus && (
                         <Oppholdstillatelse oppholdsstatus={registergrunnlag.oppholdstatus} />
                     )}
@@ -70,4 +69,4 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
         </>
     );
 };
-export default MedlemskapVisning;
+export default OppholdVisning;

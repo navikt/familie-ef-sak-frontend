@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import {
     delvilkårTypeTilTekst,
@@ -16,15 +16,22 @@ import styled from 'styled-components';
 import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
 import Oppfylt from '../../../ikoner/Oppfylt';
 import navFarger from 'nav-frontend-core';
+import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { nullstillVurdering } from './VurderingUtil';
 
 const StyledVurdering = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, max-content);
-    grid-template-rows: repeat(3, max-content);
+    grid-template-columns: repeat(3, max-content);
+    grid-template-rows: repeat(2, max-content);
     grid-gap: 1rem;
 `;
-
-const StyledKnapp = styled.button``;
+const StyledRedigerOgSlettKnapp = styled.div`
+    min-width: auto;
+`;
+const StyledKnapp = styled.button`
+    min-width: 85px;
+`;
 
 const StyledStrek = styled.span`
     border-left: 3px solid ${navFarger.navLillaLighten20};
@@ -50,22 +57,45 @@ const StyledIkonOgTittel = styled.span`
 `;
 
 interface Props {
-    settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
     vurdering: IVurdering;
+    resetVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    feilmelding: string | undefined;
+    settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
 
-const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
+const VisVurdering: FC<Props> = ({
+    settRedigeringsmodus,
+    vurdering,
+    resetVurdering,
+    feilmelding,
+}) => {
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
             <Undertittel>Manuelt behandlet</Undertittel>
-            <StyledKnapp
-                className={'lenke'}
-                onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
-            >
-                <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
-                <span>Rediger</span>
-            </StyledKnapp>
+            <StyledRedigerOgSlettKnapp>
+                <StyledKnapp
+                    className={'lenke'}
+                    onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
+                >
+                    <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
+                    <span>Rediger</span>
+                </StyledKnapp>
+                <StyledKnapp
+                    className={'lenke'}
+                    onClick={() =>
+                        resetVurdering(nullstillVurdering(vurdering)).then((response) => {
+                            if (response.status === RessursStatus.SUKSESS) {
+                                settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
+                            }
+                        })
+                    }
+                >
+                    <SlettSøppelkasse width={19} heigth={19} withDefaultStroke={false} />
+                    <span>Slett</span>
+                </StyledKnapp>
+            </StyledRedigerOgSlettKnapp>
+            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
 
             <StyledStrek />
 
@@ -101,7 +131,7 @@ const VisVurdering: FC<Props> = ({ settRedigeringsmodus, vurdering }) => {
                     </>
                 )}
                 <Element>Begrunnelse</Element>
-                <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                {vurdering.begrunnelse && <Normaltekst>{vurdering.begrunnelse}</Normaltekst>}
             </StyledVilkår>
         </StyledVurdering>
     );

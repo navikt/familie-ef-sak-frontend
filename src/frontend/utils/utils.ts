@@ -46,3 +46,11 @@ export const base64toBlob = (b64Data: string, contentType = '', sliceSize = 512)
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
 };
+
+export const toTitleCase = (str: string): string =>
+    str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+
+export const slåSammenTekst = (...tekstElementer: (string | undefined)[]): string =>
+    tekstElementer
+        .filter((tekst) => tekst !== undefined && tekst !== null && tekst !== '')
+        .join(', ');
