@@ -31,6 +31,7 @@ export const filtrerVurderinger = (
         }
         return config.vilkårGruppe === vilkårGruppe;
     });
+
 export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[]): boolean =>
     !delvilkårsvurderinger.some((delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT);
 
@@ -60,11 +61,12 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
 
 export const skalViseLagreKnappSivilstand = (
     vurdering: IVurdering,
-    sivilstandType: SivilstandType
+    sivilstandType: SivilstandType,
+    erBegrunnelseFeltValgfritt: boolean
 ): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
 
-    if (manglerBegrunnelse(begrunnelse)) {
+    if (manglerBegrunnelse(begrunnelse) && !erBegrunnelseFeltValgfritt) {
         return false;
     }
 

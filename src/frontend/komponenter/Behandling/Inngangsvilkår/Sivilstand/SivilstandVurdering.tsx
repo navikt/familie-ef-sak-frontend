@@ -10,7 +10,13 @@ import {
     skalViseLagreKnappSivilstand,
 } from '../../Vurdering/VurderingUtil';
 import Unntak from '../../Vurdering/Unntak';
-import { SivilstandType } from '../../../../typer/personopplysninger';
+import {
+    erEnkeEllerEnkemann,
+    erEnkeEllerGjenlevendePartner,
+    erIkkeUformeltGiftEllerSeparert,
+    erKravForSivilstandOppfylt,
+    erSkiltEllerUgift,
+} from './SivilstandHelper';
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
@@ -33,21 +39,26 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         inngangsvilkårgrunnlag,
     } = props;
 
+    const søknadsgrunnlag = inngangsvilkårgrunnlag.sivilstand.søknadsgrunnlag;
     const sivilstandType = inngangsvilkårgrunnlag.sivilstand.registergrunnlag.type;
     const delvilkårsvurderinger: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
         (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
+    const { erUformeltGift, erUformeltSeparertEllerSkilt } = søknadsgrunnlag;
 
-    const erEnkeEllerEnkemann: boolean =
-        sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN ||
-        sivilstandType === SivilstandType.GJENLEVENDE_PARTNER;
+    const erBegrunnelseFeltValgfritt: boolean =
+        erSkiltEllerUgift(sivilstandType) &&
+        erIkkeUformeltGiftEllerSeparert(erUformeltGift, erUformeltSeparertEllerSkilt) &&
+        erKravForSivilstandOppfylt(delvilkårsvurderinger);
 
     const visUnntak: boolean =
-        harBesvartPåAlleDelvilkår(delvilkårsvurderinger) && erEnkeEllerEnkemann;
+        harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
+        erEnkeEllerGjenlevendePartner(sivilstandType);
 
     const visBegrunnelse: boolean =
         harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
         (!erEnkeEllerEnkemann || vurdering.unntak !== null);
+
     return (
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
@@ -72,6 +83,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
             )}
             {visBegrunnelse && (
                 <Begrunnelse
+                    label={erBegrunnelseFeltValgfritt ? 'Begrunnelse (valgfritt)' : 'Begrunnelse'}
                     value={vurdering.begrunnelse || ''}
                     onChange={(e) => {
                         settVurdering({
@@ -81,7 +93,11 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     }}
                 />
             )}
-            {skalViseLagreKnappSivilstand(vurdering, sivilstandType) && (
+            {skalViseLagreKnappSivilstand(
+                vurdering,
+                sivilstandType,
+                erBegrunnelseFeltValgfritt
+            ) && (
                 <LagreVurderingKnapp
                     lagreVurdering={oppdaterVurdering}
                     disabled={lagreknappDisabled}
