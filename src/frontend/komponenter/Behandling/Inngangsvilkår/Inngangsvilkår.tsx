@@ -4,6 +4,7 @@ import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../../..
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
+import { Redirect, useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
 const StyledInngangsvilkår = styled.div`
@@ -35,6 +36,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const [inngangsvilkår, settInngangsvilkår] = useState<Ressurs<IInngangsvilkår>>(
         byggTomRessurs()
     );
+    const history = useHistory();
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
     const { axiosRequest } = useApp();
 
@@ -63,6 +65,24 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             };
         });
     }
+
+    const ferdigVurdert = (behandlingId: string): any => {
+        const request1 = axiosRequest<any, any>({
+            method: 'POST',
+            url: `http://localhost:8000/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar/fullfor`,
+        }).then((respons: any) => {
+            console.log('respons1', respons);
+        });
+
+        const request2 = axiosRequest<any, any>({
+            method: 'POST',
+            url: `http://localhost:8000/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstønad/fullfor `,
+        }).then((respons: any) => {
+            console.log('respons2', respons);
+        });
+
+        history.push(`/behandling/${behandlingId}/inntekt`);
+    };
 
     const lagreVurdering = (vurdering: IVurdering): Promise<Ressurs<string>> => {
         return axiosRequest<string, IVurdering>({
@@ -100,6 +120,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [behandlingId]);
     return (
         <>
+            <button onClick={() => ferdigVurdert(behandlingId)}>Klikk</button>
             <DataViewer response={inngangsvilkår}>
                 {(data) => (
                     <StyledInngangsvilkår>
