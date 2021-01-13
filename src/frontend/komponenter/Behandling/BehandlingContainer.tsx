@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import Høyremeny from '../Høyremeny/Høyremeny';
 import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
+import Inntekt from './Inntekt/Inntekt';
 import styled from 'styled-components';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
@@ -65,6 +66,13 @@ const BehandlingContainer: FC = () => {
                             path="/behandling/:behandlingId/inngangsvilkar"
                             render={() => {
                                 return <Inngangsvilkår behandlingId={behandlingId} />;
+                            }}
+                        />
+                        <Route
+                            exact={true}
+                            path="/behandling/:behandlingId/inntekt"
+                            render={() => {
+                                return <Inntekt behandlingId={behandlingId} />;
                             }}
                         />
                     </Switch>
