@@ -2,7 +2,7 @@ import { IDelvilkår, IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inn
 import { IVilkårConfig, VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { SivilstandType } from '../../../typer/personopplysninger';
 import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
-import { erEnkeEllerEnkemann } from '../Inngangsvilkår/Sivilstand/SivilstandHelper';
+import { erEnkeEllerGjenlevendePartner } from '../Inngangsvilkår/Sivilstand/SivilstandHelper';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
@@ -71,7 +71,7 @@ export const skalViseLagreKnappSivilstand = (
     }
 
     if (harBesvartPåAlleDelvilkår(delvilkårsvurderinger)) {
-        return erEnkeEllerEnkemann(sivilstandType) ? !!vurdering.unntak : true;
+        return erEnkeEllerGjenlevendePartner(sivilstandType) ? !!vurdering.unntak : true;
     }
     return false;
 };

@@ -7,10 +7,6 @@ export const erSkiltEllerUgift = (sivilstandType: SivilstandType): boolean =>
     sivilstandType === SivilstandType.SKILT_PARTNER ||
     sivilstandType === SivilstandType.UOPPGITT;
 
-export const erEnkeEllerEnkemann = (sivilstandType: SivilstandType): boolean =>
-    sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN ||
-    sivilstandType === SivilstandType.GJENLEVENDE_PARTNER;
-
 export const erEnkeEllerGjenlevendePartner = (sivilstandType: SivilstandType): boolean =>
     sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN ||
     sivilstandType === SivilstandType.GJENLEVENDE_PARTNER;
