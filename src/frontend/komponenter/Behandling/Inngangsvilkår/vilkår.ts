@@ -1,5 +1,6 @@
 import { IMedlemskap } from './Medlemskap/typer';
 import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
+import { IBosituasjon } from './Samliv/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
@@ -9,6 +10,7 @@ export interface IInngangsvilkår {
 export interface IInngangsvilkårGrunnlag {
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
+    bosituasjon: IBosituasjon;
 }
 
 export interface IVurdering {
@@ -56,14 +58,20 @@ export enum Vilkår {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
+    SAMLIV = 'SAMLIV',
 }
 
-export type VilkårType = Vilkår.FORUTGÅENDE_MEDLEMSKAP | Vilkår.LOVLIG_OPPHOLD | Vilkår.SIVILSTAND;
+export type VilkårType =
+    | Vilkår.FORUTGÅENDE_MEDLEMSKAP
+    | Vilkår.LOVLIG_OPPHOLD
+    | Vilkår.SIVILSTAND
+    | Vilkår.SAMLIV;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
     LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
     SIVILSTAND: 'Vilkår om sivilstand',
+    SAMLIV: 'Vilkår om samliv',
 };
 
 // ------- DELVILKÅR
@@ -142,4 +150,5 @@ export enum VilkårGruppe {
     MEDLEMSKAP = 'MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
+    SAMLIV = 'SAMLIV',
 }

@@ -143,6 +143,20 @@
           "type": "UGIFT",
           "gyldigFraOgMed": "2020-01-01"
         }
+      },
+      "bosituasjon": {
+        "delerDuBolig": {
+          "verdi": "Ja, jeg har samboer og lever i et ekteskapslignende forhold",
+          "svarId": "harEkteskapsliknendeForhold"
+        },
+        "samboer": {
+          "navn": "Bob Burger",
+          "fødselsdato": "1992-02-18",
+          "personIdent": null
+        },
+        "sammenflyttingsdato": "2018-08-12",
+        "datoFlyttetFraHverandre": "2019-08-12",
+        "tidligereSamboerFortsattRegistrertPåAdresse": null
       }
     }
   },

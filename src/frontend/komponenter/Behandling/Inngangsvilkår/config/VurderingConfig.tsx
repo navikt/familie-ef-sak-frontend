@@ -64,4 +64,11 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         ],
         begrunnelsePåkrevdHvisOppfylt: true,
     },
+    SAMLIV: {
+        vilkårGruppe: VilkårGruppe.SAMLIV,
+        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
+        unntak: [UnntakType.IKKE_OPPFYLT],
+        delvilkår: [],
+        begrunnelsePåkrevdHvisOppfylt: true,
+    },
 };
