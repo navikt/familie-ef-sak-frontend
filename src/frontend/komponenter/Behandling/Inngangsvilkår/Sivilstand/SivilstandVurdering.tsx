@@ -11,7 +11,6 @@ import {
 } from '../../Vurdering/VurderingUtil';
 import Unntak from '../../Vurdering/Unntak';
 import {
-    erEnkeEllerEnkemann,
     erEnkeEllerGjenlevendePartner,
     erIkkeUformeltGiftEllerSeparert,
     erKravForSivilstandOppfylt,
@@ -57,7 +56,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
 
     const visBegrunnelse: boolean =
         harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
-        (!erEnkeEllerEnkemann || vurdering.unntak !== null);
+        (!erEnkeEllerGjenlevendePartner(sivilstandType) || vurdering.unntak !== null);
 
     return (
         <>
