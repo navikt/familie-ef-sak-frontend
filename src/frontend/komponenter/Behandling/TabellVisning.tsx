@@ -23,7 +23,7 @@ interface TabellProps<T> {
 
 export interface Kolonner<T> {
     overskrift: string;
-    tekstVerdi: (data: T) => string | undefined;
+    tekstVerdi: (data: T) => React.ReactNode;
 }
 
 const mapIkon = (ikon: TabellIkon) => {
