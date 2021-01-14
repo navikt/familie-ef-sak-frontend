@@ -2,6 +2,7 @@ import { IDelvilkår, IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inn
 import { IVilkårConfig, VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { SivilstandType } from '../../../typer/personopplysninger';
 import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
+import { erEnkeEllerGjenlevendePartner } from '../Inngangsvilkår/Sivilstand/SivilstandHelper';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
@@ -30,6 +31,7 @@ export const filtrerVurderinger = (
         }
         return config.vilkårGruppe === vilkårGruppe;
     });
+
 export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[]): boolean =>
     !delvilkårsvurderinger.some((delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT);
 
@@ -59,19 +61,17 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
 
 export const skalViseLagreKnappSivilstand = (
     vurdering: IVurdering,
-    sivilstandType: SivilstandType
+    sivilstandType: SivilstandType,
+    erBegrunnelseFeltValgfritt: boolean
 ): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
 
-    if (manglerBegrunnelse(begrunnelse)) {
+    if (manglerBegrunnelse(begrunnelse) && !erBegrunnelseFeltValgfritt) {
         return false;
     }
-    const erEnkeEllerEnkemann =
-        sivilstandType === SivilstandType.ENKE_ELLER_ENKEMANN ||
-        sivilstandType === SivilstandType.GJENLEVENDE_PARTNER;
 
     if (harBesvartPåAlleDelvilkår(delvilkårsvurderinger)) {
-        return erEnkeEllerEnkemann ? !!vurdering.unntak : true;
+        return erEnkeEllerGjenlevendePartner(sivilstandType) ? !!vurdering.unntak : true;
     }
     return false;
 };
