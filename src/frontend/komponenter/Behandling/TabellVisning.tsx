@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { StyledTabell } from '../Felleskomponenter/Visning/StyledTabell';
-import classNames from 'classnames';
 
 export enum TabellIkon {
     REGISTER = 'REGISTER',
@@ -53,7 +52,7 @@ export function Tabell<T>(props: TabellProps<T>): React.ReactElement<TabellProps
     return (
         <>
             {kolonner.map((kolonne, index) => (
-                <Element className={classNames({ førsteDataKolonne: index === 0 })} key={index}>
+                <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
                     {kolonne.overskrift}
                 </Element>
             ))}
