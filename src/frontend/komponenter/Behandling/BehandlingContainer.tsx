@@ -9,6 +9,7 @@ import { Redirect, Route, Switch, useParams } from 'react-router';
 import Fanemeny from '../Fanemeny/Fanemeny';
 import Personopplysninger from './Personopplysninger/Personopplysninger';
 import navFarger from 'nav-frontend-core';
+import Utbetalingsoversikt from './Utbetalingsoversikt/Utbetalingsoversikt';
 
 const Container = styled.div`
     display: flex;
@@ -73,6 +74,13 @@ const BehandlingContainer: FC = () => {
                             path="/behandling/:behandlingId/inntekt"
                             render={() => {
                                 return <Inntekt behandlingId={behandlingId} />;
+                            }}
+                        />
+                        <Route
+                            exact={true}
+                            path="/behandling/:behandlingId/utbetalingsoversikt"
+                            render={() => {
+                                return <Utbetalingsoversikt behandlingId={behandlingId} />;
                             }}
                         />
                     </Switch>
