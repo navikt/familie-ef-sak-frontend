@@ -1,5 +1,5 @@
 import { Datovelger } from 'nav-datovelger';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { FlexDiv } from './OppgaveFiltrering';
@@ -14,8 +14,10 @@ interface Props {
     datoTilTekst: string;
     valgtDatoFra?: string;
     valgtDatoTil?: string;
-    settDatoFra: (datoFra?: string) => void;
-    settDatoTil: (datoTil?: string) => void;
+    //eslint-disable-next-line
+    settDatoFra: ((datoFra?: string) => void) | Dispatch<SetStateAction<string>>;
+    //eslint-disable-next-line
+    settDatoTil: ((datoTil?: string) => void) | Dispatch<SetStateAction<string>>;
     datoFeil: OrNothing<string>;
 }
 
