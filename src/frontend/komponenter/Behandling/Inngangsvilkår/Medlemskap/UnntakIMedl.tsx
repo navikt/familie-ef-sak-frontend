@@ -26,7 +26,7 @@ const UnntakIMedl: FC<Props> = ({ gyldigeVedtaksPerioder }) => {
             verdier={perioderSortert}
             kolonner={[
                 {
-                    overskrift: 'Medlem i i folketrygden',
+                    overskrift: 'Medlem i folketrygden',
                     tekstVerdi: (d) => <BooleanTekst value={d.erMedlemIFolketrygden} />,
                 },
                 {
