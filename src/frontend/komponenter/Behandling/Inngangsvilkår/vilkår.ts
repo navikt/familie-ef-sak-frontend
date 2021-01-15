@@ -85,7 +85,6 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
 
 export enum DelvilkårType {
     TRE_ÅRS_MEDLEMSKAP = 'TRE_ÅRS_MEDLEMSKAP',
-    DOKUMENTERT_FLYKTNINGSTATUS = 'DOKUMENTERT_FLYKTNINGSTATUS',
     BOR_OG_OPPHOLDER_SEG_I_NORGE = 'BOR_OG_OPPHOLDER_SEG_I_NORGE',
     DOKUMENTERT_EKTESKAP = 'DOKUMENTERT_EKTESKAP',
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE = 'DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE',
@@ -96,7 +95,6 @@ export enum DelvilkårType {
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     TRE_ÅRS_MEDLEMSKAP: 'Har bruker vært medlem i folketrygden i de siste 3 årene?',
-    DOKUMENTERT_FLYKTNINGSTATUS: 'Er flyktningstatus dokumentert?',
     BOR_OG_OPPHOLDER_SEG_I_NORGE: 'Bor og oppholder bruker og barna seg i Norge?',
     DOKUMENTERT_EKTESKAP: 'Foreligger det dokumentasjon på ekteskap?',
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:

@@ -4,6 +4,7 @@ import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { Normaltekst } from 'nav-frontend-typografi';
 import { ISivilstandSøknadsgrunnlag } from './typer';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
+import { hentBooleanTekst } from '../utils';
 
 interface Props {
     sivilstandtype: SivilstandType;
@@ -35,13 +36,19 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Søkt separasjon, skilsmisse eller reist sak</Normaltekst>
-                    {søknad.søktOmSkilsmisseSeparasjon && (
-                        <BooleanTekst value={søknad.søktOmSkilsmisseSeparasjon} />
+                    {søknad.søktOmSkilsmisseSeparasjon !== undefined && (
+                        <Normaltekst>
+                            {`${hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}, 
+                            ${søknad.datoSøktSeparasjon} `}
+                        </Normaltekst>
                     )}
-
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Dato</Normaltekst>
-                    <Normaltekst>{søknad.datoSøktSeparasjon}</Normaltekst>
+                    {søknad.fraflytningsdato && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Dato for fraflytting</Normaltekst>
+                            <Normaltekst>{søknad.fraflytningsdato}</Normaltekst>
+                        </>
+                    )}
                 </>
             );
         case SivilstandType.SEPARERT:
