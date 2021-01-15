@@ -16,14 +16,17 @@ interface BehandlingHistorikkProps {
     endretTid: string;
 }
 
-const ListWrapper = styled.div`
-    .list {
-        border-top: 1px solid #c6c2bf;
-        background: white;
-        list-style: none;
-        margin: 0;
-        padding: 14px 24px;
-    }
+const ListElementStyle = styled.div`
+    border-bottom: 1px solid #c6c2bf;
+    background: white;
+    list-style: none;
+    margin: 0;
+`;
+const StatusStyle = styled.div`
+    font-weight: bold;
+`;
+const DatoStyle = styled.div`
+    color: grey;
 `;
 
 function formatDate(date: string) {
@@ -51,10 +54,18 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                     <>
                         {data.map((v) => (
                             <ul className="list">
-                                <li className="loggitem">
-                                    <p className="hendelsesnavn">{StegVerdi.get(v.steg)}</p>
-                                    <p className="hendelsesdato">{formatDate(v.endretTid)}</p>
-                                </li>
+                                <ListElementStyle>
+                                    <li className="loggitem">
+                                        <StatusStyle>
+                                            <p className="hendelsesnavn">{StegVerdi.get(v.steg)}</p>
+                                        </StatusStyle>
+                                        <DatoStyle>
+                                            <p className="hendelsesdato">
+                                                {formatDate(v.endretTid)}
+                                            </p>
+                                        </DatoStyle>
+                                    </li>
+                                </ListElementStyle>
                             </ul>
                         ))}
                     </>
