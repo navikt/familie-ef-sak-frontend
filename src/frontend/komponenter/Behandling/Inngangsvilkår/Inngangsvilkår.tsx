@@ -4,8 +4,9 @@ import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../../..
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
-import { Redirect, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import { Knapp } from 'nav-frontend-knapper';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -13,6 +14,12 @@ const StyledInngangsvilkår = styled.div`
     grid-template-columns: repeat(2, max-content);
     grid-auto-rows: auto;
     grid-gap: 3rem;
+`;
+
+const StyledKnapp = styled(Knapp)`
+    margin: 0 auto;
+    display: block;
+    margin-top: 2rem;
 `;
 
 interface Props {
@@ -120,7 +127,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [behandlingId]);
     return (
         <>
-            <button onClick={() => ferdigVurdert(behandlingId)}>Klikk</button>
+            <StyledKnapp onClick={() => ferdigVurdert(behandlingId)}>Gå videre</StyledKnapp>
             <DataViewer response={inngangsvilkår}>
                 {(data) => (
                     <StyledInngangsvilkår>
