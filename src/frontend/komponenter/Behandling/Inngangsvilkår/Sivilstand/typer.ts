@@ -27,3 +27,11 @@ export interface ISivilstandRegistergrunnlag {
     type: SivilstandType;
     gyldigFraOgMed: string;
 }
+export enum EÅrsakEnslig {
+    samlivsbruddForeldre = 'samlivsbruddForeldre',
+    samlivsbruddAndre = 'samlivsbruddAndre',
+    aleneFraFødsel = 'aleneFraFødsel',
+    endringISamværsordning = 'endringISamværsordning',
+    dødsfall = 'dødsfall',
+    annet = 'annet',
+}

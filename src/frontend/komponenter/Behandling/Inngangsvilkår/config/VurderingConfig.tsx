@@ -4,6 +4,7 @@ import { DelvilkårType, UnntakType, VilkårGruppe, VilkårType } from '../vilk�
 import GenerellVurdering from '../../Vurdering/GenerellVurdering';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import SivilstandVurdering from '../Sivilstand/SivilstandVurdering';
+import SamlivVurdering from '../Samliv/SamlivVurdering';
 
 export type IVurderingConfig<TYPE extends VilkårType | VilkårGruppe, CONFIG> = {
     [key in TYPE]: CONFIG;
@@ -66,9 +67,13 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
     },
     SAMLIV: {
         vilkårGruppe: VilkårGruppe.SAMLIV,
-        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
+        renderVurdering: (props: VurderingProps): ReactChild => <SamlivVurdering props={props} />,
         unntak: [UnntakType.IKKE_OPPFYLT],
-        delvilkår: [],
+        delvilkår: [
+            DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
+            DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER,
+            DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
+        ],
         begrunnelsePåkrevdHvisOppfylt: true,
     },
 };

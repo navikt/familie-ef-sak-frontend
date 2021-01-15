@@ -1,4 +1,4 @@
-import { IPersonDetaljer } from '../Sivilstand/typer';
+import { EÅrsakEnslig, IPersonDetaljer } from '../Sivilstand/typer';
 import { IDokumentasjon } from '../../../../typer/felles';
 
 export interface IBosituasjon {
@@ -12,7 +12,7 @@ export interface IBosituasjon {
 // TODO: Trekk ut
 export interface ITekstalternativMedSvarId {
     verdi: string;
-    svarId: ESøkerDelerBolig;
+    svarId: ESøkerDelerBolig | EÅrsakEnslig;
 }
 
 // TODO: Denne er kopiert rett ut fra familie-ef-søknad. Kanskje trekke ut til noe felles?

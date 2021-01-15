@@ -91,6 +91,9 @@ export enum DelvilkårType {
     KRAV_SIVILSTAND = 'KRAV_SIVILSTAND',
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON = 'SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING = 'SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING',
+    HAR_FLYTTET_FRA_HVERANDRE = 'HAR_FLYTTET_FRA_HVERANDRE',
+    LEVER_IKKE_MED_ANNEN_FORELDER = 'LEVER_IKKE_MED_ANNEN_FORELDER',
+    LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD = 'LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -103,6 +106,11 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
         'Er det samsvar mellom datoene for separasjon og fraflytting?',
+    HAR_FLYTTET_FRA_HVERANDRE: 'Har partene flyttet fra hverandre?',
+    LEVER_IKKE_MED_ANNEN_FORELDER:
+        'Er vilkåret om å ikke leve sammen med den andre av barnets/barnas foreldre oppfylt?',
+    LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD:
+        'Er vilkåret om å ikke leve i et ekteskapslignende forhold i felles husholdning uten felles barn oppfylt?',
 };
 
 // ------ UNNTAK
@@ -157,3 +165,12 @@ export enum VilkårGruppe {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
 }
+
+export const delvilkårTypeTilHjelpetekst = (type: DelvilkårType) => {
+    switch (type) {
+        case DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER:
+            return 'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
+        default:
+            return undefined;
+    }
+};
