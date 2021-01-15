@@ -4,14 +4,20 @@ import { AxiosRequestConfig } from 'axios';
 import { Ressurs } from '../../typer/ressurs';
 import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import styled from 'styled-components';
 import Moment from 'moment';
-import './LoggItem.less';
 
-export enum Steg {
-    REGISTRERE_OPPLYSNINGER = 'Mottat opplysninger',
-    VILKÅRSVURDERE_INNGANGSVILKÅR = 'Vilkårsvurdering startet',
-    VILKÅRSVURDERE_STØNAD = 'Vilkårsvurere stønad',
+const enum Steg {
+    REGISTRERE_OPPLYSNINGER = 'REGISTRERE_OPPLYSNINGER',
+    VILKÅRSVURDERE_INNGANGSVILKÅR = 'VILKÅRSVURDERE_INNGANGSVILKÅR',
+    VILKÅRSVURDERE_STØNAD = 'VILKÅRSVURDERE_STØNAD',
 }
+
+const StegVerdi = new Map<Steg, string>([
+    [Steg.REGISTRERE_OPPLYSNINGER, 'Registrere Opplysninger'],
+    [Steg.VILKÅRSVURDERE_INNGANGSVILKÅR, 'Vilkårsvurdere Inngangsvilkår'],
+    [Steg.VILKÅRSVURDERE_STØNAD, 'Vilkårsvurdere Stønad'],
+]);
 
 interface BehandlingHistorikkProps {
     behandlingId: string;
@@ -20,6 +26,16 @@ interface BehandlingHistorikkProps {
     endretAvMail: string;
     endretTid: string;
 }
+
+const ListWrapper = styled.div`
+    .list {
+        border-top: 1px solid #c6c2bf;
+        background: white;
+        list-style: none;
+        margin: 0;
+        padding: 14px 24px;
+    }
+`;
 
 function formatDate(date: string) {
     return Moment(date).format('DD-MM-YYYY - HH:mm').toString();
@@ -47,7 +63,7 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                         {data.map((v) => (
                             <ul className="list">
                                 <li className="loggitem">
-                                    <p className="hendelsesnavn">{v.steg}</p>
+                                    <p className="hendelsesnavn">{StegVerdi.get(v.steg)}</p>
                                     <p className="hendelsesdato">{formatDate(v.endretTid)}</p>
                                 </li>
                             </ul>
