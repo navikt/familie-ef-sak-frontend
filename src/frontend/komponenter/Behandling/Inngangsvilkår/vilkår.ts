@@ -1,5 +1,5 @@
 import { IMedlemskap } from './Medlemskap/typer';
-import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
+import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
 
 export interface IInngangsvilkår {
@@ -11,6 +11,13 @@ export interface IInngangsvilkårGrunnlag {
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
     bosituasjon: IBosituasjon;
+    sivilstandsplaner: ISivilstandsplaner;
+}
+
+export interface ISivilstandsplaner {
+    harPlaner?: boolean;
+    fraDato?: string;
+    vordendeSamboerEktefelle?: IPersonDetaljer;
 }
 
 export interface IVurdering {

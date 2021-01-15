@@ -1,4 +1,5 @@
 import { SivilstandType } from '../../../../typer/personopplysninger';
+import { ITekstalternativMedSvarId } from '../Samliv/typer';
 
 export interface ISivilstandInngangsvilkår {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -13,7 +14,7 @@ export interface ISivilstandSøknadsgrunnlag {
     endringSamværsordningDato?: string;
     fraflytningsdato?: string;
     datoSøktSeparasjon?: string;
-    årsakEnslig?: string;
+    årsakEnslig?: ITekstalternativMedSvarId;
     tidligereSamboer?: IPersonDetaljer;
 }
 

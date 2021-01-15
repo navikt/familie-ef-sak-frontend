@@ -147,7 +147,7 @@
       "bosituasjon": {
         "delerDuBolig": {
           "verdi": "Ja, jeg har samboer og lever i et ekteskapslignende forhold",
-          "svarId": "harEkteskapsliknendeForhold"
+          "svarId": "borAleneMedBarnEllerGravid"
         },
         "samboer": {
           "navn": "Bob Burger",
@@ -157,6 +157,15 @@
         "sammenflyttingsdato": "2018-08-12",
         "datoFlyttetFraHverandre": "2019-08-12",
         "tidligereSamboerFortsattRegistrertPåAdresse": null
+      },
+      "sivilstandsplaner": {
+        "harPlaner": true,
+        "fraDato": "2021-02-10",
+        "vordendeSamboerEktefelle": {
+          "navn": "Ola Mockeson",
+          "fødselsdato": "1980-04-03",
+          "ident": null
+        }
       }
     }
   },
