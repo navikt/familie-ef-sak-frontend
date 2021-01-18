@@ -52,7 +52,7 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
             {(data: BehandlingHistorikkProps[]) => {
                 return (
                     <>
-                        {data.map((v) => (
+                        {data.reverse().map((v) => (
                             <ul className="list">
                                 <ListElementStyle>
                                     <li className="loggitem">
