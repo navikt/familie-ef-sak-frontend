@@ -25,6 +25,7 @@ const ListElementStyle = styled.div`
 `;
 const StatusStyle = styled.div`
     font-weight: bold;
+    padding: 0;
 `;
 const TextStyle = styled.div`
     line-height: 0;
