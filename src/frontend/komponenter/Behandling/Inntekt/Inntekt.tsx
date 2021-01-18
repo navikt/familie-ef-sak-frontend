@@ -28,9 +28,9 @@ const Inntekt: FC<Props> = ({ behandlingId }) => {
 
     const beregn = (): any => {
         const data = {
-            startDato,
-            sluttDato,
-            inntekt,
+            inntektsPerioder: [],
+            stønadFom: 'Dato her',
+            stønadTom: 'Dato her',
         };
 
         axiosRequest<any, any>({

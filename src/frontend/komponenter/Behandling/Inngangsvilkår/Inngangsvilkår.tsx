@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { IInngangsvilkår, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from './vilkår';
 import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
@@ -45,6 +45,9 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     );
     const history = useHistory();
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
+    const [postInngangsvilkårSuccess, settPostInngangsvilkårSuccess] = useState(false);
+    const [postOvergangsstønadSuccess, settPostOvergangsstønadSuccess] = useState(false);
+    const [feiledeKall, settFeiledeKall] = useState<string[]>([]);
     const { axiosRequest } = useApp();
 
     const hentInngangsvilkår = (behandlingId: string) => {
@@ -73,22 +76,48 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         });
     }
 
+    useEffect(() => {
+        postInngangsvilkårSuccess &&
+            postOvergangsstønadSuccess &&
+            history.push(`/behandling/${behandlingId}/inntekt`);
+    }, [postInngangsvilkårSuccess, postOvergangsstønadSuccess]);
+
     const ferdigVurdert = (behandlingId: string): any => {
-        const request1 = axiosRequest<any, any>({
+        axiosRequest<any, any>({
             method: 'POST',
             url: `http://localhost:8000/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar/fullfor`,
         }).then((respons: any) => {
-            console.log('respons1', respons);
+            switch (respons.status) {
+                case RessursStatus.SUKSESS:
+                    settPostInngangsvilkårSuccess(true);
+                    return respons;
+                case RessursStatus.FEILET:
+                case RessursStatus.FUNKSJONELL_FEIL:
+                case RessursStatus.IKKE_TILGANG:
+                    settFeiledeKall(feiledeKall.concat('inngangsvilkar'));
+                    return respons;
+                default:
+                    return respons;
+            }
         });
 
-        const request2 = axiosRequest<any, any>({
+        axiosRequest<any, any>({
             method: 'POST',
-            url: `http://localhost:8000/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstønad/fullfor `,
+            url: `http://localhost:8000/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstønad/fullfor`,
         }).then((respons: any) => {
-            console.log('respons2', respons);
+            switch (respons.status) {
+                case RessursStatus.SUKSESS:
+                    settPostOvergangsstønadSuccess(true);
+                    return respons;
+                case RessursStatus.FEILET:
+                case RessursStatus.FUNKSJONELL_FEIL:
+                case RessursStatus.IKKE_TILGANG:
+                    settFeiledeKall(feiledeKall.concat('overgangsstønad'));
+                    return respons;
+                default:
+                    return respons;
+            }
         });
-
-        history.push(`/behandling/${behandlingId}/inntekt`);
     };
 
     const lagreVurdering = (vurdering: IVurdering): Promise<Ressurs<string>> => {
