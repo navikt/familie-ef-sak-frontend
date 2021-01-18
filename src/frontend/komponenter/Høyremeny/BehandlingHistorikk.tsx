@@ -26,6 +26,9 @@ const ListElementStyle = styled.div`
 const StatusStyle = styled.div`
     font-weight: bold;
 `;
+const TextStyle = styled.div`
+    line-height: 0;
+`;
 const DatoStyle = styled.div`
     color: grey;
 `;
@@ -66,7 +69,9 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                                                     {StegVerdi.get(v.steg)}
                                                 </p>
                                             </StatusStyle>
-                                            <p className="hendelsesnavn">{v.endretAvNavn}</p>
+                                            <TextStyle>
+                                                <p className="hendelsesnavn">{v.endretAvNavn}</p>
+                                            </TextStyle>
                                             <DatoStyle>
                                                 <p className="hendelsesdato">
                                                     {formatDate(v.endretTid)}
