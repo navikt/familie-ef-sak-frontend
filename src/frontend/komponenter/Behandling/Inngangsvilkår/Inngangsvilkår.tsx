@@ -86,7 +86,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         axiosRequest<any, any>({
             method: 'POST',
             url: `http://localhost:8000/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar/fullfor`,
-        }).then((respons: any) => {
+        }).then((respons: Ressurs<string>) => {
             switch (respons.status) {
                 case RessursStatus.SUKSESS:
                     settPostInngangsvilkårSuccess(true);
@@ -104,7 +104,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         axiosRequest<any, any>({
             method: 'POST',
             url: `http://localhost:8000/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstønad/fullfor`,
-        }).then((respons: any) => {
+        }).then((respons: Ressurs<string>) => {
             switch (respons.status) {
                 case RessursStatus.SUKSESS:
                     settPostOvergangsstønadSuccess(true);
