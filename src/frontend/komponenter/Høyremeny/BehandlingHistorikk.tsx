@@ -7,6 +7,7 @@ import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import styled from 'styled-components';
 import Moment from 'moment';
 import { Steg, StegVerdi } from './Steg';
+import compareDesc from 'date-fns/compareDesc';
 
 interface BehandlingHistorikkProps {
     behandlingId: string;
@@ -53,10 +54,8 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                 return (
                     <>
                         {data
-                            .sort(
-                                (a, b) =>
-                                    new Date(b.endretTid).valueOf() -
-                                    new Date(a.endretTid).valueOf()
+                            .sort((a, b) =>
+                                compareDesc(new Date(a.endretTid), new Date(b.endretTid))
                             )
                             .map((v) => (
                                 <ul className="list">
