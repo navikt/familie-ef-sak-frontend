@@ -52,22 +52,30 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
             {(data: BehandlingHistorikkProps[]) => {
                 return (
                     <>
-                        {data.reverse().map((v) => (
-                            <ul className="list">
-                                <ListElementStyle>
-                                    <li className="loggitem">
-                                        <StatusStyle>
-                                            <p className="hendelsesnavn">{StegVerdi.get(v.steg)}</p>
-                                        </StatusStyle>
-                                        <DatoStyle>
-                                            <p className="hendelsesdato">
-                                                {formatDate(v.endretTid)}
-                                            </p>
-                                        </DatoStyle>
-                                    </li>
-                                </ListElementStyle>
-                            </ul>
-                        ))}
+                        {data
+                            .sort(
+                                (a, b) =>
+                                    new Date(b.endretTid).valueOf() -
+                                    new Date(a.endretTid).valueOf()
+                            )
+                            .map((v) => (
+                                <ul className="list">
+                                    <ListElementStyle>
+                                        <li className="loggitem">
+                                            <StatusStyle>
+                                                <p className="hendelsesnavn">
+                                                    {StegVerdi.get(v.steg)}
+                                                </p>
+                                            </StatusStyle>
+                                            <DatoStyle>
+                                                <p className="hendelsesdato">
+                                                    {formatDate(v.endretTid)}
+                                                </p>
+                                            </DatoStyle>
+                                        </li>
+                                    </ListElementStyle>
+                                </ul>
+                            ))}
                     </>
                 );
             }}
