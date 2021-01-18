@@ -45,8 +45,8 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     );
     const history = useHistory();
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
-    const [postInngangsvilkårSuccess, settPostInngangsvilkårSuccess] = useState(false);
-    const [postOvergangsstønadSuccess, settPostOvergangsstønadSuccess] = useState(false);
+    const [postInngangsvilkårSuksess, settPostInngangsvilkårSuksess] = useState(false);
+    const [postOvergangsstønadSuksess, settPostOvergangsstønadSuksess] = useState(false);
     const [feiledeKall, settFeiledeKall] = useState<string[]>([]);
     const { axiosRequest } = useApp();
 
@@ -77,10 +77,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }
 
     useEffect(() => {
-        postInngangsvilkårSuccess &&
-            postOvergangsstønadSuccess &&
+        postInngangsvilkårSuksess &&
+            postOvergangsstønadSuksess &&
             history.push(`/behandling/${behandlingId}/inntekt`);
-    }, [postInngangsvilkårSuccess, postOvergangsstønadSuccess]);
+    }, [postInngangsvilkårSuksess, postOvergangsstønadSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
         axiosRequest<any, any>({
@@ -89,7 +89,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         }).then((respons: Ressurs<string>) => {
             switch (respons.status) {
                 case RessursStatus.SUKSESS:
-                    settPostInngangsvilkårSuccess(true);
+                    settPostInngangsvilkårSuksess(true);
                     return respons;
                 case RessursStatus.FEILET:
                 case RessursStatus.FUNKSJONELL_FEIL:
@@ -107,7 +107,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         }).then((respons: Ressurs<string>) => {
             switch (respons.status) {
                 case RessursStatus.SUKSESS:
-                    settPostOvergangsstønadSuccess(true);
+                    settPostOvergangsstønadSuksess(true);
                     return respons;
                 case RessursStatus.FEILET:
                 case RessursStatus.FUNKSJONELL_FEIL:
