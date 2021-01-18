@@ -66,6 +66,7 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                                                     {StegVerdi.get(v.steg)}
                                                 </p>
                                             </StatusStyle>
+                                            <p className="hendelsesnavn">{v.endretAvNavn}</p>
                                             <DatoStyle>
                                                 <p className="hendelsesdato">
                                                     {formatDate(v.endretTid)}
