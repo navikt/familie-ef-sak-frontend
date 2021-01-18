@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
+import { Ressurs } from '../../../typer/ressurs';
 
 interface Props {
     behandlingId: string;
@@ -26,7 +27,7 @@ const Utbetalingsoversikt: FC<Props> = ({ behandlingId }) => {
         axiosRequest<any, any>({
             method: 'POST',
             url: `http://localhost:8000/familie-ef-sak/api/vedtak/${behandlingId}/sendTilBeslutter`,
-        }).then((respons: any) => {
+        }).then((respons: Ressurs<string>) => {
             console.log('respons', respons);
         });
     };
@@ -35,7 +36,7 @@ const Utbetalingsoversikt: FC<Props> = ({ behandlingId }) => {
         axiosRequest<any, any>({
             method: 'POST',
             url: `http://localhost:8000/familie-ef-sak/api/vedtak/${behandlingId}/beslutteVedtak`,
-        }).then((respons: any) => {
+        }).then((respons: Ressurs<string>) => {
             console.log('respons', respons);
         });
     };
