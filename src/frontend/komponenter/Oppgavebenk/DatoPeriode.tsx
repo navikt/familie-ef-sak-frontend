@@ -14,9 +14,7 @@ interface Props {
     datoTilTekst: string;
     valgtDatoFra?: string;
     valgtDatoTil?: string;
-    //eslint-disable-next-line
     settDatoFra: ((datoFra?: string) => void) | Dispatch<SetStateAction<string>>;
-    //eslint-disable-next-line
     settDatoTil: ((datoTil?: string) => void) | Dispatch<SetStateAction<string>>;
     datoFeil: OrNothing<string>;
 }
