@@ -62,21 +62,17 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                                 compareDesc(new Date(a.endretTid), new Date(b.endretTid))
                             )
                             .map((v) => (
-                                <ul className="list">
+                                <ul>
                                     <ListElementStyle>
-                                        <li className="loggitem">
+                                        <li>
                                             <StatusStyle>
-                                                <p className="hendelsesnavn">
-                                                    {StegVerdi.get(v.steg)}
-                                                </p>
+                                                <p>{StegVerdi.get(v.steg)}</p>
                                             </StatusStyle>
                                             <TextStyle>
-                                                <p className="hendelsesnavn">{v.endretAvNavn}</p>
+                                                <p>{v.endretAvNavn}</p>
                                             </TextStyle>
                                             <DatoStyle>
-                                                <p className="hendelsesdato">
-                                                    {formatDate(v.endretTid)}
-                                                </p>
+                                                <p>{formatDate(v.endretTid)}</p>
                                             </DatoStyle>
                                         </li>
                                     </ListElementStyle>
