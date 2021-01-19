@@ -17,7 +17,7 @@ interface BehandlingHistorikkProps {
     endretTid: string;
 }
 
-const ListElementStyle = styled.div`
+const ListElementStyle = styled.li`
     border-bottom: 1px solid #c6c2bf;
     background: white;
     list-style: none;
@@ -64,17 +64,15 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                             .map((v) => (
                                 <ul>
                                     <ListElementStyle>
-                                        <li>
-                                            <StatusStyle>
-                                                <p>{StegVerdi.get(v.steg)}</p>
-                                            </StatusStyle>
-                                            <TextStyle>
-                                                <p>{v.endretAvNavn}</p>
-                                            </TextStyle>
-                                            <DatoStyle>
-                                                <p>{formatDate(v.endretTid)}</p>
-                                            </DatoStyle>
-                                        </li>
+                                        <StatusStyle>
+                                            <p>{StegVerdi.get(v.steg)}</p>
+                                        </StatusStyle>
+                                        <TextStyle>
+                                            <p>{v.endretAvNavn}</p>
+                                        </TextStyle>
+                                        <DatoStyle>
+                                            <p>{formatDate(v.endretTid)}</p>
+                                        </DatoStyle>
                                     </ListElementStyle>
                                 </ul>
                             ))}
