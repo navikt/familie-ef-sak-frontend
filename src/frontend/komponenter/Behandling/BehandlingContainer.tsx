@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { IBehandlingParams } from '../../typer/routing';
 import { Redirect, Route, Switch, useParams } from 'react-router';
 import Fanemeny from '../Fanemeny/Fanemeny';
+import Totrinnskontroll from './Totrinnskontroll/Totrinnskontro';
 import Personopplysninger from './Personopplysninger/Personopplysninger';
 import navFarger from 'nav-frontend-core';
 
@@ -70,6 +71,7 @@ const BehandlingContainer: FC = () => {
                     </Switch>
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
+                    <Totrinnskontroll behandlingId={behandlingId} />
                     <Høyremeny behandlingId={behandlingId} />
                 </HøyreMenyWrapper>
             </Container>
