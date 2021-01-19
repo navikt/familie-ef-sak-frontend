@@ -15,16 +15,16 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
         verdier={utenlandsopphold}
         kolonner={[
             {
-                overskrift: 'Årsak',
-                tekstVerdi: (d) => d.årsak,
-            },
-            {
                 overskrift: 'Fra',
                 tekstVerdi: (d) => formaterNullableIsoDato(d.fraDato),
             },
             {
                 overskrift: 'Til',
                 tekstVerdi: (d) => formaterNullableIsoDato(d.tilDato),
+            },
+            {
+                overskrift: 'Årsak',
+                tekstVerdi: (d) => d.årsak,
             },
         ]}
     />
