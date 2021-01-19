@@ -1,8 +1,8 @@
-import { EÅrsakEnslig, IPersonDetaljer } from '../Sivilstand/typer';
+import { IPersonDetaljer } from '../Sivilstand/typer';
 import { IDokumentasjon } from '../../../../typer/felles';
 
 export interface IBosituasjon {
-    delerDuBolig: ITekstalternativMedSvarId;
+    delerDuBolig: ITekstalternativMedSvarId<ESøkerDelerBolig>;
     samboer?: IPersonDetaljer;
     sammenflyttingsdato?: string;
     datoFlyttetFraHverandre?: string;
@@ -10,12 +10,11 @@ export interface IBosituasjon {
 }
 
 // TODO: Trekk ut
-export interface ITekstalternativMedSvarId {
+export interface ITekstalternativMedSvarId<T> {
     verdi: string;
-    svarId: ESøkerDelerBolig | EÅrsakEnslig;
+    svarId: T;
 }
 
-// TODO: Denne er kopiert rett ut fra familie-ef-søknad. Kanskje trekke ut til noe felles?
 export enum ESøkerDelerBolig {
     borAleneMedBarnEllerGravid = 'borAleneMedBarnEllerGravid',
     borMidlertidigFraHverandre = 'borMidlertidigFraHverandre',

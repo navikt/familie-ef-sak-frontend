@@ -14,7 +14,7 @@ export interface ISivilstandSøknadsgrunnlag {
     endringSamværsordningDato?: string;
     fraflytningsdato?: string;
     datoSøktSeparasjon?: string;
-    årsakEnslig?: ITekstalternativMedSvarId;
+    årsakEnslig?: ITekstalternativMedSvarId<EÅrsakEnslig>;
     tidligereSamboer?: IPersonDetaljer;
 }
 

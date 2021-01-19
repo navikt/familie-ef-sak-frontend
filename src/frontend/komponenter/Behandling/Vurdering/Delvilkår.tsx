@@ -68,6 +68,7 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
                         onChange={() =>
                             settVurdering(
                                 oppdaterDelvilkår(vurdering, {
+                                    ...delvilkår,
                                     type: delvilkår.type,
                                     resultat: vilkårsresultat,
                                 })

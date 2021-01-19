@@ -17,6 +17,21 @@ const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): I
     return delvilkårsvurderinger.slice(0, sisteDelvilkårSomSkalVises + 1);
 };
 
+const skalViseLagreKnappSamliv = (delvilkårsvurderinger: IDelvilkår[]) => {
+    return delvilkårsvurderinger.every((delvilkår) => {
+        if (
+            [
+                DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
+                DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
+            ].includes(delvilkår.type) &&
+            (delvilkår.begrunnelse ? delvilkår.begrunnelse.length < 1 : true)
+        ) {
+            return false;
+        }
+        return delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT;
+    });
+};
+
 const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     const { vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
 
@@ -42,18 +57,33 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                                     ? 'Begrunnelse (valgfritt)'
                                     : 'Begrunnelse'
                             }
-                            value={vurdering.begrunnelse || ''}
+                            value={delvilkår.begrunnelse || ''}
                             onChange={(e) => {
+                                const redigerteDelvilkår = vurdering.delvilkårsvurderinger.map(
+                                    (delvilkårVurdering) => {
+                                        if (delvilkår.type === delvilkårVurdering.type) {
+                                            return {
+                                                ...delvilkår,
+                                                begrunnelse: e.target.value,
+                                            };
+                                        } else return delvilkårVurdering;
+                                    }
+                                );
                                 settVurdering({
                                     ...vurdering,
-                                    begrunnelse: e.target.value,
+                                    delvilkårsvurderinger: redigerteDelvilkår,
                                 });
                             }}
                         />
                     </div>
                 );
             })}
-            <LagreVurderingKnapp lagreVurdering={oppdaterVurdering} disabled={lagreknappDisabled} />
+            {skalViseLagreKnappSamliv(delvilkårsvurderinger) && (
+                <LagreVurderingKnapp
+                    lagreVurdering={oppdaterVurdering}
+                    disabled={lagreknappDisabled}
+                />
+            )}
         </>
     );
 };
