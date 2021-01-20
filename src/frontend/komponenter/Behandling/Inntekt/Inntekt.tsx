@@ -43,7 +43,7 @@ const Inntekt: FC<Props> = ({ behandlingId }) => {
 
         axiosRequest<any, any>({
             method: 'POST',
-            url: `http://localhost:8000/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
+            url: `/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
             data,
         }).then((respons: Ressurs<string>) => {
             switch (respons.status) {

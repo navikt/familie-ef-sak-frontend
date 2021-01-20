@@ -26,7 +26,7 @@ const Utbetalingsoversikt: FC<Props> = ({ behandlingId }) => {
     const sendTilBeslutter = () => {
         axiosRequest<any, any>({
             method: 'POST',
-            url: `http://localhost:8000/familie-ef-sak/api/vedtak/${behandlingId}/sendTilBeslutter`,
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
         }).then((respons: Ressurs<string>) => {
             console.log('respons', respons);
         });
@@ -35,7 +35,7 @@ const Utbetalingsoversikt: FC<Props> = ({ behandlingId }) => {
     const beslutteVedtak = () => {
         axiosRequest<any, any>({
             method: 'POST',
-            url: `http://localhost:8000/familie-ef-sak/api/vedtak/${behandlingId}/beslutteVedtak`,
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutteVedtak`,
         }).then((respons: Ressurs<string>) => {
             console.log('respons', respons);
         });
