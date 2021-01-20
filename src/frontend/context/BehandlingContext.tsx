@@ -1,25 +1,26 @@
 import constate from 'constate';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { Behandling } from '../typer/fagsak';
+import { useDataHenter } from '../hooks/felles/useDataHenter';
+import { byggTomRessurs, Ressurs } from '../typer/ressurs';
+import { AxiosRequestConfig } from 'axios';
 
-const [ModalProvider, useModalProvider] = constate(() => {
-    const [modalType, settModalType] = useState(null);
-    const [erSynlig, settErSynlig] = useState(false);
+const [BehandlingProvider, useBehandlingProvider] = constate((props: { behandlingId: string }) => {
+    const [behandling, settBehandling] = useState<Ressurs<Behandling>>(byggTomRessurs());
 
-    const skjulModal = () => {
-        settErSynlig(false);
-    };
+    const axiosConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/behandling/${props.behandlingId}`,
+        }),
+        [props.behandlingId]
+    );
 
-    const visModal = () => {
-        settErSynlig(true);
-    };
+    const behandlingResponse = useDataHenter<Behandling, undefined>(axiosConfig);
 
-    return {
-        erSynlig,
-        visModal,
-        skjulModal,
-        modalType,
-        settModalType,
-    };
+    settBehandling(behandlingResponse);
+
+    return { behandling };
 });
 
-export { ModalProvider, useModalProvider };
+export { BehandlingProvider, useBehandlingProvider };

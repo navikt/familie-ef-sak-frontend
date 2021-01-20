@@ -6,10 +6,10 @@ export interface Fagsak {
     id: string;
     personIdent: string;
     stønadstype: Stønadstype;
-    behandlinger: BehandlingDto[];
+    behandlinger: Behandling[];
 }
 
-export interface BehandlingDto {
+export interface Behandling {
     id: string;
     type: Behandlingstype;
     aktiv: boolean;

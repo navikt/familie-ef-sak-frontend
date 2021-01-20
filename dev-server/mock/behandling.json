@@ -1,0 +1,11 @@
+{
+  "data": {
+    "id": "ad983bff-d807-4ade-928e-1093e16ec2ac",
+    "type": "FØRSTEGANGSBEHANDLING",
+    "aktiv": false,
+    "steg": "BESLUTTE_VEDTAK",
+    "status": "FERDIGSTILT",
+    "sistEndret": "2020-10-09"
+  },
+  "status": "SUKSESS"
+}
