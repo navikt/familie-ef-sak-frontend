@@ -14,8 +14,8 @@ interface Props {
     datoTilTekst: string;
     valgtDatoFra?: string;
     valgtDatoTil?: string;
-    settDatoFra: ((datoFra?: string) => void) | Dispatch<SetStateAction<string>>;
-    settDatoTil: ((datoTil?: string) => void) | Dispatch<SetStateAction<string>>;
+    settDatoFra: any;
+    settDatoTil: any;
     datoFeil: OrNothing<string>;
 }
 
@@ -34,6 +34,7 @@ const DatoPeriode: React.FC<Props> = ({
                 <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoFra">
                     {datoFraTekst}
                 </DatolabelStyle>
+
                 <Datovelger onChange={settDatoFra} valgtDato={valgtDatoFra} />
             </div>
             <div className="skjemaelement flex-item">
