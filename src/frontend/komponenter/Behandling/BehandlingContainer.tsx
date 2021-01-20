@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
 import Høyremeny from '../Høyremeny/Høyremeny';
-import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
 import styled from 'styled-components';
 import { IBehandlingParams } from '../../typer/routing';
-import { Redirect, Route, Switch, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import Fanemeny from '../Fanemeny/Fanemeny';
-import Totrinnskontroll from './Totrinnskontroll/Totrinnskontro';
-import Personopplysninger from './Personopplysninger/Personopplysninger';
 import navFarger from 'nav-frontend-core';
+import BehandlingRoutes from './BehandlingRoutes';
 
 const Container = styled.div`
     display: flex;
@@ -40,42 +38,21 @@ const FanemenyWrapper = styled.div`
 const BehandlingContainer: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
 
+    //Hent status på behandling
+
     return (
-        <>
-            <Container>
-                <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
-                <InnholdWrapper>
-                    <FanemenyWrapper>
-                        <Fanemeny />
-                    </FanemenyWrapper>
-                    <Switch>
-                        <Redirect
-                            exact={true}
-                            from="/behandling/:behandlingId/"
-                            to="/behandling/:behandlingId/inngangsvilkar"
-                        />
-                        <Route
-                            exact={true}
-                            path="/behandling/:behandlingId/personopplysninger"
-                            render={() => {
-                                return <Personopplysninger behandlingId={behandlingId} />;
-                            }}
-                        />
-                        <Route
-                            exact={true}
-                            path="/behandling/:behandlingId/inngangsvilkar"
-                            render={() => {
-                                return <Inngangsvilkår behandlingId={behandlingId} />;
-                            }}
-                        />
-                    </Switch>
-                </InnholdWrapper>
-                <HøyreMenyWrapper>
-                    <Totrinnskontroll behandlingId={behandlingId} />
-                    <Høyremeny behandlingId={behandlingId} />
-                </HøyreMenyWrapper>
-            </Container>
-        </>
+        <Container>
+            <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
+            <InnholdWrapper>
+                <FanemenyWrapper>
+                    <Fanemeny />
+                </FanemenyWrapper>
+                <BehandlingRoutes />
+            </InnholdWrapper>
+            <HøyreMenyWrapper>
+                <Høyremeny behandlingId={behandlingId} />
+            </HøyreMenyWrapper>
+        </Container>
     );
 };
 
