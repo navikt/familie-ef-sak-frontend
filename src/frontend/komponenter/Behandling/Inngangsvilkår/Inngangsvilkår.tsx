@@ -83,40 +83,37 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [postInngangsvilkårSuksess, postOvergangsstønadSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
-        axiosRequest<any, any>({
+        const postInngangsvilkår = axiosRequest<any, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar/fullfor`,
         }).then((respons: Ressurs<string>) => {
-            switch (respons.status) {
-                case RessursStatus.SUKSESS:
-                    settPostInngangsvilkårSuksess(true);
-                    return respons;
-                case RessursStatus.FEILET:
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                    settFeiledeKall(feiledeKall.concat('inngangsvilkar'));
-                    return respons;
-                default:
-                    return respons;
-            }
+            return respons;
         });
 
-        axiosRequest<any, any>({
+        const postOvergangsstønad = axiosRequest<any, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstønad/fullfor`,
         }).then((respons: Ressurs<string>) => {
-            switch (respons.status) {
-                case RessursStatus.SUKSESS:
-                    settPostOvergangsstønadSuksess(true);
-                    return respons;
-                case RessursStatus.FEILET:
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                    settFeiledeKall(feiledeKall.concat('overgangsstønad'));
-                    return respons;
-                default:
-                    return respons;
-            }
+            return respons;
+        });
+
+        Promise.all([postInngangsvilkår, postOvergangsstønad]).then((responser) => {
+            responser.forEach((respons, index) => {
+                switch (respons.status) {
+                    case RessursStatus.SUKSESS:
+                        if (index === 0) {
+                            settPostInngangsvilkårSuksess(true);
+                        } else if (index === 1) {
+                            settPostOvergangsstønadSuksess(true);
+                        }
+                        break;
+                    case RessursStatus.FEILET:
+                    case RessursStatus.FUNKSJONELL_FEIL:
+                    case RessursStatus.IKKE_TILGANG:
+                        settFeiledeKall(feiledeKall.concat(respons.frontendFeilmelding));
+                        break;
+                }
+            });
         });
     };
 
