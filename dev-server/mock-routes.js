@@ -68,6 +68,10 @@ app.post('/familie-ef-sak/api/behandling/opprett', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
 });
 
+app.get('/familie-ef-sak/api/behandling/:id', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`behandling.json`)), delayMs);
+});
+
 app.post('/familie-ef-sak/api/fagsak/1/nytt-vedtak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
 });
@@ -93,6 +97,10 @@ app.post('/familie-ef-sak/api/journalpost/:journalpostId/fullfor', (req, res) =>
             }),
         delayMs
     );
+});
+
+app.get('/familie-ef-sak/api/vedtak/:id/totrinnskontroll', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`totrinnskontroll.json`)), delayMs);
 });
 
 app.post('/logg-feil', (req, res) => {

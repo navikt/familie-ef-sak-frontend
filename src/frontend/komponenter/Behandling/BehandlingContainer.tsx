@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 import Fanemeny from '../Fanemeny/Fanemeny';
 import navFarger from 'nav-frontend-core';
 import BehandlingRoutes from './BehandlingRoutes';
+import { BehandlingProvider } from '../../context/BehandlingContext';
 
 const Container = styled.div`
     display: flex;
@@ -41,18 +42,20 @@ const BehandlingContainer: FC = () => {
     //Hent status på behandling
 
     return (
-        <Container>
-            <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
-            <InnholdWrapper>
-                <FanemenyWrapper>
-                    <Fanemeny />
-                </FanemenyWrapper>
-                <BehandlingRoutes />
-            </InnholdWrapper>
-            <HøyreMenyWrapper>
-                <Høyremeny behandlingId={behandlingId} />
-            </HøyreMenyWrapper>
-        </Container>
+        <BehandlingProvider behandlingId={behandlingId}>
+            <Container>
+                <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
+                <InnholdWrapper>
+                    <FanemenyWrapper>
+                        <Fanemeny />
+                    </FanemenyWrapper>
+                    <BehandlingRoutes />
+                </InnholdWrapper>
+                <HøyreMenyWrapper>
+                    <Høyremeny behandlingId={behandlingId} />
+                </HøyreMenyWrapper>
+            </Container>
+        </BehandlingProvider>
     );
 };
 

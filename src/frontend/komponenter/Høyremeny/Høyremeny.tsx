@@ -7,9 +7,7 @@ import { Ressurs } from '../../typer/ressurs';
 import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
 import { DokumentProps } from '@navikt/familie-dokumentliste';
-import Totrinnskontroll, {
-    TotrinnskontrollStatus,
-} from '../Behandling/Totrinnskontroll/Totrinnskontrol';
+import Totrinnskontroll from '../Behandling/Totrinnskontroll/Totrinnskontroll';
 
 const StyledHøyremeny = styled.div`
     width: 300px;
@@ -40,7 +38,7 @@ const Høyremeny: React.FC<HøyremenyProps> = ({ behandlingId }) => {
     );
     return (
         <>
-            <Totrinnskontroll totrinnskontrollStatus={TotrinnskontrollStatus.FATTAR_VEDTAK} />
+            <Totrinnskontroll />
             <StyledHøyremeny>
                 <Valgvisning aktiv={aktivtValg} settAktiv={settAktivtvalg} />
                 {aktivtValg === Høyremenyvalg.Mappe && (

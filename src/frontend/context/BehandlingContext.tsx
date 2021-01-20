@@ -1,13 +1,10 @@
 import constate from 'constate';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Behandling } from '../typer/fagsak';
 import { useDataHenter } from '../hooks/felles/useDataHenter';
-import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 
-const [BehandlingProvider, useBehandlingProvider] = constate((props: { behandlingId: string }) => {
-    const [behandling, settBehandling] = useState<Ressurs<Behandling>>(byggTomRessurs());
-
+const [BehandlingProvider, useBehandling] = constate((props: { behandlingId: string }) => {
     const axiosConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -16,11 +13,9 @@ const [BehandlingProvider, useBehandlingProvider] = constate((props: { behandlin
         [props.behandlingId]
     );
 
-    const behandlingResponse = useDataHenter<Behandling, undefined>(axiosConfig);
-
-    settBehandling(behandlingResponse);
+    const behandling = useDataHenter<Behandling, undefined>(axiosConfig);
 
     return { behandling };
 });
 
-export { BehandlingProvider, useBehandlingProvider };
+export { BehandlingProvider, useBehandling };
