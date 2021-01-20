@@ -3,7 +3,7 @@
     "id": "ad983bff-d807-4ade-928e-1093e16ec2ac",
     "type": "FØRSTEGANGSBEHANDLING",
     "aktiv": false,
-    "steg": "BESLUTTE_VEDTAK",
+    "steg": "FATTAR_VEDTAK",
     "status": "UTREDES",
     "sistEndret": "2020-10-09"
   },

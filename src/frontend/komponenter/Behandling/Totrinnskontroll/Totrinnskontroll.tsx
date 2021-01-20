@@ -5,6 +5,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import { byggFeiletRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { Totrinnskontroll, TotrinnskontrollStatus } from '../../../typer/totrinnskontroll';
 import { useApp } from '../../../context/AppContext';
+import FattarVedtak from './FattarVedtak';
 
 const Totrinnskontroll: FC = () => {
     const { behandling } = useBehandling();
@@ -43,7 +44,7 @@ const Totrinnskontroll: FC = () => {
 
     switch (totrinnskontroll.data.status) {
         case TotrinnskontrollStatus.FATTAR_VEDTAK:
-            return <FattarVedtak />;
+            return <FattarVedtak behandlingId={behandling.data.id} />;
         case TotrinnskontrollStatus.SENDT_TIL_BESLUTTER:
             return <SendtTilBeslutter />;
         case TotrinnskontrollStatus.TOTRINNSKONTROLL_UNDERKJENT:
@@ -58,15 +59,6 @@ const SendtTilBeslutter = () => {
         <div>
             <Undertittel>To-trinnskontroll</Undertittel>
             <Element>Sendt Til Beslutter</Element>
-        </div>
-    );
-};
-
-const FattarVedtak = () => {
-    return (
-        <div>
-            <Undertittel>To-trinnskontroll</Undertittel>
-            <Element>Tryck på noe</Element>
         </div>
     );
 };

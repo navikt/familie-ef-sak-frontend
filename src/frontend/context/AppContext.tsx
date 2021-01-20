@@ -2,7 +2,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import React, { useEffect } from 'react';
 
 import { håndterRessurs, loggFeil, preferredAxios } from '../api/axios';
-import { Ressurs } from '../typer/ressurs';
+import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import constate from 'constate';
 
@@ -22,7 +22,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
 
     const axiosRequest = async <T, D>(
         config: AxiosRequestConfig & { data?: D }
-    ): Promise<Ressurs<T>> => {
+    ): Promise<RessursFeilet | RessursSuksess<T>> => {
         return preferredAxios
             .request(config)
             .then((response: AxiosResponse<Ressurs<T>>) => {
@@ -40,10 +40,25 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
             });
     };
 
+    const axiosCustomRequest = async <T, D>(
+        config: AxiosRequestConfig & { data?: D },
+        onError: (error: RessursFeilet) => void,
+        onSuccess: (data?: T) => void
+    ) => {
+        axiosRequest<T, D>(config).then((resp) => {
+            if (resp.status === RessursStatus.SUKSESS) {
+                onSuccess(resp.data);
+            } else {
+                onError(resp);
+            }
+        });
+    };
+
     return {
         axiosRequest,
         autentisert,
         innloggetSaksbehandler,
+        axiosCustomRequest,
     };
 });
 
