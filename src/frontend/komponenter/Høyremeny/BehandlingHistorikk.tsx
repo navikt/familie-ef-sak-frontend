@@ -24,13 +24,13 @@ const ListElementStyle = styled.li`
     margin: 0;
     padding-inline-start: 0px;
 `;
-const Element = styled.div`
+const Element = styled.p`
     font-weight: bold;
 `;
-const Normaltekst = styled.div`
+const Normaltekst = styled.p`
     line-height: 0;
 `;
-const Undertekst = styled.div`
+const Undertekst = styled.p`
     color: grey;
 `;
 
@@ -64,15 +64,9 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                             .map((v) => (
                                 <ListElementStyle>
                                     <ul>
-                                        <Element>
-                                            <p>{StegVerdi.get(v.steg)}</p>
-                                        </Element>
-                                        <Normaltekst>
-                                            <p>{v.endretAvNavn}</p>
-                                        </Normaltekst>
-                                        <Undertekst>
-                                            <p>{formatDate(v.endretTid)}</p>
-                                        </Undertekst>
+                                        <Element>{StegVerdi.get(v.steg)}</Element>
+                                        <Normaltekst>{v.endretAvNavn}</Normaltekst>
+                                        <Undertekst>{formatDate(v.endretTid)}</Undertekst>
                                     </ul>
                                 </ListElementStyle>
                             ))}
