@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import * as React from 'react';
 import { FormEvent, useState } from 'react';
 import { Radio, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import * as React from 'react';
 import { useApp } from '../../../context/AppContext';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const RadioButtonWrapper = styled.div`
     display: flex;
@@ -19,6 +20,7 @@ const SubmitButtonWrapper = styled.div`
 
 const StyledForm = styled.form`
     padding: 0.25rem;
+
     .textarea__container {
         margin-bottom: 1rem;
     }
@@ -40,24 +42,32 @@ interface TotrinnskontrollForm {
 }
 
 const FattarVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const [utfall, settUtfall] = useState<string>();
-    const [begrunnelse, settBegrunnelse] = useState<string>('');
+    const [godkjent, settGodkjent] = useState<boolean>();
+    const [begrunnelse, settBegrunnelse] = useState<string>();
+    const [feil, settFeil] = useState<string>();
 
     const { axiosCustomRequest } = useApp();
+    const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!erUtfylt) {
+            return;
+        }
         axiosCustomRequest<never, TotrinnskontrollForm>(
             {
                 method: 'POST',
                 url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
-                data: Object.assign(
-                    { godkjent: utfall === 'Godkjent' },
-                    utfall === 'Underkjent' && { c: 2 }
-                ),
+                data: {
+                    godkjent: !!godkjent,
+                    begrunnelse,
+                },
             },
-            (d) => console.log(d),
-            (er) => console.error(er)
+            (er) => settFeil(er.frontendFeilmelding),
+            () => {
+                // TODO vis modal
+                alert('Vedtak er lagret');
+            }
         );
     };
 
@@ -70,38 +80,39 @@ const FattarVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                 </Normaltekst>
                 <RadioButtonWrapper>
                     <Radio
-                        checked={utfall === 'Godkjent'}
+                        checked={godkjent === true}
                         label="Godkjenn"
                         name="minRadioKnapp"
                         onChange={() => {
-                            settUtfall('Godkjent');
-                            settBegrunnelse('');
+                            settGodkjent(true);
+                            settBegrunnelse(undefined);
                         }}
                     />
                     <Radio
-                        checked={utfall === 'Underkjent'}
+                        checked={godkjent === false}
                         label="Underkjenn"
                         name="minRadioKnapp"
                         onChange={() => {
-                            settUtfall('Underkjent');
-                            settBegrunnelse('');
+                            settGodkjent(false);
+                            settBegrunnelse(undefined);
                         }}
                     />
                 </RadioButtonWrapper>
-                {utfall === 'Underkjent' && (
+                {godkjent === false && (
                     <Textarea
-                        value={begrunnelse}
+                        value={begrunnelse || ''}
                         maxLength={0}
                         onChange={(e) => {
                             settBegrunnelse(e.target.value);
                         }}
                     />
                 )}
-                {utfall && (
+                {erUtfylt && (
                     <SubmitButtonWrapper>
                         <Hovedknapp htmlType="submit">Fullfør</Hovedknapp>
                     </SubmitButtonWrapper>
                 )}
+                {feil && <AlertStripeFeil>Lagring feilet: {feil}</AlertStripeFeil>}
             </BorderBox>
         </StyledForm>
     );

@@ -103,6 +103,10 @@ app.get('/familie-ef-sak/api/vedtak/:id/totrinnskontroll', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`totrinnskontroll.json`)), delayMs);
 });
 
+app.post('/familie-ef-sak/api/vedtak/:id/beslutte-vedtak', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`totrinnskontroll.json`)), delayMs);
+});
+
 app.post('/logg-feil', (req, res) => {
     console.error(req.body.melding);
     res.status(200).send();
