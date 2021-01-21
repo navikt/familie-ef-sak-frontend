@@ -1,10 +1,17 @@
 export enum TotrinnskontrollStatus {
-    SENDT_TIL_BESLUTTER = 'SENDT_TIL_BESLUTTER',
+    IKKE_AUTORISERT = 'IKKE_AUTORISERT',
     TOTRINNSKONTROLL_UNDERKJENT = 'TOTRINNSKONTROLL_UNDERKJENT',
-    FATTAR_VEDTAK = 'FATTAR_VEDTAK',
+    UAKTUELT = 'UAKTUELT',
+    KAN_FATTE_VEDTAK = 'KAN_FATTE_VEDTAK',
 }
 
 export interface Totrinnskontroll {
     status: TotrinnskontrollStatus;
-    begrunnelse?: string;
+    underkjennelse?: TotrinnskontrollUnderkjennelse;
+}
+
+export interface TotrinnskontrollUnderkjennelse {
+    begrunnelse: string;
+    besluttetAv: string;
+    besluttetTid: string;
 }

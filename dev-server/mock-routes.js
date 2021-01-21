@@ -100,7 +100,7 @@ app.post('/familie-ef-sak/api/journalpost/:journalpostId/fullfor', (req, res) =>
 });
 
 app.get('/familie-ef-sak/api/vedtak/:id/totrinnskontroll', (req, res) => {
-    setTimeout(() => res.send(lesMockFil(`totrinnskontroll.json`)), delayMs);
+    setTimeout(() => res.send(lesMockFil(`totrinnskontroll-underkjent.json`)), delayMs);
 });
 
 app.post('/familie-ef-sak/api/vedtak/:id/beslutte-vedtak', (req, res) => {

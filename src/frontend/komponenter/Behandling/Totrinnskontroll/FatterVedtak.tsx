@@ -6,6 +6,7 @@ import { Radio, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { BorderBox } from './Totrinnskontroll';
 
 const RadioButtonWrapper = styled.div`
     display: flex;
@@ -30,18 +31,12 @@ const StyledUndertittel = styled(Undertittel)`
     margin: 0.5rem 0;
 `;
 
-const BorderBox = styled.div`
-    border: 1px solid #c6c2bf;
-    padding: 0.5rem 1rem;
-    border-radius: 0.125rem;
-`;
-
 interface TotrinnskontrollForm {
     godkjent: boolean;
     beskrivelse?: string;
 }
 
-const FattarVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const [godkjent, settGodkjent] = useState<boolean>();
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
@@ -118,4 +113,4 @@ const FattarVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     );
 };
 
-export default FattarVedtak;
+export default FatterVedtak;

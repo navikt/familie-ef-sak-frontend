@@ -1,11 +1,23 @@
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { Element, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { byggFeiletRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { Totrinnskontroll, TotrinnskontrollStatus } from '../../../typer/totrinnskontroll';
+import {
+    Totrinnskontroll,
+    TotrinnskontrollStatus,
+    TotrinnskontrollUnderkjennelse,
+} from '../../../typer/totrinnskontroll';
 import { useApp } from '../../../context/AppContext';
-import FattarVedtak from './FattarVedtak';
+import FatterVedtak from './FatterVedtak';
+import styled from 'styled-components';
+import Advarsel from '../../../ikoner/Advarsel';
+
+export const BorderBox = styled.div`
+    border: 1px solid #c6c2bf;
+    padding: 0.5rem 1rem;
+    border-radius: 0.125rem;
+`;
 
 const Totrinnskontroll: FC = () => {
     const { behandling } = useBehandling();
@@ -43,12 +55,16 @@ const Totrinnskontroll: FC = () => {
     }
 
     switch (totrinnskontroll.data.status) {
-        case TotrinnskontrollStatus.FATTAR_VEDTAK:
-            return <FattarVedtak behandlingId={behandling.data.id} />;
-        case TotrinnskontrollStatus.SENDT_TIL_BESLUTTER:
+        case TotrinnskontrollStatus.KAN_FATTE_VEDTAK:
+            return <FatterVedtak behandlingId={behandling.data.id} />;
+        case TotrinnskontrollStatus.IKKE_AUTORISERT:
             return <SendtTilBeslutter />;
         case TotrinnskontrollStatus.TOTRINNSKONTROLL_UNDERKJENT:
-            return <TotrinnskontrollUnderkjent />;
+            return (
+                <TotrinnskontrollUnderkjent underkjennelse={totrinnskontroll.data.underkjennelse} />
+            );
+        case TotrinnskontrollStatus.UAKTUELT:
+            return null;
     }
 };
 
@@ -63,11 +79,24 @@ const SendtTilBeslutter = () => {
     );
 };
 
-const TotrinnskontrollUnderkjent = () => {
+const TotrinnskontrollUnderkjent: React.FC<{ underkjennelse?: TotrinnskontrollUnderkjennelse }> = ({
+    underkjennelse,
+}) => {
+    if (!underkjennelse) {
+        return null;
+    }
     return (
-        <div>
-            <Undertittel>To-trinnskontroll</Undertittel>
-            <Element>Tryck på noe</Element>
+        <div style={{ padding: '1rem 0.5rem' }}>
+            <BorderBox>
+                <Undertittel>To-trinnskontroll</Undertittel>
+                <div style={{ display: 'flex' }}>
+                    <Advarsel heigth={20} width={20} />
+                    <Element>Vedtaket er underkjent</Element>
+                </div>
+                <Normaltekst>
+                    Denne skal vurderes etter krav om 3 års medlemskap og ikke etter 5 år.
+                </Normaltekst>
+            </BorderBox>
         </div>
     );
 };
