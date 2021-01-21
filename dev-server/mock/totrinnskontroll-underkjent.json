@@ -2,9 +2,9 @@
   "data": {
     "status": "TOTRINNSKONTROLL_UNDERKJENT",
     "underkjennelse": {
-      "beskrivelse": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "begrunnelse": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "besluttetAv": "Z007",
-      "dato": "2021-01-11T11:11:49"
+      "besluttetTid": "2021-01-11T11:11:49"
     }
   },
   "status": "SUKSESS"
