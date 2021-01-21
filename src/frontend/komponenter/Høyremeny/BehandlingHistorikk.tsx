@@ -18,7 +18,7 @@ interface BehandlingHistorikkProps {
     endretTid: string;
 }
 
-const ListElementStyle = styled.li`
+const ListElementStyle = styled.div`
     border-bottom: 1px solid #c6c2bf;
     background: white;
     list-style: none;
@@ -55,11 +55,9 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                             )
                             .map((v) => (
                                 <ListElementStyle>
-                                    <ul>
-                                        <Element>{StegVerdi.get(v.steg)}</Element>
-                                        <Normaltekst>{v.endretAvNavn}</Normaltekst>
-                                        <Undertekst>{formatDate(v.endretTid)}</Undertekst>
-                                    </ul>
+                                    <Element>{StegVerdi.get(v.steg)}</Element>
+                                    <Normaltekst>{v.endretAvNavn}</Normaltekst>
+                                    <Undertekst>{formatDate(v.endretTid)}</Undertekst>
                                 </ListElementStyle>
                             ))}
                     </>
