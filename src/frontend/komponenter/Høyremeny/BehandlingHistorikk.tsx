@@ -24,7 +24,7 @@ const StyledList = styled.ul`
     margin: 0;
 `;
 
-const ListElementStyle = styled.li`
+const StyledListElement = styled.li`
     border-bottom: 1px solid ${navFarger.navGra20};
     list-style: none;
     padding: 0 2rem;
@@ -70,11 +70,11 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                                 compareDesc(new Date(a.endretTid), new Date(b.endretTid))
                             )
                             .map((v) => (
-                                <ListElementStyle>
+                                <StyledListElement>
                                     <Element>{stegTypeTilTekst[v.steg]}</Element>
                                     <Normaltekst>{v.endretAvNavn}</Normaltekst>
                                     <Undertekst>{formaterIsoDato(v.endretTid)}</Undertekst>
-                                </ListElementStyle>
+                                </StyledListElement>
                             ))}
                     </StyledList>
                 );
