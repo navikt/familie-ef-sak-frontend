@@ -22,10 +22,10 @@ const ListElementStyle = styled.li`
     background: white;
     list-style: none;
     margin: 0;
+    padding-inline-start: 0px;
 `;
 const Element = styled.div`
     font-weight: bold;
-    padding: 0;
 `;
 const Normaltekst = styled.div`
     line-height: 0;
@@ -62,8 +62,8 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                                 compareDesc(new Date(a.endretTid), new Date(b.endretTid))
                             )
                             .map((v) => (
-                                <ul>
-                                    <ListElementStyle>
+                                <ListElementStyle>
+                                    <ul>
                                         <Element>
                                             <p>{StegVerdi.get(v.steg)}</p>
                                         </Element>
@@ -73,8 +73,8 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
                                         <Undertekst>
                                             <p>{formatDate(v.endretTid)}</p>
                                         </Undertekst>
-                                    </ListElementStyle>
-                                </ul>
+                                    </ul>
+                                </ListElementStyle>
                             ))}
                     </>
                 );
