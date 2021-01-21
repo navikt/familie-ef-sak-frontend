@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Moment from 'moment';
 import { Steg, StegVerdi } from './Steg';
 import compareDesc from 'date-fns/compareDesc';
+import { Element, Normaltekst, Undertekst } from 'nav-frontend-typografi';
 
 interface BehandlingHistorikkProps {
     behandlingId: string;
@@ -23,15 +24,6 @@ const ListElementStyle = styled.li`
     list-style: none;
     margin: 0;
     padding-inline-start: 0px;
-`;
-const Element = styled.p`
-    font-weight: bold;
-`;
-const Normaltekst = styled.p`
-    line-height: 0;
-`;
-const Undertekst = styled.p`
-    color: grey;
 `;
 
 function formatDate(date: string) {
