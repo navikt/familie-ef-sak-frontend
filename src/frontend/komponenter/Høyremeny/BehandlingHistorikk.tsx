@@ -5,10 +5,11 @@ import { Ressurs } from '../../typer/ressurs';
 import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import styled from 'styled-components';
-import Moment from 'moment';
-import { Steg, StegVerdi } from './Steg';
+import { Steg, stegTypeTilTekst } from './Steg';
 import compareDesc from 'date-fns/compareDesc';
 import { Element, Normaltekst, Undertekst } from 'nav-frontend-typografi';
+import navFarger from 'nav-frontend-core';
+import { formaterIsoDato } from '../../utils/formatter';
 
 interface BehandlingHistorikkProps {
     behandlingId: string;
@@ -18,17 +19,32 @@ interface BehandlingHistorikkProps {
     endretTid: string;
 }
 
-const ListElementStyle = styled.div`
-    border-bottom: 1px solid #c6c2bf;
-    background: white;
-    list-style: none;
+const StyledList = styled.ul`
+    padding: 0 0.5rem 1rem 0.5rem;
     margin: 0;
-    padding-inline-start: 0px;
 `;
 
-function formatDate(date: string) {
-    return Moment(date).format('DD-MM-YYYY - HH:mm').toString();
-}
+const ListElementStyle = styled.li`
+    border-bottom: 1px solid ${navFarger.navGra20};
+    list-style: none;
+    padding: 0 2rem;
+
+    > :first-child {
+        margin-top: 1rem;
+    }
+    > * {
+        margin-bottom: 0.5rem;
+    }
+
+    .typo-normal,
+    .typo-element {
+        color: ${navFarger.navMorkGra};
+    }
+
+    .typo-undertekst {
+        color: ${navFarger.navGra60};
+    }
+`;
 
 const BehandlingHistorikk = (props: { behandlingId: string }) => {
     const behandlingHistorikkLogg: AxiosRequestConfig = useMemo(
@@ -48,19 +64,19 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
         <DataViewer response={behandlingHistorikk}>
             {(data: BehandlingHistorikkProps[]) => {
                 return (
-                    <>
+                    <StyledList>
                         {data
                             .sort((a, b) =>
                                 compareDesc(new Date(a.endretTid), new Date(b.endretTid))
                             )
                             .map((v) => (
                                 <ListElementStyle>
-                                    <Element>{StegVerdi.get(v.steg)}</Element>
+                                    <Element>{stegTypeTilTekst[v.steg]}</Element>
                                     <Normaltekst>{v.endretAvNavn}</Normaltekst>
-                                    <Undertekst>{formatDate(v.endretTid)}</Undertekst>
+                                    <Undertekst>{formaterIsoDato(v.endretTid)}</Undertekst>
                                 </ListElementStyle>
                             ))}
-                    </>
+                    </StyledList>
                 );
             }}
         </DataViewer>

@@ -13,17 +13,17 @@ export const enum Steg {
     BEHANDLING_FERDIGSTILT = 'BEHANDLING_FERDIGSTILT',
 }
 
-export const StegVerdi = new Map<Steg, string>([
-    [Steg.REGISTRERE_OPPLYSNINGER, 'Registrere opplysninger'],
-    [Steg.VILKÅRSVURDERE_INNGANGSVILKÅR, 'Vilkårsvurdere inngangsvilkår'],
-    [Steg.VILKÅRSVURDERE_STØNAD, 'Vilkårsvurdere stønad'],
-    [Steg.BEREGNE_YTELSE, 'Beregne ytelse'],
-    [Steg.SEND_TIL_BESLUTTER, 'Send til beslutter'],
-    [Steg.BESLUTTE_VEDTAK, 'Beslutte vedtak'],
-    [Steg.IVERKSETT_MOT_OPPDRAG, 'Iverksette mot oppdrag'],
-    [Steg.VENTE_PÅ_STATUS_FRA_ØKONOMI, 'Vente på status fra økonomi'],
-    [Steg.JOURNALFØR_VEDTAKSBREV, 'Journalfør vedtaksbrev'],
-    [Steg.DISTRIBUER_VEDTAKSBREV, 'Distribuer vedtaksbrev'],
-    [Steg.FERDIGSTILLE_BEHANDLING, 'Ferdigstille behandling'],
-    [Steg.BEHANDLING_FERDIGSTILT, 'Behandling ferdigstilt'],
-]);
+export const stegTypeTilTekst: Record<Steg, string> = {
+    BEHANDLING_FERDIGSTILT: 'Behandling ferdigstilt',
+    BEREGNE_YTELSE: 'Beregne ytelse',
+    BESLUTTE_VEDTAK: 'Beslutte vedtak',
+    DISTRIBUER_VEDTAKSBREV: 'Distribuer vedtaksbrev',
+    FERDIGSTILLE_BEHANDLING: 'Ferdigstille behandling',
+    IVERKSETT_MOT_OPPDRAG: 'Iverksette mot oppdrag',
+    JOURNALFØR_VEDTAKSBREV: 'Journalfør vedtaksbrev',
+    SEND_TIL_BESLUTTER: 'Send til beslutter',
+    VENTE_PÅ_STATUS_FRA_ØKONOMI: 'Vente på status fra økonomi',
+    VILKÅRSVURDERE_STØNAD: 'Vilkårsvurdere stønad',
+    REGISTRERE_OPPLYSNINGER: 'Registrere opplysninger',
+    VILKÅRSVURDERE_INNGANGSVILKÅR: 'Vilkårsvurdere inngangsvilkår',
+};
