@@ -5,6 +5,7 @@ import Begrunnelse from '../../Vurdering/Begrunnelse';
 import { DelvilkårType, delvilkårTypeTilHjelpetekst, IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
+import { manglerBegrunnelse } from '../../Vurdering/VurderingUtil';
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
@@ -24,7 +25,7 @@ const skalViseLagreKnappSamliv = (delvilkårsvurderinger: IDelvilkår[]) => {
                 DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
                 DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
             ].includes(delvilkår.type) &&
-            (delvilkår.begrunnelse ? delvilkår.begrunnelse.length < 1 : true)
+            manglerBegrunnelse(delvilkår.begrunnelse)
         ) {
             return false;
         }
