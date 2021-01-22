@@ -92,7 +92,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
         const postOvergangsstønad = axiosRequest<any, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstønad/fullfor`,
+            url: `/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstonad/fullfor`,
         }).then((respons: Ressurs<string>) => {
             return respons;
         });
