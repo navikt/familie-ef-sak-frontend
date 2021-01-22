@@ -69,7 +69,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     return (
         <StyledForm onSubmit={fatteTotrinnsKontroll}>
             <BorderBox>
-                <StyledUndertittel>To-trinnskontroll</StyledUndertittel>
+                <StyledUndertittel>Totrinnskontroll</StyledUndertittel>
                 <Normaltekst>
                     Kontroller opplysninger og faglige vurderinger gjort under behandlingen
                 </Normaltekst>
