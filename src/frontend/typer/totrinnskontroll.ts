@@ -19,8 +19,8 @@ export type TotrinnskontrollResponse =
       };
 
 export type TotrinnskontrollOpprettet = {
-    besluttetAv: string;
-    besluttetTid: string;
+    opprettetAv: string;
+    opprettetTid: string;
 };
 
 export type TotrinnskontrollMedBegrunnelse = TotrinnskontrollOpprettet & { begrunnelse: string };
