@@ -58,7 +58,11 @@ const GenerellVurdering: FC<{
                 />
             )}
             <Textarea
-                label="Begrunnelse"
+                label={
+                    config.begrunnelsePåkrevdHvisOppfylt
+                        ? 'Begrunnelse'
+                        : 'Begrunnelse (hvis aktuelt)'
+                }
                 maxLength={0}
                 placeholder="Skriv inn tekst"
                 value={vurdering.begrunnelse || ''}

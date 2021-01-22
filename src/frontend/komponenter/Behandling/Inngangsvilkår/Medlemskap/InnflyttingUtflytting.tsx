@@ -22,7 +22,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
             <Tabell
                 kolonner={[
                     {
-                        overskrift: 'Innflytting til',
+                        overskrift: 'Innflytting fra',
                         tekstVerdi: (innflytting) =>
                             slåSammenTekst(
                                 innflytting.fraflyttingsland,
@@ -40,7 +40,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
             <Tabell
                 kolonner={[
                     {
-                        overskrift: 'Utflytting fra',
+                        overskrift: 'Utflytting til',
                         tekstVerdi: (utflytting) =>
                             slåSammenTekst(
                                 utflytting.tilflyttingsland,

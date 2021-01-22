@@ -1,5 +1,5 @@
 import { Datovelger } from 'nav-datovelger';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { FlexDiv } from './OppgaveFiltrering';
@@ -14,8 +14,8 @@ interface Props {
     datoTilTekst: string;
     valgtDatoFra?: string;
     valgtDatoTil?: string;
-    settDatoFra: (datoFra?: string) => void;
-    settDatoTil: (datoTil?: string) => void;
+    settDatoFra: any;
+    settDatoTil: any;
     datoFeil: OrNothing<string>;
 }
 
@@ -34,6 +34,7 @@ const DatoPeriode: React.FC<Props> = ({
                 <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoFra">
                     {datoFraTekst}
                 </DatolabelStyle>
+
                 <Datovelger onChange={settDatoFra} valgtDato={valgtDatoFra} />
             </div>
             <div className="skjemaelement flex-item">

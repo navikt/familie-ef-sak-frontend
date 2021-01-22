@@ -11,10 +11,10 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { IMedlemskap } from '../Medlemskap/typer';
-import Statsborgerskap from '../Medlemskap/Statsborgerskap';
 import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
+import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -49,7 +49,9 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
 
             <StyledLesmerpanel>
                 <Lesmerpanel apneTekst={'Vis info om opphold'} lukkTekst={'Lukk info om opphold'}>
-                    <Statsborgerskap statsborgerskap={registergrunnlag.statsborgerskap} />
+                    <FolkeregisterPersonstatus
+                        status={registergrunnlag.folkeregisterpersonstatus}
+                    />
                     {finnesOppholdsstatus && (
                         <Oppholdstillatelse oppholdsstatus={registergrunnlag.oppholdstatus} />
                     )}

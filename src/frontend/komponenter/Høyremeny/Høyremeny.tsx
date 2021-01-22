@@ -7,6 +7,7 @@ import { Ressurs } from '../../typer/ressurs';
 import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
 import { DokumentProps } from '@navikt/familie-dokumentliste';
+import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Behandling/Totrinnskontroll/Totrinnskontroll';
 
 const StyledHøyremeny = styled.div`
@@ -44,7 +45,9 @@ const Høyremeny: React.FC<HøyremenyProps> = ({ behandlingId }) => {
                 {aktivtValg === Høyremenyvalg.Mappe && (
                     <Dokumentoversikt dokumentResponse={dokumentResponse} />
                 )}
-                {aktivtValg === Høyremenyvalg.Logg && <div>Her kommer logg</div>}
+                {aktivtValg === Høyremenyvalg.Logg && (
+                    <BehandlingHistorikk behandlingId={behandlingId} />
+                )}
                 {aktivtValg === Høyremenyvalg.Dialog && <div>Her kommer dialog</div>}
             </StyledHøyremeny>
         </>
