@@ -5,13 +5,22 @@ export enum TotrinnskontrollStatus {
     KAN_FATTE_VEDTAK = 'KAN_FATTE_VEDTAK',
 }
 
-export interface Totrinnskontroll {
-    status: TotrinnskontrollStatus;
-    underkjennelse?: TotrinnskontrollUnderkjennelse;
-}
+export type TotrinnskontrollResponse =
+    | {
+          status: TotrinnskontrollStatus.IKKE_AUTORISERT;
+          totrinnskontroll: TotrinnskontrollOpprettet;
+      }
+    | {
+          status: TotrinnskontrollStatus.TOTRINNSKONTROLL_UNDERKJENT;
+          totrinnskontroll: TotrinnskontrollMedBegrunnelse;
+      }
+    | {
+          status: TotrinnskontrollStatus.KAN_FATTE_VEDTAK | TotrinnskontrollStatus.UAKTUELT;
+      };
 
-export interface TotrinnskontrollUnderkjennelse {
-    begrunnelse: string;
+export type TotrinnskontrollOpprettet = {
     besluttetAv: string;
     besluttetTid: string;
-}
+};
+
+export type TotrinnskontrollMedBegrunnelse = TotrinnskontrollOpprettet & { begrunnelse: string };
