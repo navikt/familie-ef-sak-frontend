@@ -76,7 +76,7 @@ export const skalViseLagreKnappSivilstand = (
     return false;
 };
 
-export const manglerBegrunnelse = (begrunnelse: string | undefined | null) => {
+export const manglerBegrunnelse = (begrunnelse: string | undefined | null): boolean => {
     return !begrunnelse || begrunnelse.trim().length === 0;
 };
 
