@@ -45,13 +45,12 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         onError: (error: RessursFeilet) => void,
         onSuccess: (data?: T) => void
     ) => {
-        axiosRequest<T, D>(config).then((resp) => {
-            if (resp.status === RessursStatus.SUKSESS) {
-                onSuccess(resp.data);
-            } else {
-                onError(resp);
-            }
-        });
+        const resp = await axiosRequest<T, D>(config);
+        if (resp.status === RessursStatus.SUKSESS) {
+            onSuccess(resp.data);
+        } else {
+            onError(resp);
+        }
     };
 
     return {

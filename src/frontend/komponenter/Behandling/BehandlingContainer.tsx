@@ -8,6 +8,8 @@ import Fanemeny from '../Fanemeny/Fanemeny';
 import navFarger from 'nav-frontend-core';
 import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider } from '../../context/BehandlingContext';
+import { ModalProvider } from '../../context/ModalContext';
+import ModalController from '../Felleskomponenter/Modal/ModalController';
 
 const Container = styled.div`
     display: flex;
@@ -38,24 +40,26 @@ const FanemenyWrapper = styled.div`
 
 const BehandlingContainer: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
-
     //Hent status på behandling
 
     return (
-        <BehandlingProvider behandlingId={behandlingId}>
-            <Container>
-                <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
-                <InnholdWrapper>
-                    <FanemenyWrapper>
-                        <Fanemeny />
-                    </FanemenyWrapper>
-                    <BehandlingRoutes />
-                </InnholdWrapper>
-                <HøyreMenyWrapper>
-                    <Høyremeny behandlingId={behandlingId} />
-                </HøyreMenyWrapper>
-            </Container>
-        </BehandlingProvider>
+        <ModalProvider>
+            <BehandlingProvider behandlingId={behandlingId}>
+                <ModalController />
+                <Container>
+                    <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
+                    <InnholdWrapper>
+                        <FanemenyWrapper>
+                            <Fanemeny />
+                        </FanemenyWrapper>
+                        <BehandlingRoutes />
+                    </InnholdWrapper>
+                    <HøyreMenyWrapper>
+                        <Høyremeny behandlingId={behandlingId} />
+                    </HøyreMenyWrapper>
+                </Container>
+            </BehandlingProvider>
+        </ModalProvider>
     );
 };
 

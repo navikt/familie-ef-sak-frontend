@@ -7,6 +7,8 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BorderBox } from './Totrinnskontroll';
+import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 const RadioButtonWrapper = styled.div`
     display: flex;
@@ -40,8 +42,10 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const [godkjent, settGodkjent] = useState<boolean>();
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
+    const { modalDispatch } = useModal();
 
     const { axiosCustomRequest } = useApp();
+    const { triggerRerender } = useBehandling();
     const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
@@ -60,8 +64,11 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
             },
             (er) => settFeil(er.frontendFeilmelding),
             () => {
-                // TODO vis modal
-                alert('Vedtak er lagret');
+                triggerRerender();
+                modalDispatch({
+                    type: ModalAction.VIS_MODAL,
+                    modalType: godkjent ? ModalType.VEDTAK_GODKJENT : ModalType.VEDTAK_UNDERKJENT,
+                });
             }
         );
     };

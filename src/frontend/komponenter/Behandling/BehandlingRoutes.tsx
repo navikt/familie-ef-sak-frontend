@@ -43,7 +43,13 @@ const BehandlingRoutes: React.FC = () => {
                     return <Utbetalingsoversikt behandlingId={props.match.params.behandlingId} />;
                 }}
             />
-            <Route exact={true} path="/behandling/:behandlingId/brev" component={Brev} />
+            <Route
+                exact={true}
+                path="/behandling/:behandlingId/brev"
+                render={(props: RouteComponentProps<{ behandlingId: string }>) => {
+                    return <Brev behandlingId={props.match.params.behandlingId} />;
+                }}
+            />
         </Switch>
     );
 };

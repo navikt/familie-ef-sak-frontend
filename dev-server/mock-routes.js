@@ -120,6 +120,10 @@ app.post('/familie-ef-sak/api/vedtak/:id/beslutte-vedtak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`totrinnskontroll.json`)), delayMs);
 });
 
+app.post('/familie-ef-sak/api/vedtak/:id/send-til-beslutter', (req, res) => {
+    setTimeout(() => res.status(200).send({ data: req.params.id, status: 'SUKSESS' }), delayMs);
+});
+
 app.post('/logg-feil', (req, res) => {
     console.error(req.body.melding);
     res.status(200).send();
