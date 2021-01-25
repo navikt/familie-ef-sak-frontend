@@ -3,12 +3,10 @@ import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { IInngangsvilkårGrunnlag } from '../vilkår';
-import { ESøkerDelerBolig } from './typer';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { SivilstandType } from '../../../../typer/personopplysninger';
-import { EÅrsakEnslig } from '../Sivilstand/typer';
+import ÅrsakEnslig from './ÅrsakEnslig';
+import { Bosituasjon } from './Bosituasjon';
 
 interface Props {
     vilkårStatus: VilkårStatus;
@@ -16,7 +14,7 @@ interface Props {
 }
 
 const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
-    const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
+    const { sivilstand, bosituasjon } = grunnlag;
     const { søknadsgrunnlag, registergrunnlag } = sivilstand;
     const { tidligereSamboer } = søknadsgrunnlag;
 
@@ -28,6 +26,7 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                     <Undertittel>Samliv</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>
                 </div>
+
                 {registergrunnlag.type !== SivilstandType.GIFT && (
                     <>
                         <Søknadsgrunnlag />
@@ -35,111 +34,13 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                         <Normaltekst>{søknadsgrunnlag.årsakEnslig?.verdi || ''}</Normaltekst>
                     </>
                 )}
-                {søknadsgrunnlag.årsakEnslig?.svarId === EÅrsakEnslig.samlivsbruddForeldre &&
-                    søknadsgrunnlag.samlivsbruddsdato && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Dato for samlivsbrudd</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(søknadsgrunnlag.samlivsbruddsdato)}
-                            </Normaltekst>
-                        </>
-                    )}
-                {søknadsgrunnlag.årsakEnslig?.svarId === EÅrsakEnslig.samlivsbruddAndre &&
-                    tidligereSamboer && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Tidligere samboer</Normaltekst>
-                            <Normaltekst>
-                                {`${tidligereSamboer.navn} - ${
-                                    tidligereSamboer.ident ||
-                                    formaterNullableIsoDato(tidligereSamboer.fødselsdato)
-                                }`}
-                            </Normaltekst>
-                        </>
-                    ) &&
-                    søknadsgrunnlag.fraflytningsdato && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Flyttet fra hverandre</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(søknadsgrunnlag.fraflytningsdato)}
-                            </Normaltekst>
-                        </>
-                    )}
-                {søknadsgrunnlag.årsakEnslig?.svarId === EÅrsakEnslig.endringISamværsordning &&
-                    søknadsgrunnlag.endringSamværsordningDato && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Endringen skjer/skjedde</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(søknadsgrunnlag.endringSamværsordningDato)}
-                            </Normaltekst>
-                        </>
-                    )}
-                <>
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Bosituasjon</Normaltekst>
-                    <Normaltekst>{bosituasjon.delerDuBolig.verdi || ''}</Normaltekst>
+                <ÅrsakEnslig søknadsgrunnlag={søknadsgrunnlag} />
 
-                    {bosituasjon.delerDuBolig.svarId ===
-                        ESøkerDelerBolig.harEkteskapsliknendeForhold && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Samboers navn</Normaltekst>
-                            <Normaltekst>
-                                {`${bosituasjon.samboer?.navn} - ${
-                                    bosituasjon.samboer?.ident ||
-                                    formaterNullableIsoDato(bosituasjon.samboer?.fødselsdato)
-                                }`}
-                            </Normaltekst>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Flyttet sammen</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(bosituasjon.sammenflyttingsdato)}
-                            </Normaltekst>
-                        </>
-                    )}
+                <Søknadsgrunnlag />
+                <Normaltekst>Bosituasjon</Normaltekst>
+                <Normaltekst>{bosituasjon.delerDuBolig.verdi || ''}</Normaltekst>
 
-                    {bosituasjon.delerDuBolig.svarId ===
-                        ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Tidligere samboer</Normaltekst>
-                            <Normaltekst>{tidligereSamboer?.navn || ''}</Normaltekst>
-                        </>
-                    )}
-                    {[
-                        ESøkerDelerBolig.borAleneMedBarnEllerGravid,
-                        ESøkerDelerBolig.delerBoligMedAndreVoksne,
-                        ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
-                    ].includes(bosituasjon.delerDuBolig.svarId) && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Skal gifte seg eller bli samboer</Normaltekst>
-                            <BooleanTekst value={!!sivilstandsplaner.harPlaner} />
-                            {sivilstandsplaner.harPlaner && (
-                                <>
-                                    <Søknadsgrunnlag />
-                                    <Normaltekst>Dato</Normaltekst>
-                                    <Normaltekst>
-                                        {formaterNullableIsoDato(sivilstandsplaner.fraDato)}
-                                    </Normaltekst>
-                                    <Søknadsgrunnlag />
-                                    <Normaltekst>Ektefelle eller samboer</Normaltekst>
-                                    <Normaltekst>{`${
-                                        sivilstandsplaner.vordendeSamboerEktefelle?.navn
-                                    } - ${
-                                        sivilstandsplaner.vordendeSamboerEktefelle?.ident ||
-                                        formaterNullableIsoDato(
-                                            sivilstandsplaner.vordendeSamboerEktefelle?.fødselsdato
-                                        )
-                                    }`}</Normaltekst>
-                                </>
-                            )}
-                        </>
-                    )}
-                </>
+                <Bosituasjon bosituasjon={bosituasjon} tidligereSamboer={tidligereSamboer} />
             </StyledTabell>
         </>
     );
