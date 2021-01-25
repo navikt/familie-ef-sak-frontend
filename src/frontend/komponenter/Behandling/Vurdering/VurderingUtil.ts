@@ -5,7 +5,7 @@ import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 import { erEnkeEllerGjenlevendePartner } from '../Inngangsvilkår/Sivilstand/SivilstandHelper';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
-    vurderinger.filter((vurdering) => vurdering.resultat !== Vilkårsresultat.JA).length === 0;
+    vurderinger.every((vurdering) => vurdering.resultat !== Vilkårsresultat.JA);
 
 export const vilkårStatus = (vurderinger: IVurdering[]): VilkårStatus => {
     if (alleErOppfylte(vurderinger)) {

@@ -23,6 +23,14 @@ export interface IMedlemskapRegistergrunnlag {
     folkeregisterpersonstatus: Folkeregisterpersonstatus; //TODO: Definere typen et annet sted enn personopplysninger?
     innflytting: IInnflyttingTilNorge[];
     utflytting: IUtflyttingFraNorge[];
+    medlUnntak: IGyldigeVedtakPerioderIMedl;
+}
+
+export type IGyldigeVedtakPerioderIMedl = { gyldigeVedtaksPerioder: IGyldigVedtakPeriode[] };
+export interface IGyldigVedtakPeriode {
+    fraogmedDato: string;
+    tilogmedDato: string;
+    erMedlemIFolketrygden: boolean;
 }
 
 export interface IUtenlandsopphold {

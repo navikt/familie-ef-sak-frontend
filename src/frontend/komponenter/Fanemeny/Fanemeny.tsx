@@ -13,6 +13,7 @@ const StyledFanemeny = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    border-bottom: ${navFarger.navGra40} solid 2px;
 `;
 
 const StyledNavLink = styled(NavLink)`
