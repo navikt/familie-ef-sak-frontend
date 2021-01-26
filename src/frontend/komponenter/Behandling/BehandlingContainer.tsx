@@ -10,6 +10,7 @@ import Fanemeny from '../Fanemeny/Fanemeny';
 import Personopplysninger from './Personopplysninger/Personopplysninger';
 import navFarger from 'nav-frontend-core';
 import Utbetalingsoversikt from './Utbetalingsoversikt/Utbetalingsoversikt';
+import Brev from './Brev/Brev';
 
 const Container = styled.div`
     display: flex;
@@ -81,6 +82,13 @@ const BehandlingContainer: FC = () => {
                             path="/behandling/:behandlingId/utbetalingsoversikt"
                             render={() => {
                                 return <Utbetalingsoversikt behandlingId={behandlingId} />;
+                            }}
+                        />
+                        <Route
+                            exact={true}
+                            path="/behandling/:behandlingId/brev"
+                            render={() => {
+                                return <Brev />;
                             }}
                         />
                     </Switch>
