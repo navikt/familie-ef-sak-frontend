@@ -35,8 +35,6 @@ const InnholdWrapper = styled.div`
 const BehandlingContainer: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
 
-    //Hent status på behandling
-
     return (
         <BehandlingProvider behandlingId={behandlingId}>
             <Container>
