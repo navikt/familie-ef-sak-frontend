@@ -26,7 +26,10 @@ const ModalController: React.FC = () => {
                     modal={{
                         tittel: `${modalTittelToTekst[modalState.modalType]}`,
                         lukkKnapp: true,
-                        visModal: true,
+                        visModal:
+                            modalState.modalType === ModalType.SENDT_TIL_BESLUTTER ||
+                            modalState.modalType === ModalType.VEDTAK_GODKJENT ||
+                            modalState.modalType === ModalType.VEDTAK_UNDERKJENT,
                         onClose: () => modalDispatch({ type: ModalAction.SKJUL_MODAL }),
                         actions: [
                             <Knapp
@@ -36,7 +39,7 @@ const ModalController: React.FC = () => {
                                     modalDispatch({ type: ModalAction.SKJUL_MODAL });
                                     history.push(`/behandling/${behandlingId}`);
                                 }}
-                                children={'Til sendt søknad'}
+                                children="Til sendt søknad"
                             />,
                             <Knapp
                                 key={'opgavebenk'}
