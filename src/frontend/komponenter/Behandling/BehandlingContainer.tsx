@@ -88,7 +88,7 @@ const BehandlingContainer: FC = () => {
                             exact={true}
                             path="/behandling/:behandlingId/brev"
                             render={() => {
-                                return <Brev />;
+                                return <Brev behandlingId={behandlingId} />;
                             }}
                         />
                     </Switch>
