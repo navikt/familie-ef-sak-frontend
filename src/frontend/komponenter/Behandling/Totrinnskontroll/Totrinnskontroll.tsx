@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../../context/BehandlingContext';
-import { byggFeiletRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import {
     TotrinnskontrollMedBegrunnelse,
     TotrinnskontrollOpprettet,
@@ -46,18 +46,9 @@ const Totrinnskontroll: FC = () => {
             axiosRequest<TotrinnskontrollResponse, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/${behandling.data.id}/totrinnskontroll`,
-            })
-                .then((response: Ressurs<TotrinnskontrollResponse>) => {
-                    settTotrinnskontroll(response);
-                })
-                .catch((error) =>
-                    settTotrinnskontroll(
-                        byggFeiletRessurs(
-                            'En ukjent feil oppsto ved henting av totrinnskontroll',
-                            error
-                        )
-                    )
-                );
+            }).then((response: Ressurs<TotrinnskontrollResponse>) => {
+                settTotrinnskontroll(response);
+            });
         }
     }, [behandling.status]);
 

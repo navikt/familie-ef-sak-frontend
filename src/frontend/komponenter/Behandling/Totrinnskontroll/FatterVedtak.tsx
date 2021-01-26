@@ -7,6 +7,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BorderBox } from './Totrinnskontroll';
+import { RessursStatus } from '@navikt/familie-typer';
 
 const RadioButtonWrapper = styled.div`
     display: flex;
@@ -41,7 +42,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
 
-    const { axiosCustomRequest } = useApp();
+    const { axiosRequest } = useApp();
     const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
@@ -50,21 +51,20 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
             return;
         }
         settFeil(undefined);
-        axiosCustomRequest<never, TotrinnskontrollForm>(
-            {
-                method: 'POST',
-                url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
-                data: {
-                    godkjent: !!godkjent,
-                    begrunnelse,
-                },
+        axiosRequest<never, TotrinnskontrollForm>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
+            data: {
+                godkjent: !!godkjent,
+                begrunnelse,
             },
-            (er) => settFeil(er.frontendFeilmelding),
-            () => {
-                // TODO vis modal
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
                 alert('Vedtak er lagret');
+            } else {
+                settFeil(response.frontendFeilmelding);
             }
-        );
+        });
     };
 
     return (
