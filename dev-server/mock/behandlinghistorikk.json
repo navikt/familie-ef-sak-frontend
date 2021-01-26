@@ -23,7 +23,28 @@
         "endretAvNavn": "Saksbehandlernavn",
         "endretAvMail": "Saksbehandleremail",
         "endretTid": "2020-12-12T16:51:06.192"
-      }
+      },
+    {
+      "id": "92816901-86c0-45f9-86df-6f745d2370a2",
+      "behandlingId": "d3c6f6a9-39be-419d-a6bc-3cbca819297e",
+      "steg": "BESLUTTE_VEDTAK",
+      "utfall": "BESLUTTE_VEDTAK_GODKJENT",
+      "endretAvNavn": "Saksbehandlernavn",
+      "endretAvMail": "Saksbehandleremail",
+      "endretTid": "2020-12-12T16:51:06.192"
+    },
+    {
+      "id": "92816901-86c0-45f9-86df-6f745d2370a2",
+      "behandlingId": "d3c6f6a9-39be-419d-a6bc-3cbca819297e",
+      "steg": "BESLUTTE_VEDTAK",
+      "utfall": "BESLUTTE_VEDTAK_UNDERKJENT",
+      "metadata": {
+        "begrunnelse": "Denne skal vurderes etter krav om 3 års medlemskap og ikke etter 5 år."
+      },
+      "endretAvNavn": "Saksbehandlernavn",
+      "endretAvMail": "Saksbehandleremail",
+      "endretTid": "2020-12-12T16:51:06.192"
+    }
   ],
   "status": "SUKSESS",
   "melding": "Innhenting av data var vellykket",
