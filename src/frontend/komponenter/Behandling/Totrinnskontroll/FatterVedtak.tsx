@@ -53,6 +53,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
         if (!erUtfylt) {
             return;
         }
+        settFeil(undefined);
         axiosCustomRequest<never, TotrinnskontrollForm>(
             {
                 method: 'POST',

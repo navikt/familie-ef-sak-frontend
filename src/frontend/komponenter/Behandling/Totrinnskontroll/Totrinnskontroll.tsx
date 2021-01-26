@@ -97,8 +97,8 @@ const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet 
                 <Element>Vedtaket er sendt til godkjenning</Element>
             </div>
             <div>
-                <Normaltekst>{totrinnskontroll.besluttetAv}</Normaltekst>
-                <Normaltekst>{formaterIsoDatoTid(totrinnskontroll.besluttetTid)}</Normaltekst>
+                <Normaltekst>{totrinnskontroll.opprettetAv}</Normaltekst>
+                <Normaltekst>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</Normaltekst>
             </div>
         </BorderBox>
     );
@@ -115,8 +115,8 @@ const TotrinnskontrollUnderkjent: React.FC<{
                 <Element>Vedtaket er underkjent</Element>
             </div>
             <div>
-                <Normaltekst>{totrinnskontroll.besluttetAv}</Normaltekst>
-                <Normaltekst>{formaterIsoDatoTid(totrinnskontroll.besluttetTid)}</Normaltekst>
+                <Normaltekst>{totrinnskontroll.opprettetAv}</Normaltekst>
+                <Normaltekst>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</Normaltekst>
             </div>
             <div>
                 <Element>Begrunnelse:</Element>
