@@ -3,8 +3,10 @@ import {
     delvilkårTypeTilTekst,
     IDelvilkår,
     IVurdering,
+    Vilkår,
     Vilkårsresultat,
     vilkårsresultatTypeTilTekst,
+    VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import * as React from 'react';
 import { FC } from 'react';
@@ -36,12 +38,34 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
             return delvilkår;
         }
     });
+
     return {
         ...vurdering,
         delvilkårsvurderinger: delvilkårsvurderinger,
-        resultat: oppdatertDelvilkår.resultat,
+        resultat: finnVilkårsresultat(
+            vurdering.vilkårType,
+            delvilkårsvurderinger,
+            oppdatertDelvilkår
+        ),
         unntak: undefined,
     };
+};
+
+const finnVilkårsresultat = (
+    vilkårType: VilkårType,
+    delvilkårsvurderinger: IDelvilkår[],
+    oppdatertDelvilkår: IDelvilkår
+): Vilkårsresultat => {
+    if (vilkårType === Vilkår.SAMLIV) {
+        return delvilkårsvurderinger
+            .filter((delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL)
+            .map((delvilkår) => delvilkår.resultat)
+            .reduce((acc, verdi) => {
+                if (acc === Vilkårsresultat.IKKE_VURDERT) return Vilkårsresultat.IKKE_VURDERT;
+                else if (acc === Vilkårsresultat.NEI) return Vilkårsresultat.NEI;
+                else return verdi;
+            });
+    } else return oppdatertDelvilkår.resultat;
 };
 
 const StyledDelvilkår = styled.div`
