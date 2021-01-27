@@ -13,17 +13,17 @@ const StyledDiv = styled.div`
     justify-content: center;
 `;
 
-const Brev: React.FC<Props> = ({ behandlingId }) => {
+const Brev: React.FC<Props> = () => {
     const { axiosRequest } = useApp();
 
     const data = { tittel: 'test' };
 
     const genererBrev = () => {
-        axiosRequest<any, any>({
+        axiosRequest<string, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vurdering/${behandlingId}/lagBrev`,
+            url: `/familie-ef-sak/api/lag-brev`,
             data: data,
-        }).then((respons: Ressurs<string>) => {
+        }).then((respons: Ressurs<any>) => {
             console.log('respons', respons);
         });
     };
