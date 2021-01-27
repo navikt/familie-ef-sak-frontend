@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import { Knapp } from 'nav-frontend-knapper';
-import styled from 'styled-components';
 import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { Document, Page } from 'react-pdf';
-import Pagination from 'paginering';
+import { Page } from 'react-pdf';
+import {
+    StyledBrev,
+    GenererBrev,
+    StyledDataViewer,
+    DokumentWrapper,
+    StyledPagination,
+    StyledDokument,
+} from './Elementer';
 
 interface Props {
     behandlingId: string;
 }
-
-const StyledDiv = styled.div`
-    display: flex;
-    justify-content: center;
-`;
 
 const Brev: React.FC<Props> = () => {
     const { axiosRequest } = useApp();
@@ -41,20 +40,18 @@ const Brev: React.FC<Props> = () => {
     };
 
     return (
-        <>
-            <StyledDiv>
-                <Knapp onClick={genererBrev}>Generer brev</Knapp>
-            </StyledDiv>
-            <DataViewer response={brevRessurs}>
+        <StyledBrev>
+            <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+            <StyledDataViewer response={brevRessurs}>
                 {(data) => (
-                    <>
-                        <Pagination
+                    <DokumentWrapper>
+                        <StyledPagination
                             numberOfItems={numPages}
                             onChange={setPageNumber}
                             itemsPerPage={1}
                             currentPage={pageNumber}
                         />
-                        <Document
+                        <StyledDokument
                             file={`data:application/pdf;base64,${data}`}
                             onLoadSuccess={onDocumentLoadSuccess}
                             error={
@@ -66,17 +63,17 @@ const Brev: React.FC<Props> = () => {
                             loading={<NavFrontendSpinner />}
                         >
                             <Page pageNumber={pageNumber} />
-                        </Document>
-                        <Pagination
+                        </StyledDokument>
+                        <StyledPagination
                             numberOfItems={numPages}
                             onChange={setPageNumber}
                             itemsPerPage={1}
                             currentPage={pageNumber}
                         />
-                    </>
+                    </DokumentWrapper>
                 )}
-            </DataViewer>
-        </>
+            </StyledDataViewer>
+        </StyledBrev>
     );
 };
 
