@@ -21,9 +21,19 @@ export const stegTypeTilTekst: Record<Steg, string> = {
     FERDIGSTILLE_BEHANDLING: 'Ferdigstille behandling',
     IVERKSETT_MOT_OPPDRAG: 'Iverksette mot oppdrag',
     JOURNALFØR_VEDTAKSBREV: 'Journalfør vedtaksbrev',
-    SEND_TIL_BESLUTTER: 'Send til beslutter',
+    SEND_TIL_BESLUTTER: 'Vedtak sendt til godkjenning',
     VENTE_PÅ_STATUS_FRA_ØKONOMI: 'Vente på status fra økonomi',
     VILKÅRSVURDERE_STØNAD: 'Vilkårsvurdere stønad',
     REGISTRERE_OPPLYSNINGER: 'Registrere opplysninger',
     VILKÅRSVURDERE_INNGANGSVILKÅR: 'Vilkårsvurdere inngangsvilkår',
+};
+
+export const enum StegUtfall {
+    BESLUTTE_VEDTAK_GODKJENT = 'BESLUTTE_VEDTAK_GODKJENT',
+    BESLUTTE_VEDTAK_UNDERKJENT = 'BESLUTTE_VEDTAK_UNDERKJENT',
+}
+
+export const stegUtfallTilTekst: Record<StegUtfall, string> = {
+    BESLUTTE_VEDTAK_GODKJENT: 'Vedtak godkjent',
+    BESLUTTE_VEDTAK_UNDERKJENT: 'Vedtak underkjent',
 };

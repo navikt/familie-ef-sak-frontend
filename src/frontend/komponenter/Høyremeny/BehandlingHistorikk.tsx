@@ -5,19 +5,20 @@ import { Ressurs } from '../../typer/ressurs';
 import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { Steg, stegTypeTilTekst } from './Steg';
-import compareDesc from 'date-fns/compareDesc';
-import { Element, Normaltekst, Undertekst } from 'nav-frontend-typografi';
+import { Steg, stegTypeTilTekst, StegUtfall, stegUtfallTilTekst } from './Steg';
+import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import { formaterIsoDato } from '../../utils/formatter';
+import { formaterIsoDatoTid } from '../../utils/formatter';
 import { useBehandling } from '../../context/BehandlingContext';
 
-interface BehandlingHistorikkProps {
+interface Behandlingshistorikk {
     behandlingId: string;
     steg: Steg;
     endretAvNavn: string;
     endretAvMail: string;
     endretTid: string;
+    utfall?: StegUtfall;
+    metadata?: any;
 }
 
 const StyledList = styled.ul`
@@ -28,13 +29,11 @@ const StyledList = styled.ul`
 const StyledListElement = styled.li`
     border-bottom: 1px solid ${navFarger.navGra20};
     list-style: none;
-    padding: 0 2rem;
+    padding: 0.75rem 2rem;
 
     > :first-child {
-        margin-top: 1rem;
-    }
-    > * {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+        text-decoration: underline;
     }
 
     .typo-normal,
@@ -47,37 +46,46 @@ const StyledListElement = styled.li`
     }
 `;
 
+const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
+    if (behandlingshistorikk.steg === Steg.BESLUTTE_VEDTAK && !!behandlingshistorikk.utfall) {
+        return stegUtfallTilTekst[behandlingshistorikk.utfall];
+    }
+    return stegTypeTilTekst[behandlingshistorikk.steg];
+};
+
 const BehandlingHistorikk = (props: { behandlingId: string }) => {
     const { stateKey } = useBehandling();
-    const behandlingHistorikkLogg: AxiosRequestConfig = useMemo(
+    const behandlingshistorikkRequest: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/behandlinghistorikk/${props.behandlingId}`,
+            url: `/familie-ef-sak/api/behandlingshistorikk/${props.behandlingId}`,
         }),
         [props.behandlingId, stateKey]
     );
 
-    const behandlingHistorikk: Ressurs<BehandlingHistorikkProps[]> = useDataHenter<
-        BehandlingHistorikkProps[],
-        null
-    >(behandlingHistorikkLogg);
+    const response: Ressurs<Behandlingshistorikk[]> = useDataHenter<Behandlingshistorikk[], null>(
+        behandlingshistorikkRequest
+    );
 
     return (
-        <DataViewer response={behandlingHistorikk}>
-            {(data: BehandlingHistorikkProps[]) => {
+        <DataViewer response={response}>
+            {(data: Behandlingshistorikk[]) => {
                 return (
                     <StyledList>
-                        {data
-                            .sort((a, b) =>
-                                compareDesc(new Date(a.endretTid), new Date(b.endretTid))
-                            )
-                            .map((v) => (
-                                <StyledListElement>
-                                    <Element>{stegTypeTilTekst[v.steg]}</Element>
-                                    <Normaltekst>{v.endretAvNavn}</Normaltekst>
-                                    <Undertekst>{formaterIsoDato(v.endretTid)}</Undertekst>
-                                </StyledListElement>
-                            ))}
+                        {data.map((behandlingshistorikk) => (
+                            <StyledListElement>
+                                <Element>{renderTittel(behandlingshistorikk)}</Element>
+                                <Undertekst>
+                                    {formaterIsoDatoTid(behandlingshistorikk.endretTid)}
+                                </Undertekst>
+                                <Undertekst>{behandlingshistorikk.endretAvNavn}</Undertekst>
+                                {behandlingshistorikk.metadata?.begrunnelse && (
+                                    <Undertekst>
+                                        Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
+                                    </Undertekst>
+                                )}
+                            </StyledListElement>
+                        ))}
                     </StyledList>
                 );
             }}
