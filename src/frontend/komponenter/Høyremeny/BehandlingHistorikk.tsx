@@ -9,6 +9,7 @@ import { Steg, stegTypeTilTekst, StegUtfall, stegUtfallTilTekst } from './Steg';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTid } from '../../utils/formatter';
+import { useBehandling } from '../../context/BehandlingContext';
 
 interface Behandlingshistorikk {
     behandlingId: string;
@@ -53,12 +54,13 @@ const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
 };
 
 const BehandlingHistorikk = (props: { behandlingId: string }) => {
+    const { stateKey } = useBehandling();
     const behandlingshistorikkRequest: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
             url: `/familie-ef-sak/api/behandlingshistorikk/${props.behandlingId}`,
         }),
-        [props.behandlingId]
+        [props.behandlingId, stateKey]
     );
 
     const response: Ressurs<Behandlingshistorikk[]> = useDataHenter<Behandlingshistorikk[], null>(

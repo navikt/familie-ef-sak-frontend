@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../context/AppContext';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 
 const Footer = styled.div`
     position: fixed;
@@ -21,14 +22,18 @@ const MittstildtInnhold = styled.div`
 
 const Brev: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
+    const { modalDispatch } = useModal();
 
     const sendTilBeslutter = () =>
         axiosRequest<string, undefined>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vedlegg/${behandlingId}/send-til-beslutter`,
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
         }).then((res: Ressurs<string>) => {
             if (res.status === RessursStatus.SUKSESS) {
-                window.alert('Det gikk bra!');
+                modalDispatch({
+                    type: ModalAction.VIS_MODAL,
+                    modalType: ModalType.SENDT_TIL_BESLUTTER,
+                });
             } else {
                 window.alert('Det gikk mindre bra! :(((');
             }
