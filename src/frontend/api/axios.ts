@@ -1,6 +1,6 @@
 import { captureException, configureScope, withScope } from '@sentry/core';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { Ressurs, RessursStatus } from '../typer/ressurs';
+import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import { slackKanaler } from '../typer/slack';
 
@@ -10,7 +10,7 @@ export const preferredAxios = axios;
 export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,
     innloggetSaksbehandler?: ISaksbehandler
-): Ressurs<T> => {
+): RessursSuksess<T> | RessursFeilet => {
     let typetRessurs: Ressurs<T> = {
         status: RessursStatus.IKKE_HENTET,
     };

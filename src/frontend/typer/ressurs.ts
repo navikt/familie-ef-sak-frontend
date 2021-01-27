@@ -15,28 +15,22 @@ export type RessursLaster = {
     status: RessursStatus.HENTER;
 };
 
+export type FeilMelding = {
+    errorMelding?: string;
+    melding: string;
+    frontendFeilmelding: string;
+};
+
+export type RessursFeilet =
+    | (FeilMelding & { status: RessursStatus.IKKE_TILGANG })
+    | (FeilMelding & { status: RessursStatus.FEILET })
+    | (FeilMelding & { status: RessursStatus.FUNKSJONELL_FEIL });
+
 export type Ressurs<T> =
-    | {
-          status: RessursStatus.IKKE_HENTET;
-      }
+    | { status: RessursStatus.IKKE_HENTET }
     | RessursLaster
     | RessursSuksess<T>
-    | {
-          melding: string;
-          frontendFeilmelding: string;
-          status: RessursStatus.IKKE_TILGANG;
-      }
-    | {
-          errorMelding?: string;
-          melding: string;
-          frontendFeilmelding: string;
-          status: RessursStatus.FEILET;
-      }
-    | {
-          melding: string;
-          frontendFeilmelding: string;
-          status: RessursStatus.FUNKSJONELL_FEIL;
-      };
+    | RessursFeilet;
 
 export const byggTomRessurs = <T>(): Ressurs<T> => {
     return {

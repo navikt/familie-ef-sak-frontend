@@ -9,6 +9,7 @@
                 "type": "FØRSTEGANGSBEHANDLING",
                 "aktiv": false,
                 "status": "FERDIGSTILT",
+                "steg": "BEHANDLING_FERDIGSTILT",
                 "sistEndret": "2020-10-09"
             },
             {
@@ -16,6 +17,7 @@
                 "type": "REVURDERING",
                 "aktiv": true,
                 "status": "UTREDES",
+                "steg": "VILKÅRSVURDERE_INNGANGSVILKÅR",
                 "sistEndret": "2020-10-09"
             }
         ]

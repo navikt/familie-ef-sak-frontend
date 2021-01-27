@@ -6,7 +6,7 @@ import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilMedSirkel from '../../ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
 import { Behandlingstype } from '../../typer/behandlingstype';
-import { BehandlingDto, Fagsak } from '../../typer/fagsak';
+import { Behandling, Fagsak } from '../../typer/fagsak';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { BehandlingRequest } from '../../hooks/useJournalføringState';
 import { formaterIsoDato } from '../../utils/formatter';
@@ -67,7 +67,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.behandlinger.map((behandlingsEl: BehandlingDto) => (
+                                {data.behandlinger.map((behandlingsEl: Behandling) => (
                                     <tr key={behandlingsEl.id}>
                                         <td>
                                             <Checkbox
@@ -100,7 +100,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                             </tbody>
                         </table>
                         {data.behandlinger.every(
-                            (behandling: BehandlingDto) => behandling.status !== 'UTREDES'
+                            (behandling: Behandling) => behandling.status !== 'UTREDES'
                         ) &&
                             !nyBehandling && (
                                 <Flatknapp
