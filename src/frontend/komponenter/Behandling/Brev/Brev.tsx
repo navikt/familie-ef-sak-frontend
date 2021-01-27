@@ -7,6 +7,7 @@ import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Document, Page } from 'react-pdf';
+import Pagination from 'paginering';
 
 interface Props {
     behandlingId: string;
@@ -20,6 +21,12 @@ const StyledDiv = styled.div`
 const Brev: React.FC<Props> = () => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
+    const [pageNumber, setPageNumber] = useState(1);
+    const [numPages, setNumPages] = useState<number>(0);
+
+    function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+        setNumPages(numPages);
+    }
 
     const data = { tittel: 'test' };
 
@@ -41,8 +48,15 @@ const Brev: React.FC<Props> = () => {
             <DataViewer response={brevRessurs}>
                 {(data) => (
                     <>
+                        <Pagination
+                            numberOfItems={numPages}
+                            onChange={setPageNumber}
+                            itemsPerPage={1}
+                            currentPage={pageNumber}
+                        />
                         <Document
                             file={`data:application/pdf;base64,${data}`}
+                            onLoadSuccess={onDocumentLoadSuccess}
                             error={
                                 <AlertStripeFeil
                                     children={'Ukjent feil ved henting av dokument.'}
@@ -51,9 +65,14 @@ const Brev: React.FC<Props> = () => {
                             noData={<AlertStripeFeil children={'Dokumentet er tomt.'} />}
                             loading={<NavFrontendSpinner />}
                         >
-                            <Page pageNumber={1} />
-                            {/* TODO fiks pageNumber */}
+                            <Page pageNumber={pageNumber} />
                         </Document>
+                        <Pagination
+                            numberOfItems={numPages}
+                            onChange={setPageNumber}
+                            itemsPerPage={1}
+                            currentPage={pageNumber}
+                        />
                     </>
                 )}
             </DataViewer>
