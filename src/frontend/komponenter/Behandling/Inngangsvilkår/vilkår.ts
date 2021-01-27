@@ -1,5 +1,6 @@
 import { IMedlemskap } from './Medlemskap/typer';
-import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
+import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
+import { IBosituasjon } from './Samliv/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
@@ -9,6 +10,14 @@ export interface IInngangsvilkår {
 export interface IInngangsvilkårGrunnlag {
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
+    bosituasjon: IBosituasjon;
+    sivilstandsplaner: ISivilstandsplaner;
+}
+
+export interface ISivilstandsplaner {
+    harPlaner?: boolean;
+    fraDato?: string;
+    vordendeSamboerEktefelle?: IPersonDetaljer;
 }
 
 export interface IVurdering {
@@ -30,6 +39,7 @@ export interface Vurderingsfeilmelding {
 export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
+    begrunnelse?: string | null;
 }
 
 export enum Vilkårsresultat {
@@ -56,14 +66,20 @@ export enum Vilkår {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
+    SAMLIV = 'SAMLIV',
 }
 
-export type VilkårType = Vilkår.FORUTGÅENDE_MEDLEMSKAP | Vilkår.LOVLIG_OPPHOLD | Vilkår.SIVILSTAND;
+export type VilkårType =
+    | Vilkår.FORUTGÅENDE_MEDLEMSKAP
+    | Vilkår.LOVLIG_OPPHOLD
+    | Vilkår.SIVILSTAND
+    | Vilkår.SAMLIV;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
     LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
     SIVILSTAND: 'Vilkår om sivilstand',
+    SAMLIV: 'Vilkår om samliv',
 };
 
 // ------- DELVILKÅR
@@ -76,6 +92,9 @@ export enum DelvilkårType {
     KRAV_SIVILSTAND = 'KRAV_SIVILSTAND',
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON = 'SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING = 'SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING',
+    HAR_FLYTTET_FRA_HVERANDRE = 'HAR_FLYTTET_FRA_HVERANDRE',
+    LEVER_IKKE_MED_ANNEN_FORELDER = 'LEVER_IKKE_MED_ANNEN_FORELDER',
+    LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD = 'LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -88,6 +107,11 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
         'Er det samsvar mellom datoene for separasjon og fraflytting?',
+    HAR_FLYTTET_FRA_HVERANDRE: 'Har partene flyttet fra hverandre?',
+    LEVER_IKKE_MED_ANNEN_FORELDER:
+        'Er vilkåret om å ikke leve sammen med den andre av barnets/barnas foreldre oppfylt?',
+    LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD:
+        'Er vilkåret om å ikke leve i et ekteskapslignende forhold i felles husholdning uten felles barn oppfylt?',
 };
 
 // ------ UNNTAK
@@ -140,4 +164,14 @@ export enum VilkårGruppe {
     MEDLEMSKAP = 'MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
+    SAMLIV = 'SAMLIV',
 }
+
+export const delvilkårTypeTilHjelpetekst = (type: DelvilkårType): string | undefined => {
+    switch (type) {
+        case DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER:
+            return 'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
+        default:
+            return undefined;
+    }
+};

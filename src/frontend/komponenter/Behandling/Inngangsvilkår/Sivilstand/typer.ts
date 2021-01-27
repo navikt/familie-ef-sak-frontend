@@ -13,7 +13,7 @@ export interface ISivilstandSøknadsgrunnlag {
     endringSamværsordningDato?: string;
     fraflytningsdato?: string;
     datoSøktSeparasjon?: string;
-    årsakEnslig?: string;
+    årsakEnslig?: EÅrsakEnslig;
     tidligereSamboer?: IPersonDetaljer;
 }
 
@@ -25,4 +25,11 @@ export interface IPersonDetaljer {
 export interface ISivilstandRegistergrunnlag {
     type: SivilstandType;
     gyldigFraOgMed: string;
+}
+export enum EÅrsakEnslig {
+    samlivsbruddForeldre = 'samlivsbruddForeldre',
+    samlivsbruddAndre = 'samlivsbruddAndre',
+    aleneFraFødsel = 'aleneFraFødsel',
+    endringISamværsordning = 'endringISamværsordning',
+    dødsfall = 'dødsfall',
 }

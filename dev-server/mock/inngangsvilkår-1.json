@@ -172,11 +172,32 @@
           "erUformeltGift": false,
           "erUformeltSeparertEllerSkilt": true,
           "datoSøktSeparasjon": "2015-12-23",
-          "søktOmSkilsmisseSeparasjon": true
+          "søktOmSkilsmisseSeparasjon": true,
+          "årsakEnslig": "samlivsbruddAndre"
         },
         "registergrunnlag": {
           "type": "UGIFT",
           "gyldigFraOgMed": "2020-01-01"
+        }
+      },
+      "bosituasjon": {
+        "delerDuBolig": "borAleneMedBarnEllerGravid",
+        "samboer": {
+          "navn": "Bob Burger",
+          "fødselsdato": "1992-02-18",
+          "personIdent": null
+        },
+        "sammenflyttingsdato": "2018-08-12",
+        "datoFlyttetFraHverandre": "2019-08-12",
+        "tidligereSamboerFortsattRegistrertPåAdresse": null
+      },
+      "sivilstandsplaner": {
+        "harPlaner": true,
+        "fraDato": "2021-02-10",
+        "vordendeSamboerEktefelle": {
+          "navn": "Ola Mockeson",
+          "fødselsdato": "1980-04-03",
+          "ident": null
         }
       }
     }
