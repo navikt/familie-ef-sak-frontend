@@ -34,13 +34,8 @@ const InnholdWrapper = styled.div`
     overflow: auto;
 `;
 
-const FanemenyWrapper = styled.div`
-    border-bottom: ${navFarger.navGra40} solid 2px;
-`;
-
 const BehandlingContainer: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
-    //Hent status på behandling
 
     return (
         <ModalProvider>
@@ -49,9 +44,7 @@ const BehandlingContainer: FC = () => {
                 <Container>
                     <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
                     <InnholdWrapper>
-                        <FanemenyWrapper>
-                            <Fanemeny />
-                        </FanemenyWrapper>
+                        <Fanemeny />
                         <BehandlingRoutes />
                     </InnholdWrapper>
                     <HøyreMenyWrapper>

@@ -7,6 +7,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BorderBox } from './Totrinnskontroll';
+import { RessursStatus } from '@navikt/familie-typer';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import { useBehandling } from '../../../context/BehandlingContext';
 
@@ -44,7 +45,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const [feil, settFeil] = useState<string>();
     const { modalDispatch } = useModal();
 
-    const { axiosCustomRequest } = useApp();
+    const { axiosRequest } = useApp();
     const { triggerRerender } = useBehandling();
     const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
 
@@ -54,24 +55,24 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
             return;
         }
         settFeil(undefined);
-        axiosCustomRequest<never, TotrinnskontrollForm>(
-            {
-                method: 'POST',
-                url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
-                data: {
-                    godkjent: !!godkjent,
-                    begrunnelse,
-                },
+        axiosRequest<never, TotrinnskontrollForm>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
+            data: {
+                godkjent: !!godkjent,
+                begrunnelse,
             },
-            (er) => settFeil(er.frontendFeilmelding),
-            () => {
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
                 triggerRerender();
                 modalDispatch({
                     type: ModalAction.VIS_MODAL,
                     modalType: godkjent ? ModalType.VEDTAK_GODKJENT : ModalType.VEDTAK_UNDERKJENT,
                 });
+            } else {
+                settFeil(response.frontendFeilmelding);
             }
-        );
+        });
     };
 
     return (
