@@ -12,7 +12,7 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
     const { tidligereSamboer } = søknadsgrunnlag;
     return (
         <>
-            {søknadsgrunnlag.årsakEnslig?.svarId === EÅrsakEnslig.samlivsbruddForeldre &&
+            {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre &&
                 søknadsgrunnlag.samlivsbruddsdato && (
                     <>
                         <Søknadsgrunnlag />
@@ -23,7 +23,7 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
                     </>
                 )}
 
-            {søknadsgrunnlag.årsakEnslig?.svarId === EÅrsakEnslig.samlivsbruddAndre &&
+            {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre &&
                 tidligereSamboer && (
                     <>
                         <Søknadsgrunnlag />
@@ -44,7 +44,7 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
                     </>
                 )}
 
-            {søknadsgrunnlag.årsakEnslig?.svarId === EÅrsakEnslig.endringISamværsordning &&
+            {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.endringISamværsordning &&
                 søknadsgrunnlag.endringSamværsordningDato && (
                     <>
                         <Søknadsgrunnlag />

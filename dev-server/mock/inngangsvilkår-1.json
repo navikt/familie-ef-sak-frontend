@@ -133,7 +133,8 @@
           "erUformeltGift": false,
           "erUformeltSeparertEllerSkilt": true,
           "datoSøktSeparasjon": "2015-12-23",
-          "søktOmSkilsmisseSeparasjon": true
+          "søktOmSkilsmisseSeparasjon": true,
+          "årsakEnslig": "samlivsbruddAndre"
         },
         "registergrunnlag": {
           "type": "UGIFT",
@@ -141,10 +142,7 @@
         }
       },
       "bosituasjon": {
-        "delerDuBolig": {
-          "verdi": "Ja, jeg har samboer og lever i et ekteskapslignende forhold",
-          "svarId": "borAleneMedBarnEllerGravid"
-        },
+        "delerDuBolig": "borAleneMedBarnEllerGravid",
         "samboer": {
           "navn": "Bob Burger",
           "fødselsdato": "1992-02-18",

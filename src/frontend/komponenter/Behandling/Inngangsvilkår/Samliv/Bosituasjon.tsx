@@ -15,14 +15,14 @@ interface Props {
 
 export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilstandsplaner }) => (
     <>
-        {bosituasjon.delerDuBolig.svarId === ESøkerDelerBolig.harEkteskapsliknendeForhold && (
+        {bosituasjon.delerDuBolig === ESøkerDelerBolig.harEkteskapsliknendeForhold && (
             <SamboerInfoOgDatoSammenflytting
                 samboer={bosituasjon?.samboer}
                 sammenflyttingsdato={bosituasjon?.sammenflyttingsdato}
             />
         )}
 
-        {bosituasjon.delerDuBolig.svarId ===
+        {bosituasjon.delerDuBolig ===
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
             <>
                 <Søknadsgrunnlag />
@@ -38,7 +38,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             ESøkerDelerBolig.borAleneMedBarnEllerGravid,
             ESøkerDelerBolig.delerBoligMedAndreVoksne,
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
-        ].includes(bosituasjon.delerDuBolig.svarId) &&
+        ].includes(bosituasjon.delerDuBolig) &&
             sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
     </>
 );

@@ -7,6 +7,7 @@ import { IInngangsvilkårGrunnlag } from '../vilkår';
 import { SivilstandType } from '../../../../typer/personopplysninger';
 import ÅrsakEnslig from './ÅrsakEnslig';
 import { Bosituasjon } from './Bosituasjon';
+import { SøkerDelerBoligTilTekst, ÅrsakEnsligTilTekst } from './typer';
 
 interface Props {
     vilkårStatus: VilkårStatus;
@@ -31,14 +32,18 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Alene med barn fordi</Normaltekst>
-                        <Normaltekst>{søknadsgrunnlag.årsakEnslig?.verdi || ''}</Normaltekst>
+                        <Normaltekst>
+                            {(søknadsgrunnlag.årsakEnslig &&
+                                ÅrsakEnsligTilTekst[søknadsgrunnlag?.årsakEnslig]) ||
+                                ''}
+                        </Normaltekst>
                     </>
                 )}
                 <ÅrsakEnslig søknadsgrunnlag={søknadsgrunnlag} />
 
                 <Søknadsgrunnlag />
                 <Normaltekst>Bosituasjon</Normaltekst>
-                <Normaltekst>{bosituasjon.delerDuBolig.verdi || ''}</Normaltekst>
+                <Normaltekst>{SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}</Normaltekst>
 
                 <Bosituasjon bosituasjon={bosituasjon} tidligereSamboer={tidligereSamboer} />
             </StyledTabell>

@@ -1,5 +1,4 @@
 import { SivilstandType } from '../../../../typer/personopplysninger';
-import { ITekstalternativMedSvarId } from '../Samliv/typer';
 
 export interface ISivilstandInngangsvilkår {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -14,7 +13,7 @@ export interface ISivilstandSøknadsgrunnlag {
     endringSamværsordningDato?: string;
     fraflytningsdato?: string;
     datoSøktSeparasjon?: string;
-    årsakEnslig?: ITekstalternativMedSvarId<EÅrsakEnslig>;
+    årsakEnslig?: EÅrsakEnslig;
     tidligereSamboer?: IPersonDetaljer;
 }
 
@@ -33,5 +32,4 @@ export enum EÅrsakEnslig {
     aleneFraFødsel = 'aleneFraFødsel',
     endringISamværsordning = 'endringISamværsordning',
     dødsfall = 'dødsfall',
-    annet = 'annet',
 }
