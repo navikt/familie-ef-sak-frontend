@@ -122,7 +122,46 @@
               "dato": "2020-11-25"
             }
           ],
-          "folkeregisterpersonstatus": "BOSATT"
+          "folkeregisterpersonstatus": "BOSATT",
+          "medlUnntak": {
+            "gyldigeVedtaksPerioder": [
+              {
+                "fraogmedDato": "2020-09-23",
+                "tilogmedDato": "2020-10-22",
+                "erMedlemIFolketrygden": false
+              },
+              {
+                "fraogmedDato": "2019-12-09",
+                "tilogmedDato": "2020-12-11",
+                "erMedlemIFolketrygden": true
+              },
+              {
+                "fraogmedDato": "2020-12-17",
+                "tilogmedDato": "2020-12-22",
+                "erMedlemIFolketrygden": true
+              },
+              {
+                "fraogmedDato": "2020-01-01",
+                "tilogmedDato": "2022-12-31",
+                "erMedlemIFolketrygden": true
+              },
+              {
+                "fraogmedDato": "2019-01-01",
+                "tilogmedDato": "2021-12-31",
+                "erMedlemIFolketrygden": true
+              },
+              {
+                "fraogmedDato": "2019-09-02",
+                "tilogmedDato": "2020-09-22",
+                "erMedlemIFolketrygden": false
+              },
+              {
+                "fraogmedDato": "2020-09-23",
+                "tilogmedDato": "2020-11-03",
+                "erMedlemIFolketrygden": false
+              }
+            ]
+          }
         }
       },
       "sivilstand": {
@@ -133,11 +172,32 @@
           "erUformeltGift": false,
           "erUformeltSeparertEllerSkilt": true,
           "datoSøktSeparasjon": "2015-12-23",
-          "søktOmSkilsmisseSeparasjon": true
+          "søktOmSkilsmisseSeparasjon": true,
+          "årsakEnslig": "samlivsbruddAndre"
         },
         "registergrunnlag": {
           "type": "UGIFT",
           "gyldigFraOgMed": "2020-01-01"
+        }
+      },
+      "bosituasjon": {
+        "delerDuBolig": "borAleneMedBarnEllerGravid",
+        "samboer": {
+          "navn": "Bob Burger",
+          "fødselsdato": "1992-02-18",
+          "personIdent": null
+        },
+        "sammenflyttingsdato": "2018-08-12",
+        "datoFlyttetFraHverandre": "2019-08-12",
+        "tidligereSamboerFortsattRegistrertPåAdresse": null
+      },
+      "sivilstandsplaner": {
+        "harPlaner": true,
+        "fraDato": "2021-02-10",
+        "vordendeSamboerEktefelle": {
+          "navn": "Ola Mockeson",
+          "fødselsdato": "1980-04-03",
+          "ident": null
         }
       }
     }

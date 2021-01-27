@@ -116,12 +116,20 @@ const VisVurdering: FC<Props> = ({
                             delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
                     )
                     .map((delvilkårsvurdering) => (
-                        <div key={delvilkårsvurdering.type}>
-                            <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
-                            <Normaltekst>
-                                {vilkårsresultatTypeTilTekst[delvilkårsvurdering.resultat]}
-                            </Normaltekst>
-                        </div>
+                        <>
+                            <div key={delvilkårsvurdering.type}>
+                                <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
+                                <Normaltekst>
+                                    {vilkårsresultatTypeTilTekst[delvilkårsvurdering.resultat]}
+                                </Normaltekst>
+                            </div>
+                            {delvilkårsvurdering.begrunnelse && (
+                                <>
+                                    <Element>Begrunnelse</Element>
+                                    <Normaltekst>{delvilkårsvurdering.begrunnelse}</Normaltekst>
+                                </>
+                            )}
+                        </>
                     ))}
 
                 {vurdering.unntak && (
@@ -130,8 +138,12 @@ const VisVurdering: FC<Props> = ({
                         <Normaltekst>{unntakTypeTilTekst[vurdering.unntak]}</Normaltekst>
                     </>
                 )}
-                <Element>Begrunnelse</Element>
-                {vurdering.begrunnelse && <Normaltekst>{vurdering.begrunnelse}</Normaltekst>}
+                {vurdering.begrunnelse && (
+                    <>
+                        <Element>Begrunnelse</Element>
+                        <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                    </>
+                )}
             </StyledVilkår>
         </StyledVurdering>
     );

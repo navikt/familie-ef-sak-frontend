@@ -1,0 +1,11 @@
+{
+  "data": {
+    "status": "TOTRINNSKONTROLL_UNDERKJENT",
+    "totrinnskontroll": {
+      "begrunnelse": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "opprettetAv": "Z007",
+      "opprettetTid": "2021-01-11T11:11:49"
+    }
+  },
+  "status": "SUKSESS"
+}

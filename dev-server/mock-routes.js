@@ -68,6 +68,12 @@ app.post('/familie-ef-sak/api/behandling/opprett', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
 });
 
+app.get('/familie-ef-sak/api/behandling/:id', (req, res) => {
+    const behandling = JSON.parse(lesMockFil(`behandling.json`));
+    behandling.data.id = req.params.id;
+    setTimeout(() => res.send(behandling), delayMs);
+});
+
 app.post('/familie-ef-sak/api/fagsak/1/nytt-vedtak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
 });
@@ -95,6 +101,29 @@ app.post('/familie-ef-sak/api/journalpost/:journalpostId/fullfor', (req, res) =>
     );
 });
 
+app.get('/familie-ef-sak/api/vedtak/:id/totrinnskontroll', (req, res) => {
+    const status = [
+        'IKKE_AUTORISERT',
+        'TOTRINNSKONTROLL_UNDERKJENT',
+        'UAKTUELT',
+        'KAN_FATTE_VEDTAK',
+    ].includes(req.params.id)
+        ? req.params.id
+        : 'UAKTUELT';
+    const lesMockFil1 = lesMockFil(`totrinnskontroll.json`);
+    const json = JSON.parse(lesMockFil1);
+    json.data.status = status;
+    setTimeout(() => res.send(json), delayMs);
+});
+
+app.post('/familie-ef-sak/api/vedtak/:id/beslutte-vedtak', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`totrinnskontroll.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/vedtak/:id/send-til-beslutter', (req, res) => {
+    setTimeout(() => res.status(200).send({ data: req.params.id, status: 'SUKSESS' }), delayMs);
+});
+
 app.post('/logg-feil', (req, res) => {
     console.error(req.body.melding);
     res.status(200).send();
@@ -104,7 +133,7 @@ app.post('/familie-ef-sak/api/oppgave/:oppgaveId/fordel', (req, res) => {
     setTimeout(() => res.send({ data: 45060, status: 'SUKSESS' }), delayMs);
 });
 
-app.get('/familie-ef-sak/api/behandlinghistorikk/:behandlingId', (req, res) => {
+app.get('/familie-ef-sak/api/behandlingshistorikk/:behandlingId', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`behandlinghistorikk.json`)), delayMs);
 });
 

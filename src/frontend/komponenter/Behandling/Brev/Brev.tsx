@@ -19,6 +19,7 @@ interface Props {
 
 const Brev: React.FC<Props> = () => {
     const { axiosRequest } = useApp();
+
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [pageNumber, setPageNumber] = useState(1);
     const [numPages, setNumPages] = useState<number>(0);

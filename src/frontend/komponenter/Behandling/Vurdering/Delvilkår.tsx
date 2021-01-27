@@ -3,16 +3,22 @@ import {
     delvilkårTypeTilTekst,
     IDelvilkår,
     IVurdering,
+    Vilkår,
     Vilkårsresultat,
     vilkårsresultatTypeTilTekst,
+    VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import * as React from 'react';
 import { FC } from 'react';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
+import { PopoverOrientering } from 'nav-frontend-popover';
+import styled from 'styled-components';
 
 interface Props {
     delvilkår: IDelvilkår;
     vurdering: IVurdering;
     settVurdering: (vurdering: IVurdering) => void;
+    hjelpetekst?: string;
 }
 
 const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilkår): IVurdering => {
@@ -32,35 +38,75 @@ const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilk
             return delvilkår;
         }
     });
+
     return {
         ...vurdering,
         delvilkårsvurderinger: delvilkårsvurderinger,
-        resultat: oppdatertDelvilkår.resultat,
+        resultat: finnVilkårsresultat(
+            vurdering.vilkårType,
+            delvilkårsvurderinger,
+            oppdatertDelvilkår
+        ),
         unntak: undefined,
     };
 };
 
-const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering }) => {
+const finnVilkårsresultat = (
+    vilkårType: VilkårType,
+    delvilkårsvurderinger: IDelvilkår[],
+    oppdatertDelvilkår: IDelvilkår
+): Vilkårsresultat => {
+    if (vilkårType === Vilkår.SAMLIV) {
+        return delvilkårsvurderinger
+            .filter((delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL)
+            .map((delvilkår) => delvilkår.resultat)
+            .reduce((acc, verdi) => {
+                if (acc === Vilkårsresultat.IKKE_VURDERT) return Vilkårsresultat.IKKE_VURDERT;
+                else if (acc === Vilkårsresultat.NEI) return Vilkårsresultat.NEI;
+                else return verdi;
+            });
+    } else return oppdatertDelvilkår.resultat;
+};
+
+const StyledDelvilkår = styled.div`
+    display: flex;
+
+    .radiogruppe {
+        width: 26rem;
+    }
+
+    .hjelpetekst__innhold {
+        max-width: 16rem;
+    }
+`;
+
+const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetekst }) => {
     return (
-        <RadioGruppe key={delvilkår.type} legend={delvilkårTypeTilTekst[delvilkår.type]}>
-            {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
-                <Radio
-                    key={vilkårsresultat}
-                    label={vilkårsresultatTypeTilTekst[vilkårsresultat]}
-                    name={delvilkår.type}
-                    onChange={() =>
-                        settVurdering(
-                            oppdaterDelvilkår(vurdering, {
-                                type: delvilkår.type,
-                                resultat: vilkårsresultat,
-                            })
-                        )
-                    }
-                    value={vilkårsresultat}
-                    checked={delvilkår.resultat === vilkårsresultat}
-                />
-            ))}
-        </RadioGruppe>
+        <StyledDelvilkår>
+            <RadioGruppe key={delvilkår.type} legend={delvilkårTypeTilTekst[delvilkår.type]}>
+                {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
+                    <Radio
+                        key={vilkårsresultat}
+                        label={vilkårsresultatTypeTilTekst[vilkårsresultat]}
+                        name={delvilkår.type}
+                        onChange={() =>
+                            settVurdering(
+                                oppdaterDelvilkår(vurdering, {
+                                    ...delvilkår,
+                                    type: delvilkår.type,
+                                    resultat: vilkårsresultat,
+                                })
+                            )
+                        }
+                        value={vilkårsresultat}
+                        checked={delvilkår.resultat === vilkårsresultat}
+                    />
+                ))}
+            </RadioGruppe>
+            {hjelpetekst && (
+                <Hjelpetekst type={PopoverOrientering.Under}>{hjelpetekst}</Hjelpetekst>
+            )}
+        </StyledDelvilkår>
     );
 };
 export default Delvilkår;
