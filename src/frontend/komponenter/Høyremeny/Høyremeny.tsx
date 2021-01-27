@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import { DokumentProps } from '@navikt/familie-dokumentliste';
 import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Behandling/Totrinnskontroll/Totrinnskontroll';
-import { useBehandling } from '../../context/BehandlingContext';
 
 const StyledHøyremeny = styled.div`
     width: 300px;
@@ -27,7 +26,6 @@ interface HøyremenyProps {
 
 const Høyremeny: React.FC<HøyremenyProps> = ({ behandlingId }) => {
     const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Mappe);
-    const { stateKey } = useBehandling();
     const dokumentConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -40,7 +38,7 @@ const Høyremeny: React.FC<HøyremenyProps> = ({ behandlingId }) => {
         dokumentConfig
     );
     return (
-        <React.Fragment key={stateKey}>
+        <>
             <Totrinnskontroll />
             <StyledHøyremeny>
                 <Valgvisning aktiv={aktivtValg} settAktiv={settAktivtvalg} />
@@ -52,7 +50,7 @@ const Høyremeny: React.FC<HøyremenyProps> = ({ behandlingId }) => {
                 )}
                 {aktivtValg === Høyremenyvalg.Dialog && <div>Her kommer dialog</div>}
             </StyledHøyremeny>
-        </React.Fragment>
+        </>
     );
 };
 

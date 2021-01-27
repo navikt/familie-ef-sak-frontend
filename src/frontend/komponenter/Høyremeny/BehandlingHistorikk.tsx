@@ -10,6 +10,7 @@ import compareDesc from 'date-fns/compareDesc';
 import { Element, Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDato } from '../../utils/formatter';
+import { useBehandling } from '../../context/BehandlingContext';
 
 interface BehandlingHistorikkProps {
     behandlingId: string;
@@ -47,12 +48,13 @@ const StyledListElement = styled.li`
 `;
 
 const BehandlingHistorikk = (props: { behandlingId: string }) => {
+    const { stateKey } = useBehandling();
     const behandlingHistorikkLogg: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
             url: `/familie-ef-sak/api/behandlinghistorikk/${props.behandlingId}`,
         }),
-        [props.behandlingId]
+        [props.behandlingId, stateKey]
     );
 
     const behandlingHistorikk: Ressurs<BehandlingHistorikkProps[]> = useDataHenter<
