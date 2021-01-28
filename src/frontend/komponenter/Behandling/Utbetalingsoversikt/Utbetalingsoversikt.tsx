@@ -35,7 +35,7 @@ const Utbetalingsoversikt: FC<Props> = ({ behandlingId }) => {
     const beslutteVedtak = () => {
         axiosRequest<any, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutteVedtak`,
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
         }).then((respons: Ressurs<string>) => {
             console.log('respons', respons);
         });
