@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { IInngangsvilkår, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from './vilkår';
 import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
@@ -7,6 +7,7 @@ import Vurdering from '../Vurdering/Vurdering';
 import { useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -47,7 +48,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
     const [postInngangsvilkårSuksess, settPostInngangsvilkårSuksess] = useState(false);
     const [postOvergangsstønadSuksess, settPostOvergangsstønadSuksess] = useState(false);
-    const [feiledeKall, settFeiledeKall] = useState<string[]>([]);
+    const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
 
     const hentInngangsvilkår = (behandlingId: string) => {
@@ -83,37 +84,44 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [postInngangsvilkårSuksess, postOvergangsstønadSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
-        const postInngangsvilkår = axiosRequest<any, any>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar/fullfor`,
-        }).then((respons: Ressurs<string>) => {
-            return respons;
-        });
-
-        const postOvergangsstønad = axiosRequest<any, any>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstonad/fullfor`,
-        }).then((respons: Ressurs<string>) => {
-            return respons;
-        });
-
-        Promise.all([postInngangsvilkår, postOvergangsstønad]).then((responser) => {
-            responser.forEach((respons, index) => {
-                switch (respons.status) {
-                    case RessursStatus.SUKSESS:
-                        if (index === 0) {
-                            settPostInngangsvilkårSuksess(true);
-                        } else if (index === 1) {
-                            settPostOvergangsstønadSuksess(true);
-                        }
-                        break;
-                    case RessursStatus.FEILET:
-                    case RessursStatus.FUNKSJONELL_FEIL:
-                    case RessursStatus.IKKE_TILGANG:
-                        settFeiledeKall(feiledeKall.concat(respons.frontendFeilmelding));
-                        break;
-                }
+        const postInngangsvilkår = (): Promise<Ressurs<string>> => {
+            return axiosRequest<any, any>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar/fullfor`,
             });
+        };
+
+        const postOvergangsstønad = (): Promise<Ressurs<string>> => {
+            return axiosRequest<any, any>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstonad/fullfor`,
+            });
+        };
+
+        // TODO: Kun for dummy-flyt - må forbedres/omskrives
+        postInngangsvilkår().then((responseInngangsvilkår) => {
+            if (responseInngangsvilkår.status === RessursStatus.SUKSESS) {
+                postOvergangsstønad().then((responseStønadsvilkår) => {
+                    if (responseStønadsvilkår.status === RessursStatus.SUKSESS) {
+                        settPostInngangsvilkårSuksess(true);
+                        settPostOvergangsstønadSuksess(true);
+                    } else if (
+                        responseStønadsvilkår.status === RessursStatus.IKKE_TILGANG ||
+                        responseStønadsvilkår.status === RessursStatus.FEILET ||
+                        responseStønadsvilkår.status === RessursStatus.FUNKSJONELL_FEIL
+                    ) {
+                        settPostOvergangsstønadSuksess(false);
+                        settFeilmelding(responseStønadsvilkår.frontendFeilmelding);
+                    }
+                });
+            } else if (
+                responseInngangsvilkår.status === RessursStatus.IKKE_TILGANG ||
+                responseInngangsvilkår.status === RessursStatus.FEILET ||
+                responseInngangsvilkår.status === RessursStatus.FUNKSJONELL_FEIL
+            ) {
+                settPostInngangsvilkårSuksess(false);
+                settFeilmelding(responseInngangsvilkår.frontendFeilmelding);
+            }
         });
     };
 
@@ -153,6 +161,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [behandlingId]);
     return (
         <>
+            {feilmelding && <AlertStripeFeil children={feilmelding} />}
             <StyledKnapp onClick={() => ferdigVurdert(behandlingId)}>Gå videre</StyledKnapp>
             <DataViewer response={inngangsvilkår}>
                 {(data) => (
