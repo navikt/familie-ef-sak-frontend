@@ -40,14 +40,12 @@ const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
         });
 
     return (
-        <div>
-            <Footer>
-                <MittstildtInnhold>
-                    <Knapp>Lagre</Knapp>
-                    <Hovedknapp onClick={sendTilBeslutter}>Send til beslutter</Hovedknapp>
-                </MittstildtInnhold>
-            </Footer>
-        </div>
+        <Footer>
+            <MittstildtInnhold>
+                <Knapp>Lagre</Knapp>
+                <Hovedknapp onClick={sendTilBeslutter}>Send til beslutter</Hovedknapp>
+            </MittstildtInnhold>
+        </Footer>
     );
 };
 

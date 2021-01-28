@@ -12,12 +12,13 @@ import {
     StyledDokument,
 } from './Elementer';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import BrevFooter from './BrevFooter';
 
 interface Props {
     behandlingId: string;
 }
 
-const Brev: React.FC<Props> = () => {
+const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
 
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
@@ -41,40 +42,43 @@ const Brev: React.FC<Props> = () => {
     };
 
     return (
-        <StyledBrev>
-            <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-            <DataViewer response={brevRessurs}>
-                {(data) => (
-                    <DokumentWrapper>
-                        <StyledPagination
-                            numberOfItems={numPages}
-                            onChange={setPageNumber}
-                            itemsPerPage={1}
-                            currentPage={pageNumber}
-                        />
-                        <StyledDokument
-                            file={`data:application/pdf;base64,${data}`}
-                            onLoadSuccess={onDocumentLoadSuccess}
-                            error={
-                                <AlertStripeFeil
-                                    children={'Ukjent feil ved henting av dokument.'}
-                                />
-                            }
-                            noData={<AlertStripeFeil children={'Dokumentet er tomt.'} />}
-                            loading={<NavFrontendSpinner />}
-                        >
-                            <Page pageNumber={pageNumber} />
-                        </StyledDokument>
-                        <StyledPagination
-                            numberOfItems={numPages}
-                            onChange={setPageNumber}
-                            itemsPerPage={1}
-                            currentPage={pageNumber}
-                        />
-                    </DokumentWrapper>
-                )}
-            </DataViewer>
-        </StyledBrev>
+        <>
+            <StyledBrev>
+                <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                <DataViewer response={brevRessurs}>
+                    {(data) => (
+                        <DokumentWrapper>
+                            <StyledPagination
+                                numberOfItems={numPages}
+                                onChange={setPageNumber}
+                                itemsPerPage={1}
+                                currentPage={pageNumber}
+                            />
+                            <StyledDokument
+                                file={`data:application/pdf;base64,${data}`}
+                                onLoadSuccess={onDocumentLoadSuccess}
+                                error={
+                                    <AlertStripeFeil
+                                        children={'Ukjent feil ved henting av dokument.'}
+                                    />
+                                }
+                                noData={<AlertStripeFeil children={'Dokumentet er tomt.'} />}
+                                loading={<NavFrontendSpinner />}
+                            >
+                                <Page pageNumber={pageNumber} />
+                            </StyledDokument>
+                            <StyledPagination
+                                numberOfItems={numPages}
+                                onChange={setPageNumber}
+                                itemsPerPage={1}
+                                currentPage={pageNumber}
+                            />
+                        </DokumentWrapper>
+                    )}
+                </DataViewer>
+            </StyledBrev>
+            <BrevFooter behandlingId={behandlingId} />
+        </>
     );
 };
 
