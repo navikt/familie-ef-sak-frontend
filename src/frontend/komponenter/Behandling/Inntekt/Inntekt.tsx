@@ -24,6 +24,8 @@ const Inntekt: FC<Props> = ({ behandlingId }) => {
     const history = useHistory();
     const [startDato, settStartDato] = useState('');
     const [sluttDato, settSluttDato] = useState('');
+    const [startDatoStønad, settStartDatoStønad] = useState('');
+    const [sluttDatoStønad, settSluttDatoStønad] = useState('');
     const [inntekt, settInntekt] = useState('');
     const [suksess, settSuksess] = useState<boolean>(false);
     const [feil, settFeil] = useState<string>('');
@@ -36,9 +38,15 @@ const Inntekt: FC<Props> = ({ behandlingId }) => {
 
     const beregn = (): any => {
         const data = {
-            inntektsPerioder: [],
-            stønadFom: 'Dato her',
-            stønadTom: 'Dato her',
+            inntektsPerioder: [
+                {
+                    inntekt: inntekt,
+                    startDato: startDato,
+                    sluttDato: sluttDato,
+                },
+            ],
+            stønadFom: startDatoStønad,
+            stønadTom: sluttDatoStønad,
         };
 
         axiosRequest<any, any>({
@@ -62,24 +70,37 @@ const Inntekt: FC<Props> = ({ behandlingId }) => {
     };
 
     return (
-        <StyledInntekt>
-            <StyledInput
-                type="number"
-                label={'Inntekt'}
-                value={inntekt}
-                onChange={(e) => settInntekt(e.target.value)}
-            />
-            <DatoPeriode
-                datoFraTekst="Dato fra"
-                datoTilTekst="Dato fil"
-                settDatoFra={settStartDato}
-                settDatoTil={settSluttDato}
-                valgtDatoFra={startDato}
-                valgtDatoTil={sluttDato}
-                datoFeil={undefined}
-            />
-            <Knapp onClick={beregn}>Beregn</Knapp>
-        </StyledInntekt>
+        <>
+            <StyledInntekt>
+                <StyledInput
+                    type="number"
+                    label={'Inntekt'}
+                    value={inntekt}
+                    onChange={(e) => settInntekt(e.target.value)}
+                />
+                <DatoPeriode
+                    datoFraTekst="Dato fra"
+                    datoTilTekst="Dato til"
+                    settDatoFra={settStartDato}
+                    settDatoTil={settSluttDato}
+                    valgtDatoFra={startDato}
+                    valgtDatoTil={sluttDato}
+                    datoFeil={undefined}
+                />
+            </StyledInntekt>
+            <StyledInntekt>
+                <DatoPeriode
+                    datoFraTekst="Stønadsperiode fra"
+                    datoTilTekst="Stønadsperiode til"
+                    settDatoFra={settStartDatoStønad}
+                    settDatoTil={settSluttDatoStønad}
+                    valgtDatoFra={startDatoStønad}
+                    valgtDatoTil={sluttDatoStønad}
+                    datoFeil={undefined}
+                />
+                <Knapp onClick={beregn}>Beregn</Knapp>
+            </StyledInntekt>
+        </>
     );
 };
 
