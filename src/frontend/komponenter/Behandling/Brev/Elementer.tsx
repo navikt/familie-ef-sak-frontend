@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 import { Document } from 'react-pdf';
 import Pagination from 'paginering';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 
 export const GenererBrev = styled(Knapp)`
     display: block;
     margin: 0 auto;
-`;
-
-export const StyledDataViewer = styled(DataViewer)`
-    display: flex;
 `;
 
 export const StyledPagination = styled(Pagination)`

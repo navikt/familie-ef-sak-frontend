@@ -7,11 +7,11 @@ import { Page } from 'react-pdf';
 import {
     StyledBrev,
     GenererBrev,
-    StyledDataViewer,
     DokumentWrapper,
     StyledPagination,
     StyledDokument,
 } from './Elementer';
+import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
 interface Props {
     behandlingId: string;
@@ -43,7 +43,7 @@ const Brev: React.FC<Props> = () => {
     return (
         <StyledBrev>
             <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-            <StyledDataViewer response={brevRessurs}>
+            <DataViewer response={brevRessurs}>
                 {(data) => (
                     <DokumentWrapper>
                         <StyledPagination
@@ -73,7 +73,7 @@ const Brev: React.FC<Props> = () => {
                         />
                     </DokumentWrapper>
                 )}
-            </StyledDataViewer>
+            </DataViewer>
         </StyledBrev>
     );
 };
