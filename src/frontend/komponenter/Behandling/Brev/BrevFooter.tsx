@@ -5,12 +5,12 @@ import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../context/AppContext';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 const Footer = styled.div`
+    width: calc(100% - 475px);
     position: fixed;
     bottom: 0;
-    right: -10;
-    width: 100%;
     background-color: ${navFarger.navGra80};
 `;
 
@@ -20,9 +20,16 @@ const MittstildtInnhold = styled.div`
     display: flex;
 `;
 
+const StyledHovedknapp = styled(Hovedknapp)`
+    margin-left: 2rem;
+    box-shadow: none;
+    transform: none;
+`;
+
 const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
+    const { triggerRerender } = useBehandling();
 
     const sendTilBeslutter = () =>
         axiosRequest<string, undefined>({
@@ -30,6 +37,7 @@ const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
         }).then((res: Ressurs<string>) => {
             if (res.status === RessursStatus.SUKSESS) {
+                triggerRerender();
                 modalDispatch({
                     type: ModalAction.VIS_MODAL,
                     modalType: ModalType.SENDT_TIL_BESLUTTER,
@@ -43,7 +51,7 @@ const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
         <Footer>
             <MittstildtInnhold>
                 <Knapp>Lagre</Knapp>
-                <Hovedknapp onClick={sendTilBeslutter}>Send til beslutter</Hovedknapp>
+                <StyledHovedknapp onClick={sendTilBeslutter}>Send til beslutter</StyledHovedknapp>
             </MittstildtInnhold>
         </Footer>
     );
