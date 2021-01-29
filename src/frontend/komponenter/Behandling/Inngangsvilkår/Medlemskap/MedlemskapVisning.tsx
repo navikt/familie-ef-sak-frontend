@@ -42,7 +42,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
                 </div>
 
                 <Søknadsgrunnlag />
-                <Normaltekst>Har bodd i Norge siste 3 år</Normaltekst>
+                <Normaltekst>Har bodd i Norge siste 5 år</Normaltekst>
                 <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
                 {finnesUnntakIMedl && (
                     <>
