@@ -1,53 +1,84 @@
-import * as React from 'react';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
+import React, { useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
+import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import { Page } from 'react-pdf';
+import {
+    StyledBrev,
+    GenererBrev,
+    DokumentWrapper,
+    StyledPagination,
+    StyledDokument,
+} from './Elementer';
+import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import BrevFooter from './BrevFooter';
 
-const Footer = styled.div`
-    position: fixed;
-    bottom: 0;
-    right: -10;
-    width: 100%;
-    background-color: ${navFarger.navGra80};
-`;
+interface Props {
+    behandlingId: string;
+}
 
-const MittstildtInnhold = styled.div`
-    width: 30%;
-    margin: 0 auto;
-    display flex;
-`;
-
-const Brev: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { modalDispatch } = useModal();
 
-    const sendTilBeslutter = () =>
-        axiosRequest<string, undefined>({
+    const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
+    const [pageNumber, setPageNumber] = useState(1);
+    const [numPages, setNumPages] = useState<number>(0);
+
+    function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+        setNumPages(numPages);
+    }
+
+    const data = { tittel: 'test' };
+
+    const genererBrev = () => {
+        axiosRequest<string, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
-        }).then((res: Ressurs<string>) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                modalDispatch({
-                    type: ModalAction.VIS_MODAL,
-                    modalType: ModalType.SENDT_TIL_BESLUTTER,
-                });
-            } else {
-                window.alert('Det gikk mindre bra! :(((');
-            }
+            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+            data: data,
+        }).then((respons: Ressurs<string>) => {
+            settBrevRessurs(respons);
         });
+    };
 
     return (
-        <div>
-            <Footer>
-                <MittstildtInnhold>
-                    <Knapp>Lagre</Knapp>
-                    <Hovedknapp onClick={sendTilBeslutter}>Send til beslutter</Hovedknapp>
-                </MittstildtInnhold>
-            </Footer>
-        </div>
+        <>
+            <StyledBrev>
+                <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                <DataViewer response={brevRessurs}>
+                    {(data) => (
+                        <DokumentWrapper>
+                            <StyledPagination
+                                numberOfItems={numPages}
+                                onChange={setPageNumber}
+                                itemsPerPage={1}
+                                currentPage={pageNumber}
+                            />
+                            <StyledDokument
+                                file={`data:application/pdf;base64,${data}`}
+                                onLoadSuccess={onDocumentLoadSuccess}
+                                error={
+                                    <AlertStripeFeil
+                                        children={'Ukjent feil ved henting av dokument.'}
+                                    />
+                                }
+                                noData={<AlertStripeFeil children={'Dokumentet er tomt.'} />}
+                                loading={<NavFrontendSpinner />}
+                            >
+                                <Page pageNumber={pageNumber} />
+                            </StyledDokument>
+                            <StyledPagination
+                                numberOfItems={numPages}
+                                onChange={setPageNumber}
+                                itemsPerPage={1}
+                                currentPage={pageNumber}
+                            />
+                        </DokumentWrapper>
+                    )}
+                </DataViewer>
+            </StyledBrev>
+            <BrevFooter behandlingId={behandlingId} />
+        </>
     );
 };
 
