@@ -8,7 +8,9 @@ export interface IAleneomsorgSøknadsgrunnlag {
     navn?: string;
     fødselsnummer?: string;
     fødselTermindato?: string;
-    skalBoBorHosSøker?: boolean;
+    erBarnetFødt: boolean;
+    harSammeAdresse?: boolean;
+    skalBoBorHosSøker?: string;
     forelder?: IAnnenForelderAleneomsorg;
     ikkeOppgittAnnenForelderBegrunnelse?: string;
     spørsmålAvtaleOmDeltBosted?: boolean;
@@ -33,7 +35,7 @@ export interface IAnnenForelderAleneomsorg {
 export interface IAleneomsorgRegistergrunnlag {
     navn?: string;
     fødselsnummer?: string;
-    skalBoBorHosSøker?: boolean;
+    harSammeAdresse?: boolean;
     forelder?: IAnnenForelderAleneomsorg;
 }
 
