@@ -166,15 +166,32 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             <DataViewer response={inngangsvilkår}>
                 {(data) => (
                     <StyledInngangsvilkår>
-                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
-                            <Vurdering
-                                key={vilkårGruppe}
-                                vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                                inngangsvilkår={data}
-                                feilmeldinger={feilmeldinger}
-                                lagreVurdering={lagreVurdering}
-                            />
-                        ))}
+                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
+                            if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
+                                return data.grunnlag.aleneomsorg.map((aleneomsorgPerBarn) => {
+                                    return (
+                                        <Vurdering
+                                            key={aleneomsorgPerBarn.barneId}
+                                            barneId={aleneomsorgPerBarn.barneId}
+                                            vilkårGruppe={vilkårGruppe}
+                                            inngangsvilkår={data}
+                                            lagreVurdering={lagreVurdering}
+                                            feilmeldinger={feilmeldinger}
+                                        />
+                                    );
+                                });
+                            } else {
+                                return (
+                                    <Vurdering
+                                        key={vilkårGruppe}
+                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                        inngangsvilkår={data}
+                                        feilmeldinger={feilmeldinger}
+                                        lagreVurdering={lagreVurdering}
+                                    />
+                                );
+                            }
+                        })}
                     </StyledInngangsvilkår>
                 )}
             </DataViewer>

@@ -7,9 +7,14 @@ import { IVurderingConfig } from './VurderingConfig';
 import OppholdVisning from '../Opphold/OppholdVisning';
 import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import SamlivVisning from '../Samliv/SamlivVisning';
+import AleneomsorgVisning from '../Aleneomsorg/AleneomsorgVisning';
 
 export interface IVilkårGruppeConfig {
-    visning: (inngangsvilkår: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus) => ReactChild;
+    visning: (
+        inngangsvilkår: IInngangsvilkårGrunnlag,
+        vilkårStatus: VilkårStatus,
+        barneId?: string
+    ) => ReactChild;
     filtrerBortUaktuelleDelvilkår?: () => IDelvilkår[];
 }
 
@@ -32,6 +37,19 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
     SAMLIV: {
         visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <SamlivVisning grunnlag={grunnlag} vilkårStatus={vilkårStatus} />
+        ),
+    },
+    ALENEOMSORG: {
+        visning: (
+            grunnlag: IInngangsvilkårGrunnlag,
+            vilkårStatus: VilkårStatus,
+            barneId?: string
+        ): ReactChild => (
+            <AleneomsorgVisning
+                aleneomsorg={grunnlag.aleneomsorg}
+                vilkårStatus={vilkårStatus}
+                barneId={barneId}
+            />
         ),
     },
 };

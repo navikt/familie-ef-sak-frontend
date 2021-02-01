@@ -1,6 +1,7 @@
 import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
+import { IAleneomsorgInngangsvilkår } from './Aleneomsorg/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
@@ -12,6 +13,7 @@ export interface IInngangsvilkårGrunnlag {
     sivilstand: ISivilstandInngangsvilkår;
     bosituasjon: IBosituasjon;
     sivilstandsplaner: ISivilstandsplaner;
+    aleneomsorg: IAleneomsorgInngangsvilkår[];
 }
 
 export interface ISivilstandsplaner {
@@ -165,6 +167,7 @@ export enum VilkårGruppe {
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
+    ALENEOMSORG = 'ALENEOMSORG',
 }
 
 export const delvilkårTypeTilHjelpetekst = (type: DelvilkårType): string | undefined => {
