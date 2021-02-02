@@ -1,15 +1,28 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
     borAnnenForelderISammeHusTilTekst,
+    EIkkeOppgittAnnenForelderÅrsak,
     harSamværMedBarnTilTekst,
     harSkriftligSamværsavtaleTilTekst,
     hvorMyeSammenTilTekst,
     IAleneomsorgSøknadsgrunnlag,
     IAnnenForelderAleneomsorg,
+    ikkeOppgittAnnenForelderÅrsakTilTekst,
 } from './typer';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import {
+    Registergrunnlag,
+    Søknadsgrunnlag,
+} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
+import { hentAnnenForelderInfo } from './utils';
+import Modal from 'nav-frontend-modal';
+import { Knapp } from 'nav-frontend-knapper';
+import styled from 'styled-components';
+
+const StyledModal = styled(Modal)`
+    padding: 4rem;
+`;
 
 interface Props {
     søknadsgrunnlag: IAleneomsorgSøknadsgrunnlag;
@@ -17,30 +30,50 @@ interface Props {
 }
 
 const AnnenForelder: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
+    const [statusModal, settModal] = useState<boolean>(false);
+    const annenForelderInfo = hentAnnenForelderInfo();
     const forelderSøknad = søknadsgrunnlag.forelder;
-
-    const erNavnFnrEllerFødselsdatoUtfylt: boolean =
-        forelderSøknad?.navn !== '' ||
-        forelderSøknad.fødselsnummer !== '' ||
-        forelderSøknad.fødselsdato !== '';
-
-    // TODO: Legg til hvorforIkkeOppgi - Donorbarn, annet
-    const annenForelderInfo: string = !erNavnFnrEllerFødselsdatoUtfylt
-        ? 'Ikke fylt ut'
-        : `${forelderSøknad?.navn}, ${forelderSøknad?.fødselsnummer}`;
-
-    // TODO: legg til samme data, men fra register
-
     return (
         <>
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
-            <Normaltekst>{annenForelderInfo}</Normaltekst>
+            {annenForelderInfo !==
+            ikkeOppgittAnnenForelderÅrsakTilTekst[EIkkeOppgittAnnenForelderÅrsak.annet] ? (
+                <Normaltekst>{annenForelderInfo}</Normaltekst>
+            ) : (
+                <>
+                    <Knapp onClick={() => settModal(true)}>{annenForelderInfo}</Knapp>
+                    <StyledModal
+                        contentLabel={'Begrunnelse for ikke oppgitt annen forelder'}
+                        onRequestClose={() => settModal(false)}
+                        isOpen={statusModal}
+                    >
+                        <Normaltekst>
+                            {søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse}
+                            bla bla bla
+                        </Normaltekst>
+                    </StyledModal>
+                </>
+            )}
+
+            <Registergrunnlag />
+            <Normaltekst>Annen forelder</Normaltekst>
+            <Normaltekst>
+                {forelderRegister
+                    ? `${forelderRegister.navn}, ${forelderRegister.fødselsnummer}`
+                    : '-'}
+            </Normaltekst>
+
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder bor i</Normaltekst>
             <Normaltekst>
                 {forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land}
             </Normaltekst>
+
+            <Registergrunnlag />
+            <Normaltekst>Annen forelder bor i</Normaltekst>
+            <Normaltekst>{forelderRegister?.bosattINorge ? 'Norge' : '-'}</Normaltekst>
+
             {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined && (
                 <>
                     <Søknadsgrunnlag />

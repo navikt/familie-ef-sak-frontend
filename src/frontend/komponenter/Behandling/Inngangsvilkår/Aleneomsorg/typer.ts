@@ -12,6 +12,7 @@ export interface IAleneomsorgSøknadsgrunnlag {
     harSammeAdresse?: boolean;
     skalBoBorHosSøker?: ESkalBarnetBoHosSøker;
     forelder?: IAnnenForelderAleneomsorg;
+    ikkeOppgittAnnenForelderÅrsak?: string;
     ikkeOppgittAnnenForelderBegrunnelse?: string;
     spørsmålAvtaleOmDeltBosted?: boolean;
     skalAnnenForelderHaSamvær?: EHarSamværMedBarn;
@@ -24,6 +25,7 @@ export interface IAleneomsorgSøknadsgrunnlag {
     hvorMyeErDuSammenMedAnnenForelder?: EHvorMyeSammen;
     beskrivSamværUtenBarn?: string;
 }
+
 export interface IAnnenForelderAleneomsorg {
     navn?: string;
     fødselsnummer?: string;
@@ -100,4 +102,17 @@ export const skalBarnetBoHosSøkerTilTekst: Record<ESkalBarnetBoHosSøker, strin
     ja: 'Ja, og vi har eller skal registrere i Folkeregisteret',
     nei: 'Nei',
     jaMenSamarbeiderIkke: 'Ja, men den andre forelderen samarbeider ikke om adresseendring',
+};
+
+export enum EIkkeOppgittAnnenForelderÅrsak {
+    donorbarn = 'donorbarn',
+    annet = 'annet',
+}
+
+export const ikkeOppgittAnnenForelderÅrsakTilTekst: Record<
+    EIkkeOppgittAnnenForelderÅrsak,
+    string
+> = {
+    donorbarn: 'Donor',
+    annet: 'Ikke oppgitt',
 };
