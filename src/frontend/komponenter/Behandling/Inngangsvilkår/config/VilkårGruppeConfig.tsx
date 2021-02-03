@@ -46,7 +46,7 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
             barneId?: string
         ): ReactChild => (
             <AleneomsorgVisning
-                aleneomsorg={grunnlag.aleneomsorg}
+                barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårStatus={vilkårStatus}
                 barneId={barneId}
             />

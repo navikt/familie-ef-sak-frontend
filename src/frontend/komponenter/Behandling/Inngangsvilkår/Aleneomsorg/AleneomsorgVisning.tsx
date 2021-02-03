@@ -6,21 +6,21 @@ import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { IAleneomsorgInngangsvilkår, skalBarnetBoHosSøkerTilTekst } from './typer';
+import { IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
 
 interface Props {
-    aleneomsorg: IAleneomsorgInngangsvilkår[];
+    barnMedSamvær: IBarnMedSamvær[];
     vilkårStatus: VilkårStatus;
     barneId?: string;
 }
 
-const AleneomsorgVisning: FC<Props> = ({ aleneomsorg, vilkårStatus, barneId }) => {
-    const aleneomsorgForBarn = aleneomsorg.find((it) => it.barneId === barneId);
-    if (aleneomsorgForBarn === undefined) return null;
-    const { registergrunnlag, søknadsgrunnlag } = aleneomsorgForBarn;
+const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barneId }) => {
+    const gjeldendeBarn = barnMedSamvær.find((it) => it.barneId === barneId);
+    if (gjeldendeBarn === undefined) return null;
+    const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     return (
         <>
             <StyledTabell>

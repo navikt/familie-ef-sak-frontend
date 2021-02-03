@@ -1,17 +1,17 @@
-export interface IAleneomsorgInngangsvilkår {
+export interface IBarnMedSamvær {
     barneId: string;
-    søknadsgrunnlag: IAleneomsorgSøknadsgrunnlag;
-    registergrunnlag: IAleneomsorgRegistergrunnlag;
+    søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
+    registergrunnlag: IBarnMedSamværRegistergrunnlag;
 }
 
-export interface IAleneomsorgSøknadsgrunnlag {
+export interface IBarnMedSamværSøknadsgrunnlag {
     navn?: string;
     fødselsnummer?: string;
     fødselTermindato?: string;
     erBarnetFødt: boolean;
     harSammeAdresse?: boolean;
     skalBoBorHosSøker?: ESkalBarnetBoHosSøker;
-    forelder?: IAnnenForelderAleneomsorg;
+    forelder?: IAnnenForelder;
     ikkeOppgittAnnenForelderBegrunnelse?: string;
     spørsmålAvtaleOmDeltBosted?: boolean;
     skalAnnenForelderHaSamvær?: EHarSamværMedBarn;
@@ -25,7 +25,7 @@ export interface IAleneomsorgSøknadsgrunnlag {
     beskrivSamværUtenBarn?: string;
 }
 
-export interface IAnnenForelderAleneomsorg {
+export interface IAnnenForelder {
     navn?: string;
     fødselsnummer?: string;
     fødselsdato?: string;
@@ -33,11 +33,11 @@ export interface IAnnenForelderAleneomsorg {
     land?: string;
 }
 
-export interface IAleneomsorgRegistergrunnlag {
+export interface IBarnMedSamværRegistergrunnlag {
     navn?: string;
     fødselsnummer?: string;
     harSammeAdresse?: boolean;
-    forelder?: IAnnenForelderAleneomsorg;
+    forelder?: IAnnenForelder;
 }
 
 export enum EHarSamværMedBarn {

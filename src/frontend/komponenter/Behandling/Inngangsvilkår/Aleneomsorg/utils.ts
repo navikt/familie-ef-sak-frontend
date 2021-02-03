@@ -1,9 +1,9 @@
-import { IAnnenForelderAleneomsorg } from './typer';
+import { IAnnenForelder } from './typer';
 import { harVerdi } from '../../../../utils/utils';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 
 export const hentAnnenForelderInfo = (
-    forelder?: IAnnenForelderAleneomsorg,
+    forelder?: IAnnenForelder,
     ikkeOppgittAnnenForelderBegrunnelse?: string
 ) => {
     const { navn, fødselsnummer, fødselsdato } = forelder || {};

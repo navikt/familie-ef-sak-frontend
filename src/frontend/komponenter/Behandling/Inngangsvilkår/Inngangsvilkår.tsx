@@ -168,11 +168,11 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     <StyledInngangsvilkår>
                         {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
                             if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
-                                return data.grunnlag.aleneomsorg.map((aleneomsorgPerBarn) => {
+                                return data.grunnlag.barnMedSamvær.map((barn) => {
                                     return (
                                         <Vurdering
-                                            key={aleneomsorgPerBarn.barneId}
-                                            barneId={aleneomsorgPerBarn.barneId}
+                                            key={barn.barneId}
+                                            barneId={barn.barneId}
                                             vilkårGruppe={vilkårGruppe}
                                             inngangsvilkår={data}
                                             lagreVurdering={lagreVurdering}

@@ -4,8 +4,8 @@ import {
     harSamværMedBarnTilTekst,
     harSkriftligSamværsavtaleTilTekst,
     hvorMyeSammenTilTekst,
-    IAleneomsorgSøknadsgrunnlag,
-    IAnnenForelderAleneomsorg,
+    IBarnMedSamværSøknadsgrunnlag,
+    IAnnenForelder,
 } from './typer';
 import {
     Registergrunnlag,
@@ -17,8 +17,8 @@ import { hentAnnenForelderInfo } from './utils';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
-    søknadsgrunnlag: IAleneomsorgSøknadsgrunnlag;
-    forelderRegister?: IAnnenForelderAleneomsorg;
+    søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
+    forelderRegister?: IAnnenForelder;
 }
 
 const Samvær: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
