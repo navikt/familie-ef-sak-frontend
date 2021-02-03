@@ -3,8 +3,11 @@ import { useMemo, useState } from 'react';
 import { Behandling } from '../typer/fagsak';
 import { useDataHenter } from '../hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
+import { useParams } from 'react-router';
+import { IBehandlingParams } from '../typer/routing';
 
-const [BehandlingProvider, useBehandling] = constate((props: { behandlingId: string }) => {
+const [BehandlingProvider, useBehandling] = constate(() => {
+    const { behandlingId } = useParams<IBehandlingParams>();
     const [stateKey, setKey] = useState(0);
 
     const triggerRerender = () => {
@@ -14,9 +17,9 @@ const [BehandlingProvider, useBehandling] = constate((props: { behandlingId: str
     const axiosConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/behandling/${props.behandlingId}`,
+            url: `/familie-ef-sak/api/behandling/${behandlingId}`,
         }),
-        [props.behandlingId]
+        [behandlingId, stateKey]
     );
 
     const behandling = useDataHenter<Behandling, undefined>(axiosConfig);

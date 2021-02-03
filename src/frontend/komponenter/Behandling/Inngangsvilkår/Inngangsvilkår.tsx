@@ -8,6 +8,7 @@ import { useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -18,9 +19,8 @@ const StyledInngangsvilkår = styled.div`
 `;
 
 const StyledKnapp = styled(Knapp)`
-    margin: 0 auto;
     display: block;
-    margin-top: 2rem;
+    margin: 2rem auto 0;
 `;
 
 interface Props {
@@ -50,6 +50,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const [postOvergangsstønadSuksess, settPostOvergangsstønadSuksess] = useState(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
+    const { triggerRerender } = useBehandling();
 
     const hentInngangsvilkår = (behandlingId: string) => {
         axiosRequest<IInngangsvilkår, void>({
@@ -57,6 +58,17 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             url: `/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar`,
         }).then((hentetInngangsvilkår: Ressurs<IInngangsvilkår>) => {
             settInngangsvilkår(hentetInngangsvilkår);
+        });
+    };
+
+    const godkjennEnderinger = () => {
+        axiosRequest<null, void>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/behandling/${behandlingId}/registergrunnlag/godkjenn`,
+        }).then((resp) => {
+            if (resp.status === RessursStatus.SUKSESS) {
+                triggerRerender();
+            }
         });
     };
 
@@ -175,6 +187,9 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                 lagreVurdering={lagreVurdering}
                             />
                         ))}
+                        <StyledKnapp onClick={godkjennEnderinger}>
+                            Godkjenn endringer i registergrunnlag
+                        </StyledKnapp>
                     </StyledInngangsvilkår>
                 )}
             </DataViewer>
