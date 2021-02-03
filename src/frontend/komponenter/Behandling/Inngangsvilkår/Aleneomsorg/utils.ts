@@ -1,23 +1,21 @@
-import {
-    EIkkeOppgittAnnenForelderÅrsak,
-    IAnnenForelderAleneomsorg,
-    ikkeOppgittAnnenForelderÅrsakTilTekst,
-} from './typer';
+import { IAnnenForelderAleneomsorg } from './typer';
+import { harVerdi } from '../../../../utils/utils';
+import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 
 export const hentAnnenForelderInfo = (
     forelder?: IAnnenForelderAleneomsorg,
-    ikkeOppgittAnnenForelderÅrsak?: EIkkeOppgittAnnenForelderÅrsak
+    ikkeOppgittAnnenForelderBegrunnelse?: string
 ) => {
-    const erNavnFnrEllerFødselsdatoUtfylt: boolean =
-        forelder?.navn !== '' || forelder.fødselsnummer !== '' || forelder.fødselsdato !== '';
+    const { navn, fødselsnummer, fødselsdato } = forelder || {};
 
-    if (forelder) {
-        return !erNavnFnrEllerFødselsdatoUtfylt
-            ? 'Ikke fylt ut'
-            : `${forelder?.navn}, ${forelder?.fødselsnummer}`;
+    const erNavnFnrEllerFødselsdatoUtfylt: boolean =
+        harVerdi(navn) || harVerdi(fødselsnummer) || harVerdi(fødselsdato);
+
+    if (erNavnFnrEllerFødselsdatoUtfylt) {
+        return `${navn || 'Ikke oppgitt navn'} - ${
+            formaterNullableFødsesnummer(fødselsnummer) || formaterNullableIsoDato(fødselsdato)
+        }`;
     } else {
-        return ikkeOppgittAnnenForelderÅrsak === EIkkeOppgittAnnenForelderÅrsak.donorbarn
-            ? ikkeOppgittAnnenForelderÅrsakTilTekst[EIkkeOppgittAnnenForelderÅrsak.donorbarn]
-            : ikkeOppgittAnnenForelderÅrsakTilTekst[EIkkeOppgittAnnenForelderÅrsak.annet];
+        return `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`;
     }
 };

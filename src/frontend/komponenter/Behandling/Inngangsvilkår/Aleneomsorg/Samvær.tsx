@@ -1,13 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
     borAnnenForelderISammeHusTilTekst,
-    EIkkeOppgittAnnenForelderÅrsak,
     harSamværMedBarnTilTekst,
     harSkriftligSamværsavtaleTilTekst,
     hvorMyeSammenTilTekst,
     IAleneomsorgSøknadsgrunnlag,
     IAnnenForelderAleneomsorg,
-    ikkeOppgittAnnenForelderÅrsakTilTekst,
 } from './typer';
 import {
     Registergrunnlag,
@@ -16,51 +14,32 @@ import {
 import { Normaltekst } from 'nav-frontend-typografi';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { hentAnnenForelderInfo } from './utils';
-import Modal from 'nav-frontend-modal';
-import { Knapp } from 'nav-frontend-knapper';
-import styled from 'styled-components';
-
-const StyledModal = styled(Modal)`
-    padding: 4rem;
-`;
+import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     søknadsgrunnlag: IAleneomsorgSøknadsgrunnlag;
     forelderRegister?: IAnnenForelderAleneomsorg;
 }
 
-const AnnenForelder: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
-    const [statusModal, settModal] = useState<boolean>(false);
-    const annenForelderInfo = hentAnnenForelderInfo();
+const Samvær: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
+    const annenForelderInfo = hentAnnenForelderInfo(
+        søknadsgrunnlag.forelder,
+        søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
+    );
     const forelderSøknad = søknadsgrunnlag.forelder;
     return (
         <>
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
-            {annenForelderInfo !==
-            ikkeOppgittAnnenForelderÅrsakTilTekst[EIkkeOppgittAnnenForelderÅrsak.annet] ? (
-                <Normaltekst>{annenForelderInfo}</Normaltekst>
-            ) : (
-                <>
-                    <Knapp onClick={() => settModal(true)}>{annenForelderInfo}</Knapp>
-                    <StyledModal
-                        contentLabel={'Begrunnelse for ikke oppgitt annen forelder'}
-                        onRequestClose={() => settModal(false)}
-                        isOpen={statusModal}
-                    >
-                        <Normaltekst>
-                            {søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse}
-                            bla bla bla
-                        </Normaltekst>
-                    </StyledModal>
-                </>
-            )}
+            <Normaltekst>{annenForelderInfo}</Normaltekst>
 
             <Registergrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
             <Normaltekst>
                 {forelderRegister
-                    ? `${forelderRegister.navn}, ${forelderRegister.fødselsnummer}`
+                    ? `${forelderRegister.navn} - ${formaterNullableFødsesnummer(
+                          forelderRegister.fødselsnummer
+                      )}`
                     : '-'}
             </Normaltekst>
 
@@ -143,7 +122,9 @@ const AnnenForelder: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Fraflyttingsdato</Normaltekst>
-                    <Normaltekst>{søknadsgrunnlag.nårFlyttetDereFraHverandre}</Normaltekst>
+                    <Normaltekst>
+                        {formaterNullableIsoDato(søknadsgrunnlag.nårFlyttetDereFraHverandre)}
+                    </Normaltekst>
                 </>
             )}
             {søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder && (
@@ -166,4 +147,4 @@ const AnnenForelder: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
     );
 };
 
-export default AnnenForelder;
+export default Samvær;

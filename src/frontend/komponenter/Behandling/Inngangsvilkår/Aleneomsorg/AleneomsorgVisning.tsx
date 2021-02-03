@@ -6,9 +6,10 @@ import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { IAleneomsorgInngangsvilkår } from './typer';
+import { IAleneomsorgInngangsvilkår, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
-import AnnenForelder from './AnnenForelder';
+import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
+import Samvær from './Samvær';
 
 interface Props {
     aleneomsorg: IAleneomsorgInngangsvilkår[];
@@ -17,7 +18,9 @@ interface Props {
 }
 
 const AleneomsorgVisning: FC<Props> = ({ aleneomsorg, vilkårStatus, barneId }) => {
-    const { registergrunnlag, søknadsgrunnlag } = aleneomsorg.find((it) => it.barneId === barneId);
+    const aleneomsorgForBarn = aleneomsorg.find((it) => it.barneId === barneId);
+    if (aleneomsorgForBarn === undefined) return null;
+    const { registergrunnlag, søknadsgrunnlag } = aleneomsorgForBarn;
     return (
         <>
             <StyledTabell>
@@ -30,19 +33,31 @@ const AleneomsorgVisning: FC<Props> = ({ aleneomsorg, vilkårStatus, barneId }) 
                 <Element>{registergrunnlag.navn}</Element>
                 <Registergrunnlag />
                 <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                <Normaltekst>{registergrunnlag.fødselsnummer}</Normaltekst>
+                <Normaltekst>
+                    {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
+                </Normaltekst>
                 <Søknadsgrunnlag />
                 <Normaltekst>
                     {søknadsgrunnlag.erBarnetFødt ? 'Fødselsdato' : 'Termindato'}
                 </Normaltekst>
-                <Normaltekst>{søknadsgrunnlag.fødselTermindato}</Normaltekst>
+                <Normaltekst>
+                    {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
+                </Normaltekst>
                 <Bosted
                     harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                     harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
                 />
-                // TODO: Skal barnet ha adresse hos søker rad
+                {søknadsgrunnlag.skalBoBorHosSøker && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Skal bo hos søker</Normaltekst>
+                        <Normaltekst>
+                            {skalBarnetBoHosSøkerTilTekst[søknadsgrunnlag.skalBoBorHosSøker]}
+                        </Normaltekst>
+                    </>
+                )}
                 {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
-                    <AnnenForelder
+                    <Samvær
                         forelderRegister={registergrunnlag.forelder}
                         søknadsgrunnlag={søknadsgrunnlag}
                     />
