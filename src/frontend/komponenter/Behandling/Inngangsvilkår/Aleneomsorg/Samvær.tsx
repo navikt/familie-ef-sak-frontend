@@ -5,54 +5,20 @@ import {
     harSkriftligSamværsavtaleTilTekst,
     hvorMyeSammenTilTekst,
     IBarnMedSamværSøknadsgrunnlag,
-    IAnnenForelder,
 } from './typer';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
-import { hentAnnenForelderInfo } from './utils';
-import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 
 interface Props {
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
-    forelderRegister?: IAnnenForelder;
 }
 
-const Samvær: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
-    const annenForelderInfo = hentAnnenForelderInfo(
-        søknadsgrunnlag.forelder,
-        søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
-    );
-    const forelderSøknad = søknadsgrunnlag.forelder;
+const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
     return (
-        <>
-            <Søknadsgrunnlag />
-            <Normaltekst>Annen forelder</Normaltekst>
-            <Normaltekst>{annenForelderInfo}</Normaltekst>
-
-            <Registergrunnlag />
-            <Normaltekst>Annen forelder</Normaltekst>
-            <Normaltekst>
-                {forelderRegister
-                    ? `${forelderRegister.navn} - ${formaterNullableFødsesnummer(
-                          forelderRegister.fødselsnummer
-                      )}`
-                    : '-'}
-            </Normaltekst>
-
-            <Søknadsgrunnlag />
-            <Normaltekst>Annen forelder bor i</Normaltekst>
-            <Normaltekst>
-                {forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land}
-            </Normaltekst>
-
-            <Registergrunnlag />
-            <Normaltekst>Annen forelder bor i</Normaltekst>
-            <Normaltekst>{forelderRegister?.bosattINorge ? 'Norge' : '-'}</Normaltekst>
-
+        <StyledTabell>
             {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined && (
                 <>
                     <Søknadsgrunnlag />
@@ -143,7 +109,7 @@ const Samvær: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
                     <Normaltekst>{søknadsgrunnlag.beskrivSamværUtenBarn}</Normaltekst>
                 </>
             )}
-        </>
+        </StyledTabell>
     );
 };
 

@@ -11,6 +11,7 @@ import Bosted from './Bosted';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
 import LiteBarn from '../../../../ikoner/LiteBarn';
+import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -88,13 +89,17 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barneId 
                         </Normaltekst>
                     </>
                 )}
-                {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
-                    <Samvær
-                        forelderRegister={registergrunnlag.forelder}
-                        søknadsgrunnlag={søknadsgrunnlag}
-                    />
-                )}
             </StyledTabell>
+
+            {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
+                <>
+                    <AnnenForelderOpplysninger
+                        søknadsgrunnlag={søknadsgrunnlag}
+                        forelderRegister={registergrunnlag.forelder}
+                    />
+                    <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                </>
+            )}
         </>
     );
 };
