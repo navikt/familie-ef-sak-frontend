@@ -3,8 +3,6 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import UIModalWrapper from './UIModalWrapper';
 import { Knapp } from 'nav-frontend-knapper';
 import { useHistory } from 'react-router-dom';
-import { useParams } from 'react-router';
-import { IBehandlingParams } from '../../../typer/routing';
 
 const modalTittelToTekst = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
@@ -15,7 +13,6 @@ const modalTittelToTekst = {
 const ModalController: React.FC = () => {
     const { modalState, modalDispatch } = useModal();
     const history = useHistory();
-    const { behandlingId } = useParams<IBehandlingParams>();
 
     switch (modalState.modalType) {
         case ModalType.SENDT_TIL_BESLUTTER:
@@ -33,13 +30,10 @@ const ModalController: React.FC = () => {
                         onClose: () => modalDispatch({ type: ModalAction.SKJUL_MODAL }),
                         actions: [
                             <Knapp
-                                key={'søknad'}
+                                key={'lukk modal'}
                                 mini={true}
-                                onClick={() => {
-                                    modalDispatch({ type: ModalAction.SKJUL_MODAL });
-                                    history.push(`/behandling/${behandlingId}`);
-                                }}
-                                children="Til sendt søknad"
+                                onClick={() => modalDispatch({ type: ModalAction.SKJUL_MODAL })}
+                                children="Lukk"
                             />,
                             <Knapp
                                 key={'opgavebenk'}
