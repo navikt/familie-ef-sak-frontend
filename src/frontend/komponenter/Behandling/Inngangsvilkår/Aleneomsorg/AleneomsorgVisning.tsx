@@ -10,6 +10,7 @@ import { IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
+import LiteBarn from '../../../../ikoner/LiteBarn';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -29,20 +30,51 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barneId 
                     <Undertittel>Aleneomsorg</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>
                 </div>
-                <Registergrunnlag />
-                <Element>{registergrunnlag.navn}</Element>
-                <Registergrunnlag />
-                <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                <Normaltekst>
-                    {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
-                </Normaltekst>
-                <Søknadsgrunnlag />
-                <Normaltekst>
-                    {søknadsgrunnlag.erBarnetFødt ? 'Fødselsdato' : 'Termindato'}
-                </Normaltekst>
-                <Normaltekst>
-                    {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                </Normaltekst>
+                <LiteBarn />
+                {registergrunnlag.navn ? (
+                    <>
+                        <Registergrunnlag />
+                        <Element>{registergrunnlag.navn}</Element>
+                    </>
+                ) : (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Element>{søknadsgrunnlag.navn}</Element>
+                    </>
+                )}
+
+                {registergrunnlag.fødselsnummer && (
+                    <>
+                        <Registergrunnlag />
+                        <Normaltekst>Fødsels eller D-nummer</Normaltekst>
+                        <Normaltekst>
+                            {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
+                        </Normaltekst>
+                    </>
+                )}
+
+                {søknadsgrunnlag.fødselsnummer && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Fødsels eller D-nummer</Normaltekst>
+                        <Normaltekst>
+                            {formaterNullableFødsesnummer(søknadsgrunnlag.fødselsnummer)}
+                        </Normaltekst>
+                    </>
+                )}
+
+                {søknadsgrunnlag.fødselTermindato && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>
+                            {søknadsgrunnlag.erBarnetFødt ? 'Fødselsdato' : 'Termindato'}
+                        </Normaltekst>
+                        <Normaltekst>
+                            {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
+                        </Normaltekst>
+                    </>
+                )}
+
                 <Bosted
                     harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                     harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
@@ -50,7 +82,7 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barneId 
                 {søknadsgrunnlag.skalBoBorHosSøker && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Skal bo hos søker</Normaltekst>
+                        <Normaltekst>Skal barnet ha adresse hos søker</Normaltekst>
                         <Normaltekst>
                             {skalBarnetBoHosSøkerTilTekst[søknadsgrunnlag.skalBoBorHosSøker]}
                         </Normaltekst>
