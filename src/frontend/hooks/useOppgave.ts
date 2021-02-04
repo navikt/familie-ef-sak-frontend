@@ -43,7 +43,9 @@ export const useOppgave = (oppgave: IOppgave) => {
                     history.push(`/behandling/${behandlingId}`)
                 );
             })
-            .catch((error) => settFeilmelding(error));
+            .catch((error: Error) => {
+                settFeilmelding(error.message);
+            });
     };
 
     const gåTilJournalføring = () => {
