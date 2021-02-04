@@ -82,13 +82,8 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                         Gå til journalpost
                     </Flatknapp>
                     <Flatknapp
-                        hidden={!kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype)}
-                        onClick={gåTilBehandleSakOppgave}
-                    >
-                        Behandle sak
-                    </Flatknapp>
-                    <Flatknapp
                         hidden={
+                            !kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype) &&
                             !kanTotrinnskontrolleres(oppgave.behandlingstema, oppgave.oppgavetype)
                         }
                         onClick={gåTilBehandleSakOppgave}
