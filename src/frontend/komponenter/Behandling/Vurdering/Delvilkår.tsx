@@ -12,7 +12,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
-import styled from 'styled-components';
+import { RadioContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
 
 interface Props {
     delvilkår: IDelvilkår;
@@ -71,21 +71,9 @@ const finnVilkårsresultat = (
     } else return oppdatertDelvilkår.resultat;
 };
 
-const StyledDelvilkår = styled.div`
-    display: flex;
-
-    .radiogruppe {
-        width: 26rem;
-    }
-
-    .hjelpetekst__innhold {
-        max-width: 16rem;
-    }
-`;
-
 const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetekst }) => {
     return (
-        <StyledDelvilkår>
+        <RadioContainer>
             <RadioGruppe key={delvilkår.type} legend={delvilkårTypeTilTekst[delvilkår.type]}>
                 {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
                     <Radio
@@ -109,7 +97,7 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
             {hjelpetekst && (
                 <Hjelpetekst type={PopoverOrientering.Under}>{hjelpetekst}</Hjelpetekst>
             )}
-        </StyledDelvilkår>
+        </RadioContainer>
     );
 };
 export default Delvilkår;
