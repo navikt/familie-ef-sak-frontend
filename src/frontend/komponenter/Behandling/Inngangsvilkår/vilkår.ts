@@ -26,6 +26,7 @@ export interface IVurdering {
     id: string;
     resultat: Vilkårsresultat;
     behandlingId: string;
+    barneId?: string;
     vilkårType: VilkårType;
     begrunnelse?: string | null;
     unntak?: UnntakType | null;
@@ -69,19 +70,22 @@ export enum Vilkår {
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
+    ALENEOMSORG = 'ALENEOMSORG',
 }
 
 export type VilkårType =
     | Vilkår.FORUTGÅENDE_MEDLEMSKAP
     | Vilkår.LOVLIG_OPPHOLD
     | Vilkår.SIVILSTAND
-    | Vilkår.SAMLIV;
+    | Vilkår.SAMLIV
+    | Vilkår.ALENEOMSORG;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
     LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
+    ALENEOMSORG: 'Vilkår om aleneomsorg',
 };
 
 // ------- DELVILKÅR
@@ -97,6 +101,9 @@ export enum DelvilkårType {
     HAR_FLYTTET_FRA_HVERANDRE = 'HAR_FLYTTET_FRA_HVERANDRE',
     LEVER_IKKE_MED_ANNEN_FORELDER = 'LEVER_IKKE_MED_ANNEN_FORELDER',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD = 'LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD',
+    SKRIFTLIG_AVTALE_OM_DELT_BOSTED = 'SKRIFTLIG_AVTALE_OM_DELT_BOSTED',
+    NÆRE_BOFORHOLD = 'NÆRE_BOFORHOLD',
+    MER_AV_DAGLIG_OMSORG = 'MER_AV_DAGLIG_OMSORG',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -114,6 +121,9 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
         'Er vilkåret om å ikke leve sammen med den andre av barnets/barnas foreldre oppfylt?',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD:
         'Er vilkåret om å ikke leve i et ekteskapslignende forhold i felles husholdning uten felles barn oppfylt?',
+    SKRIFTLIG_AVTALE_OM_DELT_BOSTED: 'Har foreldrene inngått skriftlig avtale om delt bosted?',
+    NÆRE_BOFORHOLD: 'Har bruker og den andre forelderen nære boforhold?',
+    MER_AV_DAGLIG_OMSORG: 'Har bruker klart mer av den daglige omsorgen?',
 };
 
 // ------ UNNTAK
