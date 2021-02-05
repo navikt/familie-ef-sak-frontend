@@ -16,7 +16,7 @@ export interface IBarnMedSamværSøknadsgrunnlag {
     spørsmålAvtaleOmDeltBosted?: boolean;
     skalAnnenForelderHaSamvær?: EHarSamværMedBarn;
     harDereSkriftligAvtaleOmSamvær?: EHarSkriftligSamværsavtale;
-    hvordanPraktiseresSamværet?: string; // Tekst
+    hvordanPraktiseresSamværet?: string;
     borAnnenForelderISammeHus?: EBorAnnenForelderISammeHus;
     borAnnenForelderISammeHusBeskrivelse?: string;
     harDereTidligereBoddSammen?: boolean;
