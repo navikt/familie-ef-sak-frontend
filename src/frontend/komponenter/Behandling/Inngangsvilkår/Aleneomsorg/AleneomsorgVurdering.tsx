@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
-import { delvilkårTypeTilHjelpetekst, IDelvilkår, Vilkårsresultat } from '../vilkår';
+import { DelvilkårType, delvilkårTypeTilHjelpetekst, IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
+import NæreBoforhold from './NæreBoforhold';
 
 const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     const { vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
@@ -11,6 +12,9 @@ const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     const delvilkårsvurderinger: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
         (delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL
     );
+
+    // TODO: Lagre boforhold i vurdering et eller annet sted
+    const [boforhold, settBoforhold] = useState<string>('');
 
     return (
         <>
@@ -24,6 +28,13 @@ const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                             settVurdering={settVurdering}
                             hjelpetekst={delvilkårTypeTilHjelpetekst(delvilkår.type)}
                         />
+                        {delvilkår.type === DelvilkårType.NÆRE_BOFORHOLD &&
+                            delvilkår.resultat === Vilkårsresultat.JA && (
+                                <NæreBoforhold
+                                    boforhold={boforhold}
+                                    settBoforhold={settBoforhold}
+                                />
+                            )}
                         <Begrunnelse
                             label={'Begrunnelse'}
                             value={delvilkår.begrunnelse || ''}

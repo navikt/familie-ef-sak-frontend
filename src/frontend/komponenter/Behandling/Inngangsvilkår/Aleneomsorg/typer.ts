@@ -102,3 +102,26 @@ export const skalBarnetBoHosSøkerTilTekst: Record<ESkalBarnetBoHosSøker, strin
     nei: 'Nei',
     jaMenSamarbeiderIkke: 'Ja, men den andre forelderen samarbeider ikke om adresseendring',
 };
+
+export enum ENæreBoforhold {
+    sammeHusOgFærreEnn4Boenheter = 'sammeHusOgFærreEnn4Boenheter',
+    sammeHusOgFlereEnn4BoenheterMenVurdertNært = 'sammeHusOgFlereEnn4BoenheterMenVurdertNært',
+    selvstendigeBoligerSammeTomt = 'selvstendigeBoligerSammeTomt',
+    selvstendigeBoligerSammeGårdstun = 'selvstendigeBoligerSammeGårdstun',
+    nærmesteBoligEllerRekkehusISammeGate = 'nærmesteBoligEllerRekkehusISammeGate',
+    tilStøtendeBoligerEllerRekkehusISammeGate = 'tilStøtendeBoligerEllerRekkehusISammeGate',
+}
+
+export const næreBoforholdTilTekst: Record<ENæreBoforhold, string> = {
+    sammeHusOgFærreEnn4Boenheter:
+        'Søker bor i samme hus som den andre forelderen og huset har 4 eller færre boenheter',
+    sammeHusOgFlereEnn4BoenheterMenVurdertNært:
+        'Søker bor i samme hus som den andre forelderen og huset har flere enn 4 boenheter, men boforholdet er vurdert nært',
+    selvstendigeBoligerSammeTomt:
+        'Foreldrene bor i selvstendige boliger på samme tomt eller gårdsbruk',
+    selvstendigeBoligerSammeGårdstun: 'Foreldrene bor i selvstendige boliger på samme gårdstun',
+    nærmesteBoligEllerRekkehusISammeGate:
+        'Foreldrene bor i nærmeste bolig eller rekkehus i samme gate',
+    tilStøtendeBoligerEllerRekkehusISammeGate:
+        'Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate',
+};
