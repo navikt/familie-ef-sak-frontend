@@ -2,6 +2,7 @@
   "data": {
     "vurderinger": [
       {
+        "barnId": null,
         "id": "6366859d-60d7-460e-8a4c-a792f803e9e2",
         "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
         "resultat": "IKKE_VURDERT",
@@ -18,6 +19,7 @@
         ]
       },
       {
+        "barnId": null,
         "id": "9859d404-475c-4948-873f-f586fb130539",
         "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
         "resultat": "IKKE_VURDERT",
@@ -34,6 +36,7 @@
         ]
       },
       {
+        "barnId": null,
         "id": "90816ac7-6aaf-475c-a305-2ce57d109824",
         "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
         "resultat": "IKKE_VURDERT",
@@ -64,6 +67,62 @@
             "resultat": "IKKE_VURDERT"
           }
         ]
+      },
+      {
+        "barnId": "05257004-d92f-4e1d-b8dc-00e609e75528",
+        "begrunnelse": null,
+        "behandlingId": "b79576d0-4818-4805-ac56-7d7130ac6d1b",
+        "delvilkårsvurderinger": [
+          {
+            "begrunnelse": null,
+            "resultat": "IKKE_VURDERT",
+            "type": "SKRIFTLIG_AVTALE_OM_DELT_BOSTED"
+          },
+          {
+            "begrunnelse": null,
+            "resultat": "IKKE_VURDERT",
+            "type": "NÆRE_BOFORHOLD"
+          },
+          {
+            "begrunnelse": null,
+            "resultat": "IKKE_VURDERT",
+            "type": "MER_AV_DAGLIG_OMSORG"
+          }
+        ],
+        "endretAv": "Z994408",
+        "endretTid": "2021-02-05T08:35:47.596",
+        "id": "13e327b9-7b91-4d66-963b-cf570eba958e",
+        "resultat": "IKKE_VURDERT",
+        "unntak": null,
+        "vilkårType": "ALENEOMSORG"
+      },
+      {
+        "barnId": "43257004-d92f-4e1d-b8dc-00e609e75509",
+        "begrunnelse": null,
+        "behandlingId": "e99576d0-4818-4805-ac56-7d7130ac6d05",
+        "delvilkårsvurderinger": [
+          {
+            "begrunnelse": null,
+            "resultat": "IKKE_VURDERT",
+            "type": "SKRIFTLIG_AVTALE_OM_DELT_BOSTED"
+          },
+          {
+            "begrunnelse": null,
+            "resultat": "IKKE_VURDERT",
+            "type": "NÆRE_BOFORHOLD"
+          },
+          {
+            "begrunnelse": null,
+            "resultat": "IKKE_VURDERT",
+            "type": "MER_AV_DAGLIG_OMSORG"
+          }
+        ],
+        "endretAv": "Z994408",
+        "endretTid": "2021-02-05T08:35:47.596",
+        "id": "13e327b9-7b91-4d66-963b-cf570eba943o",
+        "resultat": "IKKE_VURDERT",
+        "unntak": null,
+        "vilkårType": "ALENEOMSORG"
       }
     ],
     "grunnlag": {
@@ -199,7 +258,91 @@
           "fødselsdato": "1980-04-03",
           "ident": null
         }
-      }
+      },
+      "barnMedSamvær": [
+        {
+          "barneId": "06857004-d92f-4e1d-b8dc-00e609e75528",
+          "registergrunnlag": {
+            "forelder": {
+              "bosattINorge": true,
+              "fødselsdato": "1994-11-01",
+              "fødselsnummer": "17097926735",
+              "land": null,
+              "navn": "Bob  Burger"
+            },
+            "fødselsnummer": "01012067050",
+            "harSammeAdresse": true,
+            "navn": "Barn Barnesen"
+          },
+          "søknadsgrunnlag": {
+            "beskrivSamværUtenBarn": "Har sjelden sett noe til han",
+            "borAnnenForelderISammeHus": "ja",
+            "borAnnenForelderISammeHusBeskrivelse": "Samme blokk",
+            "erBarnetFødt": true,
+            "forelder": {
+              "bosattINorge": false,
+              "fødselsdato": "1979-09-17",
+              "fødselsnummer": null,
+              "land": null,
+              "navn": "Bob Burger"
+            },
+            "fødselTermindato": "2020-01-01",
+            "fødselsnummer": "01012067050",
+            "harDereSkriftligAvtaleOmSamvær": "jaIkkeKonkreteTidspunkter",
+            "harDereTidligereBoddSammen": true,
+            "harSammeAdresse": true,
+            "hvorMyeErDuSammenMedAnnenForelder": "møtesUtenom",
+            "hvordanPraktiseresSamværet": "Bytter litt på innimellom",
+            "ikkeOppgittAnnenForelderBegrunnelse": null,
+            "navn": "Barn Barnesen",
+            "nårFlyttetDereFraHverandre": "2020-12-31",
+            "skalAnnenForelderHaSamvær": "jaMerEnnVanlig",
+            "skalBoBorHosSøker": null,
+            "spørsmålAvtaleOmDeltBosted": true
+          }
+        },
+        {
+          "barneId": "39857004-d92f-4e1d-b8dc-00e609e75534",
+          "registergrunnlag": {
+            "forelder": {
+              "bosattINorge": true,
+              "fødselsdato": "1994-11-01",
+              "fødselsnummer": "17097926735",
+              "land": null,
+              "navn": "Bob  Burger"
+            },
+            "fødselsnummer": "01012067050",
+            "harSammeAdresse": true,
+            "navn": "Nala Bengala"
+          },
+          "søknadsgrunnlag": {
+            "beskrivSamværUtenBarn": "Har sjelden sett noe til han",
+            "borAnnenForelderISammeHus": "ja",
+            "borAnnenForelderISammeHusBeskrivelse": "Samme blokk",
+            "erBarnetFødt": true,
+            "forelder": {
+              "bosattINorge": false,
+              "fødselsdato": "1979-09-17",
+              "fødselsnummer": null,
+              "land": null,
+              "navn": "Bob Burger"
+            },
+            "fødselTermindato": "2020-01-01",
+            "fødselsnummer": "01012067050",
+            "harDereSkriftligAvtaleOmSamvær": "jaIkkeKonkreteTidspunkter",
+            "harDereTidligereBoddSammen": true,
+            "harSammeAdresse": true,
+            "hvorMyeErDuSammenMedAnnenForelder": "møtesUtenom",
+            "hvordanPraktiseresSamværet": "Bytter litt på innimellom",
+            "ikkeOppgittAnnenForelderBegrunnelse": null,
+            "navn": "Barn Barnesen",
+            "nårFlyttetDereFraHverandre": "2020-12-31",
+            "skalAnnenForelderHaSamvær": "jaMerEnnVanlig",
+            "skalBoBorHosSøker": null,
+            "spørsmålAvtaleOmDeltBosted": true
+          }
+        }
+      ]
     }
   },
   "status": "SUKSESS",
