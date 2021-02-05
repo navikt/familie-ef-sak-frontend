@@ -49,11 +49,15 @@ export const useOppgave = (oppgave: IOppgave) => {
     };
 
     const gåTilJournalføring = () => {
-        settOppgaveTilSaksbehandler().then(() =>
-            history.push(
-                `/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`
+        settOppgaveTilSaksbehandler()
+            .then(() =>
+                history.push(
+                    `/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`
+                )
             )
-        );
+            .catch((error: Error) => {
+                settFeilmelding(error.message);
+            });
     };
 
     return {

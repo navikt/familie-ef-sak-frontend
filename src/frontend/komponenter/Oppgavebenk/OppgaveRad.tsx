@@ -26,15 +26,8 @@ const kanJournalføres = (behandlingstema?: Behandlingstema, oppgavetype?: Oppga
 
 const kanBehandles = (behandlingstema?: Behandlingstema, oppgavetype?: Oppgavetype) => {
     return (
-        oppgavetype === 'BEH_SAK' &&
-        behandlingstema &&
-        ['ab0071', 'ab0177', 'ab0028'].includes(behandlingstema)
-    );
-};
-
-const kanTotrinnskontrolleres = (behandlingstema?: Behandlingstema, oppgavetype?: Oppgavetype) => {
-    return (
-        (oppgavetype === 'GOD_VED' || oppgavetype === 'BEH_UND_VED') &&
+        oppgavetype &&
+        ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype) &&
         behandlingstema &&
         ['ab0071', 'ab0177', 'ab0028'].includes(behandlingstema)
     );
@@ -82,10 +75,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                         Gå til journalpost
                     </Flatknapp>
                     <Flatknapp
-                        hidden={
-                            !kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype) &&
-                            !kanTotrinnskontrolleres(oppgave.behandlingstema, oppgave.oppgavetype)
-                        }
+                        hidden={!kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype)}
                         onClick={gåTilBehandleSakOppgave}
                     >
                         Behandle sak
