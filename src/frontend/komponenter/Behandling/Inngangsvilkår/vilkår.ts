@@ -42,6 +42,7 @@ export interface Vurderingsfeilmelding {
 export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
+    årsak?: string | null;
     begrunnelse?: string | null;
 }
 

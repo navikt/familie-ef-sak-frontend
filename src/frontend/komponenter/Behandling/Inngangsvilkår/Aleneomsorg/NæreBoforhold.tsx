@@ -1,49 +1,46 @@
 import React, { FC } from 'react';
-import { Select } from 'nav-frontend-skjema';
+import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { ENæreBoforhold, næreBoforholdTilTekst } from './typer';
+import { IDelvilkår, IVurdering } from '../vilkår';
+import { oppdaterDelvilkår } from '../../Vurdering/Delvilkår';
 
 interface Props {
-    boforhold: string;
-    settBoforhold: (boforhold: string) => void;
+    delvilkår: IDelvilkår;
+    vurdering: IVurdering;
+    settVurdering: (vurdering: IVurdering) => void;
 }
 
-const NæreBoforhold: FC<Props> = ({ boforhold, settBoforhold }) => {
+const NæreBoforhold: FC<Props> = ({ vurdering, delvilkår, settVurdering }) => {
     return (
-        <Select
-            label={'Om boforholdet'}
-            value={boforhold}
-            onChange={(e) => settBoforhold(e.target.value)}
-        >
-            <option value={''}>Velg et alternativ</option>
-            <option value={næreBoforholdTilTekst[ENæreBoforhold.sammeHusOgFærreEnn4Boenheter]}>
-                {næreBoforholdTilTekst[ENæreBoforhold.sammeHusOgFærreEnn4Boenheter]}
-            </option>
-            <option
-                value={
-                    næreBoforholdTilTekst[ENæreBoforhold.sammeHusOgFlereEnn4BoenheterMenVurdertNært]
-                }
-            >
-                {næreBoforholdTilTekst[ENæreBoforhold.sammeHusOgFlereEnn4BoenheterMenVurdertNært]}
-            </option>
-            <option value={næreBoforholdTilTekst[ENæreBoforhold.selvstendigeBoligerSammeTomt]}>
-                {næreBoforholdTilTekst[ENæreBoforhold.selvstendigeBoligerSammeTomt]}
-            </option>
-            <option value={næreBoforholdTilTekst[ENæreBoforhold.selvstendigeBoligerSammeGårdstun]}>
-                {næreBoforholdTilTekst[ENæreBoforhold.selvstendigeBoligerSammeGårdstun]}
-            </option>
-            <option
-                value={næreBoforholdTilTekst[ENæreBoforhold.nærmesteBoligEllerRekkehusISammeGate]}
-            >
-                {næreBoforholdTilTekst[ENæreBoforhold.nærmesteBoligEllerRekkehusISammeGate]}
-            </option>
-            <option
-                value={
-                    næreBoforholdTilTekst[ENæreBoforhold.tilStøtendeBoligerEllerRekkehusISammeGate]
-                }
-            >
-                {næreBoforholdTilTekst[ENæreBoforhold.tilStøtendeBoligerEllerRekkehusISammeGate]}{' '}
-            </option>
-        </Select>
+        <>
+            <RadioGruppe key={'nære boforhold'} legend={'Om boforholdet'}>
+                {[
+                    ENæreBoforhold.sammeHusOgFærreEnn4Boenheter,
+                    ENæreBoforhold.sammeHusOgFlereEnn4BoenheterMenVurdertNært,
+                    ENæreBoforhold.selvstendigeBoligerSammeGårdstun,
+                    ENæreBoforhold.selvstendigeBoligerSammeTomt,
+                    ENæreBoforhold.nærmesteBoligEllerRekkehusISammeGate,
+                    ENæreBoforhold.tilStøtendeBoligerEllerRekkehusISammeGate,
+                ].map((årsak) => (
+                    <Radio
+                        key={årsak}
+                        label={næreBoforholdTilTekst[årsak]}
+                        name={årsak}
+                        onChange={() =>
+                            settVurdering(
+                                oppdaterDelvilkår(vurdering, {
+                                    ...delvilkår,
+                                    årsak: delvilkår.type,
+                                })
+                            )
+                        }
+                        value={årsak}
+                        checked={delvilkår.årsak === årsak}
+                    />
+                ))}
+            </RadioGruppe>
+        </>
     );
 };
+
 export default NæreBoforhold;

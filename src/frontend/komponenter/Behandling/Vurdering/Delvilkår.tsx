@@ -21,7 +21,10 @@ interface Props {
     hjelpetekst?: string;
 }
 
-const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilkår): IVurdering => {
+export const oppdaterDelvilkår = (
+    vurdering: IVurdering,
+    oppdatertDelvilkår: IDelvilkår
+): IVurdering => {
     let harPassertSisteDelvilkårSomSkalVises = false;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.map((delvilkår) => {
         const skalNullstillePåfølgendeDelvilkår =
