@@ -33,10 +33,12 @@ export const useOppgave = (oppgave: IOppgave) => {
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}`,
         })
             .then((res: RessursSuksess<OppgaveDto> | RessursFeilet) => {
-                if (res.status === RessursStatus.SUKSESS) {
-                    return Promise.resolve(res.data.behandlingId);
-                }
-                return Promise.reject(new Error(res.frontendFeilmelding));
+                return new Promise((resolve, reject) => {
+                    if (res.status === RessursStatus.SUKSESS) {
+                        return resolve(res.data.behandlingId);
+                    }
+                    return reject(new Error(res.frontendFeilmelding));
+                });
             })
             .then((behandlingId) => {
                 settOppgaveTilSaksbehandler().then(() =>
