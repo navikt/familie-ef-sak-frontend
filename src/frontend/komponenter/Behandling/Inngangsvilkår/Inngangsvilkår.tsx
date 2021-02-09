@@ -171,8 +171,8 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                 return data.grunnlag.barnMedSamvær.map((barn) => {
                                     return (
                                         <Vurdering
-                                            key={barn.barneId}
-                                            barneId={barn.barneId}
+                                            key={barn.barnId}
+                                            barnId={barn.barnId}
                                             vilkårGruppe={vilkårGruppe}
                                             inngangsvilkår={data}
                                             lagreVurdering={lagreVurdering}

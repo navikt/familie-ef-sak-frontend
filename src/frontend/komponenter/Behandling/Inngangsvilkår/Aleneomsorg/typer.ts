@@ -1,5 +1,5 @@
 export interface IBarnMedSamvær {
-    barneId: string;
+    barnId: string;
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
     registergrunnlag: IBarnMedSamværRegistergrunnlag;
 }

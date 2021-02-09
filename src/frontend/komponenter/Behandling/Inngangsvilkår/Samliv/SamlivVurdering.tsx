@@ -2,10 +2,14 @@ import * as React from 'react';
 import { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
-import { DelvilkårType, delvilkårTypeTilHjelpetekst, IDelvilkår, Vilkårsresultat } from '../vilkår';
+import { DelvilkårType, IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
 import { manglerBegrunnelse } from '../../Vurdering/VurderingUtil';
+import { KomponentGruppe } from '../../../Felleskomponenter/Visning/KomponentGruppe';
+
+const hjelpetekst =
+    'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
@@ -44,13 +48,16 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
                 return (
-                    <div key={delvilkår.type}>
+                    <KomponentGruppe key={delvilkår.type}>
                         <Delvilkår
                             key={delvilkår.type}
                             delvilkår={delvilkår}
                             vurdering={vurdering}
                             settVurdering={settVurdering}
-                            hjelpetekst={delvilkårTypeTilHjelpetekst(delvilkår.type)}
+                            hjelpetekst={
+                                delvilkår.type === DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER &&
+                                hjelpetekst
+                            }
                         />
                         <Begrunnelse
                             label={
@@ -76,7 +83,7 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                                 });
                             }}
                         />
-                    </div>
+                    </KomponentGruppe>
                 );
             })}
             {skalViseLagreKnappSamliv(delvilkårsvurderinger) && (

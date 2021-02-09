@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import { EDelvilkårÅrsak, delvilkårÅrsakTilTekst } from './typer';
+import { delvilkårÅrsakTilTekst, EDelvilkårÅrsak } from './typer';
 import { IDelvilkår, IVurdering } from '../vilkår';
 import { oppdaterDelvilkår } from '../../Vurdering/Delvilkår';
+import { RadioContainer } from '../../../Felleskomponenter/Visning/StyledFormElements';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { RadioContainer } from '../../../Felleskomponenter/Visning/StyledFormElements';
 
 interface Props {
     delvilkår: IDelvilkår;

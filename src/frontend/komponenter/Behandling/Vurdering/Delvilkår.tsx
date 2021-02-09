@@ -18,7 +18,7 @@ interface Props {
     delvilkår: IDelvilkår;
     vurdering: IVurdering;
     settVurdering: (vurdering: IVurdering) => void;
-    hjelpetekst?: string;
+    hjelpetekst?: React.ReactNode;
 }
 
 export const oppdaterDelvilkår = (

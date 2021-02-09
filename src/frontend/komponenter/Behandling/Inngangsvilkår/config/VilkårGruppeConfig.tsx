@@ -13,7 +13,7 @@ export interface IVilkårGruppeConfig {
     visning: (
         inngangsvilkår: IInngangsvilkårGrunnlag,
         vilkårStatus: VilkårStatus,
-        barneId?: string
+        barnId?: string
     ) => ReactChild;
     filtrerBortUaktuelleDelvilkår?: () => IDelvilkår[];
 }
@@ -43,12 +43,12 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
         visning: (
             grunnlag: IInngangsvilkårGrunnlag,
             vilkårStatus: VilkårStatus,
-            barneId?: string
+            barnId?: string
         ): ReactChild => (
             <AleneomsorgVisning
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårStatus={vilkårStatus}
-                barneId={barneId}
+                barnId={barnId}
             />
         ),
     },

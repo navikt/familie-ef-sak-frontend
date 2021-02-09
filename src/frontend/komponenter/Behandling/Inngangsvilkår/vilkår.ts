@@ -26,7 +26,7 @@ export interface IVurdering {
     id: string;
     resultat: Vilkårsresultat;
     behandlingId: string;
-    barneId?: string;
+    barnId?: string;
     vilkårType: VilkårType;
     begrunnelse?: string | null;
     unntak?: UnntakType | null;
@@ -173,15 +173,6 @@ export enum VilkårGruppe {
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
 }
-
-export const delvilkårTypeTilHjelpetekst = (type: DelvilkårType): string | undefined => {
-    switch (type) {
-        case DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER:
-            return 'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
-        default:
-            return undefined;
-    }
-};
 
 // TODO: Spesialhåndtering av delvilkårstekst for oppfylt/ikke_oppfylt
 export const vilkårsresultatTypeTilTekstForDelvilkår = (
