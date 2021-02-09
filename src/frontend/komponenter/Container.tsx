@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
-    const { autentisert, gitBackendInfo } = useApp();
+    const { autentisert, gitDetails } = useApp();
 
     return (
         <Router>
@@ -29,13 +29,13 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                         <tbody>
                             <tr>
                                 <th>Frontend</th>
-                                <td>{process.env.GIT_BRANCH_NAME}</td>
-                                <td>{process.env.GIT_COMMIT_DATE}</td>
+                                <td>{gitDetails.frontend.branchName}</td>
+                                <td>{gitDetails.frontend.commitTime}</td>
                             </tr>
                             <tr>
                                 <th>Backend</th>
-                                <td>{gitBackendInfo.branchName}</td>
-                                <td>{gitBackendInfo.commitTime}</td>
+                                <td>{gitDetails.backend.branchName}</td>
+                                <td>{gitDetails.backend.commitTime}</td>
                             </tr>
                         </tbody>
                     </table>

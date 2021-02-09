@@ -5,7 +5,7 @@ import { håndterRessurs, loggFeil, preferredAxios } from '../api/axios';
 import { Ressurs, RessursFeilet, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import constate from 'constate';
-import { GitBackendInfo } from '../typer/gitBackendInfo';
+import { GitDetails, GitInfo } from '../typer/gitDetails';
 
 interface IProps {
     autentisertSaksbehandler: ISaksbehandler | undefined;
@@ -16,9 +16,16 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] = React.useState(
         autentisertSaksbehandler
     );
-    const [gitBackendInfo, settGitBackendInfo] = React.useState<GitBackendInfo>({
-        branchName: '',
-        commitTime: '',
+    const gitFrontend: GitInfo = {
+        branchName: process.env.GIT_BRANCH_NAME || '',
+        commitTime: process.env.GIT_COMMIT_DATE || '',
+    };
+    const [gitDetails, settGitDetails] = React.useState<GitDetails>({
+        frontend: gitFrontend,
+        backend: {
+            branchName: '',
+            commitTime: '',
+        },
     });
 
     useEffect(() => {
@@ -29,10 +36,14 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         const branchName = headers['git-branch'];
         const commitTime = headers['git-commit-time'];
         if (branchName && commitTime) {
-            settGitBackendInfo({
-                branchName: branchName,
-                commitTime: commitTime,
-            });
+            settGitDetails(
+                Object.assign({}, gitDetails, {
+                    backend: {
+                        branchName: branchName,
+                        commitTime: commitTime,
+                    },
+                })
+            );
         }
     };
 
@@ -61,7 +72,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         axiosRequest,
         autentisert,
         innloggetSaksbehandler,
-        gitBackendInfo,
+        gitDetails,
     };
 });
 
