@@ -34,7 +34,7 @@ const NæreBoforhold: FC<Props> = ({ vurdering, delvilkår, settVurdering }) => 
                             settVurdering(
                                 oppdaterDelvilkår(vurdering, {
                                     ...delvilkår,
-                                    årsak: delvilkår.type,
+                                    årsak: årsak,
                                 })
                             )
                         }

@@ -19,6 +19,7 @@ import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { nullstillVurdering } from './VurderingUtil';
+import { næreBoforholdTilTekst } from '../Inngangsvilkår/Aleneomsorg/typer';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -123,6 +124,15 @@ const VisVurdering: FC<Props> = ({
                                     {vilkårsresultatTypeTilTekst[delvilkårsvurdering.resultat]}
                                 </Normaltekst>
                             </div>
+                            {delvilkårsvurdering.årsak && (
+                                <>
+                                    <Element>Årsak</Element>
+                                    <Normaltekst>
+                                        {næreBoforholdTilTekst[delvilkårsvurdering.årsak]}
+                                    </Normaltekst>
+                                </>
+                            )}
+
                             {delvilkårsvurdering.begrunnelse && (
                                 <>
                                     <Element>Begrunnelse</Element>
