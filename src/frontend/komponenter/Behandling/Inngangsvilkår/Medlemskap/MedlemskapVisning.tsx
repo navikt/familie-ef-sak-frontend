@@ -35,7 +35,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
     return (
         <>
             <StyledTabell>
-                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
+                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Forutgående medlemskap</Undertittel>
                     <EtikettLiten>§15-2</EtikettLiten>

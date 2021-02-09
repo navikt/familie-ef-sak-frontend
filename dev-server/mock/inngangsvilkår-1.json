@@ -261,7 +261,7 @@
       },
       "barnMedSamvær": [
         {
-          "barneId": "06857004-d92f-4e1d-b8dc-00e609e75528",
+          "barnId": "06857004-d92f-4e1d-b8dc-00e609e75528",
           "registergrunnlag": {
             "forelder": {
               "bosattINorge": true,
@@ -302,7 +302,7 @@
           }
         },
         {
-          "barneId": "39857004-d92f-4e1d-b8dc-00e609e75534",
+          "barnId": "39857004-d92f-4e1d-b8dc-00e609e75534",
           "registergrunnlag": {
             "forelder": {
               "bosattINorge": true,
@@ -313,7 +313,7 @@
             },
             "fødselsnummer": "01012067050",
             "harSammeAdresse": true,
-            "navn": "Nala Bengala"
+            "navn": "Russian Blue"
           },
           "søknadsgrunnlag": {
             "beskrivSamværUtenBarn": "Har sjelden sett noe til han",

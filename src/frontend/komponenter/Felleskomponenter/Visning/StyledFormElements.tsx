@@ -8,7 +8,7 @@ export const RadioContainer = styled.div`
     }
 
     .hjelpetekst__innhold {
-        max-width: ${(props: { hjelpetekstMaxWidth?: number }) => props.hjelpetekstMaxWidth || 16}
-            rem;
+        max-width: ${(props: { hjelpetekstMaxWidth?: number }) =>
+            props.hjelpetekstMaxWidth || 22}rem;
     }
 `;

@@ -12,29 +12,30 @@ import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../..
 import Samvær from './Samvær';
 import LiteBarn from '../../../../ikoner/LiteBarn';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
+import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
+import Lesmerpanel from 'nav-frontend-lesmerpanel';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
     vilkårStatus: VilkårStatus;
-    barneId?: string;
+    barnId?: string;
 }
 
-const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barneId }) => {
-    const gjeldendeBarn = barnMedSamvær.find((it) => it.barneId === barneId);
+const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }) => {
+    const gjeldendeBarn = barnMedSamvær.find((it) => it.barnId === barnId);
     if (gjeldendeBarn === undefined) return null;
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     return (
         <>
             <StyledTabell>
-                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
+                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Aleneomsorg</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>
                 </div>
-                <LiteBarn />
                 {registergrunnlag.navn ? (
                     <>
-                        <Registergrunnlag />
+                        <LiteBarn />
                         <Element>{registergrunnlag.navn}</Element>
                     </>
                 ) : (
@@ -91,15 +92,19 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barneId 
                 )}
             </StyledTabell>
 
-            {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
-                <>
-                    <AnnenForelderOpplysninger
-                        søknadsgrunnlag={søknadsgrunnlag}
-                        forelderRegister={registergrunnlag.forelder}
-                    />
-                    <Samvær søknadsgrunnlag={søknadsgrunnlag} />
-                </>
-            )}
+            <StyledLesmerpanel>
+                <Lesmerpanel apneTekst={'Vis info om barnet'} lukkTekst={'Lukk info om barnet'}>
+                    {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
+                        <>
+                            <AnnenForelderOpplysninger
+                                søknadsgrunnlag={søknadsgrunnlag}
+                                forelderRegister={registergrunnlag.forelder}
+                            />
+                            <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                        </>
+                    )}
+                </Lesmerpanel>
+            </StyledLesmerpanel>
         </>
     );
 };
