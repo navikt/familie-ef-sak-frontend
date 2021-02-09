@@ -1,28 +1,46 @@
 import React from 'react';
 import { IOppgave } from './oppgave';
-import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
+import { Oppgavetype, oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
-import { useHistory } from 'react-router-dom';
 import { formaterIsoDato } from '../../utils/formatter';
-import { Flatknapp } from 'nav-frontend-knapper';
-import { useApp } from '../../context/AppContext';
-import { Ressurs, RessursStatus } from '../../typer/ressurs';
+import { Flatknapp as Knapp } from 'nav-frontend-knapper';
+import UIModalWrapper from '../Felleskomponenter/Modal/UIModalWrapper';
+import { Normaltekst } from 'nav-frontend-typografi';
+import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
+import { useOppgave } from '../../hooks/useOppgave';
 
 interface Props {
     oppgave: IOppgave;
-    settFeilmelding: (melding: string) => void;
 }
 
-interface OppgaveDto {
-    behandlingId: string;
-    gsakId: string;
-}
+const Flatknapp = hiddenIf(Knapp);
 
-const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
+const kanJournalføres = (behandlingstema?: Behandlingstema, oppgavetype?: Oppgavetype) => {
+    return (
+        oppgavetype === 'JFR' &&
+        behandlingstema &&
+        ['ab0071', 'ab0177', 'ab0028'].includes(behandlingstema)
+    );
+};
+
+const kanBehandles = (behandlingstema?: Behandlingstema, oppgavetype?: Oppgavetype) => {
+    return (
+        oppgavetype &&
+        ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype) &&
+        behandlingstema &&
+        ['ab0071', 'ab0177', 'ab0028'].includes(behandlingstema)
+    );
+};
+
+const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
+    const {
+        feilmelding,
+        gåTilBehandleSakOppgave,
+        gåTilJournalføring,
+        settFeilmelding,
+    } = useOppgave(oppgave);
     const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
-    const history = useHistory();
 
     const oppgavetype = oppgave.oppgavetype && oppgaveTypeTilTekst[oppgave.oppgavetype];
 
@@ -31,96 +49,50 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, settFeilmelding }) => {
 
     const prioritet = oppgave.prioritet && prioritetTilTekst[oppgave.prioritet];
     const enhetsmappe = oppgave.mappeId && enhetsmappeTilTekst[oppgave.mappeId];
+
     const behandlingstema =
         oppgave.behandlingstema &&
         behandlingstemaTilTekst[oppgave.behandlingstema as Behandlingstema];
 
-    const kanJournalføres =
-        oppgave.oppgavetype === 'JFR' &&
-        oppgave.behandlingstema &&
-        ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);
-
-    const kanBehandles =
-        oppgave.oppgavetype === 'BEH_SAK' &&
-        oppgave.behandlingstema &&
-        ['ab0071', 'ab0177', 'ab0028'].includes(oppgave.behandlingstema);
-
-    const gåTilBehandleSakOppgave = () => {
-        axiosRequest<OppgaveDto, { oppgaveId: string }>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/oppgave/${oppgave.id}`,
-        }).then((res: Ressurs<OppgaveDto>) => {
-            switch (res.status) {
-                case RessursStatus.SUKSESS:
-                    settOppgaveTilSaksbehandler(oppgave.id, innloggetSaksbehandler?.navIdent).then(
-                        (erOppgaveOppdatert: boolean) => {
-                            if (erOppgaveOppdatert) {
-                                history.push(`/behandling/${res.data.behandlingId}`);
-                            }
-                        }
-                    );
-                    break;
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                case RessursStatus.FEILET:
-                    settFeilmelding(res.frontendFeilmelding);
-                    break;
-                default:
-                    break;
-            }
-        });
-    };
-
-    const settOppgaveTilSaksbehandler = (oppgaveId: number, saksbehandlerId?: string) => {
-        return axiosRequest<string, null>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/oppgave/${oppgaveId}/fordel?saksbehandler=${saksbehandlerId}`,
-        }).then((res: Ressurs<string>) => {
-            switch (res.status) {
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                case RessursStatus.FEILET:
-                    settFeilmelding(res.frontendFeilmelding);
-                    return false;
-                default:
-                    return true;
-            }
-        });
-    };
-
-    const gåTilJournalføring = () => {
-        settOppgaveTilSaksbehandler(oppgave.id, innloggetSaksbehandler?.navIdent).then(
-            (erOppgaveOppdatert: boolean) => {
-                if (erOppgaveOppdatert) {
-                    history.push(
-                        `/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`
-                    );
-                }
-            }
-        );
-    };
-
     return (
-        <tr>
-            <td>{regDato}</td>
-            <td>{oppgavetype}</td>
-            <td>{behandlingstema}</td>
-            <td>{fristFerdigstillelseDato}</td>
-            <td>{prioritet}</td>
-            <td>{oppgave.beskrivelse}</td>
-            <td>{oppgave.identer && oppgave.identer[0].ident}</td>
-            <td>{oppgave.tildeltEnhetsnr}</td>
-            <td>{enhetsmappe}</td>
-            <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
-            <td>
-                {kanJournalføres && (
-                    <Flatknapp onClick={gåTilJournalføring}>Gå til journalpost</Flatknapp>
-                )}
-                {kanBehandles && (
-                    <Flatknapp onClick={gåTilBehandleSakOppgave}>Behandle sak</Flatknapp>
-                )}
-            </td>
-        </tr>
+        <>
+            <tr>
+                <td>{regDato}</td>
+                <td>{oppgavetype}</td>
+                <td>{behandlingstema}</td>
+                <td>{fristFerdigstillelseDato}</td>
+                <td>{prioritet}</td>
+                <td>{oppgave.beskrivelse}</td>
+                <td>{oppgave.identer && oppgave.identer[0].ident}</td>
+                <td>{oppgave.tildeltEnhetsnr}</td>
+                <td>{enhetsmappe}</td>
+                <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
+                <td>
+                    <Flatknapp
+                        hidden={!kanJournalføres(oppgave.behandlingstema, oppgave.oppgavetype)}
+                        onClick={gåTilJournalføring}
+                    >
+                        Gå til journalpost
+                    </Flatknapp>
+                    <Flatknapp
+                        hidden={!kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype)}
+                        onClick={gåTilBehandleSakOppgave}
+                    >
+                        Behandle sak
+                    </Flatknapp>
+                </td>
+            </tr>
+            <UIModalWrapper
+                modal={{
+                    tittel: 'Ugyldig oppgave',
+                    lukkKnapp: true,
+                    visModal: !!feilmelding,
+                    onClose: () => settFeilmelding(''),
+                }}
+            >
+                <Normaltekst>{feilmelding}</Normaltekst>
+            </UIModalWrapper>
+        </>
     );
 };
 
