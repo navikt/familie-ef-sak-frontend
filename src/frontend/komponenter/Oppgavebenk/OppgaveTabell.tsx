@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { RessursStatus, RessursSuksess } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
@@ -10,8 +10,6 @@ import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/felles/useSorteringState';
 import { usePagineringState } from '../../hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
-import UIModalWrapper from '../Felleskomponenter/Modal/UIModalWrapper';
-import { Normaltekst } from 'nav-frontend-typografi';
 import Pagination from 'paginering';
 
 const SIDE_STORRELSE = 15;
@@ -42,8 +40,6 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
         1,
         SIDE_STORRELSE
     );
-
-    const [feilmelding, settFeilmelding] = useState<string>();
 
     if (status === RessursStatus.HENTER) {
         return <SystemetLaster />;
@@ -88,20 +84,10 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                 </thead>
                 <tbody>
                     {slicedListe.map((v) => (
-                        <OppgaveRad key={v.id} oppgave={v} settFeilmelding={settFeilmelding} />
+                        <OppgaveRad key={v.id} oppgave={v} />
                     ))}
                 </tbody>
             </table>
-            <UIModalWrapper
-                modal={{
-                    tittel: 'Ugyldig oppgave',
-                    lukkKnapp: true,
-                    visModal: !!feilmelding,
-                    onClose: () => settFeilmelding(''),
-                }}
-            >
-                <Normaltekst>{feilmelding}</Normaltekst>
-            </UIModalWrapper>
         </>
     );
 };
