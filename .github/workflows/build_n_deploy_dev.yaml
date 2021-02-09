@@ -17,10 +17,12 @@ jobs:
       - name: Build and publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_BRANCH_NAME: ${{ github.ref }}
+          GIT_COMMIT_DATE: ${{ github.event.head_commit.timestamp }}
         run: |
           yarn
           yarn build
-          docker build . -t ${IMAGE}
+          docker build . -t ${IMAGE} --build-arg GIT_BRANCH_NAME=${GIT_BRANCH_NAME#refs/heads/} --build-arg GIT_COMMIT_DATE=$GIT_COMMIT_DATE
           docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${IMAGE}
   deploy:

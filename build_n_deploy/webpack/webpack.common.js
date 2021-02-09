@@ -58,5 +58,13 @@ module.exports = {
         new TypeScriptTypeChecker(),
         new webpack.NoEmitOnErrorsPlugin(),
         new OptimizeCssAssetsPlugin(),
+        new webpack.DefinePlugin({
+            'process.env.GIT_BRANCH_NAME': JSON.stringify(
+                process.env.GIT_BRANCH_NAME || 'not defined'
+            ),
+            'process.env.GIT_COMMIT_DATE': JSON.stringify(
+                process.env.GIT_COMMIT_DATE || 'not defined'
+            ),
+        }),
     ],
 };

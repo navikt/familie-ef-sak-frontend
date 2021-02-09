@@ -13,13 +13,32 @@ interface IProps {
 }
 
 const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
-    const { autentisert } = useApp();
+    const { autentisert, gitBackendInfo } = useApp();
 
     return (
         <Router>
             {autentisert ? (
                 <>
                     <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
+                    <table>
+                        <thead>
+                            <th></th>
+                            <th>Branchnavn</th>
+                            <th>Committid</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Frontend</th>
+                                <td>{process.env.GIT_BRANCH_NAME}</td>
+                                <td>{process.env.GIT_COMMIT_DATE}</td>
+                            </tr>
+                            <tr>
+                                <th>Backend</th>
+                                <td>{gitBackendInfo.branchName}</td>
+                                <td>{gitBackendInfo.commitTime}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div className={'container'} role="main">
                         <Switch>
                             <Redirect exact={true} from="/" to="/oppgavebenk" />
