@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import { ENæreBoforhold, næreBoforholdTilTekst } from './typer';
+import { EDelvilkårÅrsak, delvilkårÅrsakTilTekst } from './typer';
 import { IDelvilkår, IVurdering } from '../vilkår';
 import { oppdaterDelvilkår } from '../../Vurdering/Delvilkår';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
@@ -19,16 +19,16 @@ const NæreBoforhold: FC<Props> = ({ vurdering, delvilkår, settVurdering }) => 
         <RadioContainer>
             <RadioGruppe key={'nære boforhold'} legend={'Om boforholdet'}>
                 {[
-                    ENæreBoforhold.sammeHusOgFærreEnn4Boenheter,
-                    ENæreBoforhold.sammeHusOgFlereEnn4BoenheterMenVurdertNært,
-                    ENæreBoforhold.selvstendigeBoligerSammeGårdstun,
-                    ENæreBoforhold.selvstendigeBoligerSammeTomt,
-                    ENæreBoforhold.nærmesteBoligEllerRekkehusISammeGate,
-                    ENæreBoforhold.tilStøtendeBoligerEllerRekkehusISammeGate,
+                    EDelvilkårÅrsak.SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER,
+                    EDelvilkårÅrsak.SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT,
+                    EDelvilkårÅrsak.SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN,
+                    EDelvilkårÅrsak.SELVSTENDIGE_BOLIGER_SAMME_TOMT,
+                    EDelvilkårÅrsak.NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE,
+                    EDelvilkårÅrsak.TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE,
                 ].map((årsak) => (
                     <Radio
                         key={årsak}
-                        label={næreBoforholdTilTekst[årsak]}
+                        label={delvilkårÅrsakTilTekst[årsak]}
                         name={årsak}
                         onChange={() =>
                             settVurdering(

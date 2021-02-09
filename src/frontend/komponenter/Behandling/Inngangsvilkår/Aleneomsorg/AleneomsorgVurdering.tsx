@@ -5,6 +5,7 @@ import Delvilkår from '../../Vurdering/Delvilkår';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
 import NæreBoforhold from './NæreBoforhold';
+import { skalViseLagreKnappAleneomsorg } from '../../Vurdering/VurderingUtil';
 
 const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     const { vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
@@ -26,7 +27,7 @@ const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                             hjelpetekst={delvilkårTypeTilHjelpetekst(delvilkår.type)}
                         />
                         {delvilkår.type === DelvilkårType.NÆRE_BOFORHOLD &&
-                            delvilkår.resultat === Vilkårsresultat.JA && (
+                            delvilkår.resultat === Vilkårsresultat.NEI && (
                                 <NæreBoforhold
                                     delvilkår={delvilkår}
                                     vurdering={vurdering}
@@ -56,8 +57,12 @@ const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     </div>
                 );
             })}
-
-            <LagreVurderingKnapp lagreVurdering={oppdaterVurdering} disabled={lagreknappDisabled} />
+            {skalViseLagreKnappAleneomsorg(delvilkårsvurderinger) && (
+                <LagreVurderingKnapp
+                    lagreVurdering={oppdaterVurdering}
+                    disabled={lagreknappDisabled}
+                />
+            )}
         </>
     );
 };

@@ -103,25 +103,26 @@ export const skalBarnetBoHosSøkerTilTekst: Record<ESkalBarnetBoHosSøker, strin
     jaMenSamarbeiderIkke: 'Ja, men den andre forelderen samarbeider ikke om adresseendring',
 };
 
-export enum ENæreBoforhold {
-    sammeHusOgFærreEnn4Boenheter = 'sammeHusOgFærreEnn4Boenheter',
-    sammeHusOgFlereEnn4BoenheterMenVurdertNært = 'sammeHusOgFlereEnn4BoenheterMenVurdertNært',
-    selvstendigeBoligerSammeTomt = 'selvstendigeBoligerSammeTomt',
-    selvstendigeBoligerSammeGårdstun = 'selvstendigeBoligerSammeGårdstun',
-    nærmesteBoligEllerRekkehusISammeGate = 'nærmesteBoligEllerRekkehusISammeGate',
-    tilStøtendeBoligerEllerRekkehusISammeGate = 'tilStøtendeBoligerEllerRekkehusISammeGate',
+export enum EDelvilkårÅrsak {
+    /** Nære boforhold **/
+    SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER = 'SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER',
+    SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT = 'SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT',
+    SELVSTENDIGE_BOLIGER_SAMME_TOMT = 'SELVSTENDIGE_BOLIGER_SAMME_TOMT',
+    SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN = 'SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN',
+    NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE = 'NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE',
+    TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE = 'TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE',
 }
 
-export const næreBoforholdTilTekst: Record<ENæreBoforhold, string> = {
-    sammeHusOgFærreEnn4Boenheter:
+export const delvilkårÅrsakTilTekst: Record<EDelvilkårÅrsak, string> = {
+    SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER:
         'Søker bor i samme hus som den andre forelderen og huset har 4 eller færre boenheter',
-    sammeHusOgFlereEnn4BoenheterMenVurdertNært:
+    SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT:
         'Søker bor i samme hus som den andre forelderen og huset har flere enn 4 boenheter, men boforholdet er vurdert nært',
-    selvstendigeBoligerSammeTomt:
+    SELVSTENDIGE_BOLIGER_SAMME_TOMT:
         'Foreldrene bor i selvstendige boliger på samme tomt eller gårdsbruk',
-    selvstendigeBoligerSammeGårdstun: 'Foreldrene bor i selvstendige boliger på samme gårdstun',
-    nærmesteBoligEllerRekkehusISammeGate:
+    SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN: 'Foreldrene bor i selvstendige boliger på samme gårdstun',
+    NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE:
         'Foreldrene bor i nærmeste bolig eller rekkehus i samme gate',
-    tilStøtendeBoligerEllerRekkehusISammeGate:
+    TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE:
         'Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate',
 };

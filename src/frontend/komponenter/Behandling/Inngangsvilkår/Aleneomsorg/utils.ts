@@ -5,7 +5,7 @@ import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../..
 export const hentAnnenForelderInfo = (
     forelder?: IAnnenForelder,
     ikkeOppgittAnnenForelderBegrunnelse?: string
-) => {
+): string => {
     const { navn, fødselsnummer, fødselsdato } = forelder || {};
 
     const erNavnFnrEllerFødselsdatoUtfylt: boolean =

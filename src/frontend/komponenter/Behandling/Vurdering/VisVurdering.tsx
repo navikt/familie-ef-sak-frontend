@@ -9,7 +9,7 @@ import {
     Redigeringsmodus,
     unntakTypeTilTekst,
     Vilkårsresultat,
-    vilkårsresultatTypeTilTekst,
+    vilkårsresultatTypeTilTekstForDelvilkår,
     vilkårTypeTilTekst,
 } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
@@ -19,7 +19,7 @@ import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { nullstillVurdering } from './VurderingUtil';
-import { næreBoforholdTilTekst } from '../Inngangsvilkår/Aleneomsorg/typer';
+import { delvilkårÅrsakTilTekst } from '../Inngangsvilkår/Aleneomsorg/typer';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -117,18 +117,21 @@ const VisVurdering: FC<Props> = ({
                             delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
                     )
                     .map((delvilkårsvurdering) => (
-                        <>
-                            <div key={delvilkårsvurdering.type}>
+                        <React.Fragment key={delvilkårsvurdering.type}>
+                            <div>
                                 <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
                                 <Normaltekst>
-                                    {vilkårsresultatTypeTilTekst[delvilkårsvurdering.resultat]}
+                                    {vilkårsresultatTypeTilTekstForDelvilkår(
+                                        delvilkårsvurdering.resultat,
+                                        delvilkårsvurdering.type
+                                    )}
                                 </Normaltekst>
                             </div>
                             {delvilkårsvurdering.årsak && (
                                 <>
                                     <Element>Årsak</Element>
                                     <Normaltekst>
-                                        {næreBoforholdTilTekst[delvilkårsvurdering.årsak]}
+                                        {delvilkårÅrsakTilTekst[delvilkårsvurdering.årsak]}
                                     </Normaltekst>
                                 </>
                             )}
@@ -139,7 +142,7 @@ const VisVurdering: FC<Props> = ({
                                     <Normaltekst>{delvilkårsvurdering.begrunnelse}</Normaltekst>
                                 </>
                             )}
-                        </>
+                        </React.Fragment>
                     ))}
 
                 {vurdering.unntak && (

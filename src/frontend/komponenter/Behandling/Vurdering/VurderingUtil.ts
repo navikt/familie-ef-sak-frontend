@@ -76,6 +76,13 @@ export const skalViseLagreKnappSivilstand = (
     return false;
 };
 
+export const skalViseLagreKnappAleneomsorg = (delvilkårsvurderinger: IDelvilkår[]): boolean => {
+    const begrunnelseForAlleDelvilkår = delvilkårsvurderinger.every(
+        (delvilkårsvurdering) => !manglerBegrunnelse(delvilkårsvurdering.begrunnelse)
+    );
+    return begrunnelseForAlleDelvilkår && harBesvartPåAlleDelvilkår(delvilkårsvurderinger);
+};
+
 export const manglerBegrunnelse = (begrunnelse: string | undefined | null): boolean => {
     return !begrunnelse || begrunnelse.trim().length === 0;
 };

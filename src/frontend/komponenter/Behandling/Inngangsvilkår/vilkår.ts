@@ -1,7 +1,7 @@
 import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
-import { IBarnMedSamvær } from './Aleneomsorg/typer';
+import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
@@ -42,7 +42,7 @@ export interface Vurderingsfeilmelding {
 export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
-    årsak?: string | null;
+    årsak?: EDelvilkårÅrsak;
     begrunnelse?: string | null;
 }
 
@@ -58,13 +58,6 @@ export enum Redigeringsmodus {
     VISNING = 'VISNING',
     IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
 }
-
-export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
-    JA: 'Ja',
-    NEI: 'Nei',
-    IKKE_VURDERT: 'Ikke vurdert',
-    IKKE_AKTUELL: 'Ikke aktuell',
-};
 
 export enum Vilkår {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
@@ -188,4 +181,27 @@ export const delvilkårTypeTilHjelpetekst = (type: DelvilkårType): string | und
         default:
             return undefined;
     }
+};
+
+// TODO: Spesialhåndtering av delvilkårstekst for oppfylt/ikke_oppfylt
+export const vilkårsresultatTypeTilTekstForDelvilkår = (
+    vilkårsresultat: Vilkårsresultat,
+    delvilkårType: DelvilkårType
+): string => {
+    if (
+        delvilkårType === DelvilkårType.NÆRE_BOFORHOLD ||
+        delvilkårType === DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED
+    ) {
+        if (vilkårsresultat === Vilkårsresultat.JA)
+            return vilkårsresultatTypeTilTekst[Vilkårsresultat.NEI];
+        if (vilkårsresultat === Vilkårsresultat.NEI)
+            return vilkårsresultatTypeTilTekst[Vilkårsresultat.JA];
+    }
+    return vilkårsresultatTypeTilTekst[vilkårsresultat];
+};
+export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
+    JA: 'Ja',
+    NEI: 'Nei',
+    IKKE_VURDERT: 'Ikke vurdert',
+    IKKE_AKTUELL: 'Ikke aktuell',
 };

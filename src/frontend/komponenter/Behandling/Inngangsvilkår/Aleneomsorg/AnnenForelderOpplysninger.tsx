@@ -40,7 +40,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder bor i</Normaltekst>
             <Normaltekst>
-                {forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land}
+                {forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land || '-'}
             </Normaltekst>
 
             <Registergrunnlag />

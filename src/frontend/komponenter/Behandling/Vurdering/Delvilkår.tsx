@@ -5,7 +5,7 @@ import {
     IVurdering,
     Vilkår,
     Vilkårsresultat,
-    vilkårsresultatTypeTilTekst,
+    vilkårsresultatTypeTilTekstForDelvilkår,
     VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import * as React from 'react';
@@ -59,7 +59,7 @@ const finnVilkårsresultat = (
     delvilkårsvurderinger: IDelvilkår[],
     oppdatertDelvilkår: IDelvilkår
 ): Vilkårsresultat => {
-    if (vilkårType === Vilkår.SAMLIV) {
+    if (vilkårType === Vilkår.SAMLIV || vilkårType === Vilkår.ALENEOMSORG) {
         return delvilkårsvurderinger
             .filter((delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL)
             .map((delvilkår) => delvilkår.resultat)
@@ -78,7 +78,10 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
                 {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
                     <Radio
                         key={vilkårsresultat}
-                        label={vilkårsresultatTypeTilTekst[vilkårsresultat]}
+                        label={vilkårsresultatTypeTilTekstForDelvilkår(
+                            vilkårsresultat,
+                            delvilkår.type
+                        )}
                         name={delvilkår.type}
                         onChange={() =>
                             settVurdering(
@@ -86,6 +89,7 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
                                     ...delvilkår,
                                     type: delvilkår.type,
                                     resultat: vilkårsresultat,
+                                    årsak: undefined,
                                 })
                             )
                         }
