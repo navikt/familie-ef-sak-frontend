@@ -9,3 +9,4 @@ yarn-error.log
 .env
 ci-tests/reports
 secure.log
+*.iml

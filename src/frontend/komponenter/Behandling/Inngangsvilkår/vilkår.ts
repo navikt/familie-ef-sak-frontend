@@ -1,6 +1,7 @@
 import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
+import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
@@ -12,6 +13,7 @@ export interface IInngangsvilkårGrunnlag {
     sivilstand: ISivilstandInngangsvilkår;
     bosituasjon: IBosituasjon;
     sivilstandsplaner: ISivilstandsplaner;
+    barnMedSamvær: IBarnMedSamvær[];
 }
 
 export interface ISivilstandsplaner {
@@ -24,6 +26,7 @@ export interface IVurdering {
     id: string;
     resultat: Vilkårsresultat;
     behandlingId: string;
+    barnId?: string;
     vilkårType: VilkårType;
     begrunnelse?: string | null;
     unntak?: UnntakType | null;
@@ -39,6 +42,7 @@ export interface Vurderingsfeilmelding {
 export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
+    årsak?: EDelvilkårÅrsak;
     begrunnelse?: string | null;
 }
 
@@ -55,31 +59,27 @@ export enum Redigeringsmodus {
     IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
 }
 
-export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
-    JA: 'Ja',
-    NEI: 'Nei',
-    IKKE_VURDERT: 'Ikke vurdert',
-    IKKE_AKTUELL: 'Ikke aktuell',
-};
-
 export enum Vilkår {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
+    ALENEOMSORG = 'ALENEOMSORG',
 }
 
 export type VilkårType =
     | Vilkår.FORUTGÅENDE_MEDLEMSKAP
     | Vilkår.LOVLIG_OPPHOLD
     | Vilkår.SIVILSTAND
-    | Vilkår.SAMLIV;
+    | Vilkår.SAMLIV
+    | Vilkår.ALENEOMSORG;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
     LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
+    ALENEOMSORG: 'Vilkår om aleneomsorg',
 };
 
 // ------- DELVILKÅR
@@ -95,6 +95,9 @@ export enum DelvilkårType {
     HAR_FLYTTET_FRA_HVERANDRE = 'HAR_FLYTTET_FRA_HVERANDRE',
     LEVER_IKKE_MED_ANNEN_FORELDER = 'LEVER_IKKE_MED_ANNEN_FORELDER',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD = 'LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD',
+    SKRIFTLIG_AVTALE_OM_DELT_BOSTED = 'SKRIFTLIG_AVTALE_OM_DELT_BOSTED',
+    NÆRE_BOFORHOLD = 'NÆRE_BOFORHOLD',
+    MER_AV_DAGLIG_OMSORG = 'MER_AV_DAGLIG_OMSORG',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -112,6 +115,9 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
         'Er vilkåret om å ikke leve sammen med den andre av barnets/barnas foreldre oppfylt?',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD:
         'Er vilkåret om å ikke leve i et ekteskapslignende forhold i felles husholdning uten felles barn oppfylt?',
+    SKRIFTLIG_AVTALE_OM_DELT_BOSTED: 'Har foreldrene inngått skriftlig avtale om delt bosted?',
+    NÆRE_BOFORHOLD: 'Har bruker og den andre forelderen nære boforhold?',
+    MER_AV_DAGLIG_OMSORG: 'Har bruker klart mer av den daglige omsorgen?',
 };
 
 // ------ UNNTAK
@@ -165,13 +171,28 @@ export enum VilkårGruppe {
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
+    ALENEOMSORG = 'ALENEOMSORG',
 }
 
-export const delvilkårTypeTilHjelpetekst = (type: DelvilkårType): string | undefined => {
-    switch (type) {
-        case DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER:
-            return 'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
-        default:
-            return undefined;
+// TODO: Spesialhåndtering av delvilkårstekst for oppfylt/ikke_oppfylt
+export const vilkårsresultatTypeTilTekstForDelvilkår = (
+    vilkårsresultat: Vilkårsresultat,
+    delvilkårType: DelvilkårType
+): string => {
+    if (
+        delvilkårType === DelvilkårType.NÆRE_BOFORHOLD ||
+        delvilkårType === DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED
+    ) {
+        if (vilkårsresultat === Vilkårsresultat.JA)
+            return vilkårsresultatTypeTilTekst[Vilkårsresultat.NEI];
+        if (vilkårsresultat === Vilkårsresultat.NEI)
+            return vilkårsresultatTypeTilTekst[Vilkårsresultat.JA];
     }
+    return vilkårsresultatTypeTilTekst[vilkårsresultat];
+};
+export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
+    JA: 'Ja',
+    NEI: 'Nei',
+    IKKE_VURDERT: 'Ikke vurdert',
+    IKKE_AKTUELL: 'Ikke aktuell',
 };

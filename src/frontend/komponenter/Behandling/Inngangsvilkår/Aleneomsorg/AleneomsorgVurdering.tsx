@@ -1,43 +1,34 @@
-import * as React from 'react';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
-import Begrunnelse from '../../Vurdering/Begrunnelse';
 import { DelvilkårType, IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
+import Begrunnelse from '../../Vurdering/Begrunnelse';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
-import { manglerBegrunnelse } from '../../Vurdering/VurderingUtil';
+import NæreBoforhold from './NæreBoforhold';
+import { skalViseLagreKnappAleneomsorg } from '../../Vurdering/VurderingUtil';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { KomponentGruppe } from '../../../Felleskomponenter/Visning/KomponentGruppe';
 
-const hjelpetekst =
-    'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
+const hjelpetekst = (
+    <Normaltekst>
+        Det er definert som nære boforhold når:
+        <ul>
+            <li>
+                Søker bor i samme hus som den andre forelderen og huset har 4 eller færre boenheter
+            </li>
+            <li>
+                Søker bor i samme hus som den andre forelderen og huset har flere enn 4 boenheter,
+                men boforholdet er vurdert nært
+            </li>
+            <li>Foreldrene bor i selvstendige boliger på samme tomt eller gårdsbruk</li>
+            <li>Foreldrene bor i selvstendige boliger på samme gårdstun</li>
+            <li>Foreldrene bor i nærmeste bolig eller rekkehus i samme gate</li>
+            <li>Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate</li>
+        </ul>
+    </Normaltekst>
+);
 
-const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
-    const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
-        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
-    );
-
-    if (sisteDelvilkårSomSkalVises === -1) {
-        return delvilkårsvurderinger;
-    }
-    return delvilkårsvurderinger.slice(0, sisteDelvilkårSomSkalVises + 1);
-};
-
-const skalViseLagreKnappSamliv = (delvilkårsvurderinger: IDelvilkår[]) => {
-    return delvilkårsvurderinger.every((delvilkår) => {
-        if (
-            [
-                DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
-                DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
-            ].includes(delvilkår.type) &&
-            manglerBegrunnelse(delvilkår.begrunnelse)
-        ) {
-            return false;
-        }
-        return delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT;
-    });
-};
-
-const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
+const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     const { vurdering, settVurdering, oppdaterVurdering, lagreknappDisabled } = props;
 
     const delvilkårsvurderinger: IDelvilkår[] = vurdering.delvilkårsvurderinger.filter(
@@ -46,7 +37,7 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
 
     return (
         <>
-            {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
+            {delvilkårsvurderinger.map((delvilkår) => {
                 return (
                     <KomponentGruppe key={delvilkår.type}>
                         <Delvilkår
@@ -55,16 +46,19 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                             vurdering={vurdering}
                             settVurdering={settVurdering}
                             hjelpetekst={
-                                delvilkår.type === DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER &&
-                                hjelpetekst
+                                delvilkår.type === DelvilkårType.NÆRE_BOFORHOLD && hjelpetekst
                             }
                         />
+                        {delvilkår.type === DelvilkårType.NÆRE_BOFORHOLD &&
+                            delvilkår.resultat === Vilkårsresultat.NEI && (
+                                <NæreBoforhold
+                                    delvilkår={delvilkår}
+                                    vurdering={vurdering}
+                                    settVurdering={settVurdering}
+                                />
+                            )}
                         <Begrunnelse
-                            label={
-                                delvilkår.type === DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER
-                                    ? 'Begrunnelse (valgfritt)'
-                                    : 'Begrunnelse'
-                            }
+                            label={'Begrunnelse'}
                             value={delvilkår.begrunnelse || ''}
                             onChange={(e) => {
                                 const redigerteDelvilkår = vurdering.delvilkårsvurderinger.map(
@@ -86,7 +80,7 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     </KomponentGruppe>
                 );
             })}
-            {skalViseLagreKnappSamliv(delvilkårsvurderinger) && (
+            {skalViseLagreKnappAleneomsorg(delvilkårsvurderinger) && (
                 <LagreVurderingKnapp
                     lagreVurdering={oppdaterVurdering}
                     disabled={lagreknappDisabled}
@@ -95,4 +89,5 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         </>
     );
 };
-export default SamlivVurdering;
+
+export default AleneomsorgVurdering;

@@ -16,3 +16,6 @@ export const formaterIsoDatoTid = (dato: string): string => {
 
 export const formaterFødselsnummer = (fødselsnummer: string): string =>
     fødselsnummer.substring(0, 6) + ' ' + fødselsnummer.substring(6);
+
+export const formaterNullableFødsesnummer = (fødselsnummer?: string): string | undefined =>
+    fødselsnummer && formaterFødselsnummer(fødselsnummer);

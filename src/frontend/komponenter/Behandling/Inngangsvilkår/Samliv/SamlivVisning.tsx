@@ -22,7 +22,7 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
     return (
         <>
             <StyledTabell>
-                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
+                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Samliv</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>
