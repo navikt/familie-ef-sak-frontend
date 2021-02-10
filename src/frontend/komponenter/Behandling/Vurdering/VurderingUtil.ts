@@ -5,7 +5,7 @@ import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 import { erEnkeEllerGjenlevendePartner } from '../Inngangsvilkår/Sivilstand/SivilstandHelper';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
-    vurderinger.every((vurdering) => vurdering.resultat === Vilkårsresultat.JA);
+    vurderinger.every((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
 
 export const vilkårStatus = (vurderinger: IVurdering[]): VilkårStatus => {
     if (alleErOppfylte(vurderinger)) {
@@ -56,7 +56,7 @@ export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig
     }
     const sisteBesvarteDelvilkår = besvarteDelvilkår[besvarteDelvilkår.length - 1];
 
-    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.JA;
+    const vurderingErOppfylt = sisteBesvarteDelvilkår.resultat === Vilkårsresultat.OPPFYLT;
 
     if (vurderingErOppfylt) {
         return true;
@@ -98,7 +98,8 @@ export const manglerBegrunnelse = (begrunnelse: string | undefined | null): bool
 const finnBesvarteDelvilkår = (delvilkårsvurderinger: IDelvilkår[]) => {
     return delvilkårsvurderinger.filter(
         (delvilkår) =>
-            delvilkår.resultat === Vilkårsresultat.NEI || delvilkår.resultat === Vilkårsresultat.JA
+            delvilkår.resultat === Vilkårsresultat.IKKE_OPPFYLT ||
+            delvilkår.resultat === Vilkårsresultat.OPPFYLT
     );
 };
 
@@ -107,8 +108,8 @@ export const nullstillVurdering = (vurdering: IVurdering): IVurdering => {
 
     const nullstillDelvilkår = (delvilkår: IDelvilkår): IDelvilkår => {
         if (
-            delvilkår.resultat === Vilkårsresultat.JA ||
-            delvilkår.resultat === Vilkårsresultat.NEI
+            delvilkår.resultat === Vilkårsresultat.OPPFYLT ||
+            delvilkår.resultat === Vilkårsresultat.IKKE_OPPFYLT
         ) {
             return {
                 type: delvilkår.type,

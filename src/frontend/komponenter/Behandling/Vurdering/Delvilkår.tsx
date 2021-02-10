@@ -65,7 +65,7 @@ const finnVilkårsresultat = (
             .map((delvilkår) => delvilkår.resultat)
             .reduce((acc, verdi) => {
                 if (acc === Vilkårsresultat.IKKE_VURDERT) return Vilkårsresultat.IKKE_VURDERT;
-                else if (acc === Vilkårsresultat.NEI) return Vilkårsresultat.NEI;
+                else if (acc === Vilkårsresultat.IKKE_OPPFYLT) return Vilkårsresultat.IKKE_OPPFYLT;
                 else return verdi;
             });
     } else return oppdatertDelvilkår.resultat;
@@ -75,7 +75,7 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
     return (
         <RadioContainer>
             <RadioGruppe key={delvilkår.type} legend={delvilkårTypeTilTekst[delvilkår.type]}>
-                {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
+                {[Vilkårsresultat.OPPFYLT, Vilkårsresultat.IKKE_OPPFYLT].map((vilkårsresultat) => (
                     <Radio
                         key={vilkårsresultat}
                         label={vilkårsresultatTypeTilTekstForDelvilkår(

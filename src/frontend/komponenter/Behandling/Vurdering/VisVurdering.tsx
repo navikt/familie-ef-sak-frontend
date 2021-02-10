@@ -102,7 +102,7 @@ const VisVurdering: FC<Props> = ({
 
             <StyledVilkår>
                 <StyledIkonOgTittel>
-                    {vurdering.resultat === Vilkårsresultat.JA ? (
+                    {vurdering.resultat === Vilkårsresultat.OPPFYLT ? (
                         <Oppfylt heigth={21} width={21} />
                     ) : (
                         <IkkeOppfylt heigth={21} width={21} />

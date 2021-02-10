@@ -19,7 +19,7 @@ import { skalViseLagreKnapp } from './VurderingUtil';
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
         (delvilkår) =>
-            delvilkår.resultat === Vilkårsresultat.JA ||
+            delvilkår.resultat === Vilkårsresultat.OPPFYLT ||
             delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
     );
 
@@ -49,14 +49,15 @@ const GenerellVurdering: FC<{
                     />
                 );
             })}
-            {config.unntak.length > 0 && sisteDelvilkår.resultat === Vilkårsresultat.NEI && (
-                <Unntak
-                    key={vurdering.id}
-                    vurdering={vurdering}
-                    settVurdering={settVurdering}
-                    unntak={config.unntak}
-                />
-            )}
+            {config.unntak.length > 0 &&
+                sisteDelvilkår.resultat === Vilkårsresultat.IKKE_OPPFYLT && (
+                    <Unntak
+                        key={vurdering.id}
+                        vurdering={vurdering}
+                        settVurdering={settVurdering}
+                        unntak={config.unntak}
+                    />
+                )}
             <Textarea
                 label={
                     config.begrunnelsePåkrevdHvisOppfylt
