@@ -1,5 +1,5 @@
 # familie-ef-sak-frontend
-====================
+
 
 Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 
@@ -34,11 +34,23 @@ CLIENT_ID og CLIENT_SECRET kan man finne under: /azuread/data/dev/creds/familie-
 
 For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokalt med mindre det gjøres en del endringer i forbindelse med uthenting av environment variabler og URLer for uthenting av informasjon.
 
+
+---------
+
+# Mens du koder
+
+I Team Familie har vi et intern (felles frontend bibliotek)[https://github.com/navikt/familie-felles-frontend] for komponenter som kan brukes på tvers av appene våre. Lager man noe som kan senere gjenbrukes, er det fint om disse trekkes ut hit.
+
+Ta gjerne en titt på Team Familie sin (readme)[https://github.com/navikt/familie] med best practices når det kommer til frontendutvikling, uu og bruken av styled-components! 
+
+
+
 ---
 
 
 # Bygg og deploy
 Appen bygges på github actions, og gir beskjed til nais deploy om å deployere appen i fss området. Alle pull requester går til dev miljøet og master går til produksjon og dev-miljøet.
+
 
 # Henvendelser
 

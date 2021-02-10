@@ -16,6 +16,7 @@ import {
     erKravForSivilstandOppfylt,
     erSkiltEllerUgift,
 } from './SivilstandHelper';
+import { KomponentGruppe } from '../../../Felleskomponenter/Visning/KomponentGruppe';
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
@@ -62,14 +63,14 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
         <>
             {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
                 return (
-                    <div key={delvilkår.type}>
+                    <KomponentGruppe key={delvilkår.type}>
                         <Delvilkår
                             key={delvilkår.type}
                             delvilkår={delvilkår}
                             vurdering={vurdering}
                             settVurdering={settVurdering}
                         />
-                    </div>
+                    </KomponentGruppe>
                 );
             })}
             {visUnntak && (

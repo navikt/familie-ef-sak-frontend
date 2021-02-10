@@ -32,7 +32,7 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
     return (
         <>
             <StyledTabell>
-                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
+                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Opphold i Norge</Undertittel>
                     <EtikettLiten>§15-3 </EtikettLiten>

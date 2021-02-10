@@ -54,3 +54,9 @@ export const slåSammenTekst = (...tekstElementer: (string | undefined)[]): stri
     tekstElementer
         .filter((tekst) => tekst !== undefined && tekst !== null && tekst !== '')
         .join(', ');
+
+export const harVerdi = (str: string | undefined | null): boolean =>
+    str !== undefined && str !== '' && str !== null;
+
+export const harBooleanVerdi = (bool: boolean | undefined | null): boolean =>
+    bool !== null && bool !== undefined;
