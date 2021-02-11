@@ -173,7 +173,12 @@
           "erUformeltSeparertEllerSkilt": true,
           "datoSøktSeparasjon": "2015-12-23",
           "søktOmSkilsmisseSeparasjon": true,
-          "årsakEnslig": "samlivsbruddAndre"
+          "årsakEnslig": "samlivsbruddAndre",
+          "tidligereSamboer": {
+            "navn": null,
+            "fødselsdato": null,
+            "ident": null
+          }
         },
         "registergrunnlag": {
           "type": "UGIFT",
@@ -181,7 +186,7 @@
         }
       },
       "bosituasjon": {
-        "delerDuBolig": "borAleneMedBarnEllerGravid",
+        "delerDuBolig": "tidligereSamboerFortsattRegistrertPåAdresse",
         "samboer": {
           "navn": "Bob Burger",
           "fødselsdato": "1992-02-18",

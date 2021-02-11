@@ -7,6 +7,17 @@ import { ISivilstandsplaner } from '../vilkår';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { ESøkerDelerBolig, IBosituasjon } from './typer';
 
+const erPersonInfoUtfylt = (personInfo: IPersonDetaljer): boolean => {
+    return (
+        personInfo.navn !== undefined &&
+        personInfo.navn !== null &&
+        personInfo.ident !== undefined &&
+        personInfo.ident !== null &&
+        personInfo.fødselsdato !== undefined &&
+        personInfo.fødselsdato !== null
+    );
+};
+
 interface Props {
     bosituasjon: IBosituasjon;
     tidligereSamboer?: IPersonDetaljer;
@@ -26,11 +37,16 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Samboers Navn</Normaltekst>
-                <Normaltekst>{`${tidligereSamboer?.navn} - ${
-                    tidligereSamboer?.ident ||
-                    formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
-                }`}</Normaltekst>
+                <Normaltekst>Tidligere samboer</Normaltekst>
+                <Normaltekst>
+                    {tidligereSamboer && !erPersonInfoUtfylt(tidligereSamboer)
+                        ? 'Ikke fylt ut'
+                        : `${tidligereSamboer?.navn || ''} - ${
+                              tidligereSamboer?.ident ||
+                              formaterNullableIsoDato(tidligereSamboer?.fødselsdato) ||
+                              ''
+                          }`}
+                </Normaltekst>
             </>
         )}
 
@@ -39,7 +55,9 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             ESøkerDelerBolig.delerBoligMedAndreVoksne,
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
         ].includes(bosituasjon.delerDuBolig) &&
-            sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
+            sivilstandsplaner?.harPlaner && (
+                <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />
+            )}
     </>
 );
 
