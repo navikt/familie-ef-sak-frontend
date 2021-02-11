@@ -54,8 +54,6 @@ spec:
   env:
     - name: APP_VERSION
       value: "{{version}}"
-    - name: REDIS_HOST
-      value: familie-ef-sak-frontend-redis
     {{#each env}}
     - name: {{@key}}
       value: "{{this}}"

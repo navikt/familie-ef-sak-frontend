@@ -21,6 +21,7 @@ const Environment = () => {
             buildPath: '../../frontend_production',
             namespace: 'preprod',
             proxyUrl: 'https://familie-ef-sak.dev-fss-pub.nais.io',
+            redisUrl: 'familie-ef-sak-frontend-redis',
         };
     }
 
@@ -28,6 +29,7 @@ const Environment = () => {
         buildPath: '../../frontend_production',
         namespace: 'production',
         proxyUrl: 'https://familie-ef-sak.prod-fss-pub.nais.io',
+        redisUrl: 'familie-ef-sak-frontend-redis',
     };
 };
 const env = Environment();
@@ -36,7 +38,7 @@ export const sessionConfig: ISessionKonfigurasjon = {
     cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
     navn: 'familie-ef-sak-v1',
     redisPassord: process.env.REDIS_PASSWORD,
-    redisUrl: process.env.REDIS_HOST,
+    redisUrl: env.redisUrl,
     secureCookie: process.env.ENV === 'local' || process.env.ENV === 'e2e' ? false : true,
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
