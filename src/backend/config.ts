@@ -20,14 +20,14 @@ const Environment = () => {
         return {
             buildPath: '../../frontend_production',
             namespace: 'preprod',
-            proxyUrl: 'https://familie-ef-sak.dev-fss.nais.io',
+            proxyUrl: 'https://familie-ef-sak.dev-fss-pub.nais.io',
         };
     }
 
     return {
         buildPath: '../../frontend_production',
         namespace: 'production',
-        proxyUrl: 'https://familie-ef-sak.prod-fss.nais.io',
+        proxyUrl: 'https://familie-ef-sak.prod-fss-pub.nais.io',
     };
 };
 const env = Environment();
