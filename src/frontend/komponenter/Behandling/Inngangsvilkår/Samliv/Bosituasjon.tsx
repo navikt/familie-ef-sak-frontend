@@ -6,17 +6,7 @@ import { IPersonDetaljer } from '../Sivilstand/typer';
 import { ISivilstandsplaner } from '../vilkår';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { ESøkerDelerBolig, IBosituasjon } from './typer';
-
-const erPersonInfoUtfylt = (personInfo: IPersonDetaljer): boolean => {
-    return (
-        personInfo.navn !== undefined &&
-        personInfo.navn !== null &&
-        personInfo.ident !== undefined &&
-        personInfo.ident !== null &&
-        personInfo.fødselsdato !== undefined &&
-        personInfo.fødselsdato !== null
-    );
-};
+import { erNavnUtfylt } from '../utils';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -39,7 +29,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
                 <Søknadsgrunnlag />
                 <Normaltekst>Tidligere samboer</Normaltekst>
                 <Normaltekst>
-                    {tidligereSamboer && !erPersonInfoUtfylt(tidligereSamboer)
+                    {tidligereSamboer && !erNavnUtfylt(tidligereSamboer.navn)
                         ? 'Ikke fylt ut'
                         : `${tidligereSamboer?.navn || ''} - ${
                               tidligereSamboer?.ident ||
@@ -67,11 +57,13 @@ const SamboerInfoOgDatoSammenflytting: FC<{
 }> = ({ samboer, sammenflyttingsdato }) => (
     <>
         <Søknadsgrunnlag />
-        <Normaltekst>Samboers navn</Normaltekst>
+        <Normaltekst>Samboer</Normaltekst>
         <Normaltekst>
-            {`${samboer?.navn} - ${
-                samboer?.ident || formaterNullableIsoDato(samboer?.fødselsdato)
-            }`}
+            {samboer && !erNavnUtfylt(samboer.navn)
+                ? 'Ikke fylt ut'
+                : `${samboer?.navn || ''} - ${
+                      samboer?.ident || formaterNullableIsoDato(samboer?.fødselsdato) || ''
+                  }`}
         </Normaltekst>
 
         <Søknadsgrunnlag />

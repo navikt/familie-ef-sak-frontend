@@ -175,7 +175,7 @@
           "søktOmSkilsmisseSeparasjon": true,
           "årsakEnslig": "samlivsbruddAndre",
           "tidligereSamboer": {
-            "navn": null,
+            "navn": "Hugh Jackman",
             "fødselsdato": null,
             "ident": null
           }
@@ -186,10 +186,10 @@
         }
       },
       "bosituasjon": {
-        "delerDuBolig": "tidligereSamboerFortsattRegistrertPåAdresse",
+        "delerDuBolig": "borAleneMedBarnEllerGravid",
         "samboer": {
-          "navn": "Bob Burger",
-          "fødselsdato": "1992-02-18",
+          "navn": "My",
+          "fødselsdato": null,
           "personIdent": null
         },
         "sammenflyttingsdato": "2018-08-12",

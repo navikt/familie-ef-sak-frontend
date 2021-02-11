@@ -3,6 +3,7 @@ import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from '../Sivilstand/typer';
+import { erNavnUtfylt } from '../utils';
 
 interface Props {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -10,6 +11,7 @@ interface Props {
 
 const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
     const { tidligereSamboer } = søknadsgrunnlag;
+
     return (
         <>
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre &&
@@ -23,26 +25,30 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
                     </>
                 )}
 
-            {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre &&
-                tidligereSamboer && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>Tidligere samboer</Normaltekst>
-                        <Normaltekst>{`${tidligereSamboer.navn} - ${
-                            tidligereSamboer.ident ||
-                            formaterNullableIsoDato(tidligereSamboer.fødselsdato)
-                        }`}</Normaltekst>
-                    </>
-                ) &&
-                søknadsgrunnlag.fraflytningsdato && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>Flyttet fra hverandre</Normaltekst>
-                        <Normaltekst>
-                            {formaterNullableIsoDato(søknadsgrunnlag.fraflytningsdato)}
-                        </Normaltekst>
-                    </>
-                )}
+            {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Tidligere samboer</Normaltekst>
+                    <Normaltekst>
+                        {tidligereSamboer && !erNavnUtfylt(tidligereSamboer.navn)
+                            ? 'Ikke fylt ut'
+                            : `${tidligereSamboer?.navn || ''} - ${
+                                  tidligereSamboer?.ident ||
+                                  formaterNullableIsoDato(tidligereSamboer?.fødselsdato) ||
+                                  ''
+                              }`}
+                    </Normaltekst>
+                    {søknadsgrunnlag.fraflytningsdato && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Flyttet fra hverandre</Normaltekst>
+                            <Normaltekst>
+                                {formaterNullableIsoDato(søknadsgrunnlag.fraflytningsdato)}
+                            </Normaltekst>
+                        </>
+                    )}
+                </>
+            )}
 
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.endringISamværsordning &&
                 søknadsgrunnlag.endringSamværsordningDato && (
