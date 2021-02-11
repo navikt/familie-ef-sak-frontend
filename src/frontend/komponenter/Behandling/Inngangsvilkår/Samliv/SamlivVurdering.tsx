@@ -7,17 +7,6 @@ import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
 import { manglerBegrunnelse } from '../../Vurdering/VurderingUtil';
 
-const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
-    const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
-        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
-    );
-
-    if (sisteDelvilkårSomSkalVises === -1) {
-        return delvilkårsvurderinger;
-    }
-    return delvilkårsvurderinger.slice(0, sisteDelvilkårSomSkalVises + 1);
-};
-
 const skalViseLagreKnappSamliv = (delvilkårsvurderinger: IDelvilkår[]) => {
     return delvilkårsvurderinger.every((delvilkår) => {
         if (
@@ -42,7 +31,7 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
 
     return (
         <>
-            {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
+            {delvilkårsvurderinger.map((delvilkår) => {
                 return (
                     <div key={delvilkår.type}>
                         <Delvilkår
