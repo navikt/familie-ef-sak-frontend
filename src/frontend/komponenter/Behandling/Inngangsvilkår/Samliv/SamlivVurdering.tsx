@@ -10,10 +10,7 @@ import { manglerBegrunnelse } from '../../Vurdering/VurderingUtil';
 const skalViseLagreKnappSamliv = (delvilkårsvurderinger: IDelvilkår[]) => {
     return delvilkårsvurderinger.every((delvilkår) => {
         if (
-            [
-                DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
-                DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
-            ].includes(delvilkår.type) &&
+            [DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD].includes(delvilkår.type) &&
             manglerBegrunnelse(delvilkår.begrunnelse)
         ) {
             return false;

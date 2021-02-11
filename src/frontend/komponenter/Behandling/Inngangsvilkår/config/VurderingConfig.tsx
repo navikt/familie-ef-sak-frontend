@@ -70,7 +70,6 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         renderVurdering: (props: VurderingProps): ReactChild => <SamlivVurdering props={props} />,
         unntak: [UnntakType.IKKE_OPPFYLT],
         delvilkår: [
-            DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
             DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER,
             DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
         ],
