@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router';
 
-export function useGetQueryParams(): URLSearchParams {
+export function useQueryParams(): URLSearchParams {
     return new URLSearchParams(useLocation().search);
 }
