@@ -9,7 +9,6 @@ import {
     Redigeringsmodus,
     unntakTypeTilTekst,
     Vilkårsresultat,
-    vilkårsresultatTypeTilTekstForDelvilkår,
     vilkårTypeTilTekst,
 } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
@@ -20,6 +19,7 @@ import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { nullstillVurdering } from './VurderingUtil';
 import { delvilkårÅrsakTilTekst } from '../Inngangsvilkår/Aleneomsorg/typer';
+import { vilkårsresultatTypeTilTekstForDelvilkår } from '../Inngangsvilkår/vilkårsresultat';
 
 const StyledVurdering = styled.div`
     display: grid;

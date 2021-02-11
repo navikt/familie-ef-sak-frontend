@@ -1,11 +1,11 @@
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import {
+    DelvilkårType,
     delvilkårTypeTilTekst,
     IDelvilkår,
     IVurdering,
     Vilkår,
     Vilkårsresultat,
-    vilkårsresultatTypeTilTekstForDelvilkår,
     VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import * as React from 'react';
@@ -13,6 +13,10 @@ import { FC } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
 import { RadioContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
+import {
+    delvilkårTypeSomKreverSpesialhåntering,
+    vilkårsresultatTypeTilTekstForDelvilkår,
+} from '../Inngangsvilkår/vilkårsresultat';
 
 interface Props {
     delvilkår: IDelvilkår;
@@ -75,7 +79,7 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
     return (
         <RadioContainer>
             <RadioGruppe key={delvilkår.type} legend={delvilkårTypeTilTekst[delvilkår.type]}>
-                {[Vilkårsresultat.OPPFYLT, Vilkårsresultat.IKKE_OPPFYLT].map((vilkårsresultat) => (
+                {vilkårsresultatTilVisning(delvilkår.type).map((vilkårsresultat) => (
                     <Radio
                         key={vilkårsresultat}
                         label={vilkårsresultatTypeTilTekstForDelvilkår(
@@ -103,5 +107,12 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
             )}
         </RadioContainer>
     );
+};
+
+const vilkårsresultatTilVisning = (delvilkårType: DelvilkårType): Vilkårsresultat[] => {
+    const muligeValg = [Vilkårsresultat.OPPFYLT, Vilkårsresultat.IKKE_OPPFYLT];
+    return delvilkårTypeSomKreverSpesialhåntering.includes(delvilkårType)
+        ? muligeValg.reverse()
+        : muligeValg;
 };
 export default Delvilkår;

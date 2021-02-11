@@ -174,22 +174,6 @@ export enum VilkårGruppe {
     ALENEOMSORG = 'ALENEOMSORG',
 }
 
-// TODO: Spesialhåndtering av delvilkårstekst for oppfylt/ikke_oppfylt
-export const vilkårsresultatTypeTilTekstForDelvilkår = (
-    vilkårsresultat: Vilkårsresultat,
-    delvilkårType: DelvilkårType
-): string => {
-    if (
-        delvilkårType === DelvilkårType.NÆRE_BOFORHOLD ||
-        delvilkårType === DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED
-    ) {
-        if (vilkårsresultat === Vilkårsresultat.OPPFYLT)
-            return vilkårsresultatTypeTilTekst[Vilkårsresultat.IKKE_OPPFYLT];
-        if (vilkårsresultat === Vilkårsresultat.IKKE_OPPFYLT)
-            return vilkårsresultatTypeTilTekst[Vilkårsresultat.OPPFYLT];
-    }
-    return vilkårsresultatTypeTilTekst[vilkårsresultat];
-};
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
     OPPFYLT: 'Ja',
     IKKE_OPPFYLT: 'Nei',
