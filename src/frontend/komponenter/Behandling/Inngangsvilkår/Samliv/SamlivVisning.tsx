@@ -15,7 +15,7 @@ interface Props {
 }
 
 const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
-    const { sivilstand, bosituasjon } = grunnlag;
+    const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
     const { søknadsgrunnlag, registergrunnlag } = sivilstand;
     const { tidligereSamboer } = søknadsgrunnlag;
 
@@ -45,7 +45,11 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                 <Normaltekst>Bosituasjon</Normaltekst>
                 <Normaltekst>{SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}</Normaltekst>
 
-                <Bosituasjon bosituasjon={bosituasjon} tidligereSamboer={tidligereSamboer} />
+                <Bosituasjon
+                    bosituasjon={bosituasjon}
+                    tidligereSamboer={tidligereSamboer}
+                    sivilstandsplaner={sivilstandsplaner}
+                />
             </StyledTabell>
         </>
     );
