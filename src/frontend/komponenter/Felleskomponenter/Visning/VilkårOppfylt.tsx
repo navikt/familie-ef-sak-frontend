@@ -5,6 +5,7 @@ import IkkeVurdert from '../../../ikoner/IkkeVurdert';
 
 interface Props {
     erOppfylt: boolean;
+    className?: string;
 }
 
 export enum VilkårStatus {
@@ -13,19 +14,24 @@ export enum VilkårStatus {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
 }
 
-const VilkårOppfylt: FC<Props> = ({ erOppfylt }) => {
-    return erOppfylt ? <Oppfylt heigth={21} width={21} /> : <IkkeOppfylt heigth={21} width={21} />;
+export const VilkårOppfylt: FC<Props> = ({ erOppfylt, className }) => {
+    return erOppfylt ? (
+        <Oppfylt className={className} heigth={23} width={21} />
+    ) : (
+        <IkkeOppfylt className={className} heigth={23} width={21} />
+    );
 };
 
-export const VilkårStatusIkon: FC<{ vilkårStatus: VilkårStatus }> = ({ vilkårStatus }) => {
+export const VilkårStatusIkon: FC<{ vilkårStatus: VilkårStatus; className?: string }> = ({
+    vilkårStatus,
+    className,
+}) => {
     switch (vilkårStatus) {
         case VilkårStatus.IKKE_VURDERT:
-            return <IkkeVurdert heigth={21} width={21} />;
+            return <IkkeVurdert className={className} heigth={23} width={21} />;
         case VilkårStatus.OPPFYLT:
-            return <Oppfylt heigth={21} width={21} />;
+            return <Oppfylt className={className} heigth={23} width={21} />;
         case VilkårStatus.IKKE_OPPFYLT:
-            return <IkkeOppfylt heigth={21} width={21} />;
+            return <IkkeOppfylt className={className} heigth={23} width={21} />;
     }
 };
-
-export default VilkårOppfylt;

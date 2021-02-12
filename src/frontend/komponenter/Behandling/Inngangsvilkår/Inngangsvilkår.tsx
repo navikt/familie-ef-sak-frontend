@@ -166,15 +166,32 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             <DataViewer response={inngangsvilkår}>
                 {(data) => (
                     <StyledInngangsvilkår>
-                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
-                            <Vurdering
-                                key={vilkårGruppe}
-                                vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                                inngangsvilkår={data}
-                                feilmeldinger={feilmeldinger}
-                                lagreVurdering={lagreVurdering}
-                            />
-                        ))}
+                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
+                            if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
+                                return data.grunnlag.barnMedSamvær.map((barn) => {
+                                    return (
+                                        <Vurdering
+                                            key={barn.barnId}
+                                            barnId={barn.barnId}
+                                            vilkårGruppe={vilkårGruppe}
+                                            inngangsvilkår={data}
+                                            lagreVurdering={lagreVurdering}
+                                            feilmeldinger={feilmeldinger}
+                                        />
+                                    );
+                                });
+                            } else {
+                                return (
+                                    <Vurdering
+                                        key={vilkårGruppe}
+                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                        inngangsvilkår={data}
+                                        feilmeldinger={feilmeldinger}
+                                        lagreVurdering={lagreVurdering}
+                                    />
+                                );
+                            }
+                        })}
                     </StyledInngangsvilkår>
                 )}
             </DataViewer>

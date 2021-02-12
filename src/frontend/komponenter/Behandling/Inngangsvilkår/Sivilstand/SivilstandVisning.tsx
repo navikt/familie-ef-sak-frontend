@@ -11,6 +11,7 @@ interface Props {
     sivilstand: ISivilstandInngangsvilkår;
     vilkårStatus: VilkårStatus;
 }
+
 const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
@@ -20,7 +21,7 @@ const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
     return (
         <>
             <StyledTabell>
-                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
+                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Sivilstand</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>

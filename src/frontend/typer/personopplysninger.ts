@@ -25,13 +25,13 @@ export interface IPersonopplysninger {
 export interface IBarn {
     navn: string;
     personIdent: string;
-    annenForelder?: IAnnenForelder;
+    annenForelder?: IAnnenForelderMinimum;
     adresse: IAdresse[];
     borHosSøker: boolean;
     fødselsdato?: string;
 }
 
-export interface IAnnenForelder {
+export interface IAnnenForelderMinimum {
     personIdent: string;
     navn: string;
 }
