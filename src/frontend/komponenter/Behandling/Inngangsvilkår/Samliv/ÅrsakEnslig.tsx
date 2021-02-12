@@ -3,7 +3,7 @@ import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from '../Sivilstand/typer';
-import { erNavnUtfylt } from '../utils';
+import { hentPersonInfo } from '../utils';
 
 interface Props {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -29,15 +29,7 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Tidligere samboer</Normaltekst>
-                    <Normaltekst>
-                        {tidligereSamboer && !erNavnUtfylt(tidligereSamboer.navn)
-                            ? 'Ikke fylt ut'
-                            : `${tidligereSamboer?.navn || ''} - ${
-                                  tidligereSamboer?.ident ||
-                                  formaterNullableIsoDato(tidligereSamboer?.fødselsdato) ||
-                                  ''
-                              }`}
-                    </Normaltekst>
+                    <Normaltekst>{hentPersonInfo(tidligereSamboer)}</Normaltekst>
                     {søknadsgrunnlag.fraflytningsdato && (
                         <>
                             <Søknadsgrunnlag />

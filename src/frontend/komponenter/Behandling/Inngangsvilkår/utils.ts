@@ -1,5 +1,13 @@
+import { IPersonDetaljer } from './Sivilstand/typer';
+import { formaterNullableIsoDato } from '../../../utils/formatter';
+
 export const hentBooleanTekst = (value: boolean): string => (value ? 'Ja' : 'Nei');
 
-export const erNavnUtfylt = (navn: string): boolean => {
-    return navn !== undefined && navn !== null;
+export const hentPersonInfo = (person?: IPersonDetaljer): string => {
+    const erNavnUtfylt = person?.navn !== undefined && person?.navn !== null;
+    return person && !erNavnUtfylt
+        ? 'Ikke fylt ut'
+        : `${person?.navn || ''} - ${
+              person?.ident || formaterNullableIsoDato(person?.fødselsdato) || ''
+          }`;
 };

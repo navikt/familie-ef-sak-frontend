@@ -6,7 +6,7 @@ import { IPersonDetaljer } from '../Sivilstand/typer';
 import { ISivilstandsplaner } from '../vilkår';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { ESøkerDelerBolig, IBosituasjon } from './typer';
-import { erNavnUtfylt } from '../utils';
+import { hentPersonInfo } from '../utils';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -28,15 +28,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             <>
                 <Søknadsgrunnlag />
                 <Normaltekst>Tidligere samboer</Normaltekst>
-                <Normaltekst>
-                    {tidligereSamboer && !erNavnUtfylt(tidligereSamboer.navn)
-                        ? 'Ikke fylt ut'
-                        : `${tidligereSamboer?.navn || ''} - ${
-                              tidligereSamboer?.ident ||
-                              formaterNullableIsoDato(tidligereSamboer?.fødselsdato) ||
-                              ''
-                          }`}
-                </Normaltekst>
+                <Normaltekst>{hentPersonInfo(tidligereSamboer)}</Normaltekst>
             </>
         )}
 
@@ -58,13 +50,7 @@ const SamboerInfoOgDatoSammenflytting: FC<{
     <>
         <Søknadsgrunnlag />
         <Normaltekst>Samboer</Normaltekst>
-        <Normaltekst>
-            {samboer && !erNavnUtfylt(samboer.navn)
-                ? 'Ikke fylt ut'
-                : `${samboer?.navn || ''} - ${
-                      samboer?.ident || formaterNullableIsoDato(samboer?.fødselsdato) || ''
-                  }`}
-        </Normaltekst>
+        <Normaltekst>{hentPersonInfo(samboer)}</Normaltekst>
 
         <Søknadsgrunnlag />
         <Normaltekst>Flyttet sammen</Normaltekst>
