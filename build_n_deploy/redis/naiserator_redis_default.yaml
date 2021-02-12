@@ -25,6 +25,6 @@ spec:
     inbound:
       rules:
         - application: familie-ef-sak-frontend
-        - application: familie-ef-sak-frontend-redisexporter
+        - application: familie-ef-sak-frontend-redis-exporter
   envFrom:
     - secret: familie-ef-sak-frontend-redis
