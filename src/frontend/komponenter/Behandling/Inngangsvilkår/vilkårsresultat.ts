@@ -9,11 +9,11 @@ export const vilkårsresultatTypeTilTekstForDelvilkår = (
     vilkårsresultat: Vilkårsresultat,
     delvilkårType: DelvilkårType
 ): string => {
-    return erDelvilkårOppfyltHvisSvaretErNei(vilkårsresultat, delvilkårType)
+    return harDelvilkårNegertSpørsmålstilling(vilkårsresultat, delvilkårType)
         ? reverseVilkårsresultatTypeTilTekst(vilkårsresultat)
         : vilkårsresultatTypeTilTekst[vilkårsresultat];
 };
-const erDelvilkårOppfyltHvisSvaretErNei = (
+const harDelvilkårNegertSpørsmålstilling = (
     vilkårsresultat: Vilkårsresultat,
     delvilkårType: DelvilkårType
 ): boolean => {
