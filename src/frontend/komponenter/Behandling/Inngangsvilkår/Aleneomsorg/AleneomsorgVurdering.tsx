@@ -50,7 +50,7 @@ const AleneomsorgVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                             }
                         />
                         {delvilkår.type === DelvilkårType.NÆRE_BOFORHOLD &&
-                            delvilkår.resultat === Vilkårsresultat.NEI && (
+                            delvilkår.resultat === Vilkårsresultat.IKKE_OPPFYLT && (
                                 <NæreBoforhold
                                     delvilkår={delvilkår}
                                     vurdering={vurdering}

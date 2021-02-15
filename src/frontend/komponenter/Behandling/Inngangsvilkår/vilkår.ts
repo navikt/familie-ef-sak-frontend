@@ -47,8 +47,8 @@ export interface IDelvilkår {
 }
 
 export enum Vilkårsresultat {
-    JA = 'JA',
-    NEI = 'NEI',
+    OPPFYLT = 'OPPFYLT',
+    IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_VURDERT = 'IKKE_VURDERT',
 }
@@ -172,25 +172,9 @@ export enum VilkårGruppe {
     ALENEOMSORG = 'ALENEOMSORG',
 }
 
-// TODO: Spesialhåndtering av delvilkårstekst for oppfylt/ikke_oppfylt
-export const vilkårsresultatTypeTilTekstForDelvilkår = (
-    vilkårsresultat: Vilkårsresultat,
-    delvilkårType: DelvilkårType
-): string => {
-    if (
-        delvilkårType === DelvilkårType.NÆRE_BOFORHOLD ||
-        delvilkårType === DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED
-    ) {
-        if (vilkårsresultat === Vilkårsresultat.JA)
-            return vilkårsresultatTypeTilTekst[Vilkårsresultat.NEI];
-        if (vilkårsresultat === Vilkårsresultat.NEI)
-            return vilkårsresultatTypeTilTekst[Vilkårsresultat.JA];
-    }
-    return vilkårsresultatTypeTilTekst[vilkårsresultat];
-};
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
-    JA: 'Ja',
-    NEI: 'Nei',
+    OPPFYLT: 'Ja',
+    IKKE_OPPFYLT: 'Nei',
     IKKE_VURDERT: 'Ikke vurdert',
     IKKE_AKTUELL: 'Ikke aktuell',
 };
