@@ -11,7 +11,7 @@ import DokumentVisning from '../komponenter/Journalforing/Dokumentvisning';
 import { behandlingstemaTilStønadstype, behandlingstemaTilTekst } from '../typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
-import { useGetQueryParams } from '../hooks/felles/useGetQueryParams';
+import { useQueryParams } from '../hooks/felles/useQueryParams';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
@@ -53,7 +53,7 @@ const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 export const Journalforing: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
     const history = useHistory();
-    const query = useGetQueryParams();
+    const query = useQueryParams();
     const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
 

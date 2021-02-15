@@ -1,166 +1,23 @@
 {
-    "data": {
-        "opprettetTidspunkt": "2020-02-14T13:24:08.129343",
-        "id": 1,
-        "søkerFødselsnummer": "12345678910",
-        "status": "LØPENDE",
-        "behandlinger": [
-            {
-                "aktiv": true,
-                "behandlingId": 2,
-                "type": "REVURDERING",
-                "status": "OPPRETTET",
-                "kategori": "NASJONAL",
-                "opprettetTidspunkt": "2020-02-01T12:00:00.00",
-                "personer": [
-                    {
-                        "type": "SØKER",
-                        "fødselsdato": "1990-01-01",
-                        "personIdent": "12345678910"
-                    },
-                    {
-                        "type": "BARN",
-                        "fødselsdato": "2018-05-01",
-                        "personIdent": "12345678911"
-                    },
-                    {
-                        "type": "BARN",
-                        "fødselsdato": "2019-10-01",
-                        "personIdent": "12345678912"
-                    }
-                ],
-                "underkategori": "UTVIDET",
-                "samletVilkårResultat": [
-                    {
-                        "personIdent": "12345678911",
-                        "vilkårType": "STØNADSPERIODE",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678912",
-                        "vilkårType": "STØNADSPERIODE",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678910",
-                        "vilkårType": "BOSATT_I_RIKET",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678910",
-                        "vilkårType": "STØNADSPERIODE",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678912",
-                        "vilkårType": "BOSATT_I_RIKET",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678912",
-                        "vilkårType": "UNDER_18_ÅR_OG_BOR_MED_SØKER",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678911",
-                        "vilkårType": "BOSATT_I_RIKET",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678911",
-                        "vilkårType": "UNDER_18_ÅR_OG_BOR_MED_SØKER",
-                        "utfallType": "OPPFYLT"
-                    }
-                ],
-                "vedtakForBehandling": [
-                    {
-                        "aktiv": true,
-                        "ansvarligSaksbehandler": "Henning.Hakonsen@trygdeetaten.no",
-                        "vedtaksdato": "2020-02-14",
-                        "barnasBeregning": [
-                            {
-                                "barn": "12345678911",
-                                "beløp": 1054,
-                                "stønadFom": "2019-01-01"
-                            },
-                            {
-                                "barn": "12345678912",
-                                "beløp": 1054,
-                                "stønadFom": "2020-01-01"
-                            }
-                        ],
-                        "resultat": "INNVILGET",
-                        "begrunnelse": "Fake information"
-                    }
-                ]
-            },
-            {
-                "aktiv": false,
-                "behandlingId": 1,
-                "type": "FØRSTEGANGSBEHANDLING",
-                "status": "FERDIGSTILT",
-                "kategori": "NASJONAL",
-                "opprettetTidspunkt": "2020-02-01T12:00:00.00",
-                "personer": [
-                    {
-                        "type": "SØKER",
-                        "fødselsdato": "1990-01-01",
-                        "personIdent": "12345678910"
-                    },
-                    {
-                        "type": "BARN",
-                        "fødselsdato": "2018-05-01",
-                        "personIdent": "12345678911"
-                    }
-                ],
-                "underkategori": "ORDINÆR",
-                "samletVilkårResultat": [
-                    {
-                        "personIdent": "12345678911",
-                        "vilkårType": "STØNADSPERIODE",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678910",
-                        "vilkårType": "BOSATT_I_RIKET",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678910",
-                        "vilkårType": "STØNADSPERIODE",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678911",
-                        "vilkårType": "BOSATT_I_RIKET",
-                        "utfallType": "OPPFYLT"
-                    },
-                    {
-                        "personIdent": "12345678911",
-                        "vilkårType": "UNDER_18_ÅR_OG_BOR_MED_SØKER",
-                        "utfallType": "OPPFYLT"
-                    }
-                ],
-                "vedtakForBehandling": [
-                    {
-                        "aktiv": true,
-                        "ansvarligSaksbehandler": "Henning.Hakonsen@trygdeetaten.no",
-                        "vedtaksdato": "2020-02-14",
-                        "barnasBeregning": [
-                            {
-                                "barn": "12345678911",
-                                "beløp": 1054,
-                                "stønadFom": "2020-01-01"
-                            }
-                        ],
-                        "resultat": "INNVILGET",
-                        "begrunnelse": "Fake information"
-                    }
-                ]
-            }
-        ]
-    },
-    "status": "SUKSESS",
-    "melding": "Innhenting av data var vellykket",
-    "stacktrace": null
+  "data": {
+    "id": "952c0464-4867-4d4c-9696-8d6b6aa60ade",
+    "personIdent": "10108000398",
+    "stønadstype": "OVERGANGSSTØNAD",
+    "behandlinger": [
+      {
+        "id": "e3a13ad5-50c7-4cdd-9144-75dd888bd661",
+        "steg": "REGISTRERE_OPPLYSNINGER",
+        "type": "FØRSTEGANGSBEHANDLING",
+        "aktiv": true,
+        "status": "OPPRETTET",
+        "sistEndret": "2021-02-12",
+        "resultat": "IKKE_SATT",
+        "opprettet": "2021-02-12"
+      }
+    ]
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
 }
