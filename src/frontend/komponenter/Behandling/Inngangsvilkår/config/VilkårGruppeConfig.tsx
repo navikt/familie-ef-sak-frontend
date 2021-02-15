@@ -8,6 +8,7 @@ import OppholdVisning from '../Opphold/OppholdVisning';
 import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import SamlivVisning from '../Samliv/SamlivVisning';
 import AleneomsorgVisning from '../Aleneomsorg/AleneomsorgVisning';
+import MorEllerFarVisning from '../MorEllerFar/MorEllerFarVisning';
 
 export interface IVilkårGruppeConfig {
     visning: (
@@ -27,6 +28,15 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
     LOVLIG_OPPHOLD: {
         visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <OppholdVisning medlemskap={grunnlag.medlemskap} vilkårStatus={vilkårStatus} />
+        ),
+    },
+    MOR_ELLER_FAR: {
+        visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+            <MorEllerFarVisning
+                barnMedSamvær={grunnlag.barnMedSamvær}
+                årsakEnslig={grunnlag.sivilstand.søknadsgrunnlag.årsakEnslig}
+                vilkårsStatus={vilkårStatus}
+            />
         ),
     },
     SIVILSTAND: {

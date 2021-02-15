@@ -170,6 +170,7 @@ export enum VilkårGruppe {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
+    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
