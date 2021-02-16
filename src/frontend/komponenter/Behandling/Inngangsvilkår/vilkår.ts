@@ -105,7 +105,7 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     DOKUMENTERT_EKTESKAP: 'Foreligger det dokumentasjon på ekteskap?',
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:
         'Foreligger det dokumentasjon på separasjon eller skilsmisse?',
-    KRAV_SIVILSTAND: 'Er krav for sivilstand oppfylt?',
+    KRAV_SIVILSTAND: 'Er krav til sivilstand oppfylt?',
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
         'Er det samsvar mellom datoene for separasjon og fraflytting?',
