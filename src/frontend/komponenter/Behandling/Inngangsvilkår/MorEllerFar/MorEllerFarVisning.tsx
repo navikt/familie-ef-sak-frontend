@@ -8,14 +8,14 @@ import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    årsakEnslig?: string;
     vilkårStatus: VilkårStatus;
 }
 
-const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, årsakEnslig, vilkårStatus }) => {
+const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
     return (
         <StyledTabell>
             <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
@@ -37,31 +37,38 @@ const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, årsakEnslig, vilkårSt
                             </>
                         ) : (
                             <>
-                                <Søknadsgrunnlag />
+                                <LiteBarn />
                                 <Element>
                                     {søknadsgrunnlag.navn ? søknadsgrunnlag.navn : barnUtenNavn}
                                 </Element>
                             </>
                         )}
-                        {!søknadsgrunnlag.erBarnetFødt && søknadsgrunnlag.fødselTermindato && (
-                            <>
-                                <Søknadsgrunnlag />
-                                <Normaltekst>Termindato</Normaltekst>
-                                <Normaltekst>{søknadsgrunnlag.fødselTermindato}</Normaltekst>
-                            </>
-                        )}
-                        {søknadsgrunnlag.erBarnetFødt && registergrunnlag.fødselsnummer && (
+
+                        {registergrunnlag.fødselsnummer ? (
                             <>
                                 <Registergrunnlag />
                                 <Normaltekst>Fødsels- eller D-nummer</Normaltekst>
-                                <Normaltekst>{registergrunnlag.fødselsnummer}</Normaltekst>
+                                <Normaltekst>
+                                    {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
+                                </Normaltekst>
                             </>
-                        )}
-                        {!!årsakEnslig && (
+                        ) : søknadsgrunnlag.fødselsnummer ? (
                             <>
                                 <Søknadsgrunnlag />
                                 <Normaltekst>Fødsels- eller D-nummer</Normaltekst>
-                                <Normaltekst>{søknadsgrunnlag.fødselsnummer}</Normaltekst>
+                                <Normaltekst>
+                                    {formaterNullableFødsesnummer(søknadsgrunnlag.fødselsnummer)}
+                                </Normaltekst>
+                            </>
+                        ) : (
+                            <>
+                                <Søknadsgrunnlag />
+                                <Normaltekst>
+                                    {søknadsgrunnlag.erBarnetFødt ? 'Fødselsdato' : 'Termindato'}
+                                </Normaltekst>
+                                <Normaltekst>
+                                    {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
+                                </Normaltekst>
                             </>
                         )}
                     </>

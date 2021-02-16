@@ -34,8 +34,7 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
         visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <MorEllerFarVisning
                 barnMedSamvær={grunnlag.barnMedSamvær}
-                årsakEnslig={grunnlag.sivilstand.søknadsgrunnlag.årsakEnslig}
-                vilkårsStatus={vilkårStatus}
+                vilkårStatus={vilkårStatus}
             />
         ),
     },
