@@ -59,3 +59,8 @@ export const byggSuksessRessurs = <T>(data: T): Ressurs<T> => {
         status: RessursStatus.SUKSESS,
     };
 };
+
+export const erAvTypeFeil = <T>(data: Ressurs<T>): boolean =>
+    [RessursStatus.FEILET, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.FUNKSJONELL_FEIL].includes(
+        data.status
+    );
