@@ -1,12 +1,6 @@
 import './konfigurerApp';
 
-import backend, {
-    IApp,
-    ensureAuthenticated,
-    error,
-    getLogTimestamp,
-    info,
-} from '@navikt/familie-backend';
+import backend, { IApp, ensureAuthenticated, getLogTimestamp, info } from '@navikt/familie-backend';
 import bodyParser from 'body-parser';
 import path from 'path';
 import webpack from 'webpack';
@@ -55,10 +49,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
     app.use('/', setupRouter(azureAuthClient, router, middleware));
 
-    app.listen(port, '0.0.0.0', (err: Error) => {
-        if (err) {
-            error(`${getLogTimestamp()}: server startup failed - ${err}`);
-        }
+    app.listen(port, '0.0.0.0', () => {
         info(
             `${getLogTimestamp()}: server startet på port ${port}. Build version: ${
                 process.env.APP_VERSION

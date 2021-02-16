@@ -3,16 +3,15 @@ import fetch, { Response } from 'node-fetch';
 import { namespace } from '../config';
 import { logRequest, LOG_LEVEL } from '@navikt/familie-backend';
 import HttpsProxyAgent from 'https-proxy-agent/dist/agent';
-
 const token = process.env.SLACK_TOKEN;
 const agent =
     process.env.ENV !== 'local' && process.env.ENV !== 'e2e'
-        ? new HttpsProxyAgent({
+        ? (new HttpsProxyAgent({
               host: 'webproxy.nais',
               secureProxy: true,
               port: 8088,
               rejectUnauthorized: false,
-          })
+          }) as any)
         : undefined;
 
 /**
