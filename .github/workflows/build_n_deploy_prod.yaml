@@ -30,6 +30,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+      - name: Deploy til dev-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: build_n_deploy/naiserator/nais.yaml
+          VARS: build_n_deploy/naiserator/dev.json
       - name: Deploy til prod-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
