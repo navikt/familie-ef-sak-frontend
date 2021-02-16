@@ -21,5 +21,5 @@ export const erKravForSivilstandOppfylt = (delvilkår: IDelvilkår[]): boolean =
         (delvilkår) => delvilkår.type === DelvilkårType.KRAV_SIVILSTAND
     );
 
-    return delvilkårKravSivilstand?.resultat === Vilkårsresultat.JA;
+    return delvilkårKravSivilstand?.resultat === Vilkårsresultat.OPPFYLT;
 };

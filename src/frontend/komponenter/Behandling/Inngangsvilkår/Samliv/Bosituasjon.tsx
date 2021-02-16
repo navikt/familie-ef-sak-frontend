@@ -6,6 +6,7 @@ import { IPersonDetaljer } from '../Sivilstand/typer';
 import { ISivilstandsplaner } from '../vilkår';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { ESøkerDelerBolig, IBosituasjon } from './typer';
+import { hentPersonInfo } from '../utils';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -26,11 +27,8 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Samboers Navn</Normaltekst>
-                <Normaltekst>{`${tidligereSamboer?.navn} - ${
-                    tidligereSamboer?.ident ||
-                    formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
-                }`}</Normaltekst>
+                <Normaltekst>Tidligere samboer</Normaltekst>
+                <Normaltekst>{hentPersonInfo(tidligereSamboer)}</Normaltekst>
             </>
         )}
 
@@ -39,7 +37,9 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             ESøkerDelerBolig.delerBoligMedAndreVoksne,
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
         ].includes(bosituasjon.delerDuBolig) &&
-            sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
+            sivilstandsplaner?.harPlaner && (
+                <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />
+            )}
     </>
 );
 
@@ -49,12 +49,8 @@ const SamboerInfoOgDatoSammenflytting: FC<{
 }> = ({ samboer, sammenflyttingsdato }) => (
     <>
         <Søknadsgrunnlag />
-        <Normaltekst>Samboers navn</Normaltekst>
-        <Normaltekst>
-            {`${samboer?.navn} - ${
-                samboer?.ident || formaterNullableIsoDato(samboer?.fødselsdato)
-            }`}
-        </Normaltekst>
+        <Normaltekst>Samboer</Normaltekst>
+        <Normaltekst>{hentPersonInfo(samboer)}</Normaltekst>
 
         <Søknadsgrunnlag />
         <Normaltekst>Flyttet sammen</Normaltekst>

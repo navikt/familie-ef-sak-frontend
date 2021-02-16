@@ -14,22 +14,22 @@ const Environment = () => {
             buildPath: '../../frontend_production',
             namespace: 'e2e',
             proxyUrl: 'http://familie-ef-sak:8093',
-            redisUrl: 'familie-redis',
+            //Har ikke satt opp redis
         };
     } else if (process.env.ENV === 'preprod') {
         return {
             buildPath: '../../frontend_production',
             namespace: 'preprod',
-            proxyUrl: 'http://familie-ef-sak',
-            redisUrl: 'familie-ef-sak-frontend-redis.default.svc.nais.local',
+            proxyUrl: 'https://familie-ef-sak.dev-fss-pub.nais.io',
+            redisUrl: 'familie-ef-sak-frontend-redis',
         };
     }
 
     return {
         buildPath: '../../frontend_production',
         namespace: 'production',
-        proxyUrl: 'http://familie-ef-sak',
-        redisUrl: 'familie-ef-sak-frontend-redis.default.svc.nais.local',
+        proxyUrl: 'https://familie-ef-sak.prod-fss-pub.nais.io',
+        redisUrl: 'familie-ef-sak-frontend-redis',
     };
 };
 const env = Environment();

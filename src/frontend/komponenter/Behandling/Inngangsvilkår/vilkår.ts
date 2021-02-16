@@ -47,8 +47,8 @@ export interface IDelvilkår {
 }
 
 export enum Vilkårsresultat {
-    JA = 'JA',
-    NEI = 'NEI',
+    OPPFYLT = 'OPPFYLT',
+    IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_VURDERT = 'IKKE_VURDERT',
 }
@@ -92,7 +92,6 @@ export enum DelvilkårType {
     KRAV_SIVILSTAND = 'KRAV_SIVILSTAND',
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON = 'SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING = 'SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING',
-    HAR_FLYTTET_FRA_HVERANDRE = 'HAR_FLYTTET_FRA_HVERANDRE',
     LEVER_IKKE_MED_ANNEN_FORELDER = 'LEVER_IKKE_MED_ANNEN_FORELDER',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD = 'LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD',
     SKRIFTLIG_AVTALE_OM_DELT_BOSTED = 'SKRIFTLIG_AVTALE_OM_DELT_BOSTED',
@@ -110,7 +109,6 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
         'Er det samsvar mellom datoene for separasjon og fraflytting?',
-    HAR_FLYTTET_FRA_HVERANDRE: 'Har partene flyttet fra hverandre?',
     LEVER_IKKE_MED_ANNEN_FORELDER:
         'Er vilkåret om å ikke leve sammen med den andre av barnets/barnas foreldre oppfylt?',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD:
@@ -174,25 +172,9 @@ export enum VilkårGruppe {
     ALENEOMSORG = 'ALENEOMSORG',
 }
 
-// TODO: Spesialhåndtering av delvilkårstekst for oppfylt/ikke_oppfylt
-export const vilkårsresultatTypeTilTekstForDelvilkår = (
-    vilkårsresultat: Vilkårsresultat,
-    delvilkårType: DelvilkårType
-): string => {
-    if (
-        delvilkårType === DelvilkårType.NÆRE_BOFORHOLD ||
-        delvilkårType === DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED
-    ) {
-        if (vilkårsresultat === Vilkårsresultat.JA)
-            return vilkårsresultatTypeTilTekst[Vilkårsresultat.NEI];
-        if (vilkårsresultat === Vilkårsresultat.NEI)
-            return vilkårsresultatTypeTilTekst[Vilkårsresultat.JA];
-    }
-    return vilkårsresultatTypeTilTekst[vilkårsresultat];
-};
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
-    JA: 'Ja',
-    NEI: 'Nei',
+    OPPFYLT: 'Ja',
+    IKKE_OPPFYLT: 'Nei',
     IKKE_VURDERT: 'Ikke vurdert',
     IKKE_AKTUELL: 'Ikke aktuell',
 };

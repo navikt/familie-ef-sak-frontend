@@ -18,9 +18,9 @@ const vilkårsResultatForUnntak = (unntakType: UnntakType | undefined): Vilkårs
     if (!unntakType) {
         return Vilkårsresultat.IKKE_VURDERT;
     } else if (unntakType === UnntakType.IKKE_OPPFYLT) {
-        return Vilkårsresultat.NEI;
+        return Vilkårsresultat.IKKE_OPPFYLT;
     } else {
-        return Vilkårsresultat.JA;
+        return Vilkårsresultat.OPPFYLT;
     }
 };
 

@@ -17,4 +17,6 @@ export interface Behandling {
     steg: Steg;
     status: BehandlingStatus;
     sistEndret: string;
+    opprettet: string;
+    resultat: string;
 }

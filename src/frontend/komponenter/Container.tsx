@@ -7,6 +7,7 @@ import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
 import BehandlingContainer from './Behandling/BehandlingContainer';
 import { OppgaveBenk } from '../sider/Oppgavebenk';
 import { Journalforing } from '../sider/Journalforing';
+import Fagsakoversikt from '../sider/Fagsakoversikt';
 
 interface IProps {
     innloggetSaksbehandler?: ISaksbehandler;
@@ -22,14 +23,14 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
                     <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
                     <div className={'container'} role="main">
                         <Switch>
-                            <Redirect exact={true} from="/" to="/oppgavebenk" />
                             <Route
                                 path="/behandling/:behandlingId"
                                 component={BehandlingContainer}
                             />
                             <Route path="/oppgavebenk" component={OppgaveBenk} />
                             <Route path="/journalfor" component={Journalforing} />
-                            <Redirect to="/sak" />
+                            <Route path="/fagsak/:fagsakId" component={Fagsakoversikt} />
+                            <Redirect from="/" to="/oppgavebenk" />
                         </Switch>
                     </div>
                 </>
