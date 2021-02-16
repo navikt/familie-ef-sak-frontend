@@ -83,7 +83,7 @@ const Fagsakoversikt: React.FC = () => {
                 </VisittkortWrapper>
                 <TittelWrapper>
                     <Innholdstittel className="blokk-m" tag="h2">
-                        Behandlingsoversikt - Batman{' '}
+                        Behandlingsoversikt - {personOpplysninger.data.navn.visningsnavn}
                     </Innholdstittel>
                     <Systemtittel tag="h3">
                         Fagsak: {formatterEnumVerdi(fagsak.data.stønadstype)}
