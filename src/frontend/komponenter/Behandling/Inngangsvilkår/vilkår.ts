@@ -62,6 +62,7 @@ export enum Redigeringsmodus {
 export enum Vilkår {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
+    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
@@ -70,6 +71,7 @@ export enum Vilkår {
 export type VilkårType =
     | Vilkår.FORUTGÅENDE_MEDLEMSKAP
     | Vilkår.LOVLIG_OPPHOLD
+    | Vilkår.MOR_ELLER_FAR
     | Vilkår.SIVILSTAND
     | Vilkår.SAMLIV
     | Vilkår.ALENEOMSORG;
@@ -77,6 +79,7 @@ export type VilkårType =
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
     LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
+    MOR_ELLER_FAR: 'Vilkår om mor eller far',
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
@@ -97,6 +100,7 @@ export enum DelvilkårType {
     SKRIFTLIG_AVTALE_OM_DELT_BOSTED = 'SKRIFTLIG_AVTALE_OM_DELT_BOSTED',
     NÆRE_BOFORHOLD = 'NÆRE_BOFORHOLD',
     MER_AV_DAGLIG_OMSORG = 'MER_AV_DAGLIG_OMSORG',
+    OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN = 'OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -116,6 +120,7 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     SKRIFTLIG_AVTALE_OM_DELT_BOSTED: 'Har foreldrene inngått skriftlig avtale om delt bosted?',
     NÆRE_BOFORHOLD: 'Har bruker og den andre forelderen nære boforhold?',
     MER_AV_DAGLIG_OMSORG: 'Har bruker klart mer av den daglige omsorgen?',
+    OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Har bruker omsorgen for egne/adopterte barn? ',
 };
 
 // ------ UNNTAK
@@ -167,10 +172,10 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
 export enum VilkårGruppe {
     MEDLEMSKAP = 'MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
+    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
-    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {

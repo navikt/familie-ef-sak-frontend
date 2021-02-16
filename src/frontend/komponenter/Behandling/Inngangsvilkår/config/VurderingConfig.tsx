@@ -47,6 +47,13 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
         begrunnelsePåkrevdHvisOppfylt: false,
     },
+    MOR_ELLER_FAR: {
+        vilkårGruppe: VilkårGruppe.MOR_ELLER_FAR,
+        renderVurdering: (props: VurderingProps): ReactChild => <GenerellVurdering props={props} />,
+        unntak: [],
+        delvilkår: [DelvilkårType.OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN],
+        begrunnelsePåkrevdHvisOppfylt: false,
+    },
     SIVILSTAND: {
         vilkårGruppe: VilkårGruppe.SIVILSTAND,
         renderVurdering: (props: VurderingProps): ReactChild => (
