@@ -46,7 +46,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { modalDispatch } = useModal();
 
     const { axiosRequest } = useApp();
-    const { hentBehandlingshistorikk } = useBehandling();
+    const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
     const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
@@ -65,6 +65,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
         }).then((response) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentBehandlingshistorikk.rerun();
+                hentTotrinnskontroll.rerun();
                 modalDispatch({
                     type: ModalAction.VIS_MODAL,
                     modalType: godkjent ? ModalType.VEDTAK_GODKJENT : ModalType.VEDTAK_UNDERKJENT,
