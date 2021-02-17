@@ -3,11 +3,16 @@ import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface DataViewerProps<T> {
     response: Ressurs<T>;
     children: (data: T) => React.ReactElement;
 }
+
+const StyledLenke = styled(Link)`
+    margin-left: 1rem;
+`;
 
 function DataViewer<T>(props: DataViewerProps<T>) {
     const { response, children } = props;
@@ -22,9 +27,9 @@ function DataViewer<T>(props: DataViewerProps<T>) {
         return (
             <AlertStripeFeil>
                 {response.frontendFeilmelding}
-                <Link style={{ marginLeft: '1rem' }} to={{ pathname: '/oppgavebenk' }}>
+                <StyledLenke className="lenke" to={{ pathname: '/oppgavebenk' }}>
                     Gå til oppgavebenk
-                </Link>
+                </StyledLenke>
             </AlertStripeFeil>
         );
     } else if (response.status === RessursStatus.IKKE_HENTET) {
