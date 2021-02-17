@@ -5,7 +5,7 @@ import { Behandlingshistorikk } from '../komponenter/Høyremeny/BehandlingHistor
 import { AxiosRequestConfig } from 'axios';
 
 export const useHentBehandlingHistorikk = (
-    behandlingId?: string
+    behandlingId: string
 ): {
     hentBehandlingshistorikkCallback: () => void;
     behandlingHistorikk: Ressurs<Behandlingshistorikk[]>;

@@ -3,14 +3,13 @@ import { TotrinnskontrollResponse } from '../typer/totrinnskontroll';
 import { useCallback, useState } from 'react';
 import { useApp } from '../context/AppContext';
 
-export const useHentTotrinnskontroll = (behandlingId?: string) => {
+export const useHentTotrinnskontroll = (behandlingId: string) => {
     const { axiosRequest } = useApp();
     const [totrinnskontroll, settTotrinnskontroll] = useState<Ressurs<TotrinnskontrollResponse>>(
         byggTomRessurs()
     );
 
     const hentTotrinnskontrollCallback = useCallback(() => {
-        if (!behandlingId) return;
         axiosRequest<TotrinnskontrollResponse, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/totrinnskontroll`,

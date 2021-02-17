@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { IPersonopplysninger } from '../typer/personopplysninger';
 
 export const useHentPersonopplysninger = (
-    behandlingId?: string
+    behandlingId: string
 ): {
     hentPersonopplysninger: (behandlingsid: string) => void;
     personopplysningerResponse: Ressurs<IPersonopplysninger>;
@@ -15,7 +15,6 @@ export const useHentPersonopplysninger = (
     >(byggTomRessurs());
 
     const hentPersonopplysninger = useCallback(() => {
-        if (!behandlingId) return;
         settPersonopplysningerResponse(byggHenterRessurs());
         axiosRequest<IPersonopplysninger, { behandlingId: string }>({
             method: 'GET',

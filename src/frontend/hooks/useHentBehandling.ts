@@ -5,7 +5,7 @@ import { Behandling } from '../typer/fagsak';
 import { AxiosRequestConfig } from 'axios';
 
 export const useHentBehandling = (
-    behandlingId?: string
+    behandlingId: string
 ): {
     hentBehandlingCallback: () => void;
     behandling: Ressurs<Behandling>;
@@ -14,7 +14,6 @@ export const useHentBehandling = (
     const [behandling, settBehandling] = useState<Ressurs<Behandling>>(byggTomRessurs());
 
     const hentBehandlingCallback = useCallback(() => {
-        if (!behandlingId) return;
         const behandlingConfig: AxiosRequestConfig = {
             method: 'GET',
             url: `/familie-ef-sak/api/behandling/${behandlingId}`,
