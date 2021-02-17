@@ -11,6 +11,7 @@ import ModalController from '../Felleskomponenter/Modal/ModalController';
 import Visittkort from '@navikt/familie-visittkort';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
+import { VisittkortWrapper } from '../../sider/Fagsakoversikt';
 
 const Container = styled.div`
     display: flex;
@@ -35,12 +36,6 @@ const InnholdWrapper = styled.div`
     overflow: auto;
 `;
 
-const StyledVisittkort = styled(Visittkort)`
-    .visittkort {
-        margin: 0 2rem;
-    }
-`;
-
 const BehandlingContainer: FC = () => {
     return (
         <ModalProvider>
@@ -59,12 +54,14 @@ const Behandling: FC = () => {
             {(personOpplysninger: IPersonopplysninger) => {
                 return (
                     <>
-                        <StyledVisittkort
-                            alder={20}
-                            ident={personOpplysninger.personIdent}
-                            kjønn={personOpplysninger.kjønn}
-                            navn={personOpplysninger.navn.visningsnavn}
-                        />
+                        <VisittkortWrapper>
+                            <Visittkort
+                                alder={20}
+                                ident={personOpplysninger.personIdent}
+                                kjønn={personOpplysninger.kjønn}
+                                navn={personOpplysninger.navn.visningsnavn}
+                            />
+                        </VisittkortWrapper>
                         <Container>
                             <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
                             <InnholdWrapper>

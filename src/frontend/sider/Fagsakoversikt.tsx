@@ -21,7 +21,7 @@ import {
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import SystemetLaster from '../komponenter/Felleskomponenter/SystemetLaster/SystemetLaster';
 
-const VisittkortWrapper = styled.div`
+export const VisittkortWrapper = styled.div`
     .visittkort {
         padding: 0 1.5rem;
     }
