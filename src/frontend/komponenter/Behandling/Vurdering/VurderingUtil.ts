@@ -32,8 +32,6 @@ export const filtrerVurderinger = (
         }
 
         if (vilkårGruppe === VilkårGruppe.ALENEOMSORG && config.vilkårGruppe === vilkårGruppe) {
-            console.log(barnId, 'skjer det no her??');
-            console.log(vurdering.barnId, 'ssdasdas');
             return barnId === vurdering.barnId;
         }
 
