@@ -35,6 +35,12 @@ const InnholdWrapper = styled.div`
     overflow: auto;
 `;
 
+const StyledVisittkort = styled(Visittkort)`
+    .visittkort {
+        margin: 0 2rem;
+    }
+`;
+
 const BehandlingContainer: FC = () => {
     return (
         <ModalProvider>
@@ -53,7 +59,7 @@ const Behandling: FC = () => {
             {(personOpplysninger: IPersonopplysninger) => {
                 return (
                     <>
-                        <Visittkort
+                        <StyledVisittkort
                             alder={20}
                             ident={personOpplysninger.personIdent}
                             kjønn={personOpplysninger.kjønn}

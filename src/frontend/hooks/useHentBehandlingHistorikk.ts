@@ -7,7 +7,7 @@ import { AxiosRequestConfig } from 'axios';
 export const useHentBehandlingHistorikk = (
     behandlingId?: string
 ): {
-    hentBehandlingshistorikkCallback: (behandlingsid: string) => void;
+    hentBehandlingshistorikkCallback: () => void;
     behandlingHistorikk: Ressurs<Behandlingshistorikk[]>;
 } => {
     const { axiosRequest } = useApp();

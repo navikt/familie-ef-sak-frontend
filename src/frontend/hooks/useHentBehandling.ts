@@ -7,7 +7,7 @@ import { AxiosRequestConfig } from 'axios';
 export const useHentBehandling = (
     behandlingId?: string
 ): {
-    hentBehandlingCallback: (behandlingsid: string) => void;
+    hentBehandlingCallback: () => void;
     behandling: Ressurs<Behandling>;
 } => {
     const { axiosRequest } = useApp();
