@@ -12,7 +12,7 @@ const hjelpetekst =
 
 const skalViseLagreKnappMorEllerFar = (delvilkår: IDelvilkår) => {
     if (
-        delvilkår.resultat == Vilkårsresultat.IKKE_OPPFYLT &&
+        delvilkår.resultat === Vilkårsresultat.IKKE_OPPFYLT &&
         manglerBegrunnelse(delvilkår.begrunnelse)
     ) {
         return false;
@@ -34,7 +34,11 @@ const MorEllerFarVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                     hjelpetekst={hjelpetekst}
                 />
                 <Begrunnelse
-                    label={'Begrunnelse'}
+                    label={
+                        delvilkår.resultat === Vilkårsresultat.OPPFYLT
+                            ? 'Begrunnelse (hvis aktuelt)'
+                            : 'Begrunnelse'
+                    }
                     value={delvilkår.begrunnelse || ''}
                     onChange={(e) => {
                         const redigerteDelvilkår = vurdering.delvilkårsvurderinger.map(
