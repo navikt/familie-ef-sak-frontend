@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { Ressurs, RessursStatus } from '../../typer/ressurs';
 import { useApp } from '../../context/AppContext';
@@ -7,16 +7,27 @@ import { saveAs } from 'file-saver';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
 import { base64toBlob } from '../../utils/utils';
+import { AxiosRequestConfig } from 'axios';
+import { useDataHenter } from '../../hooks/felles/useDataHenter';
+import { useParams } from 'react-router';
+import { IBehandlingParams } from '../../typer/routing';
+import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
 
-interface DokumentoversiktProps {
-    dokumentResponse: Ressurs<DokumentProps[]>;
-}
-
-const Dokumentoversikt: React.FC<DokumentoversiktProps> = ({ dokumentResponse }) => {
+const Dokumentoversikt: React.FC = () => {
     const { axiosRequest } = useApp();
+    const { behandlingId } = useParams<IBehandlingParams>();
 
-    const [lastNedDokumentFeilet, settLastNedDokumentFeilet] = useState<string | undefined>(
-        undefined
+    const [lastNedDokumentFeilet, settLastNedDokumentFeilet] = useState<string>();
+
+    const dokumentConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/vedlegg/${behandlingId}`,
+        }),
+        [behandlingId]
+    );
+    const dokumentResponse: Ressurs<DokumentProps[]> = useDataHenter<DokumentProps[], null>(
+        dokumentConfig
     );
 
     const lastNedDokument = (dokument: DokumentProps) => {
@@ -53,4 +64,4 @@ const Dokumentoversikt: React.FC<DokumentoversiktProps> = ({ dokumentResponse })
     );
 };
 
-export default Dokumentoversikt;
+export default hiddenIf(Dokumentoversikt);

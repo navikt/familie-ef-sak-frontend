@@ -36,8 +36,6 @@ export const BorderBox = styled.div`
 const Totrinnskontroll: FC = () => {
     const { behandling } = useBehandling();
     const { axiosRequest } = useApp();
-    const { stateKey } = useBehandling();
-
     const [totrinnskontroll, settTotrinnskontroll] = useState<Ressurs<TotrinnskontrollResponse>>(
         byggTomRessurs()
     );
@@ -51,7 +49,7 @@ const Totrinnskontroll: FC = () => {
                 settTotrinnskontroll(response);
             });
         }
-    }, [behandling.status, stateKey]);
+    }, [behandling.status]);
 
     if (
         behandling.status !== RessursStatus.SUKSESS ||
