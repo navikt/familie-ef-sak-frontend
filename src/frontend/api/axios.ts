@@ -7,13 +7,18 @@ import { slackKanaler } from '../typer/slack';
 axios.defaults.baseURL = window.location.origin;
 export const preferredAxios = axios;
 
+const errorMessage = (frontendFeilmelding: string, headers?: any) => {
+    const location = window.location.href;
+    const callId = headers?.['nav-call-id'];
+    return `url=${location} callId=${callId} - ${frontendFeilmelding}`;
+};
+
 export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,
-    innloggetSaksbehandler?: ISaksbehandler
+    innloggetSaksbehandler?: ISaksbehandler,
+    headers?: any
 ): RessursSuksess<T> | RessursFeilet => {
-    let typetRessurs: Ressurs<T> = {
-        status: RessursStatus.IKKE_HENTET,
-    };
+    let typetRessurs: Ressurs<T>;
 
     switch (ressurs.status) {
         case RessursStatus.SUKSESS:
@@ -26,7 +31,7 @@ export const håndterRessurs = <T>(
             loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
             typetRessurs = {
                 melding: ressurs.melding,
-                frontendFeilmelding: ressurs.frontendFeilmelding,
+                frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
                 status: RessursStatus.IKKE_TILGANG,
             };
             break;
@@ -35,21 +40,21 @@ export const håndterRessurs = <T>(
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
-                frontendFeilmelding: ressurs.frontendFeilmelding,
+                frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
                 status: RessursStatus.FEILET,
             };
             break;
         case RessursStatus.FUNKSJONELL_FEIL:
             typetRessurs = {
                 melding: ressurs.melding,
-                frontendFeilmelding: ressurs.frontendFeilmelding,
+                frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
                 status: RessursStatus.FUNKSJONELL_FEIL,
             };
             break;
         default:
             typetRessurs = {
                 melding: 'Mest sannsynlig ukjent api feil',
-                frontendFeilmelding: 'Mest sannsynlig ukjent api feil',
+                frontendFeilmelding: errorMessage('Mest sannsynlig ukjent api feil', headers),
                 status: RessursStatus.FEILET,
             };
             break;
