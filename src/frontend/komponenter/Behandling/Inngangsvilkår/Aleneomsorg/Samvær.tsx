@@ -71,7 +71,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Bo begrunnelse</Normaltekst>
+                    <Normaltekst>Beskrivelse av boforhold</Normaltekst>
                     <Normaltekst>
                         {søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse}
                     </Normaltekst>
@@ -80,7 +80,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.harDereTidligereBoddSammen && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Foreldre har bodd sammen</Normaltekst>
+                    <Normaltekst>Foreldrene har bodd sammen tidligere</Normaltekst>
                     <BooleanTekst value={søknadsgrunnlag.harDereTidligereBoddSammen} />
                 </>
             )}
@@ -96,7 +96,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Foreldres kontakt</Normaltekst>
+                    <Normaltekst>Kontakt mellom foreldrene</Normaltekst>
                     <Normaltekst>
                         {hvorMyeSammenTilTekst[søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder]}
                     </Normaltekst>
@@ -105,7 +105,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.beskrivSamværUtenBarn && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Kontakt begrunnelse</Normaltekst>
+                    <Normaltekst>Beskrivelse av kontakt</Normaltekst>
                     <Normaltekst>{søknadsgrunnlag.beskrivSamværUtenBarn}</Normaltekst>
                 </>
             )}
