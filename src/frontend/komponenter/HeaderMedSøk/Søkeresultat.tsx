@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Element } from 'nav-frontend-typografi';
-import { FamilieIkonVelger } from '@navikt/familie-ikoner';
-import { kjønnType } from '@navikt/familie-typer';
 import './søkeresultat.less';
 import navFarger from 'nav-frontend-core';
 import { styles } from '../../typer/styles';
@@ -11,7 +9,7 @@ const InlineWrapper = styled.div`
     display: flex;
 `;
 
-const ResultatWrapper = styled.div`
+const ResultatButton = styled.button`
     background-color: ${navFarger.navMorkGra};
     padding: 10px;
     display: flex;
@@ -24,28 +22,20 @@ const ElementTekst = styled(Element)`
 
 interface IProps {
     alder: number;
-    navn: string;
+    navn?: string;
     ident: string;
-    kjønn: kjønnType;
     onClick: () => void;
 }
 
-const Søkeresultat: React.FC<IProps> = ({ alder, navn, ident, kjønn, onClick }) => {
+const Søkeresultat: React.FC<IProps> = ({ navn, ident, onClick }) => {
     return (
-        <ResultatWrapper onClick={onClick} role={'button'}>
+        <ResultatButton onClick={onClick}>
             <InlineWrapper>
-                <div>
-                    <FamilieIkonVelger
-                        className={'familie-ikon-velger'}
-                        alder={alder}
-                        kjønn={kjønn}
-                    />
-                </div>
                 <ElementTekst>
                     {navn} ({ident})
                 </ElementTekst>
             </InlineWrapper>
-        </ResultatWrapper>
+        </ResultatButton>
     );
 };
 
