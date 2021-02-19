@@ -80,6 +80,9 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }
                 <Bosted
                     harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                     harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
+                    erBarnetFødt={
+                        registergrunnlag.fødselsnummer ? true : søknadsgrunnlag.erBarnetFødt
+                    }
                 />
                 {søknadsgrunnlag.skalBoBorHosSøker && (
                     <>
