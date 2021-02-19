@@ -1,6 +1,5 @@
 # familie-ef-sak-frontend
 
-
 Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 
 # Kom i gang med utvikling
