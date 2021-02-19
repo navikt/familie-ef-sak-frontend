@@ -45,8 +45,10 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
         return <SystemetLaster />;
     } else if (status === RessursStatus.IKKE_TILGANG) {
         return <AlertStripeFeil children="Ikke tilgang!" />;
-    } else if (status === RessursStatus.FEILET) {
-        return <AlertStripeFeil children="Noe gikk galt" />;
+    } else if (oppgaveResurs.status === RessursStatus.FEILET) {
+        return (
+            <AlertStripeFeil children={`Noe gikk galt - ${oppgaveResurs.frontendFeilmelding}`} />
+        );
     } else if (status === RessursStatus.IKKE_HENTET) {
         return <AlertStripeInfo> Du må gjøre ett søk for å se oppgaver i listen.</AlertStripeInfo>; //TODO FIKS TEKST
     }

@@ -1,20 +1,27 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Innholdstittel, Systemtittel } from 'nav-frontend-typografi';
 import Visittkort from '@navikt/familie-visittkort';
-import { kjønnType } from '@navikt/familie-typer';
-import { useDataHenter } from '../hooks/felles/useDataHenter';
 import { useParams } from 'react-router';
 import { Behandling, Fagsak } from '../typer/fagsak';
-import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
-import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 import { formaterIsoDato } from '../utils/formatter';
-import { formatterEnumVerdier } from '../utils/utils';
+import { formatterEnumVerdi } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import { useSorteringState } from '../hooks/felles/useSorteringState';
 import SorteringsHeader from '../komponenter/Oppgavebenk/OppgaveSorteringHeader';
+import { useApp } from '../context/AppContext';
+import { IPersonopplysninger } from '../typer/personopplysninger';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursStatus,
+    RessursFeilet,
+    erAvTypeFeil,
+} from '../typer/ressurs';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import SystemetLaster from '../komponenter/Felleskomponenter/SystemetLaster/SystemetLaster';
 
-const VisittkortWrapper = styled.div`
+export const VisittkortWrapper = styled.div`
     .visittkort {
         padding: 0 1.5rem;
     }
@@ -26,44 +33,68 @@ const TittelWrapper = styled.div`
 
 const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
+    const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+    const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
+        byggTomRessurs()
+    );
+    const { axiosRequest } = useApp();
 
-    const a: AxiosRequestConfig = useMemo(
-        () => ({
+    const hentFagsak = () =>
+        axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-        }),
-        [fagsakId]
-    );
+        }).then((response) => settFagsak(response));
 
-    const fagsak = useDataHenter<Fagsak, null>(a);
+    const hentPersonData = () =>
+        axiosRequest<IPersonopplysninger, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
+        }).then((response) => settPersonOpplysninger(response));
 
-    return (
-        <DataViewer response={fagsak}>
-            {(data) => {
-                return (
-                    <>
-                        <VisittkortWrapper className="blokk-s">
-                            <Visittkort
-                                alder={19}
-                                ident="007"
-                                kjønn={kjønnType.MANN}
-                                navn="Batman"
-                            />
-                        </VisittkortWrapper>
-                        <TittelWrapper>
-                            <Innholdstittel className="blokk-m" tag="h2">
-                                Behandlingsoversikt - Batman{' '}
-                            </Innholdstittel>
-                            <Systemtittel tag="h3">
-                                Fagsak: {formatterEnumVerdier(data.stønadstype)}
-                            </Systemtittel>
-                        </TittelWrapper>
-                        <FagsakoversiktTabell behandlinger={data.behandlinger} />
-                    </>
-                );
-            }}
-        </DataViewer>
-    );
+    useEffect(() => {
+        if (fagsakId) {
+            hentFagsak();
+            hentPersonData();
+        }
+    }, [fagsakId]);
+
+    if (erAvTypeFeil(fagsak) || erAvTypeFeil(personOpplysninger)) {
+        return (
+            <AlertStripeFeil>
+                <p>{(fagsak as RessursFeilet).frontendFeilmelding ?? ''}</p>
+                <p>{(personOpplysninger as RessursFeilet).frontendFeilmelding ?? ''}</p>
+            </AlertStripeFeil>
+        );
+    }
+
+    if (
+        fagsak.status === RessursStatus.SUKSESS &&
+        personOpplysninger.status === RessursStatus.SUKSESS
+    ) {
+        return (
+            <>
+                <VisittkortWrapper className="blokk-s">
+                    <Visittkort
+                        alder={20}
+                        ident={personOpplysninger.data.personIdent}
+                        kjønn={personOpplysninger.data.kjønn}
+                        navn={personOpplysninger.data.navn.visningsnavn}
+                    />
+                </VisittkortWrapper>
+                <TittelWrapper>
+                    <Innholdstittel className="blokk-m" tag="h2">
+                        Behandlingsoversikt - {personOpplysninger.data.navn.visningsnavn}
+                    </Innholdstittel>
+                    <Systemtittel tag="h3">
+                        Fagsak: {formatterEnumVerdi(fagsak.data.stønadstype)}
+                    </Systemtittel>
+                </TittelWrapper>
+                <FagsakoversiktTabell behandlinger={fagsak.data.behandlinger} />
+            </>
+        );
+    }
+
+    return <SystemetLaster />;
 };
 
 export default Fagsakoversikt;
@@ -130,14 +161,14 @@ const FagsakoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ behandli
                     return (
                         <tr key={behandling.id}>
                             <td>{formaterIsoDato(behandling.opprettet)}</td>
-                            <td>{formatterEnumVerdier(behandling.type)}</td>
-                            <td>{formatterEnumVerdier(behandling.status)}</td>
+                            <td>{formatterEnumVerdi(behandling.type)}</td>
+                            <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
                                 <Link
                                     className="lenke"
                                     to={{ pathname: `/behandling/${behandling.id}` }}
                                 >
-                                    {formatterEnumVerdier(behandling.resultat)}
+                                    {formatterEnumVerdi(behandling.resultat)}
                                 </Link>
                             </td>
                         </tr>

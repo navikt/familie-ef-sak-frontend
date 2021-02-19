@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'nav-frontend-tabell-style';
-import { useHentPersonopplysninger } from '../../../hooks/useHentPersonopplysninger';
 import InnvandringUtVandring from './InnvandringUtvandring';
 import Barn from './Barn';
 import Adressehistorikk from './Adressehistorikk';
@@ -9,13 +8,10 @@ import Fullmakter from './Fullmakter';
 import Statsborgerskap from './Statsborgerskap';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import Oppholdstillatelse from './Oppholdstillatelse';
+import { useBehandling } from '../../../context/BehandlingContext';
 
-const Personopplysninger: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { hentPersonopplysninger, personopplysningerResponse } = useHentPersonopplysninger();
-
-    useEffect(() => {
-        hentPersonopplysninger(behandlingId);
-    }, [behandlingId]);
+const Personopplysninger: React.FC = () => {
+    const { personopplysningerResponse } = useBehandling();
 
     return (
         <DataViewer response={personopplysningerResponse}>

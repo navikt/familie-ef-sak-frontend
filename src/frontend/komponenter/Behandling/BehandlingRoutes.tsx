@@ -18,9 +18,7 @@ const BehandlingRoutes: React.FC = () => {
             <Route
                 exact={true}
                 path="/behandling/:behandlingId/personopplysninger"
-                render={(props: RouteComponentProps<{ behandlingId: string }>) => {
-                    return <Personopplysninger behandlingId={props.match.params.behandlingId} />;
-                }}
+                component={Personopplysninger}
             />
             <Route
                 exact={true}

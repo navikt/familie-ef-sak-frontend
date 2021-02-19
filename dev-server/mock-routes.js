@@ -27,8 +27,12 @@ app.get('/user/profile', (req, res) => {
         navIdent: 'Z007',
     });
 });
+app.get('/familie-ef-sak/api/personopplysninger/fagsak/:id', (req, res) => {
+    const filnavn = `personopplysninger.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
 
-app.get('/familie-ef-sak/api/personopplysninger/behandling/12345678910', (req, res) => {
+app.get('/familie-ef-sak/api/personopplysninger/behandling/:id', (req, res) => {
     const filnavn = `personopplysninger.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
