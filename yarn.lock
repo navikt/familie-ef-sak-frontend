@@ -527,10 +527,10 @@
     prop-types "^15.7.2"
     styled-components "^5.2.1"
 
-"@navikt/familie-header@2.0.28-alpha.0+c5c2213":
-  version "2.0.28-alpha.0"
-  resolved "https://registry.yarnpkg.com/@navikt/familie-header/-/familie-header-2.0.28-alpha.0.tgz#67f744b89ff1637b018eefb75f1cc87d547a5330"
-  integrity sha512-j8Eos5xSAzXghzCxqMPZDbApaoLMno8F0kAg9S8/wkkS3EqxbXK44R2oAqAV3NQgL2PAp1YUv2klT5Z91Y2a2Q==
+"@navikt/familie-header@2.0.28-alpha.1+c46010a":
+  version "2.0.28-alpha.1"
+  resolved "https://registry.yarnpkg.com/@navikt/familie-header/-/familie-header-2.0.28-alpha.1.tgz#3b8779af118cc469d8a846c6a189deaf2c344bc1"
+  integrity sha512-iGfXF8Pl2zA56p0dYewChuSBu1AYHT31kNP5opBQPr+FQCM6B1pOu42KWKKyRUbEUWOK5qSe0jCmeTv2uQgjbQ==
   dependencies:
     "@navikt/boxed-list-with-links" "^1.0.2"
     "@navikt/ds-icons" "^0.1.5"
