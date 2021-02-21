@@ -9,7 +9,7 @@ const InlineWrapper = styled.div`
     display: flex;
 `;
 
-const ResultatButton = styled.button`
+const ResultatButton = styled.div`
     background-color: ${navFarger.navMorkGra};
     padding: 10px;
     display: flex;
@@ -24,12 +24,11 @@ interface IProps {
     alder: number;
     navn?: string;
     ident: string;
-    onClick: () => void;
 }
 
-const Søkeresultat: React.FC<IProps> = ({ navn, ident, onClick }) => {
+const Søkeresultat: React.FC<IProps> = ({ navn, ident }) => {
     return (
-        <ResultatButton onClick={onClick}>
+        <ResultatButton>
             <InlineWrapper>
                 <ElementTekst>
                     {navn} ({ident})

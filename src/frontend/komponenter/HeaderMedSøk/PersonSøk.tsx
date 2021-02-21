@@ -10,16 +10,16 @@ import {
     RessursStatus,
     RessursSuksess,
 } from '../../typer/ressurs';
-import { ISaksøk, ISakSøkPersonIdent } from '../../typer/saksøk';
+import { IFagsaksøk, ISakSøkPersonIdent } from '../../typer/fagsaksøk';
 import { useApp } from '../../context/AppContext';
 import { kjønnType } from '@navikt/familie-typer';
 import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
 
-const tilSøkeresultatListe = (resultat: ISaksøk): ISøkeresultat[] => {
-    return resultat.fagsaker.map((fagsakId) => ({
+const tilSøkeresultatListe = (resultat: IFagsaksøk): ISøkeresultat[] => {
+    return resultat.fagsaker.map((fagsak) => ({
         harTilgang: true, //Hvis ikke tilgang så RessursFeilet.IkkeTilgang
         ident: resultat.personIdent,
-        fagsakId,
+        fagsakId: fagsak.fagsakId,
         navn: resultat.visningsnavn,
         ikon: resultat.kjønn === kjønnType.MANN ? <MannIkon /> : <KvinneIkon />,
     }));
@@ -40,11 +40,11 @@ const PersonSøk: React.FC = () => {
 
     const søk = (personIdent: string): void => {
         settResultat(byggHenterRessurs());
-        axiosRequest<ISaksøk, ISakSøkPersonIdent>({
+        axiosRequest<IFagsaksøk, ISakSøkPersonIdent>({
             method: 'POST',
-            url: `/familie-ef-sak/api/fagsak/sok/`,
+            url: `/familie-ef-sak/api/sok/`,
             data: { personIdent: personIdent },
-        }).then((response: RessursSuksess<ISaksøk> | RessursFeilet) => {
+        }).then((response: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
                 const søkeresultater: ISøkeresultat[] = tilSøkeresultatListe(response.data);
                 settResultat(byggSuksessRessurs(søkeresultater));
