@@ -14,7 +14,6 @@ import {
 import Bosted from './Bosted';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
-import LiteBarn from '../../../../ikoner/LiteBarn';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
@@ -46,12 +45,14 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }
                 </div>
                 {registergrunnlag.navn ? (
                     <>
-                        <LiteBarn />
+                        <Registergrunnlag />
+                        <Element>Barnets navn</Element>
                         <Element>{registergrunnlag.navn}</Element>
                     </>
                 ) : (
                     <>
                         <Søknadsgrunnlag />
+                        <Element>Barnets navn</Element>
                         <Element>{utledVisningAvNavnFraSøknad(søknadsgrunnlag)}</Element>
                     </>
                 )}
