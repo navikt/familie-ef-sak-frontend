@@ -91,7 +91,15 @@ app.post('/familie-ef-sak/api/oppgave/soek', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`hent-oppgave.json`)), delayMs);
 });
 app.get('/familie-ef-sak/api/oppgave/:id', (req, res) => {
-    setTimeout(() => res.send(lesMockFil(`oppgave.json`)), delayMs);
+    if (req.params.id === '45058') {
+        setTimeout(() => res.send(lesMockFil(`oppgave-finnes-ikke.json`)), delayMs);
+    } else {
+        setTimeout(() => res.send(lesMockFil(`oppgave-finnes.json`)), delayMs);
+    }
+});
+
+app.post('/familie-ef-sak/api/blankett/oppgave/:id', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`start-blankett-oppgave.json`)), delayMs);
 });
 
 app.post('/familie-ef-sak/api/fagsak', (req, res) => {

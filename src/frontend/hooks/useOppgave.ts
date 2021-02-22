@@ -50,6 +50,29 @@ export const useOppgave = (oppgave: IOppgave) => {
             });
     };
 
+    const startBlankettBehandling = () => {
+        axiosRequest<string, { oppgaveId: string }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/blankett/oppgave/${oppgave.id}`,
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                return new Promise((resolve, reject) => {
+                    if (res.status === RessursStatus.SUKSESS) {
+                        return resolve(res.data);
+                    }
+                    return reject(new Error(res.frontendFeilmelding));
+                });
+            })
+            .then((behandlingId) => {
+                settOppgaveTilSaksbehandler().then(() =>
+                    history.push(`/behandling/${behandlingId}`)
+                );
+            })
+            .catch((error: Error) => {
+                settFeilmelding(error.message);
+            });
+    };
+
     const gåTilJournalføring = () => {
         settOppgaveTilSaksbehandler()
             .then(() =>
@@ -67,5 +90,6 @@ export const useOppgave = (oppgave: IOppgave) => {
         settFeilmelding,
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
+        startBlankettBehandling,
     };
 };

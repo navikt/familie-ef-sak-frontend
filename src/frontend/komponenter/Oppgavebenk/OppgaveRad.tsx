@@ -38,6 +38,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
         feilmelding,
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
+        startBlankettBehandling,
         settFeilmelding,
     } = useOppgave(oppgave);
     const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
@@ -91,6 +92,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                 }}
             >
                 <Normaltekst>{feilmelding}</Normaltekst>
+                <Flatknapp onClick={startBlankettBehandling}>Opprett blankettbehandling</Flatknapp>
             </UIModalWrapper>
         </>
     );
