@@ -19,13 +19,14 @@ interface Props {
 const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
     return (
         <StyledTabell>
-            {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined && (
-                <>
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Skriftlig avtale om delt fast bosted</Normaltekst>
-                    <BooleanTekst value={søknadsgrunnlag.spørsmålAvtaleOmDeltBosted} />
-                </>
-            )}
+            {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined &&
+                søknadsgrunnlag.spørsmålAvtaleOmDeltBosted != null && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Skriftlig avtale om delt fast bosted</Normaltekst>
+                        <BooleanTekst value={søknadsgrunnlag.spørsmålAvtaleOmDeltBosted} />
+                    </>
+                )}
             {søknadsgrunnlag.skalAnnenForelderHaSamvær && (
                 <>
                     <Søknadsgrunnlag />
@@ -77,13 +78,14 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
                     </Normaltekst>
                 </>
             )}
-            {søknadsgrunnlag.harDereTidligereBoddSammen && (
-                <>
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Foreldrene har bodd sammen tidligere</Normaltekst>
-                    <BooleanTekst value={søknadsgrunnlag.harDereTidligereBoddSammen} />
-                </>
-            )}
+            {søknadsgrunnlag.harDereTidligereBoddSammen != null &&
+                søknadsgrunnlag.harDereTidligereBoddSammen != undefined && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Foreldrene har bodd sammen tidligere</Normaltekst>
+                        <BooleanTekst value={søknadsgrunnlag.harDereTidligereBoddSammen} />
+                    </>
+                )}
             {søknadsgrunnlag.nårFlyttetDereFraHverandre && (
                 <>
                     <Søknadsgrunnlag />

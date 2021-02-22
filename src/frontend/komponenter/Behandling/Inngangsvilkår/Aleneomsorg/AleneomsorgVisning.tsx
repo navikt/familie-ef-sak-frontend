@@ -55,8 +55,7 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }
                         <Element>{utledVisningAvNavnFraSøknad(søknadsgrunnlag)}</Element>
                     </>
                 )}
-
-                {registergrunnlag.fødselsnummer && (
+                {registergrunnlag.fødselsnummer ? (
                     <>
                         <Registergrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
@@ -64,28 +63,24 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }
                             {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
                         </Normaltekst>
                     </>
-                )}
-
-                {søknadsgrunnlag.fødselsnummer && (
+                ) : søknadsgrunnlag.fødselsnummer && søknadsgrunnlag.fødselsnummer != '' ? (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <Normaltekst>
-                            {formaterNullableFødsesnummer(søknadsgrunnlag.fødselsnummer)}
-                        </Normaltekst>
+                        <Normaltekst>{søknadsgrunnlag.fødselsnummer}</Normaltekst>
                     </>
-                )}
-
-                {søknadsgrunnlag.fødselTermindato && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>
-                            {søknadsgrunnlag.erBarnetFødt ? 'Fødselsdato' : 'Termindato'}
-                        </Normaltekst>
-                        <Normaltekst>
-                            {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                        </Normaltekst>
-                    </>
+                ) : (
+                    søknadsgrunnlag.fødselTermindato && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>
+                                {søknadsgrunnlag.erBarnetFødt ? 'Fødselsdato' : 'Termindato'}
+                            </Normaltekst>
+                            <Normaltekst>
+                                {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
+                            </Normaltekst>
+                        </>
+                    )
                 )}
 
                 <Bosted
