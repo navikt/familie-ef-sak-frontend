@@ -1,0 +1,17 @@
+{
+  "data": {
+    "personIdent": "10108000398",
+    "visningsnavn": "Fornavn mellomnavn Etternavn",
+    "kjønn": "KVINNE",
+    "fagsaker": [
+      {
+        "fagsakId": "8de5ab73-e135-4cb3-b2cc-222f4cb5e339",
+        "stønadstype": "OVERGANGSSTØNAD"
+      }
+    ]
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}

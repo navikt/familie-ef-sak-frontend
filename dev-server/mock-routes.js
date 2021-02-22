@@ -28,7 +28,16 @@ app.get('/user/profile', (req, res) => {
     });
 });
 
-app.get('/familie-ef-sak/api/personopplysninger/behandling/12345678910', (req, res) => {
+app.post('/familie-ef-sak/api/sok/', (req, res) => {
+    const filnavn = `søkeresultat.json`;
+    setTimeout(() => res.send(lesMockFil()), delayMs);
+});
+app.get('/familie-ef-sak/api/personopplysninger/fagsak/:id', (req, res) => {
+    const filnavn = `personopplysninger.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
+
+app.get('/familie-ef-sak/api/personopplysninger/behandling/:id', (req, res) => {
     const filnavn = `personopplysninger.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });

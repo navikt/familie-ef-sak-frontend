@@ -6,6 +6,7 @@ import { VurderingProps } from '../../Vurdering/VurderingProps';
 import SivilstandVurdering from '../Sivilstand/SivilstandVurdering';
 import SamlivVurdering from '../Samliv/SamlivVurdering';
 import AleneomsorgVurdering from '../Aleneomsorg/AleneomsorgVurdering';
+import MorEllerFarVurdering from '../MorEllerFar/MorEllerFarVurdering';
 
 export type IVurderingConfig<TYPE extends VilkårType | VilkårGruppe, CONFIG> = {
     [key in TYPE]: CONFIG;
@@ -45,6 +46,15 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
             UnntakType.IKKE_OPPFYLT,
         ],
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
+        begrunnelsePåkrevdHvisOppfylt: false,
+    },
+    MOR_ELLER_FAR: {
+        vilkårGruppe: VilkårGruppe.MOR_ELLER_FAR,
+        renderVurdering: (props: VurderingProps): ReactChild => (
+            <MorEllerFarVurdering props={props} />
+        ),
+        unntak: [],
+        delvilkår: [DelvilkårType.OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN],
         begrunnelsePåkrevdHvisOppfylt: false,
     },
     SIVILSTAND: {

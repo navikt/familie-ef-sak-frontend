@@ -29,7 +29,7 @@ const StyledHovedknapp = styled(Hovedknapp)`
 const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
-    const { triggerRerender } = useBehandling();
+    const { hentTotrinnskontroll } = useBehandling();
 
     const sendTilBeslutter = () =>
         axiosRequest<string, undefined>({
@@ -37,7 +37,7 @@ const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
         }).then((res: Ressurs<string>) => {
             if (res.status === RessursStatus.SUKSESS) {
-                triggerRerender();
+                hentTotrinnskontroll.rerun();
                 modalDispatch({
                     type: ModalAction.VIS_MODAL,
                     modalType: ModalType.SENDT_TIL_BESLUTTER,

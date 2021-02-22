@@ -34,24 +34,8 @@ export const BorderBox = styled.div`
 `;
 
 const Totrinnskontroll: FC = () => {
-    const { behandling } = useBehandling();
+    const { behandling, totrinnskontroll } = useBehandling();
     const { axiosRequest } = useApp();
-    const { stateKey } = useBehandling();
-
-    const [totrinnskontroll, settTotrinnskontroll] = useState<Ressurs<TotrinnskontrollResponse>>(
-        byggTomRessurs()
-    );
-
-    useEffect(() => {
-        if (behandling.status === RessursStatus.SUKSESS) {
-            axiosRequest<TotrinnskontrollResponse, null>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/vedtak/${behandling.data.id}/totrinnskontroll`,
-            }).then((response: Ressurs<TotrinnskontrollResponse>) => {
-                settTotrinnskontroll(response);
-            });
-        }
-    }, [behandling.status, stateKey]);
 
     if (
         behandling.status !== RessursStatus.SUKSESS ||
