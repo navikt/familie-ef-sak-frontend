@@ -8,6 +8,12 @@ export const GenererBrev = styled(Knapp)`
     margin: 0 auto;
 `;
 
+export const HentBrev = styled(Knapp)`
+    display: block;
+    margin: 0 auto;
+    margin-top: 2rem;
+`;
+
 export const StyledPagination = styled(Pagination)`
     margin: 0 auto;
 `;

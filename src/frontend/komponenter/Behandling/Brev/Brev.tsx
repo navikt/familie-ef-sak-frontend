@@ -10,6 +10,7 @@ import {
     DokumentWrapper,
     StyledPagination,
     StyledDokument,
+    HentBrev,
 } from './Elementer';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import BrevFooter from './BrevFooter';
@@ -54,7 +55,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         <>
             <StyledBrev>
                 <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-                <GenererBrev onClick={hentBrev}>Hent brev</GenererBrev>
+                <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
                 <DataViewer response={brevRessurs}>
                     {(data) => (
                         <DokumentWrapper>
