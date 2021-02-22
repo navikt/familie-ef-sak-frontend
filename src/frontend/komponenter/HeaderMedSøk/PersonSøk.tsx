@@ -17,7 +17,7 @@ import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
 
 const tilSøkeresultatListe = (resultat: IFagsaksøk): ISøkeresultat[] => {
     return resultat.fagsaker.map((fagsak) => ({
-        harTilgang: true, //Hvis ikke tilgang så RessursFeilet.IkkeTilgang
+        harTilgang: true, //Alltid true hvis har status RessursStatus.SUKSESS
         ident: resultat.personIdent,
         fagsakId: fagsak.fagsakId,
         navn: resultat.visningsnavn,
