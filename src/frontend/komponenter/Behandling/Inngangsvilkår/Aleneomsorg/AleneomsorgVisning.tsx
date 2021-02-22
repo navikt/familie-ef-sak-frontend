@@ -6,7 +6,11 @@ import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
+import {
+    IBarnMedSamvær,
+    IBarnMedSamværSøknadsgrunnlag,
+    skalBarnetBoHosSøkerTilTekst,
+} from './typer';
 import Bosted from './Bosted';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
@@ -20,6 +24,13 @@ interface Props {
     vilkårStatus: VilkårStatus;
     barnId?: string;
 }
+
+const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag) => {
+    if (søknadsgrunnlag.navn && søknadsgrunnlag.navn != '') {
+        return søknadsgrunnlag.navn;
+    }
+    return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
+};
 
 const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }) => {
     const gjeldendeBarn = barnMedSamvær.find((it) => it.barnId === barnId);
@@ -41,7 +52,7 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }
                 ) : (
                     <>
                         <Søknadsgrunnlag />
-                        <Element>{søknadsgrunnlag.navn}</Element>
+                        <Element>{utledVisningAvNavnFraSøknad(søknadsgrunnlag)}</Element>
                     </>
                 )}
 
@@ -87,7 +98,7 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }
                 {søknadsgrunnlag.skalBoBorHosSøker && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Skal barnet ha adresse hos søker</Normaltekst>
+                        <Normaltekst>Barnet skal ha adresse hos søker</Normaltekst>
                         <Normaltekst>
                             {skalBarnetBoHosSøkerTilTekst[søknadsgrunnlag.skalBoBorHosSøker]}
                         </Normaltekst>

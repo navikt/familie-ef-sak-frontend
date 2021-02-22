@@ -98,7 +98,7 @@ export enum ESkalBarnetBoHosSøker {
 }
 
 export const skalBarnetBoHosSøkerTilTekst: Record<ESkalBarnetBoHosSøker, string> = {
-    ja: 'Ja, og vi har eller skal registrere i Folkeregisteret',
+    ja: 'Ja, og vi har eller skal registrere adressen i Folkeregisteret',
     nei: 'Nei',
     jaMenSamarbeiderIkke: 'Ja, men den andre forelderen samarbeider ikke om adresseendring',
 };
