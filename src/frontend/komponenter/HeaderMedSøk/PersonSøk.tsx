@@ -39,6 +39,7 @@ const PersonSøk: React.FC = () => {
     };
 
     const søk = (personIdent: string): void => {
+        if (!personIdent) return;
         settResultat(byggHenterRessurs());
         axiosRequest<IFagsaksøk, ISakSøkPersonIdent>({
             method: 'POST',
