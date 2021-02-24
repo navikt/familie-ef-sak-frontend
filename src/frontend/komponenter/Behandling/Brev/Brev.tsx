@@ -10,6 +10,7 @@ import {
     DokumentWrapper,
     StyledPagination,
     StyledDokument,
+    HentBrev,
 } from './Elementer';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import BrevFooter from './BrevFooter';
@@ -29,7 +30,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         setNumPages(numPages);
     }
 
-    const data = { tittel: 'test' };
+    const data = { navn: 'test', ident: '123456789' };
 
     const genererBrev = () => {
         axiosRequest<string, any>({
@@ -41,10 +42,20 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     };
 
+    const hentBrev = () => {
+        axiosRequest<string, any>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+        }).then((respons: Ressurs<string>) => {
+            settBrevRessurs(respons);
+        });
+    };
+
     return (
         <>
             <StyledBrev>
                 <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
                 <DataViewer response={brevRessurs}>
                     {(data) => (
                         <DokumentWrapper>

@@ -2,29 +2,19 @@ import * as React from 'react';
 import { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
-import { DelvilkårType, delvilkårTypeTilHjelpetekst, IDelvilkår, Vilkårsresultat } from '../vilkår';
+import { DelvilkårType, IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
 import { manglerBegrunnelse } from '../../Vurdering/VurderingUtil';
+import { KomponentGruppe } from '../../../Felleskomponenter/Visning/KomponentGruppe';
 
-const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
-    const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
-        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
-    );
-
-    if (sisteDelvilkårSomSkalVises === -1) {
-        return delvilkårsvurderinger;
-    }
-    return delvilkårsvurderinger.slice(0, sisteDelvilkårSomSkalVises + 1);
-};
+const hjelpetekst =
+    'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
 
 const skalViseLagreKnappSamliv = (delvilkårsvurderinger: IDelvilkår[]) => {
     return delvilkårsvurderinger.every((delvilkår) => {
         if (
-            [
-                DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
-                DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
-            ].includes(delvilkår.type) &&
+            [DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD].includes(delvilkår.type) &&
             manglerBegrunnelse(delvilkår.begrunnelse)
         ) {
             return false;
@@ -42,15 +32,18 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
 
     return (
         <>
-            {filtrerDelvilkårSomSkalVises(delvilkårsvurderinger).map((delvilkår) => {
+            {delvilkårsvurderinger.map((delvilkår) => {
                 return (
-                    <div key={delvilkår.type}>
+                    <KomponentGruppe key={delvilkår.type}>
                         <Delvilkår
                             key={delvilkår.type}
                             delvilkår={delvilkår}
                             vurdering={vurdering}
                             settVurdering={settVurdering}
-                            hjelpetekst={delvilkårTypeTilHjelpetekst(delvilkår.type)}
+                            hjelpetekst={
+                                delvilkår.type === DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER &&
+                                hjelpetekst
+                            }
                         />
                         <Begrunnelse
                             label={
@@ -61,7 +54,7 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                             value={delvilkår.begrunnelse || ''}
                             onChange={(e) => {
                                 const redigerteDelvilkår = vurdering.delvilkårsvurderinger.map(
-                                    (delvilkårVurdering) => {
+                                    (delvilkårVurdering: IDelvilkår) => {
                                         if (delvilkår.type === delvilkårVurdering.type) {
                                             return {
                                                 ...delvilkår,
@@ -76,7 +69,7 @@ const SamlivVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
                                 });
                             }}
                         />
-                    </div>
+                    </KomponentGruppe>
                 );
             })}
             {skalViseLagreKnappSamliv(delvilkårsvurderinger) && (

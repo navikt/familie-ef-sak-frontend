@@ -50,7 +50,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const [postOvergangsstønadSuksess, settPostOvergangsstønadSuksess] = useState(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
-    const { triggerRerender } = useBehandling();
+    const { hentBehandling } = useBehandling();
 
     const hentInngangsvilkår = (behandlingId: string) => {
         axiosRequest<IInngangsvilkår, void>({
@@ -67,7 +67,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             url: `/familie-ef-sak/api/behandling/${behandlingId}/registergrunnlag/godkjenn`,
         }).then((resp) => {
             if (resp.status === RessursStatus.SUKSESS) {
-                triggerRerender();
+                hentBehandling.rerun();
             }
         });
     };
@@ -178,15 +178,32 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             <DataViewer response={inngangsvilkår}>
                 {(data) => (
                     <StyledInngangsvilkår>
-                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => (
-                            <Vurdering
-                                key={vilkårGruppe}
-                                vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                                inngangsvilkår={data}
-                                feilmeldinger={feilmeldinger}
-                                lagreVurdering={lagreVurdering}
-                            />
-                        ))}
+                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
+                            if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
+                                return data.grunnlag.barnMedSamvær.map((barn) => {
+                                    return (
+                                        <Vurdering
+                                            key={barn.barnId}
+                                            barnId={barn.barnId}
+                                            vilkårGruppe={vilkårGruppe}
+                                            inngangsvilkår={data}
+                                            lagreVurdering={lagreVurdering}
+                                            feilmeldinger={feilmeldinger}
+                                        />
+                                    );
+                                });
+                            } else {
+                                return (
+                                    <Vurdering
+                                        key={vilkårGruppe}
+                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                        inngangsvilkår={data}
+                                        feilmeldinger={feilmeldinger}
+                                        lagreVurdering={lagreVurdering}
+                                    />
+                                );
+                            }
+                        })}
                         <StyledKnapp onClick={godkjennEnderinger}>
                             Godkjenn endringer i registergrunnlag
                         </StyledKnapp>

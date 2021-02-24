@@ -1,27 +1,34 @@
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import {
+    DelvilkårType,
     delvilkårTypeTilTekst,
     IDelvilkår,
     IVurdering,
     Vilkår,
     Vilkårsresultat,
-    vilkårsresultatTypeTilTekst,
     VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import * as React from 'react';
 import { FC } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
-import styled from 'styled-components';
+import { RadioContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
+import {
+    delvilkårTypeSomKreverSpesialhåntering,
+    vilkårsresultatTypeTilTekstForDelvilkår,
+} from '../Inngangsvilkår/vilkårsresultat';
 
 interface Props {
     delvilkår: IDelvilkår;
     vurdering: IVurdering;
     settVurdering: (vurdering: IVurdering) => void;
-    hjelpetekst?: string;
+    hjelpetekst?: React.ReactNode;
 }
 
-const oppdaterDelvilkår = (vurdering: IVurdering, oppdatertDelvilkår: IDelvilkår): IVurdering => {
+export const oppdaterDelvilkår = (
+    vurdering: IVurdering,
+    oppdatertDelvilkår: IDelvilkår
+): IVurdering => {
     let harPassertSisteDelvilkårSomSkalVises = false;
     const delvilkårsvurderinger = vurdering.delvilkårsvurderinger.map((delvilkår) => {
         const skalNullstillePåfølgendeDelvilkår =
@@ -56,38 +63,29 @@ const finnVilkårsresultat = (
     delvilkårsvurderinger: IDelvilkår[],
     oppdatertDelvilkår: IDelvilkår
 ): Vilkårsresultat => {
-    if (vilkårType === Vilkår.SAMLIV) {
+    if (vilkårType === Vilkår.SAMLIV || vilkårType === Vilkår.ALENEOMSORG) {
         return delvilkårsvurderinger
             .filter((delvilkår) => delvilkår.resultat !== Vilkårsresultat.IKKE_AKTUELL)
             .map((delvilkår) => delvilkår.resultat)
             .reduce((acc, verdi) => {
                 if (acc === Vilkårsresultat.IKKE_VURDERT) return Vilkårsresultat.IKKE_VURDERT;
-                else if (acc === Vilkårsresultat.NEI) return Vilkårsresultat.NEI;
+                else if (acc === Vilkårsresultat.IKKE_OPPFYLT) return Vilkårsresultat.IKKE_OPPFYLT;
                 else return verdi;
             });
     } else return oppdatertDelvilkår.resultat;
 };
 
-const StyledDelvilkår = styled.div`
-    display: flex;
-
-    .radiogruppe {
-        width: 26rem;
-    }
-
-    .hjelpetekst__innhold {
-        max-width: 16rem;
-    }
-`;
-
 const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetekst }) => {
     return (
-        <StyledDelvilkår>
+        <RadioContainer>
             <RadioGruppe key={delvilkår.type} legend={delvilkårTypeTilTekst[delvilkår.type]}>
-                {[Vilkårsresultat.JA, Vilkårsresultat.NEI].map((vilkårsresultat) => (
+                {vilkårsresultatTilVisning(delvilkår.type).map((vilkårsresultat) => (
                     <Radio
                         key={vilkårsresultat}
-                        label={vilkårsresultatTypeTilTekst[vilkårsresultat]}
+                        label={vilkårsresultatTypeTilTekstForDelvilkår(
+                            vilkårsresultat,
+                            delvilkår.type
+                        )}
                         name={delvilkår.type}
                         onChange={() =>
                             settVurdering(
@@ -95,6 +93,7 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
                                     ...delvilkår,
                                     type: delvilkår.type,
                                     resultat: vilkårsresultat,
+                                    årsak: undefined,
                                 })
                             )
                         }
@@ -106,7 +105,14 @@ const Delvilkår: FC<Props> = ({ delvilkår, vurdering, settVurdering, hjelpetek
             {hjelpetekst && (
                 <Hjelpetekst type={PopoverOrientering.Under}>{hjelpetekst}</Hjelpetekst>
             )}
-        </StyledDelvilkår>
+        </RadioContainer>
     );
+};
+
+const vilkårsresultatTilVisning = (delvilkårType: DelvilkårType): Vilkårsresultat[] => {
+    const muligeValg = [Vilkårsresultat.OPPFYLT, Vilkårsresultat.IKKE_OPPFYLT];
+    return delvilkårTypeSomKreverSpesialhåntering.includes(delvilkårType)
+        ? muligeValg.reverse()
+        : muligeValg;
 };
 export default Delvilkår;

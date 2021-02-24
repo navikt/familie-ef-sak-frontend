@@ -15,6 +15,10 @@ export const StyledTabell = styled.div`
         padding-right: 2.5rem;
     }
 
+    .vilkårStatusIkon {
+        align-self: auto;
+    }
+
     svg {
         max-height: 24px;
         grid-column: 1/2;
@@ -22,6 +26,7 @@ export const StyledTabell = styled.div`
     }
 
     .tittel {
+        padding-bottom: 1rem;
         grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};
 
         display: flex;

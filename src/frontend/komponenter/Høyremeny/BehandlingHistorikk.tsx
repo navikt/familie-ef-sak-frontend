@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { useMemo } from 'react';
-import { AxiosRequestConfig } from 'axios';
-import { Ressurs } from '../../typer/ressurs';
-import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { Steg, stegTypeTilTekst, StegUtfall, stegUtfallTilTekst } from './Steg';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTid } from '../../utils/formatter';
+import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
 import { useBehandling } from '../../context/BehandlingContext';
 
-interface Behandlingshistorikk {
+export interface Behandlingshistorikk {
     behandlingId: string;
     steg: Steg;
     endretAvNavn: string;
@@ -53,27 +50,16 @@ const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
     return stegTypeTilTekst[behandlingshistorikk.steg];
 };
 
-const BehandlingHistorikk = (props: { behandlingId: string }) => {
-    const { stateKey } = useBehandling();
-    const behandlingshistorikkRequest: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/behandlingshistorikk/${props.behandlingId}`,
-        }),
-        [props.behandlingId, stateKey]
-    );
-
-    const response: Ressurs<Behandlingshistorikk[]> = useDataHenter<Behandlingshistorikk[], null>(
-        behandlingshistorikkRequest
-    );
+const BehandlingHistorikk: React.FC = () => {
+    const { behandlingHistorikk } = useBehandling();
 
     return (
-        <DataViewer response={response}>
+        <DataViewer response={behandlingHistorikk}>
             {(data: Behandlingshistorikk[]) => {
                 return (
                     <StyledList>
-                        {data.map((behandlingshistorikk) => (
-                            <StyledListElement>
+                        {data.map((behandlingshistorikk, idx) => (
+                            <StyledListElement key={idx}>
                                 <Element>{renderTittel(behandlingshistorikk)}</Element>
                                 <Undertekst>
                                     {formaterIsoDatoTid(behandlingshistorikk.endretTid)}
@@ -93,4 +79,4 @@ const BehandlingHistorikk = (props: { behandlingId: string }) => {
     );
 };
 
-export default BehandlingHistorikk;
+export default hiddenIf(BehandlingHistorikk);

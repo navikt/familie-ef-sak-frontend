@@ -34,15 +34,22 @@ const StyledVurderinger = styled.div`
 `;
 
 interface Props {
+    barnId?: string;
     vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IInngangsvilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     feilmeldinger: Vurderingsfeilmelding;
 }
 
-const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering, feilmeldinger }) => {
+const Vurdering: FC<Props> = ({
+    vilkårGruppe,
+    inngangsvilkår,
+    lagreVurdering,
+    feilmeldinger,
+    barnId,
+}) => {
     const vurderinger = inngangsvilkår.vurderinger;
-    const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe);
+    const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe, barnId);
     const status = vilkårStatus(filtrerteVurderinger);
 
     const config = VilkårGruppeConfig[vilkårGruppe];
@@ -52,7 +59,7 @@ const Vurdering: FC<Props> = ({ vilkårGruppe, inngangsvilkår, lagreVurdering, 
 
     return (
         <StyledVilkårOgVurdering>
-            <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status)}</StyledVisning>
+            <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status, barnId)}</StyledVisning>
             <StyledVurderinger>
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering

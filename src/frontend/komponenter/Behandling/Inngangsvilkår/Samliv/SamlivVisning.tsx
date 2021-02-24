@@ -15,14 +15,14 @@ interface Props {
 }
 
 const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
-    const { sivilstand, bosituasjon } = grunnlag;
+    const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
     const { søknadsgrunnlag, registergrunnlag } = sivilstand;
     const { tidligereSamboer } = søknadsgrunnlag;
 
     return (
         <>
             <StyledTabell>
-                <VilkårStatusIkon vilkårStatus={vilkårStatus} />
+                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Samliv</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>
@@ -45,7 +45,11 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                 <Normaltekst>Bosituasjon</Normaltekst>
                 <Normaltekst>{SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}</Normaltekst>
 
-                <Bosituasjon bosituasjon={bosituasjon} tidligereSamboer={tidligereSamboer} />
+                <Bosituasjon
+                    bosituasjon={bosituasjon}
+                    tidligereSamboer={tidligereSamboer}
+                    sivilstandsplaner={sivilstandsplaner}
+                />
             </StyledTabell>
         </>
     );

@@ -5,6 +5,8 @@ import GenerellVurdering from '../../Vurdering/GenerellVurdering';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import SivilstandVurdering from '../Sivilstand/SivilstandVurdering';
 import SamlivVurdering from '../Samliv/SamlivVurdering';
+import AleneomsorgVurdering from '../Aleneomsorg/AleneomsorgVurdering';
+import MorEllerFarVurdering from '../MorEllerFar/MorEllerFarVurdering';
 
 export type IVurderingConfig<TYPE extends VilkårType | VilkårGruppe, CONFIG> = {
     [key in TYPE]: CONFIG;
@@ -46,6 +48,15 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         delvilkår: [DelvilkårType.BOR_OG_OPPHOLDER_SEG_I_NORGE],
         begrunnelsePåkrevdHvisOppfylt: false,
     },
+    MOR_ELLER_FAR: {
+        vilkårGruppe: VilkårGruppe.MOR_ELLER_FAR,
+        renderVurdering: (props: VurderingProps): ReactChild => (
+            <MorEllerFarVurdering props={props} />
+        ),
+        unntak: [],
+        delvilkår: [DelvilkårType.OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN],
+        begrunnelsePåkrevdHvisOppfylt: false,
+    },
     SIVILSTAND: {
         vilkårGruppe: VilkårGruppe.SIVILSTAND,
         renderVurdering: (props: VurderingProps): ReactChild => (
@@ -70,9 +81,21 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         renderVurdering: (props: VurderingProps): ReactChild => <SamlivVurdering props={props} />,
         unntak: [UnntakType.IKKE_OPPFYLT],
         delvilkår: [
-            DelvilkårType.HAR_FLYTTET_FRA_HVERANDRE,
             DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER,
             DelvilkårType.LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD,
+        ],
+        begrunnelsePåkrevdHvisOppfylt: true,
+    },
+    ALENEOMSORG: {
+        vilkårGruppe: VilkårGruppe.ALENEOMSORG,
+        renderVurdering: (props: VurderingProps): ReactChild => (
+            <AleneomsorgVurdering props={props} />
+        ),
+        unntak: [],
+        delvilkår: [
+            DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED,
+            DelvilkårType.NÆRE_BOFORHOLD,
+            DelvilkårType.MER_AV_DAGLIG_OMSORG,
         ],
         begrunnelsePåkrevdHvisOppfylt: true,
     },

@@ -1,6 +1,7 @@
 import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
+import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
@@ -12,6 +13,7 @@ export interface IInngangsvilkårGrunnlag {
     sivilstand: ISivilstandInngangsvilkår;
     bosituasjon: IBosituasjon;
     sivilstandsplaner: ISivilstandsplaner;
+    barnMedSamvær: IBarnMedSamvær[];
 }
 
 export interface ISivilstandsplaner {
@@ -24,6 +26,7 @@ export interface IVurdering {
     id: string;
     resultat: Vilkårsresultat;
     behandlingId: string;
+    barnId?: string;
     vilkårType: VilkårType;
     begrunnelse?: string | null;
     unntak?: UnntakType | null;
@@ -39,12 +42,13 @@ export interface Vurderingsfeilmelding {
 export interface IDelvilkår {
     type: DelvilkårType;
     resultat: Vilkårsresultat;
+    årsak?: EDelvilkårÅrsak;
     begrunnelse?: string | null;
 }
 
 export enum Vilkårsresultat {
-    JA = 'JA',
-    NEI = 'NEI',
+    OPPFYLT = 'OPPFYLT',
+    IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_VURDERT = 'IKKE_VURDERT',
 }
@@ -55,31 +59,30 @@ export enum Redigeringsmodus {
     IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
 }
 
-export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
-    JA: 'Ja',
-    NEI: 'Nei',
-    IKKE_VURDERT: 'Ikke vurdert',
-    IKKE_AKTUELL: 'Ikke aktuell',
-};
-
 export enum Vilkår {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
+    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
+    ALENEOMSORG = 'ALENEOMSORG',
 }
 
 export type VilkårType =
     | Vilkår.FORUTGÅENDE_MEDLEMSKAP
     | Vilkår.LOVLIG_OPPHOLD
+    | Vilkår.MOR_ELLER_FAR
     | Vilkår.SIVILSTAND
-    | Vilkår.SAMLIV;
+    | Vilkår.SAMLIV
+    | Vilkår.ALENEOMSORG;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
     LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
+    MOR_ELLER_FAR: 'Vilkår om mor eller far',
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
+    ALENEOMSORG: 'Vilkår om aleneomsorg',
 };
 
 // ------- DELVILKÅR
@@ -92,9 +95,12 @@ export enum DelvilkårType {
     KRAV_SIVILSTAND = 'KRAV_SIVILSTAND',
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON = 'SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING = 'SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING',
-    HAR_FLYTTET_FRA_HVERANDRE = 'HAR_FLYTTET_FRA_HVERANDRE',
     LEVER_IKKE_MED_ANNEN_FORELDER = 'LEVER_IKKE_MED_ANNEN_FORELDER',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD = 'LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD',
+    SKRIFTLIG_AVTALE_OM_DELT_BOSTED = 'SKRIFTLIG_AVTALE_OM_DELT_BOSTED',
+    NÆRE_BOFORHOLD = 'NÆRE_BOFORHOLD',
+    MER_AV_DAGLIG_OMSORG = 'MER_AV_DAGLIG_OMSORG',
+    OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN = 'OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -103,15 +109,18 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     DOKUMENTERT_EKTESKAP: 'Foreligger det dokumentasjon på ekteskap?',
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:
         'Foreligger det dokumentasjon på separasjon eller skilsmisse?',
-    KRAV_SIVILSTAND: 'Er krav for sivilstand oppfylt?',
+    KRAV_SIVILSTAND: 'Er krav til sivilstand oppfylt?',
     SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
         'Er det samsvar mellom datoene for separasjon og fraflytting?',
-    HAR_FLYTTET_FRA_HVERANDRE: 'Har partene flyttet fra hverandre?',
     LEVER_IKKE_MED_ANNEN_FORELDER:
         'Er vilkåret om å ikke leve sammen med den andre av barnets/barnas foreldre oppfylt?',
     LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD:
         'Er vilkåret om å ikke leve i et ekteskapslignende forhold i felles husholdning uten felles barn oppfylt?',
+    SKRIFTLIG_AVTALE_OM_DELT_BOSTED: 'Har foreldrene inngått skriftlig avtale om delt bosted?',
+    NÆRE_BOFORHOLD: 'Har bruker og den andre forelderen nære boforhold?',
+    MER_AV_DAGLIG_OMSORG: 'Har bruker klart mer av den daglige omsorgen?',
+    OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Har bruker omsorgen for egne/adopterte barn? ',
 };
 
 // ------ UNNTAK
@@ -163,15 +172,15 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
 export enum VilkårGruppe {
     MEDLEMSKAP = 'MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
+    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
+    ALENEOMSORG = 'ALENEOMSORG',
 }
 
-export const delvilkårTypeTilHjelpetekst = (type: DelvilkårType): string | undefined => {
-    switch (type) {
-        case DelvilkårType.LEVER_IKKE_MED_ANNEN_FORELDER:
-            return 'Bor ikke i samme hus, har ikke omfattende tilknytning til samme bolig, har ikke konkrete fremtidsplaner mv, midlertidig adskillelse, krav til brudd oppfylt dersom foreldrene har bodd sammen';
-        default:
-            return undefined;
-    }
+export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
+    OPPFYLT: 'Ja',
+    IKKE_OPPFYLT: 'Nei',
+    IKKE_VURDERT: 'Ikke vurdert',
+    IKKE_AKTUELL: 'Ikke aktuell',
 };

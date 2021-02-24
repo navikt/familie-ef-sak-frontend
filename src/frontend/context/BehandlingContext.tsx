@@ -1,30 +1,44 @@
 import constate from 'constate';
-import { useMemo, useState } from 'react';
-import { Behandling } from '../typer/fagsak';
-import { useDataHenter } from '../hooks/felles/useDataHenter';
-import { AxiosRequestConfig } from 'axios';
+import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { IBehandlingParams } from '../typer/routing';
+import { useRerunnableEffect } from '../hooks/felles/useRerunnableEffect';
+import { useHentPersonopplysninger } from '../hooks/useHentPersonopplysninger';
+import { useHentBehandling } from '../hooks/useHentBehandling';
+import { useHentBehandlingHistorikk } from '../hooks/useHentBehandlingHistorikk';
+import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { behandlingId } = useParams<IBehandlingParams>();
-    const [stateKey, setKey] = useState(0);
-
-    const triggerRerender = () => {
-        setKey((prevKey) => prevKey + 1);
-    };
-
-    const axiosConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/behandling/${behandlingId}`,
-        }),
-        [behandlingId, stateKey]
+    const { hentPersonopplysninger, personopplysningerResponse } = useHentPersonopplysninger(
+        behandlingId
+    );
+    const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
+    const { hentBehandlingshistorikkCallback, behandlingHistorikk } = useHentBehandlingHistorikk(
+        behandlingId
+    );
+    const { hentTotrinnskontrollCallback, totrinnskontroll } = useHentTotrinnskontroll(
+        behandlingId
     );
 
-    const behandling = useDataHenter<Behandling, undefined>(axiosConfig);
+    const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
+    const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
+        behandlingId,
+    ]);
 
-    return { behandling, triggerRerender, stateKey };
+    const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
+
+    useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
+
+    return {
+        behandling,
+        totrinnskontroll,
+        personopplysningerResponse,
+        behandlingHistorikk,
+        hentBehandling,
+        hentTotrinnskontroll,
+        hentBehandlingshistorikk,
+    };
 });
 
 export { BehandlingProvider, useBehandling };

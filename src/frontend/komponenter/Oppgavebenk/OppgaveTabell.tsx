@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { RessursStatus, RessursSuksess } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
@@ -10,8 +10,6 @@ import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../hooks/felles/useSorteringState';
 import { usePagineringState } from '../../hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
-import UIModalWrapper from '../Felleskomponenter/Modal/UIModalWrapper';
-import { Normaltekst } from 'nav-frontend-typografi';
 import Pagination from 'paginering';
 
 const SIDE_STORRELSE = 15;
@@ -43,14 +41,14 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
         SIDE_STORRELSE
     );
 
-    const [feilmelding, settFeilmelding] = useState<string>();
-
     if (status === RessursStatus.HENTER) {
         return <SystemetLaster />;
     } else if (status === RessursStatus.IKKE_TILGANG) {
         return <AlertStripeFeil children="Ikke tilgang!" />;
-    } else if (status === RessursStatus.FEILET) {
-        return <AlertStripeFeil children="Noe gikk galt" />;
+    } else if (oppgaveResurs.status === RessursStatus.FEILET) {
+        return (
+            <AlertStripeFeil children={`Noe gikk galt - ${oppgaveResurs.frontendFeilmelding}`} />
+        );
     } else if (status === RessursStatus.IKKE_HENTET) {
         return <AlertStripeInfo> Du må gjøre ett søk for å se oppgaver i listen.</AlertStripeInfo>; //TODO FIKS TEKST
     }
@@ -88,20 +86,10 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
                 </thead>
                 <tbody>
                     {slicedListe.map((v) => (
-                        <OppgaveRad key={v.id} oppgave={v} settFeilmelding={settFeilmelding} />
+                        <OppgaveRad key={v.id} oppgave={v} />
                     ))}
                 </tbody>
             </table>
-            <UIModalWrapper
-                modal={{
-                    tittel: 'Ugyldig oppgave',
-                    lukkKnapp: true,
-                    visModal: !!feilmelding,
-                    onClose: () => settFeilmelding(''),
-                }}
-            >
-                <Normaltekst>{feilmelding}</Normaltekst>
-            </UIModalWrapper>
         </>
     );
 };

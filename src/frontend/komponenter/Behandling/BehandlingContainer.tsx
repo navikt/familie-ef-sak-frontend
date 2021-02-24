@@ -8,6 +8,10 @@ import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../context/BehandlingContext';
 import { ModalProvider } from '../../context/ModalContext';
 import ModalController from '../Felleskomponenter/Modal/ModalController';
+import Visittkort from '@navikt/familie-visittkort';
+import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import { IPersonopplysninger } from '../../typer/personopplysninger';
+import { VisittkortWrapper } from '../../sider/Fagsakoversikt';
 import Venstemeny from '../Venstremeny/Venstremeny';
 import { RessursStatus } from '../../typer/ressurs';
 
@@ -35,37 +39,51 @@ const InnholdWrapper = styled.div`
     overflow: auto;
 `;
 
-const BehandlingWrapper: FC = () => {
-    const { behandling } = useBehandling();
-    if (behandling.status !== RessursStatus.SUKSESS) {
-        return null;
-    }
-    return (
-        <>
-            <ModalController />
-            <Container>
-                <VenstreMenyWrapper>
-                    <Venstemeny />
-                </VenstreMenyWrapper>
-                <InnholdWrapper>
-                    <Fanemeny />
-                    <BehandlingRoutes />
-                </InnholdWrapper>
-                <HøyreMenyWrapper>
-                    <Høyremeny behandlingId={behandling.data.id} />
-                </HøyreMenyWrapper>
-            </Container>
-        </>
-    );
-};
-
 const BehandlingContainer: FC = () => {
     return (
         <ModalProvider>
             <BehandlingProvider>
-                <BehandlingWrapper />
+                <ModalController />
+                <Behandling />
             </BehandlingProvider>
         </ModalProvider>
+    );
+};
+
+const Behandling: FC = () => {
+    const { behandling, personopplysningerResponse } = useBehandling();
+    if (behandling.status !== RessursStatus.SUKSESS) {
+        return null; // TODO vis henter/feil ?
+    }
+    return (
+        <DataViewer response={personopplysningerResponse}>
+            {(personOpplysninger: IPersonopplysninger) => {
+                return (
+                    <>
+                        <VisittkortWrapper>
+                            <Visittkort
+                                alder={20}
+                                ident={personOpplysninger.personIdent}
+                                kjønn={personOpplysninger.kjønn}
+                                navn={personOpplysninger.navn.visningsnavn}
+                            />
+                        </VisittkortWrapper>
+                        <Container>
+                            <VenstreMenyWrapper>
+                                <Venstemeny />
+                            </VenstreMenyWrapper>
+                            <InnholdWrapper>
+                                <Fanemeny />
+                                <BehandlingRoutes />
+                            </InnholdWrapper>
+                            <HøyreMenyWrapper>
+                                <Høyremeny />
+                            </HøyreMenyWrapper>
+                        </Container>
+                    </>
+                );
+            }}
+        </DataViewer>
     );
 };
 

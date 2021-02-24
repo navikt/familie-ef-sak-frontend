@@ -1,5 +1,5 @@
 import { Datovelger } from 'nav-datovelger';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { FlexDiv } from './OppgaveFiltrering';

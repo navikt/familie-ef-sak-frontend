@@ -18,6 +18,8 @@ export interface Behandling {
     status: BehandlingStatus;
     sistEndret: string;
     endringerIRegistergrunnlag?: IEndringerRegistergrunnlag;
+    opprettet: string;
+    resultat: string;
 }
 
 export interface IEndringerRegistergrunnlag {
