@@ -61,7 +61,7 @@ export enum EHarSkriftligSamværsavtale {
 }
 
 export const harSkriftligSamværsavtaleTilTekst: Record<EHarSkriftligSamværsavtale, string> = {
-    jaKonkreteTidspunkter: 'Ja, den beskriver  når barnet er sammen med hver av foreldrene',
+    jaKonkreteTidspunkter: 'Ja, og den beskriver når barnet er sammen med hver av foreldrene',
     jaIkkeKonkreteTidspunkter:
         'Ja, men den beskriver ikke når barnet er sammen med hver av foreldrene',
     nei: 'Nei',
@@ -98,7 +98,7 @@ export enum ESkalBarnetBoHosSøker {
 }
 
 export const skalBarnetBoHosSøkerTilTekst: Record<ESkalBarnetBoHosSøker, string> = {
-    ja: 'Ja, og vi har eller skal registrere i Folkeregisteret',
+    ja: 'Ja, og vi har eller skal registrere adressen i Folkeregisteret',
     nei: 'Nei',
     jaMenSamarbeiderIkke: 'Ja, men den andre forelderen samarbeider ikke om adresseendring',
 };

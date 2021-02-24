@@ -19,13 +19,14 @@ interface Props {
 const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
     return (
         <StyledTabell>
-            {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined && (
-                <>
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Skriftlig avtale om delt fast bosted</Normaltekst>
-                    <BooleanTekst value={søknadsgrunnlag.spørsmålAvtaleOmDeltBosted} />
-                </>
-            )}
+            {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined &&
+                søknadsgrunnlag.spørsmålAvtaleOmDeltBosted != null && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Skriftlig avtale om delt fast bosted</Normaltekst>
+                        <BooleanTekst value={søknadsgrunnlag.spørsmålAvtaleOmDeltBosted} />
+                    </>
+                )}
             {søknadsgrunnlag.skalAnnenForelderHaSamvær && (
                 <>
                     <Søknadsgrunnlag />
@@ -71,19 +72,20 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Bo begrunnelse</Normaltekst>
+                    <Normaltekst>Beskrivelse av boforhold</Normaltekst>
                     <Normaltekst>
                         {søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse}
                     </Normaltekst>
                 </>
             )}
-            {søknadsgrunnlag.harDereTidligereBoddSammen && (
-                <>
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Foreldre har bodd sammen</Normaltekst>
-                    <BooleanTekst value={søknadsgrunnlag.harDereTidligereBoddSammen} />
-                </>
-            )}
+            {søknadsgrunnlag.harDereTidligereBoddSammen !== null &&
+                søknadsgrunnlag.harDereTidligereBoddSammen !== undefined && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Foreldrene har bodd sammen tidligere</Normaltekst>
+                        <BooleanTekst value={søknadsgrunnlag.harDereTidligereBoddSammen} />
+                    </>
+                )}
             {søknadsgrunnlag.nårFlyttetDereFraHverandre && (
                 <>
                     <Søknadsgrunnlag />
@@ -96,7 +98,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Foreldres kontakt</Normaltekst>
+                    <Normaltekst>Kontakt mellom foreldrene</Normaltekst>
                     <Normaltekst>
                         {hvorMyeSammenTilTekst[søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder]}
                     </Normaltekst>
@@ -105,7 +107,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.beskrivSamværUtenBarn && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Kontakt begrunnelse</Normaltekst>
+                    <Normaltekst>Beskrivelse av kontakt</Normaltekst>
                     <Normaltekst>{søknadsgrunnlag.beskrivSamværUtenBarn}</Normaltekst>
                 </>
             )}
