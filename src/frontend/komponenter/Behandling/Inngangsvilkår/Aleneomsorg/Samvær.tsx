@@ -78,8 +78,8 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
                     </Normaltekst>
                 </>
             )}
-            {søknadsgrunnlag.harDereTidligereBoddSammen != null &&
-                søknadsgrunnlag.harDereTidligereBoddSammen != undefined && (
+            {søknadsgrunnlag.harDereTidligereBoddSammen !== null &&
+                søknadsgrunnlag.harDereTidligereBoddSammen !== undefined && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Foreldrene har bodd sammen tidligere</Normaltekst>

@@ -25,7 +25,7 @@ interface Props {
 }
 
 const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag) => {
-    if (søknadsgrunnlag.navn && søknadsgrunnlag.navn != '') {
+    if (søknadsgrunnlag.navn && søknadsgrunnlag.navn !== '') {
         return søknadsgrunnlag.navn;
     }
     return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
@@ -64,7 +64,7 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }
                             {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
                         </Normaltekst>
                     </>
-                ) : søknadsgrunnlag.fødselsnummer && søknadsgrunnlag.fødselsnummer != '' ? (
+                ) : søknadsgrunnlag.fødselsnummer && søknadsgrunnlag.fødselsnummer !== '' ? (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
