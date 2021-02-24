@@ -9,6 +9,8 @@ import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
+import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
+import { Behandling } from '../../../typer/fagsak';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -18,10 +20,10 @@ const StyledInngangsvilkår = styled.div`
     grid-gap: 3rem;
 `;
 
-const StyledKnapp = styled(Knapp)`
+const StyledKnapp = hiddenIf(styled(Knapp)`
     display: block;
     margin: 2rem auto 0;
-`;
+`);
 
 interface Props {
     behandlingId: string;
@@ -50,7 +52,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const [postOvergangsstønadSuksess, settPostOvergangsstønadSuksess] = useState(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
-    const { hentBehandling } = useBehandling();
+    const { behandling, hentBehandling } = useBehandling();
 
     const hentInngangsvilkår = (behandlingId: string) => {
         axiosRequest<IInngangsvilkår, void>({
@@ -176,39 +178,48 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             {feilmelding && <AlertStripeFeil children={feilmelding} />}
             <StyledKnapp onClick={() => ferdigVurdert(behandlingId)}>Gå videre</StyledKnapp>
             <DataViewer response={inngangsvilkår}>
-                {(data) => (
-                    <StyledInngangsvilkår>
-                        {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
-                            if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
-                                return data.grunnlag.barnMedSamvær.map((barn) => {
+                {(data) => {
+                    const harEndringerIGrunnlagsdata = Object.values(
+                        (behandling as RessursSuksess<Behandling>).data
+                            .endringerIRegistergrunnlag || {}
+                    ).some((endringer) => endringer.length > 0);
+                    return (
+                        <StyledInngangsvilkår>
+                            {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
+                                if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
+                                    return data.grunnlag.barnMedSamvær.map((barn) => {
+                                        return (
+                                            <Vurdering
+                                                key={barn.barnId}
+                                                barnId={barn.barnId}
+                                                vilkårGruppe={vilkårGruppe}
+                                                inngangsvilkår={data}
+                                                lagreVurdering={lagreVurdering}
+                                                feilmeldinger={feilmeldinger}
+                                            />
+                                        );
+                                    });
+                                } else {
                                     return (
                                         <Vurdering
-                                            key={barn.barnId}
-                                            barnId={barn.barnId}
-                                            vilkårGruppe={vilkårGruppe}
+                                            key={vilkårGruppe}
+                                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
                                             inngangsvilkår={data}
-                                            lagreVurdering={lagreVurdering}
                                             feilmeldinger={feilmeldinger}
+                                            lagreVurdering={lagreVurdering}
                                         />
                                     );
-                                });
-                            } else {
-                                return (
-                                    <Vurdering
-                                        key={vilkårGruppe}
-                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                                        inngangsvilkår={data}
-                                        feilmeldinger={feilmeldinger}
-                                        lagreVurdering={lagreVurdering}
-                                    />
-                                );
-                            }
-                        })}
-                        <StyledKnapp onClick={godkjennEnderinger}>
-                            Godkjenn endringer i registergrunnlag
-                        </StyledKnapp>
-                    </StyledInngangsvilkår>
-                )}
+                                }
+                            })}
+                            <StyledKnapp
+                                onClick={godkjennEnderinger}
+                                hidden={!harEndringerIGrunnlagsdata}
+                            >
+                                Godkjenn endringer i registergrunnlag
+                            </StyledKnapp>
+                        </StyledInngangsvilkår>
+                    );
+                }}
             </DataViewer>
         </>
     );

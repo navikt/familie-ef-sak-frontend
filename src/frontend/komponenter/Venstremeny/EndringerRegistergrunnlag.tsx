@@ -7,6 +7,7 @@ import { useBehandling } from '../../context/BehandlingContext';
 
 const UndertittelMedIkon = styled(Undertittel)`
     display: flex;
+
     > svg {
         padding-right: 0.25rem;
     }
@@ -18,13 +19,13 @@ const EndringerBox = styled.div`
 
 const EndringerRegistergrunnlag: FC = () => {
     const { behandling } = useBehandling();
-    if (
-        behandling.status !== RessursStatus.SUKSESS ||
-        behandling.data.endringerIRegistergrunnlag === undefined
-    ) {
+    if (behandling.status !== RessursStatus.SUKSESS) {
         return null;
     }
     const endringerRegistergrunnlag = behandling.data.endringerIRegistergrunnlag;
+    if (!endringerRegistergrunnlag) {
+        return null;
+    }
 
     const endringer = Object.entries(endringerRegistergrunnlag)
         .filter(([, endringer]) => {
