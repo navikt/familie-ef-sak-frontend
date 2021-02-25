@@ -12,6 +12,8 @@ import Visittkort from '@navikt/familie-visittkort';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
 import { VisittkortWrapper } from '../../sider/Fagsakoversikt';
+import Venstemeny from '../Venstremeny/Venstremeny';
+import { RessursStatus } from '../../typer/ressurs';
 
 const Container = styled.div`
     display: flex;
@@ -20,6 +22,7 @@ const Container = styled.div`
 
 const VenstreMenyWrapper = styled.div`
     min-width: 10rem;
+    max-width: 15rem;
     border-right: 2px solid ${navFarger.navGra40};
     overflow: hidden;
 `;
@@ -48,7 +51,10 @@ const BehandlingContainer: FC = () => {
 };
 
 const Behandling: FC = () => {
-    const { personopplysningerResponse } = useBehandling();
+    const { behandling, personopplysningerResponse } = useBehandling();
+    if (behandling.status !== RessursStatus.SUKSESS) {
+        return null; // TODO vis henter/feil ?
+    }
     return (
         <DataViewer response={personopplysningerResponse}>
             {(personOpplysninger: IPersonopplysninger) => {
@@ -63,7 +69,9 @@ const Behandling: FC = () => {
                             />
                         </VisittkortWrapper>
                         <Container>
-                            <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
+                            <VenstreMenyWrapper>
+                                <Venstemeny />
+                            </VenstreMenyWrapper>
                             <InnholdWrapper>
                                 <Fanemeny />
                                 <BehandlingRoutes />

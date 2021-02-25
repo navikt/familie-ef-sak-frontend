@@ -5,7 +5,10 @@
     "aktiv": false,
     "steg": "FATTAR_VEDTAK",
     "status": "UTREDES",
-    "sistEndret": "2020-10-09"
+    "sistEndret": "2020-10-09",
+    "endringerIRegistergrunnlag": {
+      "medlemskap": ["statsborgerskap"]
+    }
   },
   "status": "SUKSESS"
 }
