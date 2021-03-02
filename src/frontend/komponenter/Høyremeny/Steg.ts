@@ -15,7 +15,7 @@ export enum Steg {
 }
 
 export const stegTypeTilTekst: Record<Steg, string> = {
-    JOURNALFØR_BLANKETT: 'Blankett ferdigstilt',
+    JOURNALFØR_BLANKETT: 'Blankett journalført',
     BEHANDLING_FERDIGSTILT: 'Behandling ferdigstilt',
     BEREGNE_YTELSE: 'Beregne ytelse',
     BESLUTTE_VEDTAK: 'Beslutte vedtak',
