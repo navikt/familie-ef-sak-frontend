@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 interface DataViewerProps<T> {
     response: Ressurs<T>;
-    children: (data: T) => React.ReactElement;
+    children: ((data: T) => React.ReactElement) | ReactNode;
 }
 
 const StyledLenke = styled(Link)`
@@ -36,7 +36,10 @@ function DataViewer<T>(props: DataViewerProps<T>) {
         return null;
     }
 
-    return children(response.data);
+    if (typeof children === 'function') {
+        return <>{children(response.data)}</>;
+    }
+    return <>{children}</>;
 }
 
 export default DataViewer;
