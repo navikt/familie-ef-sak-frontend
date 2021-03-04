@@ -54,8 +54,8 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
     return (
         <>
             <StyledBlankett>
-                <GenererBlankett onClick={genererBlankett}>Generer brev</GenererBlankett>
-                <HentBlankett onClick={hentBlankett}>Hent brev</HentBlankett>
+                <GenererBlankett onClick={genererBlankett}>Generer blankett</GenererBlankett>
+                <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
                 <DataViewer response={blankettRessurs}>
                     {(data) => (
                         <DokumentWrapper>
