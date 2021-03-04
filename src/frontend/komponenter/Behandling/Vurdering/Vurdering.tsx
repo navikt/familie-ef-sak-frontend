@@ -19,6 +19,7 @@ const StyledVilkårOgVurdering = styled.div`
 
 const StyledVisning = styled.div`
     min-width: 600px;
+    grid-column: 1;
 `;
 
 const StyledSkillelinje = styled.div`

@@ -238,16 +238,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
     const status = vilkårStatusAleneomsorg(vurderinger);
     return (
-        <>
-            <StyledTabell style={{ marginBottom: 0 }}>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
-                <div className="tittel">
-                    <Undertittel>Aleneomsorg</Undertittel>
-                    <EtikettLiten>§15-4</EtikettLiten>
-                </div>
-            </StyledTabell>
-            <div>&nbsp;</div>
-        </>
+        <StyledTabell style={{ marginBottom: 0 }}>
+            <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
+            <div className="tittel fjernSpacing">
+                <Undertittel>Aleneomsorg</Undertittel>
+                <EtikettLiten>§15-4</EtikettLiten>
+            </div>
+        </StyledTabell>
     );
 };
 
