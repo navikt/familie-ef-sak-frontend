@@ -1,9 +1,7 @@
-import React, { FC, ReactElement, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
-import FamilieVisittkort from '@navikt/familie-visittkort';
-import DataViewer from './DataViewer/DataViewer';
+import Visittkort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
-import { Ressurs } from '../../typer/ressurs';
 
 export const VisittkortWrapper = styled.div`
     .visittkort {
@@ -11,40 +9,16 @@ export const VisittkortWrapper = styled.div`
     }
 `;
 
-const Visittkort: FC<{ personOpplysninger: IPersonopplysninger }> = ({ personOpplysninger }) => (
-    <FamilieVisittkort
-        alder={20}
-        ident={personOpplysninger.personIdent}
-        kjønn={personOpplysninger.kjønn}
-        navn={personOpplysninger.navn.visningsnavn}
-    />
-);
-
-interface VisittkortProps {
-    data: Ressurs<IPersonopplysninger>;
-    children?: ((data: IPersonopplysninger) => React.ReactElement) | ReactNode;
-}
-
-const VisittkortComponent = (props: VisittkortProps): ReactElement<VisittkortProps> => {
-    const { data, children } = props;
-    const renderChildren = (personOpplysninger: IPersonopplysninger) => {
-        if (typeof children === 'function') {
-            return <>{children(personOpplysninger)}</>;
-        }
-        return <>{children}</>;
-    };
-
+const VisittkortComponent: FC<{ data: IPersonopplysninger }> = ({ data }) => {
     return (
-        <DataViewer response={data}>
-            {(personOpplysninger) => (
-                <>
-                    <VisittkortWrapper>
-                        <Visittkort personOpplysninger={personOpplysninger} />
-                    </VisittkortWrapper>
-                    {renderChildren(personOpplysninger)}
-                </>
-            )}
-        </DataViewer>
+        <VisittkortWrapper>
+            <Visittkort
+                alder={20}
+                ident={data.personIdent}
+                kjønn={data.kjønn}
+                navn={data.navn.visningsnavn}
+            />
+        </VisittkortWrapper>
     );
 };
 

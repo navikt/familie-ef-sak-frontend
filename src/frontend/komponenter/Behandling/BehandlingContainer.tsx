@@ -50,20 +50,24 @@ const BehandlingContainer: FC = () => {
 const Behandling: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
     return (
-        <DataViewer response={behandling}>
-            <VisittkortComponent data={personopplysningerResponse} />
-            <Container>
-                <VenstreMenyWrapper>
-                    <Venstemeny />
-                </VenstreMenyWrapper>
-                <InnholdWrapper>
-                    <Fanemeny />
-                    <BehandlingRoutes />
-                </InnholdWrapper>
-                <HøyreMenyWrapper>
-                    <Høyremeny />
-                </HøyreMenyWrapper>
-            </Container>
+        <DataViewer response={personopplysningerResponse} response2={behandling}>
+            {(personopplysningerResponse) => (
+                <>
+                    <VisittkortComponent data={personopplysningerResponse} />
+                    <Container>
+                        <VenstreMenyWrapper>
+                            <Venstemeny />
+                        </VenstreMenyWrapper>
+                        <InnholdWrapper>
+                            <Fanemeny />
+                            <BehandlingRoutes />
+                        </InnholdWrapper>
+                        <HøyreMenyWrapper>
+                            <Høyremeny />
+                        </HøyreMenyWrapper>
+                    </Container>
+                </>
+            )}
         </DataViewer>
     );
 };

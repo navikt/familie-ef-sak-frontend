@@ -46,23 +46,20 @@ const Fagsakoversikt: React.FC = () => {
     }, [fagsakId]);
 
     return (
-        <DataViewer response={fagsak}>
-            {(fagsak) => (
-                <VisittkortComponent data={personOpplysninger}>
-                    {(personOpplysninger) => (
-                        <>
-                            <TittelWrapper>
-                                <Innholdstittel className="blokk-m" tag="h2">
-                                    Behandlingsoversikt - {personOpplysninger.navn.visningsnavn}
-                                </Innholdstittel>
-                                <Systemtittel tag="h3">
-                                    Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                                </Systemtittel>
-                            </TittelWrapper>
-                            <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
-                        </>
-                    )}
-                </VisittkortComponent>
+        <DataViewer response={fagsak} response2={personOpplysninger}>
+            {(fagsak, personOpplysninger) => (
+                <>
+                    <VisittkortComponent data={personOpplysninger} />
+                    <TittelWrapper>
+                        <Innholdstittel className="blokk-m" tag="h2">
+                            Behandlingsoversikt - {personOpplysninger.navn.visningsnavn}
+                        </Innholdstittel>
+                        <Systemtittel tag="h3">
+                            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+                        </Systemtittel>
+                    </TittelWrapper>
+                    <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
+                </>
             )}
         </DataViewer>
     );
