@@ -5,12 +5,12 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Page } from 'react-pdf';
 import {
-    StyledBlankett,
-    GenererBlankett,
     DokumentWrapper,
-    StyledPagination,
-    StyledDokument,
+    GenererBlankett,
     HentBlankett,
+    StyledBlankett,
+    StyledDokument,
+    StyledPagination,
 } from './Elementer';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import BlankettFooter from './BlankettFooter';
