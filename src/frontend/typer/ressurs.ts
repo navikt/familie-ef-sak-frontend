@@ -60,6 +60,11 @@ export const byggSuksessRessurs = <T>(data: T): Ressurs<T> => {
     };
 };
 
+export const harNoenRessursMedStatus = (
+    ressurser: Ressurs<any>[],
+    ...status: RessursStatus[]
+): boolean => ressurser.some((ressurs) => status.includes(ressurs.status));
+
 export const erAvTypeFeil = <T>(data: Ressurs<T>): boolean =>
     [RessursStatus.FEILET, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.IKKE_TILGANG].includes(
         data.status

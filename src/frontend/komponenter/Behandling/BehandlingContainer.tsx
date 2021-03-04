@@ -13,7 +13,6 @@ import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
 import { VisittkortWrapper } from '../../sider/Fagsakoversikt';
 import Venstemeny from '../Venstremeny/Venstremeny';
-import { RessursStatus } from '../../typer/ressurs';
 
 const Container = styled.div`
     display: flex;
@@ -52,11 +51,8 @@ const BehandlingContainer: FC = () => {
 
 const Behandling: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
-    if (behandling.status !== RessursStatus.SUKSESS) {
-        return null; // TODO vis henter/feil ?
-    }
     return (
-        <DataViewer response={personopplysningerResponse}>
+        <DataViewer response={personopplysningerResponse} dependencies={[behandling]}>
             {(personOpplysninger: IPersonopplysninger) => {
                 return (
                     <>
