@@ -1,6 +1,7 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Personopplysninger from './Personopplysninger/Personopplysninger';
 import Inngangsvilkår from './Inngangsvilkår/Inngangsvilkår';
+import Aktivitet from './Aktivitet/Aktivitet';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import Brev from './Brev/Brev';
@@ -25,6 +26,13 @@ const BehandlingRoutes: React.FC = () => {
                 path="/behandling/:behandlingId/inngangsvilkar"
                 render={(props: RouteComponentProps<{ behandlingId: string }>) => {
                     return <Inngangsvilkår behandlingId={props.match.params.behandlingId} />;
+                }}
+            />
+            <Route
+                exact={true}
+                path="/behandling/:behandlingId/aktivitet"
+                render={(props: RouteComponentProps<{ behandlingId: string }>) => {
+                    return <Aktivitet behandlingId={props.match.params.behandlingId} />;
                 }}
             />
             <Route
