@@ -3,12 +3,12 @@ import { Document } from 'react-pdf';
 import Pagination from 'paginering';
 import { Knapp } from 'nav-frontend-knapper';
 
-export const GenererBrev = styled(Knapp)`
+export const GenererBlankett = styled(Knapp)`
     display: block;
     margin: 0 auto;
 `;
 
-export const HentBrev = styled(Knapp)`
+export const HentBlankett = styled(Knapp)`
     display: block;
     margin: 0 auto;
     margin-top: 2rem;
@@ -18,7 +18,7 @@ export const StyledPagination = styled(Pagination)`
     margin: 0 auto;
 `;
 
-export const StyledBrev = styled.div`
+export const StyledBlankett = styled.div`
     background-color: #f2f2f2;
     padding: 3rem;
 `;
