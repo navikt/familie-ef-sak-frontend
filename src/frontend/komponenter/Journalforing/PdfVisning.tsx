@@ -27,8 +27,8 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
     }
 
     return (
-        <DataViewer response={pdfFilInnhold}>
-            {(data) => (
+        <DataViewer response={{ pdfFilInnhold }}>
+            {({ pdfFilInnhold }) => (
                 <>
                     <MidtstiltInnhold>
                         <Pagination
@@ -39,7 +39,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         />
                     </MidtstiltInnhold>
                     <Document
-                        file={`data:application/pdf;base64,${data}`}
+                        file={`data:application/pdf;base64,${pdfFilInnhold}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         error={
                             <AlertStripeFeil children={'Ukjent feil ved henting av dokument.'} />

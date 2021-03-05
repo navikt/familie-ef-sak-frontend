@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Innholdstittel, Systemtittel } from 'nav-frontend-typografi';
-import Visittkort from '@navikt/familie-visittkort';
 import { useParams } from 'react-router';
 import { Behandling, Fagsak } from '../typer/fagsak';
 import styled from 'styled-components';
@@ -11,21 +10,9 @@ import { useSorteringState } from '../hooks/felles/useSorteringState';
 import SorteringsHeader from '../komponenter/Oppgavebenk/OppgaveSorteringHeader';
 import { useApp } from '../context/AppContext';
 import { IPersonopplysninger } from '../typer/personopplysninger';
-import {
-    byggTomRessurs,
-    Ressurs,
-    RessursStatus,
-    RessursFeilet,
-    erAvTypeFeil,
-} from '../typer/ressurs';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import SystemetLaster from '../komponenter/Felleskomponenter/SystemetLaster/SystemetLaster';
-
-export const VisittkortWrapper = styled.div`
-    .visittkort {
-        padding: 0 1.5rem;
-    }
-`;
+import { byggTomRessurs, Ressurs } from '../typer/ressurs';
+import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort';
+import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 
 const TittelWrapper = styled.div`
     padding: 2rem 2rem 1rem 2rem;
@@ -58,43 +45,24 @@ const Fagsakoversikt: React.FC = () => {
         }
     }, [fagsakId]);
 
-    if (erAvTypeFeil(fagsak) || erAvTypeFeil(personOpplysninger)) {
-        return (
-            <AlertStripeFeil>
-                <p>{(fagsak as RessursFeilet).frontendFeilmelding ?? ''}</p>
-                <p>{(personOpplysninger as RessursFeilet).frontendFeilmelding ?? ''}</p>
-            </AlertStripeFeil>
-        );
-    }
-
-    if (
-        fagsak.status === RessursStatus.SUKSESS &&
-        personOpplysninger.status === RessursStatus.SUKSESS
-    ) {
-        return (
-            <>
-                <VisittkortWrapper className="blokk-s">
-                    <Visittkort
-                        alder={20}
-                        ident={personOpplysninger.data.personIdent}
-                        kjønn={personOpplysninger.data.kjønn}
-                        navn={personOpplysninger.data.navn.visningsnavn}
-                    />
-                </VisittkortWrapper>
-                <TittelWrapper>
-                    <Innholdstittel className="blokk-m" tag="h2">
-                        Behandlingsoversikt - {personOpplysninger.data.navn.visningsnavn}
-                    </Innholdstittel>
-                    <Systemtittel tag="h3">
-                        Fagsak: {formatterEnumVerdi(fagsak.data.stønadstype)}
-                    </Systemtittel>
-                </TittelWrapper>
-                <FagsakoversiktTabell behandlinger={fagsak.data.behandlinger} />
-            </>
-        );
-    }
-
-    return <SystemetLaster />;
+    return (
+        <DataViewer response={{ fagsak, personOpplysninger }}>
+            {({ fagsak, personOpplysninger }) => (
+                <>
+                    <VisittkortComponent data={personOpplysninger} />
+                    <TittelWrapper>
+                        <Innholdstittel className="blokk-m" tag="h2">
+                            Behandlingsoversikt - {personOpplysninger.navn.visningsnavn}
+                        </Innholdstittel>
+                        <Systemtittel tag="h3">
+                            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+                        </Systemtittel>
+                    </TittelWrapper>
+                    <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
+                </>
+            )}
+        </DataViewer>
+    );
 };
 
 export default Fagsakoversikt;
