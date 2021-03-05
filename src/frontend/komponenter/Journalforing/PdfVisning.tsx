@@ -3,7 +3,7 @@ import { Ressurs } from '../../typer/ressurs';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import styled from 'styled-components';
-import { Page, Document, pdfjs } from 'react-pdf';
+import { Document, Page, pdfjs } from 'react-pdf';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import Pagination from 'paginering';
 
@@ -13,9 +13,22 @@ interface PdfVisningProps {
     pdfFilInnhold: Ressurs<string>;
 }
 
-const MidtstiltInnhold = styled.div`
-    width: 50%;
+const StyledPagination = styled(Pagination)`
     margin: 0 auto;
+`;
+
+const StyledDokument = styled(Document)`
+    .react-pdf__Page__canvas {
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgb(0 0 0 / 25%);
+        margin: 0 auto;
+    }
+    margin: 0.5rem auto;
+`;
+
+const DokumentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem 0;
 `;
 
 const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
@@ -29,16 +42,14 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
     return (
         <DataViewer response={{ pdfFilInnhold }}>
             {({ pdfFilInnhold }) => (
-                <>
-                    <MidtstiltInnhold>
-                        <Pagination
-                            numberOfItems={numPages}
-                            onChange={setPageNumber}
-                            itemsPerPage={1}
-                            currentPage={pageNumber}
-                        />
-                    </MidtstiltInnhold>
-                    <Document
+                <DokumentWrapper>
+                    <StyledPagination
+                        numberOfItems={numPages}
+                        onChange={setPageNumber}
+                        itemsPerPage={1}
+                        currentPage={pageNumber}
+                    />
+                    <StyledDokument
                         file={`data:application/pdf;base64,${pdfFilInnhold}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         error={
@@ -48,16 +59,14 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         loading={<NavFrontendSpinner />}
                     >
                         <Page pageNumber={pageNumber} />
-                    </Document>
-                    <MidtstiltInnhold>
-                        <Pagination
-                            numberOfItems={numPages}
-                            onChange={setPageNumber}
-                            itemsPerPage={1}
-                            currentPage={pageNumber}
-                        />
-                    </MidtstiltInnhold>
-                </>
+                    </StyledDokument>
+                    <StyledPagination
+                        numberOfItems={numPages}
+                        onChange={setPageNumber}
+                        itemsPerPage={1}
+                        currentPage={pageNumber}
+                    />
+                </DokumentWrapper>
             )}
         </DataViewer>
     );
