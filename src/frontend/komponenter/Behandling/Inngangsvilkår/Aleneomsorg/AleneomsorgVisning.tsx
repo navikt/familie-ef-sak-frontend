@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import { Element, EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import {
     Registergrunnlag,
     Søknadsgrunnlag,
@@ -31,18 +31,13 @@ const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsg
     return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
 };
 
-const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus, barnId }) => {
+const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, barnId }) => {
     const gjeldendeBarn = barnMedSamvær.find((it) => it.barnId === barnId);
     if (gjeldendeBarn === undefined) return null;
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     return (
         <>
             <StyledTabell>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
-                <div className="tittel">
-                    <Undertittel>Aleneomsorg</Undertittel>
-                    <EtikettLiten>§15-4</EtikettLiten>
-                </div>
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
