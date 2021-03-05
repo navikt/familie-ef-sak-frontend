@@ -14,7 +14,7 @@ const Footer = styled.div`
     background-color: ${navFarger.navGra80};
 `;
 
-const MittstildtInnhold = styled.div`
+const MidtstiltInnhold = styled.div`
     width: 30%;
     margin: 0 auto;
     display: flex;
@@ -49,10 +49,10 @@ const BlankettFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) =>
 
     return (
         <Footer>
-            <MittstildtInnhold>
+            <MidtstiltInnhold>
                 <Knapp>Lagre</Knapp>
                 <StyledHovedknapp onClick={sendTilBeslutter}>Send til beslutter</StyledHovedknapp>
-            </MittstildtInnhold>
+            </MidtstiltInnhold>
         </Footer>
     );
 };
