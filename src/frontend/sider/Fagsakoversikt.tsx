@@ -46,8 +46,8 @@ const Fagsakoversikt: React.FC = () => {
     }, [fagsakId]);
 
     return (
-        <DataViewer response={fagsak} response2={personOpplysninger}>
-            {(fagsak, personOpplysninger) => (
+        <DataViewer response={{ fagsak, personOpplysninger }}>
+            {({ fagsak, personOpplysninger }) => (
                 <>
                     <VisittkortComponent data={personOpplysninger} />
                     <TittelWrapper>

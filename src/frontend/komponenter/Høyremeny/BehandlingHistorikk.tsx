@@ -54,11 +54,11 @@ const BehandlingHistorikk: React.FC = () => {
     const { behandlingHistorikk } = useBehandling();
 
     return (
-        <DataViewer response={behandlingHistorikk}>
-            {(data: Behandlingshistorikk[]) => {
+        <DataViewer response={{ behandlingHistorikkResponse: behandlingHistorikk }}>
+            {({ behandlingHistorikkResponse }) => {
                 return (
                     <StyledList>
-                        {data.map((behandlingshistorikk, idx) => (
+                        {behandlingHistorikkResponse.map((behandlingshistorikk, idx) => (
                             <StyledListElement key={idx}>
                                 <Element>{renderTittel(behandlingshistorikk)}</Element>
                                 <Undertekst>

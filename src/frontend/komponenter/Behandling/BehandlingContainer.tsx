@@ -50,8 +50,8 @@ const BehandlingContainer: FC = () => {
 const Behandling: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
     return (
-        <DataViewer response={personopplysningerResponse} response2={behandling}>
-            {(personopplysningerResponse) => (
+        <DataViewer response={{ personopplysningerResponse, behandling }}>
+            {({ personopplysningerResponse }) => (
                 <>
                     <VisittkortComponent data={personopplysningerResponse} />
                     <Container>

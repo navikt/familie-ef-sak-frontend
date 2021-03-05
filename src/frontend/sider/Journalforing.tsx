@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router';
-import { IJojurnalpostResponse } from '../typer/journalforing';
 import { RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../komponenter/Journalforing/PdfVisning';
@@ -110,19 +109,19 @@ export const Journalforing: React.FC = () => {
         return <Redirect to="/oppgavebenk" />;
     }
     return (
-        <DataViewer response={journalResponse}>
-            {(data: IJojurnalpostResponse) => (
+        <DataViewer response={{ journalResponse }}>
+            {({ journalResponse }) => (
                 <SideLayout>
                     <Sidetittel>{`Registrere journalpost: ${
-                        data.journalpost.behandlingstema
-                            ? behandlingstemaTilTekst[data.journalpost.behandlingstema]
+                        journalResponse.journalpost.behandlingstema
+                            ? behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
                             : ''
                     }`}</Sidetittel>
                     <Kolonner>
                         <Venstrekolonne>
-                            <Brukerinfo personIdent={data.personIdent} />
+                            <Brukerinfo personIdent={journalResponse.personIdent} />
                             <DokumentVisning
-                                journalPost={data.journalpost}
+                                journalPost={journalResponse.journalpost}
                                 hentDokument={hentDokument}
                                 dokumentTitler={journalpostState.dokumentTitler}
                                 settDokumentTitler={journalpostState.settDokumentTitler}
@@ -165,10 +164,16 @@ export const Journalforing: React.FC = () => {
                         </Venstrekolonne>
                         <Høyrekolonne>
                             <FlexKnapper>
-                                <Knapp onClick={() => hentForrigeDokument(data.journalpost)} mini>
+                                <Knapp
+                                    onClick={() => hentForrigeDokument(journalResponse.journalpost)}
+                                    mini
+                                >
                                     Forrige Dokument
                                 </Knapp>
-                                <Knapp onClick={() => hentNesteDokument(data.journalpost)} mini>
+                                <Knapp
+                                    onClick={() => hentNesteDokument(journalResponse.journalpost)}
+                                    mini
+                                >
                                     Neste Dokument
                                 </Knapp>
                             </FlexKnapper>

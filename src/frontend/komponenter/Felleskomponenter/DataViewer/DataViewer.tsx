@@ -1,26 +1,25 @@
-import React, { ReactNode } from 'react';
-import { harNoenRessursMedStatus, Ressurs, RessursStatus } from '../../../typer/ressurs';
+import React, { ReactElement, ReactNode } from 'react';
+import {
+    harNoenRessursMedStatus,
+    Ressurs,
+    RessursStatus,
+    RessursSuksess,
+} from '../../../typer/ressurs';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-interface DataViewerProps<T> {
-    response: Ressurs<T>;
+/**
+ * Input: { behandling: Ressurss<Behandling>, personopslyninger: Ressurss<IPersonopplysninger> }
+ * T = {behandling: Behandling, personopslyninger: IPersonoppslysninger}
+ * P = behandling, personoppslyninger
+ * keyof T = alle nøkkler i T, i dette tilfelle behandling og personoppslyninger
+ * T[P] = Behandling og IPersonoppslyninger
+ */
+interface DataViewerProps<T extends Record<string, unknown>> {
+    response: { [P in keyof T]: Ressurs<T[P]> };
     children: ((data: T) => React.ReactElement) | ReactNode;
-}
-
-interface DataViewerProps2<T, U> {
-    response: Ressurs<T>;
-    response2: Ressurs<U>;
-    children: ((data: T, data2: U) => React.ReactElement) | ReactNode;
-}
-
-interface DataViewerProps3<T, U, R> {
-    response: Ressurs<T>;
-    response2: Ressurs<U>;
-    response3: Ressurs<R>;
-    children: ((data: T, data2: U, data3: R) => React.ReactElement) | ReactNode;
 }
 
 const StyledLenke = styled(Link)`
@@ -45,23 +44,20 @@ const renderFeil = (responses: Ressurs<any>[]) => (
     </>
 );
 
-const renderChildren = (
-    children: (...data: any[]) => React.ReactElement | ReactNode,
-    ...data: any[]
-) => {
+const renderChildren = (children: any, response: any): ReactElement => {
     if (typeof children === 'function') {
-        return children(...data);
+        const data = Object.keys(response).reduce((acc: Record<string, unknown>, key) => {
+            acc[key] = (response[key] as RessursSuksess<any>).data;
+            return acc;
+        }, {});
+        return children(data);
     }
     return children;
 };
 
-function DataViewer<T, U, R>(props: DataViewerProps3<T, U, R>): React.ReactElement;
-function DataViewer<T, U>(props: DataViewerProps2<T, U>): React.ReactElement;
-function DataViewer<T>(props: DataViewerProps<T>): React.ReactElement;
-
-function DataViewer(props: any) {
-    const { response, response2, response3, children } = props;
-    const responses = [response, response2, response3].filter((i) => i);
+function DataViewer<T extends Record<string, unknown>>(props: DataViewerProps<T>) {
+    const { response, children } = props;
+    const responses = Object.values(response);
     if (harNoenRessursMedStatus(responses, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.FEILET)) {
         return renderFeil(responses);
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
@@ -70,14 +66,8 @@ function DataViewer(props: any) {
         return <SystemetLaster />;
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_HENTET)) {
         return null;
-    } else if (harNoenRessursMedStatus(responses, RessursStatus.SUKSESS)) {
-        if (response3) {
-            return renderChildren(children, response.data, response2.data, response3.data);
-        } else if (response2) {
-            return renderChildren(children, response.data, response2.data);
-        } else {
-            return renderChildren(children, response.data);
-        }
+    } else if (responses.every((response) => response.status === RessursStatus.SUKSESS)) {
+        return renderChildren(children, response);
     } else {
         return null;
     }

@@ -177,8 +177,8 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <>
             {feilmelding && <AlertStripeFeil children={feilmelding} />}
             <StyledKnapp onClick={() => ferdigVurdert(behandlingId)}>Gå videre</StyledKnapp>
-            <DataViewer response={inngangsvilkår}>
-                {(data) => {
+            <DataViewer response={{ inngangsvilkår }}>
+                {({ inngangsvilkår }) => {
                     const harEndringerIGrunnlagsdata = Object.values(
                         (behandling as RessursSuksess<Behandling>).data
                             .endringerIRegistergrunnlag || {}
@@ -187,13 +187,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                         <StyledInngangsvilkår>
                             {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
                                 if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
-                                    return data.grunnlag.barnMedSamvær.map((barn) => {
+                                    return inngangsvilkår.grunnlag.barnMedSamvær.map((barn) => {
                                         return (
                                             <Vurdering
                                                 key={barn.barnId}
                                                 barnId={barn.barnId}
                                                 vilkårGruppe={vilkårGruppe}
-                                                inngangsvilkår={data}
+                                                inngangsvilkår={inngangsvilkår}
                                                 lagreVurdering={lagreVurdering}
                                                 feilmeldinger={feilmeldinger}
                                             />
@@ -204,7 +204,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                         <Vurdering
                                             key={vilkårGruppe}
                                             vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                                            inngangsvilkår={data}
+                                            inngangsvilkår={inngangsvilkår}
                                             feilmeldinger={feilmeldinger}
                                             lagreVurdering={lagreVurdering}
                                         />
