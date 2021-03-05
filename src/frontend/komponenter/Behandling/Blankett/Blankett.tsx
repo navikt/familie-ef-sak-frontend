@@ -45,7 +45,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
     const hentBlankett = () => {
         axiosRequest<string, any>({
             method: 'GET',
-            url: `/familie-ef-sak/api/hentBlankett/${behandlingId}`,
+            url: `/familie-ef-sak/api/blankett/${behandlingId}`,
         }).then((respons: Ressurs<string>) => {
             settBlankettRessurs(respons);
         });
