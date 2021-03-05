@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../context/AppContext';
@@ -50,7 +50,6 @@ const BlankettFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) =>
     return (
         <Footer>
             <MittstildtInnhold>
-                <Knapp>Lagre</Knapp>
                 <StyledHovedknapp onClick={sendTilBeslutter}>Send til beslutter</StyledHovedknapp>
             </MittstildtInnhold>
         </Footer>
