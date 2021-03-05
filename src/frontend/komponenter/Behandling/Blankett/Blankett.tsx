@@ -56,8 +56,8 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
             <StyledBlankett>
                 <GenererBlankett onClick={genererBlankett}>Generer blankett</GenererBlankett>
                 <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
-                <DataViewer response={blankettRessurs}>
-                    {(data) => (
+                <DataViewer response={{ blankettRessurs }}>
+                    {({ blankettRessurs }) => (
                         <DokumentWrapper>
                             <StyledPagination
                                 numberOfItems={numPages}
@@ -66,7 +66,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
                                 currentPage={pageNumber}
                             />
                             <StyledDokument
-                                file={`data:application/pdf;base64,${data}`}
+                                file={`data:application/pdf;base64,${blankettRessurs}`}
                                 onLoadSuccess={onDocumentLoadSuccess}
                                 error={
                                     <AlertStripeFeil
