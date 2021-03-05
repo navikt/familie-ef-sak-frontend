@@ -56,8 +56,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             <StyledBrev>
                 <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
                 <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
-                <DataViewer response={brevRessurs}>
-                    {(data) => (
+                <DataViewer response={{ brevRessurs }}>
+                    {({ brevRessurs }) => (
                         <DokumentWrapper>
                             <StyledPagination
                                 numberOfItems={numPages}
@@ -66,7 +66,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 currentPage={pageNumber}
                             />
                             <StyledDokument
-                                file={`data:application/pdf;base64,${data}`}
+                                file={`data:application/pdf;base64,${brevRessurs}`}
                                 onLoadSuccess={onDocumentLoadSuccess}
                                 error={
                                     <AlertStripeFeil

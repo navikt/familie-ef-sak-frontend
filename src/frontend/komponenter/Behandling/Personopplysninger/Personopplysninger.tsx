@@ -14,8 +14,8 @@ const Personopplysninger: React.FC = () => {
     const { personopplysningerResponse } = useBehandling();
 
     return (
-        <DataViewer response={personopplysningerResponse}>
-            {(data) => {
+        <DataViewer response={{ personopplysningerResponse }}>
+            {({ personopplysningerResponse }) => {
                 const {
                     adresse,
                     sivilstand,
@@ -26,7 +26,7 @@ const Personopplysninger: React.FC = () => {
                     utflyttingFraNorge,
                     fullmakt,
                     oppholdstillatelse,
-                } = data;
+                } = personopplysningerResponse;
                 return (
                     <>
                         <Adressehistorikk adresser={adresse} />

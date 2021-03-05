@@ -55,9 +55,11 @@ const Dokumentoversikt: React.FC = () => {
     return (
         <>
             {lastNedDokumentFeilet && <AlertStripeFeil>{lastNedDokumentFeilet}</AlertStripeFeil>}
-            <DataViewer response={dokumentResponse}>
-                {(data: DokumentProps[]) => {
-                    return <Dokumentliste dokumenter={data} onClick={lastNedDokument} />;
+            <DataViewer response={{ dokumentResponse }}>
+                {({ dokumentResponse }) => {
+                    return (
+                        <Dokumentliste dokumenter={dokumentResponse} onClick={lastNedDokument} />
+                    );
                 }}
             </DataViewer>
         </>
