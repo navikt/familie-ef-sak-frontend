@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import Brev from './Brev/Brev';
 import Utbetalingsoversikt from './Utbetalingsoversikt/Utbetalingsoversikt';
 import Inntekt from './Inntekt/Inntekt';
+import Blankett from './Blankett/Blankett';
 
 const BehandlingRoutes: React.FC = () => {
     return (
@@ -54,6 +55,13 @@ const BehandlingRoutes: React.FC = () => {
                 path="/behandling/:behandlingId/brev"
                 render={(props: RouteComponentProps<{ behandlingId: string }>) => {
                     return <Brev behandlingId={props.match.params.behandlingId} />;
+                }}
+            />
+            <Route
+                exact={true}
+                path="/behandling/:behandlingId/blankett"
+                render={(props: RouteComponentProps<{ behandlingId: string }>) => {
+                    return <Blankett behandlingId={props.match.params.behandlingId} />;
                 }}
             />
         </Switch>
