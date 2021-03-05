@@ -11,6 +11,7 @@ export enum SideId {
     INNTEKT = 'INNTEKT',
     UTBETALINGSOVERSIKT = 'UTBETALINGSOVERSIKT',
     BREV = 'BREV',
+    BLANKETT = 'BLANKETT',
 }
 
 export const sider: ISide[] = [
@@ -43,5 +44,10 @@ export const sider: ISide[] = [
         id: SideId.BREV,
         href: 'brev',
         navn: 'Brev',
+    },
+    {
+        id: SideId.BLANKETT,
+        href: 'blankett',
+        navn: 'Blankett',
     },
 ];
