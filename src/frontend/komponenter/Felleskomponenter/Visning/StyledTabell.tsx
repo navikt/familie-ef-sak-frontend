@@ -39,6 +39,10 @@ export const StyledTabell = styled.div`
         }
     }
 
+    .fjernSpacing {
+        padding-bottom: 0;
+    }
+
     .førsteDataKolonne {
         grid-column: 2/3;
         padding-right: 3rem;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../context/AppContext';
@@ -26,7 +26,7 @@ const StyledHovedknapp = styled(Hovedknapp)`
     transform: none;
 `;
 
-const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const BlankettFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
@@ -50,11 +50,10 @@ const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     return (
         <Footer>
             <MidtstiltInnhold>
-                <Knapp>Lagre</Knapp>
                 <StyledHovedknapp onClick={sendTilBeslutter}>Send til beslutter</StyledHovedknapp>
             </MidtstiltInnhold>
         </Footer>
     );
 };
 
-export default BrevFooter;
+export default BlankettFooter;

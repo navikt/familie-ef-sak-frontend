@@ -5,24 +5,24 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Page } from 'react-pdf';
 import {
-    StyledBrev,
-    GenererBrev,
     DokumentWrapper,
-    StyledPagination,
+    GenererBlankett,
+    HentBlankett,
+    StyledBlankett,
     StyledDokument,
-    HentBrev,
+    StyledPagination,
 } from './Elementer';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import BrevFooter from './BrevFooter';
+import BlankettFooter from './BlankettFooter';
 
 interface Props {
     behandlingId: string;
 }
 
-const Brev: React.FC<Props> = ({ behandlingId }) => {
+const Blankett: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
 
-    const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
+    const [blankettRessurs, settBlankettRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [pageNumber, setPageNumber] = useState(1);
     const [numPages, setNumPages] = useState<number>(0);
 
@@ -32,32 +32,32 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
 
     const data = { navn: 'test', ident: '123456789' };
 
-    const genererBrev = () => {
+    const genererBlankett = () => {
         axiosRequest<string, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+            url: `/familie-ef-sak/api/blankett/${behandlingId}`,
             data: data,
         }).then((respons: Ressurs<string>) => {
-            settBrevRessurs(respons);
+            settBlankettRessurs(respons);
         });
     };
 
-    const hentBrev = () => {
+    const hentBlankett = () => {
         axiosRequest<string, any>({
             method: 'GET',
-            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+            url: `/familie-ef-sak/api/blankett/${behandlingId}`,
         }).then((respons: Ressurs<string>) => {
-            settBrevRessurs(respons);
+            settBlankettRessurs(respons);
         });
     };
 
     return (
         <>
-            <StyledBrev>
-                <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-                <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
-                <DataViewer response={{ brevRessurs }}>
-                    {({ brevRessurs }) => (
+            <StyledBlankett>
+                <GenererBlankett onClick={genererBlankett}>Generer blankett</GenererBlankett>
+                <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
+                <DataViewer response={blankettRessurs}>
+                    {(data) => (
                         <DokumentWrapper>
                             <StyledPagination
                                 numberOfItems={numPages}
@@ -66,7 +66,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 currentPage={pageNumber}
                             />
                             <StyledDokument
-                                file={`data:application/pdf;base64,${brevRessurs}`}
+                                file={`data:application/pdf;base64,${data}`}
                                 onLoadSuccess={onDocumentLoadSuccess}
                                 error={
                                     <AlertStripeFeil
@@ -87,10 +87,10 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         </DokumentWrapper>
                     )}
                 </DataViewer>
-            </StyledBrev>
-            <BrevFooter behandlingId={behandlingId} />
+            </StyledBlankett>
+            <BlankettFooter behandlingId={behandlingId} />
         </>
     );
 };
 
-export default Brev;
+export default Blankett;
