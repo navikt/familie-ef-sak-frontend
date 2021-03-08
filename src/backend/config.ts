@@ -20,7 +20,7 @@ const Environment = () => {
         return {
             buildPath: '../../frontend_production',
             namespace: 'preprod',
-            proxyUrl: 'https://familie-ef-sak.dev-fss-pub.nais.io',
+            proxyUrl: 'http://familie-ef-sak',
             redisUrl: 'familie-ef-sak-frontend-redis',
         };
     }
@@ -28,7 +28,7 @@ const Environment = () => {
     return {
         buildPath: '../../frontend_production',
         namespace: 'production',
-        proxyUrl: 'https://familie-ef-sak.prod-fss-pub.nais.io',
+        proxyUrl: 'http://familie-ef-sak',
         redisUrl: 'familie-ef-sak-frontend-redis',
     };
 };
@@ -43,18 +43,13 @@ export const sessionConfig: ISessionKonfigurasjon = {
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
-export const saksbehandlerConfig: IApi = {
-    clientId: appConfig.clientId,
-    scopes: [`${appConfig.clientId}/.default`],
-};
-
-if (!process.env.EF_SAK_SCOPE) {
+if (!process.env.EF_SAK_SCOPE2) {
     throw new Error('Scope mot familie-ef-sak er ikke konfigurert');
 }
 
 export const oboConfig: IApi = {
     clientId: appConfig.clientId,
-    scopes: [process.env.EF_SAK_SCOPE],
+    scopes: [process.env.EF_SAK_SCOPE2],
 };
 
 export const buildPath = env.buildPath;
