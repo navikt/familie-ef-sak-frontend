@@ -52,8 +52,8 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
     };
 
     return (
-        <DataViewer response={fagsak}>
-            {(data: Fagsak) => {
+        <DataViewer response={{ fagsak }}>
+            {({ fagsak }) => {
                 return (
                     <>
                         <Systemtittel>Behandling</Systemtittel>
@@ -67,7 +67,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.behandlinger.map((behandlingsEl: Behandling) => (
+                                {fagsak.behandlinger.map((behandlingsEl: Behandling) => (
                                     <tr key={behandlingsEl.id}>
                                         <td>
                                             <Checkbox
@@ -99,14 +99,14 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                 )}
                             </tbody>
                         </table>
-                        {data.behandlinger.every(
+                        {fagsak.behandlinger.every(
                             (behandling: Behandling) => behandling.status !== 'UTREDES'
                         ) &&
                             !nyBehandling && (
                                 <Flatknapp
                                     onClick={() => {
                                         settNyBehandling({
-                                            behandlingstype: data.behandlinger.length
+                                            behandlingstype: fagsak.behandlinger.length
                                                 ? Behandlingstype.REVURDERING
                                                 : Behandlingstype.FØRSTEGANGSBEHANDLING,
                                         });

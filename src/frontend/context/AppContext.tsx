@@ -27,7 +27,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
             .request(config)
             .then((response: AxiosResponse<Ressurs<T>>) => {
                 const responsRessurs: Ressurs<T> = response.data;
-                return håndterRessurs(responsRessurs, innloggetSaksbehandler);
+                return håndterRessurs(responsRessurs, innloggetSaksbehandler, response.headers);
             })
             .catch((error: AxiosError) => {
                 if (error.message.includes('401')) {
@@ -36,7 +36,11 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
                 loggFeil(error, innloggetSaksbehandler);
 
                 const responsRessurs: Ressurs<T> = error.response?.data;
-                return håndterRessurs(responsRessurs, innloggetSaksbehandler);
+                return håndterRessurs(
+                    responsRessurs,
+                    innloggetSaksbehandler,
+                    error.response?.headers
+                );
             });
     };
 

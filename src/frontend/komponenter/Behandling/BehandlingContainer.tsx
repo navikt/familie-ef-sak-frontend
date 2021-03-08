@@ -8,10 +8,9 @@ import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../context/BehandlingContext';
 import { ModalProvider } from '../../context/ModalContext';
 import ModalController from '../Felleskomponenter/Modal/ModalController';
-import Visittkort from '@navikt/familie-visittkort';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import { IPersonopplysninger } from '../../typer/personopplysninger';
-import { VisittkortWrapper } from '../../sider/Fagsakoversikt';
+import Venstemeny from '../Venstremeny/Venstremeny';
+import VisittkortComponent from '../Felleskomponenter/Visittkort';
 
 const Container = styled.div`
     display: flex;
@@ -20,6 +19,7 @@ const Container = styled.div`
 
 const VenstreMenyWrapper = styled.div`
     min-width: 10rem;
+    max-width: 15rem;
     border-right: 2px solid ${navFarger.navGra40};
     overflow: hidden;
 `;
@@ -48,33 +48,26 @@ const BehandlingContainer: FC = () => {
 };
 
 const Behandling: FC = () => {
-    const { personopplysningerResponse } = useBehandling();
+    const { behandling, personopplysningerResponse } = useBehandling();
     return (
-        <DataViewer response={personopplysningerResponse}>
-            {(personOpplysninger: IPersonopplysninger) => {
-                return (
-                    <>
-                        <VisittkortWrapper>
-                            <Visittkort
-                                alder={20}
-                                ident={personOpplysninger.personIdent}
-                                kjønn={personOpplysninger.kjønn}
-                                navn={personOpplysninger.navn.visningsnavn}
-                            />
-                        </VisittkortWrapper>
-                        <Container>
-                            <VenstreMenyWrapper>Vilkårsoversikt</VenstreMenyWrapper>
-                            <InnholdWrapper>
-                                <Fanemeny />
-                                <BehandlingRoutes />
-                            </InnholdWrapper>
-                            <HøyreMenyWrapper>
-                                <Høyremeny />
-                            </HøyreMenyWrapper>
-                        </Container>
-                    </>
-                );
-            }}
+        <DataViewer response={{ personopplysningerResponse, behandling }}>
+            {({ personopplysningerResponse }) => (
+                <>
+                    <VisittkortComponent data={personopplysningerResponse} />
+                    <Container>
+                        <VenstreMenyWrapper>
+                            <Venstemeny />
+                        </VenstreMenyWrapper>
+                        <InnholdWrapper>
+                            <Fanemeny />
+                            <BehandlingRoutes />
+                        </InnholdWrapper>
+                        <HøyreMenyWrapper>
+                            <Høyremeny />
+                        </HøyreMenyWrapper>
+                    </Container>
+                </>
+            )}
         </DataViewer>
     );
 };
