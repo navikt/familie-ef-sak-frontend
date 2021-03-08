@@ -2217,12 +2217,7 @@ axe-core@3.2.2:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.2.2.tgz#b06d6e9ae4636d706068843272bfaeed3fe97362"
   integrity sha512-gAy4kMSPpuRJV3mwictJqlg5LhE84Vw2CydKdC4tvrLhR6+G3KW51zbL/vYujcLA2jvWOq3HMHrVeNuw+mrLVA==
 
-axe-core@^3.5.0:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.5.3.tgz#5b7c0ee7c5197d546bd3a07c3ef701896f5773e9"
-  integrity sha512-HZpLE7xu05+8AbpqXITGdxp1Xwk8ysAXrg7MiKRY27py3DAyEJpoJQo1727pWF3F+O79V3r+cTWhOzfB49P89w==
-
-axe-core@^3.5.4:
+axe-core@^3.5.0, axe-core@^3.5.4:
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.5.5.tgz#84315073b53fa3c0c51676c588d59da09a192227"
   integrity sha512-5P0QZ6J5xGikH780pghEdbEKijCTrruK9KxtPZCFWUpef0f6GipO+xEZ5GKCb020mmqgbiNO6TcA55CriL784Q==
@@ -9000,10 +8995,10 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-axe@^3.5.3:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/react-axe/-/react-axe-3.5.3.tgz#38dac84e20cdf3e09e5752eb405b30c5ac845fa8"
-  integrity sha512-WDKAoLVsC6rsmYboXThY7OnVDaQOOOecySHJJjggn1cFOJyWtzNh2uiV3oSxoAolONGTi22G9zKDxw53g/8Vqg==
+react-axe@^3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/react-axe/-/react-axe-3.5.4.tgz#f59b9ea08eb82341f53cb26c5c53724417bc8c8f"
+  integrity sha512-5xNO0QVCCEZnJiyhAGox0MGFyclgU3XL8se+5H+whdxV1VTtA9/uux9BSCF5mGNSgtSZkb+tQtrOaF+zGf/oWw==
   dependencies:
     axe-core "^3.5.0"
     requestidlecallback "^0.3.0"
