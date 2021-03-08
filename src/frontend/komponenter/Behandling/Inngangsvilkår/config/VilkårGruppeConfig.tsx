@@ -9,6 +9,7 @@ import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt
 import SamlivVisning from '../Samliv/SamlivVisning';
 import AleneomsorgVisning from '../Aleneomsorg/AleneomsorgVisning';
 import MorEllerFarVisning from '../MorEllerFar/MorEllerFarVisning';
+import NyttBarnSammePartnerVisning from '../NyttBarnSammePartner/NyttBarnSammePartnerVisning';
 
 export interface IVilkårGruppeConfig {
     visning: (
@@ -58,6 +59,14 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårStatus={vilkårStatus}
                 barnId={barnId}
+            />
+        ),
+    },
+    NYTT_BARN_SAMME_PARTNER: {
+        visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+            <NyttBarnSammePartnerVisning
+                barnMedSamvær={grunnlag.barnMedSamvær}
+                vilkårStatus={vilkårStatus}
             />
         ),
     },

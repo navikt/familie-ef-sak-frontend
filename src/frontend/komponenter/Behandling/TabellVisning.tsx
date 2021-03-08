@@ -13,11 +13,13 @@ export interface Kolonndata<T> {
     tittel: string;
     verdier: T[];
     kolonner: Kolonner<T>[];
+    onEmpty?: string;
 }
 
 interface TabellProps<T> {
     verdier: T[];
     kolonner: Kolonner<T>[];
+    onEmpty?: string;
 }
 
 export interface Kolonner<T> {
@@ -35,20 +37,20 @@ const mapIkon = (ikon: TabellIkon) => {
 };
 
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
-    const { ikon, tittel, verdier, kolonner } = props;
+    const { ikon, tittel, verdier, kolonner, onEmpty } = props;
     return (
         <StyledTabell kolonner={kolonner.length + 1}>
             {mapIkon(ikon)}
             <Element className="tittel" tag="h3">
                 {tittel}
             </Element>
-            <Tabell verdier={verdier} kolonner={kolonner} />
+            <Tabell verdier={verdier} kolonner={kolonner} onEmpty={onEmpty} />
         </StyledTabell>
     );
 }
 
 export function Tabell<T>(props: TabellProps<T>): React.ReactElement<TabellProps<T>> {
-    const { verdier, kolonner } = props;
+    const { verdier, kolonner, onEmpty } = props;
     return (
         <>
             {kolonner.map((kolonne, index) => (
@@ -56,6 +58,9 @@ export function Tabell<T>(props: TabellProps<T>): React.ReactElement<TabellProps
                     {kolonne.overskrift}
                 </Element>
             ))}
+            {verdier.length === 0 && onEmpty && (
+                <Normaltekst className="førsteDataKolonne">{onEmpty}</Normaltekst>
+            )}
             {verdier.map((item) =>
                 kolonner.map((kolonne, index) => (
                     <Normaltekst
