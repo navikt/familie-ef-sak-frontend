@@ -39,7 +39,6 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const history = useHistory();
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
     const [postInngangsvilkårSuksess, settPostInngangsvilkårSuksess] = useState(false);
-    const [postOvergangsstønadSuksess, settPostOvergangsstønadSuksess] = useState(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
@@ -76,41 +75,21 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
     useEffect(() => {
         postInngangsvilkårSuksess &&
-            postOvergangsstønadSuksess &&
             history.push(`/behandling/${behandlingId}/inntekt`);
-    }, [postInngangsvilkårSuksess, postOvergangsstønadSuksess]);
+    }, [postInngangsvilkårSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
         const postInngangsvilkår = (): Promise<Ressurs<string>> => {
             return axiosRequest<any, any>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/vurdering/${behandlingId}/inngangsvilkar/fullfor`,
-            });
-        };
-
-        const postOvergangsstønad = (): Promise<Ressurs<string>> => {
-            return axiosRequest<any, any>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstonad/fullfor`,
+                url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar/fullfor`,
             });
         };
 
         // TODO: Kun for dummy-flyt - må forbedres/omskrives
         postInngangsvilkår().then((responseInngangsvilkår) => {
             if (responseInngangsvilkår.status === RessursStatus.SUKSESS) {
-                postOvergangsstønad().then((responseStønadsvilkår) => {
-                    if (responseStønadsvilkår.status === RessursStatus.SUKSESS) {
-                        settPostInngangsvilkårSuksess(true);
-                        settPostOvergangsstønadSuksess(true);
-                    } else if (
-                        responseStønadsvilkår.status === RessursStatus.IKKE_TILGANG ||
-                        responseStønadsvilkår.status === RessursStatus.FEILET ||
-                        responseStønadsvilkår.status === RessursStatus.FUNKSJONELL_FEIL
-                    ) {
-                        settPostOvergangsstønadSuksess(false);
-                        settFeilmelding(responseStønadsvilkår.frontendFeilmelding);
-                    }
-                });
+                settPostInngangsvilkårSuksess(true);
             } else if (
                 responseInngangsvilkår.status === RessursStatus.IKKE_TILGANG ||
                 responseInngangsvilkår.status === RessursStatus.FEILET ||

@@ -36,8 +36,12 @@ export const useHentVilkår = (
     behandlingId: string
 ): {
     vilkår: Ressurs<IVilkår>,
-    hentVilkår: (behandlingsId: string) => void,
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>
+    hentVilkår: (behandlingId: string) => void,
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>,
+    feilmeldinger: any,
+    settFeilmeldinger: any,
+    leggTilFeilmelding: any,
+    fjernFeilmelding: any
 } => {
     const { axiosRequest } = useApp();
 
@@ -47,7 +51,7 @@ export const useHentVilkår = (
         byggTomRessurs()
     );
 
-    function fjernFeilemelding(vurdering: IVurdering) {
+    function fjernFeilmelding(vurdering: IVurdering) {
         settFeilmeldinger((prevFeilmeldinger) => {
             const prevFeilmeldingerCopy = { ...prevFeilmeldinger };
             delete prevFeilmeldingerCopy[vurdering.id];
@@ -72,7 +76,7 @@ export const useHentVilkår = (
         }).then((respons: Ressurs<string>) => {
             switch (respons.status) {
                 case RessursStatus.SUKSESS:
-                    fjernFeilemelding(vurdering);
+                    fjernFeilmelding(vurdering);
                     settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
                         oppdaterInngangsvilkårMedVurdering(
                             prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
@@ -103,6 +107,10 @@ export const useHentVilkår = (
     return {
         vilkår,
         hentVilkår,
-        lagreVurdering
+        lagreVurdering,
+        feilmeldinger,
+        settFeilmeldinger,
+        leggTilFeilmelding,
+        fjernFeilmelding
     };
 };
