@@ -1,6 +1,5 @@
-/* eslint-disable */
 import React, { FC, useEffect, useState } from 'react';
-import { IVilkår, InngangsvilkårGruppe, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from './vilkår';
+import { InngangsvilkårGruppe, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from './vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -16,7 +15,7 @@ import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfyl
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
-import { useHentVilkår } from '../../../hooks/useHentVilkår';
+import { useHentVilkår } from '../../../hooks/useHentVilkår';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -75,7 +74,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
     useEffect(() => {
         postInngangsvilkårSuksess &&
-            history.push(`/behandling/${behandlingId}/inntekt`);
+            history.push(`/behandling/${behandlingId}/aktivitet`);
     }, [postInngangsvilkårSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {

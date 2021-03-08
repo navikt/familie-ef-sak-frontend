@@ -1,6 +1,5 @@
-/* eslint-disable */
 import React, { FC, useEffect, useState } from 'react';
-import { IVilkår, InngangsvilkårGruppe, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from '../Inngangsvilkår/vilkår';
+import { AktivitetsvilkårGruppe, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from '../Inngangsvilkår/vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -16,7 +15,7 @@ import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfyl
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
-import { useHentVilkår } from '../../../hooks/useHentVilkår';
+import { useHentVilkår } from '../../../hooks/useHentVilkår';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -120,28 +119,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <StyledInngangsvilkår>
-                            {Object.keys(InngangsvilkårGruppe).map((vilkårGruppe) => {
-                                if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
-                                    return (
-                                        <>
-                                            <VilkårStatusForAleneomsorg
-                                                vurderinger={vilkår.vurderinger}
-                                            />
-                                            {vilkår.grunnlag.barnMedSamvær.map((barn) => {
-                                                return (
-                                                    <Vurdering
-                                                        key={barn.barnId}
-                                                        barnId={barn.barnId}
-                                                        vilkårGruppe={vilkårGruppe}
-                                                        inngangsvilkår={vilkår}
-                                                        lagreVurdering={lagreVurdering}
-                                                        feilmeldinger={feilmeldinger}
-                                                    />
-                                                );
-                                            })}
-                                        </>
-                                    );
-                                } else {
+                            {Object.keys(AktivitetsvilkårGruppe).map((vilkårGruppe) => {
                                     return (
                                         <Vurdering
                                             key={vilkårGruppe}
@@ -151,7 +129,6 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                                             lagreVurdering={lagreVurdering}
                                         />
                                     );
-                                }
                             })}
                             <StyledKnapp
                                 onClick={godkjennEnderinger}

@@ -1,23 +1,7 @@
-/* eslint-disable */
-import { hentInnloggetBruker } from './../api/saksbehandler';
 import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { useCallback, useState } from 'react';
-import { Behandling } from '../typer/fagsak';
-import { AxiosRequestConfig } from 'axios';
-import { IVilkår, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from '../komponenter/Behandling/Inngangsvilkår/vilkår';
-import styled from 'styled-components';
-import Vurdering from '../komponenter/Behandling/Vurdering/Vurdering';
-import { useHistory } from 'react-router';
-import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
-import { Knapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { useBehandling } from '../context/BehandlingContext'
-import hiddenIf from '../komponenter/Felleskomponenter/HiddenIf/hiddenIf';
-import { VilkårStatusIkon } from '../komponenter/Felleskomponenter/Visning/VilkårOppfylt';
-import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
-import { StyledTabell } from '../komponenter/Felleskomponenter/Visning/StyledTabell';
-import { vilkårStatusAleneomsorg } from '../komponenter/Behandling/Vurdering/VurderingUtil';
+import { useState } from 'react';
+import { IVilkår, IVurdering, Vurderingsfeilmelding } from '../komponenter/Behandling/Inngangsvilkår/vilkår';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
@@ -25,7 +9,7 @@ const oppdaterInngangsvilkårMedVurdering = (
 ) => ({
     ...vilkår,
     data: {
-        ...vilkår.data,
+        ...vilkår.data,s
         vurderinger: vilkår.data.vurderinger.map((tidligereVurdering) =>
             tidligereVurdering.id === vurdering.id ? vurdering : tidligereVurdering
         ),
