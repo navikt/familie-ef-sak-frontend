@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst as NormaltekstNavFrontend } from 'nav-frontend-typografi';
 import { StyledTabell } from '../Felleskomponenter/Visning/StyledTabell';
+import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
+
+const Normaltekst = hiddenIf(NormaltekstNavFrontend);
 
 export enum TabellIkon {
     REGISTER = 'REGISTER',
@@ -58,9 +61,12 @@ export function Tabell<T>(props: TabellProps<T>): React.ReactElement<TabellProps
                     {kolonne.overskrift}
                 </Element>
             ))}
-            {verdier.length === 0 && onEmpty && (
-                <Normaltekst className="førsteDataKolonne">{onEmpty}</Normaltekst>
-            )}
+            <Normaltekst
+                hidden={verdier.length > 0 || !onEmpty}
+                className="førsteDataKolonne tomTabell"
+            >
+                {onEmpty}
+            </Normaltekst>
             {verdier.map((item) =>
                 kolonner.map((kolonne, index) => (
                     <Normaltekst
