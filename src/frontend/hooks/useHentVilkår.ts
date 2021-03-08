@@ -9,7 +9,7 @@ const oppdaterInngangsvilkårMedVurdering = (
 ) => ({
     ...vilkår,
     data: {
-        ...vilkår.data,s
+        ...vilkår.data,
         vurderinger: vilkår.data.vurderinger.map((tidligereVurdering) =>
             tidligereVurdering.id === vurdering.id ? vurdering : tidligereVurdering
         ),
