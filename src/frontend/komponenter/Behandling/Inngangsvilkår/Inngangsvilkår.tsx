@@ -36,13 +36,12 @@ interface Props {
 
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const history = useHistory();
-    const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
     const [postInngangsvilkårSuksess, settPostInngangsvilkårSuksess] = useState(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const {vilkår, hentVilkår, lagreVurdering } = useHentVilkår(behandlingId);
+    const {vilkår, hentVilkår, lagreVurdering, feilmeldinger} = useHentVilkår(behandlingId);
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -54,23 +53,6 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
             }
         });
     };
-
-    function fjernFeilemelding(vurdering: IVurdering) {
-        settFeilmeldinger((prevFeilmeldinger) => {
-            const prevFeilmeldingerCopy = { ...prevFeilmeldinger };
-            delete prevFeilmeldingerCopy[vurdering.id];
-            return prevFeilmeldingerCopy;
-        });
-    }
-
-    function leggTilFeilmelding(vurdering: IVurdering, feilmelding: string) {
-        settFeilmeldinger((prevFeilmeldinger) => {
-            return {
-                ...prevFeilmeldinger,
-                [vurdering.id]: feilmelding,
-            };
-        });
-    }
 
     useEffect(() => {
         postInngangsvilkårSuksess &&

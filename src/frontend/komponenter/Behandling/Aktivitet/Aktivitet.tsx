@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { AktivitetsvilkårGruppe, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from '../Inngangsvilkår/vilkår';
+import { AktivitetsvilkårGruppe, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -11,10 +11,6 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
-import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
-import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
-import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
-import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
 
 const StyledInngangsvilkår = styled.div`
@@ -36,13 +32,12 @@ interface Props {
 
 const Aktivitet: FC<Props> = ({ behandlingId }) => {
     const history = useHistory();
-    const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
     const [postOvergangsstønadSuksess, settPostOvergangsstønadSuksess] = useState(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const {vilkår, hentVilkår, lagreVurdering } = useHentVilkår(behandlingId);
+    const {vilkår, hentVilkår, lagreVurdering, feilmeldinger} = useHentVilkår(behandlingId);
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -54,23 +49,6 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
             }
         });
     };
-
-    function fjernFeilemelding(vurdering: IVurdering) {
-        settFeilmeldinger((prevFeilmeldinger) => {
-            const prevFeilmeldingerCopy = { ...prevFeilmeldinger };
-            delete prevFeilmeldingerCopy[vurdering.id];
-            return prevFeilmeldingerCopy;
-        });
-    }
-
-    function leggTilFeilmelding(vurdering: IVurdering, feilmelding: string) {
-        settFeilmeldinger((prevFeilmeldinger) => {
-            return {
-                ...prevFeilmeldinger,
-                [vurdering.id]: feilmelding,
-            };
-        });
-    }
 
     useEffect(() => {
             postOvergangsstønadSuksess &&
@@ -141,18 +119,6 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                 }}
             </DataViewer>
         </>
-    );
-};
-const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
-    const status = vilkårStatusAleneomsorg(vurderinger);
-    return (
-        <StyledTabell style={{ marginBottom: 0 }}>
-            <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
-            <div className="tittel fjernSpacing">
-                <Undertittel>Aleneomsorg</Undertittel>
-                <EtikettLiten>§15-4</EtikettLiten>
-            </div>
-        </StyledTabell>
     );
 };
 

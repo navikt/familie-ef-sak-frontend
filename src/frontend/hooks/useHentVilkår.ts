@@ -22,10 +22,7 @@ export const useHentVilkår = (
     vilkår: Ressurs<IVilkår>,
     hentVilkår: (behandlingId: string) => void,
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>,
-    feilmeldinger: any,
-    settFeilmeldinger: any,
-    leggTilFeilmelding: any,
-    fjernFeilmelding: any
+    feilmeldinger: Vurderingsfeilmelding
 } => {
     const { axiosRequest } = useApp();
 
@@ -93,8 +90,5 @@ export const useHentVilkår = (
         hentVilkår,
         lagreVurdering,
         feilmeldinger,
-        settFeilmeldinger,
-        leggTilFeilmelding,
-        fjernFeilmelding
     };
 };
