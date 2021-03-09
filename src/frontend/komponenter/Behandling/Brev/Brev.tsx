@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import BrevFooter from './BrevFooter';
-import PdfVisning from '../../Journalforing/PdfVisning';
+import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 

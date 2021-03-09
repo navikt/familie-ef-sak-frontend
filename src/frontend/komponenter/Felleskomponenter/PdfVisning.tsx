@@ -4,7 +4,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import styled from 'styled-components';
 import { Document, Page, pdfjs } from 'react-pdf';
-import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import DataViewer from './DataViewer/DataViewer';
 import Pagination from 'paginering';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.js';
