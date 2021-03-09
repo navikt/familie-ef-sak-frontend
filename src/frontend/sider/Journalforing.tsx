@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router';
 import { RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
-import PdfVisning from '../komponenter/Journalforing/PdfVisning';
+import PdfVisning from '../komponenter/Felleskomponenter/PdfVisning';
 import Behandling from '../komponenter/Journalforing/Behandling';
 import Brukerinfo from '../komponenter/Journalforing/Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
