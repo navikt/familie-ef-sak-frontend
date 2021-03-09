@@ -11,6 +11,10 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
+import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
+import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
+import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
+import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
 
 const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -187,18 +191,25 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                         <StyledInngangsvilkår>
                             {Object.keys(VilkårGruppe).map((vilkårGruppe) => {
                                 if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
-                                    return inngangsvilkår.grunnlag.barnMedSamvær.map((barn) => {
-                                        return (
-                                            <Vurdering
-                                                key={barn.barnId}
-                                                barnId={barn.barnId}
-                                                vilkårGruppe={vilkårGruppe}
-                                                inngangsvilkår={inngangsvilkår}
-                                                lagreVurdering={lagreVurdering}
-                                                feilmeldinger={feilmeldinger}
+                                    return (
+                                        <>
+                                            <VilkårStatusForAleneomsorg
+                                                vurderinger={inngangsvilkår.vurderinger}
                                             />
-                                        );
-                                    });
+                                            {inngangsvilkår.grunnlag.barnMedSamvær.map((barn) => {
+                                                return (
+                                                    <Vurdering
+                                                        key={barn.barnId}
+                                                        barnId={barn.barnId}
+                                                        vilkårGruppe={vilkårGruppe}
+                                                        inngangsvilkår={inngangsvilkår}
+                                                        lagreVurdering={lagreVurdering}
+                                                        feilmeldinger={feilmeldinger}
+                                                    />
+                                                );
+                                            })}
+                                        </>
+                                    );
                                 } else {
                                     return (
                                         <Vurdering
@@ -222,6 +233,18 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                 }}
             </DataViewer>
         </>
+    );
+};
+const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
+    const status = vilkårStatusAleneomsorg(vurderinger);
+    return (
+        <StyledTabell style={{ marginBottom: 0 }}>
+            <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
+            <div className="tittel fjernSpacing">
+                <Undertittel>Aleneomsorg</Undertittel>
+                <EtikettLiten>§15-4</EtikettLiten>
+            </div>
+        </StyledTabell>
     );
 };
 

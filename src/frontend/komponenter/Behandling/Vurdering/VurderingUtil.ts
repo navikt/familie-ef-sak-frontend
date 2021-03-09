@@ -1,4 +1,10 @@
-import { IDelvilkår, IVurdering, VilkårGruppe, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import {
+    IDelvilkår,
+    IVurdering,
+    Vilkår,
+    VilkårGruppe,
+    Vilkårsresultat,
+} from '../Inngangsvilkår/vilkår';
 import { IVilkårConfig, VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { SivilstandType } from '../../../typer/personopplysninger';
 import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
@@ -16,6 +22,23 @@ export const vilkårStatus = (vurderinger: IVurdering[]): VilkårStatus => {
         return VilkårStatus.IKKE_VURDERT;
     } else {
         return VilkårStatus.IKKE_OPPFYLT;
+    }
+};
+export const vilkårStatusAleneomsorg = (vurderinger: IVurdering[]): VilkårStatus => {
+    const filtrerteVurderinger = vurderinger.filter(
+        (vurdering) => vurdering.vilkårType === Vilkår.ALENEOMSORG
+    );
+
+    if (filtrerteVurderinger.some((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT)) {
+        return VilkårStatus.OPPFYLT;
+    } else if (
+        filtrerteVurderinger.every(
+            (vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_OPPFYLT
+        )
+    ) {
+        return VilkårStatus.IKKE_OPPFYLT;
+    } else {
+        return VilkårStatus.IKKE_VURDERT;
     }
 };
 
