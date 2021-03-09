@@ -43,13 +43,13 @@ export const sessionConfig: ISessionKonfigurasjon = {
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
-if (!process.env.EF_SAK_SCOPE2) {
+if (!process.env.EF_SAK_SCOPE) {
     throw new Error('Scope mot familie-ef-sak er ikke konfigurert');
 }
 
 export const oboConfig: IApi = {
     clientId: appConfig.clientId,
-    scopes: [process.env.EF_SAK_SCOPE2],
+    scopes: [process.env.EF_SAK_SCOPE],
 };
 
 export const buildPath = env.buildPath;
