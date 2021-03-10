@@ -3,7 +3,7 @@ import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { IInngangsvilkårGrunnlag } from '../vilkår';
+import { IVilkårGrunnlag } from '../vilkår';
 import { SivilstandType } from '../../../../typer/personopplysninger';
 import ÅrsakEnslig from './ÅrsakEnslig';
 import { Bosituasjon } from './Bosituasjon';
@@ -11,7 +11,7 @@ import { SøkerDelerBoligTilTekst, ÅrsakEnsligTilTekst } from './typer';
 
 interface Props {
     vilkårStatus: VilkårStatus;
-    grunnlag: IInngangsvilkårGrunnlag;
+    grunnlag: IVilkårGrunnlag;
 }
 
 const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {

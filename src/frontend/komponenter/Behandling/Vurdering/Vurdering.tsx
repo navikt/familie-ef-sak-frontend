@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import {
-    IInngangsvilkår,
+    IVilkår,
     IVurdering,
     VilkårGruppe,
     Vurderingsfeilmelding,
@@ -37,7 +37,7 @@ const StyledVurderinger = styled.div`
 interface Props {
     barnId?: string;
     vilkårGruppe: VilkårGruppe;
-    inngangsvilkår: IInngangsvilkår;
+    inngangsvilkår: IVilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     feilmeldinger: Vurderingsfeilmelding;
 }
