@@ -99,4 +99,11 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         ],
         begrunnelsePåkrevdHvisOppfylt: true,
     },
+    AKTIVITET: {
+        vilkårGruppe: VilkårGruppe.AKTIVITET,
+        renderVurdering: (): ReactChild => <></>,
+        unntak: [],
+        delvilkår: [],
+        begrunnelsePåkrevdHvisOppfylt: true,
+    },
 };

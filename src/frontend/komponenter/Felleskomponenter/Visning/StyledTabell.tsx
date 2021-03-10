@@ -25,6 +25,10 @@ export const StyledTabell = styled.div`
         align-self: center;
     }
 
+    .undertittel {
+        grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};
+    }
+
     .tittel {
         padding-bottom: 1rem;
         grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};

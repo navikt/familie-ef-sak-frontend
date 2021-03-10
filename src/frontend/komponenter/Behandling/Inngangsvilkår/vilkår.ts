@@ -2,6 +2,7 @@ import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
 import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
+import { IAktivitet } from '../../../typer/overgangsstønad';
 
 export interface IInngangsvilkår {
     vurderinger: IVurdering[];
@@ -14,6 +15,7 @@ export interface IInngangsvilkårGrunnlag {
     bosituasjon: IBosituasjon;
     sivilstandsplaner: ISivilstandsplaner;
     barnMedSamvær: IBarnMedSamvær[];
+    aktivitet: IAktivitet;
 }
 
 export interface ISivilstandsplaner {
@@ -66,6 +68,7 @@ export enum Vilkår {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
+    AKTIVITET = 'AKTIVITET',
 }
 
 export type VilkårType =
@@ -74,7 +77,8 @@ export type VilkårType =
     | Vilkår.MOR_ELLER_FAR
     | Vilkår.SIVILSTAND
     | Vilkår.SAMLIV
-    | Vilkår.ALENEOMSORG;
+    | Vilkår.ALENEOMSORG
+    | Vilkår.AKTIVITET;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
@@ -83,6 +87,7 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
+    AKTIVITET: '',
 };
 
 // ------- DELVILKÅR
@@ -176,6 +181,7 @@ export enum VilkårGruppe {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
+    AKTIVITET = 'AKTIVITET',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
