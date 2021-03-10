@@ -9,9 +9,9 @@ import {
 import { filtrerVurderinger, vilkårStatus } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
-import { navLysGra } from '@navikt/familie-header';
 import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
 import { Ressurs } from '../../../typer/ressurs';
+import navFarger from 'nav-frontend-core';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
@@ -24,7 +24,7 @@ const StyledVisning = styled.div`
 
 const StyledSkillelinje = styled.div`
     height: 2px;
-    border: solid 1px ${navLysGra};
+    border: solid 1px ${navFarger.navLysGra};
     grid-column: 1/3;
 `;
 

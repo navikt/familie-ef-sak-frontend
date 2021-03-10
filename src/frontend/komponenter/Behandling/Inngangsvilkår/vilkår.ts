@@ -66,6 +66,7 @@ export enum Vilkår {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
+    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
 }
 
 export type VilkårType =
@@ -74,6 +75,7 @@ export type VilkårType =
     | Vilkår.MOR_ELLER_FAR
     | Vilkår.SIVILSTAND
     | Vilkår.SAMLIV
+    | Vilkår.NYTT_BARN_SAMME_PARTNER
     | Vilkår.ALENEOMSORG;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
@@ -83,6 +85,7 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
+    NYTT_BARN_SAMME_PARTNER: 'Vilkår om barn med samme partner',
 };
 
 // ------- DELVILKÅR
@@ -101,6 +104,7 @@ export enum DelvilkårType {
     NÆRE_BOFORHOLD = 'NÆRE_BOFORHOLD',
     MER_AV_DAGLIG_OMSORG = 'MER_AV_DAGLIG_OMSORG',
     OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN = 'OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN',
+    HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER = 'HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -121,6 +125,8 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     NÆRE_BOFORHOLD: 'Har bruker og den andre forelderen nære boforhold?',
     MER_AV_DAGLIG_OMSORG: 'Har bruker klart mer av den daglige omsorgen?',
     OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Har bruker omsorgen for egne/adopterte barn? ',
+    HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER:
+        'Har søker fått nytt barn med samme partner (født etter 01.01.2016) eller venter nytt barn med samme partner, etter at en av foreldrene tidligere har mottatt eller fortsatt mottar stønad for et annet felles barn.',
 };
 
 // ------ UNNTAK
@@ -176,6 +182,7 @@ export enum VilkårGruppe {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
+    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {

@@ -7,6 +7,7 @@ import SivilstandVurdering from '../Sivilstand/SivilstandVurdering';
 import SamlivVurdering from '../Samliv/SamlivVurdering';
 import AleneomsorgVurdering from '../Aleneomsorg/AleneomsorgVurdering';
 import MorEllerFarVurdering from '../MorEllerFar/MorEllerFarVurdering';
+import NyttBarnSammePartnerVurdering from '../NyttBarnSammePartner/NyttBarnSammePartnerVurdering';
 
 export type IVurderingConfig<TYPE extends VilkårType | VilkårGruppe, CONFIG> = {
     [key in TYPE]: CONFIG;
@@ -98,5 +99,14 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
             DelvilkårType.MER_AV_DAGLIG_OMSORG,
         ],
         begrunnelsePåkrevdHvisOppfylt: true,
+    },
+    NYTT_BARN_SAMME_PARTNER: {
+        vilkårGruppe: VilkårGruppe.NYTT_BARN_SAMME_PARTNER,
+        renderVurdering: (props: VurderingProps): ReactChild => (
+            <NyttBarnSammePartnerVurdering props={props} />
+        ),
+        unntak: [],
+        delvilkår: [DelvilkårType.HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER],
+        begrunnelsePåkrevdHvisOppfylt: false,
     },
 };
