@@ -34,6 +34,10 @@ const StyledKnapp = styled.button`
     min-width: 85px;
 `;
 
+const StyledDelvilkårsvurdering = styled.div`
+    max-width: 35rem;
+`;
+
 const StyledStrek = styled.span`
     border-left: 3px solid ${navFarger.navLillaLighten20};
     margin-left: 0.55rem;
@@ -118,7 +122,7 @@ const VisVurdering: FC<Props> = ({
                     )
                     .map((delvilkårsvurdering) => (
                         <React.Fragment key={delvilkårsvurdering.type}>
-                            <div>
+                            <StyledDelvilkårsvurdering>
                                 <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
                                 <Normaltekst>
                                     {vilkårsresultatTypeTilTekstForDelvilkår(
@@ -126,7 +130,7 @@ const VisVurdering: FC<Props> = ({
                                         delvilkårsvurdering.type
                                     )}
                                 </Normaltekst>
-                            </div>
+                            </StyledDelvilkårsvurdering>
                             {delvilkårsvurdering.årsak && (
                                 <>
                                     <Element>Årsak</Element>

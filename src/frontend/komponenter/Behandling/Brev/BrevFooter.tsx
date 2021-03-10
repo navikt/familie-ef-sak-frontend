@@ -8,7 +8,7 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import { useBehandling } from '../../../context/BehandlingContext';
 
 const Footer = styled.div`
-    width: calc(100% - 475px);
+    width: calc(100% - 571px);
     position: fixed;
     bottom: 0;
     background-color: ${navFarger.navGra80};
