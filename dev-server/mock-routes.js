@@ -102,6 +102,14 @@ app.post('/familie-ef-sak/api/blankett/oppgave/:id', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`start-blankett-oppgave.json`)), delayMs);
 });
 
+app.post('/familie-ef-sak/api/blankett/:id', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`journalforing-dokument.json`)), delayMs);
+});
+
+app.get('/familie-ef-sak/api/blankett/:id', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`journalforing-dokument.json`)), delayMs);
+});
+
 app.post('/familie-ef-sak/api/fagsak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`behandlinger.json`)), delayMs);
 });

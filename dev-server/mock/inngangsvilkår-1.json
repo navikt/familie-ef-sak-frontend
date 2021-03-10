@@ -123,6 +123,23 @@
         "resultat": "IKKE_VURDERT",
         "unntak": null,
         "vilkårType": "ALENEOMSORG"
+      },
+      {
+        "id": "f5d07f22-446f-4327-b1a3-487dfabf929e",
+        "behandlingId": "25a2e2e2-d55f-49b1-a18a-5062124adb9c",
+        "resultat": "IKKE_VURDERT",
+        "vilkårType": "NYTT_BARN_SAMME_PARTNER",
+        "barnId": "43257004-d92f-4e1d-b8dc-00e609e75509",
+        "begrunnelse": null,
+        "unntak": null,
+        "delvilkårsvurderinger": [
+          {
+            "type": "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER",
+            "resultat": "IKKE_VURDERT",
+            "årsak": null,
+            "begrunnelse": null
+          }
+        ]
       }
     ],
     "grunnlag": {

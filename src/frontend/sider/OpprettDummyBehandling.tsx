@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
-import { FnrInput } from 'nav-frontend-skjema';
+import { FnrInput, Select } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import { useHistory } from 'react-router';
@@ -23,13 +23,14 @@ export const OpprettDummyBehandling: React.FC = () => {
     );
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
     const [personIdent, settPersonIdent] = useState<string>('');
+    const [behandlingsType, settBehandlingstype] = useState<string>('FØRSTEGANGSBEHANDLING');
     const history = useHistory();
 
     const opprettBehandling = () => {
-        axiosRequest<string, { personIdent: string }>({
+        axiosRequest<string, { personIdent: string; behandlingsType: string }>({
             method: 'POST',
             url: `/familie-ef-sak/api/test/fagsak`,
-            data: { personIdent: personIdent },
+            data: { personIdent: personIdent, behandlingsType: behandlingsType },
         }).then((res: Ressurs<string>) => settNyBehandlingRessurs(res));
     };
 
@@ -63,6 +64,20 @@ export const OpprettDummyBehandling: React.FC = () => {
                 value={personIdent}
                 onChange={(e) => settPersonIdent(e.target.value)}
             />
+
+            <Select
+                value={behandlingsType}
+                className="flex-item"
+                label="Type"
+                onChange={(event) => {
+                    event.persist();
+                    settBehandlingstype(event.target.value);
+                }}
+            >
+                <option value="FØRSTEGANGSBEHANDLING">Førstegangsbehandling</option>
+                <option value="BLANKETT">Blankett</option>
+            </Select>
+
             <Knapp mini disabled={!harSattPersonIdent} onClick={opprettBehandling}>
                 Lag behandling
             </Knapp>
