@@ -3,12 +3,12 @@ import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer'
 import { IBosituasjon } from './Samliv/typer';
 import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
 
-export interface IInngangsvilkår {
+export interface IVilkår {
     vurderinger: IVurdering[];
-    grunnlag: IInngangsvilkårGrunnlag;
+    grunnlag: IVilkårGrunnlag;
 }
 
-export interface IInngangsvilkårGrunnlag {
+export interface IVilkårGrunnlag {
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
     bosituasjon: IBosituasjon;
@@ -183,6 +183,23 @@ export enum VilkårGruppe {
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
     NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
+    AKTIVITET = 'AKTIVITET',
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
+}
+
+export enum InngangsvilkårGruppe {
+    MEDLEMSKAP = 'MEDLEMSKAP',
+    LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
+    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
+    SIVILSTAND = 'SIVILSTAND',
+    SAMLIV = 'SAMLIV',
+    ALENEOMSORG = 'ALENEOMSORG',
+    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER'
+}
+
+export enum AktivitetsvilkårGruppe {
+    AKTIVITET = 'AKTIVITET',
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
