@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IInngangsvilkårGrunnlag, IVurdering, Redigeringsmodus } from '../Inngangsvilkår/vilkår';
+import { IVilkårGrunnlag, IVurdering, Redigeringsmodus } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
@@ -14,7 +14,7 @@ const StyledEndreVurdering = styled.div`
 
 interface Props {
     data: IVurdering;
-    inngangsvilkårgrunnlag: IInngangsvilkårGrunnlag;
+    inngangsvilkårgrunnlag: IVilkårGrunnlag;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
     feilmelding: string | undefined;

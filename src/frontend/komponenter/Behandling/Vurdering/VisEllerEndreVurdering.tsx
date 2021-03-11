@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import {
-    IInngangsvilkårGrunnlag,
+    IVilkårGrunnlag,
     IVurdering,
     Redigeringsmodus,
     Vilkårsresultat,
@@ -13,7 +13,7 @@ import { Ressurs } from '../../../typer/ressurs';
 
 interface Props {
     vurdering: IVurdering;
-    inngangsvilkårgrunnlag: IInngangsvilkårGrunnlag;
+    inngangsvilkårgrunnlag: IVilkårGrunnlag;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     feilmelding: string | undefined;
 }
