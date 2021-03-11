@@ -26,7 +26,7 @@ const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårS
                 <div className="tittel">
                     <Undertittel>Sagt opp arbeidsforhold</Undertittel>
                 </div>
-                {!sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
+                {sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
                     <>
                         <HarSagtOppEllerRedusertStilling
                             sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
@@ -35,7 +35,7 @@ const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårS
                         />
                     </>
                 ) : (
-                    <Normaltekst>
+                    <Normaltekst className="tekstUtenIkon">
                         Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
                         blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn
                         50%.
