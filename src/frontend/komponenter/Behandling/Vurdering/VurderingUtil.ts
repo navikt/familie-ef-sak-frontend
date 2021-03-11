@@ -49,6 +49,8 @@ export const filtrerVurderinger = (
 ): IVurdering[] =>
     vurderinger.filter((vurdering) => {
         const config = VurderingConfig[vurdering.vilkårType];
+        console.log('vurdering', vurdering);
+        console.log('config', config);
         if (!config) {
             console.error(`Savner config til ${vurdering.vilkårType}`);
             return false;
