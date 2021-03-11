@@ -1,6 +1,7 @@
 //interfaces
 
 import { IDokumentasjon } from './felles';
+import { ESagtOppEllerRedusert } from '../komponenter/Behandling/Inngangsvilkår/Samliv/typer';
 
 export interface IOvergangsstønad {
     sakId: string;
@@ -21,7 +22,7 @@ export interface IAktivitet {
 }
 
 export interface ISagtOppEllerRedusertStilling {
-    sagtOppEllerRedusertStilling: string;
+    sagtOppEllerRedusertStilling?: ESagtOppEllerRedusert;
     årsak?: string;
     dato?: string;
     dokumentasjon?: IDokumentasjon;

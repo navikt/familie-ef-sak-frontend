@@ -13,7 +13,7 @@ import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
 
-const StyledInngangsvilkår = styled.div`
+const StyledAktivitetssvilkår = styled.div`
     margin: 2rem;
     display: grid;
     grid-template-columns: repeat(2, max-content);
@@ -37,7 +37,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const {vilkår, hentVilkår, lagreVurdering, feilmeldinger} = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger } = useHentVilkår(behandlingId);
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -51,8 +51,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-            postOvergangsstønadSuksess &&
-            history.push(`/behandling/${behandlingId}/inntekt`);
+        postOvergangsstønadSuksess && history.push(`/behandling/${behandlingId}/inntekt`);
     }, [postOvergangsstønadSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
@@ -76,7 +75,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                 settFeilmelding(responseStønadsvilkår.frontendFeilmelding);
             }
         });
-    }
+    };
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {
@@ -96,17 +95,17 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                             .endringerIRegistergrunnlag || {}
                     ).some((endringer) => endringer.length > 0);
                     return (
-                        <StyledInngangsvilkår>
+                        <StyledAktivitetssvilkår>
                             {Object.keys(AktivitetsvilkårGruppe).map((vilkårGruppe) => {
-                                    return (
-                                        <Vurdering
-                                            key={vilkårGruppe}
-                                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                                            inngangsvilkår={vilkår}
-                                            feilmeldinger={feilmeldinger}
-                                            lagreVurdering={lagreVurdering}
-                                        />
-                                    );
+                                return (
+                                    <Vurdering
+                                        key={vilkårGruppe}
+                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                        inngangsvilkår={vilkår}
+                                        feilmeldinger={feilmeldinger}
+                                        lagreVurdering={lagreVurdering}
+                                    />
+                                );
                             })}
                             <StyledKnapp
                                 onClick={godkjennEnderinger}
@@ -114,7 +113,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                             >
                                 Godkjenn endringer i registergrunnlag
                             </StyledKnapp>
-                        </StyledInngangsvilkår>
+                        </StyledAktivitetssvilkår>
                     );
                 }}
             </DataViewer>

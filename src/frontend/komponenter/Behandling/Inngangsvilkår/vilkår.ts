@@ -2,6 +2,7 @@ import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
 import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
+import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
 
 export interface IVilkår {
     vurderinger: IVurdering[];
@@ -14,6 +15,7 @@ export interface IVilkårGrunnlag {
     bosituasjon: IBosituasjon;
     sivilstandsplaner: ISivilstandsplaner;
     barnMedSamvær: IBarnMedSamvær[];
+    sagtOppEllerRedusertStilling: ISagtOppEllerRedusertStilling;
 }
 
 export interface ISivilstandsplaner {
@@ -184,7 +186,7 @@ export enum VilkårGruppe {
     ALENEOMSORG = 'ALENEOMSORG',
     NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
     AKTIVITET = 'AKTIVITET',
-    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export enum InngangsvilkårGruppe {
@@ -194,12 +196,12 @@ export enum InngangsvilkårGruppe {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
-    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER'
+    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
 }
 
 export enum AktivitetsvilkårGruppe {
     AKTIVITET = 'AKTIVITET',
-    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
