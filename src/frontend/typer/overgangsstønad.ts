@@ -1,6 +1,7 @@
 //interfaces
 
 import { IDokumentasjon } from './felles';
+import { EDinSituasjon } from '../komponenter/Behandling/Aktivitet/Aktivitet/typer';
 
 export interface IAktivitet {
     arbeidssituasjon: string[];
@@ -11,8 +12,9 @@ export interface IAktivitet {
     underUtdanning?: IUnderUtdanning;
     virksomhet?: IVirksomhet;
     tidligereUtdanninger: ITidligereUtdanning[];
-    gjelderDeg: string[];
+    gjelderDeg: EDinSituasjon[];
     særligeTilsynsbehov: ISærligeTilsynsbehov[];
+    datoOppstartJobb?: string;
 }
 
 export interface ISagtOppEllerRedusertStilling {

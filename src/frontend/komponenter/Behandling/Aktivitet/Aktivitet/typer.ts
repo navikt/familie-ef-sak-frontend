@@ -23,3 +23,20 @@ export const ArbeidssituasjonTilTekst: Record<EArbeidssituasjon, string> = {
     harFåttJobbTilbud: 'Har fått jobbtilbud',
     erHverkenIArbeidUtdanningEllerArbeidssøker: 'Ikke i arbeid, utdanning eller arbeidssøker',
 };
+
+export enum EDinSituasjon {
+    erSyk = 'erSyk',
+    harSyktBarn = 'harSyktBarn',
+    harSøktBarnepassOgVenterEnnå = 'harSøktBarnepassOgVenterEnnå',
+    harBarnMedSærligeBehov = 'harBarnMedSærligeBehov',
+    nei = 'nei',
+}
+
+export const DinSituasjonTilTekst: Record<EDinSituasjon, string> = {
+    erSyk: 'Jeg er syk',
+    harSyktBarn: 'Barnet mitt er sykt',
+    harSøktBarnepassOgVenterEnnå: 'Jeg har søkt om barnepass, men ikke fått plass enda',
+    harBarnMedSærligeBehov:
+        'Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store sosiale problemer',
+    nei: 'Nei',
+};

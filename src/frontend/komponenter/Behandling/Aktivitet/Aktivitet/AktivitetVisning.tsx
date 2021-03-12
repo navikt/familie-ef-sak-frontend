@@ -1,72 +1,144 @@
 import React, { FC } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { IAktivitet } from '../../../../typer/overgangsstønad';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
+import SelvstendigNæringsdrivendeEllerFrilanser from './SelvstendigNæringsdrivendeEllerFrilanser';
+import Arbeidssøker from './Arbeidssøker';
+import { TidligereUtdanninger, UnderUtdanning } from './Utdanning';
+import { SeksjonWrapper } from '../../../Felleskomponenter/SeksjonWrapper';
+import Annet from './Annet';
+import Aksjeselskap from './Aksjeselskap';
 
 interface Props {
     aktivitet: IAktivitet;
     vilkårStatus: VilkårStatus;
 }
 const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
-    const { arbeidssituasjon, selvstendig } = aktivitet;
-    console.log(aktivitet);
+    const {
+        arbeidssituasjon,
+        selvstendig,
+        aksjeselskap,
+        virksomhet,
+        arbeidssøker,
+        datoOppstartJobb,
+        underUtdanning,
+        tidligereUtdanninger,
+        særligeTilsynsbehov,
+        gjelderDeg,
+    } = aktivitet;
+
     return (
         <>
-            <StyledTabell kolonner={3}>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
-                <div className="tittel fjernSpacing">
-                    <Undertittel>Aktivitet</Undertittel>
-                </div>
-            </StyledTabell>
-            <StyledTabell kolonner={3}>
-                {arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
-                            {ArbeidssituasjonTilTekst[EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr]}
-                        </Element>
-                    </>
-                )}
-            </StyledTabell>
-            <StyledTabell kolonner={3}>
-                {arbeidssituasjon.includes(
-                    EArbeidssituasjon.erSelvstendigNæringsdriveneEllerFrilanser
-                ) &&
-                    selvstendig &&
-                    selvstendig.map((firma) => (
+            <SeksjonWrapper>
+                <StyledTabell kolonner={3}>
+                    <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+                    <Undertittel className="tittel fjernSpacing">Aktivitet</Undertittel>
+                </StyledTabell>
+                <StyledTabell kolonner={3}>
+                    {arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
                         <>
                             <Søknadsgrunnlag />
                             <Element className={'undertittel'}>
                                 {
                                     ArbeidssituasjonTilTekst[
-                                        EArbeidssituasjon.erSelvstendigNæringsdriveneEllerFrilanser
+                                        EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr
                                     ]
                                 }
                             </Element>
-                            <Normaltekst className={'førsteDataKolonne'}> Firma</Normaltekst>
-                            <Normaltekst> {firma.firmanavn}</Normaltekst>
-                            <Normaltekst className={'førsteDataKolonne'}>
-                                Organisasjonsnummer
-                            </Normaltekst>
-                            <Normaltekst>{firma.organisasjonsnummer}</Normaltekst>
-                            <Normaltekst className={'førsteDataKolonne'}>
-                                Etableringsdato
-                            </Normaltekst>
-                            <Normaltekst>{firma.etableringsdato}</Normaltekst>
-                            <Normaltekst className={'førsteDataKolonne'}>
-                                Stillingsprosent
-                            </Normaltekst>
-                            <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
-                            <Normaltekst className={'førsteDataKolonne'}>
-                                Beskrivelse av arbeidsuke
-                            </Normaltekst>
-                            <Normaltekst>{firma.hvordanSerArbeidsukenUt}</Normaltekst>
                         </>
-                    ))}
-            </StyledTabell>
+                    )}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {selvstendig &&
+                        selvstendig.map((firma) => (
+                            <SelvstendigNæringsdrivendeEllerFrilanser
+                                key={uuidv4()}
+                                firma={firma}
+                            />
+                        ))}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {aksjeselskap &&
+                        aksjeselskap.map((selskap) => (
+                            <Aksjeselskap key={uuidv4()} aksjeselskap={selskap} />
+                        ))}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {datoOppstartJobb && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Element className={'undertittel'}>
+                                {ArbeidssituasjonTilTekst[EArbeidssituasjon.harFåttJobbTilbud]}
+                            </Element>
+                            <Normaltekst className={'førsteDataKolonne'}>
+                                Startdato ny jobb
+                            </Normaltekst>
+                            <Normaltekst> {datoOppstartJobb}</Normaltekst>
+                        </>
+                    )}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {virksomhet && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Element className={'undertittel'}>
+                                {
+                                    ArbeidssituasjonTilTekst[
+                                        EArbeidssituasjon.etablererEgenVirksomhet
+                                    ]
+                                }
+                            </Element>
+                            <Normaltekst className={'førsteDataKolonne'}>
+                                Om virksomheten
+                            </Normaltekst>
+                            <Normaltekst> {virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
+                        </>
+                    )}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {arbeidssøker && <Arbeidssøker arbeidssøker={arbeidssøker} />}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {underUtdanning && <UnderUtdanning underUtdanning={underUtdanning} />}
+
+                    {tidligereUtdanninger && (
+                        <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
+                    )}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {arbeidssituasjon.includes(
+                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                    ) && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Element className={'undertittel'}>
+                                {
+                                    ArbeidssituasjonTilTekst[
+                                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                                    ]
+                                }
+                            </Element>
+                        </>
+                    )}
+                </StyledTabell>
+            </SeksjonWrapper>
+
+            {særligeTilsynsbehov && (
+                <SeksjonWrapper>
+                    <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
+                </SeksjonWrapper>
+            )}
         </>
     );
 };

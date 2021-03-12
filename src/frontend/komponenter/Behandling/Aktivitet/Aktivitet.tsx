@@ -12,14 +12,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
-
-const StyledInngangsvilkår = styled.div`
-    margin: 2rem;
-    display: grid;
-    grid-template-columns: repeat(2, max-content);
-    grid-auto-rows: auto;
-    grid-gap: 3rem;
-`;
+import { StyledInngangsvilkår } from '../Inngangsvilkår/Inngangsvilkår';
 
 const StyledKnapp = hiddenIf(styled(Knapp)`
     display: block;
@@ -37,7 +30,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const {vilkår, hentVilkår, lagreVurdering, feilmeldinger} = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger } = useHentVilkår(behandlingId);
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -51,10 +44,10 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-            postOvergangsstønadSuksess &&
-            history.push(`/behandling/${behandlingId}/inntekt`);
+        postOvergangsstønadSuksess && history.push(`/behandling/${behandlingId}/inntekt`);
     }, [postOvergangsstønadSuksess]);
 
+    // eslint-disable-next-line
     const ferdigVurdert = (behandlingId: string): any => {
         const postOvergangsstønad = (): Promise<Ressurs<string>> => {
             return axiosRequest<any, any>({
@@ -76,7 +69,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                 settFeilmelding(responseStønadsvilkår.frontendFeilmelding);
             }
         });
-    }
+    };
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {
@@ -98,15 +91,15 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                     return (
                         <StyledInngangsvilkår>
                             {Object.keys(AktivitetsvilkårGruppe).map((vilkårGruppe) => {
-                                    return (
-                                        <Vurdering
-                                            key={vilkårGruppe}
-                                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
-                                            inngangsvilkår={vilkår}
-                                            feilmeldinger={feilmeldinger}
-                                            lagreVurdering={lagreVurdering}
-                                        />
-                                    );
+                                return (
+                                    <Vurdering
+                                        key={vilkårGruppe}
+                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                        inngangsvilkår={vilkår}
+                                        feilmeldinger={feilmeldinger}
+                                        lagreVurdering={lagreVurdering}
+                                    />
+                                );
                             })}
                             <StyledKnapp
                                 onClick={godkjennEnderinger}

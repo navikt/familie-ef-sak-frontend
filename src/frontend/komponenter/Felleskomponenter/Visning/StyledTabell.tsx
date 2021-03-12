@@ -46,6 +46,9 @@ export const StyledTabell = styled.div`
     .fjernSpacing {
         padding-bottom: 0;
     }
+    .leggTilSpacing {
+        padding-bottom: 1rem;
+    }
 
     .førsteDataKolonne {
         grid-column: 2/3;
@@ -59,4 +62,8 @@ export const StyledTabell = styled.div`
     .tomTabell {
         color: ${navFarger.navGra60};
     }
+`;
+
+export const StyledTabellWrapper = styled.div`
+    display: contents;
 `;
