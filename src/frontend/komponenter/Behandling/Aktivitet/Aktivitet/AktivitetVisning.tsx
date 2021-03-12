@@ -13,6 +13,7 @@ import { SeksjonWrapper } from '../../../Felleskomponenter/SeksjonWrapper';
 import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmottakerSomFrilanser';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -21,6 +22,7 @@ interface Props {
 const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
     const {
         arbeidssituasjon,
+        arbeidsforhold,
         selvstendig,
         aksjeselskap,
         virksomhet,
@@ -52,6 +54,16 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                             </Element>
                         </>
                     )}
+                </StyledTabell>
+
+                <StyledTabell kolonner={3}>
+                    {arbeidsforhold &&
+                        arbeidsforhold.map((arbeidsgiver) => (
+                            <ArbeidstakerLønnsmottakerSomFrilanser
+                                key={uuidv4()}
+                                arbeidsforhold={arbeidsgiver}
+                            />
+                        ))}
                 </StyledTabell>
 
                 <StyledTabell kolonner={3}>

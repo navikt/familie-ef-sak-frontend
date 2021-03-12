@@ -24,10 +24,23 @@ interface Props {
     særligTilsynsbehov: ISærligeTilsynsbehov[];
 }
 
-const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
-    const hjelpetekst =
-        'Jeg er syk / Barnet mitt er sykt / Jeg har søkt om barnepass, men ikke fått plass enda / Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store sosiale problemer / Nei ';
+const hjelpetekst = (
+    <Normaltekst>
+        Mulig alternativer i søknadsdialog:
+        <ul>
+            <li>Jeg er syk</li>
+            <li>Barnet mitt er sykt </li>
+            <li>Jeg har søkt om barnepass, men ikke fått plass enda</li>
+            <li>
+                Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store
+                sosiale problemer
+            </li>
+            <li>Nei</li>
+        </ul>
+    </Normaltekst>
+);
 
+const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
     return (
         <>
             <StyledTabell kolonner={3}>
