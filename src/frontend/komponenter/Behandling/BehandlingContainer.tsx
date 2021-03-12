@@ -56,7 +56,7 @@ const Behandling: FC = () => {
                     <VisittkortComponent data={personopplysningerResponse} />
                     <Container>
                         <VenstreMenyWrapper>
-                            <Venstemeny />
+                            <Venstemeny behandling={behandling} />
                         </VenstreMenyWrapper>
                         <InnholdWrapper>
                             <Fanemeny />
