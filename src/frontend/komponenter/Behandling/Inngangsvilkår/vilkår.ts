@@ -152,6 +152,7 @@ export enum UnntakType {
     ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR = 'ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR',
     ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR = 'ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR',
     TOTALVURDERING_OPPFYLLER_FORSKRIFT = 'TOTALVURDERING_OPPFYLLER_FORSKRIFT',
+    RIMELIG_GRUNN_SAGT_OPP = 'RIMELIG_GRUNN_SAGT_OPP',
 }
 
 export const unntakTypeTilTekst: Record<UnntakType, string> = {
@@ -176,6 +177,8 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
         'Ja, medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
     TOTALVURDERING_OPPFYLLER_FORSKRIFT:
         'Ja, totalvurdering viser at forholdene går inn under forskriften om kravet om fem års forutgående medlemskap',
+    RIMELIG_GRUNN_SAGT_OPP:
+        'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
 };
 
 // ------ VILKÅRGRUPPE

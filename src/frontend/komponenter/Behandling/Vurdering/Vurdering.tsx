@@ -52,9 +52,6 @@ const Vurdering: FC<Props> = ({
     if (!config) {
         return <div>Mangler config for {vilkårGruppe}</div>;
     }
-    console.log('vurderinger:', vurderinger);
-    console.log('filtrerte vurderinger:', filtrerteVurderinger);
-
     return (
         <StyledVilkårOgVurdering>
             <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status, barnId)}</StyledVisning>
