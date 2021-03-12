@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
 import { v4 as uuidv4 } from 'uuid';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 const StyledList = styled.ul`
     list-style-type: square;
@@ -46,11 +47,11 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                     <StyledTabellWrapper key={uuidv4()}>
                         <Søknadsgrunnlag />
                         <Normaltekst className={'førsteDataKolonne'}>
-                            Om tilsynsbehov for barn:
+                            Om tilsynsbehov for:
                             {barnetsBehov.navn ||
-                                `Barn ${barnetsBehov.erBarnetFødt ? 'født' : 'ufødt'} ${
-                                    barnetsBehov.fødselTermindato
-                                }`}
+                                `Barn ${
+                                    barnetsBehov.erBarnetFødt ? 'født' : 'termindato'
+                                } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`}
                         </Normaltekst>
                         <Normaltekst>{barnetsBehov.særligeTilsynsbehov}</Normaltekst>
                     </StyledTabellWrapper>

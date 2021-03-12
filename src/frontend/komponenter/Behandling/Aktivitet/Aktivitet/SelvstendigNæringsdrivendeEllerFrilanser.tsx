@@ -3,6 +3,7 @@ import { ISelvstendig } from '../../../../typer/overgangsstønad';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 const SelvstendigNæringsdrivendeEllerFrilanser: FC<{ firma: ISelvstendig }> = ({ firma }) => {
     return (
@@ -20,7 +21,7 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{ firma: ISelvstendig }> = (
             <Normaltekst className={'førsteDataKolonne'}>Organisasjonsnummer</Normaltekst>
             <Normaltekst>{firma.organisasjonsnummer}</Normaltekst>
             <Normaltekst className={'førsteDataKolonne'}>Etableringsdato</Normaltekst>
-            <Normaltekst>{firma.etableringsdato}</Normaltekst>
+            <Normaltekst>{formaterNullableIsoDato(firma.etableringsdato)}</Normaltekst>
             <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
             <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
             <Normaltekst className={'førsteDataKolonne'}>Beskrivelse av arbeidsuke</Normaltekst>

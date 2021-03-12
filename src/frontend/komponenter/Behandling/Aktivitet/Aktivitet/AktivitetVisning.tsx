@@ -12,6 +12,7 @@ import { TidligereUtdanninger, UnderUtdanning } from './Utdanning';
 import { SeksjonWrapper } from '../../../Felleskomponenter/SeksjonWrapper';
 import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -80,7 +81,7 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                             <Normaltekst className={'førsteDataKolonne'}>
                                 Startdato ny jobb
                             </Normaltekst>
-                            <Normaltekst> {datoOppstartJobb}</Normaltekst>
+                            <Normaltekst> {formaterNullableIsoDato(datoOppstartJobb)}</Normaltekst>
                         </>
                     )}
                 </StyledTabell>

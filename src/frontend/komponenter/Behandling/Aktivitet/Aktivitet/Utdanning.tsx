@@ -6,6 +6,7 @@ import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { v4 as uuidv4 } from 'uuid';
 import { StyledTabellWrapper } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../../utils/formatter';
 
 export const UnderUtdanning: FC<{
     underUtdanning: IUnderUtdanning;
@@ -27,7 +28,9 @@ export const UnderUtdanning: FC<{
             <Normaltekst> {underUtdanning.offentligEllerPrivat}</Normaltekst>
 
             <Normaltekst className={'førsteDataKolonne'}>Studiets tidsperiode</Normaltekst>
-            <Normaltekst>{`${underUtdanning.fra} - ${underUtdanning.til}`}</Normaltekst>
+            <Normaltekst>{`${formaterNullableIsoDato(
+                underUtdanning.fra
+            )} - ${formaterNullableIsoDato(underUtdanning.til)}`}</Normaltekst>
 
             <Normaltekst className={'førsteDataKolonne'}>Heltid eller deltid</Normaltekst>
             <Normaltekst> {underUtdanning.heltidEllerDeltid}</Normaltekst>
@@ -61,7 +64,11 @@ export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanni
                     <Normaltekst className={'førsteDataKolonne'}>
                         {utdanning.linjeKursGrad}
                     </Normaltekst>
-                    <Normaltekst> {`${utdanning.fra} - ${utdanning.til}`}</Normaltekst>
+                    <Normaltekst>
+                        {`${formaterIsoMånedÅr(utdanning.fra)} - ${formaterIsoMånedÅr(
+                            utdanning.til
+                        )}`}
+                    </Normaltekst>
                 </StyledTabellWrapper>
             ))}
         </>
