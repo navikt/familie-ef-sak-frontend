@@ -4,6 +4,8 @@ export const delvilkårTypeSomKreverSpesialhåntering: DelvilkårType[] = [
     DelvilkårType.NÆRE_BOFORHOLD,
     DelvilkårType.HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER,
     DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED,
+    DelvilkårType.HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING,
+    DelvilkårType.HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD
 ];
 
 export const vilkårsresultatTypeTilTekstForDelvilkår = (
@@ -25,7 +27,7 @@ const harDelvilkårNegertSpørsmålstilling = (
     );
 };
 
-const reverseVilkårsresultatTypeTilTekst = (vilkårsresultat: Vilkårsresultat): string => {
+export const reverseVilkårsresultatTypeTilTekst = (vilkårsresultat: Vilkårsresultat): string => {
     if (vilkårsresultat === Vilkårsresultat.OPPFYLT)
         return vilkårsresultatTypeTilTekst[Vilkårsresultat.IKKE_OPPFYLT];
     return vilkårsresultatTypeTilTekst[Vilkårsresultat.OPPFYLT];

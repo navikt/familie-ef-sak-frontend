@@ -8,10 +8,12 @@ import {
     delvilkårTypeTilTekst,
     Vilkår,
     Vilkårsresultat,
-    vilkårsresultatTypeTilTekst,
 } from '../Inngangsvilkår/vilkår';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import InformasjonsElement from './InformasjonsElement';
+import {
+    reverseVilkårsresultatTypeTilTekst
+} from '../Inngangsvilkår/vilkårsresultat';
 
 const Content = styled.div`
     max-width: 1800px;
@@ -53,12 +55,10 @@ const TidligereStønadsperioder: React.FC<{ behandlingId: string }> = ({ behandl
                                     DelvilkårType.HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD
                                 ]
                             }
-                            spørsmålsvar={
-                                vilkårsresultatTypeTilTekst[
-                                    harTidligereMottattOvergansstønad?.resultat ||
-                                        Vilkårsresultat.IKKE_VURDERT
-                                ]
-                            }
+                            spørsmålsvar={reverseVilkårsresultatTypeTilTekst(
+                                harTidligereMottattOvergansstønad?.resultat ??
+                                    Vilkårsresultat.IKKE_VURDERT
+                            )}
                         />
                         <InformasjonsElement
                             tittel="Tidligere vedtaksperioder andre stønader"
@@ -67,12 +67,10 @@ const TidligereStønadsperioder: React.FC<{ behandlingId: string }> = ({ behandl
                                     DelvilkårType.HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING
                                 ]
                             }
-                            spørsmålsvar={
-                                vilkårsresultatTypeTilTekst[
-                                    harTidligereMottattAndreStønader?.resultat ||
-                                        Vilkårsresultat.IKKE_VURDERT
-                                ]
-                            }
+                            spørsmålsvar={reverseVilkårsresultatTypeTilTekst(
+                                harTidligereMottattAndreStønader?.resultat ??
+                                    Vilkårsresultat.IKKE_VURDERT
+                            )}
                             hjelpetekst="Tiden med overgangsstønad løper dersom søker mottar andre løpende ytelser etter folketrygdloven kap.15,
                             herunder ytelser etter tilleggsstønadsforeskriften."
                         />

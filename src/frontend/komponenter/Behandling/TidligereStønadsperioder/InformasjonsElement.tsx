@@ -5,13 +5,13 @@ import styled from 'styled-components';
 
 const FloatRight = styled.div`
     float: right;
-    width: ${(props:{ width?: string }) => props.width ?? "50%"}
+    width: ${(props:{ width?: string }) => props.width ?? "50%"};
     padding: 1rem 0;
 `;
 
 const FloatLeft = styled.div`
     float: left;
-    width: ${(props:{ width?: string }) => props.width ?? "50%"}
+    width: ${(props:{ width?: string }) => props.width ?? "50%"};
     padding: 1rem 0;
 `;
 
