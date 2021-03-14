@@ -67,6 +67,7 @@ export enum Vilkår {
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
     NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
+    TIDLIGERE_VEDTAKSPERIODER = 'TIDLIGERE_VEDTAKSPERIODER',
 }
 
 export type VilkårType =
@@ -76,7 +77,8 @@ export type VilkårType =
     | Vilkår.SIVILSTAND
     | Vilkår.SAMLIV
     | Vilkår.NYTT_BARN_SAMME_PARTNER
-    | Vilkår.ALENEOMSORG;
+    | Vilkår.ALENEOMSORG
+    | Vilkår.TIDLIGERE_VEDTAKSPERIODER;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
@@ -86,6 +88,7 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
     NYTT_BARN_SAMME_PARTNER: 'Vilkår om barn med samme partner',
+    TIDLIGERE_VEDTAKSPERIODER: 'Tidligere vedtaksperioder',
 };
 
 // ------- DELVILKÅR
@@ -105,6 +108,8 @@ export enum DelvilkårType {
     MER_AV_DAGLIG_OMSORG = 'MER_AV_DAGLIG_OMSORG',
     OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN = 'OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN',
     HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER = 'HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER',
+    HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD = 'HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD',
+    HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING = 'HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -127,6 +132,8 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Har bruker omsorgen for egne/adopterte barn? ',
     HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER:
         'Har søker fått nytt barn med samme partner (født etter 01.01.2016) eller venter nytt barn med samme partner, etter at en av foreldrene tidligere har mottatt eller fortsatt mottar stønad for et annet felles barn.',
+    HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD: 'Har søker tidligere mottatt overgangsstønad?',
+    HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING: 'Har søker tidligere mottatt andre stønader som har betydning for stønadstiden i §15-8 første og andre ledd?'
 };
 
 // ------ UNNTAK
@@ -184,7 +191,7 @@ export enum VilkårGruppe {
     ALENEOMSORG = 'ALENEOMSORG',
     NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
     AKTIVITET = 'AKTIVITET',
-    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export enum InngangsvilkårGruppe {
@@ -194,12 +201,12 @@ export enum InngangsvilkårGruppe {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
-    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER'
+    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
 }
 
 export enum AktivitetsvilkårGruppe {
     AKTIVITET = 'AKTIVITET',
-    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
