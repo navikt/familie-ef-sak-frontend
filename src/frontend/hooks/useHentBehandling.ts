@@ -8,7 +8,7 @@ export const useHentBehandling = (
     behandlingId: string
 ): {
     hentBehandlingCallback: () => void;
-    behandling: Ressurs<Behandling>;
+    behandling: Ressurs<Behandling> /** Hvorfor er denne pakket inn slik ? */;
 } => {
     const { axiosRequest } = useApp();
     const [behandling, settBehandling] = useState<Ressurs<Behandling>>(byggTomRessurs());
