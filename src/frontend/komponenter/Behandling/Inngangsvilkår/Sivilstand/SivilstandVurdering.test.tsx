@@ -9,8 +9,7 @@ import { DelvilkårType, IVurdering, Vilkår, Vilkårsresultat } from '../vilkå
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import { IBosituasjon } from '../Samliv/typer';
 import { IMedlemskap } from '../Medlemskap/typer';
-const domTestingLib = require('@testing-library/dom');
-const { queryHelpers } = domTestingLib;
+import { finnRadioKnappFor } from '../../../../utils/testutils';
 
 describe('inngangsvilkar/sivilstand', () => {
     describe('sivilstandsvisning', () => {
@@ -65,20 +64,19 @@ describe('inngangsvilkar/sivilstand', () => {
                 };
                 const { container } = render(<SivilstandVurdering props={vilkårProps} />);
 
-                const getByName = queryHelpers.queryAllByAttribute.bind(null, 'name');
-                const sivilstandKravRadio: HTMLElement[] = getByName(
+                const oppfyltSivilstand = finnRadioKnappFor(
                     container,
-                    DelvilkårType.KRAV_SIVILSTAND
+                    DelvilkårType.KRAV_SIVILSTAND,
+                    Vilkårsresultat.OPPFYLT
                 );
+                expect(oppfyltSivilstand).toBeChecked();
 
-                const oppfylt = sivilstandKravRadio.find(
-                    (r) => r.getAttribute('value') === Vilkårsresultat.OPPFYLT
+                const ikkeOppfyltSivilstand = finnRadioKnappFor(
+                    container,
+                    DelvilkårType.KRAV_SIVILSTAND,
+                    Vilkårsresultat.IKKE_OPPFYLT
                 );
-                expect(oppfylt?.getAttributeNames().includes('checked')).toBeTruthy();
-                const ikkeOppfylt = sivilstandKravRadio.find(
-                    (r) => r.getAttribute('value') === Vilkårsresultat.IKKE_OPPFYLT
-                );
-                expect(ikkeOppfylt?.getAttributeNames().includes('checked')).toBeFalsy();
+                expect(ikkeOppfyltSivilstand).not.toBeChecked();
             });
         });
     });

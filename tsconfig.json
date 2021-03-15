@@ -6,7 +6,7 @@
         "rootDir": "./src",
         "resolveJsonModule": true
     },
-    "include": ["./src/backend", "./src/mock-server", "./src/mock-server/**/*.json"],
+    "include": ["./src/backend", "./src/mock-server", "./src/mock-server/**/*.json", "./jest-setup"],
     "exclude": ["./src/frontend"],
     "lib": ["es2015"]
 }

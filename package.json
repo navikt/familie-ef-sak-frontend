@@ -25,6 +25,7 @@
   },
   "jest": {
     "preset": "ts-jest",
+    "setupFilesAfterEnv": ["./jest-setup.ts"],
     "globals": {
       "ts-jest": {
         "tsconfig": "<rootDir>/src/frontend/tsconfig.json"
@@ -34,7 +35,6 @@
       "nav-(.*)-style": "<rootDir>/src/mockFile.js",
       "nav-(.*)-core": "<rootDir>/src/mockFile.js"
     }
-
   },
   "lint-staged": {
     "./src/**/*.{js,ts,tsx}": [
@@ -144,13 +144,14 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.10.4",
     "@babel/preset-env": "^7.13.9",
-    "@testing-library/react-hooks": "^3.4.2",
-    "@testing-library/react": "11.2.5",
+    "@babel/preset-react": "^7.10.4",
     "@testing-library/dom": "7.30.0",
-    "@types/react-axe": "^3.1.0",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "11.2.5",
+    "@testing-library/react-hooks": "^3.4.2",
     "@types/jest": "^26.0.15",
+    "@types/react-axe": "^3.1.0",
     "@types/styled-components": "^5.1.3",
     "@types/webpack": "4.41.22",
     "@types/webpack-dev-middleware": "3.7.2",
