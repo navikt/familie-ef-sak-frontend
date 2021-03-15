@@ -14,15 +14,12 @@ const StyledList = styled.ul`
     list-style-type: square;
     margin: 0;
 `;
-
-const StyledSøknadsgrunnlag = styled(Søknadsgrunnlag)`
-    align-self: auto;
+const TittelIkonWrapper = styled.div`
+    display: flex;
+    .typo-element {
+        padding-right: 1rem;
+    }
 `;
-
-interface Props {
-    dinSituasjon: EDinSituasjon[];
-    særligTilsynsbehov: ISærligeTilsynsbehov[];
-}
 
 const hjelpetekst = (
     <Normaltekst>
@@ -40,14 +37,21 @@ const hjelpetekst = (
     </Normaltekst>
 );
 
+interface Props {
+    dinSituasjon: EDinSituasjon[];
+    særligTilsynsbehov: ISærligeTilsynsbehov[];
+}
+
 const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
     return (
         <>
             <StyledTabell kolonner={3}>
-                <Element className={'førsteDataKolonne'}>Annet</Element>
-                <Hjelpetekst type={PopoverOrientering.Under}>{hjelpetekst}</Hjelpetekst>
+                <TittelIkonWrapper className={'førsteDataKolonne'}>
+                    <Element>Annet</Element>
+                    <Hjelpetekst type={PopoverOrientering.OverVenstre}>{hjelpetekst}</Hjelpetekst>
+                </TittelIkonWrapper>
 
-                <StyledSøknadsgrunnlag />
+                <Søknadsgrunnlag />
                 <Normaltekst className={'førsteDataKolonne'}>Mer om søkers situasjon</Normaltekst>
                 <StyledList>
                     {dinSituasjon.map((svarsalternativ) => (
