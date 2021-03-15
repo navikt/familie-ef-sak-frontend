@@ -2,9 +2,14 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": ".",
-        "typeRoots": ["../../node_modules/@types", "./@types"]
+        "typeRoots": ["../../node_modules/@types", "./@types"],
+        "allowSyntheticDefaultImports": true
     },
     "exclude": [
         "../../node_modules",
+    ],
+    "lib": [
+        "es2015",
+        "esnext"
     ]
 }
