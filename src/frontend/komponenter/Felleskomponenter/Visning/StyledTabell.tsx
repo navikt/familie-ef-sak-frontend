@@ -3,10 +3,10 @@ import navFarger from 'nav-frontend-core';
 
 export const StyledTabell = styled.div`
     display: grid;
-    grid-template-columns: repeat(
-        ${(props: { kolonner?: number }) => props.kolonner || 4},
-        max-content
-    );
+    grid-template-columns: max-content minmax(100px, 250px) repeat(
+            ${(props: { kolonner?: number }) => (props.kolonner ? props.kolonner - 2 : 2)},
+            minmax(100px, 300px)
+        );
     grid-auto-rows: min-content;
     grid-gap: 0.5rem;
     margin-bottom: 3rem;
@@ -22,7 +22,7 @@ export const StyledTabell = styled.div`
     svg {
         max-height: 24px;
         grid-column: 1/2;
-        align-self: center;
+        align-self: start;
     }
 
     .undertittel {
@@ -63,6 +63,8 @@ export const StyledTabell = styled.div`
         color: ${navFarger.navGra60};
     }
 `;
+
+// export const TittelIkonWrapper = styled.
 
 export const StyledTabellWrapper = styled.div`
     display: contents;
