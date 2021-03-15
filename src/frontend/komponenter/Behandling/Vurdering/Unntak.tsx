@@ -25,7 +25,6 @@ const vilkårsResultatForUnntak = (unntakType: UnntakType | undefined): Vilkårs
 };
 
 const Unntak: FC<Props> = ({ vurdering, settVurdering, unntak }) => {
-    console.log('unntak', unntak);
     return (
         <RadioGruppe key={vurdering.id} legend={'Er unntak fra hovedregelen oppfylt?'}>
             {unntak.map((unntakType) => (
