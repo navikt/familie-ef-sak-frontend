@@ -40,3 +40,17 @@ export const DinSituasjonTilTekst: Record<EDinSituasjon, string> = {
         'Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store sosiale problemer',
     nei: 'Nei',
 };
+
+export enum EStilling {
+    fast = 'fast',
+    midlertidig = 'midlertidig',
+    lærling = 'lærling',
+    tilkallingsvakt = 'tilkallingsvakt',
+}
+
+export const StillingTilTekst: Record<EStilling, string> = {
+    fast: 'Fast stilling',
+    midlertidig: 'Midlertidig stilling',
+    lærling: 'Lærling',
+    tilkallingsvakt: 'Tilkallingsvikar eller liknende',
+};
