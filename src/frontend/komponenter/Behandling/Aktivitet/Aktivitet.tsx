@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import React, { FC, useEffect, useState } from 'react';
 import { AktivitetsvilkårGruppe, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
@@ -47,7 +48,6 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
         postOvergangsstønadSuksess && history.push(`/behandling/${behandlingId}/inntekt`);
     }, [postOvergangsstønadSuksess]);
 
-    // eslint-disable-next-line
     const ferdigVurdert = (behandlingId: string): any => {
         const postOvergangsstønad = (): Promise<Ressurs<string>> => {
             return axiosRequest<any, any>({

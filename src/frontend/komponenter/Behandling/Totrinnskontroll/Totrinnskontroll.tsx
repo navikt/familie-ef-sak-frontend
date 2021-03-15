@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../../context/BehandlingContext';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { RessursStatus } from '../../../typer/ressurs';
 import {
     TotrinnskontrollMedBegrunnelse,
     TotrinnskontrollOpprettet,
-    TotrinnskontrollResponse,
     TotrinnskontrollStatus,
 } from '../../../typer/totrinnskontroll';
-import { useApp } from '../../../context/AppContext';
 import FatterVedtak from './FatterVedtak';
 import styled from 'styled-components';
 import Advarsel from '../../../ikoner/Advarsel';
@@ -35,7 +33,6 @@ export const BorderBox = styled.div`
 
 const Totrinnskontroll: FC = () => {
     const { behandling, totrinnskontroll } = useBehandling();
-    const { axiosRequest } = useApp();
 
     if (
         behandling.status !== RessursStatus.SUKSESS ||
