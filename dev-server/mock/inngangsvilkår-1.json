@@ -140,6 +140,31 @@
             "begrunnelse": null
           }
         ]
+      },
+      {
+        "id": "6c4fe6fb-7ea6-44ec-82c8-8cd7e0efe53d",
+        "behandlingId": "26305f79-492d-42db-b8fe-2084a591dbc0",
+        "resultat": "IKKE_VURDERT",
+        "vilkårType": "TIDLIGERE_VEDTAKSPERIODER",
+        "barnId": null,
+        "begrunnelse": null,
+        "unntak": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-14T21:34:29.671",
+        "delvilkårsvurderinger": [
+          {
+            "type": "HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD",
+            "resultat": "OPPFYLT",
+            "årsak": null,
+            "begrunnelse": null
+          },
+          {
+            "type": "HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING",
+            "resultat": "OPPFYLT",
+            "årsak": null,
+            "begrunnelse": null
+          }
+        ]
       }
     ],
     "grunnlag": {

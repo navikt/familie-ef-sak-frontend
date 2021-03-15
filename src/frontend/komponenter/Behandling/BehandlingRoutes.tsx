@@ -12,7 +12,7 @@ const BehandlingRoutes: React.FC = () => {
                 to="/behandling/:behandlingId/inngangsvilkar"
             />
             {sider.map((side) => (
-                <Route exact={true} path={`/behandling/:behandlingId/${side.href}`}>
+                <Route id={side.navn} exact={true} path={`/behandling/:behandlingId/${side.href}`}>
                     {(props: RouteComponentProps<{ behandlingId: string }>) =>
                         React.createElement(
                             side.komponent,

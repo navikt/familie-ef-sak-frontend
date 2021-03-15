@@ -52,7 +52,7 @@ app.get('/familie-ef-sak/api/vedlegg/:id', (req, res) => {
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
-app.get('/familie-ef-sak/api/vurdering/:id/inngangsvilkar', (req, res) => {
+app.get('/familie-ef-sak/api/vurdering/:id/vilkar', (req, res) => {
     const filnavn = `inngangsvilkår-1.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });

@@ -1,14 +1,8 @@
-import {
-    IDelvilkår,
-    IVurdering,
-    Vilkår,
-    VilkårGruppe,
-    Vilkårsresultat,
-} from '../Inngangsvilkår/vilkår';
-import { IVilkårConfig, VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
-import { SivilstandType } from '../../../typer/personopplysninger';
-import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
-import { erEnkeEllerGjenlevendePartner } from '../Inngangsvilkår/Sivilstand/SivilstandHelper';
+import {IDelvilkår, IVurdering, Vilkår, VilkårGruppe, Vilkårsresultat,} from '../Inngangsvilkår/vilkår';
+import {IVilkårConfig, VurderingConfig} from '../Inngangsvilkår/config/VurderingConfig';
+import {SivilstandType} from '../../../typer/personopplysninger';
+import {VilkårStatus} from '../../Felleskomponenter/Visning/VilkårOppfylt';
+import {erEnkeEllerGjenlevendePartner} from '../Inngangsvilkår/Sivilstand/SivilstandHelper';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.every((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
@@ -47,25 +41,27 @@ export const filtrerVurderinger = (
     vilkårGruppe: VilkårGruppe,
     barnId?: string
 ): IVurdering[] =>
-    vurderinger.filter((vurdering) => {
-        const config = VurderingConfig[vurdering.vilkårType];
-        if (!config) {
-            console.error(`Savner config til ${vurdering.vilkårType}`);
-            return false;
-        }
+    vurderinger
+        .filter((vurdering) => vurdering.vilkårType !== Vilkår.TIDLIGERE_VEDTAKSPERIODER)
+        .filter((vurdering) => {
+            const config = VurderingConfig[vurdering.vilkårType];
+            if (!config) {
+                console.error(`Savner config til ${vurdering.vilkårType}`);
+                return false;
+            }
 
-        if (vilkårGruppe === VilkårGruppe.ALENEOMSORG && config.vilkårGruppe === vilkårGruppe) {
-            return barnId === vurdering.barnId;
-        }
+            if (vilkårGruppe === VilkårGruppe.ALENEOMSORG && config.vilkårGruppe === vilkårGruppe) {
+                return barnId === vurdering.barnId;
+            }
 
-        return config.vilkårGruppe === vilkårGruppe;
-    });
+            return config.vilkårGruppe === vilkårGruppe;
+        });
 
 export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[]): boolean =>
     !delvilkårsvurderinger.some((delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT);
 
 export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
-    const { begrunnelse, delvilkårsvurderinger } = vurdering;
+    const {begrunnelse, delvilkårsvurderinger} = vurdering;
 
     if (config.begrunnelsePåkrevdHvisOppfylt && manglerBegrunnelse(begrunnelse)) {
         return false;
@@ -93,7 +89,7 @@ export const skalViseLagreKnappSivilstand = (
     sivilstandType: SivilstandType,
     erBegrunnelseFeltValgfritt: boolean
 ): boolean => {
-    const { begrunnelse, delvilkårsvurderinger } = vurdering;
+    const {begrunnelse, delvilkårsvurderinger} = vurdering;
 
     if (manglerBegrunnelse(begrunnelse) && !erBegrunnelseFeltValgfritt) {
         return false;
@@ -125,7 +121,7 @@ const finnBesvarteDelvilkår = (delvilkårsvurderinger: IDelvilkår[]) => {
 };
 
 export const nullstillVurdering = (vurdering: IVurdering): IVurdering => {
-    const { delvilkårsvurderinger } = vurdering;
+    const {delvilkårsvurderinger} = vurdering;
 
     const nullstillDelvilkår = (delvilkår: IDelvilkår): IDelvilkår => {
         if (
