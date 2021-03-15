@@ -55,4 +55,8 @@ export const StyledTabell = styled.div`
     .tomTabell {
         color: ${navFarger.navGra60};
     }
+
+    .tekstUtenIkon {
+        grid-column: 2 / 4;
+    }
 `;

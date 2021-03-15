@@ -8,6 +8,7 @@ import SamlivVurdering from '../Samliv/SamlivVurdering';
 import AleneomsorgVurdering from '../Aleneomsorg/AleneomsorgVurdering';
 import MorEllerFarVurdering from '../MorEllerFar/MorEllerFarVurdering';
 import NyttBarnSammePartnerVurdering from '../NyttBarnSammePartner/NyttBarnSammePartnerVurdering';
+import SagtOppEllerRedusertVurdering from '../../Aktivitet/SagtOppEllerRedusert/SagtOppEllerRedusertVurdering';
 
 export type IVurderingConfig<TYPE extends VilkårType | VilkårGruppe, CONFIG> = {
     [key in TYPE]: CONFIG;
@@ -107,6 +108,15 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         ),
         unntak: [],
         delvilkår: [DelvilkårType.HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER],
+        begrunnelsePåkrevdHvisOppfylt: false,
+    },
+    SAGT_OPP_ELLER_REDUSERT: {
+        vilkårGruppe: VilkårGruppe.SAGT_OPP_ELLER_REDUSERT,
+        renderVurdering: (props: VurderingProps): ReactChild => (
+            <SagtOppEllerRedusertVurdering props={props} />
+        ),
+        unntak: [UnntakType.RIMELIG_GRUNN_SAGT_OPP],
+        delvilkår: [DelvilkårType.SAGT_OPP_ELLER_REDUSERT],
         begrunnelsePåkrevdHvisOppfylt: false,
     },
 };

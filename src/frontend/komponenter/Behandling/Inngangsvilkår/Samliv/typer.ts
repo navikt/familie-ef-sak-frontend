@@ -36,3 +36,15 @@ export const ÅrsakEnsligTilTekst: Record<EÅrsakEnslig, string> = {
     endringISamværsordning: 'Endring i omsorgen for barn',
     dødsfall: 'Jeg er alene med barn på grunn av dødsfall',
 };
+
+export enum ESagtOppEllerRedusert {
+    sagtOpp = 'sagtOpp',
+    redusertStilling = 'redusertStilling',
+    nei = 'nei',
+}
+
+export const SagtOppEllerRedusertTilTekst: Record<ESagtOppEllerRedusert, string> = {
+    sagtOpp: 'Ja, jeg har sagt opp jobben eller tatt frivillig permisjon (ikke foreldrepermisjon)',
+    redusertStilling: 'Ja, jeg har redusert arbeidstiden',
+    nei: 'Nei',
+};
