@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { IAktivitet } from '../../../../typer/overgangsstønad';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
@@ -37,11 +37,11 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
     return (
         <>
             <SeksjonWrapper>
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                     <Undertittel className="tittel fjernSpacing">Aktivitet</Undertittel>
-                </StyledTabell>
-                <StyledTabell kolonner={3}>
+                </GridTabell>
+                <GridTabell kolonner={3}>
                     {arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
                         <>
                             <Søknadsgrunnlag />
@@ -54,9 +54,9 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                             </Element>
                         </>
                     )}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {arbeidsforhold &&
                         arbeidsforhold.map((arbeidsgiver) => (
                             <ArbeidstakerLønnsmottakerSomFrilanser
@@ -64,9 +64,9 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                                 arbeidsforhold={arbeidsgiver}
                             />
                         ))}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {selvstendig &&
                         selvstendig.map((firma) => (
                             <SelvstendigNæringsdrivendeEllerFrilanser
@@ -74,16 +74,16 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                                 firma={firma}
                             />
                         ))}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {aksjeselskap &&
                         aksjeselskap.map((selskap) => (
                             <Aksjeselskap key={uuidv4()} aksjeselskap={selskap} />
                         ))}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {datoOppstartJobb && (
                         <>
                             <Søknadsgrunnlag />
@@ -96,9 +96,9 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                             <Normaltekst> {formaterNullableIsoDato(datoOppstartJobb)}</Normaltekst>
                         </>
                     )}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {virksomhet && (
                         <>
                             <Søknadsgrunnlag />
@@ -115,21 +115,21 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                             <Normaltekst> {virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
                         </>
                     )}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {arbeidssøker && <Arbeidssøker arbeidssøker={arbeidssøker} />}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {underUtdanning && <UnderUtdanning underUtdanning={underUtdanning} />}
 
                     {tidligereUtdanninger && (
                         <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
                     )}
-                </StyledTabell>
+                </GridTabell>
 
-                <StyledTabell kolonner={3}>
+                <GridTabell kolonner={3}>
                     {arbeidssituasjon.includes(
                         EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
                     ) && (
@@ -144,7 +144,7 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
                             </Element>
                         </>
                     )}
-                </StyledTabell>
+                </GridTabell>
             </SeksjonWrapper>
 
             {særligeTilsynsbehov && (

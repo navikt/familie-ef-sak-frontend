@@ -1,15 +1,20 @@
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
-export const StyledTabell = styled.div`
+interface IStyledTabell {
+    kolonner?: number;
+    underTabellMargin?: number;
+}
+
+export const GridTabell = styled.div<IStyledTabell>`
     display: grid;
-    grid-template-columns: max-content minmax(100px, 250px) repeat(
-            ${(props: { kolonner?: number }) => (props.kolonner ? props.kolonner - 2 : 2)},
-            minmax(100px, 300px)
+    grid-template-columns: 21px 250px repeat(
+            ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
+            300px
         );
     grid-auto-rows: min-content;
     grid-gap: 0.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: ${(props) => props.underTabellMargin || 3}rem;
 
     > .typo-normal {
         padding-right: 2.5rem;
@@ -26,12 +31,12 @@ export const StyledTabell = styled.div`
     }
 
     .undertittel {
-        grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};
+        grid-column: 2 / ${(props) => (props.kolonner || 3) + 1};
     }
 
     .tittel {
         padding-bottom: 1rem;
-        grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};
+        grid-column: 2 / ${(props) => (props.kolonner || 3) + 1};
 
         display: flex;
         align-items: center;
@@ -64,7 +69,10 @@ export const StyledTabell = styled.div`
     }
 `;
 
-// export const TittelIkonWrapper = styled.
+export const GridTabellRad = styled.div<{ kolonner?: number; overTabellRadPadding?: number }>`
+    padding-top: ${(props) => props.overTabellRadPadding || 2}rem;
+    grid-column: 1 / ${(props) => (props.kolonner ? props.kolonner + 1 : 4)};
+`;
 
 export const StyledTabellWrapper = styled.div`
     display: contents;

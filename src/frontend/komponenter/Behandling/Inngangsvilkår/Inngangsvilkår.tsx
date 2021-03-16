@@ -13,7 +13,7 @@ import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
 import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
-import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
 
@@ -149,13 +149,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
     const status = vilkårStatusAleneomsorg(vurderinger);
     return (
-        <StyledTabell style={{ marginBottom: 0 }}>
+        <GridTabell style={{ marginBottom: 0 }}>
             <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
             <div className="tittel fjernSpacing">
                 <Undertittel>Aleneomsorg</Undertittel>
                 <EtikettLiten>§15-4</EtikettLiten>
             </div>
-        </StyledTabell>
+        </GridTabell>
     );
 };
 

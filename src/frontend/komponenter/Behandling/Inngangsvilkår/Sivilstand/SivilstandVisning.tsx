@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
@@ -20,7 +20,7 @@ const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
 
     return (
         <>
-            <StyledTabell>
+            <GridTabell>
                 <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Sivilstand</Undertittel>
@@ -35,7 +35,7 @@ const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
                     sivilstandtype={registergrunnlag.type}
                     søknad={søknadsgrunnlag}
                 />
-            </StyledTabell>
+            </GridTabell>
         </>
     );
 };

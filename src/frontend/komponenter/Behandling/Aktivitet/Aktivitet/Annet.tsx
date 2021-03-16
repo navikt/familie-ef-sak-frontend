@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ISærligeTilsynsbehov } from '../../../../typer/overgangsstønad';
-import { StyledTabell, StyledTabellWrapper } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabellRad, GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
@@ -13,12 +13,7 @@ import { formaterNullableIsoDato } from '../../../../utils/formatter';
 const StyledList = styled.ul`
     list-style-type: square;
     margin: 0;
-`;
-const TittelIkonWrapper = styled.div`
-    display: flex;
-    .typo-element {
-        padding-right: 1rem;
-    }
+    padding-left: 1rem;
 `;
 
 const hjelpetekst = (
@@ -37,6 +32,13 @@ const hjelpetekst = (
     </Normaltekst>
 );
 
+const TittelHjelpetekstWrapper = styled.div`
+    display: flex;
+    .litenSpacingHoyre {
+        padding-right: 1rem;
+    }
+`;
+
 interface Props {
     dinSituasjon: EDinSituasjon[];
     særligTilsynsbehov: ISærligeTilsynsbehov[];
@@ -45,11 +47,11 @@ interface Props {
 const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
     return (
         <>
-            <StyledTabell kolonner={3}>
-                <TittelIkonWrapper className={'førsteDataKolonne'}>
-                    <Element>Annet</Element>
+            <GridTabell kolonner={3}>
+                <TittelHjelpetekstWrapper className={'førsteDataKolonne'}>
+                    <Element className={'litenSpacingHoyre'}>Annet</Element>
                     <Hjelpetekst type={PopoverOrientering.OverVenstre}>{hjelpetekst}</Hjelpetekst>
-                </TittelIkonWrapper>
+                </TittelHjelpetekstWrapper>
 
                 <Søknadsgrunnlag />
                 <Normaltekst className={'førsteDataKolonne'}>Mer om søkers situasjon</Normaltekst>
@@ -60,20 +62,23 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                         </li>
                     ))}
                 </StyledList>
-                {særligTilsynsbehov.map((barnetsBehov) => (
-                    <StyledTabellWrapper key={uuidv4()}>
-                        <Søknadsgrunnlag />
-                        <Normaltekst className={'førsteDataKolonne'}>
-                            Om tilsynsbehov for:
-                            {barnetsBehov.navn ||
-                                `Barn ${
-                                    barnetsBehov.erBarnetFødt ? 'født' : 'termindato'
-                                } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`}
-                        </Normaltekst>
-                        <Normaltekst>{barnetsBehov.særligeTilsynsbehov}</Normaltekst>
-                    </StyledTabellWrapper>
-                ))}
-            </StyledTabell>
+
+                <GridTabellRad kolonner={3} overTabellRadPadding={2}>
+                    {særligTilsynsbehov.map((barnetsBehov) => (
+                        <GridTabell key={uuidv4()} kolonner={3} underTabellMargin={2}>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>
+                                Om tilsynsbehov for: <br />
+                                {`${barnetsBehov.navn} ` ||
+                                    `Barn ${
+                                        barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
+                                    } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`}
+                            </Normaltekst>
+                            <Normaltekst>{barnetsBehov.særligeTilsynsbehov}</Normaltekst>
+                        </GridTabell>
+                    ))}
+                </GridTabellRad>
+            </GridTabell>
         </>
     );
 };

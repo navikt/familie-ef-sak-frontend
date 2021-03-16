@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     Registergrunnlag,
@@ -34,7 +34,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
 
     return (
         <>
-            <StyledTabell>
+            <GridTabell>
                 <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Forutgående medlemskap</Undertittel>
@@ -51,7 +51,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
                         <Etikett type="fokus">Innslag funnet</Etikett>
                     </>
                 )}
-            </StyledTabell>
+            </GridTabell>
 
             <StyledLesmerpanel>
                 <Lesmerpanel

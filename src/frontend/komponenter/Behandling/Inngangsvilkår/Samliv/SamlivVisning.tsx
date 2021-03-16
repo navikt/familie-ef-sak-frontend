@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
@@ -21,7 +21,7 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
 
     return (
         <>
-            <StyledTabell>
+            <GridTabell>
                 <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Samliv</Undertittel>
@@ -50,7 +50,7 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                     tidligereSamboer={tidligereSamboer}
                     sivilstandsplaner={sivilstandsplaner}
                 />
-            </StyledTabell>
+            </GridTabell>
         </>
     );
 };
