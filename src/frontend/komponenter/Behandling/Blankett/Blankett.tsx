@@ -54,18 +54,8 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
         });
     };
 
-    const erBehandlingÅpen = (status: BehandlingStatus): boolean => {
-        if (
-            [
-                BehandlingStatus.FATTER_VEDTAK,
-                BehandlingStatus.IVERKSETTER_VEDTAK,
-                BehandlingStatus.FERDIGSTILT,
-            ].includes(status)
-        ) {
-            return false;
-        }
-        return true;
-    };
+    const erBehandlingÅpen = (status: BehandlingStatus): boolean =>
+        [BehandlingStatus.OPPRETTET, BehandlingStatus.UTREDES].includes(status);
 
     return (
         <>
