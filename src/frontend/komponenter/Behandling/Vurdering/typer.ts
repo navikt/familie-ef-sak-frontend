@@ -1,4 +1,4 @@
-import {VilkårType} from "../Inngangsvilkår/vilkår";
+import { VilkårType } from '../Inngangsvilkår/vilkår';
 
 export enum BegrunnelseRegel {
     'PÅKREVD' = 'PÅKREVD',
@@ -41,17 +41,10 @@ export interface ReglerResponse {
 
 export type Begrunnelse = string | undefined;
 
-//Från backend
-export interface VilkårSvar {
-    regelId: string;
-    svarId: SvarId;
-    begrunnelse?: Begrunnelse;
-}
-
-export interface Svar {
+export interface Vilkårsvar {
     regelId: string;
     svarId?: SvarId;
     begrunnelse?: Begrunnelse;
 }
 
-export type RootVilkårSvar = Record<string, VilkårSvar[]>;
+export type RootVilkårsvar = Record<string, Vilkårsvar[]>;

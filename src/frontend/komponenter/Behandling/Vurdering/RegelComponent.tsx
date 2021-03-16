@@ -1,20 +1,23 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { Radio, RadioGruppe, Textarea as TextareaNav } from 'nav-frontend-skjema';
-import { BegrunnelseRegel, Regel, VilkårSvar } from './typer';
+import { BegrunnelseRegel, Regel, SvarId, VilkårSvar } from './typer';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
+import Begrunnelse from './Begrunnelse';
 
 const Textarea = hiddenIf(TextareaNav);
 
 interface Props {
     regel: Regel;
     svar: VilkårSvar;
-    oppdaterSvar: () => void;
-    opppdaterBegrunnelse: (e: any) => void;
+    oppdaterSvar: (svar: SvarId) => void;
+    opppdaterBegrunnelse: (begrunnelse: string) => void;
 }
 
 export const RegelComponent: FC<Props> = ({ regel, svar, oppdaterSvar, opppdaterBegrunnelse }) => {
-    const { begrunnelse } = regel.svarMapping[svar.svarId];
+    const begrunnelse =
+        (svar.svarId && regel.svarMapping[svar.svarId].begrunnelse) ?? BegrunnelseRegel.UTEN;
+
     return (
         <div>
             <div>{regel.regelId}</div>
@@ -26,7 +29,7 @@ export const RegelComponent: FC<Props> = ({ regel, svar, oppdaterSvar, opppdater
                         name={`${regel.regelId}_${svarId}`}
                         value={svarId}
                         checked={svarId === svar.svarId}
-                        onChange={oppdaterSvar}
+                        onChange={() => oppdaterSvar(svarId)}
                     />
                 ))}
             </RadioGruppe>
@@ -36,7 +39,7 @@ export const RegelComponent: FC<Props> = ({ regel, svar, oppdaterSvar, opppdater
                 hidden={begrunnelse === BegrunnelseRegel.UTEN}
                 placeholder="Skriv inn tekst"
                 value={svar.begrunnelse || ''}
-                onChange={opppdaterBegrunnelse}
+                onChange={(e) => opppdaterBegrunnelse(e.target.value)}
             />
         </div>
     );

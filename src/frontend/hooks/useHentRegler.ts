@@ -1,13 +1,13 @@
 import { useApp } from '../context/AppContext';
 import { useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
-import { ReglerResponse } from '../komponenter/Behandling/Vurdering/EndreVurderingComponent';
+import { ReglerResponse } from '../komponenter/Behandling/Vurdering/typer';
 
-interface HentFagsakResponse {
+interface HentReglerResponse {
     hentRegler: () => void;
     regler: Ressurs<ReglerResponse>;
 }
-export const useHentRegler = (): HentFagsakResponse => {
+export const useHentRegler = (): HentReglerResponse => {
     const { axiosRequest } = useApp();
     const [regler, settRegler] = useState<Ressurs<ReglerResponse>>(byggTomRessurs());
 

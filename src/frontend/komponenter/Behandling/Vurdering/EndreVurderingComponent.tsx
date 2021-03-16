@@ -4,12 +4,13 @@ import { VilkårType } from '../Inngangsvilkår/vilkår';
 import {
     Begrunnelse,
     BegrunnelseRegel,
-    ReglerResponse,
-    RootVilkårSvar,
-    Svar,
+    RegelId,
+    Regler,
+    RootVilkårsvar,
     Svarsalternativ,
+    Vilkårsvar,
 } from './typer';
-import {RegelComponent} from "./RegelComponent";
+import { RegelComponent } from './RegelComponent';
 
 function begrunnelseErPåkrevdOgSavnes(svarsalternativ: Svarsalternativ, begrunnelse: Begrunnelse) {
     if (svarsalternativ.begrunnelse === BegrunnelseRegel.PÅKREVD) {
@@ -21,16 +22,22 @@ function begrunnelseErPåkrevdOgSavnes(svarsalternativ: Svarsalternativ, begrunn
 /**
  * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
  */
-const EndreVurderingComponent: FC<{ vilkårType: VilkårType; reglerConfig: ReglerResponse }> = ({
-    vilkårType,
-    reglerConfig,
-}) => {
-    const [svar, settSvar] = useState<RootVilkårSvar>({});
-    const { regler, rotregler } = reglerConfig.vilkårsregler[vilkårType];
+const EndreVurderingComponent: FC<{
+    vilkårType: VilkårType;
+    regler: Regler;
+    rotregler: string[];
+}> = ({ vilkårType, regler, rotregler }) => {
+    const [svar, settSvar] = useState<RootVilkårsvar>(
+        Object.values(rotregler).reduce((acc: any, r) => {
+            acc[r] = [...(acc[r] || []), { regelId: r }];
+            return acc;
+        }, {})
+    );
 
     // TODO att man ikke resetter andre svar hvis man kun oppdaterer begrunnelse
-    const oppdaterSvar = (nyttSvar: Svar) => {
+    const oppdaterSvar = (rootRegelId: RegelId, nyttSvar: Vilkårsvar) => {
         const { regelId, svarId, begrunnelse } = nyttSvar;
+        const svarsliste = svar[rootRegelId];
         const svarIndex = svarsliste.findIndex((s) => s.regelId === regelId);
         const regel = regler[regelId];
         const nySvarArray = svarsliste.slice(0, svarIndex);
@@ -41,23 +48,39 @@ const EndreVurderingComponent: FC<{ vilkårType: VilkårType; reglerConfig: Regl
         const svarsalternativ = regel.svarMapping[svarId];
 
         if (begrunnelseErPåkrevdOgSavnes(svarsalternativ, begrunnelse)) {
-            settSvarsliste([...nySvarArray, nyttSvar]);
+            settSvar(Object.assign({}, svar, { [rootRegelId]: [...nySvarArray, nyttSvar] }));
             return;
         }
         const nesteStegId = svarsalternativ.regelId;
         if (nesteStegId === 'SLUTT_NODE') {
             //TODO Done
-            settSvarsliste([...nySvarArray, nyttSvar]);
+            settSvar(Object.assign({}, svar, { [rootRegelId]: [...nySvarArray, nyttSvar] }));
         } else {
-            settSvarsliste([...nySvarArray, nyttSvar, { regelId: nesteStegId }]);
+            settSvar(
+                Object.assign({}, svar, {
+                    [rootRegelId]: [...nySvarArray, nyttSvar, { regelId: nesteStegId }],
+                })
+            );
         }
     };
 
     return (
         <div>
-            {rotregler.map((r) => (
-                <RegelComponent regel={reglerConfig[r]} />
-            ))}
+            {rotregler.map((r) =>
+                svar[r].map((svar) => (
+                    <RegelComponent
+                        key={svar.regelId}
+                        regel={regler[svar.regelId]}
+                        svar={svar}
+                        oppdaterSvar={(svarId) =>
+                            oppdaterSvar(r, Object.assign({}, svar, { svarId: svarId }))
+                        }
+                        opppdaterBegrunnelse={(begrunnelse) =>
+                            oppdaterSvar(r, Object.assign({}, svar, { begrunnelse: begrunnelse }))
+                        }
+                    />
+                ))
+            )}
         </div>
     );
 };

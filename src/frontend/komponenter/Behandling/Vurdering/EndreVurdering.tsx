@@ -64,7 +64,8 @@ const EndreVurdering: FC<Props> = ({
             {regler.status === RessursStatus.SUKSESS && (
                 <EndreVurderingComponent
                     vilkårType={vurdering.vilkårType}
-                    reglerConfig={regler.data}
+                    regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
+                    rotregler={regler.data.vilkårsregler[vurdering.vilkårType].rotregler}
                 />
             )}
         </StyledEndreVurdering>
