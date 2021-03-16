@@ -56,10 +56,11 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
 
     const erBehandlingÅpen = (status: BehandlingStatus): boolean => {
         if (
-            status ===
-            (BehandlingStatus.FATTER_VEDTAK ||
-                BehandlingStatus.IVERKSETTER_VEDTAK ||
-                BehandlingStatus.FERDIGSTILT)
+            [
+                BehandlingStatus.FATTER_VEDTAK,
+                BehandlingStatus.IVERKSETTER_VEDTAK,
+                BehandlingStatus.FERDIGSTILT,
+            ].includes(status)
         ) {
             return false;
         }
@@ -68,24 +69,24 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
 
     return (
         <>
-        <DataViewer response={{ behandling }}>
-            {({ behandling }) => (
-                <>
-                    <StyledBlankett>
+            <DataViewer response={{ behandling }}>
+                {({ behandling }) => (
+                    <>
+                        <StyledBlankett>
+                            {erBehandlingÅpen(behandling.status) && (
+                                <GenererBlankett onClick={genererBlankett}>
+                                    Generer blankett
+                                </GenererBlankett>
+                            )}
+                            <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
+                            <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
+                        </StyledBlankett>
                         {erBehandlingÅpen(behandling.status) && (
-                            <GenererBlankett onClick={genererBlankett}>
-                                Generer blankett
-                            </GenererBlankett>
+                            <BlankettFooter behandlingId={behandlingId} />
                         )}
-                        <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
-                        <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
-                    </StyledBlankett>
-                    {erBehandlingÅpen(behandling.status) && (
-                        <BlankettFooter behandlingId={behandlingId} />
-                    )}
-                </>
-            )}
-        </DataViewer>
+                    </>
+                )}
+            </DataViewer>
         </>
     );
 };
