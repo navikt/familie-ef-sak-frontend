@@ -44,9 +44,7 @@ export const UnderUtdanning: FC<{
             <Normaltekst className={'førsteDataKolonne  leggTilSpacing'}>
                 Har søker utdanning etter grunnskolen
             </Normaltekst>
-            <Normaltekst>
-                <BooleanTekst value={underUtdanning.utdanningEtterGrunnskolen} />
-            </Normaltekst>
+            <BooleanTekst value={underUtdanning.utdanningEtterGrunnskolen} />
         </>
     );
 };

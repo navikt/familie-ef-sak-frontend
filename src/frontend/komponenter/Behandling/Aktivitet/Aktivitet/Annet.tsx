@@ -17,9 +17,9 @@ const StyledList = styled.ul`
 `;
 
 const hjelpetekst = (
-    <Normaltekst>
-        Mulig alternativer i søknadsdialog:
-        <ul>
+    <ul>
+        <Normaltekst>
+            Mulig alternativer i søknadsdialog:
             <li>Jeg er syk</li>
             <li>Barnet mitt er sykt </li>
             <li>Jeg har søkt om barnepass, men ikke fått plass enda</li>
@@ -28,8 +28,8 @@ const hjelpetekst = (
                 sosiale problemer
             </li>
             <li>Nei</li>
-        </ul>
-    </Normaltekst>
+        </Normaltekst>
+    </ul>
 );
 
 const TittelHjelpetekstWrapper = styled.div`
