@@ -1,12 +1,7 @@
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
-interface IStyledTabell {
-    kolonner?: number;
-    underTabellMargin?: number;
-}
-
-export const GridTabell = styled.div<IStyledTabell>`
+export const GridTabell = styled.div<{ kolonner?: number; underTabellMargin?: number }>`
     display: grid;
     grid-template-columns: 21px 250px repeat(
             ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},

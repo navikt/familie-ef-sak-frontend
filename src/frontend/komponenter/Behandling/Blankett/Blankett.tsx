@@ -33,6 +33,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
     const data = { navn: 'test', ident: '123456789' };
 
     const genererBlankett = () => {
+        // eslint-disable-next-line
         axiosRequest<string, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/blankett/${behandlingId}`,
@@ -43,6 +44,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
     };
 
     const hentBlankett = () => {
+        // eslint-disable-next-line
         axiosRequest<string, any>({
             method: 'GET',
             url: `/familie-ef-sak/api/blankett/${behandlingId}`,

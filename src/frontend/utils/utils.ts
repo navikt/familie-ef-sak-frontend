@@ -52,7 +52,8 @@ export const toTitleCase = (str: string): string =>
 
 const replaceUnderscoreWithSpace = (str: string): string => str.split('_').join(' ');
 
-export const formatterEnumVerdi = (str: string) => replaceUnderscoreWithSpace(toTitleCase(str));
+export const formatterEnumVerdi = (str: string): string =>
+    replaceUnderscoreWithSpace(toTitleCase(str));
 
 export const slåSammenTekst = (...tekstElementer: (string | undefined)[]): string =>
     tekstElementer
