@@ -68,20 +68,24 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
 
     return (
         <>
-            <DataViewer response={{ behandling }}>
-                <StyledBlankett>
-                    {erBehandlingÅpen(behandling.data.status) && (
-                        <GenererBlankett onClick={genererBlankett}>
-                            Generer blankett
-                        </GenererBlankett>
+        <DataViewer response={{ behandling }}>
+            {({ behandling }) => (
+                <>
+                    <StyledBlankett>
+                        {erBehandlingÅpen(behandling.status) && (
+                            <GenererBlankett onClick={genererBlankett}>
+                                Generer blankett
+                            </GenererBlankett>
+                        )}
+                        <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
+                        <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
+                    </StyledBlankett>
+                    {erBehandlingÅpen(behandling.status) && (
+                        <BlankettFooter behandlingId={behandlingId} />
                     )}
-                    <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
-                    <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
-                </StyledBlankett>
-                {erBehandlingÅpen(behandling.data.status) && (
-                    <BlankettFooter behandlingId={behandlingId} />
-                )}
-            </DataViewer>
+                </>
+            )}
+        </DataViewer>
         </>
     );
 };
