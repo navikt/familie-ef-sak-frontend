@@ -62,9 +62,9 @@ const Behandling: FC = () => {
                             <Fanemeny />
                             <BehandlingRoutes />
                         </InnholdWrapper>
-                        <HøyreMenyWrapper>
+                        {/*<HøyreMenyWrapper>
                             <Høyremeny />
-                        </HøyreMenyWrapper>
+                        </HøyreMenyWrapper>*/}
                     </Container>
                 </>
             )}

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { InngangsvilkårGruppe, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from './vilkår';
+import { InngangsvilkårGruppe, IVurdering, VilkårGruppe } from './vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -41,7 +41,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const {vilkår, hentVilkår, lagreVurdering, feilmeldinger} = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger } = useHentVilkår(behandlingId);
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -55,8 +55,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        postInngangsvilkårSuksess &&
-            history.push(`/behandling/${behandlingId}/aktivitet`);
+        postInngangsvilkårSuksess && history.push(`/behandling/${behandlingId}/aktivitet`);
     }, [postInngangsvilkårSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {

@@ -1,0 +1,318 @@
+{
+  "status": "SUKSESS",
+  "data": {
+    "vilkårsregler" : {
+      "FORUTGÅENDE_MEDLEMSKAP" : {
+        "vilkårType" : "FORUTGÅENDE_MEDLEMSKAP",
+        "regler" : {
+          "SØKER_MEDLEM_I_FOLKETRYGDEN" : {
+            "regelId" : "SØKER_MEDLEM_I_FOLKETRYGDEN",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "regelId" : "MEDLEMSKAP_UNNTAK",
+                "begrunnelse" : "UTEN"
+              }
+            }
+          },
+          "MEDLEMSKAP_UNNTAK" : {
+            "regelId" : "MEDLEMSKAP_UNNTAK",
+            "svarMapping" : {
+              "MEDLEM_MER_ENN_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "ANDRE_FORELDER_MEDLEM_SISTE_5_ÅR" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "TOTALVURDERING_OPPFYLLER_FORSKRIFT" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          }
+        },
+        "rotregler" : [ "SØKER_MEDLEM_I_FOLKETRYGDEN" ]
+      },
+      "LOVLIG_OPPHOLD" : {
+        "vilkårType" : "LOVLIG_OPPHOLD",
+        "regler" : {
+          "BOR_OG_OPPHOLDER_SEG_I_NORGE" : {
+            "regelId" : "BOR_OG_OPPHOLDER_SEG_I_NORGE",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "regelId" : "OPPHOLD_UNNTAK",
+                "begrunnelse" : "UTEN"
+              }
+            }
+          },
+          "OPPHOLD_UNNTAK" : {
+            "regelId" : "OPPHOLD_UNNTAK",
+            "svarMapping" : {
+              "ARBEID_NORSK_ARBEIDSGIVER" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          }
+        },
+        "rotregler" : [ "BOR_OG_OPPHOLDER_SEG_I_NORGE" ]
+      },
+      "MOR_ELLER_FAR" : {
+        "vilkårType" : "MOR_ELLER_FAR",
+        "regler" : {
+          "OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN" : {
+            "regelId" : "OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          }
+        },
+        "rotregler" : [ "OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN" ]
+      },
+      "SIVILSTAND" : {
+        "vilkårType" : "SIVILSTAND",
+        "regler" : {
+          "DOKUMENTERT_EKTESKAP" : {
+            "regelId" : "DOKUMENTERT_EKTESKAP",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE" : {
+            "regelId" : "DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON" : {
+            "regelId" : "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING" : {
+            "regelId" : "SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "KRAV_SIVILSTAND" : {
+            "regelId" : "KRAV_SIVILSTAND",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "SIVILSTAND_UNNTAK" : {
+            "regelId" : "SIVILSTAND_UNNTAK",
+            "svarMapping" : {
+              "GJENLEVENDE_IKKE_RETT_TIL_YTELSER" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              },
+              "GJENLEVENDE_OVERTAR_OMSORG" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          }
+        },
+        "rotregler" : [ ]
+      },
+      "SAMLIV" : {
+        "vilkårType" : "SAMLIV",
+        "regler" : {
+          "LEVER_IKKE_MED_ANNEN_FORELDER" : {
+            "regelId" : "LEVER_IKKE_MED_ANNEN_FORELDER",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "VALGFRI",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD" : {
+            "regelId" : "LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          }
+        },
+        "rotregler" : [ "LEVER_IKKE_MED_ANNEN_FORELDER", "LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD" ]
+      },
+      "ALENEOMSORG" : {
+        "vilkårType" : "ALENEOMSORG",
+        "regler" : {
+          "SKRIFTLIG_AVTALE_OM_DELT_BOSTED" : {
+            "regelId" : "SKRIFTLIG_AVTALE_OM_DELT_BOSTED",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "NÆRE_BOFORHOLD" : {
+            "regelId" : "NÆRE_BOFORHOLD",
+            "svarMapping" : {
+              "SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "SELVSTENDIGE_BOLIGER_SAMME_TOMT" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              },
+              "TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE" : {
+                "begrunnelse" : "PÅKREVD",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          },
+          "MER_AV_DAGLIG_OMSORG" : {
+            "regelId" : "MER_AV_DAGLIG_OMSORG",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          }
+        },
+        "rotregler" : [ "SKRIFTLIG_AVTALE_OM_DELT_BOSTED", "NÆRE_BOFORHOLD", "MER_AV_DAGLIG_OMSORG" ]
+      },
+      "NYTT_BARN_SAMME_PARTNER" : {
+        "vilkårType" : "NYTT_BARN_SAMME_PARTNER",
+        "regler" : {
+          "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER" : {
+            "regelId" : "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER",
+            "svarMapping" : {
+              "JA" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              },
+              "NEI" : {
+                "begrunnelse" : "UTEN",
+                "regelId" : "SLUTT_NODE"
+              }
+            }
+          }
+        },
+        "rotregler" : [ "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER" ]
+      }
+    }
+  }
+}

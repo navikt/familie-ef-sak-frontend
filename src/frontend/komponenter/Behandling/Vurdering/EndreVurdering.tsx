@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import EndreVurderingComponent from './EndreVurderingComponent';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -27,6 +29,7 @@ const EndreVurdering: FC<Props> = ({
     inngangsvilkårgrunnlag,
     settRedigeringsmodus,
 }) => {
+    const { regler } = useBehandling();
     const [vurdering, settVurdering] = useState<IVurdering>(data);
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
 
@@ -58,6 +61,12 @@ const EndreVurdering: FC<Props> = ({
                 lagreknappDisabled: oppdatererVurdering,
             })}
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
+            {regler.status === RessursStatus.SUKSESS && (
+                <EndreVurderingComponent
+                    vilkårType={vurdering.vilkårType}
+                    reglerConfig={regler.data}
+                />
+            )}
         </StyledEndreVurdering>
     );
 };

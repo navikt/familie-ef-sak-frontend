@@ -1,7 +1,11 @@
 import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useState } from 'react';
-import { IVilkår, IVurdering, Vurderingsfeilmelding } from '../komponenter/Behandling/Inngangsvilkår/vilkår';
+import {
+    IVilkår,
+    IVurdering,
+    Vurderingsfeilmelding,
+} from '../komponenter/Behandling/Inngangsvilkår/vilkår';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
@@ -19,18 +23,16 @@ const oppdaterInngangsvilkårMedVurdering = (
 export const useHentVilkår = (
     behandlingId: string
 ): {
-    vilkår: Ressurs<IVilkår>,
-    hentVilkår: (behandlingId: string) => void,
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>,
-    feilmeldinger: Vurderingsfeilmelding
+    vilkår: Ressurs<IVilkår>;
+    hentVilkår: (behandlingId: string) => void;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    feilmeldinger: Vurderingsfeilmelding;
 } => {
     const { axiosRequest } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
 
-    const [vilkår, settVilkår] = useState<Ressurs<IVilkår>>(
-        byggTomRessurs()
-    );
+    const [vilkår, settVilkår] = useState<Ressurs<IVilkår>>(byggTomRessurs());
 
     function fjernFeilmelding(vurdering: IVurdering) {
         settFeilmeldinger((prevFeilmeldinger) => {
