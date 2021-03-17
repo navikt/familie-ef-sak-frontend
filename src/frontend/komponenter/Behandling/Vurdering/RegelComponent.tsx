@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { Radio, RadioGruppe, Textarea as TextareaNav } from 'nav-frontend-skjema';
-import { BegrunnelseRegel, Regel, SvarId, VilkårSvar } from './typer';
+import {BegrunnelseRegel, Regel, SvarId, Vilkårsvar} from './typer';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
-import Begrunnelse from './Begrunnelse';
 
 const Textarea = hiddenIf(TextareaNav);
 
 interface Props {
     regel: Regel;
-    svar: VilkårSvar;
+    svar: Vilkårsvar;
     oppdaterSvar: (svar: SvarId) => void;
     opppdaterBegrunnelse: (begrunnelse: string) => void;
-}
+};
+
+
 
 export const RegelComponent: FC<Props> = ({ regel, svar, oppdaterSvar, opppdaterBegrunnelse }) => {
     const begrunnelse =
