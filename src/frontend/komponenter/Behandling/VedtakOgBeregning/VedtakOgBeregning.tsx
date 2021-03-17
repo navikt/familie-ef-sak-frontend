@@ -10,6 +10,7 @@ import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../uti
 import { Søknadsgrunnlag } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ISøknadData } from '../../../typer/beregningssøknadsdata';
+import { useApp } from '../../../context/AppContext';
 import { useDataHenter } from '../../../hooks/felles/useDataHenter';
 
 interface Props {
@@ -32,9 +33,9 @@ const StyledInntekt = styled.div`
 `;
 
 const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
-    const [vedtaksresultatType, settVedtaksresultatType] = useState<EVilkårsresultatType>();
-
-    const [vedtaksperiodeBegrunnelse, settVedtaksperiodeBegrunnelse] = useState<string>('');
+    const { axiosRequest } = useApp();
+    const [resultatType, settResultatType] = useState<EVilkårsresultatType>();
+    const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
 
     const søknadDataConfig: AxiosRequestConfig = useMemo(
@@ -49,6 +50,20 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         søknadDataConfig
     );
 
+    const lagBlankett = () => {
+        axiosRequest({
+            method: 'POST',
+            url: `/familie-ef-sak/api/beregning/${behandlingId}/lagre-vedtak`,
+            data: {
+                resultatType,
+                periodeBegrunnelse,
+                inntektBegrunnelse,
+            },
+        }).then((res: any) => {
+            console.log(res);
+        });
+    };
+
     const vedtaksresultatSwitch = (vedtaksresultatType: EVilkårsresultatType) => {
         switch (vedtaksresultatType) {
             case EVilkårsresultatType.INNVILGE:
@@ -58,9 +73,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             Vedtaksperiode
                         </Element>
                         <Textarea
-                            value={vedtaksperiodeBegrunnelse}
+                            value={periodeBegrunnelse}
                             onChange={(e) => {
-                                settVedtaksperiodeBegrunnelse(e.target.value);
+                                settPeriodeBegrunnelse(e.target.value);
                             }}
                             label="Begrunnelse"
                         />
@@ -74,7 +89,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             }}
                             label="Begrunnelse"
                         />
-                        <Hovedknapp style={{ marginTop: '2rem' }}>Lag blankett</Hovedknapp>
+                        <Hovedknapp style={{ marginTop: '2rem' }} onClick={lagBlankett}>
+                            Lag blankett
+                        </Hovedknapp>
                     </>
                 );
             case EVilkårsresultatType.ANNULLERE:
@@ -102,9 +119,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                         </StyledTabell>
                         <StyledSelect
                             label="Vedtak"
-                            value={vedtaksresultatType}
+                            value={resultatType}
                             onChange={(e) => {
-                                settVedtaksresultatType(e.target.value as EVilkårsresultatType);
+                                settResultatType(e.target.value as EVilkårsresultatType);
                             }}
                         >
                             <option value="">Velg</option>
@@ -115,9 +132,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             <option value={EVilkårsresultatType.HENLEGGE} disabled>
                                 Henlegge
                             </option>
-                            <option value={EVilkårsresultatType.ANNULLERE}>ANNULLER</option>
+                            <option value={EVilkårsresultatType.ANNULLERE}>Annullere</option>
                         </StyledSelect>
-                        {vedtaksresultatType && vedtaksresultatSwitch(vedtaksresultatType)}
+                        {resultatType && vedtaksresultatSwitch(resultatType)}
                     </StyledInntekt>
                 );
             }}
