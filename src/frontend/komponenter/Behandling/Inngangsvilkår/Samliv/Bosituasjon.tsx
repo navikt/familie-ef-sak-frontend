@@ -29,6 +29,12 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
                 <Søknadsgrunnlag />
                 <Normaltekst>Tidligere samboer</Normaltekst>
                 <Normaltekst>{hentPersonInfo(tidligereSamboer)}</Normaltekst>
+
+                <Søknadsgrunnlag />
+                <Normaltekst>Flyttet fra hverandre</Normaltekst>
+                <Normaltekst>
+                    {formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
+                </Normaltekst>
             </>
         )}
 
