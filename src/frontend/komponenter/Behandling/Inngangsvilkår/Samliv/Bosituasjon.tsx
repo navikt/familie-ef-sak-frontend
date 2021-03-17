@@ -81,7 +81,7 @@ const Sivilstandsplaner: FC<{ sivilstandsplaner: ISivilstandsplaner }> = ({
                 <Søknadsgrunnlag />
                 <Normaltekst>Ektefelle eller samboer</Normaltekst>
                 <Normaltekst>{`${sivilstandsplaner.vordendeSamboerEktefelle?.navn} - ${
-                    sivilstandsplaner.vordendeSamboerEktefelle?.ident ||
+                    sivilstandsplaner.vordendeSamboerEktefelle?.personIdent ||
                     formaterNullableIsoDato(sivilstandsplaner.vordendeSamboerEktefelle?.fødselsdato)
                 }`}</Normaltekst>
             </>
