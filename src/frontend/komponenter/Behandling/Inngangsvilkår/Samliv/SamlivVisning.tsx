@@ -35,19 +35,15 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                                 ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
                                 ''}
                         </Normaltekst>
+                        <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
                     </>
                 )}
-                <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
 
                 <Søknadsgrunnlag />
                 <Normaltekst>Bosituasjon</Normaltekst>
                 <Normaltekst>{SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}</Normaltekst>
 
-                <Bosituasjon
-                    bosituasjon={bosituasjon}
-                    tidligereSamboer={sivilstand.søknadsgrunnlag.tidligereSamboer}
-                    sivilstandsplaner={sivilstandsplaner}
-                />
+                <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
             </StyledTabell>
         </>
     );

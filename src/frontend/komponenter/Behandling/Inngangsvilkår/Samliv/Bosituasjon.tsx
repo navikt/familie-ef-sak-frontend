@@ -10,11 +10,10 @@ import { hentPersonInfo } from '../utils';
 
 interface Props {
     bosituasjon: IBosituasjon;
-    tidligereSamboer?: IPersonDetaljer;
     sivilstandsplaner?: ISivilstandsplaner;
 }
 
-export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilstandsplaner }) => (
+export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner }) => (
     <>
         {bosituasjon.delerDuBolig === ESøkerDelerBolig.harEkteskapsliknendeForhold && (
             <SamboerInfoOgDatoSammenflytting
@@ -28,7 +27,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             <>
                 <Søknadsgrunnlag />
                 <Normaltekst>Tidligere samboer</Normaltekst>
-                <Normaltekst>{hentPersonInfo(tidligereSamboer)}</Normaltekst>
+                <Normaltekst>{hentPersonInfo(bosituasjon.samboer)}</Normaltekst>
 
                 <Søknadsgrunnlag />
                 <Normaltekst>Flyttet fra hverandre</Normaltekst>
