@@ -60,19 +60,17 @@ const Fanemeny: FC = () => {
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => (
-                <>
-                    <StyledFanemeny>
-                        {fanerForBlankettbehandling(sider, behandling).map((side) => (
-                            <StyledNavLink
-                                key={side.navn}
-                                to={`/behandling/${behandlingId}/${side.href}`}
-                                activeClassName="aktiv"
-                            >
-                                <Normaltekst>{side.navn}</Normaltekst>
-                            </StyledNavLink>
-                        ))}
-                    </StyledFanemeny>
-                </>
+                <StyledFanemeny>
+                    {fanerForBlankettbehandling(sider, behandling).map((side) => (
+                        <StyledNavLink
+                            key={side.navn}
+                            to={`/behandling/${behandlingId}/${side.href}`}
+                            activeClassName="aktiv"
+                        >
+                            <Normaltekst>{side.navn}</Normaltekst>
+                        </StyledNavLink>
+                    ))}
+                </StyledFanemeny>
             )}
         </DataViewer>
     );
