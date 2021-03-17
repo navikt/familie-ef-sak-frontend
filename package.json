@@ -50,7 +50,7 @@
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.4",
     "@types/react-modal": "^3.10.6",
-    "@types/react-pdf": "^4.0.6",
+    "@types/react-pdf": "^5.0.1",
     "@types/react-router-dom": "^5.1.7",
     "@types/react-select": "^3.0.22",
     "@types/redis": "^2.8.27",
