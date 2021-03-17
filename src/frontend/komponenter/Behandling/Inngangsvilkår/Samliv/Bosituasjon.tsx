@@ -42,9 +42,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner }) => (
             ESøkerDelerBolig.delerBoligMedAndreVoksne,
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
         ].includes(bosituasjon.delerDuBolig) &&
-            sivilstandsplaner?.harPlaner && (
-                <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />
-            )}
+            sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
     </>
 );
 
