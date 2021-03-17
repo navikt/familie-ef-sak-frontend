@@ -13,6 +13,8 @@ export const formaterIsoDato = (dato: string): string => {
 export const formaterIsoDatoTid = (dato: string): string => {
     return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm");
 };
+export const formaterNullableMånedÅr = (dato?: string): string | undefined =>
+    dato && format(parseISO(dato), 'MM.yyyy');
 
 export const formaterFødselsnummer = (fødselsnummer: string): string =>
     fødselsnummer.substring(0, 6) + ' ' + fødselsnummer.substring(6);
