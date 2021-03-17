@@ -71,6 +71,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         postInngangsvilkår().then((responseInngangsvilkår) => {
             if (responseInngangsvilkår.status === RessursStatus.SUKSESS) {
                 settPostInngangsvilkårSuksess(true);
+                hentBehandling.rerun();
             } else if (
                 responseInngangsvilkår.status === RessursStatus.IKKE_TILGANG ||
                 responseInngangsvilkår.status === RessursStatus.FEILET ||
