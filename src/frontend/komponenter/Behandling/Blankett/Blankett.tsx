@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import BlankettFooter from './BlankettFooter';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
@@ -33,24 +33,17 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
     const { behandling } = useBehandling();
     const { axiosRequest } = useApp();
     const [blankettRessurs, settBlankettRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const data = { navn: 'test', ident: '123456789' };
 
-    const genererBlankett = () => {
-        axiosRequest<string, any>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/blankett/${behandlingId}`,
-            data: data,
-        }).then((respons: Ressurs<string>) => {
-            settBlankettRessurs(respons);
-        });
-    };
+    useEffect(() => hentBlankett());
 
     const hentBlankett = () => {
         axiosRequest<string, any>({
             method: 'GET',
             url: `/familie-ef-sak/api/blankett/${behandlingId}`,
         }).then((respons: Ressurs<string>) => {
-            settBlankettRessurs(respons);
+            if (respons.status === RessursStatus.SUKSESS) {
+                settBlankettRessurs(respons);
+            }
         });
     };
 
@@ -63,12 +56,6 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
                 {({ behandling }) => (
                     <>
                         <StyledBlankett>
-                            {erBehandlingÅpen(behandling.status) && (
-                                <GenererBlankett onClick={genererBlankett}>
-                                    Generer blankett
-                                </GenererBlankett>
-                            )}
-                            <HentBlankett onClick={hentBlankett}>Hent blankett</HentBlankett>
                             <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
                         </StyledBlankett>
                         {erBehandlingÅpen(behandling.status) && (
