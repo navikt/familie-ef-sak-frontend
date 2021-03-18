@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { BegrunnelseRegel, RegelId, Regler, RootVilkårsvar, Vilkårsvar } from './typer';
 import { VilkårType } from '../Inngangsvilkår/vilkår';
-import { erAllaDelvilkårBesvarte, leggTilRegelIdISvarliste } from './utils';
+import {erAllaDelvilkårBesvarte, leggTilNesteNodHvis, leggTilRegelIdISvarliste} from './utils';
 
 import { Radio, RadioGruppe, Textarea as TextareaNav } from 'nav-frontend-skjema';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
@@ -53,31 +53,15 @@ const EndreVurderingComponent: FC<{
                 return;
             }
 
-            const maybeLeggTilNesteNod = leggTilNesteNodHvis(
+            const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteNodHvis(
                 nyttSvar,
                 (nesteStegId) => nesteStegId !== 'SLUTT_NODE',
-                nySvarArray
+                nySvarArray,
+                regler
             );
 
-            oppdateterVilkårsvar(rootRegelId, maybeLeggTilNesteNod);
+            oppdateterVilkårsvar(rootRegelId, maybeLeggTilNesteNodIVilkårsvar);
         };
-    };
-
-    function leggTilNesteNodHvis (
-        nyttSvar: Vilkårsvar,
-        hvisFunksjon: (...args: any) => boolean,
-        nySvarArray: Vilkårsvar[],
-        args: any[] = []
-    )  {
-        const { regelId, svarId } = nyttSvar;
-        const regel = regler[regelId];
-        const svarsalternativ = regel.svarMapping[svarId!];
-        const nesteStegId = svarsalternativ.regelId;
-
-        if (hvisFunksjon.apply(null, [nesteStegId, ...args])) {
-            return [...nySvarArray, nyttSvar, { regelId: nesteStegId }];
-        }
-        return [...nySvarArray, nyttSvar];
     };
 
     return (

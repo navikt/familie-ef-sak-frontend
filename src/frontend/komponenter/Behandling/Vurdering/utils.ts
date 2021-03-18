@@ -1,4 +1,4 @@
-import {Begrunnelse, BegrunnelseRegel, Regler, RootVilkårsvar, Svarsalternativ} from "./typer";
+import {Begrunnelse, BegrunnelseRegel, Regler, RootVilkårsvar, Svarsalternativ, Vilkårsvar} from "./typer";
 
 export function begrunnelseErPåkrevdOgSavnes(svarsalternativ: Svarsalternativ, begrunnelse: Begrunnelse) {
     if (svarsalternativ.begrunnelse === BegrunnelseRegel.PÅKREVD) {
@@ -43,3 +43,21 @@ export function erAllaDelvilkårBesvarte(svar: RootVilkårsvar, regler: Regler) 
 
     return erPåSisteNod && harBesvartAllePåkrevdeBegrunnelser;
 }
+
+export function leggTilNesteNodHvis (
+    nyttSvar: Vilkårsvar,
+    hvisFunksjon: (...args: any) => boolean,
+    nySvarArray: Vilkårsvar[],
+    regler: Regler,
+    args: any[] = []
+)  {
+    const { regelId, svarId } = nyttSvar;
+    const regel = regler[regelId];
+    const svarsalternativ = regel.svarMapping[svarId!];
+    const nesteStegId = svarsalternativ.regelId;
+
+    if (hvisFunksjon.apply(null, [nesteStegId, ...args])) {
+        return [...nySvarArray, nyttSvar, { regelId: nesteStegId }];
+    }
+    return [...nySvarArray, nyttSvar];
+};
