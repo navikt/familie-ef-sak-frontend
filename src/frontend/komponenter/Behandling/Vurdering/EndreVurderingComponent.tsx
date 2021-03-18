@@ -1,15 +1,15 @@
 import * as React from 'react';
-import {FC, useState} from 'react';
-import {BegrunnelseRegel, RegelId, Regler, RootVilkårsvar, Vilkårsvar} from './typer';
-import {VilkårType} from '../Inngangsvilkår/vilkår';
-import {erAllaDelvilkårBesvarte, leggTilRegelIdISvarliste} from './utils';
+import { FC, useState } from 'react';
+import { BegrunnelseRegel, RegelId, Regler, RootVilkårsvar, Vilkårsvar } from './typer';
+import { VilkårType } from '../Inngangsvilkår/vilkår';
+import { erAllaDelvilkårBesvarte, leggTilRegelIdISvarliste } from './utils';
 
-import {Radio, RadioGruppe, Textarea as TextareaNav} from 'nav-frontend-skjema';
+import { Radio, RadioGruppe, Textarea as TextareaNav } from 'nav-frontend-skjema';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
-import {Hovedknapp} from "nav-frontend-knapper";
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 const Textarea = hiddenIf(TextareaNav);
-const Lagreknapp = hiddenIf(Hovedknapp)
+const Lagreknapp = hiddenIf(Hovedknapp);
 /**
  * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
  */
@@ -19,7 +19,7 @@ const EndreVurderingComponent: FC<{
     regler: Regler;
     rotregler: string[];
     oppdaterVurdering: () => void;
-}> = ({regler, rotregler, oppdaterVurdering}) => {
+}> = ({ regler, rotregler, oppdaterVurdering }) => {
     const [vilkårsvar, settVilkårsvar] = useState<RootVilkårsvar>(
         rotregler.reduce((acc, rootregel) => {
             return leggTilRegelIdISvarliste(acc, rootregel);
@@ -27,12 +27,12 @@ const EndreVurderingComponent: FC<{
     );
 
     const oppdateterVilkårsvar = (rootRegelId: string, nySvarArray: Vilkårsvar[]) =>
-        settVilkårsvar((prevSvar) => ({...prevSvar, [rootRegelId]: [...nySvarArray]}));
+        settVilkårsvar((prevSvar) => ({ ...prevSvar, [rootRegelId]: [...nySvarArray] }));
 
     const oppdaterBegrunnelse = (rootRegelId: RegelId) => {
         const svarsliste = vilkårsvar[rootRegelId];
         return (nyttSvar: Vilkårsvar) => {
-            const {svarId, regelId} = nyttSvar;
+            const { svarId, regelId } = nyttSvar;
 
             const nySvarArray = svarsliste.map((v) =>
                 v.svarId === svarId && v.regelId === regelId ? nyttSvar : v
@@ -43,32 +43,42 @@ const EndreVurderingComponent: FC<{
     };
 
     const oppdaterSvar = (rootRegelId: RegelId) => {
-        const svarsliste = vilkårsvar[rootRegelId];
+        const vurderinger = vilkårsvar[rootRegelId];
         return (nyttSvar: Vilkårsvar) => {
-            const {regelId, svarId} = nyttSvar;
-            const svarIndex = svarsliste.findIndex((s) => s.regelId === regelId);
-            const nySvarArray = svarsliste.slice(0, svarIndex);
-            const regel = regler[regelId];
+            const { regelId, svarId } = nyttSvar;
+            const svarIndex = vurderinger.findIndex((s) => s.regelId === regelId);
+            const nySvarArray = vurderinger.slice(0, svarIndex);
 
             if (!svarId) {
                 return;
             }
-            const svarsalternativ = regel.svarMapping[svarId];
-            const nesteStegId = svarsalternativ.regelId;
 
-            if (nesteStegId === 'SLUTT_NODE') {
-                oppdateterVilkårsvar(rootRegelId, [...nySvarArray, nyttSvar]);
-            } else {
-                oppdateterVilkårsvar(rootRegelId, [
-                    ...nySvarArray,
-                    nyttSvar,
-                    {regelId: nesteStegId},
-                ]);
-            }
+            const maybeLeggTilNesteNod = leggTilNesteNodHvis(
+                nyttSvar,
+                (nesteStegId) => nesteStegId !== 'SLUTT_NODE',
+                nySvarArray
+            );
+
+            oppdateterVilkårsvar(rootRegelId, maybeLeggTilNesteNod);
         };
     };
 
-    console.log("vilkårsvar", vilkårsvar);
+    function leggTilNesteNodHvis (
+        nyttSvar: Vilkårsvar,
+        hvisFunksjon: (...args: any) => boolean,
+        nySvarArray: Vilkårsvar[],
+        args: any[] = []
+    )  {
+        const { regelId, svarId } = nyttSvar;
+        const regel = regler[regelId];
+        const svarsalternativ = regel.svarMapping[svarId!];
+        const nesteStegId = svarsalternativ.regelId;
+
+        if (hvisFunksjon.apply(null, [nesteStegId, ...args])) {
+            return [...nySvarArray, nyttSvar, { regelId: nesteStegId }];
+        }
+        return [...nySvarArray, nyttSvar];
+    };
 
     return (
         <form
@@ -99,7 +109,7 @@ const EndreVurderingComponent: FC<{
                                         value={svarId}
                                         checked={svarId === svar.svarId}
                                         onChange={() =>
-                                            oppdaterSvarINod({svarId, regelId: regel.regelId})
+                                            oppdaterSvarINod({ svarId, regelId: regel.regelId })
                                         }
                                     />
                                 ))}
@@ -121,7 +131,9 @@ const EndreVurderingComponent: FC<{
                     );
                 });
             })}
-            <Lagreknapp htmlType="submit" hidden={!erAllaDelvilkårBesvarte(vilkårsvar, regler)}>Lagre</Lagreknapp>
+            <Lagreknapp htmlType="submit" hidden={!erAllaDelvilkårBesvarte(vilkårsvar, regler)}>
+                Lagre
+            </Lagreknapp>
         </form>
     );
 };
