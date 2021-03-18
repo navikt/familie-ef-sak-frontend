@@ -1,17 +1,19 @@
-import React, {FC, useMemo, useState} from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import {Ressurs, RessursStatus} from '../../../typer/ressurs';
-import {StyledTabell} from '../../Felleskomponenter/Visning/StyledTabell';
-import {Hovedknapp} from 'nav-frontend-knapper';
-import {AxiosRequestConfig} from 'axios';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
+import { Hovedknapp } from 'nav-frontend-knapper';
+import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import {Select, Textarea} from 'nav-frontend-skjema';
-import {formaterNullableIsoDato, formaterNullableMånedÅr} from '../../../utils/formatter';
-import {Søknadsgrunnlag} from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import {Element, Normaltekst} from 'nav-frontend-typografi';
-import {ISøknadData} from '../../../typer/beregningssøknadsdata';
-import {useApp} from '../../../context/AppContext';
-import {useDataHenter} from '../../../hooks/felles/useDataHenter';
+import { Select, Textarea } from 'nav-frontend-skjema';
+import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../utils/formatter';
+import { Søknadsgrunnlag } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { ISøknadData } from '../../../typer/beregningssøknadsdata';
+import { useApp } from '../../../context/AppContext';
+import { useDataHenter } from '../../../hooks/felles/useDataHenter';
+import { AlertStripeFeil, AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
     behandlingId: string;
@@ -32,11 +34,21 @@ const StyledInntekt = styled.div`
     padding: 2rem;
 `;
 
+const StyledFeilmelding = styled(AlertStripeFeil)`
+    margin-top: 2rem;
+`;
+
+const StyledAdvarsel = styled(AlertStripeAdvarsel)`
+    margin-top: 2rem;
+`;
+
 const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
+    const history = useHistory();
     const [resultatType, settResultatType] = useState<EVilkårsresultatType>();
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
+    const [lagBlankettFeil, settLagBlankettFeil] = useState<string>('');
 
     const søknadDataConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -50,7 +62,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         søknadDataConfig
     );
 
-    const lagBlankett = ()  => {
+    const lagBlankett = () => {
         axiosRequest<string, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandlingId}/lagre-vedtak`,
@@ -62,13 +74,14 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         }).then((res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    // hisotry.push(...)
-                case: RessursStatus.HENTER:
-                    // ...
+                    history.push(`/behandling/${behandlingId}/blankett`);
+                    break;
+                case RessursStatus.HENTER:
+                case RessursStatus.IKKE_HENTET:
+                    break;
                 default:
-                    // sett feilmelding
+                    settLagBlankettFeil(res.frontendFeilmelding);
             }
-            console.log(res);
         });
     };
 
@@ -103,7 +116,14 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                     </>
                 );
             case EVilkårsresultatType.ANNULLERE:
-                return <Hovedknapp style={{ marginTop: '2rem' }}>Fullfør annullering</Hovedknapp>;
+                return (
+                    <>
+                        <StyledAdvarsel>
+                            Ved annullering må oppgaven fullføres i Gosys
+                        </StyledAdvarsel>
+                        <Hovedknapp style={{ marginTop: '2rem' }}>Fullfør annullering</Hovedknapp>
+                    </>
+                );
         }
     };
 
@@ -129,6 +149,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             label="Vedtak"
                             value={resultatType}
                             onChange={(e) => {
+                                settLagBlankettFeil('');
                                 settResultatType(e.target.value as EVilkårsresultatType);
                             }}
                         >
@@ -143,6 +164,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             <option value={EVilkårsresultatType.ANNULLERE}>Annullere</option>
                         </StyledSelect>
                         {resultatType && vedtaksresultatSwitch(resultatType)}
+                        {lagBlankettFeil && (
+                            <StyledFeilmelding>{lagBlankettFeil}</StyledFeilmelding>
+                        )}
                     </StyledInntekt>
                 );
             }}
