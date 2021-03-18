@@ -1,24 +1,15 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 import React, { FC, useEffect, useState } from 'react';
 import { AktivitetsvilkårGruppe, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
-import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
 import { useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
-import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
-import { StyledInngangsvilkår } from '../Inngangsvilkår/Inngangsvilkår';
-
-const StyledKnapp = hiddenIf(styled(Knapp)`
-    display: block;
-    margin: 2rem auto 0;
-`);
+import { StyledInngangsvilkår, StyledKnapp } from '../Inngangsvilkår/Inngangsvilkår';
 
 interface Props {
     behandlingId: string;

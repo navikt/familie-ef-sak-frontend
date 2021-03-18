@@ -16,8 +16,6 @@ interface Props {
 
 const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
-    const { søknadsgrunnlag, registergrunnlag } = sivilstand;
-    const { tidligereSamboer } = søknadsgrunnlag;
 
     return (
         <>
@@ -28,28 +26,24 @@ const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
                     <EtikettLiten>§15-4</EtikettLiten>
                 </div>
 
-                {registergrunnlag.type !== SivilstandType.GIFT && (
+                {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Alene med barn fordi</Normaltekst>
                         <Normaltekst>
-                            {(søknadsgrunnlag.årsakEnslig &&
-                                ÅrsakEnsligTilTekst[søknadsgrunnlag?.årsakEnslig]) ||
+                            {(sivilstand.søknadsgrunnlag.årsakEnslig &&
+                                ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
                                 ''}
                         </Normaltekst>
+                        <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
                     </>
                 )}
-                <ÅrsakEnslig søknadsgrunnlag={søknadsgrunnlag} />
 
                 <Søknadsgrunnlag />
                 <Normaltekst>Bosituasjon</Normaltekst>
                 <Normaltekst>{SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}</Normaltekst>
 
-                <Bosituasjon
-                    bosituasjon={bosituasjon}
-                    tidligereSamboer={tidligereSamboer}
-                    sivilstandsplaner={sivilstandsplaner}
-                />
+                <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
             </GridTabell>
         </>
     );

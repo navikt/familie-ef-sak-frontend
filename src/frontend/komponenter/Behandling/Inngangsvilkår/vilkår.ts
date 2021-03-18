@@ -3,6 +3,7 @@ import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer'
 import { IBosituasjon } from './Samliv/typer';
 import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
 import { IAktivitet } from '../../../typer/overgangsstønad';
+import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
 
 export interface IVilkår {
     vurderinger: IVurdering[];
@@ -15,6 +16,7 @@ export interface IVilkårGrunnlag {
     bosituasjon: IBosituasjon;
     sivilstandsplaner: ISivilstandsplaner;
     barnMedSamvær: IBarnMedSamvær[];
+    sagtOppEllerRedusertStilling: ISagtOppEllerRedusertStilling;
     aktivitet: IAktivitet;
 }
 
@@ -69,6 +71,7 @@ export enum Vilkår {
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
     NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
     AKTIVITET = 'AKTIVITET',
 }
 
@@ -80,7 +83,9 @@ export type VilkårType =
     | Vilkår.SAMLIV
     | Vilkår.NYTT_BARN_SAMME_PARTNER
     | Vilkår.ALENEOMSORG
-    | Vilkår.AKTIVITET;
+    | Vilkår.AKTIVITET
+    | Vilkår.ALENEOMSORG
+    | Vilkår.SAGT_OPP_ELLER_REDUSERT;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
@@ -89,8 +94,9 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
-    AKTIVITET: '',
+    AKTIVITET: 'Vilkår om aktivitet',
     NYTT_BARN_SAMME_PARTNER: 'Vilkår om barn med samme partner',
+    SAGT_OPP_ELLER_REDUSERT: 'Vilkår om sagt opp arbeidsforhold ',
 };
 
 // ------- DELVILKÅR
@@ -110,6 +116,7 @@ export enum DelvilkårType {
     MER_AV_DAGLIG_OMSORG = 'MER_AV_DAGLIG_OMSORG',
     OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN = 'OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN',
     HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER = 'HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER',
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
@@ -132,6 +139,8 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
     OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Har bruker omsorgen for egne/adopterte barn? ',
     HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER:
         'Har søker fått nytt barn med samme partner (født etter 01.01.2016) eller venter nytt barn med samme partner, etter at en av foreldrene tidligere har mottatt eller fortsatt mottar stønad for et annet felles barn.',
+    SAGT_OPP_ELLER_REDUSERT:
+        'Har søker sagt opp jobben, tatt frivillig permisjon eller redusert arbeidstiden de siste 6 månedene før søknadstidspunktet?',
 };
 
 // ------ UNNTAK
@@ -149,6 +158,7 @@ export enum UnntakType {
     ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR = 'ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR',
     ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR = 'ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR',
     TOTALVURDERING_OPPFYLLER_FORSKRIFT = 'TOTALVURDERING_OPPFYLLER_FORSKRIFT',
+    RIMELIG_GRUNN_SAGT_OPP = 'RIMELIG_GRUNN_SAGT_OPP',
 }
 
 export const unntakTypeTilTekst: Record<UnntakType, string> = {
@@ -173,6 +183,8 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
         'Ja, medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
     TOTALVURDERING_OPPFYLLER_FORSKRIFT:
         'Ja, totalvurdering viser at forholdene går inn under forskriften om kravet om fem års forutgående medlemskap',
+    RIMELIG_GRUNN_SAGT_OPP:
+        'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
 };
 
 // ------ VILKÅRGRUPPE
@@ -189,7 +201,7 @@ export enum VilkårGruppe {
     ALENEOMSORG = 'ALENEOMSORG',
     NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
     AKTIVITET = 'AKTIVITET',
-    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export enum InngangsvilkårGruppe {
@@ -199,12 +211,12 @@ export enum InngangsvilkårGruppe {
     SIVILSTAND = 'SIVILSTAND',
     SAMLIV = 'SAMLIV',
     ALENEOMSORG = 'ALENEOMSORG',
-    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER'
+    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
 }
 
 export enum AktivitetsvilkårGruppe {
     AKTIVITET = 'AKTIVITET',
-    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT'
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {

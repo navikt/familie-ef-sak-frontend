@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import {
-    IVilkår,
-    IVurdering,
-    VilkårGruppe,
-    Vurderingsfeilmelding,
-} from '../Inngangsvilkår/vilkår';
+import { IVilkår, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from '../Inngangsvilkår/vilkår';
 import { filtrerVurderinger, vilkårStatus } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
@@ -57,7 +52,6 @@ const Vurdering: FC<Props> = ({
     if (!config) {
         return <div>Mangler config for {vilkårGruppe}</div>;
     }
-
     return (
         <StyledVilkårOgVurdering>
             <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status, barnId)}</StyledVisning>

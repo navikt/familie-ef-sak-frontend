@@ -1,6 +1,7 @@
 //interfaces
 
 import { IDokumentasjon } from './felles';
+import { ESagtOppEllerRedusert } from '../komponenter/Behandling/Inngangsvilkår/Samliv/typer';
 import { EDinSituasjon, EStilling } from '../komponenter/Behandling/Aktivitet/Aktivitet/typer';
 
 export interface IAktivitet {
@@ -11,14 +12,13 @@ export interface IAktivitet {
     arbeidssøker?: IArbeidssøker;
     underUtdanning?: IUnderUtdanning;
     virksomhet?: IVirksomhet;
-    tidligereUtdanninger: ITidligereUtdanning[];
     gjelderDeg: EDinSituasjon[];
     særligeTilsynsbehov: ISærligeTilsynsbehov[];
     datoOppstartJobb?: string;
 }
 
 export interface ISagtOppEllerRedusertStilling {
-    sagtOppEllerRedusertStilling: string;
+    sagtOppEllerRedusertStilling?: ESagtOppEllerRedusert;
     årsak?: string;
     dato?: string;
     dokumentasjon?: IDokumentasjon;
@@ -68,6 +68,7 @@ export interface IUnderUtdanning {
     hvorMyeSkalDuStudere?: number;
     hvaErMåletMedUtdanningen?: string;
     utdanningEtterGrunnskolen: boolean;
+    tidligereUtdanninger: ITidligereUtdanning[];
 }
 
 export interface ITidligereUtdanning {

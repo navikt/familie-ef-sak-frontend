@@ -62,6 +62,10 @@ export const GridTabell = styled.div<{ kolonner?: number; underTabellMargin?: nu
     .tomTabell {
         color: ${navFarger.navGra60};
     }
+
+    .tekstUtenIkon {
+        grid-column: 2 / 4;
+    }
 `;
 
 export const GridTabellRad = styled.div<{ kolonner?: number; overTabellRadPadding?: number }>`

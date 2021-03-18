@@ -9,7 +9,7 @@ import { BehandlingProvider, useBehandling } from '../../context/BehandlingConte
 import { ModalProvider } from '../../context/ModalContext';
 import ModalController from '../Felleskomponenter/Modal/ModalController';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import Venstemeny from '../Venstremeny/Venstremeny';
+import Venstremeny from '../Venstremeny/Venstremeny';
 import VisittkortComponent from '../Felleskomponenter/Visittkort';
 
 const Container = styled.div`
@@ -51,12 +51,12 @@ const Behandling: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
     return (
         <DataViewer response={{ personopplysningerResponse, behandling }}>
-            {({ personopplysningerResponse }) => (
+            {({ personopplysningerResponse, behandling }) => (
                 <>
                     <VisittkortComponent data={personopplysningerResponse} />
                     <Container>
                         <VenstreMenyWrapper>
-                            <Venstemeny />
+                            <Venstremeny behandling={behandling} />
                         </VenstreMenyWrapper>
                         <InnholdWrapper>
                             <Fanemeny />
