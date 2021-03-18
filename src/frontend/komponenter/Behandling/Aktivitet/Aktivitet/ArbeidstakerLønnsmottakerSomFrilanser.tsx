@@ -3,7 +3,7 @@ import { IArbeidsforhold } from '../../../../typer/overgangsstønad';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
-import { StillingTilTekst } from './typer';
+import { ArbeidssituasjonTilTekst, EArbeidssituasjon, StillingTilTekst } from './typer';
 
 export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{ arbeidsforhold: IArbeidsforhold }> = ({
     arbeidsforhold,
@@ -11,7 +11,13 @@ export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{ arbeidsforhold: IArbei
     return (
         <>
             <Søknadsgrunnlag />
-            <Element className={'undertittel'}>Arbeidstaker, Lønnsmottaker som frilanser</Element>
+            <Element className={'undertittel'}>
+                {
+                    ArbeidssituasjonTilTekst[
+                        EArbeidssituasjon.erArbeidstakerOgEllerLønnsmottakerFrilanser
+                    ]
+                }
+            </Element>
 
             <Normaltekst className={'førsteDataKolonne'}> Arbeidssted</Normaltekst>
             <Normaltekst> {arbeidsforhold.arbeidsgivernavn}</Normaltekst>

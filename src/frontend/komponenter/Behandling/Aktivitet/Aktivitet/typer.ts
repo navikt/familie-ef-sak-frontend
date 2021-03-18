@@ -1,7 +1,6 @@
 export enum EArbeidssituasjon {
     erHjemmeMedBarnUnderEttÅr = 'erHjemmeMedBarnUnderEttÅr',
-    erArbeidstaker = 'erArbeidstaker',
-    erFrilanser = 'erFrilanser',
+    erArbeidstakerOgEllerLønnsmottakerFrilanser = 'erArbeidstakerOgEllerLønnsmottakerFrilanser',
     erSelvstendigNæringsdriveneEllerFrilanser = 'erSelvstendigNæringsdriveneEllerFrilanser',
     erAnsattIEgetAS = 'erAnsattIEgetAS',
     etablererEgenVirksomhet = 'etablererEgenVirksomhet',
@@ -12,8 +11,7 @@ export enum EArbeidssituasjon {
 }
 export const ArbeidssituasjonTilTekst: Record<EArbeidssituasjon, string> = {
     erHjemmeMedBarnUnderEttÅr: 'Hjemme med barn under 1 år',
-    erArbeidstaker: 'Arbeidstaker',
-    erFrilanser: 'Lønnsmottaker som frilanser',
+    erArbeidstakerOgEllerLønnsmottakerFrilanser: 'Arbeidstaker / Lønnsmottaker som frilanser',
     erSelvstendigNæringsdriveneEllerFrilanser:
         'Selvstendig næringsdrivende eller frilanser med enkeltpersonforetak',
     erAnsattIEgetAS: 'Ansatt i eget aksjeselskap (AS)',
