@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { BegrunnelseRegel, Regler, } from './typer';
-import {IVurdering, VilkårType, Vurdering} from '../Inngangsvilkår/vilkår';
+import {IDelvilkår, IVurdering, VilkårType, Vurdering} from '../Inngangsvilkår/vilkår';
 import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAllaDelvilkårBesvarte,
@@ -27,13 +27,13 @@ const EndreVurderingComponent: FC<{
     oppdaterVurdering: (vurdering: any) => void;
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
-    const [vurderingState, settVurderingState] = useState<IVurdering>(vurdering);
+    const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(vurdering.delvilkårsvurderinger);
 
     const oppdateterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
 
-        settVurderingState((prevSvar) => {
-            const prevDelvilkårsvurdering = prevSvar.delvilkårsvurderinger[index];
-            return { ...prevSvar, delvilkårsvurderinger: [...prevSvar.delvilkårsvurderinger.slice(0,index),  {...prevDelvilkårsvurdering, vurderinger: nySvarArray}, ...prevSvar.delvilkårsvurderinger.slice(index+1) ],  }
+        settDelvilkårsvurderinger((prevSvar) => {
+            const prevDelvilkårsvurdering = prevSvar[index];
+            return [...prevSvar.slice(0,index),  {...prevDelvilkårsvurdering, vurderinger: nySvarArray}, ...prevSvar.slice(index+1) ]
         });
     }
 
@@ -86,10 +86,10 @@ const EndreVurderingComponent: FC<{
             onSubmit={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                oppdaterVurdering(vurdering);
+                oppdaterVurdering({id: vurdering.id, behandlingId: vurdering.behandlingId, delvilkårsvurderinger});
             }}
         >
-            {vurderingState.delvilkårsvurderinger.map((delvikår, index) => {
+            {delvilkårsvurderinger.map((delvikår, index) => {
                 const oppdaterSvarINod = oppdaterSvar(delvikår.vurderinger, index);
                 const oppdaterBegrunnelseINod = oppdaterBegrunnelse(delvikår.vurderinger, index);
                 return delvikår.vurderinger.map((svar) => {
@@ -130,7 +130,7 @@ const EndreVurderingComponent: FC<{
                     );
                 });
             })}
-            <Lagreknapp htmlType="submit" hidden={!erAllaDelvilkårBesvarte(vurderingState.delvilkårsvurderinger, regler)}>
+            <Lagreknapp htmlType="submit" hidden={!erAllaDelvilkårBesvarte(delvilkårsvurderinger, regler)}>
                 Lagre
             </Lagreknapp>
         </form>
