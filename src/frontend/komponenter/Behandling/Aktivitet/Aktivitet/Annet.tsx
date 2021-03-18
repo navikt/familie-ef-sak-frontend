@@ -7,7 +7,6 @@ import { Normaltekst, Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
-import { v4 as uuidv4 } from 'uuid';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 const StyledList = styled.ul`
@@ -65,7 +64,7 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
 
                 <GridTabellRad kolonner={3} overTabellRadPadding={2}>
                     {særligTilsynsbehov.map((barnetsBehov) => (
-                        <GridTabell key={uuidv4()} kolonner={3} underTabellMargin={2}>
+                        <GridTabell key={barnetsBehov.id} kolonner={3} underTabellMargin={2}>
                             <Søknadsgrunnlag />
                             <Normaltekst>
                                 Om tilsynsbehov for: <br />

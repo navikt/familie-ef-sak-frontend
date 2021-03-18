@@ -4,7 +4,6 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
-import { v4 as uuidv4 } from 'uuid';
 import { StyledTabellWrapper } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../../utils/formatter';
 
@@ -57,8 +56,8 @@ export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanni
             <Element className={'førsteDataKolonne'}>Linje/Kurs/grad</Element>
             <Element>Tidsperiode</Element>
 
-            {tidligereUtdanninger?.map((utdanning) => (
-                <StyledTabellWrapper key={uuidv4()}>
+            {tidligereUtdanninger?.map((utdanning, index) => (
+                <StyledTabellWrapper key={utdanning.linjeKursGrad + index}>
                     <Normaltekst className={'førsteDataKolonne'}>
                         {utdanning.linjeKursGrad}
                     </Normaltekst>

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { IAktivitet } from '../../../../typer/overgangsstønad';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
@@ -58,9 +57,9 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
 
                 <GridTabell kolonner={3}>
                     {arbeidsforhold &&
-                        arbeidsforhold.map((arbeidsgiver) => (
+                        arbeidsforhold.map((arbeidsgiver, index) => (
                             <ArbeidstakerLønnsmottakerSomFrilanser
-                                key={uuidv4()}
+                                key={arbeidsgiver.arbeidsgivernavn + index}
                                 arbeidsforhold={arbeidsgiver}
                             />
                         ))}
@@ -68,9 +67,9 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
 
                 <GridTabell kolonner={3}>
                     {selvstendig &&
-                        selvstendig.map((firma) => (
+                        selvstendig.map((firma, index) => (
                             <SelvstendigNæringsdrivendeEllerFrilanser
-                                key={uuidv4()}
+                                key={firma.organisasjonsnummer + index}
                                 firma={firma}
                             />
                         ))}
@@ -78,8 +77,8 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
 
                 <GridTabell kolonner={3}>
                     {aksjeselskap &&
-                        aksjeselskap.map((selskap) => (
-                            <Aksjeselskap key={uuidv4()} aksjeselskap={selskap} />
+                        aksjeselskap.map((selskap, index) => (
+                            <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />
                         ))}
                 </GridTabell>
 
