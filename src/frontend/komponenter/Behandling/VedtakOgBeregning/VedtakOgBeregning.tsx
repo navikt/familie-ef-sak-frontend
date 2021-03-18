@@ -1,17 +1,17 @@
-import React, { FC, useState, useMemo } from 'react';
+import React, {FC, useMemo, useState} from 'react';
 import styled from 'styled-components';
-import { Ressurs } from '../../../typer/ressurs';
-import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { AxiosRequestConfig } from 'axios';
+import {Ressurs, RessursStatus} from '../../../typer/ressurs';
+import {StyledTabell} from '../../Felleskomponenter/Visning/StyledTabell';
+import {Hovedknapp} from 'nav-frontend-knapper';
+import {AxiosRequestConfig} from 'axios';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { Select, Textarea } from 'nav-frontend-skjema';
-import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../utils/formatter';
-import { Søknadsgrunnlag } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { ISøknadData } from '../../../typer/beregningssøknadsdata';
-import { useApp } from '../../../context/AppContext';
-import { useDataHenter } from '../../../hooks/felles/useDataHenter';
+import {Select, Textarea} from 'nav-frontend-skjema';
+import {formaterNullableIsoDato, formaterNullableMånedÅr} from '../../../utils/formatter';
+import {Søknadsgrunnlag} from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import {Element, Normaltekst} from 'nav-frontend-typografi';
+import {ISøknadData} from '../../../typer/beregningssøknadsdata';
+import {useApp} from '../../../context/AppContext';
+import {useDataHenter} from '../../../hooks/felles/useDataHenter';
 
 interface Props {
     behandlingId: string;
@@ -50,8 +50,8 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         søknadDataConfig
     );
 
-    const lagBlankett = () => {
-        axiosRequest({
+    const lagBlankett = ()  => {
+        axiosRequest<string, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandlingId}/lagre-vedtak`,
             data: {
@@ -59,7 +59,15 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                 periodeBegrunnelse,
                 inntektBegrunnelse,
             },
-        }).then((res: any) => {
+        }).then((res: Ressurs<string>) => {
+            switch (res.status) {
+                case RessursStatus.SUKSESS:
+                    // hisotry.push(...)
+                case: RessursStatus.HENTER:
+                    // ...
+                default:
+                    // sett feilmelding
+            }
             console.log(res);
         });
     };
