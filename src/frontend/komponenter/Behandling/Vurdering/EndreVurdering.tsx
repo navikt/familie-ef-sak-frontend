@@ -63,6 +63,7 @@ const EndreVurdering: FC<Props> = ({
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             {regler.status === RessursStatus.SUKSESS && (
                 <EndreVurderingComponent
+                    oppdaterVurdering={oppdaterVurdering}
                     vilkårType={vurdering.vilkårType}
                     regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
                     rotregler={regler.data.vilkårsregler[vurdering.vilkårType].rotregler}
