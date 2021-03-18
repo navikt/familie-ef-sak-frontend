@@ -1,27 +1,60 @@
-import {Begrunnelse, BegrunnelseRegel, Regler, RootVilkårsvar, Svarsalternativ, Vilkårsvar} from "./typer";
+import {
+    Begrunnelse,
+    BegrunnelseRegel,
+    Regler,
+    RootVilkårsvar,
+    Svarsalternativ,
+    Vilkårsvar,
+} from './typer';
 
-export function begrunnelseErPåkrevdOgSavnes(svarsalternativ: Svarsalternativ, begrunnelse: Begrunnelse) {
+export function begrunnelseErPåkrevdOgSavnes(
+    svarsalternativ: Svarsalternativ,
+    begrunnelse: Begrunnelse
+) {
     if (svarsalternativ.begrunnelse === BegrunnelseRegel.PÅKREVD) {
         return !begrunnelse || begrunnelse.trim().length === 0;
     }
     return false;
 }
 
-export function leggTilRegelIdISvarliste(svarliste: RootVilkårsvar, regelId: string) {
+export function begrunnelseErPåkrevdOgUtfyllt(
+    svarsalternativ: Svarsalternativ,
+    begrunnelse: Begrunnelse
+) {
+    if (svarsalternativ.begrunnelse === BegrunnelseRegel.PÅKREVD) {
+        return !begrunnelse || begrunnelse.trim().length > 0;
+    }
+    return true;
+}
+
+export function leggTilRegelIdISvarliste(
+    svarliste: RootVilkårsvar,
+    regelId: string
+): Record<string, Vilkårsvar[]> {
     svarliste[regelId] = [...(svarliste[regelId] ?? []), { regelId }];
     return svarliste;
 }
 
-export function erAllaDelvilkårBesvarte(svar: RootVilkårsvar, regler: Regler) {
+export function hentSvarsalternativ(
+    regler: Regler,
+    vurdering: Vilkårsvar
+): Svarsalternativ | undefined {
+    if (!vurdering.svarId) {
+        return undefined;
+    }
+    const regel = regler[vurdering.regelId];
+    return regel.svarMapping[vurdering.svarId!];
+}
+
+export function erAllaDelvilkårBesvarte(svar: RootVilkårsvar, regler: Regler): boolean {
     const erPåSisteNod = Object.values(svar)
         .map((listeMedVurderinger) => listeMedVurderinger[listeMedVurderinger.length - 1])
         .every((sisteVurderingen) => {
             if (!sisteVurderingen.svarId) {
                 return false;
             }
-            const regel = regler[sisteVurderingen.regelId];
-            const svarMapping = regel.svarMapping[sisteVurderingen.svarId];
-            return svarMapping.regelId === 'SLUTT_NODE';
+            const svarsalternativ = hentSvarsalternativ(regler, sisteVurderingen);
+            return svarsalternativ?.regelId === 'SLUTT_NODE';
         });
 
     const harBesvartAllePåkrevdeBegrunnelser = Object.values(svar).reduce((acc, curr) => {
@@ -31,12 +64,11 @@ export function erAllaDelvilkårBesvarte(svar: RootVilkårsvar, regler: Regler) 
                 if (!vurdering.svarId) {
                     return false;
                 }
-                const regel = regler[vurdering.regelId];
-                const svarMapping = regel.svarMapping[vurdering.svarId];
-                if (begrunnelseErPåkrevdOgSavnes(svarMapping, vurdering.begrunnelse)) {
-                    return false;
-                }
-                return true;
+                const svarsalternativ = hentSvarsalternativ(regler, vurdering);
+                return (
+                    svarsalternativ &&
+                    begrunnelseErPåkrevdOgSavnes(svarsalternativ, vurdering.begrunnelse)
+                );
             })
         );
     }, true);
@@ -44,20 +76,32 @@ export function erAllaDelvilkårBesvarte(svar: RootVilkårsvar, regler: Regler) 
     return erPåSisteNod && harBesvartAllePåkrevdeBegrunnelser;
 }
 
-export function leggTilNesteNodHvis (
-    nyttSvar: Vilkårsvar,
-    hvisFunksjon: (...args: any) => boolean,
+export function leggTilNesteIdHvis(
+    nesteStegId: string,
     nySvarArray: Vilkårsvar[],
-    regler: Regler,
-    args: any[] = []
-)  {
-    const { regelId, svarId } = nyttSvar;
-    const regel = regler[regelId];
-    const svarsalternativ = regel.svarMapping[svarId!];
-    const nesteStegId = svarsalternativ.regelId;
-
-    if (hvisFunksjon.apply(null, [nesteStegId, ...args])) {
-        return [...nySvarArray, nyttSvar, { regelId: nesteStegId }];
+    hvisFunksjon: () => boolean
+): Vilkårsvar[] {
+    if (hvisFunksjon()) {
+        return [...nySvarArray, { regelId: nesteStegId }];
     }
-    return [...nySvarArray, nyttSvar];
+    return nySvarArray;
+}
+
+export const oppdaterSvarIListe = (
+    nyttSvar: Vilkårsvar,
+    vurderinger: Vilkårsvar[],
+    behållResterendeSvar = false
+): Vilkårsvar[] => {
+    const { svarId, regelId } = nyttSvar;
+
+    const svarIndex = vurderinger.findIndex((s) => s.regelId === regelId);
+    const nySvarArray = vurderinger.slice(0, svarIndex);
+
+    if (!svarId) {
+        return vurderinger;
+    }
+
+    return [...nySvarArray, nyttSvar].concat(
+        behållResterendeSvar ? [...vurderinger.slice(svarIndex + 1)] : []
+    );
 };
