@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
-import {
-    IInngangsvilkår,
-    IVurdering,
-    VilkårGruppe,
-    Vurderingsfeilmelding,
-} from '../Inngangsvilkår/vilkår';
+import { IVilkår, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from '../Inngangsvilkår/vilkår';
 import { filtrerVurderinger, vilkårStatus } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
-import { navLysGra } from '@navikt/familie-header';
 import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
 import { Ressurs } from '../../../typer/ressurs';
+import navFarger from 'nav-frontend-core';
 
 const StyledVilkårOgVurdering = styled.div`
     display: contents;
@@ -24,7 +19,7 @@ const StyledVisning = styled.div`
 
 const StyledSkillelinje = styled.div`
     height: 2px;
-    border: solid 1px ${navLysGra};
+    border: solid 1px ${navFarger.navLysGra};
     grid-column: 1/3;
 `;
 
@@ -37,7 +32,7 @@ const StyledVurderinger = styled.div`
 interface Props {
     barnId?: string;
     vilkårGruppe: VilkårGruppe;
-    inngangsvilkår: IInngangsvilkår;
+    inngangsvilkår: IVilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
     feilmeldinger: Vurderingsfeilmelding;
 }
@@ -57,7 +52,6 @@ const Vurdering: FC<Props> = ({
     if (!config) {
         return <div>Mangler config for {vilkårGruppe}</div>;
     }
-
     return (
         <StyledVilkårOgVurdering>
             <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status, barnId)}</StyledVisning>

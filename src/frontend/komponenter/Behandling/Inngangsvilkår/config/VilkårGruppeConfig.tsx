@@ -1,4 +1,4 @@
-import { IDelvilkår, IInngangsvilkårGrunnlag, VilkårGruppe } from '../vilkår';
+import { IDelvilkår, IVilkårGrunnlag, VilkårGruppe } from '../vilkår';
 import * as React from 'react';
 import { ReactChild } from 'react';
 import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
@@ -9,10 +9,12 @@ import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt
 import SamlivVisning from '../Samliv/SamlivVisning';
 import AleneomsorgVisning from '../Aleneomsorg/AleneomsorgVisning';
 import MorEllerFarVisning from '../MorEllerFar/MorEllerFarVisning';
+import NyttBarnSammePartnerVisning from '../NyttBarnSammePartner/NyttBarnSammePartnerVisning';
+import SagtOppEllerRedusertVisning from '../../Aktivitet/SagtOppEllerRedusert/SagtOppEllerRedusertVisning';
 
 export interface IVilkårGruppeConfig {
     visning: (
-        inngangsvilkår: IInngangsvilkårGrunnlag,
+        inngangsvilkår: IVilkårGrunnlag,
         vilkårStatus: VilkårStatus,
         barnId?: string
     ) => ReactChild;
@@ -21,17 +23,17 @@ export interface IVilkårGruppeConfig {
 
 export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppeConfig> = {
     MEDLEMSKAP: {
-        visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <MedlemskapVisning medlemskap={grunnlag.medlemskap} vilkårStatus={vilkårStatus} />
         ),
     },
     LOVLIG_OPPHOLD: {
-        visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <OppholdVisning medlemskap={grunnlag.medlemskap} vilkårStatus={vilkårStatus} />
         ),
     },
     MOR_ELLER_FAR: {
-        visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <MorEllerFarVisning
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårStatus={vilkårStatus}
@@ -39,18 +41,18 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
         ),
     },
     SIVILSTAND: {
-        visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <SivilstandVisning sivilstand={grunnlag.sivilstand} vilkårStatus={vilkårStatus} />
         ),
     },
     SAMLIV: {
-        visning: (grunnlag: IInngangsvilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <SamlivVisning grunnlag={grunnlag} vilkårStatus={vilkårStatus} />
         ),
     },
     ALENEOMSORG: {
         visning: (
-            grunnlag: IInngangsvilkårGrunnlag,
+            grunnlag: IVilkårGrunnlag,
             vilkårStatus: VilkårStatus,
             barnId?: string
         ): ReactChild => (
@@ -58,6 +60,22 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårStatus={vilkårStatus}
                 barnId={barnId}
+            />
+        ),
+    },
+    NYTT_BARN_SAMME_PARTNER: {
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+            <NyttBarnSammePartnerVisning
+                barnMedSamvær={grunnlag.barnMedSamvær}
+                vilkårStatus={vilkårStatus}
+            />
+        ),
+    },
+    SAGT_OPP_ELLER_REDUSERT: {
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+            <SagtOppEllerRedusertVisning
+                sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                vilkårStatus={vilkårStatus}
             />
         ),
     },

@@ -51,4 +51,12 @@ export const StyledTabell = styled.div`
     .kolonne {
         padding-right: 3rem;
     }
+
+    .tomTabell {
+        color: ${navFarger.navGra60};
+    }
+
+    .tekstUtenIkon {
+        grid-column: 2 / 4;
+    }
 `;

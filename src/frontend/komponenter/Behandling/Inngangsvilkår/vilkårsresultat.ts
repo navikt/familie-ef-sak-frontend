@@ -2,7 +2,9 @@ import { DelvilkårType, Vilkårsresultat, vilkårsresultatTypeTilTekst } from '
 
 export const delvilkårTypeSomKreverSpesialhåntering: DelvilkårType[] = [
     DelvilkårType.NÆRE_BOFORHOLD,
+    DelvilkårType.HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER,
     DelvilkårType.SKRIFTLIG_AVTALE_OM_DELT_BOSTED,
+    DelvilkårType.SAGT_OPP_ELLER_REDUSERT,
 ];
 
 export const vilkårsresultatTypeTilTekstForDelvilkår = (
