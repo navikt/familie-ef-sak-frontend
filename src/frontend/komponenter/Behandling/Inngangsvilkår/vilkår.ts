@@ -1,8 +1,9 @@
 import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
-import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
+import { IBarnMedSamvær } from './Aleneomsorg/typer';
 import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
+import {Begrunnelse, SvarId} from "../Vurdering/typer";
 
 export interface IVilkår {
     vurderinger: IVurdering[];
@@ -26,15 +27,13 @@ export interface ISivilstandsplaner {
 
 export interface IVurdering {
     id: string;
-    resultat: Vilkårsresultat;
     behandlingId: string;
-    barnId?: string;
+    resultat: Vilkårsresultat;
     vilkårType: VilkårType;
-    begrunnelse?: string | null;
-    unntak?: UnntakType | null;
-    delvilkårsvurderinger: IDelvilkår[];
+    barnId?: string;
     endretAv: string;
     endretTid: string;
+    delvilkårsvurderinger: IDelvilkår[];
 }
 
 export interface Vurderingsfeilmelding {
@@ -42,16 +41,21 @@ export interface Vurderingsfeilmelding {
 }
 
 export interface IDelvilkår {
-    type: DelvilkårType;
     resultat: Vilkårsresultat;
-    årsak?: EDelvilkårÅrsak;
-    begrunnelse?: string | null;
+    vurderinger: Vurdering[]
+}
+
+export interface Vurdering {
+    regelId: string;
+    svar?: SvarId;
+    begrunnelse?: Begrunnelse;
 }
 
 export enum Vilkårsresultat {
     OPPFYLT = 'OPPFYLT',
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
+    IKKE_TATT_STILLING_TIL = 'IKKE_TATT_STILLING_TIL',
     IKKE_VURDERT = 'IKKE_VURDERT',
 }
 
@@ -218,4 +222,5 @@ export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
     IKKE_OPPFYLT: 'Nei',
     IKKE_VURDERT: 'Ikke vurdert',
     IKKE_AKTUELL: 'Ikke aktuell',
+    IKKE_TATT_STILLING_TIL: 'Ikke vurdert',
 };

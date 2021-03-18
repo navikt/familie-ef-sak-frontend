@@ -13,7 +13,7 @@ export type SvarId = string;
 
 export interface Svarsalternativ {
     regelId: RegelId;
-    begrunnelse: BegrunnelseRegel;
+    begrunnelseType: BegrunnelseRegel;
 }
 
 export type SvarMapping = Record<SvarId, Svarsalternativ>;
@@ -40,11 +40,3 @@ export interface ReglerResponse {
 }
 
 export type Begrunnelse = string | undefined;
-
-export interface Vilkårsvar {
-    regelId: string;
-    svarId?: SvarId;
-    begrunnelse?: Begrunnelse;
-}
-
-export type RootVilkårsvar = Record<string, Vilkårsvar[]>;

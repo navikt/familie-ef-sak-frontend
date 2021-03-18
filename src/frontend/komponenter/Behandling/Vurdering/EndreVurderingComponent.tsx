@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { BegrunnelseRegel, RegelId, Regler, RootVilkårsvar, Vilkårsvar } from './typer';
-import { VilkårType } from '../Inngangsvilkår/vilkår';
+import { BegrunnelseRegel, Regler, } from './typer';
+import {IVurdering, VilkårType, Vurdering} from '../Inngangsvilkår/vilkår';
 import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAllaDelvilkårBesvarte,
     hentSvarsalternativ,
     leggTilNesteIdHvis,
-    leggTilRegelIdISvarliste,
     oppdaterSvarIListe,
 } from './utils';
 
@@ -25,21 +24,21 @@ const Lagreknapp = hiddenIf(Hovedknapp);
 const EndreVurderingComponent: FC<{
     vilkårType: VilkårType;
     regler: Regler;
-    rotregler: string[];
-    oppdaterVurdering: () => void;
-}> = ({ regler, rotregler, oppdaterVurdering }) => {
-    const [vilkårsvar, settVilkårsvar] = useState<RootVilkårsvar>(
-        rotregler.reduce((acc, rootregel) => {
-            return leggTilRegelIdISvarliste(acc, rootregel);
-        }, {} as RootVilkårsvar)
-    );
+    oppdaterVurdering: (vurdering: any) => void;
+    vurdering: IVurdering;
+}> = ({ regler, oppdaterVurdering, vurdering }) => {
+    const [vurderingState, settVurderingState] = useState<IVurdering>(vurdering);
 
-    const oppdateterVilkårsvar = (rootRegelId: string, nySvarArray: Vilkårsvar[]) =>
-        settVilkårsvar((prevSvar) => ({ ...prevSvar, [rootRegelId]: [...nySvarArray] }));
+    const oppdateterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
 
-    const oppdaterBegrunnelse = (rootRegelId: RegelId) => {
-        const vurderinger = vilkårsvar[rootRegelId];
-        return (nyttSvar: Vilkårsvar) => {
+        settVurderingState((prevSvar) => {
+            const prevDelvilkårsvurdering = prevSvar.delvilkårsvurderinger[index];
+            return { ...prevSvar, delvilkårsvurderinger: [...prevSvar.delvilkårsvurderinger.slice(0,index),  {...prevDelvilkårsvurdering, vurderinger: nySvarArray}, ...prevSvar.delvilkårsvurderinger.slice(index+1) ],  }
+        });
+    }
+
+    const oppdaterBegrunnelse = (vurderinger: Vurdering[], index: number) => {
+        return (nyttSvar: Vurdering) => {
             const { begrunnelse } = nyttSvar;
 
             const nySvarArray = oppdaterSvarIListe(nyttSvar, vurderinger, true);
@@ -62,13 +61,12 @@ const EndreVurderingComponent: FC<{
                 () => leggTilNesteRegelHvis()
             );
 
-            oppdateterVilkårsvar(rootRegelId, maybeLeggTilNesteNodIVilkårsvar);
+            oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
         };
     };
 
-    const oppdaterSvar = (rootRegelId: RegelId) => {
-        const vurderinger = vilkårsvar[rootRegelId];
-        return (nyttSvar: Vilkårsvar) => {
+    const oppdaterSvar = (vurderinger: Vurdering[], index: number)  => {
+        return (nyttSvar: Vurdering) => {
             const nySvarArray = oppdaterSvarIListe(nyttSvar, vurderinger);
             const svarsalternativer = hentSvarsalternativ(regler, nyttSvar)!;
             const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
@@ -76,10 +74,10 @@ const EndreVurderingComponent: FC<{
                 nySvarArray,
                 () =>
                     svarsalternativer.regelId !== 'SLUTT_NODE' &&
-                    svarsalternativer.begrunnelse !== BegrunnelseRegel.PÅKREVD
+                    svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
             );
 
-            oppdateterVilkårsvar(rootRegelId, maybeLeggTilNesteNodIVilkårsvar);
+            oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
         };
     };
 
@@ -88,17 +86,16 @@ const EndreVurderingComponent: FC<{
             onSubmit={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                oppdaterVurdering();
+                oppdaterVurdering(vurdering);
             }}
         >
-            {Object.entries(vilkårsvar).map((svarsNoder) => {
-                const hovedRegel = svarsNoder[0];
-                const oppdaterSvarINod = oppdaterSvar(hovedRegel);
-                const oppdaterBegrunnelseINod = oppdaterBegrunnelse(hovedRegel);
-                return svarsNoder[1].map((svar) => {
+            {vurderingState.delvilkårsvurderinger.map((delvikår, index) => {
+                const oppdaterSvarINod = oppdaterSvar(delvikår.vurderinger, index);
+                const oppdaterBegrunnelseINod = oppdaterBegrunnelse(delvikår.vurderinger, index);
+                return delvikår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
                     const begrunnelse =
-                        (svar.svarId && regel.svarMapping[svar.svarId].begrunnelse) ??
+                        (svar.svar && regel.svarMapping[svar.svar].begrunnelseType) ??
                         BegrunnelseRegel.UTEN;
                     return (
                         <>
@@ -110,9 +107,9 @@ const EndreVurderingComponent: FC<{
                                         name={`${regel.regelId}_${svarId}`}
                                         label={svarId}
                                         value={svarId}
-                                        checked={svarId === svar.svarId}
+                                        checked={svarId === svar.svar}
                                         onChange={() =>
-                                            oppdaterSvarINod({ svarId, regelId: regel.regelId })
+                                            oppdaterSvarINod({ svar: svarId, regelId: regel.regelId })
                                         }
                                     />
                                 ))}
@@ -133,7 +130,7 @@ const EndreVurderingComponent: FC<{
                     );
                 });
             })}
-            <Lagreknapp htmlType="submit" hidden={!erAllaDelvilkårBesvarte(vilkårsvar, regler)}>
+            <Lagreknapp htmlType="submit" hidden={!erAllaDelvilkårBesvarte(vurderingState.delvilkårsvurderinger, regler)}>
                 Lagre
             </Lagreknapp>
         </form>

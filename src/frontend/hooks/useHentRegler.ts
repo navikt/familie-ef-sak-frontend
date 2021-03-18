@@ -15,7 +15,7 @@ export const useHentRegler = (): HentReglerResponse => {
         settRegler(byggHenterRessurs());
         axiosRequest<ReglerResponse, undefined>({
             method: 'GET',
-            url: `/familie-ef-sak/api/regler`,
+            url: `/familie-ef-sak/api/vurdering/regler`,
         }).then((res: Ressurs<ReglerResponse>) => settRegler(res));
     };
 

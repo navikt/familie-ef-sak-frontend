@@ -30,10 +30,10 @@ const EndreVurdering: FC<Props> = ({
     settRedigeringsmodus,
 }) => {
     const { regler } = useBehandling();
-    const [vurdering, settVurdering] = useState<IVurdering>(data);
+    const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
 
-    const oppdaterVurdering: () => void = () => {
+    const oppdaterVurdering = (vurdering: IVurdering) => {
         if (!oppdatererVurdering) {
             settOppdatererVurdering(true);
             lagreVurdering(vurdering).then((response) => {
@@ -52,21 +52,13 @@ const EndreVurdering: FC<Props> = ({
 
     return (
         <StyledEndreVurdering>
-            {config.renderVurdering({
-                config,
-                vurdering,
-                settVurdering,
-                oppdaterVurdering,
-                inngangsvilkårgrunnlag,
-                lagreknappDisabled: oppdatererVurdering,
-            })}
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             {regler.status === RessursStatus.SUKSESS && (
                 <EndreVurderingComponent
                     oppdaterVurdering={oppdaterVurdering}
                     vilkårType={vurdering.vilkårType}
                     regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
-                    rotregler={regler.data.vilkårsregler[vurdering.vilkårType].rotregler}
+                    vurdering={vurdering}
                 />
             )}
         </StyledEndreVurdering>
