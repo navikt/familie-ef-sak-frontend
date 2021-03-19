@@ -15,7 +15,7 @@ import { useDataHenter } from '../../../hooks/felles/useDataHenter';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
-import { EBehandlingResultat, EPeriodetype, IVedtak } from '../../../typer/vedtak';
+import { EBehandlingResultat, EPeriodetype, EAktivitet, IVedtak } from '../../../typer/vedtak';
 import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
 
 interface Props {
@@ -48,12 +48,14 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const { modalDispatch } = useModal();
     const history = useHistory();
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
+
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [fraOgMedDato, settFraOgMedDato] = useState('');
     const [tilOgMedDato, settTilOgMedDato] = useState('');
     const [periodetype, settPeriodetype] = useState('');
+    const [aktivitet, settAktivitet] = useState('');
 
     const søknadDataConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -139,13 +141,40 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             </StyledSelect>
                             <StyledSelect
                                 label="Aktivitet"
-                                value={''}
-                                onChange={() => {
-                                    console.log('lala');
+                                value={aktivitet}
+                                onChange={(e) => {
+                                    settFeilmelding('');
+                                    settAktivitet(e.target.value as EAktivitet);
                                 }}
                             >
                                 <option value="">Velg</option>
-                                <option value="">Velg2</option>
+                                <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>
+                                    Barn er under 1 år
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_I_ARBEID}>
+                                    Forsørger er i arbeid (§15-6 første ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
+                                    Forsørger er i utdannings (§15-6 første ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
+                                    Forsørger er reell arbeidssøker (§15-6 første ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
+                                    Forsørger etablerer egen virksomhet (§15-6 første ledd)
+                                </option>
+                                <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
+                                    Barnet er særlig tilsynskrevende (§15-6 fjerde ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
+                                    Forsørger mangler tilsynsordning (§15-6 femte ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_ER_SYK}>
+                                    Forsørger er syk (§15-6 femte ledd)
+                                </option>
+                                <option value={EAktivitet.BARNET_ER_SYKT}>
+                                    Barnet er sykt (§15-6 femte ledd)
+                                </option>
                             </StyledSelect>
                             <DatoPeriode
                                 datoFraTekst="Fra og med"
