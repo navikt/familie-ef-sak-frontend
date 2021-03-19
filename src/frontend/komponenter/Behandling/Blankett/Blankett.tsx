@@ -4,7 +4,6 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import BlankettFooter from './BlankettFooter';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
-import { Knapp } from 'nav-frontend-knapper';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { BehandlingStatus } from '../../../typer/behandlingstatus';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -12,17 +11,6 @@ import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 interface Props {
     behandlingId: string;
 }
-
-const GenererBlankett = styled(Knapp)`
-    display: block;
-    margin: 0 auto;
-`;
-
-const HentBlankett = styled(Knapp)`
-    display: block;
-    margin: 0 auto;
-    margin-top: 2rem;
-`;
 
 const StyledBlankett = styled.div`
     background-color: #f2f2f2;
@@ -34,21 +22,23 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [blankettRessurs, settBlankettRessurs] = useState<Ressurs<string>>(byggTomRessurs());
 
-    useEffect(() => hentBlankett());
+    useEffect(() => {
+        hentEllerOpprettBlankett();
+    }, []);
 
-    const hentBlankett = () => {
+    const hentEllerOpprettBlankett = () => {
         axiosRequest<string, any>({
             method: 'GET',
             url: `/familie-ef-sak/api/blankett/${behandlingId}`,
         }).then((respons: Ressurs<string>) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                settBlankettRessurs(respons);
-            }
+            settBlankettRessurs(respons);
         });
     };
 
     const erBehandlingÅpen = (status: BehandlingStatus): boolean =>
         [BehandlingStatus.OPPRETTET, BehandlingStatus.UTREDES].includes(status);
+
+    const harHentetBlankett = (): boolean => blankettRessurs.status === RessursStatus.SUKSESS;
 
     return (
         <>
@@ -58,7 +48,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
                         <StyledBlankett>
                             <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
                         </StyledBlankett>
-                        {erBehandlingÅpen(behandling.status) && (
+                        {erBehandlingÅpen(behandling.status) && harHentetBlankett() && (
                             <BlankettFooter behandlingId={behandlingId} />
                         )}
                     </>
