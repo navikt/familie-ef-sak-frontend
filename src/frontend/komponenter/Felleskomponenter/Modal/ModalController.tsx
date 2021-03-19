@@ -8,7 +8,7 @@ const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
     VEDTAK_GODKJENT: 'Vedtaker er godkjent',
     VEDTAK_UNDERKJENT: 'Vedtaker er undergodkjent',
-    BEHANDLING_ANNULLERT: 'Behandlingen er annullert',
+    BEHANDLES_I_GOSYS: 'Saken er avsluttet og må behandles i Gosys',
 };
 
 const ModalController: React.FC = () => {
@@ -47,13 +47,13 @@ const ModalController: React.FC = () => {
                     }}
                 />
             );
-        case ModalType.BEHANDLING_ANNULLERT:
+        case ModalType.BEHANDLES_I_GOSYS:
             return (
                 <UIModalWrapper
                     modal={{
-                        tittel: `${modalTittelToTekst[ModalType.BEHANDLING_ANNULLERT]}`,
+                        tittel: `${modalTittelToTekst[ModalType.BEHANDLES_I_GOSYS]}`,
                         lukkKnapp: false,
-                        visModal: modalState.modalType === ModalType.BEHANDLING_ANNULLERT,
+                        visModal: modalState.modalType === ModalType.BEHANDLES_I_GOSYS,
                         actions: [
                             <Knapp
                                 key={'opgavebenk'}

@@ -8,5 +8,5 @@ export enum EBehandlingResultat {
     INNVILGE = 'INNVILGE',
     AVSLÅ = 'AVSLÅ',
     HENLEGGE = 'HENLEGGE',
-    ANNULLERE = 'ANNULLERE',
+    BEHANDLE_I_GOSYS = 'BEHANDLE_I_GOSYS',
 }

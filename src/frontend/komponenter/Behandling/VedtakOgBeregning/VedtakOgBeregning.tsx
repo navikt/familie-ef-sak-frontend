@@ -82,7 +82,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
             });
     };
 
-    const annulerBehandling = () => {
+    const behandleIGosys = () => {
         axiosRequest<{ id: string }, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandlingId}/annuller`,
@@ -91,7 +91,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                 case RessursStatus.SUKSESS:
                     modalDispatch({
                         type: ModalAction.VIS_MODAL,
-                        modalType: ModalType.BEHANDLING_ANNULLERT,
+                        modalType: ModalType.BEHANDLES_I_GOSYS,
                     });
                     break;
                 case RessursStatus.HENTER:
@@ -135,14 +135,12 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                         </Hovedknapp>
                     </>
                 );
-            case EBehandlingResultat.ANNULLERE:
+            case EBehandlingResultat.BEHANDLE_I_GOSYS:
                 return (
                     <>
-                        <StyledAdvarsel>
-                            Ved annullering må oppgaven fullføres i Gosys
-                        </StyledAdvarsel>
-                        <Hovedknapp style={{ marginTop: '2rem' }} onClick={annulerBehandling}>
-                            Fullfør annullering
+                        <StyledAdvarsel>Oppgaven annulleres og må fullføres i Gosys</StyledAdvarsel>
+                        <Hovedknapp style={{ marginTop: '2rem' }} onClick={behandleIGosys}>
+                            Avslutt og behandle i Gosys
                         </Hovedknapp>
                     </>
                 );
@@ -185,7 +183,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             <option value={EBehandlingResultat.HENLEGGE} disabled>
                                 Henlegge
                             </option>
-                            <option value={EBehandlingResultat.ANNULLERE}>Annullere</option>
+                            <option value={EBehandlingResultat.BEHANDLE_I_GOSYS}>
+                                Behandle i Gosys
+                            </option>
                         </StyledSelect>
                         {resultatType && vedtaksresultatSwitch(resultatType)}
                         {feilmelding && <StyledFeilmelding>{feilmelding}</StyledFeilmelding>}
