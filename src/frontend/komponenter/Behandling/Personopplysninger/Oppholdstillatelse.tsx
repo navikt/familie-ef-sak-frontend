@@ -3,6 +3,7 @@ import TabellOverskrift from './TabellOverskrift';
 import { BredTd, KolonneTitler, IngenData, TabellWrapper } from './TabellWrapper';
 import { IOppholdstillatelse } from '../../../typer/personopplysninger';
 import Pass from '../../../ikoner/Pass';
+import { formaterNullableIsoDato } from '../../../utils/formatter';
 
 const Oppholdstillatelse: React.FC<{ oppholdstillatelser: IOppholdstillatelse[] }> = ({
     oppholdstillatelser,
@@ -17,12 +18,18 @@ const Oppholdstillatelse: React.FC<{ oppholdstillatelser: IOppholdstillatelse[] 
                         {oppholdstillatelser.map((oppholdstillatelse, indeks) => {
                             return (
                                 <tr key={indeks}>
-                                    <BredTd>{oppholdstillatelse.oppholdstillatelse}</BredTd>
                                     <BredTd>
-                                        {oppholdstillatelse.fraDato && oppholdstillatelse.fraDato}
+                                        {formaterNullableIsoDato(
+                                            oppholdstillatelse.oppholdstillatelse
+                                        )}
                                     </BredTd>
                                     <BredTd>
-                                        {oppholdstillatelse.tilDato && oppholdstillatelse.tilDato}
+                                        {oppholdstillatelse.fraDato &&
+                                            formaterNullableIsoDato(oppholdstillatelse.fraDato)}
+                                    </BredTd>
+                                    <BredTd>
+                                        {oppholdstillatelse.tilDato &&
+                                            formaterNullableIsoDato(oppholdstillatelse.tilDato)}
                                     </BredTd>
                                     <BredTd />
                                 </tr>
