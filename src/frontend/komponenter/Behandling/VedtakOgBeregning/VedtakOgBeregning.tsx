@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import { EBehandlingResultat, EPeriodetype, EAktivitet, IVedtak } from '../../../typer/vedtak';
 import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
+import { differenceInMonths } from 'date-fns';
 
 interface Props {
     behandlingId: string;
@@ -41,6 +42,10 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
 const VedtaksperiodeRad = styled.div`
     display: flex;
     justify-content: flex-start;
+`;
+
+const Månedsdifferanse = styled(Element)`
+    margin-top: 2.5rem;
 `;
 
 const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
@@ -117,6 +122,11 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const vedtaksresultatSwitch: React.FC<EBehandlingResultat> = (
         vedtaksresultatType: EBehandlingResultat
     ) => {
+        const antallMåneder =
+            fraOgMedDato && tilOgMedDato
+                ? differenceInMonths(new Date(tilOgMedDato), new Date(fraOgMedDato))
+                : undefined;
+
         switch (vedtaksresultatType) {
             case EBehandlingResultat.INNVILGE:
                 return (
@@ -185,6 +195,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                                 valgtDatoTil={tilOgMedDato}
                                 datoFeil={undefined}
                             />
+                            {antallMåneder && (
+                                <Månedsdifferanse>{antallMåneder} måneder</Månedsdifferanse>
+                            )}
                         </VedtaksperiodeRad>
                         <Textarea
                             value={periodeBegrunnelse}
