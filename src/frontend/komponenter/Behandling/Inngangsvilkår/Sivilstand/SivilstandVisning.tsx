@@ -6,6 +6,7 @@ import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { ISivilstandInngangsvilkår } from './typer';
 import Søknadsinformasjon from './Søknadsinformasjon';
 import { sivilstandTilTekst } from '../../../../typer/personopplysninger';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -15,7 +16,9 @@ interface Props {
 const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
-        ? `${sivilstandTilTekst[registergrunnlag.type]} ${registergrunnlag.gyldigFraOgMed}`
+        ? `${sivilstandTilTekst[registergrunnlag.type]} ${formaterNullableIsoDato(
+              registergrunnlag.gyldigFraOgMed
+          )}`
         : sivilstandTilTekst[registergrunnlag.type];
 
     return (
