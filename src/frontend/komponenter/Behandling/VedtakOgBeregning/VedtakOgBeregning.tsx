@@ -15,7 +15,8 @@ import { useDataHenter } from '../../../hooks/felles/useDataHenter';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
-import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
+import { EBehandlingResultat, EPeriodetype, IVedtak } from '../../../typer/vedtak';
+import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
 
 interface Props {
     behandlingId: string;
@@ -23,9 +24,10 @@ interface Props {
 
 const StyledSelect = styled(Select)`
     max-width: 200px;
+    margin-right: 2rem;
 `;
 
-const StyledInntekt = styled.div`
+const StyledVedtaksperiode = styled.div`
     padding: 2rem;
 `;
 
@@ -36,6 +38,10 @@ const StyledFeilmelding = styled(AlertStripeFeil)`
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`
     margin-top: 2rem;
 `;
+const VedtaksperiodeRad = styled.div`
+    display: flex;
+    justify-content: flex-start;
+`;
 
 const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
@@ -45,6 +51,9 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>('');
+    const [fraOgMedDato, settFraOgMedDato] = useState('');
+    const [tilOgMedDato, settTilOgMedDato] = useState('');
+    const [periodetype, settPeriodetype] = useState('');
 
     const søknadDataConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -113,6 +122,41 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                         <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>
                             Vedtaksperiode
                         </Element>
+                        <VedtaksperiodeRad>
+                            <StyledSelect
+                                label="Periodetype"
+                                value={periodetype}
+                                onChange={(e) => {
+                                    settFeilmelding('');
+                                    settPeriodetype(e.target.value as EPeriodetype);
+                                }}
+                            >
+                                <option value="">Velg</option>
+                                <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
+                                    Periode før fødsel
+                                </option>
+                                <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
+                            </StyledSelect>
+                            <StyledSelect
+                                label="Aktivitet"
+                                value={''}
+                                onChange={() => {
+                                    console.log('lala');
+                                }}
+                            >
+                                <option value="">Velg</option>
+                                <option value="">Velg2</option>
+                            </StyledSelect>
+                            <DatoPeriode
+                                datoFraTekst="Fra og med"
+                                datoTilTekst="Til og med"
+                                settDatoFra={settFraOgMedDato}
+                                settDatoTil={settTilOgMedDato}
+                                valgtDatoFra={fraOgMedDato}
+                                valgtDatoTil={tilOgMedDato}
+                                datoFeil={undefined}
+                            />
+                        </VedtaksperiodeRad>
                         <Textarea
                             value={periodeBegrunnelse}
                             onChange={(e) => {
@@ -153,7 +197,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         <DataViewer response={{ søknadDataResponse }}>
             {({ søknadDataResponse }) => {
                 return (
-                    <StyledInntekt>
+                    <StyledVedtaksperiode>
                         <Element style={{ marginBottom: '0.5rem' }}>Søknadsinformasjon</Element>
                         <GridTabell style={{ marginBottom: '2rem' }}>
                             <Søknadsgrunnlag />
@@ -189,7 +233,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                         </StyledSelect>
                         {resultatType && vedtaksresultatSwitch(resultatType)}
                         {feilmelding && <StyledFeilmelding>{feilmelding}</StyledFeilmelding>}
-                    </StyledInntekt>
+                    </StyledVedtaksperiode>
                 );
             }}
         </DataViewer>
