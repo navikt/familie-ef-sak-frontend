@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -83,7 +83,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     };
 
     const behandleIGosys = () => {
-        axiosRequest<{ id: string }, any>({
+        axiosRequest<{ id: string }, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandlingId}/annuller`,
         }).then((res: Ressurs<{ id: string }>) => {
@@ -155,7 +155,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                 return (
                     <StyledInntekt>
                         <Element style={{ marginBottom: '0.5rem' }}>Søknadsinformasjon</Element>
-                        <StyledTabell style={{ marginBottom: '2rem' }}>
+                        <GridTabell style={{ marginBottom: '2rem' }}>
                             <Søknadsgrunnlag />
                             <Normaltekst>Søknadsdato</Normaltekst>
                             <Normaltekst>
@@ -166,7 +166,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             <Normaltekst>
                                 {formaterNullableMånedÅr(søknadDataResponse.søkerStønadFra)}
                             </Normaltekst>
-                        </StyledTabell>
+                        </GridTabell>
                         <StyledSelect
                             label="Vedtak"
                             value={resultatType}
