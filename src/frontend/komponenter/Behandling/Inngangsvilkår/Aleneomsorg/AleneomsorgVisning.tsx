@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import {
@@ -37,7 +37,7 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, barnId }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     return (
         <>
-            <StyledTabell>
+            <GridTabell>
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
@@ -95,7 +95,7 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, barnId }) => {
                         </Normaltekst>
                     </>
                 )}
-            </StyledTabell>
+            </GridTabell>
 
             <StyledLesmerpanel>
                 <Lesmerpanel apneTekst={'Vis info om barnet'} lukkTekst={'Lukk info om barnet'}>

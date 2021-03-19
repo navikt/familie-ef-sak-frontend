@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
@@ -21,7 +21,7 @@ const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårS
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
         <>
-            <StyledTabell>
+            <GridTabell>
                 <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Sagt opp arbeidsforhold</Undertittel>
@@ -41,7 +41,7 @@ const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårS
                         50%.
                     </Normaltekst>
                 )}
-            </StyledTabell>
+            </GridTabell>
         </>
     );
 };

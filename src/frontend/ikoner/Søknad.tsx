@@ -2,17 +2,17 @@ import * as React from 'react';
 
 interface ISøknad {
     className?: string;
-    heigth?: number;
+    height?: number;
     width?: number;
 }
 
 //Kopi av files-new
-const Søknad: React.FunctionComponent<ISøknad> = ({ className, heigth, width }) => {
+const Søknad: React.FunctionComponent<ISøknad> = ({ className, height, width }) => {
     return (
         <svg
             aria-labelledby={'søknad'}
             className={className}
-            height={heigth}
+            height={height}
             width={width}
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

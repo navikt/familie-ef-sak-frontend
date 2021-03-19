@@ -2,6 +2,7 @@ import { IMedlemskap } from './Medlemskap/typer';
 import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon } from './Samliv/typer';
 import { EDelvilkårÅrsak, IBarnMedSamvær } from './Aleneomsorg/typer';
+import { IAktivitet } from '../../../typer/overgangsstønad';
 import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
 
 export interface IVilkår {
@@ -16,6 +17,7 @@ export interface IVilkårGrunnlag {
     sivilstandsplaner: ISivilstandsplaner;
     barnMedSamvær: IBarnMedSamvær[];
     sagtOppEllerRedusertStilling: ISagtOppEllerRedusertStilling;
+    aktivitet: IAktivitet;
 }
 
 export interface ISivilstandsplaner {
@@ -70,6 +72,7 @@ export enum Vilkår {
     ALENEOMSORG = 'ALENEOMSORG',
     NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
     SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
+    AKTIVITET = 'AKTIVITET',
 }
 
 export type VilkårType =
@@ -80,6 +83,7 @@ export type VilkårType =
     | Vilkår.SAMLIV
     | Vilkår.NYTT_BARN_SAMME_PARTNER
     | Vilkår.ALENEOMSORG
+    | Vilkår.AKTIVITET
     | Vilkår.SAGT_OPP_ELLER_REDUSERT;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
@@ -89,6 +93,7 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
+    AKTIVITET: 'Vilkår om aktivitet',
     NYTT_BARN_SAMME_PARTNER: 'Vilkår om barn med samme partner',
     SAGT_OPP_ELLER_REDUSERT: 'Vilkår om sagt opp arbeidsforhold ',
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     Registergrunnlag,
@@ -31,7 +31,7 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
 
     return (
         <>
-            <StyledTabell>
+            <GridTabell>
                 <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Opphold i Norge</Undertittel>
@@ -45,7 +45,7 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
                 <Søknadsgrunnlag />
                 <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
                 <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
-            </StyledTabell>
+            </GridTabell>
 
             <StyledLesmerpanel>
                 <Lesmerpanel apneTekst={'Vis info om opphold'} lukkTekst={'Lukk info om opphold'}>
