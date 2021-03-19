@@ -8,7 +8,7 @@ const StyledBehandling = styled.div`
     padding: 1rem;
 `;
 
-const Venstemeny: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
+const Venstremeny: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
     return (
         <StyledBehandling>
             <Undertittel>Behandling</Undertittel>
@@ -24,4 +24,4 @@ const Venstemeny: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
     );
 };
 
-export default Venstemeny;
+export default Venstremeny;

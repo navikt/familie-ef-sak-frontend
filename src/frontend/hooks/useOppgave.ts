@@ -9,6 +9,7 @@ interface OppgaveDto {
     gsakId: string;
 }
 
+// eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const history = useHistory();

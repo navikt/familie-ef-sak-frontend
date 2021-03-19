@@ -2,7 +2,7 @@ import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../../../typer/personopplysninger';
 import { Element } from 'nav-frontend-typografi';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { slåSammenTekst } from '../../../../utils/utils';
 import { Tabell } from '../../TabellVisning';
@@ -14,7 +14,7 @@ interface Props {
 
 const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => {
     return (
-        <StyledTabell kolonner={3}>
+        <GridTabell kolonner={3}>
             <Registergrunnlag />
             <Element className="tittel" tag="h3">
                 Innflytting og utflytting
@@ -54,7 +54,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                 ]}
                 verdier={utflytting}
             />
-        </StyledTabell>
+        </GridTabell>
     );
 };
 

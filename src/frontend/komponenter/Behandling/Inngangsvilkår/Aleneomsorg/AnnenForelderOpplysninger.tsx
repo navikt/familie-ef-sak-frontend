@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import {
     Registergrunnlag,
     Søknadsgrunnlag,
@@ -22,7 +22,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
     const forelderSøknad = søknadsgrunnlag.forelder;
 
     return (
-        <StyledTabell>
+        <GridTabell>
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
             <Normaltekst>{annenForelderInfo}</Normaltekst>
@@ -46,7 +46,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             <Registergrunnlag />
             <Normaltekst>Annen forelder bor i</Normaltekst>
             <Normaltekst>{forelderRegister?.bosattINorge ? 'Norge' : '-'}</Normaltekst>
-        </StyledTabell>
+        </GridTabell>
     );
 };
 

@@ -110,6 +110,14 @@ export const VurderingConfig: IVurderingConfig<VilkårType, IVilkårConfig> = {
         delvilkår: [DelvilkårType.HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER],
         begrunnelsePåkrevdHvisOppfylt: false,
     },
+
+    AKTIVITET: {
+        vilkårGruppe: VilkårGruppe.AKTIVITET,
+        renderVurdering: (): ReactChild => <></>,
+        unntak: [],
+        delvilkår: [],
+        begrunnelsePåkrevdHvisOppfylt: true,
+    },
     SAGT_OPP_ELLER_REDUSERT: {
         vilkårGruppe: VilkårGruppe.SAGT_OPP_ELLER_REDUSERT,
         renderVurdering: (props: VurderingProps): ReactChild => (

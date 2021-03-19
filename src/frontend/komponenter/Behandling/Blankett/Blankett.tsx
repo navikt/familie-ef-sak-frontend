@@ -27,7 +27,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
     }, []);
 
     const hentEllerOpprettBlankett = () => {
-        axiosRequest<string, any>({
+        axiosRequest<string, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/blankett/${behandlingId}`,
         }).then((respons: Ressurs<string>) => {

@@ -20,7 +20,7 @@ export interface ISivilstandSøknadsgrunnlag {
 export interface IPersonDetaljer {
     navn: string;
     fødselsdato?: string;
-    ident?: string;
+    personIdent?: string;
 }
 export interface ISivilstandRegistergrunnlag {
     type: SivilstandType;
