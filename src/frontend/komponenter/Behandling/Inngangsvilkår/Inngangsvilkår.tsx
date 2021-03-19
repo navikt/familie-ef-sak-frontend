@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { InngangsvilkårGruppe, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from './vilkår';
+import { InngangsvilkårGruppe, IVurdering, VilkårGruppe } from './vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -13,11 +13,11 @@ import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
 import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
-import { StyledTabell } from '../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
 
-const StyledInngangsvilkår = styled.div`
+export const StyledInngangsvilkår = styled.div`
     margin: 2rem;
     display: grid;
     grid-template-columns: repeat(2, max-content);
@@ -25,7 +25,7 @@ const StyledInngangsvilkår = styled.div`
     grid-gap: 3rem;
 `;
 
-const StyledKnapp = hiddenIf(styled(Knapp)`
+export const StyledKnapp = hiddenIf(styled(Knapp)`
     display: block;
     margin: 2rem auto 0;
 `);
@@ -41,7 +41,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const {vilkår, hentVilkår, lagreVurdering, feilmeldinger} = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger } = useHentVilkår(behandlingId);
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -55,8 +55,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        postInngangsvilkårSuksess &&
-            history.push(`/behandling/${behandlingId}/aktivitet`);
+        postInngangsvilkårSuksess && history.push(`/behandling/${behandlingId}/aktivitet`);
     }, [postInngangsvilkårSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
@@ -71,6 +70,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         postInngangsvilkår().then((responseInngangsvilkår) => {
             if (responseInngangsvilkår.status === RessursStatus.SUKSESS) {
                 settPostInngangsvilkårSuksess(true);
+                hentBehandling.rerun();
             } else if (
                 responseInngangsvilkår.status === RessursStatus.IKKE_TILGANG ||
                 responseInngangsvilkår.status === RessursStatus.FEILET ||
@@ -150,13 +150,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
     const status = vilkårStatusAleneomsorg(vurderinger);
     return (
-        <StyledTabell style={{ marginBottom: 0 }}>
+        <GridTabell style={{ marginBottom: 0 }}>
             <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
             <div className="tittel fjernSpacing">
                 <Undertittel>Aleneomsorg</Undertittel>
                 <EtikettLiten>§15-4</EtikettLiten>
             </div>
-        </StyledTabell>
+        </GridTabell>
     );
 };
 

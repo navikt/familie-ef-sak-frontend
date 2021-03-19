@@ -15,6 +15,7 @@ export interface Behandlingshistorikk {
     endretAvMail: string;
     endretTid: string;
     utfall?: StegUtfall;
+    // eslint-disable-next-line
     metadata?: any;
 }
 

@@ -59,8 +59,8 @@ export const byggSuksessRessurs = <T>(data: T): Ressurs<T> => {
         status: RessursStatus.SUKSESS,
     };
 };
-
 export const harNoenRessursMedStatus = (
+    // eslint-disable-next-line
     ressurser: Ressurs<any>[],
     ...status: RessursStatus[]
 ): boolean => ressurser.some((ressurs) => status.includes(ressurs.status));

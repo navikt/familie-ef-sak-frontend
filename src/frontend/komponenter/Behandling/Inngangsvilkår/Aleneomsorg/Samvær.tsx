@@ -10,7 +10,7 @@ import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { Normaltekst } from 'nav-frontend-typografi';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 
 interface Props {
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
@@ -18,7 +18,7 @@ interface Props {
 
 const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
     return (
-        <StyledTabell>
+        <GridTabell>
             {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined &&
                 søknadsgrunnlag.spørsmålAvtaleOmDeltBosted != null && (
                     <>
@@ -111,7 +111,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
                     <Normaltekst>{søknadsgrunnlag.beskrivSamværUtenBarn}</Normaltekst>
                 </>
             )}
-        </StyledTabell>
+        </GridTabell>
     );
 };
 

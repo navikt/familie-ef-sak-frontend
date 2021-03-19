@@ -10,6 +10,7 @@ import SamlivVisning from '../Samliv/SamlivVisning';
 import AleneomsorgVisning from '../Aleneomsorg/AleneomsorgVisning';
 import MorEllerFarVisning from '../MorEllerFar/MorEllerFarVisning';
 import NyttBarnSammePartnerVisning from '../NyttBarnSammePartner/NyttBarnSammePartnerVisning';
+import AktivitetVisning from '../../Aktivitet/Aktivitet/AktivitetVisning';
 import SagtOppEllerRedusertVisning from '../../Aktivitet/SagtOppEllerRedusert/SagtOppEllerRedusertVisning';
 
 export interface IVilkårGruppeConfig {
@@ -69,6 +70,11 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårStatus={vilkårStatus}
             />
+        ),
+    },
+    AKTIVITET: {
+        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+            <AktivitetVisning aktivitet={grunnlag.aktivitet} vilkårStatus={vilkårStatus} />
         ),
     },
     SAGT_OPP_ELLER_REDUSERT: {

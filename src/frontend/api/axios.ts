@@ -10,7 +10,7 @@ export const preferredAxios = axios;
 const errorMessage = (frontendFeilmelding: string, headers?: any) => {
     const location = window.location.href;
     const callId = headers?.['nav-call-id'];
-    return `url=${location} callId=${callId} - ${frontendFeilmelding}`;
+    return `${frontendFeilmelding} (url=${location} callId=${callId})`;
 };
 
 export const håndterRessurs = <T>(

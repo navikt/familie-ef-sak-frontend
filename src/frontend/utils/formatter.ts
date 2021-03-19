@@ -2,6 +2,7 @@ import { format, parseISO } from 'date-fns';
 
 export const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
 export const datoTidFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
+export const datoMånedÅrFormat = { month: 'short', year: 'numeric' };
 
 export const formaterNullableIsoDato = (dato?: string): string | undefined =>
     dato && formaterIsoDato(dato);
@@ -15,6 +16,10 @@ export const formaterIsoDatoTid = (dato: string): string => {
 };
 export const formaterNullableMånedÅr = (dato?: string): string | undefined =>
     dato && format(parseISO(dato), 'MM.yyyy');
+
+export const formaterIsoMånedÅr = (dato: string): string => {
+    return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormat);
+};
 
 export const formaterFødselsnummer = (fødselsnummer: string): string =>
     fødselsnummer.substring(0, 6) + ' ' + fødselsnummer.substring(6);
