@@ -4,10 +4,11 @@ import UIModalWrapper from './UIModalWrapper';
 import { Knapp } from 'nav-frontend-knapper';
 import { useHistory } from 'react-router-dom';
 
-const modalTittelToTekst = {
+const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
     VEDTAK_GODKJENT: 'Vedtaker er godkjent',
     VEDTAK_UNDERKJENT: 'Vedtaker er undergodkjent',
+    BEHANDLING_ANNULLERT: 'Behandlingen er annullert',
 };
 
 const ModalController: React.FC = () => {
@@ -35,6 +36,25 @@ const ModalController: React.FC = () => {
                                 onClick={() => modalDispatch({ type: ModalAction.SKJUL_MODAL })}
                                 children="Lukk"
                             />,
+                            <Knapp
+                                key={'opgavebenk'}
+                                type={'hoved'}
+                                mini={true}
+                                onClick={() => history.push('/oppgavebenk')}
+                                children="Til opgavebenk"
+                            />,
+                        ],
+                    }}
+                />
+            );
+        case ModalType.BEHANDLING_ANNULLERT:
+            return (
+                <UIModalWrapper
+                    modal={{
+                        tittel: `${modalTittelToTekst[ModalType.BEHANDLING_ANNULLERT]}`,
+                        lukkKnapp: false,
+                        visModal: modalState.modalType === ModalType.BEHANDLING_ANNULLERT,
+                        actions: [
                             <Knapp
                                 key={'opgavebenk'}
                                 type={'hoved'}

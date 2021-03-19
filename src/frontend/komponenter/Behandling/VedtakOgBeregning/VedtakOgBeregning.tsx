@@ -12,18 +12,13 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ISøknadData } from '../../../typer/beregningssøknadsdata';
 import { useApp } from '../../../context/AppContext';
 import { useDataHenter } from '../../../hooks/felles/useDataHenter';
-import { AlertStripeFeil, AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
+import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
+import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
 
 interface Props {
     behandlingId: string;
-}
-
-enum EVilkårsresultatType {
-    INNVILGE = 'INNVILGE',
-    AVSLÅ = 'AVSLÅ',
-    HENLEGGE = 'HENLEGGE',
-    ANNULLERE = 'ANNULLERE',
 }
 
 const StyledSelect = styled(Select)`
@@ -44,11 +39,12 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
 
 const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
+    const { modalDispatch } = useModal();
     const history = useHistory();
-    const [resultatType, settResultatType] = useState<EVilkårsresultatType>();
+    const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
-    const [lagBlankettFeil, settLagBlankettFeil] = useState<string>('');
+    const [feilmelding, settFeilmelding] = useState<string>('');
 
     const søknadDataConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -63,31 +59,55 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     );
 
     const lagBlankett = () => {
-        axiosRequest<string, any>({
+        resultatType &&
+            axiosRequest<string, IVedtak>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/beregning/${behandlingId}/lagre-vedtak`,
+                data: {
+                    resultatType,
+                    periodeBegrunnelse,
+                    inntektBegrunnelse,
+                },
+            }).then((res: Ressurs<string>) => {
+                switch (res.status) {
+                    case RessursStatus.SUKSESS:
+                        history.push(`/behandling/${behandlingId}/blankett`);
+                        break;
+                    case RessursStatus.HENTER:
+                    case RessursStatus.IKKE_HENTET:
+                        break;
+                    default:
+                        settFeilmelding(res.frontendFeilmelding);
+                }
+            });
+    };
+
+    const annulerBehandling = () => {
+        axiosRequest<{ id: string }, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandlingId}/lagre-vedtak`,
-            data: {
-                resultatType,
-                periodeBegrunnelse,
-                inntektBegrunnelse,
-            },
-        }).then((res: Ressurs<string>) => {
+            url: `/familie-ef-sak/api/behandling/${behandlingId}/annuller`,
+        }).then((res: Ressurs<{ id: string }>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    history.push(`/behandling/${behandlingId}/blankett`);
+                    modalDispatch({
+                        type: ModalAction.VIS_MODAL,
+                        modalType: ModalType.BEHANDLING_ANNULLERT,
+                    });
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:
                     break;
                 default:
-                    settLagBlankettFeil(res.frontendFeilmelding);
+                    settFeilmelding(res.frontendFeilmelding);
             }
         });
     };
 
-    const vedtaksresultatSwitch = (vedtaksresultatType: EVilkårsresultatType) => {
+    const vedtaksresultatSwitch: React.FC<EBehandlingResultat> = (
+        vedtaksresultatType: EBehandlingResultat
+    ) => {
         switch (vedtaksresultatType) {
-            case EVilkårsresultatType.INNVILGE:
+            case EBehandlingResultat.INNVILGE:
                 return (
                     <>
                         <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>
@@ -115,15 +135,19 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                         </Hovedknapp>
                     </>
                 );
-            case EVilkårsresultatType.ANNULLERE:
+            case EBehandlingResultat.ANNULLERE:
                 return (
                     <>
                         <StyledAdvarsel>
                             Ved annullering må oppgaven fullføres i Gosys
                         </StyledAdvarsel>
-                        <Hovedknapp style={{ marginTop: '2rem' }}>Fullfør annullering</Hovedknapp>
+                        <Hovedknapp style={{ marginTop: '2rem' }} onClick={annulerBehandling}>
+                            Fullfør annullering
+                        </Hovedknapp>
                     </>
                 );
+            default:
+                return null;
         }
     };
 
@@ -149,24 +173,22 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             label="Vedtak"
                             value={resultatType}
                             onChange={(e) => {
-                                settLagBlankettFeil('');
-                                settResultatType(e.target.value as EVilkårsresultatType);
+                                settFeilmelding('');
+                                settResultatType(e.target.value as EBehandlingResultat);
                             }}
                         >
                             <option value="">Velg</option>
-                            <option value={EVilkårsresultatType.INNVILGE}>Innvilge</option>
-                            <option value={EVilkårsresultatType.AVSLÅ} disabled>
+                            <option value={EBehandlingResultat.INNVILGE}>Innvilge</option>
+                            <option value={EBehandlingResultat.AVSLÅ} disabled>
                                 Avslå
                             </option>
-                            <option value={EVilkårsresultatType.HENLEGGE} disabled>
+                            <option value={EBehandlingResultat.HENLEGGE} disabled>
                                 Henlegge
                             </option>
-                            <option value={EVilkårsresultatType.ANNULLERE}>Annullere</option>
+                            <option value={EBehandlingResultat.ANNULLERE}>Annullere</option>
                         </StyledSelect>
                         {resultatType && vedtaksresultatSwitch(resultatType)}
-                        {lagBlankettFeil && (
-                            <StyledFeilmelding>{lagBlankettFeil}</StyledFeilmelding>
-                        )}
+                        {feilmelding && <StyledFeilmelding>{feilmelding}</StyledFeilmelding>}
                     </StyledInntekt>
                 );
             }}
