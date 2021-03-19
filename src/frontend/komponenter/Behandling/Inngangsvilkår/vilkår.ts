@@ -84,7 +84,6 @@ export type VilkårType =
     | Vilkår.NYTT_BARN_SAMME_PARTNER
     | Vilkår.ALENEOMSORG
     | Vilkår.AKTIVITET
-    | Vilkår.ALENEOMSORG
     | Vilkår.SAGT_OPP_ELLER_REDUSERT;
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
