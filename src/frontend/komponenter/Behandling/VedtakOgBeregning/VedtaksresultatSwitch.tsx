@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { EBehandlingResultat, IVedtak, EAktivitet, EPeriodetype } from '../../../typer/vedtak';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Select, Textarea } from 'nav-frontend-skjema';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
@@ -11,6 +11,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
 import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
 import { differenceInMonths } from 'date-fns';
+import { AddCircle } from '@navikt/ds-icons';
 import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
 
 interface Props {
@@ -49,6 +50,9 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const [tilOgMedDato, settTilOgMedDato] = useState('');
     const [periodetype, settPeriodetype] = useState<EPeriodetype>();
     const [aktivitet, settAktivitet] = useState('');
+    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState([
+        { periodetype: '' as EPeriodetype, aktivitet: '' as EAktivitet },
+    ]);
 
     const antallMåneder =
         fraOgMedDato && tilOgMedDato
@@ -169,35 +173,44 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>
                         Vedtaksperiode
                     </Element>
-                    <VedtaksperiodeRad>
-                        <StyledSelect
-                            label="Periodetype"
-                            value={periodetype}
-                            onChange={(e) => {
-                                settFeilmelding('');
-                                settPeriodetype(e.target.value as EPeriodetype);
-                            }}
-                        >
-                            <option value="">Velg</option>
-                            <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
-                                Periode før fødsel
-                            </option>
-                            <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
-                        </StyledSelect>
-                        {VelgAktivitetsplikt(periodetype)}
-                        <DatoPeriode
-                            datoFraTekst="Fra og med"
-                            datoTilTekst="Til og med"
-                            settDatoFra={settFraOgMedDato}
-                            settDatoTil={settTilOgMedDato}
-                            valgtDatoFra={fraOgMedDato}
-                            valgtDatoTil={tilOgMedDato}
-                            datoFeil={undefined}
-                        />
-                        {!!antallMåneder && (
-                            <Månedsdifferanse>{antallMåneder} måneder</Månedsdifferanse>
-                        )}
-                    </VedtaksperiodeRad>
+                    {vedtaksperiodeListe.map((element) => {
+                        const { periodetype, aktivitet } = element;
+                        return (
+                            <VedtaksperiodeRad>
+                                <StyledSelect
+                                    label="Periodetype"
+                                    value={periodetype}
+                                    onChange={(e) => {
+                                        settFeilmelding('');
+                                        settPeriodetype(e.target.value as EPeriodetype);
+                                    }}
+                                >
+                                    <option value="">Velg</option>
+                                    <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
+                                        Periode før fødsel
+                                    </option>
+                                    <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
+                                </StyledSelect>
+                                {VelgAktivitetsplikt(periodetype)}
+                                <DatoPeriode
+                                    datoFraTekst="Fra og med"
+                                    datoTilTekst="Til og med"
+                                    settDatoFra={settFraOgMedDato}
+                                    settDatoTil={settTilOgMedDato}
+                                    valgtDatoFra={fraOgMedDato}
+                                    valgtDatoTil={tilOgMedDato}
+                                    datoFeil={undefined}
+                                />
+                                {!!antallMåneder && (
+                                    <Månedsdifferanse>{antallMåneder} måneder</Månedsdifferanse>
+                                )}
+                            </VedtaksperiodeRad>
+                        );
+                    })}
+                    <Flatknapp>
+                        <AddCircle style={{ marginRight: '1rem' }} />
+                        Legg til vedtaksperiode
+                    </Flatknapp>
                     <Textarea
                         value={periodeBegrunnelse}
                         onChange={(e) => {
