@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
+import { EBehandlingResultat, IVedtak, EAktivitet, EPeriodetype } from '../../../typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
-import { Textarea } from 'nav-frontend-skjema';
+import { Select, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
@@ -9,6 +9,8 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
+import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
+import { differenceInMonths } from 'date-fns';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -20,6 +22,20 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
     margin-top: 2rem;
 `;
 
+const VedtaksperiodeRad = styled.div`
+    display: flex;
+    justify-content: flex-start;
+`;
+
+const StyledSelect = styled(Select)`
+    max-width: 200px;
+    margin-right: 2rem;
+`;
+
+const Månedsdifferanse = styled(Element)`
+    margin-top: 2.5rem;
+`;
+
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
@@ -28,6 +44,15 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { vedtaksresultatType, behandlingId, settFeilmelding } = props;
+    const [fraOgMedDato, settFraOgMedDato] = useState('');
+    const [tilOgMedDato, settTilOgMedDato] = useState('');
+    const [periodetype, settPeriodetype] = useState('');
+    const [aktivitet, settAktivitet] = useState('');
+
+    const antallMåneder =
+        fraOgMedDato && tilOgMedDato
+            ? differenceInMonths(new Date(tilOgMedDato), new Date(fraOgMedDato))
+            : undefined;
 
     const lagBlankett = () => {
         settLaster(true);
@@ -90,6 +115,69 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>
                         Vedtaksperiode
                     </Element>
+                    <VedtaksperiodeRad>
+                        <StyledSelect
+                            label="Periodetype"
+                            value={periodetype}
+                            onChange={(e) => {
+                                settFeilmelding('');
+                                settPeriodetype(e.target.value as EPeriodetype);
+                            }}
+                        >
+                            <option value="">Velg</option>
+                            <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
+                                Periode før fødsel
+                            </option>
+                            <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
+                        </StyledSelect>
+                        <StyledSelect
+                            label="Aktivitet"
+                            value={aktivitet}
+                            onChange={(e) => {
+                                settFeilmelding('');
+                                settAktivitet(e.target.value as EAktivitet);
+                            }}
+                        >
+                            <option value="">Velg</option>
+                            <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>Barn er under 1 år</option>
+                            <option value={EAktivitet.FORSØRGER_I_ARBEID}>
+                                Forsørger er i arbeid (§15-6 første ledd)
+                            </option>
+                            <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
+                                Forsørger er i utdannings (§15-6 første ledd)
+                            </option>
+                            <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
+                                Forsørger er reell arbeidssøker (§15-6 første ledd)
+                            </option>
+                            <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
+                                Forsørger etablerer egen virksomhet (§15-6 første ledd)
+                            </option>
+                            <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
+                                Barnet er særlig tilsynskrevende (§15-6 fjerde ledd)
+                            </option>
+                            <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
+                                Forsørger mangler tilsynsordning (§15-6 femte ledd)
+                            </option>
+                            <option value={EAktivitet.FORSØRGER_ER_SYK}>
+                                Forsørger er syk (§15-6 femte ledd)
+                            </option>
+                            <option value={EAktivitet.BARNET_ER_SYKT}>
+                                Barnet er sykt (§15-6 femte ledd)
+                            </option>
+                        </StyledSelect>
+                        <DatoPeriode
+                            datoFraTekst="Fra og med"
+                            datoTilTekst="Til og med"
+                            settDatoFra={settFraOgMedDato}
+                            settDatoTil={settTilOgMedDato}
+                            valgtDatoFra={fraOgMedDato}
+                            valgtDatoTil={tilOgMedDato}
+                            datoFeil={undefined}
+                        />
+                        {!!antallMåneder && (
+                            <Månedsdifferanse>{antallMåneder} måneder</Månedsdifferanse>
+                        )}
+                    </VedtaksperiodeRad>
                     <Textarea
                         value={periodeBegrunnelse}
                         onChange={(e) => {
