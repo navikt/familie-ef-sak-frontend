@@ -37,11 +37,11 @@ const ModalController: React.FC = () => {
                                 children="Lukk"
                             />,
                             <Knapp
-                                key={'opgavebenk'}
+                                key={'oppgavebenk'}
                                 type={'hoved'}
                                 mini={true}
                                 onClick={() => history.push('/oppgavebenk')}
-                                children="Til opgavebenk"
+                                children="Til oppgavebenk"
                             />,
                         ],
                     }}
@@ -56,11 +56,11 @@ const ModalController: React.FC = () => {
                         visModal: modalState.modalType === ModalType.BEHANDLES_I_GOSYS,
                         actions: [
                             <Knapp
-                                key={'opgavebenk'}
+                                key={'oppgavebenk'}
                                 type={'hoved'}
                                 mini={true}
                                 onClick={() => history.push('/oppgavebenk')}
-                                children="Til opgavebenk"
+                                children="Til oppgavebenk"
                             />,
                         ],
                     }}
