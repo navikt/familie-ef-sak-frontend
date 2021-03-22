@@ -3,8 +3,8 @@ import { Normaltekst } from 'nav-frontend-typografi';
 
 const NæreBoforholdHjelpetekst: React.FC = () => {
     return (
-        <Normaltekst>
-            Det er definert som nære boforhold når:
+        <Normaltekst tag="div">
+            <p>Det er definert som nære boforhold når:</p>
             <ul>
                 <li>
                     Søker bor i samme hus som den andre forelderen og huset har 4 eller færre
