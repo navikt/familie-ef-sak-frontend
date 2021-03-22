@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
     IVilkår,
     IVurdering,
+    NullstillVilkårsvurdering,
     OppdaterVilkårsvurdering,
     Vurderingsfeilmelding,
 } from '../komponenter/Behandling/Inngangsvilkår/vilkår';
@@ -28,6 +29,9 @@ export const useHentVilkår = (
     hentVilkår: (behandlingId: string) => void;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
+    nullstillVurdering: (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
 } => {
     const { axiosRequest } = useApp();
 
@@ -79,6 +83,33 @@ export const useHentVilkår = (
         });
     };
 
+    const nullstillVurdering = (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ): Promise<Ressurs<IVurdering>> => {
+        return axiosRequest<IVurdering, NullstillVilkårsvurdering>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/vurdering/nullstill`,
+            data: nullstillVilkårsvurdering,
+        }).then((respons: Ressurs<IVurdering>) => {
+            switch (respons.status) {
+                case RessursStatus.SUKSESS:
+                    settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
+                        oppdaterInngangsvilkårMedVurdering(
+                            prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
+                            respons.data
+                        )
+                    );
+                    return respons;
+                case RessursStatus.FEILET:
+                case RessursStatus.FUNKSJONELL_FEIL:
+                case RessursStatus.IKKE_TILGANG:
+                    return respons;
+                default:
+                    return respons;
+            }
+        });
+    };
+
     const hentVilkår = (behandlingId: string) => {
         axiosRequest<IVilkår, void>({
             method: 'GET',
@@ -93,5 +124,6 @@ export const useHentVilkår = (
         hentVilkår,
         lagreVurdering,
         feilmeldinger,
+        nullstillVurdering,
     };
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IVilkår, IVurdering, VilkårGruppe, Vurderingsfeilmelding } from '../Inngangsvilkår/vilkår';
+import {IVilkår, IVurdering, NullstillVilkårsvurdering, VilkårGruppe, Vurderingsfeilmelding} from '../Inngangsvilkår/vilkår';
 import { filtrerVurderinger, vilkårStatus } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
@@ -34,6 +34,7 @@ interface Props {
     vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IVilkår;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
+    nullstillVurdering: (vurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
 }
 
@@ -41,6 +42,7 @@ const Vurdering: FC<Props> = ({
     vilkårGruppe,
     inngangsvilkår,
     lagreVurdering,
+    nullstillVurdering,
     feilmeldinger,
     barnId,
 }) => {
@@ -63,6 +65,7 @@ const Vurdering: FC<Props> = ({
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}
+                        nullstillVurdering={nullstillVurdering}
                     />
                 ))}
             </StyledVurderinger>

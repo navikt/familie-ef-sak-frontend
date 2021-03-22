@@ -41,7 +41,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger } = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger, nullstillVurdering } = useHentVilkår(behandlingId);
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -116,6 +116,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                                         inngangsvilkår={vilkår}
                                                         lagreVurdering={lagreVurdering}
                                                         feilmeldinger={feilmeldinger}
+                                                        nullstillVurdering={nullstillVurdering}
                                                     />
                                                 );
                                             })}
@@ -129,6 +130,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                             inngangsvilkår={vilkår}
                                             feilmeldinger={feilmeldinger}
                                             lagreVurdering={lagreVurdering}
+                                            nullstillVurdering={nullstillVurdering}
                                         />
                                     );
                                 }

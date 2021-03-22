@@ -5,7 +5,7 @@ import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typ
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import {
     delvilkårTypeTilTekst,
-    IVurdering,
+    IVurdering, NullstillVilkårsvurdering,
     Redigeringsmodus,
     svarTypeTilTekst,
     Vilkårsresultat,
@@ -17,7 +17,6 @@ import Oppfylt from '../../../ikoner/Oppfylt';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { nullstillVurdering } from './VurderingUtil';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -61,7 +60,7 @@ const StyledIkonOgTittel = styled.span`
 
 interface Props {
     vurdering: IVurdering;
-    resetVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
+    resetVurdering: (nullstillVilkårsvurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
@@ -87,7 +86,7 @@ const VisVurdering: FC<Props> = ({
                 <StyledKnapp
                     className={'lenke'}
                     onClick={() =>
-                        resetVurdering(nullstillVurdering(vurdering)).then((response) => {
+                        resetVurdering({id: vurdering.id, behandlingId: vurdering.behandlingId}).then((response) => {
                             if (response.status === RessursStatus.SUKSESS) {
                                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
                             }

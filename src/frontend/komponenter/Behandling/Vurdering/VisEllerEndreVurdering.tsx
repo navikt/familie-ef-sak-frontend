@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {FC, useState} from 'react';
 import {
-    IVurdering,
+    IVurdering, NullstillVilkårsvurdering,
     Redigeringsmodus,
     Vilkårsresultat,
 } from '../Inngangsvilkår/vilkår';
@@ -13,6 +13,7 @@ import { Ressurs } from '../../../typer/ressurs';
 interface Props {
     vurdering: IVurdering;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
+    nullstillVurdering: (nullstillVilkårsvurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
 }
 
@@ -31,6 +32,7 @@ function utledRedigeringsmodus(
 
 const VisEllerEndreVurdering: FC<Props> = ({
     vurdering,
+    nullstillVurdering,
     lagreVurdering,
     feilmelding,
 }) => {
@@ -58,7 +60,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 <VisVurdering
                     vurdering={vurdering}
                     settRedigeringsmodus={settRedigeringsmodus}
-                    resetVurdering={lagreVurdering}
+                    resetVurdering={nullstillVurdering}
                     feilmelding={feilmelding}
                 />
             );

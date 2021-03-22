@@ -41,6 +41,8 @@ export type OppdaterVilkårsvurdering = Pick<
     'id' | 'delvilkårsvurderinger' | 'behandlingId'
 >;
 
+export type NullstillVilkårsvurdering = Pick<IVurdering, 'id' | 'behandlingId'>;
+
 export interface Vurderingsfeilmelding {
     [Key: string]: string;
 }

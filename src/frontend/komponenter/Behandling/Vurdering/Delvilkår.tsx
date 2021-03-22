@@ -1,15 +1,11 @@
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import {
-    delvilkårTypeTilTekst,
-    svarTypeTilTekst,
-    Vurdering,
-} from '../Inngangsvilkår/vilkår';
+import { delvilkårTypeTilTekst, svarTypeTilTekst, Vurdering } from '../Inngangsvilkår/vilkår';
 import * as React from 'react';
 import { FC } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
-import {Regel } from './typer';
-import {DelvilkårContainer} from "../../Felleskomponenter/Visning/StyledFormElements";
+import { Regel } from './typer';
+import { DelvilkårContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
 
 interface Props {
     regel: Regel;
