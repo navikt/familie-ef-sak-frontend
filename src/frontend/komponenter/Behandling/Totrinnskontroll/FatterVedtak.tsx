@@ -6,7 +6,7 @@ import { Radio, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { BorderBox } from './Totrinnskontrolls';
+import { BorderBox } from './Totrinnskontroll';
 import { RessursStatus } from '@navikt/familie-typer';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import { useBehandling } from '../../../context/BehandlingContext';
