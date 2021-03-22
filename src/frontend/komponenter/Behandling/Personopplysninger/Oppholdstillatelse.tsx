@@ -1,6 +1,6 @@
 import React from 'react';
 import TabellOverskrift from './TabellOverskrift';
-import { BredTd, KolonneTitler, IngenData, TabellWrapper } from './TabellWrapper';
+import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { IOppholdstillatelse } from '../../../typer/personopplysninger';
 import Pass from '../../../ikoner/Pass';
 import { formaterNullableIsoDato } from '../../../utils/formatter';
@@ -24,12 +24,10 @@ const Oppholdstillatelse: React.FC<{ oppholdstillatelser: IOppholdstillatelse[] 
                                         )}
                                     </BredTd>
                                     <BredTd>
-                                        {oppholdstillatelse.fraDato &&
-                                            formaterNullableIsoDato(oppholdstillatelse.fraDato)}
+                                        {formaterNullableIsoDato(oppholdstillatelse.fraDato)}
                                     </BredTd>
                                     <BredTd>
-                                        {oppholdstillatelse.tilDato &&
-                                            formaterNullableIsoDato(oppholdstillatelse.tilDato)}
+                                        {formaterNullableIsoDato(oppholdstillatelse.tilDato)}
                                     </BredTd>
                                     <BredTd />
                                 </tr>
