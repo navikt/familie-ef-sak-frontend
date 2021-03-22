@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import {FC, useState} from 'react';
 import {
-    IVilkårGrunnlag,
     IVurdering,
     Redigeringsmodus,
     Vilkårsresultat,
@@ -13,8 +12,7 @@ import { Ressurs } from '../../../typer/ressurs';
 
 interface Props {
     vurdering: IVurdering;
-    inngangsvilkårgrunnlag: IVilkårGrunnlag;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
 }
 
@@ -25,7 +23,7 @@ function utledRedigeringsmodus(
     if (feilmelding !== undefined) {
         return Redigeringsmodus.REDIGERING;
     }
-    if (vurdering.resultat === Vilkårsresultat.IKKE_VURDERT) {
+    if (vurdering.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL) {
         return Redigeringsmodus.IKKE_PÅSTARTET;
     }
     return Redigeringsmodus.VISNING;
@@ -34,7 +32,6 @@ function utledRedigeringsmodus(
 const VisEllerEndreVurdering: FC<Props> = ({
     vurdering,
     lagreVurdering,
-    inngangsvilkårgrunnlag,
     feilmelding,
 }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
@@ -50,7 +47,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
         case Redigeringsmodus.REDIGERING:
             return (
                 <EndreVurdering
-                    inngangsvilkårgrunnlag={inngangsvilkårgrunnlag}
                     data={vurdering}
                     lagreVurdering={lagreVurdering}
                     feilmelding={feilmelding}

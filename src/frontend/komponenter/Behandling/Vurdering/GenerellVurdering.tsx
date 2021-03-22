@@ -20,7 +20,7 @@ const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]) =>
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
         (delvilkår) =>
             delvilkår.resultat === Vilkårsresultat.OPPFYLT ||
-            delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
+            delvilkår.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL
     );
 
     // Hvis siste delvilkåret NEI på siste dekvilkåret så skal man returnere alle

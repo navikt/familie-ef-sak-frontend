@@ -20,7 +20,7 @@ import { KomponentGruppe } from '../../../Felleskomponenter/Visning/KomponentGru
 
 const filtrerDelvilkårSomSkalVises = (delvilkårsvurderinger: IDelvilkår[]): IDelvilkår[] => {
     const sisteDelvilkårSomSkalVises = delvilkårsvurderinger.findIndex(
-        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT
+        (delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL
     );
 
     if (sisteDelvilkårSomSkalVises === -1) {

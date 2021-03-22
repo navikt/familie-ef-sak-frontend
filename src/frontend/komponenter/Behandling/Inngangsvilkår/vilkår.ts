@@ -3,7 +3,7 @@ import { IPersonDetaljer, ISivilstandInngangsvilkår } from './Sivilstand/typer'
 import { IBosituasjon } from './Samliv/typer';
 import { IBarnMedSamvær } from './Aleneomsorg/typer';
 import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
-import {Begrunnelse, SvarId} from "../Vurdering/typer";
+import { Begrunnelse, SvarId } from '../Vurdering/typer';
 
 export interface IVilkår {
     vurderinger: IVurdering[];
@@ -36,13 +36,18 @@ export interface IVurdering {
     delvilkårsvurderinger: IDelvilkår[];
 }
 
+export type OppdaterVilkårsvurdering = Pick<
+    IVurdering,
+    'id' | 'delvilkårsvurderinger' | 'behandlingId'
+>;
+
 export interface Vurderingsfeilmelding {
     [Key: string]: string;
 }
 
 export interface IDelvilkår {
     resultat: Vilkårsresultat;
-    vurderinger: Vurdering[]
+    vurderinger: Vurdering[];
 }
 
 export interface Vurdering {
@@ -56,7 +61,6 @@ export enum Vilkårsresultat {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_TATT_STILLING_TIL = 'IKKE_TATT_STILLING_TIL',
-    IKKE_VURDERT = 'IKKE_VURDERT',
 }
 
 export enum Redigeringsmodus {
@@ -117,8 +121,8 @@ export enum DelvilkårType {
     SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
-export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
-    FEM_ÅRS_MEDLEMSKAP: 'Har bruker vært medlem i folketrygden i de siste 5 årene?',
+export const delvilkårTypeTilTekst: Record<string, string> = {
+    SØKER_MEDLEM_I_FOLKETRYGDEN: 'Har bruker vært medlem i folketrygden i de siste 5 årene?',
     BOR_OG_OPPHOLDER_SEG_I_NORGE: 'Bor og oppholder bruker og barna seg i Norge?',
     DOKUMENTERT_EKTESKAP: 'Foreligger det dokumentasjon på ekteskap?',
     DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE:
@@ -139,6 +143,9 @@ export const delvilkårTypeTilTekst: Record<DelvilkårType, string> = {
         'Har søker fått nytt barn med samme partner (født etter 01.01.2016) eller venter nytt barn med samme partner, etter at en av foreldrene tidligere har mottatt eller fortsatt mottar stønad for et annet felles barn.',
     SAGT_OPP_ELLER_REDUSERT:
         'Har søker sagt opp jobben, tatt frivillig permisjon eller redusert arbeidstiden de siste 6 månedene før søknadstidspunktet?',
+    MEDLEMSKAP_UNNTAK: 'Er unntak fra hovedregelen oppfylt?',
+    OPPHOLD_UNNTAK: 'Er unntak fra hovedregelen oppfylt?',
+    SIVILSTAND_UNNTAK: 'Er unntak fra hovedregelen oppfylt?',
 };
 
 // ------ UNNTAK
@@ -185,6 +192,45 @@ export const unntakTypeTilTekst: Record<UnntakType, string> = {
         'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
 };
 
+export const svarTypeTilTekst: Record<string, string> = {
+    JA: 'Ja',
+    NEI: 'Nej',
+    IKKE_OPPFYLT: 'Nei',
+    ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
+    UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
+    GJENLEVENDE_OVERTAR_OMSORG:
+        'Ja, gjenlevende som etter dødsfallet overtar omsorgen for egne særkullsbarn',
+    GJENLEVENDE_IKKE_RETT_TIL_YTELSER:
+        'Ja, gjenlevende som etter dødsfallet får barn som avdøde ikke er mor/far til, og som ikke har rett til ytelser etter kap.17',
+    ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
+        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst fem år etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
+    ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR:
+        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
+    ANDRE_FORELDER_MEDLEM_SISTE_5_ÅR:
+        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen er bosatt og har vært medlem siste fem år',
+    I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG:
+        'Ja, medlem og bosatt når stønadstilfellet oppstod, kom til landet for gjenforening med ektefelle/samboer med felles barn, eller for å gifte seg med en som er bosatt, og hadde gyldig oppholdstillatelse ved ankomst',
+    MEDLEM_MER_ENN_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
+        'Ja, medlem i minst 5 år etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
+    MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR:
+        'Ja, medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
+    TOTALVURDERING_OPPFYLLER_FORSKRIFT:
+        'Ja, totalvurdering viser at forholdene går inn under forskriften om kravet om fem års forutgående medlemskap',
+    RIMELIG_GRUNN_SAGT_OPP:
+        'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
+    SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER:
+        'Søker bor i samme hus som den andre forelderen og huset har 4 eller færre boenheter',
+    SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT:
+        'Søker bor i samme hus som den andre forelderen og huset har flere enn 4 boenheter, men boforholdet er vurdert nært',
+    SELVSTENDIGE_BOLIGER_SAMME_TOMT:
+        'Foreldrene bor i selvstendige boliger på samme tomt eller gårdsbruk',
+    SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN: 'Foreldrene bor i selvstendige boliger på samme gårdstun',
+    NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE:
+        'Foreldrene bor i nærmeste bolig eller rekkehus i samme gate',
+    TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE:
+        'Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate',
+};
+
 // ------ VILKÅRGRUPPE
 /**
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
@@ -220,7 +266,6 @@ export enum AktivitetsvilkårGruppe {
 export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
     OPPFYLT: 'Ja',
     IKKE_OPPFYLT: 'Nei',
-    IKKE_VURDERT: 'Ikke vurdert',
     IKKE_AKTUELL: 'Ikke aktuell',
     IKKE_TATT_STILLING_TIL: 'Ikke vurdert',
 };

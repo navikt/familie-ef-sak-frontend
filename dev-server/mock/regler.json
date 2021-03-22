@@ -21,35 +21,35 @@
             "regelId": "MEDLEMSKAP_UNNTAK",
             "svarMapping": {
               "MEDLEM_MER_ENN_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "ANDRE_FORELDER_MEDLEM_SISTE_5_ÅR": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "TOTALVURDERING_OPPFYLLER_FORSKRIFT": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "NEI": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               }
             }
@@ -76,15 +76,15 @@
             "regelId": "OPPHOLD_UNNTAK",
             "svarMapping": {
               "ARBEID_NORSK_ARBEIDSGIVER": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "NEI": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               }
             }
@@ -98,11 +98,11 @@
             "regelId": "OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN",
             "svarMapping": {
               "JA": {
-                "begrunnelseType": "UTEN",
+                "begrunnelseType": "VALGFRI",
                 "regelId": "SLUTT_NODE"
               },
               "NEI": {
-                "begrunnelseType": "UTEN",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               }
             }
@@ -207,7 +207,7 @@
                 "regelId": "SLUTT_NODE"
               },
               "NEI": {
-                "begrunnelseType": "VALGFRI",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               }
             }
@@ -238,7 +238,7 @@
                 "regelId": "SLUTT_NODE"
               },
               "NEI": {
-                "begrunnelseType": "PÅKREVD",
+                "begrunnelseType": "VALGFRI",
                 "regelId": "SLUTT_NODE"
               }
             }
@@ -269,6 +269,10 @@
               "TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE": {
                 "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
               }
             }
           },
@@ -276,11 +280,11 @@
             "regelId": "MER_AV_DAGLIG_OMSORG",
             "svarMapping": {
               "JA": {
-                "begrunnelseType": "UTEN",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "NEI": {
-                "begrunnelseType": "UTEN",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               }
             }
@@ -294,11 +298,11 @@
             "regelId": "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER",
             "svarMapping": {
               "JA": {
-                "begrunnelseType": "UTEN",
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               },
               "NEI": {
-                "begrunnelseType": "UTEN",
+                "begrunnelseType": "VALGFRI",
                 "regelId": "SLUTT_NODE"
               }
             }

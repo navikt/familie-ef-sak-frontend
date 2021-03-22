@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
     IVilkår,
     IVurdering,
+    OppdaterVilkårsvurdering,
     Vurderingsfeilmelding,
 } from '../komponenter/Behandling/Inngangsvilkår/vilkår';
 
@@ -25,7 +26,7 @@ export const useHentVilkår = (
 ): {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
 } => {
     const { axiosRequest } = useApp();
@@ -34,43 +35,43 @@ export const useHentVilkår = (
 
     const [vilkår, settVilkår] = useState<Ressurs<IVilkår>>(byggTomRessurs());
 
-    function fjernFeilmelding(vurdering: IVurdering) {
+    function fjernFeilmelding(id: string) {
         settFeilmeldinger((prevFeilmeldinger) => {
             const prevFeilmeldingerCopy = { ...prevFeilmeldinger };
-            delete prevFeilmeldingerCopy[vurdering.id];
+            delete prevFeilmeldingerCopy[id];
             return prevFeilmeldingerCopy;
         });
     }
 
-    function leggTilFeilmelding(vurdering: IVurdering, feilmelding: string) {
+    function leggTilFeilmelding(id: string, feilmelding: string) {
         settFeilmeldinger((prevFeilmeldinger) => {
             return {
                 ...prevFeilmeldinger,
-                [vurdering.id]: feilmelding,
+                [id]: feilmelding,
             };
         });
     }
 
-    const lagreVurdering = (vurdering: IVurdering): Promise<Ressurs<string>> => {
-        return axiosRequest<string, IVurdering>({
+    const lagreVurdering = (vurdering: OppdaterVilkårsvurdering): Promise<Ressurs<IVurdering>> => {
+        return axiosRequest<IVurdering, OppdaterVilkårsvurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/vilkar`,
             data: vurdering,
-        }).then((respons: Ressurs<string>) => {
+        }).then((respons: Ressurs<IVurdering>) => {
             switch (respons.status) {
                 case RessursStatus.SUKSESS:
-                    fjernFeilmelding(vurdering);
+                    fjernFeilmelding(respons.data.id);
                     settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
                         oppdaterInngangsvilkårMedVurdering(
                             prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
-                            vurdering
+                            respons.data
                         )
                     );
                     return respons;
                 case RessursStatus.FEILET:
                 case RessursStatus.FUNKSJONELL_FEIL:
                 case RessursStatus.IKKE_TILGANG:
-                    leggTilFeilmelding(vurdering, respons.frontendFeilmelding);
+                    leggTilFeilmelding(vurdering.id, respons.frontendFeilmelding);
                     return respons;
                 default:
                     return respons;

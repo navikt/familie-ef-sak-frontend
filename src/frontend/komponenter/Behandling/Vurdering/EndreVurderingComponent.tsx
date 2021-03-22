@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { BegrunnelseRegel, Regler, } from './typer';
-import {IDelvilkår, IVurdering, VilkårType, Vurdering} from '../Inngangsvilkår/vilkår';
+import { BegrunnelseRegel, Regler } from './typer';
+import { IDelvilkår, IVurdering, VilkårType, Vurdering } from '../Inngangsvilkår/vilkår';
 import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAllaDelvilkårBesvarte,
@@ -10,12 +10,11 @@ import {
     oppdaterSvarIListe,
 } from './utils';
 
-import { Radio, RadioGruppe, Textarea as TextareaNav } from 'nav-frontend-skjema';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { Undertittel } from 'nav-frontend-typografi';
+import Begrunnelse from './Begrunnelse';
+import Delvilkår from './Delvilkår';
 
-const Textarea = hiddenIf(TextareaNav);
 const Lagreknapp = hiddenIf(Hovedknapp);
 /**
  * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
@@ -27,15 +26,23 @@ const EndreVurderingComponent: FC<{
     oppdaterVurdering: (vurdering: any) => void;
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
-    const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(vurdering.delvilkårsvurderinger);
+    const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
+        vurdering.delvilkårsvurderinger
+    );
 
     const oppdateterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
-
         settDelvilkårsvurderinger((prevSvar) => {
             const prevDelvilkårsvurdering = prevSvar[index];
-            return [...prevSvar.slice(0,index),  {...prevDelvilkårsvurdering, vurderinger: nySvarArray}, ...prevSvar.slice(index+1) ]
+            return [
+                ...prevSvar.slice(0, index),
+                {
+                    ...prevDelvilkårsvurdering,
+                    vurderinger: nySvarArray,
+                },
+                ...prevSvar.slice(index + 1),
+            ];
         });
-    }
+    };
 
     const oppdaterBegrunnelse = (vurderinger: Vurdering[], index: number) => {
         return (nyttSvar: Vurdering) => {
@@ -65,7 +72,7 @@ const EndreVurderingComponent: FC<{
         };
     };
 
-    const oppdaterSvar = (vurderinger: Vurdering[], index: number)  => {
+    const oppdaterSvar = (vurderinger: Vurdering[], index: number) => {
         return (nyttSvar: Vurdering) => {
             const nySvarArray = oppdaterSvarIListe(nyttSvar, vurderinger);
             const svarsalternativer = hentSvarsalternativ(regler, nyttSvar)!;
@@ -86,7 +93,11 @@ const EndreVurderingComponent: FC<{
             onSubmit={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                oppdaterVurdering({id: vurdering.id, behandlingId: vurdering.behandlingId, delvilkårsvurderinger});
+                oppdaterVurdering({
+                    id: vurdering.id,
+                    behandlingId: vurdering.behandlingId,
+                    delvilkårsvurderinger,
+                });
             }}
         >
             {delvilkårsvurderinger.map((delvikår, index) => {
@@ -94,43 +105,30 @@ const EndreVurderingComponent: FC<{
                 const oppdaterBegrunnelseINod = oppdaterBegrunnelse(delvikår.vurderinger, index);
                 return delvikår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
-                    const begrunnelse =
-                        (svar.svar && regel.svarMapping[svar.svar].begrunnelseType) ??
-                        BegrunnelseRegel.UTEN;
                     return (
                         <>
-                            <Undertittel>{regel.regelId}</Undertittel>
-                            <RadioGruppe>
-                                {Object.keys(regel.svarMapping).map((svarId) => (
-                                    <Radio
-                                        key={`${regel.regelId}_${svarId}`}
-                                        name={`${regel.regelId}_${svarId}`}
-                                        label={svarId}
-                                        value={svarId}
-                                        checked={svarId === svar.svar}
-                                        onChange={() =>
-                                            oppdaterSvarINod({ svar: svarId, regelId: regel.regelId })
-                                        }
-                                    />
-                                ))}
-                            </RadioGruppe>
-                            <Textarea
-                                label={`Begrunnelse: ${begrunnelse}`}
-                                hidden={begrunnelse === BegrunnelseRegel.UTEN}
-                                placeholder="Skriv inn tekst"
-                                value={svar.begrunnelse || ''}
-                                onChange={(e) =>
-                                    oppdaterBegrunnelseINod({
-                                        ...svar,
-                                        begrunnelse: e.target.value,
-                                    })
+                            <Delvilkår
+                                vurdering={svar}
+                                regel={regel}
+                                settVurdering={oppdaterSvarINod}
+                            />
+                            <Begrunnelse
+                                onChange={(begrunnelse) =>
+                                    oppdaterBegrunnelseINod({ ...svar, begrunnelse })
                                 }
+                                svar={svar}
+                                regel={regel}
                             />
                         </>
                     );
                 });
             })}
-            <Lagreknapp htmlType="submit" hidden={!erAllaDelvilkårBesvarte(delvilkårsvurderinger, regler)}>
+            <Lagreknapp
+                htmlType="submit"
+                style={{ marginTop: '1rem' }}
+                mini
+                hidden={!erAllaDelvilkårBesvarte(delvilkårsvurderinger, regler)}
+            >
                 Lagre
             </Lagreknapp>
         </form>

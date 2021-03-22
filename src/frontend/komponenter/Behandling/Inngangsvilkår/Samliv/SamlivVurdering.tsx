@@ -19,7 +19,7 @@ const skalViseLagreKnappSamliv = (delvilkårsvurderinger: IDelvilkår[]) => {
         ) {
             return false;
         }
-        return delvilkår.resultat !== Vilkårsresultat.IKKE_VURDERT;
+        return delvilkår.resultat !== Vilkårsresultat.IKKE_TATT_STILLING_TIL;
     });
 };
 

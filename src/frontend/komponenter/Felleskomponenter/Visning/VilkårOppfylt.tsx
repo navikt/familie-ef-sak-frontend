@@ -9,7 +9,7 @@ interface Props {
 }
 
 export enum VilkårStatus {
-    IKKE_VURDERT = 'IKKE_VURDERT',
+    IKKE_TATT_STILLING_TIL = 'IKKE_TATT_STILLING_TIL',
     OPPFYLT = 'OPPFYLT',
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
 }
@@ -27,7 +27,7 @@ export const VilkårStatusIkon: FC<{ vilkårStatus: VilkårStatus; className?: s
     className,
 }) => {
     switch (vilkårStatus) {
-        case VilkårStatus.IKKE_VURDERT:
+        case VilkårStatus.IKKE_TATT_STILLING_TIL:
             return <IkkeVurdert className={className} heigth={23} width={21} />;
         case VilkårStatus.OPPFYLT:
             return <Oppfylt className={className} heigth={23} width={21} />;

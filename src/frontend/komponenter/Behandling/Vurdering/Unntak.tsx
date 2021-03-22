@@ -16,7 +16,7 @@ interface Props {
 
 const vilkårsResultatForUnntak = (unntakType: UnntakType | undefined): Vilkårsresultat => {
     if (!unntakType) {
-        return Vilkårsresultat.IKKE_VURDERT;
+        return Vilkårsresultat.IKKE_TATT_STILLING_TIL;
     } else if (unntakType === UnntakType.IKKE_OPPFYLT) {
         return Vilkårsresultat.IKKE_OPPFYLT;
     } else {

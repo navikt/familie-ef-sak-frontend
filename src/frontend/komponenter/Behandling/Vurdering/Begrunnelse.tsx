@@ -1,23 +1,30 @@
 import * as React from 'react';
-import { Textarea } from 'nav-frontend-skjema';
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
+import { Textarea as TextareaNav } from 'nav-frontend-skjema';
+import { BegrunnelseRegel, Regel } from './typer';
+import { Vurdering } from '../Inngangsvilkår/vilkår';
+import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
+
+const Textarea = hiddenIf(TextareaNav);
 
 interface Props {
-    label?: string;
-    maxLength?: number;
-    placeholder?: string;
-    value: string;
-    onChange: (e: ChangeEvent<HTMLTextAreaElement> | { [p: string]: never }) => void;
+    svar: Vurdering;
+    regel: Regel;
+    onChange: (tekst: string) => void;
 }
 
-const Begrunnelse: FC<Props> = ({ label, maxLength, onChange, placeholder, value }) => {
+const Begrunnelse: FC<Props> = ({ svar, onChange, regel }) => {
+    const begrunnelsetype = svar.svar && regel.svarMapping[svar.svar].begrunnelseType;
+    const skjulBegrunnelse = (begrunnelsetype ?? BegrunnelseRegel.UTEN) === BegrunnelseRegel.UTEN;
+
     return (
         <Textarea
-            label={label ? label : 'Begrunnelse'}
-            maxLength={maxLength ? maxLength : 0}
-            placeholder={placeholder ? placeholder : 'Skriv inn tekst'}
-            value={value}
-            onChange={onChange}
+            label={'Begrunnelse '.concat(
+                begrunnelsetype === BegrunnelseRegel.VALGFRI ? '(valgfritt)' : ''
+            )}
+            value={svar.begrunnelse || ''}
+            onChange={(e) => onChange(e.target.value)}
+            hidden={skjulBegrunnelse}
         />
     );
 };

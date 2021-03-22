@@ -7,7 +7,7 @@ import {
     delvilkårTypeTilTekst,
     IVurdering,
     Redigeringsmodus,
-    unntakTypeTilTekst,
+    svarTypeTilTekst,
     Vilkårsresultat,
     vilkårTypeTilTekst,
 } from '../Inngangsvilkår/vilkår';
@@ -18,8 +18,6 @@ import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { nullstillVurdering } from './VurderingUtil';
-import { delvilkårÅrsakTilTekst } from '../Inngangsvilkår/Aleneomsorg/typer';
-import { vilkårsresultatTypeTilTekstForDelvilkår } from '../Inngangsvilkår/vilkårsresultat';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -63,7 +61,7 @@ const StyledIkonOgTittel = styled.span`
 
 interface Props {
     vurdering: IVurdering;
-    resetVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    resetVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
@@ -117,50 +115,27 @@ const VisVurdering: FC<Props> = ({
                 {vurdering.delvilkårsvurderinger
                     .filter(
                         (delvilkårsvurdering) =>
-                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_VURDERT &&
+                            delvilkårsvurdering.resultat !==
+                                Vilkårsresultat.IKKE_TATT_STILLING_TIL &&
                             delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
                     )
-                    .map((delvilkårsvurdering) => (
-                        <React.Fragment key={delvilkårsvurdering.type}>
-                            <StyledDelvilkårsvurdering>
-                                <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
-                                <Normaltekst>
-                                    {vilkårsresultatTypeTilTekstForDelvilkår(
-                                        delvilkårsvurdering.resultat,
-                                        delvilkårsvurdering.type
-                                    )}
-                                </Normaltekst>
-                            </StyledDelvilkårsvurdering>
-                            {delvilkårsvurdering.årsak && (
-                                <>
-                                    <Element>Årsak</Element>
-                                    <Normaltekst>
-                                        {delvilkårÅrsakTilTekst[delvilkårsvurdering.årsak]}
-                                    </Normaltekst>
-                                </>
-                            )}
+                    .map((delvilkårsvurdering) =>
+                        delvilkårsvurdering.vurderinger.map((vurdering) => (
+                            <React.Fragment key={vurdering.regelId}>
+                                <StyledDelvilkårsvurdering>
+                                    <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
+                                    <Normaltekst>{svarTypeTilTekst[vurdering.svar!]}</Normaltekst>
+                                </StyledDelvilkårsvurdering>
 
-                            {delvilkårsvurdering.begrunnelse && (
-                                <>
-                                    <Element>Begrunnelse</Element>
-                                    <Normaltekst>{delvilkårsvurdering.begrunnelse}</Normaltekst>
-                                </>
-                            )}
-                        </React.Fragment>
-                    ))}
-
-                {vurdering.unntak && (
-                    <>
-                        <Element>Unntak</Element>
-                        <Normaltekst>{unntakTypeTilTekst[vurdering.unntak]}</Normaltekst>
-                    </>
-                )}
-                {vurdering.begrunnelse && (
-                    <>
-                        <Element>Begrunnelse</Element>
-                        <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
-                    </>
-                )}
+                                {vurdering.begrunnelse && (
+                                    <>
+                                        <Element>Begrunnelse</Element>
+                                        <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                                    </>
+                                )}
+                            </React.Fragment>
+                        ))
+                    )}
             </StyledVilkår>
         </StyledVurdering>
     );

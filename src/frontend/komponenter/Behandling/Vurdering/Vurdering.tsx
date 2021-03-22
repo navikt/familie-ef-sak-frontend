@@ -33,7 +33,7 @@ interface Props {
     barnId?: string;
     vilkårGruppe: VilkårGruppe;
     inngangsvilkår: IVilkår;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
 }
 
@@ -45,6 +45,7 @@ const Vurdering: FC<Props> = ({
     barnId,
 }) => {
     const vurderinger = inngangsvilkår.vurderinger;
+
     const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe, barnId);
     const status = vilkårStatus(filtrerteVurderinger);
 
@@ -59,7 +60,6 @@ const Vurdering: FC<Props> = ({
                 {filtrerteVurderinger.map((vurdering) => (
                     <VisEllerEndreVurdering
                         key={vurdering.id}
-                        inngangsvilkårgrunnlag={inngangsvilkår.grunnlag}
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}

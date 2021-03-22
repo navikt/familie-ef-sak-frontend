@@ -17,9 +17,9 @@ export const vilkårStatus = (vurderinger: IVurdering[]): VilkårStatus => {
     if (alleErOppfylte(vurderinger)) {
         return VilkårStatus.OPPFYLT;
     } else if (
-        vurderinger.some((vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_VURDERT)
+        vurderinger.some((vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL)
     ) {
-        return VilkårStatus.IKKE_VURDERT;
+        return VilkårStatus.IKKE_TATT_STILLING_TIL;
     } else {
         return VilkårStatus.IKKE_OPPFYLT;
     }
@@ -38,7 +38,7 @@ export const vilkårStatusAleneomsorg = (vurderinger: IVurdering[]): VilkårStat
     ) {
         return VilkårStatus.IKKE_OPPFYLT;
     } else {
-        return VilkårStatus.IKKE_VURDERT;
+        return VilkårStatus.IKKE_TATT_STILLING_TIL;
     }
 };
 
@@ -62,7 +62,7 @@ export const filtrerVurderinger = (
     });
 
 export const harBesvartPåAlleDelvilkår = (delvilkårsvurderinger: IDelvilkår[]): boolean =>
-    !delvilkårsvurderinger.some((delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_VURDERT);
+    !delvilkårsvurderinger.some((delvilkår) => delvilkår.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL);
 
 export const skalViseLagreKnapp = (vurdering: IVurdering, config: IVilkårConfig): boolean => {
     const { begrunnelse, delvilkårsvurderinger } = vurdering;
@@ -133,8 +133,8 @@ export const nullstillVurdering = (vurdering: IVurdering): IVurdering => {
             delvilkår.resultat === Vilkårsresultat.IKKE_OPPFYLT
         ) {
             return {
-                type: delvilkår.type,
-                resultat: Vilkårsresultat.IKKE_VURDERT,
+                type: vurdering.vilkårType,
+                resultat: Vilkårsresultat.IKKE_TATT_STILLING_TIL,
             };
         } else return delvilkår;
     };
@@ -145,7 +145,7 @@ export const nullstillVurdering = (vurdering: IVurdering): IVurdering => {
 
     return {
         ...vurdering,
-        resultat: Vilkårsresultat.IKKE_VURDERT,
+        resultat: Vilkårsresultat.IKKE_TATT_STILLING_TIL,
         begrunnelse: null,
         unntak: null,
         delvilkårsvurderinger: nullstilteDelkvilkårsvurderinger,
