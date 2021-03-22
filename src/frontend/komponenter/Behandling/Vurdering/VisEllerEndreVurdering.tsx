@@ -2,13 +2,19 @@ import * as React from 'react';
 import {FC, useState} from 'react';
 import {
     IVurdering, NullstillVilkårsvurdering,
-    Redigeringsmodus,
     Vilkårsresultat,
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
 import { Knapp } from 'nav-frontend-knapper';
 import { Ressurs } from '../../../typer/ressurs';
+
+
+export enum Redigeringsmodus {
+    REDIGERING = 'REDIGERING',
+    VISNING = 'VISNING',
+    IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
+}
 
 interface Props {
     vurdering: IVurdering;

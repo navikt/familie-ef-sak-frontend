@@ -3,9 +3,8 @@ import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { IPersonDetaljer } from '../Sivilstand/typer';
-import { ISivilstandsplaner } from '../vilkår';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
-import { ESøkerDelerBolig, IBosituasjon } from './typer';
+import {ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner} from './typer';
 import { hentPersonInfo } from '../utils';
 
 interface Props {

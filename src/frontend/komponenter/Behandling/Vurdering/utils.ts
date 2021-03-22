@@ -6,6 +6,10 @@ import {
 } from './typer';
 import {IDelvilkår, Vurdering} from '../Inngangsvilkår/vilkår';
 
+export const manglerBegrunnelse = (begrunnelse: string | undefined | null): boolean => {
+    return !begrunnelse || begrunnelse.trim().length === 0;
+};
+
 export function begrunnelseErPåkrevdOgSavnes(
     svarsalternativ: Svarsalternativ,
     begrunnelse: Begrunnelse
@@ -41,7 +45,6 @@ export function erAllaDelvilkårBesvarte(
     delvilkårsvurderinger: IDelvilkår[],
     regler: Regler
 ): boolean {
-    console.log("delvilkårsvurderinger", delvilkårsvurderinger)
 
     const erPåSisteNod = delvilkårsvurderinger
         .map((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
@@ -64,7 +67,6 @@ export function erAllaDelvilkårBesvarte(
                         return false;
                     }
                     const svarsalternativ = hentSvarsalternativ(regler, vurdering);
-                    console.log("svarsalternativ", svarsalternativ);
                     return (
                         svarsalternativ &&
                         !begrunnelseErPåkrevdOgSavnes(svarsalternativ, vurdering.begrunnelse)
@@ -72,8 +74,6 @@ export function erAllaDelvilkårBesvarte(
                 })
             );
         }, true);
-
-    console.log("erPåSisteNod", erPåSisteNod)
 
     return erPåSisteNod && harBesvartAllePåkrevdeBegrunnelser;
 }

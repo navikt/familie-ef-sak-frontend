@@ -1,9 +1,8 @@
-import { IDelvilkår, IVilkårGrunnlag, VilkårGruppe } from '../vilkår';
+import { IDelvilkår, IVilkårGrunnlag, VilkårType } from '../vilkår';
 import * as React from 'react';
 import { ReactChild } from 'react';
 import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
 import SivilstandVisning from '../Sivilstand/SivilstandVisning';
-import { IVurderingConfig } from './VurderingConfig';
 import OppholdVisning from '../Opphold/OppholdVisning';
 import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import SamlivVisning from '../Samliv/SamlivVisning';
@@ -21,8 +20,11 @@ export interface IVilkårGruppeConfig {
     filtrerBortUaktuelleDelvilkår?: () => IDelvilkår[];
 }
 
-export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppeConfig> = {
-    MEDLEMSKAP: {
+export const VilkårGruppeConfig: Record<
+    VilkårType,
+    { visning: (...args: any[]) => React.ReactChild }
+> = {
+    FORUTGÅENDE_MEDLEMSKAP: {
         visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
             <MedlemskapVisning medlemskap={grunnlag.medlemskap} vilkårStatus={vilkårStatus} />
         ),
@@ -78,5 +80,8 @@ export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppe
                 vilkårStatus={vilkårStatus}
             />
         ),
+    },
+    AKTIVITET: {
+        visning: () => <div>Aktivitet</div>,
     },
 };

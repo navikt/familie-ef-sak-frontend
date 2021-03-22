@@ -1,20 +1,22 @@
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-import { delvilkårTypeTilTekst, svarTypeTilTekst, Vurdering } from '../Inngangsvilkår/vilkår';
 import * as React from 'react';
 import { FC } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
 import { Regel } from './typer';
 import { DelvilkårContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
+import {hjelpeTekstConfig} from "./hjelpetekstconfig";
+import {delvilkårTypeTilTekst, svarTypeTilTekst} from "./tekster";
+import {Vurdering} from "../Inngangsvilkår/vilkår";
 
 interface Props {
     regel: Regel;
     vurdering: Vurdering;
     settVurdering: (nyttSvar: Vurdering) => void;
-    hjelpetekst?: React.ReactNode;
 }
 
-const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering, hjelpetekst }) => {
+const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
+    const hjelpetekst = hjelpeTekstConfig[regel.regelId]
     return (
         <DelvilkårContainer>
             <RadioGruppe legend={delvilkårTypeTilTekst[regel.regelId]}>
@@ -35,7 +37,7 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering, hjelpetekst })
                 ))}
             </RadioGruppe>
             {hjelpetekst && (
-                <Hjelpetekst type={PopoverOrientering.Under}>{hjelpetekst}</Hjelpetekst>
+                <Hjelpetekst type={PopoverOrientering.Under}>{React.createElement(hjelpetekst)}</Hjelpetekst>
             )}
         </DelvilkårContainer>
     );

@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { AktivitetsvilkårGruppe, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -12,6 +11,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
+import {AktivitetsvilkårType} from "../Inngangsvilkår/vilkår";
 
 const StyledAktivitetssvilkår = styled.div`
     margin: 2rem;
@@ -96,11 +96,11 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <StyledAktivitetssvilkår>
-                            {Object.keys(AktivitetsvilkårGruppe).map((vilkårGruppe) => {
+                            {Object.keys(AktivitetsvilkårType).map((vilkårGruppe) => {
                                 return (
                                     <Vurdering
                                         key={vilkårGruppe}
-                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                        vilkårGruppe={vilkårGruppe as AktivitetsvilkårType}
                                         inngangsvilkår={vilkår}
                                         feilmeldinger={feilmeldinger}
                                         lagreVurdering={lagreVurdering}

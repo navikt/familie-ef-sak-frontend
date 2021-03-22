@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { InngangsvilkårGruppe, IVurdering, VilkårGruppe } from './vilkår';
+import { InngangsvilkårGruppe, IVurdering } from './vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -101,7 +101,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     return (
                         <StyledInngangsvilkår>
                             {Object.keys(InngangsvilkårGruppe).map((vilkårGruppe) => {
-                                if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
+                                if (vilkårGruppe === InngangsvilkårGruppe.ALENEOMSORG) {
                                     return (
                                         <>
                                             <VilkårStatusForAleneomsorg
@@ -126,7 +126,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                     return (
                                         <Vurdering
                                             key={vilkårGruppe}
-                                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                            vilkårGruppe={vilkårGruppe as InngangsvilkårGruppe}
                                             inngangsvilkår={vilkår}
                                             feilmeldinger={feilmeldinger}
                                             lagreVurdering={lagreVurdering}

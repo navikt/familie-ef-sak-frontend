@@ -3,20 +3,15 @@ import { FC } from 'react';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
-import {
-    delvilkårTypeTilTekst,
-    IVurdering, NullstillVilkårsvurdering,
-    Redigeringsmodus,
-    svarTypeTilTekst,
-    Vilkårsresultat,
-    vilkårTypeTilTekst,
-} from '../Inngangsvilkår/vilkår';
+import { IVurdering, NullstillVilkårsvurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
 import Oppfylt from '../../../ikoner/Oppfylt';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { Redigeringsmodus } from './VisEllerEndreVurdering';
+import {delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst} from './tekster';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -60,7 +55,9 @@ const StyledIkonOgTittel = styled.span`
 
 interface Props {
     vurdering: IVurdering;
-    resetVurdering: (nullstillVilkårsvurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    resetVurdering: (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
@@ -86,7 +83,10 @@ const VisVurdering: FC<Props> = ({
                 <StyledKnapp
                     className={'lenke'}
                     onClick={() =>
-                        resetVurdering({id: vurdering.id, behandlingId: vurdering.behandlingId}).then((response) => {
+                        resetVurdering({
+                            id: vurdering.id,
+                            behandlingId: vurdering.behandlingId,
+                        }).then((response) => {
                             if (response.status === RessursStatus.SUKSESS) {
                                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
                             }

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVurdering, Redigeringsmodus } from '../Inngangsvilkår/vilkår';
+import { IVurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Feilmelding } from 'nav-frontend-typografi';
-import { VurderingConfig } from '../Inngangsvilkår/config/VurderingConfig';
-import {Ressurs, RessursStatus} from '../../../typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import EndreVurderingComponent from './EndreVurderingComponent';
 import { useBehandling } from '../../../context/BehandlingContext';
+import { Redigeringsmodus } from './VisEllerEndreVurdering';
 
 const StyledEndreVurdering = styled.div`
     > *:not(:first-child) {
@@ -21,12 +21,7 @@ interface Props {
     feilmelding: string | undefined;
 }
 
-const EndreVurdering: FC<Props> = ({
-    data,
-    lagreVurdering,
-    feilmelding,
-    settRedigeringsmodus,
-}) => {
+const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedigeringsmodus }) => {
     const { regler } = useBehandling();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
@@ -37,16 +32,11 @@ const EndreVurdering: FC<Props> = ({
             lagreVurdering(vurdering).then((response: any) => {
                 settOppdatererVurdering(false);
                 if (response.status === RessursStatus.SUKSESS) {
-                    settRedigeringsmodus(Redigeringsmodus.VISNING)
+                    settRedigeringsmodus(Redigeringsmodus.VISNING);
                 }
             });
         }
     };
-
-    const config = VurderingConfig[vurdering.vilkårType];
-    if (!config) {
-        return <div>Mangler config for {vurdering.vilkårType}</div>;
-    }
 
     return (
         <StyledEndreVurdering>
