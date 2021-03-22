@@ -103,7 +103,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             {Object.keys(InngangsvilkårGruppe).map((vilkårGruppe) => {
                                 if (vilkårGruppe === InngangsvilkårGruppe.ALENEOMSORG) {
                                     return (
-                                        <>
+                                        <React.Fragment key={vilkårGruppe}>
                                             <VilkårStatusForAleneomsorg
                                                 vurderinger={vilkår.vurderinger}
                                             />
@@ -120,7 +120,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                                     />
                                                 );
                                             })}
-                                        </>
+                                        </React.Fragment>
                                     );
                                 } else {
                                     return (

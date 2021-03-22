@@ -11,7 +11,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
-import {AktivitetsvilkårType} from "../Inngangsvilkår/vilkår";
+import { AktivitetsvilkårType } from '../Inngangsvilkår/vilkår';
 
 const StyledAktivitetssvilkår = styled.div`
     margin: 2rem;
@@ -37,7 +37,9 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger, nullstillVurdering } = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger, nullstillVurdering } = useHentVilkår(
+        behandlingId
+    );
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({

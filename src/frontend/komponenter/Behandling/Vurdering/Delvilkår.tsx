@@ -5,9 +5,9 @@ import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
 import { Regel } from './typer';
 import { DelvilkårContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
-import {hjelpeTekstConfig} from "./hjelpetekstconfig";
-import {delvilkårTypeTilTekst, svarTypeTilTekst} from "./tekster";
-import {Vurdering} from "../Inngangsvilkår/vilkår";
+import { hjelpeTekstConfig } from './hjelpetekstconfig';
+import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
+import { Vurdering } from '../Inngangsvilkår/vilkår';
 
 interface Props {
     regel: Regel;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
-    const hjelpetekst = hjelpeTekstConfig[regel.regelId]
+    const hjelpetekst = hjelpeTekstConfig[regel.regelId];
     return (
         <DelvilkårContainer>
             <RadioGruppe legend={delvilkårTypeTilTekst[regel.regelId]}>
@@ -37,7 +37,9 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
                 ))}
             </RadioGruppe>
             {hjelpetekst && (
-                <Hjelpetekst type={PopoverOrientering.Under}>{React.createElement(hjelpetekst)}</Hjelpetekst>
+                <Hjelpetekst type={PopoverOrientering.Under}>
+                    {React.createElement(hjelpetekst)}
+                </Hjelpetekst>
             )}
         </DelvilkårContainer>
     );

@@ -4,7 +4,7 @@ import Dokumentoversikt from './Dokumentoversikt';
 import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
 import BehandlingHistorikk from './BehandlingHistorikk';
-import Totrinnskontroll from '../Behandling/Totrinnskontroll/Totrinnskontroll';
+import Totrinnskontroll from '../Behandling/Totrinnskontroll/Totrinnskontrolls';
 
 const StyledHøyremeny = styled.div`
     width: 300px;
