@@ -54,7 +54,7 @@ const Vurdering: FC<Props> = ({
 }) => {
     const vurderinger = inngangsvilkår.vurderinger;
 
-    const status = vilkårStatus(vurderinger);
+    const status = vilkårStatus(vurderinger, vilkårGruppe);
 
     const config = VilkårGruppeConfig[vilkårGruppe];
     if (!config) {
@@ -66,7 +66,7 @@ const Vurdering: FC<Props> = ({
             <StyledVurderinger>
                 {vurderinger
                     .filter((vurdering) => vurdering.vilkårType === vilkårGruppe)
-                    .filter(vurdering => vurdering.barnId ? vurdering.barnId === barnId : true)
+                    .filter((vurdering) => (vurdering.barnId ? vurdering.barnId === barnId : true))
                     .map((vurdering) => (
                         <VisEllerEndreVurdering
                             key={vurdering.id}

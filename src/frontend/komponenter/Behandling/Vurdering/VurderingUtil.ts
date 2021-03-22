@@ -2,17 +2,23 @@ import {
     InngangsvilkårGruppe,
     IVurdering,
     Vilkårsresultat,
+    VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import { VilkårStatus } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.every((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
 
-export const vilkårStatus = (vurderinger: IVurdering[]): VilkårStatus => {
-    if (alleErOppfylte(vurderinger)) {
+export const vilkårStatus = (vurderinger: IVurdering[], vilkårGruppe: VilkårType): VilkårStatus => {
+    const vurderingerForVilkårType = vurderinger.filter(
+        (vurdering) => vurdering.vilkårType === vilkårGruppe
+    );
+    if (alleErOppfylte(vurderingerForVilkårType)) {
         return VilkårStatus.OPPFYLT;
     } else if (
-        vurderinger.some((vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL)
+        vurderingerForVilkårType.some(
+            (vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL
+        )
     ) {
         return VilkårStatus.IKKE_TATT_STILLING_TIL;
     } else {
