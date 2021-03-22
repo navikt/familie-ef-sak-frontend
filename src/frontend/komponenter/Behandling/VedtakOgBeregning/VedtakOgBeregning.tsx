@@ -33,7 +33,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const søknadDataConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/beregning/${behandlingId}/hent-soknad`,
+            url: `/familie-ef-sak/api/soknad/${behandlingId}/datoer`,
         }),
         [behandlingId]
     );
