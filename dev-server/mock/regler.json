@@ -112,58 +112,6 @@
       "SIVILSTAND": {
         "vilkårType": "SIVILSTAND",
         "regler": {
-          "DOKUMENTERT_EKTESKAP": {
-            "regelId": "DOKUMENTERT_EKTESKAP",
-            "svarMapping": {
-              "JA": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              },
-              "NEI": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              }
-            }
-          },
-          "DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE": {
-            "regelId": "DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE",
-            "svarMapping": {
-              "JA": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              },
-              "NEI": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              }
-            }
-          },
-          "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON": {
-            "regelId": "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON",
-            "svarMapping": {
-              "JA": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              },
-              "NEI": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              }
-            }
-          },
-          "SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING": {
-            "regelId": "SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING",
-            "svarMapping": {
-              "JA": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              },
-              "NEI": {
-                "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              }
-            }
-          },
           "KRAV_SIVILSTAND": {
             "regelId": "KRAV_SIVILSTAND",
             "svarMapping": {
@@ -173,23 +121,6 @@
               },
               "NEI": {
                 "begrunnelseType": "PÅKREVD",
-                "regelId": "SLUTT_NODE"
-              }
-            }
-          },
-          "SIVILSTAND_UNNTAK": {
-            "regelId": "SIVILSTAND_UNNTAK",
-            "svarMapping": {
-              "GJENLEVENDE_IKKE_RETT_TIL_YTELSER": {
-                "begrunnelseType": "UTEN",
-                "regelId": "SLUTT_NODE"
-              },
-              "GJENLEVENDE_OVERTAR_OMSORG": {
-                "begrunnelseType": "UTEN",
-                "regelId": "SLUTT_NODE"
-              },
-              "NEI": {
-                "begrunnelseType": "UTEN",
                 "regelId": "SLUTT_NODE"
               }
             }
@@ -303,6 +234,55 @@
               },
               "NEI": {
                 "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "AKTIVITET": {
+        "vilkårType": "AKTIVITET",
+        "regler": {
+          "FYLLER_BRUKER_AKTIVITETSPLIKT": {
+            "regelId": "FYLLER_BRUKER_AKTIVITETSPLIKT",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "SAGT_OPP_ELLER_REDUSERT": {
+        "vilkårType": "SAGT_OPP_ELLER_REDUSERT",
+        "regler": {
+          "SAGT_OPP_ELLER_REDUSERT": {
+            "regelId": "SAGT_OPP_ELLER_REDUSERT",
+            "svarMapping": {
+              "JA": {
+                "regelId": "RIMELIG_GRUNN_SAGT_OPP",
+                "begrunnelseType": "UTEN"
+              },
+              "NEI": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          },
+          "RIMELIG_GRUNN_SAGT_OPP": {
+            "regelId": "RIMELIG_GRUNN_SAGT_OPP",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
               }
             }
