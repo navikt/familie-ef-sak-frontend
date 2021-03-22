@@ -23,7 +23,7 @@ const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
                     ? 'Ikke fylt ut'
                     : 'Ikke født ennå';
                 return (
-                    <>
+                    <React.Fragment key={barn.barnId}>
                         <StyledTabell>
                             {!indeks && (
                                 <>
@@ -84,7 +84,7 @@ const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
                                 </>
                             )}
                         </StyledTabell>
-                    </>
+                    </React.Fragment>
                 );
             })}
         </>
