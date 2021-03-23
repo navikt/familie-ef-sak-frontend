@@ -1,7 +1,7 @@
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Element, EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import LiteBarn from '../../../../ikoner/LiteBarn';
 import {
@@ -24,7 +24,7 @@ const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
                     : 'Ikke født ennå';
                 return (
                     <React.Fragment key={barn.barnId}>
-                        <StyledTabell>
+                        <GridTabell>
                             {!indeks && (
                                 <>
                                     <VilkårStatusIkon
@@ -83,7 +83,7 @@ const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
                                     </Normaltekst>
                                 </>
                             )}
-                        </StyledTabell>
+                        </GridTabell>
                     </React.Fragment>
                 );
             })}

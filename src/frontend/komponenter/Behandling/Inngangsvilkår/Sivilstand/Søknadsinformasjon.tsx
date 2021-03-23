@@ -5,6 +5,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { ISivilstandSøknadsgrunnlag } from './typer';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { hentBooleanTekst } from '../utils';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     sivilstandtype: SivilstandType;
@@ -39,14 +40,16 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     {søknad.søktOmSkilsmisseSeparasjon !== undefined && (
                         <Normaltekst>
                             {`${hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}, 
-                            ${søknad.datoSøktSeparasjon} `}
+                            ${formaterNullableIsoDato(søknad.datoSøktSeparasjon)} `}
                         </Normaltekst>
                     )}
                     {søknad.fraflytningsdato && (
                         <>
                             <Søknadsgrunnlag />
                             <Normaltekst>Dato for fraflytting</Normaltekst>
-                            <Normaltekst>{søknad.fraflytningsdato}</Normaltekst>
+                            <Normaltekst>
+                                {formaterNullableIsoDato(søknad.fraflytningsdato)}
+                            </Normaltekst>
                         </>
                     )}
                 </>
@@ -64,12 +67,12 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     <Normaltekst>{`${tidligereSamboer?.navn}, ${
                         tidligereSamboer?.ident
                             ? tidligereSamboer?.ident
-                            : tidligereSamboer?.fødselsdato
+                            : formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
                     }`}</Normaltekst>
 
                     <Søknadsgrunnlag />
                     <Normaltekst>Dato for fraflytting</Normaltekst>
-                    <Normaltekst>{søknad.fraflytningsdato}</Normaltekst>
+                    <Normaltekst>{formaterNullableIsoDato(søknad.fraflytningsdato)}</Normaltekst>
                 </>
             );
 

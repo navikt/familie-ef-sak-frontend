@@ -10,6 +10,7 @@ export interface IPersonopplysninger {
     folkeregisterpersonstatus?: Folkeregisterpersonstatus;
     dødsdato?: string;
     fødselsdato?: string;
+    egenAnsatt: boolean;
     telefonnummer?: ITelefonnummer;
     statsborgerskap: IStatsborgerskap[];
     sivilstand: ISivilstand[];

@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { ISivilstandInngangsvilkår } from './typer';
 import Søknadsinformasjon from './Søknadsinformasjon';
 import { sivilstandTilTekst } from '../../../../typer/personopplysninger';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -15,12 +16,14 @@ interface Props {
 const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
-        ? `${sivilstandTilTekst[registergrunnlag.type]} ${registergrunnlag.gyldigFraOgMed}`
+        ? `${sivilstandTilTekst[registergrunnlag.type]} ${formaterNullableIsoDato(
+              registergrunnlag.gyldigFraOgMed
+          )}`
         : sivilstandTilTekst[registergrunnlag.type];
 
     return (
         <>
-            <StyledTabell>
+            <GridTabell>
                 <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
                 <div className="tittel">
                     <Undertittel>Sivilstand</Undertittel>
@@ -35,7 +38,7 @@ const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
                     sivilstandtype={registergrunnlag.type}
                     søknad={søknadsgrunnlag}
                 />
-            </StyledTabell>
+            </GridTabell>
         </>
     );
 };

@@ -70,16 +70,25 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                 <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
                 <td>
                     <Flatknapp
+                        hidden={!oppgave.kanStarteBlankettbehandling}
+                        onClick={startBlankettBehandling}
+                    >
+                        Lag blankett
+                    </Flatknapp>
+                    <Flatknapp
                         hidden={!kanJournalføres(oppgave.behandlingstema, oppgave.oppgavetype)}
                         onClick={gåTilJournalføring}
                     >
                         Gå til journalpost
                     </Flatknapp>
                     <Flatknapp
-                        hidden={!kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype)}
+                        hidden={
+                            !kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype) ||
+                            oppgave.kanStarteBlankettbehandling
+                        }
                         onClick={gåTilBehandleSakOppgave}
                     >
-                        Behandle sak
+                        Start Behandling
                     </Flatknapp>
                 </td>
             </tr>
@@ -92,7 +101,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                 }}
             >
                 <Normaltekst>{feilmelding}</Normaltekst>
-                <Flatknapp onClick={startBlankettBehandling}>Opprett blankettbehandling</Flatknapp>
             </UIModalWrapper>
         </>
     );

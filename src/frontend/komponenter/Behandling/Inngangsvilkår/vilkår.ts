@@ -2,6 +2,7 @@ import { IMedlemskap } from './Medlemskap/typer';
 import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import {IBosituasjon, ISivilstandsplaner} from './Samliv/typer';
 import { IBarnMedSamvær } from './Aleneomsorg/typer';
+import { IAktivitet } from '../../../typer/overgangsstønad';
 import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
 import { Begrunnelse, SvarId } from '../Vurdering/typer';
 
@@ -17,6 +18,7 @@ export interface IVilkårGrunnlag {
     sivilstandsplaner: ISivilstandsplaner;
     barnMedSamvær: IBarnMedSamvær[];
     sagtOppEllerRedusertStilling: ISagtOppEllerRedusertStilling;
+    aktivitet: IAktivitet;
 }
 
 export interface IVurdering {

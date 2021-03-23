@@ -9,11 +9,10 @@ import { hentPersonInfo } from '../utils';
 
 interface Props {
     bosituasjon: IBosituasjon;
-    tidligereSamboer?: IPersonDetaljer;
     sivilstandsplaner?: ISivilstandsplaner;
 }
 
-export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilstandsplaner }) => (
+export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner }) => (
     <>
         {bosituasjon.delerDuBolig === ESøkerDelerBolig.harEkteskapsliknendeForhold && (
             <SamboerInfoOgDatoSammenflytting
@@ -27,7 +26,13 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             <>
                 <Søknadsgrunnlag />
                 <Normaltekst>Tidligere samboer</Normaltekst>
-                <Normaltekst>{hentPersonInfo(tidligereSamboer)}</Normaltekst>
+                <Normaltekst>{hentPersonInfo(bosituasjon.samboer)}</Normaltekst>
+
+                <Søknadsgrunnlag />
+                <Normaltekst>Flyttet fra hverandre</Normaltekst>
+                <Normaltekst>
+                    {formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
+                </Normaltekst>
             </>
         )}
 
@@ -36,9 +41,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, tidligereSamboer, sivilsta
             ESøkerDelerBolig.delerBoligMedAndreVoksne,
             ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
         ].includes(bosituasjon.delerDuBolig) &&
-            sivilstandsplaner?.harPlaner && (
-                <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />
-            )}
+            sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
     </>
 );
 
@@ -74,7 +77,7 @@ const Sivilstandsplaner: FC<{ sivilstandsplaner: ISivilstandsplaner }> = ({
                 <Søknadsgrunnlag />
                 <Normaltekst>Ektefelle eller samboer</Normaltekst>
                 <Normaltekst>{`${sivilstandsplaner.vordendeSamboerEktefelle?.navn} - ${
-                    sivilstandsplaner.vordendeSamboerEktefelle?.ident ||
+                    sivilstandsplaner.vordendeSamboerEktefelle?.personIdent ||
                     formaterNullableIsoDato(sivilstandsplaner.vordendeSamboerEktefelle?.fødselsdato)
                 }`}</Normaltekst>
             </>
