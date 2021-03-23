@@ -1,5 +1,5 @@
 import {
-    InngangsvilkårGruppe,
+    InngangsvilkårType,
     IVurdering,
     Vilkårsresultat,
     VilkårType,
@@ -27,7 +27,7 @@ export const vilkårStatus = (vurderinger: IVurdering[], vilkårGruppe: VilkårT
 };
 export const vilkårStatusAleneomsorg = (vurderinger: IVurdering[]): VilkårStatus => {
     const filtrerteVurderinger = vurderinger.filter(
-        (vurdering) => vurdering.vilkårType === InngangsvilkårGruppe.ALENEOMSORG
+        (vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG
     );
 
     if (filtrerteVurderinger.some((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT)) {

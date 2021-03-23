@@ -69,9 +69,9 @@ export enum Vilkårsresultat {
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
  * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk
  */
-export type VilkårType = InngangsvilkårGruppe | AktivitetsvilkårType
+export type VilkårType = InngangsvilkårType | AktivitetsvilkårType
 
-export enum InngangsvilkårGruppe {
+export enum InngangsvilkårType {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
     LOVLIG_OPPHOLD = 'LOVLIG_OPPHOLD',
     MOR_ELLER_FAR = 'MOR_ELLER_FAR',

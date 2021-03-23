@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { InngangsvilkårGruppe, IVurdering, VilkårGruppe } from './vilkår';
+import { InngangsvilkårType, IVurdering } from './vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -25,10 +25,10 @@ export const StyledInngangsvilkår = styled.div`
     grid-gap: 3rem;
 `;
 
-export const StyledKnapp = hiddenIf(styled(Knapp)`
+export const StyledKnapp = styled(hiddenIf(Knapp))`
     display: block;
     margin: 2rem auto 0;
-`);
+`;
 
 interface Props {
     behandlingId: string;
@@ -101,8 +101,8 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <StyledInngangsvilkår>
-                            {Object.keys(InngangsvilkårGruppe).map((vilkårGruppe) => {
-                                if (vilkårGruppe === InngangsvilkårGruppe.ALENEOMSORG) {
+                            {Object.keys(InngangsvilkårType).map((vilkårGruppe) => {
+                                if (vilkårGruppe === InngangsvilkårType.ALENEOMSORG) {
                                     return (
                                         <React.Fragment key={vilkårGruppe}>
                                             <VilkårStatusForAleneomsorg
@@ -127,7 +127,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                     return (
                                         <Vurdering
                                             key={vilkårGruppe}
-                                            vilkårGruppe={vilkårGruppe as InngangsvilkårGruppe}
+                                            vilkårGruppe={vilkårGruppe as InngangsvilkårType}
                                             inngangsvilkår={vilkår}
                                             feilmeldinger={feilmeldinger}
                                             lagreVurdering={lagreVurdering}

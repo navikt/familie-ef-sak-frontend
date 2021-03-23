@@ -9,6 +9,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import { Behandling } from '../../../typer/fagsak';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
 import { StyledInngangsvilkår, StyledKnapp } from '../Inngangsvilkår/Inngangsvilkår';
+import { AktivitetsvilkårType } from '../Inngangsvilkår/vilkår';
 
 interface Props {
     behandlingId: string;
@@ -82,7 +83,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <StyledInngangsvilkår>
-                            {Object.keys(AktivitetsvilkårGruppe).map((vilkårGruppe) => {
+                            {Object.keys(AktivitetsvilkårType).map((vilkårGruppe) => {
                                 return (
                                     <Vurdering
                                         key={vilkårGruppe}
