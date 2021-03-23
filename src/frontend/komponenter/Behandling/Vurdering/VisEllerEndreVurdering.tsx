@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import {IVurdering, NullstillVilkårsvurdering, OppdaterVilkårsvurdering, Vilkårsresultat} from '../Inngangsvilkår/vilkår';
+import {
+    IVurdering,
+    NullstillVilkårsvurdering,
+    OppdaterVilkårsvurdering,
+    Vilkårsresultat,
+} from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
 import { Knapp } from 'nav-frontend-knapper';
