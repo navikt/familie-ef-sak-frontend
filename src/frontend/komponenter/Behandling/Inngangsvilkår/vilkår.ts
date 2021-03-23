@@ -1,6 +1,6 @@
 import { IMedlemskap } from './Medlemskap/typer';
 import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
-import {IBosituasjon, ISivilstandsplaner} from './Samliv/typer';
+import { IBosituasjon, ISivilstandsplaner } from './Samliv/typer';
 import { IBarnMedSamvær } from './Aleneomsorg/typer';
 import { IAktivitet } from '../../../typer/overgangsstønad';
 import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
@@ -63,13 +63,12 @@ export enum Vilkårsresultat {
 
 // ------- DELVILKÅR
 
-
 // ------ VILKÅRGRUPPE
 /**
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
  * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk
  */
-export type VilkårType = InngangsvilkårType | AktivitetsvilkårType
+export type VilkårType = InngangsvilkårType | AktivitetsvilkårType;
 
 export enum InngangsvilkårType {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
@@ -85,10 +84,3 @@ export enum AktivitetsvilkårType {
     AKTIVITET = 'AKTIVITET',
     SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
-
-export const vilkårsresultatTypeTilTekst: Record<Vilkårsresultat, string> = {
-    OPPFYLT: 'Ja',
-    IKKE_OPPFYLT: 'Nei',
-    IKKE_AKTUELL: 'Ikke aktuell',
-    IKKE_TATT_STILLING_TIL: 'Ikke vurdert',
-};

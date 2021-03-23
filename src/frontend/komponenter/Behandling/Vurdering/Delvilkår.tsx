@@ -2,7 +2,6 @@ import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import * as React from 'react';
 import { FC } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
-import { PopoverOrientering } from 'nav-frontend-popover';
 import { Regel } from './typer';
 import { DelvilkårContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
@@ -37,8 +36,8 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
                 ))}
             </RadioGruppe>
             {hjelpetekst && (
-                <Hjelpetekst type={PopoverOrientering.Under}>
-                    {React.createElement(hjelpetekst)}
+                <Hjelpetekst type={hjelpetekst.plassering}>
+                    {React.createElement(hjelpetekst.komponent)}
                 </Hjelpetekst>
             )}
         </DelvilkårContainer>
