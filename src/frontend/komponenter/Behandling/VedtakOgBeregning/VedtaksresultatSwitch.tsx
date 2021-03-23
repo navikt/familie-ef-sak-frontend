@@ -9,7 +9,6 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
-import { useHentBehandling } from '../../../hooks/useHentBehandling';
 import { useBehandling } from '../../../context/BehandlingContext';
 
 interface Props {
