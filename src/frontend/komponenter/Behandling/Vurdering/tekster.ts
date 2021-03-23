@@ -33,7 +33,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
 
 export const svarTypeTilTekst: Record<string, string> = {
     JA: 'Ja',
-    NEI: 'Nej',
+    NEI: 'Nei',
     IKKE_OPPFYLT: 'Nei',
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',

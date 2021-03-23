@@ -8,9 +8,9 @@ export const manglerBegrunnelse = (begrunnelse: string | undefined | null): bool
 export function begrunnelseErPåkrevdOgSavnes(
     svarsalternativ: Svarsalternativ,
     begrunnelse: Begrunnelse
-) {
+): boolean {
     if (svarsalternativ.begrunnelseType === BegrunnelseRegel.PÅKREVD) {
-        return !begrunnelse || begrunnelse.trim().length === 0;
+        return !manglerBegrunnelse(begrunnelse);
     }
     return false;
 }
@@ -18,7 +18,7 @@ export function begrunnelseErPåkrevdOgSavnes(
 export function begrunnelseErPåkrevdOgUtfyllt(
     svarsalternativ: Svarsalternativ,
     begrunnelse: Begrunnelse
-) {
+): boolean {
     if (svarsalternativ.begrunnelseType === BegrunnelseRegel.PÅKREVD) {
         return !begrunnelse || begrunnelse.trim().length > 0;
     }
