@@ -4,6 +4,7 @@ import {
     IVilkår,
     IVurdering,
     NullstillVilkårsvurdering,
+    OppdaterVilkårsvurdering,
     VilkårType,
     Vurderingsfeilmelding,
 } from '../Inngangsvilkår/vilkår';
@@ -39,7 +40,7 @@ interface Props {
     barnId?: string;
     vilkårGruppe: VilkårType;
     inngangsvilkår: IVilkår;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (vurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
 }

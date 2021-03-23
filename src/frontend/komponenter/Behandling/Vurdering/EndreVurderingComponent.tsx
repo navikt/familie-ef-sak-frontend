@@ -50,48 +50,38 @@ const EndreVurderingComponent: FC<{
         });
     };
 
-    const oppdaterBegrunnelse = (vurderinger: Vurdering[], index: number) => {
-        return (nyttSvar: Vurdering) => {
-            const { begrunnelse } = nyttSvar;
+    const oppdaterBegrunnelse = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
+        const { begrunnelse } = nyttSvar;
 
-            const nySvarArray = oppdaterSvarIListe(nyttSvar, vurderinger, true);
+        const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger, true);
 
-            const svarsalternativ = hentSvarsalternativ(regler, nyttSvar)!;
-            const nesteStegId = svarsalternativ.regelId;
+        const svarsalternativ = hentSvarsalternativ(regler, nyttSvar)!;
+        const nesteStegId = svarsalternativ.regelId;
 
-            const leggTilNesteRegelHvis = () => {
-                const nestStegErLagtTil = vurderinger.find((v) => v.regelId === nesteStegId);
-                return (
-                    nesteStegId !== 'SLUTT_NODE' &&
-                    begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse) &&
-                    !nestStegErLagtTil
-                );
-            };
+        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+            nesteStegId,
+            oppdaterteSvar,
+            () =>
+                nesteStegId !== 'SLUTT_NODE' &&
+                begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse) &&
+                !vurderinger.find((v) => v.regelId === nesteStegId)
+        );
 
-            const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
-                nesteStegId,
-                nySvarArray,
-                () => leggTilNesteRegelHvis()
-            );
-
-            oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
-        };
+        oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
     };
 
-    const oppdaterSvar = (vurderinger: Vurdering[], index: number) => {
-        return (nyttSvar: Vurdering) => {
-            const nySvarArray = oppdaterSvarIListe(nyttSvar, vurderinger);
-            const svarsalternativer = hentSvarsalternativ(regler, nyttSvar)!;
-            const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
-                svarsalternativer.regelId,
-                nySvarArray,
-                () =>
-                    svarsalternativer.regelId !== 'SLUTT_NODE' &&
-                    svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
-            );
+    const oppdaterSvar = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
+        const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger);
+        const svarsalternativer = hentSvarsalternativ(regler, nyttSvar)!;
+        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+            svarsalternativer.regelId,
+            oppdaterteSvar,
+            () =>
+                svarsalternativer.regelId !== 'SLUTT_NODE' &&
+                svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
+        );
 
-            oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
-        };
+        oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
     };
 
     return (
@@ -107,8 +97,6 @@ const EndreVurderingComponent: FC<{
             }}
         >
             {delvilkårsvurderinger.map((delvikår, index) => {
-                const oppdaterSvarINod = oppdaterSvar(delvikår.vurderinger, index);
-                const oppdaterBegrunnelseINod = oppdaterBegrunnelse(delvikår.vurderinger, index);
                 return delvikår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
                     return (
@@ -116,11 +104,16 @@ const EndreVurderingComponent: FC<{
                             <Delvilkår
                                 vurdering={svar}
                                 regel={regel}
-                                settVurdering={oppdaterSvarINod}
+                                settVurdering={(nyVurdering) =>
+                                    oppdaterSvar(delvikår.vurderinger, index, nyVurdering)
+                                }
                             />
                             <Begrunnelse
                                 onChange={(begrunnelse) =>
-                                    oppdaterBegrunnelseINod({ ...svar, begrunnelse })
+                                    oppdaterBegrunnelse(delvikår.vurderinger, index, {
+                                        ...svar,
+                                        begrunnelse,
+                                    })
                                 }
                                 svar={svar}
                                 regel={regel}

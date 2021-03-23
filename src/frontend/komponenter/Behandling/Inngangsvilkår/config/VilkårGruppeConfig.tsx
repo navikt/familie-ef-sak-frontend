@@ -13,7 +13,13 @@ import SagtOppEllerRedusertVisning from '../../Aktivitet/SagtOppEllerRedusert/Sa
 
 export const VilkårGruppeConfig: Record<
     VilkårType,
-    { visning: (...args: any[]) => React.ReactChild }
+    {
+        visning: (
+            inngangsvilkår: IVilkårGrunnlag,
+            vilkårsresultat: Vilkårsresultat,
+            barnId?: string
+        ) => ReactChild;
+    }
 > = {
     FORUTGÅENDE_MEDLEMSKAP: {
         visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
@@ -44,8 +50,16 @@ export const VilkårGruppeConfig: Record<
         ),
     },
     ALENEOMSORG: {
-        visning: (grunnlag: IVilkårGrunnlag, barnId?: string): ReactChild => (
-            <AleneomsorgVisning barnMedSamvær={grunnlag.barnMedSamvær} barnId={barnId} />
+        visning: (
+            grunnlag: IVilkårGrunnlag,
+            vilkårsresultat: Vilkårsresultat,
+            barnId?: string
+        ): ReactChild => (
+            <AleneomsorgVisning
+                vilkårsresultat={vilkårsresultat}
+                barnMedSamvær={grunnlag.barnMedSamvær}
+                barnId={barnId}
+            />
         ),
     },
     NYTT_BARN_SAMME_PARTNER: {
