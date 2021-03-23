@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { EBehandlingResultat, IVedtak, EAktivitet, EPeriodetype } from '../../../typer/vedtak';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
@@ -29,13 +29,18 @@ const VedtaksperiodeRad = styled.div`
     justify-content: flex-start;
 `;
 
+const LeggTilVedtaksperiodeKnapp = styled(Flatknapp)`
+    padding: 0;
+    margin-bottom: 1rem;
+`;
+
 const StyledSelect = styled(Select)`
     max-width: 200px;
     margin-right: 2rem;
 `;
 
-const Månedsdifferanse = styled(Element)`
-    margin-top: 2.5rem;
+const AktivitetKolonne = styled.div`
+    width: 230px;
 `;
 
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
@@ -46,18 +51,42 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { vedtaksresultatType, behandlingId, settFeilmelding } = props;
-    const [fraOgMedDato, settFraOgMedDato] = useState('');
-    const [tilOgMedDato, settTilOgMedDato] = useState('');
-    const [periodetype, settPeriodetype] = useState<EPeriodetype>();
-    const [aktivitet, settAktivitet] = useState('');
     const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState([
-        { periodetype: '' as EPeriodetype, aktivitet: '' as EAktivitet },
+        {
+            periodetype: '' as EPeriodetype,
+            aktivitet: '' as EAktivitet,
+            fraOgMedDato: '',
+            tilOgMedDato: '',
+        },
     ]);
 
-    const antallMåneder =
-        fraOgMedDato && tilOgMedDato
-            ? differenceInMonths(new Date(tilOgMedDato), new Date(fraOgMedDato))
-            : undefined;
+    const leggTilVedtaksperiode = () => {
+        const tomVedtaksperiodeRad = {
+            periodetype: '' as EPeriodetype,
+            aktivitet: '' as EAktivitet,
+            fraOgMedDato: '',
+            tilOgMedDato: '',
+        };
+
+        const nyListe = [...vedtaksperiodeListe];
+
+        nyListe.push(tomVedtaksperiodeRad);
+
+        settVedtaksperiodeListe(nyListe);
+    };
+
+    const oppdaterVedtakslisteElement = (index: number, property: string, value: any) => {
+        const nyListe = [...vedtaksperiodeListe];
+
+        const nyttObjekt = {
+            ...nyListe[index],
+            [property]: value,
+        };
+
+        nyListe[index] = nyttObjekt;
+
+        settVedtaksperiodeListe(nyListe);
+    };
 
     const lagBlankett = () => {
         settLaster(true);
@@ -113,56 +142,74 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
             });
     };
 
-    const VelgAktivitetsplikt = (periodetype: EPeriodetype | undefined) => {
+    const VelgAktivitetsplikt = (
+        periodetype: EPeriodetype | undefined,
+        aktivitet: EAktivitet,
+        index: number
+    ) => {
+        const aktivitetLabel = index === 0 ? 'Aktivitet' : '';
+
         switch (periodetype) {
             case EPeriodetype.HOVEDPERIODE:
                 return (
-                    <StyledSelect
-                        label="Aktivitet"
-                        value={aktivitet}
-                        onChange={(e) => {
-                            settFeilmelding('');
-                            settAktivitet(e.target.value as EAktivitet);
-                        }}
-                    >
-                        <option value="">Velg</option>
-                        <optgroup label="Ingen aktivitetsplikt">
-                            <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>Barn er under 1 år</option>
-                        </optgroup>
-                        <optgroup label="Fyller aktivitetsplikt">
-                            <option value={EAktivitet.FORSØRGER_I_ARBEID}>
-                                Forsørger er i arbeid (§15-6 første ledd)
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
-                                Forsørger er i utdannings (§15-6 første ledd)
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
-                                Forsørger er reell arbeidssøker (§15-6 første ledd)
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
-                                Forsørger etablerer egen virksomhet (§15-6 første ledd)
-                            </option>
-                        </optgroup>
-                        <optgroup label="Fyller unntak for aktivitetsplikt">
-                            <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
-                                Barnet er særlig tilsynskrevende (§15-6 fjerde ledd)
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
-                                Forsørger mangler tilsynsordning (§15-6 femte ledd)
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_ER_SYK}>
-                                Forsørger er syk (§15-6 femte ledd)
-                            </option>
-                            <option value={EAktivitet.BARNET_ER_SYKT}>
-                                Barnet er sykt (§15-6 femte ledd)
-                            </option>
-                        </optgroup>
-                    </StyledSelect>
+                    <AktivitetKolonne>
+                        <StyledSelect
+                            label={aktivitetLabel}
+                            value={aktivitet}
+                            onChange={(e) => {
+                                settFeilmelding('');
+                                oppdaterVedtakslisteElement(index, 'aktivitet', e.target.value);
+                            }}
+                        >
+                            <option value="">Velg</option>
+                            <optgroup label="Ingen aktivitetsplikt">
+                                <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>
+                                    Barn er under 1 år
+                                </option>
+                            </optgroup>
+                            <optgroup label="Fyller aktivitetsplikt">
+                                <option value={EAktivitet.FORSØRGER_I_ARBEID}>
+                                    Forsørger er i arbeid (§15-6 første ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
+                                    Forsørger er i utdannings (§15-6 første ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
+                                    Forsørger er reell arbeidssøker (§15-6 første ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
+                                    Forsørger etablerer egen virksomhet (§15-6 første ledd)
+                                </option>
+                            </optgroup>
+                            <optgroup label="Fyller unntak for aktivitetsplikt">
+                                <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
+                                    Barnet er særlig tilsynskrevende (§15-6 fjerde ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
+                                    Forsørger mangler tilsynsordning (§15-6 femte ledd)
+                                </option>
+                                <option value={EAktivitet.FORSØRGER_ER_SYK}>
+                                    Forsørger er syk (§15-6 femte ledd)
+                                </option>
+                                <option value={EAktivitet.BARNET_ER_SYKT}>
+                                    Barnet er sykt (§15-6 femte ledd)
+                                </option>
+                            </optgroup>
+                        </StyledSelect>
+                    </AktivitetKolonne>
                 );
             case EPeriodetype.PERIODE_FØR_FØDSEL:
-                return <TekstMedLabel label="Aktivitet" tekst="Ikke aktivitetsplikt" />;
-            case undefined:
-                return <TekstMedLabel label="Aktivitet" tekst="-" />;
+                return (
+                    <AktivitetKolonne>
+                        <TekstMedLabel label={aktivitetLabel} tekst="Ikke aktivitetsplikt" />
+                    </AktivitetKolonne>
+                );
+            default:
+                return (
+                    <AktivitetKolonne>
+                        <TekstMedLabel label={aktivitetLabel} tekst="-" />
+                    </AktivitetKolonne>
+                );
         }
     };
 
@@ -173,16 +220,26 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>
                         Vedtaksperiode
                     </Element>
-                    {vedtaksperiodeListe.map((element) => {
-                        const { periodetype, aktivitet } = element;
+                    {vedtaksperiodeListe.map((element, index) => {
+                        const { periodetype, aktivitet, tilOgMedDato, fraOgMedDato } = element;
+
+                        const antallMåneder =
+                            fraOgMedDato && tilOgMedDato
+                                ? differenceInMonths(new Date(tilOgMedDato), new Date(fraOgMedDato))
+                                : undefined;
+
                         return (
                             <VedtaksperiodeRad>
                                 <StyledSelect
-                                    label="Periodetype"
+                                    label={index === 0 && 'Periodetype'}
                                     value={periodetype}
                                     onChange={(e) => {
                                         settFeilmelding('');
-                                        settPeriodetype(e.target.value as EPeriodetype);
+                                        oppdaterVedtakslisteElement(
+                                            index,
+                                            'periodetype',
+                                            e.target.value
+                                        );
                                     }}
                                 >
                                     <option value="">Velg</option>
@@ -191,26 +248,32 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     </option>
                                     <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
                                 </StyledSelect>
-                                {VelgAktivitetsplikt(periodetype)}
+                                {VelgAktivitetsplikt(periodetype, aktivitet, index)}
                                 <DatoPeriode
-                                    datoFraTekst="Fra og med"
-                                    datoTilTekst="Til og med"
-                                    settDatoFra={settFraOgMedDato}
-                                    settDatoTil={settTilOgMedDato}
+                                    datoFraTekst={index === 0 ? 'Fra og med' : ''}
+                                    datoTilTekst={index === 0 ? 'Til og med' : ''}
+                                    settDatoFra={(e: any) => {
+                                        oppdaterVedtakslisteElement(index, 'fraOgMedDato', e);
+                                    }}
+                                    settDatoTil={(e: any) => {
+                                        oppdaterVedtakslisteElement(index, 'tilOgMedDato', e);
+                                    }}
                                     valgtDatoFra={fraOgMedDato}
                                     valgtDatoTil={tilOgMedDato}
                                     datoFeil={undefined}
                                 />
                                 {!!antallMåneder && (
-                                    <Månedsdifferanse>{antallMåneder} måneder</Månedsdifferanse>
+                                    <Element style={{ marginTop: index === 0 ? '2.5rem' : '1rem' }}>
+                                        {antallMåneder} måneder
+                                    </Element>
                                 )}
                             </VedtaksperiodeRad>
                         );
                     })}
-                    <Flatknapp>
+                    <LeggTilVedtaksperiodeKnapp onClick={leggTilVedtaksperiode}>
                         <AddCircle style={{ marginRight: '1rem' }} />
                         Legg til vedtaksperiode
-                    </Flatknapp>
+                    </LeggTilVedtaksperiodeKnapp>
                     <Textarea
                         value={periodeBegrunnelse}
                         onChange={(e) => {
