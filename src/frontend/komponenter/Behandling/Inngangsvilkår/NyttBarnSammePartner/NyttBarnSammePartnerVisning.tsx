@@ -1,4 +1,4 @@
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import React, { FC } from 'react';
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
@@ -14,6 +14,7 @@ import {
     mapTilSøknadsgrunnlagNyttBarn,
 } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
+import {Vilkårsresultat} from "../vilkår";
 
 const TittelWrapper = styled.div`
     padding-bottom: 1rem;
@@ -31,16 +32,16 @@ const TittelWrapper = styled.div`
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
 }
 
-const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
+const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresultat }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
         <>
             <FlexDiv>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+                <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
                 <TittelWrapper>
                     <Undertittel>Nytt barn samme partner</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>

@@ -11,7 +11,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
-import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
@@ -150,10 +150,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     );
 };
 const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
-    const status = vilkårStatusAleneomsorg(vurderinger);
+    const vilkårsresultat = vilkårStatusAleneomsorg(vurderinger);
     return (
         <GridTabell style={{ marginBottom: 0 }}>
-            <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
+            <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
             <div className="tittel fjernSpacing">
                 <Undertittel>Aleneomsorg</Undertittel>
                 <EtikettLiten>§15-4</EtikettLiten>

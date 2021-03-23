@@ -7,7 +7,7 @@ import {
     VilkårType,
     Vurderingsfeilmelding,
 } from '../Inngangsvilkår/vilkår';
-import { vilkårStatus } from './VurderingUtil';
+import { vilkårsresultat } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
@@ -54,7 +54,7 @@ const Vurdering: FC<Props> = ({
 }) => {
     const vurderinger = inngangsvilkår.vurderinger;
 
-    const status = vilkårStatus(vurderinger, vilkårGruppe);
+    const status = vilkårsresultat(vurderinger, vilkårGruppe);
 
     const config = VilkårGruppeConfig[vilkårGruppe];
     if (!config) {
