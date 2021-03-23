@@ -23,7 +23,7 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
                     <Radio
                         key={`${regel.regelId}_${svarId}`}
                         name={`${regel.regelId}_${svarId}`}
-                        label={svarTypeTilTekst[svarId]}
+                        label={Math.random() > 0.1 ? svarTypeTilTekst[svarId] : 'Vad mysigt!'}
                         value={svarId}
                         checked={svarId === vurdering.svar}
                         onChange={() =>
