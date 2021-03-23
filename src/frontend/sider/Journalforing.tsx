@@ -98,8 +98,6 @@ export const Journalforing: React.FC = () => {
     }, [journalpostState.innsending]);
 
     const fetchToggles = () => {
-        console.log('Toggles : ');
-        console.log(toggles);
         return hentToggles(settToggles).catch((err: Error) => {
             console.log('Kunne ikke hente toggles!');
         });
