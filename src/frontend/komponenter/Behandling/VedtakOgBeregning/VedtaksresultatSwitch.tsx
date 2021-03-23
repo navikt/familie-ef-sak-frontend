@@ -1,5 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { EBehandlingResultat, IVedtak, EAktivitet, EPeriodetype } from '../../../typer/vedtak';
+import {
+    EBehandlingResultat,
+    IVedtak,
+    EAktivitet,
+    EPeriodetype,
+    IPeriode,
+} from '../../../typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
@@ -51,7 +57,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { vedtaksresultatType, behandlingId, settFeilmelding } = props;
-    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState([
+    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IPeriode[]>([
         {
             periodetype: '' as EPeriodetype,
             aktivitet: '' as EAktivitet,
@@ -75,7 +81,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         settVedtaksperiodeListe(nyListe);
     };
 
-    const oppdaterVedtakslisteElement = (index: number, property: string, value: any) => {
+    const oppdaterVedtakslisteElement = (index: number, property: string, value: string) => {
         const nyListe = [...vedtaksperiodeListe];
 
         const nyttObjekt = {
@@ -97,6 +103,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                 resultatType: vedtaksresultatType,
                 periodeBegrunnelse,
                 inntektBegrunnelse,
+                perioder: vedtaksperiodeListe,
             },
         })
             .then((res: Ressurs<string>) => {
@@ -252,10 +259,10 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                 <DatoPeriode
                                     datoFraTekst={index === 0 ? 'Fra og med' : ''}
                                     datoTilTekst={index === 0 ? 'Til og med' : ''}
-                                    settDatoFra={(e: any) => {
+                                    settDatoFra={(e) => {
                                         oppdaterVedtakslisteElement(index, 'fraOgMedDato', e);
                                     }}
-                                    settDatoTil={(e: any) => {
+                                    settDatoTil={(e) => {
                                         oppdaterVedtakslisteElement(index, 'tilOgMedDato', e);
                                     }}
                                     valgtDatoFra={fraOgMedDato}

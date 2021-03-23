@@ -2,6 +2,14 @@ export interface IVedtak {
     resultatType: EBehandlingResultat;
     periodeBegrunnelse: string;
     inntektBegrunnelse: string;
+    perioder: IPeriode[];
+}
+
+export interface IPeriode {
+    periodetype: EPeriodetype;
+    aktivitet: EAktivitet;
+    fraOgMedDato: string;
+    tilOgMedDato: string;
 }
 
 export enum EBehandlingResultat {
