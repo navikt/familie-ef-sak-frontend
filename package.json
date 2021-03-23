@@ -17,11 +17,6 @@
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
     "prepare": "yarn run snyk-protect"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && pretty-quick --staged"
-    }
-  },
   "lint-staged": {
     "./src/**/*.{js,ts,tsx}": [
       "eslint --fix"
