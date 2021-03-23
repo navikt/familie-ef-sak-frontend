@@ -14,7 +14,7 @@ import {
     mapTilSøknadsgrunnlagNyttBarn,
 } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import {Vilkårsresultat} from "../vilkår";
+import { Vilkårsresultat } from '../vilkår';
 
 const TittelWrapper = styled.div`
     padding-bottom: 1rem;
@@ -41,7 +41,10 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
     return (
         <>
             <FlexDiv>
-                <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <TittelWrapper>
                     <Undertittel>Nytt barn samme partner</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>

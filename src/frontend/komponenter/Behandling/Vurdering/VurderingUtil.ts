@@ -8,7 +8,10 @@ import {
 export const alleErOppfylte = (vurderinger: IVurdering[]): boolean =>
     vurderinger.every((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
 
-export const vilkårsresultat = (vurderinger: IVurdering[], vilkårGruppe: VilkårType): Vilkårsresultat => {
+export const vilkårsresultat = (
+    vurderinger: IVurdering[],
+    vilkårGruppe: VilkårType
+): Vilkårsresultat => {
     const vurderingerForVilkårType = vurderinger.filter(
         (vurdering) => vurdering.vilkårType === vilkårGruppe
     );

@@ -11,7 +11,7 @@ import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
-import {delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst} from './tekster';
+import { delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst } from './tekster';
 
 const StyledVurdering = styled.div`
     display: grid;

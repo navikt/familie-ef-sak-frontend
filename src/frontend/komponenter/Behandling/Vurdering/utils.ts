@@ -1,10 +1,5 @@
-import {
-    Begrunnelse,
-    BegrunnelseRegel,
-    Regler,
-    Svarsalternativ,
-} from './typer';
-import {IDelvilkår, Vurdering} from '../Inngangsvilkår/vilkår';
+import { Begrunnelse, BegrunnelseRegel, Regler, Svarsalternativ } from './typer';
+import { IDelvilkår, Vurdering } from '../Inngangsvilkår/vilkår';
 
 export const manglerBegrunnelse = (begrunnelse: string | undefined | null): boolean => {
     return !begrunnelse || begrunnelse.trim().length === 0;
@@ -45,7 +40,6 @@ export function erAllaDelvilkårBesvarte(
     delvilkårsvurderinger: IDelvilkår[],
     regler: Regler
 ): boolean {
-
     const erPåSisteNod = delvilkårsvurderinger
         .map((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
         .map((listeMedVurderinger) => listeMedVurderinger[listeMedVurderinger.length - 1])

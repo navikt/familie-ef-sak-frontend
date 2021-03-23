@@ -1,14 +1,10 @@
 import * as React from 'react';
-import {FC, useState} from 'react';
-import {
-    IVurdering, NullstillVilkårsvurdering,
-    Vilkårsresultat,
-} from '../Inngangsvilkår/vilkår';
+import { FC, useState } from 'react';
+import { IVurdering, NullstillVilkårsvurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
 import { Knapp } from 'nav-frontend-knapper';
 import { Ressurs } from '../../../typer/ressurs';
-
 
 export enum Redigeringsmodus {
     REDIGERING = 'REDIGERING',
@@ -19,7 +15,9 @@ export enum Redigeringsmodus {
 interface Props {
     vurdering: IVurdering;
     lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
-    nullstillVurdering: (nullstillVilkårsvurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    nullstillVurdering: (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
 }
 

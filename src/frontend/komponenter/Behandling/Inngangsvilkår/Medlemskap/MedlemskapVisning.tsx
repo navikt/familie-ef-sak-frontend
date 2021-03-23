@@ -36,7 +36,10 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårsresultat }) => {
     return (
         <>
             <GridTabell>
-                <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Forutgående medlemskap</Undertittel>
                     <EtikettLiten>§15-2</EtikettLiten>

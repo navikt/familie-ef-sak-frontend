@@ -25,7 +25,10 @@ const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårsresultat }) => {
     return (
         <>
             <GridTabell>
-                <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Sivilstand</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>

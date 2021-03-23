@@ -1,4 +1,4 @@
-import {IDelvilkår, IVilkårGrunnlag, Vilkårsresultat, VilkårType} from '../vilkår';
+import { IVilkårGrunnlag, Vilkårsresultat, VilkårType } from '../vilkår';
 import * as React from 'react';
 import { ReactChild } from 'react';
 import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
@@ -44,14 +44,8 @@ export const VilkårGruppeConfig: Record<
         ),
     },
     ALENEOMSORG: {
-        visning: (
-            grunnlag: IVilkårGrunnlag,
-            barnId?: string
-        ): ReactChild => (
-            <AleneomsorgVisning
-                barnMedSamvær={grunnlag.barnMedSamvær}
-                barnId={barnId}
-            />
+        visning: (grunnlag: IVilkårGrunnlag, barnId?: string): ReactChild => (
+            <AleneomsorgVisning barnMedSamvær={grunnlag.barnMedSamvær} barnId={barnId} />
         ),
     },
     NYTT_BARN_SAMME_PARTNER: {
@@ -74,5 +68,5 @@ export const VilkårGruppeConfig: Record<
                 vilkårsresultat={vilkårsresultat}
             />
         ),
-    }
+    },
 };

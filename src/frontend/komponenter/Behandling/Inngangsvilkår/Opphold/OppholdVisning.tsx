@@ -9,13 +9,13 @@ import {
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import {  VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { IMedlemskap } from '../Medlemskap/typer';
 import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
-import {Vilkårsresultat} from "../vilkår";
+import { Vilkårsresultat } from '../vilkår';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -33,7 +33,10 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårsresultat }) => {
     return (
         <>
             <GridTabell>
-                <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Opphold i Norge</Undertittel>
                     <EtikettLiten>§15-3 </EtikettLiten>

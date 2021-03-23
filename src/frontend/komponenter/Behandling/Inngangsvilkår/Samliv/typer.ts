@@ -54,4 +54,3 @@ export interface ISivilstandsplaner {
     fraDato?: string;
     vordendeSamboerEktefelle?: IPersonDetaljer;
 }
-
