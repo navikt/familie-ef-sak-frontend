@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 import { SivilstandType } from '../../../../typer/personopplysninger';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { ISivilstandSøknadsgrunnlag } from './typer';
+import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag, ÅrsakEnsligTilTekst } from './typer';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { hentBooleanTekst } from '../utils';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     sivilstandtype: SivilstandType;
@@ -20,7 +21,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Gift i utlandet</Normaltekst>
+                    <Normaltekst>Gift uten at det er registrert i folkeregisteret</Normaltekst>
                     {erUformeltGift !== undefined && <BooleanTekst value={erUformeltGift} />}
 
                     <Søknadsgrunnlag />
@@ -38,15 +39,19 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     <Normaltekst>Søkt separasjon, skilsmisse eller reist sak</Normaltekst>
                     {søknad.søktOmSkilsmisseSeparasjon !== undefined && (
                         <Normaltekst>
-                            {`${hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}, 
-                            ${søknad.datoSøktSeparasjon} `}
+                            {søknad.søktOmSkilsmisseSeparasjon
+                                ? `${hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}, 
+                            ${formaterNullableIsoDato(søknad.datoSøktSeparasjon)}`
+                                : hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}
                         </Normaltekst>
                     )}
                     {søknad.fraflytningsdato && (
                         <>
                             <Søknadsgrunnlag />
                             <Normaltekst>Dato for fraflytting</Normaltekst>
-                            <Normaltekst>{søknad.fraflytningsdato}</Normaltekst>
+                            <Normaltekst>
+                                {formaterNullableIsoDato(søknad.fraflytningsdato)}
+                            </Normaltekst>
                         </>
                     )}
                 </>
@@ -57,19 +62,50 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Alene med barn fordi</Normaltekst>
-                    <Normaltekst>{søknad.årsakEnslig}</Normaltekst>
+                    <Normaltekst>{ÅrsakEnsligTilTekst[søknad.årsakEnslig]}</Normaltekst>
 
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Tidligere samboer</Normaltekst>
-                    <Normaltekst>{`${tidligereSamboer?.navn}, ${
-                        tidligereSamboer?.ident
-                            ? tidligereSamboer?.ident
-                            : tidligereSamboer?.fødselsdato
-                    }`}</Normaltekst>
+                    {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Dato for samlivsbrudd</Normaltekst>
 
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Dato for fraflytting</Normaltekst>
-                    <Normaltekst>{søknad.fraflytningsdato}</Normaltekst>
+                            <Normaltekst>
+                                {søknad.samlivsbruddsdato
+                                    ? formaterNullableIsoDato(søknad.samlivsbruddsdato)
+                                    : '-'}
+                            </Normaltekst>
+                        </>
+                    )}
+
+                    {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Tidligere samboer</Normaltekst>
+                            <Normaltekst>{`${tidligereSamboer?.navn} - ${
+                                tidligereSamboer?.ident
+                                    ? tidligereSamboer?.ident
+                                    : formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
+                            }`}</Normaltekst>
+
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Dato for fraflytting</Normaltekst>
+                            <Normaltekst>
+                                {formaterNullableIsoDato(søknad.fraflytningsdato)}
+                            </Normaltekst>
+                        </>
+                    )}
+
+                    {søknad.årsakEnslig === EÅrsakEnslig.endringISamværsordning && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Endringen skjedde</Normaltekst>
+                            <Normaltekst>
+                                {søknad.endringSamværsordningDato
+                                    ? formaterNullableIsoDato(søknad.endringSamværsordningDato)
+                                    : '-'}
+                            </Normaltekst>
+                        </>
+                    )}
                 </>
             );
 

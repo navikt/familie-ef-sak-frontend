@@ -7,7 +7,8 @@ import { IVilkårGrunnlag } from '../vilkår';
 import { SivilstandType } from '../../../../typer/personopplysninger';
 import ÅrsakEnslig from './ÅrsakEnslig';
 import { Bosituasjon } from './Bosituasjon';
-import { SøkerDelerBoligTilTekst, ÅrsakEnsligTilTekst } from './typer';
+import { SøkerDelerBoligTilTekst } from './typer';
+import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 
 interface Props {
     vilkårStatus: VilkårStatus;

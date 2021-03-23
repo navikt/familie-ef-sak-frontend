@@ -29,14 +29,6 @@ export const SøkerDelerBoligTilTekst: Record<ESøkerDelerBolig, string> = {
         'En tidligere samboer er fortsatt registrert på adressen min',
 };
 
-export const ÅrsakEnsligTilTekst: Record<EÅrsakEnslig, string> = {
-    samlivsbruddForeldre: 'Samlivsbrudd med den andre forelderen',
-    samlivsbruddAndre: 'Samlivsbrudd med noen andre',
-    aleneFraFødsel: 'Jeg er alene med barn fra fødsel',
-    endringISamværsordning: 'Endring i omsorgen for barn',
-    dødsfall: 'Jeg er alene med barn på grunn av dødsfall',
-};
-
 export enum ESagtOppEllerRedusert {
     sagtOpp = 'sagtOpp',
     redusertStilling = 'redusertStilling',
