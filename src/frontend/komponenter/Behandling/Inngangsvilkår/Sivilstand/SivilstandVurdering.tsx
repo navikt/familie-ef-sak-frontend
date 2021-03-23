@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import { VurderingProps } from '../../Vurdering/VurderingProps';
 import Begrunnelse from '../../Vurdering/Begrunnelse';
-import { IDelvilkår, Vilkårsresultat } from '../vilkår';
+import { DelvilkårType, IDelvilkår, Vilkårsresultat } from '../vilkår';
 import Delvilkår from '../../Vurdering/Delvilkår';
 import LagreVurderingKnapp from '../../Vurdering/LagreVurderingKnapp';
 import {
@@ -12,9 +12,8 @@ import {
 import Unntak from '../../Vurdering/Unntak';
 import {
     erEnkeEllerGjenlevendePartner,
-    erIkkeUformeltGiftEllerSeparert,
-    erKravForSivilstandOppfylt,
-    erSkiltEllerUgift,
+    erGiftSeparertEllerEnke,
+    erSkiltOgKravIkkeOppfylt,
 } from './SivilstandHelper';
 import { KomponentGruppe } from '../../../Felleskomponenter/Visning/KomponentGruppe';
 
@@ -46,10 +45,17 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
     );
     const { erUformeltGift, erUformeltSeparertEllerSkilt } = søknadsgrunnlag;
 
-    const erBegrunnelseFeltValgfritt: boolean =
-        erSkiltEllerUgift(sivilstandType) &&
-        erIkkeUformeltGiftEllerSeparert(erUformeltGift, erUformeltSeparertEllerSkilt) &&
-        erKravForSivilstandOppfylt(delvilkårsvurderinger);
+    const erGiftEllerSkiltIUtlandet = erUformeltGift || erUformeltSeparertEllerSkilt;
+    const erObligatoriskHvisSivilstand: boolean = erGiftSeparertEllerEnke(sivilstandType);
+
+    const kravOmSivilstand: IDelvilkår | undefined = vurdering.delvilkårsvurderinger.find(
+        (delvilkårvurdering) => delvilkårvurdering.type === DelvilkårType.KRAV_SIVILSTAND
+    );
+
+    const erBegrunnelseObligatorisk: boolean | undefined =
+        erGiftEllerSkiltIUtlandet ||
+        erObligatoriskHvisSivilstand ||
+        (kravOmSivilstand && erSkiltOgKravIkkeOppfylt(sivilstandType, kravOmSivilstand));
 
     const visUnntak: boolean =
         harBesvartPåAlleDelvilkår(delvilkårsvurderinger) &&
@@ -83,7 +89,7 @@ const SivilstandVurdering: FC<{ props: VurderingProps }> = ({ props }) => {
             )}
             {visBegrunnelse && (
                 <Begrunnelse
-                    label={erBegrunnelseFeltValgfritt ? 'Begrunnelse (valgfritt)' : 'Begrunnelse'}
+                    label={erBegrunnelseObligatorisk ? 'Begrunnelse' : 'Begrunnelse (hvis aktuelt)'}
                     value={vurdering.begrunnelse || ''}
                     onChange={(e) => {
                         settVurdering({
