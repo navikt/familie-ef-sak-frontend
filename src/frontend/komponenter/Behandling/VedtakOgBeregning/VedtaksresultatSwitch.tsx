@@ -1,14 +1,15 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
-    EBehandlingResultat,
-    IVedtak,
     EAktivitet,
+    EBehandlingResultat,
+    EPeriodeProperty,
     EPeriodetype,
     IPeriode,
+    IVedtak,
 } from '../../../typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
 import { Select, Textarea } from 'nav-frontend-skjema';
-import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
+import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
@@ -19,6 +20,7 @@ import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
 import { differenceInMonths } from 'date-fns';
 import { AddCircle } from '@navikt/ds-icons';
 import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -52,28 +54,23 @@ const AktivitetKolonne = styled.div`
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
+    const { hentBehandling } = useBehandling();
     const history = useHistory();
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { vedtaksresultatType, behandlingId, settFeilmelding } = props;
+    const tomVedtaksperiodeRad = {
+        periodeType: '' as EPeriodetype,
+        aktivitet: '' as EAktivitet,
+        datoFra: '',
+        datoTil: '',
+    };
     const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IPeriode[]>([
-        {
-            periodetype: '' as EPeriodetype,
-            aktivitet: '' as EAktivitet,
-            fraOgMedDato: '',
-            tilOgMedDato: '',
-        },
+        tomVedtaksperiodeRad,
     ]);
 
     const leggTilVedtaksperiode = () => {
-        const tomVedtaksperiodeRad = {
-            periodetype: '' as EPeriodetype,
-            aktivitet: '' as EAktivitet,
-            fraOgMedDato: '',
-            tilOgMedDato: '',
-        };
-
         const nyListe = [...vedtaksperiodeListe];
 
         nyListe.push(tomVedtaksperiodeRad);
@@ -81,7 +78,11 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         settVedtaksperiodeListe(nyListe);
     };
 
-    const oppdaterVedtakslisteElement = (index: number, property: string, value: string) => {
+    const oppdaterVedtakslisteElement = (
+        index: number,
+        property: EPeriodeProperty,
+        value: string
+    ) => {
         const nyListe = [...vedtaksperiodeListe];
 
         const nyttObjekt = {
@@ -110,6 +111,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                 switch (res.status) {
                     case RessursStatus.SUKSESS:
                         history.push(`/behandling/${behandlingId}/blankett`);
+                        hentBehandling.rerun();
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
@@ -150,13 +152,13 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     };
 
     const VelgAktivitetsplikt = (
-        periodetype: EPeriodetype | undefined,
+        periodeType: EPeriodetype | undefined,
         aktivitet: EAktivitet,
         index: number
     ) => {
         const aktivitetLabel = index === 0 ? 'Aktivitet' : '';
 
-        switch (periodetype) {
+        switch (periodeType) {
             case EPeriodetype.HOVEDPERIODE:
                 return (
                     <AktivitetKolonne>
@@ -165,7 +167,11 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                             value={aktivitet}
                             onChange={(e) => {
                                 settFeilmelding('');
-                                oppdaterVedtakslisteElement(index, 'aktivitet', e.target.value);
+                                oppdaterVedtakslisteElement(
+                                    index,
+                                    EPeriodeProperty.aktivitet,
+                                    e.target.value
+                                );
                             }}
                         >
                             <option value="">Velg</option>
@@ -228,23 +234,23 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         Vedtaksperiode
                     </Element>
                     {vedtaksperiodeListe.map((element, index) => {
-                        const { periodetype, aktivitet, tilOgMedDato, fraOgMedDato } = element;
+                        const { periodeType, aktivitet, datoTil, datoFra } = element;
 
                         const antallMåneder =
-                            fraOgMedDato && tilOgMedDato
-                                ? differenceInMonths(new Date(tilOgMedDato), new Date(fraOgMedDato))
+                            datoFra && datoTil
+                                ? differenceInMonths(new Date(datoTil), new Date(datoFra))
                                 : undefined;
 
                         return (
                             <VedtaksperiodeRad>
                                 <StyledSelect
                                     label={index === 0 && 'Periodetype'}
-                                    value={periodetype}
+                                    value={periodeType}
                                     onChange={(e) => {
                                         settFeilmelding('');
                                         oppdaterVedtakslisteElement(
                                             index,
-                                            'periodetype',
+                                            EPeriodeProperty.periodeType,
                                             e.target.value
                                         );
                                     }}
@@ -255,18 +261,26 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     </option>
                                     <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
                                 </StyledSelect>
-                                {VelgAktivitetsplikt(periodetype, aktivitet, index)}
+                                {VelgAktivitetsplikt(periodeType, aktivitet, index)}
                                 <DatoPeriode
                                     datoFraTekst={index === 0 ? 'Fra og med' : ''}
                                     datoTilTekst={index === 0 ? 'Til og med' : ''}
-                                    settDatoFra={(e) => {
-                                        oppdaterVedtakslisteElement(index, 'fraOgMedDato', e);
+                                    settDatoFra={(dato: string) => {
+                                        oppdaterVedtakslisteElement(
+                                            index,
+                                            EPeriodeProperty.datoFra,
+                                            dato
+                                        );
                                     }}
-                                    settDatoTil={(e) => {
-                                        oppdaterVedtakslisteElement(index, 'tilOgMedDato', e);
+                                    settDatoTil={(dato: string) => {
+                                        oppdaterVedtakslisteElement(
+                                            index,
+                                            EPeriodeProperty.datoTil,
+                                            dato
+                                        );
                                     }}
-                                    valgtDatoFra={fraOgMedDato}
-                                    valgtDatoTil={tilOgMedDato}
+                                    valgtDatoFra={datoFra}
+                                    valgtDatoTil={datoTil}
                                     datoFeil={undefined}
                                 />
                                 {!!antallMåneder && (

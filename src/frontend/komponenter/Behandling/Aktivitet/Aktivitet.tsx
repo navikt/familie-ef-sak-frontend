@@ -36,7 +36,8 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        postOvergangsstønadSuksess && history.push(`/behandling/${behandlingId}/inntekt`);
+        postOvergangsstønadSuksess &&
+            history.push(`/behandling/${behandlingId}/vedtak-og-beregning`);
     }, [postOvergangsstønadSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
@@ -51,6 +52,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
         postOvergangsstønad().then((responseStønadsvilkår) => {
             if (responseStønadsvilkår.status === RessursStatus.SUKSESS) {
                 settPostOvergangsstønadSuksess(true);
+                hentBehandling.rerun();
             } else if (
                 responseStønadsvilkår.status === RessursStatus.IKKE_TILGANG ||
                 responseStønadsvilkår.status === RessursStatus.FEILET ||

@@ -6,10 +6,10 @@ export interface IVedtak {
 }
 
 export interface IPeriode {
-    periodetype: EPeriodetype;
+    periodeType: EPeriodetype;
     aktivitet: EAktivitet;
-    fraOgMedDato: string;
-    tilOgMedDato: string;
+    datoFra: string;
+    datoTil: string;
 }
 
 export enum EBehandlingResultat {
@@ -20,8 +20,15 @@ export enum EBehandlingResultat {
 }
 
 export enum EPeriodetype {
-    PERIODE_FØR_FØDSEL = ' PERIODE_FØR_FØDSEL',
+    PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
     HOVEDPERIODE = 'HOVEDPERIODE',
+}
+
+export enum EPeriodeProperty {
+    periodeType = 'periodeType',
+    aktivitet = 'aktivitet',
+    datoFra = 'datoFra',
+    datoTil = 'datoTil',
 }
 
 export enum EAktivitet {
