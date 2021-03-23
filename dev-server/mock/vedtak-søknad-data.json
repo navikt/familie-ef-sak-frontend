@@ -1,0 +1,10 @@
+{
+  "data": {
+    "søknadsdato": "2020-05-05T11:32:00",
+    "søkerStønadFra": "2018-08"
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}

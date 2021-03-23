@@ -162,4 +162,16 @@ app.get('/familie-ef-sak/api/behandlingshistorikk/:behandlingId', (req, res) => 
     setTimeout(() => res.send(lesMockFil(`behandlinghistorikk.json`)), delayMs);
 });
 
+app.get('/familie-ef-sak/api/soknad/:behandlingId/datoer', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`vedtak-søknad-data.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/beregning/:behandlingId/lagre-vedtak', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`lagre-vedtak.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/behandling/:behandlingId/annuller', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`behandle-i-gosys.json`)), delayMs);
+});
+
 module.exports = app;
