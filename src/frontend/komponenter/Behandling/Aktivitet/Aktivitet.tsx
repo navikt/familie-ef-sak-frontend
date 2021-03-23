@@ -38,7 +38,8 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        postOvergangsstønadSuksess && history.push(`/behandling/${behandlingId}/inntekt`);
+        postOvergangsstønadSuksess &&
+            history.push(`/behandling/${behandlingId}/vedtak-og-beregning`);
     }, [postOvergangsstønadSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
