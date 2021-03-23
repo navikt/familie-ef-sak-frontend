@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVurdering, NullstillVilkårsvurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import {IVurdering, NullstillVilkårsvurdering, OppdaterVilkårsvurdering, Vilkårsresultat} from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
 import { Knapp } from 'nav-frontend-knapper';
@@ -14,7 +14,7 @@ export enum Redigeringsmodus {
 
 interface Props {
     vurdering: IVurdering;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (
         nullstillVilkårsvurdering: NullstillVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
@@ -44,7 +44,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
         utledRedigeringsmodus(feilmelding, vurdering)
     );
 
-    console.log("redigeringsmodus", redigeringsmodus);
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (

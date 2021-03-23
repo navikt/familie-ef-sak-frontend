@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import {IVurdering, OppdaterVilkårsvurdering} from '../Inngangsvilkår/vilkår';
+import { IVurdering, OppdaterVilkårsvurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
@@ -26,7 +26,7 @@ const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedi
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
 
-    const oppdaterVurdering = (vurdering: IVurdering) => {
+    const oppdaterVurdering = (vurdering: OppdaterVilkårsvurdering) => {
         if (!oppdatererVurdering) {
             settOppdatererVurdering(true);
             lagreVurdering(vurdering).then((response: any) => {
@@ -37,8 +37,6 @@ const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedi
             });
         }
     };
-    console.log("hello world");
-    console.log("regler.status", regler.status);
     return (
         <StyledEndreVurdering>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}

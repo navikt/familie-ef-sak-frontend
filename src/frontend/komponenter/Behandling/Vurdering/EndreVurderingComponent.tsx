@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { BegrunnelseRegel, Regler } from './typer';
-import {IDelvilkår, IVurdering, OppdaterVilkårsvurdering, VilkårType, Vurdering} from '../Inngangsvilkår/vilkår';
+import {
+    IDelvilkår,
+    IVurdering,
+    OppdaterVilkårsvurdering,
+    VilkårType,
+    Vurdering,
+} from '../Inngangsvilkår/vilkår';
 import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAllaDelvilkårBesvarte,
