@@ -43,6 +43,8 @@ const VisEllerEndreVurdering: FC<Props> = ({
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering)
     );
+
+    console.log("redigeringsmodus", redigeringsmodus);
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (

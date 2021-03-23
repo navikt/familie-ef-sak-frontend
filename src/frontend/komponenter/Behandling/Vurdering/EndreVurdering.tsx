@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { IVurdering } from '../Inngangsvilkår/vilkår';
+import {IVurdering, OppdaterVilkårsvurdering} from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
@@ -16,7 +16,7 @@ const StyledEndreVurdering = styled.div`
 
 interface Props {
     data: IVurdering;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
     feilmelding: string | undefined;
 }
@@ -37,7 +37,8 @@ const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedi
             });
         }
     };
-
+    console.log("hello world");
+    console.log("regler.status", regler.status);
     return (
         <StyledEndreVurdering>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}

@@ -162,7 +162,7 @@ app.get('/familie-ef-sak/api/behandlingshistorikk/:behandlingId', (req, res) => 
     setTimeout(() => res.send(lesMockFil(`behandlinghistorikk.json`)), delayMs);
 });
 
-app.get('/familie-ef-sak/api/regler', (req, res) => {
+app.get('/familie-ef-sak/api/vurdering/regler', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`regler.json`)), delayMs);
 });
 

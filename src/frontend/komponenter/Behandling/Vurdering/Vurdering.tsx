@@ -60,6 +60,7 @@ const Vurdering: FC<Props> = ({
     if (!config) {
         return <div>Mangler config for {vilkårGruppe}</div>;
     }
+
     return (
         <StyledVilkårOgVurdering>
             <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status, barnId)}</StyledVisning>

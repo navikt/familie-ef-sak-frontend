@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { BegrunnelseRegel, Regler } from './typer';
-import { IDelvilkår, IVurdering, VilkårType, Vurdering } from '../Inngangsvilkår/vilkår';
+import {IDelvilkår, IVurdering, OppdaterVilkårsvurdering, VilkårType, Vurdering} from '../Inngangsvilkår/vilkår';
 import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAllaDelvilkårBesvarte,
@@ -23,7 +23,7 @@ const Lagreknapp = hiddenIf(Hovedknapp);
 const EndreVurderingComponent: FC<{
     vilkårType: VilkårType;
     regler: Regler;
-    oppdaterVurdering: (vurdering: any) => void;
+    oppdaterVurdering: (vurdering: OppdaterVilkårsvurdering) => void;
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
