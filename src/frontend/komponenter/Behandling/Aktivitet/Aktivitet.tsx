@@ -52,6 +52,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
         postOvergangsstønad().then((responseStønadsvilkår) => {
             if (responseStønadsvilkår.status === RessursStatus.SUKSESS) {
                 settPostOvergangsstønadSuksess(true);
+                hentBehandling.rerun();
             } else if (
                 responseStønadsvilkår.status === RessursStatus.IKKE_TILGANG ||
                 responseStønadsvilkår.status === RessursStatus.FEILET ||

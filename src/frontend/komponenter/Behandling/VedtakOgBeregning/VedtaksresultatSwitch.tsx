@@ -9,6 +9,7 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -23,6 +24,7 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
+    const { hentBehandling } = useBehandling();
     const history = useHistory();
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
@@ -44,6 +46,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                 switch (res.status) {
                     case RessursStatus.SUKSESS:
                         history.push(`/behandling/${behandlingId}/blankett`);
+                        hentBehandling.rerun();
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
