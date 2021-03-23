@@ -72,14 +72,11 @@ export const Journalforing: React.FC = () => {
     const { hentFagsak, fagsak } = useHentFagsak();
 
     useEffect(() => {
-        Promise.all([fetchToggles()]);
-    });
-
-    useEffect(() => {
         if (oppgaveIdParam && journalpostIdParam) {
             hentJournalPost();
             journalpostState.settOppgaveId(oppgaveIdParam);
         }
+        Promise.all([fetchToggles()]);
     }, [oppgaveIdParam, journalpostIdParam]);
 
     useEffect(() => {
