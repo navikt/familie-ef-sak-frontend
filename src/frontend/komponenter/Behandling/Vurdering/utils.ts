@@ -10,7 +10,7 @@ export function begrunnelseErPåkrevdOgSavnes(
     begrunnelse: Begrunnelse
 ): boolean {
     if (svarsalternativ.begrunnelseType === BegrunnelseRegel.PÅKREVD) {
-        return !manglerBegrunnelse(begrunnelse);
+        return manglerBegrunnelse(begrunnelse);
     }
     return false;
 }
@@ -53,21 +53,18 @@ export function erAllaDelvilkårBesvarte(
 
     const harBesvartAllePåkrevdeBegrunnelser = delvilkårsvurderinger
         .map((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
-        .reduce((acc, curr) => {
-            return (
-                acc &&
-                curr.every((vurdering) => {
-                    if (!vurdering.svar) {
-                        return false;
-                    }
-                    const svarsalternativ = hentSvarsalternativ(regler, vurdering);
-                    return (
-                        svarsalternativ &&
-                        !begrunnelseErPåkrevdOgSavnes(svarsalternativ, vurdering.begrunnelse)
-                    );
-                })
-            );
-        }, true);
+        .every((delvilkår) =>
+            delvilkår.every((vurdering) => {
+                if (!vurdering.svar) {
+                    return false;
+                }
+                const svarsalternativ = hentSvarsalternativ(regler, vurdering);
+                return (
+                    svarsalternativ &&
+                    !begrunnelseErPåkrevdOgSavnes(svarsalternativ, vurdering.begrunnelse)
+                );
+            })
+        );
 
     return erPåSisteNod && harBesvartAllePåkrevdeBegrunnelser;
 }
