@@ -24,7 +24,7 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../komponenter/Oppgavebenk/oppgavefilterStorage';
-import { useToggles } from '../context/TogglesContext';
+import { TogglesProvider, useToggles } from '../context/TogglesContext';
 import { ToggleName } from '../context/toggles';
 import hentToggles from '../toggles/api';
 
@@ -125,82 +125,90 @@ export const Journalforing: React.FC = () => {
         return <Redirect to="/oppgavebenk" />;
     }
     return (
-        <DataViewer response={{ journalResponse }}>
-            {({ journalResponse }) => (
-                <SideLayout>
-                    <Sidetittel>{`Registrere journalpost: ${
-                        journalResponse.journalpost.behandlingstema
-                            ? behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
-                            : ''
-                    }`}</Sidetittel>
-                    <Kolonner>
-                        <Venstrekolonne>
-                            <Brukerinfo personIdent={journalResponse.personIdent} />
-                            <DokumentVisning
-                                journalPost={journalResponse.journalpost}
-                                hentDokument={hentDokument}
-                                dokumentTitler={journalpostState.dokumentTitler}
-                                settDokumentTitler={journalpostState.settDokumentTitler}
-                            />
-                            <SkjemaGruppe
-                                feil={
-                                    journalpostState.forsøktJournalført &&
-                                    !journalpostState.behandling &&
-                                    'Du må velge en behandling for å journalføre'
-                                }
-                            >
-                                <Behandling
-                                    settBehandling={journalpostState.settBehandling}
-                                    behandling={journalpostState.behandling}
-                                    fagsak={fagsak}
+        <TogglesProvider>
+            <DataViewer response={{ journalResponse }}>
+                {({ journalResponse }) => (
+                    <SideLayout>
+                        <Sidetittel>{`Registrere journalpost: ${
+                            journalResponse.journalpost.behandlingstema
+                                ? behandlingstemaTilTekst[
+                                      journalResponse.journalpost.behandlingstema
+                                  ]
+                                : ''
+                        }`}</Sidetittel>
+                        <Kolonner>
+                            <Venstrekolonne>
+                                <Brukerinfo personIdent={journalResponse.personIdent} />
+                                <DokumentVisning
+                                    journalPost={journalResponse.journalpost}
+                                    hentDokument={hentDokument}
+                                    dokumentTitler={journalpostState.dokumentTitler}
+                                    settDokumentTitler={journalpostState.settDokumentTitler}
                                 />
-                            </SkjemaGruppe>
-                            {journalpostState.innsending.status === RessursStatus.FEILET && (
-                                <AlertStripeFeil>
-                                    {journalpostState.innsending.frontendFeilmelding}
-                                </AlertStripeFeil>
-                            )}
-                            <FlexKnapper>
-                                <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                                {toggles[ToggleName.journalfoer] && (
-                                    <Hovedknapp
-                                        onClick={() =>
-                                            journalpostState.fullførJournalføring(
-                                                journalpostIdParam,
-                                                innloggetSaksbehandler?.enhet || '9999',
-                                                innloggetSaksbehandler?.navIdent
-                                            )
-                                        }
-                                        spinner={
-                                            journalpostState.innsending.status ===
-                                            RessursStatus.HENTER
-                                        }
-                                    >
-                                        Journalfør
-                                    </Hovedknapp>
+                                <SkjemaGruppe
+                                    feil={
+                                        journalpostState.forsøktJournalført &&
+                                        !journalpostState.behandling &&
+                                        'Du må velge en behandling for å journalføre'
+                                    }
+                                >
+                                    <Behandling
+                                        settBehandling={journalpostState.settBehandling}
+                                        behandling={journalpostState.behandling}
+                                        fagsak={fagsak}
+                                    />
+                                </SkjemaGruppe>
+                                {journalpostState.innsending.status === RessursStatus.FEILET && (
+                                    <AlertStripeFeil>
+                                        {journalpostState.innsending.frontendFeilmelding}
+                                    </AlertStripeFeil>
                                 )}
-                            </FlexKnapper>
-                        </Venstrekolonne>
-                        <Høyrekolonne>
-                            <FlexKnapper>
-                                <Knapp
-                                    onClick={() => hentForrigeDokument(journalResponse.journalpost)}
-                                    mini
-                                >
-                                    Forrige Dokument
-                                </Knapp>
-                                <Knapp
-                                    onClick={() => hentNesteDokument(journalResponse.journalpost)}
-                                    mini
-                                >
-                                    Neste Dokument
-                                </Knapp>
-                            </FlexKnapper>
-                            <PdfVisning pdfFilInnhold={valgtDokument} />
-                        </Høyrekolonne>
-                    </Kolonner>
-                </SideLayout>
-            )}
-        </DataViewer>
+                                <FlexKnapper>
+                                    <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
+                                    {toggles[ToggleName.journalfoer] && (
+                                        <Hovedknapp
+                                            onClick={() =>
+                                                journalpostState.fullførJournalføring(
+                                                    journalpostIdParam,
+                                                    innloggetSaksbehandler?.enhet || '9999',
+                                                    innloggetSaksbehandler?.navIdent
+                                                )
+                                            }
+                                            spinner={
+                                                journalpostState.innsending.status ===
+                                                RessursStatus.HENTER
+                                            }
+                                        >
+                                            Journalfør
+                                        </Hovedknapp>
+                                    )}
+                                </FlexKnapper>
+                            </Venstrekolonne>
+                            <Høyrekolonne>
+                                <FlexKnapper>
+                                    <Knapp
+                                        onClick={() =>
+                                            hentForrigeDokument(journalResponse.journalpost)
+                                        }
+                                        mini
+                                    >
+                                        Forrige Dokument
+                                    </Knapp>
+                                    <Knapp
+                                        onClick={() =>
+                                            hentNesteDokument(journalResponse.journalpost)
+                                        }
+                                        mini
+                                    >
+                                        Neste Dokument
+                                    </Knapp>
+                                </FlexKnapper>
+                                <PdfVisning pdfFilInnhold={valgtDokument} />
+                            </Høyrekolonne>
+                        </Kolonner>
+                    </SideLayout>
+                )}
+            </DataViewer>
+        </TogglesProvider>
     );
 };
