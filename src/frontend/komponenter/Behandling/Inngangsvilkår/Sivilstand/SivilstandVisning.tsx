@@ -4,8 +4,8 @@ import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { ISivilstandInngangsvilkår } from './typer';
-import Søknadsinformasjon from './Søknadsinformasjon';
 import { sivilstandTilTekst } from '../../../../typer/personopplysninger';
+import Søknadsinformasjon from './Søknadsinformasjon';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { Vilkårsresultat } from '../vilkår';
 
@@ -17,7 +17,7 @@ interface Props {
 const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårsresultat }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
-        ? `${sivilstandTilTekst[registergrunnlag.type]} ${formaterNullableIsoDato(
+        ? `${sivilstandTilTekst[registergrunnlag.type]} - ${formaterNullableIsoDato(
               registergrunnlag.gyldigFraOgMed
           )}`
         : sivilstandTilTekst[registergrunnlag.type];
