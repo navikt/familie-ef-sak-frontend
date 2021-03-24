@@ -100,7 +100,7 @@ const EndreVurderingComponent: FC<{
                 return delvikår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
                     return (
-                        <React.Fragment key={regel.regelId}>
+                        <div key={regel.regelId} className="blokk-xs">
                             <Delvilkår
                                 vurdering={svar}
                                 regel={regel}
@@ -118,7 +118,7 @@ const EndreVurderingComponent: FC<{
                                 svar={svar}
                                 regel={regel}
                             />
-                        </React.Fragment>
+                        </div>
                     );
                 });
             })}
