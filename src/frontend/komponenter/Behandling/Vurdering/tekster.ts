@@ -27,7 +27,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     OPPHOLD_UNNTAK: 'Er unntak fra hovedregelen oppfylt?',
     FYLLER_BRUKER_AKTIVITETSPLIKT:
         'Fyller bruker aktivitetsplikt, unntak for aktivitetsplikt eller har barn under 1 år?',
-    SIVILSTAND_UNNTAK: 'Er unntak fra hovedregelen oppfylt?',
+    SIVILSTAND_UNNTAK: 'Er unntak fra krav om sivilstand oppfylt?',
     RIMELIG_GRUNN_SAGT_OPP:
         'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
 };
@@ -59,16 +59,17 @@ export const svarTypeTilTekst: Record<string, string> = {
     RIMELIG_GRUNN_SAGT_OPP:
         'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
     SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER:
-        'Søker bor i samme hus som den andre forelderen og huset har 4 eller færre boenheter',
+        'Ja, Søker bor i samme hus som den andre forelderen og huset har 4 eller færre boenheter',
     SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT:
-        'Søker bor i samme hus som den andre forelderen og huset har flere enn 4 boenheter, men boforholdet er vurdert nært',
+        'Ja, Søker bor i samme hus som den andre forelderen og huset har flere enn 4 boenheter, men boforholdet er vurdert nært',
     SELVSTENDIGE_BOLIGER_SAMME_TOMT:
-        'Foreldrene bor i selvstendige boliger på samme tomt eller gårdsbruk',
-    SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN: 'Foreldrene bor i selvstendige boliger på samme gårdstun',
+        'Ja, Foreldrene bor i selvstendige boliger på samme tomt eller gårdsbruk',
+    SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN:
+        'Ja, Foreldrene bor i selvstendige boliger på samme gårdstun',
     NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE:
-        'Foreldrene bor i nærmeste bolig eller rekkehus i samme gate',
+        'Ja, Foreldrene bor i nærmeste bolig eller rekkehus i samme gate',
     TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE:
-        'Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate',
+        'Ja, Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate',
 };
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
