@@ -18,7 +18,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
 import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
 import { differenceInMonths } from 'date-fns';
-import { AddCircle } from '@navikt/ds-icons';
+import { AddCircle, Delete } from '@navikt/ds-icons';
 import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
 import { useBehandling } from '../../../context/BehandlingContext';
 
@@ -40,6 +40,12 @@ const VedtaksperiodeRad = styled.div`
 const LeggTilVedtaksperiodeKnapp = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 1rem;
+`;
+
+const FjernVedtaksperiodeKnapp = styled(Flatknapp)`
+    padding: 0;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
 `;
 
 const StyledSelect = styled(Select)`
@@ -74,6 +80,14 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         const nyListe = [...vedtaksperiodeListe];
 
         nyListe.push(tomVedtaksperiodeRad);
+
+        settVedtaksperiodeListe(nyListe);
+    };
+
+    const fjernVedtaksperiode = () => {
+        const nyListe = [...vedtaksperiodeListe];
+
+        nyListe.pop();
 
         settVedtaksperiodeListe(nyListe);
     };
@@ -287,6 +301,12 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     <Element style={{ marginTop: index === 0 ? '2.5rem' : '1rem' }}>
                                         {antallMåneder} måneder
                                     </Element>
+                                )}
+                                {index === vedtaksperiodeListe.length - 1 && index !== 0 && (
+                                    <FjernVedtaksperiodeKnapp onClick={fjernVedtaksperiode}>
+                                        <Delete />
+                                        <span className="sr-only">Fjern vedtaksperiode</span>
+                                    </FjernVedtaksperiodeKnapp>
                                 )}
                             </VedtaksperiodeRad>
                         );
