@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import {
     Registergrunnlag,
     Søknadsgrunnlag,
@@ -17,10 +16,11 @@ import Samvær from './Samvær';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
+import { Vilkårsresultat } from '../vilkår';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
     barnId?: string;
 }
 

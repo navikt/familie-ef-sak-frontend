@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { AktivitetsvilkårGruppe, VilkårGruppe } from '../Inngangsvilkår/vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import Vurdering from '../Vurdering/Vurdering';
@@ -10,6 +9,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import { Behandling } from '../../../typer/fagsak';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
 import { StyledInngangsvilkår, StyledKnapp } from '../Inngangsvilkår/Inngangsvilkår';
+import { AktivitetsvilkårType } from '../Inngangsvilkår/vilkår';
 
 interface Props {
     behandlingId: string;
@@ -22,7 +22,9 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger } = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger, nullstillVurdering } = useHentVilkår(
+        behandlingId
+    );
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -83,14 +85,15 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <StyledInngangsvilkår>
-                            {Object.keys(AktivitetsvilkårGruppe).map((vilkårGruppe) => {
+                            {Object.keys(AktivitetsvilkårType).map((vilkårGruppe) => {
                                 return (
                                     <Vurdering
                                         key={vilkårGruppe}
-                                        vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                        vilkårGruppe={vilkårGruppe as AktivitetsvilkårType}
                                         inngangsvilkår={vilkår}
                                         feilmeldinger={feilmeldinger}
                                         lagreVurdering={lagreVurdering}
+                                        nullstillVurdering={nullstillVurdering}
                                     />
                                 );
                             })}

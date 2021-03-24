@@ -9,19 +9,20 @@ import {
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { IMedlemskap } from '../Medlemskap/typer';
 import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
+import { Vilkårsresultat } from '../vilkår';
 
 interface Props {
     medlemskap: IMedlemskap;
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
 }
 
-const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
+const OppholdVisning: FC<Props> = ({ medlemskap, vilkårsresultat }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
@@ -32,7 +33,10 @@ const OppholdVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
     return (
         <>
             <GridTabell>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Opphold i Norge</Undertittel>
                     <EtikettLiten>§15-3 </EtikettLiten>

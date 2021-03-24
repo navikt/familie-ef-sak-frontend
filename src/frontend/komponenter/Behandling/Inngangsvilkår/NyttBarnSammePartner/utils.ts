@@ -32,17 +32,17 @@ export const mapTilRegistergrunnlagNyttBarn = (
         .filter((barn) => barn.fødselsnummer);
 };
 
-export const mapForelderTilNavnOgFnr = (forelder?: IAnnenForelder) =>
+export const mapForelderTilNavnOgFnr = (forelder?: IAnnenForelder): string =>
     [forelder?.navn, forelder?.fødselsnummer].filter(Boolean).join('-');
 
-export const mapIkkeOppgitt = (ikkeOppgittAnnenForelderBegrunnelse?: string | null) => {
+export const mapIkkeOppgitt = (ikkeOppgittAnnenForelderBegrunnelse?: string | null): string => {
     if (!ikkeOppgittAnnenForelderBegrunnelse) return '';
     return 'Donor' === ikkeOppgittAnnenForelderBegrunnelse
         ? 'Donor'
         : `Kan ikke oppgi:${ikkeOppgittAnnenForelderBegrunnelse}`;
 };
 
-export const mapBarnNavnTekst = (søknadsgrunnlagNyttBarn: SøknadsgrunnlagNyttBarn) => {
+export const mapBarnNavnTekst = (søknadsgrunnlagNyttBarn: SøknadsgrunnlagNyttBarn): string => {
     if (søknadsgrunnlagNyttBarn.navn) return søknadsgrunnlagNyttBarn.navn;
     if (søknadsgrunnlagNyttBarn.terminDato) return 'Ikke født';
     if (søknadsgrunnlagNyttBarn.erBarnetFødt) return 'Ikke fylt ut';
