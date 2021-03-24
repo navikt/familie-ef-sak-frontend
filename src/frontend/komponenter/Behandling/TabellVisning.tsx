@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst as NormaltekstNavFrontend } from 'nav-frontend-typografi';
-import { StyledTabell } from '../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../Felleskomponenter/Visning/StyledTabell';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
 
 const Normaltekst = hiddenIf(NormaltekstNavFrontend);
@@ -42,13 +42,13 @@ const mapIkon = (ikon: TabellIkon) => {
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
     const { ikon, tittel, verdier, kolonner, onEmpty } = props;
     return (
-        <StyledTabell kolonner={kolonner.length + 1}>
+        <GridTabell kolonner={kolonner.length + 1}>
             {mapIkon(ikon)}
             <Element className="tittel" tag="h3">
                 {tittel}
             </Element>
             <Tabell verdier={verdier} kolonner={kolonner} onEmpty={onEmpty} />
-        </StyledTabell>
+        </GridTabell>
     );
 }
 

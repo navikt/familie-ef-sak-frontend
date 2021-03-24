@@ -1,56 +1,54 @@
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { IVilkårGrunnlag } from '../vilkår';
+import { IVilkårGrunnlag, Vilkårsresultat } from '../vilkår';
 import { SivilstandType } from '../../../../typer/personopplysninger';
 import ÅrsakEnslig from './ÅrsakEnslig';
 import { Bosituasjon } from './Bosituasjon';
-import { SøkerDelerBoligTilTekst, ÅrsakEnsligTilTekst } from './typer';
+import { SøkerDelerBoligTilTekst } from './typer';
+import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 
 interface Props {
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
     grunnlag: IVilkårGrunnlag;
 }
 
-const SamlivVisning: FC<Props> = ({ grunnlag, vilkårStatus }) => {
+const SamlivVisning: FC<Props> = ({ grunnlag, vilkårsresultat }) => {
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
-    const { søknadsgrunnlag, registergrunnlag } = sivilstand;
-    const { tidligereSamboer } = søknadsgrunnlag;
 
     return (
         <>
-            <StyledTabell>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+            <GridTabell>
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Samliv</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>
                 </div>
 
-                {registergrunnlag.type !== SivilstandType.GIFT && (
+                {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Alene med barn fordi</Normaltekst>
                         <Normaltekst>
-                            {(søknadsgrunnlag.årsakEnslig &&
-                                ÅrsakEnsligTilTekst[søknadsgrunnlag?.årsakEnslig]) ||
+                            {(sivilstand.søknadsgrunnlag.årsakEnslig &&
+                                ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
                                 ''}
                         </Normaltekst>
+                        <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
                     </>
                 )}
-                <ÅrsakEnslig søknadsgrunnlag={søknadsgrunnlag} />
 
                 <Søknadsgrunnlag />
                 <Normaltekst>Bosituasjon</Normaltekst>
                 <Normaltekst>{SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}</Normaltekst>
 
-                <Bosituasjon
-                    bosituasjon={bosituasjon}
-                    tidligereSamboer={tidligereSamboer}
-                    sivilstandsplaner={sivilstandsplaner}
-                />
-            </StyledTabell>
+                <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
+            </GridTabell>
         </>
     );
 };

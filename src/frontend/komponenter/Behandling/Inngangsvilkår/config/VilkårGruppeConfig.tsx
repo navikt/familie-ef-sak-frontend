@@ -1,72 +1,85 @@
-import { IDelvilkår, IVilkårGrunnlag, VilkårGruppe } from '../vilkår';
+import { IVilkårGrunnlag, Vilkårsresultat, VilkårType } from '../vilkår';
 import * as React from 'react';
 import { ReactChild } from 'react';
 import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
 import SivilstandVisning from '../Sivilstand/SivilstandVisning';
-import { IVurderingConfig } from './VurderingConfig';
 import OppholdVisning from '../Opphold/OppholdVisning';
-import { VilkårStatus } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import SamlivVisning from '../Samliv/SamlivVisning';
 import AleneomsorgVisning from '../Aleneomsorg/AleneomsorgVisning';
 import MorEllerFarVisning from '../MorEllerFar/MorEllerFarVisning';
 import NyttBarnSammePartnerVisning from '../NyttBarnSammePartner/NyttBarnSammePartnerVisning';
+import AktivitetVisning from '../../Aktivitet/Aktivitet/AktivitetVisning';
+import SagtOppEllerRedusertVisning from '../../Aktivitet/SagtOppEllerRedusert/SagtOppEllerRedusertVisning';
 
-export interface IVilkårGruppeConfig {
-    visning: (
-        inngangsvilkår: IVilkårGrunnlag,
-        vilkårStatus: VilkårStatus,
-        barnId?: string
-    ) => ReactChild;
-    filtrerBortUaktuelleDelvilkår?: () => IDelvilkår[];
-}
-
-export const VilkårGruppeConfig: IVurderingConfig<VilkårGruppe, IVilkårGruppeConfig> = {
-    MEDLEMSKAP: {
-        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
-            <MedlemskapVisning medlemskap={grunnlag.medlemskap} vilkårStatus={vilkårStatus} />
+export const VilkårGruppeConfig: Record<
+    VilkårType,
+    {
+        visning: (
+            inngangsvilkår: IVilkårGrunnlag,
+            vilkårsresultat: Vilkårsresultat,
+            barnId?: string
+        ) => ReactChild;
+    }
+> = {
+    FORUTGÅENDE_MEDLEMSKAP: {
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
+            <MedlemskapVisning medlemskap={grunnlag.medlemskap} vilkårsresultat={vilkårsresultat} />
         ),
     },
     LOVLIG_OPPHOLD: {
-        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
-            <OppholdVisning medlemskap={grunnlag.medlemskap} vilkårStatus={vilkårStatus} />
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
+            <OppholdVisning medlemskap={grunnlag.medlemskap} vilkårsresultat={vilkårsresultat} />
         ),
     },
     MOR_ELLER_FAR: {
-        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
             <MorEllerFarVisning
                 barnMedSamvær={grunnlag.barnMedSamvær}
-                vilkårStatus={vilkårStatus}
+                vilkårsresultat={vilkårsresultat}
             />
         ),
     },
     SIVILSTAND: {
-        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
-            <SivilstandVisning sivilstand={grunnlag.sivilstand} vilkårStatus={vilkårStatus} />
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
+            <SivilstandVisning sivilstand={grunnlag.sivilstand} vilkårsresultat={vilkårsresultat} />
         ),
     },
     SAMLIV: {
-        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
-            <SamlivVisning grunnlag={grunnlag} vilkårStatus={vilkårStatus} />
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
+            <SamlivVisning grunnlag={grunnlag} vilkårsresultat={vilkårsresultat} />
         ),
     },
     ALENEOMSORG: {
         visning: (
             grunnlag: IVilkårGrunnlag,
-            vilkårStatus: VilkårStatus,
+            vilkårsresultat: Vilkårsresultat,
             barnId?: string
         ): ReactChild => (
             <AleneomsorgVisning
+                vilkårsresultat={vilkårsresultat}
                 barnMedSamvær={grunnlag.barnMedSamvær}
-                vilkårStatus={vilkårStatus}
                 barnId={barnId}
             />
         ),
     },
     NYTT_BARN_SAMME_PARTNER: {
-        visning: (grunnlag: IVilkårGrunnlag, vilkårStatus: VilkårStatus): ReactChild => (
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
             <NyttBarnSammePartnerVisning
                 barnMedSamvær={grunnlag.barnMedSamvær}
-                vilkårStatus={vilkårStatus}
+                vilkårsresultat={vilkårsresultat}
+            />
+        ),
+    },
+    AKTIVITET: {
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
+            <AktivitetVisning aktivitet={grunnlag.aktivitet} vilkårsresultat={vilkårsresultat} />
+        ),
+    },
+    SAGT_OPP_ELLER_REDUSERT: {
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
+            <SagtOppEllerRedusertVisning
+                sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                vilkårsresultat={vilkårsresultat}
             />
         ),
     },

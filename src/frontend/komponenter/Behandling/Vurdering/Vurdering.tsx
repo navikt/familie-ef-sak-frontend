@@ -3,10 +3,12 @@ import { FC } from 'react';
 import {
     IVilkår,
     IVurdering,
-    VilkårGruppe,
+    NullstillVilkårsvurdering,
+    OppdaterVilkårsvurdering,
+    VilkårType,
     Vurderingsfeilmelding,
 } from '../Inngangsvilkår/vilkår';
-import { filtrerVurderinger, vilkårStatus } from './VurderingUtil';
+import { vilkårsresultat } from './VurderingUtil';
 import VisEllerEndreVurdering from './VisEllerEndreVurdering';
 import styled from 'styled-components';
 import { VilkårGruppeConfig } from '../Inngangsvilkår/config/VilkårGruppeConfig';
@@ -36,9 +38,10 @@ const StyledVurderinger = styled.div`
 
 interface Props {
     barnId?: string;
-    vilkårGruppe: VilkårGruppe;
+    vilkårGruppe: VilkårType;
     inngangsvilkår: IVilkår;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    nullstillVurdering: (vurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
 }
 
@@ -46,12 +49,13 @@ const Vurdering: FC<Props> = ({
     vilkårGruppe,
     inngangsvilkår,
     lagreVurdering,
+    nullstillVurdering,
     feilmeldinger,
     barnId,
 }) => {
     const vurderinger = inngangsvilkår.vurderinger;
-    const filtrerteVurderinger = filtrerVurderinger(vurderinger, vilkårGruppe, barnId);
-    const status = vilkårStatus(filtrerteVurderinger);
+
+    const status = vilkårsresultat(vurderinger, vilkårGruppe);
 
     const config = VilkårGruppeConfig[vilkårGruppe];
     if (!config) {
@@ -62,15 +66,18 @@ const Vurdering: FC<Props> = ({
         <StyledVilkårOgVurdering>
             <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status, barnId)}</StyledVisning>
             <StyledVurderinger>
-                {filtrerteVurderinger.map((vurdering) => (
-                    <VisEllerEndreVurdering
-                        key={vurdering.id}
-                        inngangsvilkårgrunnlag={inngangsvilkår.grunnlag}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                    />
-                ))}
+                {vurderinger
+                    .filter((vurdering) => vurdering.vilkårType === vilkårGruppe)
+                    .filter((vurdering) => (vurdering.barnId ? vurdering.barnId === barnId : true))
+                    .map((vurdering) => (
+                        <VisEllerEndreVurdering
+                            key={vurdering.id}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ))}
             </StyledVurderinger>
             <StyledSkillelinje />
         </StyledVilkårOgVurdering>

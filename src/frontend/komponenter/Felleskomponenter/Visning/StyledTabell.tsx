@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
-export const StyledTabell = styled.div`
+export const GridTabell = styled.div<{ kolonner?: number; underTabellMargin?: number }>`
     display: grid;
-    grid-template-columns: repeat(
-        ${(props: { kolonner?: number }) => props.kolonner || 4},
-        max-content
-    );
+    grid-template-columns: 21px 250px repeat(
+            ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
+            ${(props) => (props.kolonner && props.kolonner > 3 ? '150px' : '300px')}
+        );
     grid-auto-rows: min-content;
     grid-gap: 0.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: ${(props) => props.underTabellMargin || 3}rem;
 
     > .typo-normal {
         padding-right: 2.5rem;
@@ -22,12 +22,16 @@ export const StyledTabell = styled.div`
     svg {
         max-height: 24px;
         grid-column: 1/2;
-        align-self: center;
+        align-self: start;
+    }
+
+    .undertittel {
+        grid-column: 2 / ${(props) => (props.kolonner || 3) + 1};
     }
 
     .tittel {
         padding-bottom: 1rem;
-        grid-column: 2 / ${(props: { kolonner?: number }) => (props.kolonner || 3) + 1};
+        grid-column: 2 / ${(props) => (props.kolonner || 3) + 1};
 
         display: flex;
         align-items: center;
@@ -42,6 +46,9 @@ export const StyledTabell = styled.div`
     .fjernSpacing {
         padding-bottom: 0;
     }
+    .leggTilSpacing {
+        padding-bottom: 1rem;
+    }
 
     .førsteDataKolonne {
         grid-column: 2/3;
@@ -55,4 +62,17 @@ export const StyledTabell = styled.div`
     .tomTabell {
         color: ${navFarger.navGra60};
     }
+
+    .tekstUtenIkon {
+        grid-column: 2 / 4;
+    }
+`;
+
+export const GridTabellRad = styled.div<{ kolonner?: number; overTabellRadPadding?: number }>`
+    padding-top: ${(props) => props.overTabellRadPadding || 2}rem;
+    grid-column: 1 / ${(props) => (props.kolonner ? props.kolonner + 1 : 4)};
+`;
+
+export const StyledTabellWrapper = styled.div`
+    display: contents;
 `;

@@ -50,7 +50,9 @@ spec:
         - host: {{host}}
         {{/each}}
   envFrom:
-    - secret: familie-ef-sak-frontend
+    - secret: familie                       # Henter ut EF_SAK_SCOPE
+    - secret: familie-ef-sak-frontend-redis # Henter ut REDIS_PASSWORD
+    - secret: familie-ef-sak-frontend       # Ulike secrets
   env:
     - name: APP_VERSION
       value: "{{version}}"

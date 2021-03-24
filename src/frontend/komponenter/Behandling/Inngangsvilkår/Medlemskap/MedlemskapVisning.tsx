@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     Registergrunnlag,
@@ -12,19 +12,20 @@ import Statsborgerskap from './Statsborgerskap';
 import Oppholdstillatelse from './Oppholdstillatelse';
 import Utenlandsopphold from './Utenlandsopphold';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { IMedlemskap } from './typer';
 import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
 import InnflyttingUtflytting from './InnflyttingUtflytting';
 import Etikett from 'nav-frontend-etiketter';
 import UnntakIMedl from './UnntakIMedl';
+import { Vilkårsresultat } from '../vilkår';
 
 interface Props {
     medlemskap: IMedlemskap;
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
 }
 
-const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
+const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårsresultat }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
     const { oppholdstatus, medlUnntak, innflytting, utflytting } = registergrunnlag;
     const finnesOppholdsstatus = oppholdstatus.length > 0;
@@ -34,8 +35,11 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
 
     return (
         <>
-            <StyledTabell>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+            <GridTabell>
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Forutgående medlemskap</Undertittel>
                     <EtikettLiten>§15-2</EtikettLiten>
@@ -51,7 +55,7 @@ const MedlemskapVisning: FC<Props> = ({ medlemskap, vilkårStatus }) => {
                         <Etikett type="fokus">Innslag funnet</Etikett>
                     </>
                 )}
-            </StyledTabell>
+            </GridTabell>
 
             <StyledLesmerpanel>
                 <Lesmerpanel

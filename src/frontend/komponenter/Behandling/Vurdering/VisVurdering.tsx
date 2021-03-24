@@ -3,23 +3,15 @@ import { FC } from 'react';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
-import {
-    delvilkårTypeTilTekst,
-    IVurdering,
-    Redigeringsmodus,
-    unntakTypeTilTekst,
-    Vilkårsresultat,
-    vilkårTypeTilTekst,
-} from '../Inngangsvilkår/vilkår';
+import { IVurdering, NullstillVilkårsvurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
 import Oppfylt from '../../../ikoner/Oppfylt';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { nullstillVurdering } from './VurderingUtil';
-import { delvilkårÅrsakTilTekst } from '../Inngangsvilkår/Aleneomsorg/typer';
-import { vilkårsresultatTypeTilTekstForDelvilkår } from '../Inngangsvilkår/vilkårsresultat';
+import { Redigeringsmodus } from './VisEllerEndreVurdering';
+import { delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst } from './tekster';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -63,7 +55,9 @@ const StyledIkonOgTittel = styled.span`
 
 interface Props {
     vurdering: IVurdering;
-    resetVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    resetVurdering: (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
@@ -89,7 +83,10 @@ const VisVurdering: FC<Props> = ({
                 <StyledKnapp
                     className={'lenke'}
                     onClick={() =>
-                        resetVurdering(nullstillVurdering(vurdering)).then((response) => {
+                        resetVurdering({
+                            id: vurdering.id,
+                            behandlingId: vurdering.behandlingId,
+                        }).then((response) => {
                             if (response.status === RessursStatus.SUKSESS) {
                                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
                             }
@@ -117,50 +114,27 @@ const VisVurdering: FC<Props> = ({
                 {vurdering.delvilkårsvurderinger
                     .filter(
                         (delvilkårsvurdering) =>
-                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_VURDERT &&
+                            delvilkårsvurdering.resultat !==
+                                Vilkårsresultat.IKKE_TATT_STILLING_TIL &&
                             delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
                     )
-                    .map((delvilkårsvurdering) => (
-                        <React.Fragment key={delvilkårsvurdering.type}>
-                            <StyledDelvilkårsvurdering>
-                                <Element>{delvilkårTypeTilTekst[delvilkårsvurdering.type]}</Element>
-                                <Normaltekst>
-                                    {vilkårsresultatTypeTilTekstForDelvilkår(
-                                        delvilkårsvurdering.resultat,
-                                        delvilkårsvurdering.type
-                                    )}
-                                </Normaltekst>
-                            </StyledDelvilkårsvurdering>
-                            {delvilkårsvurdering.årsak && (
-                                <>
-                                    <Element>Årsak</Element>
-                                    <Normaltekst>
-                                        {delvilkårÅrsakTilTekst[delvilkårsvurdering.årsak]}
-                                    </Normaltekst>
-                                </>
-                            )}
+                    .map((delvilkårsvurdering) =>
+                        delvilkårsvurdering.vurderinger.map((vurdering) => (
+                            <React.Fragment key={vurdering.regelId}>
+                                <StyledDelvilkårsvurdering>
+                                    <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
+                                    <Normaltekst>{svarTypeTilTekst[vurdering.svar!]}</Normaltekst>
+                                </StyledDelvilkårsvurdering>
 
-                            {delvilkårsvurdering.begrunnelse && (
-                                <>
-                                    <Element>Begrunnelse</Element>
-                                    <Normaltekst>{delvilkårsvurdering.begrunnelse}</Normaltekst>
-                                </>
-                            )}
-                        </React.Fragment>
-                    ))}
-
-                {vurdering.unntak && (
-                    <>
-                        <Element>Unntak</Element>
-                        <Normaltekst>{unntakTypeTilTekst[vurdering.unntak]}</Normaltekst>
-                    </>
-                )}
-                {vurdering.begrunnelse && (
-                    <>
-                        <Element>Begrunnelse</Element>
-                        <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
-                    </>
-                )}
+                                {vurdering.begrunnelse && (
+                                    <>
+                                        <Element>Begrunnelse</Element>
+                                        <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                                    </>
+                                )}
+                            </React.Fragment>
+                        ))
+                    )}
             </StyledVilkår>
         </StyledVurdering>
     );

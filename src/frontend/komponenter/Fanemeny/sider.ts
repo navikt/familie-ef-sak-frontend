@@ -1,58 +1,48 @@
-import TidligereStønadsperioder from '../Behandling/TidligereStønadsperioder/TidligereStønadsperioder';
-import {FunctionComponent} from 'react';
-import Personopplysninger from '../Behandling/Personopplysninger/Personopplysninger';
-import Inngangsvilkår from '../Behandling/Inngangsvilkår/Inngangsvilkår';
-import Aktivitet from '../Behandling/Aktivitet/Aktivitet';
-import Inntekt from '../Behandling/Inntekt/Inntekt';
-import Utbetalingsoversikt from '../Behandling/Utbetalingsoversikt/Utbetalingsoversikt';
-import Brev from '../Behandling/Brev/Brev';
-import Blankett from '../Behandling/Blankett/Blankett';
-
 export interface ISide {
+    id: SideId;
     href: string;
     navn: string;
-    komponent: FunctionComponent<{behandlingId: string}>;
+}
+
+export enum SideId {
+    PERSONOPPLYSNINGER = 'PERSONOPPLYSNINGER',
+    INNGANGSVILKÅR = 'INNGANGSVILKÅR',
+    AKTIVITET = 'AKTIVITET',
+    VEDTAK_OG_BEREGNING = 'VEDTAK_OG_BEREGNING',
+    UTBETALINGSOVERSIKT = 'UTBETALINGSOVERSIKT',
+    BREV = 'BREV',
+    BLANKETT = 'BLANKETT',
 }
 
 export const sider: ISide[] = [
     {
-        href: 'tidligerestønadsperioder',
-        navn: 'Tidligere Stønadsperioder',
-        komponent: TidligereStønadsperioder,
-    },
-    {
+        id: SideId.PERSONOPPLYSNINGER,
         href: 'personopplysninger',
         navn: 'Personopplysninger',
-        komponent: Personopplysninger,
     },
     {
+        id: SideId.INNGANGSVILKÅR,
         href: 'inngangsvilkar',
         navn: 'Inngangsvilkår',
-        komponent: Inngangsvilkår,
     },
     {
+        id: SideId.AKTIVITET,
         href: 'aktivitet',
         navn: 'Aktivitet',
-        komponent: Aktivitet,
     },
     {
-        href: 'inntekt',
-        navn: 'Inntekt',
-        komponent: Inntekt,
+        id: SideId.VEDTAK_OG_BEREGNING,
+        href: 'vedtak-og-beregning',
+        navn: 'Vedtak og beregning',
     },
     {
-        href: 'utbetalingsoversikt',
-        navn: 'Utbetalingsoversikt',
-        komponent: Utbetalingsoversikt,
-    },
-    {
+        id: SideId.BREV,
         href: 'brev',
         navn: 'Brev',
-        komponent: Brev,
     },
     {
+        id: SideId.BLANKETT,
         href: 'blankett',
         navn: 'Blankett',
-        komponent: Blankett,
     },
 ];

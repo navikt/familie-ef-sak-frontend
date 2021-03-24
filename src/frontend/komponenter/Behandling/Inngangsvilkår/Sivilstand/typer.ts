@@ -1,4 +1,5 @@
 import { SivilstandType } from '../../../../typer/personopplysninger';
+import { ESøkerDelerBolig } from '../Samliv/typer';
 
 export interface ISivilstandInngangsvilkår {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -20,7 +21,7 @@ export interface ISivilstandSøknadsgrunnlag {
 export interface IPersonDetaljer {
     navn: string;
     fødselsdato?: string;
-    ident?: string;
+    personIdent?: string;
 }
 export interface ISivilstandRegistergrunnlag {
     type: SivilstandType;
@@ -33,3 +34,11 @@ export enum EÅrsakEnslig {
     endringISamværsordning = 'endringISamværsordning',
     dødsfall = 'dødsfall',
 }
+
+export const ÅrsakEnsligTilTekst: Record<EÅrsakEnslig, string> = {
+    samlivsbruddForeldre: 'Samlivsbrudd med den andre forelderen',
+    samlivsbruddAndre: 'Samlivsbrudd med noen andre',
+    aleneFraFødsel: 'Jeg er alene med barn fra fødsel',
+    endringISamværsordning: 'Endring i omsorgen for barn',
+    dødsfall: 'Jeg er alene med barn på grunn av dødsfall',
+};

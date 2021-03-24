@@ -35,4 +35,5 @@ export interface IOppgave {
     endretTidspunkt?: string;
     prioritet?: Prioritet; //OppgavePrioritet
     status?: string; //StatusEnum
+    kanStarteBlankettbehandling: boolean;
 }

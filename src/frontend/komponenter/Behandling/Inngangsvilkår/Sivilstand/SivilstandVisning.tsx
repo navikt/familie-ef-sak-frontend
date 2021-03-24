@@ -1,27 +1,34 @@
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { ISivilstandInngangsvilkår } from './typer';
-import Søknadsinformasjon from './Søknadsinformasjon';
 import { sivilstandTilTekst } from '../../../../typer/personopplysninger';
+import Søknadsinformasjon from './Søknadsinformasjon';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { Vilkårsresultat } from '../vilkår';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
 }
 
-const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
+const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårsresultat }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
-        ? `${sivilstandTilTekst[registergrunnlag.type]} ${registergrunnlag.gyldigFraOgMed}`
+        ? `${sivilstandTilTekst[registergrunnlag.type]} - ${formaterNullableIsoDato(
+              registergrunnlag.gyldigFraOgMed
+          )}`
         : sivilstandTilTekst[registergrunnlag.type];
 
     return (
         <>
-            <StyledTabell>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+            <GridTabell>
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Sivilstand</Undertittel>
                     <EtikettLiten>§15-4</EtikettLiten>
@@ -35,7 +42,7 @@ const SivilstandVisning: FC<Props> = ({ sivilstand, vilkårStatus }) => {
                     sivilstandtype={registergrunnlag.type}
                     søknad={søknadsgrunnlag}
                 />
-            </StyledTabell>
+            </GridTabell>
         </>
     );
 };

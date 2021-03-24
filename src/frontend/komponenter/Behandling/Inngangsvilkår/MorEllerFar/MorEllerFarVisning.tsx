@@ -1,7 +1,7 @@
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import React, { FC } from 'react';
-import { StyledTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Element, EtikettLiten, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import LiteBarn from '../../../../ikoner/LiteBarn';
 import {
@@ -9,12 +9,13 @@ import {
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
+import { Vilkårsresultat } from '../vilkår';
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
 }
 
-const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
+const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårsresultat }) => {
     return (
         <>
             {barnMedSamvær.map((barn: IBarnMedSamvær, indeks) => {
@@ -23,13 +24,13 @@ const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
                     ? 'Ikke fylt ut'
                     : 'Ikke født ennå';
                 return (
-                    <>
-                        <StyledTabell>
+                    <React.Fragment key={barn.barnId}>
+                        <GridTabell>
                             {!indeks && (
                                 <>
-                                    <VilkårStatusIkon
+                                    <VilkårsresultatIkon
                                         className={'vilkårStatusIkon'}
-                                        vilkårStatus={vilkårStatus}
+                                        vilkårsresultat={vilkårsresultat}
                                     />
                                     <div className="tittel">
                                         <Undertittel>Mor eller Far</Undertittel>
@@ -83,8 +84,8 @@ const MorEllerFarVisning: FC<Props> = ({ barnMedSamvær, vilkårStatus }) => {
                                     </Normaltekst>
                                 </>
                             )}
-                        </StyledTabell>
-                    </>
+                        </GridTabell>
+                    </React.Fragment>
                 );
             })}
         </>

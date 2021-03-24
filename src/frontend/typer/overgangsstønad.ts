@@ -1,27 +1,24 @@
 //interfaces
 
 import { IDokumentasjon } from './felles';
-
-export interface IOvergangsstønad {
-    sakId: string;
-    aktivitet: IAktivitet;
-    sagtOppEllerRedusertStilling?: ISagtOppEllerRedusertStilling;
-}
+import { ESagtOppEllerRedusert } from '../komponenter/Behandling/Inngangsvilkår/Samliv/typer';
+import { EDinSituasjon, EStilling } from '../komponenter/Behandling/Aktivitet/Aktivitet/typer';
 
 export interface IAktivitet {
     arbeidssituasjon: string[];
     arbeidsforhold: IArbeidsforhold[];
-    selvstendig?: ISelvstendig;
+    selvstendig?: ISelvstendig[];
     aksjeselskap: IAksjeselskap[];
     arbeidssøker?: IArbeidssøker;
     underUtdanning?: IUnderUtdanning;
-    aktivitetsplikt?: string;
-    situasjon: ISituasjon;
     virksomhet?: IVirksomhet;
+    gjelderDeg: EDinSituasjon[];
+    særligeTilsynsbehov: ISærligeTilsynsbehov[];
+    datoOppstartJobb?: string;
 }
 
 export interface ISagtOppEllerRedusertStilling {
-    sagtOppEllerRedusertStilling: string;
+    sagtOppEllerRedusertStilling?: ESagtOppEllerRedusert;
     årsak?: string;
     dato?: string;
     dokumentasjon?: IDokumentasjon;
@@ -30,7 +27,8 @@ export interface ISagtOppEllerRedusertStilling {
 export interface IArbeidsforhold {
     arbeidsgivernavn: string;
     arbeidsmengde: number;
-    fastEllerMidlertidig: string;
+    fastEllerMidlertidig?: EStilling;
+    harSluttdato: boolean;
     sluttdato?: string;
 }
 
@@ -62,31 +60,27 @@ export interface IArbeidssøker {
 
 export interface IUnderUtdanning {
     skoleUtdanningssted: string;
-    utdanning: IUtdanning;
+    linjeKursGrad: string;
+    fra: string;
+    til: string;
     offentligEllerPrivat: string;
     heltidEllerDeltid: string;
     hvorMyeSkalDuStudere?: number;
     hvaErMåletMedUtdanningen?: string;
     utdanningEtterGrunnskolen: boolean;
-    tidligereUtdanninger: IUtdanning[];
+    tidligereUtdanninger: ITidligereUtdanning[];
 }
 
-export interface IUtdanning {
+export interface ITidligereUtdanning {
     linjeKursGrad: string;
-    nårVarSkalDuVæreElevStudent: IPeriode;
+    fra: string;
+    til: string;
 }
 
-//cKommer troligvis endres
-export interface IPeriode {
-    fraMåned: number;
-    fraÅr: number;
-    tilMåned: number;
-    tilÅr: number;
-}
-
-export interface ISituasjon {
-    sykdom?: IDokumentasjon;
-    barnsSykdom?: IDokumentasjon;
-    manglendeBarnepass?: IDokumentasjon;
-    barnMedSærligeBehov?: IDokumentasjon;
+export interface ISærligeTilsynsbehov {
+    id: string;
+    navn?: string;
+    erBarnetFødt: boolean;
+    fødselTermindato?: string;
+    særligeTilsynsbehov?: string;
 }
