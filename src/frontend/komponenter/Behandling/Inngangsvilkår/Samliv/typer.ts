@@ -36,8 +36,8 @@ export enum ESagtOppEllerRedusert {
 }
 
 export const SagtOppEllerRedusertTilTekst: Record<ESagtOppEllerRedusert, string> = {
-    sagtOpp: 'Ja, jeg har sagt opp jobben eller tatt frivillig permisjon (ikke foreldrepermisjon)',
-    redusertStilling: 'Ja, jeg har redusert arbeidstiden',
+    sagtOpp: 'Ja, har sagt opp jobben eller tatt frivillig permisjon (ikke foreldrepermisjon)',
+    redusertStilling: 'Ja, har redusert arbeidstiden',
     nei: 'Nei',
 };
 
