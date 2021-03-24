@@ -1,48 +1,74 @@
+import TidligereStønadsperioder from '../Behandling/TidligereStønadsperioder/TidligereStønadsperioder';
+import Personopplysninger from '../Behandling/Personopplysninger/Personopplysninger';
+import Inngangsvilkår from '../Behandling/Inngangsvilkår/Inngangsvilkår';
+import { FunctionComponent } from 'react';
+import Aktivitet from '../Behandling/Aktivitet/Aktivitet';
+import Brev from '../Behandling/Brev/Brev';
+import Blankett from '../Behandling/Blankett/Blankett';
+import VedtakOgBeregning from '../Behandling/VedtakOgBeregning/VedtakOgBeregning';
+import { Behandling } from '../../typer/fagsak';
+import { Behandlingstype } from '../../typer/behandlingstype';
+
 export interface ISide {
-    id: SideId;
     href: string;
     navn: string;
+    komponent: FunctionComponent<{ behandlingId: string }>;
 }
 
-export enum SideId {
-    PERSONOPPLYSNINGER = 'PERSONOPPLYSNINGER',
-    INNGANGSVILKÅR = 'INNGANGSVILKÅR',
-    AKTIVITET = 'AKTIVITET',
-    VEDTAK_OG_BEREGNING = 'VEDTAK_OG_BEREGNING',
-    UTBETALINGSOVERSIKT = 'UTBETALINGSOVERSIKT',
-    BREV = 'BREV',
-    BLANKETT = 'BLANKETT',
+export enum SideNavn {
+    PERSONOPPLYSNINGER = 'Personopplysninger',
+    TIDLIGERESTØNADSPERIODER = 'Tidligere Stønadsperioder',
+    INNGANGSVILKÅR = 'Inngangsvilkår',
+    AKTIVITET = 'Aktivitet',
+    VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
+    BREV = 'Brev',
+    BLANKETT = 'Blankett',
 }
 
 export const sider: ISide[] = [
     {
-        id: SideId.PERSONOPPLYSNINGER,
         href: 'personopplysninger',
-        navn: 'Personopplysninger',
+        navn: SideNavn.PERSONOPPLYSNINGER,
+        komponent: Personopplysninger,
     },
     {
-        id: SideId.INNGANGSVILKÅR,
+        href: 'tidligerestønadsperioder',
+        navn: SideNavn.TIDLIGERESTØNADSPERIODER,
+        komponent: TidligereStønadsperioder,
+    },
+    {
         href: 'inngangsvilkar',
-        navn: 'Inngangsvilkår',
+        navn: SideNavn.INNGANGSVILKÅR,
+        komponent: Inngangsvilkår,
     },
     {
-        id: SideId.AKTIVITET,
         href: 'aktivitet',
-        navn: 'Aktivitet',
+        navn: SideNavn.AKTIVITET,
+        komponent: Aktivitet,
     },
     {
-        id: SideId.VEDTAK_OG_BEREGNING,
         href: 'vedtak-og-beregning',
-        navn: 'Vedtak og beregning',
+        navn: SideNavn.VEDTAK_OG_BEREGNING,
+        komponent: VedtakOgBeregning,
     },
     {
-        id: SideId.BREV,
         href: 'brev',
-        navn: 'Brev',
+        navn: SideNavn.BREV,
+        komponent: Brev,
     },
     {
-        id: SideId.BLANKETT,
         href: 'blankett',
-        navn: 'Blankett',
+        navn: SideNavn.BLANKETT,
+        komponent: Blankett,
     },
 ];
+
+export const filtrerSiderEtterBehandlingstype = (
+    sider: ISide[],
+    behandling: Behandling
+): ISide[] => {
+    if (behandling.type === Behandlingstype.BLANKETT) {
+        return sider.filter((side) => side.navn !== SideNavn.BREV);
+    }
+    return sider.filter((side) => side.navn !== SideNavn.BLANKETT);
+};

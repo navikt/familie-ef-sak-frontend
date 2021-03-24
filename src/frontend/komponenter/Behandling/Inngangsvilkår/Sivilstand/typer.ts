@@ -1,5 +1,4 @@
 import { SivilstandType } from '../../../../typer/personopplysninger';
-import { ESøkerDelerBolig } from '../Samliv/typer';
 
 export interface ISivilstandInngangsvilkår {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;

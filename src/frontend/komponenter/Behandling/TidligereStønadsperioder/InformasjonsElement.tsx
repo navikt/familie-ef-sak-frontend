@@ -1,17 +1,17 @@
 import * as React from 'react';
-import {Element, Normaltekst, Systemtittel} from 'nav-frontend-typografi';
-import {FlexDiv} from '../../Oppgavebenk/OppgaveFiltrering';
+import { Element, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
 import styled from 'styled-components';
 
 const FloatRight = styled.div`
     float: right;
-    width: ${(props: { width?: string }) => props.width ?? "50%"};
+    width: ${(props: { width?: string }) => props.width ?? '50%'};
     padding: 1rem 0;
 `;
 
 const FloatLeft = styled.div`
     float: left;
-    width: ${(props: { width?: string }) => props.width ?? "50%"};
+    width: ${(props: { width?: string }) => props.width ?? '50%'};
     padding: 1rem 0;
 `;
 
@@ -32,7 +32,7 @@ const InformasjonsElement: React.FC<Props> = ({
         <>
             <Element className="blokk-s">
                 {props.spørsmåltekst}
-                <Normaltekst tag="span" children={props.hjelpetekst}/>
+                <Normaltekst tag="span" children={props.hjelpetekst} />
             </Element>
         </>
     );
@@ -43,7 +43,7 @@ const InformasjonsElement: React.FC<Props> = ({
                 <Systemtittel>{tittel}</Systemtittel>
             </FloatLeft>
             <FloatRight>
-                <Spørsmål spørsmåltekst={spørsmåltekst} hjelpetekst={hjelpetekst}/>
+                <Spørsmål spørsmåltekst={spørsmåltekst} hjelpetekst={hjelpetekst} />
                 <Normaltekst>{spørsmålsvar}</Normaltekst>
             </FloatRight>
         </FlexDiv>

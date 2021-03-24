@@ -41,9 +41,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger, nullstillVurdering } = useHentVilkår(
-        behandlingId
-    );
+    const {
+        vilkår,
+        hentVilkår,
+        lagreVurdering,
+        feilmeldinger,
+        nullstillVurdering,
+    } = useHentVilkår();
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({

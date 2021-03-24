@@ -30,6 +30,9 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     SIVILSTAND_UNNTAK: 'Er unntak fra hovedregelen oppfylt?',
     RIMELIG_GRUNN_SAGT_OPP:
         'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
+    HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD: 'Har søker tidligere mottatt overgangsstønad?',
+    HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING:
+        'Har søker tidligere mottatt andre stønader som har betydning for stønadstiden i §15-8 første og andre ledd?',
 };
 
 export const svarTypeTilTekst: Record<string, string> = {
@@ -81,4 +84,5 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     ALENEOMSORG: 'Vilkår om aleneomsorg',
     NYTT_BARN_SAMME_PARTNER: 'Vilkår om barn med samme partner',
     SAGT_OPP_ELLER_REDUSERT: 'Vilkår om sagt opp arbeidsforhold ',
+    TIDLIGERE_VEDTAKSPERIODER: 'Tidligere vedtaksperioder',
 };
