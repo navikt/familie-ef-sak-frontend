@@ -2,142 +2,262 @@
   "data": {
     "vurderinger": [
       {
-        "barnId": null,
-        "id": "6366859d-60d7-460e-8a4c-a792f803e9e2",
-        "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
-        "resultat": "IKKE_VURDERT",
+        "id": "9ddcd2cb-898e-42b8-bd47-43bda9ed330e",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "FORUTGÅENDE_MEDLEMSKAP",
-        "begrunnelse": null,
-        "unntak": null,
-        "endretAv": "F_Z994230.E_Z994230@trygdeetaten.no",
-        "endretTid": "2020-11-25T12:17:01.514",
+        "barnId": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.634",
         "delvilkårsvurderinger": [
           {
-            "type": "TRE_ÅRS_MEDLEMSKAP",
-            "resultat": "IKKE_VURDERT"
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "SØKER_MEDLEM_I_FOLKETRYGDEN",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
           }
         ]
       },
       {
-        "barnId": null,
-        "id": "9859d404-475c-4948-873f-f586fb130539",
-        "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
-        "resultat": "IKKE_VURDERT",
+        "id": "29299dd6-eb0e-4e21-af5a-2a391ebf351b",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "LOVLIG_OPPHOLD",
-        "begrunnelse": null,
-        "unntak": null,
-        "endretAv": "F_Z994230.E_Z994230@trygdeetaten.no",
-        "endretTid": "2020-11-25T12:17:01.514",
-        "delvilkårsvurderinger": [
-          {
-            "type": "BOR_OG_OPPHOLDER_SEG_I_NORGE",
-            "resultat": "IKKE_VURDERT"
-          }
-        ]
-      },
-      {
         "barnId": null,
-        "id": "90816ac7-6aaf-475c-a305-2ce57d109824",
-        "behandlingId": "ec4a1d0a-c066-44d4-8f55-9d1ec13a8f06",
-        "resultat": "IKKE_VURDERT",
-        "vilkårType": "SIVILSTAND",
-        "begrunnelse": null,
-        "unntak": null,
-        "endretAv": "F_Z994230.E_Z994230@trygdeetaten.no",
-        "endretTid": "2020-11-25T12:17:01.514",
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.644",
         "delvilkårsvurderinger": [
           {
-            "type": "DOKUMENTERT_EKTESKAP",
-            "resultat": "IKKE_VURDERT"
-          },
-          {
-            "type": "DOKUMENTERT_SEPARASJON_ELLER_SKILSMISSE",
-            "resultat": "IKKE_VURDERT"
-          },
-          {
-            "type": "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON",
-            "resultat": "IKKE_VURDERT"
-          },
-          {
-            "type": "SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING",
-            "resultat": "IKKE_VURDERT"
-          },
-          {
-            "type": "KRAV_SIVILSTAND",
-            "resultat": "IKKE_VURDERT"
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "BOR_OG_OPPHOLDER_SEG_I_NORGE",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
           }
         ]
       },
       {
-        "barnId": "05257004-d92f-4e1d-b8dc-00e609e75528",
-        "begrunnelse": null,
-        "behandlingId": "b79576d0-4818-4805-ac56-7d7130ac6d1b",
+        "id": "8c4a3a90-3409-47f8-bc3c-01295a5f7870",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
+        "vilkårType": "MOR_ELLER_FAR",
+        "barnId": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.655",
         "delvilkårsvurderinger": [
           {
-            "begrunnelse": null,
-            "resultat": "IKKE_VURDERT",
-            "type": "SKRIFTLIG_AVTALE_OM_DELT_BOSTED"
-          },
-          {
-            "begrunnelse": null,
-            "resultat": "IKKE_VURDERT",
-            "type": "NÆRE_BOFORHOLD"
-          },
-          {
-            "begrunnelse": null,
-            "resultat": "IKKE_VURDERT",
-            "type": "MER_AV_DAGLIG_OMSORG"
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
           }
-        ],
-        "endretAv": "Z994408",
-        "endretTid": "2021-02-05T08:35:47.596",
-        "id": "13e327b9-7b91-4d66-963b-cf570eba958e",
-        "resultat": "IKKE_VURDERT",
-        "unntak": null,
-        "vilkårType": "ALENEOMSORG"
+        ]
       },
       {
-        "barnId": "43257004-d92f-4e1d-b8dc-00e609e75509",
-        "begrunnelse": null,
-        "behandlingId": "e99576d0-4818-4805-ac56-7d7130ac6d05",
+        "id": "5858051a-0315-42d8-a8b5-33c37219e696",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
+        "vilkårType": "SIVILSTAND",
+        "barnId": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.665",
         "delvilkårsvurderinger": [
           {
-            "begrunnelse": null,
-            "resultat": "IKKE_VURDERT",
-            "type": "SKRIFTLIG_AVTALE_OM_DELT_BOSTED"
-          },
-          {
-            "begrunnelse": null,
-            "resultat": "IKKE_VURDERT",
-            "type": "NÆRE_BOFORHOLD"
-          },
-          {
-            "begrunnelse": null,
-            "resultat": "IKKE_VURDERT",
-            "type": "MER_AV_DAGLIG_OMSORG"
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "KRAV_SIVILSTAND",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
           }
-        ],
-        "endretAv": "Z994408",
-        "endretTid": "2021-02-05T08:35:47.596",
-        "id": "13e327b9-7b91-4d66-963b-cf570eba943o",
-        "resultat": "IKKE_VURDERT",
-        "unntak": null,
-        "vilkårType": "ALENEOMSORG"
+        ]
       },
       {
-        "id": "f5d07f22-446f-4327-b1a3-487dfabf929e",
-        "behandlingId": "25a2e2e2-d55f-49b1-a18a-5062124adb9c",
-        "resultat": "IKKE_VURDERT",
+        "id": "7822b32c-dada-4fde-b1ea-688904a2873e",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
+        "vilkårType": "SAMLIV",
+        "barnId": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.676",
+        "delvilkårsvurderinger": [
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "LEVER_IKKE_MED_ANNEN_FORELDER",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          },
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1214315b-640c-45da-b3e4-eee1ebbf49de",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
+        "vilkårType": "ALENEOMSORG",
+        "barnId": "d949d8c4-5589-48cc-a460-91279987f862",
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.689",
+        "delvilkårsvurderinger": [
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "SKRIFTLIG_AVTALE_OM_DELT_BOSTED",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          },
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "NÆRE_BOFORHOLD",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          },
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "MER_AV_DAGLIG_OMSORG",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "c29b1c2b-89f8-4961-a9f6-cf3a276a0275",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
+        "vilkårType": "ALENEOMSORG",
+        "barnId": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.699",
+        "delvilkårsvurderinger": [
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "SKRIFTLIG_AVTALE_OM_DELT_BOSTED",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          },
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "NÆRE_BOFORHOLD",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          },
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "MER_AV_DAGLIG_OMSORG",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1ae8d886-9bb7-47f2-b485-44ba7e397ec1",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "NYTT_BARN_SAMME_PARTNER",
-        "barnId": "43257004-d92f-4e1d-b8dc-00e609e75509",
-        "begrunnelse": null,
-        "unntak": null,
+        "barnId": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.708",
         "delvilkårsvurderinger": [
           {
-            "type": "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER",
-            "resultat": "IKKE_VURDERT",
-            "årsak": null,
-            "begrunnelse": null
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "7f0019eb-8ab9-4f41-a408-6b767f3efdec",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
+        "vilkårType": "AKTIVITET",
+        "barnId": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.72",
+        "delvilkårsvurderinger": [
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "FYLLER_BRUKER_AKTIVITETSPLIKT",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "9ac51f0d-6b00-4985-bb10-8457172a744b",
+        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "resultat": "IKKE_TATT_STILLING_TIL",
+        "vilkårType": "SAGT_OPP_ELLER_REDUSERT",
+        "barnId": null,
+        "endretAv": "Z994407",
+        "endretTid": "2021-03-23T10:15:09.734",
+        "delvilkårsvurderinger": [
+          {
+            "resultat": "IKKE_TATT_STILLING_TIL",
+            "vurderinger": [
+              {
+                "regelId": "SAGT_OPP_ELLER_REDUSERT",
+                "svar": null,
+                "begrunnelse": null
+              }
+            ]
           }
         ]
       }
@@ -189,54 +309,20 @@
           "innflytting": [
             {
               "fraflyttingsland": "Sverige",
-              "dato": "2020-11-25"
+              "dato": "2010-08-30",
+              "fraflyttingssted": null
             }
           ],
           "utflytting": [
             {
               "tilflyttingsland": "Sverige",
-              "dato": "2020-11-25"
+              "dato": "2010-08-30",
+              "tilflyttingssted": null
             }
           ],
           "folkeregisterpersonstatus": "BOSATT",
           "medlUnntak": {
-            "gyldigeVedtaksPerioder": [
-              {
-                "fraogmedDato": "2020-09-23",
-                "tilogmedDato": "2020-10-22",
-                "erMedlemIFolketrygden": false
-              },
-              {
-                "fraogmedDato": "2019-12-09",
-                "tilogmedDato": "2020-12-11",
-                "erMedlemIFolketrygden": true
-              },
-              {
-                "fraogmedDato": "2020-12-17",
-                "tilogmedDato": "2020-12-22",
-                "erMedlemIFolketrygden": true
-              },
-              {
-                "fraogmedDato": "2020-01-01",
-                "tilogmedDato": "2022-12-31",
-                "erMedlemIFolketrygden": true
-              },
-              {
-                "fraogmedDato": "2019-01-01",
-                "tilogmedDato": "2021-12-31",
-                "erMedlemIFolketrygden": true
-              },
-              {
-                "fraogmedDato": "2019-09-02",
-                "tilogmedDato": "2020-09-22",
-                "erMedlemIFolketrygden": false
-              },
-              {
-                "fraogmedDato": "2020-09-23",
-                "tilogmedDato": "2020-11-03",
-                "erMedlemIFolketrygden": false
-              }
-            ]
+            "gyldigeVedtaksPerioder": []
           }
         }
       },
@@ -245,126 +331,205 @@
           "samlivsbruddsdato": "2014-10-03",
           "endringSamværsordningDato": "2013-04-17",
           "fraflytningsdato": "2014-10-04",
-          "erUformeltGift": false,
+          "erUformeltGift": true,
           "erUformeltSeparertEllerSkilt": true,
           "datoSøktSeparasjon": "2015-12-23",
           "søktOmSkilsmisseSeparasjon": true,
-          "årsakEnslig": "samlivsbruddAndre",
+          "årsakEnslig": "aleneFraFødsel",
           "tidligereSamboer": {
-            "navn": "Hugh Jackman",
-            "fødselsdato": null,
-            "ident": null
+            "navn": "Bob Burger",
+            "fødselsdato": "1992-02-18",
+            "personIdent": null
           }
         },
         "registergrunnlag": {
-          "type": "UGIFT",
+          "type": "GIFT",
           "gyldigFraOgMed": "2020-01-01"
         }
       },
       "bosituasjon": {
         "delerDuBolig": "borAleneMedBarnEllerGravid",
         "samboer": {
-          "navn": "My",
-          "fødselsdato": null,
+          "navn": "Bob Burger",
+          "fødselsdato": "1992-02-18",
           "personIdent": null
         },
         "sammenflyttingsdato": "2018-08-12",
         "datoFlyttetFraHverandre": "2019-08-12",
         "tidligereSamboerFortsattRegistrertPåAdresse": null
       },
-      "sivilstandsplaner": {
-        "harPlaner": true,
-        "fraDato": "2021-02-10",
-        "vordendeSamboerEktefelle": {
-          "navn": "Ola Mockeson",
-          "fødselsdato": "1980-04-03",
-          "ident": null
-        }
-      },
       "barnMedSamvær": [
         {
-          "barnId": "06857004-d92f-4e1d-b8dc-00e609e75528",
-          "registergrunnlag": {
-            "forelder": {
-              "bosattINorge": true,
-              "fødselsdato": "1994-11-01",
-              "fødselsnummer": "17097926735",
-              "land": null,
-              "navn": "Bob  Burger"
-            },
-            "fødselsnummer": "01012067050",
-            "harSammeAdresse": true,
-            "navn": "Barn Barnesen"
-          },
+          "barnId": "d949d8c4-5589-48cc-a460-91279987f862",
           "søknadsgrunnlag": {
-            "beskrivSamværUtenBarn": "Har sjelden sett noe til han",
-            "borAnnenForelderISammeHus": "ja",
-            "borAnnenForelderISammeHusBeskrivelse": "Samme blokk",
-            "erBarnetFødt": true,
-            "forelder": {
-              "bosattINorge": false,
-              "fødselsdato": "1979-09-17",
-              "fødselsnummer": null,
-              "land": null,
-              "navn": "Bob Burger"
-            },
-            "fødselTermindato": "2020-01-01",
-            "fødselsnummer": "01012067050",
-            "harDereSkriftligAvtaleOmSamvær": "jaIkkeKonkreteTidspunkter",
-            "harDereTidligereBoddSammen": true,
-            "harSammeAdresse": true,
-            "hvorMyeErDuSammenMedAnnenForelder": "møtesUtenom",
-            "hvordanPraktiseresSamværet": "Bytter litt på innimellom",
-            "ikkeOppgittAnnenForelderBegrunnelse": null,
+            "id": "d949d8c4-5589-48cc-a460-91279987f862",
             "navn": "Barn Barnesen",
-            "nårFlyttetDereFraHverandre": "2020-12-31",
+            "fødselsnummer": "01012067050",
+            "fødselTermindato": "2020-01-01",
+            "erBarnetFødt": true,
+            "harSammeAdresse": true,
+            "skalBoBorHosSøker": "jaMenSamarbeiderIkke",
+            "forelder": {
+              "navn": "Bob Burger",
+              "fødselsnummer": null,
+              "fødselsdato": "1979-09-17",
+              "bosattINorge": false,
+              "land": "Sverige"
+            },
+            "ikkeOppgittAnnenForelderBegrunnelse": null,
+            "spørsmålAvtaleOmDeltBosted": true,
             "skalAnnenForelderHaSamvær": "jaMerEnnVanlig",
-            "skalBoBorHosSøker": null,
-            "spørsmålAvtaleOmDeltBosted": true
+            "harDereSkriftligAvtaleOmSamvær": "jaIkkeKonkreteTidspunkter",
+            "hvordanPraktiseresSamværet": "Bytter litt på innimellom",
+            "borAnnenForelderISammeHus": "ja",
+            "borAnnenForelderISammeHusBeskrivelse": "Bor i utleiedel",
+            "harDereTidligereBoddSammen": true,
+            "nårFlyttetDereFraHverandre": "2020-12-31",
+            "hvorMyeErDuSammenMedAnnenForelder": "møtesUtenom",
+            "beskrivSamværUtenBarn": "Vi sees stadig vekk"
+          },
+          "registergrunnlag": {
+            "id": "d949d8c4-5589-48cc-a460-91279987f862",
+            "navn": "Barn Barnesen",
+            "fødselsnummer": "01012067050",
+            "harSammeAdresse": true,
+            "forelder": null
           }
         },
         {
-          "barnId": "39857004-d92f-4e1d-b8dc-00e609e75534",
-          "registergrunnlag": {
-            "forelder": {
-              "bosattINorge": true,
-              "fødselsdato": "1994-11-01",
-              "fødselsnummer": "17097926735",
-              "land": null,
-              "navn": "Bob  Burger"
-            },
-            "fødselsnummer": "01012067050",
-            "harSammeAdresse": true,
-            "navn": "Russian Blue"
-          },
+          "barnId": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
           "søknadsgrunnlag": {
-            "beskrivSamværUtenBarn": "Har sjelden sett noe til han",
-            "borAnnenForelderISammeHus": "ja",
-            "borAnnenForelderISammeHusBeskrivelse": "Samme blokk",
+            "id": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+            "navn": "Barn2 Barnesen",
+            "fødselsnummer": "13071489536",
+            "fødselTermindato": "2014-07-13",
             "erBarnetFødt": true,
-            "forelder": {
-              "bosattINorge": false,
-              "fødselsdato": "1979-09-17",
-              "fødselsnummer": null,
-              "land": null,
-              "navn": "Bob Burger"
-            },
-            "fødselTermindato": "2020-01-01",
-            "fødselsnummer": "01012067050",
-            "harDereSkriftligAvtaleOmSamvær": "jaIkkeKonkreteTidspunkter",
-            "harDereTidligereBoddSammen": true,
             "harSammeAdresse": true,
-            "hvorMyeErDuSammenMedAnnenForelder": "møtesUtenom",
-            "hvordanPraktiseresSamværet": "Bytter litt på innimellom",
+            "skalBoBorHosSøker": "jaMenSamarbeiderIkke",
+            "forelder": {
+              "navn": "Bob Burger",
+              "fødselsnummer": null,
+              "fødselsdato": "1979-09-17",
+              "bosattINorge": false,
+              "land": "Sverige"
+            },
             "ikkeOppgittAnnenForelderBegrunnelse": null,
-            "navn": "Barn Barnesen",
-            "nårFlyttetDereFraHverandre": "2020-12-31",
+            "spørsmålAvtaleOmDeltBosted": true,
             "skalAnnenForelderHaSamvær": "jaMerEnnVanlig",
-            "skalBoBorHosSøker": null,
-            "spørsmålAvtaleOmDeltBosted": true
+            "harDereSkriftligAvtaleOmSamvær": "jaIkkeKonkreteTidspunkter",
+            "hvordanPraktiseresSamværet": "Bytter litt på innimellom",
+            "borAnnenForelderISammeHus": "ja",
+            "borAnnenForelderISammeHusBeskrivelse": "Bor i utleiedel",
+            "harDereTidligereBoddSammen": true,
+            "nårFlyttetDereFraHverandre": "2020-12-31",
+            "hvorMyeErDuSammenMedAnnenForelder": "møtesUtenom",
+            "beskrivSamværUtenBarn": "Vi sees stadig vekk"
+          },
+          "registergrunnlag": {
+            "id": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+            "navn": "Barn2 Barnesen",
+            "fødselsnummer": "13071489536",
+            "harSammeAdresse": true,
+            "forelder": null
           }
         }
-      ]
+      ],
+      "sivilstandsplaner": {
+        "harPlaner": true,
+        "fraDato": "2019-09-17",
+        "vordendeSamboerEktefelle": {
+          "navn": "Fyren som skal bli min samboer",
+          "fødselsdato": "1979-09-17",
+          "personIdent": null
+        }
+      },
+      "aktivitet": {
+        "arbeidssituasjon": [
+          "erHjemmeMedBarnUnderEttÅr",
+          "erArbeidstaker",
+          "erSelvstendigNæringsdriveneEllerFrilanser"
+        ],
+        "arbeidsforhold": [
+          {
+            "arbeidsgivernavn": "Palpatine",
+            "arbeidsmengde": 15,
+            "fastEllerMidlertidig": null,
+            "harSluttdato": true,
+            "sluttdato": "2020-11-18"
+          }
+        ],
+        "selvstendig": [
+          {
+            "firmanavn": "Bobs burgers",
+            "organisasjonsnummer": "987654321",
+            "etableringsdato": "2018-04-05",
+            "arbeidsmengde": 150,
+            "hvordanSerArbeidsukenUt": "Veldig tung"
+          }
+        ],
+        "aksjeselskap": [
+          {
+            "navn": "Fima abc",
+            "arbeidsmengde": 50
+          }
+        ],
+        "arbeidssøker": {
+          "registrertSomArbeidssøkerNav": true,
+          "villigTilÅTaImotTilbudOmArbeid": true,
+          "kanDuBegynneInnenEnUke": true,
+          "kanDuSkaffeBarnepassInnenEnUke": true,
+          "hvorØnskerDuArbeid": "Kun i bodistriktet mitt, ikke mer enn 1 times reisevei",
+          "ønskerDuMinst50ProsentStilling": true
+        },
+        "underUtdanning": {
+          "skoleUtdanningssted": "UiO",
+          "linjeKursGrad": "Profesjonsstudium Informatikk",
+          "fra": "1999-01-01",
+          "til": "2004-10-12",
+          "offentligEllerPrivat": null,
+          "heltidEllerDeltid": null,
+          "hvorMyeSkalDuStudere": 300,
+          "hvaErMåletMedUtdanningen": "Økonomisk selvstendighet",
+          "utdanningEtterGrunnskolen": true
+        },
+        "virksomhet": {
+          "virksomhetsbeskrivelse": "Den kommer til å revolusjonere verden"
+        },
+        "tidligereUtdanninger": [
+          {
+            "linjeKursGrad": "Master Fysikk",
+            "fra": "1999-01",
+            "til": "2004-10"
+          }
+        ],
+        "gjelderDeg": [
+          "harSyktBarn",
+          "harSøktBarnepassOgVenterEnnå",
+          "harBarnMedSærligeBehov"
+        ],
+        "særligeTilsynsbehov": [
+          {
+            "id": "d949d8c4-5589-48cc-a460-91279987f862",
+            "navn": "Barn Barnesen",
+            "erBarnetFødt": true,
+            "fødselTermindato": "2020-01-01",
+            "særligeTilsynsbehov": "Barnet mitt trenger ekstra oppfølging"
+          },
+          {
+            "id": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+            "navn": "Barn2 Barnesen",
+            "erBarnetFødt": true,
+            "fødselTermindato": "2014-07-13",
+            "særligeTilsynsbehov": "Barnet mitt trenger ekstra oppfølging"
+          }
+        ],
+        "datoOppstartJobb": "2045-12-16"
+      },
+      "sagtOppEllerRedusertStilling": {
+        "sagtOppEllerRedusertStilling": "sagtOpp",
+        "årsak": "Sjefen var dum",
+        "dato": "2014-01-12"
+      }
     }
   },
   "status": "SUKSESS",

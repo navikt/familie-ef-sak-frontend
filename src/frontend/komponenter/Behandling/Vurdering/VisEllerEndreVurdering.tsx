@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import {
-    IVilkårGrunnlag,
     IVurdering,
-    Redigeringsmodus,
+    NullstillVilkårsvurdering,
+    OppdaterVilkårsvurdering,
     Vilkårsresultat,
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
@@ -11,10 +11,18 @@ import VisVurdering from './VisVurdering';
 import { Knapp } from 'nav-frontend-knapper';
 import { Ressurs } from '../../../typer/ressurs';
 
+export enum Redigeringsmodus {
+    REDIGERING = 'REDIGERING',
+    VISNING = 'VISNING',
+    IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
+}
+
 interface Props {
     vurdering: IVurdering;
-    inngangsvilkårgrunnlag: IVilkårGrunnlag;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<string>>;
+    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    nullstillVurdering: (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
 }
 
@@ -25,7 +33,7 @@ function utledRedigeringsmodus(
     if (feilmelding !== undefined) {
         return Redigeringsmodus.REDIGERING;
     }
-    if (vurdering.resultat === Vilkårsresultat.IKKE_VURDERT) {
+    if (vurdering.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL) {
         return Redigeringsmodus.IKKE_PÅSTARTET;
     }
     return Redigeringsmodus.VISNING;
@@ -33,13 +41,14 @@ function utledRedigeringsmodus(
 
 const VisEllerEndreVurdering: FC<Props> = ({
     vurdering,
+    nullstillVurdering,
     lagreVurdering,
-    inngangsvilkårgrunnlag,
     feilmelding,
 }) => {
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering)
     );
+
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
@@ -50,7 +59,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
         case Redigeringsmodus.REDIGERING:
             return (
                 <EndreVurdering
-                    inngangsvilkårgrunnlag={inngangsvilkårgrunnlag}
                     data={vurdering}
                     lagreVurdering={lagreVurdering}
                     feilmelding={feilmelding}
@@ -62,7 +70,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 <VisVurdering
                     vurdering={vurdering}
                     settRedigeringsmodus={settRedigeringsmodus}
-                    resetVurdering={lagreVurdering}
+                    resetVurdering={nullstillVurdering}
                     feilmelding={feilmelding}
                 />
             );

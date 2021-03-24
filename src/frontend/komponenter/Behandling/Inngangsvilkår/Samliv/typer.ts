@@ -40,3 +40,9 @@ export const SagtOppEllerRedusertTilTekst: Record<ESagtOppEllerRedusert, string>
     redusertStilling: 'Ja, jeg har redusert arbeidstiden',
     nei: 'Nei',
 };
+
+export interface ISivilstandsplaner {
+    harPlaner?: boolean;
+    fraDato?: string;
+    vordendeSamboerEktefelle?: IPersonDetaljer;
+}

@@ -7,6 +7,7 @@ import { useHentPersonopplysninger } from '../hooks/useHentPersonopplysninger';
 import { useHentBehandling } from '../hooks/useHentBehandling';
 import { useHentBehandlingHistorikk } from '../hooks/useHentBehandlingHistorikk';
 import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
+import { useHentRegler } from '../hooks/useHentRegler';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { behandlingId } = useParams<IBehandlingParams>();
@@ -26,6 +27,9 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         behandlingId,
     ]);
 
+    const { hentRegler, regler } = useHentRegler();
+    useEffect(() => hentRegler(), [behandlingId]);
+
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
 
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
@@ -38,6 +42,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentBehandling,
         hentTotrinnskontroll,
         hentBehandlingshistorikk,
+        regler,
     };
 });
 

@@ -3,6 +3,7 @@ import TabellOverskrift from './TabellOverskrift';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { Folkeregisterpersonstatus, IStatsborgerskap } from '../../../typer/personopplysninger';
 import Pass from '../../../ikoner/Pass';
+import { formaterNullableIsoDato } from '../../../utils/formatter';
 
 const Statsborgerskap: React.FC<{
     statsborgerskap: IStatsborgerskap[];
@@ -18,8 +19,12 @@ const Statsborgerskap: React.FC<{
                         return (
                             <tr key={indeks}>
                                 <BredTd>{statsborgerskap.land}</BredTd>
-                                <BredTd>{statsborgerskap.gyldigFraOgMedDato}</BredTd>
-                                <BredTd>{statsborgerskap.gyldigTilOgMedDato}</BredTd>
+                                <BredTd>
+                                    {formaterNullableIsoDato(statsborgerskap.gyldigFraOgMedDato)}
+                                </BredTd>
+                                <BredTd>
+                                    {formaterNullableIsoDato(statsborgerskap.gyldigTilOgMedDato)}
+                                </BredTd>
                                 <BredTd>
                                     {statsborgerskap.land.toLowerCase() === 'norge' &&
                                         folkeregisterPersonstatus}

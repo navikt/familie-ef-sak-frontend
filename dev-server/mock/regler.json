@@ -1,0 +1,298 @@
+{
+  "data": {
+    "vilkårsregler": {
+      "FORUTGÅENDE_MEDLEMSKAP": {
+        "vilkårType": "FORUTGÅENDE_MEDLEMSKAP",
+        "regler": {
+          "SØKER_MEDLEM_I_FOLKETRYGDEN": {
+            "regelId": "SØKER_MEDLEM_I_FOLKETRYGDEN",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "regelId": "MEDLEMSKAP_UNNTAK",
+                "begrunnelseType": "UTEN"
+              }
+            }
+          },
+          "MEDLEMSKAP_UNNTAK": {
+            "regelId": "MEDLEMSKAP_UNNTAK",
+            "svarMapping": {
+              "MEDLEM_MER_ENN_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "ANDRE_FORELDER_MEDLEM_SISTE_5_ÅR": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "TOTALVURDERING_OPPFYLLER_FORSKRIFT": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "LOVLIG_OPPHOLD": {
+        "vilkårType": "LOVLIG_OPPHOLD",
+        "regler": {
+          "BOR_OG_OPPHOLDER_SEG_I_NORGE": {
+            "regelId": "BOR_OG_OPPHOLDER_SEG_I_NORGE",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "regelId": "OPPHOLD_UNNTAK",
+                "begrunnelseType": "UTEN"
+              }
+            }
+          },
+          "OPPHOLD_UNNTAK": {
+            "regelId": "OPPHOLD_UNNTAK",
+            "svarMapping": {
+              "ARBEID_NORSK_ARBEIDSGIVER": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "MOR_ELLER_FAR": {
+        "vilkårType": "MOR_ELLER_FAR",
+        "regler": {
+          "OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN": {
+            "regelId": "OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "SIVILSTAND": {
+        "vilkårType": "SIVILSTAND",
+        "regler": {
+          "KRAV_SIVILSTAND": {
+            "regelId": "KRAV_SIVILSTAND",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "SAMLIV": {
+        "vilkårType": "SAMLIV",
+        "regler": {
+          "LEVER_IKKE_MED_ANNEN_FORELDER": {
+            "regelId": "LEVER_IKKE_MED_ANNEN_FORELDER",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          },
+          "LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD": {
+            "regelId": "LEVER_IKKE_I_EKTESKAPLIGNENDE_FORHOLD",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "ALENEOMSORG": {
+        "vilkårType": "ALENEOMSORG",
+        "regler": {
+          "SKRIFTLIG_AVTALE_OM_DELT_BOSTED": {
+            "regelId": "SKRIFTLIG_AVTALE_OM_DELT_BOSTED",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          },
+          "NÆRE_BOFORHOLD": {
+            "regelId": "NÆRE_BOFORHOLD",
+            "svarMapping": {
+              "SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "SAMME_HUS_OG_FLERE_ENN_4_BOENHETER_MEN_VURDERT_NÆRT": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "SELVSTENDIGE_BOLIGER_SAMME_GÅRDSTUN": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "SELVSTENDIGE_BOLIGER_SAMME_TOMT": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NÆRMESTE_BOLIG_ELLER_REKKEHUS_I_SAMMEGATE": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          },
+          "MER_AV_DAGLIG_OMSORG": {
+            "regelId": "MER_AV_DAGLIG_OMSORG",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "NYTT_BARN_SAMME_PARTNER": {
+        "vilkårType": "NYTT_BARN_SAMME_PARTNER",
+        "regler": {
+          "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER": {
+            "regelId": "HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "AKTIVITET": {
+        "vilkårType": "AKTIVITET",
+        "regler": {
+          "FYLLER_BRUKER_AKTIVITETSPLIKT": {
+            "regelId": "FYLLER_BRUKER_AKTIVITETSPLIKT",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      },
+      "SAGT_OPP_ELLER_REDUSERT": {
+        "vilkårType": "SAGT_OPP_ELLER_REDUSERT",
+        "regler": {
+          "SAGT_OPP_ELLER_REDUSERT": {
+            "regelId": "SAGT_OPP_ELLER_REDUSERT",
+            "svarMapping": {
+              "JA": {
+                "regelId": "RIMELIG_GRUNN_SAGT_OPP",
+                "begrunnelseType": "UTEN"
+              },
+              "NEI": {
+                "begrunnelseType": "VALGFRI",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          },
+          "RIMELIG_GRUNN_SAGT_OPP": {
+            "regelId": "RIMELIG_GRUNN_SAGT_OPP",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}
