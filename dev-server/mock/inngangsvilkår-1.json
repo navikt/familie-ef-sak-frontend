@@ -2,13 +2,13 @@
   "data": {
     "vurderinger": [
       {
-        "id": "9ddcd2cb-898e-42b8-bd47-43bda9ed330e",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "724759e2-2057-4c19-bf59-f82d00ca68b1",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "FORUTGÅENDE_MEDLEMSKAP",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.634",
+        "endretTid": "2021-03-24T12:35:23.814",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -23,13 +23,13 @@
         ]
       },
       {
-        "id": "29299dd6-eb0e-4e21-af5a-2a391ebf351b",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "a85fc302-c569-4438-9eb5-0dbe96d48ecf",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "LOVLIG_OPPHOLD",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.644",
+        "endretTid": "2021-03-24T12:35:23.824",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -44,13 +44,13 @@
         ]
       },
       {
-        "id": "8c4a3a90-3409-47f8-bc3c-01295a5f7870",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "e0b61c47-8f16-4854-8a4f-a20445aaf13a",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "MOR_ELLER_FAR",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.655",
+        "endretTid": "2021-03-24T12:35:23.83",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -65,19 +65,19 @@
         ]
       },
       {
-        "id": "5858051a-0315-42d8-a8b5-33c37219e696",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "4fb34d3b-26b6-47f6-b3cd-d93c7f427ab5",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "SIVILSTAND",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.665",
+        "endretTid": "2021-03-24T12:35:23.836",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
             "vurderinger": [
               {
-                "regelId": "KRAV_SIVILSTAND",
+                "regelId": "SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON",
                 "svar": null,
                 "begrunnelse": null
               }
@@ -86,13 +86,13 @@
         ]
       },
       {
-        "id": "7822b32c-dada-4fde-b1ea-688904a2873e",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "0f6a9584-358a-478c-877c-0f4744c4a184",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "SAMLIV",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.676",
+        "endretTid": "2021-03-24T12:35:23.842",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -117,13 +117,13 @@
         ]
       },
       {
-        "id": "1214315b-640c-45da-b3e4-eee1ebbf49de",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "6f4ec4f8-085b-4105-b1d1-c5dda6519a91",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "ALENEOMSORG",
-        "barnId": "d949d8c4-5589-48cc-a460-91279987f862",
+        "barnId": "4cc1f549-2a87-4d66-84a5-e64b5c794305",
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.689",
+        "endretTid": "2021-03-24T12:35:23.847",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -158,13 +158,13 @@
         ]
       },
       {
-        "id": "c29b1c2b-89f8-4961-a9f6-cf3a276a0275",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "ce3ed415-a219-445c-bc2b-b64778040cc1",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "ALENEOMSORG",
-        "barnId": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+        "barnId": "d68bddd7-680e-42dc-a359-bae967489ff6",
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.699",
+        "endretTid": "2021-03-24T12:35:23.852",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -199,13 +199,13 @@
         ]
       },
       {
-        "id": "1ae8d886-9bb7-47f2-b485-44ba7e397ec1",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "e4276718-9dc5-4f59-a2d9-91123b4aa7ee",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "NYTT_BARN_SAMME_PARTNER",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.708",
+        "endretTid": "2021-03-24T12:35:23.856",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -220,13 +220,13 @@
         ]
       },
       {
-        "id": "7f0019eb-8ab9-4f41-a408-6b767f3efdec",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "7070b547-6978-483a-82aa-44374fb7c8e8",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "AKTIVITET",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.72",
+        "endretTid": "2021-03-24T12:35:23.862",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -241,13 +241,13 @@
         ]
       },
       {
-        "id": "9ac51f0d-6b00-4985-bb10-8457172a744b",
-        "behandlingId": "82622e5c-5864-4c34-9a35-523c7640c708",
+        "id": "97e968cd-4f50-47c7-bdd3-ba62e11f5546",
+        "behandlingId": "e5d5c759-aa7a-4751-94e8-07bd5a113b06",
         "resultat": "IKKE_TATT_STILLING_TIL",
         "vilkårType": "SAGT_OPP_ELLER_REDUSERT",
         "barnId": null,
         "endretAv": "Z994407",
-        "endretTid": "2021-03-23T10:15:09.734",
+        "endretTid": "2021-03-24T12:35:23.869",
         "delvilkårsvurderinger": [
           {
             "resultat": "IKKE_TATT_STILLING_TIL",
@@ -360,9 +360,9 @@
       },
       "barnMedSamvær": [
         {
-          "barnId": "d949d8c4-5589-48cc-a460-91279987f862",
+          "barnId": "4cc1f549-2a87-4d66-84a5-e64b5c794305",
           "søknadsgrunnlag": {
-            "id": "d949d8c4-5589-48cc-a460-91279987f862",
+            "id": "4cc1f549-2a87-4d66-84a5-e64b5c794305",
             "navn": "Barn Barnesen",
             "fødselsnummer": "01012067050",
             "fødselTermindato": "2020-01-01",
@@ -389,7 +389,7 @@
             "beskrivSamværUtenBarn": "Vi sees stadig vekk"
           },
           "registergrunnlag": {
-            "id": "d949d8c4-5589-48cc-a460-91279987f862",
+            "id": "4cc1f549-2a87-4d66-84a5-e64b5c794305",
             "navn": "Barn Barnesen",
             "fødselsnummer": "01012067050",
             "harSammeAdresse": true,
@@ -397,9 +397,9 @@
           }
         },
         {
-          "barnId": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+          "barnId": "d68bddd7-680e-42dc-a359-bae967489ff6",
           "søknadsgrunnlag": {
-            "id": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+            "id": "d68bddd7-680e-42dc-a359-bae967489ff6",
             "navn": "Barn2 Barnesen",
             "fødselsnummer": "13071489536",
             "fødselTermindato": "2014-07-13",
@@ -426,7 +426,7 @@
             "beskrivSamværUtenBarn": "Vi sees stadig vekk"
           },
           "registergrunnlag": {
-            "id": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+            "id": "d68bddd7-680e-42dc-a359-bae967489ff6",
             "navn": "Barn2 Barnesen",
             "fødselsnummer": "13071489536",
             "harSammeAdresse": true,
@@ -509,14 +509,14 @@
         ],
         "særligeTilsynsbehov": [
           {
-            "id": "d949d8c4-5589-48cc-a460-91279987f862",
+            "id": "4cc1f549-2a87-4d66-84a5-e64b5c794305",
             "navn": "Barn Barnesen",
             "erBarnetFødt": true,
             "fødselTermindato": "2020-01-01",
             "særligeTilsynsbehov": "Barnet mitt trenger ekstra oppfølging"
           },
           {
-            "id": "48c7ac62-bb66-41a0-9649-2d90a54601ed",
+            "id": "d68bddd7-680e-42dc-a359-bae967489ff6",
             "navn": "Barn2 Barnesen",
             "erBarnetFødt": true,
             "fødselTermindato": "2014-07-13",
