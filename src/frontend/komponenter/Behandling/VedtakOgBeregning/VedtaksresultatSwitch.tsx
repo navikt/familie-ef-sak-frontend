@@ -19,8 +19,8 @@ import { useHistory } from 'react-router-dom';
 import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
 import { differenceInMonths } from 'date-fns';
 import { AddCircle, Delete } from '@navikt/ds-icons';
-import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
 import { useBehandling } from '../../../context/BehandlingContext';
+import AktivitetspliktVelger from './AktivitetspliktVelger';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -51,10 +51,6 @@ const FjernVedtaksperiodeKnapp = styled(Flatknapp)`
 const StyledSelect = styled(Select)`
     max-width: 200px;
     margin-right: 2rem;
-`;
-
-const AktivitetKolonne = styled.div`
-    width: 230px;
 `;
 
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
@@ -164,82 +160,6 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                 settLaster(false);
             });
     };
-
-    const VelgAktivitetsplikt = (
-        periodeType: EPeriodetype | undefined,
-        aktivitet: EAktivitet,
-        index: number
-    ) => {
-        const aktivitetLabel = index === 0 ? 'Aktivitet' : '';
-
-        switch (periodeType) {
-            case EPeriodetype.HOVEDPERIODE:
-                return (
-                    <AktivitetKolonne>
-                        <StyledSelect
-                            label={aktivitetLabel}
-                            value={aktivitet}
-                            onChange={(e) => {
-                                settFeilmelding('');
-                                oppdaterVedtakslisteElement(
-                                    index,
-                                    EPeriodeProperty.aktivitet,
-                                    e.target.value
-                                );
-                            }}
-                        >
-                            <option value="">Velg</option>
-                            <optgroup label="Ingen aktivitetsplikt">
-                                <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>
-                                    Barn er under 1 år
-                                </option>
-                            </optgroup>
-                            <optgroup label="Fyller aktivitetsplikt">
-                                <option value={EAktivitet.FORSØRGER_I_ARBEID}>
-                                    Forsørger er i arbeid (§15-6 første ledd)
-                                </option>
-                                <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
-                                    Forsørger er i utdannings (§15-6 første ledd)
-                                </option>
-                                <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
-                                    Forsørger er reell arbeidssøker (§15-6 første ledd)
-                                </option>
-                                <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
-                                    Forsørger etablerer egen virksomhet (§15-6 første ledd)
-                                </option>
-                            </optgroup>
-                            <optgroup label="Fyller unntak for aktivitetsplikt">
-                                <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
-                                    Barnet er særlig tilsynskrevende (§15-6 fjerde ledd)
-                                </option>
-                                <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
-                                    Forsørger mangler tilsynsordning (§15-6 femte ledd)
-                                </option>
-                                <option value={EAktivitet.FORSØRGER_ER_SYK}>
-                                    Forsørger er syk (§15-6 femte ledd)
-                                </option>
-                                <option value={EAktivitet.BARNET_ER_SYKT}>
-                                    Barnet er sykt (§15-6 femte ledd)
-                                </option>
-                            </optgroup>
-                        </StyledSelect>
-                    </AktivitetKolonne>
-                );
-            case EPeriodetype.PERIODE_FØR_FØDSEL:
-                return (
-                    <AktivitetKolonne>
-                        <TekstMedLabel label={aktivitetLabel} tekst="Ikke aktivitetsplikt" />
-                    </AktivitetKolonne>
-                );
-            default:
-                return (
-                    <AktivitetKolonne>
-                        <TekstMedLabel label={aktivitetLabel} tekst="-" />
-                    </AktivitetKolonne>
-                );
-        }
-    };
-
     switch (vedtaksresultatType) {
         case EBehandlingResultat.INNVILGE:
             return (
@@ -275,7 +195,13 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     </option>
                                     <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
                                 </StyledSelect>
-                                {VelgAktivitetsplikt(periodeType, aktivitet, index)}
+                                <AktivitetspliktVelger
+                                    index={index}
+                                    aktivitet={aktivitet}
+                                    periodeType={periodeType}
+                                    settFeilmelding={settFeilmelding}
+                                    oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
+                                />
                                 <DatoPeriode
                                     datoFraTekst={index === 0 ? 'Fra og med' : ''}
                                     datoTilTekst={index === 0 ? 'Til og med' : ''}
