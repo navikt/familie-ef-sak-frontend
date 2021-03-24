@@ -33,6 +33,15 @@ const kanBehandles = (behandlingstema?: Behandlingstema, oppgavetype?: Oppgavety
     );
 };
 
+// TODO fjernes etter første "start blankett behandling" mvp. Hack for å kunne starte blankettbehandling på sak uten "kanLageBlankett=true"
+// NB! skal ikke brukes
+function erAutomatiskJournalført(beskrivelse: string | undefined) {
+    if(beskrivelse?.includes('[Automatisk journalført]')){
+        return true
+    }
+    return false
+}
+
 const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
     const {
         feilmelding,
@@ -75,6 +84,16 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                     >
                         Lag blankett
                     </Flatknapp>
+
+
+                    <Flatknapp
+                        hidden={!kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype) || !erAutomatiskJournalført(oppgave.beskrivelse)}
+                        onClick={startBlankettBehandling}
+                    >
+                        Lag blankett (tmp)
+                    </Flatknapp>
+
+
                     <Flatknapp
                         hidden={!kanJournalføres(oppgave.behandlingstema, oppgave.oppgavetype)}
                         onClick={gåTilJournalføring}
