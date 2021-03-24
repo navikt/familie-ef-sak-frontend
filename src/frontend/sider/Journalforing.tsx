@@ -24,9 +24,8 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../komponenter/Oppgavebenk/oppgavefilterStorage';
-import { TogglesProvider, useToggles } from '../context/TogglesContext';
+import { useToggles } from '../context/TogglesContext';
 import { ToggleName } from '../context/toggles';
-import hentToggles from '../toggles/api';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -53,7 +52,7 @@ const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 export const Journalforing: React.FC = () => {
-    const { settToggles, toggles } = useToggles();
+    const { toggles } = useToggles();
     const { innloggetSaksbehandler } = useApp();
     const history = useHistory();
     const query = useQueryParams();
@@ -76,7 +75,6 @@ export const Journalforing: React.FC = () => {
             hentJournalPost();
             journalpostState.settOppgaveId(oppgaveIdParam);
         }
-        Promise.all([fetchToggles()]);
     }, [oppgaveIdParam, journalpostIdParam]);
 
     useEffect(() => {
@@ -93,12 +91,6 @@ export const Journalforing: React.FC = () => {
             history.push('/oppgavebenk');
         }
     }, [journalpostState.innsending]);
-
-    const fetchToggles = () => {
-        return hentToggles(settToggles).catch((err: Error) => {
-            console.log('Kunne ikke hente toggles!');
-        });
-    };
 
     useEffect(() => {
         if (journalResponse.status === RessursStatus.SUKSESS) {
@@ -119,6 +111,7 @@ export const Journalforing: React.FC = () => {
     if (!oppgaveIdParam || !journalpostIdParam) {
         return <Redirect to="/oppgavebenk" />;
     }
+
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => (
