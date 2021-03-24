@@ -41,8 +41,8 @@ const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårs
                 ) : (
                     <Normaltekst className="tekstUtenIkon">
                         Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
-                        blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn
-                        50%.
+                        blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn 50
+                        %.
                     </Normaltekst>
                 )}
             </GridTabell>
@@ -62,7 +62,7 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
         <>
             <Søknadsgrunnlag />
             <Normaltekst>
-                Har sagt opp jobben eller redusert arbeidstiden de siste 6 måneder?
+                Har sagt opp jobben eller redusert arbeidstiden de siste 6 måneder
             </Normaltekst>
             <Normaltekst>
                 {sagtOppEllerRedusertStilling &&
