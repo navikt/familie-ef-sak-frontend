@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { ISagtOppEllerRedusertStilling } from '../../../../typer/overgangsstønad';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import {
@@ -11,18 +11,22 @@ import {
     SagtOppEllerRedusertTilTekst,
 } from '../../Inngangsvilkår/Samliv/typer';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
 }
 
-const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårStatus }) => {
+const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårsresultat }) => {
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
         <>
             <GridTabell>
-                <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+                <VilkårsresultatIkon
+                    className={'vilkårStatusIkon'}
+                    vilkårsresultat={vilkårsresultat}
+                />
                 <div className="tittel">
                     <Undertittel>Sagt opp arbeidsforhold</Undertittel>
                 </div>
@@ -37,8 +41,8 @@ const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårS
                 ) : (
                     <Normaltekst className="tekstUtenIkon">
                         Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
-                        blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn
-                        50%.
+                        blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn 50
+                        %.
                     </Normaltekst>
                 )}
             </GridTabell>
@@ -58,7 +62,7 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
         <>
             <Søknadsgrunnlag />
             <Normaltekst>
-                Har sagt opp jobben eller redusert arbeidstiden de siste 6 måneder?
+                Har sagt opp jobben eller redusert arbeidstiden de siste 6 måneder
             </Normaltekst>
             <Normaltekst>
                 {sagtOppEllerRedusertStilling &&

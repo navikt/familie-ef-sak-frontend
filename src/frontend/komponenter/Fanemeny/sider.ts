@@ -8,7 +8,7 @@ export enum SideId {
     PERSONOPPLYSNINGER = 'PERSONOPPLYSNINGER',
     INNGANGSVILKÅR = 'INNGANGSVILKÅR',
     AKTIVITET = 'AKTIVITET',
-    INNTEKT = 'INNTEKT',
+    VEDTAK_OG_BEREGNING = 'VEDTAK_OG_BEREGNING',
     UTBETALINGSOVERSIKT = 'UTBETALINGSOVERSIKT',
     BREV = 'BREV',
     BLANKETT = 'BLANKETT',
@@ -31,14 +31,9 @@ export const sider: ISide[] = [
         navn: 'Aktivitet',
     },
     {
-        id: SideId.INNTEKT,
-        href: 'inntekt',
-        navn: 'Inntekt',
-    },
-    {
-        id: SideId.UTBETALINGSOVERSIKT,
-        href: 'utbetalingsoversikt',
-        navn: 'Utbetalingsoversikt',
+        id: SideId.VEDTAK_OG_BEREGNING,
+        href: 'vedtak-og-beregning',
+        navn: 'Vedtak og beregning',
     },
     {
         id: SideId.BREV,

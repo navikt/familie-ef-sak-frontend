@@ -29,14 +29,6 @@ export const SøkerDelerBoligTilTekst: Record<ESøkerDelerBolig, string> = {
         'En tidligere samboer er fortsatt registrert på adressen min',
 };
 
-export const ÅrsakEnsligTilTekst: Record<EÅrsakEnslig, string> = {
-    samlivsbruddForeldre: 'Samlivsbrudd med den andre forelderen',
-    samlivsbruddAndre: 'Samlivsbrudd med noen andre',
-    aleneFraFødsel: 'Jeg er alene med barn fra fødsel',
-    endringISamværsordning: 'Endring i omsorgen for barn',
-    dødsfall: 'Jeg er alene med barn på grunn av dødsfall',
-};
-
 export enum ESagtOppEllerRedusert {
     sagtOpp = 'sagtOpp',
     redusertStilling = 'redusertStilling',
@@ -44,7 +36,13 @@ export enum ESagtOppEllerRedusert {
 }
 
 export const SagtOppEllerRedusertTilTekst: Record<ESagtOppEllerRedusert, string> = {
-    sagtOpp: 'Ja, jeg har sagt opp jobben eller tatt frivillig permisjon (ikke foreldrepermisjon)',
-    redusertStilling: 'Ja, jeg har redusert arbeidstiden',
+    sagtOpp: 'Ja, har sagt opp jobben eller tatt frivillig permisjon (ikke foreldrepermisjon)',
+    redusertStilling: 'Ja, har redusert arbeidstiden',
     nei: 'Nei',
 };
+
+export interface ISivilstandsplaner {
+    harPlaner?: boolean;
+    fraDato?: string;
+    vordendeSamboerEktefelle?: IPersonDetaljer;
+}

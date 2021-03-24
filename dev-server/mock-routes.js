@@ -52,7 +52,7 @@ app.get('/familie-ef-sak/api/vedlegg/:id', (req, res) => {
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
-app.get('/familie-ef-sak/api/vurdering/:id/inngangsvilkar', (req, res) => {
+app.get('/familie-ef-sak/api/vurdering/:id/vilkar', (req, res) => {
     const filnavn = `inngangsvilkår-1.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
@@ -160,6 +160,22 @@ app.post('/familie-ef-sak/api/oppgave/:oppgaveId/fordel', (req, res) => {
 
 app.get('/familie-ef-sak/api/behandlingshistorikk/:behandlingId', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`behandlinghistorikk.json`)), delayMs);
+});
+
+app.get('/familie-ef-sak/api/vurdering/regler', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`regler.json`)), delayMs);
+});
+
+app.get('/familie-ef-sak/api/soknad/:behandlingId/datoer', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`vedtak-søknad-data.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/beregning/:behandlingId/lagre-vedtak', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`lagre-vedtak.json`)), delayMs);
+});
+
+app.post('/familie-ef-sak/api/behandling/:behandlingId/annuller', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`behandle-i-gosys.json`)), delayMs);
 });
 
 module.exports = app;

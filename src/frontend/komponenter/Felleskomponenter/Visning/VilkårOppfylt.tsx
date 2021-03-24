@@ -2,16 +2,11 @@ import React, { FC } from 'react';
 import Oppfylt from '../../../ikoner/Oppfylt';
 import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
 import IkkeVurdert from '../../../ikoner/IkkeVurdert';
+import { Vilkårsresultat } from '../../Behandling/Inngangsvilkår/vilkår';
 
 interface Props {
     erOppfylt: boolean;
     className?: string;
-}
-
-export enum VilkårStatus {
-    IKKE_VURDERT = 'IKKE_VURDERT',
-    OPPFYLT = 'OPPFYLT',
-    IKKE_OPPFYLT = 'IKKE_OPPFYLT',
 }
 
 export const VilkårOppfylt: FC<Props> = ({ erOppfylt, className }) => {
@@ -22,16 +17,18 @@ export const VilkårOppfylt: FC<Props> = ({ erOppfylt, className }) => {
     );
 };
 
-export const VilkårStatusIkon: FC<{ vilkårStatus: VilkårStatus; className?: string }> = ({
-    vilkårStatus,
+export const VilkårsresultatIkon: FC<{ vilkårsresultat: Vilkårsresultat; className?: string }> = ({
+    vilkårsresultat,
     className,
 }) => {
-    switch (vilkårStatus) {
-        case VilkårStatus.IKKE_VURDERT:
+    switch (vilkårsresultat) {
+        case Vilkårsresultat.IKKE_TATT_STILLING_TIL:
             return <IkkeVurdert className={className} heigth={23} width={21} />;
-        case VilkårStatus.OPPFYLT:
+        case Vilkårsresultat.OPPFYLT:
             return <Oppfylt className={className} heigth={23} width={21} />;
-        case VilkårStatus.IKKE_OPPFYLT:
+        case Vilkårsresultat.IKKE_OPPFYLT:
             return <IkkeOppfylt className={className} heigth={23} width={21} />;
+        default:
+            return null;
     }
 };

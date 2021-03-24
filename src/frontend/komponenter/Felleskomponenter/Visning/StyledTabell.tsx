@@ -5,7 +5,7 @@ export const GridTabell = styled.div<{ kolonner?: number; underTabellMargin?: nu
     display: grid;
     grid-template-columns: 21px 250px repeat(
             ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
-            300px
+            ${(props) => (props.kolonner && props.kolonner > 3 ? '150px' : '300px')}
         );
     grid-auto-rows: min-content;
     grid-gap: 0.5rem;
