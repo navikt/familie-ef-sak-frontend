@@ -16,7 +16,7 @@ const BehandlingRoutes: React.FC = () => {
                 to="/behandling/:behandlingId/inngangsvilkar"
             />
             {filtrerSiderEtterBehandlingstype(sider, behandlingSuksess.data).map((side) => (
-                <Route id={side.navn} exact={true} path={`/behandling/:behandlingId/${side.href}`}>
+                <Route key={side.navn} exact={true} path={`/behandling/:behandlingId/${side.href}`}>
                     {React.createElement(
                         side.komponent,
                         { behandlingId: behandlingSuksess.data.id },
