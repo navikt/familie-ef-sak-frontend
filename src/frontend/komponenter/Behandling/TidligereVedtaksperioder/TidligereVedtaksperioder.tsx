@@ -13,7 +13,7 @@ const Container = styled.div`
     color: ${variables.navMorkGra};
     padding: 1rem 5rem;
 `;
-const TidligereStønadsperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { hentVilkår, vilkår } = useHentVilkår();
 
     const hentVilkårCallback = useCallback(() => {
@@ -84,4 +84,4 @@ const TidligereStønadsperioder: React.FC<{ behandlingId: string }> = ({ behandl
     );
 };
 
-export default TidligereStønadsperioder;
+export default TidligereVedtaksperioder;
