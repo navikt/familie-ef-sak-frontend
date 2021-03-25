@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
 import {
+    AktivitetsvilkårType,
+    InngangsvilkårType,
     IVilkår,
     IVurdering,
     NullstillVilkårsvurdering,
     OppdaterVilkårsvurdering,
-    VilkårType,
     Vurderingsfeilmelding,
 } from '../Inngangsvilkår/vilkår';
 import { vilkårsresultat } from './VurderingUtil';
@@ -38,7 +39,7 @@ const StyledVurderinger = styled.div`
 
 interface Props {
     barnId?: string;
-    vilkårGruppe: VilkårType;
+    vilkårGruppe: InngangsvilkårType | AktivitetsvilkårType;
     inngangsvilkår: IVilkår;
     lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (vurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;

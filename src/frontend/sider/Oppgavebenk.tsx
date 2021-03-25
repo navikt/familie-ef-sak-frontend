@@ -24,13 +24,16 @@ export const OppgaveBenk: React.FC = () => {
     const { axiosRequest } = useApp();
     const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveResurs>(byggTomRessurs());
 
-    const hentOppgaver = useCallback((data: IOppgaveRequest) => {
-        axiosRequest<IOppgaverResponse, IOppgaveRequest>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/oppgave/soek`,
-            data,
-        }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
-    }, []);
+    const hentOppgaver = useCallback(
+        (data: IOppgaveRequest) => {
+            axiosRequest<IOppgaverResponse, IOppgaveRequest>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/oppgave/soek`,
+                data,
+            }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
+        },
+        [axiosRequest]
+    );
 
     return (
         <Side>

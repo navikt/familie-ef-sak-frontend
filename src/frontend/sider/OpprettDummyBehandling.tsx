@@ -50,7 +50,7 @@ export const OpprettDummyBehandling: React.FC = () => {
             case RessursStatus.SUKSESS:
                 history.push(`/behandling/${nyBehandlingRessurs.data}/inngangsvilkar`);
         }
-    }, [nyBehandlingRessurs]);
+    }, [nyBehandlingRessurs, history]);
     const harSattPersonIdent = personIdent.length === 11;
     const harFeil = feilmelding !== undefined && harSattPersonIdent;
 

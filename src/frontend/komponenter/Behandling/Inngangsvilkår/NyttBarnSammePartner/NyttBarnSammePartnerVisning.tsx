@@ -4,7 +4,7 @@ import { Element, EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
-import { RegistergrunnlagNyttBarn } from './typer';
+import { RegistergrunnlagNyttBarn, SøknadsgrunnlagNyttBarn } from './typer';
 import {
     mapBarnNavnTekst,
     mapForelderTilNavnOgFnr,
@@ -15,11 +15,11 @@ import {
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { Vilkårsresultat } from '../vilkår';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
-import { Tabell } from './Tabell';
 import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Tabell } from './Tabell';
 
 const TittelWrapper = styled.div`
     padding-bottom: 1rem;
@@ -103,29 +103,30 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
                     kolonner={[
                         {
                             overskrift: 'Navn',
-                            tekstVerdi: (søknadsgrunnlag) => mapBarnNavnTekst(søknadsgrunnlag),
+                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
+                                mapBarnNavnTekst(søknadsgrunnlag),
                         },
                         {
                             overskrift: 'Fødsels/D-nummer',
-                            tekstVerdi: (søknadsgrunnlag) =>
+                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
                                 formaterNullableFødsesnummer(søknadsgrunnlag.fødselsnummer),
                         },
                         {
                             overskrift: 'Fødselsdato',
-                            tekstVerdi: (søknadsgrunnlag) =>
+                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
                                 !søknadsgrunnlag.fødselsnummer &&
                                 søknadsgrunnlag.erBarnetFødt &&
                                 formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
                         },
                         {
                             overskrift: 'Termindato',
-                            tekstVerdi: (søknadsgrunnlag) =>
+                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
                                 !søknadsgrunnlag.erBarnetFødt &&
                                 formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
                         },
                         {
                             overskrift: 'Annen forelder',
-                            tekstVerdi: (søknadsgrunnlag) =>
+                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
                                 mapForelderTilNavnOgFnr(søknadsgrunnlag.annenForelderSoknad) ??
                                 mapIkkeOppgitt(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse),
                         },
