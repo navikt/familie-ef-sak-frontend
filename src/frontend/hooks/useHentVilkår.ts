@@ -22,12 +22,10 @@ const oppdaterInngangsvilkårMedVurdering = (
     },
 });
 
-export const useHentVilkår = (
-    behandlingId: string
-): {
+export const useHentVilkår = (): {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
-    lagreVurdering: (vurdering: IVurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
     nullstillVurdering: (
         nullstillVilkårsvurdering: NullstillVilkårsvurdering

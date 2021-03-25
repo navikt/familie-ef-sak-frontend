@@ -61,12 +61,11 @@ export enum Vilkårsresultat {
     IKKE_TATT_STILLING_TIL = 'IKKE_TATT_STILLING_TIL',
 }
 
-
 /**
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
  * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk
  */
-export type VilkårType = InngangsvilkårType | AktivitetsvilkårType;
+export type VilkårType = InngangsvilkårType | AktivitetsvilkårType | TidligereVedtaksperioderType;
 
 export enum InngangsvilkårType {
     FORUTGÅENDE_MEDLEMSKAP = 'FORUTGÅENDE_MEDLEMSKAP',
@@ -81,4 +80,8 @@ export enum InngangsvilkårType {
 export enum AktivitetsvilkårType {
     AKTIVITET = 'AKTIVITET',
     SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
+}
+
+export enum TidligereVedtaksperioderType {
+    TIDLIGERE_VEDTAKSPERIODER = 'TIDLIGERE_VEDTAKSPERIODER',
 }
