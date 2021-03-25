@@ -96,7 +96,7 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
                 <FlexDiv className="blokk-xs">
                     <Søknadsgrunnlag />
                     <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
-                        Brukers barn registrert i folkeregisteret
+                        Brukers nåværende eller fremtidige barn lagt til i søknad
                     </Element>
                 </FlexDiv>
                 <Tabell
