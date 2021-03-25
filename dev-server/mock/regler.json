@@ -344,6 +344,37 @@
             }
           }
         }
+      },
+      "TIDLIGERE_VEDTAKSPERIODER": {
+        "vilkårType": "TIDLIGERE_VEDTAKSPERIODER",
+        "regler": {
+          "HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD": {
+            "regelId": "HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "UTEN",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "UTEN",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          },
+          "HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING": {
+            "regelId": "HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING",
+            "svarMapping": {
+              "JA": {
+                "begrunnelseType": "UTEN",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "UTEN",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          }
+        }
       }
     }
   },

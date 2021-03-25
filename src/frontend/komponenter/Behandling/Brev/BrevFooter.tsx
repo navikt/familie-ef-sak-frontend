@@ -7,7 +7,7 @@ import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import { useBehandling } from '../../../context/BehandlingContext';
 
-const Footer = styled.div`
+const Footer = styled.footer`
     width: calc(100% - 571px);
     position: fixed;
     bottom: 0;

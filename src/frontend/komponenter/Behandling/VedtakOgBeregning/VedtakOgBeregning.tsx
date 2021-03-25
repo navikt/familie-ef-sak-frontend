@@ -18,7 +18,7 @@ interface Props {
     behandlingId: string;
 }
 
-const StyledInntekt = styled.div`
+const StyledVedtaksperiode = styled.div`
     padding: 2rem;
 `;
 
@@ -46,7 +46,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         <DataViewer response={{ søknadDataResponse }}>
             {({ søknadDataResponse }) => {
                 return (
-                    <StyledInntekt>
+                    <StyledVedtaksperiode>
                         <Element style={{ marginBottom: '0.5rem' }}>Søknadsinformasjon</Element>
                         <GridTabell style={{ marginBottom: '2rem' }}>
                             <Søknadsgrunnlag />
@@ -73,7 +73,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             />
                         )}
                         {feilmelding && <StyledFeilmelding>{feilmelding}</StyledFeilmelding>}
-                    </StyledInntekt>
+                    </StyledVedtaksperiode>
                 );
             }}
         </DataViewer>
