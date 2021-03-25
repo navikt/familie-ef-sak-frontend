@@ -1,4 +1,9 @@
-import { IVilkårGrunnlag, Vilkårsresultat, VilkårType } from '../vilkår';
+import {
+    AktivitetsvilkårType,
+    InngangsvilkårType,
+    IVilkårGrunnlag,
+    Vilkårsresultat,
+} from '../vilkår';
 import * as React from 'react';
 import { ReactChild } from 'react';
 import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
@@ -12,7 +17,7 @@ import AktivitetVisning from '../../Aktivitet/Aktivitet/AktivitetVisning';
 import SagtOppEllerRedusertVisning from '../../Aktivitet/SagtOppEllerRedusert/SagtOppEllerRedusertVisning';
 
 export const VilkårGruppeConfig: Record<
-    VilkårType,
+    InngangsvilkårType | AktivitetsvilkårType,
     {
         visning: (
             inngangsvilkår: IVilkårGrunnlag,
@@ -39,6 +44,14 @@ export const VilkårGruppeConfig: Record<
             />
         ),
     },
+    NYTT_BARN_SAMME_PARTNER: {
+        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
+            <NyttBarnSammePartnerVisning
+                barnMedSamvær={grunnlag.barnMedSamvær}
+                vilkårsresultat={vilkårsresultat}
+            />
+        ),
+    },
     SIVILSTAND: {
         visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
             <SivilstandVisning sivilstand={grunnlag.sivilstand} vilkårsresultat={vilkårsresultat} />
@@ -59,14 +72,6 @@ export const VilkårGruppeConfig: Record<
                 vilkårsresultat={vilkårsresultat}
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 barnId={barnId}
-            />
-        ),
-    },
-    NYTT_BARN_SAMME_PARTNER: {
-        visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
-            <NyttBarnSammePartnerVisning
-                barnMedSamvær={grunnlag.barnMedSamvær}
-                vilkårsresultat={vilkårsresultat}
             />
         ),
     },
