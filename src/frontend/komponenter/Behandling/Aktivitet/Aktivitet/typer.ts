@@ -52,3 +52,12 @@ export const StillingTilTekst: Record<EStilling, string> = {
     lærling: 'Lærling',
     tilkallingsvakt: 'Tilkallingsvikar eller liknende',
 };
+
+export enum EStudieandel {
+    heltid = 'heltid',
+    deltid = 'deltid',
+}
+export const StudieandelTilTekst: Record<EStudieandel, string> = {
+    heltid: 'Heltid',
+    deltid: 'Deltid',
+};

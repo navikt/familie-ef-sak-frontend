@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ITidligereUtdanning, IUnderUtdanning } from '../../../../typer/overgangsstønad';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
+import { ArbeidssituasjonTilTekst, EArbeidssituasjon, StudieandelTilTekst } from './typer';
 import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
 import { StyledTabellWrapper } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../../utils/formatter';
@@ -32,7 +32,7 @@ export const UnderUtdanning: FC<{
             )} - ${formaterNullableIsoDato(underUtdanning.til)}`}</Normaltekst>
 
             <Normaltekst className={'førsteDataKolonne'}>Heltid eller deltid</Normaltekst>
-            <Normaltekst> {underUtdanning.heltidEllerDeltid}</Normaltekst>
+            <Normaltekst> {StudieandelTilTekst[underUtdanning.heltidEllerDeltid]}</Normaltekst>
 
             <Normaltekst className={'førsteDataKolonne'}>Hvor mye skal søker studere</Normaltekst>
             <Normaltekst> {underUtdanning.hvorMyeSkalDuStudere + ' %'}</Normaltekst>
