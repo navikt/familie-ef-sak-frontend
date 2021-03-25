@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { InngangsvilkårGruppe, IVurdering, VilkårGruppe } from './vilkår';
+import { InngangsvilkårType, IVurdering } from './vilkår';
 import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -11,7 +11,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
-import { VilkårStatusIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
@@ -25,10 +25,10 @@ export const StyledInngangsvilkår = styled.div`
     grid-gap: 3rem;
 `;
 
-export const StyledKnapp = hiddenIf(styled(Knapp)`
+export const StyledKnapp = styled(hiddenIf(Knapp))`
     display: block;
     margin: 2rem auto 0;
-`);
+`;
 
 interface Props {
     behandlingId: string;
@@ -41,7 +41,9 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
-    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger } = useHentVilkår(behandlingId);
+    const { vilkår, hentVilkår, lagreVurdering, feilmeldinger, nullstillVurdering } = useHentVilkår(
+        behandlingId
+    );
 
     const godkjennEnderinger = () => {
         axiosRequest<null, void>({
@@ -101,10 +103,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <StyledInngangsvilkår>
-                            {Object.keys(InngangsvilkårGruppe).map((vilkårGruppe) => {
-                                if (vilkårGruppe === VilkårGruppe.ALENEOMSORG) {
+                            {Object.keys(InngangsvilkårType).map((vilkårGruppe) => {
+                                if (vilkårGruppe === InngangsvilkårType.ALENEOMSORG) {
                                     return (
-                                        <>
+                                        <React.Fragment key={vilkårGruppe}>
                                             <VilkårStatusForAleneomsorg
                                                 vurderinger={vilkår.vurderinger}
                                             />
@@ -117,19 +119,21 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                                         inngangsvilkår={vilkår}
                                                         lagreVurdering={lagreVurdering}
                                                         feilmeldinger={feilmeldinger}
+                                                        nullstillVurdering={nullstillVurdering}
                                                     />
                                                 );
                                             })}
-                                        </>
+                                        </React.Fragment>
                                     );
                                 } else {
                                     return (
                                         <Vurdering
                                             key={vilkårGruppe}
-                                            vilkårGruppe={vilkårGruppe as VilkårGruppe}
+                                            vilkårGruppe={vilkårGruppe as InngangsvilkårType}
                                             inngangsvilkår={vilkår}
                                             feilmeldinger={feilmeldinger}
                                             lagreVurdering={lagreVurdering}
+                                            nullstillVurdering={nullstillVurdering}
                                         />
                                     );
                                 }
@@ -148,10 +152,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     );
 };
 const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
-    const status = vilkårStatusAleneomsorg(vurderinger);
+    const vilkårsresultat = vilkårStatusAleneomsorg(vurderinger);
     return (
         <GridTabell style={{ marginBottom: 0 }}>
-            <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={status} />
+            <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
             <div className="tittel fjernSpacing">
                 <Undertittel>Aleneomsorg</Undertittel>
                 <EtikettLiten>§15-4</EtikettLiten>

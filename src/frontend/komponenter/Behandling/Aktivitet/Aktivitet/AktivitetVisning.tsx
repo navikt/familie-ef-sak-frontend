@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { IAktivitet } from '../../../../typer/overgangsstønad';
-import { VilkårStatus, VilkårStatusIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
@@ -13,12 +13,13 @@ import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmottakerSomFrilanser';
+import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
     aktivitet: IAktivitet;
-    vilkårStatus: VilkårStatus;
+    vilkårsresultat: Vilkårsresultat;
 }
-const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
+const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -37,7 +38,10 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårStatus }) => {
         <>
             <SeksjonWrapper>
                 <GridTabell kolonner={3}>
-                    <VilkårStatusIkon className={'vilkårStatusIkon'} vilkårStatus={vilkårStatus} />
+                    <VilkårsresultatIkon
+                        className={'vilkårStatusIkon'}
+                        vilkårsresultat={vilkårsresultat}
+                    />
                     <Undertittel className="tittel fjernSpacing">Aktivitet</Undertittel>
                 </GridTabell>
 
