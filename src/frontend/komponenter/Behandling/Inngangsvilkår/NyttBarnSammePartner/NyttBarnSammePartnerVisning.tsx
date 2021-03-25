@@ -14,11 +14,7 @@ import {
 } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { Vilkårsresultat } from '../vilkår';
-import {
-    formaterFødselsnummer,
-    formaterNullableFødsesnummer,
-    formaterNullableIsoDato,
-} from '../../../../utils/formatter';
+import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import { Tabell } from './Tabell';
 import {
     Registergrunnlag,
@@ -112,22 +108,20 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
                         {
                             overskrift: 'Fødsels/D-nummer',
                             tekstVerdi: (søknadsgrunnlag) =>
-                                søknadsgrunnlag.fødselsnummer &&
-                                søknadsgrunnlag.fødselsnummer.length === 11 &&
-                                formaterFødselsnummer(søknadsgrunnlag.fødselsnummer),
+                                formaterNullableFødsesnummer(søknadsgrunnlag.fødselsnummer),
                         },
                         {
                             overskrift: 'Fødselsdato',
                             tekstVerdi: (søknadsgrunnlag) =>
                                 !søknadsgrunnlag.fødselsnummer &&
                                 søknadsgrunnlag.erBarnetFødt &&
-                                formaterNullableIsoDato(søknadsgrunnlag.terminDato),
+                                formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
                         },
                         {
                             overskrift: 'Termindato',
                             tekstVerdi: (søknadsgrunnlag) =>
                                 !søknadsgrunnlag.erBarnetFødt &&
-                                formaterNullableIsoDato(søknadsgrunnlag.terminDato),
+                                formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
                         },
                         {
                             overskrift: 'Annen forelder',

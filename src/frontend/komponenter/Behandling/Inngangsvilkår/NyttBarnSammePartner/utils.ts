@@ -9,7 +9,7 @@ export const mapTilSøknadsgrunnlagNyttBarn = (
         .filter((barn) => !barn.registergrunnlag.fødselsnummer)
         .map((barn) => ({
             navn: barn.søknadsgrunnlag.navn,
-            terminDato: barn.søknadsgrunnlag.fødselTermindato,
+            fødselTermindato: barn.søknadsgrunnlag.fødselTermindato,
             fødselsnummer: barn.søknadsgrunnlag.fødselsnummer,
             annenForelderSoknad: barn.søknadsgrunnlag.forelder,
             ikkeOppgittAnnenForelderBegrunnelse:
