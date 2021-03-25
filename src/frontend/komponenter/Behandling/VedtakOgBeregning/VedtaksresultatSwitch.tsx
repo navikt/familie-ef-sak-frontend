@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
     EAktivitet,
     EBehandlingResultat,
@@ -26,6 +26,7 @@ interface Props {
     vedtaksresultatType: EBehandlingResultat;
     behandlingId: string;
     settFeilmelding: Dispatch<SetStateAction<string>>;
+    lagretVedtak?: IVedtak;
 }
 
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`
@@ -61,7 +62,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
     const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
-    const { vedtaksresultatType, behandlingId, settFeilmelding } = props;
+    const { vedtaksresultatType, behandlingId, settFeilmelding, lagretVedtak } = props;
     const tomVedtaksperiodeRad = {
         periodeType: '' as EPeriodetype,
         aktivitet: '' as EAktivitet,
@@ -71,6 +72,14 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IPeriode[]>([
         tomVedtaksperiodeRad,
     ]);
+
+    useEffect(() => {
+        if (lagretVedtak) {
+            settPeriodeBegrunnelse(lagretVedtak.periodeBegrunnelse);
+            settInntektBegrunnelse(lagretVedtak.inntektBegrunnelse);
+            settVedtaksperiodeListe(lagretVedtak.perioder);
+        }
+    }, []);
 
     const leggTilVedtaksperiode = () => {
         const nyListe = [...vedtaksperiodeListe];
