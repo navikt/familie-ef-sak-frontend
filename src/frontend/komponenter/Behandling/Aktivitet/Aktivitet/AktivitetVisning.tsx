@@ -73,13 +73,12 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
                         </GridTabell>
                     ))}
 
-                {aksjeselskap && (
-                    <GridTabell kolonner={3}>
-                        {aksjeselskap.map((selskap, index) => (
+                {aksjeselskap &&
+                    aksjeselskap.map((selskap, index) => (
+                        <GridTabell kolonner={3}>
                             <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />
-                        ))}
-                    </GridTabell>
-                )}
+                        </GridTabell>
+                    ))}
 
                 {datoOppstartJobb && (
                     <GridTabell kolonner={3}>
