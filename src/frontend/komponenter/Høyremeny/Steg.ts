@@ -1,8 +1,6 @@
 export enum Steg {
     JOURNALFØR_BLANKETT = 'JOURNALFØR_BLANKETT',
-    REGISTRERE_OPPLYSNINGER = 'REGISTRERE_OPPLYSNINGER',
-    VILKÅRSVURDERE_INNGANGSVILKÅR = 'VILKÅRSVURDERE_INNGANGSVILKÅR',
-    VILKÅRSVURDERE_STØNAD = 'VILKÅRSVURDERE_STØNAD',
+    VILKÅR = 'VILKÅR',
     BEREGNE_YTELSE = 'BEREGNE_YTELSE',
     SEND_TIL_BESLUTTER = 'SEND_TIL_BESLUTTER',
     BESLUTTE_VEDTAK = 'BESLUTTE_VEDTAK',
@@ -15,6 +13,7 @@ export enum Steg {
 }
 
 export const stegTypeTilTekst: Record<Steg, string> = {
+    VILKÅR: 'Vilkår',
     JOURNALFØR_BLANKETT: 'Blankett journalført',
     BEHANDLING_FERDIGSTILT: 'Behandling ferdigstilt',
     BEREGNE_YTELSE: 'Beregne ytelse',
