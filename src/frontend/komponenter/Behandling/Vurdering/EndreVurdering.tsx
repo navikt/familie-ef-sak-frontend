@@ -22,7 +22,7 @@ interface Props {
 }
 
 const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedigeringsmodus }) => {
-    const { regler } = useBehandling();
+    const { regler, hentBehandling } = useBehandling();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
 
@@ -33,6 +33,7 @@ const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedi
                 settOppdatererVurdering(false);
                 if (response.status === RessursStatus.SUKSESS) {
                     settRedigeringsmodus(Redigeringsmodus.VISNING);
+                    hentBehandling.rerun();
                 }
             });
         }

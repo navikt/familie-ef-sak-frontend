@@ -5,7 +5,6 @@ import Aktivitet from './Aktivitet/Aktivitet';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import Brev from './Brev/Brev';
-import Utbetalingsoversikt from './Utbetalingsoversikt/Utbetalingsoversikt';
 import VedtakOgBeregning from './VedtakOgBeregning/VedtakOgBeregning';
 import Blankett from './Blankett/Blankett';
 

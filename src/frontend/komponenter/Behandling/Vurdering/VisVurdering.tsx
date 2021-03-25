@@ -12,6 +12,7 @@ import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst } from './tekster';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -68,6 +69,7 @@ const VisVurdering: FC<Props> = ({
     resetVurdering,
     feilmelding,
 }) => {
+    const { hentBehandling } = useBehandling();
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
@@ -89,6 +91,7 @@ const VisVurdering: FC<Props> = ({
                         }).then((response) => {
                             if (response.status === RessursStatus.SUKSESS) {
                                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
+                                hentBehandling.rerun();
                             }
                         })
                     }

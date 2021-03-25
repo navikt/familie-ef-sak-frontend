@@ -61,11 +61,8 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [postInngangsvilkårSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
-        const postInngangsvilkår = (): Promise<Ressurs<string>> => {
-            return axiosRequest<any, any>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar/fullfor`,
-            });
+        const postInngangsvilkår = () => {
+            history.push(`/behandling/${behandlingId}/aktivitet`);
         };
 
         // TODO: Kun for dummy-flyt - må forbedres/omskrives

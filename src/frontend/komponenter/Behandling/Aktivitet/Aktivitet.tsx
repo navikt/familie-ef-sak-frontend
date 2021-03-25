@@ -43,18 +43,14 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
     }, [postOvergangsstønadSuksess]);
 
     const ferdigVurdert = (behandlingId: string): any => {
-        const postOvergangsstønad = (): Promise<Ressurs<string>> => {
-            return axiosRequest<any, any>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/vurdering/${behandlingId}/overgangsstonad/fullfor`,
-            });
+        const postOvergangsstønad = () => {
+            history.push(`/behandling/${behandlingId}/vedtak-og-beregning`);
         };
-
+        hentBehandling.rerun();
         // TODO: Kun for dummy-flyt - må forbedres/omskrives
         postOvergangsstønad().then((responseStønadsvilkår) => {
             if (responseStønadsvilkår.status === RessursStatus.SUKSESS) {
                 settPostOvergangsstønadSuksess(true);
-                hentBehandling.rerun();
             } else if (
                 responseStønadsvilkår.status === RessursStatus.IKKE_TILGANG ||
                 responseStønadsvilkår.status === RessursStatus.FEILET ||
