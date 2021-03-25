@@ -79,7 +79,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
             settInntektBegrunnelse(lagretVedtak.inntektBegrunnelse);
             settVedtaksperiodeListe(lagretVedtak.perioder);
         }
-    }, []);
+    }, [lagretVedtak]);
 
     const leggTilVedtaksperiode = () => {
         const nyListe = [...vedtaksperiodeListe];
