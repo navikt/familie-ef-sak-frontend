@@ -25,7 +25,9 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     {erUformeltGift !== undefined && <BooleanTekst value={erUformeltGift} />}
 
                     <Søknadsgrunnlag />
-                    <Normaltekst>Skilt eller separert i utlandet</Normaltekst>
+                    <Normaltekst>
+                        Separert eller skilt uten at det er registrert i folkeregisteret
+                    </Normaltekst>
                     {erUformeltSeparertEllerSkilt !== undefined && (
                         <BooleanTekst value={erUformeltSeparertEllerSkilt} />
                     )}
