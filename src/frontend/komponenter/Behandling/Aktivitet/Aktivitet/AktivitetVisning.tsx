@@ -29,6 +29,7 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
         arbeidssøker,
         datoOppstartJobb,
         underUtdanning,
+        tidligereUtdanninger,
         særligeTilsynsbehov,
         gjelderDeg,
     } = aktivitet;
@@ -114,9 +115,7 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
                     <GridTabell kolonner={3}>
                         <UnderUtdanning underUtdanning={underUtdanning} />
                         {underUtdanning.utdanningEtterGrunnskolen && (
-                            <TidligereUtdanninger
-                                tidligereUtdanninger={underUtdanning.tidligereUtdanninger}
-                            />
+                            <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
                         )}
                     </GridTabell>
                 )}
