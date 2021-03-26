@@ -1,4 +1,4 @@
-import { Client, getOnBehalfOfAccessToken } from '@navikt/familie-backend';
+import { Client, getLogTimestamp, getOnBehalfOfAccessToken, info } from '@navikt/familie-backend';
 import { NextFunction, Request, Response } from 'express';
 import { ClientRequest } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
@@ -31,10 +31,28 @@ export const doProxy: any = () => {
 
 export const attachToken = (authClient: Client) => {
     return async (req: Request, _res: Response, next: NextFunction) => {
-        getOnBehalfOfAccessToken(authClient, req, oboConfig).then((accessToken: string) => {
-            req.headers['Nav-Call-Id'] = uuidv4();
-            req.headers.Authorization = `Bearer ${accessToken}`;
-            return next();
-        });
+        getOnBehalfOfAccessToken(authClient, req, oboConfig)
+            .then((accessToken: string) => {
+                req.headers['Nav-Call-Id'] = uuidv4();
+                req.headers.Authorization = `Bearer ${accessToken}`;
+                return next();
+            })
+            .catch((e) => {
+                try {
+                    info(`${getLogTimestamp()}: ${JSON.stringify(e)}`);
+                } catch (_) {
+                    info(`${getLogTimestamp()}: feilet logging`);
+                }
+                try {
+                    info(`${getLogTimestamp()}: ${e}`);
+                } catch (_) {
+                    info(`${getLogTimestamp()}: feilet logging`);
+                }
+                _res.status(500).json({
+                    status: 'FEILET',
+                    frontendFeilmelding:
+                        'Uventet feil. Mulig du ikke har tilgang til applikasjonen.',
+                });
+            });
     };
 };
