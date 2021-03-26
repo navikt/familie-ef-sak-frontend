@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
+import { RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import Vurdering from '../Vurdering/Vurdering';
 import { useHistory } from 'react-router';

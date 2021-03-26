@@ -1,4 +1,4 @@
-import TidligereStønadsperioder from '../Behandling/TidligereStønadsperioder/TidligereStønadsperioder';
+import TidligereVedtaksperioder from '../Behandling/TidligereVedtaksperioder/TidligereVedtaksperioder';
 import Personopplysninger from '../Behandling/Personopplysninger/Personopplysninger';
 import Inngangsvilkår from '../Behandling/Inngangsvilkår/Inngangsvilkår';
 import { FunctionComponent } from 'react';
@@ -17,7 +17,7 @@ export interface ISide {
 
 export enum SideNavn {
     PERSONOPPLYSNINGER = 'Personopplysninger',
-    TIDLIGERESTØNADSPERIODER = 'Tidligere Stønadsperioder',
+    TIDLIGEREVEDTAKSPERIODER = 'Tidligere vedtaksperioder',
     INNGANGSVILKÅR = 'Inngangsvilkår',
     AKTIVITET = 'Aktivitet',
     VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
@@ -32,9 +32,9 @@ export const sider: ISide[] = [
         komponent: Personopplysninger,
     },
     {
-        href: 'tidligerestønadsperioder',
-        navn: SideNavn.TIDLIGERESTØNADSPERIODER,
-        komponent: TidligereStønadsperioder,
+        href: 'tidligere-vedtaksperioder',
+        navn: SideNavn.TIDLIGEREVEDTAKSPERIODER,
+        komponent: TidligereVedtaksperioder,
     },
     {
         href: 'inngangsvilkar',

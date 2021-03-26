@@ -72,7 +72,7 @@ export const Journalforing: React.FC = () => {
             hentJournalPost();
             journalpostState.settOppgaveId(oppgaveIdParam);
         }
-    }, [oppgaveIdParam, journalpostIdParam]);
+    }, [oppgaveIdParam, journalpostIdParam, hentJournalPost, journalpostState]);
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
@@ -97,13 +97,13 @@ export const Journalforing: React.FC = () => {
             stønadstype && hentFagsak(journalResponse.data.personIdent, stønadstype);
             hentFørsteDokument(journalResponse.data.journalpost);
         }
-    }, [journalResponse]);
+    }, [journalResponse, hentFagsak, hentFørsteDokument]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             journalpostState.settFagsakId(fagsak.data.id);
         }
-    }, [fagsak]);
+    }, [fagsak, journalpostState]);
 
     if (!oppgaveIdParam || !journalpostIdParam) {
         return <Redirect to="/oppgavebenk" />;
