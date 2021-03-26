@@ -1,6 +1,6 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Ressurs } from '../../../typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -55,12 +55,15 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         null
     >(lagretVedtakConfig);
 
+    useEffect(() => {
+        if (lagretVedtakResponse.status === RessursStatus.SUKSESS && lagretVedtakResponse.data) {
+            settResultatType(lagretVedtakResponse.data.resultatType);
+        }
+    }, [lagretVedtakResponse]);
+
     return (
         <DataViewer response={{ søknadDataResponse, lagretVedtakResponse }}>
             {({ søknadDataResponse, lagretVedtakResponse }) => {
-                if (lagretVedtakResponse) {
-                    settResultatType(lagretVedtakResponse.resultatType);
-                }
                 return (
                     <StyledVedtaksperiode>
                         <Element style={{ marginBottom: '0.5rem' }}>Søknadsinformasjon</Element>
