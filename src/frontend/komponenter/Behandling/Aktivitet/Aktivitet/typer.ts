@@ -57,7 +57,18 @@ export enum EStudieandel {
     heltid = 'heltid',
     deltid = 'deltid',
 }
+
 export const StudieandelTilTekst: Record<EStudieandel, string> = {
     heltid: 'Heltid',
     deltid: 'Deltid',
+};
+
+export enum EUtdanningsform {
+    privat = 'privat',
+    offentlig = 'offentlig',
+}
+
+export const UtdanningsformTilTekst: Record<EUtdanningsform, string> = {
+    privat: 'Privat',
+    offentlig: 'Offentlig',
 };

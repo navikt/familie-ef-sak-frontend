@@ -6,6 +6,7 @@ import {
     EDinSituasjon,
     EStilling,
     EStudieandel,
+    EUtdanningsform,
 } from '../komponenter/Behandling/Aktivitet/Aktivitet/typer';
 
 export interface IAktivitet {
@@ -67,7 +68,7 @@ export interface IUnderUtdanning {
     linjeKursGrad: string;
     fra: string;
     til: string;
-    offentligEllerPrivat: string;
+    offentligEllerPrivat: EUtdanningsform;
     heltidEllerDeltid: EStudieandel;
     hvorMyeSkalDuStudere?: number;
     hvaErMåletMedUtdanningen?: string;
