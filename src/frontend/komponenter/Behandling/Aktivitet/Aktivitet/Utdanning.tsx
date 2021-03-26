@@ -39,12 +39,14 @@ export const UnderUtdanning: FC<{
             <Normaltekst className={'førsteDataKolonne'}>Heltid eller deltid</Normaltekst>
             <Normaltekst> {StudieandelTilTekst[underUtdanning.heltidEllerDeltid]}</Normaltekst>
 
-            <Normaltekst className={'førsteDataKolonne'}>Hvor mye skal søker studere</Normaltekst>
-            <Normaltekst>
-                {underUtdanning.hvorMyeSkalDuStudere
-                    ? underUtdanning.hvorMyeSkalDuStudere + ' %'
-                    : '-'}
-            </Normaltekst>
+            {underUtdanning.hvorMyeSkalDuStudere && (
+                <>
+                    <Normaltekst className={'førsteDataKolonne'}>
+                        Hvor mye skal søker studere
+                    </Normaltekst>
+                    <Normaltekst> {underUtdanning.hvorMyeSkalDuStudere + ' %'}</Normaltekst>
+                </>
+            )}
 
             <Normaltekst className={'førsteDataKolonne'}>Målet for utdanningen</Normaltekst>
             <Normaltekst> {underUtdanning.hvaErMåletMedUtdanningen}</Normaltekst>
