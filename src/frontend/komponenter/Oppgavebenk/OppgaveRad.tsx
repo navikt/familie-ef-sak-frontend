@@ -75,6 +75,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                     >
                         Lag blankett
                     </Flatknapp>
+
                     <Flatknapp
                         hidden={!kanJournalføres(oppgave.behandlingstema, oppgave.oppgavetype)}
                         onClick={gåTilJournalføring}

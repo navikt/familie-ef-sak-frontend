@@ -1,4 +1,4 @@
-import { EÅrsakEnslig, IPersonDetaljer } from '../Sivilstand/typer';
+import { IPersonDetaljer } from '../Sivilstand/typer';
 import { IDokumentasjon } from '../../../../typer/felles';
 
 export interface IBosituasjon {

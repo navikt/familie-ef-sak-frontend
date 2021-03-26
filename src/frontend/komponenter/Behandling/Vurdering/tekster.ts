@@ -20,7 +20,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     MER_AV_DAGLIG_OMSORG: 'Har bruker klart mer av den daglige omsorgen?',
     OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Har bruker omsorgen for egne/adopterte barn? ',
     HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER:
-        'Har søker fått nytt barn med samme partner (født etter 01.01.2016) eller venter nytt barn med samme partner, etter at en av foreldrene tidligere har mottatt eller fortsatt mottar stønad for et annet felles barn.',
+        'Har søker fått nytt barn med samme partner (født etter 01.01.2016) eller venter nytt barn med samme partner, etter at en av foreldrene tidligere har mottatt eller fortsatt mottar stønad for et annet felles barn?',
     SAGT_OPP_ELLER_REDUSERT:
         'Har søker sagt opp jobben, tatt frivillig permisjon eller redusert arbeidstiden de siste 6 månedene før søknadstidspunktet?',
     MEDLEMSKAP_UNNTAK: 'Er unntak fra hovedregelen oppfylt?',
@@ -83,7 +83,7 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
-    NYTT_BARN_SAMME_PARTNER: 'Vilkår om barn med samme partner',
+    NYTT_BARN_SAMME_PARTNER: 'Vilkår om nytt barn samme partner',
     SAGT_OPP_ELLER_REDUSERT: 'Vilkår om sagt opp arbeidsforhold ',
     TIDLIGERE_VEDTAKSPERIODER: 'Tidligere vedtaksperioder',
 };

@@ -16,7 +16,7 @@ module.exports = {
         ecmaVersion: 2020,
         sourceType: 'module',
     },
-    plugins: ['@typescript-eslint', 'react-app', 'prettier'],
+    plugins: ['@typescript-eslint', 'react-app', 'prettier', 'react-hooks'],
     rules: {
         'import/extensions': [
             'off',
@@ -37,6 +37,8 @@ module.exports = {
         'react-app/react-hooks/exhaustive-deps': 'off',
         'jsx-a11y/interactive-supports-focus': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'warn',
     },
     settings: {
         react: {
