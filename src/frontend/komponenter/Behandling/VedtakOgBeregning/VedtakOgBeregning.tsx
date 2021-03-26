@@ -1,6 +1,6 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Ressurs } from '../../../typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -10,7 +10,7 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ISøknadData } from '../../../typer/beregningssøknadsdata';
 import { useDataHenter } from '../../../hooks/felles/useDataHenter';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { EBehandlingResultat } from '../../../typer/vedtak';
+import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import VelgVedtaksresultat from './VelgVedtaksresultat';
 
@@ -38,13 +38,32 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
         [behandlingId]
     );
 
+    const lagretVedtakConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
+        }),
+        [behandlingId]
+    );
+
     const søknadDataResponse: Ressurs<ISøknadData> = useDataHenter<ISøknadData, null>(
         søknadDataConfig
     );
 
+    const lagretVedtakResponse: Ressurs<IVedtak | undefined> = useDataHenter<
+        IVedtak | undefined,
+        null
+    >(lagretVedtakConfig);
+
+    useEffect(() => {
+        if (lagretVedtakResponse.status === RessursStatus.SUKSESS && lagretVedtakResponse.data) {
+            settResultatType(lagretVedtakResponse.data.resultatType);
+        }
+    }, [lagretVedtakResponse]);
+
     return (
-        <DataViewer response={{ søknadDataResponse }}>
-            {({ søknadDataResponse }) => {
+        <DataViewer response={{ søknadDataResponse, lagretVedtakResponse }}>
+            {({ søknadDataResponse, lagretVedtakResponse }) => {
                 return (
                     <StyledVedtaksperiode>
                         <Element style={{ marginBottom: '0.5rem' }}>Søknadsinformasjon</Element>
@@ -70,6 +89,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                                 vedtaksresultatType={resultatType}
                                 behandlingId={behandlingId}
                                 settFeilmelding={settFeilmelding}
+                                lagretVedtak={lagretVedtakResponse}
                             />
                         )}
                         {feilmelding && <StyledFeilmelding>{feilmelding}</StyledFeilmelding>}
