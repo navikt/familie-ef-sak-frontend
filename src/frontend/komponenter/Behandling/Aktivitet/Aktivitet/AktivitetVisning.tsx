@@ -29,7 +29,6 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
         arbeidssøker,
         datoOppstartJobb,
         underUtdanning,
-        tidligereUtdanninger,
         særligeTilsynsbehov,
         gjelderDeg,
     } = aktivitet;
@@ -74,13 +73,12 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
                         </GridTabell>
                     ))}
 
-                {aksjeselskap && (
-                    <GridTabell kolonner={3}>
-                        {aksjeselskap.map((selskap, index) => (
+                {aksjeselskap &&
+                    aksjeselskap.map((selskap, index) => (
+                        <GridTabell kolonner={3}>
                             <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />
-                        ))}
-                    </GridTabell>
-                )}
+                        </GridTabell>
+                    ))}
 
                 {datoOppstartJobb && (
                     <GridTabell kolonner={3}>
@@ -99,7 +97,9 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
                         <Element className={'undertittel'}>
                             {ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]}
                         </Element>
-                        <Normaltekst className={'førsteDataKolonne'}>Om virksomheten</Normaltekst>
+                        <Normaltekst className={'førsteDataKolonne'}>
+                            Beskrivelse av virksomheten
+                        </Normaltekst>
                         <Normaltekst> {virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
                     </GridTabell>
                 )}
@@ -113,8 +113,10 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
                 {underUtdanning && (
                     <GridTabell kolonner={3}>
                         <UnderUtdanning underUtdanning={underUtdanning} />
-                        {tidligereUtdanninger && (
-                            <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
+                        {underUtdanning.utdanningEtterGrunnskolen && (
+                            <TidligereUtdanninger
+                                tidligereUtdanninger={underUtdanning.tidligereUtdanninger}
+                            />
                         )}
                     </GridTabell>
                 )}

@@ -3,7 +3,7 @@ import { IArbeidsforhold } from '../../../../typer/overgangsstønad';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
-import { ArbeidssituasjonTilTekst, EArbeidssituasjon, StillingTilTekst } from './typer';
+import { ArbeidssituasjonTilTekst, EArbeidssituasjon, EStilling, StillingTilTekst } from './typer';
 
 export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{ arbeidsforhold: IArbeidsforhold }> = ({
     arbeidsforhold,
@@ -29,12 +29,16 @@ export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{ arbeidsforhold: IArbei
                     ? StillingTilTekst[arbeidsforhold.fastEllerMidlertidig]
                     : '-'}
             </Normaltekst>
-            <Normaltekst className={'førsteDataKolonne'}>Sluttdato</Normaltekst>
-            <Normaltekst>{`${
-                arbeidsforhold.harSluttdato
-                    ? 'Ja, ' + formaterNullableIsoDato(arbeidsforhold.sluttdato)
-                    : 'Nei'
-            }`}</Normaltekst>
+            {arbeidsforhold.fastEllerMidlertidig === EStilling.midlertidig && (
+                <>
+                    <Normaltekst className={'førsteDataKolonne'}>Sluttdato</Normaltekst>
+                    <Normaltekst>{`${
+                        arbeidsforhold.harSluttdato
+                            ? 'Ja, ' + formaterNullableIsoDato(arbeidsforhold.sluttdato)
+                            : 'Nei'
+                    }`}</Normaltekst>
+                </>
+            )}
         </>
     );
 };

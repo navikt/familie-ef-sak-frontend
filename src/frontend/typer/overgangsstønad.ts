@@ -2,7 +2,12 @@
 
 import { IDokumentasjon } from './felles';
 import { ESagtOppEllerRedusert } from '../komponenter/Behandling/Inngangsvilkår/Samliv/typer';
-import { EDinSituasjon, EStilling } from '../komponenter/Behandling/Aktivitet/Aktivitet/typer';
+import {
+    EDinSituasjon,
+    EStilling,
+    EStudieandel,
+    EUtdanningsform,
+} from '../komponenter/Behandling/Aktivitet/Aktivitet/typer';
 
 export interface IAktivitet {
     arbeidssituasjon: string[];
@@ -63,8 +68,8 @@ export interface IUnderUtdanning {
     linjeKursGrad: string;
     fra: string;
     til: string;
-    offentligEllerPrivat: string;
-    heltidEllerDeltid: string;
+    offentligEllerPrivat: EUtdanningsform;
+    heltidEllerDeltid: EStudieandel;
     hvorMyeSkalDuStudere?: number;
     hvaErMåletMedUtdanningen?: string;
     utdanningEtterGrunnskolen: boolean;
