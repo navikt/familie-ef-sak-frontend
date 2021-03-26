@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { InngangsvilkårType, IVurdering } from './vilkår';
-import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
+import { RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
-import { useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -35,9 +34,7 @@ interface Props {
 }
 
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
-    const history = useHistory();
-    const [postInngangsvilkårSuksess, settPostInngangsvilkårSuksess] = useState(false);
-    const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
@@ -49,38 +46,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         nullstillVurdering,
     } = useHentVilkår();
 
-    const godkjennEnderinger = () => {
+    const godkjennEndringer = () => {
         axiosRequest<null, void>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandlingId}/registergrunnlag/godkjenn`,
         }).then((resp) => {
             if (resp.status === RessursStatus.SUKSESS) {
                 hentBehandling.rerun();
-            }
-        });
-    };
-
-    useEffect(() => {
-        postInngangsvilkårSuksess && history.push(`/behandling/${behandlingId}/aktivitet`);
-    }, [postInngangsvilkårSuksess]);
-
-    const ferdigVurdert = (behandlingId: string): any => {
-        const postInngangsvilkår = () => {
-            history.push(`/behandling/${behandlingId}/aktivitet`);
-        };
-
-        // TODO: Kun for dummy-flyt - må forbedres/omskrives
-        postInngangsvilkår().then((responseInngangsvilkår) => {
-            if (responseInngangsvilkår.status === RessursStatus.SUKSESS) {
-                settPostInngangsvilkårSuksess(true);
-                hentBehandling.rerun();
-            } else if (
-                responseInngangsvilkår.status === RessursStatus.IKKE_TILGANG ||
-                responseInngangsvilkår.status === RessursStatus.FEILET ||
-                responseInngangsvilkår.status === RessursStatus.FUNKSJONELL_FEIL
-            ) {
-                settPostInngangsvilkårSuksess(false);
-                settFeilmelding(responseInngangsvilkår.frontendFeilmelding);
             }
         });
     };
@@ -95,7 +67,6 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     return (
         <>
             {feilmelding && <AlertStripeFeil children={feilmelding} />}
-            <StyledKnapp onClick={() => ferdigVurdert(behandlingId)}>Gå videre</StyledKnapp>
             <DataViewer response={{ vilkår }}>
                 {({ vilkår }) => {
                     const harEndringerIGrunnlagsdata = Object.values(
@@ -140,7 +111,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                 }
                             })}
                             <StyledKnapp
-                                onClick={godkjennEnderinger}
+                                onClick={godkjennEndringer}
                                 hidden={!harEndringerIGrunnlagsdata}
                             >
                                 Godkjenn endringer i registergrunnlag
