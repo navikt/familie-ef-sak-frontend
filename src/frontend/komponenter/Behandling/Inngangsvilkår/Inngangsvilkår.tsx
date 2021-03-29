@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { InngangsvilkårType, IVurdering, Vilkårsresultat } from './vilkår';
+import { InngangsvilkårType, IVilkår, IVurdering, Vilkårsresultat } from './vilkår';
 import { RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
@@ -79,33 +79,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <>
-                            <Vilkår
-                                tittel="Nytt barn samme partner"
-                                vilkårsresultat={
-                                    vilkår.vurderinger.find(
-                                        (v) =>
-                                            v.vilkårType ===
-                                            InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
-                                    )!.resultat ?? Vilkårsresultat.IKKE_TATT_STILLING_TIL
-                                }
-                            >
-                                {{
-                                    left: (
-                                        <NyttBarnSammePartnerVisning
-                                            barnMedSamvær={vilkår.grunnlag.barnMedSamvær}
-                                            vilkårsresultat={
-                                                vilkår.vurderinger.find(
-                                                    (v) =>
-                                                        v.vilkårType ===
-                                                        InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
-                                                )!.resultat ??
-                                                Vilkårsresultat.IKKE_TATT_STILLING_TIL
-                                            }
-                                        />
-                                    ),
-                                    right: <div>vurdering</div>,
-                                }}
-                            </Vilkår>
+                            <NyttBarnSammePartner vilkår={vilkår} />
                             <StyledInngangsvilkår>
                                 {Object.keys(InngangsvilkårType).map((vilkårGruppe) => {
                                     if (vilkårGruppe === InngangsvilkårType.ALENEOMSORG) {
@@ -166,6 +140,33 @@ const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ 
                 <EtikettLiten>§15-4</EtikettLiten>
             </div>
         </GridTabell>
+    );
+};
+
+const NyttBarnSammePartner: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
+    return (
+        <Vilkår
+            tittel="Nytt barn samme partner"
+            vilkårsresultat={
+                vilkår.vurderinger.find(
+                    (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
+                )!.resultat ?? Vilkårsresultat.IKKE_TATT_STILLING_TIL
+            }
+        >
+            {{
+                left: (
+                    <NyttBarnSammePartnerVisning
+                        barnMedSamvær={vilkår.grunnlag.barnMedSamvær}
+                        vilkårsresultat={
+                            vilkår.vurderinger.find(
+                                (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
+                            )!.resultat ?? Vilkårsresultat.IKKE_TATT_STILLING_TIL
+                        }
+                    />
+                ),
+                right: <div style={{ backgroundColor: 'pink' }}> høyre side vurdering</div>,
+            }}
+        </Vilkår>
     );
 };
 
