@@ -67,7 +67,7 @@
     "http-proxy-middleware": "^1.0.6",
     "https-proxy-agent": "^5.0.0",
     "lodash.throttle": "^4.1.1",
-    "loglevel": "^1.7.0",
+    "loglevel": "^1.7.1",
     "namecase": "^1.1.2",
     "nav-datovelger": "^6.1.10",
     "nav-frontend-alertstriper": "^3.0.23",
