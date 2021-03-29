@@ -20,6 +20,9 @@ const App: React.FC = () => {
         });
     }, []);
 
+    if (!innloggetSaksbehandler) {
+        return null;
+    }
     return (
         <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
             <AppProvider autentisertSaksbehandler={innloggetSaksbehandler}>

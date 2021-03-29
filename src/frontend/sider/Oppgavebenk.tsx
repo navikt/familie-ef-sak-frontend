@@ -18,11 +18,11 @@ const Side = styled.div`
     }
 `;
 
-export type OppgaveResurs = Ressurs<IOppgaverResponse>;
+export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
 
 export const OppgaveBenk: React.FC = () => {
     const { axiosRequest } = useApp();
-    const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveResurs>(byggTomRessurs());
+    const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveRessurs>(byggTomRessurs());
 
     const hentOppgaver = useCallback(
         (data: IOppgaveRequest) => {
