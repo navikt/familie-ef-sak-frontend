@@ -5,10 +5,14 @@ import { VilkårsresultatIkon } from './Visning/VilkårOppfylt';
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 
-interface Props {
+type VilkårtittelProps = {
     tittel: string;
     paragrafTittel: string;
     vilkårsresultat: Vilkårsresultat;
+};
+
+interface Props {
+    vilkårtittel?: VilkårtittelProps;
     children: {
         left: JSX.Element;
         right: JSX.Element;
@@ -17,16 +21,16 @@ interface Props {
 
 const Container = styled.div`
     display: flex;
-    width: 100%;
     margin: 2rem;
+    border-bottom: 3px solid #e9e7e7;
 
     .leftContainer {
+        padding: 1.5rem 0;
         width: 50%;
-        background-color: blue;
     }
     .rightContainer {
+        padding: 1.5rem 0;
         width: 50%;
-        background-color: pink;
     }
 
     .tittel {
@@ -35,7 +39,7 @@ const Container = styled.div`
         align-items: center;
 
         .typo-undertittel {
-            margin-right: 1rem;
+            margin: 0 1rem 0 0.5rem;
         }
         .typo-etikett-liten {
             color: ${navFarger.navGra60};
@@ -43,23 +47,21 @@ const Container = styled.div`
     }
 `;
 
-const Vilkår: React.FC<Props> = ({
-    tittel,
-    vilkårsresultat,
-    paragrafTittel,
-    children: { left, right },
-}) => {
+const Vilkår: React.FC<Props> = ({ vilkårtittel, children: { left, right } }) => {
+    const Vilkårtittel = () => {
+        return vilkårtittel ? (
+            <div className="tittel">
+                <VilkårsresultatIkon vilkårsresultat={vilkårtittel.vilkårsresultat} />
+                <Undertittel>{vilkårtittel.tittel}</Undertittel>
+                <EtikettLiten>{vilkårtittel.paragrafTittel}</EtikettLiten>
+            </div>
+        ) : null;
+    };
+
     return (
         <Container>
             <div className="leftContainer">
-                <div className="tittel">
-                    <VilkårsresultatIkon
-                        className="vilkårStatusIkon"
-                        vilkårsresultat={vilkårsresultat}
-                    />
-                    <Undertittel>{tittel}</Undertittel>
-                    <EtikettLiten>{paragrafTittel}</EtikettLiten>
-                </div>
+                <Vilkårtittel />
                 {left}
             </div>
             <div className="rightContainer">{right}</div>

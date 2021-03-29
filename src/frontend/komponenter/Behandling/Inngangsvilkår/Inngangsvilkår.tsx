@@ -1,11 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
@@ -13,6 +12,10 @@ import { useHentVilkår } from '../../../hooks/useHentVilkår';
 import { NyttBarnSammePartner } from './NyttBarnSammePartner/NyttBarnSammePartner';
 import { Aleneomsorg } from './Aleneomsorg/Aleneomsorg';
 import { MorEllerFar } from './MorEllerFar/MorEllerFar';
+import { Opphold } from './Opphold/Opphold';
+import { Medlemskap } from './Medlemskap/Medlemskap';
+import { Samliv } from './Samliv/Samliv';
+import { Sivilstand } from './Sivilstand/Sivilstand';
 
 export const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -33,7 +36,6 @@ interface Props {
 
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const history = useHistory();
-    const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { behandling, hentBehandling } = useBehandling();
 
@@ -64,48 +66,72 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         }
     }, [behandlingId]);
     return (
-        <>
-            {feilmelding && <AlertStripeFeil children={feilmelding} />}
-            <DataViewer response={{ vilkår }}>
-                {({ vilkår }) => {
-                    const harEndringerIGrunnlagsdata = Object.values(
-                        (behandling as RessursSuksess<Behandling>).data
-                            .endringerIRegistergrunnlag || {}
-                    ).some((endringer) => endringer.length > 0);
-                    return (
-                        <>
-                            <NyttBarnSammePartner
-                                nullstillVurdering={nullstillVurdering}
-                                feilmeldinger={feilmeldinger}
-                                grunnlag={vilkår.grunnlag}
-                                lagreVurdering={lagreVurdering}
-                                vurderinger={vilkår.vurderinger}
-                            />
-                            <MorEllerFar
-                                nullstillVurdering={nullstillVurdering}
-                                feilmeldinger={feilmeldinger}
-                                grunnlag={vilkår.grunnlag}
-                                lagreVurdering={lagreVurdering}
-                                vurderinger={vilkår.vurderinger}
-                            />
-                            <Aleneomsorg
-                                nullstillVurdering={nullstillVurdering}
-                                feilmeldinger={feilmeldinger}
-                                grunnlag={vilkår.grunnlag}
-                                lagreVurdering={lagreVurdering}
-                                vurderinger={vilkår.vurderinger}
-                            />
-                            <StyledKnapp
-                                onClick={godkjennEnderinger}
-                                hidden={!harEndringerIGrunnlagsdata}
-                            >
-                                Godkjenn endringer i registergrunnlag
-                            </StyledKnapp>
-                        </>
-                    );
-                }}
-            </DataViewer>
-        </>
+        <DataViewer response={{ vilkår }}>
+            {({ vilkår }) => {
+                const harEndringerIGrunnlagsdata = Object.values(
+                    (behandling as RessursSuksess<Behandling>).data.endringerIRegistergrunnlag || {}
+                ).some((endringer) => endringer.length > 0);
+                return (
+                    <>
+                        <Medlemskap
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <Opphold
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <Sivilstand
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <Samliv
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <NyttBarnSammePartner
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <MorEllerFar
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <Aleneomsorg
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <StyledKnapp
+                            onClick={godkjennEnderinger}
+                            hidden={!harEndringerIGrunnlagsdata}
+                        >
+                            Godkjenn endringer i registergrunnlag
+                        </StyledKnapp>
+                    </>
+                );
+            }}
+        </DataViewer>
     );
 };
 

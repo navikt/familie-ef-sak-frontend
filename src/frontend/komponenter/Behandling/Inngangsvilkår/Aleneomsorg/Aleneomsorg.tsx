@@ -15,30 +15,30 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
 }) => {
     const vilkårsresultat = vilkårStatusAleneomsorg(vurderinger);
     return (
-        <Vilkår
-            paragrafTittel="§15-4"
-            tittel="Nytt barn samme partner"
-            vilkårsresultat={vilkårsresultat}
-        >
-            {{
-                left: (
-                    <>
-                        {grunnlag.barnMedSamvær.map((barn) => (
-                            <AleneomsorgInfo
-                                barnMedSamvær={grunnlag.barnMedSamvær}
-                                barnId={barn.barnId}
-                            />
-                        ))}
-                    </>
-                ),
-                right: (
-                    <>
-                        {vurderinger
-                            .filter(
-                                (vurdering) =>
-                                    vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG
-                            )
-                            .map((vurdering) => (
+        <>
+            {vurderinger
+                .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
+                .map((vurdering, idx) => (
+                    <Vilkår
+                        key={vurdering.id}
+                        vilkårtittel={
+                            idx === 0
+                                ? {
+                                      paragrafTittel: '§15-4',
+                                      tittel: 'Aleneomsorg',
+                                      vilkårsresultat,
+                                  }
+                                : undefined
+                        }
+                    >
+                        {{
+                            left: (
+                                <AleneomsorgInfo
+                                    barnMedSamvær={grunnlag.barnMedSamvær}
+                                    barnId={vurdering.barnId}
+                                />
+                            ),
+                            right: (
                                 <VisEllerEndreVurdering
                                     key={vurdering.id}
                                     vurdering={vurdering}
@@ -46,10 +46,10 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                     lagreVurdering={lagreVurdering}
                                     nullstillVurdering={nullstillVurdering}
                                 />
-                            ))}
-                    </>
-                ),
-            }}
-        </Vilkår>
+                            ),
+                        }}
+                    </Vilkår>
+                ))}
+        </>
     );
 };

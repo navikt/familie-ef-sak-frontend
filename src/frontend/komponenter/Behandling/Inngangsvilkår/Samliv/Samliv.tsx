@@ -1,31 +1,31 @@
 import React from 'react';
-import { VilkårProps } from '../vilkårprops';
-import Vilkår from '../../../Felleskomponenter/Vilkår';
 import { InngangsvilkårType } from '../vilkår';
-import MorEllerFarInfo from './MorEllerFarInfo';
+import Vilkår from '../../../Felleskomponenter/Vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
+import { VilkårProps } from '../vilkårprops';
+import SamlivInfo from './SamlivInfo';
 
-export const MorEllerFar: React.FC<VilkårProps> = ({
+export const Samliv: React.FC<VilkårProps> = ({
     vurderinger,
+    grunnlag,
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
-    grunnlag,
 }) => {
-    const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.MOR_ELLER_FAR);
+    const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.SAMLIV);
     if (!vurdering) {
-        return <div>Mangler vurdering for Mor eller far</div>;
+        return <div>Mangler vurdering for samliv</div>;
     }
     return (
         <Vilkår
             vilkårtittel={{
                 paragrafTittel: '§15-4',
-                tittel: 'Mor eller Far',
+                tittel: 'Samliv',
                 vilkårsresultat: vurdering.resultat,
             }}
         >
             {{
-                left: <MorEllerFarInfo barnMedSamvær={grunnlag.barnMedSamvær} />,
+                left: <SamlivInfo grunnlag={grunnlag} />,
                 right: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}

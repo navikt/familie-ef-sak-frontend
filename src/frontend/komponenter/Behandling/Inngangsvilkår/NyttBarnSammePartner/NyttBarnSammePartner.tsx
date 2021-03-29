@@ -38,9 +38,11 @@ export const NyttBarnSammePartner: React.FC<Props> = ({
     }
     return (
         <Vilkår
-            paragrafTittel="§15-4"
-            tittel="Nytt barn samme partner"
-            vilkårsresultat={vurdering.resultat}
+            vilkårtittel={{
+                paragrafTittel: '§15-4',
+                tittel: 'Nytt barn samme partner',
+                vilkårsresultat: vurdering.resultat,
+            }}
         >
             {{
                 left: <NyttBarnSammePartnerInfo barnMedSamvær={barnMedSamvær} />,

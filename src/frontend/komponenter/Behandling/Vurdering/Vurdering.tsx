@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC } from 'react';
 import {
     AktivitetsvilkårType,
-    InngangsvilkårType,
     IVilkår,
     IVurdering,
     NullstillVilkårsvurdering,
@@ -38,8 +37,7 @@ const StyledVurderinger = styled.div`
 `;
 
 interface Props {
-    barnId?: string;
-    vilkårGruppe: InngangsvilkårType | AktivitetsvilkårType;
+    vilkårGruppe: AktivitetsvilkårType;
     inngangsvilkår: IVilkår;
     lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (vurdering: NullstillVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
@@ -52,7 +50,6 @@ const Vurdering: FC<Props> = ({
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
-    barnId,
 }) => {
     const vurderinger = inngangsvilkår.vurderinger;
 
@@ -65,11 +62,10 @@ const Vurdering: FC<Props> = ({
 
     return (
         <StyledVilkårOgVurdering>
-            <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status, barnId)}</StyledVisning>
+            <StyledVisning>{config.visning(inngangsvilkår.grunnlag, status)}</StyledVisning>
             <StyledVurderinger>
                 {vurderinger
                     .filter((vurdering) => vurdering.vilkårType === vilkårGruppe)
-                    .filter((vurdering) => (vurdering.barnId ? vurdering.barnId === barnId : true))
                     .map((vurdering) => (
                         <VisEllerEndreVurdering
                             key={vurdering.id}
