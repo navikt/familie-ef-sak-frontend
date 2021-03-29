@@ -6,6 +6,7 @@ import { useApp } from '../../../context/AppContext';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import { useBehandling } from '../../../context/BehandlingContext';
+import { useState } from 'react';
 
 const Footer = styled.footer`
     width: calc(100% - 571px);
@@ -30,28 +31,35 @@ const BrevFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
+    const [laster, settLaster] = useState<boolean>(false);
 
-    const sendTilBeslutter = () =>
+    const sendTilBeslutter = () => {
+        settLaster(true);
         axiosRequest<string, undefined>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
-        }).then((res: Ressurs<string>) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                hentTotrinnskontroll.rerun();
-                modalDispatch({
-                    type: ModalAction.VIS_MODAL,
-                    modalType: ModalType.SENDT_TIL_BESLUTTER,
-                });
-            } else {
-                window.alert('Det gikk mindre bra! :(((');
-            }
-        });
+        })
+            .then((res: Ressurs<string>) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    hentTotrinnskontroll.rerun();
+                    modalDispatch({
+                        type: ModalAction.VIS_MODAL,
+                        modalType: ModalType.SENDT_TIL_BESLUTTER,
+                    });
+                } else {
+                    window.alert('Det gikk mindre bra! :(((');
+                }
+            })
+            .finally(() => settLaster(false));
+    };
 
     return (
         <Footer>
             <MidtstiltInnhold>
                 <Knapp>Lagre</Knapp>
-                <StyledHovedknapp onClick={sendTilBeslutter}>Send til beslutter</StyledHovedknapp>
+                <StyledHovedknapp onClick={sendTilBeslutter} disabled={laster}>
+                    Send til beslutter
+                </StyledHovedknapp>
             </MidtstiltInnhold>
         </Footer>
     );
