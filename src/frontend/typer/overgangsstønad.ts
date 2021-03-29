@@ -19,6 +19,7 @@ export interface IAktivitet {
     virksomhet?: IVirksomhet;
     gjelderDeg: EDinSituasjon[];
     særligeTilsynsbehov: ISærligeTilsynsbehov[];
+    tidligereUtdanninger: ITidligereUtdanning[];
     datoOppstartJobb?: string;
 }
 
@@ -73,7 +74,6 @@ export interface IUnderUtdanning {
     hvorMyeSkalDuStudere?: number;
     hvaErMåletMedUtdanningen?: string;
     utdanningEtterGrunnskolen: boolean;
-    tidligereUtdanninger: ITidligereUtdanning[];
 }
 
 export interface ITidligereUtdanning {
