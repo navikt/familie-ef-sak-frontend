@@ -30,11 +30,17 @@ export const doProxy: any = () => {
 };
 
 export const attachToken = (authClient: Client) => {
-    return async (req: Request, _res: Response, next: NextFunction) => {
-        getOnBehalfOfAccessToken(authClient, req, oboConfig).then((accessToken: string) => {
-            req.headers['Nav-Call-Id'] = uuidv4();
-            req.headers.Authorization = `Bearer ${accessToken}`;
-            return next();
-        });
+    return async (req: Request, res: Response, next: NextFunction) => {
+        getOnBehalfOfAccessToken(authClient, req, oboConfig)
+            .then((accessToken: string) => {
+                req.headers['Nav-Call-Id'] = uuidv4();
+                req.headers.Authorization = `Bearer ${accessToken}`;
+                return next();
+            })
+            .catch((error) => {
+                console.error('Kaster 403 i getOnBehalfOfAccessToken' + error);
+                res.statusCode = 403; //Kanske feil her
+                res.end();
+            });
     };
 };
