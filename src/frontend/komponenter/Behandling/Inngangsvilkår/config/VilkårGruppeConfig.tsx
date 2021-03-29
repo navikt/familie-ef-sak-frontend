@@ -10,9 +10,9 @@ import MedlemskapVisning from '../Medlemskap/MedlemskapVisning';
 import SivilstandVisning from '../Sivilstand/SivilstandVisning';
 import OppholdVisning from '../Opphold/OppholdVisning';
 import SamlivVisning from '../Samliv/SamlivVisning';
-import AleneomsorgVisning from '../Aleneomsorg/AleneomsorgVisning';
-import MorEllerFarVisning from '../MorEllerFar/MorEllerFarVisning';
-import NyttBarnSammePartnerVisning from '../NyttBarnSammePartner/NyttBarnSammePartnerVisning';
+import AleneomsorgInfo from '../Aleneomsorg/AleneomsorgInfo';
+import MorEllerFarInfo from '../MorEllerFar/MorEllerFarInfo';
+import NyttBarnSammePartnerInfo from '../NyttBarnSammePartner/NyttBarnSammePartnerInfo';
 import AktivitetVisning from '../../Aktivitet/Aktivitet/AktivitetVisning';
 import SagtOppEllerRedusertVisning from '../../Aktivitet/SagtOppEllerRedusert/SagtOppEllerRedusertVisning';
 
@@ -38,7 +38,7 @@ export const VilkårGruppeConfig: Record<
     },
     MOR_ELLER_FAR: {
         visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
-            <MorEllerFarVisning
+            <MorEllerFarInfo
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårsresultat={vilkårsresultat}
             />
@@ -46,7 +46,7 @@ export const VilkårGruppeConfig: Record<
     },
     NYTT_BARN_SAMME_PARTNER: {
         visning: (grunnlag: IVilkårGrunnlag, vilkårsresultat: Vilkårsresultat): ReactChild => (
-            <NyttBarnSammePartnerVisning
+            <NyttBarnSammePartnerInfo
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 vilkårsresultat={vilkårsresultat}
             />
@@ -68,7 +68,7 @@ export const VilkårGruppeConfig: Record<
             vilkårsresultat: Vilkårsresultat,
             barnId?: string
         ): ReactChild => (
-            <AleneomsorgVisning
+            <AleneomsorgInfo
                 vilkårsresultat={vilkårsresultat}
                 barnMedSamvær={grunnlag.barnMedSamvær}
                 barnId={barnId}

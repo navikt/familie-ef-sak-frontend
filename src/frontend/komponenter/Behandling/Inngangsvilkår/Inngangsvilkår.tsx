@@ -1,9 +1,7 @@
 import React, { FC, useState } from 'react';
-import { InngangsvilkårType, IVilkår, IVurdering, Vilkårsresultat } from './vilkår';
 import { RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
-import Vurdering from '../Vurdering/Vurdering';
 import { useHistory } from 'react-router';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
@@ -11,13 +9,10 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../context/BehandlingContext';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Behandling } from '../../../typer/fagsak';
-import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
-import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
-import Vilkår from '../../Felleskomponenter/Vilkår';
-import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
-import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
-import NyttBarnSammePartnerVisning from './NyttBarnSammePartner/NyttBarnSammePartnerVisning';
+import { NyttBarnSammePartner } from './NyttBarnSammePartner/NyttBarnSammePartner';
+import { Aleneomsorg } from './Aleneomsorg/Aleneomsorg';
+import { MorEllerFar } from './MorEllerFar/MorEllerFar';
 
 export const StyledInngangsvilkår = styled.div`
     margin: 2rem;
@@ -79,94 +74,38 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     ).some((endringer) => endringer.length > 0);
                     return (
                         <>
-                            <NyttBarnSammePartner vilkår={vilkår} />
-                            <StyledInngangsvilkår>
-                                {Object.keys(InngangsvilkårType).map((vilkårGruppe) => {
-                                    if (vilkårGruppe === InngangsvilkårType.ALENEOMSORG) {
-                                        return (
-                                            <React.Fragment key={vilkårGruppe}>
-                                                <VilkårStatusForAleneomsorg
-                                                    vurderinger={vilkår.vurderinger}
-                                                />
-                                                {vilkår.grunnlag.barnMedSamvær.map((barn) => {
-                                                    return (
-                                                        <Vurdering
-                                                            key={barn.barnId}
-                                                            barnId={barn.barnId}
-                                                            vilkårGruppe={vilkårGruppe}
-                                                            inngangsvilkår={vilkår}
-                                                            lagreVurdering={lagreVurdering}
-                                                            feilmeldinger={feilmeldinger}
-                                                            nullstillVurdering={nullstillVurdering}
-                                                        />
-                                                    );
-                                                })}
-                                            </React.Fragment>
-                                        );
-                                    } else {
-                                        return (
-                                            <Vurdering
-                                                key={vilkårGruppe}
-                                                vilkårGruppe={vilkårGruppe as InngangsvilkårType}
-                                                inngangsvilkår={vilkår}
-                                                feilmeldinger={feilmeldinger}
-                                                lagreVurdering={lagreVurdering}
-                                                nullstillVurdering={nullstillVurdering}
-                                            />
-                                        );
-                                    }
-                                })}
-                                <StyledKnapp
-                                    onClick={godkjennEnderinger}
-                                    hidden={!harEndringerIGrunnlagsdata}
-                                >
-                                    Godkjenn endringer i registergrunnlag
-                                </StyledKnapp>
-                            </StyledInngangsvilkår>
+                            <NyttBarnSammePartner
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                            />
+                            <MorEllerFar
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                            />
+                            <Aleneomsorg
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                            />
+                            <StyledKnapp
+                                onClick={godkjennEnderinger}
+                                hidden={!harEndringerIGrunnlagsdata}
+                            >
+                                Godkjenn endringer i registergrunnlag
+                            </StyledKnapp>
                         </>
                     );
                 }}
             </DataViewer>
         </>
-    );
-};
-const VilkårStatusForAleneomsorg: React.FC<{ vurderinger: IVurdering[] }> = ({ vurderinger }) => {
-    const vilkårsresultat = vilkårStatusAleneomsorg(vurderinger);
-    return (
-        <GridTabell style={{ marginBottom: 0 }}>
-            <VilkårsresultatIkon className={'vilkårStatusIkon'} vilkårsresultat={vilkårsresultat} />
-            <div className="tittel fjernSpacing">
-                <Undertittel>Aleneomsorg</Undertittel>
-                <EtikettLiten>§15-4</EtikettLiten>
-            </div>
-        </GridTabell>
-    );
-};
-
-const NyttBarnSammePartner: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
-    return (
-        <Vilkår
-            tittel="Nytt barn samme partner"
-            vilkårsresultat={
-                vilkår.vurderinger.find(
-                    (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
-                )!.resultat ?? Vilkårsresultat.IKKE_TATT_STILLING_TIL
-            }
-        >
-            {{
-                left: (
-                    <NyttBarnSammePartnerVisning
-                        barnMedSamvær={vilkår.grunnlag.barnMedSamvær}
-                        vilkårsresultat={
-                            vilkår.vurderinger.find(
-                                (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
-                            )!.resultat ?? Vilkårsresultat.IKKE_TATT_STILLING_TIL
-                        }
-                    />
-                ),
-                right: <div style={{ backgroundColor: 'pink' }}> høyre side vurdering</div>,
-            }}
-        </Vilkår>
     );
 };
 

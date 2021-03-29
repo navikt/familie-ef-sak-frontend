@@ -1,9 +1,6 @@
-import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import React, { FC } from 'react';
-import { Element, EtikettLiten, Undertittel } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
-import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { RegistergrunnlagNyttBarn, SøknadsgrunnlagNyttBarn } from './typer';
 import {
     mapBarnNavnTekst,
@@ -13,7 +10,6 @@ import {
     mapTilSøknadsgrunnlagNyttBarn,
 } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { Vilkårsresultat } from '../vilkår';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import {
     Registergrunnlag,
@@ -21,26 +17,11 @@ import {
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Tabell } from './Tabell';
 
-const TittelWrapper = styled.div`
-    padding-bottom: 1rem;
-    display: flex;
-    margin-left: 0.5rem;
-    align-items: center;
-
-    .typo-undertittel {
-        margin-right: 1rem;
-    }
-    .typo-etikett-liten {
-        color: ${navFarger.navGra60};
-    }
-`;
-
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    vilkårsresultat: Vilkårsresultat;
 }
 
-const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresultat }) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
@@ -128,4 +109,4 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
         </>
     );
 };
-export default NyttBarnSammePartnerVisning;
+export default NyttBarnSammePartnerInfo;

@@ -7,6 +7,7 @@ import navFarger from 'nav-frontend-core';
 
 interface Props {
     tittel: string;
+    paragrafTittel: string;
     vilkårsresultat: Vilkårsresultat;
     children: {
         left: JSX.Element;
@@ -21,9 +22,11 @@ const Container = styled.div`
 
     .leftContainer {
         width: 50%;
+        background-color: blue;
     }
     .rightContainer {
         width: 50%;
+        background-color: pink;
     }
 
     .tittel {
@@ -40,7 +43,12 @@ const Container = styled.div`
     }
 `;
 
-const Vilkår: React.FC<Props> = ({ tittel, vilkårsresultat, children: { left, right } }) => {
+const Vilkår: React.FC<Props> = ({
+    tittel,
+    vilkårsresultat,
+    paragrafTittel,
+    children: { left, right },
+}) => {
     return (
         <Container>
             <div className="leftContainer">
@@ -50,7 +58,7 @@ const Vilkår: React.FC<Props> = ({ tittel, vilkårsresultat, children: { left, 
                         vilkårsresultat={vilkårsresultat}
                     />
                     <Undertittel>{tittel}</Undertittel>
-                    <EtikettLiten>§15-4</EtikettLiten>
+                    <EtikettLiten>{paragrafTittel}</EtikettLiten>
                 </div>
                 {left}
             </div>
