@@ -45,16 +45,6 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
         <>
-            <FlexDiv>
-                <VilkårsresultatIkon
-                    className={'vilkårStatusIkon'}
-                    vilkårsresultat={vilkårsresultat}
-                />
-                <TittelWrapper>
-                    <Undertittel>Nytt barn samme partner</Undertittel>
-                    <EtikettLiten>§15-4</EtikettLiten>
-                </TittelWrapper>
-            </FlexDiv>
             <div style={{ marginBottom: '3rem' }}>
                 <FlexDiv className="blokk-xs">
                     <Registergrunnlag />
