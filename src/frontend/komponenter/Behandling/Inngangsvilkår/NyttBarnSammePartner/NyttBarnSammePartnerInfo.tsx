@@ -26,8 +26,8 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
         <>
-            <div style={{ marginBottom: '3rem' }}>
-                <FlexDiv className="blokk-xs">
+            <div>
+                <FlexDiv>
                     <Registergrunnlag />
                     <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
                         Brukers barn registrert i folkeregisteret
@@ -63,8 +63,8 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                     data={registergrunnlagNyttBarn}
                 />
             </div>
-            <div style={{ marginBottom: '3rem' }}>
-                <FlexDiv className="blokk-xs">
+            <div>
+                <FlexDiv>
                     <Søknadsgrunnlag />
                     <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
                         Brukers nåværende eller fremtidige barn lagt til i søknad

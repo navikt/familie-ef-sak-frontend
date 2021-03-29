@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
 import { RessursStatus } from '../../../typer/ressurs';
-import styled from 'styled-components';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { Knapp } from 'nav-frontend-knapper';
-import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { useHentVilkår } from '../../../hooks/useHentVilkår';
 import { NyttBarnSammePartner } from './NyttBarnSammePartner/NyttBarnSammePartner';
 import { Aleneomsorg } from './Aleneomsorg/Aleneomsorg';
@@ -12,19 +9,6 @@ import { Opphold } from './Opphold/Opphold';
 import { Medlemskap } from './Medlemskap/Medlemskap';
 import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
-
-export const StyledInngangsvilkår = styled.div`
-    margin: 2rem;
-    display: grid;
-    grid-template-columns: repeat(2, max-content);
-    grid-auto-rows: auto;
-    grid-gap: 3rem;
-`;
-
-export const StyledKnapp = styled(hiddenIf(Knapp))`
-    display: block;
-    margin: 2rem auto 0;
-`;
 
 interface Props {
     behandlingId: string;

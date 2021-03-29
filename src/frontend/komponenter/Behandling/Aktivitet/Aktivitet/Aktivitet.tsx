@@ -1,34 +1,30 @@
 import React from 'react';
-import { InngangsvilkårType } from '../vilkår';
+import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
+import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import Vilkår from '../../../Felleskomponenter/Vilkår';
-import NyttBarnSammePartnerInfo from './NyttBarnSammePartnerInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { VilkårProps } from '../vilkårprops';
+import AktivitetInfo from './AktivitetInfo';
 
-export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
+export const Aktivitet: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
 }) => {
-    const vurdering = vurderinger.find(
-        (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
-    );
-    const barnMedSamvær = grunnlag.barnMedSamvær;
+    const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET);
     if (!vurdering) {
-        return <div>Mangler vurdering for NyttBarnSammePartner</div>;
+        return <div>Mangler vurdering for aktivitet</div>;
     }
     return (
         <Vilkår
             vilkårtittel={{
-                paragrafTittel: '§15-4',
-                tittel: 'Nytt barn samme partner',
+                tittel: 'Aktivitet',
                 vilkårsresultat: vurdering.resultat,
             }}
         >
             {{
-                left: <NyttBarnSammePartnerInfo barnMedSamvær={barnMedSamvær} />,
+                left: <AktivitetInfo aktivitet={grunnlag.aktivitet} />,
                 right: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}

@@ -9,15 +9,16 @@ interface Props<T> {
         overskrift: string;
         tekstVerdi: (data: T) => React.ReactNode;
     }[];
-    onEmpty: string;
+    onEmpty?: string;
 }
 
 const StyledTable = styled.table`
-    width: 100%;
+    thead {
+        display: table-header-group;
+    }
     td,
     th {
-        display: table-cell;
-        padding: 0.5rem;
+        padding: 0.5rem 1.5rem;
         border-bottom: none;
         text-align: unset;
     }
@@ -54,7 +55,7 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
                     </tbody>
                 )}
             </StyledTable>
-            {data.length === 0 && <StyledNormalTekst>{onEmpty}</StyledNormalTekst>}
+            {data.length === 0 && onEmpty && <StyledNormalTekst>{onEmpty}</StyledNormalTekst>}
         </div>
     );
 }

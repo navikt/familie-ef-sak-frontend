@@ -1,11 +1,11 @@
 import React from 'react';
-import { InngangsvilkårType } from '../vilkår';
+import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
+import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import Vilkår from '../../../Felleskomponenter/Vilkår';
-import NyttBarnSammePartnerInfo from './NyttBarnSammePartnerInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { VilkårProps } from '../vilkårprops';
+import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
 
-export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
+export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
@@ -13,22 +13,24 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     feilmeldinger,
 }) => {
     const vurdering = vurderinger.find(
-        (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
+        (v) => v.vilkårType === AktivitetsvilkårType.SAGT_OPP_ELLER_REDUSERT
     );
-    const barnMedSamvær = grunnlag.barnMedSamvær;
     if (!vurdering) {
-        return <div>Mangler vurdering for NyttBarnSammePartner</div>;
+        return <div>Mangler vurdering for sagt opp arbeidsforhold</div>;
     }
     return (
         <Vilkår
             vilkårtittel={{
-                paragrafTittel: '§15-4',
-                tittel: 'Nytt barn samme partner',
+                tittel: 'Sagt opp arbeidsforhold',
                 vilkårsresultat: vurdering.resultat,
             }}
         >
             {{
-                left: <NyttBarnSammePartnerInfo barnMedSamvær={barnMedSamvær} />,
+                left: (
+                    <SagtOppEllerRedusertInfo
+                        sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                    />
+                ),
                 right: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}

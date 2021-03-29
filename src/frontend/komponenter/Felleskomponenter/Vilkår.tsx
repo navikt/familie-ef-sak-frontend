@@ -7,7 +7,7 @@ import navFarger from 'nav-frontend-core';
 
 type VilkårtittelProps = {
     tittel: string;
-    paragrafTittel: string;
+    paragrafTittel?: string;
     vilkårsresultat: Vilkårsresultat;
 };
 
@@ -23,6 +23,7 @@ const Container = styled.div`
     display: flex;
     margin: 2rem;
     border-bottom: 3px solid #e9e7e7;
+    min-width: 660px;
 
     .leftContainer {
         padding: 1.5rem 0;
@@ -53,7 +54,9 @@ const Vilkår: React.FC<Props> = ({ vilkårtittel, children: { left, right } }) 
             <div className="tittel">
                 <VilkårsresultatIkon vilkårsresultat={vilkårtittel.vilkårsresultat} />
                 <Undertittel>{vilkårtittel.tittel}</Undertittel>
-                <EtikettLiten>{vilkårtittel.paragrafTittel}</EtikettLiten>
+                {vilkårtittel.paragrafTittel && (
+                    <EtikettLiten>{vilkårtittel.paragrafTittel}</EtikettLiten>
+                )}
             </div>
         ) : null;
     };

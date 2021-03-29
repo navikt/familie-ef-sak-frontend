@@ -1,10 +1,17 @@
 import React from 'react';
-import { StyledKnapp } from './Inngangsvilkår/Inngangsvilkår';
 import { Behandling } from '../../typer/fagsak';
 import { RessursStatus } from '../../typer/ressurs';
 import { useApp } from '../../context/AppContext';
 import { useBehandling } from '../../context/BehandlingContext';
 import { useLocation } from 'react-router';
+import styled from 'styled-components';
+import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
+import { Knapp } from 'nav-frontend-knapper';
+
+const StyledKnapp = styled(hiddenIf(Knapp))`
+    display: block;
+    margin: 2rem auto 0;
+`;
 
 export const GodkjennEndringer: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { axiosRequest } = useApp();
