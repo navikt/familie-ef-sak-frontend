@@ -1,9 +1,6 @@
-import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import React, { FC } from 'react';
-import { Element, EtikettLiten, Undertittel } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
-import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { RegistergrunnlagNyttBarn, SøknadsgrunnlagNyttBarn } from './typer';
 import {
     mapBarnNavnTekst,
@@ -13,7 +10,6 @@ import {
     mapTilSøknadsgrunnlagNyttBarn,
 } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { Vilkårsresultat } from '../vilkår';
 import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
 import {
     Registergrunnlag,
@@ -21,42 +17,17 @@ import {
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Tabell } from './Tabell';
 
-const TittelWrapper = styled.div`
-    padding-bottom: 1rem;
-    display: flex;
-    margin-left: 0.5rem;
-    align-items: center;
-
-    .typo-undertittel {
-        margin-right: 1rem;
-    }
-    .typo-etikett-liten {
-        color: ${navFarger.navGra60};
-    }
-`;
-
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    vilkårsresultat: Vilkårsresultat;
 }
 
-const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresultat }) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
         <>
-            <FlexDiv>
-                <VilkårsresultatIkon
-                    className={'vilkårStatusIkon'}
-                    vilkårsresultat={vilkårsresultat}
-                />
-                <TittelWrapper>
-                    <Undertittel>Nytt barn samme partner</Undertittel>
-                    <EtikettLiten>§15-4</EtikettLiten>
-                </TittelWrapper>
-            </FlexDiv>
-            <div style={{ marginBottom: '3rem' }}>
-                <FlexDiv className="blokk-xs">
+            <div>
+                <FlexDiv>
                     <Registergrunnlag />
                     <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
                         Brukers barn registrert i folkeregisteret
@@ -92,8 +63,8 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
                     data={registergrunnlagNyttBarn}
                 />
             </div>
-            <div style={{ marginBottom: '3rem' }}>
-                <FlexDiv className="blokk-xs">
+            <div>
+                <FlexDiv>
                     <Søknadsgrunnlag />
                     <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
                         Brukers nåværende eller fremtidige barn lagt til i søknad
@@ -138,4 +109,4 @@ const NyttBarnSammePartnerVisning: FC<Props> = ({ barnMedSamvær, vilkårsresult
         </>
     );
 };
-export default NyttBarnSammePartnerVisning;
+export default NyttBarnSammePartnerInfo;

@@ -2,7 +2,7 @@ import TidligereVedtaksperioder from '../Behandling/TidligereVedtaksperioder/Tid
 import Personopplysninger from '../Behandling/Personopplysninger/Personopplysninger';
 import Inngangsvilkår from '../Behandling/Inngangsvilkår/Inngangsvilkår';
 import { FunctionComponent } from 'react';
-import Aktivitet from '../Behandling/Aktivitet/Aktivitet';
+import Aktivitet from '../Behandling/Aktivitet/Aktivitetsvilkår';
 import Brev from '../Behandling/Brev/Brev';
 import Blankett from '../Behandling/Blankett/Blankett';
 import VedtakOgBeregning from '../Behandling/VedtakOgBeregning/VedtakOgBeregning';
