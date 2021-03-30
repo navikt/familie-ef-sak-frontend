@@ -4,8 +4,10 @@ import styled from 'styled-components';
 const Container = styled.div`
     display: flex;
     margin: 2rem;
-    border-bottom: 3px solid #e9e7e7;
+    border-bottom: ${(props: { skillelinje: boolean }) =>
+        props.skillelinje ? '3px solid #e9e7e7' : 'none'};
     min-width: 660px;
+    max-width: 1080px;
 
     .venstreKolonne {
         padding: 1.5rem 0;
@@ -17,17 +19,21 @@ const Container = styled.div`
     }
 `;
 interface Props {
+    skillelinje?: boolean;
     children: {
         venstre: JSX.Element;
         høyre: JSX.Element;
     };
 }
 
-const ToKolonnerLayout: React.FC<Props> = ({ children: { venstre, høyre } }) => {
+const ToKolonnerLayout: React.FC<Props> = ({
+    skillelinje = true,
+    children: { venstre, høyre },
+}) => {
     return (
-        <Container>
-            <div className="leftContainer">{venstre}</div>
-            <div className="rightContainer">{høyre}</div>
+        <Container skillelinje={skillelinje}>
+            <div className="venstreKolonne">{venstre}</div>
+            <div className="høyreKolonne">{høyre}</div>
         </Container>
     );
 };
