@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { InngangsvilkårType, IVurdering } from './vilkår';
-import { Ressurs, RessursStatus, RessursSuksess } from '../../../typer/ressurs';
+import { RessursStatus, RessursSuksess } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
 import Vurdering from '../Vurdering/Vurdering';
@@ -70,7 +70,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         };
 
         // TODO: Kun for dummy-flyt - må forbedres/omskrives
-        postInngangsvilkår().then((responseInngangsvilkår) => {
+        postInngangsvilkår().then((responseInngangsvilkår: any) => {
             if (responseInngangsvilkår.status === RessursStatus.SUKSESS) {
                 settPostInngangsvilkårSuksess(true);
                 hentBehandling.rerun();

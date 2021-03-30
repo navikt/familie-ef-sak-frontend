@@ -52,7 +52,7 @@ const Aktivitet: FC<Props> = ({ behandlingId }) => {
         };
         hentBehandling.rerun();
         // TODO: Kun for dummy-flyt - må forbedres/omskrives
-        postOvergangsstønad().then((responseStønadsvilkår) => {
+        postOvergangsstønad().then((responseStønadsvilkår: any) => {
             if (responseStønadsvilkår.status === RessursStatus.SUKSESS) {
                 settPostOvergangsstønadSuksess(true);
             } else if (

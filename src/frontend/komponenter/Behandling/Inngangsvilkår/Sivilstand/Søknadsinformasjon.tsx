@@ -64,7 +64,9 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Alene med barn fordi</Normaltekst>
-                    <Normaltekst>{ÅrsakEnsligTilTekst[søknad.årsakEnslig]}</Normaltekst>
+                    <Normaltekst>
+                        {søknad.årsakEnslig && ÅrsakEnsligTilTekst[søknad.årsakEnslig]}
+                    </Normaltekst>
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
                         <>
@@ -84,8 +86,8 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                             <Søknadsgrunnlag />
                             <Normaltekst>Tidligere samboer</Normaltekst>
                             <Normaltekst>{`${tidligereSamboer?.navn} - ${
-                                tidligereSamboer?.ident
-                                    ? tidligereSamboer?.ident
+                                tidligereSamboer?.personIdent
+                                    ? tidligereSamboer?.personIdent
                                     : formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
                             }`}</Normaltekst>
 

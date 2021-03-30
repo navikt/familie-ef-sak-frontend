@@ -2,7 +2,7 @@ import React from 'react';
 import { RessursStatus, RessursSuksess } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { OppgaveResurs } from '../../sider/Oppgavebenk';
+import { OppgaveRessurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
@@ -20,7 +20,7 @@ export interface IOppgaverResponse {
 }
 
 interface Props {
-    oppgaveResurs: OppgaveResurs;
+    oppgaveResurs: OppgaveRessurs;
 }
 
 const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
