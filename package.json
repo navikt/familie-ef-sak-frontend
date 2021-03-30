@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@navikt/boxed-list-with-links": "^1.0.2",
+    "@navikt/ds-icons": "^0.2.0",
     "@navikt/familie-backend": "5.0.10",
     "@navikt/familie-dokumentliste": "^1.0.1",
     "@navikt/familie-header": "3.0.3",
