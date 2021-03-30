@@ -64,7 +64,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         postInngangsvilkårSuksess && history.push(`/behandling/${behandlingId}/aktivitet`);
     }, [postInngangsvilkårSuksess]);
 
-    const ferdigVurdert = (behandlingId: string): any => {
+    const ferdigVurdert = (behandlingId: string): void => {
         const postInngangsvilkår = () => {
             history.push(`/behandling/${behandlingId}/aktivitet`);
         };
