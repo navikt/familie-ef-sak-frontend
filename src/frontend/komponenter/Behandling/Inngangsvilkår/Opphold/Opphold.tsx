@@ -1,9 +1,10 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import Vilkår from '../../../Felleskomponenter/Vilkår';
+import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import OppholdInfo from './OppholdInfo';
+import { Vilkårstittel } from '../Vilkårstittel';
 
 export const Opphold: React.FC<VilkårProps> = ({
     vurderinger,
@@ -17,16 +18,19 @@ export const Opphold: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for opphold</div>;
     }
     return (
-        <Vilkår
-            vilkårtittel={{
-                paragrafTittel: '§15-3',
-                tittel: 'Opphold i Norge',
-                vilkårsresultat: vurdering.resultat,
-            }}
-        >
+        <ToKolonnerLayout>
             {{
-                left: <OppholdInfo medlemskap={grunnlag.medlemskap} />,
-                right: (
+                venstre: (
+                    <>
+                        <Vilkårstittel
+                            paragrafTittel="§15-3"
+                            tittel="Opphold i Norge"
+                            vilkårsresultat={vurdering.resultat}
+                        />
+                        <OppholdInfo medlemskap={grunnlag.medlemskap} />
+                    </>
+                ),
+                høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
@@ -35,6 +39,6 @@ export const Opphold: React.FC<VilkårProps> = ({
                     />
                 ),
             }}
-        </Vilkår>
+        </ToKolonnerLayout>
     );
 };

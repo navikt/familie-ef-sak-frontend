@@ -1,9 +1,10 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import Vilkår from '../../../Felleskomponenter/Vilkår';
+import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
 import NyttBarnSammePartnerInfo from './NyttBarnSammePartnerInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
+import { Vilkårstittel } from '../Vilkårstittel';
 
 export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     vurderinger,
@@ -20,16 +21,19 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for NyttBarnSammePartner</div>;
     }
     return (
-        <Vilkår
-            vilkårtittel={{
-                paragrafTittel: '§15-4',
-                tittel: 'Nytt barn samme partner',
-                vilkårsresultat: vurdering.resultat,
-            }}
-        >
+        <ToKolonnerLayout>
             {{
-                left: <NyttBarnSammePartnerInfo barnMedSamvær={barnMedSamvær} />,
-                right: (
+                venstre: (
+                    <>
+                        <Vilkårstittel
+                            paragrafTittel="§15-4"
+                            tittel="Nytt barn samme partner"
+                            vilkårsresultat={vurdering.resultat}
+                        />
+                        <NyttBarnSammePartnerInfo barnMedSamvær={barnMedSamvær} />
+                    </>
+                ),
+                høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
@@ -38,6 +42,6 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                     />
                 ),
             }}
-        </Vilkår>
+        </ToKolonnerLayout>
     );
 };

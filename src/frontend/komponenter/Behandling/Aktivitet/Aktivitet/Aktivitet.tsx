@@ -1,9 +1,10 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import Vilkår from '../../../Felleskomponenter/Vilkår';
+import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AktivitetInfo from './AktivitetInfo';
+import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 
 export const Aktivitet: React.FC<VilkårProps> = ({
     vurderinger,
@@ -17,15 +18,15 @@ export const Aktivitet: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for aktivitet</div>;
     }
     return (
-        <Vilkår
-            vilkårtittel={{
-                tittel: 'Aktivitet',
-                vilkårsresultat: vurdering.resultat,
-            }}
-        >
+        <ToKolonnerLayout>
             {{
-                left: <AktivitetInfo aktivitet={grunnlag.aktivitet} />,
-                right: (
+                venstre: (
+                    <>
+                        <Vilkårstittel tittel="Aktivitet" vilkårsresultat={vurdering.resultat} />
+                        <AktivitetInfo aktivitet={grunnlag.aktivitet} />
+                    </>
+                ),
+                høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
@@ -34,6 +35,6 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                     />
                 ),
             }}
-        </Vilkår>
+        </ToKolonnerLayout>
     );
 };

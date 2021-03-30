@@ -50,14 +50,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                         />
-                        <Sivilstand
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                        />
-                        <Samliv
+                        <MorEllerFar
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
                             grunnlag={vilkår.grunnlag}
@@ -71,7 +64,14 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                         />
-                        <MorEllerFar
+                        <Sivilstand
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                        />
+                        <Samliv
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
                             grunnlag={vilkår.grunnlag}

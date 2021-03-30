@@ -1,9 +1,10 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import Vilkår from '../../../Felleskomponenter/Vilkår';
+import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import SivilstandInfo from './SivilstandInfo';
+import { Vilkårstittel } from '../Vilkårstittel';
 
 export const Sivilstand: React.FC<VilkårProps> = ({
     vurderinger,
@@ -17,16 +18,19 @@ export const Sivilstand: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for sivilstand</div>;
     }
     return (
-        <Vilkår
-            vilkårtittel={{
-                paragrafTittel: '§15-4',
-                tittel: 'Sivilstand',
-                vilkårsresultat: vurdering.resultat,
-            }}
-        >
+        <ToKolonnerLayout>
             {{
-                left: <SivilstandInfo sivilstand={grunnlag.sivilstand} />,
-                right: (
+                venstre: (
+                    <>
+                        <Vilkårstittel
+                            paragrafTittel="§15-4"
+                            tittel="Sivilstand"
+                            vilkårsresultat={vurdering.resultat}
+                        />
+                        <SivilstandInfo sivilstand={grunnlag.sivilstand} />
+                    </>
+                ),
+                høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
@@ -35,6 +39,6 @@ export const Sivilstand: React.FC<VilkårProps> = ({
                     />
                 ),
             }}
-        </Vilkår>
+        </ToKolonnerLayout>
     );
 };

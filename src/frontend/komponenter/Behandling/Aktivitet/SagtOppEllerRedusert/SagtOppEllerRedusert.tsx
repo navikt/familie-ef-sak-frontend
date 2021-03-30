@@ -1,9 +1,10 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import Vilkår from '../../../Felleskomponenter/Vilkår';
+import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
+import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 
 export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
@@ -19,19 +20,20 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for sagt opp arbeidsforhold</div>;
     }
     return (
-        <Vilkår
-            vilkårtittel={{
-                tittel: 'Sagt opp arbeidsforhold',
-                vilkårsresultat: vurdering.resultat,
-            }}
-        >
+        <ToKolonnerLayout>
             {{
-                left: (
-                    <SagtOppEllerRedusertInfo
-                        sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                    />
+                venstre: (
+                    <>
+                        <Vilkårstittel
+                            tittel="Sagt opp arbeidsforhold"
+                            vilkårsresultat={vurdering.resultat}
+                        />
+                        <SagtOppEllerRedusertInfo
+                            sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                        />
+                    </>
                 ),
-                right: (
+                høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
@@ -40,6 +42,6 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
                     />
                 ),
             }}
-        </Vilkår>
+        </ToKolonnerLayout>
     );
 };
