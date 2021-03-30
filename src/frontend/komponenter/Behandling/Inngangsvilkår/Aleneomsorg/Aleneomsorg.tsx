@@ -1,10 +1,11 @@
 import React from 'react';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
-import Vilkår from '../../../Felleskomponenter/Vilkår';
+import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
 import { InngangsvilkårType } from '../vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
 import { VilkårProps } from '../vilkårprops';
+import { Vilkårstittel } from '../Vilkårstittel';
 
 export const Aleneomsorg: React.FC<VilkårProps> = ({
     vurderinger,
@@ -19,26 +20,24 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
             {vurderinger
                 .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
                 .map((vurdering, idx) => (
-                    <Vilkår
-                        key={vurdering.id}
-                        vilkårtittel={
-                            idx === 0
-                                ? {
-                                      paragrafTittel: '§15-4',
-                                      tittel: 'Aleneomsorg',
-                                      vilkårsresultat,
-                                  }
-                                : undefined
-                        }
-                    >
+                    <ToKolonnerLayout key={vurdering.id}>
                         {{
-                            left: (
-                                <AleneomsorgInfo
-                                    barnMedSamvær={grunnlag.barnMedSamvær}
-                                    barnId={vurdering.barnId}
-                                />
+                            venstre: (
+                                <>
+                                    {idx === 0 && (
+                                        <Vilkårstittel
+                                            paragrafTittel="§15-4"
+                                            tittel="Aleneomsorg"
+                                            vilkårsresultat={vilkårsresultat}
+                                        />
+                                    )}
+                                    <AleneomsorgInfo
+                                        barnMedSamvær={grunnlag.barnMedSamvær}
+                                        barnId={vurdering.barnId}
+                                    />
+                                </>
                             ),
-                            right: (
+                            høyre: (
                                 <VisEllerEndreVurdering
                                     key={vurdering.id}
                                     vurdering={vurdering}
@@ -48,7 +47,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                 />
                             ),
                         }}
-                    </Vilkår>
+                    </ToKolonnerLayout>
                 ))}
         </>
     );
