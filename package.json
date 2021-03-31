@@ -34,7 +34,7 @@
     "@navikt/fnrvalidator": "^1.1.3",
     "@navikt/nap-header": "^1.0.10",
     "@navikt/nap-popover": "^1.0.4",
-    "@navikt/nap-user-panel": "^1.0.0",
+    "@navikt/nap-user-panel": "^1.1.0",
     "@sentry/browser": "^5.23.0",
     "@sentry/core": "^5.22.3",
     "@types/classnames": "^2.2.9",

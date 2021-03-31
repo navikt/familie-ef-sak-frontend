@@ -671,17 +671,6 @@
     react "^16.13.1"
     react-popper "^2.2.2"
 
-"@navikt/nap-user-panel@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@navikt/nap-user-panel/-/nap-user-panel-1.0.0.tgz#a4ac7ada637ea1dd0c378c8739b8ed93db4d428c"
-  integrity sha512-zXNplyKJ2Qj/9+dsrdDWQTqmYH6EiLh8ynYYVAu7vz8Df3ikViwjaslKdcHY9eJbogL2fIxhxRoCDtHDkAnwSA==
-  dependencies:
-    "@navikt/nap-bem-utils" "1.0.1"
-    nav-frontend-chevron "^1.0.10"
-    nav-frontend-chevron-style "^0.3.5"
-    nav-frontend-typografi "^2.0.16"
-    nav-frontend-typografi-style "^1.0.17"
-
 "@navikt/nap-user-panel@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@navikt/nap-user-panel/-/nap-user-panel-1.1.0.tgz#320b6a03a2fd89462b019521dcf9cd122d6caf85"
@@ -7525,17 +7514,7 @@ nav-frontend-chevron-style@^1.0.4:
   resolved "https://registry.yarnpkg.com/nav-frontend-chevron-style/-/nav-frontend-chevron-style-1.0.4.tgz#9cad6d1f19507147771e9ff26ebecf6e0964a50c"
   integrity sha512-GFc/IZpb1+E9ZBMoWALmKeTjySxRcwNCtz55P+45k5vUryNh2rnxxErhKh7J3OrIHVAy8BdTLjug3sC5Tscffw==
 
-nav-frontend-chevron@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.10.tgz#6d38caa5231c3bb164005c7f95c4c39979d86fe4"
-  integrity sha512-zh7KZJh8zwwNSOWv/nHciwh/8DpKPF6ObHIN+mpc3Y3W0EFLG7S7m4sS0OtdBAW+MSudBHqV7Ixbtrq8mzstOA==
-
-nav-frontend-chevron@^1.0.13:
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.13.tgz#38efff6b1c84e0d45dd0899c1a0dcc04da2f07a4"
-  integrity sha512-hYn0tTDUEaJafzT6cw/ZTvipVpg7xA9GJrp32Ymo47zRf6XXzfNeycC0q+IqtPrlECUfZXaDne3cSaU+CqOYRg==
-
-nav-frontend-chevron@^1.0.28:
+nav-frontend-chevron@^1.0.13, nav-frontend-chevron@^1.0.28:
   version "1.0.28"
   resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.28.tgz#1ec53e142f1b381ee9bd7874b505abd5bc3a6b2a"
   integrity sha512-gwM2eUTsUlEnxHoWJz4MU2nCGpmLWXBogiPDRd+gvdoDfD4qWMthm0ofaRz5yI3y7v5xKd+gzNq2Q2fDDO0Jvw==
