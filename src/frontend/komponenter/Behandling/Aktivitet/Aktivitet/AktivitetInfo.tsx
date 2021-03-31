@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { IAktivitet } from '../../../../typer/overgangsstønad';
-import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import SelvstendigNæringsdrivendeEllerFrilanser from './SelvstendigNæringsdrivendeEllerFrilanser';
 import Arbeidssøker from './Arbeidssøker';
@@ -13,13 +12,11 @@ import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmottakerSomFrilanser';
-import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
     aktivitet: IAktivitet;
-    vilkårsresultat: Vilkårsresultat;
 }
-const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
+const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -37,14 +34,6 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
     return (
         <>
             <SeksjonWrapper>
-                <GridTabell kolonner={3}>
-                    <VilkårsresultatIkon
-                        className={'vilkårStatusIkon'}
-                        vilkårsresultat={vilkårsresultat}
-                    />
-                    <Undertittel className="tittel fjernSpacing">Aktivitet</Undertittel>
-                </GridTabell>
-
                 {arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
@@ -145,4 +134,4 @@ const AktivitetVisning: FC<Props> = ({ aktivitet, vilkårsresultat }) => {
     );
 };
 
-export default AktivitetVisning;
+export default AktivitetInfo;

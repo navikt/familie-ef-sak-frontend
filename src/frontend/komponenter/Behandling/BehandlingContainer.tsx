@@ -11,6 +11,7 @@ import ModalController from '../Felleskomponenter/Modal/ModalController';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import Venstremeny from '../Venstremeny/Venstremeny';
 import VisittkortComponent from '../Felleskomponenter/Visittkort';
+import { GodkjennEndringer } from './GodkjennEndringer';
 
 const Container = styled.div`
     display: flex;
@@ -61,6 +62,7 @@ const Behandling: FC = () => {
                         <InnholdWrapper>
                             <Fanemeny />
                             <BehandlingRoutes />
+                            <GodkjennEndringer behandling={behandling} />
                         </InnholdWrapper>
                         <HøyreMenyWrapper>
                             <Høyremeny />

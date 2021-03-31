@@ -11,7 +11,6 @@ import { delvilkårTypeTilTekst, svarTypeTilTekst } from '../Vurdering/tekster';
 const Container = styled.div`
     max-width: 1800px;
     color: ${variables.navMorkGra};
-    padding: 1rem 5rem;
 `;
 const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { hentVilkår, vilkår } = useHentVilkår();
