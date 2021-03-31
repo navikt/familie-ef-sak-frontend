@@ -32,11 +32,13 @@ const InformasjonsElement: React.FC<Props> = ({
         <>
             <Element className="blokk-s">
                 {props.spørsmåltekst}
-                <Normaltekst
-                    style={{ marginLeft: '0.25rem' }}
-                    tag="span"
-                    children={props.hjelpetekst}
-                />
+                {props.hjelpetekst && (
+                    <Normaltekst
+                        style={{ marginLeft: '0.25rem' }}
+                        tag="span"
+                        children={props.hjelpetekst}
+                    />
+                )}
             </Element>
         </>
     );
