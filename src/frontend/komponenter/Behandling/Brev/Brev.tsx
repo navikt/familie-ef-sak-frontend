@@ -13,8 +13,7 @@ const GenererBrev = styled(Knapp)`
 
 const HentBrev = styled(Knapp)`
     display: block;
-    margin: 0 auto;
-    margin-top: 2rem;
+    margin: 2rem auto;
 `;
 
 const StyledBrev = styled.div`
