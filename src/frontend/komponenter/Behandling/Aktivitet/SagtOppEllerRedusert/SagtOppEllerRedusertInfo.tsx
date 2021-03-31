@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 
-import { VilkårsresultatIkon } from '../../../Felleskomponenter/Visning/VilkårOppfylt';
 import { ISagtOppEllerRedusertStilling } from '../../../../typer/overgangsstønad';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import {
@@ -11,25 +10,16 @@ import {
     SagtOppEllerRedusertTilTekst,
 } from '../../Inngangsvilkår/Samliv/typer';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
-import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
-    vilkårsresultat: Vilkårsresultat;
 }
 
-const SagtOppEllerRedusertVisning: FC<Props> = ({ sagtOppEllerRedusert, vilkårsresultat }) => {
+const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert }) => {
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
         <>
             <GridTabell>
-                <VilkårsresultatIkon
-                    className={'vilkårStatusIkon'}
-                    vilkårsresultat={vilkårsresultat}
-                />
-                <div className="tittel">
-                    <Undertittel>Sagt opp arbeidsforhold</Undertittel>
-                </div>
                 {sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
                     <>
                         <HarSagtOppEllerRedusertStilling
@@ -92,4 +82,4 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
     );
 };
 
-export default SagtOppEllerRedusertVisning;
+export default SagtOppEllerRedusertInfo;

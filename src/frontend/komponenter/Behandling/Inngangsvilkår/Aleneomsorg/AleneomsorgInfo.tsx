@@ -16,11 +16,9 @@ import Samvær from './Samvær';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import { Vilkårsresultat } from '../vilkår';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    vilkårsresultat: Vilkårsresultat;
     barnId?: string;
 }
 
@@ -31,7 +29,7 @@ const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsg
     return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
 };
 
-const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, barnId }) => {
+const AleneomsorgInfo: FC<Props> = ({ barnMedSamvær, barnId }) => {
     const gjeldendeBarn = barnMedSamvær.find((it) => it.barnId === barnId);
     if (gjeldendeBarn === undefined) return null;
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
@@ -114,4 +112,4 @@ const AleneomsorgVisning: FC<Props> = ({ barnMedSamvær, barnId }) => {
     );
 };
 
-export default AleneomsorgVisning;
+export default AleneomsorgInfo;

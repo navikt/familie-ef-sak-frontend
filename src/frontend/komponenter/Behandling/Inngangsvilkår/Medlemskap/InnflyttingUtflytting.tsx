@@ -2,10 +2,10 @@ import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../../../typer/personopplysninger';
 import { Element } from 'nav-frontend-typografi';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { slåSammenTekst } from '../../../../utils/utils';
-import { Tabell } from '../../TabellVisning';
+import { Tabell } from '../NyttBarnSammePartner/Tabell';
+import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -14,11 +14,13 @@ interface Props {
 
 const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => {
     return (
-        <GridTabell kolonner={3}>
-            <Registergrunnlag />
-            <Element className="tittel" tag="h3">
-                Innflytting og utflytting
-            </Element>
+        <>
+            <FlexDiv>
+                <Registergrunnlag />
+                <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
+                    Innflytting og utflytting
+                </Element>
+            </FlexDiv>
             <Tabell
                 kolonner={[
                     {
@@ -35,7 +37,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                             formaterNullableIsoDato(innflytting.dato) || '',
                     },
                 ]}
-                verdier={innflytting}
+                data={innflytting}
             />
             <Tabell
                 kolonner={[
@@ -52,9 +54,9 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                         tekstVerdi: (utflytting) => formaterNullableIsoDato(utflytting.dato) || '',
                     },
                 ]}
-                verdier={utflytting}
+                data={utflytting}
             />
-        </GridTabell>
+        </>
     );
 };
 
