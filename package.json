@@ -44,7 +44,7 @@
     "@types/http-proxy-middleware": "^0.19.3",
     "@types/node-fetch": "^2.5.3",
     "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.4",
+    "@types/react-dom": "^17.0.3",
     "@types/react-modal": "^3.10.6",
     "@types/react-pdf": "^5.0.1",
     "@types/react-router-dom": "^5.1.7",
