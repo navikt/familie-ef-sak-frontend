@@ -17,6 +17,7 @@ module.exports = {
         sourceType: 'module',
     },
     plugins: ['@typescript-eslint', 'react-app', 'prettier', 'react-hooks'],
+    ignorePatterns: ['pdf.worker.js'],
     rules: {
         'import/extensions': [
             'off',
