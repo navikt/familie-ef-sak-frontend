@@ -14,6 +14,7 @@ export const useOppgave = (oppgave: IOppgave) => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const history = useHistory();
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [laster, settLaster] = useState<boolean>(false);
 
     const settOppgaveTilSaksbehandler = () => {
         return axiosRequest<string, null>({
@@ -29,6 +30,7 @@ export const useOppgave = (oppgave: IOppgave) => {
     };
 
     const gåTilBehandleSakOppgave = () => {
+        settLaster(true);
         axiosRequest<OppgaveDto, { oppgaveId: string }>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}`,
@@ -48,10 +50,12 @@ export const useOppgave = (oppgave: IOppgave) => {
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
-            });
+            })
+            .finally(() => settLaster(false));
     };
 
     const startBlankettBehandling = () => {
+        settLaster(true);
         axiosRequest<string, { oppgaveId: string }>({
             method: 'POST',
             url: `/familie-ef-sak/api/blankett/oppgave/${oppgave.id}`,
@@ -71,10 +75,12 @@ export const useOppgave = (oppgave: IOppgave) => {
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
-            });
+            })
+            .finally(() => settLaster(false));
     };
 
     const gåTilJournalføring = () => {
+        settLaster(true);
         settOppgaveTilSaksbehandler()
             .then(() =>
                 history.push(
@@ -83,7 +89,8 @@ export const useOppgave = (oppgave: IOppgave) => {
             )
             .catch((error: Error) => {
                 settFeilmelding(error.message);
-            });
+            })
+            .finally(() => settLaster(false));
     };
 
     return {
@@ -92,5 +99,6 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
         startBlankettBehandling,
+        laster,
     };
 };

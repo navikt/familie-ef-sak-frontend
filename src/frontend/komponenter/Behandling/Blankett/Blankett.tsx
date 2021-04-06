@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
-import BlankettFooter from './BlankettFooter';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { BehandlingStatus } from '../../../typer/behandlingstatus';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 
 interface Props {
     behandlingId: string;
@@ -49,7 +49,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
                             <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
                         </StyledBlankett>
                         {erBehandlingÅpen(behandling.status) && harHentetBlankett() && (
-                            <BlankettFooter behandlingId={behandlingId} />
+                            <SendTilBeslutterFooter behandlingId={behandlingId} />
                         )}
                     </>
                 )}
