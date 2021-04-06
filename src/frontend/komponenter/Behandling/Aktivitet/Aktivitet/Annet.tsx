@@ -68,10 +68,11 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                             <Søknadsgrunnlag />
                             <Normaltekst>
                                 Om tilsynsbehov for: <br />
-                                {`${barnetsBehov.navn} ` ||
-                                    `Barn ${
-                                        barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
-                                    } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`}
+                                {barnetsBehov.navn
+                                    ? `${barnetsBehov.navn} `
+                                    : `Barn ${
+                                          barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
+                                      } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`}
                             </Normaltekst>
                             <Normaltekst>{barnetsBehov.særligeTilsynsbehov}</Normaltekst>
                         </GridTabell>

@@ -53,10 +53,7 @@ const initFeilObjekt = {} as Feil;
 const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     const { innloggetSaksbehandler } = useApp();
     const tomOppgaveRequest = {};
-
-    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>(
-        hentFraLocalStorage(oppgaveRequestKey, tomOppgaveRequest)
-    );
+    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
@@ -78,7 +75,11 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
 
     useEffect(() => {
-        hentOppgaver(oppgaveRequest);
+        const fraLocalStorage = hentFraLocalStorage(oppgaveRequestKey, undefined);
+        if (fraLocalStorage) {
+            settOppgaveRequest(fraLocalStorage);
+            hentOppgaver(fraLocalStorage);
+        }
     }, [hentOppgaver]);
 
     const saksbehandlerTekst =

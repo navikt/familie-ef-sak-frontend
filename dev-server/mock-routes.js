@@ -178,4 +178,8 @@ app.post('/familie-ef-sak/api/behandling/:behandlingId/annuller', (req, res) => 
     setTimeout(() => res.send(lesMockFil(`behandle-i-gosys.json`)), delayMs);
 });
 
+app.get('/familie-ef-sak/api/vedtak/:behandlingId', (req, res) => {
+    setTimeout(() => res.send(lesMockFil('vedtak.json')), delayMs);
+});
+
 module.exports = app;
