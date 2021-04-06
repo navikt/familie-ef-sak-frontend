@@ -15,7 +15,6 @@
     "snyk-protect": "snyk protect",
     "lint": "eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
-    "prepare": "yarn run snyk-protect",
     "postinstall": "husky install"
   },
   "lint-staged": {
@@ -108,6 +107,7 @@
     "paginering": "^1.0.6",
     "passport": "^0.4.0",
     "passport-azure-ad": "^4.1.0",
+    "pdfjs-dist": "2.5.207",
     "prom-client": "^11.5.3",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
