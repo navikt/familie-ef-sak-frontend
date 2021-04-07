@@ -27,7 +27,7 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                     <>
                         <Vilkårstittel
                             paragrafTittel="§15-4"
-                            tittel="Nytt barn samme partner"
+                            tittel="Nytt barn med samme partner"
                             vilkårsresultat={vurdering.resultat}
                         />
                         <NyttBarnSammePartnerInfo barnMedSamvær={barnMedSamvær} />

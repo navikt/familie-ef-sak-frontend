@@ -83,7 +83,7 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     SIVILSTAND: 'Vilkår om sivilstand',
     SAMLIV: 'Vilkår om samliv',
     ALENEOMSORG: 'Vilkår om aleneomsorg',
-    NYTT_BARN_SAMME_PARTNER: 'Vilkår om nytt barn samme partner',
+    NYTT_BARN_SAMME_PARTNER: 'Vilkår om nytt barn med samme partner',
     SAGT_OPP_ELLER_REDUSERT: 'Vilkår om sagt opp arbeidsforhold ',
     TIDLIGERE_VEDTAKSPERIODER: 'Tidligere vedtaksperioder',
 };
