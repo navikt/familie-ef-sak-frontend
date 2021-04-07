@@ -6,8 +6,6 @@ const Container = styled.div`
     margin: 2rem;
     border-bottom: ${(props: { skillelinje: boolean }) =>
         props.skillelinje ? '3px solid #e9e7e7' : 'none'};
-    min-width: 660px;
-    max-width: 1080px;
 
     .venstreKolonne {
         padding: 1.5rem 0;
