@@ -43,6 +43,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const [godkjent, settGodkjent] = useState<boolean>();
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
+    const [laster, settLaster] = useState<boolean>(false);
     const { modalDispatch } = useModal();
 
     const { axiosRequest } = useApp();
@@ -51,6 +52,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        settLaster(true);
         if (!erUtfylt) {
             return;
         }
@@ -62,18 +64,22 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                 godkjent: !!godkjent,
                 begrunnelse,
             },
-        }).then((response) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                hentBehandlingshistorikk.rerun();
-                hentTotrinnskontroll.rerun();
-                modalDispatch({
-                    type: ModalAction.VIS_MODAL,
-                    modalType: godkjent ? ModalType.VEDTAK_GODKJENT : ModalType.VEDTAK_UNDERKJENT,
-                });
-            } else {
-                settFeil(response.frontendFeilmelding);
-            }
-        });
+        })
+            .then((response) => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    hentBehandlingshistorikk.rerun();
+                    hentTotrinnskontroll.rerun();
+                    modalDispatch({
+                        type: ModalAction.VIS_MODAL,
+                        modalType: godkjent
+                            ? ModalType.VEDTAK_GODKJENT
+                            : ModalType.VEDTAK_UNDERKJENT,
+                    });
+                } else {
+                    settFeil(response.frontendFeilmelding);
+                }
+            })
+            .finally(() => settLaster(false));
     };
 
     return (
@@ -114,7 +120,9 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                 )}
                 {erUtfylt && (
                     <SubmitButtonWrapper>
-                        <Hovedknapp htmlType="submit">Fullfør</Hovedknapp>
+                        <Hovedknapp htmlType="submit" disabled={laster}>
+                            Fullfør
+                        </Hovedknapp>
                     </SubmitButtonWrapper>
                 )}
                 {feil && <AlertStripeFeil>Lagring feilet: {feil}</AlertStripeFeil>}

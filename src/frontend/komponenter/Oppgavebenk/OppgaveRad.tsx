@@ -40,6 +40,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
         gåTilJournalføring,
         startBlankettBehandling,
         settFeilmelding,
+        laster,
     } = useOppgave(oppgave);
     const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
 
@@ -72,6 +73,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                     <Flatknapp
                         hidden={!oppgave.kanStarteBlankettbehandling}
                         onClick={startBlankettBehandling}
+                        disabled={laster}
                     >
                         Lag blankett
                     </Flatknapp>
@@ -79,6 +81,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                     <Flatknapp
                         hidden={!kanJournalføres(oppgave.behandlingstema, oppgave.oppgavetype)}
                         onClick={gåTilJournalføring}
+                        disabled={laster}
                     >
                         Gå til journalpost
                     </Flatknapp>
@@ -88,6 +91,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                             oppgave.kanStarteBlankettbehandling
                         }
                         onClick={gåTilBehandleSakOppgave}
+                        disabled={laster}
                     >
                         Start Behandling
                     </Flatknapp>
