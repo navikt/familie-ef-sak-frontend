@@ -274,7 +274,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         onClick={lagBlankett}
                         disabled={laster}
                     >
-                        Lag blankett
+                        Lagre vedtak
                     </Hovedknapp>
                 </>
             );
