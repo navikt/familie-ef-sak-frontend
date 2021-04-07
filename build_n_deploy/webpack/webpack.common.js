@@ -15,24 +15,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
-                enforce: 'pre',
+                test: /\.(jsx|tsx|ts|js)?$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        options: {
-                            eslintPath: require.resolve('eslint'),
-                        },
-                        loader: require.resolve('eslint-loader'),
-                    },
-                ],
-            },
-            {
-                test: /\.(js|ts|tsx)$/,
-                loader: 'ts-loader',
-                exclude: /node_modules/,
+                loader: 'babel-loader',
                 options: {
-                    transpileOnly: true,
+                    presets: ['react-app'],
                 },
             },
         ],

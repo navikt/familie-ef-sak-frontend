@@ -10,7 +10,7 @@
     "start:mock": "NODE_ENV=development node dev-server/mock-server.js",
     "start:dev": "tsc && NODE_ENV=development node node_dist/backend/server.js",
     "build": "yarn build:prod",
-    "build:dev": "webpack --config ./build_n_deploy/webpack/webpack.dev.js",
+    "build:dev": "NODE_ENV=development webpack --config ./build_n_deploy/webpack/webpack.dev.js",
     "build:prod": "tsc & webpack --config ./build_n_deploy/webpack/webpack.prod.js",
     "snyk-protect": "snyk protect",
     "lint": "eslint './src/**/*.{js,ts,tsx}'",
@@ -23,6 +23,8 @@
     ]
   },
   "dependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/preset-env": "^7.13.12",
     "@navikt/boxed-list-with-links": "^1.0.2",
     "@navikt/familie-backend": "5.0.10",
     "@navikt/familie-dokumentliste": "^1.0.1",
@@ -54,6 +56,7 @@
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
+    "babel-preset-react-app": "^10.0.0",
     "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "connect-redis": "^4.0.3",
