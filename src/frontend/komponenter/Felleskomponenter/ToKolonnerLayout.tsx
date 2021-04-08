@@ -6,16 +6,25 @@ const Container = styled.div`
     margin: 2rem;
     border-bottom: ${(props: { skillelinje: boolean }) =>
         props.skillelinje ? '3px solid #e9e7e7' : 'none'};
-    min-width: 660px;
-    max-width: 1080px;
+
+    @media (max-width: 1800px) {
+        flex-direction: column;
+    }
 
     .venstreKolonne {
         padding: 1.5rem 0;
         width: 50%;
+
+        @media (max-width: 1800px) {
+            width: 100%;
+        }
     }
     .høyreKolonne {
         padding: 1.5rem 0;
         width: 50%;
+        @media (max-width: 1800px) {
+            width: 100%;
+        }
     }
 `;
 interface Props {
