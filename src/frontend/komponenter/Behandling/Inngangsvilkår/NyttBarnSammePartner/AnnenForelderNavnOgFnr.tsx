@@ -6,7 +6,7 @@ import { formaterNullableIsoDato } from '../../../../utils/formatter';
 export const AnnenForelderNavnogFnr: React.FC<{ forelder?: IAnnenForelder }> = ({ forelder }) => {
     if (!forelder || !forelder.navn || forelder.navn === 'ikke oppgitt') {
         return null;
-    } else if (forelder?.fødselsnummer) {
+    } else if (forelder.fødselsnummer) {
         return (
             <>
                 {forelder.navn + ' - '}
