@@ -5,12 +5,16 @@ import LiteBarn from '../../../ikoner/LiteBarn';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { EtikettInfo, EtikettSuksess, EtikettFokus } from 'nav-frontend-etiketter';
 import { EtikettLiten } from 'nav-frontend-typografi';
-import { formaterFødselsnummer } from '../../../utils/formatter';
 import styled from 'styled-components';
 import { differenceInYears } from 'date-fns';
+import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
+`;
+
+const FlexDiv = styled.div`
+    display: flex;
 `;
 
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
@@ -31,10 +35,15 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                     fødselsdato={barn.fødselsdato}
                                 />
                                 <BredTd>
-                                    {barn.annenForelder &&
-                                        formaterFødselsnummer(barn.annenForelder.personIdent) +
-                                            ', ' +
-                                            barn.annenForelder.navn}
+                                    {barn.annenForelder && (
+                                        <>
+                                            <KopierbartNullableFødselsnummer
+                                                fødselsnummer={barn.annenForelder.personIdent}
+                                            />
+                                            {', '}
+                                            {barn.annenForelder.navn}
+                                        </>
+                                    )}
                                 </BredTd>
                                 <BredTd>{barn.borHosSøker ? 'Ja' : '-'}</BredTd>
                             </tr>
@@ -54,24 +63,26 @@ const FødselsnummerBarn: React.FC<{ fødselsnummer: string; fødselsdato?: stri
 
     return (
         <BredTd>
-            {formaterFødselsnummer(fødselsnummer)}
-            <SpanMedVenstreMargin>
-                {!isNaN(alder) ? (
-                    alder < 18 ? (
-                        <EtikettSuksess>
-                            <EtikettLiten>{alder} år</EtikettLiten>
-                        </EtikettSuksess>
+            <FlexDiv>
+                <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
+                <SpanMedVenstreMargin>
+                    {!isNaN(alder) ? (
+                        alder < 18 ? (
+                            <EtikettSuksess>
+                                <EtikettLiten>{alder} år</EtikettLiten>
+                            </EtikettSuksess>
+                        ) : (
+                            <EtikettInfo>
+                                <EtikettLiten>Over 18 år</EtikettLiten>
+                            </EtikettInfo>
+                        )
                     ) : (
-                        <EtikettInfo>
-                            <EtikettLiten>Over 18 år</EtikettLiten>
-                        </EtikettInfo>
-                    )
-                ) : (
-                    <EtikettFokus>
-                        <EtikettLiten>Ukjent alder</EtikettLiten>
-                    </EtikettFokus>
-                )}
-            </SpanMedVenstreMargin>
+                        <EtikettFokus>
+                            <EtikettLiten>Ukjent alder</EtikettLiten>
+                        </EtikettFokus>
+                    )}
+                </SpanMedVenstreMargin>
+            </FlexDiv>
         </BredTd>
     );
 };

@@ -41,9 +41,11 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                 <>
                                     <Registergrunnlag />
                                     <Normaltekst>Fødsels- eller D-nummer</Normaltekst>
-                                    <KopierbartNullableFødselsnummer
-                                        fødselsnummer={registergrunnlag.fødselsnummer}
-                                    />
+                                    <Normaltekst>
+                                        <KopierbartNullableFødselsnummer
+                                            fødselsnummer={registergrunnlag.fødselsnummer}
+                                        />
+                                    </Normaltekst>
                                 </>
                             ) : søknadsgrunnlag.fødselsnummer ? (
                                 <>
