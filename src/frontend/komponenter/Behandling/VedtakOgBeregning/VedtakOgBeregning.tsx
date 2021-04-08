@@ -76,7 +76,8 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                             <Søknadsgrunnlag />
                             <Normaltekst>Søker stønad fra</Normaltekst>
                             <Normaltekst>
-                                {formaterNullableMånedÅr(søknadDataResponse.søkerStønadFra)}
+                                {formaterNullableMånedÅr(søknadDataResponse.søkerStønadFra) ||
+                                    'Søker ikke stønad fra bestemt tidspunkt'}
                             </Normaltekst>
                         </GridTabell>
                         <VelgVedtaksresultat
