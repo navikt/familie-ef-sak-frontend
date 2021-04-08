@@ -21,6 +21,7 @@ const Container = styled.div`
     }
     .høyreKolonne {
         padding: 1.5rem 0;
+        width: 50%;
         @media (max-width: 1800px) {
             width: 100%;
         }
