@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom';
 import navFarger from 'nav-frontend-core';
 import { useBehandling } from '../../context/BehandlingContext';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import { Sticky } from '../Felleskomponenter/Sticky';
 
 const StyledFanemeny = styled.div`
     width: 100%;
@@ -16,6 +17,7 @@ const StyledFanemeny = styled.div`
     justify-content: space-evenly;
     align-items: center;
     border-bottom: ${navFarger.navGra40} solid 2px;
+    background-color: ${navFarger.white};
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -51,17 +53,19 @@ const Fanemeny: FC = () => {
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => (
-                <StyledFanemeny>
-                    {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
-                        <StyledNavLink
-                            key={side.navn}
-                            to={`/behandling/${behandlingId}/${side.href}`}
-                            activeClassName="aktiv"
-                        >
-                            <Normaltekst>{side.navn}</Normaltekst>
-                        </StyledNavLink>
-                    ))}
-                </StyledFanemeny>
+                <Sticky>
+                    <StyledFanemeny>
+                        {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
+                            <StyledNavLink
+                                key={side.navn}
+                                to={`/behandling/${behandlingId}/${side.href}`}
+                                activeClassName="aktiv"
+                            >
+                                <Normaltekst>{side.navn}</Normaltekst>
+                            </StyledNavLink>
+                        ))}
+                    </StyledFanemeny>
+                </Sticky>
             )}
         </DataViewer>
     );
