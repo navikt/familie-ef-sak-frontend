@@ -42,6 +42,19 @@ export interface IAdresse {
     type: AdresseType;
     gyldigFraOgMed?: string;
     gyldigTilOgMed?: string;
+    bostedsadresse?: IBostedsadresse;
+}
+
+export interface IBostedsadresse {
+    vegadresse?: any;
+    matrikkeladresse?: any;
+}
+
+export interface IPersonSøkResultat {
+    hits: any[];
+    totalHints: number;
+    pageNumber: number;
+    totalPages: number;
 }
 
 export interface IFullmakt {

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../../ikoner/Bygning';
-import { AdresseType, IAdresse } from '../../../typer/personopplysninger';
+import { AdresseType, IAdresse, IPersonSøkResultat } from '../../../typer/personopplysninger';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
+import { useApp } from '../../../context/AppContext';
+import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../typer/ressurs';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -65,7 +67,20 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
 };
 
 const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
+    const { axiosRequest } = useApp();
     const [visBeboereModal, settVisBeboereModal] = useState(false);
+    const [beboere, settBeboere] = useState<Ressurs<IPersonSøkResultat>>(byggTomRessurs());
+
+    const sokPerson = () => {
+        axiosRequest<IPersonSøkResultat, any>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/sok/person/adresse`,
+            data: adresser[0].bostedsadresse,
+        }).then((respons: Ressurs<IPersonSøkResultat> | RessursFeilet) => {
+            settBeboere(respons);
+            settVisBeboereModal(true);
+        });
+    };
     return (
         <tbody>
             {adresser.map((adresse, indeks) => {
@@ -78,7 +93,7 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                             <StyledFlexDiv>
                                 <div>{adresse.gyldigTilOgMed}</div>
                                 {adresse.type === AdresseType.BOSTEDADRESSE && (
-                                    <StyledKnapp onClick={() => settVisBeboereModal(true)} mini>
+                                    <StyledKnapp onClick={() => sokPerson()} mini>
                                         Se Beboere
                                     </StyledKnapp>
                                 )}
