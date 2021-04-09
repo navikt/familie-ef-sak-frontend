@@ -5,9 +5,8 @@ import {
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { formaterNullableFødsesnummer } from '../../../../utils/formatter';
-import { hentAnnenForelderInfo } from './utils';
 import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
+import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
 
 interface Props {
     forelderRegister?: IAnnenForelder;
@@ -15,26 +14,25 @@ interface Props {
 }
 
 const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
-    const annenForelderInfo = hentAnnenForelderInfo(
-        søknadsgrunnlag.forelder,
-        søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
-    );
     const forelderSøknad = søknadsgrunnlag.forelder;
 
     return (
         <GridTabell>
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
-            <Normaltekst>{annenForelderInfo}</Normaltekst>
+            <Normaltekst>
+                <AnnenForelderNavnOgFnr
+                    forelder={søknadsgrunnlag.forelder}
+                    ikkeOppgittAnnenForelderBegrunnelse={
+                        søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
+                    }
+                />
+            </Normaltekst>
 
             <Registergrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
             <Normaltekst>
-                {forelderRegister
-                    ? `${forelderRegister.navn} - ${formaterNullableFødsesnummer(
-                          forelderRegister.fødselsnummer
-                      )}`
-                    : '-'}
+                {forelderRegister ? <AnnenForelderNavnOgFnr forelder={forelderRegister} /> : '-'}
             </Normaltekst>
 
             <Søknadsgrunnlag />

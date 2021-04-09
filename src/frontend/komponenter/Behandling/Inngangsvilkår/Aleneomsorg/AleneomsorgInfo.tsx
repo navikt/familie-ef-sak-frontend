@@ -11,11 +11,12 @@ import {
     skalBarnetBoHosSøkerTilTekst,
 } from './typer';
 import Bosted from './Bosted';
-import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
+import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -53,15 +54,17 @@ const AleneomsorgInfo: FC<Props> = ({ barnMedSamvær, barnId }) => {
                     <>
                         <Registergrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <Normaltekst>
-                            {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
-                        </Normaltekst>
+                        <KopierbartNullableFødselsnummer
+                            fødselsnummer={registergrunnlag.fødselsnummer}
+                        />
                     </>
                 ) : søknadsgrunnlag.fødselsnummer && søknadsgrunnlag.fødselsnummer !== '' ? (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <Normaltekst>{søknadsgrunnlag.fødselsnummer}</Normaltekst>
+                        <KopierbartNullableFødselsnummer
+                            fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                        />
                     </>
                 ) : (
                     søknadsgrunnlag.fødselTermindato && (

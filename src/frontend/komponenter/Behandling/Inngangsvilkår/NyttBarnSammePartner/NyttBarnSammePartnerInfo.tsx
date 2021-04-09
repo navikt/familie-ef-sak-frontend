@@ -4,18 +4,18 @@ import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import { RegistergrunnlagNyttBarn, SøknadsgrunnlagNyttBarn } from './typer';
 import {
     mapBarnNavnTekst,
-    mapForelderTilNavnOgFnr,
-    mapIkkeOppgitt,
     mapTilRegistergrunnlagNyttBarn,
     mapTilSøknadsgrunnlagNyttBarn,
 } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Tabell } from './Tabell';
+import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
+import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -43,21 +43,30 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         },
                         {
                             overskrift: 'Fødsels/D-nummer',
-                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) =>
-                                formaterNullableFødsesnummer(registergrunnlag.fødselsnummer),
+                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
+                                <KopierbartNullableFødselsnummer
+                                    fødselsnummer={registergrunnlag.fødselsnummer}
+                                />
+                            ),
                         },
                         {
                             overskrift: 'Annen forelder register',
-                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) =>
-                                mapForelderTilNavnOgFnr(registergrunnlag.annenForelderRegister),
+                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
+                                <AnnenForelderNavnOgFnr
+                                    forelder={registergrunnlag.annenForelderRegister}
+                                />
+                            ),
                         },
                         {
                             overskrift: 'Annen forelder søknad',
-                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) =>
-                                mapForelderTilNavnOgFnr(registergrunnlag.annenForelderSoknad) ??
-                                mapIkkeOppgitt(
-                                    registergrunnlag.ikkeOppgittAnnenForelderBegrunnelse
-                                ),
+                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
+                                <AnnenForelderNavnOgFnr
+                                    forelder={registergrunnlag.annenForelderSoknad}
+                                    ikkeOppgittAnnenForelderBegrunnelse={
+                                        registergrunnlag.ikkeOppgittAnnenForelderBegrunnelse
+                                    }
+                                />
+                            ),
                         },
                     ]}
                     data={registergrunnlagNyttBarn}
@@ -79,8 +88,11 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         },
                         {
                             overskrift: 'Fødsels/D-nummer',
-                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
-                                formaterNullableFødsesnummer(søknadsgrunnlag.fødselsnummer),
+                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) => (
+                                <KopierbartNullableFødselsnummer
+                                    fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                                />
+                            ),
                         },
                         {
                             overskrift: 'Fødselsdato',
@@ -97,9 +109,14 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         },
                         {
                             overskrift: 'Annen forelder',
-                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
-                                mapForelderTilNavnOgFnr(søknadsgrunnlag.annenForelderSoknad) ??
-                                mapIkkeOppgitt(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse),
+                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) => (
+                                <AnnenForelderNavnOgFnr
+                                    forelder={søknadsgrunnlag.annenForelderSoknad}
+                                    ikkeOppgittAnnenForelderBegrunnelse={
+                                        søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
+                                    }
+                                />
+                            ),
                         },
                     ]}
                     data={søknadsgrunnlagNyttBarn}
