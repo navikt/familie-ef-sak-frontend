@@ -5,5 +5,6 @@
 *.yml
 *.md
 *.html
+*.lock
 .env
 .gitignore

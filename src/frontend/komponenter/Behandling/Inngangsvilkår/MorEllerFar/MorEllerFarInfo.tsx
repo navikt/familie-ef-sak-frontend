@@ -19,7 +19,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                 const { søknadsgrunnlag, registergrunnlag } = barn;
                 const barnUtenNavn: string = søknadsgrunnlag.erBarnetFødt
                     ? 'Ikke fylt ut'
-                    : 'Ikke født ennå';
+                    : 'Ikke født';
                 return (
                     <React.Fragment key={barn.barnId}>
                         <GridTabell>
