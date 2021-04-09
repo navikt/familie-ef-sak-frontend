@@ -54,21 +54,17 @@ const AleneomsorgInfo: FC<Props> = ({ barnMedSamvær, barnId }) => {
                     <>
                         <Registergrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <Normaltekst>
-                            <KopierbartNullableFødselsnummer
-                                fødselsnummer={registergrunnlag.fødselsnummer}
-                            />
-                        </Normaltekst>
+                        <KopierbartNullableFødselsnummer
+                            fødselsnummer={registergrunnlag.fødselsnummer}
+                        />
                     </>
                 ) : søknadsgrunnlag.fødselsnummer && søknadsgrunnlag.fødselsnummer !== '' ? (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <Normaltekst>
-                            <KopierbartNullableFødselsnummer
-                                fødselsnummer={søknadsgrunnlag.fødselsnummer}
-                            />
-                        </Normaltekst>
+                        <KopierbartNullableFødselsnummer
+                            fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                        />
                     </>
                 ) : (
                     søknadsgrunnlag.fødselTermindato && (
