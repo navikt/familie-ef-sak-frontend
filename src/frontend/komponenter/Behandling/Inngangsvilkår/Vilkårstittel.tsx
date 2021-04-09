@@ -1,4 +1,4 @@
-import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
+import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårsresultatIkon';
 import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
 import React from 'react';
 import styled from 'styled-components';

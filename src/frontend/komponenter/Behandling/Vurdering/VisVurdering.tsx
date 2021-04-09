@@ -5,14 +5,14 @@ import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typ
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import { IVurdering, NullstillVilkårsvurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import IkkeOppfylt from '../../../ikoner/IkkeOppfylt';
-import Oppfylt from '../../../ikoner/Oppfylt';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst } from './tekster';
 import { useBehandling } from '../../../context/BehandlingContext';
+import LenkeKnapp from '../../Felleskomponenter/LenkeKnapp';
+import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårsresultatIkon';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -23,9 +23,6 @@ const StyledVurdering = styled.div`
 const StyledRedigerOgSlettKnapp = styled.div`
     min-width: auto;
 `;
-const StyledKnapp = styled.button`
-    min-width: 85px;
-`;
 
 const StyledDelvilkårsvurdering = styled.div`
     max-width: 35rem;
@@ -35,6 +32,7 @@ const StyledStrek = styled.span`
     border-left: 3px solid ${navFarger.navLillaLighten20};
     margin-left: 0.55rem;
     grid-column: 1/2;
+    min-height: 10rem;
 `;
 
 const StyledVilkår = styled.div`
@@ -70,35 +68,34 @@ const VisVurdering: FC<Props> = ({
     feilmelding,
 }) => {
     const { hentBehandling } = useBehandling();
+
+    const nullstilVurdering = () =>
+        resetVurdering({
+            id: vurdering.id,
+            behandlingId: vurdering.behandlingId,
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
+                hentBehandling.rerun();
+            }
+        });
+    const vilkårsresultat = vurdering.resultat;
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
             <Undertittel>Manuelt behandlet</Undertittel>
             <StyledRedigerOgSlettKnapp>
-                <StyledKnapp
-                    className={'lenke'}
+                <LenkeKnapp
+                    hidden={vilkårsresultat === Vilkårsresultat.SKAL_IKKE_VURDERES}
                     onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
                 >
                     <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
                     <span>Rediger</span>
-                </StyledKnapp>
-                <StyledKnapp
-                    className={'lenke'}
-                    onClick={() =>
-                        resetVurdering({
-                            id: vurdering.id,
-                            behandlingId: vurdering.behandlingId,
-                        }).then((response) => {
-                            if (response.status === RessursStatus.SUKSESS) {
-                                settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
-                                hentBehandling.rerun();
-                            }
-                        })
-                    }
-                >
+                </LenkeKnapp>
+                <LenkeKnapp onClick={nullstilVurdering}>
                     <SlettSøppelkasse width={19} heigth={19} withDefaultStroke={false} />
                     <span>Slett</span>
-                </StyledKnapp>
+                </LenkeKnapp>
             </StyledRedigerOgSlettKnapp>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
 
@@ -106,11 +103,7 @@ const VisVurdering: FC<Props> = ({
 
             <StyledVilkår>
                 <StyledIkonOgTittel>
-                    {vurdering.resultat === Vilkårsresultat.OPPFYLT ? (
-                        <Oppfylt heigth={21} width={21} />
-                    ) : (
-                        <IkkeOppfylt heigth={21} width={21} />
-                    )}
+                    <VilkårsresultatIkon vilkårsresultat={vilkårsresultat} heigth={21} width={21} />
                     <Element>{vilkårTypeTilTekst[vurdering.vilkårType]}</Element>
                 </StyledIkonOgTittel>
 
@@ -119,7 +112,8 @@ const VisVurdering: FC<Props> = ({
                         (delvilkårsvurdering) =>
                             delvilkårsvurdering.resultat !==
                                 Vilkårsresultat.IKKE_TATT_STILLING_TIL &&
-                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL
+                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL &&
+                            delvilkårsvurdering.resultat !== Vilkårsresultat.SKAL_IKKE_VURDERES
                     )
                     .map((delvilkårsvurdering) =>
                         delvilkårsvurdering.vurderinger.map((vurdering) => (

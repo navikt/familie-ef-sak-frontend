@@ -60,7 +60,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
             behandlingId: vurdering.behandlingId,
             delvilkårsvurderinger: (regler as RessursSuksess<ReglerResponse>).data.vilkårsregler[
                 vurdering.vilkårType
-            ].rotregler
+            ].hovedregler
                 .map((regelId) => ({ regelId }))
                 .map((regelIdObjekt) => ({
                     resultat: Vilkårsresultat.SKAL_IKKE_VURDERES,
@@ -80,12 +80,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     >
                         Vurder vilkår
                     </Knapp>
-                    <Flatknapp
-                        className="lenke"
-                        mini
-                        htmlType="button"
-                        onClick={() => ikkeVurder()}
-                    >
+                    <Flatknapp className="lenke" mini htmlType="button" onClick={ikkeVurder}>
                         Ikke vurder vilkår
                     </Flatknapp>
                 </KnappWrapper>
