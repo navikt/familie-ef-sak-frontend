@@ -50,6 +50,11 @@ const StyledIkonOgTittel = styled.span`
     }
 `;
 
+const BreakWordNormaltekst = styled(Normaltekst)`
+    white-space: pre-wrap
+    word-wrap: break-word
+    `;
+
 interface Props {
     vurdering: IVurdering;
     resetVurdering: (
@@ -122,7 +127,9 @@ const VisVurdering: FC<Props> = ({
                             <React.Fragment key={vurdering.regelId}>
                                 <div>
                                     <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
-                                    <Normaltekst>{svarTypeTilTekst[vurdering.svar!]}</Normaltekst>
+                                    <BreakWordNormaltekst>
+                                        {svarTypeTilTekst[vurdering.svar!]}
+                                    </BreakWordNormaltekst>
                                 </div>
 
                                 {vurdering.begrunnelse && (
