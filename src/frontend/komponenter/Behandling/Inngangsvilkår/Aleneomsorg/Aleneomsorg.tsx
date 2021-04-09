@@ -1,7 +1,6 @@
 import React from 'react';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
 import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
-import { InngangsvilkårType } from '../vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
 import { VilkårProps } from '../vilkårprops';
@@ -17,10 +16,11 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
     const vilkårsresultat = vilkårStatusAleneomsorg(vurderinger);
     return (
         <>
-            {vurderinger
-                .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
-                .map((vurdering, idx) => (
-                    <ToKolonnerLayout key={vurdering.id}>
+            {grunnlag.barnMedSamvær.map((barn, idx) => {
+                const vurdering = vurderinger.find((v) => v.barnId === barn.barnId);
+                if (!vurdering) return null;
+                return (
+                    <ToKolonnerLayout key={barn.barnId}>
                         {{
                             venstre: (
                                 <>
@@ -33,7 +33,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                     )}
                                     <AleneomsorgInfo
                                         barnMedSamvær={grunnlag.barnMedSamvær}
-                                        barnId={vurdering.barnId}
+                                        barnId={barn.barnId}
                                     />
                                 </>
                             ),
@@ -48,7 +48,8 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                             ),
                         }}
                     </ToKolonnerLayout>
-                ))}
+                );
+            })}
         </>
     );
 };
