@@ -6,8 +6,7 @@ import {
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
-import { AnnenForelderNavnogFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
-import { AnnenForelderSøknad } from './AnnenForelderSøknad';
+import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
 
 interface Props {
     forelderRegister?: IAnnenForelder;
@@ -22,7 +21,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
             <Normaltekst>
-                <AnnenForelderSøknad
+                <AnnenForelderNavnOgFnr
                     forelder={søknadsgrunnlag.forelder}
                     ikkeOppgittAnnenForelderBegrunnelse={
                         søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
@@ -33,7 +32,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             <Registergrunnlag />
             <Normaltekst>Annen forelder</Normaltekst>
             <Normaltekst>
-                {forelderRegister ? <AnnenForelderNavnogFnr forelder={forelderRegister} /> : '-'}
+                {forelderRegister ? <AnnenForelderNavnOgFnr forelder={forelderRegister} /> : '-'}
             </Normaltekst>
 
             <Søknadsgrunnlag />

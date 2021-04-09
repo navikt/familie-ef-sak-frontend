@@ -1,27 +1,36 @@
 import React from 'react';
 import { IAnnenForelder } from '../Aleneomsorg/typer';
+import { harVerdi } from '../../../../utils/utils';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
-export const AnnenForelderNavnogFnr: React.FC<{ forelder?: IAnnenForelder }> = ({ forelder }) => {
-    if (!forelder || !forelder.navn || forelder.navn === 'ikke oppgitt') {
+interface Props {
+    forelder?: IAnnenForelder;
+    ikkeOppgittAnnenForelderBegrunnelse?: string;
+}
+
+export const AnnenForelderNavnOgFnr: React.FC<Props> = ({
+    forelder,
+    ikkeOppgittAnnenForelderBegrunnelse,
+}) => {
+    const { navn, fødselsnummer, fødselsdato } = forelder || {};
+
+    const erFnrEllerFødselsdatoUtfylt: boolean = harVerdi(fødselsnummer) || harVerdi(fødselsdato);
+
+    if (!forelder && !ikkeOppgittAnnenForelderBegrunnelse) {
         return null;
-    } else if (forelder.fødselsnummer) {
+    } else if (erFnrEllerFødselsdatoUtfylt) {
         return (
             <>
-                {forelder.navn + ' - '}
-                <KopierbartNullableFødselsnummer fødselsnummer={forelder.fødselsnummer} />
+                {navn !== 'ikke oppgitt' ? `${navn} - ` : 'Ikke oppgitt navn - '}
+                {fødselsnummer ? (
+                    <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
+                ) : (
+                    formaterNullableIsoDato(fødselsdato)
+                )}
             </>
         );
     } else {
-        return (
-            <>
-                {`${forelder?.navn} ${
-                    forelder?.fødselsdato
-                        ? '- ' + formaterNullableIsoDato(forelder.fødselsdato)
-                        : ''
-                } `}
-            </>
-        );
+        return <>{`Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}</>;
     }
 };

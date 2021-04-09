@@ -15,8 +15,7 @@ import {
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Tabell } from './Tabell';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
-import { AnnenForelderNavnogFnr } from './AnnenForelderNavnOgFnr';
-import { AnnenForelderSøknad } from '../Aleneomsorg/AnnenForelderSøknad';
+import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -53,7 +52,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         {
                             overskrift: 'Annen forelder register',
                             tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
-                                <AnnenForelderNavnogFnr
+                                <AnnenForelderNavnOgFnr
                                     forelder={registergrunnlag.annenForelderRegister}
                                 />
                             ),
@@ -61,7 +60,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         {
                             overskrift: 'Annen forelder søknad',
                             tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
-                                <AnnenForelderSøknad
+                                <AnnenForelderNavnOgFnr
                                     forelder={registergrunnlag.annenForelderSoknad}
                                     ikkeOppgittAnnenForelderBegrunnelse={
                                         registergrunnlag.ikkeOppgittAnnenForelderBegrunnelse
@@ -111,7 +110,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         {
                             overskrift: 'Annen forelder',
                             tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) => (
-                                <AnnenForelderSøknad
+                                <AnnenForelderNavnOgFnr
                                     forelder={søknadsgrunnlag.annenForelderSoknad}
                                     ikkeOppgittAnnenForelderBegrunnelse={
                                         søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
