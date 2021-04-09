@@ -30,6 +30,9 @@ export const useHentVilkår = (): {
     nullstillVurdering: (
         nullstillVilkårsvurdering: NullstillVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
+    ikkeVurderVilkår: (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
 } => {
     const { axiosRequest } = useApp();
 
@@ -107,7 +110,32 @@ export const useHentVilkår = (): {
             }
         });
     };
-
+    const ikkeVurderVilkår = (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ): Promise<Ressurs<IVurdering>> => {
+        return axiosRequest<IVurdering, NullstillVilkårsvurdering>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/vurdering/ikkevurder`,
+            data: nullstillVilkårsvurdering,
+        }).then((respons: Ressurs<IVurdering>) => {
+            switch (respons.status) {
+                case RessursStatus.SUKSESS:
+                    settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
+                        oppdaterInngangsvilkårMedVurdering(
+                            prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
+                            respons.data
+                        )
+                    );
+                    return respons;
+                case RessursStatus.FEILET:
+                case RessursStatus.FUNKSJONELL_FEIL:
+                case RessursStatus.IKKE_TILGANG:
+                    return respons;
+                default:
+                    return respons;
+            }
+        });
+    };
     const hentVilkår = (behandlingId: string) => {
         axiosRequest<IVilkår, void>({
             method: 'GET',
@@ -123,5 +151,6 @@ export const useHentVilkår = (): {
         lagreVurdering,
         feilmeldinger,
         nullstillVurdering,
+        ikkeVurderVilkår,
     };
 };

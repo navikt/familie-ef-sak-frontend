@@ -12,6 +12,7 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
+    ikkeVurderVilkår,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
@@ -35,6 +36,7 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                 ),
                 høyre: (
                     <VisEllerEndreVurdering
+                        ikkeVurderVilkår={ikkeVurderVilkår}
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}

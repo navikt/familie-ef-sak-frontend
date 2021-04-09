@@ -11,6 +11,9 @@ export interface VilkårProps {
     vurderinger: IVurdering[];
     grunnlag: IVilkårGrunnlag;
     lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    ikkeVurderVilkår: (
+        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (
         nullstillVilkårsvurdering: NullstillVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;

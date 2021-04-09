@@ -3,14 +3,12 @@ import { FC } from 'react';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
-import { IVurdering, NullstillVilkårsvurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
-import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst } from './tekster';
-import { useBehandling } from '../../../context/BehandlingContext';
 import LenkeKnapp from '../../Felleskomponenter/LenkeKnapp';
 import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårsresultatIkon';
 
@@ -54,9 +52,7 @@ const StyledIkonOgTittel = styled.span`
 
 interface Props {
     vurdering: IVurdering;
-    resetVurdering: (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
-    ) => Promise<Ressurs<IVurdering>>;
+    resetVurdering: () => void;
     feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
 }
@@ -67,18 +63,6 @@ const VisVurdering: FC<Props> = ({
     resetVurdering,
     feilmelding,
 }) => {
-    const { hentBehandling } = useBehandling();
-
-    const nullstilVurdering = () =>
-        resetVurdering({
-            id: vurdering.id,
-            behandlingId: vurdering.behandlingId,
-        }).then((response) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
-                hentBehandling.rerun();
-            }
-        });
     const vilkårsresultat = vurdering.resultat;
     return (
         <StyledVurdering key={vurdering.id}>
@@ -92,7 +76,7 @@ const VisVurdering: FC<Props> = ({
                     <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
                     <span>Rediger</span>
                 </LenkeKnapp>
-                <LenkeKnapp onClick={nullstilVurdering}>
+                <LenkeKnapp onClick={resetVurdering}>
                     <SlettSøppelkasse width={19} heigth={19} withDefaultStroke={false} />
                     <span>Slett</span>
                 </LenkeKnapp>
