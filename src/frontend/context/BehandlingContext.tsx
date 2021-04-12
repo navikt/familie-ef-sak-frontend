@@ -8,12 +8,14 @@ import { useHentBehandling } from '../hooks/useHentBehandling';
 import { useHentBehandlingHistorikk } from '../hooks/useHentBehandlingHistorikk';
 import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
 import { useHentRegler } from '../hooks/useHentRegler';
+import { useHentNavKontor } from '../hooks/useHentNavKontor';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { behandlingId } = useParams<IBehandlingParams>();
     const { hentPersonopplysninger, personopplysningerResponse } = useHentPersonopplysninger(
         behandlingId
     );
+    const { hentNavKontor, navKontorResponse } = useHentNavKontor(behandlingId);
     const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
     const { hentBehandlingshistorikkCallback, behandlingHistorikk } = useHentBehandlingHistorikk(
         behandlingId
@@ -33,11 +35,13 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
 
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
+    useEffect(() => hentNavKontor(behandlingId), [behandlingId]);
 
     return {
         behandling,
         totrinnskontroll,
         personopplysningerResponse,
+        navKontorResponse,
         behandlingHistorikk,
         hentBehandling,
         hentTotrinnskontroll,

@@ -23,6 +23,11 @@ export interface IPersonopplysninger {
     oppholdstillatelse: IOppholdstillatelse[];
 }
 
+export interface INavEnhet {
+    enhetId: string;
+    enhetNavn: string;
+}
+
 export interface IBarn {
     navn: string;
     personIdent: string;
