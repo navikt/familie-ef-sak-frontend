@@ -10,6 +10,7 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../typer/ressurs';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import { datoErEtterDagensDato } from '../../../utils/utils';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -67,6 +68,9 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     );
 };
 
+const gyldigTilOgMedErNullEllerFremITid = (adresse: IAdresse) =>
+    !adresse.gyldigTilOgMed || datoErEtterDagensDato(adresse.gyldigTilOgMed);
+
 const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
 
@@ -82,14 +86,15 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                             <BredTd>
                                 <StyledFlexDiv>
                                     <div>{adresse.gyldigTilOgMed}</div>
-                                    {adresse.type === AdresseType.BOSTEDADRESSE && (
-                                        <StyledKnapp
-                                            onClick={() => settBeboereAdresseIModal(adresse)}
-                                            mini
-                                        >
-                                            Se Beboere
-                                        </StyledKnapp>
-                                    )}
+                                    {adresse.type === AdresseType.BOSTEDADRESSE &&
+                                        gyldigTilOgMedErNullEllerFremITid(adresse) && (
+                                            <StyledKnapp
+                                                onClick={() => settBeboereAdresseIModal(adresse)}
+                                                mini
+                                            >
+                                                Se Beboere
+                                            </StyledKnapp>
+                                        )}
                                 </StyledFlexDiv>
                             </BredTd>
                         </tr>
