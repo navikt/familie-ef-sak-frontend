@@ -143,15 +143,17 @@ const Beboere: React.FC<{ adresse: IAdresse }> = ({ adresse }) => {
                         <TabellWrapper>
                             <table className="tabell">
                                 <KolonneTitler titler={['Navn', 'Fødselsnummer', 'Adresse']} />
-                                {søkResultat.hits.map((beboer, indeks) => {
-                                    return (
-                                        <tr key={indeks}>
-                                            <BredTd>{beboer.visningsnavn}</BredTd>
-                                            <BredTd>{beboer.personIdent}</BredTd>
-                                            <BredTd>{beboer.visningsadresse}</BredTd>
-                                        </tr>
-                                    );
-                                })}
+                                <tbody>
+                                    {søkResultat.hits.map((beboer, indeks) => {
+                                        return (
+                                            <tr key={indeks}>
+                                                <BredTd>{beboer.visningsnavn}</BredTd>
+                                                <BredTd>{beboer.personIdent}</BredTd>
+                                                <BredTd>{beboer.visningsadresse}</BredTd>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
                             </table>
                         </TabellWrapper>
                     </>
