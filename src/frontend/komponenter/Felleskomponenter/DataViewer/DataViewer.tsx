@@ -26,6 +26,7 @@ const StyledLenke = styled(Link)`
     margin-left: 1rem;
 `;
 
+// eslint-disable-next-line
 const renderFeil = (responses: Ressurs<any>[]) => (
     <>
         {responses.map((feilet) => {
@@ -44,9 +45,11 @@ const renderFeil = (responses: Ressurs<any>[]) => (
     </>
 );
 
+// eslint-disable-next-line
 const renderChildren = (children: any, response: any): ReactElement => {
     if (typeof children === 'function') {
         const data = Object.keys(response).reduce((acc: Record<string, unknown>, key) => {
+            // eslint-disable-next-line
             acc[key] = (response[key] as RessursSuksess<any>).data;
             return acc;
         }, {});
