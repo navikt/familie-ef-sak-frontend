@@ -18,11 +18,6 @@ import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavK
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 
-interface Props {
-    gjeldendeBarn: IBarnMedSamvær;
-    barnId?: string;
-}
-
 const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag) => {
     if (søknadsgrunnlag.navn && søknadsgrunnlag.navn !== '') {
         return søknadsgrunnlag.navn;
@@ -30,7 +25,7 @@ const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsg
     return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
 };
 
-const AleneomsorgInfo: FC<Props> = ({ gjeldendeBarn }) => {
+const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     return (
         <>
