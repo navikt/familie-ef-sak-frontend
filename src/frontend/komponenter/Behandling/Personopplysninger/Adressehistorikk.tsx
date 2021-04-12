@@ -68,40 +68,47 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
 };
 
 const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
-    const [visBeboereModal, settVisBeboereModal] = useState(false);
+    const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
 
     return (
-        <tbody>
-            {adresser.map((adresse, indeks) => {
-                return (
-                    <tr key={indeks}>
-                        <BredTd>{adresse.visningsadresse}</BredTd>
-                        <BredTd>{adresse.type}</BredTd>
-                        <BredTd>{adresse.gyldigFraOgMed}</BredTd>
-                        <BredTd>
-                            <StyledFlexDiv>
-                                <div>{adresse.gyldigTilOgMed}</div>
-                                {adresse.type === AdresseType.BOSTEDADRESSE && (
-                                    <StyledKnapp onClick={() => settVisBeboereModal(true)} mini>
-                                        Se Beboere
-                                    </StyledKnapp>
-                                )}
-                                <UIModalWrapper
-                                    modal={{
-                                        tittel: 'Beboere',
-                                        lukkKnapp: true,
-                                        visModal: visBeboereModal,
-                                        onClose: () => settVisBeboereModal(false),
-                                    }}
-                                >
-                                    <Beboere adresse={adresse} />
-                                </UIModalWrapper>
-                            </StyledFlexDiv>
-                        </BredTd>
-                    </tr>
-                );
-            })}
-        </tbody>
+        <>
+            <tbody>
+                {adresser.map((adresse, indeks) => {
+                    return (
+                        <tr key={indeks}>
+                            <BredTd>{adresse.visningsadresse}</BredTd>
+                            <BredTd>{adresse.type}</BredTd>
+                            <BredTd>{adresse.gyldigFraOgMed}</BredTd>
+                            <BredTd>
+                                <StyledFlexDiv>
+                                    <div>{adresse.gyldigTilOgMed}</div>
+                                    {adresse.type === AdresseType.BOSTEDADRESSE && (
+                                        <StyledKnapp
+                                            onClick={() => settBeboereAdresseIModal(adresse)}
+                                            mini
+                                        >
+                                            Se Beboere
+                                        </StyledKnapp>
+                                    )}
+                                </StyledFlexDiv>
+                            </BredTd>
+                        </tr>
+                    );
+                })}
+            </tbody>
+            {beboereAdresseIModal && (
+                <UIModalWrapper
+                    modal={{
+                        tittel: 'Beboere',
+                        lukkKnapp: true,
+                        visModal: true,
+                        onClose: () => settBeboereAdresseIModal(undefined),
+                    }}
+                >
+                    <Beboere adresse={beboereAdresseIModal} />
+                </UIModalWrapper>
+            )}
+        </>
     );
 };
 
@@ -134,9 +141,9 @@ const Beboere: React.FC<{ adresse: IAdresse }> = ({ adresse }) => {
                                 {søkResultat.hits.map((beboer, indeks) => {
                                     return (
                                         <tr key={indeks}>
-                                            <BredTd>{'lalal'}</BredTd>
-                                            <BredTd>{'lalal'}</BredTd>
-                                            <BredTd>{'lalal'}</BredTd>
+                                            <BredTd>{beboer.visningsnavn}</BredTd>
+                                            <BredTd>{beboer.personIdent}</BredTd>
+                                            <BredTd>{beboer.visningsadresse}</BredTd>
                                         </tr>
                                     );
                                 })}
