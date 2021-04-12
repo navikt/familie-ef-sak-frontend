@@ -19,7 +19,7 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 
 interface Props {
-    barnMedSamvær: IBarnMedSamvær[];
+    gjeldendeBarn: IBarnMedSamvær;
     barnId?: string;
 }
 
@@ -30,9 +30,7 @@ const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsg
     return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
 };
 
-const AleneomsorgInfo: FC<Props> = ({ barnMedSamvær, barnId }) => {
-    const gjeldendeBarn = barnMedSamvær.find((it) => it.barnId === barnId);
-    if (gjeldendeBarn === undefined) return null;
+const AleneomsorgInfo: FC<Props> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     return (
         <>

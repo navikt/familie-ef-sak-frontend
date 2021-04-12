@@ -31,10 +31,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                             vilkårsresultat={vilkårsresultat}
                                         />
                                     )}
-                                    <AleneomsorgInfo
-                                        barnMedSamvær={grunnlag.barnMedSamvær}
-                                        barnId={barn.barnId}
-                                    />
+                                    <AleneomsorgInfo gjeldendeBarn={barn} />
                                 </>
                             ),
                             høyre: (
