@@ -127,15 +127,15 @@ const VisVurdering: FC<Props> = ({
                             <React.Fragment key={vurdering.regelId}>
                                 <div>
                                     <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
-                                    <BreakWordNormaltekst>
-                                        {svarTypeTilTekst[vurdering.svar!]}
-                                    </BreakWordNormaltekst>
+                                    <Normaltekst>{svarTypeTilTekst[vurdering.svar!]}</Normaltekst>
                                 </div>
 
                                 {vurdering.begrunnelse && (
                                     <>
                                         <Element>Begrunnelse</Element>
-                                        <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                                        <BreakWordNormaltekst>
+                                            {vurdering.begrunnelse}
+                                        </BreakWordNormaltekst>
                                     </>
                                 )}
                             </React.Fragment>
