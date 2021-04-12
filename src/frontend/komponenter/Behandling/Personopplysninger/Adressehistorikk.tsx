@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../../ikoner/Bygning';
-import { AdresseType, IAdresse, IPersonSøkResultat } from '../../../typer/personopplysninger';
+import { AdresseType, IAdresse, ISøkeresultatPerson } from '../../../typer/personopplysninger';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import styled from 'styled-components';
@@ -9,6 +9,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../typer/ressurs';
+import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -67,20 +68,8 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
 };
 
 const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
-    const { axiosRequest } = useApp();
     const [visBeboereModal, settVisBeboereModal] = useState(false);
-    const [beboere, settBeboere] = useState<Ressurs<IPersonSøkResultat>>(byggTomRessurs());
 
-    const sokPerson = () => {
-        axiosRequest<IPersonSøkResultat, any>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/sok/person/adresse`,
-            data: adresser[0].bostedsadresse,
-        }).then((respons: Ressurs<IPersonSøkResultat> | RessursFeilet) => {
-            settBeboere(respons);
-            settVisBeboereModal(true);
-        });
-    };
     return (
         <tbody>
             {adresser.map((adresse, indeks) => {
@@ -93,7 +82,7 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                             <StyledFlexDiv>
                                 <div>{adresse.gyldigTilOgMed}</div>
                                 {adresse.type === AdresseType.BOSTEDADRESSE && (
-                                    <StyledKnapp onClick={() => sokPerson()} mini>
+                                    <StyledKnapp onClick={() => settVisBeboereModal(true)} mini>
                                         Se Beboere
                                     </StyledKnapp>
                                 )}
@@ -105,7 +94,7 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                                         onClose: () => settVisBeboereModal(false),
                                     }}
                                 >
-                                    *Ikke implementert. Venter på adressesøk i PDL*
+                                    <Beboere adresse={adresse} />
                                 </UIModalWrapper>
                             </StyledFlexDiv>
                         </BredTd>
@@ -113,6 +102,50 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                 );
             })}
         </tbody>
+    );
+};
+
+const Beboere: React.FC<{ adresse: IAdresse }> = ({ adresse }) => {
+    const { axiosRequest } = useApp();
+    const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
+
+    useEffect(() => {
+        sokPerson();
+    }, []);
+
+    const sokPerson = () => {
+        axiosRequest<ISøkeresultatPerson, any>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/sok/person/adresse`,
+            data: adresse.bostedsadresse,
+        }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
+            settSøkResultat(respons);
+        });
+    };
+
+    return (
+        <DataViewer response={{ søkResultat }}>
+            {({ søkResultat }) => {
+                return (
+                    <>
+                        <TabellWrapper>
+                            <table className="tabell">
+                                <KolonneTitler titler={['Navn', 'Fødselsnummer', 'Adresse']} />
+                                {søkResultat.hits.map((beboer, indeks) => {
+                                    return (
+                                        <tr key={indeks}>
+                                            <BredTd>{'lalal'}</BredTd>
+                                            <BredTd>{'lalal'}</BredTd>
+                                            <BredTd>{'lalal'}</BredTd>
+                                        </tr>
+                                    );
+                                })}
+                            </table>
+                        </TabellWrapper>
+                    </>
+                );
+            }}
+        </DataViewer>
     );
 };
 

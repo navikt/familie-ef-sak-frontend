@@ -50,11 +50,17 @@ export interface IBostedsadresse {
     matrikkeladresse?: any;
 }
 
-export interface IPersonSøkResultat {
-    hits: any[];
+export interface ISøkeresultatPerson {
+    hits: IPersonFraSøk[];
     totalHints: number;
     pageNumber: number;
     totalPages: number;
+}
+
+export interface IPersonFraSøk {
+    personIdent: string;
+    visningsadresse: string;
+    visningsnavn: string;
 }
 
 export interface IFullmakt {
