@@ -11,16 +11,12 @@ import {
     skalBarnetBoHosSøkerTilTekst,
 } from './typer';
 import Bosted from './Bosted';
-import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-
-interface Props {
-    barnMedSamvær: IBarnMedSamvær[];
-    barnId?: string;
-}
+import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 
 const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag) => {
     if (søknadsgrunnlag.navn && søknadsgrunnlag.navn !== '') {
@@ -29,9 +25,7 @@ const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsg
     return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
 };
 
-const AleneomsorgInfo: FC<Props> = ({ barnMedSamvær, barnId }) => {
-    const gjeldendeBarn = barnMedSamvær.find((it) => it.barnId === barnId);
-    if (gjeldendeBarn === undefined) return null;
+const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     return (
         <>
@@ -53,15 +47,17 @@ const AleneomsorgInfo: FC<Props> = ({ barnMedSamvær, barnId }) => {
                     <>
                         <Registergrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <Normaltekst>
-                            {formaterNullableFødsesnummer(registergrunnlag.fødselsnummer)}
-                        </Normaltekst>
+                        <KopierbartNullableFødselsnummer
+                            fødselsnummer={registergrunnlag.fødselsnummer}
+                        />
                     </>
                 ) : søknadsgrunnlag.fødselsnummer && søknadsgrunnlag.fødselsnummer !== '' ? (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <Normaltekst>{søknadsgrunnlag.fødselsnummer}</Normaltekst>
+                        <KopierbartNullableFødselsnummer
+                            fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                        />
                     </>
                 ) : (
                     søknadsgrunnlag.fødselTermindato && (

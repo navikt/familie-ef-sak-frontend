@@ -7,7 +7,8 @@ import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { formaterNullableFødsesnummer, formaterNullableIsoDato } from '../../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
 }
@@ -19,7 +20,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                 const { søknadsgrunnlag, registergrunnlag } = barn;
                 const barnUtenNavn: string = søknadsgrunnlag.erBarnetFødt
                     ? 'Ikke fylt ut'
-                    : 'Ikke født ennå';
+                    : 'Ikke født';
                 return (
                     <React.Fragment key={barn.barnId}>
                         <GridTabell>
@@ -41,20 +42,18 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                     <Registergrunnlag />
                                     <Normaltekst>Fødsels- eller D-nummer</Normaltekst>
                                     <Normaltekst>
-                                        {formaterNullableFødsesnummer(
-                                            registergrunnlag.fødselsnummer
-                                        )}
+                                        <KopierbartNullableFødselsnummer
+                                            fødselsnummer={registergrunnlag.fødselsnummer}
+                                        />
                                     </Normaltekst>
                                 </>
                             ) : søknadsgrunnlag.fødselsnummer ? (
                                 <>
                                     <Søknadsgrunnlag />
                                     <Normaltekst>Fødsels- eller D-nummer</Normaltekst>
-                                    <Normaltekst>
-                                        {formaterNullableFødsesnummer(
-                                            søknadsgrunnlag.fødselsnummer
-                                        )}
-                                    </Normaltekst>
+                                    <KopierbartNullableFødselsnummer
+                                        fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                                    />
                                 </>
                             ) : (
                                 <>

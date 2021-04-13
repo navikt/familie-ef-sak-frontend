@@ -20,7 +20,7 @@ const Begrunnelse: FC<Props> = ({ svar, onChange, regel }) => {
     return (
         <Textarea
             label={'Begrunnelse '.concat(
-                begrunnelsetype === BegrunnelseRegel.VALGFRI ? '(valgfritt)' : ''
+                begrunnelsetype === BegrunnelseRegel.VALGFRI ? '(hvis aktuelt)' : ''
             )}
             value={svar.begrunnelse || ''}
             onChange={(e) => onChange(e.target.value)}

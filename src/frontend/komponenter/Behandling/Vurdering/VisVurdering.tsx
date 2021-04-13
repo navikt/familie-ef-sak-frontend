@@ -22,10 +22,6 @@ const StyledRedigerOgSlettKnapp = styled.div`
     min-width: auto;
 `;
 
-const StyledDelvilkårsvurdering = styled.div`
-    max-width: 35rem;
-`;
-
 const StyledStrek = styled.span`
     border-left: 3px solid ${navFarger.navLillaLighten20};
     margin-left: 0.55rem;
@@ -35,7 +31,7 @@ const StyledStrek = styled.span`
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
-
+    max-width: 40rem;
     .typo-normal {
         margin-top: 0.25rem;
         margin-bottom: 1.5rem;
@@ -48,6 +44,11 @@ const StyledIkonOgTittel = styled.span`
     svg {
         margin-right: 1rem;
     }
+`;
+
+const BreakWordNormaltekst = styled(Normaltekst)`
+    white-space: pre-wrap
+    word-wrap: break-word
 `;
 
 interface Props {
@@ -102,15 +103,17 @@ const VisVurdering: FC<Props> = ({
                     .map((delvilkårsvurdering) =>
                         delvilkårsvurdering.vurderinger.map((vurdering) => (
                             <React.Fragment key={vurdering.regelId}>
-                                <StyledDelvilkårsvurdering>
+                                <div>
                                     <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
                                     <Normaltekst>{svarTypeTilTekst[vurdering.svar!]}</Normaltekst>
-                                </StyledDelvilkårsvurdering>
+                                </div>
 
                                 {vurdering.begrunnelse && (
                                     <>
                                         <Element>Begrunnelse</Element>
-                                        <Normaltekst>{vurdering.begrunnelse}</Normaltekst>
+                                        <BreakWordNormaltekst>
+                                            {vurdering.begrunnelse}
+                                        </BreakWordNormaltekst>
                                     </>
                                 )}
                             </React.Fragment>

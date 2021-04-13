@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { Document, Page, pdfjs } from 'react-pdf';
 import DataViewer from './DataViewer/DataViewer';
 import Pagination from 'paginering';
-
-pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.js';
+const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 interface PdfVisningProps {
     pdfFilInnhold: Ressurs<string>;
