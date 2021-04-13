@@ -31,6 +31,11 @@ const StyledTabellWrapper = styled(TabellWrapper)`
     padding-top: 0rem;
 `;
 
+const StyledModalTabellWrapper = styled(TabellWrapper)`
+    padding-top: 0rem;
+    grid-template-columns: max-content;
+`;
+
 const MAX_LENGDE_ADRESSER = 5;
 
 const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
@@ -140,7 +145,7 @@ const Beboere: React.FC<{ adresse: IAdresse }> = ({ adresse }) => {
             {({ søkResultat }) => {
                 return (
                     <>
-                        <TabellWrapper>
+                        <StyledModalTabellWrapper>
                             <table className="tabell">
                                 <KolonneTitler titler={['Navn', 'Fødselsnummer', 'Adresse']} />
                                 <tbody>
@@ -155,7 +160,7 @@ const Beboere: React.FC<{ adresse: IAdresse }> = ({ adresse }) => {
                                     })}
                                 </tbody>
                             </table>
-                        </TabellWrapper>
+                        </StyledModalTabellWrapper>
                     </>
                 );
             }}

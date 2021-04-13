@@ -182,4 +182,8 @@ app.get('/familie-ef-sak/api/vedtak/:behandlingId', (req, res) => {
     setTimeout(() => res.send(lesMockFil('vedtak.json')), delayMs);
 });
 
+app.post('/familie-ef-sak/api/sok/person/adresse', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`søke-person-resultat.json`)), delayMs);
+});
+
 module.exports = app;
