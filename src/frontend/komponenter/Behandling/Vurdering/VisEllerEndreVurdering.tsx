@@ -2,8 +2,8 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import {
     IVurdering,
-    NullstillVilkårsvurdering,
     OppdaterVilkårsvurdering,
+    SvarPåVilkårsvurdering,
     Vilkårsresultat,
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
@@ -21,12 +21,12 @@ export enum Redigeringsmodus {
 
 interface Props {
     vurdering: IVurdering;
-    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
     ikkeVurderVilkår: (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
 }
@@ -61,7 +61,12 @@ const VisEllerEndreVurdering: FC<Props> = ({
         ikkeVurderVilkår({
             id: vurdering.id,
             behandlingId: vurdering.behandlingId,
-        }).then(() => settRedigeringsmodus(Redigeringsmodus.VISNING));
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                settRedigeringsmodus(Redigeringsmodus.VISNING);
+                hentBehandling.rerun();
+            }
+        });
     };
 
     const resetVurdering = () =>

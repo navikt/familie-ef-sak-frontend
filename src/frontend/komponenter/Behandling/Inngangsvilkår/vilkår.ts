@@ -32,12 +32,12 @@ export interface IVurdering {
     delvilkårsvurderinger: IDelvilkår[];
 }
 
-export type OppdaterVilkårsvurdering = Pick<
+export type SvarPåVilkårsvurdering = Pick<
     IVurdering,
     'id' | 'delvilkårsvurderinger' | 'behandlingId'
 >;
 
-export type NullstillVilkårsvurdering = Pick<IVurdering, 'id' | 'behandlingId'>;
+export type OppdaterVilkårsvurdering = Pick<IVurdering, 'id' | 'behandlingId'>;
 
 export interface Vurderingsfeilmelding {
     [Key: string]: string;

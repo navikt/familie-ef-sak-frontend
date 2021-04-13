@@ -4,8 +4,8 @@ import { useState } from 'react';
 import {
     IVilkår,
     IVurdering,
-    NullstillVilkårsvurdering,
     OppdaterVilkårsvurdering,
+    SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from '../komponenter/Behandling/Inngangsvilkår/vilkår';
 
@@ -25,13 +25,13 @@ const oppdaterInngangsvilkårMedVurdering = (
 export const useHentVilkår = (): {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
-    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
     nullstillVurdering: (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
     ikkeVurderVilkår: (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
 } => {
     const { axiosRequest } = useApp();
@@ -57,8 +57,8 @@ export const useHentVilkår = (): {
         });
     }
 
-    const lagreVurdering = (vurdering: OppdaterVilkårsvurdering): Promise<Ressurs<IVurdering>> => {
-        return axiosRequest<IVurdering, OppdaterVilkårsvurdering>({
+    const lagreVurdering = (vurdering: SvarPåVilkårsvurdering): Promise<Ressurs<IVurdering>> => {
+        return axiosRequest<IVurdering, SvarPåVilkårsvurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/vilkar`,
             data: vurdering,
@@ -85,9 +85,9 @@ export const useHentVilkår = (): {
     };
 
     const nullstillVurdering = (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ): Promise<Ressurs<IVurdering>> => {
-        return axiosRequest<IVurdering, NullstillVilkårsvurdering>({
+        return axiosRequest<IVurdering, OppdaterVilkårsvurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/nullstill`,
             data: nullstillVilkårsvurdering,
@@ -111,9 +111,9 @@ export const useHentVilkår = (): {
         });
     };
     const ikkeVurderVilkår = (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ): Promise<Ressurs<IVurdering>> => {
-        return axiosRequest<IVurdering, NullstillVilkårsvurdering>({
+        return axiosRequest<IVurdering, OppdaterVilkårsvurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/ikkevurder`,
             data: nullstillVilkårsvurdering,
