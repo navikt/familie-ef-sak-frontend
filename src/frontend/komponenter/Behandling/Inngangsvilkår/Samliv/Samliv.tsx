@@ -28,7 +28,7 @@ export const Samliv: React.FC<VilkårProps> = ({
                             tittel="Samliv"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <SamlivInfo grunnlag={grunnlag} />,
+                        <SamlivInfo grunnlag={grunnlag} />
                     </>
                 ),
                 høyre: (
