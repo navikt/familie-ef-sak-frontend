@@ -65,6 +65,11 @@ const VisVurdering: FC<Props> = ({
     feilmelding,
 }) => {
     const vilkårsresultat = vurdering.resultat;
+    const vurderingerBesvaradeAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
+        (delvilkårsvurdering) =>
+            delvilkårsvurdering.resultat === Vilkårsresultat.OPPFYLT ||
+            delvilkårsvurdering.resultat === Vilkårsresultat.IKKE_OPPFYLT
+    );
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
@@ -92,33 +97,25 @@ const VisVurdering: FC<Props> = ({
                     <Element>{vilkårTypeTilTekst[vurdering.vilkårType]}</Element>
                 </StyledIkonOgTittel>
 
-                {vurdering.delvilkårsvurderinger
-                    .filter(
-                        (delvilkårsvurdering) =>
-                            delvilkårsvurdering.resultat !==
-                                Vilkårsresultat.IKKE_TATT_STILLING_TIL &&
-                            delvilkårsvurdering.resultat !== Vilkårsresultat.IKKE_AKTUELL &&
-                            delvilkårsvurdering.resultat !== Vilkårsresultat.SKAL_IKKE_VURDERES
-                    )
-                    .map((delvilkårsvurdering) =>
-                        delvilkårsvurdering.vurderinger.map((vurdering) => (
-                            <React.Fragment key={vurdering.regelId}>
-                                <div>
-                                    <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
-                                    <Normaltekst>{svarTypeTilTekst[vurdering.svar!]}</Normaltekst>
-                                </div>
+                {vurderingerBesvaradeAvSaksbehandler.map((delvilkårsvurdering) =>
+                    delvilkårsvurdering.vurderinger.map((vurdering) => (
+                        <React.Fragment key={vurdering.regelId}>
+                            <div>
+                                <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
+                                <Normaltekst>{svarTypeTilTekst[vurdering.svar!]}</Normaltekst>
+                            </div>
 
-                                {vurdering.begrunnelse && (
-                                    <>
-                                        <Element>Begrunnelse</Element>
-                                        <BreakWordNormaltekst>
-                                            {vurdering.begrunnelse}
-                                        </BreakWordNormaltekst>
-                                    </>
-                                )}
-                            </React.Fragment>
-                        ))
-                    )}
+                            {vurdering.begrunnelse && (
+                                <>
+                                    <Element>Begrunnelse</Element>
+                                    <BreakWordNormaltekst>
+                                        {vurdering.begrunnelse}
+                                    </BreakWordNormaltekst>
+                                </>
+                            )}
+                        </React.Fragment>
+                    ))
+                )}
             </StyledVilkår>
         </StyledVurdering>
     );
