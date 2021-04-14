@@ -39,7 +39,7 @@ export const OppgaveBenk: React.FC = () => {
         <Side>
             {process.env.ENV !== 'production' && <OpprettDummyBehandling />}
             <OppgaveFiltering hentOppgaver={hentOppgaver} />
-            <OppgaveTabell oppgaveResurs={oppgaveResurs} />
+            <OppgaveTabell oppgaveRessurs={oppgaveResurs} />
         </Side>
     );
 };
