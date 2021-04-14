@@ -1,4 +1,4 @@
-import { Datovelger } from 'nav-datovelger';
+import { Datepicker } from 'nav-datovelger';
 import React from 'react';
 import styled from 'styled-components';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
@@ -35,13 +35,13 @@ const DatoPeriode: React.FC<Props> = ({
                     {datoFraTekst}
                 </DatolabelStyle>
 
-                <Datovelger onChange={settDatoFra} valgtDato={valgtDatoFra} />
+                <Datepicker onChange={settDatoFra} value={valgtDatoFra} />
             </div>
             <div className="skjemaelement flex-item">
                 <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
                     {datoTilTekst}
                 </DatolabelStyle>
-                <Datovelger onChange={settDatoTil} valgtDato={valgtDatoTil} />
+                <Datepicker onChange={settDatoTil} value={valgtDatoTil} />
                 {datoFeil && <SkjemaelementFeilmelding>{datoFeil}</SkjemaelementFeilmelding>}
             </div>
         </FlexDiv>

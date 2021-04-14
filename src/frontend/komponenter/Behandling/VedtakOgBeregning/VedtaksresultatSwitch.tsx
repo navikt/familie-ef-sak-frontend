@@ -179,10 +179,14 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     {vedtaksperiodeListe.map((element, index) => {
                         const { periodeType, aktivitet, datoTil, datoFra } = element;
 
-                        const antallMåneder =
-                            datoFra && datoTil
-                                ? differenceInMonths(new Date(datoTil), new Date(datoFra))
-                                : undefined;
+                        const antallMåneder = (() => {
+                            if (!(datoFra && datoTil)) {
+                                return undefined;
+                            }
+                            const plussEnDag = new Date(datoTil);
+                            plussEnDag.setDate(plussEnDag.getDate() + 1);
+                            return differenceInMonths(plussEnDag, new Date(datoFra));
+                        })();
 
                         return (
                             <VedtaksperiodeRad>
@@ -272,7 +276,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         onClick={lagBlankett}
                         disabled={laster}
                     >
-                        Lag blankett
+                        Lagre vedtak
                     </Hovedknapp>
                 </>
             );

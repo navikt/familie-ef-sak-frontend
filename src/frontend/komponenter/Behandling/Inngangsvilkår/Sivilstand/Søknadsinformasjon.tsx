@@ -64,9 +64,9 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Alene med barn fordi</Normaltekst>
-                    <Normaltekst>
-                        {søknad.årsakEnslig && ÅrsakEnsligTilTekst[søknad.årsakEnslig]}
-                    </Normaltekst>
+                    {søknad.årsakEnslig && (
+                        <Normaltekst>{ÅrsakEnsligTilTekst[søknad.årsakEnslig]}</Normaltekst>
+                    )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
                         <>
