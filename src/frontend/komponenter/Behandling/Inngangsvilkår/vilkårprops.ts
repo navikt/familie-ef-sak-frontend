@@ -1,8 +1,8 @@
 import {
     IVilkårGrunnlag,
     IVurdering,
-    NullstillVilkårsvurdering,
     OppdaterVilkårsvurdering,
+    SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from './vilkår';
 import { Ressurs } from '../../../typer/ressurs';
@@ -10,9 +10,12 @@ import { Ressurs } from '../../../typer/ressurs';
 export interface VilkårProps {
     vurderinger: IVurdering[];
     grunnlag: IVilkårGrunnlag;
-    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    ikkeVurderVilkår: (
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
 }

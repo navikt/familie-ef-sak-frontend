@@ -4,7 +4,7 @@ import { BegrunnelseRegel, Regler } from './typer';
 import {
     IDelvilkår,
     IVurdering,
-    OppdaterVilkårsvurdering,
+    SvarPåVilkårsvurdering,
     VilkårType,
     Vurdering,
 } from '../Inngangsvilkår/vilkår';
@@ -29,7 +29,7 @@ const Lagreknapp = hiddenIf(Hovedknapp);
 const EndreVurderingComponent: FC<{
     vilkårType: VilkårType;
     regler: Regler;
-    oppdaterVurdering: (vurdering: OppdaterVilkårsvurdering) => void;
+    oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(

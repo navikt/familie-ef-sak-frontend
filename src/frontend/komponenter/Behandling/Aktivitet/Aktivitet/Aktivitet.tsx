@@ -11,6 +11,7 @@ export const Aktivitet: React.FC<VilkårProps> = ({
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
+    ikkeVurderVilkår,
     feilmeldinger,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET);
@@ -28,6 +29,7 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                 ),
                 høyre: (
                     <VisEllerEndreVurdering
+                        ikkeVurderVilkår={ikkeVurderVilkår}
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}

@@ -32,12 +32,12 @@ export interface IVurdering {
     delvilkårsvurderinger: IDelvilkår[];
 }
 
-export type OppdaterVilkårsvurdering = Pick<
+export type SvarPåVilkårsvurdering = Pick<
     IVurdering,
     'id' | 'delvilkårsvurderinger' | 'behandlingId'
 >;
 
-export type NullstillVilkårsvurdering = Pick<IVurdering, 'id' | 'behandlingId'>;
+export type OppdaterVilkårsvurdering = Pick<IVurdering, 'id' | 'behandlingId'>;
 
 export interface Vurderingsfeilmelding {
     [Key: string]: string;
@@ -59,6 +59,7 @@ export enum Vilkårsresultat {
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_TATT_STILLING_TIL = 'IKKE_TATT_STILLING_TIL',
+    SKAL_IKKE_VURDERES = 'SKAL_IKKE_VURDERES',
 }
 
 /**
