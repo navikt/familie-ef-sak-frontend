@@ -2,7 +2,7 @@ import React from 'react';
 import { RessursStatus, RessursSuksess } from '../../typer/ressurs';
 import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { OppgaveResurs } from '../../sider/Oppgavebenk';
+import { OppgaveRessurs } from '../../sider/Oppgavebenk';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './oppgave';
 import 'nav-frontend-tabell-style';
@@ -20,14 +20,14 @@ export interface IOppgaverResponse {
 }
 
 interface Props {
-    oppgaveResurs: OppgaveResurs;
+    oppgaveRessurs: OppgaveRessurs;
 }
 
-const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
-    const { status } = oppgaveResurs;
+const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs }) => {
+    const { status } = oppgaveRessurs;
     const oppgaveListe =
         status === RessursStatus.SUKSESS
-            ? (oppgaveResurs as RessursSuksess<IOppgaverResponse>).data.oppgaver
+            ? (oppgaveRessurs as RessursSuksess<IOppgaverResponse>).data.oppgaver
             : [];
 
     const { sortertListe, settSortering, sortConfig } = useSorteringState<IOppgave>(oppgaveListe, {
@@ -45,9 +45,9 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveResurs }) => {
         return <SystemetLaster />;
     } else if (status === RessursStatus.IKKE_TILGANG) {
         return <AlertStripeFeil children="Ikke tilgang!" />;
-    } else if (oppgaveResurs.status === RessursStatus.FEILET) {
+    } else if (oppgaveRessurs.status === RessursStatus.FEILET) {
         return (
-            <AlertStripeFeil children={`Noe gikk galt - ${oppgaveResurs.frontendFeilmelding}`} />
+            <AlertStripeFeil children={`Noe gikk galt - ${oppgaveRessurs.frontendFeilmelding}`} />
         );
     } else if (status === RessursStatus.IKKE_HENTET) {
         return <AlertStripeInfo> Du må gjøre ett søk for å se oppgaver i listen.</AlertStripeInfo>; //TODO FIKS TEKST

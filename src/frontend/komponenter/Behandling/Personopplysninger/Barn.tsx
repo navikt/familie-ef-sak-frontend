@@ -4,7 +4,6 @@ import TabellOverskrift from './TabellOverskrift';
 import LiteBarn from '../../../ikoner/LiteBarn';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { EtikettInfo, EtikettSuksess, EtikettFokus } from 'nav-frontend-etiketter';
-import { EtikettLiten } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { differenceInYears } from 'date-fns';
 import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
@@ -68,18 +67,12 @@ const FødselsnummerBarn: React.FC<{ fødselsnummer: string; fødselsdato?: stri
                 <SpanMedVenstreMargin>
                     {!isNaN(alder) ? (
                         alder < 18 ? (
-                            <EtikettSuksess>
-                                <EtikettLiten>{alder} år</EtikettLiten>
-                            </EtikettSuksess>
+                            <EtikettSuksess>{alder} år</EtikettSuksess>
                         ) : (
-                            <EtikettInfo>
-                                <EtikettLiten>Over 18 år</EtikettLiten>
-                            </EtikettInfo>
+                            <EtikettInfo>Over 18 år</EtikettInfo>
                         )
                     ) : (
-                        <EtikettFokus>
-                            <EtikettLiten>Ukjent alder</EtikettLiten>
-                        </EtikettFokus>
+                        <EtikettFokus>Ukjent alder</EtikettFokus>
                     )}
                 </SpanMedVenstreMargin>
             </FlexDiv>

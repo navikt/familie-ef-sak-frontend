@@ -24,9 +24,6 @@ export const stegTypeTilTekst: Record<Steg, string> = {
     JOURNALFØR_VEDTAKSBREV: 'Journalfør vedtaksbrev',
     SEND_TIL_BESLUTTER: 'Vedtak sendt til godkjenning',
     VENTE_PÅ_STATUS_FRA_ØKONOMI: 'Vente på status fra økonomi',
-    VILKÅRSVURDERE_STØNAD: 'Vilkårsvurdere stønad',
-    REGISTRERE_OPPLYSNINGER: 'Registrere opplysninger',
-    VILKÅRSVURDERE_INNGANGSVILKÅR: 'Vilkårsvurdere inngangsvilkår',
 };
 
 export const enum StegUtfall {
