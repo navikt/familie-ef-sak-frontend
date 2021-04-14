@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../../ikoner/Bygning';
-import { AdresseType, IAdresse, ISøkeresultatPerson } from '../../../typer/personopplysninger';
+import {
+    AdresseType,
+    IAdresse,
+    IBostedsadresse,
+    ISøkeresultatPerson,
+} from '../../../typer/personopplysninger';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import styled from 'styled-components';
@@ -131,7 +136,7 @@ const Beboere: React.FC<{ adresse: IAdresse }> = ({ adresse }) => {
     }, []);
 
     const sokPerson = () => {
-        axiosRequest<ISøkeresultatPerson, any>({
+        axiosRequest<ISøkeresultatPerson, IBostedsadresse>({
             method: 'POST',
             url: `/familie-ef-sak/api/sok/person/adresse`,
             data: adresse.bostedsadresse,

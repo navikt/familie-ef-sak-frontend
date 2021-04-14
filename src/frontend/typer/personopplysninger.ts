@@ -46,8 +46,32 @@ export interface IAdresse {
 }
 
 export interface IBostedsadresse {
-    vegadresse?: any;
-    matrikkeladresse?: any;
+    vegadresse?: IVegadresse;
+    matrikkeladresse?: IMatrikkeladresse;
+}
+
+export interface IVegadresse {
+    husnummer?: string;
+    husbokstav?: string;
+    bruksenhetsnummer?: string;
+    adressenavn?: string;
+    kommunenummer?: string;
+    tilleggsnavn?: string;
+    postnummer?: string;
+    koordinater?: IKoordinater;
+    matrikkelId?: IMatrikkeladresse;
+}
+
+export interface IKoordinater {
+    x?: number;
+    y?: number;
+    z?: number;
+    kvalitet?: number;
+}
+
+export interface IMatrikkeladresse {
+    matrikkelId?: number;
+    bruksenhetsnummer?: string;
 }
 
 export interface ISøkeresultatPerson {
