@@ -89,7 +89,6 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         {
                             overskrift: 'Termindato',
                             tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
-                                !søknadsgrunnlag.erBarnetFødt &&
                                 formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
                         },
                         {

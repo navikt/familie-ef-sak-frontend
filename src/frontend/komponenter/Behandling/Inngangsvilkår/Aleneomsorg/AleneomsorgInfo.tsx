@@ -5,11 +5,7 @@ import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import {
-    IBarnMedSamvær,
-    IBarnMedSamværSøknadsgrunnlag,
-    skalBarnetBoHosSøkerTilTekst,
-} from './typer';
+import { IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import Samvær from './Samvær';
@@ -17,13 +13,6 @@ import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
-
-const utledVisningAvNavnFraSøknad = (søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag) => {
-    if (søknadsgrunnlag.navn && søknadsgrunnlag.navn !== '') {
-        return søknadsgrunnlag.navn;
-    }
-    return søknadsgrunnlag.erBarnetFødt ? 'Ikke utfylt' : 'Ikke født';
-};
 
 const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
@@ -40,7 +29,11 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                     <>
                         <Søknadsgrunnlag />
                         <Element>Barnets navn</Element>
-                        <Element>{utledVisningAvNavnFraSøknad(søknadsgrunnlag)}</Element>
+                        <Element>
+                            {søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
+                                ? 'Ikke utfylt'
+                                : 'Ikke født'}
+                        </Element>
                     </>
                 )}
                 {registergrunnlag.fødselsnummer ? (
@@ -51,21 +44,11 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
                     </>
-                ) : søknadsgrunnlag.fødselsnummer && søknadsgrunnlag.fødselsnummer !== '' ? (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                        <KopierbartNullableFødselsnummer
-                            fødselsnummer={søknadsgrunnlag.fødselsnummer}
-                        />
-                    </>
                 ) : (
                     søknadsgrunnlag.fødselTermindato && (
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>
-                                {søknadsgrunnlag.erBarnetFødt ? 'Fødselsdato' : 'Termindato'}
-                            </Normaltekst>
+                            <Normaltekst>Termindato</Normaltekst>
                             <Normaltekst>
                                 {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                             </Normaltekst>
@@ -76,9 +59,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                 <Bosted
                     harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                     harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
-                    erBarnetFødt={
-                        registergrunnlag.fødselsnummer ? true : søknadsgrunnlag.erBarnetFødt
-                    }
+                    erBarnetFødt={registergrunnlag.fødselsnummer ? true : false}
                 />
                 {søknadsgrunnlag.skalBoBorHosSøker && (
                     <>

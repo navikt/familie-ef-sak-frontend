@@ -18,9 +18,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
         <>
             {barnMedSamvær.map((barn: IBarnMedSamvær) => {
                 const { søknadsgrunnlag, registergrunnlag } = barn;
-                const barnUtenNavn: string = søknadsgrunnlag.erBarnetFødt
-                    ? 'Ikke fylt ut'
-                    : 'Ikke født';
+
                 return (
                     <React.Fragment key={barn.barnId}>
                         <GridTabell>
@@ -33,7 +31,9 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                 <>
                                     <LiteBarn />
                                     <Element>
-                                        {søknadsgrunnlag.navn ? søknadsgrunnlag.navn : barnUtenNavn}
+                                        {søknadsgrunnlag.navn
+                                            ? søknadsgrunnlag.navn
+                                            : 'Ikke fylt ut'}
                                     </Element>
                                 </>
                             )}
@@ -47,22 +47,10 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                         />
                                     </Normaltekst>
                                 </>
-                            ) : søknadsgrunnlag.fødselsnummer ? (
-                                <>
-                                    <Søknadsgrunnlag />
-                                    <Normaltekst>Fødsels- eller D-nummer</Normaltekst>
-                                    <KopierbartNullableFødselsnummer
-                                        fødselsnummer={søknadsgrunnlag.fødselsnummer}
-                                    />
-                                </>
                             ) : (
                                 <>
                                     <Søknadsgrunnlag />
-                                    <Normaltekst>
-                                        {søknadsgrunnlag.erBarnetFødt
-                                            ? 'Fødselsdato'
-                                            : 'Termindato'}
-                                    </Normaltekst>
+                                    <Normaltekst>Termindato</Normaltekst>
                                     <Normaltekst>
                                         {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                                     </Normaltekst>
