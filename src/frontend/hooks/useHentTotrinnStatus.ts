@@ -17,6 +17,7 @@ export const useHentTotrinnskontroll = (behandlingId: string) => {
         }).then((response: Ressurs<TotrinnskontrollResponse>) => {
             settTotrinnskontroll(response);
         });
+        // eslint-disable-next-line
     }, [behandlingId]);
 
     return {
