@@ -2,14 +2,16 @@ export interface IVedtak {
     resultatType: EBehandlingResultat;
     periodeBegrunnelse: string;
     inntektBegrunnelse: string;
-    perioder: IPeriode[];
+    perioder: IVedtaksperiode[];
 }
 
-export interface IPeriode {
+export interface IVedtaksperiode {
     periodeType: EPeriodetype;
     aktivitet: EAktivitet;
-    datoFra: string;
-    datoTil: string;
+    månedFra?: number;
+    årFra?: number;
+    månedTil?: number;
+    årTil?: number;
 }
 
 export enum EBehandlingResultat {
@@ -27,8 +29,10 @@ export enum EPeriodetype {
 export enum EPeriodeProperty {
     periodeType = 'periodeType',
     aktivitet = 'aktivitet',
-    datoFra = 'datoFra',
-    datoTil = 'datoTil',
+    månedFra = 'månedFra',
+    månedTil = 'månedTil',
+    årFra = 'årFra',
+    årTil = 'årTil',
 }
 
 export enum EAktivitet {

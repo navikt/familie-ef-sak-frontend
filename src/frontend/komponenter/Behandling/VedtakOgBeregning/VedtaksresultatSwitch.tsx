@@ -4,7 +4,7 @@ import {
     EBehandlingResultat,
     EPeriodeProperty,
     EPeriodetype,
-    IPeriode,
+    IVedtaksperiode,
     IVedtak,
 } from '../../../typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
@@ -16,11 +16,11 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
-import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
-import { differenceInMonths } from 'date-fns';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
+import MånedÅrPeriode from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import { månederMellom, månedÅrTilDate } from '../../../utils/formatter';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -66,10 +66,8 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const tomVedtaksperiodeRad = {
         periodeType: '' as EPeriodetype,
         aktivitet: '' as EAktivitet,
-        datoFra: '',
-        datoTil: '',
     };
-    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IPeriode[]>([
+    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IVedtaksperiode[]>([
         tomVedtaksperiodeRad,
     ]);
 
@@ -100,18 +98,16 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const oppdaterVedtakslisteElement = (
         index: number,
         property: EPeriodeProperty,
-        value: string
+        value: string | number
     ) => {
-        const nyListe = [...vedtaksperiodeListe];
+        const oppdatertListe = vedtaksperiodeListe.map((vedtaksperiode, i) => {
+            if (i === index) {
+                return { ...vedtaksperiode, [property]: value };
+            }
+            return vedtaksperiode;
+        });
 
-        const nyttObjekt = {
-            ...nyListe[index],
-            [property]: value,
-        };
-
-        nyListe[index] = nyttObjekt;
-
-        settVedtaksperiodeListe(nyListe);
+        settVedtaksperiodeListe(oppdatertListe);
     };
 
     const lagBlankett = () => {
@@ -177,19 +173,26 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         Vedtaksperiode
                     </Element>
                     {vedtaksperiodeListe.map((element, index) => {
-                        const { periodeType, aktivitet, datoTil, datoFra } = element;
+                        const {
+                            periodeType,
+                            aktivitet,
+                            månedFra,
+                            årFra,
+                            månedTil,
+                            årTil,
+                        } = element;
 
                         const antallMåneder = (() => {
-                            if (!(datoFra && datoTil)) {
-                                return undefined;
+                            if (årFra && årTil && månedTil && månedFra) {
+                                const fra = månedÅrTilDate(månedFra, årFra);
+                                const til = månedÅrTilDate(månedTil, årTil);
+                                return månederMellom(fra, til);
                             }
-                            const plussEnDag = new Date(datoTil);
-                            plussEnDag.setDate(plussEnDag.getDate() + 1);
-                            return differenceInMonths(plussEnDag, new Date(datoFra));
+                            return undefined;
                         })();
 
                         return (
-                            <VedtaksperiodeRad>
+                            <VedtaksperiodeRad key={index}>
                                 <StyledSelect
                                     label={index === 0 && 'Periodetype'}
                                     value={periodeType}
@@ -215,27 +218,44 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     settFeilmelding={settFeilmelding}
                                     oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
                                 />
-                                <DatoPeriode
+                                <MånedÅrPeriode
                                     datoFraTekst={index === 0 ? 'Fra og med' : ''}
                                     datoTilTekst={index === 0 ? 'Til og med' : ''}
-                                    settDatoFra={(dato: string) => {
+                                    månedFra={månedFra}
+                                    månedTil={månedTil}
+                                    årFra={årFra}
+                                    årTil={årTil}
+                                    settMånedFra={(måned) => {
                                         oppdaterVedtakslisteElement(
                                             index,
-                                            EPeriodeProperty.datoFra,
-                                            dato
+                                            EPeriodeProperty.månedFra,
+                                            måned
                                         );
                                     }}
-                                    settDatoTil={(dato: string) => {
+                                    settMånedTil={(måned) => {
                                         oppdaterVedtakslisteElement(
                                             index,
-                                            EPeriodeProperty.datoTil,
-                                            dato
+                                            EPeriodeProperty.månedTil,
+                                            måned
                                         );
                                     }}
-                                    valgtDatoFra={datoFra}
-                                    valgtDatoTil={datoTil}
-                                    datoFeil={undefined}
+                                    settÅrFra={(år) => {
+                                        oppdaterVedtakslisteElement(
+                                            index,
+                                            EPeriodeProperty.årFra,
+                                            år
+                                        );
+                                    }}
+                                    settÅrTil={(år) => {
+                                        oppdaterVedtakslisteElement(
+                                            index,
+                                            EPeriodeProperty.årTil,
+                                            år
+                                        );
+                                    }}
+                                    feilmelding={undefined}
                                 />
+
                                 {!!antallMåneder && (
                                     <Element style={{ marginTop: index === 0 ? '2.5rem' : '1rem' }}>
                                         {antallMåneder} måneder
