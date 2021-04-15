@@ -397,7 +397,6 @@
             "navn": "Barn Barnesen",
             "fødselsnummer": "01012067050",
             "fødselTermindato": "2020-01-01",
-            "erBarnetFødt": true,
             "harSammeAdresse": true,
             "skalBoBorHosSøker": "jaMenSamarbeiderIkke",
             "forelder": {
@@ -434,7 +433,6 @@
             "navn": "Barn2 Barnesen",
             "fødselsnummer": "13071489536",
             "fødselTermindato": "2014-07-13",
-            "erBarnetFødt": true,
             "harSammeAdresse": true,
             "skalBoBorHosSøker": "jaMenSamarbeiderIkke",
             "forelder": {
