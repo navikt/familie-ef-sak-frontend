@@ -37,6 +37,7 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
 const VedtaksperiodeRad = styled.div`
     display: flex;
     justify-content: flex-start;
+    margin-bottom: 0.25rem;
 `;
 
 const LeggTilVedtaksperiodeKnapp = styled(Flatknapp)`
@@ -53,6 +54,11 @@ const FjernVedtaksperiodeKnapp = styled(Flatknapp)`
 const StyledSelect = styled(Select)`
     max-width: 200px;
     margin-right: 2rem;
+`;
+
+const MndKnappWrapper = styled.div`
+    width: 90px;
+    display: flex;
 `;
 
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
@@ -236,17 +242,17 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     feilmelding={undefined}
                                 />
 
-                                {!!antallMåneder && (
+                                <MndKnappWrapper>
                                     <Element style={{ marginTop: index === 0 ? '2.5rem' : '1rem' }}>
-                                        {antallMåneder} måneder
+                                        {!!antallMåneder && `${antallMåneder} mnd`}
                                     </Element>
-                                )}
-                                {index === vedtaksperiodeListe.length - 1 && index !== 0 && (
-                                    <FjernVedtaksperiodeKnapp onClick={fjernVedtaksperiode}>
-                                        <Delete />
-                                        <span className="sr-only">Fjern vedtaksperiode</span>
-                                    </FjernVedtaksperiodeKnapp>
-                                )}
+                                    {index === vedtaksperiodeListe.length - 1 && index !== 0 && (
+                                        <FjernVedtaksperiodeKnapp onClick={fjernVedtaksperiode}>
+                                            <Delete />
+                                            <span className="sr-only">Fjern vedtaksperiode</span>
+                                        </FjernVedtaksperiodeKnapp>
+                                    )}
+                                </MndKnappWrapper>
                             </VedtaksperiodeRad>
                         );
                     })}

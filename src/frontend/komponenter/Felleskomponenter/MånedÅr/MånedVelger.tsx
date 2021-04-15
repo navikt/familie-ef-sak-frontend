@@ -10,7 +10,6 @@ const MånedVelger: React.FC<MånedProps> = ({ måned, settMåned }) => {
     return (
         <Select
             value={måned}
-            bredde={'s'}
             onChange={(event) => {
                 event.persist();
                 settMåned(parseInt(event.target.value, 10));
