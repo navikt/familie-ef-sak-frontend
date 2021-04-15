@@ -30,7 +30,6 @@ export type Regler = {
 export type Vilkårsregler<T extends VilkårType> = {
     vilkårType: T;
     regler: Regler;
-    rotregler: string[];
 };
 
 export interface ReglerResponse {

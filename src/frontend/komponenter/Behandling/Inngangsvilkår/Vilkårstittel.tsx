@@ -1,5 +1,5 @@
-import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårOppfylt';
-import { EtikettLiten, Undertittel } from 'nav-frontend-typografi';
+import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårsresultatIkon';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React from 'react';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
@@ -19,7 +19,7 @@ const Container = styled.div`
     .typo-undertittel {
         margin: 0 1rem 0 0.5rem;
     }
-    .typo-etikett-liten {
+    .paragrafTittel {
         color: ${navFarger.navGra60};
     }
 `;
@@ -33,7 +33,9 @@ export const Vilkårstittel: React.FC<VilkårtittelProps> = ({
         <Container>
             <VilkårsresultatIkon vilkårsresultat={vilkårsresultat} />
             <Undertittel>{tittel}</Undertittel>
-            {paragrafTittel && <EtikettLiten>{paragrafTittel}</EtikettLiten>}
+            {paragrafTittel && (
+                <Normaltekst className={'paragrafTittel'}>{paragrafTittel}</Normaltekst>
+            )}
         </Container>
     );
 };

@@ -10,6 +10,7 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
+    ikkeVurderVilkår,
     nullstillVurdering,
     feilmeldinger,
 }) => {
@@ -35,6 +36,7 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
                 ),
                 høyre: (
                     <VisEllerEndreVurdering
+                        ikkeVurderVilkår={ikkeVurderVilkår}
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}

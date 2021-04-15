@@ -12,6 +12,7 @@ export const Medlemskap: React.FC<VilkårProps> = ({
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
+    ikkeVurderVilkår,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === InngangsvilkårType.FORUTGÅENDE_MEDLEMSKAP
@@ -34,6 +35,7 @@ export const Medlemskap: React.FC<VilkårProps> = ({
                 ),
                 høyre: (
                     <VisEllerEndreVurdering
+                        ikkeVurderVilkår={ikkeVurderVilkår}
                         vurdering={vurdering}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}

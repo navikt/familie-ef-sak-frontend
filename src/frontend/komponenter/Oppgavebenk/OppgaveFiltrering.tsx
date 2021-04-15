@@ -29,7 +29,7 @@ export const FlexDiv = styled.div`
     }
 `;
 
-const KnappWrapper = styled.div`
+export const KnappWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: flex-start;

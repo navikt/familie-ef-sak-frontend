@@ -11,7 +11,7 @@ import SorteringsHeader from '../komponenter/Oppgavebenk/OppgaveSorteringHeader'
 import { useApp } from '../context/AppContext';
 import { IPersonopplysninger } from '../typer/personopplysninger';
 import { byggTomRessurs, Ressurs } from '../typer/ressurs';
-import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort';
+import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort/Visittkort';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 
 const TittelWrapper = styled.div`
