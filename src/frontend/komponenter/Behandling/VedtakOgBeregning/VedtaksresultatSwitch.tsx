@@ -6,6 +6,7 @@ import {
     EPeriodetype,
     IVedtaksperiode,
     IVedtak,
+    periodeVariantTilProperty,
 } from '../../../typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
 import { Select, Textarea } from 'nav-frontend-skjema';
@@ -225,32 +226,11 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     månedTil={månedTil}
                                     årFra={årFra}
                                     årTil={årTil}
-                                    settMånedFra={(måned) => {
+                                    onEndre={(verdi, periodeVariant) => {
                                         oppdaterVedtakslisteElement(
                                             index,
-                                            EPeriodeProperty.månedFra,
-                                            måned
-                                        );
-                                    }}
-                                    settMånedTil={(måned) => {
-                                        oppdaterVedtakslisteElement(
-                                            index,
-                                            EPeriodeProperty.månedTil,
-                                            måned
-                                        );
-                                    }}
-                                    settÅrFra={(år) => {
-                                        oppdaterVedtakslisteElement(
-                                            index,
-                                            EPeriodeProperty.årFra,
-                                            år
-                                        );
-                                    }}
-                                    settÅrTil={(år) => {
-                                        oppdaterVedtakslisteElement(
-                                            index,
-                                            EPeriodeProperty.årTil,
-                                            år
+                                            periodeVariantTilProperty(periodeVariant),
+                                            verdi
                                         );
                                     }}
                                     feilmelding={undefined}

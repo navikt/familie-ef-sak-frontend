@@ -1,6 +1,13 @@
 import React from 'react';
 import MånedÅrVelger from './MånedÅrVelger';
 
+export enum PeriodeVariant {
+    ÅR_FRA = 'årFra',
+    ÅR_TIL = 'årTil',
+    MÅNED_FRA = 'månedFra',
+    MÅNED_TIL = 'månedTil',
+}
+
 interface Props {
     datoFraTekst?: string;
     datoTilTekst?: string;
@@ -8,10 +15,7 @@ interface Props {
     årFra?: number;
     månedTil?: number;
     årTil?: number;
-    settMånedFra: (månedFra: number) => void;
-    settMånedTil: (månedTil: number) => void;
-    settÅrFra: (årFra: number) => void;
-    settÅrTil: (årTil: number) => void;
+    onEndre: (verdi: number, type: PeriodeVariant) => void;
     antallÅrTilbake?: number;
     antallÅrFrem?: number;
     feilmelding?: string;
@@ -24,10 +28,7 @@ const MånedÅrPeriode: React.FC<Props> = ({
     årTil,
     datoFraTekst,
     datoTilTekst,
-    settMånedFra,
-    settMånedTil,
-    settÅrFra,
-    settÅrTil,
+    onEndre,
     antallÅrTilbake = 10,
     antallÅrFrem = 4,
     feilmelding,
@@ -38,8 +39,8 @@ const MånedÅrPeriode: React.FC<Props> = ({
                 måned={månedFra}
                 år={årFra}
                 label={datoFraTekst}
-                settMåned={settMånedFra}
-                settÅr={settÅrFra}
+                settMåned={(verdi) => onEndre(verdi, PeriodeVariant.MÅNED_FRA)}
+                settÅr={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_FRA)}
                 antallÅrTilbake={antallÅrTilbake}
                 antallÅrFrem={antallÅrFrem}
             />
@@ -47,8 +48,8 @@ const MånedÅrPeriode: React.FC<Props> = ({
                 måned={månedTil}
                 år={årTil}
                 label={datoTilTekst}
-                settMåned={settMånedTil}
-                settÅr={settÅrTil}
+                settMåned={(verdi) => onEndre(verdi, PeriodeVariant.MÅNED_TIL)}
+                settÅr={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_TIL)}
                 antallÅrTilbake={antallÅrTilbake}
                 antallÅrFrem={antallÅrFrem}
                 feilmelding={feilmelding}
