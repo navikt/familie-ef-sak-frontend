@@ -108,7 +108,7 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                         onClose: () => settBeboereAdresseIModal(undefined),
                     }}
                 >
-                    <Beboere adresse={beboereAdresseIModal} />
+                    <Beboere />
                 </UIModalWrapper>
             )}
         </>

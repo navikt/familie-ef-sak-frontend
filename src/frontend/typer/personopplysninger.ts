@@ -42,36 +42,6 @@ export interface IAdresse {
     type: AdresseType;
     gyldigFraOgMed?: string;
     gyldigTilOgMed?: string;
-    bostedsadresse?: IBostedsadresse;
-}
-
-export interface IBostedsadresse {
-    vegadresse?: IVegadresse;
-    matrikkeladresse?: IMatrikkeladresse;
-}
-
-export interface IVegadresse {
-    husnummer?: string;
-    husbokstav?: string;
-    bruksenhetsnummer?: string;
-    adressenavn?: string;
-    kommunenummer?: string;
-    tilleggsnavn?: string;
-    postnummer?: string;
-    koordinater?: IKoordinater;
-    matrikkelId?: IMatrikkeladresse;
-}
-
-export interface IKoordinater {
-    x?: number;
-    y?: number;
-    z?: number;
-    kvalitet?: number;
-}
-
-export interface IMatrikkeladresse {
-    matrikkelId?: number;
-    bruksenhetsnummer?: string;
 }
 
 export interface ISøkeresultatPerson {
