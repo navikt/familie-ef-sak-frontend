@@ -13,7 +13,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import VelgVedtaksresultat from './VelgVedtaksresultat';
-import { withResultatSammendrag } from '../../Vilkårresultat/ResultatSammendrag';
+import { withResultatSammendrag } from '../../Vilkårresultat/VilkårsresultatOppsummering';
 
 interface Props {
     behandlingId: string;

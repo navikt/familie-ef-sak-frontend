@@ -10,9 +10,9 @@ export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
 ): Record<VilkårType, [Vilkårsresultat]> => {
     return vurderinger.reduce((acc, vurdering) => {
-        const list = acc[vurdering.vilkårType] ?? [];
-        list.push(vurdering.resultat);
-        acc[vurdering.vilkårType] = list;
+        const listeMedVilkårsresultat = acc[vurdering.vilkårType] ?? [];
+        listeMedVilkårsresultat.push(vurdering.resultat);
+        acc[vurdering.vilkårType] = listeMedVilkårsresultat;
         return acc;
     }, {} as Record<VilkårType, [Vilkårsresultat]>);
 };

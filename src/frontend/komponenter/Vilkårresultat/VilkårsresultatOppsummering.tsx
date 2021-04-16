@@ -10,20 +10,29 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../context/BehandlingContext';
 import { useHentVilkår } from '../../hooks/useHentVilkår';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import { ResultatForVilkårstype } from './ResultatForVilkårtype';
+import styled from 'styled-components';
+import { ResultatVisning } from './ResultatVisning';
 
 export function withResultatSammendrag<PROPS>(Component: React.ComponentType<PROPS>) {
     return (props: PROPS & { behandlingId: string }) => {
         const { behandling } = useBehandling();
         const { behandlingId, ...rest } = props as any;
         if (behandling.status === RessursStatus.SUKSESS && behandling.data.steg === Steg.VILKÅR) {
-            return <ResultatSammendrag behandlingId={behandlingId} />;
+            return <VilkårsresultatOppsummering behandlingId={behandlingId} />;
         }
         return <Component {...rest} />;
     };
 }
 
-const ResultatSammendrag: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const Container = styled.div`
+    max-width: 1180px;
+`;
+
+const InnerContainer = styled.div`
+    padding: 1.5rem;
+`;
+
+const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { vilkår, hentVilkår } = useHentVilkår();
 
     useEffect(() => {
@@ -44,28 +53,26 @@ const ResultatSammendrag: React.FC<{ behandlingId: string }> = ({ behandlingId }
                     (v) => v.vilkårType in AktivitetsvilkårType
                 );
                 return (
-                    <div style={{ maxWidth: '1180px' }}>
-                        <div style={{ padding: '1.5rem' }}>
+                    <Container>
+                        <InnerContainer>
                             <div style={{ padding: '2rem 1rem' }}>
                                 <Undertittel className="blokk-xs">
                                     Tidligere stønadsperioder
                                 </Undertittel>
                                 <Normaltekst>Søker har ingen tidligere stønadsperioder</Normaltekst>
                             </div>
-                            <ResultatForVilkårstype
+                            <ResultatVisning
                                 vilkårsvurderinger={inngangsvilkår}
                                 tittel="Inngangsvilkår"
                             />
-                            <ResultatForVilkårstype
+                            <ResultatVisning
                                 vilkårsvurderinger={aktivitetsvilkår}
                                 tittel="Aktivitet"
                             />
-                        </div>
-                    </div>
+                        </InnerContainer>
+                    </Container>
                 );
             }}
         </DataViewer>
     );
 };
-
-export default ResultatSammendrag;

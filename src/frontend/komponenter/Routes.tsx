@@ -13,7 +13,7 @@ interface IProps {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
+const Routes: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
     const { autentisert } = useApp();
 
     return (
@@ -41,4 +41,4 @@ const Container: React.FC<IProps> = ({ innloggetSaksbehandler }) => {
     );
 };
 
-export default Container;
+export default Routes;
