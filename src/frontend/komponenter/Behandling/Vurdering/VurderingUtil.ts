@@ -34,13 +34,20 @@ export const vilkårStatusAleneomsorg = (vurderinger: IVurdering[]): Vilkårsres
 
     if (filtrerteVurderinger.some((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT)) {
         return Vilkårsresultat.OPPFYLT;
-    } else if (
-        filtrerteVurderinger.every(
-            (vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_OPPFYLT
+    }
+    if (
+        filtrerteVurderinger.some(
+            (vurdering) => vurdering.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL
         )
     ) {
-        return Vilkårsresultat.IKKE_OPPFYLT;
-    } else {
         return Vilkårsresultat.IKKE_TATT_STILLING_TIL;
     }
+    if (
+        filtrerteVurderinger.every(
+            (vurdering) => vurdering.resultat === Vilkårsresultat.SKAL_IKKE_VURDERES
+        )
+    ) {
+        return Vilkårsresultat.SKAL_IKKE_VURDERES;
+    }
+    return Vilkårsresultat.IKKE_OPPFYLT;
 };

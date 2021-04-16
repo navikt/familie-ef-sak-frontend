@@ -2,14 +2,16 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import {
     IVurdering,
-    NullstillVilkårsvurdering,
     OppdaterVilkårsvurdering,
+    SvarPåVilkårsvurdering,
     Vilkårsresultat,
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
-import { Knapp } from 'nav-frontend-knapper';
-import { Ressurs } from '../../../typer/ressurs';
+import { Flatknapp, Knapp } from 'nav-frontend-knapper';
+import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { KnappWrapper } from '../../Oppgavebenk/OppgaveFiltrering';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 export enum Redigeringsmodus {
     REDIGERING = 'REDIGERING',
@@ -19,9 +21,12 @@ export enum Redigeringsmodus {
 
 interface Props {
     vurdering: IVurdering;
-    lagreVurdering: (vurdering: OppdaterVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (
-        nullstillVilkårsvurdering: NullstillVilkårsvurdering
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
+    ) => Promise<Ressurs<IVurdering>>;
+    ikkeVurderVilkår: (
+        nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
 }
@@ -42,6 +47,7 @@ function utledRedigeringsmodus(
 const VisEllerEndreVurdering: FC<Props> = ({
     vurdering,
     nullstillVurdering,
+    ikkeVurderVilkår,
     lagreVurdering,
     feilmelding,
 }) => {
@@ -49,12 +55,46 @@ const VisEllerEndreVurdering: FC<Props> = ({
         utledRedigeringsmodus(feilmelding, vurdering)
     );
 
+    const { hentBehandling } = useBehandling();
+
+    const ikkeVurder = () => {
+        ikkeVurderVilkår({
+            id: vurdering.id,
+            behandlingId: vurdering.behandlingId,
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                settRedigeringsmodus(Redigeringsmodus.VISNING);
+                hentBehandling.rerun();
+            }
+        });
+    };
+
+    const resetVurdering = () =>
+        nullstillVurdering({
+            id: vurdering.id,
+            behandlingId: vurdering.behandlingId,
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
+                hentBehandling.rerun();
+            }
+        });
+
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
-                <Knapp mini onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}>
-                    Vurder vilkår
-                </Knapp>
+                <KnappWrapper>
+                    <Knapp
+                        className="flex-item"
+                        mini
+                        onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
+                    >
+                        Vurder vilkår
+                    </Knapp>
+                    <Flatknapp className="lenke" mini htmlType="button" onClick={ikkeVurder}>
+                        Ikke vurder vilkår
+                    </Flatknapp>
+                </KnappWrapper>
             );
         case Redigeringsmodus.REDIGERING:
             return (
@@ -70,7 +110,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 <VisVurdering
                     vurdering={vurdering}
                     settRedigeringsmodus={settRedigeringsmodus}
-                    resetVurdering={nullstillVurdering}
+                    resetVurdering={resetVurdering}
                     feilmelding={feilmelding}
                 />
             );

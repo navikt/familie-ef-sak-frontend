@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { IPersonopplysninger } from '../../typer/personopplysninger';
+import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import Visittkort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
-import PersonStatusVarsel from './PersonStatusVarsel';
-import AdressebeskyttelseVarsel from './AdressebeskyttelseVarsel';
+import PersonStatusVarsel from '../PersonStatusVarsel';
+import AdressebeskyttelseVarsel from '../AdressebeskyttelseVarsel';
 import { EtikettAdvarsel } from 'nav-frontend-etiketter';
 
 export const VisittkortWrapper = styled.div`

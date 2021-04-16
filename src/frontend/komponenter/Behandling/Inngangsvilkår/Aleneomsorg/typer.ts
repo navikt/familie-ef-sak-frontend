@@ -6,9 +6,7 @@ export interface IBarnMedSamvær {
 
 export interface IBarnMedSamværSøknadsgrunnlag {
     navn?: string;
-    fødselsnummer?: string;
     fødselTermindato?: string;
-    erBarnetFødt: boolean;
     harSammeAdresse?: boolean;
     skalBoBorHosSøker?: ESkalBarnetBoHosSøker;
     forelder?: IAnnenForelder;

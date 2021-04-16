@@ -16,6 +16,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
         lagreVurdering,
         feilmeldinger,
         nullstillVurdering,
+        ikkeVurderVilkår,
     } = useHentVilkår();
 
     React.useEffect(() => {
@@ -32,6 +33,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
                 return (
                     <>
                         <Aktivitet
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
                             grunnlag={vilkår.grunnlag}
@@ -39,6 +41,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
                             vurderinger={vilkår.vurderinger}
                         />
                         <SagtOppEllerRedusert
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
                             grunnlag={vilkår.grunnlag}

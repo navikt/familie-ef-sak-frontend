@@ -7,6 +7,8 @@ import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
+import { datoErEtterDagensDato } from '../../../utils/utils';
+import Beboere from './Beboere';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -64,40 +66,52 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     );
 };
 
+const gyldigTilOgMedErNullEllerFremITid = (adresse: IAdresse) =>
+    !adresse.gyldigTilOgMed || datoErEtterDagensDato(adresse.gyldigTilOgMed);
+
 const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
-    const [visBeboereModal, settVisBeboereModal] = useState(false);
+    const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
+
     return (
-        <tbody>
-            {adresser.map((adresse, indeks) => {
-                return (
-                    <tr key={indeks}>
-                        <BredTd>{adresse.visningsadresse}</BredTd>
-                        <BredTd>{adresse.type}</BredTd>
-                        <BredTd>{adresse.gyldigFraOgMed}</BredTd>
-                        <BredTd>
-                            <StyledFlexDiv>
-                                <div>{adresse.gyldigTilOgMed}</div>
-                                {adresse.type === AdresseType.BOSTEDADRESSE && (
-                                    <StyledKnapp onClick={() => settVisBeboereModal(true)} mini>
-                                        Se Beboere
-                                    </StyledKnapp>
-                                )}
-                                <UIModalWrapper
-                                    modal={{
-                                        tittel: 'Beboere',
-                                        lukkKnapp: true,
-                                        visModal: visBeboereModal,
-                                        onClose: () => settVisBeboereModal(false),
-                                    }}
-                                >
-                                    *Ikke implementert. Venter på adressesøk i PDL*
-                                </UIModalWrapper>
-                            </StyledFlexDiv>
-                        </BredTd>
-                    </tr>
-                );
-            })}
-        </tbody>
+        <>
+            <tbody>
+                {adresser.map((adresse, indeks) => {
+                    return (
+                        <tr key={indeks}>
+                            <BredTd>{adresse.visningsadresse}</BredTd>
+                            <BredTd>{adresse.type}</BredTd>
+                            <BredTd>{adresse.gyldigFraOgMed}</BredTd>
+                            <BredTd>
+                                <StyledFlexDiv>
+                                    <div>{adresse.gyldigTilOgMed}</div>
+                                    {adresse.type === AdresseType.BOSTEDADRESSE &&
+                                        gyldigTilOgMedErNullEllerFremITid(adresse) && (
+                                            <StyledKnapp
+                                                onClick={() => settBeboereAdresseIModal(adresse)}
+                                                mini
+                                            >
+                                                Se Beboere
+                                            </StyledKnapp>
+                                        )}
+                                </StyledFlexDiv>
+                            </BredTd>
+                        </tr>
+                    );
+                })}
+            </tbody>
+            {beboereAdresseIModal && (
+                <UIModalWrapper
+                    modal={{
+                        tittel: 'Beboere',
+                        lukkKnapp: true,
+                        visModal: true,
+                        onClose: () => settBeboereAdresseIModal(undefined),
+                    }}
+                >
+                    <Beboere />
+                </UIModalWrapper>
+            )}
+        </>
     );
 };
 

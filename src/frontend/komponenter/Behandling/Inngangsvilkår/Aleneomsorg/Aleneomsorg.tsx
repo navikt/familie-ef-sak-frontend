@@ -12,6 +12,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
     nullstillVurdering,
     feilmeldinger,
     grunnlag,
+    ikkeVurderVilkår,
 }) => {
     const vilkårsresultat = vilkårStatusAleneomsorg(vurderinger);
     return (
@@ -37,6 +38,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                             høyre: (
                                 <VisEllerEndreVurdering
                                     key={vurdering.id}
+                                    ikkeVurderVilkår={ikkeVurderVilkår}
                                     vurdering={vurdering}
                                     feilmelding={feilmeldinger[vurdering.id]}
                                     lagreVurdering={lagreVurdering}

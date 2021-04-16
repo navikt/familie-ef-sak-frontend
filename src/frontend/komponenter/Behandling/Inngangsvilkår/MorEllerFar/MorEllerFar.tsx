@@ -12,6 +12,7 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
     nullstillVurdering,
     feilmeldinger,
     grunnlag,
+    ikkeVurderVilkår,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.MOR_ELLER_FAR);
     if (!vurdering) {
@@ -33,6 +34,7 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
                 høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
+                        ikkeVurderVilkår={ikkeVurderVilkår}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}
                         nullstillVurdering={nullstillVurdering}

@@ -11,6 +11,7 @@ export const Sivilstand: React.FC<VilkårProps> = ({
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
+    ikkeVurderVilkår,
     feilmeldinger,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.SIVILSTAND);
@@ -33,6 +34,7 @@ export const Sivilstand: React.FC<VilkårProps> = ({
                 høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
+                        ikkeVurderVilkår={ikkeVurderVilkår}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}
                         nullstillVurdering={nullstillVurdering}

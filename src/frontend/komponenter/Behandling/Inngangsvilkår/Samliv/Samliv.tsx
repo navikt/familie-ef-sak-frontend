@@ -11,6 +11,7 @@ export const Samliv: React.FC<VilkårProps> = ({
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
+    ikkeVurderVilkår,
     feilmeldinger,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.SAMLIV);
@@ -27,12 +28,13 @@ export const Samliv: React.FC<VilkårProps> = ({
                             tittel="Samliv"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <SamlivInfo grunnlag={grunnlag} />,
+                        <SamlivInfo grunnlag={grunnlag} />
                     </>
                 ),
                 høyre: (
                     <VisEllerEndreVurdering
                         vurdering={vurdering}
+                        ikkeVurderVilkår={ikkeVurderVilkår}
                         feilmelding={feilmeldinger[vurdering.id]}
                         lagreVurdering={lagreVurdering}
                         nullstillVurdering={nullstillVurdering}

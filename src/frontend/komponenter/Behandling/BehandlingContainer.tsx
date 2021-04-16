@@ -10,7 +10,7 @@ import { ModalProvider } from '../../context/ModalContext';
 import ModalController from '../Felleskomponenter/Modal/ModalController';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import Venstremeny from '../Venstremeny/Venstremeny';
-import VisittkortComponent from '../Felleskomponenter/Visittkort';
+import VisittkortComponent from '../Felleskomponenter/Visittkort/Visittkort';
 import { GodkjennEndringer } from './GodkjennEndringer';
 
 const Container = styled.div`

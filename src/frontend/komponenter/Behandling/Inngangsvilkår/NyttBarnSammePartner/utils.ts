@@ -9,11 +9,9 @@ export const mapTilSøknadsgrunnlagNyttBarn = (
         .map((barn) => ({
             navn: barn.søknadsgrunnlag.navn,
             fødselTermindato: barn.søknadsgrunnlag.fødselTermindato,
-            fødselsnummer: barn.søknadsgrunnlag.fødselsnummer,
             annenForelderSoknad: barn.søknadsgrunnlag.forelder,
             ikkeOppgittAnnenForelderBegrunnelse:
                 barn.søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse,
-            erBarnetFødt: barn.søknadsgrunnlag.erBarnetFødt,
         }));
 };
 
@@ -33,7 +31,5 @@ export const mapTilRegistergrunnlagNyttBarn = (
 };
 
 export const mapBarnNavnTekst = (søknadsgrunnlagNyttBarn: SøknadsgrunnlagNyttBarn): string => {
-    if (søknadsgrunnlagNyttBarn.navn) return søknadsgrunnlagNyttBarn.navn;
-    if (søknadsgrunnlagNyttBarn.erBarnetFødt) return 'Ikke fylt ut';
-    return 'Ikke født';
+    return søknadsgrunnlagNyttBarn.navn ? søknadsgrunnlagNyttBarn.navn : 'Ikke fylt ut';
 };

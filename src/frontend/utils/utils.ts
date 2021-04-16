@@ -1,5 +1,5 @@
 import { OrNothing } from '../hooks/felles/useSorteringState';
-import { isBefore } from 'date-fns';
+import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../komponenter/Oppgavebenk/oppgaverequest';
 
 export const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothing<string> => {
@@ -10,6 +10,10 @@ export const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothin
         return 'Til dato må vare etter til fra dato';
     }
     return null;
+};
+
+export const datoErEtterDagensDato = (dato: string): boolean => {
+    return isAfter(new Date(dato), new Date());
 };
 
 export const oppdaterFilter = (

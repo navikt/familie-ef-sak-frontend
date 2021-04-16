@@ -21,6 +21,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         lagreVurdering,
         feilmeldinger,
         nullstillVurdering,
+        ikkeVurderVilkår,
     } = useHentVilkår();
 
     React.useEffect(() => {
@@ -43,6 +44,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                         />
                         <Opphold
                             nullstillVurdering={nullstillVurdering}
@@ -50,6 +52,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                         />
                         <MorEllerFar
                             nullstillVurdering={nullstillVurdering}
@@ -57,6 +60,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                         />
                         <NyttBarnSammePartner
                             nullstillVurdering={nullstillVurdering}
@@ -64,6 +68,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                         />
                         <Sivilstand
                             nullstillVurdering={nullstillVurdering}
@@ -71,6 +76,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                         />
                         <Samliv
                             nullstillVurdering={nullstillVurdering}
@@ -78,6 +84,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                         />
                         <Aleneomsorg
                             nullstillVurdering={nullstillVurdering}
@@ -85,6 +92,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
                         />
                     </>
                 );

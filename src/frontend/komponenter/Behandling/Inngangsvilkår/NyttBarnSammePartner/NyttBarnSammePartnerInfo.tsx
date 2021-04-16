@@ -76,7 +76,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                 <FlexDiv>
                     <Søknadsgrunnlag />
                     <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
-                        Brukers nåværende eller fremtidige barn lagt til i søknad
+                        Brukers fremtidige barn lagt til i søknad
                     </Element>
                 </FlexDiv>
                 <Tabell
@@ -87,24 +87,8 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                                 mapBarnNavnTekst(søknadsgrunnlag),
                         },
                         {
-                            overskrift: 'Fødsels/D-nummer',
-                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) => (
-                                <KopierbartNullableFødselsnummer
-                                    fødselsnummer={søknadsgrunnlag.fødselsnummer}
-                                />
-                            ),
-                        },
-                        {
-                            overskrift: 'Fødselsdato',
-                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
-                                !søknadsgrunnlag.fødselsnummer &&
-                                søknadsgrunnlag.erBarnetFødt &&
-                                formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
-                        },
-                        {
                             overskrift: 'Termindato',
                             tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
-                                !søknadsgrunnlag.erBarnetFødt &&
                                 formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
                         },
                         {
