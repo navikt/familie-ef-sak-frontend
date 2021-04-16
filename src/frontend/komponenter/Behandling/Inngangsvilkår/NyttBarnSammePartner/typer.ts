@@ -10,9 +10,7 @@ export interface RegistergrunnlagNyttBarn {
 
 export interface SøknadsgrunnlagNyttBarn {
     navn?: string;
-    fødselsnummer?: string;
     fødselTermindato?: string;
     annenForelderSoknad?: IAnnenForelder;
     ikkeOppgittAnnenForelderBegrunnelse?: string;
-    erBarnetFødt: boolean;
 }

@@ -43,6 +43,7 @@ const Fagsakoversikt: React.FC = () => {
             hentFagsak();
             hentPersonData();
         }
+        // eslint-disable-next-line
     }, [fagsakId]);
 
     return (

@@ -11,7 +11,7 @@ interface Props {
     datoTilTekst?: string;
     årMånedFraInitiell?: string;
     årMånedTilInitiell?: string;
-    onEndre: (verdi: string, type: PeriodeVariant) => void;
+    onEndre: (verdi: string | undefined, type: PeriodeVariant) => void;
     antallÅrTilbake?: number;
     antallÅrFrem?: number;
     feilmelding?: string;

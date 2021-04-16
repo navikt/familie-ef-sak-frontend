@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
-import MånedÅrPeriode from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import MånedÅrPeriode, { PeriodeVariant } from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
 import { månederMellom, månedÅrTilDate } from '../../../utils/formatter';
 
 interface Props {
@@ -110,7 +110,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const oppdaterVedtakslisteElement = (
         index: number,
         property: EPeriodeProperty,
-        value: string | number
+        value: string | number | undefined
     ) => {
         const oppdatertListe = vedtaksperiodeListe.map((vedtaksperiode, i) => {
             if (i === index) {
@@ -220,7 +220,10 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     datoTilTekst={index === 0 ? 'Til og med' : ''}
                                     årMånedFraInitiell={årMånedFra}
                                     årMånedTilInitiell={årMånedTil}
-                                    onEndre={(verdi, periodeVariant) => {
+                                    onEndre={(
+                                        verdi: string | undefined,
+                                        periodeVariant: PeriodeVariant
+                                    ) => {
                                         oppdaterVedtakslisteElement(
                                             index,
                                             periodeVariantTilProperty(periodeVariant),

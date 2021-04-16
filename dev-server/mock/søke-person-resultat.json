@@ -1,0 +1,33 @@
+{
+  "data": {
+    "hits": [
+      {
+        "personIdent": "01012067050",
+        "visningsadresse": "c/o CONAVN, Charlies vei 13 b, 0575 Oslo",
+        "visningsnavn": "Fornavn mellomnavn Etternavn"
+      },
+      {
+        "personIdent": "01012067055",
+        "visningsadresse": "c/o CONAVN, Charlies vei 13 b, 0575 Oslo",
+        "visningsnavn": "Fornavn2 mellomnavn Etternavn"
+      },
+      {
+        "personIdent": "01012067052",
+        "visningsadresse": "c/o CONAVN, Charlies vei 13 b, 0575 Oslo",
+        "visningsnavn": "Fornavn3 mellomnavn Etternavn"
+      },
+      {
+        "personIdent": "01012067058",
+        "visningsadresse": "c/o CONAVN, Charlies vei 13 b, 0575 Oslo",
+        "visningsnavn": "Fornavn4 Etternavn"
+      }
+    ],
+    "totalHits": 1,
+    "pageNumber": 1,
+    "totalPages": 1
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}

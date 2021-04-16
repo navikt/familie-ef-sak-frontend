@@ -8,7 +8,7 @@ import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 interface Props {
     label?: string;
     årMånedInitiell?: string;
-    onEndret: (årMåned: string) => void;
+    onEndret: (årMåned?: string) => void;
     antallÅrTilbake: number;
     antallÅrFrem: number;
     feilmelding?: string;
@@ -44,6 +44,8 @@ const MånedÅrVelger: React.FC<Props> = ({
     useEffect(() => {
         if (år && måned) {
             onEndret(`${år}-${måned}`);
+        } else {
+            onEndret(undefined);
         }
     }, [år, måned]);
 

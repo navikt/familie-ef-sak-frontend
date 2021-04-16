@@ -24,6 +24,7 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
                 url: `/familie-ef-sak/api/journalpost/${journalpostIdParam}/dokument/${dokumentInfoId}`,
             }).then((res: Ressurs<string>) => settValgtDokument(res));
         },
+        // eslint-disable-next-line
         [journalpostIdParam]
     );
 
@@ -31,6 +32,7 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
         (journalpost: IJournalpost) => {
             hentDokumentForIndex(journalpost, 0);
         },
+        // eslint-disable-next-line
         [journalpostIdParam]
     );
 
@@ -40,6 +42,7 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
                 hentDokument(journalpost.dokumenter[index].dokumentInfoId);
             }
         },
+        // eslint-disable-next-line
         [journalpostIdParam]
     );
 
@@ -49,6 +52,7 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
                 (dok) => dok.dokumentInfoId === valgtDokumentInfoId
             );
         },
+        // eslint-disable-next-line
         [valgtDokumentInfoId]
     );
 
@@ -58,6 +62,7 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
                 (indeksForValgtDokument(journalpost) + 1) % journalpost.dokumenter.length;
             hentDokumentForIndex(journalpost, nesteEllerFørsteIndeks);
         },
+        // eslint-disable-next-line
         [journalpostIdParam, valgtDokumentInfoId]
     );
 
@@ -68,6 +73,7 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
                 journalpost.dokumenter.length;
             hentDokumentForIndex(journalpost, forrigeEllerSisteIndeks);
         },
+        // eslint-disable-next-line
         [journalpostIdParam, valgtDokumentInfoId]
     );
 

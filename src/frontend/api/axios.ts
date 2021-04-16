@@ -7,6 +7,7 @@ import { slackKanaler } from '../typer/slack';
 axios.defaults.baseURL = window.location.origin;
 export const preferredAxios = axios;
 
+// eslint-disable-next-line
 const errorMessage = (frontendFeilmelding: string, headers?: any) => {
     const location = window.location.href;
     const callId = headers?.['nav-call-id'];
@@ -16,6 +17,7 @@ const errorMessage = (frontendFeilmelding: string, headers?: any) => {
 export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,
     innloggetSaksbehandler?: ISaksbehandler,
+    // eslint-disable-next-line
     headers?: any
 ): RessursSuksess<T> | RessursFeilet => {
     let typetRessurs: Ressurs<T>;
@@ -104,12 +106,14 @@ export const loggFeil = (
 };
 
 export const slackNotify = (melding: string, kanal: string): void => {
+    // eslint-disable-next-line
     preferredAxios.post(`/slack/notify/${kanal}`, {
         melding,
     });
 };
 
 export const apiLoggFeil = (melding: string): void => {
+    // eslint-disable-next-line
     preferredAxios.post('/logg-feil', {
         melding,
     });

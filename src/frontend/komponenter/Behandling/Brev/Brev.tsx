@@ -13,8 +13,7 @@ const GenererBrev = styled(Knapp)`
 
 const HentBrev = styled(Knapp)`
     display: block;
-    margin: 0 auto;
-    margin-top: 2rem;
+    margin: 2rem auto;
 `;
 
 const StyledBrev = styled.div`
@@ -33,6 +32,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const data = { navn: 'test', ident: '123456789' };
 
     const genererBrev = () => {
+        // eslint-disable-next-line
         axiosRequest<string, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}`,
@@ -43,6 +43,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     };
 
     const hentBrev = () => {
+        // eslint-disable-next-line
         axiosRequest<string, any>({
             method: 'GET',
             url: `/familie-ef-sak/api/brev/${behandlingId}`,
