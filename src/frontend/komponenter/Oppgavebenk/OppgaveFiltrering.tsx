@@ -18,9 +18,9 @@ import {
     oppgaveRequestKey,
 } from './oppgavefilterStorage';
 
-export const FlexDiv = styled.div`
+export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
-    flex-direction: row;
+    flex-direction: ${(props) => props.flexDirection ?? 'row'};
     flex-wrap: wrap;
 
     .flex-item {

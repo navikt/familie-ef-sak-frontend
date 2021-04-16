@@ -5,14 +5,12 @@ import {
     AktivitetsvilkårType,
     InngangsvilkårType,
     TidligereVedtaksperioderType,
-    Vilkårsresultat,
 } from '../Behandling/Inngangsvilkår/vilkår';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../context/BehandlingContext';
 import { useHentVilkår } from '../../hooks/useHentVilkår';
-import { VilkårsresultatIkon } from '../Felleskomponenter/Visning/VilkårsresultatIkon';
-import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import { ResultatForVilkårstype } from './ResultatForVilkårtype';
 
 export function withResultatSammendrag<PROPS>(Component: React.ComponentType<PROPS>) {
     return (props: PROPS & { behandlingId: string }) => {
@@ -24,31 +22,6 @@ export function withResultatSammendrag<PROPS>(Component: React.ComponentType<PRO
         return <Component {...rest} />;
     };
 }
-
-const resultatTilTekst: Record<Vilkårsresultat, string> = {
-    IKKE_AKTUELL: 'ikke aktuell',
-    IKKE_OPPFYLT: 'ikke oppfylt',
-    IKKE_TATT_STILLING_TIL: 'ikke tatt stilling til',
-    OPPFYLT: 'oppfylt',
-    SKAL_IKKE_VURDERES: 'ikke vurdert',
-};
-
-const ResultatSummering: React.FC<{
-    vilkårsresultat: Vilkårsresultat;
-    summering: number;
-    antall: number;
-}> = ({ summering, vilkårsresultat, antall }) => {
-    return (
-        <>
-            <VilkårsresultatIkon
-                vilkårsresultat={(vilkårsresultat as unknown) as Vilkårsresultat}
-            />
-            <Normaltekst>
-                {`${summering} av ${antall} ${resultatTilTekst[vilkårsresultat]}`}
-            </Normaltekst>
-        </>
-    );
-};
 
 const ResultatSammendrag: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { vilkår, hentVilkår } = useHentVilkår();
@@ -70,40 +43,23 @@ const ResultatSammendrag: React.FC<{ behandlingId: string }> = ({ behandlingId }
                 const aktivitetsvilkår = vurderingerUtenTidligereVedtaksperioder.filter(
                     (v) => v.vilkårType in AktivitetsvilkårType
                 );
-
-                const ingangsvilkårResultat = summerVilkårsresultat(
-                    mapVilkårtypeTilResultat(inngangsvilkår)
-                );
-                const aktivitetsvilkårResultat = summerVilkårsresultat(
-                    mapVilkårtypeTilResultat(aktivitetsvilkår)
-                );
                 return (
-                    <div>
-                        <div style={{ padding: '3rem' }}>
-                            <div>
-                                <Undertittel>Inngangsvilkår</Undertittel>
-                                <div>
-                                    {Object.entries(ingangsvilkårResultat).map(
-                                        ([vilkårsresultat, sum]) => (
-                                            <ResultatSummering
-                                                vilkårsresultat={vilkårsresultat as Vilkårsresultat}
-                                                summering={sum}
-                                                antall={7}
-                                            />
-                                        )
-                                    )}
-                                </div>
+                    <div style={{ maxWidth: '1180px' }}>
+                        <div style={{ padding: '1.5rem' }}>
+                            <div style={{ padding: '2rem 1rem' }}>
+                                <Undertittel className="blokk-xs">
+                                    Tidligere stønadsperioder
+                                </Undertittel>
+                                <Normaltekst>Søker har ingen tidligere stønadsperioder</Normaltekst>
                             </div>
-                            <Undertittel>Aktivitet</Undertittel>
-                            {Object.entries(aktivitetsvilkårResultat).map(
-                                ([vilkårsresultat, sum]) => (
-                                    <ResultatSummering
-                                        vilkårsresultat={vilkårsresultat as Vilkårsresultat}
-                                        summering={sum}
-                                        antall={7}
-                                    />
-                                )
-                            )}
+                            <ResultatForVilkårstype
+                                vilkårsvurderinger={inngangsvilkår}
+                                tittel="Inngangsvilkår"
+                            />
+                            <ResultatForVilkårstype
+                                vilkårsvurderinger={aktivitetsvilkår}
+                                tittel="Aktivitet"
+                            />
                         </div>
                     </div>
                 );
