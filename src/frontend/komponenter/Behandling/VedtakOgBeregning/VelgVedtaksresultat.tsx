@@ -13,7 +13,7 @@ const StyledSelect = styled(Select)`
     max-width: 200px;
 `;
 
-const VelgVedtaksresultat = (props: Props) => {
+const VelgVedtaksresultat = (props: Props): JSX.Element => {
     const { resultatType, settFeilmelding, settResultatType } = props;
     return (
         <StyledSelect

@@ -29,6 +29,7 @@ const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedi
     const oppdaterVurdering = (vurdering: SvarPåVilkårsvurdering) => {
         if (!oppdatererVurdering) {
             settOppdatererVurdering(true);
+            // eslint-disable-next-line
             lagreVurdering(vurdering).then((response: any) => {
                 settOppdatererVurdering(false);
                 if (response.status === RessursStatus.SUKSESS) {

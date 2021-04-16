@@ -47,8 +47,8 @@ const StyledIkonOgTittel = styled.span`
 `;
 
 const BreakWordNormaltekst = styled(Normaltekst)`
-    white-space: pre-wrap
-    word-wrap: break-word
+    white-space: pre-wrap;
+    word-wrap: break-word;
 `;
 
 interface Props {

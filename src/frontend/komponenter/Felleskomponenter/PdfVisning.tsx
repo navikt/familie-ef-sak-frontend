@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { Document, Page, pdfjs } from 'react-pdf';
 import DataViewer from './DataViewer/DataViewer';
 import Pagination from 'paginering';
+
+// eslint-disable-next-line
 const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 

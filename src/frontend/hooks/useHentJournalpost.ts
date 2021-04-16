@@ -28,6 +28,7 @@ export const useHentJournalpost = (
         axiosRequest<IJojurnalpostResponse, null>(
             hentJournalpostConfig
         ).then((res: Ressurs<IJojurnalpostResponse>) => settJournalResponse(res));
+        // eslint-disable-next-line
     }, [hentJournalpostConfig]);
 
     return {

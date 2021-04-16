@@ -31,9 +31,10 @@ export function hentSvarsalternativ(
 ): Svarsalternativ | undefined {
     if (!vurdering.svar) {
         return undefined;
+    } else {
+        const regel = regler[vurdering.regelId];
+        return regel.svarMapping[vurdering.svar];
     }
-    const regel = regler[vurdering.regelId];
-    return regel.svarMapping[vurdering.svar!];
 }
 
 export function erAllaDelvilkårBesvarte(

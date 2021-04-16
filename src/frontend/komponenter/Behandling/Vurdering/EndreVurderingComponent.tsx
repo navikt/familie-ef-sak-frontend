@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { BegrunnelseRegel, Regler } from './typer';
+import { BegrunnelseRegel, Regler, Svarsalternativ } from './typer';
 import {
     IDelvilkår,
     IVurdering,
@@ -36,7 +36,7 @@ const EndreVurderingComponent: FC<{
         vurdering.delvilkårsvurderinger
     );
 
-    const oppdateterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
+    const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
         settDelvilkårsvurderinger((prevSvar) => {
             const prevDelvilkårsvurdering = prevSvar[index];
             return [
@@ -55,33 +55,40 @@ const EndreVurderingComponent: FC<{
 
         const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger, true);
 
-        const svarsalternativ = hentSvarsalternativ(regler, nyttSvar)!;
-        const nesteStegId = svarsalternativ.regelId;
+        const svarsalternativ: Svarsalternativ | undefined = hentSvarsalternativ(regler, nyttSvar);
+        if (svarsalternativ) {
+            const nesteStegId = svarsalternativ?.regelId;
+            const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+                nesteStegId,
+                oppdaterteSvar,
+                () =>
+                    nesteStegId !== 'SLUTT_NODE' &&
+                    begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse) &&
+                    !vurderinger.find((v) => v.regelId === nesteStegId)
+            );
 
-        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
-            nesteStegId,
-            oppdaterteSvar,
-            () =>
-                nesteStegId !== 'SLUTT_NODE' &&
-                begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse) &&
-                !vurderinger.find((v) => v.regelId === nesteStegId)
-        );
-
-        oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
+            oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
+        }
     };
 
     const oppdaterSvar = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
         const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger);
-        const svarsalternativer = hentSvarsalternativ(regler, nyttSvar)!;
-        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
-            svarsalternativer.regelId,
-            oppdaterteSvar,
-            () =>
-                svarsalternativer.regelId !== 'SLUTT_NODE' &&
-                svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
+        const svarsalternativer: Svarsalternativ | undefined = hentSvarsalternativ(
+            regler,
+            nyttSvar
         );
 
-        oppdateterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
+        if (svarsalternativer) {
+            const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+                svarsalternativer.regelId,
+                oppdaterteSvar,
+                () =>
+                    svarsalternativer.regelId !== 'SLUTT_NODE' &&
+                    svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
+            );
+
+            oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
+        }
     };
 
     return (

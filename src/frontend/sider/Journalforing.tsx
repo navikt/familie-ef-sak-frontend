@@ -75,6 +75,7 @@ export const Journalforing: React.FC = () => {
             hentJournalPost();
             journalpostState.settOppgaveId(oppgaveIdParam);
         }
+        // eslint-disable-next-line
     }, [oppgaveIdParam, journalpostIdParam]);
 
     useEffect(() => {
@@ -90,6 +91,7 @@ export const Journalforing: React.FC = () => {
             });
             history.push('/oppgavebenk');
         }
+        // eslint-disable-next-line
     }, [journalpostState.innsending]);
 
     useEffect(() => {
@@ -100,12 +102,14 @@ export const Journalforing: React.FC = () => {
             stønadstype && hentFagsak(journalResponse.data.personIdent, stønadstype);
             hentFørsteDokument(journalResponse.data.journalpost);
         }
+        // eslint-disable-next-line
     }, [journalResponse]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             journalpostState.settFagsakId(fagsak.data.id);
         }
+        // eslint-disable-next-line
     }, [fagsak]);
 
     if (!oppgaveIdParam || !journalpostIdParam) {

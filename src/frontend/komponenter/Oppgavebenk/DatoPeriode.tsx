@@ -14,8 +14,8 @@ interface Props {
     datoTilTekst: string;
     valgtDatoFra?: string;
     valgtDatoTil?: string;
-    settDatoFra: any;
-    settDatoTil: any;
+    settDatoFra: (dato?: string) => void;
+    settDatoTil: (dato?: string) => void;
     datoFeil: OrNothing<string>;
 }
 
