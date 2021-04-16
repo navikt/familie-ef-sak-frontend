@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
 import styled from 'styled-components';
 import MånedVelger from './MånedVelger';
@@ -7,10 +7,8 @@ import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 
 interface Props {
     label?: string;
-    måned?: number;
-    år?: number;
-    settMåned: (måned: number) => void;
-    settÅr: (år: number) => void;
+    årMånedInitiell?: string;
+    onEndret: (årMåned: string) => void;
     antallÅrTilbake: number;
     antallÅrFrem: number;
     feilmelding?: string;
@@ -29,15 +27,26 @@ const StyledÅrvelger = styled.div`
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
-    måned,
-    år,
     label,
-    settMåned,
-    settÅr,
+    årMånedInitiell,
+    onEndret,
     antallÅrTilbake = 10,
     antallÅrFrem = 4,
     feilmelding,
 }) => {
+    const [år, settÅr] = useState(
+        årMånedInitiell ? parseInt(årMånedInitiell.split('-')[0], 10) : undefined
+    );
+    const [måned, settMåned] = useState(
+        årMånedInitiell ? årMånedInitiell.split('-')[1] : undefined
+    );
+
+    useEffect(() => {
+        if (år && måned) {
+            onEndret(`${år}-${måned}`);
+        }
+    }, [år, måned]);
+
     return (
         <div>
             <div>

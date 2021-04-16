@@ -2,30 +2,24 @@ import React from 'react';
 import MånedÅrVelger from './MånedÅrVelger';
 
 export enum PeriodeVariant {
-    ÅR_FRA = 'årFra',
-    ÅR_TIL = 'årTil',
-    MÅNED_FRA = 'månedFra',
-    MÅNED_TIL = 'månedTil',
+    ÅR_MÅNED_FRA = 'årMånedFra',
+    ÅR_MÅNED_TIL = 'årMånedTil',
 }
 
 interface Props {
     datoFraTekst?: string;
     datoTilTekst?: string;
-    månedFra?: number;
-    årFra?: number;
-    månedTil?: number;
-    årTil?: number;
-    onEndre: (verdi: number, type: PeriodeVariant) => void;
+    årMånedFraInitiell?: string;
+    årMånedTilInitiell?: string;
+    onEndre: (verdi: string, type: PeriodeVariant) => void;
     antallÅrTilbake?: number;
     antallÅrFrem?: number;
     feilmelding?: string;
 }
 
 const MånedÅrPeriode: React.FC<Props> = ({
-    månedFra,
-    månedTil,
-    årFra,
-    årTil,
+    årMånedFraInitiell,
+    årMånedTilInitiell,
     datoFraTekst,
     datoTilTekst,
     onEndre,
@@ -36,20 +30,16 @@ const MånedÅrPeriode: React.FC<Props> = ({
     return (
         <>
             <MånedÅrVelger
-                måned={månedFra}
-                år={årFra}
+                årMånedInitiell={årMånedFraInitiell}
                 label={datoFraTekst}
-                settMåned={(verdi) => onEndre(verdi, PeriodeVariant.MÅNED_FRA)}
-                settÅr={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_FRA)}
+                onEndret={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_MÅNED_FRA)}
                 antallÅrTilbake={antallÅrTilbake}
                 antallÅrFrem={antallÅrFrem}
             />
             <MånedÅrVelger
-                måned={månedTil}
-                år={årTil}
+                årMånedInitiell={årMånedTilInitiell}
                 label={datoTilTekst}
-                settMåned={(verdi) => onEndre(verdi, PeriodeVariant.MÅNED_TIL)}
-                settÅr={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_TIL)}
+                onEndret={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_MÅNED_TIL)}
                 antallÅrTilbake={antallÅrTilbake}
                 antallÅrFrem={antallÅrFrem}
                 feilmelding={feilmelding}

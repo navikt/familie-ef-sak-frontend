@@ -10,10 +10,8 @@ export interface IVedtak {
 export interface IVedtaksperiode {
     periodeType: EPeriodetype;
     aktivitet: EAktivitet;
-    månedFra?: number;
-    årFra?: number;
-    månedTil?: number;
-    årTil?: number;
+    årMånedFra?: string;
+    årMånedTil?: string;
 }
 
 export enum EBehandlingResultat {
@@ -31,22 +29,16 @@ export enum EPeriodetype {
 export enum EPeriodeProperty {
     periodeType = 'periodeType',
     aktivitet = 'aktivitet',
-    månedFra = 'månedFra',
-    månedTil = 'månedTil',
-    årFra = 'årFra',
-    årTil = 'årTil',
+    årMånedFra = 'årMånedFra',
+    årMånedTil = 'årMånedTil',
 }
 
 export const periodeVariantTilProperty = (periodeVariant: PeriodeVariant): EPeriodeProperty => {
     switch (periodeVariant) {
-        case PeriodeVariant.MÅNED_FRA:
-            return EPeriodeProperty.månedFra;
-        case PeriodeVariant.MÅNED_TIL:
-            return EPeriodeProperty.månedTil;
-        case PeriodeVariant.ÅR_FRA:
-            return EPeriodeProperty.årFra;
-        case PeriodeVariant.ÅR_TIL:
-            return EPeriodeProperty.årTil;
+        case PeriodeVariant.ÅR_MÅNED_FRA:
+            return EPeriodeProperty.årMånedFra;
+        case PeriodeVariant.ÅR_MÅNED_TIL:
+            return EPeriodeProperty.årMånedTil;
     }
 };
 
