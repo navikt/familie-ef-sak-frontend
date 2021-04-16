@@ -13,6 +13,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import VelgVedtaksresultat from './VelgVedtaksresultat';
+import { withResultatSammendrag } from '../../Vilkårresultat/ResultatSammendrag';
 
 interface Props {
     behandlingId: string;
@@ -101,4 +102,4 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     );
 };
 
-export default VedtakOgBeregning;
+export default withResultatSammendrag(VedtakOgBeregning);
