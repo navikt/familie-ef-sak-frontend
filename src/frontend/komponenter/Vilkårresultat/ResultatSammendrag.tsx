@@ -7,11 +7,12 @@ import {
     TidligereVedtaksperioderType,
     Vilkårsresultat,
 } from '../Behandling/Inngangsvilkår/vilkår';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../context/BehandlingContext';
 import { useHentVilkår } from '../../hooks/useHentVilkår';
 import { VilkårsresultatIkon } from '../Felleskomponenter/Visning/VilkårsresultatIkon';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
+import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 
 export function withResultatSammendrag<PROPS>(Component: React.ComponentType<PROPS>) {
     return (props: PROPS & { behandlingId: string }) => {
@@ -56,39 +57,59 @@ const ResultatSammendrag: React.FC<{ behandlingId: string }> = ({ behandlingId }
         hentVilkår(behandlingId);
     }, [behandlingId]);
 
-    if (vilkår.status === RessursStatus.SUKSESS) {
-        const vurderingerUtenTidligereVedtaksperioder = vilkår.data.vurderinger.filter(
-            (v) => v.vilkårType !== TidligereVedtaksperioderType.TIDLIGERE_VEDTAKSPERIODER
-        );
+    return (
+        <DataViewer response={{ vilkår }}>
+            {({ vilkår }) => {
+                const vurderingerUtenTidligereVedtaksperioder = vilkår.vurderinger.filter(
+                    (v) => v.vilkårType !== TidligereVedtaksperioderType.TIDLIGERE_VEDTAKSPERIODER
+                );
 
-        const inngangsvilkår = vurderingerUtenTidligereVedtaksperioder.filter(
-            (v) => v.vilkårType in InngangsvilkårType
-        );
-        const aktivitetsvilkår = vurderingerUtenTidligereVedtaksperioder.filter(
-            (v) => v.vilkårType in AktivitetsvilkårType
-        );
+                const inngangsvilkår = vurderingerUtenTidligereVedtaksperioder.filter(
+                    (v) => v.vilkårType in InngangsvilkårType
+                );
+                const aktivitetsvilkår = vurderingerUtenTidligereVedtaksperioder.filter(
+                    (v) => v.vilkårType in AktivitetsvilkårType
+                );
 
-        const ingangsvilkårResultat = summerVilkårsresultat(
-            mapVilkårtypeTilResultat(inngangsvilkår)
-        );
-        const aktivitetsvilkårResultat = summerVilkårsresultat(
-            mapVilkårtypeTilResultat(aktivitetsvilkår)
-        );
-
-        return (
-            <>
-                <Systemtittel>Inngangsvilkår</Systemtittel>
-                {Object.entries(ingangsvilkårResultat).map(([vilkårsresultat, sum]) => (
-                    <ResultatSummering
-                        vilkårsresultat={vilkårsresultat as Vilkårsresultat}
-                        summering={sum}
-                        antall={7}
-                    />
-                ))}
-            </>
-        );
-    }
-    return null;
+                const ingangsvilkårResultat = summerVilkårsresultat(
+                    mapVilkårtypeTilResultat(inngangsvilkår)
+                );
+                const aktivitetsvilkårResultat = summerVilkårsresultat(
+                    mapVilkårtypeTilResultat(aktivitetsvilkår)
+                );
+                return (
+                    <div>
+                        <div style={{ padding: '3rem' }}>
+                            <div>
+                                <Undertittel>Inngangsvilkår</Undertittel>
+                                <div>
+                                    {Object.entries(ingangsvilkårResultat).map(
+                                        ([vilkårsresultat, sum]) => (
+                                            <ResultatSummering
+                                                vilkårsresultat={vilkårsresultat as Vilkårsresultat}
+                                                summering={sum}
+                                                antall={7}
+                                            />
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                            <Undertittel>Aktivitet</Undertittel>
+                            {Object.entries(aktivitetsvilkårResultat).map(
+                                ([vilkårsresultat, sum]) => (
+                                    <ResultatSummering
+                                        vilkårsresultat={vilkårsresultat as Vilkårsresultat}
+                                        summering={sum}
+                                        antall={7}
+                                    />
+                                )
+                            )}
+                        </div>
+                    </div>
+                );
+            }}
+        </DataViewer>
+    );
 };
 
 export default ResultatSammendrag;
