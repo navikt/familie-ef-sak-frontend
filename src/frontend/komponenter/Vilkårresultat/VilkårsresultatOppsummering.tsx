@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
     AktivitetsvilkårType,
     InngangsvilkårType,
@@ -23,9 +23,13 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
 }) => {
     const { vilkår, hentVilkår } = useHentVilkår();
 
-    useEffect(() => {
+    const hentVilkårCallback = useCallback(() => {
         hentVilkår(behandlingId);
     }, [behandlingId]);
+
+    useEffect(() => {
+        hentVilkårCallback();
+    }, [hentVilkårCallback]);
 
     return (
         <DataViewer response={{ vilkår }}>
