@@ -25,6 +25,7 @@ export const summerVilkårsresultat = (
         if (type === InngangsvilkårType.ALENEOMSORG) {
             resultat = vilkårStatusAleneomsorg(resultatListe);
         } else {
+            // alle andre vilkår har kun ett resultat
             resultat = resultatListe[0];
         }
         acc[resultat] = (acc[resultat] ?? 0) + 1;
