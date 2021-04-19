@@ -5,9 +5,9 @@ import { FunctionComponent } from 'react';
 import Aktivitet from '../Behandling/Aktivitet/Aktivitetsvilkår';
 import Brev from '../Behandling/Brev/Brev';
 import Blankett from '../Behandling/Blankett/Blankett';
-import VedtakOgBeregning from '../Behandling/VedtakOgBeregning/VedtakOgBeregning';
 import { Behandling } from '../../typer/fagsak';
 import { Behandlingstype } from '../../typer/behandlingstype';
+import { VedtakOgBeregningSide } from '../Behandling/VedtakOgBeregning/VedtakOgBeregningSide';
 
 export interface ISide {
     href: string;
@@ -49,7 +49,7 @@ export const sider: ISide[] = [
     {
         href: 'vedtak-og-beregning',
         navn: SideNavn.VEDTAK_OG_BEREGNING,
-        komponent: VedtakOgBeregning,
+        komponent: VedtakOgBeregningSide,
     },
     {
         href: 'brev',

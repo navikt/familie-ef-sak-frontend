@@ -5,7 +5,7 @@ import { AppProvider } from '../context/AppContext';
 import { hentInnloggetBruker } from '../api/saksbehandler';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import ErrorBoundary from './Felleskomponenter/ErrorBoundary/ErrorBoundary';
-import Container from './Container';
+import Routes from './Routes';
 import { TogglesProvider } from '../context/TogglesContext';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
@@ -28,7 +28,7 @@ const App: React.FC = () => {
         <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
             <AppProvider autentisertSaksbehandler={innloggetSaksbehandler}>
                 <TogglesProvider>
-                    <Container innloggetSaksbehandler={innloggetSaksbehandler} />
+                    <Routes innloggetSaksbehandler={innloggetSaksbehandler} />
                 </TogglesProvider>
             </AppProvider>
         </ErrorBoundary>
