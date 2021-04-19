@@ -7,9 +7,11 @@ import {
     IVedtaksperiode,
     IVedtak,
     periodeVariantTilProperty,
+    IInntektsperiode,
+    EInntektsperiodeProperty,
 } from '../../../typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
-import { Select, Textarea } from 'nav-frontend-skjema';
+import { Select, Textarea, Checkbox, Input } from 'nav-frontend-skjema';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
@@ -21,6 +23,7 @@ import { AddCircle, Delete } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
 import MånedÅrPeriode, { PeriodeVariant } from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import MånedÅrVelger from '../../Felleskomponenter/MånedÅr/MånedÅrVelger';
 import { månederMellom, månedÅrTilDate } from '../../../utils/formatter';
 
 interface Props {
@@ -29,6 +32,16 @@ interface Props {
     settFeilmelding: Dispatch<SetStateAction<string>>;
     lagretVedtak?: IVedtak;
 }
+
+const Inntekt = styled.div`
+    padding: 2rem;
+`;
+
+const InntektsperiodeRad = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0.25rem;
+`;
 
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`
     margin-top: 2rem;
@@ -40,12 +53,12 @@ const VedtaksperiodeRad = styled.div`
     margin-bottom: 0.25rem;
 `;
 
-const LeggTilVedtaksperiodeKnapp = styled(Flatknapp)`
+const LeggTilPeriodeKnapp = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 1rem;
 `;
 
-const FjernVedtaksperiodeKnapp = styled(Flatknapp)`
+const FjernPeriodeKnapp = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 1rem;
     margin-left: 1rem;
@@ -87,9 +100,50 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         aktivitet: '' as EAktivitet,
     };
 
+    const tomInntektsperiodeRad = {
+        årMånedFra: '',
+        forventetInntekt: '',
+        stønadsbeløp: 0,
+    };
+
     const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IVedtaksperiode[]>(
         lagretVedtak ? lagretVedtak.perioder : [tomVedtaksperiodeRad]
     );
+
+    const [inntektsperiodeListe, settInntektsperiodeListe] = useState<any[]>(
+        lagretVedtak ? lagretVedtak.periodeInntekt : [tomInntektsperiodeRad]
+    );
+
+    const leggTilInntektsperiode = () => {
+        const nyListe = [...inntektsperiodeListe];
+
+        nyListe.push(tomInntektsperiodeRad);
+
+        settInntektsperiodeListe(nyListe);
+    };
+
+    const fjernInntektsperiode = () => {
+        const nyListe = [...inntektsperiodeListe];
+
+        nyListe.pop();
+
+        settInntektsperiodeListe(nyListe);
+    };
+
+    const oppdaterInntektslisteElement = (
+        index: number,
+        property: EInntektsperiodeProperty,
+        value: string | number | undefined
+    ) => {
+        const oppdatertListe = inntektsperiodeListe.map((inntektsperiode, i) => {
+            if (i === index) {
+                return { ...inntektsperiode, [property]: value };
+            }
+            return inntektsperiode;
+        });
+
+        settInntektsperiodeListe(oppdatertListe);
+    };
 
     const leggTilVedtaksperiode = () => {
         const nyListe = [...vedtaksperiodeListe];
@@ -106,6 +160,8 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
 
         settVedtaksperiodeListe(nyListe);
     };
+
+    console.log('INNTEKTSPERIODE', inntektsperiodeListe);
 
     const oppdaterVedtakslisteElement = (
         index: number,
@@ -238,19 +294,19 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                         {!!antallMåneder && `${antallMåneder} mnd`}
                                     </Element>
                                     {index === vedtaksperiodeListe.length - 1 && index !== 0 && (
-                                        <FjernVedtaksperiodeKnapp onClick={fjernVedtaksperiode}>
+                                        <FjernPeriodeKnapp onClick={fjernVedtaksperiode}>
                                             <Delete />
                                             <span className="sr-only">Fjern vedtaksperiode</span>
-                                        </FjernVedtaksperiodeKnapp>
+                                        </FjernPeriodeKnapp>
                                     )}
                                 </MndKnappWrapper>
                             </VedtaksperiodeRad>
                         );
                     })}
-                    <LeggTilVedtaksperiodeKnapp onClick={leggTilVedtaksperiode}>
+                    <LeggTilPeriodeKnapp onClick={leggTilVedtaksperiode}>
                         <AddCircle style={{ marginRight: '1rem' }} />
                         Legg til vedtaksperiode
-                    </LeggTilVedtaksperiodeKnapp>
+                    </LeggTilPeriodeKnapp>
                     <Textarea
                         value={periodeBegrunnelse}
                         onChange={(e) => {
@@ -259,6 +315,51 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         label="Begrunnelse"
                     />
                     <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>Inntekt</Element>
+                    <Inntekt>
+                        <Checkbox label="Vis samordning" />
+                    </Inntekt>
+                    {inntektsperiodeListe.map((rad, index) => {
+                        return (
+                            <InntektsperiodeRad>
+                                <MånedÅrVelger
+                                    label={index === 0 ? 'Fra' : ''}
+                                    onEndret={(e) => {
+                                        oppdaterInntektslisteElement(
+                                            index,
+                                            EInntektsperiodeProperty.årMånedFra,
+                                            e
+                                        );
+                                    }}
+                                    antallÅrTilbake={10}
+                                    antallÅrFrem={4}
+                                ></MånedÅrVelger>
+
+                                <Input
+                                    label={index === 0 && 'Forventet inntekt (år)'}
+                                    onChange={(e) => {
+                                        oppdaterInntektslisteElement(
+                                            index,
+                                            EInntektsperiodeProperty.forventetInntekt,
+                                            e.target.value
+                                        );
+                                    }}
+                                />
+
+                                <MndKnappWrapper>
+                                    {index === inntektsperiodeListe.length - 1 && index !== 0 && (
+                                        <FjernPeriodeKnapp onClick={fjernInntektsperiode}>
+                                            <Delete />
+                                            <span className="sr-only">Fjern inntektsperiode</span>
+                                        </FjernPeriodeKnapp>
+                                    )}
+                                </MndKnappWrapper>
+                            </InntektsperiodeRad>
+                        );
+                    })}
+                    <LeggTilPeriodeKnapp onClick={leggTilInntektsperiode}>
+                        <AddCircle style={{ marginRight: '1rem' }} />
+                        Legg til inntektsperiode
+                    </LeggTilPeriodeKnapp>
                     <Textarea
                         value={inntektBegrunnelse}
                         onChange={(e) => {

@@ -10,9 +10,10 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ISøknadData } from '../../../typer/beregningssøknadsdata';
 import { useDataHenter } from '../../../hooks/felles/useDataHenter';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
+import { EBehandlingResultat, IVedtak, IInntektsperiode } from '../../../typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import VelgVedtaksresultat from './VelgVedtaksresultat';
+import { Checkbox } from 'nav-frontend-skjema';
 
 interface Props {
     behandlingId: string;
@@ -24,6 +25,10 @@ const StyledVedtaksperiode = styled.div`
 
 const StyledFeilmelding = styled(AlertStripeFeil)`
     margin-top: 2rem;
+`;
+
+const Inntekt = styled.div`
+    padding: 2rem;
 `;
 
 const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {

@@ -5,6 +5,15 @@ export interface IVedtak {
     periodeBegrunnelse: string;
     inntektBegrunnelse: string;
     perioder: IVedtaksperiode[];
+    periodeInntekt: IInntektsperiode[];
+}
+
+export interface IInntektsperiode {
+    årMånedfra?: string;
+    forventetInntekt: number;
+    stønadsbeløp: number;
+    samordningsfradag?: number;
+    beløpFørSamordning?: number;
 }
 
 export interface IVedtaksperiode {
@@ -12,6 +21,14 @@ export interface IVedtaksperiode {
     aktivitet: EAktivitet;
     årMånedFra?: string;
     årMånedTil?: string;
+}
+
+export enum EInntektsperiodeProperty {
+    årMånedFra = 'årMånedFra',
+    forventetInntekt = 'forventetInntekt',
+    stønadsbeløp = 'stønadsbeløp',
+    samordningsfradrag = 'samordningsfradrag',
+    beløpFørSamordning = 'beløpFørSamordning',
 }
 
 export enum EBehandlingResultat {
