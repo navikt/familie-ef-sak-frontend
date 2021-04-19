@@ -21,6 +21,7 @@ export interface IPersonopplysninger {
     innflyttingTilNorge: IInnflyttingTilNorge[];
     utflyttingFraNorge: IUtflyttingFraNorge[];
     oppholdstillatelse: IOppholdstillatelse[];
+    navKontor?: INavKontor;
 }
 
 export interface IBarn {
@@ -163,4 +164,9 @@ export enum OppholdType {
     MIDLERTIDIG = 'MIDLERTIDIG',
     PERMANENT = 'PERMANENT',
     UKJENT = 'UKJENT',
+}
+
+export interface INavKontor {
+    navn: string;
+    enhetNr: string;
 }

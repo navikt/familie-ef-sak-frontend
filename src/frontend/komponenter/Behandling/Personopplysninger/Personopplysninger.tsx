@@ -9,6 +9,7 @@ import Statsborgerskap from './Statsborgerskap';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import Oppholdstillatelse from './Oppholdstillatelse';
 import { useBehandling } from '../../../context/BehandlingContext';
+import NavKontor from './NavKontor';
 
 const Personopplysninger: React.FC = () => {
     const { personopplysningerResponse } = useBehandling();
@@ -26,6 +27,7 @@ const Personopplysninger: React.FC = () => {
                     utflyttingFraNorge,
                     fullmakt,
                     oppholdstillatelse,
+                    navKontor,
                 } = personopplysningerResponse;
                 return (
                     <>
@@ -42,6 +44,7 @@ const Personopplysninger: React.FC = () => {
                             utvandringer={utflyttingFraNorge}
                         />
                         <Fullmakter fullmakter={fullmakt} />
+                        <NavKontor navKontor={navKontor} />
                     </>
                 );
             }}
