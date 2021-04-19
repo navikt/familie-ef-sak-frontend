@@ -1,13 +1,8 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../utils/formatter';
-import { Søknadsgrunnlag } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { ISøknadData } from '../../../typer/beregningssøknadsdata';
 import { useDataHenter } from '../../../hooks/felles/useDataHenter';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EBehandlingResultat, IVedtak, IInntektsperiode } from '../../../typer/vedtak';
@@ -35,24 +30,12 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const [feilmelding, settFeilmelding] = useState<string>('');
 
-    const søknadDataConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/soknad/${behandlingId}/datoer`,
-        }),
-        [behandlingId]
-    );
-
     const lagretVedtakConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
         }),
         [behandlingId]
-    );
-
-    const søknadDataResponse: Ressurs<ISøknadData> = useDataHenter<ISøknadData, null>(
-        søknadDataConfig
     );
 
     const lagretVedtakResponse: Ressurs<IVedtak | undefined> = useDataHenter<
@@ -67,24 +50,10 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
     }, [lagretVedtakResponse]);
 
     return (
-        <DataViewer response={{ søknadDataResponse, lagretVedtakResponse }}>
-            {({ søknadDataResponse, lagretVedtakResponse }) => {
+        <DataViewer response={{ lagretVedtakResponse }}>
+            {({ lagretVedtakResponse }) => {
                 return (
                     <StyledVedtaksperiode>
-                        <Element style={{ marginBottom: '0.5rem' }}>Søknadsinformasjon</Element>
-                        <GridTabell style={{ marginBottom: '2rem' }}>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Søknadsdato</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(søknadDataResponse.søknadsdato)}
-                            </Normaltekst>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Søker stønad fra</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableMånedÅr(søknadDataResponse.søkerStønadFra) ||
-                                    'Søker ikke stønad fra bestemt tidspunkt'}
-                            </Normaltekst>
-                        </GridTabell>
                         <VelgVedtaksresultat
                             resultatType={resultatType}
                             settFeilmelding={settFeilmelding}
