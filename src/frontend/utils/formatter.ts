@@ -1,4 +1,4 @@
-import { format, parseISO, parse, differenceInMonths, addMonths } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 export const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
 export const datoTidFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -26,11 +26,3 @@ export const formaterFødselsnummer = (fødselsnummer: string): string =>
 
 export const formaterNullableFødsesnummer = (fødselsnummer?: string): string | undefined =>
     fødselsnummer && formaterFødselsnummer(fødselsnummer);
-
-export const månedÅrTilDate = (årMåned: string): Date => {
-    return parse(årMåned, 'yyyy-MM', new Date());
-};
-
-export const månederMellom = (fra: Date, til: Date): number => {
-    return differenceInMonths(addMonths(til, 1), fra);
-};

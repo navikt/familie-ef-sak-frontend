@@ -9,9 +9,9 @@ export interface IVedtak {
 }
 
 export interface IInntektsperiode {
-    årMånedfra?: string;
-    forventetInntekt: number;
-    stønadsbeløp: number;
+    årMånedFra?: string;
+    forventetInntekt?: number;
+    stønadsbeløp?: number;
     samordningsfradag?: number;
     beløpFørSamordning?: number;
 }
@@ -23,6 +23,10 @@ export interface IVedtaksperiode {
     årMånedTil?: string;
 }
 
+export interface IValideringsfeil {
+    vedtaksperioder: string[];
+    inntektsperioder: string[];
+}
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',
     forventetInntekt = 'forventetInntekt',
