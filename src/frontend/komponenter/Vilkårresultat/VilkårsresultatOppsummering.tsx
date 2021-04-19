@@ -25,7 +25,7 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
 
     const hentVilkårCallback = useCallback(() => {
         hentVilkår(behandlingId);
-    }, [behandlingId]);
+    }, [behandlingId, hentVilkår]);
 
     useEffect(() => {
         hentVilkårCallback();
