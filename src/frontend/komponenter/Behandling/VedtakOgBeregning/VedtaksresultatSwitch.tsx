@@ -1,11 +1,12 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
     EAktivitet,
     EBehandlingResultat,
     EPeriodeProperty,
     EPeriodetype,
-    IPeriode,
+    IVedtaksperiode,
     IVedtak,
+    periodeVariantTilProperty,
 } from '../../../typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
 import { Select, Textarea } from 'nav-frontend-skjema';
@@ -16,11 +17,11 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
-import DatoPeriode from '../../Oppgavebenk/DatoPeriode';
-import { differenceInMonths } from 'date-fns';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
+import MånedÅrPeriode, { PeriodeVariant } from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import { månederMellom, månedÅrTilDate } from '../../../utils/formatter';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -36,6 +37,7 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
 const VedtaksperiodeRad = styled.div`
     display: flex;
     justify-content: flex-start;
+    margin-bottom: 0.25rem;
 `;
 
 const LeggTilVedtaksperiodeKnapp = styled(Flatknapp)`
@@ -54,32 +56,40 @@ const StyledSelect = styled(Select)`
     margin-right: 2rem;
 `;
 
+const MndKnappWrapper = styled.div`
+    width: 90px;
+    display: flex;
+`;
+
+const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): number | undefined => {
+    if (årMånedFra && årMånedTil) {
+        return månederMellom(månedÅrTilDate(årMånedFra), månedÅrTilDate(årMånedTil));
+    }
+    return undefined;
+};
+
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
     const { hentBehandling } = useBehandling();
     const history = useHistory();
-    const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
-    const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>('');
-    const [laster, settLaster] = useState<boolean>(false);
     const { vedtaksresultatType, behandlingId, settFeilmelding, lagretVedtak } = props;
+
+    const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>(
+        lagretVedtak?.periodeBegrunnelse || ''
+    );
+    const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>(
+        lagretVedtak?.inntektBegrunnelse || ''
+    );
+    const [laster, settLaster] = useState<boolean>(false);
     const tomVedtaksperiodeRad = {
         periodeType: '' as EPeriodetype,
         aktivitet: '' as EAktivitet,
-        datoFra: '',
-        datoTil: '',
     };
-    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IPeriode[]>([
-        tomVedtaksperiodeRad,
-    ]);
 
-    useEffect(() => {
-        if (lagretVedtak) {
-            settPeriodeBegrunnelse(lagretVedtak.periodeBegrunnelse);
-            settInntektBegrunnelse(lagretVedtak.inntektBegrunnelse);
-            settVedtaksperiodeListe(lagretVedtak.perioder);
-        }
-    }, [lagretVedtak]);
+    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IVedtaksperiode[]>(
+        lagretVedtak ? lagretVedtak.perioder : [tomVedtaksperiodeRad]
+    );
 
     const leggTilVedtaksperiode = () => {
         const nyListe = [...vedtaksperiodeListe];
@@ -100,18 +110,16 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const oppdaterVedtakslisteElement = (
         index: number,
         property: EPeriodeProperty,
-        value: string
+        value: string | number | undefined
     ) => {
-        const nyListe = [...vedtaksperiodeListe];
+        const oppdatertListe = vedtaksperiodeListe.map((vedtaksperiode, i) => {
+            if (i === index) {
+                return { ...vedtaksperiode, [property]: value };
+            }
+            return vedtaksperiode;
+        });
 
-        const nyttObjekt = {
-            ...nyListe[index],
-            [property]: value,
-        };
-
-        nyListe[index] = nyttObjekt;
-
-        settVedtaksperiodeListe(nyListe);
+        settVedtaksperiodeListe(oppdatertListe);
     };
 
     const lagBlankett = () => {
@@ -177,19 +185,11 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         Vedtaksperiode
                     </Element>
                     {vedtaksperiodeListe.map((element, index) => {
-                        const { periodeType, aktivitet, datoTil, datoFra } = element;
-
-                        const antallMåneder = (() => {
-                            if (!(datoFra && datoTil)) {
-                                return undefined;
-                            }
-                            const plussEnDag = new Date(datoTil);
-                            plussEnDag.setDate(plussEnDag.getDate() + 1);
-                            return differenceInMonths(plussEnDag, new Date(datoFra));
-                        })();
+                        const { periodeType, aktivitet, årMånedFra, årMånedTil } = element;
+                        const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
 
                         return (
-                            <VedtaksperiodeRad>
+                            <VedtaksperiodeRad key={index}>
                                 <StyledSelect
                                     label={index === 0 && 'Periodetype'}
                                     value={periodeType}
@@ -215,40 +215,35 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     settFeilmelding={settFeilmelding}
                                     oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
                                 />
-                                <DatoPeriode
+                                <MånedÅrPeriode
                                     datoFraTekst={index === 0 ? 'Fra og med' : ''}
                                     datoTilTekst={index === 0 ? 'Til og med' : ''}
-                                    settDatoFra={(dato?: string) => {
-                                        dato &&
-                                            oppdaterVedtakslisteElement(
-                                                index,
-                                                EPeriodeProperty.datoFra,
-                                                dato
-                                            );
+                                    årMånedFraInitiell={årMånedFra}
+                                    årMånedTilInitiell={årMånedTil}
+                                    onEndre={(
+                                        verdi: string | undefined,
+                                        periodeVariant: PeriodeVariant
+                                    ) => {
+                                        oppdaterVedtakslisteElement(
+                                            index,
+                                            periodeVariantTilProperty(periodeVariant),
+                                            verdi
+                                        );
                                     }}
-                                    settDatoTil={(dato?: string) => {
-                                        dato &&
-                                            oppdaterVedtakslisteElement(
-                                                index,
-                                                EPeriodeProperty.datoTil,
-                                                dato
-                                            );
-                                    }}
-                                    valgtDatoFra={datoFra}
-                                    valgtDatoTil={datoTil}
-                                    datoFeil={undefined}
+                                    feilmelding={undefined}
                                 />
-                                {!!antallMåneder && (
+
+                                <MndKnappWrapper>
                                     <Element style={{ marginTop: index === 0 ? '2.5rem' : '1rem' }}>
-                                        {antallMåneder} måneder
+                                        {!!antallMåneder && `${antallMåneder} mnd`}
                                     </Element>
-                                )}
-                                {index === vedtaksperiodeListe.length - 1 && index !== 0 && (
-                                    <FjernVedtaksperiodeKnapp onClick={fjernVedtaksperiode}>
-                                        <Delete />
-                                        <span className="sr-only">Fjern vedtaksperiode</span>
-                                    </FjernVedtaksperiodeKnapp>
-                                )}
+                                    {index === vedtaksperiodeListe.length - 1 && index !== 0 && (
+                                        <FjernVedtaksperiodeKnapp onClick={fjernVedtaksperiode}>
+                                            <Delete />
+                                            <span className="sr-only">Fjern vedtaksperiode</span>
+                                        </FjernVedtaksperiodeKnapp>
+                                    )}
+                                </MndKnappWrapper>
                             </VedtaksperiodeRad>
                         );
                     })}
