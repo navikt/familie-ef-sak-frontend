@@ -24,6 +24,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
 
     useEffect(() => {
         hentEllerOpprettBlankett();
+        // eslint-disable-next-line
     }, []);
 
     const hentEllerOpprettBlankett = () => {

@@ -218,19 +218,21 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                 <DatoPeriode
                                     datoFraTekst={index === 0 ? 'Fra og med' : ''}
                                     datoTilTekst={index === 0 ? 'Til og med' : ''}
-                                    settDatoFra={(dato: string) => {
-                                        oppdaterVedtakslisteElement(
-                                            index,
-                                            EPeriodeProperty.datoFra,
-                                            dato
-                                        );
+                                    settDatoFra={(dato?: string) => {
+                                        dato &&
+                                            oppdaterVedtakslisteElement(
+                                                index,
+                                                EPeriodeProperty.datoFra,
+                                                dato
+                                            );
                                     }}
-                                    settDatoTil={(dato: string) => {
-                                        oppdaterVedtakslisteElement(
-                                            index,
-                                            EPeriodeProperty.datoTil,
-                                            dato
-                                        );
+                                    settDatoTil={(dato?: string) => {
+                                        dato &&
+                                            oppdaterVedtakslisteElement(
+                                                index,
+                                                EPeriodeProperty.datoTil,
+                                                dato
+                                            );
                                     }}
                                     valgtDatoFra={datoFra}
                                     valgtDatoTil={datoTil}

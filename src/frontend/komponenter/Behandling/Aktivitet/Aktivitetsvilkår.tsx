@@ -25,6 +25,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
                 hentVilkår(behandlingId);
             }
         }
+        // eslint-disable-next-line
     }, [behandlingId]);
     return (
         <DataViewer response={{ vilkår }}>

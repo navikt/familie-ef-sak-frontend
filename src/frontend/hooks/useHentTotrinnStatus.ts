@@ -3,6 +3,7 @@ import { TotrinnskontrollResponse } from '../typer/totrinnskontroll';
 import { useCallback, useState } from 'react';
 import { useApp } from '../context/AppContext';
 
+// eslint-disable-next-line
 export const useHentTotrinnskontroll = (behandlingId: string) => {
     const { axiosRequest } = useApp();
     const [totrinnskontroll, settTotrinnskontroll] = useState<Ressurs<TotrinnskontrollResponse>>(
@@ -16,6 +17,7 @@ export const useHentTotrinnskontroll = (behandlingId: string) => {
         }).then((response: Ressurs<TotrinnskontrollResponse>) => {
             settTotrinnskontroll(response);
         });
+        // eslint-disable-next-line
     }, [behandlingId]);
 
     return {

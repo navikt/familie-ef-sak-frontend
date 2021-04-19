@@ -6,7 +6,7 @@ interface Props {
     tekst: string;
 }
 
-const TekstMedLabel: React.FC<Props> = ({ label, tekst }: Props) => {
+const TekstMedLabel = ({ label, tekst }: Props): JSX.Element => {
     return (
         <div style={{ marginRight: '2rem' }} className="skjemaelement">
             <span className="skjemaelement__label">{label}</span>

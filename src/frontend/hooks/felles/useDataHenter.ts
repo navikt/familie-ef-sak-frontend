@@ -14,6 +14,7 @@ export const useDataHenter = <T, D>(config: Props<D>): Ressurs<T> => {
     const hentData = useCallback(() => {
         setResponse({ status: RessursStatus.HENTER });
         axiosRequest<T, D>(config).then((res: Ressurs<T>) => setResponse(res));
+        // eslint-disable-next-line
     }, [config]);
 
     useEffect(() => {
