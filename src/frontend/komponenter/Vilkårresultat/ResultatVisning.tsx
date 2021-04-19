@@ -22,19 +22,22 @@ export const ResultatVisning: React.FC<{
     vilkårsvurderinger: IVurdering[];
     tittel: string;
 }> = ({ vilkårsvurderinger, tittel }) => {
-    const vilkårResultat = summerVilkårsresultat(mapVilkårtypeTilResultat(vilkårsvurderinger));
-    const antallVilkårTotalt = vilkårsvurderinger.length;
+    const vilkårtypeTilResultat = mapVilkårtypeTilResultat(vilkårsvurderinger);
+    const antallVilkårTotalt = Object.keys(vilkårtypeTilResultat).length;
+    const oppsummeringAvVilkårsresultat = summerVilkårsresultat(vilkårtypeTilResultat);
     return (
         <Container>
             <Undertittel className="blokk-xs">{tittel}</Undertittel>
-            {Object.entries(vilkårResultat).map(([vilkårsresultat, antallVilkårsresultat]) => (
-                <FlexDiv flexDirection="row" className="blokk-xxs">
-                    <VilkårsresultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
-                    <Normaltekst style={{ marginLeft: '0.25rem' }}>
-                        {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                    </Normaltekst>
-                </FlexDiv>
-            ))}
+            {Object.entries(oppsummeringAvVilkårsresultat).map(
+                ([vilkårsresultat, antallVilkårsresultat]) => (
+                    <FlexDiv flexDirection="row" className="blokk-xxs">
+                        <VilkårsresultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
+                        <Normaltekst style={{ marginLeft: '0.25rem' }}>
+                            {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
+                        </Normaltekst>
+                    </FlexDiv>
+                )
+            )}
         </Container>
     );
 };
