@@ -20,7 +20,7 @@ import { ModalAction, ModalType, useModal } from '../../../context/ModalContext'
 import styled from 'styled-components';
 import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
-import { AddCircle, Delete } from '@navikt/ds-icons';
+import { AddCircle, Delete, Calculator } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
 import MånedÅrPeriode, { PeriodeVariant } from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
@@ -44,6 +44,16 @@ const StyledTekstMedLabel = styled(TekstMedLabel)`
     margin-left: 1rem;
 `;
 
+const StyledBeløpMedSamordning = styled(TekstMedLabel)`
+    min-width: 150px;
+`;
+
+const Knapper = styled.div`
+    max-width: 500px;
+    display: flex;
+    justify-content: space-between;
+`;
+
 const InntektsperiodeRad = styled.div`
     display: flex;
     justify-content: flex-start;
@@ -60,14 +70,13 @@ const VedtaksperiodeRad = styled.div`
     margin-bottom: 0.25rem;
 `;
 
-const LeggTilPeriodeKnapp = styled(Flatknapp)`
+const KnappMedLuftUnder = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 1rem;
 `;
 
 const FjernPeriodeKnapp = styled(Flatknapp)`
     padding: 0;
-    margin-bottom: 1rem;
     margin-left: 1rem;
 `;
 
@@ -79,6 +88,10 @@ const StyledSelect = styled(Select)`
 const StyledInput = styled(Input)`
     max-width: 200px;
     margin-right: 2rem;
+`;
+
+const StyledSamordningsfradrag = styled(StyledInput)`
+    min-width: 200px;
 `;
 
 const MndKnappWrapper = styled.div`
@@ -177,6 +190,18 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         settInntektsperiodeListe(oppdatertListe);
     };
 
+    const oppdaterInntektslisteMedBeløp = () => {
+        const oppdatertListe = inntektsperiodeListe.map((rad, i) => {
+            const beløpFørSamordning = 20000 - (0.5 * (rad.forventetInntekt || 0)) / 12;
+
+            const stønadsbeløp = beløpFørSamordning - (rad.samordningsfradrag || 0);
+
+            return { ...rad, stønadsbeløp, beløpFørSamordning };
+        });
+
+        settInntektsperiodeListe(oppdatertListe);
+    };
+
     const leggTilVedtaksperiode = () => {
         settVedtaksperiodeListe([...vedtaksperiodeListe, tomVedtaksperiodeRad]);
     };
@@ -188,8 +213,6 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
 
         settVedtaksperiodeListe(nyListe);
     };
-
-    console.log('INNTEKTSPERIODE', inntektsperiodeListe);
 
     const oppdaterVedtakslisteElement = (
         index: number,
@@ -335,10 +358,10 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     {valideringsfeil.vedtaksperioder.map((feil) => (
                         <AlertStripeFeil>{feil}</AlertStripeFeil>
                     ))}
-                    <LeggTilPeriodeKnapp onClick={leggTilVedtaksperiode}>
+                    <KnappMedLuftUnder onClick={leggTilVedtaksperiode}>
                         <AddCircle style={{ marginRight: '1rem' }} />
                         Legg til vedtaksperiode
-                    </LeggTilPeriodeKnapp>
+                    </KnappMedLuftUnder>
                     <Textarea
                         value={periodeBegrunnelse}
                         onChange={(e) => {
@@ -390,8 +413,16 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                         );
                                     }}
                                 />
+
                                 {visSamordning && (
-                                    <StyledInput
+                                    <StyledBeløpMedSamordning
+                                        label={index === 0 ? 'Beløp før samordning' : ''}
+                                        tekst={rad.beløpFørSamordning?.toString() || ''}
+                                    />
+                                )}
+
+                                {visSamordning && (
+                                    <StyledSamordningsfradrag
                                         label={index === 0 && 'Samordningsfradrag (mnd)'}
                                         type="number"
                                         value={rad.samordningsfradrag}
@@ -407,7 +438,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
 
                                 <StyledTekstMedLabel
                                     label={index === 0 ? 'Stønadsbeløp' : ''}
-                                    tekst={stønadsbeløp?.toString() || ''}
+                                    tekst={rad.stønadsbeløp?.toString() || ''}
                                 />
 
                                 <MndKnappWrapper>
@@ -424,10 +455,20 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     {valideringsfeil.inntektsperioder.map((feil) => (
                         <AlertStripeFeil>{feil}</AlertStripeFeil>
                     ))}
-                    <LeggTilPeriodeKnapp onClick={leggTilInntektsperiode}>
-                        <AddCircle style={{ marginRight: '1rem' }} />
-                        Legg til inntektsperiode
-                    </LeggTilPeriodeKnapp>
+                    <Knapper>
+                        <KnappMedLuftUnder onClick={leggTilInntektsperiode}>
+                            <AddCircle style={{ marginRight: '1rem' }} />
+                            Legg til inntektsperiode
+                        </KnappMedLuftUnder>
+                        <KnappMedLuftUnder
+                            onClick={(e) => {
+                                oppdaterInntektslisteMedBeløp();
+                            }}
+                        >
+                            <Calculator style={{ marginRight: '1rem' }} />
+                            Beregn stønadsbeløp
+                        </KnappMedLuftUnder>
+                    </Knapper>
                     <Textarea
                         value={inntektBegrunnelse}
                         onChange={(e) => {
