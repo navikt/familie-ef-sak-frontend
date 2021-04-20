@@ -11,9 +11,7 @@ export interface IVedtak {
 export interface IInntektsperiode {
     årMånedFra?: string;
     forventetInntekt?: number;
-    stønadsbeløp?: number;
     samordningsfradrag?: number;
-    beløpFørSamordning?: number;
 }
 
 export interface IVedtaksperiode {
