@@ -373,7 +373,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     <Inntekt>
                         <Checkbox
                             label="Vis samordning"
-                            onClick={() => {
+                            onChange={() => {
                                 settVisSamordning(!visSamordning);
                             }}
                             checked={visSamordning}

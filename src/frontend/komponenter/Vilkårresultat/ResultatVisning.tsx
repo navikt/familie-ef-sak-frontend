@@ -29,8 +29,8 @@ export const ResultatVisning: React.FC<{
         <Container>
             <Undertittel className="blokk-xs">{tittel}</Undertittel>
             {Object.entries(oppsummeringAvVilkårsresultat).map(
-                ([vilkårsresultat, antallVilkårsresultat]) => (
-                    <FlexDiv flexDirection="row" className="blokk-xxs">
+                ([vilkårsresultat, antallVilkårsresultat], i) => (
+                    <FlexDiv flexDirection="row" className="blokk-xxs" key={i}>
                         <VilkårsresultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
                         <Normaltekst style={{ marginLeft: '0.25rem' }}>
                             {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
