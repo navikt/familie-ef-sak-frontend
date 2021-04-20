@@ -120,7 +120,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
 
     const [visSamordning, settVisSamordning] = useState<boolean>(
         lagretVedtak?.periodeInntekt?.some(
-            (el) => el.samordningsfradag && el.samordningsfradag > 0
+            (el) => el.samordningsfradrag && el.samordningsfradrag > 0
         ) || false
     );
 
