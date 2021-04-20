@@ -12,7 +12,7 @@ export interface IInntektsperiode {
     årMånedFra?: string;
     forventetInntekt?: number;
     stønadsbeløp?: number;
-    samordningsfradag?: number;
+    samordningsfradrag?: number;
     beløpFørSamordning?: number;
 }
 

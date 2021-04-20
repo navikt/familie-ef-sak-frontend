@@ -27,6 +27,7 @@ import MånedÅrPeriode, { PeriodeVariant } from '../../Felleskomponenter/Måned
 import MånedÅrVelger from '../../Felleskomponenter/MånedÅr/MånedÅrVelger';
 import { månederMellom, månedÅrTilDate } from '../../../utils/dato';
 import { validerVedtaksperioder } from './vedtaksvalidering';
+import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -36,7 +37,11 @@ interface Props {
 }
 
 const Inntekt = styled.div`
-    padding: 2rem;
+    padding-bottom: 2rem;
+`;
+
+const StyledTekstMedLabel = styled(TekstMedLabel)`
+    margin-left: 1rem;
 `;
 
 const InntektsperiodeRad = styled.div`
@@ -71,6 +76,11 @@ const StyledSelect = styled(Select)`
     margin-right: 2rem;
 `;
 
+const StyledInput = styled(Input)`
+    max-width: 200px;
+    margin-right: 2rem;
+`;
+
 const MndKnappWrapper = styled.div`
     width: 90px;
     display: flex;
@@ -94,6 +104,12 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         vedtaksperioder: [],
         inntektsperioder: [],
     });
+
+    const [visSamordning, settVisSamordning] = useState<boolean>(
+        lagretVedtak?.periodeInntekt?.some(
+            (el) => el.samordningsfradag && el.samordningsfradag > 0
+        ) || false
+    );
 
     const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>(
         lagretVedtak?.periodeBegrunnelse || ''
@@ -154,6 +170,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
             if (i === index) {
                 return { ...inntektsperiode, [property]: value };
             }
+
             return inntektsperiode;
         });
 
@@ -331,9 +348,20 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     />
                     <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>Inntekt</Element>
                     <Inntekt>
-                        <Checkbox label="Vis samordning" />
+                        <Checkbox
+                            label="Vis samordning"
+                            onClick={() => {
+                                settVisSamordning(!visSamordning);
+                            }}
+                            checked={visSamordning}
+                        />
                     </Inntekt>
                     {inntektsperiodeListe.map((rad, index) => {
+                        const samordningsfradrag = rad.samordningsfradrag || 0;
+                        const forventetInntekt = rad.forventetInntekt || 0;
+
+                        const stønadsbeløp = forventetInntekt - samordningsfradrag;
+
                         return (
                             <InntektsperiodeRad key={index}>
                                 <MånedÅrVelger
@@ -350,27 +378,36 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                                     antallÅrFrem={4}
                                 />
 
-                                <Input
+                                <StyledInput
                                     label={index === 0 && 'Forventet inntekt (år)'}
+                                    type="number"
                                     value={rad.forventetInntekt}
                                     onChange={(e) => {
                                         oppdaterInntektslisteElement(
                                             index,
                                             EInntektsperiodeProperty.forventetInntekt,
-                                            e.target.value
+                                            parseInt(e.target.value, 10)
                                         );
                                     }}
                                 />
-                                <Input
-                                    label={index === 0 && 'Samordningsfradrag (mnd)'}
-                                    value={rad.samordningsfradag}
-                                    onChange={(e) => {
-                                        oppdaterInntektslisteElement(
-                                            index,
-                                            EInntektsperiodeProperty.samordningsfradrag,
-                                            e.target.value
-                                        );
-                                    }}
+                                {visSamordning && (
+                                    <StyledInput
+                                        label={index === 0 && 'Samordningsfradrag (mnd)'}
+                                        type="number"
+                                        value={rad.samordningsfradrag}
+                                        onChange={(e) => {
+                                            oppdaterInntektslisteElement(
+                                                index,
+                                                EInntektsperiodeProperty.samordningsfradrag,
+                                                parseInt(e.target.value, 10)
+                                            );
+                                        }}
+                                    />
+                                )}
+
+                                <StyledTekstMedLabel
+                                    label={index === 0 ? 'Stønadsbeløp' : ''}
+                                    tekst={stønadsbeløp?.toString() || ''}
                                 />
 
                                 <MndKnappWrapper>
