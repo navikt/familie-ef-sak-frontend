@@ -48,33 +48,66 @@ const MndKnappWrapper = styled.div`
     display: flex;
 `;
 
-interface Props {
-    settVisSamordning: (verdi: boolean) => void;
-    visSamordning: boolean;
+export const tomInntektsperiodeRad: IInntektsperiode = {
+    årMånedFra: '',
+};
+
+export interface IInntektsperiodeData {
     inntektsperiodeListe: IInntektsperiode[];
-    oppdaterInntektslisteElement: (
-        index: number,
-        property: EInntektsperiodeProperty,
-        value: string | number | undefined
-    ) => void;
-    fjernInntektsperiode: () => void;
-    valideringsfeil: string[];
-    leggTilInntektsperiode: () => void;
-    settInntektBegrunnelse: (verdi: string) => void;
     inntektBegrunnelse: string;
+    visSamordning: boolean;
+}
+
+interface Props {
+    inntektsperiodeData: IInntektsperiodeData;
+    settInntektsperiodeData: (verdi: IInntektsperiodeData) => void;
+    valideringsfeil: string[];
 }
 
 const InntektsperiodeValg: React.FC<Props> = ({
-    settVisSamordning,
-    visSamordning,
-    inntektsperiodeListe,
-    oppdaterInntektslisteElement,
-    fjernInntektsperiode,
+    inntektsperiodeData,
+    settInntektsperiodeData,
     valideringsfeil,
-    leggTilInntektsperiode,
-    inntektBegrunnelse,
-    settInntektBegrunnelse,
 }) => {
+    const { inntektsperiodeListe, visSamordning, inntektBegrunnelse } = inntektsperiodeData;
+
+    const oppdaterInntektslisteElement = (
+        index: number,
+        property: EInntektsperiodeProperty,
+        value: string | number | undefined
+    ) => {
+        const oppdatertListe = inntektsperiodeListe.map((inntektsperiode, i) => {
+            return i === index ? { ...inntektsperiode, [property]: value } : inntektsperiode;
+        });
+
+        settInntektsperiodeData({
+            ...inntektsperiodeData,
+            inntektsperiodeListe: oppdatertListe,
+        });
+    };
+
+    const leggTilInntektsperiode = () => {
+        settInntektsperiodeData({
+            ...inntektsperiodeData,
+            inntektsperiodeListe: [...inntektsperiodeListe, tomInntektsperiodeRad],
+        });
+    };
+
+    const fjernInntektsperiode = () => {
+        const nyListe = [...inntektsperiodeListe];
+        nyListe.pop();
+        settInntektsperiodeData({
+            ...inntektsperiodeData,
+            inntektsperiodeListe: nyListe,
+        });
+    };
+
+    const settInntektBegrunnelse = (begrunnelse: string) =>
+        settInntektsperiodeData({ ...inntektsperiodeData, inntektBegrunnelse: begrunnelse });
+
+    const settVisSamordning = (samordning: boolean) =>
+        settInntektsperiodeData({ ...inntektsperiodeData, visSamordning: samordning });
+
     return (
         <>
             <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>Inntekt</Element>
@@ -107,7 +140,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                         <StyledInput
                             label={index === 0 && 'Forventet inntekt (år)'}
                             type="number"
-                            value={rad.forventetInntekt}
+                            value={rad.forventetInntekt === undefined ? '' : rad.forventetInntekt}
                             onChange={(e) => {
                                 oppdaterInntektslisteElement(
                                     index,
@@ -121,7 +154,11 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             <StyledSamordningsfradrag
                                 label={index === 0 && 'Samordningsfradrag (mnd)'}
                                 type="number"
-                                value={rad.samordningsfradrag}
+                                value={
+                                    rad.samordningsfradrag === undefined
+                                        ? ''
+                                        : rad.samordningsfradrag
+                                }
                                 onChange={(e) => {
                                     oppdaterInntektslisteElement(
                                         index,

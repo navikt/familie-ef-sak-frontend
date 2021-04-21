@@ -1,5 +1,6 @@
 import { Element } from 'nav-frontend-typografi';
 import {
+    EAktivitet,
     EPeriodeProperty,
     EPeriodetype,
     IVedtaksperiode,
@@ -41,20 +42,21 @@ const MndKnappWrapper = styled.div`
     display: flex;
 `;
 
-interface Props {
+export interface IVedtaksperiodeData {
     vedtaksperiodeListe: IVedtaksperiode[];
     periodeBegrunnelse: string;
-
-    oppdaterVedtakslisteElement: (
-        index: number,
-        periodeType: EPeriodeProperty,
-        verdi: string | undefined
-    ) => void;
-    fjernVedtaksperiode: () => void;
-    valideringsfeil: string[];
-    leggTilVedtaksperiode: () => void;
-    settPeriodeBegrunnelse: (verdi: string) => void;
 }
+
+interface Props {
+    vedtaksperiodeData: IVedtaksperiodeData;
+    settVedtaksperiodeData: (verdi: IVedtaksperiodeData) => void;
+    valideringsfeil: string[];
+}
+
+export const tomVedtaksperiodeRad: IVedtaksperiode = {
+    periodeType: '' as EPeriodetype,
+    aktivitet: '' as EAktivitet,
+};
 
 const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): number | undefined => {
     if (årMånedFra && årMånedTil) {
@@ -64,18 +66,49 @@ const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): n
 };
 
 const VedtaksperiodeValg: React.FC<Props> = ({
-    vedtaksperiodeListe,
-    oppdaterVedtakslisteElement,
-    fjernVedtaksperiode,
+    vedtaksperiodeData,
+    settVedtaksperiodeData,
     valideringsfeil,
-    leggTilVedtaksperiode,
-    periodeBegrunnelse,
-    settPeriodeBegrunnelse,
 }) => {
+    const settPeriodeBegrunnelse = (begrunnelse: string) =>
+        settVedtaksperiodeData({
+            ...vedtaksperiodeData,
+            periodeBegrunnelse: begrunnelse,
+        });
+
+    const leggTilVedtaksperiode = () =>
+        settVedtaksperiodeData({
+            ...vedtaksperiodeData,
+            vedtaksperiodeListe: [...vedtaksperiodeData.vedtaksperiodeListe, tomVedtaksperiodeRad],
+        });
+
+    const fjernVedtaksperiode = () => {
+        const nyListe = [...vedtaksperiodeData.vedtaksperiodeListe];
+        nyListe.pop();
+        settVedtaksperiodeData({
+            ...vedtaksperiodeData,
+            vedtaksperiodeListe: nyListe,
+        });
+    };
+
+    const oppdaterVedtakslisteElement = (
+        index: number,
+        property: EPeriodeProperty,
+        value: string | number | undefined
+    ) => {
+        const oppdatertListe = vedtaksperiodeData.vedtaksperiodeListe.map((vedtaksperiode, i) => {
+            return i === index ? { ...vedtaksperiode, [property]: value } : vedtaksperiode;
+        });
+        settVedtaksperiodeData({
+            ...vedtaksperiodeData,
+            vedtaksperiodeListe: oppdatertListe,
+        });
+    };
+
     return (
         <>
             <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>Vedtaksperiode</Element>
-            {vedtaksperiodeListe.map((element, index) => {
+            {vedtaksperiodeData.vedtaksperiodeListe.map((element, index) => {
                 const { periodeType, aktivitet, årMånedFra, årMånedTil } = element;
                 const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
 
@@ -125,12 +158,13 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             <Element style={{ marginTop: index === 0 ? '2.5rem' : '1rem' }}>
                                 {!!antallMåneder && `${antallMåneder} mnd`}
                             </Element>
-                            {index === vedtaksperiodeListe.length - 1 && index !== 0 && (
-                                <FjernPeriodeKnapp onClick={fjernVedtaksperiode}>
-                                    <Delete />
-                                    <span className="sr-only">Fjern vedtaksperiode</span>
-                                </FjernPeriodeKnapp>
-                            )}
+                            {index === vedtaksperiodeData.vedtaksperiodeListe.length - 1 &&
+                                index !== 0 && (
+                                    <FjernPeriodeKnapp onClick={fjernVedtaksperiode}>
+                                        <Delete />
+                                        <span className="sr-only">Fjern vedtaksperiode</span>
+                                    </FjernPeriodeKnapp>
+                                )}
                         </MndKnappWrapper>
                     </VedtaksperiodeRad>
                 );
@@ -143,7 +177,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 Legg til vedtaksperiode
             </KnappMedLuftUnder>
             <Textarea
-                value={periodeBegrunnelse}
+                value={vedtaksperiodeData.periodeBegrunnelse}
                 onChange={(e) => {
                     settPeriodeBegrunnelse(e.target.value);
                 }}

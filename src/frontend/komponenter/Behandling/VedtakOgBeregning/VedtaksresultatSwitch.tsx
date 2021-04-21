@@ -1,15 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import {
-    EAktivitet,
-    EBehandlingResultat,
-    EInntektsperiodeProperty,
-    EPeriodeProperty,
-    EPeriodetype,
-    IInntektsperiode,
-    IValideringsfeil,
-    IVedtak,
-    IVedtaksperiode,
-} from '../../../typer/vedtak';
+import { EBehandlingResultat, IValideringsfeil, IVedtak } from '../../../typer/vedtak';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
@@ -20,8 +10,14 @@ import { useHistory } from 'react-router-dom';
 import { Calculator } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { validerVedtaksperioder } from './vedtaksvalidering';
-import InntektsperiodeValg from './InntektsperiodeValg';
-import VedtaksperiodeValg from './VedtaksperiodeValg';
+import InntektsperiodeValg, {
+    IInntektsperiodeData,
+    tomInntektsperiodeRad,
+} from './InntektsperiodeValg';
+import VedtaksperiodeValg, {
+    IVedtaksperiodeData,
+    tomVedtaksperiodeRad,
+} from './VedtaksperiodeValg';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -51,33 +47,28 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         inntektsperioder: [],
     });
 
-    const [visSamordning, settVisSamordning] = useState<boolean>(
-        lagretVedtak?.periodeInntekt?.some(
-            (el) => el.samordningsfradrag && el.samordningsfradrag > 0
-        ) || false
-    );
+    const [vedtaksperiodeData, settVedtaksperiodeData] = useState<IVedtaksperiodeData>({
+        periodeBegrunnelse: lagretVedtak?.periodeBegrunnelse || '',
+        vedtaksperiodeListe: lagretVedtak ? lagretVedtak.perioder : [tomVedtaksperiodeRad],
+    });
 
-    const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>(
-        lagretVedtak?.periodeBegrunnelse || ''
-    );
-    const [inntektBegrunnelse, settInntektBegrunnelse] = useState<string>(
-        lagretVedtak?.inntektBegrunnelse || ''
-    );
+    const [inntektsperiodeData, settInntektsperiodeData] = useState<IInntektsperiodeData>({
+        inntektBegrunnelse: lagretVedtak?.inntektBegrunnelse || '',
+        inntektsperiodeListe: lagretVedtak?.periodeInntekt
+            ? lagretVedtak?.periodeInntekt
+            : [tomInntektsperiodeRad],
+        visSamordning:
+            lagretVedtak?.periodeInntekt?.some(
+                (el) => el.samordningsfradrag && el.samordningsfradrag > 0
+            ) || false,
+    });
+
     const [laster, settLaster] = useState<boolean>(false);
-    const tomVedtaksperiodeRad = {
-        periodeType: '' as EPeriodetype,
-        aktivitet: '' as EAktivitet,
-    };
-
-    const tomInntektsperiodeRad: IInntektsperiode = {
-        årMånedFra: '',
-        forventetInntekt: undefined,
-    };
 
     const validerVedtak = (): boolean => {
         const validerteVedtaksperioder = validerVedtaksperioder(
-            inntektsperiodeListe,
-            vedtaksperiodeListe
+            inntektsperiodeData.inntektsperiodeListe,
+            vedtaksperiodeData.vedtaksperiodeListe
         );
         settValideringsfeil(validerteVedtaksperioder);
         return (
@@ -86,73 +77,8 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         );
     };
 
-    const [vedtaksperiodeListe, settVedtaksperiodeListe] = useState<IVedtaksperiode[]>(
-        lagretVedtak ? lagretVedtak.perioder : [tomVedtaksperiodeRad]
-    );
-
-    const [inntektsperiodeListe, settInntektsperiodeListe] = useState<IInntektsperiode[]>(
-        lagretVedtak && lagretVedtak.periodeInntekt
-            ? lagretVedtak.periodeInntekt
-            : [tomInntektsperiodeRad]
-    );
-
-    const leggTilInntektsperiode = () => {
-        settInntektsperiodeListe([...inntektsperiodeListe, tomInntektsperiodeRad]);
-    };
-
-    const fjernInntektsperiode = () => {
-        const nyListe = [...inntektsperiodeListe];
-
-        nyListe.pop();
-
-        settInntektsperiodeListe(nyListe);
-    };
-
-    const oppdaterInntektslisteElement = (
-        index: number,
-        property: EInntektsperiodeProperty,
-        value: string | number | undefined
-    ) => {
-        const oppdatertListe = inntektsperiodeListe.map((inntektsperiode, i) => {
-            if (i === index) {
-                return { ...inntektsperiode, [property]: value };
-            }
-
-            return inntektsperiode;
-        });
-
-        settInntektsperiodeListe(oppdatertListe);
-    };
-
     const beregnPerioder = () => {
         // api-kall og oppdater beregnede perioder
-    };
-
-    const leggTilVedtaksperiode = () => {
-        settVedtaksperiodeListe([...vedtaksperiodeListe, tomVedtaksperiodeRad]);
-    };
-
-    const fjernVedtaksperiode = () => {
-        const nyListe = [...vedtaksperiodeListe];
-
-        nyListe.pop();
-
-        settVedtaksperiodeListe(nyListe);
-    };
-
-    const oppdaterVedtakslisteElement = (
-        index: number,
-        property: EPeriodeProperty,
-        value: string | number | undefined
-    ) => {
-        const oppdatertListe = vedtaksperiodeListe.map((vedtaksperiode, i) => {
-            if (i === index) {
-                return { ...vedtaksperiode, [property]: value };
-            }
-            return vedtaksperiode;
-        });
-
-        settVedtaksperiodeListe(oppdatertListe);
     };
 
     const lagBlankett = () => {
@@ -162,10 +88,10 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
             url: `/familie-ef-sak/api/beregning/${behandlingId}/lagre-vedtak`,
             data: {
                 resultatType: vedtaksresultatType,
-                periodeBegrunnelse,
-                inntektBegrunnelse,
-                perioder: vedtaksperiodeListe,
-                periodeInntekt: inntektsperiodeListe,
+                periodeBegrunnelse: vedtaksperiodeData.periodeBegrunnelse,
+                inntektBegrunnelse: inntektsperiodeData.inntektBegrunnelse,
+                perioder: vedtaksperiodeData.vedtaksperiodeListe,
+                periodeInntekt: inntektsperiodeData.inntektsperiodeListe,
             },
         })
             .then((res: Ressurs<string>) => {
@@ -216,27 +142,13 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
             return (
                 <>
                     <VedtaksperiodeValg
-                        // vedtaksperiodeData={vedtaksperiodeData}
-                        // oppdaterVedtaksperiodeData={oppdaterVedtaksperiodeData}
-                        vedtaksperiodeListe={vedtaksperiodeListe}
-                        leggTilVedtaksperiode={leggTilVedtaksperiode}
-                        fjernVedtaksperiode={fjernVedtaksperiode}
-                        oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
-                        periodeBegrunnelse={periodeBegrunnelse}
-                        settPeriodeBegrunnelse={settPeriodeBegrunnelse}
+                        vedtaksperiodeData={vedtaksperiodeData}
+                        settVedtaksperiodeData={settVedtaksperiodeData}
                         valideringsfeil={valideringsfeil.vedtaksperioder}
                     />
                     <InntektsperiodeValg
-                        // inntektsperiodeData={inntektsperiodeData}
-                        // oppdaterInntektsperiodeData={oppdaterInntekstperiodeData}
-                        inntektsperiodeListe={inntektsperiodeListe}
-                        inntektBegrunnelse={inntektBegrunnelse}
-                        settInntektBegrunnelse={settInntektBegrunnelse}
-                        fjernInntektsperiode={fjernInntektsperiode}
-                        leggTilInntektsperiode={leggTilInntektsperiode}
-                        oppdaterInntektslisteElement={oppdaterInntektslisteElement}
-                        settVisSamordning={settVisSamordning}
-                        visSamordning={visSamordning}
+                        inntektsperiodeData={inntektsperiodeData}
+                        settInntektsperiodeData={settInntektsperiodeData}
                         valideringsfeil={valideringsfeil.inntektsperioder}
                     />
                     <div>
