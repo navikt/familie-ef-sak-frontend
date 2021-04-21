@@ -56,6 +56,7 @@ interface Props {
     resetVurdering: () => void;
     feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
+    redigeringsmodus: Redigeringsmodus;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -63,6 +64,7 @@ const VisVurdering: FC<Props> = ({
     vurdering,
     resetVurdering,
     feilmelding,
+    redigeringsmodus,
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const vurderingerBesvaradeAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
@@ -74,20 +76,26 @@ const VisVurdering: FC<Props> = ({
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
             <Undertittel>Manuelt behandlet</Undertittel>
-            <StyledRedigerOgSlettKnapp>
-                <LenkeKnapp
-                    hidden={vilkårsresultat === Vilkårsresultat.SKAL_IKKE_VURDERES}
-                    onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
-                >
-                    <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
-                    <span>Rediger</span>
-                </LenkeKnapp>
-                <LenkeKnapp onClick={resetVurdering}>
-                    <SlettSøppelkasse width={19} heigth={19} withDefaultStroke={false} />
-                    <span>Slett</span>
-                </LenkeKnapp>
-            </StyledRedigerOgSlettKnapp>
-            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
+            {redigeringsmodus !== Redigeringsmodus.LÅST && (
+                <>
+                    <StyledRedigerOgSlettKnapp>
+                        <LenkeKnapp
+                            hidden={vilkårsresultat === Vilkårsresultat.SKAL_IKKE_VURDERES}
+                            onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
+                        >
+                            <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
+                            <span>Rediger</span>
+                        </LenkeKnapp>
+                        <LenkeKnapp onClick={resetVurdering}>
+                            <SlettSøppelkasse width={19} heigth={19} withDefaultStroke={false} />
+                            <span>Slett</span>
+                        </LenkeKnapp>
+                    </StyledRedigerOgSlettKnapp>
+                    {feilmelding && (
+                        <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>
+                    )}
+                </>
+            )}
 
             <StyledStrek />
 
