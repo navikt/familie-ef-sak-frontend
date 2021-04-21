@@ -375,6 +375,7 @@
         },
         "registergrunnlag": {
           "type": "GIFT",
+          "navn": "Bob Burger",
           "gyldigFraOgMed": "2020-01-01"
         }
       },

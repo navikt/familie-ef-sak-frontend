@@ -1,6 +1,6 @@
 import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
     IVilkår,
     IVurdering,
@@ -136,14 +136,17 @@ export const useHentVilkår = (): {
             }
         });
     };
-    const hentVilkår = (behandlingId: string) => {
-        axiosRequest<IVilkår, void>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
-        }).then((hentetInngangsvilkår: Ressurs<IVilkår>) => {
-            settVilkår(hentetInngangsvilkår);
-        });
-    };
+    const hentVilkår = useCallback(
+        (behandlingId) => {
+            axiosRequest<IVilkår, void>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
+            }).then((hentetInngangsvilkår: Ressurs<IVilkår>) => {
+                settVilkår(hentetInngangsvilkår);
+            });
+        },
+        [axiosRequest]
+    );
 
     return {
         vilkår,

@@ -1,15 +1,17 @@
+import { PeriodeVariant } from '../komponenter/Felleskomponenter/MånedÅr/MånedÅrPeriode';
+
 export interface IVedtak {
     resultatType: EBehandlingResultat;
     periodeBegrunnelse: string;
     inntektBegrunnelse: string;
-    perioder: IPeriode[];
+    perioder: IVedtaksperiode[];
 }
 
-export interface IPeriode {
+export interface IVedtaksperiode {
     periodeType: EPeriodetype;
     aktivitet: EAktivitet;
-    datoFra: string;
-    datoTil: string;
+    årMånedFra?: string;
+    årMånedTil?: string;
 }
 
 export enum EBehandlingResultat {
@@ -27,9 +29,18 @@ export enum EPeriodetype {
 export enum EPeriodeProperty {
     periodeType = 'periodeType',
     aktivitet = 'aktivitet',
-    datoFra = 'datoFra',
-    datoTil = 'datoTil',
+    årMånedFra = 'årMånedFra',
+    årMånedTil = 'årMånedTil',
 }
+
+export const periodeVariantTilProperty = (periodeVariant: PeriodeVariant): EPeriodeProperty => {
+    switch (periodeVariant) {
+        case PeriodeVariant.ÅR_MÅNED_FRA:
+            return EPeriodeProperty.årMånedFra;
+        case PeriodeVariant.ÅR_MÅNED_TIL:
+            return EPeriodeProperty.årMånedTil;
+    }
+};
 
 export enum EAktivitet {
     IKKE_AKTIVITETSPLIKT = 'IKKE_AKTIVITETSPLIKT',
