@@ -21,7 +21,6 @@ export interface IPersonopplysninger {
     innflyttingTilNorge: IInnflyttingTilNorge[];
     utflyttingFraNorge: IUtflyttingFraNorge[];
     oppholdstillatelse: IOppholdstillatelse[];
-    navKontor?: INavKontor;
 }
 
 export interface IBarn {
