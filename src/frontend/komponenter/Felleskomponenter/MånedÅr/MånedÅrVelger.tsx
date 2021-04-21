@@ -47,6 +47,8 @@ const MånedÅrVelger: React.FC<Props> = ({
         } else {
             onEndret(undefined);
         }
+
+        // eslint-disable-next-line
     }, [år, måned]);
 
     return (

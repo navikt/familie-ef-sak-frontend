@@ -21,6 +21,7 @@ const Beboere: React.FC = () => {
         if (behandling.status === RessursStatus.SUKSESS) {
             sokPerson(behandling.data.id);
         }
+        // eslint-disable-next-line
     }, [behandling]);
 
     const sokPerson = (behandlingId: string) => {
