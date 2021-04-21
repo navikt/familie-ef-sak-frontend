@@ -17,7 +17,6 @@ export enum Redigeringsmodus {
     REDIGERING = 'REDIGERING',
     VISNING = 'VISNING',
     IKKE_PÅSTARTET = 'IKKE_PÅSTARTET',
-    LÅST = 'LÅST',
 }
 
 interface Props {
@@ -34,12 +33,8 @@ interface Props {
 
 function utledRedigeringsmodus(
     feilmelding: string | undefined,
-    vurdering: IVurdering,
-    behandlingErRedigerbar: boolean
+    vurdering: IVurdering
 ): Redigeringsmodus {
-    if (!behandlingErRedigerbar) {
-        return Redigeringsmodus.LÅST;
-    }
     if (feilmelding !== undefined) {
         return Redigeringsmodus.REDIGERING;
     }
@@ -56,12 +51,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
     lagreVurdering,
     feilmelding,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
-        utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
+        utledRedigeringsmodus(feilmelding, vurdering)
     );
-
-    const { hentBehandling } = useBehandling();
 
     const ikkeVurder = () => {
         ikkeVurderVilkår({
@@ -112,14 +105,13 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 />
             );
         case Redigeringsmodus.VISNING:
-        case Redigeringsmodus.LÅST:
             return (
                 <VisVurdering
                     vurdering={vurdering}
                     settRedigeringsmodus={settRedigeringsmodus}
                     resetVurdering={resetVurdering}
                     feilmelding={feilmelding}
-                    redigeringsmodus={redigeringsmodus}
+                    behandlingErRedigerbar={behandlingErRedigerbar}
                 />
             );
     }
