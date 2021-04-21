@@ -2,15 +2,11 @@ import { Element } from 'nav-frontend-typografi';
 import { EInntektsperiodeProperty, IInntektsperiode } from '../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Checkbox, Input, Textarea } from 'nav-frontend-skjema';
+import { Input, Textarea } from 'nav-frontend-skjema';
 import MånedÅrVelger from '../../Felleskomponenter/MånedÅr/MånedÅrVelger';
 import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
-
-const Inntekt = styled.div`
-    padding-bottom: 2rem;
-`;
 
 const Knapper = styled.div`
     max-width: 500px;
@@ -55,7 +51,6 @@ export const tomInntektsperiodeRad: IInntektsperiode = {
 export interface IInntektsperiodeData {
     inntektsperiodeListe: IInntektsperiode[];
     inntektBegrunnelse: string;
-    visSamordning: boolean;
 }
 
 interface Props {
@@ -69,7 +64,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     settInntektsperiodeData,
     valideringsfeil,
 }) => {
-    const { inntektsperiodeListe, visSamordning, inntektBegrunnelse } = inntektsperiodeData;
+    const { inntektsperiodeListe, inntektBegrunnelse } = inntektsperiodeData;
 
     const oppdaterInntektslisteElement = (
         index: number,
@@ -105,21 +100,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
     const settInntektBegrunnelse = (begrunnelse: string) =>
         settInntektsperiodeData({ ...inntektsperiodeData, inntektBegrunnelse: begrunnelse });
 
-    const settVisSamordning = (samordning: boolean) =>
-        settInntektsperiodeData({ ...inntektsperiodeData, visSamordning: samordning });
-
     return (
         <>
             <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>Inntekt</Element>
-            <Inntekt>
-                <Checkbox
-                    label="Vis samordning"
-                    onChange={() => {
-                        settVisSamordning(!visSamordning);
-                    }}
-                    checked={visSamordning}
-                />
-            </Inntekt>
             {inntektsperiodeListe.map((rad, index) => {
                 return (
                     <InntektsperiodeRad key={index}>
@@ -150,24 +133,20 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             }}
                         />
 
-                        {visSamordning && (
-                            <StyledSamordningsfradrag
-                                label={index === 0 && 'Samordningsfradrag (mnd)'}
-                                type="number"
-                                value={
-                                    rad.samordningsfradrag === undefined
-                                        ? ''
-                                        : rad.samordningsfradrag
-                                }
-                                onChange={(e) => {
-                                    oppdaterInntektslisteElement(
-                                        index,
-                                        EInntektsperiodeProperty.samordningsfradrag,
-                                        parseInt(e.target.value, 10)
-                                    );
-                                }}
-                            />
-                        )}
+                        <StyledSamordningsfradrag
+                            label={index === 0 && 'Samordningsfradrag (mnd)'}
+                            type="number"
+                            value={
+                                rad.samordningsfradrag === undefined ? '' : rad.samordningsfradrag
+                            }
+                            onChange={(e) => {
+                                oppdaterInntektslisteElement(
+                                    index,
+                                    EInntektsperiodeProperty.samordningsfradrag,
+                                    parseInt(e.target.value, 10)
+                                );
+                            }}
+                        />
 
                         <MndKnappWrapper>
                             {index === inntektsperiodeListe.length - 1 && index !== 0 && (

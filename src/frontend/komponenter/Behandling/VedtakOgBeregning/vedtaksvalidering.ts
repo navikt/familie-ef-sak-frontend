@@ -10,7 +10,7 @@ export const validerVedtaksperioder = (
         inntektsperioder: [],
     };
 
-    vedtaksperiodeListe.reduce((forrige: IVedtaksperiode, vedtaksperiode) => {
+    vedtaksperiodeListe.forEach((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil } = vedtaksperiode;
         if (!årMånedTil || !årMånedFra) {
             feil.vedtaksperioder.push('Mangelfull utfylling av vedtaksperiode');
@@ -21,6 +21,7 @@ export const validerVedtaksperioder = (
                 `Ugyldig periode - fra (${årMånedFra})  må være før til (${årMånedTil})`
             );
         }
+        const forrige = index > 0 && vedtaksperiodeListe[index - 1];
         if (forrige && forrige.årMånedTil) {
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 feil.vedtaksperioder.push(
@@ -31,11 +32,11 @@ export const validerVedtaksperioder = (
         return vedtaksperiode;
     });
 
-    inntektsperiodeListe.reduce((forrige: IInntektsperiode, inntektsperiode, index) => {
+    inntektsperiodeListe.forEach((inntektsperiode, index) => {
         const årMånedFra = inntektsperiode.årMånedFra;
         if (!årMånedFra) {
             feil.inntektsperioder.push('Mangelfull utfylling av inntektsperiode');
-            return inntektsperiode;
+            return;
         }
         const førsteVedtaksperiode = vedtaksperiodeListe[0];
         if (
@@ -46,8 +47,9 @@ export const validerVedtaksperioder = (
         ) {
             feil.inntektsperioder.push(`Første inntektsperiode må være lik vedtaksperiode`);
         }
+        const forrige = index > 0 && inntektsperiodeListe[index - 1];
         if (forrige && forrige.årMånedFra) {
-            if (!erMånedÅrEtter(årMånedFra, forrige.årMånedFra)) {
+            if (!erMånedÅrEtter(forrige.årMånedFra, årMånedFra)) {
                 feil.inntektsperioder.push(
                     `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`
                 );

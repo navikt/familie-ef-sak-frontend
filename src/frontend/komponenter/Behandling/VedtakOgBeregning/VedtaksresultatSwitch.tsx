@@ -54,13 +54,9 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
 
     const [inntektsperiodeData, settInntektsperiodeData] = useState<IInntektsperiodeData>({
         inntektBegrunnelse: lagretVedtak?.inntektBegrunnelse || '',
-        inntektsperiodeListe: lagretVedtak?.periodeInntekt
-            ? lagretVedtak?.periodeInntekt
+        inntektsperiodeListe: lagretVedtak?.inntekter
+            ? lagretVedtak?.inntekter
             : [tomInntektsperiodeRad],
-        visSamordning:
-            lagretVedtak?.periodeInntekt?.some(
-                (el) => el.samordningsfradrag && el.samordningsfradrag > 0
-            ) || false,
     });
 
     const [laster, settLaster] = useState<boolean>(false);
@@ -91,7 +87,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                 periodeBegrunnelse: vedtaksperiodeData.periodeBegrunnelse,
                 inntektBegrunnelse: inntektsperiodeData.inntektBegrunnelse,
                 perioder: vedtaksperiodeData.vedtaksperiodeListe,
-                periodeInntekt: inntektsperiodeData.inntektsperiodeListe,
+                inntekter: inntektsperiodeData.inntektsperiodeListe,
             },
         })
             .then((res: Ressurs<string>) => {

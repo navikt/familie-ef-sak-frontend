@@ -5,7 +5,7 @@ export interface IVedtak {
     periodeBegrunnelse: string;
     inntektBegrunnelse: string;
     perioder: IVedtaksperiode[];
-    periodeInntekt: IInntektsperiode[];
+    inntekter: IInntektsperiode[];
 }
 
 export interface IInntektsperiode {
