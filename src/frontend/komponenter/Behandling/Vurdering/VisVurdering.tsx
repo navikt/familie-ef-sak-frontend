@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import RedigerBlyant from '../../../ikoner/RedigerBlyant';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
@@ -8,15 +7,16 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
-import { delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst } from './tekster';
+import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import LenkeKnapp from '../../Felleskomponenter/LenkeKnapp';
-import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårsresultatIkon';
+import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { resultatTilTekst } from '../../Vilkårresultat/ResultatVisning';
 
 const StyledVurdering = styled.div`
     display: grid;
     grid-template-columns: repeat(3, max-content);
     grid-template-rows: repeat(2, max-content);
-    grid-gap: 1rem;
+    grid-gap: 0.25rem 1rem;
 `;
 const StyledRedigerOgSlettKnapp = styled.div`
     min-width: auto;
@@ -75,7 +75,9 @@ const VisVurdering: FC<Props> = ({
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
-            <Undertittel>Manuelt behandlet</Undertittel>
+            <StyledIkonOgTittel>
+                <Undertittel>{`Vilkår ${resultatTilTekst[vurdering.resultat]}`}</Undertittel>
+            </StyledIkonOgTittel>
             {redigeringsmodus !== Redigeringsmodus.LÅST && (
                 <>
                     <StyledRedigerOgSlettKnapp>
@@ -100,11 +102,6 @@ const VisVurdering: FC<Props> = ({
             <StyledStrek />
 
             <StyledVilkår>
-                <StyledIkonOgTittel>
-                    <VilkårsresultatIkon vilkårsresultat={vilkårsresultat} heigth={21} width={21} />
-                    <Element>{vilkårTypeTilTekst[vurdering.vilkårType]}</Element>
-                </StyledIkonOgTittel>
-
                 {vurderingerBesvaradeAvSaksbehandler.map((delvilkårsvurdering) =>
                     delvilkårsvurdering.vurderinger.map((vurdering) => (
                         <React.Fragment key={vurdering.regelId}>
