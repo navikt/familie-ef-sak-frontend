@@ -31,7 +31,7 @@ const StyledStrek = styled.span`
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
-    max-width: 30rem;
+    width: 30rem;
     .typo-normal {
         margin-top: 0.25rem;
         margin-bottom: 1.5rem;
