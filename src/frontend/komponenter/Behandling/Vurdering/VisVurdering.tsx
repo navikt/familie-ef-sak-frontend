@@ -7,9 +7,10 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import SlettSøppelkasse from '../../../ikoner/SlettSøppelkasse';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
-import { delvilkårTypeTilTekst, svarTypeTilTekst, vilkårTypeTilTekst } from './tekster';
+import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import LenkeKnapp from '../../Felleskomponenter/LenkeKnapp';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { resultatTilTekst } from '../../Vilkårresultat/ResultatVisning';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -30,7 +31,7 @@ const StyledStrek = styled.span`
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
-    max-width: 40rem;
+    max-width: 30rem;
     .typo-normal {
         margin-top: 0.25rem;
         margin-bottom: 1.5rem;
@@ -73,7 +74,7 @@ const VisVurdering: FC<Props> = ({
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
             <StyledIkonOgTittel>
-                <Undertittel>{vilkårTypeTilTekst[vurdering.vilkårType]}</Undertittel>
+                <Undertittel>{`Vilkår ${resultatTilTekst[vurdering.resultat]}`}</Undertittel>
             </StyledIkonOgTittel>
             <StyledRedigerOgSlettKnapp>
                 <LenkeKnapp
