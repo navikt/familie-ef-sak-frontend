@@ -12,7 +12,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import NavKontor from './NavKontor';
 
 const Personopplysninger: React.FC = () => {
-    const { personopplysningerResponse } = useBehandling();
+    const { personopplysningerResponse, navKontorResponse } = useBehandling();
 
     return (
         <DataViewer response={{ personopplysningerResponse }}>
@@ -27,7 +27,6 @@ const Personopplysninger: React.FC = () => {
                     utflyttingFraNorge,
                     fullmakt,
                     oppholdstillatelse,
-                    navKontor,
                 } = personopplysningerResponse;
                 return (
                     <>
@@ -44,7 +43,12 @@ const Personopplysninger: React.FC = () => {
                             utvandringer={utflyttingFraNorge}
                         />
                         <Fullmakter fullmakter={fullmakt} />
-                        <NavKontor navKontor={navKontor} />
+
+                        <DataViewer response={{ navKontorResponse }}>
+                            {({ navKontorResponse }) => {
+                                return <NavKontor navKontor={navKontorResponse} />;
+                            }}
+                        </DataViewer>
                     </>
                 );
             }}

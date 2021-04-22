@@ -18,7 +18,7 @@ export const useHentNavKontor = (
         settNavKontorResponse(byggHenterRessurs());
         axiosRequest<INavKontor, { behandlingId: string }>({
             method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/geografisk-tilknytning/behandling/${behandlingId}`,
+            url: `/familie-ef-sak/api/personopplysninger/nav-kontor/behandling/${behandlingId}`,
         }).then((res: Ressurs<INavKontor>) => settNavKontorResponse(res));
     }, [behandlingId]);
 
