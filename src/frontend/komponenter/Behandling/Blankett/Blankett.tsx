@@ -4,7 +4,7 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import { useBehandling } from '../../../context/BehandlingContext';
-import { BehandlingStatus } from '../../../typer/behandlingstatus';
+import { erBehandlingRedigerbar } from '../../../typer/behandlingstatus';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 
@@ -36,9 +36,6 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
         });
     };
 
-    const erBehandlingÅpen = (status: BehandlingStatus): boolean =>
-        [BehandlingStatus.OPPRETTET, BehandlingStatus.UTREDES].includes(status);
-
     const harHentetBlankett = (): boolean => blankettRessurs.status === RessursStatus.SUKSESS;
 
     return (
@@ -49,7 +46,7 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
                         <StyledBlankett>
                             <PdfVisning pdfFilInnhold={blankettRessurs}></PdfVisning>
                         </StyledBlankett>
-                        {erBehandlingÅpen(behandling.status) && harHentetBlankett() && (
+                        {erBehandlingRedigerbar(behandling) && harHentetBlankett() && (
                             <SendTilBeslutterFooter behandlingId={behandlingId} />
                         )}
                     </>
