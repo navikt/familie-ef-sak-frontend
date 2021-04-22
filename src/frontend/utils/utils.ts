@@ -67,5 +67,12 @@ export const slåSammenTekst = (...tekstElementer: (string | undefined)[]): stri
 export const harVerdi = (str: string | undefined | null): boolean =>
     str !== undefined && str !== '' && str !== null;
 
+export const tilTallverdi = (verdi: number | string | undefined): number | string | undefined => {
+    if (verdi === '' || verdi === undefined || verdi === null) {
+        return verdi;
+    }
+    return Number(verdi);
+};
+
 export const range = (start: number, end: number): number[] =>
     Array.from({ length: end - start }, (_, k) => k + start);

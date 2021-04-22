@@ -2,11 +2,13 @@ import { Element } from 'nav-frontend-typografi';
 import { EInntektsperiodeProperty, IInntektsperiode } from '../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Input, Textarea } from 'nav-frontend-skjema';
+import { Textarea } from 'nav-frontend-skjema';
 import MånedÅrVelger from '../../Felleskomponenter/MånedÅr/MånedÅrVelger';
 import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
+import InputMedTusenSkille from '../../Felleskomponenter/InputMedTusenskille';
+import { tilTallverdi } from '../../../utils/utils';
 
 const Knapper = styled.div`
     max-width: 500px;
@@ -30,7 +32,7 @@ const FjernPeriodeKnapp = styled(Flatknapp)`
     margin-left: 1rem;
 `;
 
-const StyledInput = styled(Input)`
+const StyledInput = styled(InputMedTusenSkille)`
     max-width: 200px;
     margin-right: 2rem;
 `;
@@ -128,7 +130,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 oppdaterInntektslisteElement(
                                     index,
                                     EInntektsperiodeProperty.forventetInntekt,
-                                    parseInt(e.target.value, 10)
+                                    tilTallverdi(e.target.value)
                                 );
                             }}
                         />
@@ -143,7 +145,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 oppdaterInntektslisteElement(
                                     index,
                                     EInntektsperiodeProperty.samordningsfradrag,
-                                    parseInt(e.target.value, 10)
+                                    tilTallverdi(e.target.value)
                                 );
                             }}
                         />
