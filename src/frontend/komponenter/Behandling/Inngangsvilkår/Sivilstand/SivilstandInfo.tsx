@@ -19,8 +19,8 @@ const SivilstandInfo: FC<Props> = ({ sivilstand }) => {
                 <Normaltekst>Sivilstatus</Normaltekst>
                 <Normaltekst>
                     {sivilstandTilTekst[registergrunnlag.type]}
-                    {registergrunnlag.navn && ' med ' + registergrunnlag.navn}
-                    {registergrunnlag.gyldigFraOgMed && ' - ' + registergrunnlag.gyldigFraOgMed}
+                    {registergrunnlag.navn && ` - ${registergrunnlag.navn}`}
+                    {registergrunnlag.gyldigFraOgMed && ` (${registergrunnlag.gyldigFraOgMed})`}
                 </Normaltekst>
 
                 <Søknadsinformasjon
