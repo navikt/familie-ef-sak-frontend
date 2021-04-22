@@ -65,7 +65,7 @@
         "behandlesAvApplikasjon": "familie-ef-sak-blankett"
       },
       {
-        "id": 45058,
+        "id": 45057,
         "journalpostId": "12345",
         "identer": [
           {
@@ -80,7 +80,7 @@
         "tildeltEnhetsnr": "4833",
         "saksreferanse": "1024910",
         "aktoerId": "2926951485035",
-        "beskrivelse": "Vurdert og satt automatisk\n\t- Mor har ikke lovlig opphold - EØS borger. Mor er ikke registrert med arbeidsforhold. Det er ikke registrert medforelder på barnet. Mor har ikke hatt bostedsadresse i Norge i mer enn fem år.\n----- Opprettet av familie-ba-sak 2020-09-24T21:04:24.623183 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024910",
+        "beskrivelse": "Journalført i ny løsning",
         "tema": "ENF",
         "behandlingstema": "ab0071",
         "oppgavetype": "BEH_SAK",
@@ -96,7 +96,7 @@
         "behandlesAvApplikasjon": "familie-ef-sak"
       },
       {
-        "id": 45057,
+        "id": 45058,
         "journalpostId": "12345",
         "identer": [
           {
