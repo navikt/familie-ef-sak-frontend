@@ -116,6 +116,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     <VedtaksperiodeRad key={index}>
                         <StyledSelect
                             label={index === 0 && 'Periodetype'}
+                            aria-label={index !== 0 ? 'Periodetype' : ''}
                             value={periodeType}
                             onChange={(e) => {
                                 oppdaterVedtakslisteElement(

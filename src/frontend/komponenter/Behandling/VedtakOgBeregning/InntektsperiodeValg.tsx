@@ -126,6 +126,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
 
                         <StyledInput
                             label={index === 0 && 'Forventet inntekt (år)'}
+                            aria-label={index !== 0 ? 'Forventet inntekt (år)' : ''}
                             type="number"
                             value={rad.forventetInntekt === undefined ? '' : rad.forventetInntekt}
                             onChange={(e) => {
@@ -139,6 +140,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
 
                         <StyledSamordningsfradrag
                             label={index === 0 && 'Samordningsfradrag (mnd)'}
+                            aria-label={index !== 0 ? 'Samordningsfradrag (mnd)' : ''}
                             type="number"
                             value={
                                 rad.samordningsfradrag === undefined ? '' : rad.samordningsfradrag
