@@ -63,6 +63,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
     const kanStarteBlankettBehandling =
         oppgave.behandlesAvApplikasjon === 'familie-ef-sak-blankett';
 
+    const måHåndteresIGosys =
+        !måBehandlesIEFSak(oppgave) && !kanJournalføres(oppgave) && !kanStarteBlankettBehandling;
+
     return (
         <>
             <tr>
@@ -92,6 +95,11 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                         <Flatknapp onClick={gåTilBehandleSakOppgave} disabled={laster}>
                             Start Behandling
                         </Flatknapp>
+                    )}
+                    {måHåndteresIGosys && (
+                        <Normaltekst style={{ marginLeft: '2.5rem' }}>
+                            Må håndteres i Gosys
+                        </Normaltekst>
                     )}
                 </td>
             </tr>
