@@ -8,7 +8,7 @@ import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
 import InputMedTusenSkille from '../../Felleskomponenter/InputMedTusenskille';
-import { tilTallverdi } from '../../../utils/utils';
+import { harTallverdi, tilTallverdi } from '../../../utils/utils';
 
 const Knapper = styled.div`
     max-width: 500px;
@@ -128,7 +128,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             label={index === 0 && 'Forventet inntekt (år)'}
                             aria-label={index !== 0 ? 'Forventet inntekt (år)' : ''}
                             type="number"
-                            value={rad.forventetInntekt === undefined ? '' : rad.forventetInntekt}
+                            value={harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''}
                             onChange={(e) => {
                                 oppdaterInntektslisteElement(
                                     index,
@@ -143,7 +143,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             aria-label={index !== 0 ? 'Samordningsfradrag (mnd)' : ''}
                             type="number"
                             value={
-                                rad.samordningsfradrag === undefined ? '' : rad.samordningsfradrag
+                                harTallverdi(rad.samordningsfradrag) ? rad.samordningsfradrag : ''
                             }
                             onChange={(e) => {
                                 oppdaterInntektslisteElement(

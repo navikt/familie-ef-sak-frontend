@@ -42,7 +42,9 @@ const MånedVelger: React.FC<MånedProps> = ({
         >
             <option value="">Måned</option>
             {månedValg.map((mnd) => (
-                <option value={mnd.mndNr}>{mnd.verdi}</option>
+                <option value={mnd.mndNr} key={mnd.mndNr}>
+                    {mnd.verdi}
+                </option>
             ))}
         </FamilieSelect>
     );
