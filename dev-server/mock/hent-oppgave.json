@@ -31,7 +31,7 @@
         "prioritet": "NORM",
         "status": "OPPRETTET",
         "metadata": {},
-        "kanStarteBlankettbehandling": false
+        "behandlesAvApplikasjon": "familie-ef-sak-førstegangsbehandling"
       },
       {
         "id": 45059,
@@ -62,7 +62,7 @@
         "prioritet": "NORM",
         "status": "OPPRETTET",
         "metadata": {},
-        "kanStarteBlankettbehandling": false
+        "behandlesAvApplikasjon": "familie-ef-sak-blankett"
       },
       {
         "id": 45058,
@@ -93,7 +93,38 @@
         "prioritet": "NORM",
         "status": "OPPRETTET",
         "metadata": {},
-        "kanStarteBlankettbehandling": true
+        "behandlesAvApplikasjon": "familie-ef-sak"
+      },
+      {
+        "id": 45057,
+        "journalpostId": "12345",
+        "identer": [
+          {
+            "ident": "11111111111",
+            "gruppe": "FOLKEREGISTERIDENT"
+          },
+          {
+            "ident": "2195875492274",
+            "gruppe": "AKTOERID"
+          }
+        ],
+        "tildeltEnhetsnr": "4833",
+        "saksreferanse": "1024923",
+        "aktoerId": "2195875492274",
+        "beskrivelse": "Det har gått mindre enn fem måneder siden forrige barn ble født.\n----- Opprettet av familie-ba-sak 2020-09-24T21:09:24.913845 --- \nhttps://barnetrygd.nais.adeo.no/fagsak/1024923  ",
+        "tema": "ENF",
+        "behandlingstema": "ab0071",
+        "oppgavetype": "JFR",
+        "versjon": 1,
+        "fristFerdigstillelse": "2020-09-24",
+        "aktivDato": "2020-09-24",
+        "opprettetTidspunkt": "2020-09-24T21:09:24.96+02:00",
+        "opprettetAv": "srvfamilie-ks-opps",
+        "mappeId": "100000035",
+        "prioritet": "NORM",
+        "status": "OPPRETTET",
+        "metadata": {},
+        "behandlesAvApplikasjon": ""
       }
     ]
   },
