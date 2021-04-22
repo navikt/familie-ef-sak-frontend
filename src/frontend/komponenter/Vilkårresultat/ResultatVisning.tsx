@@ -10,7 +10,7 @@ const Container = styled.div`
     padding: 2rem 1rem;
 `;
 
-const resultatTilTekst: Record<string, string> = {
+export const resultatTilTekst: Record<string, string> = {
     IKKE_AKTUELL: 'ikke aktuell',
     IKKE_OPPFYLT: 'ikke oppfylt',
     IKKE_TATT_STILLING_TIL: 'ikke tatt stilling til',
