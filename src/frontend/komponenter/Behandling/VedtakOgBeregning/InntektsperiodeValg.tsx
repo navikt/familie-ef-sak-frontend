@@ -109,6 +109,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 return (
                     <InntektsperiodeRad key={index}>
                         <MånedÅrVelger
+                            key={rad.endretKey || null}
+                            disabled={index === 0}
                             label={index === 0 ? 'Fra' : ''}
                             onEndret={(e) => {
                                 oppdaterInntektslisteElement(

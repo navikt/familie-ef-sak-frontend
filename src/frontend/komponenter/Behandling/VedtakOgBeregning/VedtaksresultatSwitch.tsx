@@ -18,6 +18,7 @@ import VedtaksperiodeValg, {
     IVedtaksperiodeData,
     tomVedtaksperiodeRad,
 } from './VedtaksperiodeValg';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
@@ -58,6 +59,30 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
             ? lagretVedtak?.inntekter
             : [tomInntektsperiodeRad],
     });
+
+    const oppdaterVedtaksperiodeData = (verdi: IVedtaksperiodeData) => {
+        const førsteVedtaksperiode = verdi.vedtaksperiodeListe[0];
+        const førsteInntektsperiode = inntektsperiodeData.inntektsperiodeListe[0];
+        settVedtaksperiodeData(verdi);
+        if (førsteVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra) {
+            settÅrMånedFraPåFørsteInntektsperiode(førsteVedtaksperiode.årMånedFra);
+        }
+    };
+
+    const settÅrMånedFraPåFørsteInntektsperiode = (årMånedFra: string | undefined) => {
+        settInntektsperiodeData({
+            ...inntektsperiodeData,
+            inntektsperiodeListe: inntektsperiodeData.inntektsperiodeListe.map((periode, index) => {
+                return index === 0
+                    ? {
+                          ...periode,
+                          årMånedFra: årMånedFra,
+                          endretKey: uuidv4(),
+                      }
+                    : periode;
+            }),
+        });
+    };
 
     const [laster, settLaster] = useState<boolean>(false);
 
@@ -139,7 +164,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                 <>
                     <VedtaksperiodeValg
                         vedtaksperiodeData={vedtaksperiodeData}
-                        settVedtaksperiodeData={settVedtaksperiodeData}
+                        settVedtaksperiodeData={oppdaterVedtaksperiodeData}
                         valideringsfeil={valideringsfeil.vedtaksperioder}
                     />
                     <InntektsperiodeValg

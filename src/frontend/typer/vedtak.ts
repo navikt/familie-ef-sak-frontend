@@ -12,6 +12,7 @@ export interface IInntektsperiode {
     årMånedFra?: string;
     forventetInntekt?: number;
     samordningsfradrag?: number;
+    endretKey?: string; // intern for re-rendring
 }
 
 export interface IVedtaksperiode {

@@ -1,9 +1,23 @@
 import React, { useState } from 'react';
 import { Input, InputProps } from 'nav-frontend-skjema';
+import styled from 'styled-components';
 
 interface TusenseparatorProps extends InputProps {
     value: number | string | undefined;
 }
+
+const NummerInputUtenSpinner = styled(Input)`
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type='number'] {
+        -moz-appearance: textfield;
+    }
+`;
 
 const InputMedTusenSkille: React.FC<TusenseparatorProps> = (props) => {
     const [harFokus, settHarFokus] = useState(false);
@@ -16,7 +30,7 @@ const InputMedTusenSkille: React.FC<TusenseparatorProps> = (props) => {
     };
     if (!harFokus) {
         return (
-            <Input
+            <NummerInputUtenSpinner
                 {...props}
                 type="text"
                 value={formaterVerdi(props.value)}
@@ -24,7 +38,7 @@ const InputMedTusenSkille: React.FC<TusenseparatorProps> = (props) => {
             />
         );
     }
-    return <Input {...props} onBlur={() => settHarFokus(false)} />;
+    return <NummerInputUtenSpinner {...props} onBlur={() => settHarFokus(false)} />;
 };
 
 export default InputMedTusenSkille;
