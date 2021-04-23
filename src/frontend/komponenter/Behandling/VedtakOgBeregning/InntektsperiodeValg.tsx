@@ -1,5 +1,5 @@
 import { Element } from 'nav-frontend-typografi';
-import { EInntektsperiodeProperty, IInntektsperiode } from '../../../typer/vedtak';
+import { EInntektsperiodeProperty, IBeløpsperiode, IInntektsperiode } from '../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Textarea } from 'nav-frontend-skjema';
@@ -9,6 +9,8 @@ import React from 'react';
 import styled from 'styled-components';
 import InputMedTusenSkille from '../../Felleskomponenter/InputMedTusenskille';
 import { harTallverdi, tilTallverdi } from '../../../utils/utils';
+import Utregningstabell from './Utregningstabell';
+import { Ressurs } from '../../../typer/ressurs';
 
 const Knapper = styled.div`
     max-width: 500px;
@@ -59,12 +61,14 @@ interface Props {
     inntektsperiodeData: IInntektsperiodeData;
     settInntektsperiodeData: (verdi: IInntektsperiodeData) => void;
     valideringsfeil: string[];
+    beregnetStønad: Ressurs<IBeløpsperiode[]>;
 }
 
 const InntektsperiodeValg: React.FC<Props> = ({
     inntektsperiodeData,
     settInntektsperiodeData,
     valideringsfeil,
+    beregnetStønad,
 }) => {
     const { inntektsperiodeListe, inntektBegrunnelse } = inntektsperiodeData;
 
@@ -174,6 +178,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     Legg til inntektsperiode
                 </KnappMedLuftUnder>
             </Knapper>
+            <Utregningstabell beregnetStønad={beregnetStønad} />
             <Textarea
                 value={inntektBegrunnelse}
                 onChange={(e) => {

@@ -24,7 +24,7 @@ export interface IBeløpsperiode {
 
 export interface IBeregningsgrunnlag {
     inntekt: number;
-    samordningsfradrag: number;
+    samordningsfradrag?: number;
     avkortningPerMåned: number;
     fullOvergangsStønadPerMåned: number;
     grunnbeløp: number;
@@ -41,6 +41,15 @@ export type IBeregningsrequest = {
     vedtaksperioder: IVedtaksperiode[];
     inntekt: IInntektsperiode[];
 };
+
+export interface IBeløpsperiode {
+    fraOgMedDato: string;
+    tilDato: string;
+    beløp: number;
+    beregningsgrunnlag: IBeregningsgrunnlag;
+    beløpFørSamordning: number;
+    inntektsreduksjon: number;
+}
 
 export interface IValideringsfeil {
     vedtaksperioder: string[];

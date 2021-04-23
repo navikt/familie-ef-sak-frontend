@@ -1,4 +1,5 @@
 import { format, parseISO } from 'date-fns';
+import { harTallverdi } from './utils';
 
 export const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
 export const datoTidFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -26,3 +27,6 @@ export const formaterFødselsnummer = (fødselsnummer: string): string =>
 
 export const formaterNullableFødsesnummer = (fødselsnummer?: string): string | undefined =>
     fødselsnummer && formaterFødselsnummer(fødselsnummer);
+
+export const formaterTallMedTusenSkille = (verdi?: number): string =>
+    harTallverdi(verdi) ? Number(verdi).toLocaleString('no-NO', { currency: 'NOK' }) : '';

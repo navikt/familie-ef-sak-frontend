@@ -7,7 +7,7 @@ import {
     IVedtak,
 } from '../../../typer/vedtak';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import styled from 'styled-components';
@@ -49,6 +49,9 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const history = useHistory();
     const { vedtaksresultatType, behandlingId, settFeilmelding, lagretVedtak } = props;
 
+    const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
+        byggTomRessurs()
+    );
     const [valideringsfeil, settValideringsfeil] = useState<IValideringsfeil>({
         vedtaksperioder: [],
         inntektsperioder: [],
@@ -105,7 +108,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     };
 
     const beregnPerioder = () => {
-        axiosRequest<IBeløpsperiode, IBeregningsrequest>({
+        axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/`,
             data: {
@@ -116,7 +119,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     samordningsfradrag: v.samordningsfradrag ?? 0,
                 })),
             },
-        });
+        }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
     };
 
     const lagBlankett = () => {
@@ -187,6 +190,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                     <InntektsperiodeValg
                         inntektsperiodeData={inntektsperiodeData}
                         settInntektsperiodeData={settInntektsperiodeData}
+                        beregnetStønad={beregnetStønad}
                         valideringsfeil={valideringsfeil.inntektsperioder}
                     />
                     <div>
