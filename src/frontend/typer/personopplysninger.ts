@@ -164,3 +164,8 @@ export enum OppholdType {
     PERMANENT = 'PERMANENT',
     UKJENT = 'UKJENT',
 }
+
+export interface INavKontor {
+    navn: string;
+    enhetNr: string;
+}
