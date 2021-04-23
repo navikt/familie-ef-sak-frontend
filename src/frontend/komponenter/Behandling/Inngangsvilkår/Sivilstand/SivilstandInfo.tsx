@@ -5,6 +5,7 @@ import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { ISivilstandInngangsvilkår } from './typer';
 import { sivilstandTilTekst } from '../../../../typer/personopplysninger';
 import Søknadsinformasjon from './Søknadsinformasjon';
+import { formaterIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -19,8 +20,9 @@ const SivilstandInfo: FC<Props> = ({ sivilstand }) => {
                 <Normaltekst>Sivilstatus</Normaltekst>
                 <Normaltekst>
                     {sivilstandTilTekst[registergrunnlag.type]}
-                    {registergrunnlag.navn && ' med ' + registergrunnlag.navn}
-                    {registergrunnlag.gyldigFraOgMed && ' - ' + registergrunnlag.gyldigFraOgMed}
+                    {registergrunnlag.navn && ` - ${registergrunnlag.navn}`}
+                    {registergrunnlag.gyldigFraOgMed &&
+                        ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`}
                 </Normaltekst>
 
                 <Søknadsinformasjon
