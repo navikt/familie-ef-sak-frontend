@@ -1,5 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { EBehandlingResultat, IValideringsfeil, IVedtak } from '../../../typer/vedtak';
+import {
+    EBehandlingResultat,
+    IBeløpsperiode,
+    IBeregningsrequest,
+    IValideringsfeil,
+    IVedtak,
+} from '../../../typer/vedtak';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
@@ -99,7 +105,18 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     };
 
     const beregnPerioder = () => {
-        // api-kall og oppdater beregnede perioder
+        axiosRequest<IBeløpsperiode, IBeregningsrequest>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/beregning/`,
+            data: {
+                vedtaksperioder: vedtaksperiodeData.vedtaksperiodeListe,
+                inntekt: inntektsperiodeData.inntektsperiodeListe.map((v) => ({
+                    ...v,
+                    forventetInntekt: v.forventetInntekt ?? 0,
+                    samordningsfradrag: v.samordningsfradrag ?? 0,
+                })),
+            },
+        });
     };
 
     const lagBlankett = () => {

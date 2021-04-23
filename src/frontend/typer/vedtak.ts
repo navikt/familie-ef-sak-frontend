@@ -15,6 +15,21 @@ export interface IInntektsperiode {
     endretKey?: string; // intern for re-rendring
 }
 
+export interface IBeløpsperiode {
+    fraOgMedDato: string;
+    tilDato: string;
+    beregningsgrunnlag: IBeregningsgrunnlag;
+    beløp: number;
+}
+
+export interface IBeregningsgrunnlag {
+    inntekt: number;
+    samordningsfradrag: number;
+    avkortningPerMåned: number;
+    fullOvergangsStønadPerMåned: number;
+    grunnbeløp: number;
+}
+
 export interface IVedtaksperiode {
     periodeType: EPeriodetype;
     aktivitet: EAktivitet;
@@ -22,10 +37,16 @@ export interface IVedtaksperiode {
     årMånedTil?: string;
 }
 
+export type IBeregningsrequest = {
+    vedtaksperioder: IVedtaksperiode[];
+    inntekt: IInntektsperiode[];
+};
+
 export interface IValideringsfeil {
     vedtaksperioder: string[];
     inntektsperioder: string[];
 }
+
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',
     forventetInntekt = 'forventetInntekt',
