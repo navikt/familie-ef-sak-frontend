@@ -73,9 +73,14 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
 
     const oppdaterVedtaksperiodeData = (verdi: IVedtaksperiodeData) => {
         const førsteVedtaksperiode = verdi.vedtaksperiodeListe[0];
-        const førsteInntektsperiode = inntektsperiodeData.inntektsperiodeListe[0];
+        const førsteInntektsperiode =
+            inntektsperiodeData.inntektsperiodeListe.length > 0 &&
+            inntektsperiodeData.inntektsperiodeListe[0];
         settVedtaksperiodeData(verdi);
-        if (førsteVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra) {
+        if (
+            førsteInntektsperiode &&
+            førsteVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra
+        ) {
             settÅrMånedFraPåFørsteInntektsperiode(førsteVedtaksperiode.årMånedFra);
         }
     };
