@@ -9,25 +9,24 @@ import { Opphold } from './Opphold/Opphold';
 import { Medlemskap } from './Medlemskap/Medlemskap';
 import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { hentVilkårAsync } from '../vilkårSlice';
 
 interface Props {
     behandlingId: string;
 }
 
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
-    const {
-        vilkår,
-        hentVilkår,
-        lagreVurdering,
-        feilmeldinger,
-        nullstillVurdering,
-        ikkeVurderVilkår,
-    } = useHentVilkår();
+    const { lagreVurdering, feilmeldinger, nullstillVurdering, ikkeVurderVilkår } = useHentVilkår();
+
+    const dispatch = useDispatch();
+    const vilkår = useSelector((state: RootState) => state.vilkår.vilkår);
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {
             if (vilkår.status !== RessursStatus.SUKSESS) {
-                hentVilkår(behandlingId);
+                dispatch(hentVilkårAsync({ behandlingId }));
             }
         }
         // eslint-disable-next-line

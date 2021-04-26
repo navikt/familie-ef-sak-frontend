@@ -7,6 +7,8 @@ import { ISaksbehandler } from '../typer/saksbehandler';
 import ErrorBoundary from './Felleskomponenter/ErrorBoundary/ErrorBoundary';
 import Routes from './Routes';
 import { TogglesProvider } from '../context/TogglesContext';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -25,13 +27,15 @@ const App: React.FC = () => {
         return null;
     }
     return (
-        <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
-            <AppProvider autentisertSaksbehandler={innloggetSaksbehandler}>
-                <TogglesProvider>
-                    <Routes innloggetSaksbehandler={innloggetSaksbehandler} />
-                </TogglesProvider>
-            </AppProvider>
-        </ErrorBoundary>
+        <Provider store={store}>
+            <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
+                <AppProvider autentisertSaksbehandler={innloggetSaksbehandler}>
+                    <TogglesProvider>
+                        <Routes innloggetSaksbehandler={innloggetSaksbehandler} />
+                    </TogglesProvider>
+                </AppProvider>
+            </ErrorBoundary>
+        </Provider>
     );
 };
 

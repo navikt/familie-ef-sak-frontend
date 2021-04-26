@@ -1,7 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import vilkårSlice from '../komponenter/Behandling/vilkårSlice';
 
 export const store = configureStore({
-    reducer: {},
+    reducer: {
+        vilkår: vilkårSlice.reducer,
+    },
 });
 
 export type AppDispatch = typeof store.dispatch;
