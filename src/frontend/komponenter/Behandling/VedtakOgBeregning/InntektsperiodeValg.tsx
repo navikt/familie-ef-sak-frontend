@@ -185,6 +185,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     settInntektBegrunnelse(e.target.value);
                 }}
                 label="Begrunnelse"
+                maxLength={0}
             />
         </>
     );

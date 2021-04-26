@@ -183,6 +183,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     settPeriodeBegrunnelse(e.target.value);
                 }}
                 label="Begrunnelse"
+                maxLength={0}
             />
         </>
     );
