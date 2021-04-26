@@ -1,34 +1,52 @@
 import React from 'react';
-import { Select } from 'nav-frontend-skjema';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 
 interface MånedProps {
     måned: string | undefined;
     settMåned: (måned: string) => void;
+    lesevisning?: boolean;
+    disabled?: boolean;
 }
 
-const MånedVelger: React.FC<MånedProps> = ({ måned, settMåned }) => {
+const månedValg = [
+    { mndNr: '01', verdi: 'Januar' },
+    { mndNr: '02', verdi: 'Februar' },
+    { mndNr: '03', verdi: 'Mars' },
+    { mndNr: '04', verdi: 'April' },
+    { mndNr: '05', verdi: 'Mai' },
+    { mndNr: '06', verdi: 'Juni' },
+    { mndNr: '07', verdi: 'Juli' },
+    { mndNr: '08', verdi: 'August' },
+    { mndNr: '09', verdi: 'September' },
+    { mndNr: '10', verdi: 'Oktober' },
+    { mndNr: '11', verdi: 'November' },
+    { mndNr: '12', verdi: 'Desember' },
+];
+
+const MånedVelger: React.FC<MånedProps> = ({
+    måned,
+    settMåned,
+    lesevisning = false,
+    disabled = false,
+}) => {
     return (
-        <Select
+        <FamilieSelect
+            erLesevisning={lesevisning}
+            lesevisningVerdi={måned ? månedValg.find((mnd) => mnd.mndNr === måned)?.verdi : ''}
             value={måned}
             onChange={(event) => {
                 event.persist();
                 settMåned(event.target.value);
             }}
+            disabled={disabled}
         >
             <option value="">Måned</option>
-            <option value={'01'}>Januar</option>
-            <option value={'02'}>Februar</option>
-            <option value={'03'}>Mars</option>
-            <option value={'04'}>April</option>
-            <option value={'05'}>Mai</option>
-            <option value={'06'}>Juni</option>
-            <option value={'07'}>Juli</option>
-            <option value={'08'}>August</option>
-            <option value={'09'}>September</option>
-            <option value={'10'}>Oktober</option>
-            <option value={'11'}>November</option>
-            <option value={'12'}>Desember</option>
-        </Select>
+            {månedValg.map((mnd) => (
+                <option value={mnd.mndNr} key={mnd.mndNr}>
+                    {mnd.verdi}
+                </option>
+            ))}
+        </FamilieSelect>
     );
 };
 

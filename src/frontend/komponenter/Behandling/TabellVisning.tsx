@@ -3,12 +3,14 @@ import { Registergrunnlag, Søknadsgrunnlag } from '../Felleskomponenter/Visning
 import { Element, Normaltekst as NormaltekstNavFrontend } from 'nav-frontend-typografi';
 import { GridTabell } from '../Felleskomponenter/Visning/StyledTabell';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
+import { Calculator } from '@navikt/ds-icons';
 
 const Normaltekst = hiddenIf(NormaltekstNavFrontend);
 
 export enum TabellIkon {
     REGISTER = 'REGISTER',
     SØKNAD = 'SØKNAD',
+    KALKULATOR = 'KALKULATOR',
 }
 
 export interface Kolonndata<T> {
@@ -29,6 +31,8 @@ const mapIkon = (ikon: TabellIkon) => {
             return <Registergrunnlag />;
         case TabellIkon.SØKNAD:
             return <Søknadsgrunnlag />;
+        case TabellIkon.KALKULATOR:
+            return <Calculator />;
     }
 };
 

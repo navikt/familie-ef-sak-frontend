@@ -31,7 +31,7 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
                     {behandling.steg === Steg.VILKÅR ? (
                         <AlertStripeIkkeFerdigBehandletVilkår />
                     ) : (
-                        <VedtakOgBeregning behandlingId={behandlingId} />
+                        <VedtakOgBeregning behandling={behandling} />
                     )}
                 </>
             )}

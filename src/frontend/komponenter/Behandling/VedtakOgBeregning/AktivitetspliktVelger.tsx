@@ -1,6 +1,6 @@
 import { EAktivitet, EPeriodeProperty, EPeriodetype } from '../../../typer/vedtak';
 import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Select } from 'nav-frontend-skjema';
 
@@ -8,7 +8,6 @@ interface Props {
     periodeType: EPeriodetype | undefined;
     aktivitet: EAktivitet;
     index: number;
-    settFeilmelding: Dispatch<SetStateAction<string>>;
     oppdaterVedtakslisteElement: (index: number, property: EPeriodeProperty, value: string) => void;
 }
 
@@ -22,7 +21,7 @@ const AktivitetKolonne = styled.div`
 `;
 
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
-    const { periodeType, aktivitet, index, settFeilmelding, oppdaterVedtakslisteElement } = props;
+    const { periodeType, aktivitet, index, oppdaterVedtakslisteElement } = props;
     const aktivitetLabel = index === 0 ? 'Aktivitet' : '';
 
     switch (periodeType) {
@@ -33,7 +32,6 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                         label={aktivitetLabel}
                         value={aktivitet}
                         onChange={(e) => {
-                            settFeilmelding('');
                             oppdaterVedtakslisteElement(
                                 index,
                                 EPeriodeProperty.aktivitet,

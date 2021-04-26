@@ -27,6 +27,7 @@
     "@navikt/familie-backend": "5.0.10",
     "@navikt/familie-dokumentliste": "^1.0.10",
     "@navikt/familie-header": "^3.0.7",
+    "@navikt/familie-form-elements": "^2.2.14",
     "@navikt/familie-ikoner": "^3.1.10",
     "@navikt/familie-typer": "^3.0.13",
     "@navikt/familie-visittkort": "^2.1.23",
