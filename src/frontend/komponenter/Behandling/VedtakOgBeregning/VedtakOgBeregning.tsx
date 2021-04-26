@@ -8,9 +8,10 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import VelgVedtaksresultat from './VelgVedtaksresultat';
+import { Behandling } from '../../../typer/fagsak';
 
 interface Props {
-    behandlingId: string;
+    behandling: Behandling;
 }
 
 const StyledVedtaksperiode = styled.div`
@@ -21,9 +22,10 @@ const StyledFeilmelding = styled(AlertStripeFeil)`
     margin-top: 2rem;
 `;
 
-const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
+const VedtakOgBeregning: FC<Props> = ({ behandling }) => {
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const [feilmelding, settFeilmelding] = useState<string>('');
+    const behandlingId = behandling.id;
 
     const lagretVedtakConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -57,7 +59,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandlingId }) => {
                         {resultatType && (
                             <VedtaksresultatSwitch
                                 vedtaksresultatType={resultatType}
-                                behandlingId={behandlingId}
+                                behandling={behandling}
                                 settFeilmelding={settFeilmelding}
                                 lagretVedtak={lagretVedtakResponse}
                             />

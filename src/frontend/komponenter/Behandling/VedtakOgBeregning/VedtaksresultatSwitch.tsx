@@ -25,10 +25,12 @@ import VedtaksperiodeValg, {
     tomVedtaksperiodeRad,
 } from './VedtaksperiodeValg';
 import { v4 as uuidv4 } from 'uuid';
+import { Behandling } from '../../../typer/fagsak';
+import { Behandlingstype } from '../../../typer/behandlingstype';
 
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
-    behandlingId: string;
+    behandling: Behandling;
     settFeilmelding: Dispatch<SetStateAction<string>>;
     lagretVedtak?: IVedtak;
 }
@@ -47,8 +49,8 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const { modalDispatch } = useModal();
     const { hentBehandling } = useBehandling();
     const history = useHistory();
-    const { vedtaksresultatType, behandlingId, settFeilmelding, lagretVedtak } = props;
-
+    const { vedtaksresultatType, behandling, settFeilmelding, lagretVedtak } = props;
+    const behandlingId = behandling.id;
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
     );
@@ -122,32 +124,53 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
         }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
     };
 
+    function lagVedtaksRequest() {
+        return {
+            resultatType: vedtaksresultatType,
+            periodeBegrunnelse: vedtaksperiodeData.periodeBegrunnelse,
+            inntektBegrunnelse: inntektsperiodeData.inntektBegrunnelse,
+            perioder: vedtaksperiodeData.vedtaksperiodeListe,
+            inntekter: inntektsperiodeData.inntektsperiodeListe,
+        };
+    }
+
+    const håndterVedtaksresultat = (nesteUrl: string) => {
+        return (res: Ressurs<string>) => {
+            switch (res.status) {
+                case RessursStatus.SUKSESS:
+                    history.push(nesteUrl);
+                    hentBehandling.rerun();
+                    break;
+                case RessursStatus.HENTER:
+                case RessursStatus.IKKE_HENTET:
+                    break;
+                default:
+                    settFeilmelding(res.frontendFeilmelding);
+            }
+        };
+    };
+
     const lagBlankett = () => {
         settLaster(true);
         axiosRequest<string, IVedtak>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandlingId}/lagre-vedtak`,
-            data: {
-                resultatType: vedtaksresultatType,
-                periodeBegrunnelse: vedtaksperiodeData.periodeBegrunnelse,
-                inntektBegrunnelse: inntektsperiodeData.inntektBegrunnelse,
-                perioder: vedtaksperiodeData.vedtaksperiodeListe,
-                inntekter: inntektsperiodeData.inntektsperiodeListe,
-            },
+            data: lagVedtaksRequest(),
         })
-            .then((res: Ressurs<string>) => {
-                switch (res.status) {
-                    case RessursStatus.SUKSESS:
-                        history.push(`/behandling/${behandlingId}/blankett`);
-                        hentBehandling.rerun();
-                        break;
-                    case RessursStatus.HENTER:
-                    case RessursStatus.IKKE_HENTET:
-                        break;
-                    default:
-                        settFeilmelding(res.frontendFeilmelding);
-                }
-            })
+            .then(håndterVedtaksresultat(`/behandling/${behandlingId}/blankett`))
+            .finally(() => {
+                settLaster(false);
+            });
+    };
+
+    const lagreVedtak = () => {
+        settLaster(true);
+        axiosRequest<string, IVedtak>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
+            data: lagVedtaksRequest(),
+        })
+            .then(håndterVedtaksresultat(`/behandling/${behandlingId}/brev`))
             .finally(() => {
                 settLaster(false);
             });
@@ -203,7 +226,18 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         style={{ marginTop: '2rem' }}
                         onClick={() => {
                             if (validerVedtak()) {
-                                lagBlankett();
+                                switch (behandling.type) {
+                                    case Behandlingstype.BLANKETT:
+                                        lagBlankett();
+                                        break;
+                                    case Behandlingstype.FØRSTEGANGSBEHANDLING:
+                                        lagreVedtak();
+                                        break;
+                                    case Behandlingstype.REVURDERING:
+                                        throw Error(
+                                            'Støtter ikke behandlingstype revurdering ennå...'
+                                        );
+                                }
                             }
                         }}
                         disabled={laster}
