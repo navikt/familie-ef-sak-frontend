@@ -70,7 +70,7 @@ export const loggFeil = (
     innloggetSaksbehandler?: ISaksbehandler,
     feilmelding?: string
 ): void => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'production') {
         configureScope((scope) => {
             scope.setUser({
                 username: innloggetSaksbehandler
@@ -105,11 +105,13 @@ export const loggFeil = (
     }
 };
 
+// eslint-disable-next-line
 export const slackNotify = (melding: string, kanal: string): void => {
+    console.log(`Logg til slack ${kanal} er skrudd av`, melding);
     // eslint-disable-next-line
-    preferredAxios.post(`/slack/notify/${kanal}`, {
-        melding,
-    });
+    // preferredAxios.post(`/slack/notify/${kanal}`, {
+    //     melding,
+    // });
 };
 
 export const apiLoggFeil = (melding: string): void => {
