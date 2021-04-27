@@ -21,7 +21,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     const { lagreVurdering, feilmeldinger, nullstillVurdering, ikkeVurderVilkår } = useHentVilkår();
 
     const dispatch = useDispatch();
-    const vilkår = useSelector((state: RootState) => state.vilkår.vilkår);
+    const vilkår = useSelector((state: RootState) => state.vilkår.vilkårsressurs);
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {

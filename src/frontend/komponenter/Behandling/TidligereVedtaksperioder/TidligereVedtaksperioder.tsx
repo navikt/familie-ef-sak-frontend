@@ -17,8 +17,7 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
 
     const hentVilkårCallback = useCallback(() => {
         hentVilkår(behandlingId);
-        // eslint-disable-next-line
-    }, [behandlingId]);
+    }, [behandlingId, hentVilkår]);
 
     useEffect(() => {
         hentVilkårCallback();

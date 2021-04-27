@@ -1,6 +1,6 @@
 import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import {
     IVilkår,
     IVurdering,
@@ -24,7 +24,6 @@ const oppdaterInngangsvilkårMedVurdering = (
 
 export const useHentVilkår = (): {
     vilkår: Ressurs<IVilkår>;
-    hentVilkår: (behandlingId: string) => void;
     lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
     nullstillVurdering: (
@@ -136,21 +135,9 @@ export const useHentVilkår = (): {
             }
         });
     };
-    const hentVilkår = useCallback(
-        (behandlingId) => {
-            axiosRequest<IVilkår, void>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
-            }).then((hentetInngangsvilkår: Ressurs<IVilkår>) => {
-                settVilkår(hentetInngangsvilkår);
-            });
-        },
-        [axiosRequest]
-    );
 
     return {
         vilkår,
-        hentVilkår,
         lagreVurdering,
         feilmeldinger,
         nullstillVurdering,

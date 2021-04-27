@@ -25,7 +25,7 @@ const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedi
     const { regler, hentBehandling } = useBehandling();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
-
+    /*
     const oppdaterVurdering = (vurdering: SvarPåVilkårsvurdering) => {
         if (!oppdatererVurdering) {
             settOppdatererVurdering(true);
@@ -39,12 +39,13 @@ const EndreVurdering: FC<Props> = ({ data, lagreVurdering, feilmelding, settRedi
             });
         }
     };
+     */
+
     return (
         <StyledEndreVurdering>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             {regler.status === RessursStatus.SUKSESS && (
                 <EndreVurderingComponent
-                    oppdaterVurdering={oppdaterVurdering}
                     vilkårType={vurdering.vilkårType}
                     regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
                     vurdering={vurdering}

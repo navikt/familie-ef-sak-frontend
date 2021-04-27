@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { BegrunnelseRegel, Regler, Svarsalternativ } from './typer';
-import {
-    IDelvilkår,
-    IVurdering,
-    SvarPåVilkårsvurdering,
-    VilkårType,
-    Vurdering,
-} from '../Inngangsvilkår/vilkår';
+import { IDelvilkår, IVurdering, VilkårType, Vurdering } from '../Inngangsvilkår/vilkår';
 import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAllaDelvilkårBesvarte,
@@ -20,6 +14,8 @@ import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Begrunnelse from './Begrunnelse';
 import Delvilkår from './Delvilkår';
+import { useAppDispatch } from '../../../store/store';
+import { oppdaterVilkår } from '../endrevilkårSlice';
 
 const Lagreknapp = hiddenIf(Hovedknapp);
 /**
@@ -29,12 +25,13 @@ const Lagreknapp = hiddenIf(Hovedknapp);
 const EndreVurderingComponent: FC<{
     vilkårType: VilkårType;
     regler: Regler;
-    oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
-}> = ({ regler, oppdaterVurdering, vurdering }) => {
+}> = ({ regler, vurdering }) => {
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
+
+    const dispatch = useAppDispatch();
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
         settDelvilkårsvurderinger((prevSvar) => {
@@ -96,11 +93,15 @@ const EndreVurderingComponent: FC<{
             onSubmit={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                oppdaterVurdering({
-                    id: vurdering.id,
-                    behandlingId: vurdering.behandlingId,
-                    delvilkårsvurderinger,
-                });
+                dispatch(
+                    oppdaterVilkår({
+                        vurdering: {
+                            id: vurdering.id,
+                            behandlingId: vurdering.behandlingId,
+                            delvilkårsvurderinger,
+                        },
+                    })
+                );
             }}
         >
             {delvilkårsvurderinger.map((delvikår, index) => {

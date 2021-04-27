@@ -16,7 +16,6 @@ const Beboere: React.FC = () => {
     const { axiosRequest } = useApp();
     const { behandling } = useBehandling();
     const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
-
     useEffect(() => {
         if (behandling.status === RessursStatus.SUKSESS) {
             sokPerson(behandling.data.id);
