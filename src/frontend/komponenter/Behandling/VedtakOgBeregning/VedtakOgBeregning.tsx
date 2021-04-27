@@ -4,28 +4,21 @@ import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { useDataHenter } from '../../../hooks/felles/useDataHenter';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EBehandlingResultat, IVedtak } from '../../../typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
-import VelgVedtaksresultat from './VelgVedtaksresultat';
+import SelectVedtaksresultat from './SelectVedtaksresultat';
 import { Behandling } from '../../../typer/fagsak';
 
 interface Props {
     behandling: Behandling;
 }
 
-const StyledVedtaksperiode = styled.div`
+const Wrapper = styled.div`
     padding: 2rem;
 `;
-
-const StyledFeilmelding = styled(AlertStripeFeil)`
-    margin-top: 2rem;
-`;
-
 const VedtakOgBeregning: FC<Props> = ({ behandling }) => {
-    const [resultatType, settResultatType] = useState<EBehandlingResultat>();
-    const [feilmelding, settFeilmelding] = useState<string>('');
     const behandlingId = behandling.id;
+    const [resultatType, settResultatType] = useState<EBehandlingResultat>();
 
     const lagretVedtakConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -50,22 +43,17 @@ const VedtakOgBeregning: FC<Props> = ({ behandling }) => {
         <DataViewer response={{ lagretVedtakResponse }}>
             {({ lagretVedtakResponse }) => {
                 return (
-                    <StyledVedtaksperiode>
-                        <VelgVedtaksresultat
+                    <Wrapper>
+                        <SelectVedtaksresultat
                             resultatType={resultatType}
-                            settFeilmelding={settFeilmelding}
                             settResultatType={settResultatType}
                         />
-                        {resultatType && (
-                            <VedtaksresultatSwitch
-                                vedtaksresultatType={resultatType}
-                                behandling={behandling}
-                                settFeilmelding={settFeilmelding}
-                                lagretVedtak={lagretVedtakResponse}
-                            />
-                        )}
-                        {feilmelding && <StyledFeilmelding>{feilmelding}</StyledFeilmelding>}
-                    </StyledVedtaksperiode>
+                        <VedtaksresultatSwitch
+                            vedtaksresultatType={resultatType}
+                            behandling={behandling}
+                            lagretVedtak={lagretVedtakResponse}
+                        />
+                    </Wrapper>
                 );
             }}
         </DataViewer>

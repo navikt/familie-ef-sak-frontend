@@ -1,5 +1,5 @@
-import { EAktivitet, EPeriodeProperty, EPeriodetype } from '../../../typer/vedtak';
-import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
+import { EAktivitet, EPeriodeProperty, EPeriodetype } from '../../../../typer/vedtak';
+import TekstMedLabel from '../../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
 import React from 'react';
 import styled from 'styled-components';
 import { Select } from 'nav-frontend-skjema';

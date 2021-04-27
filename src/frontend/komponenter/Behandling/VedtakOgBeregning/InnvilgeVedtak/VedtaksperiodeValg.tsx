@@ -5,16 +5,16 @@ import {
     EPeriodetype,
     IVedtaksperiode,
     periodeVariantTilProperty,
-} from '../../../typer/vedtak';
+} from '../../../../typer/vedtak';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
-import MånedÅrPeriode, { PeriodeVariant } from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import MånedÅrPeriode, { PeriodeVariant } from '../../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
-import { månederMellom, månedÅrTilDate } from '../../../utils/dato';
+import { månederMellom, månedÅrTilDate } from '../../../../utils/dato';
 
 const VedtaksperiodeRad = styled.div`
     display: flex;
