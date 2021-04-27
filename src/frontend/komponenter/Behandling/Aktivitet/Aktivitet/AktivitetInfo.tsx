@@ -45,7 +45,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
 
                 {arbeidsforhold &&
                     arbeidsforhold.map((arbeidsgiver, index) => (
-                        <GridTabell kolonner={3}>
+                        <GridTabell kolonner={3} key={arbeidsgiver.arbeidsgivernavn + index}>
                             <ArbeidstakerLønnsmottakerSomFrilanser
                                 key={arbeidsgiver.arbeidsgivernavn + index}
                                 arbeidsforhold={arbeidsgiver}
@@ -55,7 +55,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
 
                 {selvstendig &&
                     selvstendig.map((firma, index) => (
-                        <GridTabell kolonner={3}>
+                        <GridTabell kolonner={3} key={firma.organisasjonsnummer + index}>
                             <SelvstendigNæringsdrivendeEllerFrilanser
                                 key={firma.organisasjonsnummer + index}
                                 firma={firma}
@@ -65,7 +65,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
 
                 {aksjeselskap &&
                     aksjeselskap.map((selskap, index) => (
-                        <GridTabell kolonner={3}>
+                        <GridTabell kolonner={3} key={selskap.navn + index}>
                             <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />
                         </GridTabell>
                     ))}

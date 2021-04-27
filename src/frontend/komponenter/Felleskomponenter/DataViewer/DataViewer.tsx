@@ -29,12 +29,12 @@ const StyledLenke = styled(Link)`
 // eslint-disable-next-line
 const renderFeil = (responses: Ressurs<any>[]) => (
     <>
-        {responses.map((feilet) => {
+        {responses.map((feilet, index) => {
             if (
                 feilet.status === RessursStatus.FUNKSJONELL_FEIL ||
                 feilet.status === RessursStatus.FEILET
             ) {
-                return <AlertStripeFeil>{feilet.frontendFeilmelding}</AlertStripeFeil>;
+                return <AlertStripeFeil key={index}>{feilet.frontendFeilmelding}</AlertStripeFeil>;
             } else {
                 return null;
             }
