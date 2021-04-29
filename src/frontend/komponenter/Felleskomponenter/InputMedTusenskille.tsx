@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Input, InputProps } from 'nav-frontend-skjema';
 import styled from 'styled-components';
+import { FamilieInput, IFamilieInputProps } from '@navikt/familie-form-elements';
 
-interface TusenseparatorProps extends InputProps {
+interface TusenseparatorProps extends IFamilieInputProps {
     value: number | string | undefined;
 }
 
-const NummerInputUtenSpinner = styled(Input)`
+const NummerInputUtenSpinner = styled(FamilieInput)`
+    text-align: right;
+    input {
+        text-align: right;
+    }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;

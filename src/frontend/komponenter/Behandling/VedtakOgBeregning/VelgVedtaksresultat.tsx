@@ -1,7 +1,8 @@
-import { EBehandlingResultat } from '../../../typer/vedtak';
+import { EBehandlingResultat, behandlingResultatTilTekst } from '../../../typer/vedtak';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { Select } from 'nav-frontend-skjema';
+import { useBehandling } from '../../../context/BehandlingContext';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 
 interface Props {
     resultatType?: EBehandlingResultat;
@@ -9,11 +10,12 @@ interface Props {
     settResultatType: Dispatch<SetStateAction<EBehandlingResultat | undefined>>;
 }
 
-const StyledSelect = styled(Select)`
+const StyledSelect = styled(FamilieSelect)`
     max-width: 200px;
 `;
 
 const VelgVedtaksresultat = (props: Props): JSX.Element => {
+    const { behandlingErRedigerbar } = useBehandling();
     const { resultatType, settFeilmelding, settResultatType } = props;
     return (
         <StyledSelect
@@ -23,16 +25,22 @@ const VelgVedtaksresultat = (props: Props): JSX.Element => {
                 settFeilmelding('');
                 settResultatType(e.target.value as EBehandlingResultat);
             }}
+            erLesevisning={!behandlingErRedigerbar}
+            lesevisningVerdi={resultatType && behandlingResultatTilTekst[resultatType]}
         >
             <option value="">Velg</option>
-            <option value={EBehandlingResultat.INNVILGE}>Innvilge</option>
+            <option value={EBehandlingResultat.INNVILGE}>
+                {behandlingResultatTilTekst[EBehandlingResultat.INNVILGE]}
+            </option>
             <option value={EBehandlingResultat.AVSLÅ} disabled>
-                Avslå
+                {behandlingResultatTilTekst[EBehandlingResultat.AVSLÅ]}
             </option>
             <option value={EBehandlingResultat.HENLEGGE} disabled>
-                Henlegge
+                {behandlingResultatTilTekst[EBehandlingResultat.HENLEGGE]}
             </option>
-            <option value={EBehandlingResultat.BEHANDLE_I_GOSYS}>Behandle i Gosys</option>
+            <option value={EBehandlingResultat.BEHANDLE_I_GOSYS}>
+                {behandlingResultatTilTekst[EBehandlingResultat.BEHANDLE_I_GOSYS]}
+            </option>
         </StyledSelect>
     );
 };

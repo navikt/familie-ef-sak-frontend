@@ -3,6 +3,7 @@ import {
     EAktivitet,
     EPeriodeProperty,
     EPeriodetype,
+    periodetypeTilTekst,
     IVedtaksperiode,
     periodeVariantTilProperty,
 } from '../../../typer/vedtak';
@@ -10,14 +11,16 @@ import AktivitetspliktVelger from './AktivitetspliktVelger';
 import MånedÅrPeriode, { PeriodeVariant } from '../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Select, Textarea } from 'nav-frontend-skjema';
 import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
 import { månederMellom, månedÅrTilDate } from '../../../utils/dato';
+import { useBehandling } from '../../../context/BehandlingContext';
+import { FamilieSelect, FamilieTextarea } from '@navikt/familie-form-elements';
 
 const VedtaksperiodeRad = styled.div`
     display: flex;
+    align-items: center;
     justify-content: flex-start;
     margin-bottom: 0.25rem;
 `;
@@ -32,7 +35,8 @@ const FjernPeriodeKnapp = styled(Flatknapp)`
     margin-left: 1rem;
 `;
 
-const StyledSelect = styled(Select)`
+const StyledSelect = styled(FamilieSelect)`
+    //min-width: 140px;
     max-width: 200px;
     margin-right: 2rem;
 `;
@@ -40,6 +44,7 @@ const StyledSelect = styled(Select)`
 const MndKnappWrapper = styled.div`
     width: 90px;
     display: flex;
+    align-items: center;
 `;
 
 export interface IVedtaksperiodeData {
@@ -70,6 +75,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     settVedtaksperiodeData,
     valideringsfeil,
 }) => {
+    const { behandlingErRedigerbar } = useBehandling();
     const settPeriodeBegrunnelse = (begrunnelse: string) =>
         settVedtaksperiodeData({
             ...vedtaksperiodeData,
@@ -125,18 +131,23 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                     e.target.value
                                 );
                             }}
+                            erLesevisning={!behandlingErRedigerbar}
+                            lesevisningVerdi={periodetypeTilTekst[periodeType]}
                         >
                             <option value="">Velg</option>
                             <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
-                                Periode før fødsel
+                                {periodetypeTilTekst[EPeriodetype.PERIODE_FØR_FØDSEL]}
                             </option>
-                            <option value={EPeriodetype.HOVEDPERIODE}>Hovedperiode</option>
+                            <option value={EPeriodetype.HOVEDPERIODE}>
+                                {periodetypeTilTekst[EPeriodetype.HOVEDPERIODE]}
+                            </option>
                         </StyledSelect>
                         <AktivitetspliktVelger
                             index={index}
                             aktivitet={aktivitet}
                             periodeType={periodeType}
                             oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
+                            erLesevisning={!behandlingErRedigerbar}
                         />
                         <MånedÅrPeriode
                             datoFraTekst={index === 0 ? 'Fra og med' : ''}
@@ -153,13 +164,14 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                     verdi
                                 );
                             }}
+                            erLesevisning={!behandlingErRedigerbar}
                         />
-
                         <MndKnappWrapper>
-                            <Element style={{ marginTop: index === 0 ? '2.5rem' : '1rem' }}>
+                            <Element style={{}}>
                                 {!!antallMåneder && `${antallMåneder} mnd`}
                             </Element>
-                            {index === vedtaksperiodeData.vedtaksperiodeListe.length - 1 &&
+                            {behandlingErRedigerbar &&
+                                index === vedtaksperiodeData.vedtaksperiodeListe.length - 1 &&
                                 index !== 0 && (
                                     <FjernPeriodeKnapp onClick={fjernVedtaksperiode}>
                                         <Delete />
@@ -173,17 +185,20 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             {valideringsfeil.map((feil) => (
                 <AlertStripeFeil>{feil}</AlertStripeFeil>
             ))}
-            <KnappMedLuftUnder onClick={leggTilVedtaksperiode}>
-                <AddCircle style={{ marginRight: '1rem' }} />
-                Legg til vedtaksperiode
-            </KnappMedLuftUnder>
-            <Textarea
+            {behandlingErRedigerbar && (
+                <KnappMedLuftUnder onClick={leggTilVedtaksperiode}>
+                    <AddCircle style={{ marginRight: '1rem' }} />
+                    Legg til vedtaksperiode
+                </KnappMedLuftUnder>
+            )}
+            <FamilieTextarea
                 value={vedtaksperiodeData.periodeBegrunnelse}
                 onChange={(e) => {
                     settPeriodeBegrunnelse(e.target.value);
                 }}
                 label="Begrunnelse"
                 maxLength={0}
+                erLesevisning={!behandlingErRedigerbar}
             />
         </>
     );

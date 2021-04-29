@@ -54,7 +54,7 @@ const MånedÅrVelger: React.FC<Props> = ({
     }, [år, måned]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div>
+        <div style={lesevisning ? { minWidth: '140px' } : {}}>
             <div>
                 {label && (
                     <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">

@@ -1,17 +1,23 @@
-import { EAktivitet, EPeriodeProperty, EPeriodetype } from '../../../typer/vedtak';
-import TekstMedLabel from '../../Felleskomponenter/TekstMedLabel/TekstMedLabel';
+import {
+    EAktivitet,
+    aktivitetTilTekst,
+    EPeriodeProperty,
+    EPeriodetype,
+} from '../../../typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
-import { Select } from 'nav-frontend-skjema';
+import { FamilieSelect } from '@navikt/familie-form-elements';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     periodeType: EPeriodetype | undefined;
     aktivitet: EAktivitet;
     index: number;
     oppdaterVedtakslisteElement: (index: number, property: EPeriodeProperty, value: string) => void;
+    erLesevisning: boolean;
 }
 
-const StyledSelect = styled(Select)`
+const StyledSelect = styled(FamilieSelect)`
     max-width: 200px;
     margin-right: 2rem;
 `;
@@ -21,7 +27,7 @@ const AktivitetKolonne = styled.div`
 `;
 
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
-    const { periodeType, aktivitet, index, oppdaterVedtakslisteElement } = props;
+    const { periodeType, aktivitet, index, oppdaterVedtakslisteElement, erLesevisning } = props;
     const aktivitetLabel = index === 0 ? 'Aktivitet' : '';
 
     switch (periodeType) {
@@ -38,37 +44,41 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                                 e.target.value
                             );
                         }}
+                        erLesevisning={erLesevisning}
+                        lesevisningVerdi={aktivitetTilTekst[aktivitet]}
                     >
                         <option value="">Velg</option>
                         <optgroup label="Ingen aktivitetsplikt">
-                            <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>Barn er under 1 år</option>
+                            <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>
+                                {aktivitetTilTekst[EAktivitet.BARN_UNDER_ETT_ÅR]}
+                            </option>
                         </optgroup>
                         <optgroup label="Fyller aktivitetsplikt">
                             <option value={EAktivitet.FORSØRGER_I_ARBEID}>
-                                Forsørger er i arbeid (§15-6 første ledd)
+                                {aktivitetTilTekst[EAktivitet.FORSØRGER_I_ARBEID]}
                             </option>
                             <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
-                                Forsørger er i utdannings (§15-6 første ledd)
+                                {aktivitetTilTekst[EAktivitet.FORSØRGER_I_UTDANNING]}
                             </option>
                             <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
-                                Forsørger er reell arbeidssøker (§15-6 første ledd)
+                                {aktivitetTilTekst[EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER]}
                             </option>
                             <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
-                                Forsørger etablerer egen virksomhet (§15-6 første ledd)
+                                {aktivitetTilTekst[EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET]}
                             </option>
                         </optgroup>
                         <optgroup label="Fyller unntak for aktivitetsplikt">
                             <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
-                                Barnet er særlig tilsynskrevende (§15-6 fjerde ledd)
+                                {aktivitetTilTekst[EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE]}
                             </option>
                             <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
-                                Forsørger mangler tilsynsordning (§15-6 femte ledd)
+                                {aktivitetTilTekst[EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING]}
                             </option>
                             <option value={EAktivitet.FORSØRGER_ER_SYK}>
-                                Forsørger er syk (§15-6 femte ledd)
+                                {aktivitetTilTekst[EAktivitet.FORSØRGER_ER_SYK]}
                             </option>
                             <option value={EAktivitet.BARNET_ER_SYKT}>
-                                Barnet er sykt (§15-6 femte ledd)
+                                {aktivitetTilTekst[EAktivitet.BARNET_ER_SYKT]}
                             </option>
                         </optgroup>
                     </StyledSelect>
@@ -77,13 +87,13 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
                 <AktivitetKolonne>
-                    <TekstMedLabel label={aktivitetLabel} tekst="Ikke aktivitetsplikt" />
+                    <Normaltekst>Ikke aktivitetsplikt</Normaltekst>
                 </AktivitetKolonne>
             );
         default:
             return (
                 <AktivitetKolonne>
-                    <TekstMedLabel label={aktivitetLabel} tekst="-" />
+                    <Normaltekst>-</Normaltekst>
                 </AktivitetKolonne>
             );
     }

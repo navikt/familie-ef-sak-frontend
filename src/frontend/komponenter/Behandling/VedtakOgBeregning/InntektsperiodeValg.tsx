@@ -2,7 +2,6 @@ import { Element } from 'nav-frontend-typografi';
 import { EInntektsperiodeProperty, IBeløpsperiode, IInntektsperiode } from '../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Textarea } from 'nav-frontend-skjema';
 import MånedÅrVelger from '../../Felleskomponenter/MånedÅr/MånedÅrVelger';
 import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
@@ -11,6 +10,8 @@ import InputMedTusenSkille from '../../Felleskomponenter/InputMedTusenskille';
 import { harTallverdi, tilTallverdi } from '../../../utils/utils';
 import Utregningstabell from './Utregningstabell';
 import { Ressurs } from '../../../typer/ressurs';
+import { useBehandling } from '../../../context/BehandlingContext';
+import { FamilieTextarea } from '@navikt/familie-form-elements';
 
 const Knapper = styled.div`
     max-width: 500px;
@@ -35,6 +36,7 @@ const FjernPeriodeKnapp = styled(Flatknapp)`
 `;
 
 const StyledInput = styled(InputMedTusenSkille)`
+    min-width: 160px;
     max-width: 200px;
     margin-right: 2rem;
 `;
@@ -70,6 +72,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     valideringsfeil,
     beregnetStønad,
 }) => {
+    const { behandlingErRedigerbar } = useBehandling();
     const { inntektsperiodeListe, inntektBegrunnelse } = inntektsperiodeData;
 
     const oppdaterInntektslisteElement = (
@@ -126,6 +129,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             årMånedInitiell={rad.årMånedFra}
                             antallÅrTilbake={10}
                             antallÅrFrem={4}
+                            lesevisning={!behandlingErRedigerbar}
                         />
 
                         <StyledInput
@@ -140,6 +144,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     tilTallverdi(e.target.value)
                                 );
                             }}
+                            erLesevisning={!behandlingErRedigerbar}
                         />
 
                         <StyledSamordningsfradrag
@@ -156,36 +161,42 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     tilTallverdi(e.target.value)
                                 );
                             }}
+                            erLesevisning={!behandlingErRedigerbar}
                         />
 
-                        <MndKnappWrapper>
-                            {index === inntektsperiodeListe.length - 1 && index !== 0 && (
-                                <FjernPeriodeKnapp onClick={fjernInntektsperiode}>
-                                    <Delete />
-                                    <span className="sr-only">Fjern inntektsperiode</span>
-                                </FjernPeriodeKnapp>
-                            )}
-                        </MndKnappWrapper>
+                        {behandlingErRedigerbar && (
+                            <MndKnappWrapper>
+                                {index === inntektsperiodeListe.length - 1 && index !== 0 && (
+                                    <FjernPeriodeKnapp onClick={fjernInntektsperiode}>
+                                        <Delete />
+                                        <span className="sr-only">Fjern inntektsperiode</span>
+                                    </FjernPeriodeKnapp>
+                                )}
+                            </MndKnappWrapper>
+                        )}
                     </InntektsperiodeRad>
                 );
             })}
             {valideringsfeil.map((feil) => (
                 <AlertStripeFeil>{feil}</AlertStripeFeil>
             ))}
-            <Knapper>
-                <KnappMedLuftUnder onClick={leggTilInntektsperiode}>
-                    <AddCircle style={{ marginRight: '1rem' }} />
-                    Legg til inntektsperiode
-                </KnappMedLuftUnder>
-            </Knapper>
+            {behandlingErRedigerbar && (
+                <Knapper>
+                    <KnappMedLuftUnder onClick={leggTilInntektsperiode}>
+                        <AddCircle style={{ marginRight: '1rem' }} />
+                        Legg til inntektsperiode
+                    </KnappMedLuftUnder>
+                </Knapper>
+            )}
             <Utregningstabell beregnetStønad={beregnetStønad} />
-            <Textarea
+            <FamilieTextarea
                 value={inntektBegrunnelse}
                 onChange={(e) => {
                     settInntektBegrunnelse(e.target.value);
                 }}
                 label="Begrunnelse"
                 maxLength={0}
+                erLesevisning={!behandlingErRedigerbar}
             />
         </>
     );

@@ -47,7 +47,7 @@ const KnappMedMargin = styled(Knapp)`
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
-    const { hentBehandling } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const history = useHistory();
     const { vedtaksresultatType, behandling, settFeilmelding, lagretVedtak } = props;
     const behandlingId = behandling.id;
@@ -221,47 +221,54 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         beregnetStønad={beregnetStønad}
                         valideringsfeil={valideringsfeil.inntektsperioder}
                     />
-                    <div>
-                        <KnappMedMargin onClick={beregnPerioder}>
-                            <Calculator style={{ marginRight: '1rem' }} />
-                            Beregn stønadsbeløp
-                        </KnappMedMargin>
-                    </div>
-                    <Hovedknapp
-                        style={{ marginTop: '2rem' }}
-                        onClick={() => {
-                            if (validerVedtak()) {
-                                switch (behandling.type) {
-                                    case Behandlingstype.BLANKETT:
-                                        lagBlankett();
-                                        break;
-                                    case Behandlingstype.FØRSTEGANGSBEHANDLING:
-                                        lagreVedtak();
-                                        break;
-                                    case Behandlingstype.REVURDERING:
-                                        throw Error(
-                                            'Støtter ikke behandlingstype revurdering ennå...'
-                                        );
-                                }
-                            }
-                        }}
-                        disabled={laster}
-                    >
-                        Lagre vedtak
-                    </Hovedknapp>
+                    {behandlingErRedigerbar && (
+                        <>
+                            <div>
+                                <KnappMedMargin onClick={beregnPerioder}>
+                                    <Calculator style={{ marginRight: '1rem' }} />
+                                    Beregn stønadsbeløp
+                                </KnappMedMargin>
+                            </div>
+
+                            <Hovedknapp
+                                style={{ marginTop: '2rem' }}
+                                onClick={() => {
+                                    if (validerVedtak()) {
+                                        switch (behandling.type) {
+                                            case Behandlingstype.BLANKETT:
+                                                lagBlankett();
+                                                break;
+                                            case Behandlingstype.FØRSTEGANGSBEHANDLING:
+                                                lagreVedtak();
+                                                break;
+                                            case Behandlingstype.REVURDERING:
+                                                throw Error(
+                                                    'Støtter ikke behandlingstype revurdering ennå...'
+                                                );
+                                        }
+                                    }
+                                }}
+                                disabled={laster}
+                            >
+                                Lagre vedtak
+                            </Hovedknapp>
+                        </>
+                    )}
                 </>
             );
         case EBehandlingResultat.BEHANDLE_I_GOSYS:
             return (
                 <>
                     <StyledAdvarsel>Oppgaven annulleres og må fullføres i Gosys</StyledAdvarsel>
-                    <Hovedknapp
-                        style={{ marginTop: '2rem' }}
-                        onClick={behandleIGosys}
-                        disabled={laster}
-                    >
-                        Avslutt og behandle i Gosys
-                    </Hovedknapp>
+                    {behandlingErRedigerbar && (
+                        <Hovedknapp
+                            style={{ marginTop: '2rem' }}
+                            onClick={behandleIGosys}
+                            disabled={laster}
+                        >
+                            Avslutt og behandle i Gosys
+                        </Hovedknapp>
+                    )}
                 </>
             );
         default:
