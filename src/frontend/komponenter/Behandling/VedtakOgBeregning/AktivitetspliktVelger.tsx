@@ -28,14 +28,13 @@ const AktivitetKolonne = styled.div`
 
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     const { periodeType, aktivitet, index, oppdaterVedtakslisteElement, erLesevisning } = props;
-    const aktivitetLabel = index === 0 ? 'Aktivitet' : '';
 
     switch (periodeType) {
         case EPeriodetype.HOVEDPERIODE:
             return (
                 <AktivitetKolonne>
                     <StyledSelect
-                        label={aktivitetLabel}
+                        aria-label={'Aktivitet'}
                         value={aktivitet}
                         onChange={(e) => {
                             oppdaterVedtakslisteElement(

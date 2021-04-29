@@ -1,4 +1,4 @@
-import { Element } from 'nav-frontend-typografi';
+import { Undertittel } from 'nav-frontend-typografi';
 import { EInntektsperiodeProperty, IBeløpsperiode, IInntektsperiode } from '../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -111,7 +111,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
 
     return (
         <>
-            <Element style={{ marginBottom: '1rem', marginTop: '3rem' }}>Inntekt</Element>
+            <Undertittel style={{ marginBottom: '1rem', marginTop: '3rem' }}>Inntekt</Undertittel>
             {inntektsperiodeListe.map((rad, index) => {
                 return (
                     <InntektsperiodeRad key={index}>

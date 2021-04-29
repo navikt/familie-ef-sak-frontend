@@ -1,6 +1,6 @@
 import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
 import { Søknadsgrunnlag } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../utils/formatter';
 import React, { useMemo } from 'react';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -31,7 +31,7 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingI
         <DataViewer response={{ søknadDataResponse }}>
             {({ søknadDataResponse }) => (
                 <Container>
-                    <Element style={{ marginBottom: '0.5rem' }}>Søknadsinformasjon</Element>
+                    <Undertittel className={'blokk-xs'}>Søknadsinformasjon</Undertittel>
                     <GridTabell style={{ marginBottom: '2rem' }}>
                         <Søknadsgrunnlag />
                         <Normaltekst>Søknadsdato</Normaltekst>
