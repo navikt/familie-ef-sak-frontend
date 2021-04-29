@@ -10,7 +10,7 @@ const Container = styled.div`
     padding: 2rem 1rem;
 `;
 
-const resultatTilTekst: Record<string, string> = {
+export const resultatTilTekst: Record<string, string> = {
     IKKE_AKTUELL: 'ikke aktuell',
     IKKE_OPPFYLT: 'ikke oppfylt',
     IKKE_TATT_STILLING_TIL: 'ikke tatt stilling til',
@@ -29,8 +29,8 @@ export const ResultatVisning: React.FC<{
         <Container>
             <Undertittel className="blokk-xs">{tittel}</Undertittel>
             {Object.entries(oppsummeringAvVilkårsresultat).map(
-                ([vilkårsresultat, antallVilkårsresultat]) => (
-                    <FlexDiv flexDirection="row" className="blokk-xxs">
+                ([vilkårsresultat, antallVilkårsresultat], i) => (
+                    <FlexDiv flexDirection="row" className="blokk-xxs" key={i}>
                         <VilkårsresultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
                         <Normaltekst style={{ marginLeft: '0.25rem' }}>
                             {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}

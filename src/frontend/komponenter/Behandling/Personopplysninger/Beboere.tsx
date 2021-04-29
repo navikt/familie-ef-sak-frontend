@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ISøkeresultatPerson } from '../../../typer/personopplysninger';
 import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursStatus } from '../../../typer/ressurs';
@@ -17,21 +17,24 @@ const Beboere: React.FC = () => {
     const { behandling } = useBehandling();
     const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
 
+    const sokPerson = useCallback(
+        (behandlingId: string) => {
+            axiosRequest<ISøkeresultatPerson, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/sok/${behandlingId}/samme-adresse`,
+            }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
+                settSøkResultat(respons);
+            });
+        },
+        [axiosRequest]
+    );
+
     useEffect(() => {
         if (behandling.status === RessursStatus.SUKSESS) {
             sokPerson(behandling.data.id);
         }
-        // eslint-disable-next-line
-    }, [behandling]);
+    }, [behandling, sokPerson]);
 
-    const sokPerson = (behandlingId: string) => {
-        axiosRequest<ISøkeresultatPerson, null>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/sok/${behandlingId}/samme-adresse`,
-        }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
-            settSøkResultat(respons);
-        });
-    };
 
     return (
         <DataViewer response={{ søkResultat }}>

@@ -5,7 +5,7 @@ import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnla
 import { ISivilstandInngangsvilkår } from './typer';
 import { sivilstandTilTekst } from '../../../../typer/personopplysninger';
 import Søknadsinformasjon from './Søknadsinformasjon';
-import { formaterNullableIsoDato } from '../../../../utils/formatter';
+import { formaterIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -13,18 +13,17 @@ interface Props {
 
 const SivilstandInfo: FC<Props> = ({ sivilstand }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
-    const sivilstatusOgDato = registergrunnlag.gyldigFraOgMed
-        ? `${sivilstandTilTekst[registergrunnlag.type]} - ${formaterNullableIsoDato(
-              registergrunnlag.gyldigFraOgMed
-          )}`
-        : sivilstandTilTekst[registergrunnlag.type];
-
     return (
         <>
             <GridTabell>
                 <Registergrunnlag />
                 <Normaltekst>Sivilstatus</Normaltekst>
-                <Normaltekst>{sivilstatusOgDato}</Normaltekst>
+                <Normaltekst>
+                    {sivilstandTilTekst[registergrunnlag.type]}
+                    {registergrunnlag.navn && ` - ${registergrunnlag.navn}`}
+                    {registergrunnlag.gyldigFraOgMed &&
+                        ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`}
+                </Normaltekst>
 
                 <Søknadsinformasjon
                     sivilstandtype={registergrunnlag.type}

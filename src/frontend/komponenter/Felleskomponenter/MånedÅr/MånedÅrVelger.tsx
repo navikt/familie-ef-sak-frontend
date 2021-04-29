@@ -12,6 +12,8 @@ interface Props {
     antallÅrTilbake: number;
     antallÅrFrem: number;
     feilmelding?: string;
+    lesevisning?: boolean;
+    disabled?: boolean;
 }
 
 const DatolabelStyle = styled.label`
@@ -33,6 +35,8 @@ const MånedÅrVelger: React.FC<Props> = ({
     antallÅrTilbake = 10,
     antallÅrFrem = 4,
     feilmelding,
+    lesevisning = false,
+    disabled = false,
 }) => {
     const [år, settÅr] = useState(
         årMånedInitiell ? parseInt(årMånedInitiell.split('-')[0], 10) : undefined
@@ -46,10 +50,7 @@ const MånedÅrVelger: React.FC<Props> = ({
             onEndret(`${år}-${måned}`);
         } else {
             onEndret(undefined);
-        }
-
-        // eslint-disable-next-line
-    }, [år, måned]);
+    }, [år, måned]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>
@@ -62,7 +63,12 @@ const MånedÅrVelger: React.FC<Props> = ({
             </div>
             <FlexDiv>
                 <StyledMånedvelger>
-                    <MånedVelger måned={måned} settMåned={settMåned} />
+                    <MånedVelger
+                        måned={måned}
+                        settMåned={settMåned}
+                        lesevisning={lesevisning}
+                        disabled={disabled}
+                    />
                 </StyledMånedvelger>
                 <StyledÅrvelger>
                     <Årvelger
@@ -70,6 +76,8 @@ const MånedÅrVelger: React.FC<Props> = ({
                         settÅr={settÅr}
                         antallÅrTilbake={antallÅrTilbake}
                         antallÅrFrem={antallÅrFrem}
+                        lesevisning={lesevisning}
+                        disabled={disabled}
                     />
                 </StyledÅrvelger>
             </FlexDiv>

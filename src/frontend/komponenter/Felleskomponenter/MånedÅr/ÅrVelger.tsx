@@ -1,12 +1,14 @@
 import React from 'react';
-import { Select } from 'nav-frontend-skjema';
 import { range } from '../../../utils/utils';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 
 interface ÅrProps {
     år: number | undefined;
     settÅr: (år: number) => void;
     antallÅrFrem: number;
     antallÅrTilbake: number;
+    lesevisning?: boolean;
+    disabled?: boolean;
 }
 
 const lagÅrOptions = (år: number | undefined, antallÅrFrem: number, antallÅrTilbake: number) => {
@@ -20,20 +22,30 @@ const lagÅrOptions = (år: number | undefined, antallÅrFrem: number, antallÅr
     ));
 };
 
-const Årvelger: React.FC<ÅrProps> = ({ år, settÅr, antallÅrFrem, antallÅrTilbake }) => {
+const Årvelger: React.FC<ÅrProps> = ({
+    år,
+    settÅr,
+    antallÅrFrem,
+    antallÅrTilbake,
+    lesevisning = false,
+    disabled = false,
+}) => {
     const årOptions = lagÅrOptions(år, antallÅrFrem, antallÅrTilbake);
     return (
-        <Select
+        <FamilieSelect
+            lesevisningVerdi={år ? år.toString() : ''}
             value={år}
             bredde={'xs'}
             onChange={(event) => {
                 event.persist();
                 settÅr(parseInt(event.target.value));
             }}
+            erLesevisning={lesevisning}
+            disabled={disabled}
         >
             <option value="">År</option>
             {årOptions}
-        </Select>
+        </FamilieSelect>
     );
 };
 

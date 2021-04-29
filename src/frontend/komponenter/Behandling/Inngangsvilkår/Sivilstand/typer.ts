@@ -24,6 +24,7 @@ export interface IPersonDetaljer {
 }
 export interface ISivilstandRegistergrunnlag {
     type: SivilstandType;
+    navn?: string;
     gyldigFraOgMed: string;
 }
 export enum EÅrsakEnslig {

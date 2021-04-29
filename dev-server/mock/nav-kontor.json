@@ -1,0 +1,12 @@
+{
+  "data": {
+    "enhetId": 100000194,
+    "navn": "NAV Kristiansand",
+    "enhetNr": "1001",
+    "status": "Aktiv"
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}

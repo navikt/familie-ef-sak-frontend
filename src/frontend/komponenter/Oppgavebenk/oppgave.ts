@@ -11,7 +11,7 @@ export interface IOppgave {
     opprettetAvEnhetsnr?: string;
     journalpostId?: string;
     journalpostkilde?: string;
-    behandlesAvApplikasjon?: string;
+    behandlesAvApplikasjon: string;
     saksreferanse?: string;
     bnr?: string;
     samhandlernr?: string;
@@ -35,5 +35,4 @@ export interface IOppgave {
     endretTidspunkt?: string;
     prioritet?: Prioritet; //OppgavePrioritet
     status?: string; //StatusEnum
-    kanStarteBlankettbehandling: boolean;
 }

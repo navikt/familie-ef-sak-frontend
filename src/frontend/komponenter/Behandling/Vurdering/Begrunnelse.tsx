@@ -25,6 +25,7 @@ const Begrunnelse: FC<Props> = ({ svar, onChange, regel }) => {
             value={svar.begrunnelse || ''}
             onChange={(e) => onChange(e.target.value)}
             hidden={skjulBegrunnelse}
+            maxLength={0}
         />
     );
 };

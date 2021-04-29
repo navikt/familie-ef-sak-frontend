@@ -1,6 +1,6 @@
 import React from 'react';
 import { IOppgave } from './oppgave';
-import { Oppgavetype, oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
+import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
 import { formaterIsoDato } from '../../utils/formatter';
@@ -16,16 +16,20 @@ interface Props {
 
 const Flatknapp = hiddenIf(Knapp);
 
-const kanJournalføres = (behandlingstema?: Behandlingstema, oppgavetype?: Oppgavetype) => {
+const kanJournalføres = (oppgave: IOppgave) => {
+    const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
     return (
+        behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' &&
         oppgavetype === 'JFR' &&
         behandlingstema &&
         ['ab0071', 'ab0177', 'ab0028'].includes(behandlingstema)
     );
 };
 
-const kanBehandles = (behandlingstema?: Behandlingstema, oppgavetype?: Oppgavetype) => {
+const måBehandlesIEFSak = (oppgave: IOppgave) => {
+    const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
     return (
+        behandlesAvApplikasjon === 'familie-ef-sak' &&
         oppgavetype &&
         ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype) &&
         behandlingstema &&
@@ -56,6 +60,12 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
         oppgave.behandlingstema &&
         behandlingstemaTilTekst[oppgave.behandlingstema as Behandlingstema];
 
+    const kanStarteBlankettBehandling =
+        oppgave.behandlesAvApplikasjon === 'familie-ef-sak-blankett';
+
+    const måHåndteresIGosys =
+        !måBehandlesIEFSak(oppgave) && !kanJournalføres(oppgave) && !kanStarteBlankettBehandling;
+
     return (
         <>
             <tr>
@@ -70,31 +80,27 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
                 <td>{enhetsmappe}</td>
                 <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
                 <td>
-                    <Flatknapp
-                        hidden={!oppgave.kanStarteBlankettbehandling}
-                        onClick={startBlankettBehandling}
-                        disabled={laster}
-                    >
-                        Lag blankett
-                    </Flatknapp>
+                    {kanStarteBlankettBehandling && (
+                        <Flatknapp onClick={startBlankettBehandling} disabled={laster}>
+                            Lag blankett
+                        </Flatknapp>
+                    )}
 
-                    <Flatknapp
-                        hidden={!kanJournalføres(oppgave.behandlingstema, oppgave.oppgavetype)}
-                        onClick={gåTilJournalføring}
-                        disabled={laster}
-                    >
-                        Gå til journalpost
-                    </Flatknapp>
-                    <Flatknapp
-                        hidden={
-                            !kanBehandles(oppgave.behandlingstema, oppgave.oppgavetype) ||
-                            oppgave.kanStarteBlankettbehandling
-                        }
-                        onClick={gåTilBehandleSakOppgave}
-                        disabled={laster}
-                    >
-                        Start Behandling
-                    </Flatknapp>
+                    {kanJournalføres(oppgave) && (
+                        <Flatknapp onClick={gåTilJournalføring} disabled={laster}>
+                            Gå til journalpost
+                        </Flatknapp>
+                    )}
+                    {måBehandlesIEFSak(oppgave) && (
+                        <Flatknapp onClick={gåTilBehandleSakOppgave} disabled={laster}>
+                            Start Behandling
+                        </Flatknapp>
+                    )}
+                    {måHåndteresIGosys && (
+                        <Normaltekst style={{ marginLeft: '2.5rem' }}>
+                            Må håndteres i Gosys
+                        </Normaltekst>
+                    )}
                 </td>
             </tr>
             <UIModalWrapper

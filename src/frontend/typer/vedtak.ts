@@ -5,6 +5,29 @@ export interface IVedtak {
     periodeBegrunnelse: string;
     inntektBegrunnelse: string;
     perioder: IVedtaksperiode[];
+    inntekter: IInntektsperiode[];
+}
+
+export interface IInntektsperiode {
+    årMånedFra?: string;
+    forventetInntekt?: number;
+    samordningsfradrag?: number;
+    endretKey?: string; // intern for re-rendring
+}
+
+export interface IBeløpsperiode {
+    fraOgMedDato: string;
+    tilDato: string;
+    beregningsgrunnlag: IBeregningsgrunnlag;
+    beløp: number;
+}
+
+export interface IBeregningsgrunnlag {
+    inntekt: number;
+    samordningsfradrag?: number;
+    avkortningPerMåned: number;
+    fullOvergangsStønadPerMåned: number;
+    grunnbeløp: number;
 }
 
 export interface IVedtaksperiode {
@@ -12,6 +35,33 @@ export interface IVedtaksperiode {
     aktivitet: EAktivitet;
     årMånedFra?: string;
     årMånedTil?: string;
+}
+
+export type IBeregningsrequest = {
+    vedtaksperioder: IVedtaksperiode[];
+    inntekt: IInntektsperiode[];
+};
+
+export interface IBeløpsperiode {
+    fraOgMedDato: string;
+    tilDato: string;
+    beløp: number;
+    beregningsgrunnlag: IBeregningsgrunnlag;
+    beløpFørSamordning: number;
+    inntektsreduksjon: number;
+}
+
+export interface IValideringsfeil {
+    vedtaksperioder: string[];
+    inntektsperioder: string[];
+}
+
+export enum EInntektsperiodeProperty {
+    årMånedFra = 'årMånedFra',
+    forventetInntekt = 'forventetInntekt',
+    stønadsbeløp = 'stønadsbeløp',
+    samordningsfradrag = 'samordningsfradrag',
+    beløpFørSamordning = 'beløpFørSamordning',
 }
 
 export enum EBehandlingResultat {
