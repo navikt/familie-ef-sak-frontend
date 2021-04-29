@@ -4,18 +4,29 @@ import { useApp } from '../../../../context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../typer/ressurs';
 import { useHistory } from 'react-router-dom';
 import { useBehandling } from '../../../../context/BehandlingContext';
-import { EBehandlingResultat } from '../../../../typer/vedtak';
+import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../../typer/vedtak';
 import { Behandling } from '../../../../typer/fagsak';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
-export const AvslåVedtak: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const [periodeBegrunnelse, settPeriodeBegrunnelse] = useState<string>('');
+export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVedtak }> = ({
+    behandling,
+    lagretVedtak,
+}) => {
+    const lagretAvslåBehandling = lagretVedtak as IAvslåVedtak;
+    const [avslåBegrunnelse, settAvslåBegrunnelse] = useState<string>(
+        lagretAvslåBehandling.avslåBegrunnelse ?? ''
+    );
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
     const { hentBehandling } = useBehandling();
     const { axiosRequest } = useApp();
+
+    const vedtakRequest: IAvslåVedtak = {
+        resultatType: EBehandlingResultat.AVSLÅ,
+        avslåBegrunnelse,
+    };
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
         return (res: Ressurs<string>) => {
@@ -35,13 +46,10 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling }> = ({ behandling 
 
     const lagBlankett = () => {
         settLaster(true);
-        axiosRequest<string, { periodeBegrunnelse: string; resultatType: EBehandlingResultat }>({
+        axiosRequest<string, IAvslåVedtak>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-vedtak`,
-            data: {
-                periodeBegrunnelse,
-                resultatType: EBehandlingResultat.AVSLÅ,
-            },
+            data: vedtakRequest,
         })
             .then(håndterVedtaksresultat(`/behandling/${behandling.id}/blankett`))
             .finally(() => {
@@ -53,9 +61,9 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling }> = ({ behandling 
         <>
             <form style={{ marginTop: '2rem' }} onSubmit={lagBlankett}>
                 <Textarea
-                    value={periodeBegrunnelse}
+                    value={avslåBegrunnelse}
                     onChange={(e) => {
-                        settPeriodeBegrunnelse(e.target.value);
+                        settAvslåBegrunnelse(e.target.value);
                     }}
                     label="Begrunnelse"
                     maxLength={0}

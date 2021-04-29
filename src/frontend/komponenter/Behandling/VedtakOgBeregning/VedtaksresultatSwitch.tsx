@@ -19,15 +19,9 @@ const VedtaksresultatSwitch: React.FC<Props> = ({
     if (!vedtaksresultatType) return null;
     switch (vedtaksresultatType) {
         case EBehandlingResultat.AVSLÅ:
-            return <AvslåVedtak />;
+            return <AvslåVedtak behandling={behandling} lagretVedtak={lagretVedtak} />;
         case EBehandlingResultat.INNVILGE:
-            return (
-                <InnvilgeVedtak
-                    vedtaksresultatType={vedtaksresultatType}
-                    behandling={behandling}
-                    lagretVedtak={lagretVedtak}
-                />
-            );
+            return <InnvilgeVedtak behandling={behandling} lagretVedtak={lagretVedtak} />;
         case EBehandlingResultat.BEHANDLE_I_GOSYS:
             return <BehandleIGosys behandlingId={behandling.id} />;
         default:

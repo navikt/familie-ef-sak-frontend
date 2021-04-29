@@ -13,6 +13,7 @@ import {
     EBehandlingResultat,
     IBeløpsperiode,
     IBeregningsrequest,
+    IInnvilgeVedtak,
     IValideringsfeil,
     IVedtak,
 } from '../../../../typer/vedtak';
@@ -35,8 +36,8 @@ const KnappMedMargin = styled(Knapp)`
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtak;
-    vedtaksresultatType: EBehandlingResultat;
-}> = ({ behandling, lagretVedtak, vedtaksresultatType }) => {
+}> = ({ behandling, lagretVedtak }) => {
+    const lagretInnvilgetVedtak = lagretVedtak as IInnvilgeVedtak;
     const { hentBehandling } = useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
@@ -52,14 +53,16 @@ export const InnvilgeVedtak: React.FC<{
     });
 
     const [vedtaksperiodeData, settVedtaksperiodeData] = useState<IVedtaksperiodeData>({
-        periodeBegrunnelse: lagretVedtak?.periodeBegrunnelse || '',
-        vedtaksperiodeListe: lagretVedtak ? lagretVedtak.perioder : [tomVedtaksperiodeRad],
+        periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
+        vedtaksperiodeListe: lagretInnvilgetVedtak
+            ? lagretInnvilgetVedtak.perioder
+            : [tomVedtaksperiodeRad],
     });
 
     const [inntektsperiodeData, settInntektsperiodeData] = useState<IInntektsperiodeData>({
-        inntektBegrunnelse: lagretVedtak?.inntektBegrunnelse || '',
-        inntektsperiodeListe: lagretVedtak?.inntekter
-            ? lagretVedtak?.inntekter
+        inntektBegrunnelse: lagretInnvilgetVedtak?.inntektBegrunnelse || '',
+        inntektsperiodeListe: lagretInnvilgetVedtak?.inntekter
+            ? lagretInnvilgetVedtak?.inntekter
             : [tomInntektsperiodeRad],
     });
 
@@ -75,8 +78,8 @@ export const InnvilgeVedtak: React.FC<{
         );
     };
 
-    const vedtaksRequest: IVedtak = {
-        resultatType: vedtaksresultatType,
+    const vedtaksRequest: IInnvilgeVedtak = {
+        resultatType: EBehandlingResultat.INNVILGE,
         periodeBegrunnelse: vedtaksperiodeData.periodeBegrunnelse,
         inntektBegrunnelse: inntektsperiodeData.inntektBegrunnelse,
         perioder: vedtaksperiodeData.vedtaksperiodeListe,
@@ -143,7 +146,7 @@ export const InnvilgeVedtak: React.FC<{
 
     const lagBlankett = () => {
         settLaster(true);
-        axiosRequest<string, IVedtak>({
+        axiosRequest<string, IInnvilgeVedtak>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
@@ -156,7 +159,7 @@ export const InnvilgeVedtak: React.FC<{
 
     const lagreVedtak = () => {
         settLaster(true);
-        axiosRequest<string, IVedtak>({
+        axiosRequest<string, IInnvilgeVedtak>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
             data: vedtaksRequest,
