@@ -35,7 +35,6 @@ const Beboere: React.FC = () => {
         }
     }, [behandling, sokPerson]);
 
-
     return (
         <DataViewer response={{ søkResultat }}>
             {({ søkResultat }) => {
