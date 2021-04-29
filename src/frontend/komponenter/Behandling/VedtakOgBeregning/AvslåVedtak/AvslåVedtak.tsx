@@ -1,5 +1,5 @@
 import { Textarea } from 'nav-frontend-skjema';
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useApp } from '../../../../context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../typer/ressurs';
 import { useHistory } from 'react-router-dom';
@@ -13,9 +13,12 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
     behandling,
     lagretVedtak,
 }) => {
-    const lagretAvslåBehandling = lagretVedtak as IAvslåVedtak;
+    const lagretAvslåBehandling =
+        lagretVedtak?.resultatType === EBehandlingResultat.AVSLÅ
+            ? (lagretVedtak as IAvslåVedtak)
+            : undefined;
     const [avslåBegrunnelse, settAvslåBegrunnelse] = useState<string>(
-        lagretAvslåBehandling.avslåBegrunnelse ?? ''
+        lagretAvslåBehandling?.avslåBegrunnelse ?? ''
     );
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
@@ -44,7 +47,8 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
         };
     };
 
-    const lagBlankett = () => {
+    const lagBlankett = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         settLaster(true);
         axiosRequest<string, IAvslåVedtak>({
             method: 'POST',

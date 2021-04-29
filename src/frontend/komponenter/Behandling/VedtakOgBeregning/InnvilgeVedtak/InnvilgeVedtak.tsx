@@ -37,7 +37,10 @@ export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtak;
 }> = ({ behandling, lagretVedtak }) => {
-    const lagretInnvilgetVedtak = lagretVedtak as IInnvilgeVedtak;
+    const lagretInnvilgetVedtak =
+        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
+            ? (lagretVedtak as IInnvilgeVedtak)
+            : undefined;
     const { hentBehandling } = useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
