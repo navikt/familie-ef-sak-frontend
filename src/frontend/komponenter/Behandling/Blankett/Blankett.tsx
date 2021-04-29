@@ -4,7 +4,6 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import { useBehandling } from '../../../context/BehandlingContext';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 
 interface Props {
@@ -17,7 +16,7 @@ const StyledBlankett = styled.div`
 `;
 
 const Blankett: React.FC<Props> = ({ behandlingId }) => {
-    const { behandling, behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar } = useBehandling();
     const { axiosRequest } = useApp();
     const [blankettRessurs, settBlankettRessurs] = useState<Ressurs<string>>(byggTomRessurs());
 
@@ -39,16 +38,12 @@ const Blankett: React.FC<Props> = ({ behandlingId }) => {
 
     return (
         <>
-            <DataViewer response={{ behandling }}>
-                <>
-                    <StyledBlankett>
-                        <PdfVisning pdfFilInnhold={blankettRessurs} />
-                    </StyledBlankett>
-                    {behandlingErRedigerbar && harHentetBlankett() && (
-                        <SendTilBeslutterFooter behandlingId={behandlingId} />
-                    )}
-                </>
-            </DataViewer>
+            <StyledBlankett>
+                <PdfVisning pdfFilInnhold={blankettRessurs} />
+            </StyledBlankett>
+            {behandlingErRedigerbar && harHentetBlankett() && (
+                <SendTilBeslutterFooter behandlingId={behandlingId} />
+            )}
         </>
     );
 };
