@@ -52,7 +52,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
 
     return {
         behandling,
-        behandlingErRedigerbar: true, // TODO revert
+        behandlingErRedigerbar,
         totrinnskontroll,
         personopplysningerResponse,
         navKontorResponse,
