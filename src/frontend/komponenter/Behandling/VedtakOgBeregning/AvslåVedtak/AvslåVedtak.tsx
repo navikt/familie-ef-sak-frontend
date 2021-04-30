@@ -8,6 +8,15 @@ import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../../typer/v
 import { Behandling } from '../../../../typer/fagsak';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import styled from 'styled-components';
+
+const StyledForm = styled.form`
+    margin-top: 2rem;
+`;
+
+const StyledHovedKnapp = styled(Hovedknapp)`
+    margin-top: 2rem;
+`;
 
 export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVedtak }> = ({
     behandling,
@@ -63,7 +72,7 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
 
     return (
         <>
-            <form style={{ marginTop: '2rem' }} onSubmit={lagBlankett}>
+            <StyledForm onSubmit={lagBlankett}>
                 <Textarea
                     value={avslåBegrunnelse}
                     onChange={(e) => {
@@ -72,10 +81,10 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
                     label="Begrunnelse"
                     maxLength={0}
                 />
-                <Hovedknapp htmlType="submit" disabled={laster}>
+                <StyledHovedKnapp htmlType="submit" disabled={laster}>
                     Lagre vedtak
-                </Hovedknapp>
-            </form>
+                </StyledHovedKnapp>
+            </StyledForm>
             {feilmelding && (
                 <AlertStripeFeil style={{ marginTop: '2rem' }}>{feilmelding}</AlertStripeFeil>
             )}
