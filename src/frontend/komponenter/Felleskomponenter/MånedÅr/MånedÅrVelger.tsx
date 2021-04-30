@@ -6,6 +6,7 @@ import Årvelger from './ÅrVelger';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 
 interface Props {
+    className?: string;
     label?: string;
     årMånedInitiell?: string;
     onEndret: (årMåned?: string) => void;
@@ -29,6 +30,7 @@ const StyledÅrvelger = styled.div`
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
+    className,
     label,
     årMånedInitiell,
     onEndret,
@@ -54,7 +56,7 @@ const MånedÅrVelger: React.FC<Props> = ({
     }, [år, måned]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div style={lesevisning ? { minWidth: '140px' } : {}}>
+        <div className={className} style={lesevisning ? { minWidth: '140px' } : {}}>
             <div>
                 {label && (
                     <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
