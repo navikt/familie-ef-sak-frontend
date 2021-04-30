@@ -51,7 +51,7 @@ const MånedÅrVelger: React.FC<Props> = ({
         } else {
             onEndret(undefined);
         }
-    }, [år, måned]);
+    }, [år, måned]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>

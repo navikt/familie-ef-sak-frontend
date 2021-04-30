@@ -5,6 +5,7 @@ import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
+import { useBehandling } from '../../../context/BehandlingContext';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -28,6 +29,7 @@ interface Props {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
+    const { behandlingErRedigerbar } = useBehandling();
 
     const data = { navn: 'test', ident: '123456789' };
 
@@ -55,11 +57,13 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     return (
         <>
             <StyledBrev>
-                <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                {behandlingErRedigerbar && (
+                    <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                )}
                 <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
-                <PdfVisning pdfFilInnhold={brevRessurs}></PdfVisning>
+                <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
-            <SendTilBeslutterFooter behandlingId={behandlingId} />
+            {behandlingErRedigerbar && <SendTilBeslutterFooter behandlingId={behandlingId} />}
         </>
     );
 };

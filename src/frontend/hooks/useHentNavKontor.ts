@@ -20,7 +20,7 @@ export const useHentNavKontor = (
             method: 'GET',
             url: `/familie-ef-sak/api/personopplysninger/nav-kontor/behandling/${behandlingId}`,
         }).then((res: Ressurs<INavKontor>) => settNavKontorResponse(res));
-    }, [behandlingId]);
+    }, [behandlingId, axiosRequest]);
 
     return {
         hentNavKontor,
