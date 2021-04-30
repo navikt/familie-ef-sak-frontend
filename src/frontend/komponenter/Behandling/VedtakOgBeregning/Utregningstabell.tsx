@@ -2,7 +2,7 @@ import { IBeløpsperiode } from '../../../typer/vedtak';
 import React from 'react';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Ressurs } from '../../../typer/ressurs';
-import TabellVisning, { TabellIkon } from '../TabellVisning';
+import TabellVisning from '../TabellVisning';
 import { formaterNullableMånedÅr, formaterTallMedTusenSkille } from '../../../utils/formatter';
 
 interface Props {
@@ -16,7 +16,6 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                 return (
                     <>
                         <TabellVisning
-                            ikon={TabellIkon.KALKULATOR}
                             tittel="Utregning av stønad"
                             verdier={beregnetStønad}
                             kolonner={[

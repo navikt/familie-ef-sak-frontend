@@ -14,7 +14,7 @@ export enum TabellIkon {
 }
 
 export interface Kolonndata<T> {
-    ikon: TabellIkon;
+    ikon?: TabellIkon;
     tittel: string;
     verdier: T[];
     kolonner: Kolonner<T>[];
@@ -39,8 +39,8 @@ const mapIkon = (ikon: TabellIkon) => {
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
     const { ikon, tittel, verdier, kolonner } = props;
     return (
-        <GridTabell kolonner={kolonner.length + 1}>
-            {mapIkon(ikon)}
+        <GridTabell kolonner={kolonner.length + 1} utenIkon={!ikon}>
+            {ikon && mapIkon(ikon)}
             <Element className="tittel" tag="h3">
                 {tittel}
             </Element>

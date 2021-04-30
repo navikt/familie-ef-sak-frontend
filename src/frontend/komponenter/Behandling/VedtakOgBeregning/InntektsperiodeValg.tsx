@@ -3,7 +3,7 @@ import { EInntektsperiodeProperty, IBeløpsperiode, IInntektsperiode } from '../
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import MånedÅrVelger from '../../Felleskomponenter/MånedÅr/MånedÅrVelger';
-import { Flatknapp } from 'nav-frontend-knapper';
+import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
 import InputMedTusenSkille from '../../Felleskomponenter/InputMedTusenskille';
@@ -12,12 +12,6 @@ import Utregningstabell from './Utregningstabell';
 import { Ressurs } from '../../../typer/ressurs';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
-
-const Knapper = styled.div`
-    max-width: 500px;
-    display: flex;
-    justify-content: space-between;
-`;
 
 const InntektsperiodeRad = styled.div`
     display: flex;
@@ -64,6 +58,7 @@ interface Props {
     settInntektsperiodeData: (verdi: IInntektsperiodeData) => void;
     valideringsfeil: string[];
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
+    beregnPerioder: () => void;
 }
 
 const InntektsperiodeValg: React.FC<Props> = ({
@@ -71,6 +66,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     settInntektsperiodeData,
     valideringsfeil,
     beregnetStønad,
+    beregnPerioder,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { inntektsperiodeListe, inntektBegrunnelse } = inntektsperiodeData;
@@ -181,14 +177,21 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 <AlertStripeFeil>{feil}</AlertStripeFeil>
             ))}
             {behandlingErRedigerbar && (
-                <Knapper>
+                <>
                     <KnappMedLuftUnder onClick={leggTilInntektsperiode}>
                         <AddCircle style={{ marginRight: '1rem' }} />
                         Legg til inntektsperiode
                     </KnappMedLuftUnder>
-                </Knapper>
+                    <div className={'blokk-m'}>
+                        <Knapp type={'standard'} onClick={beregnPerioder}>
+                            Beregn
+                        </Knapp>
+                    </div>
+                </>
             )}
+
             <Utregningstabell beregnetStønad={beregnetStønad} />
+
             <FamilieTextarea
                 value={inntektBegrunnelse}
                 onChange={(e) => {

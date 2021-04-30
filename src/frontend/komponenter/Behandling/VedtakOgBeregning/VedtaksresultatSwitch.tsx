@@ -6,14 +6,13 @@ import {
     IValideringsfeil,
     IVedtak,
 } from '../../../typer/vedtak';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
-import { Calculator } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { validerVedtaksperioder } from './vedtaksvalidering';
 import InntektsperiodeValg, {
@@ -37,11 +36,6 @@ interface Props {
 
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`
     margin-top: 2rem;
-`;
-
-const KnappMedMargin = styled(Knapp)`
-    margin-bottom: 1rem;
-    margin-top: 1rem;
 `;
 
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
@@ -219,17 +213,11 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         inntektsperiodeData={inntektsperiodeData}
                         settInntektsperiodeData={settInntektsperiodeData}
                         beregnetStønad={beregnetStønad}
+                        beregnPerioder={beregnPerioder}
                         valideringsfeil={valideringsfeil.inntektsperioder}
                     />
                     {behandlingErRedigerbar && (
                         <>
-                            <div>
-                                <KnappMedMargin onClick={beregnPerioder}>
-                                    <Calculator style={{ marginRight: '1rem' }} />
-                                    Beregn stønadsbeløp
-                                </KnappMedMargin>
-                            </div>
-
                             <Hovedknapp
                                 style={{ marginTop: '2rem' }}
                                 onClick={() => {
