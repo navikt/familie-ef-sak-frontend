@@ -24,8 +24,8 @@ const VelgVedtaksresultat = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { resultatType, settFeilmelding, settResultatType } = props;
     return (
-        <>
-            <Undertittel className={'blokk-xs'}>Vedtak</Undertittel>
+        <section className={'blokk-xl'}>
+            <Undertittel className={'blokk-s'}>Vedtak</Undertittel>
             <StyledSelect
                 aria-label={'Vedtak'}
                 value={resultatType}
@@ -50,7 +50,7 @@ const VelgVedtaksresultat = (props: Props): JSX.Element => {
                     {behandlingResultatTilTekst[EBehandlingResultat.BEHANDLE_I_GOSYS]}
                 </option>
             </StyledSelect>
-        </>
+        </section>
     );
 };
 

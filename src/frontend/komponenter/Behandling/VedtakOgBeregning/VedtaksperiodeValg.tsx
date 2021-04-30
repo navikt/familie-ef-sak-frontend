@@ -1,4 +1,4 @@
-import { Element, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     EAktivitet,
     EPeriodeProperty,
@@ -38,6 +38,11 @@ const VedtaksperiodeRad = styled.div`
     display: contents;
 `;
 
+const IngenBegrunnelseOppgitt = styled.div`
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+`;
+
 const KnappMedLuftUnder = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 1rem;
@@ -52,6 +57,10 @@ const MndKnappWrapper = styled.div`
     width: 90px;
     display: flex;
     align-items: center;
+`;
+
+const StyledFamilieTextarea = styled(FamilieTextarea)`
+    max-width: 60rem;
 `;
 
 export interface IVedtaksperiodeData {
@@ -119,11 +128,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <>
-            <Undertittel style={{ marginBottom: '1rem', marginTop: '3rem' }}>
-                Vedtaksperiode
-            </Undertittel>
-            <VedtakContainer>
+        <section className={'blokk-xl'}>
+            <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
+            <VedtakContainer className={'blokk-s'}>
                 <Element>Periodetype</Element>
                 <Element>Aktivitet</Element>
                 <Element>Fra og med</Element>
@@ -185,7 +192,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             </VedtakContainer>
 
             {valideringsfeil.map((feil) => (
-                <AlertStripeFeil>{feil}</AlertStripeFeil>
+                <AlertStripeFeil className={'blokk-s'}>{feil}</AlertStripeFeil>
             ))}
 
             {behandlingErRedigerbar && (
@@ -194,16 +201,25 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     Legg til vedtaksperiode
                 </KnappMedLuftUnder>
             )}
-            <FamilieTextarea
-                value={vedtaksperiodeData.periodeBegrunnelse}
-                onChange={(e) => {
-                    settPeriodeBegrunnelse(e.target.value);
-                }}
-                label="Begrunnelse"
-                maxLength={0}
-                erLesevisning={!behandlingErRedigerbar}
-            />
-        </>
+            {!behandlingErRedigerbar && vedtaksperiodeData.periodeBegrunnelse === '' ? (
+                <IngenBegrunnelseOppgitt>
+                    <Element className={'blokk-s'}>Begrunnelse</Element>
+                    <Normaltekst style={{ fontStyle: 'italic' }}>
+                        Ingen opplysninger oppgitt.
+                    </Normaltekst>
+                </IngenBegrunnelseOppgitt>
+            ) : (
+                <StyledFamilieTextarea
+                    value={vedtaksperiodeData.periodeBegrunnelse}
+                    onChange={(e) => {
+                        settPeriodeBegrunnelse(e.target.value);
+                    }}
+                    label="Begrunnelse"
+                    maxLength={0}
+                    erLesevisning={!behandlingErRedigerbar}
+                />
+            )}
+        </section>
     );
 };
 
