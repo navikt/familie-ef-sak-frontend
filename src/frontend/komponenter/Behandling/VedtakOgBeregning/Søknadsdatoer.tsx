@@ -32,7 +32,7 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingI
             {({ søknadDataResponse }) => (
                 <Container>
                     <Undertittel className={'blokk-xs'}>Søknadsinformasjon</Undertittel>
-                    <GridTabell style={{ marginBottom: '2rem' }}>
+                    <GridTabell gridGap={0.5} style={{ marginBottom: '2rem' }}>
                         <Søknadsgrunnlag />
                         <Normaltekst>Søknadsdato</Normaltekst>
                         <Normaltekst>

@@ -27,6 +27,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { Behandling } from '../../../typer/fagsak';
 import { Behandlingstype } from '../../../typer/behandlingstype';
 
+const BehandlingsResultatContainer = styled.div`
+    margin-bottom: 8rem;
+`;
+
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
     behandling: Behandling;
@@ -203,7 +207,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     switch (vedtaksresultatType) {
         case EBehandlingResultat.INNVILGE:
             return (
-                <>
+                <BehandlingsResultatContainer>
                     <VedtaksperiodeValg
                         vedtaksperiodeData={vedtaksperiodeData}
                         settVedtaksperiodeData={oppdaterVedtaksperiodeData}
@@ -217,32 +221,30 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         valideringsfeil={valideringsfeil.inntektsperioder}
                     />
                     {behandlingErRedigerbar && (
-                        <>
-                            <Hovedknapp
-                                style={{ marginTop: '2rem' }}
-                                onClick={() => {
-                                    if (validerVedtak()) {
-                                        switch (behandling.type) {
-                                            case Behandlingstype.BLANKETT:
-                                                lagBlankett();
-                                                break;
-                                            case Behandlingstype.FØRSTEGANGSBEHANDLING:
-                                                lagreVedtak();
-                                                break;
-                                            case Behandlingstype.REVURDERING:
-                                                throw Error(
-                                                    'Støtter ikke behandlingstype revurdering ennå...'
-                                                );
-                                        }
+                        <Hovedknapp
+                            style={{ marginTop: '5rem' }}
+                            onClick={() => {
+                                if (validerVedtak()) {
+                                    switch (behandling.type) {
+                                        case Behandlingstype.BLANKETT:
+                                            lagBlankett();
+                                            break;
+                                        case Behandlingstype.FØRSTEGANGSBEHANDLING:
+                                            lagreVedtak();
+                                            break;
+                                        case Behandlingstype.REVURDERING:
+                                            throw Error(
+                                                'Støtter ikke behandlingstype revurdering ennå...'
+                                            );
                                     }
-                                }}
-                                disabled={laster}
-                            >
-                                Lagre vedtak
-                            </Hovedknapp>
-                        </>
+                                }
+                            }}
+                            disabled={laster}
+                        >
+                            Lagre vedtak
+                        </Hovedknapp>
                     )}
-                </>
+                </BehandlingsResultatContainer>
             );
         case EBehandlingResultat.BEHANDLE_I_GOSYS:
             return (

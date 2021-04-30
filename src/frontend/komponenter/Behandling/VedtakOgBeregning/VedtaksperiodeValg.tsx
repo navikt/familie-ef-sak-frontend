@@ -18,14 +18,14 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
 
-const VedtakContainer = styled.div<{ radStart?: number; lesevisning?: boolean }>`
+const VedtakContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: repeat(5, max-content);
     grid-auto-rows: min-content;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     align-items: center;
 
-    .vedtakperiodeselect {
+    .forsteKolonne {
         grid-column: 1/2;
     }
 
@@ -38,7 +38,7 @@ const VedtaksperiodeRad = styled.div`
     display: contents;
 `;
 
-const IngenBegrunnelseOppgitt = styled.div`
+export const IngenBegrunnelseOppgitt = styled.div`
     margin-top: 2rem;
     margin-bottom: 2rem;
 `;
@@ -133,7 +133,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     return (
         <section className={'blokk-xl'}>
             <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
-            <VedtakContainer className={'blokk-m'} lesevisning={!behandlingErRedigerbar}>
+            <VedtakContainer className={'blokk-s'} lesevisning={!behandlingErRedigerbar}>
                 <Element>Periodetype</Element>
                 <Element>Aktivitet</Element>
                 <Element>Fra og med</Element>
@@ -146,7 +146,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     return (
                         <VedtaksperiodeRad key={index} className={'vedtakrad'}>
                             <VedtakperiodeSelect
-                                className={'vedtakperiodeselect'}
+                                className={'forsteKolonne'}
                                 oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
                                 behandlingErRedigerbar={behandlingErRedigerbar}
                                 periodeType={periodeType}

@@ -16,7 +16,8 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                 return (
                     <>
                         <TabellVisning
-                            tittel="Utregning av stønad"
+                            tittel="Utregning"
+                            tittelType={'undertittel'}
                             verdier={beregnetStønad}
                             kolonner={[
                                 {
