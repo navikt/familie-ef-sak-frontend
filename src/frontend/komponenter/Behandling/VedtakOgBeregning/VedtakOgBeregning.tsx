@@ -14,7 +14,7 @@ interface Props {
     behandling: Behandling;
 }
 
-const StyledVedtaksperiode = styled.section`
+const StyledVedtaksperiode = styled.div`
     padding: 2rem;
 `;
 

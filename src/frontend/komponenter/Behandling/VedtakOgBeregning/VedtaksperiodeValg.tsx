@@ -18,11 +18,11 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
 
-const VedtakContainer = styled.div<{ radStart?: number }>`
+const VedtakContainer = styled.div<{ radStart?: number; lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: repeat(5, max-content);
     grid-auto-rows: min-content;
-    grid-gap: 1rem;
+    grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     align-items: center;
 
     .vedtakperiodeselect {
@@ -61,6 +61,9 @@ const MndKnappWrapper = styled.div`
 
 const StyledFamilieTextarea = styled(FamilieTextarea)`
     max-width: 60rem;
+    .typo-element {
+        padding-bottom: 0.5rem;
+    }
 `;
 
 export interface IVedtaksperiodeData {
@@ -130,7 +133,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     return (
         <section className={'blokk-xl'}>
             <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
-            <VedtakContainer className={'blokk-s'}>
+            <VedtakContainer className={'blokk-m'} lesevisning={!behandlingErRedigerbar}>
                 <Element>Periodetype</Element>
                 <Element>Aktivitet</Element>
                 <Element>Fra og med</Element>
@@ -203,7 +206,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             )}
             {!behandlingErRedigerbar && vedtaksperiodeData.periodeBegrunnelse === '' ? (
                 <IngenBegrunnelseOppgitt>
-                    <Element className={'blokk-s'}>Begrunnelse</Element>
+                    <Element className={'blokk-xxs'}>Begrunnelse</Element>
                     <Normaltekst style={{ fontStyle: 'italic' }}>
                         Ingen opplysninger oppgitt.
                     </Normaltekst>
