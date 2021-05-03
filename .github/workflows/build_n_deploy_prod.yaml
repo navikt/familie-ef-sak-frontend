@@ -6,8 +6,8 @@ on:
       - 'master'
 
 env:
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/familie-ef-sak-frontend:${{ github.sha }}
-  IMAGE_LATEST: docker.pkg.github.com/${{ github.repository }}/familie-ef-sak-frontend:latest
+  IMAGE: ghcr.io/navikt/familie-ef-sak-frontend:${{ github.sha }}
+  IMAGE_LATEST: ghcr.io/navikt/familie-ef-sak-frontend:latest
 
 jobs:
   build:
@@ -15,14 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Yarn build
+        run: |
+          yarn
+          yarn build
       - name: Build and publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          yarn
-          yarn build
           docker build . -t ${IMAGE} -t ${IMAGE_LATEST}
-          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
           docker push ${IMAGE}
           docker push ${IMAGE_LATEST}
       - name: Post build failures to Slack
