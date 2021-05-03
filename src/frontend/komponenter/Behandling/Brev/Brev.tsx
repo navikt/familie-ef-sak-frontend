@@ -38,18 +38,15 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar } = useBehandling();
-    const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>();
+    const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>(byggTomRessurs());
 
     const data = { navn: 'test', ident: '123456789' };
 
     useEffect(() => {
-        // eslint-disable-next-line
-        axiosRequest<DokumentMal, any>({
+        axiosRequest<DokumentMal, null>({
             method: 'GET',
             url: `/familie-brev/api/EF/avansert-dokument/bokmaal/innvilgetOvergangsstonadHovedp/felter`,
         }).then((respons: Ressurs<DokumentMal>) => {
-            console.log('HEEI respons', respons);
-
             settDokumentFelter(respons);
         });
     }, []);
