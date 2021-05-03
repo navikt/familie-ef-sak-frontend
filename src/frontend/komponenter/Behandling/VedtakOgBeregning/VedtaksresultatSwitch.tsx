@@ -6,14 +6,13 @@ import {
     IValideringsfeil,
     IVedtak,
 } from '../../../typer/vedtak';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { useHistory } from 'react-router-dom';
-import { Calculator } from '@navikt/ds-icons';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { validerVedtaksperioder } from './vedtaksvalidering';
 import InntektsperiodeValg, {
@@ -28,6 +27,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { Behandling } from '../../../typer/fagsak';
 import { Behandlingstype } from '../../../typer/behandlingstype';
 
+const BehandlingsResultatContainer = styled.div`
+    margin-bottom: 8rem;
+`;
+
 interface Props {
     vedtaksresultatType: EBehandlingResultat;
     behandling: Behandling;
@@ -39,15 +42,10 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
     margin-top: 2rem;
 `;
 
-const KnappMedMargin = styled(Knapp)`
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-`;
-
 const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
-    const { hentBehandling } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const history = useHistory();
     const { vedtaksresultatType, behandling, settFeilmelding, lagretVedtak } = props;
     const behandlingId = behandling.id;
@@ -209,7 +207,7 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
     switch (vedtaksresultatType) {
         case EBehandlingResultat.INNVILGE:
             return (
-                <>
+                <BehandlingsResultatContainer>
                     <VedtaksperiodeValg
                         vedtaksperiodeData={vedtaksperiodeData}
                         settVedtaksperiodeData={oppdaterVedtaksperiodeData}
@@ -219,49 +217,48 @@ const VedtaksresultatSwitch: React.FC<Props> = (props: Props) => {
                         inntektsperiodeData={inntektsperiodeData}
                         settInntektsperiodeData={settInntektsperiodeData}
                         beregnetStønad={beregnetStønad}
+                        beregnPerioder={beregnPerioder}
                         valideringsfeil={valideringsfeil.inntektsperioder}
                     />
-                    <div>
-                        <KnappMedMargin onClick={beregnPerioder}>
-                            <Calculator style={{ marginRight: '1rem' }} />
-                            Beregn stønadsbeløp
-                        </KnappMedMargin>
-                    </div>
-                    <Hovedknapp
-                        style={{ marginTop: '2rem' }}
-                        onClick={() => {
-                            if (validerVedtak()) {
-                                switch (behandling.type) {
-                                    case Behandlingstype.BLANKETT:
-                                        lagBlankett();
-                                        break;
-                                    case Behandlingstype.FØRSTEGANGSBEHANDLING:
-                                        lagreVedtak();
-                                        break;
-                                    case Behandlingstype.REVURDERING:
-                                        throw Error(
-                                            'Støtter ikke behandlingstype revurdering ennå...'
-                                        );
+                    {behandlingErRedigerbar && (
+                        <Hovedknapp
+                            style={{ marginTop: '5rem' }}
+                            onClick={() => {
+                                if (validerVedtak()) {
+                                    switch (behandling.type) {
+                                        case Behandlingstype.BLANKETT:
+                                            lagBlankett();
+                                            break;
+                                        case Behandlingstype.FØRSTEGANGSBEHANDLING:
+                                            lagreVedtak();
+                                            break;
+                                        case Behandlingstype.REVURDERING:
+                                            throw Error(
+                                                'Støtter ikke behandlingstype revurdering ennå...'
+                                            );
+                                    }
                                 }
-                            }
-                        }}
-                        disabled={laster}
-                    >
-                        Lagre vedtak
-                    </Hovedknapp>
-                </>
+                            }}
+                            disabled={laster}
+                        >
+                            Lagre vedtak
+                        </Hovedknapp>
+                    )}
+                </BehandlingsResultatContainer>
             );
         case EBehandlingResultat.BEHANDLE_I_GOSYS:
             return (
                 <>
                     <StyledAdvarsel>Oppgaven annulleres og må fullføres i Gosys</StyledAdvarsel>
-                    <Hovedknapp
-                        style={{ marginTop: '2rem' }}
-                        onClick={behandleIGosys}
-                        disabled={laster}
-                    >
-                        Avslutt og behandle i Gosys
-                    </Hovedknapp>
+                    {behandlingErRedigerbar && (
+                        <Hovedknapp
+                            style={{ marginTop: '2rem' }}
+                            onClick={behandleIGosys}
+                            disabled={laster}
+                        >
+                            Avslutt og behandle i Gosys
+                        </Hovedknapp>
+                    )}
                 </>
             );
         default:

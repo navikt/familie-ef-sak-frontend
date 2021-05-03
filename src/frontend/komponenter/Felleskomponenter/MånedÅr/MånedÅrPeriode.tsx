@@ -15,6 +15,7 @@ interface Props {
     antallÅrTilbake?: number;
     antallÅrFrem?: number;
     feilmelding?: string;
+    erLesevisning?: boolean;
 }
 
 const MånedÅrPeriode: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const MånedÅrPeriode: React.FC<Props> = ({
     antallÅrTilbake = 10,
     antallÅrFrem = 4,
     feilmelding,
+    erLesevisning,
 }) => {
     return (
         <>
@@ -35,6 +37,7 @@ const MånedÅrPeriode: React.FC<Props> = ({
                 onEndret={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_MÅNED_FRA)}
                 antallÅrTilbake={antallÅrTilbake}
                 antallÅrFrem={antallÅrFrem}
+                lesevisning={erLesevisning}
             />
             <MånedÅrVelger
                 årMånedInitiell={årMånedTilInitiell}
@@ -43,6 +46,7 @@ const MånedÅrPeriode: React.FC<Props> = ({
                 antallÅrTilbake={antallÅrTilbake}
                 antallÅrFrem={antallÅrFrem}
                 feilmelding={feilmelding}
+                lesevisning={erLesevisning}
             />
         </>
     );

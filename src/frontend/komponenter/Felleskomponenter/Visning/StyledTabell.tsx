@@ -1,14 +1,19 @@
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
-export const GridTabell = styled.div<{ kolonner?: number; underTabellMargin?: number }>`
+export const GridTabell = styled.div<{
+    kolonner?: number;
+    underTabellMargin?: number;
+    gridGap?: number;
+    utenIkon?: boolean;
+}>`
     display: grid;
-    grid-template-columns: 21px 250px repeat(
+    grid-template-columns: ${(props) => (props.utenIkon ? 0 : 21)}px 250px repeat(
             ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
             ${(props) => (props.kolonner && props.kolonner > 3 ? '150px' : '300px')}
         );
     grid-auto-rows: min-content;
-    grid-gap: 0.5rem;
+    grid-gap: ${(props) => props.gridGap || 0.5}rem;
     margin-bottom: ${(props) => props.underTabellMargin || 3}rem;
 
     > .typo-normal {

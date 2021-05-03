@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Element, Normaltekst as NormaltekstNavFrontend } from 'nav-frontend-typografi';
+import {
+    Element,
+    Normaltekst as NormaltekstNavFrontend,
+    Undertittel,
+} from 'nav-frontend-typografi';
 import { GridTabell } from '../Felleskomponenter/Visning/StyledTabell';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
 import { Calculator } from '@navikt/ds-icons';
@@ -14,8 +18,9 @@ export enum TabellIkon {
 }
 
 export interface Kolonndata<T> {
-    ikon: TabellIkon;
+    ikon?: TabellIkon;
     tittel: string;
+    tittelType?: 'element' | 'undertittel';
     verdier: T[];
     kolonner: Kolonner<T>[];
 }
@@ -37,13 +42,21 @@ const mapIkon = (ikon: TabellIkon) => {
 };
 
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
-    const { ikon, tittel, verdier, kolonner } = props;
+    const { ikon, tittel, tittelType, verdier, kolonner } = props;
     return (
-        <GridTabell kolonner={kolonner.length + 1}>
-            {mapIkon(ikon)}
-            <Element className="tittel" tag="h3">
-                {tittel}
-            </Element>
+        <GridTabell kolonner={kolonner.length + 1} utenIkon={!ikon}>
+            {ikon && mapIkon(ikon)}
+            {tittelType === 'undertittel' ? (
+                <Undertittel className="tittel" tag="h3">
+                    {tittel}
+                </Undertittel>
+            ) : (
+                <Element className="tittel" tag="h3">
+                    {' '}
+                    {tittel}
+                </Element>
+            )}
+
             <>
                 {kolonner.map((kolonne, index) => (
                     <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
