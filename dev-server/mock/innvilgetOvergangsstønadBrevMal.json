@@ -1,0 +1,889 @@
+ {
+    "dokument": [
+      {
+        "valgFeltKategori": "hvisUforeElGjenlevende",
+        "valgMuligheter": [
+          {
+            "apiNavn": "grunnlagUforeElGjenlevende",
+            "flettefelt": [
+              {
+                "felt": "manedssats"
+              },
+              {
+                "felt": "stonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDu",
+            "flettefelt": [
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuUforeGjlevendeForHoy",
+            "flettefelt": [
+              {
+                "felt": "stonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgGomreg",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisEtterbetIkkeSpurtOmRefus",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgSpurtOmRefus",
+            "flettefelt": [
+              {
+                "felt": "navKontor"
+              }
+            ]
+          },
+          {
+            "apiNavn": "endringIInntektUfore",
+            "flettefelt": []
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "hvisInntektUnderHalvG",
+        "valgMuligheter": [
+          {
+            "apiNavn": "detteFarDu",
+            "flettefelt": [
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgGomreg",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagHvisInntektUnderHalvG",
+            "flettefelt": [
+              {
+                "felt": "kroner"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgSpurtOmRefus",
+            "flettefelt": [
+              {
+                "felt": "navKontor"
+              }
+            ]
+          },
+          {
+            "apiNavn": "endringIInntektUnderHalvG",
+            "flettefelt": [
+              {
+                "felt": "kroner"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "hvisBarnUnderEttAr",
+        "valgMuligheter": [
+          {
+            "apiNavn": "aktivitetspliktBarnUnderEttAr",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "barnUnderEttArIkkeFodt",
+            "flettefelt": [
+              {
+                "felt": "manedOgAr"
+              }
+            ]
+          },
+          {
+            "apiNavn": "barnUnderEttArFodt",
+            "flettefelt": [
+              {
+                "felt": "datoBarnEttAr"
+              }
+            ]
+          },
+          {
+            "apiNavn": "aktivitetspliktSlikFyllerDuDen",
+            "flettefelt": []
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "avslutning",
+        "valgMuligheter": [
+          {
+            "apiNavn": "hjemmel",
+            "flettefelt": [
+              {
+                "felt": "paragraf1513"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hjemmelInnvilgetTilbakeITid",
+            "flettefelt": [
+              {
+                "felt": "paragraf1513"
+              }
+            ]
+          },
+          {
+            "apiNavn": "skattekort",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "beregningAvStonadOgInntekt",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "meldeOmEndring",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "kanMisteRetten",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "sisteAvslutning",
+            "flettefelt": []
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "oppholdstillatelseBarn",
+        "valgMuligheter": [
+          {
+            "apiNavn": "oppholdstillatelseBarn",
+            "flettefelt": []
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "hvisIngenInntekt",
+        "valgMuligheter": [
+          {
+            "apiNavn": "detteFarDu",
+            "flettefelt": [
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgGomreg",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagHvisIngenInntekt",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "hvisEtterbetIkkeSpurtOmRefus",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgSpurtOmRefus",
+            "flettefelt": [
+              {
+                "felt": "navKontor"
+              }
+            ]
+          },
+          {
+            "apiNavn": "endringInntektIngenInntekt",
+            "flettefelt": []
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "hvisVarierendeInntekt",
+        "valgMuligheter": [
+          {
+            "apiNavn": "grunnlagVarierendeInntekt",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "grunnlagInntektOgAndreStonader",
+            "flettefelt": [
+              {
+                "felt": "stonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuEbetVariInntekt",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "detteFarDuFremoverVariInntekt",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuFremoverInntektEnMnd",
+            "flettefelt": [
+              {
+                "felt": "maned"
+              },
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuFremoverHvisFratrekk",
+            "flettefelt": [
+              {
+                "felt": "etterbetalingOvertidEl"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuFremoverArbkontrakt",
+            "flettefelt": [
+              {
+                "felt": "arbeidsgiverArbeidskontrakt"
+              },
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuFremoverStartStonad",
+            "flettefelt": [
+              {
+                "felt": "stonad"
+              },
+              {
+                "felt": "belopDagsats"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisEtterbetIkkeSpurtOmRefus",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgSpurtOmRefus",
+            "flettefelt": [
+              {
+                "felt": "navKontor"
+              }
+            ]
+          },
+          {
+            "apiNavn": "endringIInntektTiProsent",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "detteFarDuInntektGjennomsnitt",
+            "flettefelt": [
+              {
+                "felt": "maned"
+              },
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "sluttidspunkt",
+        "valgMuligheter": [
+          {
+            "apiNavn": "stonadITreAr",
+            "flettefelt": [
+              {
+                "felt": "Tom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "stonadItreArTidligereStonad",
+            "flettefelt": [
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Fom-dato tidligere periode"
+              },
+              {
+                "felt": "Tom-dato tidligere periode"
+              },
+              {
+                "felt": "Antall måneder tidligere periode"
+              }
+            ]
+          },
+          {
+            "apiNavn": "barnetBlirAtteAr",
+            "flettefelt": [
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Dato barn fyller 8 år"
+              }
+            ]
+          },
+          {
+            "apiNavn": "venterNyttBarn",
+            "flettefelt": [
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Dato venter nytt barn"
+              }
+            ]
+          },
+          {
+            "apiNavn": "nyttBarnSammePartner",
+            "flettefelt": [
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Dato nytt barn samme partner"
+              }
+            ]
+          },
+          {
+            "apiNavn": "barnetBlirEttAr",
+            "flettefelt": [
+              {
+                "felt": "Tom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "begrunnelse",
+            "flettefelt": [
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "begrunnelseTomDatoInnvilgelse"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "hvisEnInntektEllerFastlonn",
+        "valgMuligheter": [
+          {
+            "apiNavn": "detteFarDu",
+            "flettefelt": [
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgGomreg",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "Tom-dato innvilgelse"
+              },
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              },
+              {
+                "felt": "belopOvergangsstonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagHvisInntekt",
+            "flettefelt": [
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagInntektOgAndreStonader",
+            "flettefelt": [
+              {
+                "felt": "stonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagIkkeInntektAnnenStonad",
+            "flettefelt": [
+              {
+                "felt": "stonad"
+              },
+              {
+                "felt": "belopDagsats"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagSelvstendigNaringsdriv",
+            "flettefelt": [
+              {
+                "felt": "yrkeBransjeNavnPaSelskap"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagSelvstendigIkkeNytt",
+            "flettefelt": [
+              {
+                "felt": "arstall"
+              },
+              {
+                "felt": "belopInntekt"
+              },
+              {
+                "felt": "arstall"
+              },
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagSelvstendigNytt",
+            "flettefelt": [
+              {
+                "felt": "datoNyoppstartetBedrift"
+              },
+              {
+                "felt": "arstall"
+              },
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisEtterbetIkkeSpurtOmRefus",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "detteFarDuEbetOgSpurtOmRefus",
+            "flettefelt": [
+              {
+                "felt": "navKontor"
+              }
+            ]
+          },
+          {
+            "apiNavn": "endringIInntektTiProsent",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "endringIInntektSelvstendig",
+            "flettefelt": []
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "hvisBarnEttOgAtteAr",
+        "valgMuligheter": [
+          {
+            "apiNavn": "aktivitetspliktBarnEttOgAtteAr",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "hvisArbeidstaker",
+            "flettefelt": [
+              {
+                "felt": "navn"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisSelvstendigNaringsdrivende",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "hvisAnsattIEgetAS",
+            "flettefelt": [
+              {
+                "felt": "navn"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisArbeidssoker",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "hvisIUtdanning",
+            "flettefelt": [
+              {
+                "felt": "studium"
+              },
+              {
+                "felt": "skole"
+              },
+              {
+                "felt": "manedOgAr"
+              },
+              {
+                "felt": "manedOgAr"
+              },
+              {
+                "felt": "prosent"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisEtablererEgenVirksomhet",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "komboArbeidStudierIkkeGodkjent",
+            "flettefelt": [
+              {
+                "felt": "studium"
+              },
+              {
+                "felt": "skole"
+              },
+              {
+                "felt": "manedOgAr"
+              },
+              {
+                "felt": "manedOgAr"
+              },
+              {
+                "felt": "begrunnelseIkkeGodkjentStudium"
+              }
+            ]
+          },
+          {
+            "apiNavn": "komboSokeArbeidStudereIkkeGkj",
+            "flettefelt": [
+              {
+                "felt": "studium"
+              },
+              {
+                "felt": "skole"
+              },
+              {
+                "felt": "manedOgAr"
+              },
+              {
+                "felt": "manedOgAr"
+              },
+              {
+                "felt": "begrunnelseIkkeGodkjentStudium"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisEgenSykdom",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "hvisBarnsSykdom",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "hvisSarligTilsynskrevendeBarn",
+            "flettefelt": [
+              {
+                "felt": "omDokumentasjonOgSituasjon"
+              }
+            ]
+          },
+          {
+            "apiNavn": "hvisPaventeAvBarnehageplass",
+            "flettefelt": [
+              {
+                "felt": "datoBarnehageplass"
+              },
+              {
+                "felt": "Tom-dato innvilgelse"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "startstidspunkt",
+        "valgMuligheter": [
+          {
+            "apiNavn": "manedenForTermin",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "forBarnetBleFodt",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "vartINorgeIFemAr",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "etterTilbakekomstUtland",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "foreldreFlyttetFraHverandre",
+            "flettefelt": [
+              {}
+            ]
+          },
+          {
+            "apiNavn": "manedenEtterSamboereFlyttet",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "manedenEtterSeparasjon",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mndDuSokteStonadFra",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "manedenEtterSkilsmisse",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mndenEtterOrdnetSamvarsordning",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mndenEtterEndretSamvarsordning",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mndEtterArbeidsstart",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mndEtterRegSomArbeidssoker",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mdnEtterStudiestart",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mndEtterEtablertEgenBedrift",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "mndDuSokteStonadFra",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "treManederForDuSokte",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              }
+            ]
+          },
+          {
+            "apiNavn": "begrunnelse",
+            "flettefelt": [
+              {
+                "felt": "Fom-dato innvilgelse"
+              },
+              {
+                "felt": "begrunnelseFomDatoInnvilgelse"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "valgFeltKategori": "hvisForHoyInntekt",
+        "valgMuligheter": [
+          {
+            "apiNavn": "detteFarDuForHoyInntekt",
+            "flettefelt": []
+          },
+          {
+            "apiNavn": "grunnlagHvisInntekt",
+            "flettefelt": [
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagInntektOgAndreStonader",
+            "flettefelt": [
+              {
+                "felt": "stonad"
+              }
+            ]
+          },
+          {
+            "apiNavn": "grunnlagIkkeInntektAnnenStonad",
+            "flettefelt": [
+              {
+                "felt": "stonad"
+              },
+              {
+                "felt": "belopDagsats"
+              }
+            ]
+          },
+          {
+            "apiNavn": "endringIInntektTiForHoyInntekt",
+            "flettefelt": [
+              {
+                "felt": "belopInntekt"
+              }
+            ]
+          },
+          {
+            "apiNavn": "endringIInntektForHoyInntekt",
+            "flettefelt": [
+              {
+                "felt": "kroner"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "malNavn": "innvilgetOvergangsstonadHovedp"
+  }
