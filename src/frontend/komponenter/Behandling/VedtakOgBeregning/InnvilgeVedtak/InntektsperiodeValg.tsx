@@ -1,18 +1,22 @@
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { EInntektsperiodeProperty, IBeløpsperiode, IInntektsperiode } from '../../../typer/vedtak';
+import {
+    EInntektsperiodeProperty,
+    IBeløpsperiode,
+    IInntektsperiode,
+} from '../../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import MånedÅrVelger from '../../Felleskomponenter/MånedÅr/MånedÅrVelger';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
-import InputMedTusenSkille from '../../Felleskomponenter/InputMedTusenskille';
-import { harTallverdi, tilTallverdi } from '../../../utils/utils';
+import InputMedTusenSkille from '../../../Felleskomponenter/InputMedTusenskille';
+import { harTallverdi, tilTallverdi } from '../../../../utils/utils';
 import Utregningstabell from './Utregningstabell';
-import { Ressurs } from '../../../typer/ressurs';
-import { useBehandling } from '../../../context/BehandlingContext';
+import { Ressurs } from '../../../../typer/ressurs';
+import { useBehandling } from '../../../../context/BehandlingContext';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import { IngenBegrunnelseOppgitt } from './VedtaksperiodeValg';
+import MånedÅrVelger from '../../../Felleskomponenter/MånedÅr/MånedÅrVelger';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;

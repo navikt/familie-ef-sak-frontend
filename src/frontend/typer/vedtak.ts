@@ -1,12 +1,19 @@
 import { PeriodeVariant } from '../komponenter/Felleskomponenter/MånedÅr/MånedÅrPeriode';
 
-export interface IVedtak {
-    resultatType: EBehandlingResultat;
+export type IAvslåVedtak = {
+    resultatType: EBehandlingResultat.AVSLÅ;
+    avslåBegrunnelse: string;
+};
+
+export type IInnvilgeVedtak = {
+    resultatType: EBehandlingResultat.INNVILGE;
     periodeBegrunnelse: string;
     inntektBegrunnelse: string;
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
-}
+};
+
+export type IVedtak = IAvslåVedtak | IInnvilgeVedtak;
 
 export interface IInntektsperiode {
     årMånedFra?: string;
