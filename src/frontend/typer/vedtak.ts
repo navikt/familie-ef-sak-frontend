@@ -23,8 +23,7 @@ export interface IInntektsperiode {
 }
 
 export interface IBeløpsperiode {
-    fraOgMedDato: string;
-    tilDato: string;
+    periode: { fradato: string; tildato: string };
     beregningsgrunnlag: IBeregningsgrunnlag;
     beløp: number;
 }
