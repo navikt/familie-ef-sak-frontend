@@ -45,7 +45,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                                         ),
                                 },
                                 {
-                                    overskrift: 'Beløp',
+                                    overskrift: 'Stønadsbeløp',
                                     tekstVerdi: (d) => formaterTallMedTusenSkille(d.beløp),
                                 },
                             ]}
