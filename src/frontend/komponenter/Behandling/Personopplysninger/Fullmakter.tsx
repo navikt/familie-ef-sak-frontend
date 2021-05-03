@@ -3,6 +3,7 @@ import TabellOverskrift from './TabellOverskrift';
 import SkrivendeBlyant from '../../../ikoner/SkrivendeBlyant';
 import { BredTd, KolonneTitler, IngenData, TabellWrapper } from './TabellWrapper';
 import { IFullmakt } from '../../../typer/personopplysninger';
+import { formaterNullableIsoDato } from '../../../utils/formatter';
 
 const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
@@ -17,8 +18,12 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
                                 <tr key={indeks}>
                                     <BredTd>{fullmakt.navn}</BredTd>
                                     <BredTd>{fullmakt.motpartsPersonident}</BredTd>
-                                    <BredTd>{fullmakt.gyldigFraOgMed}</BredTd>
-                                    <BredTd>{fullmakt.gyldigTilOgMed}</BredTd>
+                                    <BredTd>
+                                        {formaterNullableIsoDato(fullmakt.gyldigFraOgMed)}
+                                    </BredTd>
+                                    <BredTd>
+                                        {formaterNullableIsoDato(fullmakt.gyldigTilOgMed)}
+                                    </BredTd>
                                 </tr>
                             );
                         })}

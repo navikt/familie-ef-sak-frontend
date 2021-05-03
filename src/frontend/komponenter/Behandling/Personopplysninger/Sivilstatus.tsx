@@ -4,6 +4,7 @@ import Hjerte from '../../../ikoner/Hjerte';
 import { KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { ISivilstand } from '../../../typer/personopplysninger';
 import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
+import { formaterNullableIsoDato } from '../../../utils/formatter';
 
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
@@ -16,7 +17,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                         return (
                             <tr key={indeks}>
                                 <td>{sivilstand.type}</td>
-                                <td>{sivilstand.gyldigFraOgMed}</td>
+                                <td>{formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}</td>
                                 <td>{sivilstand.navn}</td>
                                 <td>
                                     <KopierbartNullableFødselsnummer

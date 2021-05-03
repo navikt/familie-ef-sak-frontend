@@ -9,6 +9,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { datoErEtterDagensDato } from '../../../utils/utils';
 import Beboere from './Beboere';
+import { formaterNullableIsoDato } from '../../../utils/formatter';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -80,10 +81,10 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                         <tr key={indeks}>
                             <BredTd>{adresse.visningsadresse}</BredTd>
                             <BredTd>{adresse.type}</BredTd>
-                            <BredTd>{adresse.gyldigFraOgMed}</BredTd>
+                            <BredTd>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</BredTd>
                             <BredTd>
                                 <StyledFlexDiv>
-                                    <div>{adresse.gyldigTilOgMed}</div>
+                                    <div>{formaterNullableIsoDato(adresse.gyldigTilOgMed)}</div>
                                     {adresse.type === AdresseType.BOSTEDADRESSE &&
                                         gyldigTilOgMedErNullEllerFremITid(adresse) && (
                                             <StyledKnapp
