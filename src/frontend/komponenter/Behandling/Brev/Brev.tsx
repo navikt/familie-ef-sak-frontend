@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
@@ -25,13 +25,34 @@ const StyledBrev = styled.div`
 interface Props {
     behandlingId: string;
 }
+interface DokumentMal {
+    dokument: DokumentFelt[];
+}
+
+interface DokumentFelt {
+    valgFeltKategori: string;
+    visningnavn: string;
+}
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar } = useBehandling();
+    const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>();
 
     const data = { navn: 'test', ident: '123456789' };
+
+    useEffect(() => {
+        // eslint-disable-next-line
+        axiosRequest<DokumentMal, any>({
+            method: 'GET',
+            url: `/familie-brev/api/EF/avansert-dokument/bokmaal/innvilgetOvergangsstonadHovedp/felter`,
+        }).then((respons: Ressurs<DokumentMal>) => {
+            console.log('HEEI respons', respons);
+
+            settDokumentFelter(respons);
+        });
+    }, []);
 
     const genererBrev = () => {
         // eslint-disable-next-line
@@ -53,6 +74,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             settBrevRessurs(respons);
         });
     };
+    console.log(dokumentFelter);
 
     return (
         <>
