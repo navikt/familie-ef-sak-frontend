@@ -7,7 +7,7 @@ import InntektsperiodeValg, {
     IInntektsperiodeData,
     tomInntektsperiodeRad,
 } from './InntektsperiodeValg';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp as HovedknappNAV } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../../typer/behandlingstype';
 import {
     EBehandlingResultat,
@@ -23,14 +23,15 @@ import { useBehandling } from '../../../../context/BehandlingContext';
 import { useHistory } from 'react-router-dom';
 import { useApp } from '../../../../context/AppContext';
 import { Behandling } from '../../../../typer/fagsak';
-import { Calculator } from '@navikt/ds-icons';
 import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import hiddenIf from '../../../Felleskomponenter/HiddenIf/hiddenIf';
 
-const KnappMedMargin = styled(Knapp)`
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+const Hovedknapp = hiddenIf(HovedknappNAV);
+
+const BehandlingsResultatContainer = styled.div`
+    margin-bottom: 8rem;
 `;
 
 export const InnvilgeVedtak: React.FC<{
@@ -41,7 +42,7 @@ export const InnvilgeVedtak: React.FC<{
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtak)
             : undefined;
-    const { hentBehandling } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
     const [laster, settLaster] = useState<boolean>(false);
@@ -102,6 +103,7 @@ export const InnvilgeVedtak: React.FC<{
             settÅrMånedFraPåFørsteInntektsperiode(førsteVedtaksperiode.årMånedFra);
         }
     };
+
     const beregnPerioder = () => {
         axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
             method: 'POST',
@@ -116,6 +118,7 @@ export const InnvilgeVedtak: React.FC<{
             },
         }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
     };
+
     const settÅrMånedFraPåFørsteInntektsperiode = (årMånedFra: string | undefined) => {
         settInntektsperiodeData({
             ...inntektsperiodeData,
@@ -174,7 +177,7 @@ export const InnvilgeVedtak: React.FC<{
     };
 
     return (
-        <>
+        <BehandlingsResultatContainer>
             <VedtaksperiodeValg
                 vedtaksperiodeData={vedtaksperiodeData}
                 settVedtaksperiodeData={oppdaterVedtaksperiodeData}
@@ -185,14 +188,10 @@ export const InnvilgeVedtak: React.FC<{
                 settInntektsperiodeData={settInntektsperiodeData}
                 beregnetStønad={beregnetStønad}
                 valideringsfeil={valideringsfeil.inntektsperioder}
+                beregnPerioder={beregnPerioder}
             />
-            <div>
-                <KnappMedMargin onClick={beregnPerioder}>
-                    <Calculator style={{ marginRight: '1rem' }} />
-                    Beregn stønadsbeløp
-                </KnappMedMargin>
-            </div>
             <Hovedknapp
+                hidden={!behandlingErRedigerbar}
                 style={{ marginTop: '2rem' }}
                 onClick={() => {
                     if (validerVedtak()) {
@@ -215,6 +214,6 @@ export const InnvilgeVedtak: React.FC<{
             {feilmelding && (
                 <AlertStripeFeil style={{ marginTop: '2rem' }}>{feilmelding}</AlertStripeFeil>
             )}
-        </>
+        </BehandlingsResultatContainer>
     );
 };

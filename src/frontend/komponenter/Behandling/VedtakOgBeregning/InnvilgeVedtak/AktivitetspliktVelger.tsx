@@ -3,7 +3,7 @@ import {
     aktivitetTilTekst,
     EPeriodeProperty,
     EPeriodetype,
-} from '../../../typer/vedtak';
+} from '../../../../typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';

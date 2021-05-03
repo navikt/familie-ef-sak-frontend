@@ -14,7 +14,7 @@ import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
 import { månederMellom, månedÅrTilDate } from '../../../../utils/dato';
-import { useBehandling } from '../../../context/BehandlingContext';
+import { useBehandling } from '../../../../context/BehandlingContext';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
 
