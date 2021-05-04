@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
@@ -38,8 +38,12 @@ interface Flettefelt {
     felt: string;
 }
 
+interface FletteMedVerdi extends Flettefelt {
+    verdi: unknown | null;
+}
+
 export interface Valgmulighet {
-    flettefelter: Flettefelt[];
+    flettefelt: Flettefelt[];
     valgmulighet: string;
     visningsnavnValgmulighet: string;
 }
@@ -55,6 +59,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar } = useBehandling();
     const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>(byggTomRessurs());
+    const [fletteFelt, settFletteFelt] = useState<FletteMedVerdi[]>();
     const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
         {} as ValgtFelt
     );
@@ -66,6 +71,20 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             url: `/familie-brev/api/EF/avansert-dokument/bokmaal/innvilgetOvergangsstonadHovedp/felter`,
         }).then((respons: Ressurs<DokumentMal>) => {
             settDokumentFelter(respons);
+            if (respons.status === RessursStatus.SUKSESS) {
+                settFletteFelt(
+                    respons.data.dokument
+                        .flatMap((dok) =>
+                            dok.valgMuligheter.flatMap((valMulighet) => valMulighet.flettefelt)
+                        )
+                        .filter((v) => Object.keys(v).length > 0)
+                        .map((v) => ({ ...v, verdi: null }))
+                        .filter(
+                            (v, i, a) =>
+                                a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i
+                        )
+                );
+            }
         });
     }, []);
 
@@ -89,6 +108,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             settBrevRessurs(respons);
         });
     };
+
     return (
         <DataViewer response={{ dokumentFelter }}>
             {({ dokumentFelter }) => {

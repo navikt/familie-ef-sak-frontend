@@ -1,16 +1,15 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { DokumentFelt, Valgmulighet } from './Brev';
-import { Select } from 'nav-frontend-skjema';
+import { Input, Select } from 'nav-frontend-skjema';
 
 type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 
 interface Props {
     dokument: DokumentFelt[];
-    valgteFelt?: ValgtFelt;
+    valgteFelt: ValgtFelt;
     settValgteFelt: Dispatch<SetStateAction<ValgtFelt>>;
 }
-
-const Brevmeny: React.FC<Props> = ({ dokument, settValgteFelt }) => {
+const Brevmeny: React.FC<Props> = ({ dokument, settValgteFelt, valgteFelt }) => {
     const doSettValgteFelt = (valgFeltKategori: string, valgmulighet: string) => {
         const d = dokument
             .find((v) => v.valgFeltKategori === valgFeltKategori)
@@ -26,16 +25,22 @@ const Brevmeny: React.FC<Props> = ({ dokument, settValgteFelt }) => {
         <>
             {dokument.map((dok) => {
                 return (
-                    <Select
-                        label={dok.visningsnavn}
-                        onChange={(e) => doSettValgteFelt(dok.valgFeltKategori, e.target.value)}
-                    >
-                        {dok.valgMuligheter.map((valMulighet: Valgmulighet) => (
-                            <option value={valMulighet.valgmulighet}>
-                                {valMulighet.visningsnavnValgmulighet}
-                            </option>
-                        ))}
-                    </Select>
+                    <div style={{ backgroundColor: 'lightblue', margin: '2rem 0' }}>
+                        <Select
+                            label={dok.visningsnavn}
+                            onChange={(e) => doSettValgteFelt(dok.valgFeltKategori, e.target.value)}
+                        >
+                            {dok.valgMuligheter.map((valMulighet: Valgmulighet) => (
+                                <option value={valMulighet.valgmulighet}>
+                                    {valMulighet.visningsnavnValgmulighet}
+                                </option>
+                            ))}
+                        </Select>
+                        {valgteFelt[dok.valgFeltKategori] != null &&
+                            valgteFelt[dok.valgFeltKategori].flettefelt.map((flett) => (
+                                <Input label={flett.felt} />
+                            ))}
+                    </div>
                 );
             })}
         </>
