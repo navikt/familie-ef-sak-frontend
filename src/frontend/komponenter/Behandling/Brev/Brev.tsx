@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
+import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import Brevmeny from './Brevmeny';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -25,13 +27,27 @@ const StyledBrev = styled.div`
 interface Props {
     behandlingId: string;
 }
-interface DokumentMal {
+type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
+
+export interface DokumentMal {
     dokument: DokumentFelt[];
 }
 
-interface DokumentFelt {
+interface Flettefelt {
+    id: string;
+    felt: string;
+}
+
+export interface Valgmulighet {
+    flettefelter: Flettefelt[];
+    valgmulighet: string;
+    visningsnavnValgmulighet: string;
+}
+
+export interface DokumentFelt {
     valgFeltKategori: string;
-    visningnavn: string;
+    visningsnavn: string;
+    valgMuligheter: Valgmulighet[];
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
@@ -39,7 +55,9 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar } = useBehandling();
     const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>(byggTomRessurs());
-
+    const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
+        {} as ValgtFelt
+    );
     const data = { navn: 'test', ident: '123456789' };
 
     useEffect(() => {
@@ -71,19 +89,30 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             settBrevRessurs(respons);
         });
     };
-    console.log(dokumentFelter);
-
     return (
-        <>
-            <StyledBrev>
-                {behandlingErRedigerbar && (
-                    <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-                )}
-                <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
-                <PdfVisning pdfFilInnhold={brevRessurs} />
-            </StyledBrev>
-            {behandlingErRedigerbar && <SendTilBeslutterFooter behandlingId={behandlingId} />}
-        </>
+        <DataViewer response={{ dokumentFelter }}>
+            {({ dokumentFelter }) => {
+                return (
+                    <>
+                        <StyledBrev>
+                            <Brevmeny
+                                dokument={dokumentFelter.dokument}
+                                valgteFelt={valgteFelt}
+                                settValgteFelt={settValgteFelt}
+                            />
+                            {behandlingErRedigerbar && (
+                                <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                            )}
+                            <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
+                            <PdfVisning pdfFilInnhold={brevRessurs} />
+                        </StyledBrev>
+                        {behandlingErRedigerbar && (
+                            <SendTilBeslutterFooter behandlingId={behandlingId} />
+                        )}
+                    </>
+                );
+            }}
+        </DataViewer>
     );
 };
 
