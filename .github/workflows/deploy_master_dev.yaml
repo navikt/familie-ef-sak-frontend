@@ -1,0 +1,19 @@
+name: Deploy master to dev
+
+on: [workflow_dispatch]
+env:
+  IMAGE: ghcr.io/navikt/familie-ef-sak-frontend:latest
+
+jobs:
+  deploy:
+    name: Deploy to NAIS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Deploy til dev-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: build_n_deploy/naiserator/nais.yaml
+          VARS: build_n_deploy/naiserator/dev.json
