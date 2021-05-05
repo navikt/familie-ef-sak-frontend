@@ -34,12 +34,12 @@ export interface DokumentMal {
 }
 
 interface Flettefelt {
-    id: string;
+    _id: string;
     felt: string;
 }
 
-interface FletteMedVerdi extends Flettefelt {
-    verdi: unknown | null;
+export interface FletteMedVerdi extends Flettefelt {
+    verdi: string | null;
 }
 
 export interface Valgmulighet {
@@ -59,7 +59,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar } = useBehandling();
     const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>(byggTomRessurs());
-    const [fletteFelt, settFletteFelt] = useState<FletteMedVerdi[]>();
+    const [fletteFelter, settFletteFelter] = useState<FletteMedVerdi[]>([] as FletteMedVerdi[]);
     const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
         {} as ValgtFelt
     );
@@ -72,7 +72,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         }).then((respons: Ressurs<DokumentMal>) => {
             settDokumentFelter(respons);
             if (respons.status === RessursStatus.SUKSESS) {
-                settFletteFelt(
+                settFletteFelter(
                     respons.data.dokument
                         .flatMap((dok) =>
                             dok.valgMuligheter.flatMap((valMulighet) => valMulighet.flettefelt)
@@ -109,6 +109,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     };
 
+    console.log('fletteFelt:', fletteFelter);
     return (
         <DataViewer response={{ dokumentFelter }}>
             {({ dokumentFelter }) => {
@@ -119,6 +120,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 dokument={dokumentFelter.dokument}
                                 valgteFelt={valgteFelt}
                                 settValgteFelt={settValgteFelt}
+                                settFlettefelter={settFletteFelter}
+                                fletteFelter={fletteFelter}
                             />
                             {behandlingErRedigerbar && (
                                 <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
