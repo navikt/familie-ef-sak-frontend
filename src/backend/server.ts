@@ -47,7 +47,14 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         '/familie-ef-sak/api',
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),
-        doProxy()
+        doProxy('/familie-ef-sak/api')
+    );
+
+    app.use(
+        '/familie-brev/api',
+        ensureAuthenticated(azureAuthClient, true),
+        attachToken(azureAuthClient),
+        doProxy('/familie-brev/api')
     );
 
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser

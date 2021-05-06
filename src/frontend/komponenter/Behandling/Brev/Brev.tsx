@@ -3,7 +3,7 @@ import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
-import { Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -44,7 +44,7 @@ export interface FletteMedVerdi extends Flettefelt {
 
 export interface Valgmulighet {
     flettefelt: Flettefelt[];
-    valgmulighet: string;
+    valgmulighet: string; //denne er nøkkel
     visningsnavnValgmulighet: string;
 }
 
@@ -98,6 +98,48 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             settBrevRessurs(respons);
         });
     };
+    const genererBrev2 = () => {
+        const req = Object.entries(valgteFelt).reduce((acc, curr) => {
+            const valgFeltKategori = curr[0];
+            const valgmulighet = curr[1];
+            const flettefelter = valgmulighet.flettefelt.reduce((acc, ff) => {
+                const noe = fletteFelter.find(
+                    (utfylltFletteFelt) => utfylltFletteFelt._id === ff._id
+                )!;
+                return { ...acc, [noe.felt]: Array.of(noe.verdi) };
+            });
+            const arr = Array.of({
+                navn: valgmulighet.valgmulighet,
+                dokumentFelter: { flettefelter },
+            });
+            return { ...acc, [valgFeltKategori]: arr };
+        }, {} as any);
+
+        axiosRequest<string, any>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/brev/${behandlingId}/v2`,
+            data: {
+                valgfelter: req,
+                delmalData: {
+                    signatur: {
+                        enhet: ['Nav arbeid og ... - OSLO'],
+                        saksbehandler: 'Batman',
+                    },
+                },
+                flettefelter: {
+                    navn: ['$navn'],
+                    fodselsnummer: ['$ident'],
+                    'Fom-dato innvilgelse': ['$innvilgelseFra'],
+                    'Tom-dato innvilgelse': ['$innvilgelseTil'],
+                    begrunnelseFomDatoInnvilgelse: ['$begrunnelseFomDatoInnvilgelse'],
+                    dato: ['$brevdato'],
+                    belopOvergangsstonad: ['$belopOvergangsstonad'],
+                },
+            },
+        }).then((respons: Ressurs<string>) => {
+            settBrevRessurs(respons);
+        });
+    };
 
     const hentBrev = () => {
         // eslint-disable-next-line
@@ -109,7 +151,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     };
 
-    console.log('fletteFelt:', fletteFelter);
     return (
         <DataViewer response={{ dokumentFelter }}>
             {({ dokumentFelter }) => {
@@ -128,6 +169,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                             )}
                             <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
                             <PdfVisning pdfFilInnhold={brevRessurs} />
+                            <Hovedknapp onClick={genererBrev2}>Generer brev2!!!</Hovedknapp>
                         </StyledBrev>
                         {behandlingErRedigerbar && (
                             <SendTilBeslutterFooter behandlingId={behandlingId} />
