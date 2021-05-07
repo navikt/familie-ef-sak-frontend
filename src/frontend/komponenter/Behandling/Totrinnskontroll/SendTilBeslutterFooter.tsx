@@ -25,8 +25,6 @@ const MidtstiltInnhold = styled.div`
 const StyledHovedknapp = styled(Hovedknapp)`
     margin-left: 1rem;
     margin-right: 1rem;
-    box-shadow: none;
-    transform: none;
 `;
 
 const StyledKnapp = styled(Knapp)`
