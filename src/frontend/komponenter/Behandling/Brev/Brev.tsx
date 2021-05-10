@@ -59,20 +59,25 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar } = useBehandling();
     const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>(byggTomRessurs());
-    const [fletteFelter, settFletteFelter] = useState<FletteMedVerdi[]>([] as FletteMedVerdi[]);
+    const [alleFlettefelter, settAlleFlettefelter] = useState<FletteMedVerdi[]>(
+        [] as FletteMedVerdi[]
+    );
     const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
         {} as ValgtFelt
     );
     const data = { navn: 'test', ident: '123456789' };
 
+    // const brevMal = 'innvilgetOvergangsstonadHovedp';
+    const brevMal = 'innvilgetVedtakMVP';
+
     useEffect(() => {
         axiosRequest<DokumentMal, null>({
             method: 'GET',
-            url: `/familie-brev/api/EF/avansert-dokument/bokmaal/innvilgetOvergangsstonadHovedp/felter`,
+            url: `/familie-brev/api/ef-brev/avansert-dokument/bokmaal/${brevMal}/felter`,
         }).then((respons: Ressurs<DokumentMal>) => {
             settDokumentFelter(respons);
             if (respons.status === RessursStatus.SUKSESS) {
-                settFletteFelter(
+                settAlleFlettefelter(
                     respons.data.dokument
                         .flatMap((dok) =>
                             dok.valgMuligheter.flatMap((valMulighet) => valMulighet.flettefelt)
@@ -103,21 +108,21 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             const valgFeltKategori = curr[0];
             const valgmulighet = curr[1];
             const flettefelter = valgmulighet.flettefelt.reduce((acc, ff) => {
-                const noe = fletteFelter.find(
+                const noe = alleFlettefelter.find(
                     (utfylltFletteFelt) => utfylltFletteFelt._id === ff._id
                 )!;
                 return { ...acc, [noe.felt]: Array.of(noe.verdi) };
-            });
+            }, {});
             const arr = Array.of({
                 navn: valgmulighet.valgmulighet,
-                dokumentFelter: { flettefelter },
+                dokumentVariabler: { flettefelter },
             });
             return { ...acc, [valgFeltKategori]: arr };
         }, {} as any);
 
         axiosRequest<string, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}/v2`,
+            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}/`,
             data: {
                 valgfelter: req,
                 delmalData: {
@@ -161,8 +166,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 dokument={dokumentFelter.dokument}
                                 valgteFelt={valgteFelt}
                                 settValgteFelt={settValgteFelt}
-                                settFlettefelter={settFletteFelter}
-                                fletteFelter={fletteFelter}
+                                settFlettefelter={settAlleFlettefelter}
+                                fletteFelter={alleFlettefelter}
                             />
                             {behandlingErRedigerbar && (
                                 <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>

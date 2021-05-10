@@ -9,7 +9,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ClientRequest } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { oboConfig, proxyUrl } from './config';
+import { oboConfig } from './config';
 
 const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
     if (req.body) {
@@ -21,7 +21,7 @@ const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
 };
 
 // eslint-disable-next-line
-export const doProxy: any = (context: string) => {
+export const doProxy: any = (context: string, targetUrl: string) => {
     return createProxyMiddleware(context, {
         changeOrigin: true,
         logLevel: 'info',
@@ -31,7 +31,7 @@ export const doProxy: any = (context: string) => {
             return `/api${newPath}`;
         },
         secure: true,
-        target: `${proxyUrl}`,
+        target: `${targetUrl}`,
     });
 };
 

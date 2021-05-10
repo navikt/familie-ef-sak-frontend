@@ -54,4 +54,5 @@ export const oboConfig: IApi = {
 
 export const buildPath = env.buildPath;
 export const proxyUrl = env.proxyUrl;
+export const brevProxyUrl = 'http://localhost:8001';
 export const namespace = env.namespace;

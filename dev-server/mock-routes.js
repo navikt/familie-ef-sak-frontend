@@ -191,7 +191,7 @@ app.get('/familie-ef-sak/api/personopplysninger/nav-kontor/behandling/:id', (req
 });
 
 app.get(
-    '/familie-brev/api/EF/avansert-dokument/bokmaal/innvilgetOvergangsstonadHovedp/felter',
+    '/familie-brev/api/ef-brev/avansert-dokument/bokmaal/innvilgetOvergangsstonadHovedp/felter',
     (req, res) => {
         setTimeout(() => res.send(lesMockFil(`innvilgetOvergangsstønadBrevMal.json`)), delayMs);
     }
