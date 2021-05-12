@@ -3,7 +3,8 @@ import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../../ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../../typer/personopplysninger';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
-import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { Element } from 'nav-frontend-typografi';
+import { TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
@@ -55,12 +56,26 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     }
 };
 
+const TableColumnHeader: React.FC<{ text: string; width: number }> = ({ text, width }) => (
+    <Td width={`${width}%`}>
+        <Element>{text}</Element>
+    </Td>
+);
+
 const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={Bygning} tittel={'Adressehistorikk'} />
             <table className="tabell">
-                <KolonneTitler titler={['Adresse', 'Adressetype', 'Fra', 'Til']} />
+                <thead>
+                    <tr>
+                        <TableColumnHeader text={'Adresse'} width={35} />
+                        <TableColumnHeader text={'Adressetype'} width={15} />
+                        <TableColumnHeader text={'Angitt flyttedato'} width={15} />
+                        <TableColumnHeader text={'Fra'} width={15} />
+                        <TableColumnHeader text={'Til'} width={20} />
+                    </tr>
+                </thead>
                 <Innhold adresser={adresser} />
             </table>
         </TabellWrapper>
@@ -79,12 +94,15 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                 {adresser.map((adresse, indeks) => {
                     return (
                         <tr key={indeks}>
-                            <BredTd>{adresse.visningsadresse}</BredTd>
-                            <BredTd>{adresse.type}</BredTd>
-                            <BredTd>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</BredTd>
-                            <BredTd>
+                            <Td>{adresse.visningsadresse}</Td>
+                            <Td>{adresse.type}</Td>
+                            <Td>{formaterNullableIsoDato(adresse.angittFlyttedato)}</Td>
+                            <Td>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</Td>
+                            <Td>
                                 <StyledFlexDiv>
-                                    <div>{formaterNullableIsoDato(adresse.gyldigTilOgMed)}</div>
+                                    <div style={{ margin: 'auto 0' }}>
+                                        {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
+                                    </div>
                                     {adresse.type === AdresseType.BOSTEDADRESSE &&
                                         gyldigTilOgMedErNullEllerFremITid(adresse) && (
                                             <StyledKnapp
@@ -95,7 +113,7 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                                             </StyledKnapp>
                                         )}
                                 </StyledFlexDiv>
-                            </BredTd>
+                            </Td>
                         </tr>
                     );
                 })}

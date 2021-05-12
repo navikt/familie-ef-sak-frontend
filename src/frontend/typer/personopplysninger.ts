@@ -42,6 +42,7 @@ export interface IAdresse {
     type: AdresseType;
     gyldigFraOgMed?: string;
     gyldigTilOgMed?: string;
+    angittFlyttedato?: string;
 }
 
 export interface ISøkeresultatPerson {

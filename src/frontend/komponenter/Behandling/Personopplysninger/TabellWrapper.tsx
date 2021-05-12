@@ -3,7 +3,11 @@ import React from 'react';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 export const BredTd = styled.td`
-    width: 25%;
+    width: ${(props) => props.width ?? '25%'};
+    padding-left: 0;
+`;
+
+export const Td = styled.td`
     padding-left: 0;
 `;
 
@@ -39,13 +43,11 @@ export const KolonneTitler: React.FC<{ titler: string[] }> = ({ titler }) => {
     return (
         <thead>
             <tr>
-                {titler.map((tittel, indeks) => {
-                    return (
-                        <BredTd key={indeks}>
-                            <Element>{tittel}</Element>
-                        </BredTd>
-                    );
-                })}
+                {titler.map((tittel, indeks) => (
+                    <BredTd key={indeks} width={100 / titler.length}>
+                        <Element>{tittel}</Element>
+                    </BredTd>
+                ))}
             </tr>
         </thead>
     );
