@@ -165,6 +165,12 @@ export enum OppholdType {
     UKJENT = 'UKJENT',
 }
 
+export const oppholdTilTekst: Record<OppholdType, string> = {
+    MIDLERTIDIG: 'Midlertidig',
+    PERMANENT: 'Permanent',
+    UKJENT: 'Ukjent',
+};
+
 export interface INavKontor {
     navn: string;
     enhetNr: string;
