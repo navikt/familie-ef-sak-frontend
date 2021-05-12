@@ -56,7 +56,7 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     }
 };
 
-const TableColumnHeader: React.FC<{ text: string; width: number }> = ({ text, width }) => (
+const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
     <Td width={`${width}%`}>
         <Element>{text}</Element>
     </Td>
@@ -69,11 +69,11 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
             <table className="tabell">
                 <thead>
                     <tr>
-                        <TableColumnHeader text={'Adresse'} width={35} />
-                        <TableColumnHeader text={'Adressetype'} width={15} />
-                        <TableColumnHeader text={'Angitt flyttedato'} width={15} />
-                        <TableColumnHeader text={'Fra'} width={15} />
-                        <TableColumnHeader text={'Til'} width={20} />
+                        <Kolonnetittel text={'Adresse'} width={35} />
+                        <Kolonnetittel text={'Adressetype'} width={15} />
+                        <Kolonnetittel text={'Angitt flyttedato'} width={15} />
+                        <Kolonnetittel text={'Fra'} width={15} />
+                        <Kolonnetittel text={'Til'} width={20} />
                     </tr>
                 </thead>
                 <Innhold adresser={adresser} />
