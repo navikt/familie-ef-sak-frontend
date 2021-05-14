@@ -71,7 +71,7 @@ const SendTilBeslutterFooter: React.FC<{ behandlingId: string }> = ({ behandling
                 if (res.status === RessursStatus.SUKSESS) {
                     settSimuleringsdata(res.data);
                 } else {
-                    window.alert('DENNE SIMULERINGA GIKK IKKE BRA, GITT');
+                    window.alert('Simulering feilet');
                 }
             })
             .finally(() => settLaster(false));
