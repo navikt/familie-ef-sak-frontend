@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
-import { RegistergrunnlagNyttBarn, SøknadsgrunnlagNyttBarn } from './typer';
 import {
     mapBarnNavnTekst,
     mapTilRegistergrunnlagNyttBarn,
@@ -13,15 +12,19 @@ import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { Tabell } from './Tabell';
 import LiteBarn from '../../../../ikoner/LiteBarn';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
+import styled from 'styled-components';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
 }
+
+const Overskrift = styled(Element)`
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+`;
 
 const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
@@ -31,9 +34,9 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
             <div>
                 <FlexDiv>
                     <Registergrunnlag />
-                    <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
+                    <Overskrift className="tittel" tag="h3">
                         Brukers barn registrert i folkeregisteret
-                    </Element>
+                    </Overskrift>
                 </FlexDiv>
                 {registergrunnlagNyttBarn.map((barn) => (
                     <GridTabell>
@@ -53,79 +56,41 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         </>
                     </GridTabell>
                 ))}
-                <Tabell
-                    onEmpty="Ingen barn registrert i folkeregisteret"
-                    kolonner={[
-                        {
-                            overskrift: 'Navn',
-                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) =>
-                                registergrunnlag.navn,
-                        },
-                        {
-                            overskrift: 'Fødsels/D-nummer',
-                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
-                                <KopierbartNullableFødselsnummer
-                                    fødselsnummer={registergrunnlag.fødselsnummer}
-                                />
-                            ),
-                        },
-                        {
-                            overskrift: 'Annen forelder register',
-                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
-                                <AnnenForelderNavnOgFnr
-                                    forelder={registergrunnlag.annenForelderRegister}
-                                />
-                            ),
-                        },
-                        {
-                            overskrift: 'Annen forelder søknad',
-                            tekstVerdi: (registergrunnlag: RegistergrunnlagNyttBarn) => (
-                                <AnnenForelderNavnOgFnr
-                                    forelder={registergrunnlag.annenForelderSoknad}
-                                    ikkeOppgittAnnenForelderBegrunnelse={
-                                        registergrunnlag.ikkeOppgittAnnenForelderBegrunnelse
-                                    }
-                                />
-                            ),
-                        },
-                    ]}
-                    data={registergrunnlagNyttBarn}
-                />
             </div>
             <div>
                 <FlexDiv>
                     <Søknadsgrunnlag />
-                    <Element className="tittel" tag="h3" style={{ marginLeft: '0.5rem' }}>
+                    <Overskrift className="tittel" tag="h3">
                         Brukers fremtidige barn lagt til i søknad
-                    </Element>
+                    </Overskrift>
                 </FlexDiv>
-                <Tabell
-                    kolonner={[
-                        {
-                            overskrift: 'Navn',
-                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
-                                mapBarnNavnTekst(søknadsgrunnlag),
-                        },
-                        {
-                            overskrift: 'Termindato',
-                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) =>
-                                formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato),
-                        },
-                        {
-                            overskrift: 'Annen forelder',
-                            tekstVerdi: (søknadsgrunnlag: SøknadsgrunnlagNyttBarn) => (
+                {søknadsgrunnlagNyttBarn.map((barn) => (
+                    <GridTabell>
+                        <>
+                            <LiteBarn />
+                            <Element>{mapBarnNavnTekst(barn)}</Element>
+                        </>
+                        <>
+                            <Søknadsgrunnlag />
+                            <Element>Termindato</Element>
+                            <Normaltekst>
+                                {formaterNullableIsoDato(barn.fødselTermindato)}
+                            </Normaltekst>
+                        </>
+                        <>
+                            <Søknadsgrunnlag />
+                            <Element>Annen forelder</Element>
+                            <Normaltekst>
                                 <AnnenForelderNavnOgFnr
-                                    forelder={søknadsgrunnlag.annenForelderSoknad}
+                                    forelder={barn.annenForelderSoknad}
                                     ikkeOppgittAnnenForelderBegrunnelse={
-                                        søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
+                                        barn.ikkeOppgittAnnenForelderBegrunnelse
                                     }
                                 />
-                            ),
-                        },
-                    ]}
-                    data={søknadsgrunnlagNyttBarn}
-                    onEmpty="Ingen barn lagt til i søknad"
-                />
+                            </Normaltekst>
+                        </>
+                    </GridTabell>
+                ))}
             </div>
         </>
     );
