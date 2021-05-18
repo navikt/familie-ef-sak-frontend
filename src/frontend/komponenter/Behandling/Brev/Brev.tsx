@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Knapp } from 'nav-frontend-knapper';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -30,28 +30,42 @@ interface Props {
 type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 
 export interface DokumentMal {
-    dokument: DokumentFelt[];
+    delmaler: Delmal[];
 }
 
 interface Flettefelt {
-    _id: string;
     felt: string;
+    _id: string;
 }
 
-export interface FletteMedVerdi extends Flettefelt {
+interface Flettefeltreferanse {
+    _ref: string;
+}
+
+export interface FletteMedVerdi extends Flettefeltreferanse {
     verdi: string | null;
 }
 
 export interface Valgmulighet {
-    flettefelt: Flettefelt[];
-    valgmulighet: string; //denne er nøkkel
+    flettefelter: Flettefelter[];
+    valgmulighet: string;
     visningsnavnValgmulighet: string;
 }
 
-export interface DokumentFelt {
-    valgFeltKategori: string;
-    visningsnavn: string;
+export interface Flettefelter {
+    flettefelt: Flettefeltreferanse[];
+}
+export interface ValgFelt {
     valgMuligheter: Valgmulighet[];
+    valgfeltVisningsnavn: string;
+    valgFeltApiNavn: string;
+}
+
+export interface Delmal {
+    delmalApiNavn: string;
+    delmalNavn: string;
+    delmalValgfelt: ValgFelt[];
+    delmalFlettefelter: Flettefelter[]; // referanse til flettefelt
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
@@ -71,20 +85,20 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             url: `/familie-brev/api/EF/avansert-dokument/bokmaal/innvilgetOvergangsstonadHovedp/felter`,
         }).then((respons: Ressurs<DokumentMal>) => {
             settDokumentFelter(respons);
-            if (respons.status === RessursStatus.SUKSESS) {
-                settFletteFelter(
-                    respons.data.dokument
-                        .flatMap((dok) =>
-                            dok.valgMuligheter.flatMap((valMulighet) => valMulighet.flettefelt)
-                        )
-                        .filter((v) => Object.keys(v).length > 0)
-                        .map((v) => ({ ...v, verdi: null }))
-                        .filter(
-                            (v, i, a) =>
-                                a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i
-                        )
-                );
-            }
+            // if (respons.status === RessursStatus.SUKSESS) {
+            //     settFletteFelter(
+            //         respons.data.delmaler
+            //             .flatMap((delmal) =>
+            //                 delmal.delmalValgfelt.flatMap((valgmulighet) => valgmulighet.)
+            //             )
+            //             .filter((v) => Object.keys(v).length > 0)
+            //             .map((v) => ({ ...v, verdi: null }))
+            //             .filter(
+            //                 (v, i, a) =>
+            //                     a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i
+            //             )
+            //     );
+            // }
         });
     }, []);
 
@@ -98,48 +112,48 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             settBrevRessurs(respons);
         });
     };
-    const genererBrev2 = () => {
-        const req = Object.entries(valgteFelt).reduce((acc, curr) => {
-            const valgFeltKategori = curr[0];
-            const valgmulighet = curr[1];
-            const flettefelter = valgmulighet.flettefelt.reduce((acc, ff) => {
-                const noe = fletteFelter.find(
-                    (utfylltFletteFelt) => utfylltFletteFelt._id === ff._id
-                )!;
-                return { ...acc, [noe.felt]: Array.of(noe.verdi) };
-            });
-            const arr = Array.of({
-                navn: valgmulighet.valgmulighet,
-                dokumentFelter: { flettefelter },
-            });
-            return { ...acc, [valgFeltKategori]: arr };
-        }, {} as any);
-
-        axiosRequest<string, any>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}/v2`,
-            data: {
-                valgfelter: req,
-                delmalData: {
-                    signatur: {
-                        enhet: ['Nav arbeid og ... - OSLO'],
-                        saksbehandler: 'Batman',
-                    },
-                },
-                flettefelter: {
-                    navn: ['$navn'],
-                    fodselsnummer: ['$ident'],
-                    'Fom-dato innvilgelse': ['$innvilgelseFra'],
-                    'Tom-dato innvilgelse': ['$innvilgelseTil'],
-                    begrunnelseFomDatoInnvilgelse: ['$begrunnelseFomDatoInnvilgelse'],
-                    dato: ['$brevdato'],
-                    belopOvergangsstonad: ['$belopOvergangsstonad'],
-                },
-            },
-        }).then((respons: Ressurs<string>) => {
-            settBrevRessurs(respons);
-        });
-    };
+    // const genererBrev2 = () => {
+    //     const req = Object.entries(valgteFelt).reduce((acc, curr) => {
+    //         const valgFeltKategori = curr[0];
+    //         const valgmulighet = curr[1];
+    //         const flettefelter = valgmulighet.flettefelt.reduce((acc, ff) => {
+    //             const noe = fletteFelter.find(
+    //                 (utfylltFletteFelt) => utfylltFletteFelt._id === ff._id
+    //             )!;
+    //             return { ...acc, [noe.felt]: Array.of(noe.verdi) };
+    //         });
+    //         const arr = Array.of({
+    //             navn: valgmulighet.valgmulighet,
+    //             dokumentFelter: { flettefelter },
+    //         });
+    //         return { ...acc, [valgFeltKategori]: arr };
+    //     }, {} as any);
+    //
+    //     axiosRequest<string, any>({
+    //         method: 'POST',
+    //         url: `/familie-ef-sak/api/brev/${behandlingId}/v2`,
+    //         data: {
+    //             valgfelter: req,
+    //             delmalData: {
+    //                 signatur: {
+    //                     enhet: ['Nav arbeid og ... - OSLO'],
+    //                     saksbehandler: 'Batman',
+    //                 },
+    //             },
+    //             flettefelter: {
+    //                 navn: ['$navn'],
+    //                 fodselsnummer: ['$ident'],
+    //                 'Fom-dato innvilgelse': ['$innvilgelseFra'],
+    //                 'Tom-dato innvilgelse': ['$innvilgelseTil'],
+    //                 begrunnelseFomDatoInnvilgelse: ['$begrunnelseFomDatoInnvilgelse'],
+    //                 dato: ['$brevdato'],
+    //                 belopOvergangsstonad: ['$belopOvergangsstonad'],
+    //             },
+    //         },
+    //     }).then((respons: Ressurs<string>) => {
+    //         settBrevRessurs(respons);
+    //     });
+    // };
 
     const hentBrev = () => {
         // eslint-disable-next-line
@@ -158,7 +172,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                     <>
                         <StyledBrev>
                             <Brevmeny
-                                dokument={dokumentFelter.dokument}
+                                dokument={dokumentFelter.delmaler}
                                 valgteFelt={valgteFelt}
                                 settValgteFelt={settValgteFelt}
                                 settFlettefelter={settFletteFelter}
@@ -169,7 +183,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                             )}
                             <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
                             <PdfVisning pdfFilInnhold={brevRessurs} />
-                            <Hovedknapp onClick={genererBrev2}>Generer brev2!!!</Hovedknapp>
+                            {/*<Hovedknapp onClick={genererBrev2}>Generer brev2!!!</Hovedknapp>*/}
                         </StyledBrev>
                         {behandlingErRedigerbar && (
                             <SendTilBeslutterFooter behandlingId={behandlingId} />

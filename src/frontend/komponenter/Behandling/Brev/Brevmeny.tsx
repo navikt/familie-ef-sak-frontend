@@ -1,11 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { DokumentFelt, FletteMedVerdi, Valgmulighet } from './Brev';
+import { Delmal, FletteMedVerdi, Valgmulighet } from './Brev';
 import { Input, Select } from 'nav-frontend-skjema';
 
 type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 
 interface Props {
-    dokument: DokumentFelt[];
+    dokument: Delmal[];
     valgteFelt: ValgtFelt;
     settValgteFelt: Dispatch<SetStateAction<ValgtFelt>>;
     settFlettefelter: Dispatch<SetStateAction<FletteMedVerdi[]>>;
