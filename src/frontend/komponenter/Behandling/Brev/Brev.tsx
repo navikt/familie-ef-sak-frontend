@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
@@ -8,6 +8,7 @@ import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import Brevmeny from './Brevmeny';
+import { RessursStatus } from '@navikt/familie-typer';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -29,65 +30,80 @@ interface Props {
 }
 type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 
+export interface BrevStruktur {
+    dokument: DokumentMal;
+    flettefelter: Flettefelter;
+}
 export interface DokumentMal {
-    dokument: DokumentFelt[];
+    delmaler: Delmal[];
 }
 
+export interface Flettefelter {
+    flettefeltReferanse: Flettefelt[];
+}
 interface Flettefelt {
-    _id: string;
     felt: string;
+    _id: string;
 }
 
-export interface FletteMedVerdi extends Flettefelt {
+export interface Flettefeltreferanse {
+    _ref: string;
+}
+
+export interface FlettefeltMedVerdi extends Flettefeltreferanse {
     verdi: string | null;
 }
 
 export interface Valgmulighet {
-    flettefelt: Flettefelt[];
-    valgmulighet: string; //denne er nøkkel
+    flettefelter: Flettefelter[];
+    valgmulighet: string;
     visningsnavnValgmulighet: string;
 }
 
-export interface DokumentFelt {
-    valgFeltKategori: string;
-    visningsnavn: string;
+export interface Flettefelter {
+    flettefelt: Flettefeltreferanse[];
+}
+export interface ValgFelt {
     valgMuligheter: Valgmulighet[];
+    valgfeltVisningsnavn: string;
+    valgFeltApiNavn: string;
+}
+
+export interface Delmal {
+    delmalApiNavn: string;
+    delmalNavn: string;
+    delmalValgfelt: ValgFelt[];
+    delmalFlettefelter: Flettefelter[]; // referanse til flettefelt
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar } = useBehandling();
-    const [dokumentFelter, settDokumentFelter] = useState<Ressurs<DokumentMal>>(byggTomRessurs());
-    const [alleFlettefelter, settAlleFlettefelter] = useState<FletteMedVerdi[]>(
-        [] as FletteMedVerdi[]
+    const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
+    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
+        [] as FlettefeltMedVerdi[]
     );
     const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
         {} as ValgtFelt
     );
     const data = { navn: 'test', ident: '123456789' };
 
-    // const brevMal = 'innvilgetOvergangsstonadHovedp';
-    const brevMal = 'innvilgetVedtakMVP';
+    const brevMal = 'innvilgetOvergangsstonadHovedp';
+    // const brevMal = 'innvilgetVedtakMVP';
 
     useEffect(() => {
-        axiosRequest<DokumentMal, null>({
+        axiosRequest<BrevStruktur, null>({
             method: 'GET',
             url: `/familie-brev/api/ef-brev/avansert-dokument/bokmaal/${brevMal}/felter`,
-        }).then((respons: Ressurs<DokumentMal>) => {
-            settDokumentFelter(respons);
+        }).then((respons: Ressurs<BrevStruktur>) => {
             if (respons.status === RessursStatus.SUKSESS) {
+                settBrevStruktur(respons);
                 settAlleFlettefelter(
-                    respons.data.dokument
-                        .flatMap((dok) =>
-                            dok.valgMuligheter.flatMap((valMulighet) => valMulighet.flettefelt)
-                        )
-                        .filter((v) => Object.keys(v).length > 0)
-                        .map((v) => ({ ...v, verdi: null }))
-                        .filter(
-                            (v, i, a) =>
-                                a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i
-                        )
+                    respons.data.flettefelter.flettefeltReferanse.map((felt) => ({
+                        _ref: felt._id,
+                        verdi: null,
+                    }))
                 );
             }
         });
@@ -104,25 +120,11 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     };
     const genererBrev2 = () => {
-        const req = Object.entries(valgteFelt).reduce((acc, curr) => {
-            const valgFeltKategori = curr[0];
-            const valgmulighet = curr[1];
-            const flettefelter = valgmulighet.flettefelt.reduce((acc, ff) => {
-                const noe = alleFlettefelter.find(
-                    (utfylltFletteFelt) => utfylltFletteFelt._id === ff._id
-                )!;
-                return { ...acc, [noe.felt]: Array.of(noe.verdi) };
-            }, {});
-            const arr = Array.of({
-                navn: valgmulighet.valgmulighet,
-                dokumentVariabler: { flettefelter },
-            });
-            return { ...acc, [valgFeltKategori]: arr };
-        }, {} as any);
+        const req = {};
 
         axiosRequest<string, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}/`,
+            url: `/familie-ef-sak/api/brev/${behandlingId}/v2`,
             data: {
                 valgfelter: req,
                 delmalData: {
@@ -157,17 +159,17 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     };
 
     return (
-        <DataViewer response={{ dokumentFelter }}>
+        <DataViewer response={{ dokumentFelter: brevStruktur }}>
             {({ dokumentFelter }) => {
                 return (
                     <>
                         <StyledBrev>
                             <Brevmeny
-                                dokument={dokumentFelter.dokument}
+                                dokument={dokumentFelter}
                                 valgteFelt={valgteFelt}
                                 settValgteFelt={settValgteFelt}
+                                flettefelter={alleFlettefelter}
                                 settFlettefelter={settAlleFlettefelter}
-                                fletteFelter={alleFlettefelter}
                             />
                             {behandlingErRedigerbar && (
                                 <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>

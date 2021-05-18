@@ -1,1122 +1,408 @@
 {
-  "data":{
-    "dokument": [
-      {
-        "valgFeltKategori": "hvisUforeElGjenlevende",
-        "valgMuligheter": [
-          {
-            "flettefelt": [
-              {
-                "_id": "26bf695a-1dd2-4798-b372-3199f1531b37",
-                "felt": "manedssats"
-              },
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              }
-            ],
-            "valgmulighet": "grunnlagUforeElGjenlevende",
-            "visningsnavnValgmulighet": "Grunnlag - hvis uføretrygd eller gjenlevendepensjon"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDu",
-            "visningsnavnValgmulighet": "Dette får du"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              }
-            ],
-            "valgmulighet": "detteFarDuUforeGjlevendeForHoy",
-            "visningsnavnValgmulighet": "Dette får du - hvis uføretrygd og gjenlevende for høy uføretrygd"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDuEbetOgGomreg",
-            "visningsnavnValgmulighet": "Dette får du - hvis etterbetaling og G-omregning"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisEtterbetIkkeSpurtOmRefus",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og ikke spurt om refusjonskrav"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "53df6f4e-dba5-4218-aec9-9b040d036a3e",
-                "felt": "navKontor"
-              }
-            ],
-            "valgmulighet": "detteFarDuEbetOgSpurtOmRefus",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og spurt om refusjonskrav "
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "endringIInntektUfore",
-            "visningsnavnValgmulighet": "Endring i inntekt – uføre"
-          }
-        ],
-        "visningsnavn": "A_Hvis uføretrygd eller gjenlevendepensjon"
-      },
-      {
-        "valgFeltKategori": "hvisInntektUnderHalvG",
-        "valgMuligheter": [
-          {
-            "flettefelt": [
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDu",
-            "visningsnavnValgmulighet": "Dette får du"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDuEbetOgGomreg",
-            "visningsnavnValgmulighet": "Dette får du - hvis etterbetaling og G-omregning"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "314e37ef-bbbb-437e-bf8a-b15f66ea2a45",
-                "felt": "kroner"
-              }
-            ],
-            "valgmulighet": "grunnlagHvisInntektUnderHalvG",
-            "visningsnavnValgmulighet": "Grunnlag - hvis inntekt under 1/2"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "53df6f4e-dba5-4218-aec9-9b040d036a3e",
-                "felt": "navKontor"
-              }
-            ],
-            "valgmulighet": "hvisEbetSpurtOmRefkrav",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og spurt om refusjonskrav "
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "314e37ef-bbbb-437e-bf8a-b15f66ea2a45",
-                "felt": "kroner"
-              }
-            ],
-            "valgmulighet": "endringIInntektOverHalvG",
-            "visningsnavnValgmulighet": "Endring i inntekt - under 1/2 G"
-          }
-        ],
-        "visningsnavn": "A_Hvis inntekt under 1/2 G_ad"
-      },
-      {
-        "valgFeltKategori": "hvisBarnUnderEttAr",
-        "valgMuligheter": [
-          {
-            "flettefelt": [],
-            "valgmulighet": "aktivitetspliktBarnUnderEttAr",
-            "visningsnavnValgmulighet": "Aktivitetsplikt - barn under ett år"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
-                "felt": "manedOgAr"
-              }
-            ],
-            "valgmulighet": "barnUnderEttArIkkeFodt",
-            "visningsnavnValgmulighet": "Barn under ett år - ikke født"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "cf95b423-9e6b-4adb-a9a2-783cd6961c86",
-                "felt": "datoBarnEttAr"
-              }
-            ],
-            "valgmulighet": "barnUnderEttArFodt",
-            "visningsnavnValgmulighet": "Barn under ett år - født"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "aktivitetspliktSlikFyllerDuDen",
-            "visningsnavnValgmulighet": "Aktivitetsplikt - slik fyller du den"
-          }
-        ],
-        "visningsnavn": "A_Hvis barn under ett år"
-      },
-      {
-        "valgFeltKategori": "avslutning",
-        "valgMuligheter": [
-          {
-            "flettefelt": [
-              {
-                "_id": "0dfaeb6f-d270-4649-b179-761eb4ac6e73",
-                "felt": "paragraf1513"
-              }
-            ],
-            "valgmulighet": "hjemmel",
-            "visningsnavnValgmulighet": "Hjemmel"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "0dfaeb6f-d270-4649-b179-761eb4ac6e73",
-                "felt": "paragraf1513"
-              }
-            ],
-            "valgmulighet": "hjemmelInnvilgetTilbakeITid",
-            "visningsnavnValgmulighet": "Hjemmel - hvis innvilget tilbake i tid"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "skattekort",
-            "visningsnavnValgmulighet": "Skattekort"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "beregningAvStonadOgInntekt",
-            "visningsnavnValgmulighet": "Beregning av stonad og inntekt"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "meldeOmEndring",
-            "visningsnavnValgmulighet": "Melde om endring"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "kanMisteRetten",
-            "visningsnavnValgmulighet": "Kan miste retten"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "sisteAvslutning",
-            "visningsnavnValgmulighet": "Siste avslutning"
-          }
-        ],
-        "visningsnavn": "A_Avslutning"
-      },
-      {
-        "valgFeltKategori": "oppholdstillatelseBarn",
-        "valgMuligheter": [
-          {
-            "flettefelt": [],
-            "valgmulighet": "oppholdstillatelseBarn",
-            "visningsnavnValgmulighet": "Oppholdstillatelse barn - der det er relevant"
-          }
-        ],
-        "visningsnavn": "Oppholdstillatelse barn"
-      },
-      {
-        "valgFeltKategori": "hvisIngenInntekt",
-        "valgMuligheter": [
-          {
-            "flettefelt": [
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDu",
-            "visningsnavnValgmulighet": "Dette får du"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDuEbetOgGomreg",
-            "visningsnavnValgmulighet": "Dette får du - hvis etterbetaling og G-omregning"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "grunnlagHvisIngenInntekt",
-            "visningsnavnValgmulighet": "Grunnlag - hvis ingen inntekt"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisEbetIkkeSpurtOmRefkrav",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og ikke spurt om refusjonskrav"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "53df6f4e-dba5-4218-aec9-9b040d036a3e",
-                "felt": "navKontor"
-              }
-            ],
-            "valgmulighet": "hvisEbetSpurtOmRefkrav",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og spurt om refusjonskrav "
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "endringInntektIngenInntekt",
-            "visningsnavnValgmulighet": "Endring i inntekt - ingen inntekt"
-          }
-        ],
-        "visningsnavn": "A_Hvis ingen inntekt_ad"
-      },
-      {
-        "valgFeltKategori": "hvisVarierendeInntekt",
-        "valgMuligheter": [
-          {
-            "flettefelt": [],
-            "valgmulighet": "grunnlagVarierendeInntekt",
-            "visningsnavnValgmulighet": "Grunnlag - hvis varierende inntekt"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              }
-            ],
-            "valgmulighet": "grunnlagInntektOgAndreStonader",
-            "visningsnavnValgmulighet": "Grunnlag - hvis inntekt og andre stønader"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "detteFarDuEbetVariInntekt",
-            "visningsnavnValgmulighet": "Dette får du etterbetalt - varierende inntekt "
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDuFremoverVariInntekt",
-            "visningsnavnValgmulighet": "Dette får du fremover – hvis varierende inntekt"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "ab6053e0-7aeb-4610-98b6-cea27a6c39f3",
-                "felt": "maned"
-              },
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "detteFarDuFremoverVariEnMnd",
-            "visningsnavnValgmulighet": "Dette får du fremover – hvis inntekt kun én måned"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "64deafee-1edf-4763-a049-d699ef8de708",
-                "felt": "etterbetalingOvertidEl"
-              }
-            ],
-            "valgmulighet": "detteFarDuFremoverFratrekk",
-            "visningsnavnValgmulighet": "Dette får du fremover – hvis fratrekk"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "c6817641-b4f9-43ed-a822-f930c1bbccff",
-                "felt": "arbeidsgiverArbeidskontrakt"
-              },
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "detteFarDuFremoverArbkontrakt",
-            "visningsnavnValgmulighet": "Dette får du fremover - hvis arbeidskontrakt"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              },
-              {
-                "_id": "079fe698-ed8d-46a8-8cf8-3c009ee3bc86",
-                "felt": "belopDagsats"
-              }
-            ],
-            "valgmulighet": "dettefarDuFremoverStartStonad",
-            "visningsnavnValgmulighet": "Dette får du fremover - starter stønad"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisEtterbetIkkeSpurtOmRefus",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og ikke spurt om refusjonskrav"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "53df6f4e-dba5-4218-aec9-9b040d036a3e",
-                "felt": "navKontor"
-              }
-            ],
-            "valgmulighet": "detteFarDuEbetOgSpurtOmRefus",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og spurt om refusjonskrav "
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "endringIInntektTiProsent",
-            "visningsnavnValgmulighet": "Endring i inntekt ti prosent"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "ab6053e0-7aeb-4610-98b6-cea27a6c39f3",
-                "felt": "maned"
-              },
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "detteFarDuFremoverInntGjsnitt",
-            "visningsnavnValgmulighet": "Dette får du fremover – hvis inntekt, gjennomsnittet"
-          }
-        ],
-        "visningsnavn": "A_Hvis varierende inntekt"
-      },
-      {
-        "valgFeltKategori": "sluttidspunkt",
-        "valgMuligheter": [
-          {
-            "flettefelt": [
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "stonadITreAr",
-            "visningsnavnValgmulighet": "Stønad i tre år_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "5ea8fdae-d156-43b4-95b8-40eec418d927",
-                "felt": "Fom-dato tidligere periode"
-              },
-              {
-                "_id": "33a0c413-a0e3-49c9-b542-850374d38497",
-                "felt": "Tom-dato tidligere periode"
-              },
-              {
-                "_id": "1a81e574-30ab-4782-8242-233915d985c3",
-                "felt": "Antall måneder tidligere periode"
-              }
-            ],
-            "valgmulighet": "stonadITreArTidligereStonad",
-            "visningsnavnValgmulighet": "Stønad i tre år og tidligere overgangsstønad_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "f8b6f567-e024-4604-b9e2-08bb408add61",
-                "felt": "Dato barn fyller 8 år"
-              }
-            ],
-            "valgmulighet": "barnetBlirAtteAr",
-            "visningsnavnValgmulighet": "Barnet blir åtte år_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "522217b4-a2f9-497c-beaf-223fd5abd87f",
-                "felt": "Dato venter nytt barn"
-              }
-            ],
-            "valgmulighet": "venterNyttBarn",
-            "visningsnavnValgmulighet": "Venter nytt barn_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "084f8be5-286c-470e-9749-dd1aaa969b44",
-                "felt": "Dato nytt barn samme partner"
-              }
-            ],
-            "valgmulighet": "nyttBarnSammePartner",
-            "visningsnavnValgmulighet": "Nytt barn med samme partner_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "barnetBlirEttAr",
-            "visningsnavnValgmulighet": "Barnet blir ett år_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "d604bb29-cfba-4bcb-839f-836df3c36351",
-                "felt": "begrunnelseTomDatoInnvilgelse"
-              }
-            ],
-            "valgmulighet": "begrunnelse",
-            "visningsnavnValgmulighet": "Begrunnelse sluttidspunkt_ad"
-          }
-        ],
-        "visningsnavn": "Sluttidspunkt_ad"
-      },
-      {
-        "valgFeltKategori": "hvisEnInntektEllerFastlonn",
-        "valgMuligheter": [
-          {
-            "flettefelt": [
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDu",
-            "visningsnavnValgmulighet": "Dette får du"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              },
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              },
-              {
-                "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
-                "felt": "belopOvergangsstonad"
-              }
-            ],
-            "valgmulighet": "detteFarDuEbetOgGomreg",
-            "visningsnavnValgmulighet": "Dette får du - hvis etterbetaling og G-omregning"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "grunnlagHvisInntekt",
-            "visningsnavnValgmulighet": "Grunnlag - hvis inntekt"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              }
-            ],
-            "valgmulighet": "grunnlagInntektOgAndreStonader",
-            "visningsnavnValgmulighet": "Grunnlag - hvis inntekt og andre stønader"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              },
-              {
-                "_id": "079fe698-ed8d-46a8-8cf8-3c009ee3bc86",
-                "felt": "belopDagsats"
-              }
-            ],
-            "valgmulighet": "grunnlagIkkeInntektAnnenStonad",
-            "visningsnavnValgmulighet": "Grunnlag - hvis ingen inntekt men får andre stønader"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e9a9bd16-24ca-430b-a867-aa25bfdc89ff",
-                "felt": "yrkeBransjeNavnPaSelskap"
-              }
-            ],
-            "valgmulighet": "grunnlagSelvstendigNaringsdriv",
-            "visningsnavnValgmulighet": "Grunnlag - hvis selvstendig næringsdrivende"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "0980eb62-6f0f-4019-aa78-98974aa8b519",
-                "felt": "arstall"
-              },
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              },
-              {
-                "_id": "0980eb62-6f0f-4019-aa78-98974aa8b519",
-                "felt": "arstall"
-              },
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "grunnlagSelvstendigIkkeNytt",
-            "visningsnavnValgmulighet": "Grunnlag - hvis selvstendig næringsdrivende ikke nyoppstartet"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "7e7a12e2-96d1-43fd-b781-680c14edb5b8",
-                "felt": "datoNyoppstartetBedrift"
-              },
-              {
-                "_id": "0980eb62-6f0f-4019-aa78-98974aa8b519",
-                "felt": "arstall"
-              },
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "grunnlagSelvstendigNytt",
-            "visningsnavnValgmulighet": "Grunnlag - hvis selvstendig næringsdrivende nyoppstartet"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisEbetIkkeSpurtOmRefkrav",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og ikke spurt om refusjonskrav"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "53df6f4e-dba5-4218-aec9-9b040d036a3e",
-                "felt": "navKontor"
-              }
-            ],
-            "valgmulighet": "hvisEbetSpurtOmRefkrav",
-            "visningsnavnValgmulighet": "Dette får du – hvis etterbetaling og spurt om refusjonskrav "
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "endringInntektTiProsent",
-            "visningsnavnValgmulighet": "Endring i inntekt ti prosent"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "endringInntektSelvstTiProsent",
-            "visningsnavnValgmulighet": "Endring i inntekt ti prosent - selvstendig næringsdrivende"
-          }
-        ],
-        "visningsnavn": "A_Hvis én inntekt eller fastlønn_ad"
-      },
-      {
-        "valgFeltKategori": "hvisBarnEttOgAtteAr",
-        "valgMuligheter": [
-          {
-            "flettefelt": [],
-            "valgmulighet": "aktivitetspliktBarnEttOgAtteAr",
-            "visningsnavnValgmulighet": "Aktivitetsplikt - barn mellom ett og åtte år"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "52364852-ad9c-4af0-98f4-e5b7fa17d383",
-                "felt": "navn"
-              }
-            ],
-            "valgmulighet": "hvisArbeidstakerBarnEttOgAtte",
-            "visningsnavnValgmulighet": "Hvis arbeidstaker"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisSelvstendigNaringsdrivende",
-            "visningsnavnValgmulighet": "Hvis selvstendig næringsdrivende"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "52364852-ad9c-4af0-98f4-e5b7fa17d383",
-                "felt": "navn"
-              }
-            ],
-            "valgmulighet": "hvisAnsattIEgetAS",
-            "visningsnavnValgmulighet": "Hvis ansatt i eget AS"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisArbeidssoker",
-            "visningsnavnValgmulighet": "Hvis arbeidssøker"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "992f87d9-0734-4e34-bcff-fcd79c3b7f30",
-                "felt": "studium"
-              },
-              {
-                "_id": "346ff1c6-a085-40e0-9217-4da318b25970",
-                "felt": "skole"
-              },
-              {
-                "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
-                "felt": "manedOgAr"
-              },
-              {
-                "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
-                "felt": "manedOgAr"
-              },
-              {
-                "_id": "fd0b4446-1da3-456d-9fa0-67eb73f9e022",
-                "felt": "prosent"
-              }
-            ],
-            "valgmulighet": "hvisIUtdanning",
-            "visningsnavnValgmulighet": "Hvis i utdanning"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisEtablererEgenVirksomhet",
-            "visningsnavnValgmulighet": "Hvis etablerer egen virksomhet"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "992f87d9-0734-4e34-bcff-fcd79c3b7f30",
-                "felt": "studium"
-              },
-              {
-                "_id": "346ff1c6-a085-40e0-9217-4da318b25970",
-                "felt": "skole"
-              },
-              {
-                "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
-                "felt": "manedOgAr"
-              },
-              {
-                "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
-                "felt": "manedOgAr"
-              },
-              {
-                "_id": "c1d40960-5470-4959-8ecf-e13a5fe81935",
-                "felt": "begrunnelseIkkeGodkjentStudium"
-              }
-            ],
-            "valgmulighet": "komboArbeidStudierIkkeGodkjent",
-            "visningsnavnValgmulighet": "Kombinasjon av arbeid og studier - ikke godkjent utdanning"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "992f87d9-0734-4e34-bcff-fcd79c3b7f30",
-                "felt": "studium"
-              },
-              {
-                "_id": "346ff1c6-a085-40e0-9217-4da318b25970",
-                "felt": "skole"
-              },
-              {
-                "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
-                "felt": "manedOgAr"
-              },
-              {
-                "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
-                "felt": "manedOgAr"
-              },
-              {
-                "_id": "c1d40960-5470-4959-8ecf-e13a5fe81935",
-                "felt": "begrunnelseIkkeGodkjentStudium"
-              }
-            ],
-            "valgmulighet": "komboSokeArbeidStudereIkkeGkj",
-            "visningsnavnValgmulighet": "Kombinasjon av å søke arbeid og utdanning - ikke godkjent utdanning"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisEgenSykdom",
-            "visningsnavnValgmulighet": "Hvis egen sykdom"
-          },
-          {
-            "flettefelt": [],
-            "valgmulighet": "hvisBarnsSykdom",
-            "visningsnavnValgmulighet": "Hvis barns sykdom"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "e458fa6c-8942-4bdc-a0f8-890c2c0e679f",
-                "felt": "omDokumentasjonOgSituasjon"
-              }
-            ],
-            "valgmulighet": "hvisSarligTilsynskrevendeBarn",
-            "visningsnavnValgmulighet": "Hvis særlig tilsynskrevende barn"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "8b0461eb-a01e-41c6-860e-c90937afb007",
-                "felt": "datoBarnehageplass"
-              },
-              {
-                "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
-                "felt": "Tom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "hvisPaventeAvBarnehageplass",
-            "visningsnavnValgmulighet": "Hvis påvente av barnehageplass"
-          }
-        ],
-        "visningsnavn": "A_Aktivitet - hvis barn mellom ett og åtte år"
-      },
-      {
-        "valgFeltKategori": "startstidspunkt",
-        "valgMuligheter": [
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "manedenForTermin",
-            "visningsnavnValgmulighet": "Måneden før termin_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "forBarnetBleFodt",
-            "visningsnavnValgmulighet": "Før barnet ble født_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "vartINorgeIFemAr",
-            "visningsnavnValgmulighet": "Vært i Norge i fem år_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "tilbakeFraOppholdIUtland",
-            "visningsnavnValgmulighet": "Måneden etter tilbakekomst fra utland_ad"
-          },
-          {
-            "flettefelt": [
-              {}
-            ],
-            "valgmulighet": "foreldreFlyttetFraHverandre",
-            "visningsnavnValgmulighet": "Foreldre flyttet fra hverandre"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "samboereFlyttetFraHverandre",
-            "visningsnavnValgmulighet": "Måneden etter samboere flyttet fra hverandre_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterSeparasjon",
-            "visningsnavnValgmulighet": "Måneden etter separasjon_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterSokOmSeparasjon",
-            "visningsnavnValgmulighet": "Måneden du søkte stønad fra_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterSkilsmisse",
-            "visningsnavnValgmulighet": "Måneden etter skilsmisse_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterInngattSamvarsordning",
-            "visningsnavnValgmulighet": "Måneden etter inngått samværsordning_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterEndretSamvarsordning",
-            "visningsnavnValgmulighet": "Måneden etter endret samværsordning_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterArbeidsstart",
-            "visningsnavnValgmulighet": "Måneden etter arbeidsstart_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterRegSomArbeidssoker",
-            "visningsnavnValgmulighet": "Måneden etter registrert som arbeidssøker_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterStudiestart",
-            "visningsnavnValgmulighet": "Måneden etter studiestart_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndEtterEtablertEgenBedrift",
-            "visningsnavnValgmulighet": "Måneden etter etablert egen bedrift_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "mndDuSokteStonadFra",
-            "visningsnavnValgmulighet": "Måneden du søkte stønad fra_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              }
-            ],
-            "valgmulighet": "treMndForDuSokteStonad",
-            "visningsnavnValgmulighet": "Tre måneder før du søkte_ad"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
-                "felt": "Fom-dato innvilgelse"
-              },
-              {
-                "_id": "994c29b3-5dca-45b5-953d-869b0f3c532a",
-                "felt": "begrunnelseFomDatoInnvilgelse"
-              }
-            ],
-            "valgmulighet": "begrunnelse",
-            "visningsnavnValgmulighet": "Begrunnelse startidspunkt_ad"
-          }
-        ],
-        "visningsnavn": "Starttidspunkt_ad"
-      },
-      {
-        "valgFeltKategori": "hvisForHoyInntekt",
-        "valgMuligheter": [
-          {
-            "flettefelt": [],
-            "valgmulighet": "detteFarDuForHoyInntekt",
-            "visningsnavnValgmulighet": "Dette får du - hvis for høy inntekt"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "grunnlagHvisInntekt",
-            "visningsnavnValgmulighet": "Grunnlag - hvis inntekt"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              }
-            ],
-            "valgmulighet": "grunnlagInntektOgAndreStonader",
-            "visningsnavnValgmulighet": "Grunnlag - hvis inntekt og andre stønader"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
-                "felt": "stonad"
-              },
-              {
-                "_id": "079fe698-ed8d-46a8-8cf8-3c009ee3bc86",
-                "felt": "belopDagsats"
-              }
-            ],
-            "valgmulighet": "grunnlagIkkeInntektAnnenStonad",
-            "visningsnavnValgmulighet": "Grunnlag - hvis ingen inntekt men får andre stønader"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
-                "felt": "belopInntekt"
-              }
-            ],
-            "valgmulighet": "endringIInntektTiForHoyInntekt",
-            "visningsnavnValgmulighet": "Endring i inntekt ti prosent - for høy inntekt"
-          },
-          {
-            "flettefelt": [
-              {
-                "_id": "314e37ef-bbbb-437e-bf8a-b15f66ea2a45",
-                "felt": "kroner"
-              }
-            ],
-            "valgmulighet": "endringIInntektForHoyInntekt",
-            "visningsnavnValgmulighet": "Endring i inntekt - for høy inntekt"
-          }
-        ],
-        "visningsnavn": "A_Hvis for høy inntekt"
-      }
-    ],
-    "malNavn": "innvilgetOvergangsstonadHovedp"
+  "data": {
+    "dokument": {
+      "delmaler": [
+        {
+          "delmalApiNavn": "delmal2Eftest",
+          "delmalFlettefelter": [
+            {
+              "flettefelt": [
+                {
+                  "_ref": "195f377a-4779-4e69-8121-395801a5ff4c",
+                  "_type": "reference"
+                },
+                {
+                  "_ref": "7c3f595d-c796-49eb-a512-5455572f3074",
+                  "_type": "reference"
+                }
+              ]
+            },
+            {
+              "flettefelt": [
+                {
+                  "_ref": "c91144d5-047a-48bb-a61a-6117639ef212",
+                  "_type": "reference"
+                }
+              ]
+            }
+          ],
+          "delmalNavn": "Delmal 2 EF_TEST",
+          "delmalValgfelt": [
+            {
+              "valgFeltApiNavn": "barnIkkeFodtInfoEf",
+              "valgMuligheter": [
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "94a1c3f8-1ced-4c0c-bc3e-8826cfa7a16b",
+                          "_type": "reference"
+                        }
+                      ]
+                    },
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "c91144d5-047a-48bb-a61a-6117639ef212",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "barnIkkeFodtInfo",
+                  "visningsnavnValgmulighet": "Barn er ikke født info"
+                }
+              ],
+              "valgfeltVisningsnavn": "Info hvis barn ikke er født"
+            },
+            {
+              "valgFeltApiNavn": "toValg",
+              "valgMuligheter": [
+                {
+                  "flettefelter": [],
+                  "valgmulighet": "valgEn",
+                  "visningsnavnValgmulighet": "Periode - Får du"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "94a1c3f8-1ced-4c0c-bc3e-8826cfa7a16b",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "195f377a-4779-4e69-8121-395801a5ff4c",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "valgTo",
+                  "visningsnavnValgmulighet": "Periode - får du med T.O.M. dato"
+                }
+              ],
+              "valgfeltVisningsnavn": "Dette er et valgfelt med to valg"
+            }
+          ]
+        }
+      ],
+      "malNavn": "testMedDelmal"
+    },
+    "flettefelter": {
+      "flettefeltReferanse": [
+        {
+          "_createdAt": "2020-10-22T09:22:27Z",
+          "_id": "0035b82c-e2f5-4743-a9c2-3d9bfd085b89",
+          "_rev": "VnYpe9yNBePIWPanLidGwN",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:22:27Z",
+          "felt": "REDUKSJON_DELT_BOSTED_UENIGHET"
+        },
+        {
+          "_createdAt": "2020-10-22T09:20:50Z",
+          "_id": "0cce8eaa-8f0e-4e02-9b54-5b7453f4109a",
+          "_rev": "MPyV3mkMDcCssKnHShQpEJ",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:20:50Z",
+          "felt": "INNVILGET_LOVLIG_OPPHOLD_EØS_BORGER_SKJØNNSMESSIG_VURDERING"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:18Z",
+          "_id": "0ce7ecc0-4a20-47ca-aecc-81dd6fe818f8",
+          "_rev": "MPyV3mkMDcCssKnHShQqJU",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:18Z",
+          "felt": "REDUKSJON_BOSATT_I_RIKTET"
+        },
+        {
+          "_createdAt": "2020-10-22T09:22:12Z",
+          "_id": "16e0bc2f-7cfc-4567-a11a-c4fb8963a275",
+          "_rev": "MPyV3mkMDcCssKnHShQtAW",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:22:12Z",
+          "felt": "REDUKSJON_UNDER_6_ÅR"
+        },
+        {
+          "_createdAt": "2020-10-21T11:40:09Z",
+          "_id": "185e32b1-615c-48b5-825b-daab68df80f8",
+          "_rev": "VnYpe9yNBePIWPanLgB0qH",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-21T11:40:09Z",
+          "felt": "etterbetalingsbelop"
+        },
+        {
+          "_createdAt": "2021-05-11T07:55:28Z",
+          "_id": "195f377a-4779-4e69-8121-395801a5ff4c",
+          "_rev": "cbwI1x0Lqwe8Wna6Z89Ayr",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-05-11T07:55:28Z",
+          "erListe": false,
+          "felt": "antallBarn"
+        },
+        {
+          "_createdAt": "2020-10-22T09:22:01Z",
+          "_id": "1eda4922-573c-4cb0-8200-96981c2b715c",
+          "_rev": "VnYpe9yNBePIWPanLidDcs",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:22:01Z",
+          "felt": "REDUKSJON_MANGLENDE_OPPLYSNINGER"
+        },
+        {
+          "_createdAt": "2020-10-19T15:25:19Z",
+          "_id": "2e0d424f-d856-451f-beb8-d5cb6d0f70c2",
+          "_rev": "VnYpe9yNBePIWPanLg1U2S",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-21T10:28:20Z",
+          "felt": "fodselsnummer"
+        },
+        {
+          "_createdAt": "2020-10-21T10:33:41Z",
+          "_id": "2e7800a7-bbf7-4dbe-bdd4-59a5d7b13680",
+          "_rev": "VnYpe9yNBePIWPanLg2AqH",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-21T10:33:41Z",
+          "felt": "enhet"
+        },
+        {
+          "_createdAt": "2020-10-22T09:03:30Z",
+          "_id": "36b7bbe8-7369-4cd7-b861-2eaff9e8bdff",
+          "_rev": "cbwI1x0Lqwe8Wna6ZIPFrZ",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-05-12T07:57:33Z",
+          "erListe": false,
+          "felt": "tILOGMEDDATO"
+        },
+        {
+          "_createdAt": "2020-10-22T09:20:57Z",
+          "_id": "3c4854f7-bb30-4aaa-8dd3-1a8f5793f3f6",
+          "_rev": "MPyV3mkMDcCssKnHShQpWU",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:20:57Z",
+          "felt": "INNVILGET_OMSORG_FOR_BARN"
+        },
+        {
+          "_createdAt": "2020-10-22T08:23:37Z",
+          "_id": "42efc2ac-7234-46e0-b23d-4d64921e2aab",
+          "_rev": "VnYpe9yNBePIWPanLiVM6h",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T08:23:37Z",
+          "felt": "hjemler"
+        },
+        {
+          "_createdAt": "2020-10-22T09:20:25Z",
+          "_id": "50fd4f13-1f8b-4998-b25e-a041337eb7e8",
+          "_rev": "MPyV3mkMDcCssKnHShQo2o",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:20:25Z",
+          "felt": "INNVILGET_BOSATT_I_RIKTET"
+        },
+        {
+          "_createdAt": "2020-10-19T15:33:21Z",
+          "_id": "537366f6-8198-4392-aaa3-fe6bd507ad00",
+          "_rev": "EQN94RGJsjjv1rfKBWRMfg",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-11-05T15:20:27Z",
+          "felt": "navn"
+        },
+        {
+          "_createdAt": "2020-10-23T08:39:31Z",
+          "_id": "5e01fcc2-d0d7-49a7-a9ee-56b22dd3695c",
+          "_rev": "XoaOTvah7ZFSBIsJK50AvE",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-23T08:39:31Z",
+          "felt": "vilkaarsdato"
+        },
+        {
+          "_createdAt": "2020-10-22T09:22:35Z",
+          "_id": "5f2a684b-e000-472a-9f87-f5e3b4ea32bb",
+          "_rev": "MPyV3mkMDcCssKnHShQuiw",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:22:35Z",
+          "felt": "INNVILGET_SATSENDRING"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:35Z",
+          "_id": "6931e74f-7003-4c56-9362-0c114e6bd9ff",
+          "_rev": "VnYpe9yNBePIWPanLid9ho",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:35Z",
+          "felt": "REDUKSJON_FLYTTET_FORELDER"
+        },
+        {
+          "_createdAt": "2021-01-15T12:53:55Z",
+          "_id": "6980c60f-d159-4609-9a99-e4a9014384a6",
+          "_rev": "zF7zz4NSGLgNY1VvnzKsgX",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-01-15T12:53:55Z",
+          "felt": "dato"
+        },
+        {
+          "_createdAt": "2020-10-22T09:22:20Z",
+          "_id": "711c47a6-80e4-4843-a5d4-a341cd14333c",
+          "_rev": "HwY8WMJj1v1ybzSgrYQvB6",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:22:20Z",
+          "felt": "REDUKSJON_DELT_BOSTED_ENIGHET"
+        },
+        {
+          "_createdAt": "2020-10-21T10:33:06Z",
+          "_id": "7c3f595d-c796-49eb-a512-5455572f3074",
+          "_rev": "MPyV3mkMDcCssKnHSgV2nd",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-21T10:33:06Z",
+          "felt": "beslutter"
+        },
+        {
+          "_createdAt": "2020-10-22T09:22:06Z",
+          "_id": "813a2732-e423-4539-80e9-ed6509a93a27",
+          "_rev": "HwY8WMJj1v1ybzSgrYQsu0",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:22:06Z",
+          "felt": "REDUKSJON_UNDER_18_ÅR"
+        },
+        {
+          "_createdAt": "2020-10-22T09:02:57Z",
+          "_id": "8c4e2ff5-8142-4c81-b5f1-2dc4817752d8",
+          "_rev": "XszOhSOqE7Zees1yLjXRx0",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-12-17T08:33:31Z",
+          "felt": "VIRKNINGSTIDSPUNKT"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:41Z",
+          "_id": "8d936055-0f6d-4a79-ac14-6817df25d2d0",
+          "_rev": "VnYpe9yNBePIWPanLidAhg",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:41Z",
+          "felt": "REDUKSJON_FLYTTET_BARN"
+        },
+        {
+          "_createdAt": "2020-10-22T09:12:49Z",
+          "_id": "949793c8-0ae4-4056-8777-5fb3b1685a57",
+          "_rev": "HwY8WMJj1v1ybzSgrYPA1g",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:12:49Z",
+          "felt": "antallBarn"
+        },
+        {
+          "_createdAt": "2021-05-11T07:47:31Z",
+          "_id": "94a1c3f8-1ced-4c0c-bc3e-8826cfa7a16b",
+          "_rev": "0QE2uMeufefNFEcQqkEbFD",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-05-11T07:47:31Z",
+          "erListe": false,
+          "felt": "barnNavn"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:48Z",
+          "_id": "96980908-00bf-4506-af57-dddc91469c1a",
+          "_rev": "MPyV3mkMDcCssKnHShQrz1",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:48Z",
+          "felt": "REDUKSJON_BARN_DØD"
+        },
+        {
+          "_createdAt": "2020-11-17T14:22:02Z",
+          "_id": "99598fbf-3bae-4a68-be9c-c29d6e8ac2c0",
+          "_rev": "w3J2fgMuhjI3JWEP65nZHf",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-01-27T14:38:24Z",
+          "erListe": true,
+          "felt": "test"
+        },
+        {
+          "_createdAt": "2020-10-22T09:12:56Z",
+          "_id": "a51a9171-4f7a-4484-bbc9-80c5c79c409e",
+          "_rev": "HwY8WMJj1v1ybzSgrYPC0U",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:12:56Z",
+          "felt": "barnasFodselsdatoer"
+        },
+        {
+          "_createdAt": "2021-01-29T11:20:17Z",
+          "_id": "a9f21c39-0573-4d0b-b767-3ddac2290fb4",
+          "_rev": "ab7Ikw411E3rEkqLluFwz3",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-01-29T11:20:23Z",
+          "erListe": false,
+          "felt": "lovparagrafer"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:11Z",
+          "_id": "acf726b2-fe8f-46dd-9d9e-30a8a958f15d",
+          "_rev": "HwY8WMJj1v1ybzSgrYQk8W",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:11Z",
+          "felt": "INNVILGET_FAST_OMSORG_FOR_BARN"
+        },
+        {
+          "_createdAt": "2020-10-19T15:33:07Z",
+          "_id": "ad499896-d48b-4a37-a494-08ee42c4d73e",
+          "_rev": "VnYpe9yNBePIWPanLg1Te9",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-21T10:28:17Z",
+          "felt": "dokumentDato"
+        },
+        {
+          "_createdAt": "2020-10-22T09:20:42Z",
+          "_id": "b5ab2f85-e6a2-4341-a31c-fadcebf2c41e",
+          "_rev": "MPyV3mkMDcCssKnHShQohu",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:20:42Z",
+          "felt": "INNVILGET_LOVLIG_OPPHOLD_EØS_BORGER"
+        },
+        {
+          "_createdAt": "2020-10-22T09:12:41Z",
+          "_id": "c91144d5-047a-48bb-a61a-6117639ef212",
+          "_rev": "VnYpe9yNBePIWPanLibbuC",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:12:41Z",
+          "felt": "belop"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:05Z",
+          "_id": "cdda88bb-96b8-429b-a308-c70019f6f49f",
+          "_rev": "HwY8WMJj1v1ybzSgrYQjiO",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:05Z",
+          "felt": "INNVILGET_BOR_HOS_SØKER"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:26Z",
+          "_id": "d6a30725-2177-470a-81ca-76c3ca8f782d",
+          "_rev": "VnYpe9yNBePIWPanLid8An",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:26Z",
+          "felt": "REDUKSJON_LOVLIG_OPPHOLD_OPPHOLDSTILLATELSE_BARN"
+        },
+        {
+          "_createdAt": "2020-10-22T09:21:54Z",
+          "_id": "dbf46074-2e5c-41dd-b528-97dac8e8335c",
+          "_rev": "HwY8WMJj1v1ybzSgrYQqkk",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:21:54Z",
+          "felt": "REDUKSJON_FAST_OMSORG_FOR_BARN"
+        },
+        {
+          "_createdAt": "2020-10-22T09:20:34Z",
+          "_id": "df52c4d3-c397-4d00-b320-60e21e14acf6",
+          "_rev": "MPyV3mkMDcCssKnHShQoKz",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-22T09:20:34Z",
+          "felt": "INNVILGET_LOVLIG_OPPHOLD_OPPHOLDSTILLATELSE"
+        },
+        {
+          "_createdAt": "2020-10-21T10:32:59Z",
+          "_id": "f727fd79-2117-4d4c-8939-ae111b75966d",
+          "_rev": "MPyV3mkMDcCssKnHSgV2WF",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-10-21T10:32:59Z",
+          "felt": "saksbehandler"
+        }
+      ]
+    }
   },
-  "status":"SUKSESS"
+  "status": "SUKSESS"
 }
