@@ -31,5 +31,5 @@ export const mapTilRegistergrunnlagNyttBarn = (
 };
 
 export const mapBarnNavnTekst = (søknadsgrunnlagNyttBarn: SøknadsgrunnlagNyttBarn): string => {
-    return søknadsgrunnlagNyttBarn.navn ? søknadsgrunnlagNyttBarn.navn : 'Ikke fylt ut';
+    return søknadsgrunnlagNyttBarn.navn ? søknadsgrunnlagNyttBarn.navn : 'Ikke født';
 };

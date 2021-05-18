@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import { RegistergrunnlagNyttBarn, SøknadsgrunnlagNyttBarn } from './typer';
 import {
@@ -14,6 +14,8 @@ import {
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { Tabell } from './Tabell';
+import LiteBarn from '../../../../ikoner/LiteBarn';
+import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 
@@ -33,6 +35,24 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         Brukers barn registrert i folkeregisteret
                     </Element>
                 </FlexDiv>
+                {registergrunnlagNyttBarn.map((barn) => (
+                    <GridTabell>
+                        <>
+                            <LiteBarn />
+                            <Element>{barn.navn}</Element>
+                        </>
+                        <>
+                            <Søknadsgrunnlag />
+                            <Element>Fødsels/D-nummer</Element>
+                            <Normaltekst>{barn.fødselsnummer}</Normaltekst>
+                        </>
+                        <>
+                            <Søknadsgrunnlag />
+                            <Element>Annen forelder register</Element>
+                            <Normaltekst>{barn.annenForelderRegister?.navn}</Normaltekst>
+                        </>
+                    </GridTabell>
+                ))}
                 <Tabell
                     onEmpty="Ingen barn registrert i folkeregisteret"
                     kolonner={[
