@@ -1,14 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import {
-    BrevStruktur,
-    Delmal,
-    Flettefeltreferanse,
-    FlettefeltMedVerdi,
-    Valgmulighet,
-} from './Brev';
-import { Input, Select } from 'nav-frontend-skjema';
-
-type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
+import { BrevStruktur, FlettefeltMedVerdi, ValgtFelt } from './Brev';
+import { BrevMenyDelmal } from './BrevMenyDelmal';
 
 interface Props {
     dokument: BrevStruktur;
@@ -25,126 +17,18 @@ const Brevmeny: React.FC<Props> = ({
     settFlettefelter,
     flettefelter,
 }) => {
-    const doSettValgteFelt = (
-        valgFeltApiNavn: string,
-        valgmulighetNavn: string,
-        delmal: Delmal
-    ) => {
-        if (!valgmulighetNavn) {
-            const nyState = { ...valgteFelt };
-            delete nyState[valgFeltApiNavn];
-            settValgteFelt(nyState);
-            return;
-        }
-        const valgmulighet = delmal.delmalValgfelt
-            .find((valgFelt) => valgFelt.valgFeltApiNavn === valgFeltApiNavn)!
-            .valgMuligheter.find((valgmulighet) => valgmulighet.valgmulighet === valgmulighetNavn)!;
-
-        settValgteFelt((prevState) => {
-            return {
-                ...prevState,
-                [valgFeltApiNavn]: valgmulighet,
-            };
-        });
-    };
-
-    const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
-        settFlettefelter((prevState) =>
-            prevState.map((felt) => (felt._ref === flettefelt._ref ? { ...felt, verdi } : felt))
-        );
-    };
-
-    const finnFlettefeltNavnFraRef = (ref: string) => {
-        return dokument.flettefelter.flettefeltReferanse.find((felt) => felt._id === ref)!.felt;
-    };
-
     return (
         <>
-            {dokument.dokument.delmaler.map((delmal) => {
-                const { delmalValgfelt, delmalFlettefelter } = delmal;
-
-                return (
-                    <>
-                        {delmalValgfelt.map((valgFelt) => {
-                            return (
-                                <>
-                                    <Select
-                                        label={valgFelt.valgfeltVisningsnavn}
-                                        onChange={(e) =>
-                                            doSettValgteFelt(
-                                                valgFelt.valgFeltApiNavn,
-                                                e.target.value,
-                                                delmal
-                                            )
-                                        }
-                                    >
-                                        <option value="">Velg land</option>
-                                        {valgFelt.valgMuligheter.map(
-                                            (valMulighet: Valgmulighet) => (
-                                                <option
-                                                    value={valMulighet.valgmulighet}
-                                                    key={valMulighet.valgmulighet}
-                                                >
-                                                    {valMulighet.visningsnavnValgmulighet}
-                                                </option>
-                                            )
-                                        )}
-                                    </Select>
-
-                                    {Object.entries(valgteFelt)
-                                        .filter(
-                                            ([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn
-                                        )
-                                        .map(([_, valg]) =>
-                                            valg.flettefelter.map((felter) =>
-                                                felter.flettefelt.map((flettefelt) => (
-                                                    <Input
-                                                        label={finnFlettefeltNavnFraRef(
-                                                            flettefelt._ref
-                                                        )}
-                                                        onChange={(e) => {
-                                                            handleFlettefeltInput(
-                                                                e.target.value,
-                                                                flettefelt
-                                                            );
-                                                        }}
-                                                        value={
-                                                            (
-                                                                flettefelter.find(
-                                                                    (felt) =>
-                                                                        felt._ref ===
-                                                                        flettefelt._ref
-                                                                ) ?? { verdi: '' }
-                                                            ).verdi || ''
-                                                        }
-                                                    />
-                                                ))
-                                            )
-                                        )}
-                                </>
-                            );
-                        })}
-
-                        {delmalFlettefelter.flatMap((f) =>
-                            f.flettefelt.map((flettefelt) => (
-                                <Input
-                                    label={finnFlettefeltNavnFraRef(flettefelt._ref)}
-                                    onChange={(e) => {
-                                        handleFlettefeltInput(e.target.value, flettefelt);
-                                    }}
-                                    value={
-                                        (
-                                            flettefelter.find(
-                                                (felt) => felt._ref === flettefelt._ref
-                                            ) ?? { verdi: '' }
-                                        ).verdi || ''
-                                    }
-                                />
-                            ))
-                        )}
-                    </>
-                );
-            })}
+            {dokument.dokument.delmaler.map((delmal) => (
+                <BrevMenyDelmal
+                    delmal={delmal}
+                    dokument={dokument}
+                    valgteFelt={valgteFelt}
+                    settValgteFelt={settValgteFelt}
+                    flettefelter={flettefelter}
+                    settFlettefelter={settFlettefelter}
+                />
+            ))}
         </>
     );
 };

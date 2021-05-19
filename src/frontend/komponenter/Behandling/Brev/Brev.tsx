@@ -9,6 +9,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import Brevmeny from './Brevmeny';
 import { RessursStatus } from '@navikt/familie-typer';
+import { finnFlettefeltNavnFraRef } from './BrevUtils';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -28,7 +29,8 @@ const StyledBrev = styled.div`
 interface Props {
     behandlingId: string;
 }
-type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
+
+export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 
 export interface BrevStruktur {
     dokument: DokumentMal;
@@ -87,7 +89,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
         {} as ValgtFelt
     );
-    const data = { navn: 'test', ident: '123456789' };
 
     // const brevMal = 'innvilgetOvergangsstonadHovedp';
     const brevMal = 'testMedDelmal';
@@ -113,24 +114,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     }, []);
 
-    const finnFlettefeltNavnFraRef = (ref: string) => {
-        return brevStruktur.status === RessursStatus.SUKSESS
-            ? brevStruktur.data.flettefelter.flettefeltReferanse.find((felt) => felt._id === ref)!
-                  .felt
-            : '';
-    };
-
-    const genererBrev = () => {
-        // eslint-disable-next-line
-        axiosRequest<string, any>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}`,
-            data: data,
-        }).then((respons: Ressurs<string>) => {
-            settBrevRessurs(respons);
-        });
-    };
-
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
             const nyttAvsnitt = lagFlettefeltForAvsnitt(flettefeltAvsnitt.flettefelt);
@@ -139,13 +122,18 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     };
 
     const lagFlettefeltForAvsnitt = (flettefelter: Flettefeltreferanse[]) => {
-        return flettefelter.reduce((acc, flettefeltreferanse) => {
-            const nyttFeltNavn = finnFlettefeltNavnFraRef(flettefeltreferanse._ref);
-            const nyttFeltVerdi = alleFlettefelter.find(
-                (flettefelt) => flettefeltreferanse._ref === flettefelt._ref
-            )!.verdi;
-            return { ...acc, [nyttFeltNavn]: [nyttFeltVerdi] };
-        }, {});
+        if (brevStruktur.status === RessursStatus.SUKSESS) {
+            return flettefelter.reduce((acc, flettefeltreferanse) => {
+                const nyttFeltNavn = finnFlettefeltNavnFraRef(
+                    brevStruktur.data,
+                    flettefeltreferanse._ref
+                );
+                const nyttFeltVerdi = alleFlettefelter.find(
+                    (flettefelt) => flettefeltreferanse._ref === flettefelt._ref
+                )!.verdi;
+                return { ...acc, [nyttFeltNavn]: [nyttFeltVerdi] };
+            }, {});
+        }
     };
 
     const genererBrev2 = () => {
@@ -198,15 +186,14 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                 return (
                     <>
                         <StyledBrev>
-                            <Brevmeny
-                                dokument={dokumentFelter}
-                                valgteFelt={valgteFelt}
-                                settValgteFelt={settValgteFelt}
-                                flettefelter={alleFlettefelter}
-                                settFlettefelter={settAlleFlettefelter}
-                            />
                             {behandlingErRedigerbar && (
-                                <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                                <Brevmeny
+                                    dokument={dokumentFelter}
+                                    valgteFelt={valgteFelt}
+                                    settValgteFelt={settValgteFelt}
+                                    flettefelter={alleFlettefelter}
+                                    settFlettefelter={settAlleFlettefelter}
+                                />
                             )}
                             <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
                             <PdfVisning pdfFilInnhold={brevRessurs} />
