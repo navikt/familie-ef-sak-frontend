@@ -54,7 +54,10 @@ const Behandling: FC = () => {
         <DataViewer response={{ personopplysningerResponse, behandling }}>
             {({ personopplysningerResponse, behandling }) => (
                 <>
-                    <VisittkortComponent data={personopplysningerResponse} />
+                    <VisittkortComponent
+                        data={personopplysningerResponse}
+                        behandling={behandling}
+                    />
                     <Container>
                         <VenstreMenyWrapper>
                             <Venstremeny behandling={behandling} />
