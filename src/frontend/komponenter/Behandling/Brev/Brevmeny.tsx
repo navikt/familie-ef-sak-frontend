@@ -60,7 +60,7 @@ const Brevmeny: React.FC<Props> = ({
 
     return (
         <>
-            {dokument.dokument.delmaler.map((delmal, index) => {
+            {dokument.dokument.delmaler.map((delmal) => {
                 const { delmalValgfelt, delmalFlettefelter } = delmal;
 
                 return (
@@ -90,6 +90,37 @@ const Brevmeny: React.FC<Props> = ({
                                             )
                                         )}
                                     </Select>
+
+                                    {Object.entries(valgteFelt)
+                                        .filter(
+                                            ([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn
+                                        )
+                                        .map(([_, valg]) =>
+                                            valg.flettefelter.map((felter) =>
+                                                felter.flettefelt.map((flettefelt) => (
+                                                    <Input
+                                                        label={finnFlettefeltNavnFraRef(
+                                                            flettefelt._ref
+                                                        )}
+                                                        onChange={(e) => {
+                                                            handleFlettefeltInput(
+                                                                e.target.value,
+                                                                flettefelt
+                                                            );
+                                                        }}
+                                                        value={
+                                                            (
+                                                                flettefelter.find(
+                                                                    (felt) =>
+                                                                        felt._ref ===
+                                                                        flettefelt._ref
+                                                                ) ?? { verdi: '' }
+                                                            ).verdi || ''
+                                                        }
+                                                    />
+                                                ))
+                                            )
+                                        )}
                                 </>
                             );
                         })}

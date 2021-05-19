@@ -32,13 +32,13 @@ type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 
 export interface BrevStruktur {
     dokument: DokumentMal;
-    flettefelter: Flettefelter;
+    flettefelter: AlleFlettefelter;
 }
 export interface DokumentMal {
     delmaler: Delmal[];
 }
 
-export interface Flettefelter {
+export interface AlleFlettefelter {
     flettefeltReferanse: Flettefelt[];
 }
 interface Flettefelt {
@@ -89,13 +89,17 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     );
     const data = { navn: 'test', ident: '123456789' };
 
-    const brevMal = 'innvilgetOvergangsstonadHovedp';
+    // const brevMal = 'innvilgetOvergangsstonadHovedp';
+    const brevMal = 'testMedDelmal';
     // const brevMal = 'innvilgetVedtakMVP';
+
+    // const datasett = 'ef-brev';
+    const datasett = 'testdata';
 
     useEffect(() => {
         axiosRequest<BrevStruktur, null>({
             method: 'GET',
-            url: `/familie-brev/api/ef-brev/avansert-dokument/bokmaal/${brevMal}/felter`,
+            url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
         }).then((respons: Ressurs<BrevStruktur>) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settBrevStruktur(respons);
@@ -109,6 +113,13 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     }, []);
 
+    const finnFlettefeltNavnFraRef = (ref: string) => {
+        return brevStruktur.status === RessursStatus.SUKSESS
+            ? brevStruktur.data.flettefelter.flettefeltReferanse.find((felt) => felt._id === ref)!
+                  .felt
+            : '';
+    };
+
     const genererBrev = () => {
         // eslint-disable-next-line
         axiosRequest<string, any>({
@@ -119,20 +130,43 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             settBrevRessurs(respons);
         });
     };
+
+    const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
+        return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
+            const nyttAvsnitt = lagFlettefeltForAvsnitt(flettefeltAvsnitt.flettefelt);
+            return { ...acc, ...nyttAvsnitt };
+        }, {});
+    };
+
+    const lagFlettefeltForAvsnitt = (flettefelter: Flettefeltreferanse[]) => {
+        return flettefelter.reduce((acc, flettefeltreferanse) => {
+            const nyttFeltNavn = finnFlettefeltNavnFraRef(flettefeltreferanse._ref);
+            const nyttFeltVerdi = alleFlettefelter.find(
+                (flettefelt) => flettefeltreferanse._ref === flettefelt._ref
+            )!.verdi;
+            return { ...acc, [nyttFeltNavn]: [nyttFeltVerdi] };
+        }, {});
+    };
+
     const genererBrev2 = () => {
-        const req = {};
+        const delmaler =
+            brevStruktur.status === RessursStatus.SUKSESS
+                ? brevStruktur.data.dokument.delmaler.reduce((acc, delmal) => {
+                      return {
+                          ...acc,
+                          [delmal.delmalApiNavn]: [
+                              { flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter) },
+                          ],
+                      };
+                  }, {})
+                : {};
 
         axiosRequest<string, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}/v2`,
+            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}/v2`,
             data: {
-                valgfelter: req,
-                delmalData: {
-                    signatur: {
-                        enhet: ['Nav arbeid og ... - OSLO'],
-                        saksbehandler: 'Batman',
-                    },
-                },
+                valgfelter: {},
+                delmaler,
                 flettefelter: {
                     navn: ['$navn'],
                     fodselsnummer: ['$ident'],
