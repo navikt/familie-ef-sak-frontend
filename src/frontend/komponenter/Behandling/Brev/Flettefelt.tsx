@@ -1,7 +1,7 @@
 import { finnFlettefeltNavnFraRef } from './BrevUtils';
 import { Input } from 'nav-frontend-skjema';
 import React from 'react';
-import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse, ValgFelt, ValgtFelt } from './Brev';
+import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './Brev';
 
 interface Props {
     flettefelt: Flettefeltreferanse;
@@ -15,14 +15,12 @@ export const Flettefelt: React.FC<Props> = ({
     dokument,
     flettefelter,
     handleFlettefeltInput,
-}) => {
-    return (
-        <Input
-            label={finnFlettefeltNavnFraRef(dokument, flettefelt._ref)}
-            onChange={(e) => {
-                handleFlettefeltInput(e.target.value, flettefelt);
-            }}
-            value={flettefelter.find((felt) => felt._ref === flettefelt._ref)!.verdi || ''}
-        />
-    );
-};
+}) => (
+    <Input
+        label={finnFlettefeltNavnFraRef(dokument, flettefelt._ref)}
+        onChange={(e) => {
+            handleFlettefeltInput(e.target.value, flettefelt);
+        }}
+        value={flettefelter.find((felt) => felt._ref === flettefelt._ref)!.verdi || ''}
+    />
+);

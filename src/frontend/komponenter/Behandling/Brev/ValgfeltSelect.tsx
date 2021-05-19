@@ -77,6 +77,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
                                 dokument={dokument}
                                 flettefelter={flettefelter}
                                 handleFlettefeltInput={handleFlettefeltInput}
+                                key={flettefelt._ref}
                             />
                         ))
                     )

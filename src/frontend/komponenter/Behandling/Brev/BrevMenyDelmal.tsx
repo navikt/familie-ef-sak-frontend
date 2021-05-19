@@ -1,8 +1,7 @@
 import { BrevStruktur, Delmal, FlettefeltMedVerdi, Flettefeltreferanse, ValgtFelt } from './Brev';
-import { Input } from 'nav-frontend-skjema';
 import React, { Dispatch, SetStateAction } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
-import { finnFlettefeltNavnFraRef } from './BrevUtils';
+import { Flettefelt } from './Flettefelt';
 
 interface Props {
     delmal: Delmal;
@@ -30,7 +29,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
 
     return (
         <>
-            {delmalValgfelt.map((valgFelt) => (
+            {delmalValgfelt.map((valgFelt, index) => (
                 <ValgfeltSelect
                     valgFelt={valgFelt}
                     dokument={dokument}
@@ -40,23 +39,18 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     settFlettefelter={settFlettefelter}
                     handleFlettefeltInput={handleFlettefeltInput}
                     delmal={delmal}
+                    key={`${valgteFelt.valgFeltKategori}${index}`}
                 />
             ))}
 
             {delmalFlettefelter.flatMap((f) =>
                 f.flettefelt.map((flettefelt) => (
-                    <Input
-                        label={finnFlettefeltNavnFraRef(dokument, flettefelt._ref)}
-                        onChange={(e) => {
-                            handleFlettefeltInput(e.target.value, flettefelt);
-                        }}
-                        value={
-                            (
-                                flettefelter.find((felt) => felt._ref === flettefelt._ref) ?? {
-                                    verdi: '',
-                                }
-                            ).verdi || ''
-                        }
+                    <Flettefelt
+                        flettefelt={flettefelt}
+                        dokument={dokument}
+                        flettefelter={flettefelter}
+                        handleFlettefeltInput={handleFlettefeltInput}
+                        key={flettefelt._ref}
                     />
                 ))
             )}
