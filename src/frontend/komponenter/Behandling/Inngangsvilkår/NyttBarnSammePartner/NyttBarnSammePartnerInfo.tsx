@@ -15,6 +15,7 @@ import {
 import LiteBarn from '../../../../ikoner/LiteBarn';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
+import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import styled from 'styled-components';
 
 interface Props {
@@ -29,6 +30,7 @@ const Overskrift = styled(Element)`
 const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
+
     return (
         <>
             <div>
@@ -38,24 +40,31 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         Brukers barn registrert i folkeregisteret
                     </Overskrift>
                 </FlexDiv>
-                {registergrunnlagNyttBarn.map((barn) => (
-                    <GridTabell>
-                        <>
-                            <LiteBarn />
-                            <Element>{barn.navn}</Element>
-                        </>
-                        <>
-                            <Søknadsgrunnlag />
-                            <Element>Fødsels/D-nummer</Element>
-                            <Normaltekst>{barn.fødselsnummer}</Normaltekst>
-                        </>
-                        <>
-                            <Søknadsgrunnlag />
-                            <Element>Annen forelder register</Element>
-                            <Normaltekst>{barn.annenForelderRegister?.navn}</Normaltekst>
-                        </>
-                    </GridTabell>
-                ))}
+                {registergrunnlagNyttBarn.map((barn) => {
+                    return (
+                        <GridTabell>
+                            <>
+                                <LiteBarn />
+                                <Element>{barn.navn}</Element>
+                            </>
+                            <>
+                                <Registergrunnlag />
+                                <Element>Fødsels eller D-nummer</Element>
+                                <Normaltekst>{barn.fødselsnummer}</Normaltekst>
+                            </>
+                            <>
+                                <Registergrunnlag />
+                                <Element>Annen forelder fra folkeregister</Element>
+                                <FlexDiv>
+                                    <Normaltekst>{barn.annenForelderRegister?.navn} – </Normaltekst>
+                                    <KopierbartNullableFødselsnummer
+                                        fødselsnummer={barn.annenForelderRegister?.fødselsnummer}
+                                    />
+                                </FlexDiv>
+                            </>
+                        </GridTabell>
+                    );
+                })}
             </div>
             <div>
                 <FlexDiv>
@@ -79,7 +88,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         </>
                         <>
                             <Søknadsgrunnlag />
-                            <Element>Annen forelder</Element>
+                            <Element>Annen forelder lagt til i søknad</Element>
                             <Normaltekst>
                                 <AnnenForelderNavnOgFnr
                                     forelder={barn.annenForelderSoknad}
