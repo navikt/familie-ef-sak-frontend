@@ -11,6 +11,7 @@ import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import LenkeKnapp from '../../Felleskomponenter/LenkeKnapp';
 import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { resultatTilTekst } from '../../Vilkårresultat/ResultatVisning';
+import { BreakWordNormaltekst } from '../../Felleskomponenter/BreakWordNormaltekst';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -44,11 +45,6 @@ const StyledIkonOgTittel = styled.span`
     svg {
         margin-right: 1rem;
     }
-`;
-
-const BreakWordNormaltekst = styled(Normaltekst)`
-    white-space: pre-wrap;
-    word-wrap: break-word;
 `;
 
 interface Props {
