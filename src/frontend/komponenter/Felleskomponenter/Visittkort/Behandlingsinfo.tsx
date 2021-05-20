@@ -11,8 +11,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 
 const BehandlingsinfoWrapper = styled.div`
-    display: flex;
-    align-items: center;
+    margin: auto;
     padding-right: 0.25rem;
 `;
 
@@ -37,6 +36,8 @@ const StyledMenyKnapp = styled(Menyknapp)`
     text-transform: none;
 `;
 
+const popoverId = 'visBehandlingsinfo-popover';
+
 const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [anker, settAnker] = useState<HTMLButtonElement>();
 
@@ -50,7 +51,7 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 id="visBehandlingsinfo"
                 onClick={(e) => togglePopover(e.currentTarget)}
                 aria-expanded={anker !== undefined}
-                aria-controls="visBehandlingsinfo-popover"
+                aria-controls={popoverId}
                 aria-haspopup="menu"
                 style={{
                     background: 'none',
@@ -62,7 +63,7 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 {behandlingstypeTilTekst[behandling.type]}
             </StyledMenyKnapp>
             <Popover
-                id="visBehandlingsinfo-popover"
+                id={popoverId}
                 ankerEl={anker}
                 onRequestClose={() => settAnker(undefined)}
                 orientering={PopoverOrientering.Under}
