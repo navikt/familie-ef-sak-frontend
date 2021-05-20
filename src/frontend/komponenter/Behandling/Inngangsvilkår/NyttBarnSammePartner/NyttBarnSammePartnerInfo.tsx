@@ -17,6 +17,7 @@ import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import styled from 'styled-components';
+import EtikettBase from 'nav-frontend-etiketter';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -25,6 +26,13 @@ interface Props {
 const Overskrift = styled(Element)`
     margin-left: 0.5rem;
     margin-bottom: 1rem;
+`;
+
+const EtikettDød = styled(EtikettBase)`
+    background-color: black;
+    color: #eee;
+    margin-left: 0.5rem;
+    border: none;
 `;
 
 const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
@@ -60,8 +68,24 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                                     <KopierbartNullableFødselsnummer
                                         fødselsnummer={barn.annenForelderRegister?.fødselsnummer}
                                     />
+                                    {barn.annenForelderRegister?.dødsfall && (
+                                        <EtikettDød mini type="info">
+                                            Død
+                                        </EtikettDød>
+                                    )}
                                 </FlexDiv>
                             </>
+                            {barn.annenForelderRegister?.dødsfall && (
+                                <>
+                                    <Registergrunnlag />
+                                    <Element>Annen forelder dødsdato</Element>
+                                    <Normaltekst>
+                                        {formaterNullableIsoDato(
+                                            barn.annenForelderRegister.dødsfall
+                                        )}
+                                    </Normaltekst>
+                                </>
+                            )}
                         </GridTabell>
                     );
                 })}
