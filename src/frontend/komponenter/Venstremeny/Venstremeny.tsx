@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Behandling } from '../../typer/fagsak';
 
-const Venstremeny: React.FC<{ behandling?: Behandling }> = ({}) => {
+const Venstremeny: React.FC = ({}) => {
     return <></>;
 };
 

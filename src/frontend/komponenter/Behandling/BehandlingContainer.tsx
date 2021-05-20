@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 const VenstreMenyWrapper = styled.div`
-    min-width: 10rem;
+    min-width: 3rem;
     max-width: 15rem;
     border-right: 2px solid ${navFarger.navGra40};
     overflow: hidden;
@@ -60,7 +60,7 @@ const Behandling: FC = () => {
                     />
                     <Container>
                         <VenstreMenyWrapper>
-                            <Venstremeny behandling={behandling} />
+                            <Venstremeny />
                         </VenstreMenyWrapper>
                         <InnholdWrapper>
                             <Fanemeny />
