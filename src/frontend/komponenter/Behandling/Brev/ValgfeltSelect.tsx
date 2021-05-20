@@ -60,7 +60,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
                 label={valgFelt.valgfeltVisningsnavn}
                 onChange={(e) => doSettValgteFelt(valgFelt.valgFeltApiNavn, e.target.value, delmal)}
             >
-                <option value="">Velg land</option>
+                <option value="">Ikke valgt</option>
                 {valgFelt.valgMuligheter.map((valMulighet: Valgmulighet) => (
                     <option value={valMulighet.valgmulighet} key={valMulighet.valgmulighet}>
                         {valMulighet.visningsnavnValgmulighet}

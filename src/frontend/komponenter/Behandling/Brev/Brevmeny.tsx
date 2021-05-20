@@ -4,6 +4,7 @@ import {
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
+    ValgFelt,
     Valgmulighet,
     ValgtFelt,
 } from './Brev';
@@ -35,6 +36,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
     const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
         {} as ValgtFelt
     );
+    const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
 
     // const brevMal = 'innvilgetOvergangsstonadHovedp';
     const brevMal = 'testMedDelmal';
@@ -67,6 +69,24 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
         }, {});
     };
 
+    const lagValgfelterForDelmal = (delmalValgfelter: ValgFelt[]) => {
+        return delmalValgfelter.reduce((acc, valgfelt) => {
+            const valgtMulighet = valgteFelt[valgfelt.valgFeltApiNavn];
+            const flettefelterForValg = lagFlettefeltForAvsnitt(
+                valgtMulighet.flettefelter.flatMap((felter) => felter.flettefelt)
+            );
+            const valgMedflettefelt = {
+                [valgfelt.valgFeltApiNavn]: [
+                    {
+                        navn: valgtMulighet.valgmulighet,
+                        dokumentVariabler: { flettefelter: flettefelterForValg },
+                    },
+                ],
+            };
+            return { ...acc, ...valgMedflettefelt };
+        }, {});
+    };
+
     const lagFlettefeltForAvsnitt = (flettefelter: Flettefeltreferanse[]) => {
         if (brevStruktur.status === RessursStatus.SUKSESS) {
             return flettefelter.reduce((acc, flettefeltreferanse) => {
@@ -86,12 +106,19 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
         const delmaler =
             brevStruktur.status === RessursStatus.SUKSESS
                 ? brevStruktur.data.dokument.delmaler.reduce((acc, delmal) => {
-                      return {
-                          ...acc,
-                          [delmal.delmalApiNavn]: [
-                              { flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter) },
-                          ],
-                      };
+                      return valgteDelmaler[delmal.delmalApiNavn]
+                          ? {
+                                ...acc,
+                                [delmal.delmalApiNavn]: [
+                                    {
+                                        flettefelter: lagFlettefelterForDelmal(
+                                            delmal.delmalFlettefelter
+                                        ),
+                                        valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
+                                    },
+                                ],
+                            }
+                          : acc;
                   }, {})
                 : {};
 
@@ -128,6 +155,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
                             settValgteFelt={settValgteFelt}
                             flettefelter={alleFlettefelter}
                             settFlettefelter={settAlleFlettefelter}
+                            settValgteDelmaler={settValgteDelmaler}
                             key={delmal.delmalApiNavn}
                         />
                     ))}
