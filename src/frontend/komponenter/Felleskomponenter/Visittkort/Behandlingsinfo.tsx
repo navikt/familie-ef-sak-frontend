@@ -53,12 +53,6 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 aria-expanded={anker !== undefined}
                 aria-controls={popoverId}
                 aria-haspopup="menu"
-                style={{
-                    background: 'none',
-                    color: navFarger.navMorkGra,
-                    border: `1px solid ${navFarger.navGra60}`,
-                    boxShadow: 'none',
-                }}
             >
                 {behandlingstypeTilTekst[behandling.type]}
             </StyledMenyKnapp>
