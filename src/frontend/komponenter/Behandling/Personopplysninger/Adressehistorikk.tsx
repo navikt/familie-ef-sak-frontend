@@ -27,30 +27,24 @@ const StyledLesmer = styled(Lesmerpanel)`
     }
 `;
 
-const StyledTabellWrapper = styled(TabellWrapper)`
-    padding-top: 0rem;
-`;
-
 const MAX_LENGDE_ADRESSER = 5;
 
 const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
+    const [isClosed, setIsClosed] = useState<boolean>(true);
     if (adresser.length <= MAX_LENGDE_ADRESSER) {
         return <Adresser adresser={adresser} />;
     } else {
         const introAdresser = adresser.slice(0, MAX_LENGDE_ADRESSER);
-        const visMerAdresser = adresser.slice(MAX_LENGDE_ADRESSER, adresser.length);
         return (
             <StyledLesmer
+                onOpen={() => setIsClosed(false)}
+                onClose={() => setIsClosed(true)}
                 className={'adresser'}
-                intro={<Adresser adresser={introAdresser} />}
+                intro={isClosed && <Adresser adresser={introAdresser} />}
                 apneTekst={'Vis flere adresser'}
                 lukkTekst={'Skjul adresser'}
             >
-                <StyledTabellWrapper>
-                    <table className="tabell" style={{ borderTopStyle: 'hidden' }}>
-                        <Innhold adresser={visMerAdresser} />
-                    </table>
-                </StyledTabellWrapper>
+                <Adresser adresser={adresser} />
             </StyledLesmer>
         );
     }
@@ -87,7 +81,6 @@ const gyldigTilOgMedErNullEllerFremITid = (adresse: IAdresse) =>
 
 const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
-
     return (
         <>
             <tbody>
