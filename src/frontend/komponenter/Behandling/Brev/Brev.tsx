@@ -16,6 +16,8 @@ const HentBrev = styled(Knapp)`
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
     padding: 3rem;
+    display: grid;
+    grid-template-columns: 30% 70%;
 `;
 
 interface Props {
@@ -88,10 +90,12 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     return (
         <>
             <StyledBrev>
-                {behandlingErRedigerbar && (
-                    <Brevmeny behandlingId={behandlingId} settBrevRessurs={settBrevRessurs} />
-                )}
-                <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
+                <div>
+                    {behandlingErRedigerbar && (
+                        <Brevmeny behandlingId={behandlingId} settBrevRessurs={settBrevRessurs} />
+                    )}
+                </div>
+                {/*<HentBrev onClick={hentBrev}>Hent brev</HentBrev>*/}
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
             {behandlingErRedigerbar && <SendTilBeslutterFooter behandlingId={behandlingId} />}

@@ -27,6 +27,12 @@ const GenererBrev = styled(Knapp)`
     margin: 0 auto;
 `;
 
+const StyledBrevmeny = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+`;
+
 const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
@@ -39,7 +45,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
     const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
 
     // const brevMal = 'innvilgetOvergangsstonadHovedp';
-    const brevMal = 'testMedDelmal';
+    const brevMal = 'demobrevInnvilget';
     // const brevMal = 'innvilgetVedtakMVP';
 
     // const datasett = 'ef-brev';
@@ -129,12 +135,12 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
                 valgfelter: {},
                 delmaler,
                 flettefelter: {
-                    navn: ['$navn'],
-                    fodselsnummer: ['$ident'],
+                    navn: ['RAKRYGGET KRONJUVEL'],
+                    fodselsnummer: ['01010172272'],
                     'Fom-dato innvilgelse': ['$innvilgelseFra'],
                     'Tom-dato innvilgelse': ['$innvilgelseTil'],
                     begrunnelseFomDatoInnvilgelse: ['$begrunnelseFomDatoInnvilgelse'],
-                    dato: ['$brevdato'],
+                    dato: ['21.05.2021'],
                     belopOvergangsstonad: ['$belopOvergangsstonad'],
                 },
             },
@@ -146,7 +152,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
     return (
         <DataViewer response={{ brevStruktur }}>
             {({ brevStruktur }) => (
-                <>
+                <StyledBrevmeny>
                     {brevStruktur.dokument.delmaler.map((delmal) => (
                         <BrevMenyDelmal
                             delmal={delmal}
@@ -159,8 +165,8 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
                             key={delmal.delmalApiNavn}
                         />
                     ))}
-                    <GenererBrev onClick={genererBrev}>Generer brev2!!!</GenererBrev>
-                </>
+                    <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                </StyledBrevmeny>
             )}
         </DataViewer>
     );
