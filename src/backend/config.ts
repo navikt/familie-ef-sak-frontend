@@ -8,12 +8,14 @@ const Environment = () => {
             buildPath: '../../frontend_development',
             namespace: 'local',
             proxyUrl: 'http://localhost:8093',
+            brevProxyUrl: 'http://localhost:8001',
         };
     } else if (process.env.ENV === 'e2e') {
         return {
             buildPath: '../../frontend_production',
             namespace: 'e2e',
             proxyUrl: 'http://familie-ef-sak:8093',
+            brevProxyUrl: '', // TODO
             //Har ikke satt opp redis
         };
     } else if (process.env.ENV === 'preprod') {
@@ -21,6 +23,7 @@ const Environment = () => {
             buildPath: '../../frontend_production',
             namespace: 'preprod',
             proxyUrl: 'http://familie-ef-sak',
+            brevProxyUrl: 'http://familie-brev',
             redisUrl: 'familie-ef-sak-frontend-redis',
         };
     }
@@ -29,6 +32,7 @@ const Environment = () => {
         buildPath: '../../frontend_production',
         namespace: 'production',
         proxyUrl: 'http://familie-ef-sak',
+        brevProxyUrl: 'http://familie-brev',
         redisUrl: 'familie-ef-sak-frontend-redis',
     };
 };
@@ -54,5 +58,5 @@ export const oboConfig: IApi = {
 
 export const buildPath = env.buildPath;
 export const proxyUrl = env.proxyUrl;
-export const brevProxyUrl = 'http://localhost:8001';
+export const brevProxyUrl = env.brevProxyUrl;
 export const namespace = env.namespace;
