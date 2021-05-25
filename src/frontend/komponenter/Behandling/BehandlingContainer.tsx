@@ -29,7 +29,7 @@ const HøyreMenyWrapper = styled.div`
     border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
     max-width: 20rem;
-    overflow-y: scroll;
+    overflow-y: auto;
 `;
 
 const InnholdWrapper = styled.div`

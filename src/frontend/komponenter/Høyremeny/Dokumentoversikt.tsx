@@ -12,6 +12,14 @@ import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import { useParams } from 'react-router';
 import { IBehandlingParams } from '../../typer/routing';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
+import styled from 'styled-components';
+
+const StyledDokumentliste = styled(Dokumentliste)`
+    .typo-element,
+    .typo-undertekst {
+        text-align: left;
+    }
+`;
 
 const Dokumentoversikt: React.FC = () => {
     const { axiosRequest } = useApp();
@@ -58,7 +66,10 @@ const Dokumentoversikt: React.FC = () => {
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
                     return (
-                        <Dokumentliste dokumenter={dokumentResponse} onClick={lastNedDokument} />
+                        <StyledDokumentliste
+                            dokumenter={dokumentResponse}
+                            onClick={lastNedDokument}
+                        />
                     );
                 }}
             </DataViewer>
