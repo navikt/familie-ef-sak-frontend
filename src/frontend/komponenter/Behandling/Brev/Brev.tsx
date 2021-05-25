@@ -31,7 +31,7 @@ export interface BrevStruktur {
     flettefelter: AlleFlettefelter;
 }
 export interface DokumentMal {
-    delmaler: Delmal[];
+    delmalerSortert: Delmal[];
 }
 
 export interface AlleFlettefelter {
@@ -70,6 +70,7 @@ export interface Delmal {
     delmalNavn: string;
     delmalValgfelt: ValgFelt[];
     delmalFlettefelter: Flettefelter[]; // referanse til flettefelt
+    mappe: string;
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
