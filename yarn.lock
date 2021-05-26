@@ -660,10 +660,10 @@
     nav-frontend-knapper-style "^1.1.2"
     react-tooltip "^4.2.15"
 
-"@navikt/familie-dokumentliste@^1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@navikt/familie-dokumentliste/-/familie-dokumentliste-1.0.12.tgz#2897f1692b4ef215b947f15fbc2b47e07b39ca4e"
-  integrity sha512-6eStqCBX3nTmlzru64hh08dTP8wlbvhpU/YvQzLuf/tQRzM72oEKILGlXIKWBBfji86vdGf6PzvVUly1zBksfA==
+"@navikt/familie-dokumentliste@^1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@navikt/familie-dokumentliste/-/familie-dokumentliste-1.0.13.tgz#62310a8450c7cffc4a9af831a1b10e5daf00f080"
+  integrity sha512-b6WeLhlkGf1gJi+lsJCCUyrxoqn0VhIdW19g/a6d3By7ehAZS9khBjFeFZQ2BD+D6bxWsETwEBTA9k1L7L53Ow==
   dependencies:
     "@navikt/familie-ikoner" "^3.1.11"
     "@navikt/familie-typer" "^3.0.13"
