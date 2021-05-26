@@ -130,7 +130,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
 
         axiosRequest<string, any>({
             method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}/v2`,
+            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
             data: {
                 valgfelter: {},
                 delmaler,
