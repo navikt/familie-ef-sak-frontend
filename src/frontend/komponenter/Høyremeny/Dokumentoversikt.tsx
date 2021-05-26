@@ -13,6 +13,7 @@ import { useParams } from 'react-router';
 import { IBehandlingParams } from '../../typer/routing';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
 import styled from 'styled-components';
+import { formaterNullableIsoDato } from '../../utils/formatter';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,
@@ -65,9 +66,13 @@ const Dokumentoversikt: React.FC = () => {
             {lastNedDokumentFeilet && <AlertStripeFeil>{lastNedDokumentFeilet}</AlertStripeFeil>}
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
+                    const dokumenterMedFormatertDato = dokumentResponse.map((dokument) => ({
+                        ...dokument,
+                        dato: formaterNullableIsoDato(dokument.dato),
+                    }));
                     return (
                         <StyledDokumentliste
-                            dokumenter={dokumentResponse}
+                            dokumenter={dokumenterMedFormatertDato}
                             onClick={lastNedDokument}
                         />
                     );
