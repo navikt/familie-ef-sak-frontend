@@ -13,7 +13,7 @@ import { useParams } from 'react-router';
 import { IBehandlingParams } from '../../typer/routing';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
 import styled from 'styled-components';
-import { formaterNullableIsoDato } from '../../utils/formatter';
+import { formaterNullableIsoDatoTid } from '../../utils/formatter';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,
@@ -68,7 +68,7 @@ const Dokumentoversikt: React.FC = () => {
                 {({ dokumentResponse }) => {
                     const dokumenterMedFormatertDato = dokumentResponse.map((dokument) => ({
                         ...dokument,
-                        dato: formaterNullableIsoDato(dokument.dato),
+                        dato: formaterNullableIsoDatoTid(dokument.dato),
                     }));
                     return (
                         <StyledDokumentliste
