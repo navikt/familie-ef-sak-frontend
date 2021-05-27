@@ -1,405 +1,859 @@
 {
   "data": {
     "dokument": {
-      "delmaler": [
+      "delmalerSortert": [
         {
-          "delmalApiNavn": "delmal2Eftest",
+          "delmalApiNavn": "startOgSluttdato",
+          "delmalFlettefelter": [],
+          "delmalNavn": "Start og sluttdato for stønad",
+          "delmalValgfelt": [
+            {
+              "valgFeltApiNavn": "sluttidspunkt",
+              "valgMuligheter": [
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "e52b179d-928f-4703-adc4-71dc35c34993",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "stonadITreAr",
+                  "visningsnavnValgmulighet": "Stønad i tre år_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "e52b179d-928f-4703-adc4-71dc35c34993",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "5ea8fdae-d156-43b4-95b8-40eec418d927",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "33a0c413-a0e3-49c9-b542-850374d38497",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "1a81e574-30ab-4782-8242-233915d985c3",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "stonadITreArTidligereStonad",
+                  "visningsnavnValgmulighet": "Stønad i tre år og tidligere overgangsstønad_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "e52b179d-928f-4703-adc4-71dc35c34993",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "f8b6f567-e024-4604-b9e2-08bb408add61",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "barnetBlirAtteAr",
+                  "visningsnavnValgmulighet": "Barnet blir åtte år_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "e52b179d-928f-4703-adc4-71dc35c34993",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "522217b4-a2f9-497c-beaf-223fd5abd87f",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "venterNyttBarn",
+                  "visningsnavnValgmulighet": "Venter nytt barn_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "e52b179d-928f-4703-adc4-71dc35c34993",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "084f8be5-286c-470e-9749-dd1aaa969b44",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "nyttBarnSammePartner",
+                  "visningsnavnValgmulighet": "Nytt barn med samme partner_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "e52b179d-928f-4703-adc4-71dc35c34993",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "barnetBlirEttAr",
+                  "visningsnavnValgmulighet": "Barnet blir ett år_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "e52b179d-928f-4703-adc4-71dc35c34993",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "d604bb29-cfba-4bcb-839f-836df3c36351",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "begrunnelse",
+                  "visningsnavnValgmulighet": "Begrunnelse sluttidspunkt_ad"
+                }
+              ],
+              "valgfeltVisningsnavn": "Sluttidspunkt_ad"
+            },
+            {
+              "valgFeltApiNavn": "startstidspunkt",
+              "valgMuligheter": [
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "manedenForTermin",
+                  "visningsnavnValgmulighet": "Måneden før termin_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "forBarnetBleFodt",
+                  "visningsnavnValgmulighet": "Før barnet ble født_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "vartINorgeIFemAr",
+                  "visningsnavnValgmulighet": "Vært i Norge i fem år_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "tilbakeFraOppholdIUtland",
+                  "visningsnavnValgmulighet": "Måneden etter tilbakekomst fra utland_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        null
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "foreldreFlyttetFraHverandre",
+                  "visningsnavnValgmulighet": "Foreldre flyttet fra hverandre"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "samboereFlyttetFraHverandre",
+                  "visningsnavnValgmulighet": "Måneden etter samboere flyttet fra hverandre_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterSeparasjon",
+                  "visningsnavnValgmulighet": "Måneden etter separasjon_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterSokOmSeparasjon",
+                  "visningsnavnValgmulighet": "Måneden du søkte stønad fra_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterSkilsmisse",
+                  "visningsnavnValgmulighet": "Måneden etter skilsmisse_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterInngattSamvarsordning",
+                  "visningsnavnValgmulighet": "Måneden etter inngått samværsordning_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterEndretSamvarsordning",
+                  "visningsnavnValgmulighet": "Måneden etter endret samværsordning_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterArbeidsstart",
+                  "visningsnavnValgmulighet": "Måneden etter arbeidsstart_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterRegSomArbeidssoker",
+                  "visningsnavnValgmulighet": "Måneden etter registrert som arbeidssøker_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterStudiestart",
+                  "visningsnavnValgmulighet": "Måneden etter studiestart_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndEtterEtablertEgenBedrift",
+                  "visningsnavnValgmulighet": "Måneden etter etablert egen bedrift_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "mndDuSokteStonadFra",
+                  "visningsnavnValgmulighet": "Måneden du søkte stønad fra_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "treMndForDuSokteStonad",
+                  "visningsnavnValgmulighet": "Tre måneder før du søkte_ad"
+                },
+                {
+                  "flettefelter": [
+                    {
+                      "flettefelt": [
+                        {
+                          "_ref": "d96a5849-4da4-487c-af44-68f3759028ae",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "994c29b3-5dca-45b5-953d-869b0f3c532a",
+                          "_type": "reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "valgmulighet": "begrunnelse",
+                  "visningsnavnValgmulighet": "Begrunnelse startidspunkt_ad"
+                }
+              ],
+              "valgfeltVisningsnavn": "Starttidspunkt_ad"
+            }
+          ]
+        },
+        {
+          "delmalApiNavn": "ingenInntekt",
           "delmalFlettefelter": [
             {
               "flettefelt": [
                 {
-                  "_ref": "195f377a-4779-4e69-8121-395801a5ff4c",
-                  "_type": "reference"
-                },
-                {
-                  "_ref": "7c3f595d-c796-49eb-a512-5455572f3074",
-                  "_type": "reference"
-                }
-              ]
-            },
-            {
-              "flettefelt": [
-                {
-                  "_ref": "c91144d5-047a-48bb-a61a-6117639ef212",
+                  "_ref": "fef9eaf0-df7e-4e79-bc67-3dea9d8b0c7b",
                   "_type": "reference"
                 }
               ]
             }
           ],
-          "delmalNavn": "Delmal 2 EF_TEST",
+          "delmalNavn": "Ingen inntekt",
           "delmalValgfelt": [
             {
-              "valgFeltApiNavn": "barnIkkeFodtInfoEf",
+              "valgFeltApiNavn": "detteFarDuMedEllrUtenOmregning",
               "valgMuligheter": [
                 {
                   "flettefelter": [
                     {
                       "flettefelt": [
                         {
-                          "_ref": "94a1c3f8-1ced-4c0c-bc3e-8826cfa7a16b",
-                          "_type": "reference"
-                        }
-                      ]
-                    },
-                    {
-                      "flettefelt": [
-                        {
-                          "_ref": "c91144d5-047a-48bb-a61a-6117639ef212",
+                          "_ref": "211b4b77-225b-4f55-8c7a-153c055c9773",
                           "_type": "reference"
                         }
                       ]
                     }
                   ],
-                  "valgmulighet": "barnIkkeFodtInfo",
-                  "visningsnavnValgmulighet": "Barn er ikke født info"
-                }
-              ],
-              "valgfeltVisningsnavn": "Info hvis barn ikke er født"
-            },
-            {
-              "valgFeltApiNavn": "toValg",
-              "valgMuligheter": [
-                {
-                  "flettefelter": [],
-                  "valgmulighet": "valgEn",
-                  "visningsnavnValgmulighet": "Periode - Får du"
+                  "valgmulighet": "detteFarDuUtenGOmregning",
+                  "visningsnavnValgmulighet": "Dette får du - uten G-omregning"
                 },
                 {
                   "flettefelter": [
                     {
                       "flettefelt": [
                         {
-                          "_ref": "94a1c3f8-1ced-4c0c-bc3e-8826cfa7a16b",
+                          "_ref": "c5c4c99f-65cf-45ae-a19c-89522d76d8d7",
                           "_type": "reference"
                         },
                         {
-                          "_ref": "195f377a-4779-4e69-8121-395801a5ff4c",
+                          "_ref": "5ebf11f8-98b5-4501-b339-99a2d2b3fd41",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "e7df971b-cea6-427f-9031-c9ba19e72a02",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "0dc38adf-727d-459b-82be-4fcbb2986050",
+                          "_type": "reference"
+                        },
+                        {
+                          "_ref": "53cae7f4-eae2-4d81-b520-c052664feb4d",
                           "_type": "reference"
                         }
                       ]
                     }
                   ],
-                  "valgmulighet": "valgTo",
-                  "visningsnavnValgmulighet": "Periode - får du med T.O.M. dato"
+                  "valgmulighet": "detteFarDuMedGOmregning",
+                  "visningsnavnValgmulighet": "Dette får du - med G-omregning"
                 }
               ],
-              "valgfeltVisningsnavn": "Dette er et valgfelt med to valg"
+              "valgfeltVisningsnavn": "Dette får du - med eller uten G-omregning"
+            },
+            {
+              "valgFeltApiNavn": "etterbetalingMedElrUtenRefKrav",
+              "valgMuligheter": [
+                {
+                  "flettefelter": [],
+                  "valgmulighet": "etterbetalingUtenRefKrav",
+                  "visningsnavnValgmulighet": "Hvis etterbetaling - ikke ref.krav"
+                },
+                {
+                  "flettefelter": [],
+                  "valgmulighet": "etterbetalingMedRefKrav",
+                  "visningsnavnValgmulighet": "Hvis etterbetaling - etterspurt ref.krav"
+                }
+              ],
+              "valgfeltVisningsnavn": "Etterbetaling - med eller uten refusjonskrav"
             }
-          ]
+          ],
+          "mappe": "Beregning og utbetaling (type inntekt)"
         }
       ],
-      "malNavn": "testMedDelmal"
+      "malNavn": "innvilgetOvergangsstonadHoved2"
     },
     "flettefelter": {
       "flettefeltReferanse": [
         {
-          "_createdAt": "2020-10-22T09:22:27Z",
-          "_id": "0035b82c-e2f5-4743-a9c2-3d9bfd085b89",
-          "_rev": "VnYpe9yNBePIWPanLidGwN",
+          "_createdAt": "2021-03-05T10:23:08Z",
+          "_id": "079fe698-ed8d-46a8-8cf8-3c009ee3bc86",
+          "_rev": "UpNETHWt3D4TS4hNtH39rG",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:22:27Z",
-          "felt": "REDUKSJON_DELT_BOSTED_UENIGHET"
-        },
-        {
-          "_createdAt": "2020-10-22T09:20:50Z",
-          "_id": "0cce8eaa-8f0e-4e02-9b54-5b7453f4109a",
-          "_rev": "MPyV3mkMDcCssKnHShQpEJ",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:20:50Z",
-          "felt": "INNVILGET_LOVLIG_OPPHOLD_EØS_BORGER_SKJØNNSMESSIG_VURDERING"
-        },
-        {
-          "_createdAt": "2020-10-22T09:21:18Z",
-          "_id": "0ce7ecc0-4a20-47ca-aecc-81dd6fe818f8",
-          "_rev": "MPyV3mkMDcCssKnHShQqJU",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:18Z",
-          "felt": "REDUKSJON_BOSATT_I_RIKTET"
-        },
-        {
-          "_createdAt": "2020-10-22T09:22:12Z",
-          "_id": "16e0bc2f-7cfc-4567-a11a-c4fb8963a275",
-          "_rev": "MPyV3mkMDcCssKnHShQtAW",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:22:12Z",
-          "felt": "REDUKSJON_UNDER_6_ÅR"
-        },
-        {
-          "_createdAt": "2020-10-21T11:40:09Z",
-          "_id": "185e32b1-615c-48b5-825b-daab68df80f8",
-          "_rev": "VnYpe9yNBePIWPanLgB0qH",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-21T11:40:09Z",
-          "felt": "etterbetalingsbelop"
-        },
-        {
-          "_createdAt": "2021-05-11T07:55:28Z",
-          "_id": "195f377a-4779-4e69-8121-395801a5ff4c",
-          "_rev": "cbwI1x0Lqwe8Wna6Z89Ayr",
-          "_type": "flettefelt",
-          "_updatedAt": "2021-05-11T07:55:28Z",
+          "_updatedAt": "2021-03-05T10:23:51Z",
           "erListe": false,
-          "felt": "antallBarn"
+          "felt": "belopDagsats"
         },
         {
-          "_createdAt": "2020-10-22T09:22:01Z",
-          "_id": "1eda4922-573c-4cb0-8200-96981c2b715c",
-          "_rev": "VnYpe9yNBePIWPanLidDcs",
+          "_createdAt": "2020-12-07T14:47:00Z",
+          "_id": "084f8be5-286c-470e-9749-dd1aaa969b44",
+          "_rev": "C1ZIrqoS9wHyKbWzRqMUaw",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:22:01Z",
-          "felt": "REDUKSJON_MANGLENDE_OPPLYSNINGER"
+          "_updatedAt": "2020-12-07T14:47:00Z",
+          "felt": "Dato nytt barn samme partner"
         },
         {
-          "_createdAt": "2020-10-19T15:25:19Z",
-          "_id": "2e0d424f-d856-451f-beb8-d5cb6d0f70c2",
-          "_rev": "VnYpe9yNBePIWPanLg1U2S",
+          "_createdAt": "2021-03-05T10:33:37Z",
+          "_id": "0980eb62-6f0f-4019-aa78-98974aa8b519",
+          "_rev": "iLAA2dFsxP9vF9hRHz7jsk",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-21T10:28:20Z",
-          "felt": "fodselsnummer"
-        },
-        {
-          "_createdAt": "2020-10-21T10:33:41Z",
-          "_id": "2e7800a7-bbf7-4dbe-bdd4-59a5d7b13680",
-          "_rev": "VnYpe9yNBePIWPanLg2AqH",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-21T10:33:41Z",
-          "felt": "enhet"
-        },
-        {
-          "_createdAt": "2020-10-22T09:03:30Z",
-          "_id": "36b7bbe8-7369-4cd7-b861-2eaff9e8bdff",
-          "_rev": "cbwI1x0Lqwe8Wna6ZIPFrZ",
-          "_type": "flettefelt",
-          "_updatedAt": "2021-05-12T07:57:33Z",
+          "_updatedAt": "2021-03-05T10:33:37Z",
           "erListe": false,
-          "felt": "tILOGMEDDATO"
+          "felt": "arstall"
         },
         {
-          "_createdAt": "2020-10-22T09:20:57Z",
-          "_id": "3c4854f7-bb30-4aaa-8dd3-1a8f5793f3f6",
-          "_rev": "MPyV3mkMDcCssKnHShQpWU",
+          "_createdAt": "2021-05-26T11:33:53Z",
+          "_id": "0dc38adf-727d-459b-82be-4fcbb2986050",
+          "_rev": "yjjTlIfWUrvUEyWkvrWwUi",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:20:57Z",
-          "felt": "INNVILGET_OMSORG_FOR_BARN"
+          "_updatedAt": "2021-05-26T11:33:53Z",
+          "felt": "belopEtterGOmregning"
         },
         {
-          "_createdAt": "2020-10-22T08:23:37Z",
-          "_id": "42efc2ac-7234-46e0-b23d-4d64921e2aab",
-          "_rev": "VnYpe9yNBePIWPanLiVM6h",
+          "_createdAt": "2021-03-11T12:04:01Z",
+          "_id": "0dfaeb6f-d270-4649-b179-761eb4ac6e73",
+          "_rev": "L4AJUO2konpLMkFIo3a9cl",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T08:23:37Z",
-          "felt": "hjemler"
+          "_updatedAt": "2021-03-11T12:04:01Z",
+          "erListe": true,
+          "felt": "paragraf1513"
         },
         {
-          "_createdAt": "2020-10-22T09:20:25Z",
-          "_id": "50fd4f13-1f8b-4998-b25e-a041337eb7e8",
-          "_rev": "MPyV3mkMDcCssKnHShQo2o",
+          "_createdAt": "2021-01-27T13:25:12Z",
+          "_id": "1491cef3-9cee-4036-b732-e9cb46ed4ff5",
+          "_rev": "w3J2fgMuhjI3JWEP65fIJp",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:20:25Z",
-          "felt": "INNVILGET_BOSATT_I_RIKTET"
+          "_updatedAt": "2021-01-27T13:25:12Z",
+          "felt": "testfelt"
         },
         {
-          "_createdAt": "2020-10-19T15:33:21Z",
-          "_id": "537366f6-8198-4392-aaa3-fe6bd507ad00",
-          "_rev": "EQN94RGJsjjv1rfKBWRMfg",
+          "_createdAt": "2020-12-08T12:34:35Z",
+          "_id": "1a81e574-30ab-4782-8242-233915d985c3",
+          "_rev": "SouCfgAR6Xv5DC10btK5wy",
           "_type": "flettefelt",
-          "_updatedAt": "2020-11-05T15:20:27Z",
+          "_updatedAt": "2020-12-08T12:34:35Z",
+          "felt": "Antall måneder tidligere periode"
+        },
+        {
+          "_createdAt": "2021-02-11T11:24:07Z",
+          "_id": "211b4b77-225b-4f55-8c7a-153c055c9773",
+          "_rev": "b6geSro80mc4Rqr4pq2GrH",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-02-11T11:24:07Z",
+          "felt": "belopOvergangsstonad"
+        },
+        {
+          "_createdAt": "2021-03-09T14:50:21Z",
+          "_id": "26bf695a-1dd2-4798-b372-3199f1531b37",
+          "_rev": "GILfHdVArv8MZX81APzmes",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-09T14:50:21Z",
+          "erListe": true,
+          "felt": "manedssats"
+        },
+        {
+          "_createdAt": "2021-02-08T13:11:25Z",
+          "_id": "314e37ef-bbbb-437e-bf8a-b15f66ea2a45",
+          "_rev": "LdS7Uk1HqtjGo5aaqJ3Iyz",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-02-08T13:11:25Z",
+          "felt": "kroner"
+        },
+        {
+          "_createdAt": "2020-12-08T12:21:54Z",
+          "_id": "33a0c413-a0e3-49c9-b542-850374d38497",
+          "_rev": "C1ZIrqoS9wHyKbWzRuhvhC",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-12-08T12:22:00Z",
+          "felt": "Tom-dato tidligere periode"
+        },
+        {
+          "_createdAt": "2021-03-11T09:59:21Z",
+          "_id": "346ff1c6-a085-40e0-9217-4da318b25970",
+          "_rev": "CIdasCJpzzVapgqhiaFz3G",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-11T09:59:21Z",
+          "erListe": true,
+          "felt": "skole"
+        },
+        {
+          "_createdAt": "2020-12-07T14:45:26Z",
+          "_id": "522217b4-a2f9-497c-beaf-223fd5abd87f",
+          "_rev": "qg2mvHl8kOTG85WNZiMnMk",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-12-07T14:45:26Z",
+          "felt": "Dato venter nytt barn"
+        },
+        {
+          "_createdAt": "2021-03-10T13:05:38Z",
+          "_id": "52364852-ad9c-4af0-98f4-e5b7fa17d383",
+          "_rev": "L4AJUO2konpLMkFIo1UzZ3",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-10T13:05:38Z",
+          "erListe": true,
           "felt": "navn"
         },
         {
-          "_createdAt": "2020-10-23T08:39:31Z",
-          "_id": "5e01fcc2-d0d7-49a7-a9ee-56b22dd3695c",
-          "_rev": "XoaOTvah7ZFSBIsJK50AvE",
+          "_createdAt": "2021-05-26T11:23:44Z",
+          "_id": "53cae7f4-eae2-4d81-b520-c052664feb4d",
+          "_rev": "yjjTlIfWUrvUEyWkvrVH7R",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-23T08:39:31Z",
-          "felt": "vilkaarsdato"
+          "_updatedAt": "2021-05-26T11:23:44Z",
+          "felt": "belopFoerGOmregning"
         },
         {
-          "_createdAt": "2020-10-22T09:22:35Z",
-          "_id": "5f2a684b-e000-472a-9f87-f5e3b4ea32bb",
-          "_rev": "MPyV3mkMDcCssKnHShQuiw",
+          "_createdAt": "2021-03-03T09:24:28Z",
+          "_id": "53df6f4e-dba5-4218-aec9-9b040d036a3e",
+          "_rev": "nlvDC1m5gnmwd4gDLGDJmz",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:22:35Z",
-          "felt": "INNVILGET_SATSENDRING"
-        },
-        {
-          "_createdAt": "2020-10-22T09:21:35Z",
-          "_id": "6931e74f-7003-4c56-9362-0c114e6bd9ff",
-          "_rev": "VnYpe9yNBePIWPanLid9ho",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:35Z",
-          "felt": "REDUKSJON_FLYTTET_FORELDER"
-        },
-        {
-          "_createdAt": "2021-01-15T12:53:55Z",
-          "_id": "6980c60f-d159-4609-9a99-e4a9014384a6",
-          "_rev": "zF7zz4NSGLgNY1VvnzKsgX",
-          "_type": "flettefelt",
-          "_updatedAt": "2021-01-15T12:53:55Z",
-          "felt": "dato"
-        },
-        {
-          "_createdAt": "2020-10-22T09:22:20Z",
-          "_id": "711c47a6-80e4-4843-a5d4-a341cd14333c",
-          "_rev": "HwY8WMJj1v1ybzSgrYQvB6",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:22:20Z",
-          "felt": "REDUKSJON_DELT_BOSTED_ENIGHET"
-        },
-        {
-          "_createdAt": "2020-10-21T10:33:06Z",
-          "_id": "7c3f595d-c796-49eb-a512-5455572f3074",
-          "_rev": "MPyV3mkMDcCssKnHSgV2nd",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-21T10:33:06Z",
-          "felt": "beslutter"
-        },
-        {
-          "_createdAt": "2020-10-22T09:22:06Z",
-          "_id": "813a2732-e423-4539-80e9-ed6509a93a27",
-          "_rev": "HwY8WMJj1v1ybzSgrYQsu0",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:22:06Z",
-          "felt": "REDUKSJON_UNDER_18_ÅR"
-        },
-        {
-          "_createdAt": "2020-10-22T09:02:57Z",
-          "_id": "8c4e2ff5-8142-4c81-b5f1-2dc4817752d8",
-          "_rev": "XszOhSOqE7Zees1yLjXRx0",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-12-17T08:33:31Z",
-          "felt": "VIRKNINGSTIDSPUNKT"
-        },
-        {
-          "_createdAt": "2020-10-22T09:21:41Z",
-          "_id": "8d936055-0f6d-4a79-ac14-6817df25d2d0",
-          "_rev": "VnYpe9yNBePIWPanLidAhg",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:41Z",
-          "felt": "REDUKSJON_FLYTTET_BARN"
-        },
-        {
-          "_createdAt": "2020-10-22T09:12:49Z",
-          "_id": "949793c8-0ae4-4056-8777-5fb3b1685a57",
-          "_rev": "HwY8WMJj1v1ybzSgrYPA1g",
-          "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:12:49Z",
-          "felt": "antallBarn"
-        },
-        {
-          "_createdAt": "2021-05-11T07:47:31Z",
-          "_id": "94a1c3f8-1ced-4c0c-bc3e-8826cfa7a16b",
-          "_rev": "0QE2uMeufefNFEcQqkEbFD",
-          "_type": "flettefelt",
-          "_updatedAt": "2021-05-11T07:47:31Z",
+          "_updatedAt": "2021-04-29T08:52:10Z",
           "erListe": false,
-          "felt": "barnNavn"
+          "felt": "navKontor",
+          "visningsnavn": "Søkerens lokale nav-kontor"
         },
         {
-          "_createdAt": "2020-10-22T09:21:48Z",
-          "_id": "96980908-00bf-4506-af57-dddc91469c1a",
-          "_rev": "MPyV3mkMDcCssKnHShQrz1",
+          "_createdAt": "2020-12-08T12:21:43Z",
+          "_id": "5ea8fdae-d156-43b4-95b8-40eec418d927",
+          "_rev": "C1ZIrqoS9wHyKbWzRuhrn8",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:48Z",
-          "felt": "REDUKSJON_BARN_DØD"
+          "_updatedAt": "2020-12-08T12:21:43Z",
+          "felt": "Fom-dato tidligere periode"
         },
         {
-          "_createdAt": "2020-11-17T14:22:02Z",
-          "_id": "99598fbf-3bae-4a68-be9c-c29d6e8ac2c0",
-          "_rev": "w3J2fgMuhjI3JWEP65nZHf",
+          "_createdAt": "2021-05-26T11:31:22Z",
+          "_id": "5ebf11f8-98b5-4501-b339-99a2d2b3fd41",
+          "_rev": "yjjTlIfWUrvUEyWkvrWXA9",
           "_type": "flettefelt",
-          "_updatedAt": "2021-01-27T14:38:24Z",
+          "_updatedAt": "2021-05-26T11:31:22Z",
+          "felt": "sluttmanedBelopFoerGOmregning"
+        },
+        {
+          "_createdAt": "2021-03-09T10:52:41Z",
+          "_id": "64deafee-1edf-4763-a049-d699ef8de708",
+          "_rev": "ZL28H1YhcL74yLCXQ3Ycx9",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-09T10:55:13Z",
+          "erListe": false,
+          "felt": "etterbetalingOvertidEl"
+        },
+        {
+          "_createdAt": "2021-03-05T10:20:28Z",
+          "_id": "6d89fa19-d5c1-4e16-b448-f0faf531242b",
+          "_rev": "K4IeQUm7UXkNkTYevgIqac",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-05T10:20:39Z",
+          "erListe": false,
+          "felt": "stonad"
+        },
+        {
+          "_createdAt": "2021-03-05T10:37:26Z",
+          "_id": "7e7a12e2-96d1-43fd-b781-680c14edb5b8",
+          "_rev": "iLAA2dFsxP9vF9hRHz8aFW",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-05T10:37:26Z",
+          "erListe": false,
+          "felt": "datoNyoppstartetBedrift"
+        },
+        {
+          "_createdAt": "2021-03-11T11:10:20Z",
+          "_id": "8b0461eb-a01e-41c6-860e-c90937afb007",
+          "_rev": "CIdasCJpzzVapgqhiafxv3",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-11T11:10:20Z",
           "erListe": true,
-          "felt": "test"
+          "felt": "datoBarnehageplass"
         },
         {
-          "_createdAt": "2020-10-22T09:12:56Z",
-          "_id": "a51a9171-4f7a-4484-bbc9-80c5c79c409e",
-          "_rev": "HwY8WMJj1v1ybzSgrYPC0U",
+          "_createdAt": "2021-03-11T09:59:14Z",
+          "_id": "992f87d9-0734-4e34-bcff-fcd79c3b7f30",
+          "_rev": "wO6jD3l9feVXnFDksxvPk1",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:12:56Z",
-          "felt": "barnasFodselsdatoer"
+          "_updatedAt": "2021-03-11T09:59:14Z",
+          "erListe": true,
+          "felt": "studium"
         },
         {
-          "_createdAt": "2021-01-29T11:20:17Z",
-          "_id": "a9f21c39-0573-4d0b-b767-3ddac2290fb4",
-          "_rev": "ab7Ikw411E3rEkqLluFwz3",
+          "_createdAt": "2020-12-07T12:36:20Z",
+          "_id": "994c29b3-5dca-45b5-953d-869b0f3c532a",
+          "_rev": "b6geSro80mc4Rqr4pq2wqt",
           "_type": "flettefelt",
-          "_updatedAt": "2021-01-29T11:20:23Z",
+          "_updatedAt": "2021-02-11T11:27:15Z",
+          "felt": "begrunnelseFomDatoInnvilgelse"
+        },
+        {
+          "_createdAt": "2021-03-09T10:35:49Z",
+          "_id": "ab6053e0-7aeb-4610-98b6-cea27a6c39f3",
+          "_rev": "cuWShmhxxIlUhYHETBqGal",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-09T10:35:49Z",
           "erListe": false,
-          "felt": "lovparagrafer"
+          "felt": "maned"
         },
         {
-          "_createdAt": "2020-10-22T09:21:11Z",
-          "_id": "acf726b2-fe8f-46dd-9d9e-30a8a958f15d",
-          "_rev": "HwY8WMJj1v1ybzSgrYQk8W",
+          "_createdAt": "2021-03-09T10:21:07Z",
+          "_id": "bd6517bb-a31d-4aaf-9586-0f09ab02ae3c",
+          "_rev": "5RV8Yoj1F47WCpPOyCLdQ4",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:11Z",
-          "felt": "INNVILGET_FAST_OMSORG_FOR_BARN"
+          "_updatedAt": "2021-03-09T10:21:25Z",
+          "erListe": false,
+          "felt": "manedOgAr"
         },
         {
-          "_createdAt": "2020-10-19T15:33:07Z",
-          "_id": "ad499896-d48b-4a37-a494-08ee42c4d73e",
-          "_rev": "VnYpe9yNBePIWPanLg1Te9",
+          "_createdAt": "2021-03-11T10:20:52Z",
+          "_id": "c1d40960-5470-4959-8ecf-e13a5fe81935",
+          "_rev": "CIdasCJpzzVapgqhiaN8JW",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-21T10:28:17Z",
-          "felt": "dokumentDato"
+          "_updatedAt": "2021-03-11T10:20:52Z",
+          "erListe": true,
+          "felt": "begrunnelseIkkeGodkjentStudium"
         },
         {
-          "_createdAt": "2020-10-22T09:20:42Z",
-          "_id": "b5ab2f85-e6a2-4341-a31c-fadcebf2c41e",
-          "_rev": "MPyV3mkMDcCssKnHShQohu",
+          "_createdAt": "2021-05-26T11:29:30Z",
+          "_id": "c5c4c99f-65cf-45ae-a19c-89522d76d8d7",
+          "_rev": "yjjTlIfWUrvUEyWkvrW7xe",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:20:42Z",
-          "felt": "INNVILGET_LOVLIG_OPPHOLD_EØS_BORGER"
+          "_updatedAt": "2021-05-26T11:29:30Z",
+          "felt": "startmanedBelopFoerGOmregning"
         },
         {
-          "_createdAt": "2020-10-22T09:12:41Z",
-          "_id": "c91144d5-047a-48bb-a61a-6117639ef212",
-          "_rev": "VnYpe9yNBePIWPanLibbuC",
+          "_createdAt": "2021-03-09T11:03:59Z",
+          "_id": "c6817641-b4f9-43ed-a822-f930c1bbccff",
+          "_rev": "GILfHdVArv8MZX81APGKD3",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:12:41Z",
-          "felt": "belop"
+          "_updatedAt": "2021-03-09T11:03:59Z",
+          "erListe": false,
+          "felt": "arbeidsgiverArbeidskontrakt"
         },
         {
-          "_createdAt": "2020-10-22T09:21:05Z",
-          "_id": "cdda88bb-96b8-429b-a308-c70019f6f49f",
-          "_rev": "HwY8WMJj1v1ybzSgrYQjiO",
+          "_createdAt": "2021-03-10T11:38:15Z",
+          "_id": "cf95b423-9e6b-4adb-a9a2-783cd6961c86",
+          "_rev": "wO6jD3l9feVXnFDkssc4Dr",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:05Z",
-          "felt": "INNVILGET_BOR_HOS_SØKER"
+          "_updatedAt": "2021-03-10T11:38:15Z",
+          "erListe": true,
+          "felt": "datoBarnEttAr"
         },
         {
-          "_createdAt": "2020-10-22T09:21:26Z",
-          "_id": "d6a30725-2177-470a-81ca-76c3ca8f782d",
-          "_rev": "VnYpe9yNBePIWPanLid8An",
+          "_createdAt": "2020-12-07T14:50:20Z",
+          "_id": "d604bb29-cfba-4bcb-839f-836df3c36351",
+          "_rev": "HO2csGLF2Fpgu974VDDIFM",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:26Z",
-          "felt": "REDUKSJON_LOVLIG_OPPHOLD_OPPHOLDSTILLATELSE_BARN"
+          "_updatedAt": "2021-02-11T11:27:22Z",
+          "felt": "begrunnelseTomDatoInnvilgelse"
         },
         {
-          "_createdAt": "2020-10-22T09:21:54Z",
-          "_id": "dbf46074-2e5c-41dd-b528-97dac8e8335c",
-          "_rev": "HwY8WMJj1v1ybzSgrYQqkk",
+          "_createdAt": "2021-03-05T10:35:01Z",
+          "_id": "d6e05dd5-f9ba-4c8d-b49f-71d49eb3e2c9",
+          "_rev": "UpNETHWt3D4TS4hNtH5YDK",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:21:54Z",
-          "felt": "REDUKSJON_FAST_OMSORG_FOR_BARN"
+          "_updatedAt": "2021-03-05T10:35:01Z",
+          "erListe": false,
+          "felt": "belopInntekt"
         },
         {
-          "_createdAt": "2020-10-22T09:20:34Z",
-          "_id": "df52c4d3-c397-4d00-b320-60e21e14acf6",
-          "_rev": "MPyV3mkMDcCssKnHShQoKz",
+          "_createdAt": "2020-11-20T13:12:09Z",
+          "_id": "d96a5849-4da4-487c-af44-68f3759028ae",
+          "_rev": "C1ZIrqoS9wHyKbWzRpvTwY",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-22T09:20:34Z",
-          "felt": "INNVILGET_LOVLIG_OPPHOLD_OPPHOLDSTILLATELSE"
+          "_updatedAt": "2020-12-07T13:00:11Z",
+          "felt": "Fom-dato innvilgelse"
         },
         {
-          "_createdAt": "2020-10-21T10:32:59Z",
-          "_id": "f727fd79-2117-4d4c-8939-ae111b75966d",
-          "_rev": "MPyV3mkMDcCssKnHSgV2WF",
+          "_createdAt": "2021-02-11T12:39:13Z",
+          "_id": "dead160f-239c-49f8-b699-56bbc9d0f75c",
+          "_rev": "MJ2eqVJFm0HHCngl9uSiKl",
           "_type": "flettefelt",
-          "_updatedAt": "2020-10-21T10:32:59Z",
-          "felt": "saksbehandler"
+          "_updatedAt": "2021-02-11T12:39:13Z",
+          "felt": "blirEttAarDato"
+        },
+        {
+          "_createdAt": "2021-03-11T09:44:11Z",
+          "_id": "e22a3397-e6f9-4153-b15b-50a03f945a52",
+          "_rev": "CIdasCJpzzVapgqhia8MWt",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-11T09:44:11Z",
+          "erListe": true,
+          "felt": "dagligLederEllerAdmDir"
+        },
+        {
+          "_createdAt": "2021-03-11T11:01:17Z",
+          "_id": "e458fa6c-8942-4bdc-a0f8-890c2c0e679f",
+          "_rev": "wO6jD3l9feVXnFDksyDuJL",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-11T11:01:17Z",
+          "erListe": true,
+          "felt": "omDokumentasjonOgSituasjon"
+        },
+        {
+          "_createdAt": "2020-12-07T13:21:44Z",
+          "_id": "e52b179d-928f-4703-adc4-71dc35c34993",
+          "_rev": "YFV9fGATAGZ4qSVlmPV8Dw",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-12-07T13:21:44Z",
+          "felt": "Tom-dato innvilgelse"
+        },
+        {
+          "_createdAt": "2021-05-26T11:32:45Z",
+          "_id": "e7df971b-cea6-427f-9031-c9ba19e72a02",
+          "_rev": "yjjTlIfWUrvUEyWkvrWlfL",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-05-26T11:32:45Z",
+          "felt": "startmanedBelopEtterGOmregning"
+        },
+        {
+          "_createdAt": "2021-03-05T10:30:36Z",
+          "_id": "e9a9bd16-24ca-430b-a867-aa25bfdc89ff",
+          "_rev": "K4IeQUm7UXkNkTYevgLAoY",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-05T10:30:40Z",
+          "erListe": false,
+          "felt": "yrkeBransjeNavnPaSelskap"
+        },
+        {
+          "_createdAt": "2020-12-07T14:44:09Z",
+          "_id": "f8b6f567-e024-4604-b9e2-08bb408add61",
+          "_rev": "YFV9fGATAGZ4qSVlmPv0Nt",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-12-07T14:44:09Z",
+          "felt": "Dato barn fyller 8 år"
+        },
+        {
+          "_createdAt": "2021-03-11T10:04:13Z",
+          "_id": "fd0b4446-1da3-456d-9fa0-67eb73f9e022",
+          "_rev": "L4AJUO2konpLMkFIo3NB2X",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-03-11T10:04:13Z",
+          "erListe": true,
+          "felt": "prosent"
+        },
+        {
+          "_createdAt": "2020-12-07T12:18:59Z",
+          "_id": "fd7f571b-5a13-48c1-b86d-fe4fe18a7ac9",
+          "_rev": "SouCfgAR6Xv5DC10bqA18Y",
+          "_type": "flettefelt",
+          "_updatedAt": "2020-12-07T12:18:59Z",
+          "felt": "Etterbetaling"
+        },
+        {
+          "_createdAt": "2021-05-26T11:51:59Z",
+          "_id": "fef9eaf0-df7e-4e79-bc67-3dea9d8b0c7b",
+          "_rev": "l2EsXilqZnTe4uFeo0xR54",
+          "_type": "flettefelt",
+          "_updatedAt": "2021-05-26T11:51:59Z",
+          "felt": "grenseManedslonnHalvG"
         }
       ]
     }
