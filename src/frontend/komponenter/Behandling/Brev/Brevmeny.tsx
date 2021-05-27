@@ -7,7 +7,7 @@ import {
     ValgFelt,
     Valgmulighet,
     ValgtFelt,
-} from './Brev';
+} from './BrevTyper';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -17,7 +17,7 @@ import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
-import { dagensDatoFormatert, formaterNullableIsoDato } from '../../../utils/formatter';
+import { dagensDatoFormatert } from '../../../utils/formatter';
 
 interface Props {
     settBrevRessurs: Dispatch<Ressurs<string>>;
@@ -48,12 +48,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
     const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
 
     const brevMal = 'innvilgetOvergangsstonadHoved2';
-
-    //const brevMal = 'demobrevInnvilget';
-    // const brevMal = 'innvilgetVedtakMVP';
-
     const datasett = 'ef-brev';
-    //const datasett = 'testdata';
 
     useEffect(() => {
         axiosRequest<BrevStruktur, null>({

@@ -1,5 +1,11 @@
 import React from 'react';
-import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse, ValgFelt, ValgtFelt } from './Brev';
+import {
+    BrevStruktur,
+    FlettefeltMedVerdi,
+    Flettefeltreferanse,
+    ValgFelt,
+    ValgtFelt,
+} from './BrevTyper';
 import { Flettefelt } from './Flettefelt';
 
 interface Props {

@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
-import { Knapp } from 'nav-frontend-knapper';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
 import Brevmeny from './Brevmeny';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
-const HentBrev = styled(Knapp)`
+/*const HentBrev = styled(Knapp)`
     display: block;
     margin: 2rem auto;
-`;
+`;*/
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -25,61 +23,12 @@ interface Props {
     behandlingId: string;
 }
 
-export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
-
-export interface BrevStruktur {
-    dokument: DokumentMal;
-    flettefelter: AlleFlettefelter;
-}
-export interface DokumentMal {
-    delmalerSortert: Delmal[];
-}
-
-export interface AlleFlettefelter {
-    flettefeltReferanse: Flettefelt[];
-}
-interface Flettefelt {
-    felt: string;
-    _id: string;
-}
-
-export interface Flettefeltreferanse {
-    _ref: string;
-}
-
-export interface FlettefeltMedVerdi extends Flettefeltreferanse {
-    verdi: string | null;
-}
-
-export interface Valgmulighet {
-    flettefelter: Flettefelter[];
-    valgmulighet: string;
-    visningsnavnValgmulighet: string;
-}
-
-export interface Flettefelter {
-    flettefelt: Flettefeltreferanse[];
-}
-export interface ValgFelt {
-    valgMuligheter: Valgmulighet[];
-    valgfeltVisningsnavn: string;
-    valgFeltApiNavn: string;
-}
-
-export interface Delmal {
-    delmalApiNavn: string;
-    delmalNavn: string;
-    delmalValgfelt: ValgFelt[];
-    delmalFlettefelter: Flettefelter[]; // referanse til flettefelt
-    mappe: string;
-}
-
 const Brev: React.FC<Props> = ({ behandlingId }) => {
-    const { axiosRequest } = useApp();
+    //const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar, personopplysningerResponse } = useBehandling();
 
-    const hentBrev = () => {
+    /*const hentBrev = () => {
         // eslint-disable-next-line
         axiosRequest<string, any>({
             method: 'GET',
@@ -87,7 +36,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
         });
-    };
+    };*/
 
     return (
         <>
@@ -105,9 +54,9 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         </DataViewer>
                     )}
                 </div>
-                {/*<HentBrev onClick={hentBrev}>Hent brev</HentBrev>*/}
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
+            {/*<HentBrev onClick={hentBrev}>Hent brev</HentBrev>*/}
             {behandlingErRedigerbar && <SendTilBeslutterFooter behandlingId={behandlingId} />}
         </>
     );

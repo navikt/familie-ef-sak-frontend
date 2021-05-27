@@ -7,7 +7,7 @@ import {
     ValgFelt,
     Valgmulighet,
     ValgtFelt,
-} from './Brev';
+} from './BrevTyper';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Flettefelt } from './Flettefelt';
 

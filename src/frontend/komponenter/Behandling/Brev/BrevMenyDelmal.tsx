@@ -1,4 +1,10 @@
-import { BrevStruktur, Delmal, FlettefeltMedVerdi, Flettefeltreferanse, ValgtFelt } from './Brev';
+import {
+    BrevStruktur,
+    Delmal,
+    FlettefeltMedVerdi,
+    Flettefeltreferanse,
+    ValgtFelt,
+} from './BrevTyper';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';

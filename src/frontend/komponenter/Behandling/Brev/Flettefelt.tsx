@@ -1,7 +1,7 @@
 import { finnFlettefeltNavnFraRef } from './BrevUtils';
 import { Input } from 'nav-frontend-skjema';
 import React from 'react';
-import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './Brev';
+import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 
 interface Props {
     flettefelt: Flettefeltreferanse;
