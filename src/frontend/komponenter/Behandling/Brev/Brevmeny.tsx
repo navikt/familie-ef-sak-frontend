@@ -16,10 +16,13 @@ import { useApp } from '../../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
+import { IPersonopplysninger } from '../../../typer/personopplysninger';
+import { dagensDatoFormatert, formaterNullableIsoDato } from '../../../utils/formatter';
 
 interface Props {
     settBrevRessurs: Dispatch<Ressurs<string>>;
     behandlingId: string;
+    personopplysninger: IPersonopplysninger;
 }
 
 const GenererBrev = styled(Knapp)`
@@ -33,7 +36,7 @@ const StyledBrevmeny = styled.div`
     gap: 12px;
 `;
 
-const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
+const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplysninger }) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
@@ -128,7 +131,6 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
                           : acc;
                   }, {})
                 : {};
-
         axiosRequest<string, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
@@ -136,13 +138,9 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
                 valgfelter: {},
                 delmaler,
                 flettefelter: {
-                    navn: ['RAKRYGGET KRONJUVEL'],
-                    fodselsnummer: ['01010172272'],
-                    'Fom-dato innvilgelse': ['$innvilgelseFra'],
-                    'Tom-dato innvilgelse': ['$innvilgelseTil'],
-                    begrunnelseFomDatoInnvilgelse: ['$begrunnelseFomDatoInnvilgelse'],
-                    dato: ['21.05.2021'],
-                    belopOvergangsstonad: ['$belopOvergangsstonad'],
+                    navn: [personopplysninger.navn.visningsnavn],
+                    fodselsnummer: [personopplysninger.personIdent],
+                    dato: [dagensDatoFormatert()],
                 },
             },
         }).then((respons: Ressurs<string>) => {

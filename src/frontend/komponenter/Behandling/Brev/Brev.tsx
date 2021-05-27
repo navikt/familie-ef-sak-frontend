@@ -7,6 +7,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
 import Brevmeny from './Brevmeny';
+import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
 const HentBrev = styled(Knapp)`
     display: block;
@@ -76,7 +77,7 @@ export interface Delmal {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, personopplysningerResponse } = useBehandling();
 
     const hentBrev = () => {
         // eslint-disable-next-line
@@ -93,7 +94,15 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             <StyledBrev>
                 <div>
                     {behandlingErRedigerbar && (
-                        <Brevmeny behandlingId={behandlingId} settBrevRessurs={settBrevRessurs} />
+                        <DataViewer response={{ personopplysningerResponse }}>
+                            {({ personopplysningerResponse }) => (
+                                <Brevmeny
+                                    behandlingId={behandlingId}
+                                    settBrevRessurs={settBrevRessurs}
+                                    personopplysninger={personopplysningerResponse}
+                                />
+                            )}
+                        </DataViewer>
                     )}
                 </div>
                 {/*<HentBrev onClick={hentBrev}>Hent brev</HentBrev>*/}

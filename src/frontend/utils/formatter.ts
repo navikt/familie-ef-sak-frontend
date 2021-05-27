@@ -12,6 +12,10 @@ export const formaterIsoDato = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoFormat);
 };
 
+export const dagensDatoFormatert = (): string => {
+    return new Date().toLocaleDateString('no-No', datoFormat);
+};
+
 export const formaterIsoDatoTid = (dato: string): string => {
     return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm");
 };
