@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const Venstremeny: React.FC = ({}) => {
+const Venstremeny: React.FC = () => {
     return <></>;
 };
 

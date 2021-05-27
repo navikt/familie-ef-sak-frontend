@@ -36,6 +36,7 @@ export const doProxy: any = () => {
 };
 
 export const attachToken = (authClient: Client) => {
+    // eslint-disable-next-line
     return async (req: Request, _res: Response, next: NextFunction) => {
         getOnBehalfOfAccessToken(authClient, req, oboConfig)
             .then((accessToken: string) => {

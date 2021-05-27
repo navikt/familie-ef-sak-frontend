@@ -39,7 +39,7 @@ const SendTilBeslutterFooter: React.FC<{ behandlingId: string }> = ({ behandling
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
-    const [simuleringsdata, settSimuleringsdata] = useState<any>();
+    const [simuleringsdata, settSimuleringsdata] = useState<string | null>();
 
     const sendTilBeslutter = () => {
         settLaster(true);
