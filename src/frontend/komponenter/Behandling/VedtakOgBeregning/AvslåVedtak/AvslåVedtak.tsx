@@ -1,4 +1,3 @@
-import { Textarea } from 'nav-frontend-skjema';
 import React, { FormEvent, useState } from 'react';
 import { useApp } from '../../../../context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../typer/ressurs';
@@ -6,17 +5,9 @@ import { useHistory } from 'react-router-dom';
 import { useBehandling } from '../../../../context/BehandlingContext';
 import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../../typer/vedtak';
 import { Behandling } from '../../../../typer/fagsak';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import styled from 'styled-components';
-
-const StyledForm = styled.form`
-    margin-top: 2rem;
-`;
-
-const StyledHovedKnapp = styled(Hovedknapp)`
-    margin-top: 2rem;
-`;
+import AvslåVedtakForm from './AvslåVedtakForm';
+import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVedtak }> = ({
     behandling,
@@ -32,7 +23,7 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
-    const { hentBehandling } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest } = useApp();
 
     const vedtakRequest: IAvslåVedtak = {
@@ -70,24 +61,18 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
             });
     };
 
-    return (
-        <>
-            <StyledForm onSubmit={lagBlankett}>
-                <Textarea
-                    value={avslåBegrunnelse}
-                    onChange={(e) => {
-                        settAvslåBegrunnelse(e.target.value);
-                    }}
-                    label="Begrunnelse"
-                    maxLength={0}
-                />
-                <StyledHovedKnapp htmlType="submit" disabled={laster}>
-                    Lagre vedtak
-                </StyledHovedKnapp>
-            </StyledForm>
-            {feilmelding && (
-                <AlertStripeFeil style={{ marginTop: '2rem' }}>{feilmelding}</AlertStripeFeil>
-            )}
-        </>
+    return behandlingErRedigerbar ? (
+        <AvslåVedtakForm
+            avslåBegrunnelse={avslåBegrunnelse}
+            settAvslåBegrunnelse={settAvslåBegrunnelse}
+            laster={laster ?? false}
+            lagBlankett={lagBlankett}
+            feilmelding={feilmelding}
+        />
+    ) : (
+        <FlexDiv>
+            <Element style={{ marginRight: '0.25rem' }}>Begrunnelse for avslag:</Element>
+            <Normaltekst children={avslåBegrunnelse} />
+        </FlexDiv>
     );
 };

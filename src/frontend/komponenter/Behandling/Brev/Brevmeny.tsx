@@ -44,12 +44,13 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId }) => {
     );
     const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
 
-    // const brevMal = 'innvilgetOvergangsstonadHovedp';
-    const brevMal = 'demobrevInnvilget';
+    const brevMal = 'innvilgetOvergangsstonadHoved2';
+
+    //const brevMal = 'demobrevInnvilget';
     // const brevMal = 'innvilgetVedtakMVP';
 
-    // const datasett = 'ef-brev';
-    const datasett = 'testdata';
+    const datasett = 'ef-brev';
+    //const datasett = 'testdata';
 
     useEffect(() => {
         axiosRequest<BrevStruktur, null>({

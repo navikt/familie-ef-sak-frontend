@@ -5,18 +5,27 @@ import styled from 'styled-components';
 import PersonStatusVarsel from '../PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../AdressebeskyttelseVarsel';
 import { EtikettAdvarsel } from 'nav-frontend-etiketter';
+import { Behandling } from '../../../typer/fagsak';
+import Behandlingsinfo from './Behandlingsinfo';
+import navFarger from 'nav-frontend-core';
 
 export const VisittkortWrapper = styled.div`
+    display: flex;
+    border-bottom: 1px solid ${navFarger.navGra80};
+
     .visittkort {
         padding: 0 1.5rem;
+        border-bottom: none;
     }
 `;
-
 const ElementWrapper = styled.div`
     margin-left: 1rem;
 `;
 
-const VisittkortComponent: FC<{ data: IPersonopplysninger }> = ({ data }) => {
+const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
+    data,
+    behandling,
+}) => {
     const {
         personIdent,
         kjønn,
@@ -44,6 +53,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger }> = ({ data }) => {
                     </ElementWrapper>
                 )}
             </Visittkort>
+            {behandling && <Behandlingsinfo behandling={behandling} />}
         </VisittkortWrapper>
     );
 };

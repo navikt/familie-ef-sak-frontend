@@ -2,7 +2,7 @@ import React from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Hjerte from '../../../ikoner/Hjerte';
 import { KolonneTitler, TabellWrapper } from './TabellWrapper';
-import { ISivilstand } from '../../../typer/personopplysninger';
+import { ISivilstand, sivilstandTilTekst } from '../../../typer/personopplysninger';
 import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../../utils/formatter';
 
@@ -16,7 +16,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                     {sivilstander.map((sivilstand, indeks) => {
                         return (
                             <tr key={indeks}>
-                                <td>{sivilstand.type}</td>
+                                <td>{sivilstandTilTekst[sivilstand.type]}</td>
                                 <td>{formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}</td>
                                 <td>{sivilstand.navn}</td>
                                 <td>

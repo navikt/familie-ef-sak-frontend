@@ -3,7 +3,8 @@ import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../../ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../../typer/personopplysninger';
 import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
-import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { Element } from 'nav-frontend-typografi';
+import { TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
@@ -26,41 +27,49 @@ const StyledLesmer = styled(Lesmerpanel)`
     }
 `;
 
-const StyledTabellWrapper = styled(TabellWrapper)`
-    padding-top: 0rem;
-`;
-
 const MAX_LENGDE_ADRESSER = 5;
 
 const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
+    const [isClosed, setIsClosed] = useState<boolean>(true);
     if (adresser.length <= MAX_LENGDE_ADRESSER) {
         return <Adresser adresser={adresser} />;
     } else {
         const introAdresser = adresser.slice(0, MAX_LENGDE_ADRESSER);
-        const visMerAdresser = adresser.slice(MAX_LENGDE_ADRESSER, adresser.length);
         return (
             <StyledLesmer
+                onOpen={() => setIsClosed(false)}
+                onClose={() => setIsClosed(true)}
                 className={'adresser'}
-                intro={<Adresser adresser={introAdresser} />}
+                intro={isClosed && <Adresser adresser={introAdresser} />}
                 apneTekst={'Vis flere adresser'}
                 lukkTekst={'Skjul adresser'}
             >
-                <StyledTabellWrapper>
-                    <table className="tabell" style={{ borderTopStyle: 'hidden' }}>
-                        <Innhold adresser={visMerAdresser} />
-                    </table>
-                </StyledTabellWrapper>
+                <Adresser adresser={adresser} />
             </StyledLesmer>
         );
     }
 };
+
+const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
+    <Td width={`${width}%`}>
+        <Element>{text}</Element>
+    </Td>
+);
 
 const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={Bygning} tittel={'Adressehistorikk'} />
             <table className="tabell">
-                <KolonneTitler titler={['Adresse', 'Adressetype', 'Fra', 'Til']} />
+                <thead>
+                    <tr>
+                        <Kolonnetittel text={'Adresse'} width={35} />
+                        <Kolonnetittel text={'Adressetype'} width={15} />
+                        <Kolonnetittel text={'Angitt flyttedato'} width={15} />
+                        <Kolonnetittel text={'Fra'} width={15} />
+                        <Kolonnetittel text={'Til'} width={20} />
+                    </tr>
+                </thead>
                 <Innhold adresser={adresser} />
             </table>
         </TabellWrapper>
@@ -72,19 +81,21 @@ const gyldigTilOgMedErNullEllerFremITid = (adresse: IAdresse) =>
 
 const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
-
     return (
         <>
             <tbody>
                 {adresser.map((adresse, indeks) => {
                     return (
                         <tr key={indeks}>
-                            <BredTd>{adresse.visningsadresse}</BredTd>
-                            <BredTd>{adresse.type}</BredTd>
-                            <BredTd>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</BredTd>
-                            <BredTd>
+                            <Td>{adresse.visningsadresse}</Td>
+                            <Td>{adresse.type}</Td>
+                            <Td>{formaterNullableIsoDato(adresse.angittFlyttedato)}</Td>
+                            <Td>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</Td>
+                            <Td>
                                 <StyledFlexDiv>
-                                    <div>{formaterNullableIsoDato(adresse.gyldigTilOgMed)}</div>
+                                    <div style={{ margin: 'auto 0' }}>
+                                        {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
+                                    </div>
                                     {adresse.type === AdresseType.BOSTEDADRESSE &&
                                         gyldigTilOgMedErNullEllerFremITid(adresse) && (
                                             <StyledKnapp
@@ -95,7 +106,7 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                                             </StyledKnapp>
                                         )}
                                 </StyledFlexDiv>
-                            </BredTd>
+                            </Td>
                         </tr>
                     );
                 })}

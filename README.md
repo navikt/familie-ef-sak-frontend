@@ -10,6 +10,12 @@ Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 * Starte mock-server `yarn start:mock`
 * Åpne `http://localhost:8000` i nettleseren din
 
+## Client id & client secret
+secret kan hentes fra cluster med 
+`kubectl -n teamfamilie get secret azuread-familie-ef-sak-frontend-lokal -o json | jq '.data | map_values(@base64d)'`
+`kubectl -n teamfamilie get secret azuread-familie-ef-sak-lokal -o json | jq '.data | map_values(@base64d)'`
+
+
 Appen krever en del environment variabler og legges til i .env fila i root på prosjektet.  
 ```
 
@@ -21,8 +27,10 @@ Appen krever en del environment variabler og legges til i .env fila i root på p
     PASSPORTCOOKIE_KEY4='<any string of length 12>'
     SESSION_SECRET='<any string of length 32>'
 
-    CLIENT_ID='<>'
-    CLIENT_SECRET='<>'
+    EF_SAK_SCOPE='api://<AZURE_APP_CLIENT_ID fra secret til azuread-familie-ef-sak-lokal>/.default'
+    CLIENT_ID='<AZURE_APP_CLIENT_ID fra secret>'
+    CLIENT_SECRET='<AZURE_APP_CLIENT_SECRET fra secret>'
+    AZURE_APP_WELL_KNOWN_URL='<AZURE_APP_WELL_KNOWN_URL fra secret>'
     
     ENV=local
     APP_VERSION=0.0.1

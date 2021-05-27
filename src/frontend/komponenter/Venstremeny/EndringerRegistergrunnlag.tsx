@@ -31,15 +31,15 @@ const EndringerRegistergrunnlag: FC = () => {
         .filter(([, endringer]) => {
             return endringer.length > 0;
         })
-        .map(([endringdel, endringer]) => {
+        .map(([endringdel, endringer], index) => {
             return (
-                <>
+                <React.Fragment key={index}>
                     <Element>{endringdel}</Element>
 
                     {endringer.map((endring) => (
                         <div style={{ paddingLeft: '0.5rem' }}>{endring}</div>
                     ))}
-                </>
+                </React.Fragment>
             );
         });
     if (endringer.length === 0) {

@@ -12,6 +12,15 @@ import { useDataHenter } from '../../hooks/felles/useDataHenter';
 import { useParams } from 'react-router';
 import { IBehandlingParams } from '../../typer/routing';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
+import styled from 'styled-components';
+import { formaterNullableIsoDatoTid } from '../../utils/formatter';
+
+const StyledDokumentliste = styled(Dokumentliste)`
+    .typo-element,
+    .typo-undertekst {
+        text-align: left;
+    }
+`;
 
 const Dokumentoversikt: React.FC = () => {
     const { axiosRequest } = useApp();
@@ -57,8 +66,15 @@ const Dokumentoversikt: React.FC = () => {
             {lastNedDokumentFeilet && <AlertStripeFeil>{lastNedDokumentFeilet}</AlertStripeFeil>}
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
+                    const dokumenterMedFormatertDato = dokumentResponse.map((dokument) => ({
+                        ...dokument,
+                        dato: formaterNullableIsoDatoTid(dokument.dato),
+                    }));
                     return (
-                        <Dokumentliste dokumenter={dokumentResponse} onClick={lastNedDokument} />
+                        <StyledDokumentliste
+                            dokumenter={dokumenterMedFormatertDato}
+                            onClick={lastNedDokument}
+                        />
                     );
                 }}
             </DataViewer>

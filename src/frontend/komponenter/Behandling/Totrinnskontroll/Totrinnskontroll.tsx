@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import Advarsel from '../../../ikoner/Advarsel';
 import { formaterIsoDatoTid } from '../../../utils/formatter';
 import Info from '../../../ikoner/Info';
+import { BreakWordNormaltekst } from '../../Felleskomponenter/BreakWordNormaltekst';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -93,7 +94,7 @@ const TotrinnskontrollUnderkjent: React.FC<{
             </div>
             <div>
                 <Element>Begrunnelse:</Element>
-                <Normaltekst>{totrinnskontroll.begrunnelse}</Normaltekst>
+                <BreakWordNormaltekst>{totrinnskontroll.begrunnelse}</BreakWordNormaltekst>
             </div>
         </BorderBox>
     );
