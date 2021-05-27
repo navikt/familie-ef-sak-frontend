@@ -60,6 +60,8 @@ const MndKnappWrapper = styled.div`
 `;
 
 const StyledFamilieTextarea = styled(FamilieTextarea)`
+    white-space: pre-wrap;
+    word-wrap: break-word;
     max-width: 60rem;
     .typo-element {
         padding-bottom: 0.5rem;

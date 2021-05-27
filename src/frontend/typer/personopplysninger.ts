@@ -42,6 +42,7 @@ export interface IAdresse {
     type: AdresseType;
     gyldigFraOgMed?: string;
     gyldigTilOgMed?: string;
+    angittFlyttedato?: string;
 }
 
 export interface ISøkeresultatPerson {
@@ -164,6 +165,12 @@ export enum OppholdType {
     PERMANENT = 'PERMANENT',
     UKJENT = 'UKJENT',
 }
+
+export const oppholdTilTekst: Record<OppholdType, string> = {
+    MIDLERTIDIG: 'Midlertidig',
+    PERMANENT: 'Permanent',
+    UKJENT: 'Ukjent',
+};
 
 export interface INavKontor {
     navn: string;

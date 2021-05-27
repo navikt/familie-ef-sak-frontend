@@ -19,9 +19,21 @@ export interface Behandling {
     sistEndret: string;
     endringerIRegistergrunnlag?: IEndringerRegistergrunnlag;
     opprettet: string;
-    resultat: string;
+    resultat: BehandlingResultat;
 }
 
 export interface IEndringerRegistergrunnlag {
     [key: string]: string[];
 }
+
+enum BehandlingResultat {
+    INNVILGET = 'INNVILGET',
+    IKKE_SATT = 'IKKE_SATT',
+    ANNULERT = 'ANNULERT',
+}
+
+export const behandlingResultatTilTekst: Record<BehandlingResultat, string> = {
+    INNVILGET: 'Innvilget',
+    IKKE_SATT: 'Ikke satt',
+    ANNULERT: 'Annulert',
+};

@@ -7,6 +7,7 @@ import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import { useBehandling } from '../../../context/BehandlingContext';
 import { useState } from 'react';
+import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
 
 const Footer = styled.footer`
     width: calc(100% - 571px);
@@ -22,7 +23,13 @@ const MidtstiltInnhold = styled.div`
 `;
 
 const StyledHovedknapp = styled(Hovedknapp)`
-    margin-left: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+`;
+
+const StyledKnapp = styled(Knapp)`
+    margin-left: 1rem;
+    margin-right: 1rem;
     box-shadow: none;
     transform: none;
 `;
@@ -32,6 +39,7 @@ const SendTilBeslutterFooter: React.FC<{ behandlingId: string }> = ({ behandling
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
+    const [simuleringsdata, settSimuleringsdata] = useState<any>();
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -53,13 +61,40 @@ const SendTilBeslutterFooter: React.FC<{ behandlingId: string }> = ({ behandling
             .finally(() => settLaster(false));
     };
 
+    const kjørSimulering = () => {
+        settLaster(true);
+        axiosRequest<string, undefined>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/simulering/${behandlingId}`,
+        })
+            .then((res: Ressurs<string>) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    settSimuleringsdata(res.data);
+                } else {
+                    window.alert('Simulering feilet');
+                }
+            })
+            .finally(() => settLaster(false));
+    };
+
     return (
         <Footer>
+            <UIModalWrapper
+                modal={{
+                    tittel: 'Simulering',
+                    lukkKnapp: true,
+                    visModal: !!simuleringsdata,
+                    onClose: () => settSimuleringsdata(null),
+                }}
+            >
+                <pre>{JSON.stringify(simuleringsdata, null, 2)}</pre>
+            </UIModalWrapper>
             <MidtstiltInnhold>
-                <Knapp>Lagre</Knapp>
+                <StyledKnapp>Lagre</StyledKnapp>
                 <StyledHovedknapp onClick={sendTilBeslutter} disabled={laster}>
                     Send til beslutter
                 </StyledHovedknapp>
+                <StyledKnapp onClick={kjørSimulering}>Simulér</StyledKnapp>
             </MidtstiltInnhold>
         </Footer>
     );

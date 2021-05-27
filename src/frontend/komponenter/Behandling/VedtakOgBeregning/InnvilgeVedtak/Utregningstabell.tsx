@@ -24,8 +24,8 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                                     overskrift: 'Periode',
                                     tekstVerdi: (d) =>
                                         `${formaterNullableMånedÅr(
-                                            d.fraOgMedDato
-                                        )} - ${formaterNullableMånedÅr(d.tilDato)}`,
+                                            d.periode.fradato
+                                        )} - ${formaterNullableMånedÅr(d.periode.tildato)}`,
                                 },
                                 {
                                     overskrift: 'Inntekt (år)',
@@ -45,7 +45,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                                         ),
                                 },
                                 {
-                                    overskrift: 'Beløp',
+                                    overskrift: 'Stønadsbeløp',
                                     tekstVerdi: (d) => formaterTallMedTusenSkille(d.beløp),
                                 },
                             ]}
