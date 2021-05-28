@@ -7,6 +7,7 @@ import {
     ValgFelt,
     ValgtFelt,
 } from './BrevTyper';
+import { Systemtittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -17,6 +18,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import { dagensDatoFormatert } from '../../../utils/formatter';
+import Panel from 'nav-frontend-paneler';
 
 interface Props {
     settBrevRessurs: Dispatch<Ressurs<string>>;
@@ -29,11 +31,26 @@ const GenererBrev = styled(Knapp)`
     margin: 0 auto;
 `;
 
-const StyledBrevmeny = styled.div`
+const StyledBrevMeny = styled.div`
     display: flex;
     flex-direction: column;
     gap: 12px;
 `;
+
+const BrevMenyTittel = styled(Systemtittel)`
+    margin-bottom: 0.5rem;
+`;
+
+const BrevMenyDelmalWrapper = styled.div`
+    margin-top: 1rem;
+`;
+
+const groupBy = (array: any, key: string) => {
+    return array.reduce((result: any, currentItem: any) => {
+        (result[currentItem[key]] = result[currentItem[key]] || []).push(currentItem);
+        return result;
+    }, {});
+};
 
 const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplysninger }) => {
     const { axiosRequest } = useApp();
@@ -138,36 +155,44 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
         });
     };
 
-    let mappeNavn = '';
-
     return (
         <DataViewer response={{ brevStruktur }}>
-            {({ brevStruktur }) => (
-                <StyledBrevmeny>
-                    {brevStruktur.dokument.delmalerSortert.map((delmal) => {
-                        const nyttMappenavn = mappeNavn !== delmal.mappe;
-                        mappeNavn = delmal.mappe;
+            {({ brevStruktur }) => {
+                const delmalerGruppert = groupBy(brevStruktur.dokument.delmalerSortert, 'mappe');
 
-                        return (
-                            <>
-                                <>{nyttMappenavn && '--------'}</>
-                                <>{nyttMappenavn && mappeNavn}</>
-                                <BrevMenyDelmal
-                                    delmal={delmal}
-                                    dokument={brevStruktur}
-                                    valgteFelt={valgteFelt}
-                                    settValgteFelt={settValgteFelt}
-                                    flettefelter={alleFlettefelter}
-                                    settFlettefelter={settAlleFlettefelter}
-                                    settValgteDelmaler={settValgteDelmaler}
-                                    key={delmal.delmalApiNavn}
-                                />
-                            </>
-                        );
-                    })}
-                    <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-                </StyledBrevmeny>
-            )}
+                return (
+                    <StyledBrevMeny>
+                        {Object.entries(delmalerGruppert).map(
+                            ([key, delmaler]: [string, any], index: number) => {
+                                return (
+                                    <Panel>
+                                        <BrevMenyTittel>
+                                            {key !== 'undefined' ? key : 'Ingen tittel'}
+                                        </BrevMenyTittel>
+                                        {delmaler.map((delmal: any) => {
+                                            return (
+                                                <BrevMenyDelmalWrapper>
+                                                    <BrevMenyDelmal
+                                                        delmal={delmal}
+                                                        dokument={brevStruktur}
+                                                        valgteFelt={valgteFelt}
+                                                        settValgteFelt={settValgteFelt}
+                                                        flettefelter={alleFlettefelter}
+                                                        settFlettefelter={settAlleFlettefelter}
+                                                        settValgteDelmaler={settValgteDelmaler}
+                                                        key={delmal.delmalApiNavn}
+                                                    />
+                                                </BrevMenyDelmalWrapper>
+                                            );
+                                        })}
+                                    </Panel>
+                                );
+                            }
+                        )}
+                        <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                    </StyledBrevMeny>
+                );
+            }}
         </DataViewer>
     );
 };
