@@ -41,19 +41,17 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     return (
         <>
             <StyledBrev>
-                <div>
-                    {behandlingErRedigerbar && (
-                        <DataViewer response={{ personopplysningerResponse }}>
-                            {({ personopplysningerResponse }) => (
-                                <Brevmeny
-                                    behandlingId={behandlingId}
-                                    settBrevRessurs={settBrevRessurs}
-                                    personopplysninger={personopplysningerResponse}
-                                />
-                            )}
-                        </DataViewer>
-                    )}
-                </div>
+                {behandlingErRedigerbar && (
+                    <DataViewer response={{ personopplysningerResponse }}>
+                        {({ personopplysningerResponse }) => (
+                            <Brevmeny
+                                behandlingId={behandlingId}
+                                settBrevRessurs={settBrevRessurs}
+                                personopplysninger={personopplysningerResponse}
+                            />
+                        )}
+                    </DataViewer>
+                )}
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
             {/*<HentBrev onClick={hentBrev}>Hent brev</HentBrev>*/}

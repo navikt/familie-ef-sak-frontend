@@ -13,7 +13,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import { brevProxyUrl, proxyUrl, sessionConfig } from './config';
+import { brevProxyUrl, sakProxyUrl, sessionConfig } from './config';
 import { prometheusTellere } from './metrikker';
 import { attachToken, doProxy } from './proxy';
 import setupRouter from './router';
@@ -47,7 +47,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         '/familie-ef-sak/api',
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),
-        doProxy('/familie-ef-sak/api', proxyUrl)
+        doProxy('/familie-ef-sak/api', sakProxyUrl)
     );
 
     app.use(

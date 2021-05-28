@@ -5,7 +5,6 @@ import {
     FlettefeltMedVerdi,
     Flettefeltreferanse,
     ValgFelt,
-    Valgmulighet,
     ValgtFelt,
 } from './BrevTyper';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
@@ -39,12 +38,8 @@ const StyledBrevmeny = styled.div`
 const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplysninger }) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
-    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
-        [] as FlettefeltMedVerdi[]
-    );
-    const [valgteFelt, settValgteFelt] = useState<{ [valgFeltKategori: string]: Valgmulighet }>(
-        {} as ValgtFelt
-    );
+    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
+    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
 
     const brevMal = 'innvilgetOvergangsstonadHoved2';

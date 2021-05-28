@@ -13,7 +13,7 @@ export const formaterIsoDato = (dato: string): string => {
 };
 
 export const dagensDatoFormatert = (): string => {
-    return new Date().toLocaleDateString('no-No', datoFormat);
+    return new Date().toLocaleDateString('no-NO', datoFormat);
 };
 
 export const formaterIsoDatoTid = (dato: string): string => {
