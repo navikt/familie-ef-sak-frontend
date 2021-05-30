@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
@@ -6,11 +6,7 @@ import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
 import Brevmeny from './Brevmeny';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-
-/*const HentBrev = styled(Knapp)`
-    display: block;
-    margin: 2rem auto;
-`;*/
+import { useApp } from '../../../context/AppContext';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -24,19 +20,24 @@ interface Props {
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
-    //const { axiosRequest } = useApp();
+    const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar, personopplysningerResponse } = useBehandling();
 
-    /*const hentBrev = () => {
-        // eslint-disable-next-line
-        axiosRequest<string, any>({
+    const hentBrev = () => {
+        axiosRequest<string, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/brev/${behandlingId}`,
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
         });
-    };*/
+    };
+
+    useEffect(() => {
+        if (!behandlingErRedigerbar) {
+            hentBrev();
+        }
+    }, [behandlingErRedigerbar]);
 
     return (
         <>
@@ -54,7 +55,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                 )}
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
-            {/*<HentBrev onClick={hentBrev}>Hent brev</HentBrev>*/}
             {behandlingErRedigerbar && <SendTilBeslutterFooter behandlingId={behandlingId} />}
         </>
     );
