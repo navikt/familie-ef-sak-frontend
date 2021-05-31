@@ -23,6 +23,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar, personopplysningerResponse } = useBehandling();
+    const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
 
     const hentBrev = () => {
         axiosRequest<string, null>({
@@ -49,13 +50,20 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 behandlingId={behandlingId}
                                 settBrevRessurs={settBrevRessurs}
                                 personopplysninger={personopplysningerResponse}
+                                settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                kanSendesTilBeslutter={kanSendesTilBeslutter}
                             />
                         )}
                     </DataViewer>
                 )}
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
-            {behandlingErRedigerbar && <SendTilBeslutterFooter behandlingId={behandlingId} />}
+            {behandlingErRedigerbar && (
+                <SendTilBeslutterFooter
+                    behandlingId={behandlingId}
+                    kanSendesTilBeslutter={kanSendesTilBeslutter}
+                />
+            )}
         </>
     );
 };

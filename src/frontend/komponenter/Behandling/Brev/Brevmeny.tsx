@@ -25,6 +25,8 @@ interface Props {
     settBrevRessurs: Dispatch<Ressurs<string>>;
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
+    kanSendesTilBeslutter: boolean;
+    settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
 }
 
 const GenererBrev = styled(Knapp)`
@@ -47,7 +49,13 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplysninger }) => {
+const Brevmeny: React.FC<Props> = ({
+    settBrevRessurs,
+    behandlingId,
+    personopplysninger,
+    kanSendesTilBeslutter,
+    settKanSendesTilBeslutter,
+}) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
@@ -74,6 +82,20 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
         });
     }, []);
 
+    const oppdaterAlleFlettefelter = (flettefeltMedVerdi: FlettefeltMedVerdi[]): void => {
+        settAlleFlettefelter(flettefeltMedVerdi);
+        settKanSendesTilBeslutter(false);
+    };
+
+    const oppdaterValgtFelt = (valgtFelt: ValgtFelt): void => {
+        settValgteFelt(valgtFelt);
+        settKanSendesTilBeslutter(false);
+    };
+
+    const oppdaterValgteDelmaler = (valgteDelmaler: { [delmalNavn: string]: boolean }): void => {
+        settValgteDelmaler(valgteDelmaler);
+        settKanSendesTilBeslutter(false);
+    };
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
             const nyttAvsnitt = lagFlettefeltForAvsnitt(flettefeltAvsnitt.flettefelt);
@@ -147,6 +169,9 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
             },
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
+            if (respons.status === RessursStatus.SUKSESS) {
+                settKanSendesTilBeslutter(true);
+            }
         });
     };
 
@@ -159,7 +184,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
                     <StyledBrevMeny>
                         {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, any]) => {
                             return (
-                                <Panel>
+                                <Panel key={key}>
                                     {key !== 'undefined' && <BrevMenyTittel>{key}</BrevMenyTittel>}
                                     {delmaler.map((delmal: any, index: number) => {
                                         return (
@@ -168,10 +193,10 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
                                                     delmal={delmal}
                                                     dokument={brevStruktur}
                                                     valgteFelt={valgteFelt}
-                                                    settValgteFelt={settValgteFelt}
+                                                    settValgteFelt={oppdaterValgtFelt}
                                                     flettefelter={alleFlettefelter}
-                                                    settFlettefelter={settAlleFlettefelter}
-                                                    settValgteDelmaler={settValgteDelmaler}
+                                                    settFlettefelter={oppdaterAlleFlettefelter}
+                                                    settValgteDelmaler={oppdaterValgteDelmaler}
                                                     key={delmal.delmalApiNavn}
                                                 />
                                             </BrevMenyDelmalWrapper>
