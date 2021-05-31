@@ -1,7 +1,7 @@
 {
   "data": {
     "id": "ad983bff-d807-4ade-928e-1093e16ec2ac",
-    "type": "BLANKETT",
+    "type": "FØRSTEGANGSBEHANDLING",
     "aktiv": false,
     "steg": "FATTAR_VEDTAK",
     "status": "UTREDES",

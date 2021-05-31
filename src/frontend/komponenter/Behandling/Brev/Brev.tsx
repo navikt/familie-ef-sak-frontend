@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
-import { useApp } from '../../../context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
-import { Knapp } from 'nav-frontend-knapper';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../context/BehandlingContext';
+import Brevmeny from './Brevmeny';
+import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 
-const GenererBrev = styled(Knapp)`
-    display: block;
-    margin: 0 auto;
-`;
-
-const HentBrev = styled(Knapp)`
+/*const HentBrev = styled(Knapp)`
     display: block;
     margin: 2rem auto;
-`;
+`;*/
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
     padding: 3rem;
+    display: grid;
+    grid-template-columns: 30% 70%;
 `;
 
 interface Props {
@@ -27,24 +24,11 @@ interface Props {
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
-    const { axiosRequest } = useApp();
+    //const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, personopplysningerResponse } = useBehandling();
 
-    const data = { navn: 'test', ident: '123456789' };
-
-    const genererBrev = () => {
-        // eslint-disable-next-line
-        axiosRequest<string, any>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}`,
-            data: data,
-        }).then((respons: Ressurs<string>) => {
-            settBrevRessurs(respons);
-        });
-    };
-
-    const hentBrev = () => {
+    /*const hentBrev = () => {
         // eslint-disable-next-line
         axiosRequest<string, any>({
             method: 'GET',
@@ -52,17 +36,25 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
         });
-    };
+    };*/
 
     return (
         <>
             <StyledBrev>
                 {behandlingErRedigerbar && (
-                    <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+                    <DataViewer response={{ personopplysningerResponse }}>
+                        {({ personopplysningerResponse }) => (
+                            <Brevmeny
+                                behandlingId={behandlingId}
+                                settBrevRessurs={settBrevRessurs}
+                                personopplysninger={personopplysningerResponse}
+                            />
+                        )}
+                    </DataViewer>
                 )}
-                <HentBrev onClick={hentBrev}>Hent brev</HentBrev>
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
+            {/*<HentBrev onClick={hentBrev}>Hent brev</HentBrev>*/}
             {behandlingErRedigerbar && <SendTilBeslutterFooter behandlingId={behandlingId} />}
         </>
     );

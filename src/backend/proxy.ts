@@ -9,7 +9,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ClientRequest } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { oboConfig, proxyUrl } from './config';
+import { oboConfig } from './config';
 
 const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
     if (req.body) {
@@ -21,17 +21,17 @@ const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
 };
 
 // eslint-disable-next-line
-export const doProxy: any = () => {
-    return createProxyMiddleware('/familie-ef-sak/api', {
+export const doProxy: any = (context: string, targetUrl: string) => {
+    return createProxyMiddleware(context, {
         changeOrigin: true,
         logLevel: 'info',
         onProxyReq: restream,
         pathRewrite: (path: string, _req: Request) => {
-            const newPath = path.replace('/familie-ef-sak/api', '');
+            const newPath = path.replace(context, '');
             return `/api${newPath}`;
         },
         secure: true,
-        target: `${proxyUrl}`,
+        target: `${targetUrl}`,
     });
 };
 

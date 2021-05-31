@@ -190,4 +190,9 @@ app.get('/familie-ef-sak/api/personopplysninger/nav-kontor/behandling/:id', (req
     setTimeout(() => res.send(lesMockFil(`nav-kontor.json`)), delayMs);
 });
 
+//localhost:8000/familie-brev/api/ef-brev/avansert-dokument/bokmaal/innvilgetOvergangsstonadHoved2/felter
+app.get('/familie-brev/api/ef-brev/avansert-dokument/bokmaal/:mal/felter', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`innvilgetOvergangsstønadBrevMal.json`)), delayMs);
+});
+
 module.exports = app;
