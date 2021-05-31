@@ -79,3 +79,10 @@ export const tilTallverdi = (verdi: number | string | undefined): number | strin
 
 export const range = (start: number, end: number): number[] =>
     Array.from({ length: end - start }, (_, k) => k + start);
+
+export const grupper = (array: any, key: string) => {
+    return array.reduce((result: any, currentItem: any) => {
+        (result[currentItem[key]] = result[currentItem[key]] || []).push(currentItem);
+        return result;
+    }, {});
+};
