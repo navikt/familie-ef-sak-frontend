@@ -63,10 +63,13 @@ const MndKnappWrapper = styled.div`
     display: flex;
 `;
 
+const TextareaWrapper = styled.div`
+    max-width: 60rem;
+`;
+
 const StyledFamilieTextarea = styled(FamilieTextarea)`
     white-space: pre-wrap;
     word-wrap: break-word;
-    max-width: 60rem;
     .typo-element {
         padding-bottom: 0.5rem;
     }
@@ -239,15 +242,17 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     </Normaltekst>
                 </IngenBegrunnelseOppgitt>
             ) : (
-                <StyledFamilieTextarea
-                    value={inntektBegrunnelse}
-                    onChange={(e) => {
-                        settInntektBegrunnelse(e.target.value);
-                    }}
-                    label="Begrunnelse"
-                    maxLength={0}
-                    erLesevisning={!behandlingErRedigerbar}
-                />
+                <TextareaWrapper>
+                    <StyledFamilieTextarea
+                        value={inntektBegrunnelse}
+                        onChange={(e) => {
+                            settInntektBegrunnelse(e.target.value);
+                        }}
+                        label="Begrunnelse"
+                        maxLength={0}
+                        erLesevisning={!behandlingErRedigerbar}
+                    />
+                </TextareaWrapper>
             )}
         </>
     );
