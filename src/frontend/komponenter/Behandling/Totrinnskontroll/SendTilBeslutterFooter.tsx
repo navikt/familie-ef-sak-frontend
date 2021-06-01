@@ -96,7 +96,7 @@ const SendTilBeslutterFooter: React.FC<{
                 <StyledKnapp>Lagre</StyledKnapp>
                 <StyledHovedknapp
                     onClick={sendTilBeslutter}
-                    disabled={laster || (kanSendesTilBeslutter && !kanSendesTilBeslutter)}
+                    disabled={laster || kanSendesTilBeslutter === false}
                 >
                     Send til beslutter
                 </StyledHovedknapp>

@@ -34,6 +34,7 @@ const StyledBrevMeny = styled.div`
     flex-direction: column;
     gap: 2rem;
     margin: 1rem;
+    min-width: 350px;
 `;
 
 const BrevMenyTittel = styled(Systemtittel)`

@@ -31,6 +31,7 @@ const DokumentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin: 0.5rem 0;
+    min-width: 600px;
 `;
 
 const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {

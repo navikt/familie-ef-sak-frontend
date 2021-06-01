@@ -8,11 +8,11 @@ import Brevmeny from './Brevmeny';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { useApp } from '../../../context/AppContext';
 
-const StyledBrev = styled.div`
+const StyledBrev = styled.div<{ redigeringsmodus: boolean }>`
     background-color: #f2f2f2;
     padding: 3rem;
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: ${(props) => (props.redigeringsmodus ? '30% 70%' : '1fr')};
 `;
 
 interface Props {
@@ -43,7 +43,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
 
     return (
         <>
-            <StyledBrev>
+            <StyledBrev redigeringsmodus={behandlingErRedigerbar}>
                 {behandlingErRedigerbar && (
                     <DataViewer response={{ personopplysningerResponse }}>
                         {({ personopplysningerResponse }) => (
