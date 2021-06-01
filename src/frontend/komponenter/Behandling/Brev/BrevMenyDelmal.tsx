@@ -10,6 +10,18 @@ import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
 import { Checkbox } from 'nav-frontend-skjema';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
+import styled from 'styled-components';
+
+const DelmalValg = styled.div`
+    display: flex;
+    flex-direction: row;
+
+    justify-content: flex-start;
+`;
+
+const StyledEkspanderbartpanelBase = styled(EkspanderbartpanelBase)`
+    flex: 100%;
+`;
 
 interface Props {
     delmal: Delmal;
@@ -21,6 +33,7 @@ interface Props {
     settValgteDelmaler: Dispatch<SetStateAction<Record<string, boolean>>>;
     settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
 }
+
 export const BrevMenyDelmal: React.FC<Props> = ({
     delmal,
     dokument,
@@ -32,7 +45,8 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     settKanSendeTilBeslutter,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
-    const [åpen, settÅpen] = useState(false);
+    const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
+    const [checkboxÅpen, settCheckboxÅpen] = useState<boolean>(false);
 
     const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
         settFlettefelter((prevState) =>
@@ -46,17 +60,24 @@ export const BrevMenyDelmal: React.FC<Props> = ({
             ...prevState,
             [delmal.delmalApiNavn]: e.target.checked,
         }));
-        settÅpen(e.target.checked);
+
+        if (!ekspanderbartPanelÅpen && !checkboxÅpen) {
+            settEkspanderbartPanelÅpen(true);
+        }
+
+        settCheckboxÅpen(e.target.checked);
+
         settKanSendeTilBeslutter(false);
     };
 
     return (
-        <>
-            <EkspanderbartpanelBase
-                tittel={<Checkbox label={delmal?.delmalNavn} onChange={håndterToggleDelmal} />}
-                apen={åpen}
+        <DelmalValg>
+            <Checkbox label="" onChange={håndterToggleDelmal} checked={checkboxÅpen} />
+            <StyledEkspanderbartpanelBase
+                tittel={delmal?.delmalNavn}
+                apen={ekspanderbartPanelÅpen}
                 onClick={() => {
-                    settÅpen(!åpen);
+                    settEkspanderbartPanelÅpen(!ekspanderbartPanelÅpen);
                 }}
             >
                 {delmalValgfelt &&
@@ -86,7 +107,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                         />
                     ))
                 )}
-            </EkspanderbartpanelBase>
-        </>
+            </StyledEkspanderbartpanelBase>
+        </DelmalValg>
     );
 };
