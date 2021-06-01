@@ -20,7 +20,7 @@ const agent =
  * Funksjon som kaller slack sitt postMessage api.
  * Bruker node-fetch da axios ikke bryr seg om proxy agent som sendes inn.
  */
-export const slackNotify = (req: Request, res: ExpressResponse, kanal: string) => {
+export const slackNotify = (req: Request, res: ExpressResponse, kanal: string): void => {
     const displayName = req.session?.user.displayName ? req.session.user.displayName : 'System';
     const formatertMelding = `*${displayName}, ${namespace}*\n ${req.body.melding}`;
 
