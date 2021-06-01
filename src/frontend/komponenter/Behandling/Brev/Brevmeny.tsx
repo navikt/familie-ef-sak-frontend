@@ -99,7 +99,6 @@ const Brevmeny: React.FC<Props> = ({
             );
             const flettefelterForValg = lagFlettefeltForAvsnitt(flettefelterMedReferanse);
 
-            console.log(flettefelterMedReferanse, flettefelterForValg);
             const valgMedflettefelt = {
                 [valgfelt.valgFeltApiNavn]: [
                     {
@@ -177,7 +176,6 @@ const Brevmeny: React.FC<Props> = ({
                 return (
                     <StyledBrevMeny>
                         {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, any]) => {
-                            console.log(key, delmaler);
                             return (
                                 <Panel>
                                     {key !== 'undefined' && <BrevMenyTittel>{key}</BrevMenyTittel>}

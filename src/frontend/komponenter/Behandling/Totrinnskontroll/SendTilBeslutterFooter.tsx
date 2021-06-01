@@ -79,7 +79,6 @@ const SendTilBeslutterFooter: React.FC<{
             })
             .finally(() => settLaster(false));
     };
-    console.log('INNNI FOOTER', kanSendesTilBeslutter);
 
     return (
         <Footer>
