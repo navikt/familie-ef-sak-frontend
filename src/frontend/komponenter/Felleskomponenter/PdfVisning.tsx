@@ -24,6 +24,7 @@ const StyledDokument = styled(Document)`
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgb(0 0 0 / 25%);
         margin: 0 auto;
     }
+
     margin: 0.5rem auto;
 `;
 
@@ -32,6 +33,11 @@ const DokumentWrapper = styled.div`
     flex-direction: column;
     margin: 0.5rem 0;
     min-width: 600px;
+
+    align-self: flex-start;
+    position: sticky;
+    top: 100px;
+    left: 0;
 `;
 
 const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {

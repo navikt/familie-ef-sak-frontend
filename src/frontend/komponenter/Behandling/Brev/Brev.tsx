@@ -11,8 +11,8 @@ import { useApp } from '../../../context/AppContext';
 const StyledBrev = styled.div<{ redigeringsmodus: boolean }>`
     background-color: #f2f2f2;
     padding: 3rem;
-    display: grid;
-    grid-template-columns: ${(props) => (props.redigeringsmodus ? '30% 70%' : '1fr')};
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 interface Props {
