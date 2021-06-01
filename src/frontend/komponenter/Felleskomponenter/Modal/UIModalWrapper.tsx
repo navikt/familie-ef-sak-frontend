@@ -2,8 +2,7 @@ import Modal from 'nav-frontend-modal';
 import { Undertittel } from 'nav-frontend-typografi';
 import * as React from 'react';
 import { IModal } from '../../../typer/modal';
-import classNames = require('classnames');
-
+import classNames from 'classnames';
 interface IProps {
     modal: IModal;
 }

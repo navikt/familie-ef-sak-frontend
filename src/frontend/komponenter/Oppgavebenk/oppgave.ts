@@ -1,10 +1,11 @@
 import { Oppgavetype, Prioritet } from './oppgavetema';
 import { Enhetsmappe } from './enhetsmappe';
 import { Behandlingstema } from '../../typer/behandlingstema';
+import { IOppgaveIdent } from '@navikt/familie-typer/dist/oppgave';
 
 export interface IOppgave {
     id: number;
-    identer: any[];
+    identer: IOppgaveIdent[];
     tildeltEnhetsnr?: string;
     endretAvEnhetsnr?: string;
     eksisterendeOppgaveId?: string;

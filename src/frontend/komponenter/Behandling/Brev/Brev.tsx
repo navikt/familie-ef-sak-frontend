@@ -38,6 +38,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         if (!behandlingErRedigerbar) {
             hentBrev();
         }
+        // eslint-disable-next-line
     }, [behandlingErRedigerbar]);
 
     return (
@@ -51,7 +52,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 settBrevRessurs={settBrevRessurs}
                                 personopplysninger={personopplysningerResponse}
                                 settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                kanSendesTilBeslutter={kanSendesTilBeslutter}
                             />
                         )}
                     </DataViewer>

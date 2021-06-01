@@ -21,6 +21,6 @@ export const Flettefelt: React.FC<Props> = ({
         onChange={(e) => {
             handleFlettefeltInput(e.target.value, flettefelt);
         }}
-        value={flettefelter.find((felt) => felt._ref === flettefelt._ref)!.verdi || ''}
+        value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
     />
 );

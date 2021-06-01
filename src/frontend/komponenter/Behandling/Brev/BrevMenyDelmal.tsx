@@ -19,6 +19,7 @@ interface Props {
     settFlettefelter: Dispatch<SetStateAction<FlettefeltMedVerdi[]>>;
     flettefelter: FlettefeltMedVerdi[];
     settValgteDelmaler: Dispatch<SetStateAction<Record<string, boolean>>>;
+    settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
 }
 export const BrevMenyDelmal: React.FC<Props> = ({
     delmal,
@@ -28,6 +29,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     settFlettefelter,
     flettefelter,
     settValgteDelmaler,
+    settKanSendeTilBeslutter,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [åpen, settÅpen] = useState(false);
@@ -36,6 +38,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
         settFlettefelter((prevState) =>
             prevState.map((felt) => (felt._ref === flettefelt._ref ? { ...felt, verdi } : felt))
         );
+        settKanSendeTilBeslutter(false);
     };
 
     const håndterToggleDelmal = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,30 +47,33 @@ export const BrevMenyDelmal: React.FC<Props> = ({
             [delmal.delmalApiNavn]: e.target.checked,
         }));
         settÅpen(e.target.checked);
+        settKanSendeTilBeslutter(false);
     };
 
     return (
         <>
             <EkspanderbartpanelBase
-                tittel={<Checkbox label={delmal.delmalNavn} onChange={håndterToggleDelmal} />}
+                tittel={<Checkbox label={delmal?.delmalNavn} onChange={håndterToggleDelmal} />}
                 apen={åpen}
                 onClick={() => {
                     settÅpen(!åpen);
                 }}
             >
-                {delmalValgfelt.map((valgFelt, index) => (
-                    <ValgfeltSelect
-                        valgFelt={valgFelt}
-                        dokument={dokument}
-                        valgteFelt={valgteFelt}
-                        settValgteFelt={settValgteFelt}
-                        flettefelter={flettefelter}
-                        settFlettefelter={settFlettefelter}
-                        handleFlettefeltInput={handleFlettefeltInput}
-                        delmal={delmal}
-                        key={`${valgteFelt.valgFeltKategori}${index}`}
-                    />
-                ))}
+                {delmalValgfelt &&
+                    delmalValgfelt.map((valgFelt, index) => (
+                        <ValgfeltSelect
+                            valgFelt={valgFelt}
+                            dokument={dokument}
+                            valgteFelt={valgteFelt}
+                            settValgteFelt={settValgteFelt}
+                            flettefelter={flettefelter}
+                            settFlettefelter={settFlettefelter}
+                            handleFlettefeltInput={handleFlettefeltInput}
+                            delmal={delmal}
+                            key={`${valgteFelt.valgFeltKategori}${index}`}
+                            settKanSendeTilBeslutter={settKanSendeTilBeslutter}
+                        />
+                    ))}
 
                 {delmalFlettefelter.flatMap((f) =>
                     f.flettefelt.map((flettefelt) => (

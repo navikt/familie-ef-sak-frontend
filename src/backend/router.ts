@@ -13,7 +13,7 @@ export default (
     authClient: Client,
     router: Router,
     middleware?: WebpackDevMiddleware.WebpackDevMiddleware
-) => {
+): Router => {
     router.get('/version', (_req, res) => {
         res.status(200)
             .send({ version: process.env.APP_VERSION, reduxVersion: packageJson.redux_version })

@@ -1,6 +1,9 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+/* eslint-disable  @typescript-eslint/no-non-null-assertion */
 import React, { Dispatch, useEffect, useState } from 'react';
 import {
     BrevStruktur,
+    Delmal,
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
@@ -20,14 +23,6 @@ import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import { dagensDatoFormatert } from '../../../utils/formatter';
 import { grupper } from '../../../utils/utils';
 import Panel from 'nav-frontend-paneler';
-
-interface Props {
-    settBrevRessurs: Dispatch<Ressurs<string>>;
-    behandlingId: string;
-    personopplysninger: IPersonopplysninger;
-    kanSendesTilBeslutter: boolean;
-    settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
-}
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -49,11 +44,17 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
+interface Props {
+    settBrevRessurs: Dispatch<Ressurs<string>>;
+    behandlingId: string;
+    personopplysninger: IPersonopplysninger;
+    settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
+}
+
 const Brevmeny: React.FC<Props> = ({
     settBrevRessurs,
     behandlingId,
     personopplysninger,
-    kanSendesTilBeslutter,
     settKanSendesTilBeslutter,
 }) => {
     const { axiosRequest } = useApp();
@@ -80,22 +81,9 @@ const Brevmeny: React.FC<Props> = ({
                 settBrevStruktur(respons);
             }
         });
+        // eslint-disable-next-line
     }, []);
 
-    const oppdaterAlleFlettefelter = (flettefeltMedVerdi: FlettefeltMedVerdi[]): void => {
-        settAlleFlettefelter(flettefeltMedVerdi);
-        settKanSendesTilBeslutter(false);
-    };
-
-    const oppdaterValgtFelt = (valgtFelt: ValgtFelt): void => {
-        settValgteFelt(valgtFelt);
-        settKanSendesTilBeslutter(false);
-    };
-
-    const oppdaterValgteDelmaler = (valgteDelmaler: { [delmalNavn: string]: boolean }): void => {
-        settValgteDelmaler(valgteDelmaler);
-        settKanSendesTilBeslutter(false);
-    };
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
             const nyttAvsnitt = lagFlettefeltForAvsnitt(flettefeltAvsnitt.flettefelt);
@@ -106,9 +94,12 @@ const Brevmeny: React.FC<Props> = ({
     const lagValgfelterForDelmal = (delmalValgfelter: ValgFelt[]) => {
         return delmalValgfelter.reduce((acc, valgfelt) => {
             const valgtMulighet = valgteFelt[valgfelt.valgFeltApiNavn];
-            const flettefelterForValg = lagFlettefeltForAvsnitt(
-                valgtMulighet.flettefelter.flatMap((felter) => felter.flettefelt)
+            const flettefelterMedReferanse: Flettefeltreferanse[] = valgtMulighet.flettefelter.flatMap(
+                (felter) => felter.flettefelt
             );
+            const flettefelterForValg = lagFlettefeltForAvsnitt(flettefelterMedReferanse);
+
+            console.log(flettefelterMedReferanse, flettefelterForValg);
             const valgMedflettefelt = {
                 [valgfelt.valgFeltApiNavn]: [
                     {
@@ -178,26 +169,33 @@ const Brevmeny: React.FC<Props> = ({
     return (
         <DataViewer response={{ brevStruktur }}>
             {({ brevStruktur }) => {
-                const delmalerGruppert = grupper(brevStruktur.dokument.delmalerSortert, 'mappe');
+                const delmalerGruppert: Delmal[] = grupper(
+                    brevStruktur.dokument.delmalerSortert,
+                    'mappe'
+                );
 
                 return (
                     <StyledBrevMeny>
                         {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, any]) => {
+                            console.log(key, delmaler);
                             return (
-                                <Panel key={key}>
+                                <Panel>
                                     {key !== 'undefined' && <BrevMenyTittel>{key}</BrevMenyTittel>}
-                                    {delmaler.map((delmal: any, index: number) => {
+                                    {delmaler.map((delmal: Delmal, index: number) => {
                                         return (
                                             <BrevMenyDelmalWrapper førsteElement={index === 0}>
                                                 <BrevMenyDelmal
                                                     delmal={delmal}
                                                     dokument={brevStruktur}
                                                     valgteFelt={valgteFelt}
-                                                    settValgteFelt={oppdaterValgtFelt}
+                                                    settValgteFelt={settValgteFelt}
                                                     flettefelter={alleFlettefelter}
-                                                    settFlettefelter={oppdaterAlleFlettefelter}
-                                                    settValgteDelmaler={oppdaterValgteDelmaler}
+                                                    settFlettefelter={settAlleFlettefelter}
+                                                    settValgteDelmaler={settValgteDelmaler}
                                                     key={delmal.delmalApiNavn}
+                                                    settKanSendeTilBeslutter={
+                                                        settKanSendesTilBeslutter
+                                                    }
                                                 />
                                             </BrevMenyDelmalWrapper>
                                         );

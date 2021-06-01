@@ -24,6 +24,7 @@ const Utbetalingsoversikt: FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
 
     const sendTilBeslutter = () => {
+        // eslint-disable-next-line
         axiosRequest<any, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
@@ -33,6 +34,7 @@ const Utbetalingsoversikt: FC<Props> = ({ behandlingId }) => {
     };
 
     const beslutteVedtak = () => {
+        // eslint-disable-next-line
         axiosRequest<any, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,

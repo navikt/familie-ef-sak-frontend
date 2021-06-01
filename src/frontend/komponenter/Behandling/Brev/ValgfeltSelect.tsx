@@ -20,6 +20,7 @@ interface Props {
     flettefelter: FlettefeltMedVerdi[];
     handleFlettefeltInput: (verdi: string, flettefelt: Flettefeltreferanse) => void;
     delmal: Delmal;
+    settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
 }
 
 export const ValgfeltSelect: React.FC<Props> = ({
@@ -30,6 +31,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
     handleFlettefeltInput,
     dokument,
     delmal,
+    settKanSendeTilBeslutter,
 }) => {
     const doSettValgteFelt = (
         valgFeltApiNavn: string,
@@ -42,16 +44,19 @@ export const ValgfeltSelect: React.FC<Props> = ({
             settValgteFelt(nyState);
             return;
         }
-        const valgmulighet = delmal.delmalValgfelt
-            .find((valgFelt) => valgFelt.valgFeltApiNavn === valgFeltApiNavn)!
-            .valgMuligheter.find((valgmulighet) => valgmulighet.valgmulighet === valgmulighetNavn)!;
+        // @ts-ignore
+        const valgmulighet: Valgmulighet | undefined = delmal?.delmalValgfelt
+            .find((valgFelt) => valgFelt.valgFeltApiNavn === valgFeltApiNavn)
+            .valgMuligheter.find((valgmulighet) => valgmulighet.valgmulighet === valgmulighetNavn);
 
-        settValgteFelt((prevState) => {
-            return {
-                ...prevState,
-                [valgFeltApiNavn]: valgmulighet,
-            };
-        });
+        valgmulighet &&
+            settValgteFelt((prevState) => {
+                return {
+                    ...prevState,
+                    [valgFeltApiNavn]: valgmulighet,
+                };
+            });
+        settKanSendeTilBeslutter(false);
     };
 
     return (

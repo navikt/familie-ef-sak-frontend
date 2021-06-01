@@ -27,6 +27,7 @@ export interface IMedlemskapRegistergrunnlag {
 }
 
 export type IGyldigeVedtakPerioderIMedl = { gyldigeVedtaksPerioder: IGyldigVedtakPeriode[] };
+
 export interface IGyldigVedtakPeriode {
     fraogmedDato: string;
     tilogmedDato: string;

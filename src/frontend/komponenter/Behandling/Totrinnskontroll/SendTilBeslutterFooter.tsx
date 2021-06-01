@@ -36,13 +36,13 @@ const StyledKnapp = styled(Knapp)`
 
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
-    kanSendesTilBeslutter: boolean;
+    kanSendesTilBeslutter?: boolean;
 }> = ({ behandlingId, kanSendesTilBeslutter }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
-    const [simuleringsdata, settSimuleringsdata] = useState<any>();
+    const [simuleringsdata, settSimuleringsdata] = useState<string | null>();
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -97,7 +97,7 @@ const SendTilBeslutterFooter: React.FC<{
                 <StyledKnapp>Lagre</StyledKnapp>
                 <StyledHovedknapp
                     onClick={sendTilBeslutter}
-                    disabled={laster || !kanSendesTilBeslutter}
+                    disabled={laster || (kanSendesTilBeslutter && !kanSendesTilBeslutter)}
                 >
                     Send til beslutter
                 </StyledHovedknapp>
