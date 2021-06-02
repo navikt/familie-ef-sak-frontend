@@ -44,10 +44,10 @@ export const ValgfeltSelect: React.FC<Props> = ({
             settValgteFelt(nyState);
             return;
         }
-        // @ts-ignore
-        const valgmulighet: Valgmulighet | undefined = delmal?.delmalValgfelt
+
+        const valgmulighet = delmal?.delmalValgfelt
             .find((valgFelt) => valgFelt.valgFeltApiNavn === valgFeltApiNavn)
-            .valgMuligheter.find((valgmulighet) => valgmulighet.valgmulighet === valgmulighetNavn);
+            ?.valgMuligheter.find((valgmulighet) => valgmulighet.valgmulighet === valgmulighetNavn);
 
         valgmulighet &&
             settValgteFelt((prevState) => {

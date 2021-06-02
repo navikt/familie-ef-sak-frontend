@@ -1,7 +1,6 @@
 import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../komponenter/Oppgavebenk/oppgaverequest';
-import { Delmal } from '../komponenter/Behandling/Brev/BrevTyper';
 
 export const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothing<string> => {
     if (!valgtDatoFra || !valgtDatoTil) {
@@ -80,11 +79,3 @@ export const tilTallverdi = (verdi: number | string | undefined): number | strin
 
 export const range = (start: number, end: number): number[] =>
     Array.from({ length: end - start }, (_, k) => k + start);
-
-export const grupper = (array: Delmal[], key: string): Delmal[] => {
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    return array.reduce((result: any, currentItem: any) => {
-        (result[currentItem[key]] = result[currentItem[key]] || []).push(currentItem);
-        return result;
-    }, {});
-};
