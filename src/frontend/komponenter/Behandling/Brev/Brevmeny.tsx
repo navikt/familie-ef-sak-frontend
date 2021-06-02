@@ -14,14 +14,13 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import { RessursStatus } from '@navikt/familie-typer';
-import { finnFlettefeltNavnFraRef } from './BrevUtils';
+import { finnFlettefeltNavnFraRef, grupperDelmaler } from './BrevUtils';
 import { useApp } from '../../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import { dagensDatoFormatert } from '../../../utils/formatter';
-import { grupper } from '../../../utils/utils';
 import Panel from 'nav-frontend-paneler';
 
 const GenererBrev = styled(Knapp)`
@@ -95,6 +94,9 @@ const Brevmeny: React.FC<Props> = ({
     const lagValgfelterForDelmal = (delmalValgfelter: ValgFelt[]) => {
         return delmalValgfelter.reduce((acc, valgfelt) => {
             const valgtMulighet = valgteFelt[valgfelt.valgFeltApiNavn];
+            if (!valgtMulighet) {
+                return acc;
+            }
             const flettefelterMedReferanse: Flettefeltreferanse[] = valgtMulighet.flettefelter.flatMap(
                 (felter) => felter.flettefelt
             );
@@ -169,39 +171,43 @@ const Brevmeny: React.FC<Props> = ({
     return (
         <DataViewer response={{ brevStruktur }}>
             {({ brevStruktur }) => {
-                const delmalerGruppert: Delmal[] = grupper(
-                    brevStruktur.dokument.delmalerSortert,
-                    'mappe'
-                );
+                const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
 
                 return (
                     <StyledBrevMeny>
-                        {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, any]) => {
-                            return (
-                                <Panel>
-                                    {key !== 'undefined' && <BrevMenyTittel>{key}</BrevMenyTittel>}
-                                    {delmaler.map((delmal: Delmal, index: number) => {
-                                        return (
-                                            <BrevMenyDelmalWrapper førsteElement={index === 0}>
-                                                <BrevMenyDelmal
-                                                    delmal={delmal}
-                                                    dokument={brevStruktur}
-                                                    valgteFelt={valgteFelt}
-                                                    settValgteFelt={settValgteFelt}
-                                                    flettefelter={alleFlettefelter}
-                                                    settFlettefelter={settAlleFlettefelter}
-                                                    settValgteDelmaler={settValgteDelmaler}
-                                                    key={delmal.delmalApiNavn}
-                                                    settKanSendeTilBeslutter={
-                                                        settKanSendesTilBeslutter
-                                                    }
-                                                />
-                                            </BrevMenyDelmalWrapper>
-                                        );
-                                    })}
-                                </Panel>
-                            );
-                        })}
+                        {Object.entries(delmalerGruppert).map(
+                            ([key, delmaler]: [string, Delmal[]]) => {
+                                return (
+                                    <Panel key={key}>
+                                        {key !== 'undefined' && (
+                                            <BrevMenyTittel>{key}</BrevMenyTittel>
+                                        )}
+                                        {delmaler.map((delmal: Delmal, index: number) => {
+                                            return (
+                                                <BrevMenyDelmalWrapper
+                                                    førsteElement={index === 0}
+                                                    key={`${delmal.delmalApiNavn}_wrapper`}
+                                                >
+                                                    <BrevMenyDelmal
+                                                        delmal={delmal}
+                                                        dokument={brevStruktur}
+                                                        valgteFelt={valgteFelt}
+                                                        settValgteFelt={settValgteFelt}
+                                                        flettefelter={alleFlettefelter}
+                                                        settFlettefelter={settAlleFlettefelter}
+                                                        settValgteDelmaler={settValgteDelmaler}
+                                                        key={delmal.delmalApiNavn}
+                                                        settKanSendeTilBeslutter={
+                                                            settKanSendesTilBeslutter
+                                                        }
+                                                    />
+                                                </BrevMenyDelmalWrapper>
+                                            );
+                                        })}
+                                    </Panel>
+                                );
+                            }
+                        )}
                         <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
                     </StyledBrevMeny>
                 );
