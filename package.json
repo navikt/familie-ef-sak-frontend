@@ -170,7 +170,7 @@
     "react-axe": "^3.5.4",
     "react-hot-loader": "^4.13.0",
     "request": "^2.88.2",
-    "style-loader": "^1.0.0",
+    "style-loader": "^2.0.0",
     "ts-loader": "8.0.4",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
     "typescript": "^4.0.3",
