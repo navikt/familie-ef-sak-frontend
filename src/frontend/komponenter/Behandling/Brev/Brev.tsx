@@ -8,7 +8,7 @@ import Brevmeny from './Brevmeny';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { useApp } from '../../../context/AppContext';
 
-const StyledBrev = styled.div<{ redigeringsmodus: boolean }>`
+const StyledBrev = styled.div`
     background-color: #f2f2f2;
     padding: 3rem;
     display: flex;
@@ -43,7 +43,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
 
     return (
         <>
-            <StyledBrev redigeringsmodus={behandlingErRedigerbar}>
+            <StyledBrev>
                 {behandlingErRedigerbar && (
                     <DataViewer response={{ personopplysningerResponse }}>
                         {({ personopplysningerResponse }) => (
