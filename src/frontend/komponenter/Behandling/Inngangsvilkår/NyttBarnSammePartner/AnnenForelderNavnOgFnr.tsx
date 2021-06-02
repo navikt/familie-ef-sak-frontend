@@ -31,6 +31,10 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({
             </>
         );
     } else {
-        return <>{`Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}</>;
+        if (ikkeOppgittAnnenForelderBegrunnelse) {
+            return <>{`Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}</>;
+        } else {
+            return <>-</>;
+        }
     }
 };

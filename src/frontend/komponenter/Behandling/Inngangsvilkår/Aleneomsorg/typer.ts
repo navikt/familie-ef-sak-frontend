@@ -29,6 +29,7 @@ export interface IAnnenForelder {
     fødselsdato?: string;
     bosattINorge?: boolean;
     land?: string;
+    dødsfall?: string;
 }
 
 export interface IBarnMedSamværRegistergrunnlag {
