@@ -1,6 +1,9 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+/* eslint-disable  @typescript-eslint/no-non-null-assertion */
 import React, { Dispatch, useEffect, useState } from 'react';
 import {
     BrevStruktur,
+    Delmal,
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
@@ -21,12 +24,6 @@ import { dagensDatoFormatert } from '../../../utils/formatter';
 import { grupper } from '../../../utils/utils';
 import Panel from 'nav-frontend-paneler';
 
-interface Props {
-    settBrevRessurs: Dispatch<Ressurs<string>>;
-    behandlingId: string;
-    personopplysninger: IPersonopplysninger;
-}
-
 const GenererBrev = styled(Knapp)`
     display: block;
     margin: 0 auto;
@@ -37,6 +34,7 @@ const StyledBrevMeny = styled.div`
     flex-direction: column;
     gap: 2rem;
     margin: 1rem;
+    min-width: 450px;
 `;
 
 const BrevMenyTittel = styled(Systemtittel)`
@@ -47,7 +45,19 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplysninger }) => {
+interface Props {
+    settBrevRessurs: Dispatch<Ressurs<string>>;
+    behandlingId: string;
+    personopplysninger: IPersonopplysninger;
+    settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
+}
+
+const Brevmeny: React.FC<Props> = ({
+    settBrevRessurs,
+    behandlingId,
+    personopplysninger,
+    settKanSendesTilBeslutter,
+}) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
@@ -72,6 +82,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
                 settBrevStruktur(respons);
             }
         });
+        // eslint-disable-next-line
     }, []);
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
@@ -84,9 +95,11 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
     const lagValgfelterForDelmal = (delmalValgfelter: ValgFelt[]) => {
         return delmalValgfelter.reduce((acc, valgfelt) => {
             const valgtMulighet = valgteFelt[valgfelt.valgFeltApiNavn];
-            const flettefelterForValg = lagFlettefeltForAvsnitt(
-                valgtMulighet.flettefelter.flatMap((felter) => felter.flettefelt)
+            const flettefelterMedReferanse: Flettefeltreferanse[] = valgtMulighet.flettefelter.flatMap(
+                (felter) => felter.flettefelt
             );
+            const flettefelterForValg = lagFlettefeltForAvsnitt(flettefelterMedReferanse);
+
             const valgMedflettefelt = {
                 [valgfelt.valgFeltApiNavn]: [
                     {
@@ -147,13 +160,19 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
             },
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
+            if (respons.status === RessursStatus.SUKSESS) {
+                settKanSendesTilBeslutter(true);
+            }
         });
     };
 
     return (
         <DataViewer response={{ brevStruktur }}>
             {({ brevStruktur }) => {
-                const delmalerGruppert = grupper(brevStruktur.dokument.delmalerSortert, 'mappe');
+                const delmalerGruppert: Delmal[] = grupper(
+                    brevStruktur.dokument.delmalerSortert,
+                    'mappe'
+                );
 
                 return (
                     <StyledBrevMeny>
@@ -161,7 +180,7 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
                             return (
                                 <Panel>
                                     {key !== 'undefined' && <BrevMenyTittel>{key}</BrevMenyTittel>}
-                                    {delmaler.map((delmal: any, index: number) => {
+                                    {delmaler.map((delmal: Delmal, index: number) => {
                                         return (
                                             <BrevMenyDelmalWrapper førsteElement={index === 0}>
                                                 <BrevMenyDelmal
@@ -173,6 +192,9 @@ const Brevmeny: React.FC<Props> = ({ settBrevRessurs, behandlingId, personopplys
                                                     settFlettefelter={settAlleFlettefelter}
                                                     settValgteDelmaler={settValgteDelmaler}
                                                     key={delmal.delmalApiNavn}
+                                                    settKanSendeTilBeslutter={
+                                                        settKanSendesTilBeslutter
+                                                    }
                                                 />
                                             </BrevMenyDelmalWrapper>
                                         );

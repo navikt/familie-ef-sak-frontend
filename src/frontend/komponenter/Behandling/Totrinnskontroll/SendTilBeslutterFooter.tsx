@@ -34,7 +34,10 @@ const StyledKnapp = styled(Knapp)`
     transform: none;
 `;
 
-const SendTilBeslutterFooter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const SendTilBeslutterFooter: React.FC<{
+    behandlingId: string;
+    kanSendesTilBeslutter?: boolean;
+}> = ({ behandlingId, kanSendesTilBeslutter }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
@@ -91,7 +94,10 @@ const SendTilBeslutterFooter: React.FC<{ behandlingId: string }> = ({ behandling
             </UIModalWrapper>
             <MidtstiltInnhold>
                 <StyledKnapp>Lagre</StyledKnapp>
-                <StyledHovedknapp onClick={sendTilBeslutter} disabled={laster}>
+                <StyledHovedknapp
+                    onClick={sendTilBeslutter}
+                    disabled={laster || kanSendesTilBeslutter === false}
+                >
                     Send til beslutter
                 </StyledHovedknapp>
                 <StyledKnapp onClick={kjørSimulering}>Simulér</StyledKnapp>
