@@ -31,6 +31,7 @@ export const FlettefelterForValgfelt: React.FC<Props> = ({
                     valg.flettefelter.map((felter) =>
                         felter.flettefelt.map((flettefelt) => (
                             <Flettefelt
+                                fetLabel={false}
                                 flettefelt={flettefelt}
                                 dokument={dokument}
                                 flettefelter={flettefelter}
