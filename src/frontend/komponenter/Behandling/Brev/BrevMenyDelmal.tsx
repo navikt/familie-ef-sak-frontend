@@ -46,7 +46,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
-    const [checkboxÅpen, settCheckboxÅpen] = useState<boolean>(false);
+    const [checkboxValgt, settCheckboxValgt] = useState<boolean>(false);
 
     const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
         settFlettefelter((prevState) =>
@@ -61,18 +61,18 @@ export const BrevMenyDelmal: React.FC<Props> = ({
             [delmal.delmalApiNavn]: e.target.checked,
         }));
 
-        if (!ekspanderbartPanelÅpen && !checkboxÅpen) {
+        if (!ekspanderbartPanelÅpen && !checkboxValgt) {
             settEkspanderbartPanelÅpen(true);
         }
 
-        settCheckboxÅpen(e.target.checked);
+        settCheckboxValgt(e.target.checked);
 
         settKanSendeTilBeslutter(false);
     };
 
     return (
         <DelmalValg>
-            <Checkbox label="" onChange={håndterToggleDelmal} checked={checkboxÅpen} />
+            <Checkbox label="" onChange={håndterToggleDelmal} checked={checkboxValgt} />
             <StyledEkspanderbartpanelBase
                 tittel={delmal?.delmalNavn}
                 apen={ekspanderbartPanelÅpen}
