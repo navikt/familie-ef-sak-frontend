@@ -2,8 +2,17 @@ import { finnFlettefeltNavnFraRef } from './BrevUtils';
 import { Input } from 'nav-frontend-skjema';
 import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
+import styled from 'styled-components';
+
+const StyledInput = styled(Input)<{ fetLabel: boolean }>`
+    padding-top: 0.5rem;
+    .skjemaelement__label {
+        font-weight: ${(props) => (props.fetLabel ? 600 : 300)};
+    }
+`;
 
 interface Props {
+    fetLabel: boolean;
     flettefelt: Flettefeltreferanse;
     dokument: BrevStruktur;
     flettefelter: FlettefeltMedVerdi[];
@@ -11,12 +20,14 @@ interface Props {
 }
 
 export const Flettefelt: React.FC<Props> = ({
+    fetLabel,
     flettefelt,
     dokument,
     flettefelter,
     handleFlettefeltInput,
 }) => (
-    <Input
+    <StyledInput
+        fetLabel={fetLabel}
         label={finnFlettefeltNavnFraRef(dokument, flettefelt._ref)}
         onChange={(e) => {
             handleFlettefeltInput(e.target.value, flettefelt);

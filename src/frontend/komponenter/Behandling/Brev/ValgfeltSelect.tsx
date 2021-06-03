@@ -10,6 +10,11 @@ import {
 } from './BrevTyper';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Flettefelt } from './Flettefelt';
+import styled from 'styled-components';
+
+const StyledValgfeltSelect = styled.div`
+    padding-bottom: 2.5rem;
+`;
 
 interface Props {
     valgFelt: ValgFelt;
@@ -60,7 +65,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
     };
 
     return (
-        <>
+        <StyledValgfeltSelect>
             <Select
                 label={valgFelt.valgfeltVisningsnavn}
                 onChange={(e) => doSettValgteFelt(valgFelt.valgFeltApiNavn, e.target.value, delmal)}
@@ -78,6 +83,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
                     valg.flettefelter.map((felter) =>
                         felter.flettefelt.map((flettefelt) => (
                             <Flettefelt
+                                fetLabel={false}
                                 flettefelt={flettefelt}
                                 dokument={dokument}
                                 flettefelter={flettefelter}
@@ -87,6 +93,6 @@ export const ValgfeltSelect: React.FC<Props> = ({
                         ))
                     )
                 )}
-        </>
+        </StyledValgfeltSelect>
     );
 };

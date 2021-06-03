@@ -99,6 +99,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                 {delmalFlettefelter.flatMap((f) =>
                     f.flettefelt.map((flettefelt) => (
                         <Flettefelt
+                            fetLabel={true}
                             flettefelt={flettefelt}
                             dokument={dokument}
                             flettefelter={flettefelter}
