@@ -35,7 +35,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
 
     const hentBrev = () => {
         axiosRequest<string, null>({
-            method: 'GET',
+            method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}`,
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
