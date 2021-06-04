@@ -17,8 +17,7 @@ const errorMessage = (frontendFeilmelding: string, headers?: any) => {
 export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,
     innloggetSaksbehandler?: ISaksbehandler,
-    // eslint-disable-next-line
-    headers?: any
+    headers?: Headers
 ): RessursSuksess<T> | RessursFeilet => {
     let typetRessurs: Ressurs<T>;
 
@@ -30,7 +29,7 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.IKKE_TILGANG:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
+            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers, false);
             typetRessurs = {
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
@@ -38,7 +37,7 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.FEILET:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
+            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers);
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
@@ -68,9 +67,11 @@ export const håndterRessurs = <T>(
 export const loggFeil = (
     error?: AxiosError,
     innloggetSaksbehandler?: ISaksbehandler,
-    feilmelding?: string
+    feilmelding?: string,
+    headers?: Headers,
+    isWarning = false
 ): void => {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'production') {
         configureScope((scope) => {
             scope.setUser({
                 username: innloggetSaksbehandler
@@ -93,7 +94,9 @@ export const loggFeil = (
         apiLoggFeil(
             `${error ? `${error}${feilmelding ? ' - ' : ''}` : ''}${
                 feilmelding ? `Feilmelding: ${feilmelding}` : ''
-            }`
+            }`,
+            headers,
+            isWarning
         );
 
         slackNotify(
@@ -114,9 +117,23 @@ export const slackNotify = (melding: string, kanal: string): void => {
     // });
 };
 
-export const apiLoggFeil = (melding: string): void => {
+export const apiLoggFeil = (melding: string, headers?: Headers, isWarning = false): void => {
     // eslint-disable-next-line
-    preferredAxios.post('/logg-feil', {
-        melding,
-    });
+    const x_callId = headers?.['x_callId'];
+    const x_requestId = headers?.['x_requestId'];
+    preferredAxios.post(
+        '/logg-feil',
+        {
+            melding,
+            ...(isWarning && { isWarning }),
+        },
+        {
+            headers: {
+                ...(x_callId && { x_callId }),
+                ...(x_requestId && { x_requestId }),
+            },
+        }
+    );
 };
+
+type Headers = Record<string, unknown>;
