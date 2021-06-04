@@ -7,6 +7,7 @@ import {
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
 import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
+import { harVerdi } from '../../../../utils/utils';
 
 interface Props {
     forelderRegister?: IAnnenForelder;
@@ -16,24 +17,47 @@ interface Props {
 const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
     const forelderSøknad = søknadsgrunnlag.forelder;
 
+    const harNavnFødselsdatoEllerFnr = (forelder: IAnnenForelder): boolean =>
+        harVerdi(forelder.navn) ||
+        harVerdi(forelder.fødselsnummer) ||
+        harVerdi(forelder.fødselsdato);
+
     return (
         <GridTabell>
-            <Søknadsgrunnlag />
-            <Normaltekst>Annen forelder</Normaltekst>
-            <Normaltekst>
-                <AnnenForelderNavnOgFnr
-                    forelder={søknadsgrunnlag.forelder}
-                    ikkeOppgittAnnenForelderBegrunnelse={
-                        søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
-                    }
-                />
-            </Normaltekst>
+            {((forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad)) ||
+                harVerdi(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse)) && (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Annen forelder</Normaltekst>
+                    <Normaltekst>
+                        {forelderSøknad &&
+                        harNavnFødselsdatoEllerFnr(forelderSøknad) &&
+                        !søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse ? (
+                            <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
+                        ) : (
+                            <>
+                                {søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
+                                    ? `Ikke oppgitt: ${søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse}`
+                                    : '-'}
+                            </>
+                        )}
+                    </Normaltekst>
+                </>
+            )}
 
-            <Registergrunnlag />
-            <Normaltekst>Annen forelder</Normaltekst>
-            <Normaltekst>
-                {forelderRegister ? <AnnenForelderNavnOgFnr forelder={forelderRegister} /> : '-'}
-            </Normaltekst>
+            {forelderRegister && harNavnFødselsdatoEllerFnr(forelderRegister) && (
+                <>
+                    <Registergrunnlag />
+                    <Normaltekst>Annen forelder</Normaltekst>
+                    <Normaltekst>
+                        {forelderRegister ? (
+                            <AnnenForelderNavnOgFnr forelder={forelderRegister} />
+                        ) : (
+                            '-'
+                        )}
+                    </Normaltekst>
+                </>
+            )}
 
             <Søknadsgrunnlag />
             <Normaltekst>Annen forelder bor i</Normaltekst>

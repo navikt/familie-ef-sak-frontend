@@ -1,23 +1,17 @@
 import React, { FC } from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
-import {
-    mapBarnNavnTekst,
-    mapTilRegistergrunnlagNyttBarn,
-    mapTilSøknadsgrunnlagNyttBarn,
-} from './utils';
+import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import {
     Registergrunnlag,
     Søknadsgrunnlag,
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import LiteBarn from '../../../../ikoner/LiteBarn';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
-import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
+
 import styled from 'styled-components';
 import EtikettBase from 'nav-frontend-etiketter';
+import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
+import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -28,7 +22,7 @@ const Overskrift = styled(Element)`
     margin-bottom: 1rem;
 `;
 
-const EtikettDød = styled(EtikettBase)`
+export const EtikettDød = styled(EtikettBase)`
     background-color: black;
     color: #eee;
     margin-left: 0.5rem;
@@ -48,47 +42,9 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         Brukers barn registrert i folkeregisteret
                     </Overskrift>
                 </FlexDiv>
-                {registergrunnlagNyttBarn.map((barn) => {
-                    return (
-                        <GridTabell>
-                            <>
-                                <LiteBarn />
-                                <Element>{barn.navn}</Element>
-                            </>
-                            <>
-                                <Registergrunnlag />
-                                <Element>Fødsels eller D-nummer</Element>
-                                <Normaltekst>{barn.fødselsnummer}</Normaltekst>
-                            </>
-                            <>
-                                <Registergrunnlag />
-                                <Element>Annen forelder fra folkeregister</Element>
-                                <FlexDiv>
-                                    <Normaltekst>{barn.annenForelderRegister?.navn} – </Normaltekst>
-                                    <KopierbartNullableFødselsnummer
-                                        fødselsnummer={barn.annenForelderRegister?.fødselsnummer}
-                                    />
-                                    {barn.annenForelderRegister?.dødsfall && (
-                                        <EtikettDød mini type="info">
-                                            Død
-                                        </EtikettDød>
-                                    )}
-                                </FlexDiv>
-                            </>
-                            {barn.annenForelderRegister?.dødsfall && (
-                                <>
-                                    <Registergrunnlag />
-                                    <Element>Annen forelder dødsdato</Element>
-                                    <Normaltekst>
-                                        {formaterNullableIsoDato(
-                                            barn.annenForelderRegister.dødsfall
-                                        )}
-                                    </Normaltekst>
-                                </>
-                            )}
-                        </GridTabell>
-                    );
-                })}
+                {registergrunnlagNyttBarn.map((barn) => (
+                    <RegistergrunnlagNyttBarn barn={barn} />
+                ))}
             </div>
             <div>
                 <FlexDiv>
@@ -98,31 +54,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                     </Overskrift>
                 </FlexDiv>
                 {søknadsgrunnlagNyttBarn.map((barn) => (
-                    <GridTabell>
-                        <>
-                            <LiteBarn />
-                            <Element>{mapBarnNavnTekst(barn)}</Element>
-                        </>
-                        <>
-                            <Søknadsgrunnlag />
-                            <Element>Termindato</Element>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(barn.fødselTermindato)}
-                            </Normaltekst>
-                        </>
-                        <>
-                            <Søknadsgrunnlag />
-                            <Element>Annen forelder lagt til i søknad</Element>
-                            <Normaltekst>
-                                <AnnenForelderNavnOgFnr
-                                    forelder={barn.annenForelderSoknad}
-                                    ikkeOppgittAnnenForelderBegrunnelse={
-                                        barn.ikkeOppgittAnnenForelderBegrunnelse
-                                    }
-                                />
-                            </Normaltekst>
-                        </>
-                    </GridTabell>
+                    <SøknadgrunnlagNyttBarn barn={barn} />
                 ))}
             </div>
         </>

@@ -5,6 +5,7 @@ import { KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { ISivilstand, sivilstandTilTekst } from '../../../typer/personopplysninger';
 import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
@@ -20,9 +21,13 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                 <td>{formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}</td>
                                 <td>{sivilstand.navn}</td>
                                 <td>
-                                    <KopierbartNullableFødselsnummer
-                                        fødselsnummer={sivilstand.relatertVedSivilstand}
-                                    />
+                                    {sivilstand.relatertVedSivilstand ? (
+                                        <KopierbartNullableFødselsnummer
+                                            fødselsnummer={sivilstand.relatertVedSivilstand}
+                                        />
+                                    ) : (
+                                        <Normaltekst>-</Normaltekst>
+                                    )}
                                 </td>
                             </tr>
                         );
