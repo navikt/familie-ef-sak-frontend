@@ -9,6 +9,7 @@ import {
 } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
+
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
 }
@@ -31,9 +32,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                 <>
                                     <LiteBarn />
                                     <Element>
-                                        {søknadsgrunnlag.navn
-                                            ? søknadsgrunnlag.navn
-                                            : 'Ikke fylt ut'}
+                                        {søknadsgrunnlag.navn ? søknadsgrunnlag.navn : 'Ikke født'}
                                     </Element>
                                 </>
                             )}
