@@ -58,16 +58,25 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                     </Normaltekst>
                 </>
             )}
+            {forelderSøknad && harVerdi(forelderSøknad.land) && (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Annen forelder bor i</Normaltekst>
+                    <Normaltekst>
+                        {forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land || '-'}
+                    </Normaltekst>
+                </>
+            )}
 
-            <Søknadsgrunnlag />
-            <Normaltekst>Annen forelder bor i</Normaltekst>
-            <Normaltekst>
-                {forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land || '-'}
-            </Normaltekst>
-
-            <Registergrunnlag />
-            <Normaltekst>Annen forelder bor i</Normaltekst>
-            <Normaltekst>{forelderRegister?.bosattINorge ? 'Norge' : '-'}</Normaltekst>
+            {forelderRegister && harVerdi(forelderRegister.land) && (
+                <>
+                    <Registergrunnlag />
+                    <Normaltekst>Annen forelder bor i</Normaltekst>
+                    <Normaltekst>
+                        {forelderRegister?.bosattINorge ? 'Norge' : forelderRegister.land || '-'}
+                    </Normaltekst>
+                </>
+            )}
         </GridTabell>
     );
 };
