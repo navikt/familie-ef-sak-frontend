@@ -27,7 +27,7 @@
     "@navikt/boxed-list-with-links": "^1.0.4",
     "@navikt/familie-backend": "5.0.10",
     "@navikt/familie-dokumentliste": "^1.0.13",
-    "@navikt/familie-form-elements": "^2.2.17",
+    "@navikt/familie-form-elements": "^3.0.2",
     "@navikt/familie-header": "^3.0.13",
     "@navikt/familie-ikoner": "^3.1.10",
     "@navikt/familie-typer": "^3.0.13",
