@@ -13,9 +13,12 @@ import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
+import { harVerdi } from '../../../../utils/utils';
 
 const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
+    const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
+
     return (
         <>
             <GridTabell>
@@ -59,8 +62,9 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                 <Bosted
                     harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                     harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
-                    erBarnetFødt={registergrunnlag.fødselsnummer ? true : false}
+                    erBarnetFødt={!!registergrunnlag.fødselsnummer}
                 />
+
                 {søknadsgrunnlag.skalBoBorHosSøker && (
                     <>
                         <Søknadsgrunnlag />
@@ -70,21 +74,32 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                         </Normaltekst>
                     </>
                 )}
-            </GridTabell>
 
-            <StyledLesmerpanel>
-                <Lesmerpanel apneTekst={'Vis info om barnet'} lukkTekst={'Lukk info om barnet'}>
-                    {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
+                {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) &&
+                    ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn' && (
                         <>
-                            <AnnenForelderOpplysninger
-                                søknadsgrunnlag={søknadsgrunnlag}
-                                forelderRegister={registergrunnlag.forelder}
-                            />
-                            <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Annen forelder ikke oppgitt</Normaltekst>
+                            <Normaltekst>{ikkeOppgittAnnenForelderBegrunnelse}</Normaltekst>
                         </>
                     )}
-                </Lesmerpanel>
-            </StyledLesmerpanel>
+            </GridTabell>
+
+            {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
+                <StyledLesmerpanel>
+                    <Lesmerpanel apneTekst={'Vis info om barnet'} lukkTekst={'Lukk info om barnet'}>
+                        {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
+                            <>
+                                <AnnenForelderOpplysninger
+                                    søknadsgrunnlag={søknadsgrunnlag}
+                                    forelderRegister={registergrunnlag.forelder}
+                                />
+                                <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                            </>
+                        )}
+                    </Lesmerpanel>
+                </StyledLesmerpanel>
+            )}
         </>
     );
 };

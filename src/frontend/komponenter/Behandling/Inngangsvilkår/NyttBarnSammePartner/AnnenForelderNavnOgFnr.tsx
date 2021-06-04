@@ -9,7 +9,6 @@ interface Props {
 
 export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder }) => {
     const { navn, fødselsnummer, fødselsdato } = forelder;
-    console.log(forelder);
 
     return (
         <>
