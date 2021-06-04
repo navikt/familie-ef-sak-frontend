@@ -21,7 +21,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
 
     return (
         <>
-            <GridTabell>
+            <GridTabell kolonner={3}>
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
@@ -94,7 +94,9 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                                     søknadsgrunnlag={søknadsgrunnlag}
                                     forelderRegister={registergrunnlag.forelder}
                                 />
-                                <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                                {!registergrunnlag.forelder?.dødsfall && (
+                                    <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                                )}
                             </>
                         )}
                     </Lesmerpanel>

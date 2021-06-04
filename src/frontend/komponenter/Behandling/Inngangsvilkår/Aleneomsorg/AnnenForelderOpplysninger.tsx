@@ -8,6 +8,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
 import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../utils/utils';
+import { formaterNullableIsoDato } from '../../../../utils/formatter';
 
 interface Props {
     forelderRegister?: IAnnenForelder;
@@ -22,10 +23,14 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
         harVerdi(forelder.fødselsnummer) ||
         harVerdi(forelder.fødselsdato);
 
+    const visForelderSøknadInfo =
+        !forelderRegister?.dødsfall &&
+        ((forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad)) ||
+            harVerdi(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse));
+
     return (
         <GridTabell>
-            {((forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad)) ||
-                harVerdi(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse)) && (
+            {visForelderSøknadInfo && (
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Annen forelder</Normaltekst>
@@ -58,23 +63,39 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                     </Normaltekst>
                 </>
             )}
-            {forelderSøknad && harVerdi(forelderSøknad.land) && (
-                <>
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Annen forelder bor i</Normaltekst>
-                    <Normaltekst>
-                        {forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land || '-'}
-                    </Normaltekst>
-                </>
-            )}
 
-            {forelderRegister && harVerdi(forelderRegister.land) && (
+            {forelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
-                    <Normaltekst>Annen forelder bor i</Normaltekst>
-                    <Normaltekst>
-                        {forelderRegister?.bosattINorge ? 'Norge' : forelderRegister.land || '-'}
-                    </Normaltekst>
+                    <Normaltekst>Annen forelder dødsdato</Normaltekst>
+                    <Normaltekst>{formaterNullableIsoDato(forelderRegister.dødsfall)}</Normaltekst>
+                </>
+            )}
+            {!forelderRegister?.dødsfall && (
+                <>
+                    {forelderSøknad && harVerdi(forelderSøknad.land) && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Annen forelder bor i</Normaltekst>
+                            <Normaltekst>
+                                {forelderSøknad?.bosattINorge
+                                    ? 'Norge'
+                                    : forelderSøknad?.land || '-'}
+                            </Normaltekst>
+                        </>
+                    )}
+
+                    {forelderRegister && harVerdi(forelderRegister.land) && (
+                        <>
+                            <Registergrunnlag />
+                            <Normaltekst>Annen forelder bor i</Normaltekst>
+                            <Normaltekst>
+                                {forelderRegister?.bosattINorge
+                                    ? 'Norge'
+                                    : forelderRegister.land || '-'}
+                            </Normaltekst>
+                        </>
+                    )}
                 </>
             )}
         </GridTabell>

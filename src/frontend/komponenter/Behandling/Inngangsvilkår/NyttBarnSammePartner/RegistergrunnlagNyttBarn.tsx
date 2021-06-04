@@ -4,10 +4,8 @@ import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import LiteBarn from '../../../../ikoner/LiteBarn';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
-import { EtikettDød } from './NyttBarnSammePartnerInfo';
+import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
@@ -28,21 +26,11 @@ const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
             <>
                 <Registergrunnlag />
                 <Element>Annen forelder fra folkeregister</Element>
-                <FlexDiv>
-                    <Normaltekst>{barn.annenForelderRegister?.navn} – </Normaltekst>
-                    {barn.annenForelderRegister?.fødselsnummer ? (
-                        <KopierbartNullableFødselsnummer
-                            fødselsnummer={barn.annenForelderRegister?.fødselsnummer}
-                        />
-                    ) : (
-                        <Normaltekst>-</Normaltekst>
-                    )}
-                    {barn.annenForelderRegister?.dødsfall && (
-                        <EtikettDød mini type="info">
-                            Død
-                        </EtikettDød>
-                    )}
-                </FlexDiv>
+                {barn.annenForelderRegister ? (
+                    <AnnenForelderNavnOgFnr forelder={barn.annenForelderRegister} />
+                ) : (
+                    '-'
+                )}
             </>
             {barn.annenForelderRegister?.dødsfall && (
                 <>
