@@ -29,7 +29,7 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.IKKE_TILGANG:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers, false);
+            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers, true);
             typetRessurs = {
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
@@ -118,9 +118,7 @@ export const slackNotify = (melding: string, kanal: string): void => {
 };
 
 export const apiLoggFeil = (melding: string, headers?: Headers, isWarning = false): void => {
-    // eslint-disable-next-line
-    const x_callId = headers?.['x_callId'];
-    const x_requestId = headers?.['x_requestId'];
+    const callId = headers?.['nav-call-id'];
     preferredAxios.post(
         '/logg-feil',
         {
@@ -129,8 +127,7 @@ export const apiLoggFeil = (melding: string, headers?: Headers, isWarning = fals
         },
         {
             headers: {
-                ...(x_callId && { x_callId }),
-                ...(x_requestId && { x_requestId }),
+                ...(callId && { 'nav-call-id': callId }),
             },
         }
     );
