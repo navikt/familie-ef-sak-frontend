@@ -1,10 +1,11 @@
-import { Client, ensureAuthenticated, logRequest, LOG_LEVEL } from '@navikt/familie-backend';
+import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
 import { Response, Request, Router } from 'express';
 import path from 'path';
 import { buildPath } from './config';
 import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
+import { LOG_LEVEL } from '@navikt/familie-logging';
 
 // eslint-disable-next-line
 const packageJson = require('../../package.json');

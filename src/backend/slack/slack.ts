@@ -1,9 +1,10 @@
 import { Request, Response as ExpressResponse } from 'express';
 import fetch, { Response } from 'node-fetch';
 import { namespace } from '../config';
-import { logRequest, LOG_LEVEL } from '@navikt/familie-backend';
+import { logRequest } from '@navikt/familie-backend';
 import HttpsProxyAgent from 'https-proxy-agent/dist/agent';
 import { Agent } from 'node:http';
+import { LOG_LEVEL } from '@navikt/familie-logging';
 
 const token = process.env.SLACK_TOKEN;
 const agent =
