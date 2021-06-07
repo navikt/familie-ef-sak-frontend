@@ -1,12 +1,6 @@
 import './konfigurerApp';
 
-import backend, {
-    IApp,
-    ensureAuthenticated,
-    error,
-    getLogTimestamp,
-    info,
-} from '@navikt/familie-backend';
+import backend, { IApp, ensureAuthenticated } from '@navikt/familie-backend';
 import bodyParser from 'body-parser';
 import path from 'path';
 import webpack from 'webpack';
@@ -18,6 +12,7 @@ import { prometheusTellere } from './metrikker';
 import { attachToken, doProxy } from './proxy';
 import setupRouter from './router';
 import expressStaticGzip from 'express-static-gzip';
+import { logError, logInfo } from '@navikt/familie-logging';
 // eslint-disable-next-line
 const config = require('../../build_n_deploy/webpack/webpack.dev');
 
@@ -62,14 +57,9 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
     app.use('/', setupRouter(azureAuthClient, router, middleware));
 
-    app.listen(port, '0.0.0.0', (err: Error) => {
-        if (err) {
-            error(`${getLogTimestamp()}: server startup failed - ${err}`);
-        }
-        info(
-            `${getLogTimestamp()}: server startet på port ${port}. Build version: ${
-                process.env.APP_VERSION
-            }.`
-        );
+    app.listen(port, '0.0.0.0', () => {
+        logInfo(`server startet på port ${port}. Build version: ${process.env.APP_VERSION}.`);
+    }).on('error', (err: Error) => {
+        logError(`server startup failed - ${err}`);
     });
 });

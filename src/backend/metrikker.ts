@@ -1,6 +1,6 @@
 import { Counter } from 'prom-client';
 
-export const prometheusTellere = {
+export const prometheusTellere: { [key: string]: Counter<string> } = {
     appLoad: new Counter({
         help: 'Counter for times app has been loaded',
         labelNames: ['code'],
