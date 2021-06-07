@@ -73,7 +73,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             )}
             {!forelderRegister?.dødsfall && (
                 <>
-                    {forelderSøknad && harVerdi(forelderSøknad.land) && (
+                    {forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad) && (
                         <>
                             <Søknadsgrunnlag />
                             <Normaltekst>Annen forelder bor i</Normaltekst>
@@ -85,7 +85,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         </>
                     )}
 
-                    {forelderRegister && harVerdi(forelderRegister.land) && (
+                    {forelderRegister && harNavnFødselsdatoEllerFnr(forelderRegister) && (
                         <>
                             <Registergrunnlag />
                             <Normaltekst>Annen forelder bor i</Normaltekst>
