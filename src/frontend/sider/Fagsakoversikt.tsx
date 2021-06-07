@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Innholdstittel, Systemtittel } from 'nav-frontend-typografi';
 import { useParams } from 'react-router';
@@ -13,14 +14,20 @@ import { IPersonopplysninger } from '../typer/personopplysninger';
 import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort/Visittkort';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
+import { Knapp } from 'nav-frontend-knapper';
 
 const TittelWrapper = styled.div`
     padding: 2rem 2rem 1rem 2rem;
 `;
 
+const TekniskOpphørKnapp = styled(Knapp)`
+    margin: 1rem;
+`;
+
 const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+    const [tekniskOpphørResponse, settTekniskOpphørResponse] = useState<any>();
     const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
         byggTomRessurs()
     );
@@ -31,6 +38,8 @@ const Fagsakoversikt: React.FC = () => {
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
         }).then((response) => settFagsak(response));
+
+    console.log(tekniskOpphørResponse);
 
     const hentPersonData = () =>
         axiosRequest<IPersonopplysninger, null>({
@@ -46,6 +55,14 @@ const Fagsakoversikt: React.FC = () => {
         // eslint-disable-next-line
     }, [fagsakId]);
 
+    const gjørTekniskOpphør = (personIdent: string) => {
+        axiosRequest<any, { personIdent: string }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/tekniskopphor`,
+            data: { personIdent },
+        }).then((res) => settTekniskOpphørResponse(res));
+    };
+
     return (
         <DataViewer response={{ fagsak, personOpplysninger }}>
             {({ fagsak, personOpplysninger }) => (
@@ -60,6 +77,13 @@ const Fagsakoversikt: React.FC = () => {
                         </Systemtittel>
                     </TittelWrapper>
                     <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
+                    <TekniskOpphørKnapp
+                        onClick={() => {
+                            gjørTekniskOpphør(personOpplysninger.personIdent);
+                        }}
+                    >
+                        Teknisk opphør
+                    </TekniskOpphørKnapp>
                 </>
             )}
         </DataViewer>
