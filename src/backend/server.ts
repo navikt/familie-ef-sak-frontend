@@ -55,7 +55,6 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
     app.use(bodyParser.json({ limit: '200mb' }));
     app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
-    // @ts-ignore
     app.use('/', setupRouter(azureAuthClient, router, middleware));
 
     app.listen(port, '0.0.0.0', () => {
