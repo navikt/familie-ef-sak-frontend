@@ -75,14 +75,17 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                     </>
                 )}
 
-                {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) &&
-                    ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn' && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Annen forelder ikke oppgitt</Normaltekst>
-                            <Normaltekst>{ikkeOppgittAnnenForelderBegrunnelse}</Normaltekst>
-                        </>
-                    )}
+                {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Annen forelder </Normaltekst>
+                        <Normaltekst>
+                            {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
+                                ? ikkeOppgittAnnenForelderBegrunnelse
+                                : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
+                        </Normaltekst>
+                    </>
+                )}
             </GridTabell>
 
             {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
