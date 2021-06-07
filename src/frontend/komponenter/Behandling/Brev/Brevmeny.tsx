@@ -51,38 +51,49 @@ interface Props {
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
 }
 
-const Brevmeny: React.FC<Props> = ({
-    settBrevRessurs,
-    behandlingId,
-    personopplysninger,
-    settKanSendesTilBeslutter,
-}) => {
+const brevMal = 'innvilgetOvergangsstonadHoved2';
+const datasett = 'ef-brev';
+
+const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerdi[] =>
+    brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
+        _ref: felt._id,
+        verdi: null,
+    }));
+
+const Brevmeny: React.FC<Props> = (props) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
-    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
-    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
-    const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
-
-    const brevMal = 'innvilgetOvergangsstonadHoved2';
-    const datasett = 'ef-brev';
 
     useEffect(() => {
         axiosRequest<BrevStruktur, null>({
             method: 'GET',
             url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
         }).then((respons: Ressurs<BrevStruktur>) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                settAlleFlettefelter(
-                    respons.data.flettefelter.flettefeltReferanse.map((felt) => ({
-                        _ref: felt._id,
-                        verdi: null,
-                    }))
-                );
-                settBrevStruktur(respons);
-            }
+            settBrevStruktur(respons);
         });
         // eslint-disable-next-line
     }, []);
+
+    return (
+        <DataViewer response={{ brevStruktur }}>
+            {({ brevStruktur }) => <BrevmenyView {...props} brevStruktur={brevStruktur} />}
+        </DataViewer>
+    );
+};
+
+const BrevmenyView: React.FC<Props & { brevStruktur: BrevStruktur }> = ({
+    settBrevRessurs,
+    behandlingId,
+    personopplysninger,
+    settKanSendesTilBeslutter,
+    brevStruktur,
+}) => {
+    const { axiosRequest } = useApp();
+    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
+        initFlettefelterMedVerdi(brevStruktur)
+    );
+    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
+    const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
@@ -115,45 +126,38 @@ const Brevmeny: React.FC<Props> = ({
     };
 
     const lagFlettefeltForAvsnitt = (flettefelter: Flettefeltreferanse[]) => {
-        if (brevStruktur.status === RessursStatus.SUKSESS) {
-            return flettefelter.reduce((acc, flettefeltreferanse) => {
-                const nyttFeltNavn = finnFlettefeltNavnFraRef(
-                    brevStruktur.data,
-                    flettefeltreferanse._ref
-                );
-                const nyttFeltVerdi = alleFlettefelter.find(
-                    (flettefelt) => flettefeltreferanse._ref === flettefelt._ref
-                )!.verdi;
-                return { ...acc, [nyttFeltNavn]: [nyttFeltVerdi] };
-            }, {});
-        }
+        return flettefelter.reduce((acc, flettefeltreferanse) => {
+            const nyttFeltNavn = finnFlettefeltNavnFraRef(brevStruktur, flettefeltreferanse._ref);
+            const nyttFeltVerdi = alleFlettefelter.find(
+                (flettefelt) => flettefeltreferanse._ref === flettefelt._ref
+            )!.verdi;
+            return { ...acc, [nyttFeltNavn]: [nyttFeltVerdi] };
+        }, {});
+    };
+
+    const utledDelmalerForBrev = () => {
+        return brevStruktur.dokument.delmalerSortert.reduce((acc, delmal) => {
+            return valgteDelmaler[delmal.delmalApiNavn]
+                ? {
+                      ...acc,
+                      [delmal.delmalApiNavn]: [
+                          {
+                              flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
+                              valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
+                          },
+                      ],
+                  }
+                : acc;
+        }, {});
     };
 
     const genererBrev = () => {
-        const delmaler =
-            brevStruktur.status === RessursStatus.SUKSESS
-                ? brevStruktur.data.dokument.delmalerSortert.reduce((acc, delmal) => {
-                      return valgteDelmaler[delmal.delmalApiNavn]
-                          ? {
-                                ...acc,
-                                [delmal.delmalApiNavn]: [
-                                    {
-                                        flettefelter: lagFlettefelterForDelmal(
-                                            delmal.delmalFlettefelter
-                                        ),
-                                        valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                                    },
-                                ],
-                            }
-                          : acc;
-                  }, {})
-                : {};
         axiosRequest<string, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
             data: {
                 valgfelter: {},
-                delmaler,
+                delmaler: utledDelmalerForBrev(),
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
@@ -168,51 +172,38 @@ const Brevmeny: React.FC<Props> = ({
         });
     };
 
+    const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
-        <DataViewer response={{ brevStruktur }}>
-            {({ brevStruktur }) => {
-                const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
-
+        <StyledBrevMeny>
+            {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
-                    <StyledBrevMeny>
-                        {Object.entries(delmalerGruppert).map(
-                            ([key, delmaler]: [string, Delmal[]]) => {
-                                return (
-                                    <Panel key={key}>
-                                        {key !== 'undefined' && (
-                                            <BrevMenyTittel>{key}</BrevMenyTittel>
-                                        )}
-                                        {delmaler.map((delmal: Delmal, index: number) => {
-                                            return (
-                                                <BrevMenyDelmalWrapper
-                                                    førsteElement={index === 0}
-                                                    key={`${delmal.delmalApiNavn}_wrapper`}
-                                                >
-                                                    <BrevMenyDelmal
-                                                        delmal={delmal}
-                                                        dokument={brevStruktur}
-                                                        valgteFelt={valgteFelt}
-                                                        settValgteFelt={settValgteFelt}
-                                                        flettefelter={alleFlettefelter}
-                                                        settFlettefelter={settAlleFlettefelter}
-                                                        settValgteDelmaler={settValgteDelmaler}
-                                                        key={delmal.delmalApiNavn}
-                                                        settKanSendeTilBeslutter={
-                                                            settKanSendesTilBeslutter
-                                                        }
-                                                    />
-                                                </BrevMenyDelmalWrapper>
-                                            );
-                                        })}
-                                    </Panel>
-                                );
-                            }
-                        )}
-                        <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-                    </StyledBrevMeny>
+                    <Panel key={key}>
+                        {key !== 'undefined' && <BrevMenyTittel>{key}</BrevMenyTittel>}
+                        {delmaler.map((delmal: Delmal, index: number) => {
+                            return (
+                                <BrevMenyDelmalWrapper
+                                    førsteElement={index === 0}
+                                    key={`${delmal.delmalApiNavn}_wrapper`}
+                                >
+                                    <BrevMenyDelmal
+                                        delmal={delmal}
+                                        dokument={brevStruktur}
+                                        valgteFelt={valgteFelt}
+                                        settValgteFelt={settValgteFelt}
+                                        flettefelter={alleFlettefelter}
+                                        settFlettefelter={settAlleFlettefelter}
+                                        settValgteDelmaler={settValgteDelmaler}
+                                        key={delmal.delmalApiNavn}
+                                        settKanSendeTilBeslutter={settKanSendesTilBeslutter}
+                                    />
+                                </BrevMenyDelmalWrapper>
+                            );
+                        })}
+                    </Panel>
                 );
-            }}
-        </DataViewer>
+            })}
+            <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+        </StyledBrevMeny>
     );
 };
 
