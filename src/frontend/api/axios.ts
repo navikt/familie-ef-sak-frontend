@@ -71,7 +71,7 @@ export const loggFeil = (
     headers?: Headers,
     isWarning = false
 ): void => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'production') {
         configureScope((scope) => {
             scope.setUser({
                 username: innloggetSaksbehandler
