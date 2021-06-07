@@ -58,10 +58,9 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     // @ts-ignore
     app.use('/', setupRouter(azureAuthClient, router, middleware));
 
-    app.listen(port, '0.0.0.0', (err: Error) => {
-        if (err) {
-            logError(`server startup failed - ${err}`);
-        }
+    app.listen(port, '0.0.0.0', () => {
         logInfo(`server startet på port ${port}. Build version: ${process.env.APP_VERSION}.`);
+    }).on('error', (err: Error) => {
+        logError(`server startup failed - ${err}`);
     });
 });
