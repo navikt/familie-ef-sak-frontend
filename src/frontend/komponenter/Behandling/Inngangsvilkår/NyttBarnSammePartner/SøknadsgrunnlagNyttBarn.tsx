@@ -17,16 +17,16 @@ const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
         <GridTabell>
             <>
                 <LiteBarn />
-                <Element>{mapBarnNavnTekst(barn)}</Element>
+                <Element tag="h4">{mapBarnNavnTekst(barn)}</Element>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Element>Termindato</Element>
+                <Normaltekst>Termindato</Normaltekst>
                 <Normaltekst>{formaterNullableIsoDato(barn.fødselTermindato)}</Normaltekst>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Element>Annen forelder lagt til i søknad</Element>
+                <Normaltekst>Annen forelder lagt til i søknad</Normaltekst>
                 <Normaltekst>
                     {barn.annenForelderSoknad ? (
                         <AnnenForelderNavnOgFnr forelder={barn.annenForelderSoknad} />

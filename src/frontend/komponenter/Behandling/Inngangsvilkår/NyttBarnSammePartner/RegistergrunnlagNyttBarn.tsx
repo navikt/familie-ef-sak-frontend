@@ -20,12 +20,12 @@ const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
             </>
             <>
                 <Registergrunnlag />
-                <Element>Fødsels eller D-nummer</Element>
+                <Normaltekst>Fødsels eller D-nummer</Normaltekst>
                 <Normaltekst>{barn.fødselsnummer}</Normaltekst>
             </>
             <>
                 <Registergrunnlag />
-                <Element>Annen forelder fra folkeregister</Element>
+                <Normaltekst>Annen forelder fra folkeregister</Normaltekst>
                 {barn.annenForelderRegister ? (
                     <AnnenForelderNavnOgFnr forelder={barn.annenForelderRegister} />
                 ) : (
@@ -35,7 +35,7 @@ const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
             {barn.annenForelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
-                    <Element>Annen forelder dødsdato</Element>
+                    <Normaltekst>Annen forelder dødsdato</Normaltekst>
                     <Normaltekst>
                         {formaterNullableIsoDato(barn.annenForelderRegister.dødsfall)}
                     </Normaltekst>
