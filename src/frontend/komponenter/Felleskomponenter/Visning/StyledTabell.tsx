@@ -10,7 +10,7 @@ export const GridTabell = styled.div<{
     display: grid;
     grid-template-columns: ${(props) => (props.utenIkon ? 0 : 21)}px 250px repeat(
             ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
-            ${(props) => (props.kolonner && props.kolonner > 3 ? '150px' : '300px')}
+            ${(props) => (props.kolonner && props.kolonner > 3 ? '150px' : '325px')}
         );
     grid-auto-rows: min-content;
     grid-gap: ${(props) => props.gridGap || 0.5}rem;

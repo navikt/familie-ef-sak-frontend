@@ -7,14 +7,14 @@ const NoWrapSpan = styled.span`
     white-space: nowrap;
 `;
 
-export const KopierbartNullableFødselsnummer: React.FC<{ fødselsnummer: string | undefined }> = ({
+export const KopierbartNullableFødselsnummer: React.FC<{ fødselsnummer: string }> = ({
     fødselsnummer,
 }) => {
-    return fødselsnummer ? (
+    return (
         <NoWrapSpan>
             <Clipboard>
                 <span>{formaterFødselsnummer(fødselsnummer)}</span>
             </Clipboard>
         </NoWrapSpan>
-    ) : null;
+    );
 };
