@@ -41,6 +41,26 @@ const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
                     </Normaltekst>
                 </>
             )}
+            {barn.annenForelderSoknad && (
+                <>
+                    <Registergrunnlag />
+                    <Normaltekst>Annen forelder fra søknad</Normaltekst>
+                    {barn.annenForelderSoknad ? (
+                        <AnnenForelderNavnOgFnr forelder={barn.annenForelderSoknad} />
+                    ) : (
+                        '-'
+                    )}
+                </>
+            )}
+            {barn.annenForelderSoknad?.dødsfall && (
+                <>
+                    <Registergrunnlag />
+                    <Normaltekst>Annen forelder dødsdato</Normaltekst>
+                    <Normaltekst>
+                        {formaterNullableIsoDato(barn.annenForelderSoknad.dødsfall)}
+                    </Normaltekst>
+                </>
+            )}
         </GridTabell>
     );
 };
