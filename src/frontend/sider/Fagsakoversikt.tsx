@@ -56,10 +56,10 @@ const Fagsakoversikt: React.FC = () => {
     }, [fagsakId]);
 
     const gjørTekniskOpphør = (personIdent: string) => {
-        axiosRequest<any, { personIdent: string }>({
+        axiosRequest<any, { ident: string }>({
             method: 'POST',
             url: `/familie-ef-sak/api/tekniskopphor`,
-            data: { personIdent },
+            data: { ident: personIdent },
         }).then((res) => settTekniskOpphørResponse(res));
     };
 
