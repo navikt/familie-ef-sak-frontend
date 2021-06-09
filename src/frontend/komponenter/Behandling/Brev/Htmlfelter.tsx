@@ -1,5 +1,5 @@
 import { TilkjentYtelse } from './BrevTyper';
-import { parseISO } from 'date-fns';
+import { addMonths, differenceInMonths, parseISO } from 'date-fns';
 import { formaterMånedÅr, formaterTallMedTusenSkille } from '../../../utils/formatter';
 
 export const delmalTilHtml = (
@@ -38,15 +38,10 @@ const lagRaderForVedtak = (tilkjentYtelse?: TilkjentYtelse): string => {
 const genrerMånedÅrForPeriode = (fom: string, tom: string): string[] => {
     const fomDato = parseISO(fom);
     const tomDato = parseISO(tom);
-    fomDato.setDate(1);
-    tomDato.setDate(1);
-    const result: string[] = [];
-    while (
-        fomDato.getFullYear() <= tomDato.getFullYear() &&
-        fomDato.getMonth() <= tomDato.getMonth()
-    ) {
-        result.push(formaterMånedÅr(fomDato));
-        fomDato.setMonth(fomDato.getMonth() + 1);
-    }
-    return result;
+    const antallMåneder = differenceInMonths(tomDato, fomDato) + 1;
+    return Array(antallMåneder)
+        .fill(null)
+        .map((_, index) => {
+            return formaterMånedÅr(addMonths(fomDato, index));
+        });
 };
