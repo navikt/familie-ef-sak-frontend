@@ -5,6 +5,7 @@ import { useApp } from '../../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
+import { IVedtak } from '../../../typer/vedtak';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -13,12 +14,13 @@ export interface BrevmenyProps {
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
 }
 
-const brevMal = 'innvilgetOvergangsstonadHoved2';
-const datasett = 'ef-brev';
+export const brevMal = 'htmlDokument';
+const datasett = 'testdata';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
+    const [vedtak, settVedtak] = useState<Ressurs<IVedtak | undefined>>(byggTomRessurs());
 
     useEffect(() => {
         axiosRequest<BrevStruktur, null>({
@@ -30,9 +32,21 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         // eslint-disable-next-line
     }, []);
 
+    useEffect(() => {
+        axiosRequest<IVedtak, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/vedtak/${props.behandlingId}`,
+        }).then((respons: Ressurs<IVedtak | undefined>) => {
+            settVedtak(respons);
+        });
+        // eslint-disable-next-line
+    }, []);
+
     return (
-        <DataViewer response={{ brevStruktur }}>
-            {({ brevStruktur }) => <BrevmenyVisning {...props} brevStruktur={brevStruktur} />}
+        <DataViewer response={{ brevStruktur, vedtak }}>
+            {({ brevStruktur, vedtak }) => (
+                <BrevmenyVisning {...props} brevStruktur={brevStruktur} vedtak={vedtak} />
+            )}
         </DataViewer>
     );
 };
