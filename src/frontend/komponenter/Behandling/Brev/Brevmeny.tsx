@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur } from './BrevTyper';
-import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
+import { BrevStruktur, TilkjentYtelse } from './BrevTyper';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
-import { IVedtak } from '../../../typer/vedtak';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -20,7 +19,9 @@ const datasett = 'testdata';
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
-    const [vedtak, settVedtak] = useState<Ressurs<IVedtak | undefined>>(byggTomRessurs());
+    const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
+        byggTomRessurs()
+    );
 
     useEffect(() => {
         axiosRequest<BrevStruktur, null>({
@@ -33,19 +34,42 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        axiosRequest<IVedtak, null>({
+        /*axiosRequest<IVedtak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/vedtak/${props.behandlingId}`,
         }).then((respons: Ressurs<IVedtak | undefined>) => {
             settVedtak(respons);
+        });*/
+        settTilkjentYtelse({
+            status: RessursStatus.SUKSESS,
+            data: {
+                andeler: [
+                    {
+                        beløp: 123,
+                        fraDato: '2021-01-01',
+                        tilDato: '2021-03-31',
+                        inntekt: 30000,
+                    },
+                    {
+                        beløp: 321,
+                        fraDato: '2021-05-01',
+                        tilDato: '2021-07-31',
+                        inntekt: 1000,
+                    },
+                ],
+            },
         });
         // eslint-disable-next-line
     }, []);
 
     return (
-        <DataViewer response={{ brevStruktur, vedtak }}>
-            {({ brevStruktur, vedtak }) => (
-                <BrevmenyVisning {...props} brevStruktur={brevStruktur} vedtak={vedtak} />
+        <DataViewer response={{ brevStruktur, tilkjentYtelse }}>
+            {({ brevStruktur, tilkjentYtelse }) => (
+                <BrevmenyVisning
+                    {...props}
+                    brevStruktur={brevStruktur}
+                    tilkjentYtelse={tilkjentYtelse}
+                />
             )}
         </DataViewer>
     );

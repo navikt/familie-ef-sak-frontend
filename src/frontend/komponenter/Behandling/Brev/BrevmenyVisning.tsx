@@ -5,6 +5,7 @@ import {
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
+    TilkjentYtelse,
     ValgFelt,
     ValgtFelt,
 } from './BrevTyper';
@@ -20,7 +21,6 @@ import Panel from 'nav-frontend-paneler';
 import { brevMal, BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../api/axios';
 import { delmalTilHtml } from './Htmlfelter';
-import { IVedtak } from '../../../typer/vedtak';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -51,7 +51,7 @@ const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerd
 
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
-    vedtak?: IVedtak;
+    tilkjentYtelse?: TilkjentYtelse;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -60,7 +60,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     personopplysninger,
     settKanSendesTilBeslutter,
     brevStruktur,
-    vedtak,
+    tilkjentYtelse,
 }) => {
     const { axiosRequest } = useApp();
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
@@ -124,7 +124,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                           {
                               flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
                               valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                              htmlfelter: delmalTilHtml(delmal.delmalApiNavn, vedtak),
+                              htmlfelter: delmalTilHtml(delmal.delmalApiNavn, tilkjentYtelse),
                           },
                       ],
                   }
