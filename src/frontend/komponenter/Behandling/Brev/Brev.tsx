@@ -52,6 +52,13 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     };
 
+    const oppdaterBrevRessurs = (respons: Ressurs<string>) => {
+        settBrevRessurs(respons);
+        if (respons.status === RessursStatus.SUKSESS) {
+            settKanSendesTilBeslutter(true);
+        }
+    };
+
     useEffect(() => {
         if (!behandlingErRedigerbar) {
             if (
@@ -74,7 +81,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         {({ personopplysningerResponse }) => (
                             <Brevmeny
                                 behandlingId={behandlingId}
-                                settBrevRessurs={settBrevRessurs}
+                                oppdaterBrevRessurs={oppdaterBrevRessurs}
                                 personopplysninger={personopplysningerResponse}
                                 settKanSendesTilBeslutter={settKanSendesTilBeslutter}
                             />
