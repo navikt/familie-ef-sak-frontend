@@ -15,6 +15,7 @@ import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort/Visittkort';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
+import { Behandlingstype } from '../typer/behandlingstype';
 
 const TittelWrapper = styled.div`
     padding: 2rem 2rem 1rem 2rem;
@@ -170,12 +171,16 @@ const FagsakoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ behandli
                             <td>{formatterEnumVerdi(behandling.type)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
-                                <Link
-                                    className="lenke"
-                                    to={{ pathname: `/behandling/${behandling.id}` }}
-                                >
-                                    {formatterEnumVerdi(behandling.resultat)}
-                                </Link>
+                                {behandling.type === Behandlingstype.TEKNISK_OPPHØR ? (
+                                    <span>{formatterEnumVerdi(behandling.resultat)}</span>
+                                ) : (
+                                    <Link
+                                        className="lenke"
+                                        to={{ pathname: `/behandling/${behandling.id}` }}
+                                    >
+                                        {formatterEnumVerdi(behandling.resultat)}
+                                    </Link>
+                                )}
                             </td>
                         </tr>
                     );
