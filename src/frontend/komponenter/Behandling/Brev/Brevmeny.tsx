@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrevStruktur, TilkjentYtelse } from './BrevTyper';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
@@ -13,8 +13,8 @@ export interface BrevmenyProps {
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
 }
 
-export const brevMal = 'htmlDokument';
-const datasett = 'testdata';
+export const brevMal = 'innvilgetOvergangsstonadHoved2';
+const datasett = 'ef-brev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
@@ -34,31 +34,31 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        /*axiosRequest<IVedtak, null>({
+        axiosRequest<never, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/vedtak/${props.behandlingId}`,
-        }).then((respons: Ressurs<IVedtak | undefined>) => {
-            settVedtak(respons);
-        });*/
-        settTilkjentYtelse({
-            status: RessursStatus.SUKSESS,
-            data: {
-                andeler: [
-                    {
-                        beløp: 123,
-                        fraDato: '2021-01-01',
-                        tilDato: '2021-03-31',
-                        inntekt: 30000,
-                    },
-                    {
-                        beløp: 321,
-                        fraDato: '2021-05-01',
-                        tilDato: '2021-07-31',
-                        inntekt: 1000,
-                    },
-                ],
-            },
+            url: `/familie-ef-sak/api/brev/${props.behandlingId}/tilkjent-ytelse`,
+        }).then((respons: Ressurs<never | undefined>) => {
+            settTilkjentYtelse(respons);
         });
+        // settTilkjentYtelse({
+        //     status: RessursStatus.SUKSESS,
+        //     data: {
+        //         andeler: [
+        //             {
+        //                 beløp: 123,
+        //                 fraDato: '2021-01-01',
+        //                 tilDato: '2021-03-31',
+        //                 inntekt: 30000,
+        //             },
+        //             {
+        //                 beløp: 321,
+        //                 fraDato: '2021-05-01',
+        //                 tilDato: '2021-07-31',
+        //                 inntekt: 1000,
+        //             },
+        //         ],
+        //     },
+        // });
         // eslint-disable-next-line
     }, []);
 
