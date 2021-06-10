@@ -28,21 +28,18 @@ const TekniskOpphørKnapp = styled(Knapp)`
 const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
-    const [featuretoggle, settFeaturetoggle] = useState<
-        Ressurs<{ [featuretoggle: string]: boolean }>
-    >(byggTomRessurs());
+    const [featuretoggle, settFeaturetoggle] = useState<boolean>(false);
     const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
         byggTomRessurs()
     );
     const { axiosRequest } = useApp();
     //
     const hentFeaturetoggle = () =>
-        axiosRequest<{ [featuretoggle: string]: boolean }, void>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/featuretoggle`,
-        }).then((response) => {
-            settFeaturetoggle(response);
-        });
+        fetch('/familie-ef-sak/api/featuretoggle')
+            .then((response) => response.json())
+            .then((response: { [featuretoggle: string]: boolean }) => {
+                settFeaturetoggle(response['familie.ef.sak.tekniskopphor']);
+            });
 
     const hentFagsak = () =>
         axiosRequest<Fagsak, null>({
@@ -74,9 +71,8 @@ const Fagsakoversikt: React.FC = () => {
     };
 
     return (
-        <DataViewer response={{ fagsak, personOpplysninger, featuretoggle }}>
-            {({ fagsak, personOpplysninger, featuretoggle }) => {
-                const erFeaturePå = featuretoggle['familie.ef.sak.tekniskopphor'];
+        <DataViewer response={{ fagsak, personOpplysninger }}>
+            {({ fagsak, personOpplysninger }) => {
                 return (
                     <>
                         <VisittkortComponent data={personOpplysninger} />
@@ -90,7 +86,7 @@ const Fagsakoversikt: React.FC = () => {
                         </TittelWrapper>
                         <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
                         <TekniskOpphørKnapp
-                            hidden={!erFeaturePå}
+                            hidden={!featuretoggle}
                             onClick={() => {
                                 gjørTekniskOpphør(personOpplysninger.personIdent);
                             }}
