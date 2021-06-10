@@ -29,8 +29,6 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
 
-    console.log('barnmedsamvær', barnMedSamvær);
-
     return (
         <>
             <div>

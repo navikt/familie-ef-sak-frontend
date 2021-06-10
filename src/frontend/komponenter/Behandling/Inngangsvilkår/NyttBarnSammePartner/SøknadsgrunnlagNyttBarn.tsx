@@ -13,6 +13,11 @@ interface Props {
 }
 
 const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
+    const annenForelder =
+        barn.annenForelderRegister && barn.annenForelderSoknad
+            ? barn.annenForelderRegister
+            : barn.annenForelderSoknad;
+
     return (
         <GridTabell>
             <>
@@ -28,8 +33,8 @@ const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
                 <Søknadsgrunnlag />
                 <Normaltekst>Annen forelder lagt til i søknad</Normaltekst>
                 <Normaltekst>
-                    {barn.annenForelderSoknad ? (
-                        <AnnenForelderNavnOgFnr forelder={barn.annenForelderSoknad} />
+                    {annenForelder ? (
+                        <AnnenForelderNavnOgFnr forelder={annenForelder} />
                     ) : (
                         <>
                             {barn.ikkeOppgittAnnenForelderBegrunnelse
