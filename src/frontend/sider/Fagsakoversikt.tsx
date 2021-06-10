@@ -16,6 +16,7 @@ import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort/Vis
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../typer/behandlingstype';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const TittelWrapper = styled.div`
     padding: 2rem 2rem 1rem 2rem;
@@ -29,6 +30,7 @@ const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [featuretoggle, settFeaturetoggle] = useState<boolean>(false);
+    const [teknisktOpprettingFeil, settTeknisktOpprettingFeil] = useState<boolean>(false);
     const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
         byggTomRessurs()
     );
@@ -67,7 +69,9 @@ const Fagsakoversikt: React.FC = () => {
             method: 'POST',
             url: `/familie-ef-sak/api/tekniskopphor`,
             data: { ident: personIdent },
-        });
+        })
+            .then(() => hentFagsak())
+            .catch(() => settTeknisktOpprettingFeil(true));
     };
 
     return (
@@ -93,6 +97,13 @@ const Fagsakoversikt: React.FC = () => {
                         >
                             Teknisk opphør
                         </TekniskOpphørKnapp>
+                        {teknisktOpprettingFeil && (
+                            <AlertStripeFeil>
+                                Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen
+                                som har tilgang til secureloggs och kan førtelle dig hva som gikk
+                                galt
+                            </AlertStripeFeil>
+                        )}
                     </>
                 );
             }}
