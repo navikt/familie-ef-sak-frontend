@@ -27,19 +27,27 @@ const TekniskOpphørKnapp = styled(Knapp)`
 const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
-    const [tekniskOpphørResponse, settTekniskOpphørResponse] = useState<any>();
+    const [featuretoggle, settFeaturetoggle] = useState<
+        Ressurs<{ [featuretoggle: string]: boolean }>
+    >(byggTomRessurs());
     const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
         byggTomRessurs()
     );
     const { axiosRequest } = useApp();
+    //
+    const hentFeaturetoggle = () =>
+        axiosRequest<{ [featuretoggle: string]: boolean }, void>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/featuretoggle`,
+        }).then((response) => {
+            settFeaturetoggle(response);
+        });
 
     const hentFagsak = () =>
         axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
         }).then((response) => settFagsak(response));
-
-    console.log(tekniskOpphørResponse);
 
     const hentPersonData = () =>
         axiosRequest<IPersonopplysninger, null>({
@@ -51,6 +59,7 @@ const Fagsakoversikt: React.FC = () => {
         if (fagsakId) {
             hentFagsak();
             hentPersonData();
+            hentFeaturetoggle();
         }
         // eslint-disable-next-line
     }, [fagsakId]);
@@ -60,32 +69,36 @@ const Fagsakoversikt: React.FC = () => {
             method: 'POST',
             url: `/familie-ef-sak/api/tekniskopphor`,
             data: { ident: personIdent },
-        }).then((res) => settTekniskOpphørResponse(res));
+        });
     };
 
     return (
-        <DataViewer response={{ fagsak, personOpplysninger }}>
-            {({ fagsak, personOpplysninger }) => (
-                <>
-                    <VisittkortComponent data={personOpplysninger} />
-                    <TittelWrapper>
-                        <Innholdstittel className="blokk-m" tag="h2">
-                            Behandlingsoversikt - {personOpplysninger.navn.visningsnavn}
-                        </Innholdstittel>
-                        <Systemtittel tag="h3">
-                            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                        </Systemtittel>
-                    </TittelWrapper>
-                    <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
-                    <TekniskOpphørKnapp
-                        onClick={() => {
-                            gjørTekniskOpphør(personOpplysninger.personIdent);
-                        }}
-                    >
-                        Teknisk opphør
-                    </TekniskOpphørKnapp>
-                </>
-            )}
+        <DataViewer response={{ fagsak, personOpplysninger, featuretoggle }}>
+            {({ fagsak, personOpplysninger, featuretoggle }) => {
+                const erFeaturePå = featuretoggle['familie.ef.sak.tekniskopphor'];
+                return (
+                    <>
+                        <VisittkortComponent data={personOpplysninger} />
+                        <TittelWrapper>
+                            <Innholdstittel className="blokk-m" tag="h2">
+                                Behandlingsoversikt - {personOpplysninger.navn.visningsnavn}
+                            </Innholdstittel>
+                            <Systemtittel tag="h3">
+                                Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+                            </Systemtittel>
+                        </TittelWrapper>
+                        <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
+                        <TekniskOpphørKnapp
+                            hidden={!erFeaturePå}
+                            onClick={() => {
+                                gjørTekniskOpphør(personOpplysninger.personIdent);
+                            }}
+                        >
+                            Teknisk opphør
+                        </TekniskOpphørKnapp>
+                    </>
+                );
+            }}
         </DataViewer>
     );
 };
