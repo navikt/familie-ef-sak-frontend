@@ -17,7 +17,7 @@ export const dagensDatoFormatert = (): string => {
 };
 
 export const formaterIsoDatoTid = (dato: string): string => {
-    return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm");
+    return format(parseISO(dato), "dd.MM.yyyy 'kl'.\xa0HH:mm");
 };
 
 export const formaterNullableIsoDatoTid = (dato?: string): string | undefined => {
