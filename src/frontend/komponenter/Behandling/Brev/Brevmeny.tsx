@@ -36,7 +36,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     useEffect(() => {
         axiosRequest<TilkjentYtelse, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/brev/${props.behandlingId}/tilkjent-ytelse`,
+            url: `/familie-ef-sak/api/tilkjentytelse/behandling/${props.behandlingId}`,
         }).then((respons: Ressurs<TilkjentYtelse>) => {
             settTilkjentYtelse(respons);
         });

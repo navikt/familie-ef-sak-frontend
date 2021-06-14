@@ -5,8 +5,8 @@ export interface TilkjentYtelse {
 }
 
 export interface AndelTilkjentYtelse {
-    fraDato: string;
-    tilDato: string;
+    stønadFra: string;
+    stønadTil: string;
     inntekt: number;
     beløp: number;
 }
