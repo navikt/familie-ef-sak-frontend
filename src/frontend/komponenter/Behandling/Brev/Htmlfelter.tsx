@@ -17,11 +17,11 @@ export const delmalTilHtml = (
 const borderStyling = 'border: 1px solid black; padding:3px 8px 3px 8px';
 const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
     return `<table style="border-collapse: collapse; ${borderStyling}"><thead><tr>
-<th style="${borderStyling}">Periode</th>
-<th style="${borderStyling}">Årsinntekt</th>
-<th style="${borderStyling}">Dette får du i overgangsstønad pr. måned</th></tr></thead>
-<tbody>${lagRaderForVedtak(tilkjentYtelse)}</tbody>
-</table>`;
+                <th style="${borderStyling}">Periode</th>
+                <th style="${borderStyling}">Årsinntekt</th>
+                <th style="${borderStyling}">Dette får du i overgangsstønad pr. måned</th></tr></thead>
+                <tbody>${lagRaderForVedtak(tilkjentYtelse)}</tbody>
+            </table>`;
 };
 
 const lagRaderForVedtak = (tilkjentYtelse?: TilkjentYtelse): string => {
