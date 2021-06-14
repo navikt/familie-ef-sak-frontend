@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IOppgave } from './oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './oppgavetema';
 import { enhetsmappeTilTekst } from './enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../typer/behandlingstema';
-import { formaterIsoDato } from '../../utils/formatter';
+import { formaterIsoDato, formaterIsoDatoTid } from '../../utils/formatter';
 import { Flatknapp as Knapp } from 'nav-frontend-knapper';
 import UIModalWrapper from '../Felleskomponenter/Modal/UIModalWrapper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
 import { useOppgave } from '../../hooks/useOppgave';
+import Popover, { PopoverOrientering } from 'nav-frontend-popover';
+import styled from 'styled-components';
 
 interface Props {
     oppgave: IOppgave;
 }
 
+const StyledPopoverinnhold = styled.p`
+    margin: 1rem;
+`;
 const Flatknapp = hiddenIf(Knapp);
 
 const kanJournalføres = (oppgave: IOppgave) => {
@@ -46,7 +51,16 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
         settFeilmelding,
         laster,
     } = useOppgave(oppgave);
+
+    const [anker, settAnker] = useState<HTMLElement>();
+
+    const togglePopover = (element: React.MouseEvent<HTMLElement>) => {
+        settAnker(anker ? undefined : element.currentTarget);
+    };
+
     const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
+    const regDatoMedKlokkeslett =
+        oppgave.opprettetTidspunkt && formaterIsoDatoTid(oppgave.opprettetTidspunkt);
 
     const oppgavetype = oppgave.oppgavetype && oppgaveTypeTilTekst[oppgave.oppgavetype];
 
@@ -69,7 +83,21 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
     return (
         <>
             <tr>
-                <td>{regDato}</td>
+                <td onMouseEnter={togglePopover} onMouseLeave={togglePopover}>
+                    {regDato}
+                    <Popover
+                        id={`registreringstidspunkt-for-oppgave-${oppgave.id}`}
+                        ankerEl={anker}
+                        onRequestClose={() => settAnker(undefined)}
+                        orientering={PopoverOrientering.Hoyre}
+                        autoFokus={false}
+                        tabIndex={-1}
+                    >
+                        <StyledPopoverinnhold>
+                            Registreringstidspunkt: {regDatoMedKlokkeslett}
+                        </StyledPopoverinnhold>
+                    </Popover>
+                </td>
                 <td>{oppgavetype}</td>
                 <td>{behandlingstema}</td>
                 <td>{fristFerdigstillelseDato}</td>
