@@ -127,7 +127,18 @@ const VedtaksperiodeValg: React.FC<Props> = ({
         value: string | number | undefined
     ) => {
         const oppdatertListe = vedtaksperiodeData.vedtaksperiodeListe.map((vedtaksperiode, i) => {
-            return i === index ? { ...vedtaksperiode, [property]: value } : vedtaksperiode;
+            return i === index
+                ? {
+                      ...vedtaksperiode,
+                      [property]: value,
+                      ...(property === EPeriodeProperty.periodeType && {
+                          [EPeriodeProperty.aktivitet]:
+                              value === EPeriodetype.PERIODE_FØR_FØDSEL
+                                  ? EAktivitet.IKKE_AKTIVITETSPLIKT
+                                  : undefined,
+                      }),
+                  }
+                : vedtaksperiode;
         });
         settVedtaksperiodeData({
             ...vedtaksperiodeData,

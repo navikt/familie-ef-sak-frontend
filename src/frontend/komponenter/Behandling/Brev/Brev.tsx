@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import PdfVisning from '../../Felleskomponenter/PdfVisning';
 import styled from 'styled-components';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
@@ -7,6 +7,7 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import Brevmeny from './Brevmeny';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { useApp } from '../../../context/AppContext';
+import { Steg } from '../../Høyremeny/Steg';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -30,10 +31,10 @@ interface Props {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const { behandlingErRedigerbar, personopplysningerResponse } = useBehandling();
+    const { behandlingErRedigerbar, personopplysningerResponse, behandling } = useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
 
-    const hentBrev = () => {
+    const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}`,
@@ -42,12 +43,35 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         });
     };
 
+    const hentBrev = () => {
+        axiosRequest<string, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+        }).then((respons: Ressurs<string>) => {
+            settBrevRessurs(respons);
+        });
+    };
+
+    const oppdaterBrevRessurs = (respons: Ressurs<string>) => {
+        settBrevRessurs(respons);
+        if (respons.status === RessursStatus.SUKSESS) {
+            settKanSendesTilBeslutter(true);
+        }
+    };
+
     useEffect(() => {
         if (!behandlingErRedigerbar) {
-            hentBrev();
+            if (
+                behandling.status === RessursStatus.SUKSESS &&
+                behandling.data.steg === Steg.BESLUTTE_VEDTAK
+            ) {
+                lagBeslutterBrev();
+            } else {
+                hentBrev();
+            }
         }
         // eslint-disable-next-line
-    }, [behandlingErRedigerbar]);
+    }, [behandlingErRedigerbar, behandling]);
 
     return (
         <>
@@ -57,7 +81,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         {({ personopplysningerResponse }) => (
                             <Brevmeny
                                 behandlingId={behandlingId}
-                                settBrevRessurs={settBrevRessurs}
+                                oppdaterBrevRessurs={oppdaterBrevRessurs}
                                 personopplysninger={personopplysningerResponse}
                                 settKanSendesTilBeslutter={settKanSendesTilBeslutter}
                             />
