@@ -61,7 +61,6 @@ const Fagsakoversikt: React.FC = () => {
             hentPersonData();
             hentFeaturetoggle();
         }
-        // eslint-disable-next-line
     }, [fagsakId]);
 
     const gjørTekniskOpphør = (personIdent: string) => {
@@ -76,37 +75,34 @@ const Fagsakoversikt: React.FC = () => {
 
     return (
         <DataViewer response={{ fagsak, personOpplysninger }}>
-            {({ fagsak, personOpplysninger }) => {
-                return (
-                    <>
-                        <VisittkortComponent data={personOpplysninger} />
-                        <TittelWrapper>
-                            <Innholdstittel className="blokk-m" tag="h2">
-                                Behandlingsoversikt - {personOpplysninger.navn.visningsnavn}
-                            </Innholdstittel>
-                            <Systemtittel tag="h3">
-                                Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                            </Systemtittel>
-                        </TittelWrapper>
-                        <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
-                        <TekniskOpphørKnapp
-                            hidden={!featuretoggle}
-                            onClick={() => {
-                                gjørTekniskOpphør(personOpplysninger.personIdent);
-                            }}
-                        >
-                            Teknisk opphør
-                        </TekniskOpphørKnapp>
-                        {teknisktOpprettingFeil && (
-                            <AlertStripeFeil>
-                                Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen
-                                som har tilgang til secureloggs och kan førtelle dig hva som gikk
-                                galt
-                            </AlertStripeFeil>
-                        )}
-                    </>
-                );
-            }}
+            {({ fagsak, personOpplysninger }) => (
+                <>
+                    <VisittkortComponent data={personOpplysninger} />
+                    <TittelWrapper>
+                        <Innholdstittel className="blokk-m" tag="h2">
+                            Behandlingsoversikt - {personOpplysninger.navn.visningsnavn}
+                        </Innholdstittel>
+                        <Systemtittel tag="h3">
+                            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+                        </Systemtittel>
+                    </TittelWrapper>
+                    <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
+                    <TekniskOpphørKnapp
+                        hidden={!featuretoggle}
+                        onClick={() => {
+                            gjørTekniskOpphør(personOpplysninger.personIdent);
+                        }}
+                    >
+                        Teknisk opphør
+                    </TekniskOpphørKnapp>
+                    {teknisktOpprettingFeil && (
+                        <AlertStripeFeil>
+                            Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen som
+                            som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
+                        </AlertStripeFeil>
+                    )}
+                </>
+            )}
         </DataViewer>
     );
 };
