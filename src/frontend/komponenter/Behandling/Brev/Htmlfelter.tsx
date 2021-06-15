@@ -8,8 +8,6 @@ export const delmalTilHtml = (
     switch (delmalNavn) {
         case 'varierendeInntekt':
             return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
-        case 'testHtml':
-            return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
         default:
             return {};
     }
