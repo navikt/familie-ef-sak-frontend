@@ -5,6 +5,7 @@ import {
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
+    TilkjentYtelse,
     ValgFelt,
     ValgtFelt,
 } from './BrevTyper';
@@ -17,8 +18,9 @@ import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { dagensDatoFormatert } from '../../../utils/formatter';
 import Panel from 'nav-frontend-paneler';
-import { BrevmenyProps } from './Brevmeny';
+import { brevMal, BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../api/axios';
+import { delmalTilHtml } from './Htmlfelter';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -41,20 +43,24 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const brevMal = 'innvilgetOvergangsstonadHoved2';
-
 const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerdi[] =>
     brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
         _ref: felt._id,
         verdi: null,
     }));
 
-const BrevmenyVisning: React.FC<BrevmenyProps & { brevStruktur: BrevStruktur }> = ({
+export interface BrevmenyVisningProps extends BrevmenyProps {
+    brevStruktur: BrevStruktur;
+    tilkjentYtelse?: TilkjentYtelse;
+}
+
+const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     oppdaterBrevRessurs,
     behandlingId,
     personopplysninger,
     settKanSendesTilBeslutter,
     brevStruktur,
+    tilkjentYtelse,
 }) => {
     const { axiosRequest } = useApp();
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
@@ -118,6 +124,7 @@ const BrevmenyVisning: React.FC<BrevmenyProps & { brevStruktur: BrevStruktur }> 
                           {
                               flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
                               valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
+                              htmlfelter: delmalTilHtml(delmal.delmalApiNavn, tilkjentYtelse),
                           },
                       ],
                   }
