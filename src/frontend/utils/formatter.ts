@@ -30,8 +30,6 @@ export const formaterIsoMånedÅr = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormat);
 };
 
-export const formaterMånedÅr = (dato: Date): string => format(dato, 'MM.yyyy');
-
 export const formaterFødselsnummer = (fødselsnummer: string): string =>
     fødselsnummer.substring(0, 6) + ' ' + fødselsnummer.substring(6);
 
