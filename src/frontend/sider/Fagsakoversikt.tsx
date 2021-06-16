@@ -11,12 +11,14 @@ import { useSorteringState } from '../hooks/felles/useSorteringState';
 import SorteringsHeader from '../komponenter/Oppgavebenk/OppgaveSorteringHeader';
 import { useApp } from '../context/AppContext';
 import { IPersonopplysninger } from '../typer/personopplysninger';
-import { byggTomRessurs, Ressurs } from '../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort/Visittkort';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
 import { Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../typer/behandlingstype';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { useToggles } from '../context/TogglesContext';
+import { ToggleName } from '../context/toggles';
 
 const TittelWrapper = styled.div`
     padding: 2rem 2rem 1rem 2rem;
@@ -29,19 +31,12 @@ const TekniskOpphørKnapp = styled(Knapp)`
 const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
-    const [featuretoggle, settFeaturetoggle] = useState<boolean>(false);
     const [teknisktOpprettingFeil, settTeknisktOpprettingFeil] = useState<boolean>(false);
     const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
         byggTomRessurs()
     );
     const { axiosRequest } = useApp();
-    //
-    const hentFeaturetoggle = () =>
-        fetch('/familie-ef-sak/api/featuretoggle')
-            .then((response) => response.json())
-            .then((response: { [featuretoggle: string]: boolean }) => {
-                settFeaturetoggle(response['familie.ef.sak.tekniskopphor']);
-            });
+    const { toggles } = useToggles();
 
     const hentFagsak = () =>
         axiosRequest<Fagsak, null>({
@@ -59,18 +54,24 @@ const Fagsakoversikt: React.FC = () => {
         if (fagsakId) {
             hentFagsak();
             hentPersonData();
-            hentFeaturetoggle();
         }
     }, [fagsakId]);
 
     const gjørTekniskOpphør = (personIdent: string) => {
-        axiosRequest<any, { ident: string }>({
+        axiosRequest<Ressurs<void>, { ident: string }>({
             method: 'POST',
             url: `/familie-ef-sak/api/tekniskopphor`,
             data: { ident: personIdent },
-        })
-            .then(() => hentFagsak())
-            .catch(() => settTeknisktOpprettingFeil(true));
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                hentFagsak();
+            } else if (
+                response.status === RessursStatus.FEILET ||
+                response.status === RessursStatus.FUNKSJONELL_FEIL
+            ) {
+                settTeknisktOpprettingFeil(true);
+            }
+        });
     };
 
     return (
@@ -87,14 +88,13 @@ const Fagsakoversikt: React.FC = () => {
                         </Systemtittel>
                     </TittelWrapper>
                     <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
-                    <TekniskOpphørKnapp
-                        hidden={!featuretoggle}
-                        onClick={() => {
-                            gjørTekniskOpphør(personOpplysninger.personIdent);
-                        }}
-                    >
-                        Teknisk opphør
-                    </TekniskOpphørKnapp>
+                    {toggles[ToggleName.TEKNISKT_OPPHØR] && (
+                        <TekniskOpphørKnapp
+                            onClick={() => gjørTekniskOpphør(personOpplysninger.personIdent)}
+                        >
+                            Teknisk opphør
+                        </TekniskOpphørKnapp>
+                    )}
                     {teknisktOpprettingFeil && (
                         <AlertStripeFeil>
                             Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen som
