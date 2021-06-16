@@ -1,9 +1,13 @@
 import { format, parseISO } from 'date-fns';
 import { harTallverdi } from './utils';
 
-export const datoFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
+export const datoFormat = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+} as const;
 export const datoTidFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
-export const datoMånedÅrFormat = { month: 'short', year: 'numeric' };
+export const datoMånedÅrFormat = { month: 'short', year: 'numeric' } as const;
 
 export const formaterNullableIsoDato = (dato?: string): string | undefined =>
     dato && formaterIsoDato(dato);
