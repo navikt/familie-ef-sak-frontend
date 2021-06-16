@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Innholdstittel, Systemtittel } from 'nav-frontend-typografi';
 import { useParams } from 'react-router';
@@ -10,21 +11,32 @@ import { useSorteringState } from '../hooks/felles/useSorteringState';
 import SorteringsHeader from '../komponenter/Oppgavebenk/OppgaveSorteringHeader';
 import { useApp } from '../context/AppContext';
 import { IPersonopplysninger } from '../typer/personopplysninger';
-import { byggTomRessurs, Ressurs } from '../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import VisittkortComponent from '../komponenter/Felleskomponenter/Visittkort/Visittkort';
 import DataViewer from '../komponenter/Felleskomponenter/DataViewer/DataViewer';
+import { Knapp } from 'nav-frontend-knapper';
+import { Behandlingstype } from '../typer/behandlingstype';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { useToggles } from '../context/TogglesContext';
+import { ToggleName } from '../context/toggles';
 
 const TittelWrapper = styled.div`
     padding: 2rem 2rem 1rem 2rem;
 `;
 
+const TekniskOpphørKnapp = styled(Knapp)`
+    margin: 1rem;
+`;
+
 const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+    const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
         byggTomRessurs()
     );
     const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
 
     const hentFagsak = () =>
         axiosRequest<Fagsak, null>({
@@ -43,8 +55,24 @@ const Fagsakoversikt: React.FC = () => {
             hentFagsak();
             hentPersonData();
         }
-        // eslint-disable-next-line
     }, [fagsakId]);
+
+    const gjørTekniskOpphør = (personIdent: string) => {
+        axiosRequest<Ressurs<void>, { ident: string }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/tekniskopphor`,
+            data: { ident: personIdent },
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                hentFagsak();
+            } else if (
+                response.status === RessursStatus.FEILET ||
+                response.status === RessursStatus.FUNKSJONELL_FEIL
+            ) {
+                settTekniskOpphørFeilet(true);
+            }
+        });
+    };
 
     return (
         <DataViewer response={{ fagsak, personOpplysninger }}>
@@ -60,6 +88,19 @@ const Fagsakoversikt: React.FC = () => {
                         </Systemtittel>
                     </TittelWrapper>
                     <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
+                    {toggles[ToggleName.TEKNISK_OPPHØR] && (
+                        <TekniskOpphørKnapp
+                            onClick={() => gjørTekniskOpphør(personOpplysninger.personIdent)}
+                        >
+                            Teknisk opphør
+                        </TekniskOpphørKnapp>
+                    )}
+                    {tekniskOpphørFeilet && (
+                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
+                            Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen som
+                            som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
+                        </AlertStripeFeil>
+                    )}
                 </>
             )}
         </DataViewer>
@@ -133,12 +174,16 @@ const FagsakoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ behandli
                             <td>{formatterEnumVerdi(behandling.type)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
-                                <Link
-                                    className="lenke"
-                                    to={{ pathname: `/behandling/${behandling.id}` }}
-                                >
-                                    {formatterEnumVerdi(behandling.resultat)}
-                                </Link>
+                                {behandling.type === Behandlingstype.TEKNISK_OPPHØR ? (
+                                    <span>{formatterEnumVerdi(behandling.resultat)}</span>
+                                ) : (
+                                    <Link
+                                        className="lenke"
+                                        to={{ pathname: `/behandling/${behandling.id}` }}
+                                    >
+                                        {formatterEnumVerdi(behandling.resultat)}
+                                    </Link>
+                                )}
                             </td>
                         </tr>
                     );
