@@ -31,7 +31,7 @@ const TekniskOpphørKnapp = styled(Knapp)`
 const Fagsakoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
-    const [teknisktOpprettingFeil, settTeknisktOpprettingFeil] = useState<boolean>(false);
+    const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [personOpplysninger, settPersonOpplysninger] = useState<Ressurs<IPersonopplysninger>>(
         byggTomRessurs()
     );
@@ -69,7 +69,7 @@ const Fagsakoversikt: React.FC = () => {
                 response.status === RessursStatus.FEILET ||
                 response.status === RessursStatus.FUNKSJONELL_FEIL
             ) {
-                settTeknisktOpprettingFeil(true);
+                settTekniskOpphørFeilet(true);
             }
         });
     };
@@ -88,15 +88,15 @@ const Fagsakoversikt: React.FC = () => {
                         </Systemtittel>
                     </TittelWrapper>
                     <FagsakoversiktTabell behandlinger={fagsak.behandlinger} />
-                    {toggles[ToggleName.TEKNISKT_OPPHØR] && (
+                    {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <TekniskOpphørKnapp
                             onClick={() => gjørTekniskOpphør(personOpplysninger.personIdent)}
                         >
                             Teknisk opphør
                         </TekniskOpphørKnapp>
                     )}
-                    {teknisktOpprettingFeil && (
-                        <AlertStripeFeil>
+                    {tekniskOpphørFeilet && (
+                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
                             Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen som
                             som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
                         </AlertStripeFeil>
