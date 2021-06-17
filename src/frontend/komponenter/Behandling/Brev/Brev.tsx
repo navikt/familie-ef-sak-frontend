@@ -7,7 +7,6 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import Brevmeny from './Brevmeny';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { useApp } from '../../../context/AppContext';
-import { Steg } from '../../Høyremeny/Steg';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -22,6 +21,11 @@ const StyledBrev = styled.div`
         flex-wrap: wrap;
         gap: 3rem;
     }
+`;
+
+const SignerBrevKnapp = styled.button`
+    display: block;
+    margin: 0 auto;
 `;
 
 interface Props {
@@ -61,14 +65,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
 
     useEffect(() => {
         if (!behandlingErRedigerbar) {
-            if (
-                behandling.status === RessursStatus.SUKSESS &&
-                behandling.data.steg === Steg.BESLUTTE_VEDTAK
-            ) {
-                lagBeslutterBrev();
-            } else {
-                hentBrev();
-            }
+            hentBrev();
         }
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, behandling]);
@@ -88,6 +85,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         )}
                     </DataViewer>
                 )}
+                {!behandlingErRedigerbar && <SignerBrevKnapp onClick={lagBeslutterBrev} />}
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
             {behandlingErRedigerbar && (
