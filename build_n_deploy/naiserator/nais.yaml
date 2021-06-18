@@ -41,6 +41,9 @@ spec:
     requests:
       memory: 512Mi
   accessPolicy:
+    inbound:
+      rules:
+        - application: familie-ef-sak-e2e
     outbound:
       rules:
         - application: familie-ef-sak
