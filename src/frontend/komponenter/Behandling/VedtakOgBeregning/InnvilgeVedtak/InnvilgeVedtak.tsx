@@ -105,18 +105,20 @@ export const InnvilgeVedtak: React.FC<{
     };
 
     const beregnPerioder = () => {
-        axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/beregning/`,
-            data: {
-                vedtaksperioder: vedtaksperiodeData.vedtaksperiodeListe,
-                inntekt: inntektsperiodeData.inntektsperiodeListe.map((v) => ({
-                    ...v,
-                    forventetInntekt: v.forventetInntekt ?? 0,
-                    samordningsfradrag: v.samordningsfradrag ?? 0,
-                })),
-            },
-        }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
+        if (validerVedtak()) {
+            axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/beregning/`,
+                data: {
+                    vedtaksperioder: vedtaksperiodeData.vedtaksperiodeListe,
+                    inntekt: inntektsperiodeData.inntektsperiodeListe.map((v) => ({
+                        ...v,
+                        forventetInntekt: v.forventetInntekt ?? 0,
+                        samordningsfradrag: v.samordningsfradrag ?? 0,
+                    })),
+                },
+            }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
+        }
     };
 
     const settÅrMånedFraPåFørsteInntektsperiode = (årMånedFra: string | undefined) => {
