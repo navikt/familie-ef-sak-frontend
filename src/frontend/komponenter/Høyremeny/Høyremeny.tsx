@@ -17,7 +17,7 @@ export enum Høyremenyvalg {
 }
 
 const Høyremeny: React.FC = () => {
-    const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Mappe);
+    const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Logg);
     return (
         <>
             <Totrinnskontroll />
