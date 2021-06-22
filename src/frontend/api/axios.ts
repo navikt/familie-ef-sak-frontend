@@ -14,6 +14,26 @@ const errorMessage = (frontendFeilmelding: string, headers?: any) => {
     return `${frontendFeilmelding} (url=${location} callId=${callId})`;
 };
 
+const lagUkjentFeilRessurs = (headers?: Headers): RessursFeilet => ({
+    melding: 'Mest sannsynlig ukjent api feil',
+    frontendFeilmelding: errorMessage('Mest sannsynlig ukjent api feil', headers),
+    status: RessursStatus.FEILET,
+});
+
+export const håndterFeil = <T>(
+    error: AxiosError,
+    innloggetSaksbehandler?: ISaksbehandler
+): RessursSuksess<T> | RessursFeilet => {
+    const headers = error.response?.headers;
+    if (!error.response?.data.status) {
+        loggFeil(error, innloggetSaksbehandler, `Savner body/status i response`, headers);
+        return lagUkjentFeilRessurs(headers);
+    }
+    const responsRessurs: Ressurs<T> = error.response?.data;
+
+    return håndterRessurs(responsRessurs, innloggetSaksbehandler, headers);
+};
+
 export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,
     innloggetSaksbehandler?: ISaksbehandler,
@@ -53,11 +73,13 @@ export const håndterRessurs = <T>(
             };
             break;
         default:
-            typetRessurs = {
-                melding: 'Mest sannsynlig ukjent api feil',
-                frontendFeilmelding: errorMessage('Mest sannsynlig ukjent api feil', headers),
-                status: RessursStatus.FEILET,
-            };
+            loggFeil(
+                undefined,
+                innloggetSaksbehandler,
+                `Ukjent feil status=${ressurs.status}`,
+                headers
+            );
+            typetRessurs = lagUkjentFeilRessurs(headers);
             break;
     }
 
@@ -127,7 +149,7 @@ export const apiLoggFeil = (melding: string, headers?: Headers, isWarning = fals
         },
         {
             headers: {
-                ...(callId && { 'nav-call-id': callId }),
+                ...((callId && { 'nav-call-id': callId }) as Headers),
             },
         }
     );
