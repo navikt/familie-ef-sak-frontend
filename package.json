@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@navikt/boxed-list-with-links": "^1.0.4",
-    "@navikt/familie-backend": "^5.0.26",
+    "@navikt/familie-backend": "^5.0.28",
     "@navikt/familie-dokumentliste": "^1.0.13",
     "@navikt/familie-form-elements": "^3.0.2",
     "@navikt/familie-header": "^3.0.17",
