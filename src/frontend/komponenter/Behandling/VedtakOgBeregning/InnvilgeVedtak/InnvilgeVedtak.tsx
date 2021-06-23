@@ -17,7 +17,7 @@ import {
     IValideringsfeil,
     IVedtak,
 } from '../../../../typer/vedtak';
-import { validerVedtaksperioder } from '../vedtaksvalidering';
+import { validerAktivitetsType, validerMånedFraPerioder } from '../vedtaksvalidering';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../typer/ressurs';
 import { useBehandling } from '../../../../context/BehandlingContext';
 import { useHistory } from 'react-router-dom';
@@ -51,10 +51,7 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     const [feilmelding, settFeilmelding] = useState<string>();
-    const [valideringsfeil, settValideringsfeil] = useState<IValideringsfeil>({
-        vedtaksperioder: [],
-        inntektsperioder: [],
-    });
+    const [valideringsfeil, settValideringsfeil] = useState<IValideringsfeil>();
 
     const [vedtaksperiodeData, settVedtaksperiodeData] = useState<IVedtaksperiodeData>({
         periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
@@ -71,15 +68,24 @@ export const InnvilgeVedtak: React.FC<{
     });
 
     const validerVedtak = (): boolean => {
-        const validerteVedtaksperioder = validerVedtaksperioder(
+        const { vedtaksperioder, inntektsperioder } = validerMånedFraPerioder(
+            inntektsperiodeData.inntektsperiodeListe,
+            vedtaksperiodeData.vedtaksperiodeListe
+        );
+        const aktivitet = validerAktivitetsType(vedtaksperiodeData.vedtaksperiodeListe);
+        settValideringsfeil({ aktivitet, vedtaksperioder, inntektsperioder });
+        return Object.values({ aktivitet, vedtaksperioder, inntektsperioder }).every(
+            (v) => v === undefined
+        );
+    };
+
+    const validerPerioder = (): boolean => {
+        const validerteVedtaksperioder = validerMånedFraPerioder(
             inntektsperiodeData.inntektsperiodeListe,
             vedtaksperiodeData.vedtaksperiodeListe
         );
         settValideringsfeil(validerteVedtaksperioder);
-        return (
-            validerteVedtaksperioder.vedtaksperioder.length === 0 &&
-            validerteVedtaksperioder.inntektsperioder.length === 0
-        );
+        return Object.values(validerteVedtaksperioder).every((v) => v === undefined);
     };
 
     const vedtaksRequest: IInnvilgeVedtak = {
@@ -105,7 +111,7 @@ export const InnvilgeVedtak: React.FC<{
     };
 
     const beregnPerioder = () => {
-        if (validerVedtak()) {
+        if (validerPerioder()) {
             axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/`,
@@ -183,13 +189,14 @@ export const InnvilgeVedtak: React.FC<{
             <VedtaksperiodeValg
                 vedtaksperiodeData={vedtaksperiodeData}
                 settVedtaksperiodeData={oppdaterVedtaksperiodeData}
-                valideringsfeil={valideringsfeil.vedtaksperioder}
+                vedtaksperioderFeil={valideringsfeil?.vedtaksperioder}
+                aktivitetstypeFeil={valideringsfeil?.aktivitet}
             />
             <InntektsperiodeValg
                 inntektsperiodeData={inntektsperiodeData}
                 settInntektsperiodeData={settInntektsperiodeData}
                 beregnetStønad={beregnetStønad}
-                valideringsfeil={valideringsfeil.inntektsperioder}
+                valideringsfeil={valideringsfeil?.inntektsperioder}
                 beregnPerioder={beregnPerioder}
             />
             <Hovedknapp

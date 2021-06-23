@@ -3,13 +3,13 @@ import {
     EAktivitet,
     EPeriodeProperty,
     EPeriodetype,
+    IValideringsfeil,
     IVedtaksperiode,
     periodeVariantTilProperty,
 } from '../../../../typer/vedtak';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
 import { AddCircle, Delete } from '@navikt/ds-icons';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Flatknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
@@ -17,10 +17,12 @@ import { månederMellom, månedÅrTilDate } from '../../../../utils/dato';
 import { useBehandling } from '../../../../context/BehandlingContext';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
+import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 
 const VedtakContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: repeat(5, max-content);
+    grid-template-rows: 1fr 1fr;
     grid-auto-rows: min-content;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     align-items: center;
@@ -79,7 +81,8 @@ export interface IVedtaksperiodeData {
 interface Props {
     vedtaksperiodeData: IVedtaksperiodeData;
     settVedtaksperiodeData: (verdi: IVedtaksperiodeData) => void;
-    valideringsfeil: string[];
+    vedtaksperioderFeil: IValideringsfeil['vedtaksperioder'];
+    aktivitetstypeFeil: IValideringsfeil['aktivitet'];
 }
 
 export const tomVedtaksperiodeRad: IVedtaksperiode = {
@@ -97,7 +100,8 @@ const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): n
 const VedtaksperiodeValg: React.FC<Props> = ({
     vedtaksperiodeData,
     settVedtaksperiodeData,
-    valideringsfeil,
+    vedtaksperioderFeil,
+    aktivitetstypeFeil,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const settPeriodeBegrunnelse = (begrunnelse: string) =>
@@ -174,6 +178,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                 periodeType={periodeType}
                                 oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
                                 erLesevisning={!behandlingErRedigerbar}
+                                aktivitetfeil={aktivitetstypeFeil && aktivitetstypeFeil[index]}
                             />
                             <MånedÅrPeriode
                                 datoFraTekst={''}
@@ -205,14 +210,15 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                         </FjernPeriodeKnapp>
                                     )}
                             </MndKnappWrapper>
+                            {vedtaksperioderFeil && (
+                                <SkjemaelementFeilmelding style={{ gridColumn: '3/4' }}>
+                                    {vedtaksperioderFeil[index]}
+                                </SkjemaelementFeilmelding>
+                            )}
                         </VedtaksperiodeRad>
                     );
                 })}
             </VedtakContainer>
-
-            {valideringsfeil.map((feil) => (
-                <AlertStripeFeil className={'blokk-s'}>{feil}</AlertStripeFeil>
-            ))}
 
             {behandlingErRedigerbar && (
                 <KnappMedLuftUnder onClick={leggTilVedtaksperiode}>

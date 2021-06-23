@@ -12,7 +12,7 @@ interface Props {
     onEndret: (årMåned?: string) => void;
     antallÅrTilbake: number;
     antallÅrFrem: number;
-    feilmelding?: string;
+    feilmelding?: string | null;
     lesevisning?: boolean;
     disabled?: boolean;
 }
@@ -57,13 +57,13 @@ const MånedÅrVelger: React.FC<Props> = ({
 
     return (
         <div className={className} style={lesevisning ? { minWidth: '140px' } : {}}>
-            <div>
-                {label && (
+            {label && (
+                <div>
                     <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
                         {label}
                     </DatolabelStyle>
-                )}
-            </div>
+                </div>
+            )}
             <FlexDiv>
                 <StyledMånedvelger>
                     <MånedVelger

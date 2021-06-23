@@ -8,6 +8,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { OrNothing } from '../../../../hooks/felles/useSorteringState';
 
 interface Props {
     periodeType: EPeriodetype | undefined;
@@ -15,6 +16,7 @@ interface Props {
     index: number;
     oppdaterVedtakslisteElement: (index: number, property: EPeriodeProperty, value: string) => void;
     erLesevisning: boolean;
+    aktivitetfeil: OrNothing<string>;
 }
 
 const StyledSelect = styled(FamilieSelect)`
@@ -27,8 +29,16 @@ const AktivitetKolonne = styled.div`
 `;
 
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
-    const { periodeType, aktivitet, index, oppdaterVedtakslisteElement, erLesevisning } = props;
-
+    const {
+        periodeType,
+        aktivitet,
+        index,
+        oppdaterVedtakslisteElement,
+        erLesevisning,
+        aktivitetfeil,
+    } = props;
+    console.log('aktivitetfeil', aktivitetfeil);
+    console.log('aktivitet', aktivitet);
     switch (periodeType) {
         case EPeriodetype.HOVEDPERIODE:
             return (
@@ -36,6 +46,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     <StyledSelect
                         aria-label={'Aktivitet'}
                         value={aktivitet}
+                        feil={aktivitetfeil}
                         onChange={(e) => {
                             oppdaterVedtakslisteElement(
                                 index,

@@ -3,9 +3,9 @@ import {
     EInntektsperiodeProperty,
     IBeløpsperiode,
     IInntektsperiode,
+    IValideringsfeil,
 } from '../../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
@@ -21,6 +21,7 @@ import MånedÅrVelger from '../../../Felleskomponenter/MånedÅr/MånedÅrVelge
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: repeat(8, max-content);
+    grid-template-rows: repeat(3, 1fr);
     grid-auto-rows: min-content;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     align-items: center;
@@ -87,7 +88,7 @@ export interface IInntektsperiodeData {
 interface Props {
     inntektsperiodeData: IInntektsperiodeData;
     settInntektsperiodeData: (verdi: IInntektsperiodeData) => void;
-    valideringsfeil: string[];
+    valideringsfeil?: IValideringsfeil['inntektsperioder'];
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
     beregnPerioder: () => void;
 }
@@ -148,6 +149,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     return (
                         <InntektsperiodeRad key={index} className={'inntektrad'}>
                             <MånedÅrVelger
+                                feilmelding={valideringsfeil && valideringsfeil[index]}
                                 className={'forsteKolonne'}
                                 key={rad.endretKey || null}
                                 disabled={index === 0}
@@ -199,24 +201,20 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 erLesevisning={!behandlingErRedigerbar}
                             />
 
-                            {behandlingErRedigerbar && (
-                                <MndKnappWrapper>
-                                    {index === inntektsperiodeListe.length - 1 && index !== 0 && (
+                            {index === inntektsperiodeListe.length - 1 &&
+                                index !== 0 &&
+                                behandlingErRedigerbar && (
+                                    <MndKnappWrapper>
                                         <FjernPeriodeKnapp onClick={fjernInntektsperiode}>
                                             <Delete />
                                             <span className="sr-only">Fjern inntektsperiode</span>
                                         </FjernPeriodeKnapp>
-                                    )}
-                                </MndKnappWrapper>
-                            )}
+                                    </MndKnappWrapper>
+                                )}
                         </InntektsperiodeRad>
                     );
                 })}
             </InntektContainer>
-
-            {valideringsfeil.map((feil) => (
-                <AlertStripeFeil>{feil}</AlertStripeFeil>
-            ))}
 
             {behandlingErRedigerbar && (
                 <>

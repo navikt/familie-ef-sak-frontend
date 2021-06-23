@@ -1,42 +1,38 @@
-import { IInntektsperiode, IValideringsfeil, IVedtaksperiode } from '../../../typer/vedtak';
+import {
+    EPeriodetype,
+    IInntektsperiode,
+    IValideringsfeil,
+    IVedtaksperiode,
+} from '../../../typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik, erMånedÅrLik } from '../../../utils/dato';
 
-export const validerVedtaksperioder = (
-    inntektsperiodeListe: IInntektsperiode[],
-    vedtaksperiodeListe: IVedtaksperiode[]
-): IValideringsfeil => {
-    const feil: IValideringsfeil = {
-        vedtaksperioder: [],
-        inntektsperioder: [],
-    };
-
-    vedtaksperiodeListe.forEach((vedtaksperiode, index) => {
+function validerVedtaksPerioder(vedtaksperiodeListe: IVedtaksperiode[]): (string | undefined)[] {
+    return vedtaksperiodeListe.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil } = vedtaksperiode;
         if (!årMånedTil || !årMånedFra) {
-            feil.vedtaksperioder.push('Mangelfull utfylling av vedtaksperiode');
-            return vedtaksperiode;
+            return 'Mangelfull utfylling av vedtaksperiode';
         }
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
-            feil.vedtaksperioder.push(
-                `Ugyldig periode - fra (${årMånedFra})  må være før til (${årMånedTil})`
-            );
+            return `Ugyldig periode - fra (${årMånedFra})  må være før til (${årMånedTil})`;
         }
         const forrige = index > 0 && vedtaksperiodeListe[index - 1];
         if (forrige && forrige.årMånedTil) {
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
-                feil.vedtaksperioder.push(
-                    `Ugyldig etterfølgende periode - fra (${forrige.årMånedTil}) må være etter til (${årMånedFra})`
-                );
+                return `Ugyldig etterfølgende periode - fra (${forrige.årMånedTil}) må være etter til (${årMånedFra})`;
             }
         }
-        return vedtaksperiode;
+        return undefined;
     });
+}
 
-    inntektsperiodeListe.forEach((inntektsperiode, index) => {
+function validerInntektsperiode(
+    inntektsperiodeListe: IInntektsperiode[],
+    vedtaksperiodeListe: IVedtaksperiode[]
+): (string | undefined)[] {
+    return inntektsperiodeListe.map((inntektsperiode, index) => {
         const årMånedFra = inntektsperiode.årMånedFra;
         if (!årMånedFra) {
-            feil.inntektsperioder.push('Mangelfull utfylling av inntektsperiode');
-            return;
+            return 'Mangelfull utfylling av inntektsperiode';
         }
         const førsteVedtaksperiode = vedtaksperiodeListe[0];
         if (
@@ -45,18 +41,36 @@ export const validerVedtaksperioder = (
             førsteVedtaksperiode.årMånedFra &&
             !erMånedÅrLik(årMånedFra, førsteVedtaksperiode.årMånedFra)
         ) {
-            feil.inntektsperioder.push(`Første inntektsperiode må være lik vedtaksperiode`);
+            return 'Første inntektsperiode må være lik vedtaksperiode';
         }
         const forrige = index > 0 && inntektsperiodeListe[index - 1];
         if (forrige && forrige.årMånedFra) {
             if (!erMånedÅrEtter(forrige.årMånedFra, årMånedFra)) {
-                feil.inntektsperioder.push(
-                    `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`
-                );
+                return `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`;
             }
         }
-        return inntektsperiode;
+        return undefined;
     });
+}
 
-    return feil;
+export const validerMånedFraPerioder = (
+    inntektsperiodeListe: IInntektsperiode[],
+    vedtaksperiodeListe: IVedtaksperiode[]
+): IValideringsfeil => {
+    const vedtaksperioder = validerVedtaksPerioder(vedtaksperiodeListe);
+    const inntektsperioder = validerInntektsperiode(inntektsperiodeListe, vedtaksperiodeListe);
+
+    return { vedtaksperioder, inntektsperioder };
+};
+
+export const validerAktivitetsType = (
+    vedtaksperiodeListe: IVedtaksperiode[]
+): (string | undefined)[] => {
+    return vedtaksperiodeListe.map((v) =>
+        v.periodeType === EPeriodetype.HOVEDPERIODE
+            ? v.aktivitet === undefined
+                ? 'Mangler aktivitetstype'
+                : undefined
+            : undefined
+    );
 };
