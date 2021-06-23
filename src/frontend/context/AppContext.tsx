@@ -1,7 +1,7 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import React, { useEffect } from 'react';
 
-import { håndterRessurs, loggFeil, preferredAxios } from '../api/axios';
+import { håndterFeil, håndterRessurs, preferredAxios } from '../api/axios';
 import { Ressurs, RessursFeilet, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import constate from 'constate';
@@ -33,14 +33,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
                 if (error.message.includes('401')) {
                     settAutentisert(false);
                 }
-                loggFeil(error, innloggetSaksbehandler);
-
-                const responsRessurs: Ressurs<T> = error.response?.data;
-                return håndterRessurs(
-                    responsRessurs,
-                    innloggetSaksbehandler,
-                    error.response?.headers
-                );
+                return håndterFeil(error, innloggetSaksbehandler);
             });
     };
 
