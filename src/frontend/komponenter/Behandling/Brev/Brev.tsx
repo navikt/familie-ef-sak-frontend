@@ -7,8 +7,8 @@ import { useBehandling } from '../../../context/BehandlingContext';
 import Brevmeny from './Brevmeny';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { useApp } from '../../../context/AppContext';
+import { TotrinnskontrollStatus } from '../../../typer/totrinnskontroll';
 import { Steg } from '../../Høyremeny/Steg';
-
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
     padding: 3rem 5rem 3rem 5rem;
@@ -31,8 +31,16 @@ interface Props {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const { behandlingErRedigerbar, personopplysningerResponse, behandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        personopplysningerResponse,
+        behandling,
+        totrinnskontroll,
+    } = useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
+    const kanFatteVedtak =
+        totrinnskontroll.status === RessursStatus.SUKSESS &&
+        totrinnskontroll.data.status === TotrinnskontrollStatus.KAN_FATTE_VEDTAK;
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -63,7 +71,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         if (!behandlingErRedigerbar) {
             if (
                 behandling.status === RessursStatus.SUKSESS &&
-                behandling.data.steg === Steg.BESLUTTE_VEDTAK
+                behandling.data.steg === Steg.BESLUTTE_VEDTAK &&
+                kanFatteVedtak
             ) {
                 lagBeslutterBrev();
             } else {
