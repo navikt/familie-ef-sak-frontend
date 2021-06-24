@@ -4,7 +4,7 @@ import { Innholdstittel, Systemtittel } from 'nav-frontend-typografi';
 import { useParams } from 'react-router';
 import { Behandling, Fagsak } from '../typer/fagsak';
 import styled from 'styled-components';
-import { formaterIsoDato } from '../utils/formatter';
+import { formaterIsoDatoTid } from '../utils/formatter';
 import { formatterEnumVerdi } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import { useSorteringState } from '../hooks/felles/useSorteringState';
@@ -170,7 +170,7 @@ const FagsakoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ behandli
                 {sortertListe.map((behandling) => {
                     return (
                         <tr key={behandling.id}>
-                            <td>{formaterIsoDato(behandling.opprettet)}</td>
+                            <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
                             <td>{formatterEnumVerdi(behandling.type)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
