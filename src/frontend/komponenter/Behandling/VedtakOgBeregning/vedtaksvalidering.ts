@@ -1,12 +1,9 @@
-import {
-    EPeriodetype,
-    IInntektsperiode,
-    IValideringsfeil,
-    IVedtaksperiode,
-} from '../../../typer/vedtak';
+import { EAktivitet, EPeriodetype, IInntektsperiode, IVedtaksperiode } from '../../../typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik, erMånedÅrLik } from '../../../utils/dato';
 
-function validerVedtaksPerioder(vedtaksperiodeListe: IVedtaksperiode[]): (string | undefined)[] {
+export const validerVedtaksPerioder = (
+    vedtaksperiodeListe: IVedtaksperiode[]
+): (string | undefined)[] => {
     return vedtaksperiodeListe.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil } = vedtaksperiode;
         if (!årMånedTil || !årMånedFra) {
@@ -23,12 +20,12 @@ function validerVedtaksPerioder(vedtaksperiodeListe: IVedtaksperiode[]): (string
         }
         return undefined;
     });
-}
+};
 
-function validerInntektsperiode(
+export const validerInntektsperioder = (
     inntektsperiodeListe: IInntektsperiode[],
     vedtaksperiodeListe: IVedtaksperiode[]
-): (string | undefined)[] {
+): (string | undefined)[] => {
     return inntektsperiodeListe.map((inntektsperiode, index) => {
         const årMånedFra = inntektsperiode.årMånedFra;
         if (!årMånedFra) {
@@ -51,26 +48,25 @@ function validerInntektsperiode(
         }
         return undefined;
     });
-}
-
-export const validerMånedFraPerioder = (
-    inntektsperiodeListe: IInntektsperiode[],
-    vedtaksperiodeListe: IVedtaksperiode[]
-): IValideringsfeil => {
-    const vedtaksperioder = validerVedtaksPerioder(vedtaksperiodeListe);
-    const inntektsperioder = validerInntektsperiode(inntektsperiodeListe, vedtaksperiodeListe);
-
-    return { vedtaksperioder, inntektsperioder };
 };
 
 export const validerAktivitetsType = (
     vedtaksperiodeListe: IVedtaksperiode[]
 ): (string | undefined)[] => {
-    return vedtaksperiodeListe.map((v) =>
-        v.periodeType === EPeriodetype.HOVEDPERIODE
-            ? v.aktivitet === undefined
-                ? 'Mangler aktivitetstype'
-                : undefined
-            : undefined
-    );
+    return vedtaksperiodeListe.map((v) => {
+        if (v.periodeType === EPeriodetype.HOVEDPERIODE) {
+            return v.aktivitet === undefined ? 'Mangler aktivitetstype' : undefined;
+        } else if (v.periodeType === EPeriodetype.PERIODE_FØR_FØDSEL) {
+            return v.aktivitet === EAktivitet.IKKE_AKTIVITETSPLIKT
+                ? undefined
+                : 'Mangler aktivitetstype';
+        }
+        return undefined;
+    });
+};
+
+export const validerPeriodetype = (
+    vedtaksperiodeListe: IVedtaksperiode[]
+): (string | undefined)[] => {
+    return vedtaksperiodeListe.map((v) => (v.periodeType ? 'Mangler periodetype' : undefined));
 };

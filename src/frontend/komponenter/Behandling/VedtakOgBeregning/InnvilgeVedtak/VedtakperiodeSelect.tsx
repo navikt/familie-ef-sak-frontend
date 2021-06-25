@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { EPeriodeProperty, EPeriodetype, periodetypeTilTekst } from '../../../../typer/vedtak';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
+import { Element } from 'nav-frontend-typografi';
 
 const StyledSelect = styled(FamilieSelect)`
     min-width: 140px;
@@ -29,24 +30,32 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     className,
 }) => {
     return (
-        <StyledSelect
-            className={className}
-            aria-label={'Periodetype'}
-            value={periodeType}
-            onChange={(e) => {
-                oppdaterVedtakslisteElement(index, EPeriodeProperty.periodeType, e.target.value);
-            }}
-            erLesevisning={!behandlingErRedigerbar}
-            lesevisningVerdi={periodetypeTilTekst[periodeType]}
-        >
-            <option value="">Velg</option>
-            <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
-                {periodetypeTilTekst[EPeriodetype.PERIODE_FØR_FØDSEL]}
-            </option>
-            <option value={EPeriodetype.HOVEDPERIODE}>
-                {periodetypeTilTekst[EPeriodetype.HOVEDPERIODE]}
-            </option>
-        </StyledSelect>
+        <div id="">
+            <Element>Periodetype</Element>
+            <StyledSelect
+                className={className}
+                feil="trskkaka"
+                aria-label={'Periodetype'}
+                value={periodeType}
+                onChange={(e) => {
+                    oppdaterVedtakslisteElement(
+                        index,
+                        EPeriodeProperty.periodeType,
+                        e.target.value
+                    );
+                }}
+                erLesevisning={!behandlingErRedigerbar}
+                lesevisningVerdi={periodetypeTilTekst[periodeType]}
+            >
+                <option value="">Velg</option>
+                <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
+                    {periodetypeTilTekst[EPeriodetype.PERIODE_FØR_FØDSEL]}
+                </option>
+                <option value={EPeriodetype.HOVEDPERIODE}>
+                    {periodetypeTilTekst[EPeriodetype.HOVEDPERIODE]}
+                </option>
+            </StyledSelect>
+        </div>
     );
 };
 

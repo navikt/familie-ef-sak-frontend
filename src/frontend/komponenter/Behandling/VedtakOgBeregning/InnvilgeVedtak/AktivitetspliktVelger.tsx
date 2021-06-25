@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { OrNothing } from '../../../../hooks/felles/useSorteringState';
 
 interface Props {
@@ -37,12 +37,12 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
         erLesevisning,
         aktivitetfeil,
     } = props;
-    console.log('aktivitetfeil', aktivitetfeil);
-    console.log('aktivitet', aktivitet);
+
     switch (periodeType) {
         case EPeriodetype.HOVEDPERIODE:
             return (
                 <AktivitetKolonne>
+                    <Element>Aktivitet</Element>
                     <StyledSelect
                         aria-label={'Aktivitet'}
                         value={aktivitet}
@@ -97,12 +97,14 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
                 <AktivitetKolonne>
+                    <Element>Aktivitet</Element>
                     <Normaltekst>Ikke aktivitetsplikt</Normaltekst>
                 </AktivitetKolonne>
             );
         default:
             return (
                 <AktivitetKolonne>
+                    <Element>Aktivitet</Element>
                     <Normaltekst>-</Normaltekst>
                 </AktivitetKolonne>
             );

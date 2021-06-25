@@ -1,22 +1,19 @@
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     EInntektsperiodeProperty,
     IBeløpsperiode,
     IInntektsperiode,
     IValideringsfeil,
 } from '../../../../typer/vedtak';
-import { AddCircle, Delete } from '@navikt/ds-icons';
-import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import React from 'react';
 import styled from 'styled-components';
 import InputMedTusenSkille from '../../../Felleskomponenter/InputMedTusenskille';
 import { harTallverdi, tilTallverdi } from '../../../../utils/utils';
-import Utregningstabell from './Utregningstabell';
 import { Ressurs } from '../../../../typer/ressurs';
 import { useBehandling } from '../../../../context/BehandlingContext';
-import { FamilieTextarea } from '@navikt/familie-form-elements';
-import { IngenBegrunnelseOppgitt } from './VedtaksperiodeValg';
+import { Undertittel } from 'nav-frontend-typografi';
 import MånedÅrVelger from '../../../Felleskomponenter/MånedÅr/MånedÅrVelger';
+import FjernKnapp from '../../../Felleskomponenter/Knapper/FjernKnapp';
+import LeggTilKnapp from '../../../Felleskomponenter/Knapper/LeggTilKnapp';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -35,20 +32,6 @@ const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     }
 `;
 
-const InntektsperiodeRad = styled.div`
-    display: contents;
-`;
-
-const KnappMedLuftUnder = styled(Flatknapp)`
-    padding: 0;
-    margin-bottom: 1rem;
-`;
-
-const FjernPeriodeKnapp = styled(Flatknapp)`
-    padding: 0;
-    margin-left: 1rem;
-`;
-
 const StyledInput = styled(InputMedTusenSkille)`
     min-width: 160px;
     max-width: 200px;
@@ -58,24 +41,6 @@ const StyledInput = styled(InputMedTusenSkille)`
 const StyledSamordningsfradrag = styled(StyledInput)`
     min-width: 200px;
 `;
-
-const MndKnappWrapper = styled.div`
-    width: 90px;
-    display: flex;
-`;
-
-const TextareaWrapper = styled.div`
-    max-width: 60rem;
-`;
-
-const StyledFamilieTextarea = styled(FamilieTextarea)`
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    .typo-element {
-        padding-bottom: 0.5rem;
-    }
-`;
-
 export const tomInntektsperiodeRad: IInntektsperiode = {
     årMånedFra: '',
 };
@@ -88,7 +53,7 @@ export interface IInntektsperiodeData {
 interface Props {
     inntektsperiodeData: IInntektsperiodeData;
     settInntektsperiodeData: (verdi: IInntektsperiodeData) => void;
-    valideringsfeil?: IValideringsfeil['inntektsperioder'];
+    valideringsfeil?: IValideringsfeil['inntekt'];
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
     beregnPerioder: () => void;
 }
@@ -97,11 +62,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
     inntektsperiodeData,
     settInntektsperiodeData,
     valideringsfeil,
-    beregnetStønad,
-    beregnPerioder,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
-    const { inntektsperiodeListe, inntektBegrunnelse } = inntektsperiodeData;
+    const { inntektsperiodeListe } = inntektsperiodeData;
 
     const oppdaterInntektslisteElement = (
         index: number,
@@ -134,123 +97,80 @@ const InntektsperiodeValg: React.FC<Props> = ({
         });
     };
 
-    const settInntektBegrunnelse = (begrunnelse: string) =>
-        settInntektsperiodeData({ ...inntektsperiodeData, inntektBegrunnelse: begrunnelse });
-
     return (
         <>
             <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
-            <InntektContainer className={'blokk-s'} lesevisning={!behandlingErRedigerbar}>
-                <Element>Fra</Element>
-                <Element>Forventet inntekt (år)</Element>
-                <Element>Samordningsfradrag (mnd)</Element>
+            {inntektsperiodeListe.map((rad, index) => {
+                return (
+                    <InntektContainer
+                        key={index}
+                        className={'blokk-s'}
+                        lesevisning={!behandlingErRedigerbar}
+                    >
+                        <MånedÅrVelger
+                            className={'forsteKolonne'}
+                            key={rad.endretKey || null}
+                            disabled={index === 0}
+                            aria-label={index === 0 ? 'Fra' : undefined}
+                            onEndret={(e) => {
+                                oppdaterInntektslisteElement(
+                                    index,
+                                    EInntektsperiodeProperty.årMånedFra,
+                                    e
+                                );
+                            }}
+                            årMånedInitiell={rad.årMånedFra}
+                            antallÅrTilbake={10}
+                            antallÅrFrem={4}
+                            lesevisning={!behandlingErRedigerbar}
+                        />
 
-                {inntektsperiodeListe.map((rad, index) => {
-                    return (
-                        <InntektsperiodeRad key={index} className={'inntektrad'}>
-                            <MånedÅrVelger
-                                feilmelding={valideringsfeil && valideringsfeil[index]}
-                                className={'forsteKolonne'}
-                                key={rad.endretKey || null}
-                                disabled={index === 0}
-                                aria-label={'Fra'}
-                                onEndret={(e) => {
-                                    oppdaterInntektslisteElement(
-                                        index,
-                                        EInntektsperiodeProperty.årMånedFra,
-                                        e
-                                    );
-                                }}
-                                årMånedInitiell={rad.årMånedFra}
-                                antallÅrTilbake={10}
-                                antallÅrFrem={4}
-                                lesevisning={!behandlingErRedigerbar}
-                            />
+                        <StyledInput
+                            type="number"
+                            label={index === 0 ? 'Forventet inntekt (år)' : undefined}
+                            value={harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''}
+                            onChange={(e) => {
+                                oppdaterInntektslisteElement(
+                                    index,
+                                    EInntektsperiodeProperty.forventetInntekt,
+                                    tilTallverdi(e.target.value)
+                                );
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
 
-                            <StyledInput
-                                aria-label={'Forventet inntekt (år)'}
-                                type="number"
-                                value={
-                                    harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''
-                                }
-                                onChange={(e) => {
-                                    oppdaterInntektslisteElement(
-                                        index,
-                                        EInntektsperiodeProperty.forventetInntekt,
-                                        tilTallverdi(e.target.value)
-                                    );
-                                }}
-                                erLesevisning={!behandlingErRedigerbar}
-                            />
+                        <StyledSamordningsfradrag
+                            aria-label={'Samordningsfradrag (mnd)'}
+                            type="number"
+                            value={
+                                harTallverdi(rad.samordningsfradrag) ? rad.samordningsfradrag : ''
+                            }
+                            onChange={(e) => {
+                                oppdaterInntektslisteElement(
+                                    index,
+                                    EInntektsperiodeProperty.samordningsfradrag,
+                                    tilTallverdi(e.target.value)
+                                );
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
 
-                            <StyledSamordningsfradrag
-                                aria-label={'Samordningsfradrag (mnd)'}
-                                type="number"
-                                value={
-                                    harTallverdi(rad.samordningsfradrag)
-                                        ? rad.samordningsfradrag
-                                        : ''
-                                }
-                                onChange={(e) => {
-                                    oppdaterInntektslisteElement(
-                                        index,
-                                        EInntektsperiodeProperty.samordningsfradrag,
-                                        tilTallverdi(e.target.value)
-                                    );
-                                }}
-                                erLesevisning={!behandlingErRedigerbar}
-                            />
-
-                            {index === inntektsperiodeListe.length - 1 &&
-                                index !== 0 &&
-                                behandlingErRedigerbar && (
-                                    <MndKnappWrapper>
-                                        <FjernPeriodeKnapp onClick={fjernInntektsperiode}>
-                                            <Delete />
-                                            <span className="sr-only">Fjern inntektsperiode</span>
-                                        </FjernPeriodeKnapp>
-                                    </MndKnappWrapper>
-                                )}
-                        </InntektsperiodeRad>
-                    );
-                })}
-            </InntektContainer>
-
+                        {index === inntektsperiodeListe.length - 1 &&
+                            index !== 0 &&
+                            behandlingErRedigerbar && (
+                                <FjernKnapp
+                                    onClick={fjernInntektsperiode}
+                                    knappetekst="Fjern inntektsperiode"
+                                />
+                            )}
+                    </InntektContainer>
+                );
+            })}
             {behandlingErRedigerbar && (
-                <>
-                    <KnappMedLuftUnder className={'blokk-s'} onClick={leggTilInntektsperiode}>
-                        <AddCircle style={{ marginRight: '1rem' }} />
-                        Legg til inntektsperiode
-                    </KnappMedLuftUnder>
-                    <div className={'blokk-m'}>
-                        <Knapp type={'standard'} onClick={beregnPerioder}>
-                            Beregn
-                        </Knapp>
-                    </div>
-                </>
-            )}
-
-            <Utregningstabell beregnetStønad={beregnetStønad} />
-
-            {!behandlingErRedigerbar && inntektBegrunnelse === '' ? (
-                <IngenBegrunnelseOppgitt>
-                    <Element className={'blokk-xxs'}>Begrunnelse</Element>
-                    <Normaltekst style={{ fontStyle: 'italic' }}>
-                        Ingen opplysninger oppgitt.
-                    </Normaltekst>
-                </IngenBegrunnelseOppgitt>
-            ) : (
-                <TextareaWrapper>
-                    <StyledFamilieTextarea
-                        value={inntektBegrunnelse}
-                        onChange={(e) => {
-                            settInntektBegrunnelse(e.target.value);
-                        }}
-                        label="Begrunnelse"
-                        maxLength={0}
-                        erLesevisning={!behandlingErRedigerbar}
-                    />
-                </TextareaWrapper>
+                <LeggTilKnapp
+                    onClick={leggTilInntektsperiode}
+                    knappetekst=" Legg til inntektsperiode"
+                />
             )}
         </>
     );

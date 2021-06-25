@@ -1,5 +1,4 @@
 import { PeriodeVariant } from '../komponenter/Felleskomponenter/MånedÅr/MånedÅrPeriode';
-import { OrNothing } from '../hooks/felles/useSorteringState';
 
 export type IAvslåVedtak = {
     resultatType: EBehandlingResultat.AVSLÅ;
@@ -59,9 +58,14 @@ export interface IBeløpsperiode {
 }
 
 export interface IValideringsfeil {
-    vedtaksperioder?: OrNothing<string>[];
-    aktivitet?: OrNothing<string>[];
-    inntektsperioder?: OrNothing<string>[];
+    vedtak: {
+        periode?: string | undefined;
+        type?: string | undefined;
+        aktivitetstype?: string | undefined;
+    }[];
+    inntekt: {
+        periode?: string | undefined;
+    }[];
 }
 
 export enum EInntektsperiodeProperty {
