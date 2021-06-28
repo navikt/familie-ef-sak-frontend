@@ -24,6 +24,7 @@ export interface AlleFlettefelter {
 }
 interface Flettefelt {
     felt: string;
+    feltVisningsnavn?: string;
     _id: string;
 }
 

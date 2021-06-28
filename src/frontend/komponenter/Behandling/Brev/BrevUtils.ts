@@ -4,7 +4,12 @@ export const finnFlettefeltNavnFraRef = (dokument: BrevStruktur, ref: string): s
     const flettefeltNavnFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
         (felt) => felt._id === ref
     );
-    return flettefeltNavnFraRef ? flettefeltNavnFraRef.felt : '';
+
+    if (!flettefeltNavnFraRef) return '';
+
+    return flettefeltNavnFraRef.feltVisningsnavn
+        ? flettefeltNavnFraRef.feltVisningsnavn
+        : flettefeltNavnFraRef.felt;
 };
 export const grupperDelmaler = (delmaler: Delmal[]): { [mappeNavn: string]: Delmal[] } => {
     return delmaler.reduce((acc: { [mappeNavn: string]: Delmal[] }, delmal: Delmal) => {
