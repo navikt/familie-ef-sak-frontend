@@ -1,12 +1,6 @@
-import React, { FormEvent, useState } from 'react';
-import VedtaksperiodeValg, {
-    IVedtaksperiodeData,
-    tomVedtaksperiodeRad,
-} from './VedtaksperiodeValg';
-import InntektsperiodeValg, {
-    IInntektsperiodeData,
-    tomInntektsperiodeRad,
-} from './InntektsperiodeValg';
+import React, { FormEvent, useEffect, useState } from 'react';
+import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
+import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../../typer/behandlingstype';
 import {
@@ -29,14 +23,15 @@ import { useHistory } from 'react-router-dom';
 import { useApp } from '../../../../context/AppContext';
 import { Behandling } from '../../../../typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
-import styled from 'styled-components';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import hiddenIf from '../../../Felleskomponenter/HiddenIf/hiddenIf';
-import Utregningstabell from './Utregningstabell';
-import { FamilieTextarea } from '@navikt/familie-form-elements';
+import useFieldState from '../../../../hooks/felles/useFieldState';
+import useListState from '../../../../hooks/felles/useListState';
+import { Undertittel } from 'nav-frontend-typografi';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
-
-const Hovedknapp = hiddenIf(HovedknappNAV);
+import styled from 'styled-components';
+import { FamilieTextarea } from '@navikt/familie-form-elements';
+import Utregningstabell from './Utregningstabell';
 
 const StyledFamilieTextarea = styled(FamilieTextarea)`
     white-space: pre-wrap;
@@ -47,6 +42,8 @@ const StyledFamilieTextarea = styled(FamilieTextarea)`
         padding-bottom: 0.5rem;
     }
 `;
+
+const Hovedknapp = hiddenIf(HovedknappNAV);
 
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
@@ -66,27 +63,22 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
     const [valideringsfeil, settValideringsfeil] = useState<IValideringsfeil>();
-
-    const [vedtaksperiodeData, settVedtaksperiodeData] = useState<IVedtaksperiodeData>({
-        periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
-        vedtaksperiodeListe: lagretInnvilgetVedtak
-            ? lagretInnvilgetVedtak.perioder
-            : [tomVedtaksperiodeRad],
-    });
-
-    //TODO SPLIT UPP I begrunnelse och periode
-    const [inntektsperiodeData, settInntektsperiodeData] = useState<IInntektsperiodeData>({
-        inntektBegrunnelse: lagretInnvilgetVedtak?.inntektBegrunnelse || '',
-        inntektsperiodeListe: lagretInnvilgetVedtak?.inntekter
+    const periodeBegrunnelse = useFieldState(lagretInnvilgetVedtak?.periodeBegrunnelse || '');
+    const inntektBegrunnelse = useFieldState(lagretInnvilgetVedtak?.inntektBegrunnelse || '');
+    const vedtaksperiodeListe = useListState(
+        lagretInnvilgetVedtak ? lagretInnvilgetVedtak.perioder : [tomVedtaksperiodeRad]
+    );
+    const inntektsperiodeListe = useListState(
+        lagretInnvilgetVedtak?.inntekter
             ? lagretInnvilgetVedtak?.inntekter
-            : [tomInntektsperiodeRad],
-    });
+            : [tomInntektsperiodeRad]
+    );
 
     const validerVedtak = (): boolean => {
         const harRiktigePerioder = validerPerioder();
 
-        const aktivitetsfeil = validerAktivitetsType(vedtaksperiodeData.vedtaksperiodeListe);
-        const periodetypeFeil = validerPeriodetype(vedtaksperiodeData.vedtaksperiodeListe);
+        const aktivitetsfeil = validerAktivitetsType(vedtaksperiodeListe.value);
+        const periodetypeFeil = validerPeriodetype(vedtaksperiodeListe.value);
         settValideringsfeil((prevState) => {
             if (!prevState) {
                 return {
@@ -113,10 +105,10 @@ export const InnvilgeVedtak: React.FC<{
     };
 
     const validerPerioder = (): boolean => {
-        const vedtaksperioder = validerVedtaksPerioder(vedtaksperiodeData.vedtaksperiodeListe);
+        const vedtaksperioder = validerVedtaksPerioder(vedtaksperiodeListe.value);
         const inntektsperioder = validerInntektsperioder(
-            inntektsperiodeData.inntektsperiodeListe,
-            vedtaksperiodeData.vedtaksperiodeListe
+            inntektsperiodeListe.value,
+            vedtaksperiodeListe.value
         );
 
         settValideringsfeil((prevState) => {
@@ -138,27 +130,24 @@ export const InnvilgeVedtak: React.FC<{
         return vedtaksperioder.concat(inntektsperioder).every((v) => v === undefined);
     };
 
-    const vedtaksRequest: IInnvilgeVedtak = {
-        resultatType: EBehandlingResultat.INNVILGE,
-        periodeBegrunnelse: vedtaksperiodeData.periodeBegrunnelse,
-        inntektBegrunnelse: inntektsperiodeData.inntektBegrunnelse,
-        perioder: vedtaksperiodeData.vedtaksperiodeListe,
-        inntekter: inntektsperiodeData.inntektsperiodeListe,
-    };
-
-    const oppdaterVedtaksperiodeData = (verdi: IVedtaksperiodeData) => {
-        const førsteVedtaksperiode = verdi.vedtaksperiodeListe[0];
+    useEffect(() => {
+        const førsteVedtaksperiode = vedtaksperiodeListe.value[0];
         const førsteInntektsperiode =
-            inntektsperiodeData.inntektsperiodeListe.length > 0 &&
-            inntektsperiodeData.inntektsperiodeListe[0];
-        settVedtaksperiodeData(verdi);
+            inntektsperiodeListe.value.length > 0 && inntektsperiodeListe.value[0];
         if (
             førsteInntektsperiode &&
             førsteVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra
         ) {
-            settÅrMånedFraPåFørsteInntektsperiode(førsteVedtaksperiode.årMånedFra);
+            inntektsperiodeListe.update(
+                {
+                    ...inntektsperiodeListe.value[0],
+                    årMånedFra: førsteVedtaksperiode.årMånedFra,
+                    endretKey: uuidv4(),
+                },
+                0
+            );
         }
-    };
+    }, [vedtaksperiodeListe, inntektsperiodeListe]);
 
     const beregnPerioder = () => {
         if (validerPerioder()) {
@@ -166,8 +155,8 @@ export const InnvilgeVedtak: React.FC<{
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/`,
                 data: {
-                    vedtaksperioder: vedtaksperiodeData.vedtaksperiodeListe,
-                    inntekt: inntektsperiodeData.inntektsperiodeListe.map((v) => ({
+                    vedtaksperioder: vedtaksperiodeListe.value,
+                    inntekt: inntektsperiodeListe.value.map((v) => ({
                         ...v,
                         forventetInntekt: v.forventetInntekt ?? 0,
                         samordningsfradrag: v.samordningsfradrag ?? 0,
@@ -175,21 +164,6 @@ export const InnvilgeVedtak: React.FC<{
                 },
             }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
         }
-    };
-
-    const settÅrMånedFraPåFørsteInntektsperiode = (årMånedFra: string | undefined) => {
-        settInntektsperiodeData({
-            ...inntektsperiodeData,
-            inntektsperiodeListe: inntektsperiodeData.inntektsperiodeListe.map((periode, index) => {
-                return index === 0
-                    ? {
-                          ...periode,
-                          årMånedFra: årMånedFra,
-                          endretKey: uuidv4(),
-                      }
-                    : periode;
-            }),
-        });
     };
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
@@ -208,7 +182,7 @@ export const InnvilgeVedtak: React.FC<{
         };
     };
 
-    const lagBlankett = () => {
+    const lagBlankett = (vedtaksRequest: IInnvilgeVedtak) => {
         settLaster(true);
         axiosRequest<string, IInnvilgeVedtak>({
             method: 'POST',
@@ -221,7 +195,7 @@ export const InnvilgeVedtak: React.FC<{
             });
     };
 
-    const lagreVedtak = () => {
+    const lagreVedtak = (vedtaksRequest: IInnvilgeVedtak) => {
         settLaster(true);
         axiosRequest<string, IInnvilgeVedtak>({
             method: 'POST',
@@ -240,12 +214,20 @@ export const InnvilgeVedtak: React.FC<{
         e.preventDefault();
         e.stopPropagation();
         if (validerVedtak()) {
+            const vedtaksRequest: IInnvilgeVedtak = {
+                resultatType: EBehandlingResultat.INNVILGE,
+                periodeBegrunnelse: periodeBegrunnelse.value,
+                inntektBegrunnelse: inntektBegrunnelse.value,
+                perioder: vedtaksperiodeListe.value,
+                inntekter: inntektsperiodeListe.value,
+            };
+
             switch (behandling.type) {
                 case Behandlingstype.BLANKETT:
-                    lagBlankett();
+                    lagBlankett(vedtaksRequest);
                     break;
                 case Behandlingstype.FØRSTEGANGSBEHANDLING:
-                    lagreVedtak();
+                    lagreVedtak(vedtaksRequest);
                     break;
                 case Behandlingstype.REVURDERING:
                     throw Error('Støtter ikke behandlingstype revurdering ennå...');
@@ -255,56 +237,51 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <form onSubmit={v}>
-            <VedtaksperiodeValg
-                vedtaksperiodeData={vedtaksperiodeData}
-                settVedtaksperiodeData={oppdaterVedtaksperiodeData}
-                valideringsfeil={valideringsfeil?.vedtak}
-            />
-            {!behandlingErRedigerbar && vedtaksperiodeData.periodeBegrunnelse === '' ? (
-                <IngenBegrunnelseOppgitt />
-            ) : (
-                <StyledFamilieTextarea
-                    value={vedtaksperiodeData.periodeBegrunnelse}
-                    onChange={(e) => {
-                        settVedtaksperiodeData({
-                            ...vedtaksperiodeData,
-                            periodeBegrunnelse: e.target.value,
-                        });
-                    }}
-                    label="Begrunnelse"
-                    maxLength={0}
-                    erLesevisning={!behandlingErRedigerbar}
+            <section className={'blokk-xl'}>
+                <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
+                <VedtaksperiodeValg
+                    vedtaksperiodeListe={vedtaksperiodeListe}
+                    valideringsfeil={valideringsfeil?.vedtak}
                 />
-            )}
-            <InntektsperiodeValg
-                inntektsperiodeData={inntektsperiodeData}
-                settInntektsperiodeData={settInntektsperiodeData}
-                beregnetStønad={beregnetStønad}
-                beregnPerioder={beregnPerioder}
-            />
-            <div className={'blokk-m'}>
-                <Knapp type={'standard'} onClick={beregnPerioder}>
-                    Beregn
-                </Knapp>
-            </div>
-            <Utregningstabell beregnetStønad={beregnetStønad} />
-
-            {!behandlingErRedigerbar && inntektsperiodeData.inntektBegrunnelse === '' ? (
-                <IngenBegrunnelseOppgitt />
-            ) : (
-                <StyledFamilieTextarea
-                    value={inntektsperiodeData.inntektBegrunnelse}
-                    onChange={(e) => {
-                        settInntektsperiodeData({
-                            ...inntektsperiodeData,
-                            inntektBegrunnelse: e.target.value,
-                        });
-                    }}
-                    label="Begrunnelse"
-                    maxLength={0}
-                    erLesevisning={!behandlingErRedigerbar}
+                {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
+                    <IngenBegrunnelseOppgitt />
+                ) : (
+                    <StyledFamilieTextarea
+                        value={periodeBegrunnelse.value}
+                        onChange={periodeBegrunnelse.onChange}
+                        label="Begrunnelse"
+                        maxLength={0}
+                        erLesevisning={!behandlingErRedigerbar}
+                    />
+                )}
+            </section>
+            <section>
+                <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
+                <InntektsperiodeValg
+                    inntektsperiodeListe={inntektsperiodeListe}
+                    inntektBegrunnelse={inntektBegrunnelse}
+                    beregnPerioder={beregnPerioder}
+                    beregnetStønad={beregnetStønad}
+                    valideringsfeil={valideringsfeil?.inntekt}
                 />
-            )}
+                <div className={'blokk-m'}>
+                    <Knapp type={'standard'} onClick={beregnPerioder}>
+                        Beregn
+                    </Knapp>
+                </div>
+                <Utregningstabell beregnetStønad={beregnetStønad} />
+                {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
+                    <IngenBegrunnelseOppgitt />
+                ) : (
+                    <StyledFamilieTextarea
+                        value={inntektBegrunnelse.value}
+                        onChange={inntektBegrunnelse.onChange}
+                        label="Begrunnelse"
+                        maxLength={0}
+                        erLesevisning={!behandlingErRedigerbar}
+                    />
+                )}
+            </section>
             <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
                 Lagre vedtak
             </Hovedknapp>

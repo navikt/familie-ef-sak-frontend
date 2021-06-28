@@ -1,4 +1,3 @@
-import { Undertittel } from 'nav-frontend-typografi';
 import {
     EAktivitet,
     EPeriodeProperty,
@@ -15,24 +14,31 @@ import { useBehandling } from '../../../../context/BehandlingContext';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
 import LeggTilKnapp from '../../../Felleskomponenter/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../Felleskomponenter/Knapper/FjernKnapp';
+import { ListState } from '../../../../hooks/felles/useListState';
+import { månederMellom, månedÅrTilDate } from '../../../../utils/dato';
+import { Element } from 'nav-frontend-typografi';
 
-const VedtakContainer = styled.div<{ lesevisning?: boolean }>`
+const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
-    grid-template-areas: 'periodetype aktivitetstype periodevelger ting';
-    grid-template-columns: minmax(10rem, 16rem) 8rem minmax(10rem, 1fr) 8rem;
-    grid-template-rows: min-content 1fr;
+    grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger antallMåneder fjernknapp';
+    grid-template-columns: 14rem 14rem 14rem 14rem 4rem 4rem;
+    grid-template-rows: auto;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
-    align-items: center;
+    margin-bottom: 1rem;
+    }
 `;
 
-export interface IVedtaksperiodeData {
-    vedtaksperiodeListe: IVedtaksperiode[];
-    periodeBegrunnelse: string;
-}
+const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
+    display: grid;
+    grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
+    grid-template-columns: 14rem 14rem 14rem 14rem;
+    grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
+    margin-bottom: 1rem;
+    }
+`;
 
 interface Props {
-    vedtaksperiodeData: IVedtaksperiodeData;
-    settVedtaksperiodeData: (verdi: IVedtaksperiodeData) => void;
+    vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: IValideringsfeil['vedtak'];
 }
 
@@ -41,59 +47,56 @@ export const tomVedtaksperiodeRad: IVedtaksperiode = {
     aktivitet: '' as EAktivitet,
 };
 
-const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeData, settVedtaksperiodeData }) => {
+const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): number | undefined => {
+    if (årMånedFra && årMånedTil) {
+        return månederMellom(månedÅrTilDate(årMånedFra), månedÅrTilDate(årMånedTil));
+    }
+    return undefined;
+};
+
+const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe }) => {
     const { behandlingErRedigerbar } = useBehandling();
-
-    const leggTilVedtaksperiode = () =>
-        settVedtaksperiodeData({
-            ...vedtaksperiodeData,
-            vedtaksperiodeListe: [...vedtaksperiodeData.vedtaksperiodeListe, tomVedtaksperiodeRad],
-        });
-
-    const fjernVedtaksperiode = () => {
-        const nyListe = [...vedtaksperiodeData.vedtaksperiodeListe];
-        nyListe.pop();
-        settVedtaksperiodeData({
-            ...vedtaksperiodeData,
-            vedtaksperiodeListe: nyListe,
-        });
-    };
-
     const oppdaterVedtakslisteElement = (
         index: number,
         property: EPeriodeProperty,
         value: string | number | undefined
     ) => {
-        const oppdatertListe = vedtaksperiodeData.vedtaksperiodeListe.map((vedtaksperiode, i) => {
-            return i === index
-                ? {
-                      ...vedtaksperiode,
-                      [property]: value,
-                      ...(property === EPeriodeProperty.periodeType && {
-                          [EPeriodeProperty.aktivitet]:
-                              value === EPeriodetype.PERIODE_FØR_FØDSEL
-                                  ? EAktivitet.IKKE_AKTIVITETSPLIKT
-                                  : undefined,
-                      }),
-                  }
-                : vedtaksperiode;
-        });
-        settVedtaksperiodeData({
-            ...vedtaksperiodeData,
-            vedtaksperiodeListe: oppdatertListe,
-        });
+        vedtaksperiodeListe.update(
+            {
+                ...vedtaksperiodeListe.value[index],
+                [property]: value,
+                ...(property === EPeriodeProperty.periodeType && {
+                    [EPeriodeProperty.aktivitet]:
+                        value === EPeriodetype.PERIODE_FØR_FØDSEL
+                            ? EAktivitet.IKKE_AKTIVITETSPLIKT
+                            : undefined,
+                }),
+            },
+            index
+        );
     };
 
     return (
-        <section className={'blokk-xl'}>
-            <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
-            {vedtaksperiodeData.vedtaksperiodeListe.map((vedtaksperiode, index) => {
+        <>
+            <KolonneHeaderWrapper>
+                <Element>Periodetype</Element>
+                <Element>Aktivitet</Element>
+                <Element>Fra og med</Element>
+                <Element>Til og med</Element>
+            </KolonneHeaderWrapper>
+            {vedtaksperiodeListe.value.map((vedtaksperiode, index) => {
                 const { periodeType, aktivitet, årMånedFra, årMånedTil } = vedtaksperiode;
+                const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
+                const skalViseFjernKnapp =
+                    behandlingErRedigerbar &&
+                    index === vedtaksperiodeListe.value.length - 1 &&
+                    index !== 0;
                 return (
-                    <VedtakContainer className={'blokk-s'} lesevisning={!behandlingErRedigerbar}>
+                    <VedtakPeriodeContainer>
                         <VedtakperiodeSelect
-                            className={'forsteKolonne'}
-                            oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
+                            oppdaterVedtakslisteElement={(property, value) =>
+                                oppdaterVedtakslisteElement(index, property, value)
+                            }
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             periodeType={periodeType}
                             index={index}
@@ -107,10 +110,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeData, settVedtakspe
                             aktivitetfeil={null}
                         />
                         <MånedÅrPeriode
-                            datoFraTekst={index === 0 ? 'Fra og med' : undefined}
-                            datoTilTekst={index === 0 ? 'Til og med' : undefined}
                             årMånedFraInitiell={årMånedFra}
                             årMånedTilInitiell={årMånedTil}
+                            index={index}
                             onEndre={(verdi, periodeVariant) => {
                                 oppdaterVedtakslisteElement(
                                     index,
@@ -120,24 +122,22 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeData, settVedtakspe
                             }}
                             erLesevisning={!behandlingErRedigerbar}
                         />
-
-                        {behandlingErRedigerbar &&
-                            index === vedtaksperiodeData.vedtaksperiodeListe.length - 1 &&
-                            index !== 0 && (
-                                <FjernKnapp
-                                    onClick={fjernVedtaksperiode}
-                                    knappetekst="Fjern vedtaksperiode"
-                                />
-                            )}
-                    </VedtakContainer>
+                        {antallMåneder && <Element>{`${antallMåneder} mnd`}</Element>}
+                        {skalViseFjernKnapp && (
+                            <FjernKnapp
+                                onClick={() => vedtaksperiodeListe.remove(index)}
+                                knappetekst="Fjern vedtaksperiode"
+                            />
+                        )}
+                    </VedtakPeriodeContainer>
                 );
             })}
             <LeggTilKnapp
-                onClick={leggTilVedtaksperiode}
+                onClick={() => vedtaksperiodeListe.push(tomVedtaksperiodeRad)}
                 knappetekst="Legg til vedtaksperiode"
                 hidden={!behandlingErRedigerbar}
             />
-        </section>
+        </>
     );
 };
 

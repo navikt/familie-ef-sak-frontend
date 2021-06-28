@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { OrNothing } from '../../../../hooks/felles/useSorteringState';
 
 interface Props {
@@ -20,12 +20,13 @@ interface Props {
 }
 
 const StyledSelect = styled(FamilieSelect)`
-    max-width: 200px;
     margin-right: 2rem;
 `;
 
 const AktivitetKolonne = styled.div`
-    width: 230px;
+    .typo-normal {
+        padding: 0.5rem 0 1rem 0;
+    }
 `;
 
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
@@ -41,70 +42,65 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     switch (periodeType) {
         case EPeriodetype.HOVEDPERIODE:
             return (
-                <AktivitetKolonne>
-                    <Element>Aktivitet</Element>
-                    <StyledSelect
-                        aria-label={'Aktivitet'}
-                        value={aktivitet}
-                        feil={aktivitetfeil}
-                        onChange={(e) => {
-                            oppdaterVedtakslisteElement(
-                                index,
-                                EPeriodeProperty.aktivitet,
-                                e.target.value
-                            );
-                        }}
-                        erLesevisning={erLesevisning}
-                        lesevisningVerdi={aktivitetTilTekst[aktivitet]}
-                    >
-                        <option value="">Velg</option>
-                        <optgroup label="Ingen aktivitetsplikt">
-                            <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>
-                                {aktivitetTilTekst[EAktivitet.BARN_UNDER_ETT_ÅR]}
-                            </option>
-                        </optgroup>
-                        <optgroup label="Fyller aktivitetsplikt">
-                            <option value={EAktivitet.FORSØRGER_I_ARBEID}>
-                                {aktivitetTilTekst[EAktivitet.FORSØRGER_I_ARBEID]}
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
-                                {aktivitetTilTekst[EAktivitet.FORSØRGER_I_UTDANNING]}
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
-                                {aktivitetTilTekst[EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER]}
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
-                                {aktivitetTilTekst[EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET]}
-                            </option>
-                        </optgroup>
-                        <optgroup label="Fyller unntak for aktivitetsplikt">
-                            <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
-                                {aktivitetTilTekst[EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE]}
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
-                                {aktivitetTilTekst[EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING]}
-                            </option>
-                            <option value={EAktivitet.FORSØRGER_ER_SYK}>
-                                {aktivitetTilTekst[EAktivitet.FORSØRGER_ER_SYK]}
-                            </option>
-                            <option value={EAktivitet.BARNET_ER_SYKT}>
-                                {aktivitetTilTekst[EAktivitet.BARNET_ER_SYKT]}
-                            </option>
-                        </optgroup>
-                    </StyledSelect>
-                </AktivitetKolonne>
+                <StyledSelect
+                    aria-label={'Aktivitet'}
+                    value={aktivitet}
+                    feil={aktivitetfeil}
+                    onChange={(e) => {
+                        oppdaterVedtakslisteElement(
+                            index,
+                            EPeriodeProperty.aktivitet,
+                            e.target.value
+                        );
+                    }}
+                    erLesevisning={erLesevisning}
+                    lesevisningVerdi={aktivitetTilTekst[aktivitet]}
+                >
+                    <option value="">Velg</option>
+                    <optgroup label="Ingen aktivitetsplikt">
+                        <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>
+                            {aktivitetTilTekst[EAktivitet.BARN_UNDER_ETT_ÅR]}
+                        </option>
+                    </optgroup>
+                    <optgroup label="Fyller aktivitetsplikt">
+                        <option value={EAktivitet.FORSØRGER_I_ARBEID}>
+                            {aktivitetTilTekst[EAktivitet.FORSØRGER_I_ARBEID]}
+                        </option>
+                        <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
+                            {aktivitetTilTekst[EAktivitet.FORSØRGER_I_UTDANNING]}
+                        </option>
+                        <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
+                            {aktivitetTilTekst[EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER]}
+                        </option>
+                        <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
+                            {aktivitetTilTekst[EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET]}
+                        </option>
+                    </optgroup>
+                    <optgroup label="Fyller unntak for aktivitetsplikt">
+                        <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
+                            {aktivitetTilTekst[EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE]}
+                        </option>
+                        <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
+                            {aktivitetTilTekst[EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING]}
+                        </option>
+                        <option value={EAktivitet.FORSØRGER_ER_SYK}>
+                            {aktivitetTilTekst[EAktivitet.FORSØRGER_ER_SYK]}
+                        </option>
+                        <option value={EAktivitet.BARNET_ER_SYKT}>
+                            {aktivitetTilTekst[EAktivitet.BARNET_ER_SYKT]}
+                        </option>
+                    </optgroup>
+                </StyledSelect>
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
                 <AktivitetKolonne>
-                    <Element>Aktivitet</Element>
                     <Normaltekst>Ikke aktivitetsplikt</Normaltekst>
                 </AktivitetKolonne>
             );
         default:
             return (
                 <AktivitetKolonne>
-                    <Element>Aktivitet</Element>
                     <Normaltekst>-</Normaltekst>
                 </AktivitetKolonne>
             );

@@ -6,6 +6,7 @@ interface MånedProps {
     settMåned: (måned: string) => void;
     lesevisning?: boolean;
     disabled?: boolean;
+    className?: string;
 }
 
 const månedValg = [
@@ -28,12 +29,14 @@ const MånedVelger: React.FC<MånedProps> = ({
     settMåned,
     lesevisning = false,
     disabled = false,
+    className,
 }) => {
     return (
         <FamilieSelect
             erLesevisning={lesevisning}
             lesevisningVerdi={måned ? månedValg.find((mnd) => mnd.mndNr === måned)?.verdi : ''}
             value={måned}
+            className={className}
             onChange={(event) => {
                 event.persist();
                 settMåned(event.target.value);

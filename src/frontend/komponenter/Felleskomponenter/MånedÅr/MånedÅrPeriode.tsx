@@ -1,7 +1,5 @@
 import React from 'react';
 import MånedÅrVelger from './MånedÅrVelger';
-import { Element } from 'nav-frontend-typografi';
-import { månederMellom, månedÅrTilDate } from '../../../utils/dato';
 
 export enum PeriodeVariant {
     ÅR_MÅNED_FRA = 'årMånedFra',
@@ -18,14 +16,8 @@ interface Props {
     antallÅrFrem?: number;
     feilmelding?: string;
     erLesevisning?: boolean;
+    index?: number;
 }
-
-const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): number | undefined => {
-    if (årMånedFra && årMånedTil) {
-        return månederMellom(månedÅrTilDate(årMånedFra), månedÅrTilDate(årMånedTil));
-    }
-    return undefined;
-};
 
 const MånedÅrPeriode: React.FC<Props> = ({
     årMånedFraInitiell,
@@ -38,9 +30,8 @@ const MånedÅrPeriode: React.FC<Props> = ({
     feilmelding,
     erLesevisning,
 }) => {
-    const antallMåneder = kalkulerAntallMåneder(årMånedFraInitiell, årMånedTilInitiell);
     return (
-        <div>
+        <>
             <MånedÅrVelger
                 årMånedInitiell={årMånedFraInitiell}
                 label={datoFraTekst}
@@ -58,8 +49,7 @@ const MånedÅrPeriode: React.FC<Props> = ({
                 feilmelding={feilmelding}
                 lesevisning={erLesevisning}
             />
-            <Element>{!!antallMåneder && `${antallMåneder} mnd`}</Element>
-        </div>
+        </>
     );
 };
 

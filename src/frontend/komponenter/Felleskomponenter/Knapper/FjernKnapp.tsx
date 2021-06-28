@@ -14,7 +14,7 @@ const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     knappetekst,
 }) => {
     return (
-        <StyledKnapp onClick={onClick}>
+        <StyledKnapp onClick={onClick} id="ting">
             <Delete />
             <span className="sr-only">{knappetekst}</span>
         </StyledKnapp>
