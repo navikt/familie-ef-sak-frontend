@@ -4,12 +4,6 @@ import styled from 'styled-components';
 import { Flatknapp } from 'nav-frontend-knapper';
 import hiddenIf from '../HiddenIf/hiddenIf';
 
-const MndKnappWrapper = styled.div`
-    width: 90px;
-    display: flex;
-    align-items: center;
-`;
-
 const KnappMedLuftUnder = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 1rem;
@@ -20,12 +14,10 @@ const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     knappetekst,
 }) => {
     return (
-        <MndKnappWrapper>
-            <KnappMedLuftUnder onClick={onClick}>
-                <AddCircle style={{ marginRight: '1rem' }} />
-                {knappetekst}
-            </KnappMedLuftUnder>
-        </MndKnappWrapper>
+        <KnappMedLuftUnder onClick={onClick} htmlType="button">
+            <AddCircle style={{ marginRight: '1rem' }} />
+            {knappetekst}
+        </KnappMedLuftUnder>
     );
 };
 

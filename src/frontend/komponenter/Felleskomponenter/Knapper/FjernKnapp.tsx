@@ -1,12 +1,12 @@
 import { Delete } from '@navikt/ds-icons';
 import React from 'react';
-import styled from 'styled-components';
 import { Flatknapp } from 'nav-frontend-knapper';
 import hiddenIf from '../HiddenIf/hiddenIf';
+import styled from 'styled-components';
 
 const StyledKnapp = styled(Flatknapp)`
     padding: 0;
-    margin-left: 1rem;
+    margin-bottom: 0.25rem;
 `;
 
 const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
@@ -14,7 +14,7 @@ const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     knappetekst,
 }) => {
     return (
-        <StyledKnapp onClick={onClick} id="ting">
+        <StyledKnapp onClick={onClick} htmlType="button">
             <Delete />
             <span className="sr-only">{knappetekst}</span>
         </StyledKnapp>

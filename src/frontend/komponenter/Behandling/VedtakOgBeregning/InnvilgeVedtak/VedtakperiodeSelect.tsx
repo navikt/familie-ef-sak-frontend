@@ -17,18 +17,20 @@ interface VedtakperiodeSelectProps {
     behandlingErRedigerbar: boolean;
     periodeType: EPeriodetype;
     index: number;
-    className?: string;
+    feil?: string;
 }
 
 const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     oppdaterVedtakslisteElement,
     behandlingErRedigerbar,
     periodeType,
+    feil,
 }) => {
     return (
         <StyledSelect
             aria-label="Periodetype"
             value={periodeType}
+            feil={feil}
             onChange={(e) => {
                 oppdaterVedtakslisteElement(EPeriodeProperty.periodeType, e.target.value);
             }}

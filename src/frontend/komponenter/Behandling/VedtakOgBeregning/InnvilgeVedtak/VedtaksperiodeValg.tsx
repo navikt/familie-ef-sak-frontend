@@ -21,7 +21,7 @@ import { Element } from 'nav-frontend-typografi';
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger antallMåneder fjernknapp';
-    grid-template-columns: 14rem 14rem 14rem 14rem 4rem 4rem;
+    grid-template-columns: 14rem 14rem 13rem 13rem 4rem 4rem;
     grid-template-rows: auto;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     margin-bottom: 1rem;
@@ -31,12 +31,15 @@ const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
 const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
-    grid-template-columns: 14rem 14rem 14rem 14rem;
+    grid-template-columns: 14rem 14rem 12rem 12rem;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     margin-bottom: 1rem;
     }
 `;
 
+const StyledElement = styled(Element)`
+    margin-top: 0.65rem;
+`;
 interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: IValideringsfeil['vedtak'];
@@ -54,7 +57,7 @@ const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): n
     return undefined;
 };
 
-const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe }) => {
+const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe, valideringsfeil }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const oppdaterVedtakslisteElement = (
         index: number,
@@ -78,7 +81,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe }) => {
 
     return (
         <>
-            <KolonneHeaderWrapper>
+            <KolonneHeaderWrapper lesevisning={behandlingErRedigerbar}>
                 <Element>Periodetype</Element>
                 <Element>Aktivitet</Element>
                 <Element>Fra og med</Element>
@@ -92,8 +95,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe }) => {
                     index === vedtaksperiodeListe.value.length - 1 &&
                     index !== 0;
                 return (
-                    <VedtakPeriodeContainer>
+                    <VedtakPeriodeContainer key={index} lesevisning={behandlingErRedigerbar}>
                         <VedtakperiodeSelect
+                            feil={valideringsfeil && valideringsfeil[index]?.type}
                             oppdaterVedtakslisteElement={(property, value) =>
                                 oppdaterVedtakslisteElement(index, property, value)
                             }
@@ -107,7 +111,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe }) => {
                             periodeType={periodeType}
                             oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
                             erLesevisning={!behandlingErRedigerbar}
-                            aktivitetfeil={null}
+                            aktivitetfeil={
+                                valideringsfeil && valideringsfeil[index]?.aktivitetstype
+                            }
                         />
                         <MånedÅrPeriode
                             årMånedFraInitiell={årMånedFra}
@@ -120,9 +126,10 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe }) => {
                                     verdi
                                 );
                             }}
+                            feilmelding={valideringsfeil && valideringsfeil[index].periode}
                             erLesevisning={!behandlingErRedigerbar}
                         />
-                        {antallMåneder && <Element>{`${antallMåneder} mnd`}</Element>}
+                        {antallMåneder && <StyledElement>{`${antallMåneder} mnd`}</StyledElement>}
                         {skalViseFjernKnapp && (
                             <FjernKnapp
                                 onClick={() => vedtaksperiodeListe.remove(index)}

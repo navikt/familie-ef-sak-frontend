@@ -68,5 +68,5 @@ export const validerAktivitetsType = (
 export const validerPeriodetype = (
     vedtaksperiodeListe: IVedtaksperiode[]
 ): (string | undefined)[] => {
-    return vedtaksperiodeListe.map((v) => (v.periodeType ? 'Mangler periodetype' : undefined));
+    return vedtaksperiodeListe.map((v) => (v.periodeType ? undefined : 'Mangler periodetype'));
 };

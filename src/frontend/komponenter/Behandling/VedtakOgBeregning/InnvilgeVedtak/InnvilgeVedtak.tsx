@@ -265,7 +265,7 @@ export const InnvilgeVedtak: React.FC<{
                     valideringsfeil={valideringsfeil?.inntekt}
                 />
                 <div className={'blokk-m'}>
-                    <Knapp type={'standard'} onClick={beregnPerioder}>
+                    <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
                         Beregn
                     </Knapp>
                 </div>
