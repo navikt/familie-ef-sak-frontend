@@ -5,7 +5,7 @@ import { Menyknapp } from 'nav-frontend-ikonknapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { behandlingstypeTilTekst } from '../../../typer/behandlingstype';
 import { stegTypeTilTekst } from '../../Høyremeny/Steg';
-import { formaterIsoDato } from '../../../utils/formatter';
+import { formaterIsoDatoTid } from '../../../utils/formatter';
 import { behandlingStatusTilTekst } from '../../../typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
@@ -23,6 +23,7 @@ const PopoverTabell = styled.div`
     display: grid;
     grid-template-columns: 2fr 1fr;
     margin-bottom: 0.75rem;
+
     > * {
         margin: 0.25rem 0;
     }
@@ -74,10 +75,10 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
                         <Normaltekst>{behandlingResultatTilTekst[behandling.resultat]}</Normaltekst>
 
                         <GråTekst>Opprettet</GråTekst>
-                        <Normaltekst>{formaterIsoDato(behandling.opprettet)}</Normaltekst>
+                        <Normaltekst>{formaterIsoDatoTid(behandling.opprettet)}</Normaltekst>
 
                         <GråTekst>Sist endret</GråTekst>
-                        <Normaltekst>{formaterIsoDato(behandling.sistEndret)}</Normaltekst>
+                        <Normaltekst>{formaterIsoDatoTid(behandling.sistEndret)}</Normaltekst>
 
                         <GråTekst>Steg</GråTekst>
                         <Normaltekst>{stegTypeTilTekst[behandling.steg]}</Normaltekst>

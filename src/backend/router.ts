@@ -1,5 +1,5 @@
 import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
-import { Response, Request, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import path from 'path';
 import { buildPath } from './config';
 import { prometheusTellere } from './metrikker';
@@ -15,12 +15,12 @@ export default (
     router: Router,
     middleware?: WebpackDevMiddleware.WebpackDevMiddleware
 ): Router => {
-    router.get('/version', (_req, res) => {
+    router.get('/version', (_req: Request, res: Response) => {
         res.status(200)
             .send({ version: process.env.APP_VERSION, reduxVersion: packageJson.redux_version })
             .end();
     });
-    router.get('/error', (_req, res) => {
+    router.get('/error', (_req: Request, res: Response) => {
         prometheusTellere.errorRoute.inc();
         res.sendFile('error.html', { root: path.join(`assets/`) });
     });
@@ -31,7 +31,7 @@ export default (
     });
 
     router.post('/logg-feil', (req: Request, res: Response) => {
-        logRequest(req, req.body.melding, LOG_LEVEL.ERROR);
+        logRequest(req, req.body.melding, req.body.isWarning ? LOG_LEVEL.WARNING : LOG_LEVEL.ERROR);
         res.status(200).send();
     });
 
