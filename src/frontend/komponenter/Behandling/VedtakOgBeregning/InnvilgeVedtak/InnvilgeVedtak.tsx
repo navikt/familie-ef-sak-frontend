@@ -211,11 +211,13 @@ export const InnvilgeVedtak: React.FC<{
                     valideringsfeil={formState.errors.inntekter}
                     setValideringsFeil={formState.setErrors}
                 />
-                <div className={'blokk-m'}>
-                    <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
-                        Beregn
-                    </Knapp>
-                </div>
+                {behandlingErRedigerbar && (
+                    <div className={'blokk-m'}>
+                        <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
+                            Beregn
+                        </Knapp>
+                    </div>
+                )}
                 <Utregningstabell beregnetStønad={beregnetStønad} />
                 {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
                     <IngenBegrunnelseOppgitt />
