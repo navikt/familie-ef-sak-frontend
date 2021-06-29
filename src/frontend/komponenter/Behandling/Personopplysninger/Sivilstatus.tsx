@@ -8,12 +8,16 @@ import { formaterNullableIsoDato } from '../../../utils/formatter';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { EtikettDød } from '../../etiketter/EtikettDød';
 
+const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
+const titlerMedDødsdato = [...titler, 'Dødsdato'];
+
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
+    const harDødsdato = sivilstander.some((sivilstand) => sivilstand.dødsdato);
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={Hjerte} tittel={'Sivilstatus'} />
             <table className="tabell">
-                <KolonneTitler titler={['Status', 'Dato', 'Navn', 'Fødselsnummer', 'Dødsdato']} />
+                <KolonneTitler titler={harDødsdato ? titlerMedDødsdato : titler} />
                 <tbody>
                     {sivilstander.map((sivilstand, indeks) => {
                         return (
@@ -33,7 +37,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                         <Normaltekst>-</Normaltekst>
                                     )}
                                 </td>
-                                <td>{sivilstand.dødsdato}</td>
+                                {harDødsdato && <td>{sivilstand.dødsdato}</td>}
                             </tr>
                         );
                     })}
