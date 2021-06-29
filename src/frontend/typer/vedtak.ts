@@ -37,7 +37,7 @@ export interface IBeregningsgrunnlag {
 }
 
 export interface IVedtaksperiode {
-    periodeType: EPeriodetype;
+    periodeType: EPeriodetype | '';
     aktivitet: EAktivitet;
     årMånedFra?: string;
     årMånedTil?: string;
@@ -55,17 +55,6 @@ export interface IBeløpsperiode {
     beregningsgrunnlag: IBeregningsgrunnlag;
     beløpFørSamordning: number;
     inntektsreduksjon: number;
-}
-
-export interface IValideringsfeil {
-    vedtak: {
-        periode?: string | undefined;
-        type?: string | undefined;
-        aktivitetstype?: string | undefined;
-    }[];
-    inntekt: {
-        periode?: string | undefined;
-    }[];
 }
 
 export enum EInntektsperiodeProperty {
@@ -117,9 +106,10 @@ export enum EAktivitet {
     BARNET_ER_SYKT = 'BARNET_ER_SYKT',
 }
 
-export const periodetypeTilTekst: Record<EPeriodetype, string> = {
+export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
     HOVEDPERIODE: 'Hovedperiode',
+    '': '',
 };
 
 export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {

@@ -2,13 +2,12 @@ import {
     EAktivitet,
     EPeriodeProperty,
     EPeriodetype,
-    IValideringsfeil,
     IVedtaksperiode,
     periodeVariantTilProperty,
 } from '../../../../typer/vedtak';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
 import MånedÅrPeriode from '../../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../context/BehandlingContext';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
@@ -17,11 +16,13 @@ import FjernKnapp from '../../../Felleskomponenter/Knapper/FjernKnapp';
 import { ListState } from '../../../../hooks/felles/useListState';
 import { månederMellom, månedÅrTilDate } from '../../../../utils/dato';
 import { Element } from 'nav-frontend-typografi';
+import { FormErrors } from '../../../../hooks/felles/useFormState';
+import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger antallMåneder fjernknapp';
-    grid-template-columns: 14rem 14rem 13rem 13rem 4rem 4rem;
+    grid-template-columns: repeat(4, 14rem) repeat(2, 4rem);
     grid-template-rows: auto;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     margin-bottom: 1rem;
@@ -31,7 +32,7 @@ const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
 const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
-    grid-template-columns: 14rem 14rem 12rem 12rem;
+    grid-template-columns: repeat(4, 14rem);
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
     margin-bottom: 1rem;
     }
@@ -42,7 +43,8 @@ const StyledElement = styled(Element)`
 `;
 interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
-    valideringsfeil?: IValideringsfeil['vedtak'];
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
+    setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
 export const tomVedtaksperiodeRad: IVedtaksperiode = {
@@ -57,7 +59,11 @@ const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): n
     return undefined;
 };
 
-const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe, valideringsfeil }) => {
+const VedtaksperiodeValg: React.FC<Props> = ({
+    vedtaksperiodeListe,
+    valideringsfeil,
+    setValideringsFeil,
+}) => {
     const { behandlingErRedigerbar } = useBehandling();
     const oppdaterVedtakslisteElement = (
         index: number,
@@ -97,7 +103,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe, valideringsf
                 return (
                     <VedtakPeriodeContainer key={index} lesevisning={behandlingErRedigerbar}>
                         <VedtakperiodeSelect
-                            feil={valideringsfeil && valideringsfeil[index]?.type}
+                            feil={valideringsfeil && valideringsfeil[index]?.periodeType}
                             oppdaterVedtakslisteElement={(property, value) =>
                                 oppdaterVedtakslisteElement(index, property, value)
                             }
@@ -111,9 +117,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe, valideringsf
                             periodeType={periodeType}
                             oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
                             erLesevisning={!behandlingErRedigerbar}
-                            aktivitetfeil={
-                                valideringsfeil && valideringsfeil[index]?.aktivitetstype
-                            }
+                            aktivitetfeil={valideringsfeil && valideringsfeil[index]?.aktivitet}
                         />
                         <MånedÅrPeriode
                             årMånedFraInitiell={årMånedFra}
@@ -126,13 +130,23 @@ const VedtaksperiodeValg: React.FC<Props> = ({ vedtaksperiodeListe, valideringsf
                                     verdi
                                 );
                             }}
-                            feilmelding={valideringsfeil && valideringsfeil[index].periode}
+                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
                         />
                         {antallMåneder && <StyledElement>{`${antallMåneder} mnd`}</StyledElement>}
                         {skalViseFjernKnapp && (
                             <FjernKnapp
-                                onClick={() => vedtaksperiodeListe.remove(index)}
+                                onClick={() => {
+                                    vedtaksperiodeListe.remove(index);
+                                    setValideringsFeil(
+                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                            const perioder = prevState.perioder.filter(
+                                                (_, i) => i !== index
+                                            );
+                                            return { ...prevState, perioder };
+                                        }
+                                    );
+                                }}
                                 knappetekst="Fjern vedtaksperiode"
                             />
                         )}

@@ -11,7 +11,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { OrNothing } from '../../../../hooks/felles/useSorteringState';
 
 interface Props {
-    periodeType: EPeriodetype | undefined;
+    periodeType: EPeriodetype | '';
     aktivitet: EAktivitet;
     index: number;
     oppdaterVedtakslisteElement: (index: number, property: EPeriodeProperty, value: string) => void;

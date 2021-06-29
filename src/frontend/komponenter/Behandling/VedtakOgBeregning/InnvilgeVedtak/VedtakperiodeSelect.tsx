@@ -15,7 +15,7 @@ interface VedtakperiodeSelectProps {
         value: string | number | undefined
     ) => void;
     behandlingErRedigerbar: boolean;
-    periodeType: EPeriodetype;
+    periodeType: EPeriodetype | '';
     index: number;
     feil?: string;
 }

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 const StyledKnapp = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 0.25rem;
+    height: 2rem;
 `;
 
 const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({

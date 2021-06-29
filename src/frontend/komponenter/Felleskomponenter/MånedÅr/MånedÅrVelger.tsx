@@ -15,7 +15,6 @@ interface Props {
     feilmelding?: string | null;
     lesevisning?: boolean;
     disabled?: boolean;
-    index?: number;
 }
 
 const DatolabelStyle = styled.label`
