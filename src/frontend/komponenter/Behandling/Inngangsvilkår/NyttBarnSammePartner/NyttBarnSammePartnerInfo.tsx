@@ -51,7 +51,9 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                         Brukers fremtidige barn lagt til i søknad
                     </Overskrift>
                 </FlexDiv>
-                {søknadsgrunnlagNyttBarn.map((barn) => <SøknadgrunnlagNyttBarn barn={barn} />) || (
+                {søknadsgrunnlagNyttBarn.length ? (
+                    søknadsgrunnlagNyttBarn.map((barn) => <SøknadgrunnlagNyttBarn barn={barn} />)
+                ) : (
                     <Normaltekst>
                         <i>Bruker har ingen barn lagt til i søknad</i>
                     </Normaltekst>
