@@ -36,9 +36,7 @@ const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
                 <>
                     <Søknadsgrunnlag />
                     <Normaltekst>Annen forelder lagt til i søknad</Normaltekst>
-                    <Normaltekst>
-                        <AnnenForelderNavnOgFnr forelder={annenForelder} />
-                    </Normaltekst>
+                    <AnnenForelderNavnOgFnr forelder={annenForelder} />
                 </>
             )}
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
