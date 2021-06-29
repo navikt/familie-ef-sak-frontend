@@ -3,15 +3,23 @@ import { RegistergrunnlagNyttBarn } from './typer';
 import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
 import LiteBarn from '../../../../ikoner/LiteBarn';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import {
+    Registergrunnlag,
+    Søknadsgrunnlag,
+} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
+import { harVerdi } from '../../../../utils/utils';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
 }
 
 const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
+    const { annenForelderRegister } = barn;
+
+    const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
+
     return (
         <GridTabell>
             <>
@@ -20,22 +28,34 @@ const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
             </>
             <>
                 <Registergrunnlag />
-                <Element>Fødsels eller D-nummer</Element>
+                <Normaltekst>Fødsels eller D-nummer</Normaltekst>
                 <Normaltekst>{barn.fødselsnummer}</Normaltekst>
             </>
-            <>
-                <Registergrunnlag />
-                <Element>Annen forelder fra folkeregister</Element>
-                {barn.annenForelderRegister ? (
-                    <AnnenForelderNavnOgFnr forelder={barn.annenForelderRegister} />
-                ) : (
-                    '-'
-                )}
-            </>
+
+            {annenForelderRegister && (
+                <>
+                    <Registergrunnlag />
+                    <Normaltekst>Annen forelder fra folkeregister</Normaltekst>
+                    <AnnenForelderNavnOgFnr forelder={annenForelderRegister} />
+                </>
+            )}
+
+            {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Annen forelder</Normaltekst>
+                    <Normaltekst>
+                        {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
+                            ? ikkeOppgittAnnenForelderBegrunnelse
+                            : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
+                    </Normaltekst>
+                </>
+            )}
+
             {barn.annenForelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
-                    <Element>Annen forelder dødsdato</Element>
+                    <Normaltekst>Annen forelder dødsdato</Normaltekst>
                     <Normaltekst>
                         {formaterNullableIsoDato(barn.annenForelderRegister.dødsfall)}
                     </Normaltekst>

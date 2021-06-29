@@ -3,15 +3,11 @@ import { Element } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-
 import styled from 'styled-components';
 import EtikettBase from 'nav-frontend-etiketter';
 import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
 import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -37,25 +33,31 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
         <>
             <div>
                 <FlexDiv>
-                    <Registergrunnlag />
                     <Overskrift className="tittel" tag="h3">
                         Brukers barn registrert i folkeregisteret
                     </Overskrift>
                 </FlexDiv>
                 {registergrunnlagNyttBarn.map((barn) => (
                     <RegistergrunnlagNyttBarn barn={barn} />
-                ))}
+                )) || (
+                    <Normaltekst>
+                        <i>Bruker har ingen barn lagt til i folkeregister</i>
+                    </Normaltekst>
+                )}
             </div>
             <div>
                 <FlexDiv>
-                    <Søknadsgrunnlag />
                     <Overskrift className="tittel" tag="h3">
                         Brukers fremtidige barn lagt til i søknad
                     </Overskrift>
                 </FlexDiv>
-                {søknadsgrunnlagNyttBarn.map((barn) => (
-                    <SøknadgrunnlagNyttBarn barn={barn} />
-                ))}
+                {søknadsgrunnlagNyttBarn.length ? (
+                    søknadsgrunnlagNyttBarn.map((barn) => <SøknadgrunnlagNyttBarn barn={barn} />)
+                ) : (
+                    <Normaltekst>
+                        <i>Bruker har ingen barn lagt til i søknad</i>
+                    </Normaltekst>
+                )}
             </div>
         </>
     );

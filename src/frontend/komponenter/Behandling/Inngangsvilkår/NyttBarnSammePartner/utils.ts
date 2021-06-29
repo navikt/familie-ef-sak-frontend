@@ -10,6 +10,7 @@ export const mapTilSøknadsgrunnlagNyttBarn = (
             navn: barn.søknadsgrunnlag.navn,
             fødselTermindato: barn.søknadsgrunnlag.fødselTermindato,
             annenForelderSoknad: barn.søknadsgrunnlag.forelder,
+            annenForelderRegister: barn.registergrunnlag.forelder,
             ikkeOppgittAnnenForelderBegrunnelse:
                 barn.søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse,
         }));

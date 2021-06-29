@@ -12,5 +12,6 @@ export interface SøknadsgrunnlagNyttBarn {
     navn?: string;
     fødselTermindato?: string;
     annenForelderSoknad?: IAnnenForelder;
+    annenForelderRegister?: IAnnenForelder;
     ikkeOppgittAnnenForelderBegrunnelse?: string;
 }
