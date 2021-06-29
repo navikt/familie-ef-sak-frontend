@@ -6,20 +6,24 @@ import { ISivilstand, sivilstandTilTekst } from '../../../typer/personopplysning
 import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../../utils/formatter';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { EtikettDød } from '../../etiketter/EtikettDød';
 
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={Hjerte} tittel={'Sivilstatus'} />
             <table className="tabell">
-                <KolonneTitler titler={['Status', 'Dato', 'Navn', 'Fødselsnummer']} />
+                <KolonneTitler titler={['Status', 'Dato', 'Navn', 'Fødselsnummer', 'Dødsdato']} />
                 <tbody>
                     {sivilstander.map((sivilstand, indeks) => {
                         return (
                             <tr key={indeks}>
                                 <td>{sivilstandTilTekst[sivilstand.type]}</td>
                                 <td>{formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}</td>
-                                <td>{sivilstand.navn}</td>
+                                <td>
+                                    {sivilstand.navn}
+                                    {sivilstand.dødsdato && <EtikettDød />}
+                                </td>
                                 <td>
                                     {sivilstand.relatertVedSivilstand ? (
                                         <KopierbartNullableFødselsnummer
@@ -29,6 +33,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                         <Normaltekst>-</Normaltekst>
                                     )}
                                 </td>
+                                <td>{sivilstand.dødsdato}</td>
                             </tr>
                         );
                     })}

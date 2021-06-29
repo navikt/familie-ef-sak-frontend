@@ -10,7 +10,8 @@
                 "aktiv": false,
                 "status": "FERDIGSTILT",
                 "steg": "BEHANDLING_FERDIGSTILT",
-                "sistEndret": "2020-10-09"
+                "sistEndret": "2020-10-09T11:27:15Z"
+                "opprettet": "2020-10-09T11:27:15Z"
             },
             {
                 "id": "e1e7326c-a043-4370-8d29-8d1099ff6346",
@@ -18,7 +19,8 @@
                 "aktiv": true,
                 "status": "UTREDES",
                 "steg": "VILKÅRSVURDERE_INNGANGSVILKÅR",
-                "sistEndret": "2020-10-09"
+                "sistEndret": "2020-10-09T11:27:15Z",
+                "opprettet": "2020-10-09T11:27:15Z"
             }
         ]
     },
