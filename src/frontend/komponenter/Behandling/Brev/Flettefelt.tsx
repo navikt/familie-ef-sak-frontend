@@ -1,4 +1,4 @@
-import { finnFlettefeltNavnFraRef } from './BrevUtils';
+import { finnFlettefeltVisningsnavnFraRef } from './BrevUtils';
 import { Input } from 'nav-frontend-skjema';
 import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
@@ -28,7 +28,7 @@ export const Flettefelt: React.FC<Props> = ({
 }) => (
     <StyledInput
         fetLabel={fetLabel}
-        label={finnFlettefeltNavnFraRef(dokument, flettefelt._ref)}
+        label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}
         onChange={(e) => {
             handleFlettefeltInput(e.target.value, flettefelt);
         }}
