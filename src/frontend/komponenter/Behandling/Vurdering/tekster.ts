@@ -8,7 +8,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
         'Foreligger det dokumentasjon på separasjon eller skilsmisse?',
     KRAV_SIVILSTAND_PÅKREVD_BEGRUNNELSE: 'Er krav til sivilstand oppfylt?',
     KRAV_SIVILSTAND_UTEN_PÅKREVD_BEGRUNNELSE: 'Er krav til sivilstand oppfylt?',
-    SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbrudd likestilles med formell separasjon?',
+    SAMLIVSBRUDD_LIKESTILT_MED_SEPARASJON: 'Kan samlivsbruddet likestilles med formell separasjon?',
     SAMSVAR_DATO_SEPARASJON_OG_FRAFLYTTING:
         'Er det samsvar mellom datoene for separasjon og fraflytting?',
     LEVER_IKKE_MED_ANNEN_FORELDER:
