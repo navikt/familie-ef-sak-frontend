@@ -12,7 +12,7 @@ import {
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import { Ressurs } from '../../../typer/ressurs';
-import { finnFlettefeltNavnFraRef, grupperDelmaler } from './BrevUtils';
+import { finnFletteFeltApinavnFraRef, grupperDelmaler } from './BrevUtils';
 import { useApp } from '../../../context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -101,7 +101,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const lagFlettefeltForAvsnitt = (flettefelter: Flettefeltreferanse[]) => {
         return flettefelter.reduce((acc, flettefeltreferanse) => {
-            const nyttFeltNavn = finnFlettefeltNavnFraRef(brevStruktur, flettefeltreferanse._ref);
+            const nyttFeltNavn = finnFletteFeltApinavnFraRef(
+                brevStruktur,
+                flettefeltreferanse._ref
+            );
             const nyttFlettefelt = alleFlettefelter.find(
                 (flettefelt) => flettefeltreferanse._ref === flettefelt._ref
             );
