@@ -201,7 +201,6 @@ export const InnvilgeVedtak: React.FC<{
         }
     };
 
-    console.log('error', formState.errors);
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <section className={'blokk-xl'}>

@@ -16,11 +16,14 @@ export const validerVedtaksperioder = ({
             årMånedTil: undefined,
         };
 
-        if (periodeType === '') {
+        if (periodeType === '' || periodeType === undefined) {
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, periodeType: 'Mangler periodetype' };
         }
 
-        if (periodeType === EPeriodetype.HOVEDPERIODE && aktivitet === undefined) {
+        if (
+            periodeType === EPeriodetype.HOVEDPERIODE &&
+            (aktivitet === undefined || aktivitet === '')
+        ) {
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };
         }
         if (

@@ -11,8 +11,8 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { OrNothing } from '../../../../hooks/felles/useSorteringState';
 
 interface Props {
-    periodeType: EPeriodetype | '';
-    aktivitet: EAktivitet;
+    periodeType: EPeriodetype | '' | undefined;
+    aktivitet: EAktivitet | '' | undefined;
     index: number;
     oppdaterVedtakslisteElement: (index: number, property: EPeriodeProperty, value: string) => void;
     erLesevisning: boolean;
@@ -54,7 +54,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                         );
                     }}
                     erLesevisning={erLesevisning}
-                    lesevisningVerdi={aktivitetTilTekst[aktivitet]}
+                    lesevisningVerdi={aktivitet && aktivitetTilTekst[aktivitet]}
                 >
                     <option value="">Velg</option>
                     <optgroup label="Ingen aktivitetsplikt">

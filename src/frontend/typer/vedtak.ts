@@ -37,8 +37,8 @@ export interface IBeregningsgrunnlag {
 }
 
 export interface IVedtaksperiode {
-    periodeType: EPeriodetype | '';
-    aktivitet: EAktivitet;
+    periodeType: EPeriodetype | '' | undefined;
+    aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;
     årMånedTil?: string;
 }

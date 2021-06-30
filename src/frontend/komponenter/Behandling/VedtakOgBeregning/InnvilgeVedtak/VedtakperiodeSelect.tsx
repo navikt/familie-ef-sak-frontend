@@ -15,7 +15,7 @@ interface VedtakperiodeSelectProps {
         value: string | number | undefined
     ) => void;
     behandlingErRedigerbar: boolean;
-    periodeType: EPeriodetype | '';
+    periodeType: EPeriodetype | '' | undefined;
     index: number;
     feil?: string;
 }
@@ -35,7 +35,7 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
                 oppdaterVedtakslisteElement(EPeriodeProperty.periodeType, e.target.value);
             }}
             erLesevisning={!behandlingErRedigerbar}
-            lesevisningVerdi={periodetypeTilTekst[periodeType]}
+            lesevisningVerdi={periodeType && periodetypeTilTekst[periodeType]}
         >
             <option value="">Velg</option>
             <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>
