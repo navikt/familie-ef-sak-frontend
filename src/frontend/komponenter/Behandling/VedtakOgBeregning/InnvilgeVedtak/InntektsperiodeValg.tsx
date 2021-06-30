@@ -1,9 +1,5 @@
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import {
-    EInntektsperiodeProperty,
-    IBeløpsperiode,
-    IInntektsperiode,
-} from '../../../../typer/vedtak';
+import { EInntektsperiodeProperty, IInntektsperiode } from '../../../../typer/vedtak';
 import { AddCircle, Delete } from '@navikt/ds-icons';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';

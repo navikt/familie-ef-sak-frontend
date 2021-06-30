@@ -22,20 +22,6 @@ export interface IInntektsperiode {
     endretKey?: string; // intern for re-rendring
 }
 
-export interface IBeløpsperiode {
-    periode: { fradato: string; tildato: string };
-    beregningsgrunnlag: IBeregningsgrunnlag;
-    beløp: number;
-}
-
-export interface IBeregningsgrunnlag {
-    inntekt: number;
-    samordningsfradrag?: number;
-    avkortningPerMåned: number;
-    fullOvergangsStønadPerMåned: number;
-    grunnbeløp: number;
-}
-
 export interface IVedtaksperiode {
     periodeType: EPeriodetype;
     aktivitet: EAktivitet;
@@ -47,15 +33,6 @@ export type IBeregningsrequest = {
     vedtaksperioder: IVedtaksperiode[];
     inntekt: IInntektsperiode[];
 };
-
-export interface IBeløpsperiode {
-    fraOgMedDato: string;
-    tilDato: string;
-    beløp: number;
-    beregningsgrunnlag: IBeregningsgrunnlag;
-    beløpFørSamordning: number;
-    inntektsreduksjon: number;
-}
 
 export interface IValideringsfeil {
     vedtaksperioder: string[];
