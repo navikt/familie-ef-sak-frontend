@@ -7,8 +7,8 @@ export type IAvslåVedtak = {
 
 export type IInnvilgeVedtak = {
     resultatType: EBehandlingResultat.INNVILGE;
-    periodeBegrunnelse: string;
-    inntektBegrunnelse: string;
+    periodeBegrunnelse?: string;
+    inntektBegrunnelse?: string;
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
 };

@@ -101,7 +101,25 @@ export const InnvilgeVedtak: React.FC<{
     }, [vedtaksperioder, inntektsperiodState, inntektsperioder]);
 
     const beregnPerioder = () => {
-        const feil = formState.validateForm();
+        const feil = validerVedtaksperioder({
+            perioder: vedtaksperioder,
+            inntekter: inntektsperioder,
+        });
+        formState.setErrors((prevState) => {
+            return {
+                ...prevState,
+                perioder: (feil.perioder ?? []).map((periode, index) => ({
+                    ...(prevState.perioder
+                        ? prevState.perioder[index]
+                        : { periodeType: undefined, aktivitet: undefined }),
+                    årMånedFra: periode.årMånedFra,
+                })),
+                inntekter: (feil.inntekter ?? []).map((inntekt, index) => ({
+                    ...(prevState.inntekter ? prevState.inntekter[index] : {}),
+                    årMånedFra: inntekt.årMånedFra,
+                })),
+            };
+        });
         const vedtaksperiodeFeil = feil.perioder.map((p) => p.årMånedFra);
         const inntektsPeriodeFeil = feil.inntekter.map((p) => p.årMånedFra);
         if (vedtaksperiodeFeil.concat(inntektsPeriodeFeil).every((v) => v === undefined)) {
@@ -183,6 +201,7 @@ export const InnvilgeVedtak: React.FC<{
         }
     };
 
+    console.log('error', formState.errors);
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <section className={'blokk-xl'}>
