@@ -75,7 +75,7 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
                                 ]
                             }
                             hjelpetekst="Tiden med overgangsstønad løper dersom søker mottar andre løpende ytelser etter folketrygdloven kap.15,
-                            herunder ytelser etter tilleggsstønadsforeskriften."
+                            herunder ytelser etter tilleggsstønadsforskriften."
                         />
                     </Container>
                 );
