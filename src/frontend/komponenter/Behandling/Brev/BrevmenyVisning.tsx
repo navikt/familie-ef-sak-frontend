@@ -5,14 +5,13 @@ import {
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
-    TilkjentYtelse,
     ValgFelt,
     ValgtFelt,
 } from './BrevTyper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import { Ressurs } from '../../../typer/ressurs';
-import { finnFlettefeltNavnFraRef, grupperDelmaler } from './BrevUtils';
+import { finnFletteFeltApinavnFraRef, grupperDelmaler } from './BrevUtils';
 import { useApp } from '../../../context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -21,6 +20,7 @@ import Panel from 'nav-frontend-paneler';
 import { brevMal, BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../api/axios';
 import { delmalTilHtml } from './Htmlfelter';
+import { TilkjentYtelse } from '../../../typer/tilkjentytelse';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -101,7 +101,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const lagFlettefeltForAvsnitt = (flettefelter: Flettefeltreferanse[]) => {
         return flettefelter.reduce((acc, flettefeltreferanse) => {
-            const nyttFeltNavn = finnFlettefeltNavnFraRef(brevStruktur, flettefeltreferanse._ref);
+            const nyttFeltNavn = finnFletteFeltApinavnFraRef(
+                brevStruktur,
+                flettefeltreferanse._ref
+            );
             const nyttFlettefelt = alleFlettefelter.find(
                 (flettefelt) => flettefeltreferanse._ref === flettefelt._ref
             );

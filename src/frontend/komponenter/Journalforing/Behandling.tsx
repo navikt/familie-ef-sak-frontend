@@ -9,7 +9,7 @@ import { Behandlingstype } from '../../typer/behandlingstype';
 import { Behandling, Fagsak } from '../../typer/fagsak';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { BehandlingRequest } from '../../hooks/useJournalføringState';
-import { formaterIsoDato } from '../../utils/formatter';
+import { formaterIsoDatoTid } from '../../utils/formatter';
 import { Ressurs } from '../../typer/ressurs';
 
 interface Props {
@@ -80,7 +80,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                         </td>
                                         <td>{behandlingsEl.type}</td>
                                         <td>{behandlingsEl.status}</td>
-                                        <td>{formaterIsoDato(behandlingsEl.sistEndret)}</td>
+                                        <td>{formaterIsoDatoTid(behandlingsEl.sistEndret)}</td>
                                     </tr>
                                 ))}
                                 {nyBehandling && (

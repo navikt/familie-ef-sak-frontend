@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur, TilkjentYtelse } from './BrevTyper';
+import { BrevStruktur } from './BrevTyper';
 import { byggTomRessurs, Ressurs } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
+import { TilkjentYtelse } from '../../../typer/tilkjentytelse';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;

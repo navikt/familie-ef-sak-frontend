@@ -14,11 +14,30 @@ const errorMessage = (frontendFeilmelding: string, headers?: any) => {
     return `${frontendFeilmelding} (url=${location} callId=${callId})`;
 };
 
+const lagUkjentFeilRessurs = (headers?: Headers): RessursFeilet => ({
+    melding: 'Mest sannsynlig ukjent api feil',
+    frontendFeilmelding: errorMessage('Mest sannsynlig ukjent api feil', headers),
+    status: RessursStatus.FEILET,
+});
+
+export const håndterFeil = <T>(
+    error: AxiosError,
+    innloggetSaksbehandler?: ISaksbehandler
+): RessursSuksess<T> | RessursFeilet => {
+    const headers = error.response?.headers;
+    if (!error.response?.data.status) {
+        loggFeil(error, innloggetSaksbehandler, `Savner body/status i response`, headers);
+        return lagUkjentFeilRessurs(headers);
+    }
+    const responsRessurs: Ressurs<T> = error.response?.data;
+
+    return håndterRessurs(responsRessurs, innloggetSaksbehandler, headers);
+};
+
 export const håndterRessurs = <T>(
     ressurs: Ressurs<T>,
     innloggetSaksbehandler?: ISaksbehandler,
-    // eslint-disable-next-line
-    headers?: any
+    headers?: Headers
 ): RessursSuksess<T> | RessursFeilet => {
     let typetRessurs: Ressurs<T>;
 
@@ -30,7 +49,7 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.IKKE_TILGANG:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
+            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers, true);
             typetRessurs = {
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
@@ -38,7 +57,7 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.FEILET:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding);
+            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers);
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
@@ -54,11 +73,13 @@ export const håndterRessurs = <T>(
             };
             break;
         default:
-            typetRessurs = {
-                melding: 'Mest sannsynlig ukjent api feil',
-                frontendFeilmelding: errorMessage('Mest sannsynlig ukjent api feil', headers),
-                status: RessursStatus.FEILET,
-            };
+            loggFeil(
+                undefined,
+                innloggetSaksbehandler,
+                `Ukjent feil status=${ressurs.status}`,
+                headers
+            );
+            typetRessurs = lagUkjentFeilRessurs(headers);
             break;
     }
 
@@ -68,7 +89,9 @@ export const håndterRessurs = <T>(
 export const loggFeil = (
     error?: AxiosError,
     innloggetSaksbehandler?: ISaksbehandler,
-    feilmelding?: string
+    feilmelding?: string,
+    headers?: Headers,
+    isWarning = false
 ): void => {
     if (process.env.NODE_ENV === 'production') {
         configureScope((scope) => {
@@ -93,7 +116,9 @@ export const loggFeil = (
         apiLoggFeil(
             `${error ? `${error}${feilmelding ? ' - ' : ''}` : ''}${
                 feilmelding ? `Feilmelding: ${feilmelding}` : ''
-            }`
+            }`,
+            headers,
+            isWarning
         );
 
         slackNotify(
@@ -114,9 +139,20 @@ export const slackNotify = (melding: string, kanal: string): void => {
     // });
 };
 
-export const apiLoggFeil = (melding: string): void => {
-    // eslint-disable-next-line
-    preferredAxios.post('/logg-feil', {
-        melding,
-    });
+export const apiLoggFeil = (melding: string, headers?: Headers, isWarning = false): void => {
+    const callId = headers?.['nav-call-id'];
+    preferredAxios.post(
+        '/logg-feil',
+        {
+            melding,
+            ...(isWarning && { isWarning }),
+        },
+        {
+            headers: {
+                ...((callId && { 'nav-call-id': callId }) as Headers),
+            },
+        }
+    );
 };
+
+type Headers = Record<string, unknown>;

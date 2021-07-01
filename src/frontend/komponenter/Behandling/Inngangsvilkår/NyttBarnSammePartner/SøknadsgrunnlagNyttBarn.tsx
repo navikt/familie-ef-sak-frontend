@@ -7,38 +7,49 @@ import { mapBarnNavnTekst } from './utils';
 import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
+import { harVerdi } from '../../../../utils/utils';
 
 interface Props {
     barn: SøknadsgrunnlagNyttBarn;
 }
 
 const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
+    const annenForelder =
+        barn.annenForelderRegister && barn.annenForelderSoknad
+            ? barn.annenForelderRegister
+            : barn.annenForelderSoknad;
+
+    const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
+
     return (
         <GridTabell>
             <>
                 <LiteBarn />
-                <Element>{mapBarnNavnTekst(barn)}</Element>
+                <Element tag="h4">{mapBarnNavnTekst(barn)}</Element>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Element>Termindato</Element>
+                <Normaltekst>Termindato</Normaltekst>
                 <Normaltekst>{formaterNullableIsoDato(barn.fødselTermindato)}</Normaltekst>
             </>
-            <>
-                <Søknadsgrunnlag />
-                <Element>Annen forelder lagt til i søknad</Element>
-                <Normaltekst>
-                    {barn.annenForelderSoknad ? (
-                        <AnnenForelderNavnOgFnr forelder={barn.annenForelderSoknad} />
-                    ) : (
-                        <>
-                            {barn.ikkeOppgittAnnenForelderBegrunnelse
-                                ? `Ikke oppgitt: ${barn.ikkeOppgittAnnenForelderBegrunnelse}`
-                                : '-'}
-                        </>
-                    )}
-                </Normaltekst>
-            </>
+            {annenForelder && (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Annen forelder lagt til i søknad</Normaltekst>
+                    <AnnenForelderNavnOgFnr forelder={annenForelder} />
+                </>
+            )}
+            {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Annen forelder</Normaltekst>
+                    <Normaltekst>
+                        {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
+                            ? ikkeOppgittAnnenForelderBegrunnelse
+                            : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
+                    </Normaltekst>
+                </>
+            )}
         </GridTabell>
     );
 };

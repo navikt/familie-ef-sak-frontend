@@ -4,7 +4,20 @@ export type IAvslåVedtak = {
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåBegrunnelse: string;
 };
+export interface IBeløpsperiode {
+    periode: { fradato: string; tildato: string };
+    beregningsgrunnlag: IBeregningsgrunnlag;
+    beløp: number;
+    beløpFørSamordning: number;
+}
 
+export interface IBeregningsgrunnlag {
+    inntekt: number;
+    samordningsfradrag: number;
+    avkortningPerMåned: number;
+    fullOvergangsStønadPerMåned: number | null;
+    grunnbeløp: number | null;
+}
 export type IInnvilgeVedtak = {
     resultatType: EBehandlingResultat.INNVILGE;
     periodeBegrunnelse?: string;
@@ -22,20 +35,6 @@ export interface IInntektsperiode {
     endretKey?: string; // intern for re-rendring
 }
 
-export interface IBeløpsperiode {
-    periode: { fradato: string; tildato: string };
-    beregningsgrunnlag: IBeregningsgrunnlag;
-    beløp: number;
-}
-
-export interface IBeregningsgrunnlag {
-    inntekt: number;
-    samordningsfradrag?: number;
-    avkortningPerMåned: number;
-    fullOvergangsStønadPerMåned: number;
-    grunnbeløp: number;
-}
-
 export interface IVedtaksperiode {
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
@@ -47,15 +46,6 @@ export type IBeregningsrequest = {
     vedtaksperioder: IVedtaksperiode[];
     inntekt: IInntektsperiode[];
 };
-
-export interface IBeløpsperiode {
-    fraOgMedDato: string;
-    tilDato: string;
-    beløp: number;
-    beregningsgrunnlag: IBeregningsgrunnlag;
-    beløpFørSamordning: number;
-    inntektsreduksjon: number;
-}
 
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',

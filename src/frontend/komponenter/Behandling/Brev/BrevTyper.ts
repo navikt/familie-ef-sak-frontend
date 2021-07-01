@@ -1,16 +1,5 @@
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 
-export interface TilkjentYtelse {
-    andeler: AndelTilkjentYtelse[];
-}
-
-export interface AndelTilkjentYtelse {
-    stønadFra: string;
-    stønadTil: string;
-    inntekt: number;
-    beløp: number;
-}
-
 export interface BrevStruktur {
     dokument: DokumentMal;
     flettefelter: AlleFlettefelter;
@@ -24,6 +13,7 @@ export interface AlleFlettefelter {
 }
 interface Flettefelt {
     felt: string;
+    feltVisningsnavn?: string;
     _id: string;
 }
 
