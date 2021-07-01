@@ -5,7 +5,6 @@ import {
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
-    TilkjentYtelse,
     ValgFelt,
     ValgtFelt,
 } from './BrevTyper';
@@ -21,6 +20,7 @@ import Panel from 'nav-frontend-paneler';
 import { brevMal, BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../api/axios';
 import { delmalTilHtml } from './Htmlfelter';
+import { TilkjentYtelse } from '../../../typer/tilkjentytelse';
 
 const GenererBrev = styled(Knapp)`
     display: block;
