@@ -43,15 +43,24 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerdi[] =>
-    brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
+const initFlettefelterMedVerdi = (
+    brevStruktur: BrevStruktur,
+    mellomlagretFlettefeltMedVerdi: FlettefeltMedVerdi[] | undefined
+): FlettefeltMedVerdi[] => {
+    if (mellomlagretFlettefeltMedVerdi) {
+        return mellomlagretFlettefeltMedVerdi;
+    }
+
+    return brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
         _ref: felt._id,
         verdi: null,
     }));
+};
 
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     tilkjentYtelse?: TilkjentYtelse;
+    mellomlagretFlettefeltMedVerdi?: FlettefeltMedVerdi[];
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -61,10 +70,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     settKanSendesTilBeslutter,
     brevStruktur,
     tilkjentYtelse,
+    mellomlagretFlettefeltMedVerdi,
 }) => {
     const { axiosRequest } = useApp();
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
-        initFlettefelterMedVerdi(brevStruktur)
+        initFlettefelterMedVerdi(brevStruktur, mellomlagretFlettefeltMedVerdi)
     );
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
@@ -154,8 +164,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
+
     return (
         <StyledBrevMeny>
+            {JSON.stringify(alleFlettefelter)}
+
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
                     <Panel key={key}>
@@ -187,5 +200,4 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         </StyledBrevMeny>
     );
 };
-
 export default BrevmenyVisning;
