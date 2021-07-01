@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import VedtaksperiodeValg, {
     IVedtaksperiodeData,
     tomVedtaksperiodeRad,
@@ -70,6 +70,34 @@ export const InnvilgeVedtak: React.FC<{
             : [tomInntektsperiodeRad],
     });
 
+    const beregnPerioder = () => {
+        axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/beregning/`,
+            data: {
+                vedtaksperioder: vedtaksperiodeData.vedtaksperiodeListe,
+                inntekt: inntektsperiodeData.inntektsperiodeListe.map((v) => ({
+                    ...v,
+                    forventetInntekt: v.forventetInntekt ?? 0,
+                    samordningsfradrag: v.samordningsfradrag ?? 0,
+                })),
+            },
+        }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
+    };
+
+    const hentLagretBeløpForYtelse = useCallback(() => {
+        axiosRequest<IBeløpsperiode[], void>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/beregning/${behandling.id}`,
+        }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
+    }, [axiosRequest, behandling]);
+
+    useEffect(() => {
+        if (!behandlingErRedigerbar && lagretInnvilgetVedtak) {
+            hentLagretBeløpForYtelse();
+        }
+    }, [behandlingErRedigerbar, lagretInnvilgetVedtak, hentLagretBeløpForYtelse]);
+
     const validerVedtak = (): boolean => {
         const validerteVedtaksperioder = validerVedtaksperioder(
             inntektsperiodeData.inntektsperiodeListe,
@@ -102,21 +130,6 @@ export const InnvilgeVedtak: React.FC<{
         ) {
             settÅrMånedFraPåFørsteInntektsperiode(førsteVedtaksperiode.årMånedFra);
         }
-    };
-
-    const beregnPerioder = () => {
-        axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/beregning/`,
-            data: {
-                vedtaksperioder: vedtaksperiodeData.vedtaksperiodeListe,
-                inntekt: inntektsperiodeData.inntektsperiodeListe.map((v) => ({
-                    ...v,
-                    forventetInntekt: v.forventetInntekt ?? 0,
-                    samordningsfradrag: v.samordningsfradrag ?? 0,
-                })),
-            },
-        }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
     };
 
     const settÅrMånedFraPåFørsteInntektsperiode = (årMånedFra: string | undefined) => {

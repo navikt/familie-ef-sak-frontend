@@ -1,9 +1,9 @@
-import { IBeløpsperiode } from '../../../../typer/vedtak';
 import React from 'react';
 import DataViewer from '../../../Felleskomponenter/DataViewer/DataViewer';
 import { Ressurs } from '../../../../typer/ressurs';
 import TabellVisning from '../../TabellVisning';
 import { formaterNullableMånedÅr, formaterTallMedTusenSkille } from '../../../../utils/formatter';
+import { IBeløpsperiode } from '../../../../typer/vedtak';
 
 interface Props {
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
