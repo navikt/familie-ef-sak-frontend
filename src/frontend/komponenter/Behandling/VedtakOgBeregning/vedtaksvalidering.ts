@@ -47,7 +47,7 @@ export const validerVedtaksperioder = ({
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
                     ...vedtaksperiodeFeil,
-                    årMånedFra: `Ugyldig periode - fra (${årMånedFra})  må være før til (${årMånedTil})`,
+                    årMånedFra: `Ugyldig etterfølgende periode - fra (${forrige.årMånedTil}) må være etter til (${årMånedFra})`,
                 };
             }
         }
