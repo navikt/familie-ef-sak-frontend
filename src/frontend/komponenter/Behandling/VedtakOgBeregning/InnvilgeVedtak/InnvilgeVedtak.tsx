@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
@@ -99,6 +99,19 @@ export const InnvilgeVedtak: React.FC<{
             );
         }
     }, [vedtaksperioder, inntektsperiodState, inntektsperioder]);
+
+    const hentLagretBeløpForYtelse = useCallback(() => {
+        axiosRequest<IBeløpsperiode[], void>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/beregning/${behandling.id}`,
+        }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
+    }, [axiosRequest, behandling]);
+
+    useEffect(() => {
+        if (!behandlingErRedigerbar && lagretInnvilgetVedtak) {
+            hentLagretBeløpForYtelse();
+        }
+    }, [behandlingErRedigerbar, lagretInnvilgetVedtak, hentLagretBeløpForYtelse]);
 
     const beregnPerioder = () => {
         const feil = validerVedtaksperioder({
