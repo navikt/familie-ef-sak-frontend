@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-//import { AndelTilkjentYtelse, BrevStruktur, FlettefeltMedVerdi, TilkjentYtelse } from './BrevTyper';
-import { BrevStruktur, FlettefeltMedVerdi, TilkjentYtelse } from './BrevTyper';
+import { AndelTilkjentYtelse, BrevStruktur, FlettefeltMedVerdi, TilkjentYtelse } from './BrevTyper';
+//import { BrevStruktur, FlettefeltMedVerdi, TilkjentYtelse } from './BrevTyper';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { useApp } from '../../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
-//import { byggSuksessRessurs } from '@navikt/familie-typer';
+import { byggSuksessRessurs } from '@navikt/familie-typer';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -35,13 +35,13 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         // eslint-disable-next-line
     }, []);
 
-    // const andel: AndelTilkjentYtelse = {
-    //     stønadFra: 'wer',
-    //     stønadTil: 'wer',
-    //     inntekt: 12,
-    //     beløp: 12,
-    // };
-    // const mockTilkjent: TilkjentYtelse = { andeler: [andel] };
+    const andel: AndelTilkjentYtelse = {
+        stønadFra: 'wer',
+        stønadTil: 'wer',
+        inntekt: 12,
+        beløp: 12,
+    };
+    const mockTilkjent: TilkjentYtelse = { andeler: [andel] };
 
     useEffect(() => {
         axiosRequest<TilkjentYtelse, null>({
@@ -49,9 +49,9 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
             url: `/familie-ef-sak/api/tilkjentytelse/behandling/${props.behandlingId}`,
         }).then((respons: Ressurs<TilkjentYtelse>) => {
             console.log(respons);
-            settTilkjentYtelse(respons); // BYTT UT MED DEN UNDER
+            //settTilkjentYtelse(respons); // BYTT UT MED DEN UNDER
             // @ts-ignore
-            //settTilkjentYtelse(byggSuksessRessurs(mockTilkjent));
+            settTilkjentYtelse(byggSuksessRessurs(mockTilkjent));
         });
         // eslint-disable-next-line
     }, []);
