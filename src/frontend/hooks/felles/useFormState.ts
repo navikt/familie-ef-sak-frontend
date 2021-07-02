@@ -15,7 +15,7 @@ export type FormHook<T extends Record<string, any>> = {
     onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement>;
 };
 
-export type FormErrors<T extends Record<string, any>> = {
+export type FormErrors<T extends Record<string, any | undefined>> = {
     [P in keyof T]: T[P] extends string | undefined ? string | undefined : FormErrors<T[P]>;
 };
 
@@ -25,7 +25,15 @@ export default function useFormState<T extends Record<string, unknown>>(
     initialState: FormState<T>,
     valideringsfunksjon: Valideringsfunksjon<T>
 ): FormHook<T> {
-    const [errors, setErrors] = useState<FormErrors<T>>({} as FormErrors<T>);
+    const [errors, setErrors] = useState<FormErrors<T>>(
+        Object.keys(initialState).reduce(
+            (acc, key) => ({
+                ...acc,
+                [key]: undefined,
+            }),
+            {} as FormErrors<T>
+        ) as FormErrors<T>
+    );
 
     const formState: InternalFormState<T> = Object.entries(initialState)
         .map(([key, value]) => {
