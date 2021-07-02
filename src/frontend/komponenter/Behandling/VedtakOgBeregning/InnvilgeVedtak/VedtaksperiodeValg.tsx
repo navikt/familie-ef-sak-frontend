@@ -142,10 +142,13 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                     vedtaksperiodeListe.remove(index);
                                     setValideringsFeil(
                                         (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const perioder = prevState.perioder.filter(
-                                                (_, i) => i !== index
-                                            );
-                                            return { ...prevState, perioder };
+                                            if (prevState) {
+                                                const perioder = prevState.perioder.filter(
+                                                    (_, i) => i !== index
+                                                );
+                                                return { ...prevState, perioder };
+                                            }
+                                            return prevState;
                                         }
                                     );
                                 }}
