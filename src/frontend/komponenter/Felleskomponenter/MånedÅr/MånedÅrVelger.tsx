@@ -12,7 +12,7 @@ interface Props {
     onEndret: (årMåned?: string) => void;
     antallÅrTilbake: number;
     antallÅrFrem: number;
-    feilmelding?: string;
+    feilmelding?: string | null;
     lesevisning?: boolean;
     disabled?: boolean;
 }
@@ -21,12 +21,8 @@ const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;
 `;
 
-const StyledMånedvelger = styled.div`
-    padding-right: 0.5em;
-`;
-
-const StyledÅrvelger = styled.div`
-    padding-right: 1.5em;
+const StyledMånedVelger = styled(MånedVelger)`
+    padding-right: 1em;
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
@@ -57,32 +53,26 @@ const MånedÅrVelger: React.FC<Props> = ({
 
     return (
         <div className={className} style={lesevisning ? { minWidth: '140px' } : {}}>
-            <div>
-                {label && (
-                    <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
-                        {label}
-                    </DatolabelStyle>
-                )}
-            </div>
+            {label && (
+                <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
+                    {label}
+                </DatolabelStyle>
+            )}
             <FlexDiv>
-                <StyledMånedvelger>
-                    <MånedVelger
-                        måned={måned}
-                        settMåned={settMåned}
-                        lesevisning={lesevisning}
-                        disabled={disabled}
-                    />
-                </StyledMånedvelger>
-                <StyledÅrvelger>
-                    <Årvelger
-                        år={år}
-                        settÅr={settÅr}
-                        antallÅrTilbake={antallÅrTilbake}
-                        antallÅrFrem={antallÅrFrem}
-                        lesevisning={lesevisning}
-                        disabled={disabled}
-                    />
-                </StyledÅrvelger>
+                <StyledMånedVelger
+                    måned={måned}
+                    settMåned={settMåned}
+                    lesevisning={lesevisning}
+                    disabled={disabled}
+                />
+                <Årvelger
+                    år={år}
+                    settÅr={settÅr}
+                    antallÅrTilbake={antallÅrTilbake}
+                    antallÅrFrem={antallÅrFrem}
+                    lesevisning={lesevisning}
+                    disabled={disabled}
+                />
             </FlexDiv>
             {feilmelding && <SkjemaelementFeilmelding>{feilmelding}</SkjemaelementFeilmelding>}
         </div>

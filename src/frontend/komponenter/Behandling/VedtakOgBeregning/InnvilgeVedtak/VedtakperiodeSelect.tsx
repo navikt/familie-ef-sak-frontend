@@ -11,33 +11,31 @@ const StyledSelect = styled(FamilieSelect)`
 
 interface VedtakperiodeSelectProps {
     oppdaterVedtakslisteElement: (
-        index: number,
         property: EPeriodeProperty,
         value: string | number | undefined
     ) => void;
     behandlingErRedigerbar: boolean;
-    periodeType: EPeriodetype;
+    periodeType: EPeriodetype | '' | undefined;
     index: number;
-    className?: string;
+    feil?: string;
 }
 
 const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     oppdaterVedtakslisteElement,
     behandlingErRedigerbar,
     periodeType,
-    index,
-    className,
+    feil,
 }) => {
     return (
         <StyledSelect
-            className={className}
-            aria-label={'Periodetype'}
+            aria-label="Periodetype"
             value={periodeType}
+            feil={feil}
             onChange={(e) => {
-                oppdaterVedtakslisteElement(index, EPeriodeProperty.periodeType, e.target.value);
+                oppdaterVedtakslisteElement(EPeriodeProperty.periodeType, e.target.value);
             }}
             erLesevisning={!behandlingErRedigerbar}
-            lesevisningVerdi={periodetypeTilTekst[periodeType]}
+            lesevisningVerdi={periodeType && periodetypeTilTekst[periodeType]}
         >
             <option value="">Velg</option>
             <option value={EPeriodetype.PERIODE_FØR_FØDSEL}>

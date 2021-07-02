@@ -20,8 +20,8 @@ export interface IBeregningsgrunnlag {
 }
 export type IInnvilgeVedtak = {
     resultatType: EBehandlingResultat.INNVILGE;
-    periodeBegrunnelse: string;
-    inntektBegrunnelse: string;
+    periodeBegrunnelse?: string;
+    inntektBegrunnelse?: string;
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
 };
@@ -36,8 +36,8 @@ export interface IInntektsperiode {
 }
 
 export interface IVedtaksperiode {
-    periodeType: EPeriodetype;
-    aktivitet: EAktivitet;
+    periodeType: EPeriodetype | '' | undefined;
+    aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;
     årMånedTil?: string;
 }
@@ -46,11 +46,6 @@ export type IBeregningsrequest = {
     vedtaksperioder: IVedtaksperiode[];
     inntekt: IInntektsperiode[];
 };
-
-export interface IValideringsfeil {
-    vedtaksperioder: string[];
-    inntektsperioder: string[];
-}
 
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',
@@ -101,9 +96,10 @@ export enum EAktivitet {
     BARNET_ER_SYKT = 'BARNET_ER_SYKT',
 }
 
-export const periodetypeTilTekst: Record<EPeriodetype, string> = {
+export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
     HOVEDPERIODE: 'Hovedperiode',
+    '': '',
 };
 
 export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
