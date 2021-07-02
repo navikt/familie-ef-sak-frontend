@@ -130,13 +130,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     inntektsperiodeListe.remove(index);
                                     setValideringsFeil(
                                         (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            if (prevState) {
-                                                const inntekter = prevState.inntekter.filter(
-                                                    (_, i) => i !== index
-                                                );
-                                                return { ...prevState, inntekter: inntekter };
-                                            }
-                                            return prevState;
+                                            const inntekter = (prevState.inntekter ?? []).filter(
+                                                (_, i) => i !== index
+                                            );
+                                            return { ...prevState, inntekter: inntekter };
                                         }
                                     );
                                 }}
