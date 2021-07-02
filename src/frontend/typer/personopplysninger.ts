@@ -88,6 +88,7 @@ export interface ISivilstand {
     gyldigFraOgMed?: string;
     relatertVedSivilstand?: string;
     navn?: string;
+    dødsdato?: string;
 }
 
 export interface IInnflyttingTilNorge {

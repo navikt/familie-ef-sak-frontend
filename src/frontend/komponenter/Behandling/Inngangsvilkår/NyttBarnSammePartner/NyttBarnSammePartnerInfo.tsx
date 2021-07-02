@@ -1,13 +1,11 @@
 import React, { FC } from 'react';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import styled from 'styled-components';
-import EtikettBase from 'nav-frontend-etiketter';
 import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
 import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -16,13 +14,6 @@ interface Props {
 const Overskrift = styled(Element)`
     margin-left: 0.5rem;
     margin-bottom: 1rem;
-`;
-
-export const EtikettDød = styled(EtikettBase)`
-    background-color: black;
-    color: #eee;
-    margin-left: 0.5rem;
-    border: none;
 `;
 
 const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
