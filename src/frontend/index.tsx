@@ -4,9 +4,9 @@ import axe from 'react-axe';
 import * as ReactDOM from 'react-dom';
 import { hot } from 'react-hot-loader';
 
-import App from './komponenter/App';
+import App from './App';
 import './index.less';
-import { oppgaveRequestKey } from './komponenter/Oppgavebenk/oppgavefilterStorage';
+import { oppgaveRequestKey } from './Oppgavebenk/oppgavefilterStorage';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');

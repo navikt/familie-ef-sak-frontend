@@ -1,7 +1,7 @@
 import { Stønadstype } from './behandlingstema';
 import { Behandlingstype } from './behandlingstype';
 import { BehandlingStatus } from './behandlingstatus';
-import { Steg } from '../komponenter/Høyremeny/Steg';
+import { Steg } from '../Behandling/Høyremeny/Steg';
 
 export interface Fagsak {
     id: string;
