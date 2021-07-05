@@ -1,7 +1,7 @@
 import { useApp } from '../context/AppContext';
 import { useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
-import { ReglerResponse } from '../komponenter/Behandling/Vurdering/typer';
+import { ReglerResponse } from '../Behandling/Vurdering/typer';
 
 interface HentReglerResponse {
     hentRegler: () => void;

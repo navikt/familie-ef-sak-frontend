@@ -1,4 +1,4 @@
-import { PeriodeVariant } from '../komponenter/Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import { PeriodeVariant } from '../Felleskomponenter/MånedÅr/MånedÅrPeriode';
 
 export type IAvslåVedtak = {
     resultatType: EBehandlingResultat.AVSLÅ;

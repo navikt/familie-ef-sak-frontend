@@ -1,7 +1,7 @@
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useHistory } from 'react-router-dom';
-import { IOppgave } from '../komponenter/Oppgavebenk/oppgave';
+import { IOppgave } from '../Oppgavebenk/typer/oppgave';
 import { useState } from 'react';
 
 interface OppgaveDto {
