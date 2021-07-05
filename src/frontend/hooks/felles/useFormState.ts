@@ -11,7 +11,7 @@ export type FormHook<T extends Record<string, any>> = {
     getProps(key: keyof T): FieldState | ListState<unknown>;
     errors: FormErrors<T>;
     setErrors: Dispatch<SetStateAction<FormErrors<T>>>;
-    validateForm: () => FormErrors<T>;
+    validateForm: () => boolean;
     onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement>;
 };
 
@@ -55,13 +55,13 @@ export default function useFormState<T extends Record<string, unknown>>(
 
     return {
         getProps: (key: keyof T) => formState[key],
-        errors,
-        setErrors,
         validateForm: () => {
             const errors = valideringsfunksjon(tilFormstate);
             setErrors(errors);
-            return errors;
+            return isValid(errors);
         },
+        errors,
+        setErrors,
         onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement> {
             return (event) => {
                 event.preventDefault();
