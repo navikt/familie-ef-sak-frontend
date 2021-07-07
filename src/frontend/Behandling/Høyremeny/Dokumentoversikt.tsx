@@ -14,6 +14,8 @@ import { IBehandlingParams } from '../../typer/routing';
 import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
 import styled from 'styled-components';
 import { formaterNullableIsoDatoTid } from '../../utils/formatter';
+import { Undertittel } from 'nav-frontend-typografi';
+import navFarger from 'nav-frontend-core';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,
@@ -21,6 +23,16 @@ const StyledDokumentliste = styled(Dokumentliste)`
         text-align: left;
     }
 `;
+
+const StyledUndertittel = styled(Undertittel)`
+    padding: 0.5rem 1rem;
+    color: ${navFarger.navGra80};
+`;
+
+type AlleDokument = {
+    dokumenterKnyttetTilBehandlingen: DokumentProps[];
+    andreDokumenter: DokumentProps[];
+};
 
 const Dokumentoversikt: React.FC = () => {
     const { axiosRequest } = useApp();
@@ -35,9 +47,7 @@ const Dokumentoversikt: React.FC = () => {
         }),
         [behandlingId]
     );
-    const dokumentResponse: Ressurs<DokumentProps[]> = useDataHenter<DokumentProps[], null>(
-        dokumentConfig
-    );
+    const dokumentResponse = useDataHenter<AlleDokument, null>(dokumentConfig);
 
     const lastNedDokument = (dokument: DokumentProps) => {
         axiosRequest<string, null>({
@@ -66,15 +76,31 @@ const Dokumentoversikt: React.FC = () => {
             {lastNedDokumentFeilet && <AlertStripeFeil>{lastNedDokumentFeilet}</AlertStripeFeil>}
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
-                    const dokumenterMedFormatertDato = dokumentResponse.map((dokument) => ({
-                        ...dokument,
-                        dato: formaterNullableIsoDatoTid(dokument.dato),
-                    }));
+                    const dokumenterKnyttetTilBehandlingenMedDato = dokumentResponse.dokumenterKnyttetTilBehandlingen.map(
+                        (dokument) => ({
+                            ...dokument,
+                            dato: formaterNullableIsoDatoTid(dokument.dato),
+                        })
+                    );
+                    const andraDokumenterMedDato = dokumentResponse.andreDokumenter.map(
+                        (dokument) => ({
+                            ...dokument,
+                            dato: formaterNullableIsoDatoTid(dokument.dato),
+                        })
+                    );
                     return (
-                        <StyledDokumentliste
-                            dokumenter={dokumenterMedFormatertDato}
-                            onClick={lastNedDokument}
-                        />
+                        <>
+                            <StyledUndertittel>Knyttet til behandlingen</StyledUndertittel>
+                            <StyledDokumentliste
+                                dokumenter={dokumenterKnyttetTilBehandlingenMedDato}
+                                onClick={lastNedDokument}
+                            />
+                            <StyledUndertittel>Andre dokumenter</StyledUndertittel>
+                            <StyledDokumentliste
+                                dokumenter={andraDokumenterMedDato}
+                                onClick={lastNedDokument}
+                            />
+                        </>
                     );
                 }}
             </DataViewer>
