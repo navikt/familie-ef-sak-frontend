@@ -6,10 +6,14 @@ import { IBehandlingParams } from '../../typer/routing';
 import { filtrerSiderEtterBehandlingstype, sider } from './sider';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { NavLink } from 'react-router-dom';
-import navFarger from 'nav-frontend-core';
 import { useBehandling } from '../../context/BehandlingContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Sticky } from '../../Felleskomponenter/Sticky';
+import navFarger from 'nav-frontend-core';
+
+const StickyMedBoxShadow = styled(Sticky)`
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+`;
 
 const StyledFanemeny = styled.div`
     width: 100%;
@@ -53,7 +57,7 @@ const Fanemeny: FC = () => {
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => (
-                <Sticky>
+                <StickyMedBoxShadow>
                     <StyledFanemeny>
                         {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
                             <StyledNavLink
@@ -65,7 +69,7 @@ const Fanemeny: FC = () => {
                             </StyledNavLink>
                         ))}
                     </StyledFanemeny>
-                </Sticky>
+                </StickyMedBoxShadow>
             )}
         </DataViewer>
     );
