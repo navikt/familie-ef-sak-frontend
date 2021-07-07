@@ -53,7 +53,7 @@ const Routes: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
             {autentisert ? (
                 <>
                     <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
-                    <div className={'container'} role="main">
+                    <div role="main">
                         <Switch>
                             <Route
                                 path="/behandling/:behandlingId"

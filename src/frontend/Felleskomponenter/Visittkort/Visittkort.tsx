@@ -8,10 +8,12 @@ import { EtikettAdvarsel } from 'nav-frontend-etiketter';
 import { Behandling } from '../../typer/fagsak';
 import Behandlingsinfo from './Behandlingsinfo';
 import navFarger from 'nav-frontend-core';
+import { Sticky } from '../Sticky';
 
-export const VisittkortWrapper = styled.div`
+export const VisittkortWrapper = styled(Sticky)`
     display: flex;
     border-bottom: 1px solid ${navFarger.navGra80};
+    z-index: 1227;
 
     .visittkort {
         padding: 0 1.5rem;
