@@ -3,6 +3,7 @@ import { ModalAction, ModalType, useModal } from '../../context/ModalContext';
 import UIModalWrapper from './UIModalWrapper';
 import { Knapp } from 'nav-frontend-knapper';
 import { useHistory } from 'react-router-dom';
+import { useBehandling } from '../../context/BehandlingContext';
 
 const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
@@ -13,6 +14,7 @@ const modalTittelToTekst: Record<ModalType, string> = {
 
 const ModalController: React.FC = () => {
     const { modalState, modalDispatch } = useModal();
+    const { hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const history = useHistory();
 
     switch (modalState.modalType) {
@@ -33,7 +35,11 @@ const ModalController: React.FC = () => {
                             <Knapp
                                 key={'lukk modal'}
                                 mini={true}
-                                onClick={() => modalDispatch({ type: ModalAction.SKJUL_MODAL })}
+                                onClick={() => {
+                                    modalDispatch({ type: ModalAction.SKJUL_MODAL });
+                                    hentBehandling.rerun();
+                                    hentBehandlingshistorikk.rerun();
+                                }}
                                 children="Lukk"
                             />,
                             <Knapp
