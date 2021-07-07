@@ -14,7 +14,7 @@ const modalTittelToTekst: Record<ModalType, string> = {
 
 const ModalController: React.FC = () => {
     const { modalState, modalDispatch } = useModal();
-    const { hentBehandling } = useBehandling();
+    const { hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const history = useHistory();
 
     switch (modalState.modalType) {
@@ -38,6 +38,7 @@ const ModalController: React.FC = () => {
                                 onClick={() => {
                                     modalDispatch({ type: ModalAction.SKJUL_MODAL });
                                     hentBehandling.rerun();
+                                    hentBehandlingshistorikk.rerun();
                                 }}
                                 children="Lukk"
                             />,
