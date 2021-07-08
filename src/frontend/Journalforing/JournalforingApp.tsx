@@ -119,7 +119,7 @@ export const JournalforingApp: React.FC = () => {
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => (
-                <SideLayout>
+                <SideLayout className={'container'}>
                     <Sidetittel>{`Registrere journalpost: ${
                         journalResponse.journalpost.behandlingstema
                             ? behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]

@@ -53,18 +53,13 @@ const Routes: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
             {autentisert ? (
                 <>
                     <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
-                    <div role="main">
-                        <Switch>
-                            <Route
-                                path="/behandling/:behandlingId"
-                                component={BehandlingContainer}
-                            />
-                            <Route path="/oppgavebenk" component={OppgavebenkApp} />
-                            <Route path="/journalfor" component={JournalforingApp} />
-                            <Route path="/fagsak/:fagsakId" component={Fagsakoversikt} />
-                            <Redirect from="/" to="/oppgavebenk" />
-                        </Switch>
-                    </div>
+                    <Switch>
+                        <Route path="/behandling/:behandlingId" component={BehandlingContainer} />
+                        <Route path="/oppgavebenk" component={OppgavebenkApp} />
+                        <Route path="/journalfor" component={JournalforingApp} />
+                        <Route path="/fagsak/:fagsakId" component={Fagsakoversikt} />
+                        <Redirect from="/" to="/oppgavebenk" />
+                    </Switch>
                 </>
             ) : (
                 <UgyldigSesjon />
