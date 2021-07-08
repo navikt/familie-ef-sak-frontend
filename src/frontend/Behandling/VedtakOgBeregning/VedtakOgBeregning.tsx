@@ -14,7 +14,7 @@ interface Props {
 }
 
 const Wrapper = styled.div`
-    padding: 2rem;
+    padding: 4rem 2rem;
 `;
 const VedtakOgBeregning: FC<Props> = ({ behandling }) => {
     const behandlingId = behandling.id;
