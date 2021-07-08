@@ -19,6 +19,7 @@ import { Behandlingstype } from '../typer/behandlingstype';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useToggles } from '../context/TogglesContext';
 import { ToggleName } from '../context/toggles';
+import { Side } from '../Felleskomponenter/Side/Side';
 
 const TittelWrapper = styled.div`
     padding: 2rem 2rem 1rem 2rem;
@@ -77,7 +78,7 @@ const Fagsakoversikt: React.FC = () => {
     return (
         <DataViewer response={{ fagsak, personOpplysninger }}>
             {({ fagsak, personOpplysninger }) => (
-                <>
+                <Side className={'container'}>
                     <VisittkortComponent data={personOpplysninger} />
                     <TittelWrapper>
                         <Innholdstittel className="blokk-m" tag="h2">
@@ -101,7 +102,7 @@ const Fagsakoversikt: React.FC = () => {
                             som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
                         </AlertStripeFeil>
                     )}
-                </>
+                </Side>
             )}
         </DataViewer>
     );
