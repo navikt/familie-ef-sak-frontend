@@ -3,7 +3,7 @@ import TabellOverskrift from './TabellOverskrift';
 import Hjerte from '../../ikoner/Hjerte';
 import { KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { ISivilstand, sivilstandTilTekst } from '../../typer/personopplysninger';
-import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
+import { KopierbartNullableFødselsnummer } from '../KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../utils/formatter';
 import { Normaltekst } from 'nav-frontend-typografi';
 

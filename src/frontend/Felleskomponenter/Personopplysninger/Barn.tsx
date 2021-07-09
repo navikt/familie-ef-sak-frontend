@@ -6,7 +6,7 @@ import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import styled from 'styled-components';
 import { differenceInYears } from 'date-fns';
-import { KopierbartNullableFødselsnummer } from '../../Felleskomponenter/KopierbartNullableFødselsnummer';
+import { KopierbartNullableFødselsnummer } from '../KopierbartNullableFødselsnummer';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;

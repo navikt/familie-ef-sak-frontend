@@ -1,4 +1,6 @@
-//interfaces
+export interface IPersonIdent {
+    personIdent: string;
+}
 
 export interface IDokumentasjon {
     harSendtInn: boolean;
