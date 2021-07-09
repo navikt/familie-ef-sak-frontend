@@ -1,41 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
-import { useApp } from '../context/AppContext';
 import { IPersonopplysninger } from '../typer/personopplysninger';
-import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import VisittkortComponent from '../Felleskomponenter/Visittkort/Visittkort';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { Side } from '../Felleskomponenter/Side/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';
 import Tabs from 'nav-frontend-tabs';
 import Personopplysninger from './Personopplysninger';
+import { useDataHenter } from '../hooks/felles/useDataHenter';
+import { AxiosRequestConfig } from 'axios';
 
 const Personoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
     const [tabvalg, settTabvalg] = useState<number>(1);
-    const [personopplysninger, settPersonopplysninger] = useState<Ressurs<IPersonopplysninger>>(
-        byggTomRessurs()
-    );
-    const { axiosRequest } = useApp();
 
-    const hentPersonData = () =>
-        axiosRequest<IPersonopplysninger, null>({
+    const personopplysningerConfig: AxiosRequestConfig = useMemo(
+        () => ({
             method: 'GET',
             url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
-        }).then((response) => settPersonopplysninger(response));
+        }),
+        [fagsakId]
+    );
 
-    useEffect(() => {
-        if (fagsakId) {
-            hentPersonData();
-        }
-        // eslint-disable-next-line
-    }, [fagsakId]);
+    const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
 
     return (
-        <DataViewer response={{ personOpplysninger: personopplysninger }}>
-            {({ personOpplysninger }) => (
+        <DataViewer response={{ personopplysninger }}>
+            {({ personopplysninger }) => (
                 <Side className={'container'}>
-                    <VisittkortComponent data={personOpplysninger} />
+                    <VisittkortComponent data={personopplysninger} />
                     <Tabs
                         defaultAktiv={tabvalg}
                         tabs={[
@@ -47,12 +40,12 @@ const Personoversikt: React.FC = () => {
                         onChange={(_, tabNumber) => settTabvalg(tabNumber)}
                     />
                     {tabvalg === 0 && (
-                        <Personopplysninger personopplysninger={personOpplysninger} />
+                        <Personopplysninger personopplysninger={personopplysninger} />
                     )}
                     {tabvalg === 1 && (
                         <Behandlingsoversikt
                             fagsakId={fagsakId}
-                            personIdent={personOpplysninger.personIdent}
+                            personIdent={personopplysninger.personIdent}
                         />
                     )}
                 </Side>

@@ -1,27 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { INavKontor, IPersonopplysninger } from '../typer/personopplysninger';
 import PersonopplysningerMedNavKontor from '../Felleskomponenter/Personopplysninger/PersonopplysningerMedNavKontor';
-import { byggTomRessurs, Ressurs } from '../typer/ressurs';
-import { useApp } from '../context/AppContext';
 import { IPersonIdent } from '../typer/felles';
+import { AxiosRequestConfig } from 'axios';
+import { useDataHenter } from '../hooks/felles/useDataHenter';
 
 const Personopplysninger: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,
 }) => {
-    const [navKontor, settNavKontor] = useState<Ressurs<INavKontor>>(byggTomRessurs());
-    const { axiosRequest } = useApp();
-
-    const hentNavKontor = () =>
-        axiosRequest<INavKontor, IPersonIdent>({
+    const personIdent = personopplysninger.personIdent;
+    const navKontorConfig: AxiosRequestConfig = useMemo(
+        () => ({
             method: 'POST',
             url: `/familie-ef-sak/api/personopplysninger/nav-kontor`,
-            data: { personIdent: personopplysninger.personIdent },
-        }).then((response) => settNavKontor(response));
-
-    useEffect(() => {
-        hentNavKontor();
-        // eslint-disable-next-line
-    }, [personopplysninger]);
+            data: { personIdent: personIdent },
+        }),
+        [personIdent]
+    );
+    const navKontor = useDataHenter<INavKontor, IPersonIdent>(navKontorConfig);
 
     return (
         <PersonopplysningerMedNavKontor
