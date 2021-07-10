@@ -5,10 +5,11 @@ import VisittkortComponent from '../Felleskomponenter/Visittkort/Visittkort';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import { Side } from '../Felleskomponenter/Side/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';
-import Tabs from 'nav-frontend-tabs';
+import { TabsPure } from 'nav-frontend-tabs';
 import Personopplysninger from './Personopplysninger';
 import { useDataHenter } from '../hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
+import Vedtaksperioder from './Vedtaksperioder';
 
 const Personoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
@@ -29,15 +30,16 @@ const Personoversikt: React.FC = () => {
             {({ personopplysninger }) => (
                 <Side className={'container'}>
                     <VisittkortComponent data={personopplysninger} />
-                    <Tabs
-                        defaultAktiv={tabvalg}
+                    <TabsPure
                         tabs={[
-                            { label: 'Personopplysninger' },
-                            { label: 'Behandlingsoversikt' },
-                            { label: 'Vedtaksperioder', disabled: true },
+                            { label: 'Personopplysninger', aktiv: tabvalg === 0 },
+                            { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
+                            { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
                             { label: 'Dokumentoversikt', disabled: true },
                         ]}
-                        onChange={(_, tabNumber) => settTabvalg(tabNumber)}
+                        onChange={(e, tabNumber) =>
+                            e.target && tabNumber !== 3 && settTabvalg(tabNumber)
+                        }
                     />
                     {tabvalg === 0 && (
                         <Personopplysninger personopplysninger={personopplysninger} />
@@ -48,6 +50,7 @@ const Personoversikt: React.FC = () => {
                             personIdent={personopplysninger.personIdent}
                         />
                     )}
+                    {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
                 </Side>
             )}
         </DataViewer>
