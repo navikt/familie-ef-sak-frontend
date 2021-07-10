@@ -21,6 +21,7 @@ export interface IPersonopplysninger {
     innflyttingTilNorge: IInnflyttingTilNorge[];
     utflyttingFraNorge: IUtflyttingFraNorge[];
     oppholdstillatelse: IOppholdstillatelse[];
+    vergemål: IVergemål[];
 }
 
 export interface IBarn {
@@ -63,6 +64,14 @@ export interface IFullmakt {
     gyldigTilOgMed: string;
     motpartsPersonident: string;
     navn?: string;
+}
+
+export interface IVergemål {
+    embete?: string;
+    type?: string;
+    motpartsPersonident?: string;
+    navn?: string;
+    omfang?: string;
 }
 
 export interface INavn {
