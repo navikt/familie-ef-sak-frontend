@@ -11,6 +11,7 @@ import Oppholdstillatelse from './Oppholdstillatelse';
 import NavKontor from './NavKontor';
 import { INavKontor, IPersonopplysninger } from '../../typer/personopplysninger';
 import { Ressurs } from '../../typer/ressurs';
+import Vergemål from './Vergemål';
 
 const PersonopplysningerMedNavKontor: React.FC<{
     personopplysninger: IPersonopplysninger;
@@ -26,6 +27,7 @@ const PersonopplysningerMedNavKontor: React.FC<{
         utflyttingFraNorge,
         fullmakt,
         oppholdstillatelse,
+        vergemål,
     } = personopplysninger;
     return (
         <>
@@ -42,6 +44,7 @@ const PersonopplysningerMedNavKontor: React.FC<{
                 utvandringer={utflyttingFraNorge}
             />
             <Fullmakter fullmakter={fullmakt} />
+            <Vergemål vergemål={vergemål} />
 
             <DataViewer response={{ navKontor }}>
                 {({ navKontor }) => {
