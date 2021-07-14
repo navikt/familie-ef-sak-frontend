@@ -146,7 +146,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
-                    dato: [dagensDatoFormatert()],
+                    brevOpprettetDato: [dagensDatoFormatert()],
                 },
             },
         }).then((respons: Ressurs<string>) => {
