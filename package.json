@@ -182,7 +182,7 @@
     "webpack-cli": "^4.7.0",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
-    "webpack-merge": "5.1.4"
+    "webpack-merge": "^5.8.0"
   },
   "snyk": true
 }
