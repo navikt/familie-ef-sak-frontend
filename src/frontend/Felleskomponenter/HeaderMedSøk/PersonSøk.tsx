@@ -10,10 +10,11 @@ import {
     RessursStatus,
     RessursSuksess,
 } from '../../typer/ressurs';
-import { IFagsaksøk, ISakSøkPersonIdent } from '../../typer/fagsaksøk';
+import { IFagsaksøk } from '../../typer/fagsaksøk';
 import { useApp } from '../../context/AppContext';
 import { kjønnType } from '@navikt/familie-typer';
 import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
+import { IPersonIdent } from '../../typer/felles';
 
 const tilSøkeresultatListe = (resultat: IFagsaksøk): ISøkeresultat[] => {
     return resultat.fagsaker.map((fagsak) => ({
@@ -41,7 +42,7 @@ const PersonSøk: React.FC = () => {
     const søk = (personIdent: string): void => {
         if (!personIdent) return;
         settResultat(byggHenterRessurs());
-        axiosRequest<IFagsaksøk, ISakSøkPersonIdent>({
+        axiosRequest<IFagsaksøk, IPersonIdent>({
             method: 'POST',
             url: `/familie-ef-sak/api/sok/`,
             data: { personIdent: personIdent },

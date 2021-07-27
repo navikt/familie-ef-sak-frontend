@@ -2,21 +2,10 @@ import React, { useCallback, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import OppgaveFiltering from './OppgaveFiltrering';
 import OppgaveTabell, { IOppgaverResponse } from './OppgaveTabell';
-import styled from 'styled-components';
 import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { IOppgaveRequest } from './typer/oppgaverequest';
 import { OpprettDummyBehandling } from './OpprettDummyBehandling';
-
-const Side = styled.div`
-    padding: 0.5rem;
-    width: 100vw;
-    overflow: auto;
-    min-height: 100vh;
-
-    & hr {
-        margin-top: 2rem;
-    }
-`;
+import { Side } from '../Felleskomponenter/Side/Side';
 
 export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
 
@@ -36,7 +25,7 @@ export const OppgavebenkApp: React.FC = () => {
     );
 
     return (
-        <Side>
+        <Side className={'container'}>
             {process.env.ENV !== 'production' && <OpprettDummyBehandling />}
             <OppgaveFiltering hentOppgaver={hentOppgaver} />
             <OppgaveTabell oppgaveRessurs={oppgaveResurs} />

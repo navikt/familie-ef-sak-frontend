@@ -31,6 +31,7 @@ const StyledBrevMeny = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    padding: 2rem 0;
     margin: 1rem;
     min-width: 450px;
 `;
@@ -145,7 +146,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
-                    dato: [dagensDatoFormatert()],
+                    brevOpprettetDato: [dagensDatoFormatert()],
                 },
             },
         }).then((respons: Ressurs<string>) => {

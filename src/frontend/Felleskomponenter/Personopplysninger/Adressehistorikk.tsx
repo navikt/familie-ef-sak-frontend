@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../../ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../typer/personopplysninger';
-import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
+import UIModalWrapper from '../Modal/UIModalWrapper';
 import { Element } from 'nav-frontend-typografi';
 import { TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';

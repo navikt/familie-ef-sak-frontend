@@ -11,7 +11,7 @@ import { TotrinnskontrollStatus } from '../../typer/totrinnskontroll';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
-    padding: 3rem 5rem 3rem 5rem;
+    padding: 3rem 5rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 5rem;

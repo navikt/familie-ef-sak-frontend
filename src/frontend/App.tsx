@@ -11,7 +11,7 @@ import { HeaderMedSøk } from './Felleskomponenter/HeaderMedSøk/HeaderMedSøk';
 import BehandlingContainer from './Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Oppgavebenk/OppgavebenkApp';
 import { JournalforingApp } from './Journalforing/JournalforingApp';
-import Fagsakoversikt from './Fagsakoversikt/Fagsakoversikt';
+import Personoversikt from './Personoversikt/Personoversikt';
 import UgyldigSesjon from './Felleskomponenter/Modal/SesjonUtløpt';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
@@ -53,18 +53,13 @@ const Routes: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
             {autentisert ? (
                 <>
                     <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
-                    <div className={'container'} role="main">
-                        <Switch>
-                            <Route
-                                path="/behandling/:behandlingId"
-                                component={BehandlingContainer}
-                            />
-                            <Route path="/oppgavebenk" component={OppgavebenkApp} />
-                            <Route path="/journalfor" component={JournalforingApp} />
-                            <Route path="/fagsak/:fagsakId" component={Fagsakoversikt} />
-                            <Redirect from="/" to="/oppgavebenk" />
-                        </Switch>
-                    </div>
+                    <Switch>
+                        <Route path="/behandling/:behandlingId" component={BehandlingContainer} />
+                        <Route path="/oppgavebenk" component={OppgavebenkApp} />
+                        <Route path="/journalfor" component={JournalforingApp} />
+                        <Route path="/fagsak/:fagsakId" component={Personoversikt} />
+                        <Redirect from="/" to="/oppgavebenk" />
+                    </Switch>
                 </>
             ) : (
                 <UgyldigSesjon />

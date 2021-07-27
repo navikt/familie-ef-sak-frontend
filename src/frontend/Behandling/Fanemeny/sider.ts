@@ -1,5 +1,4 @@
 import TidligereVedtaksperioder from '../TidligereVedtaksperioder/TidligereVedtaksperioder';
-import Personopplysninger from '../Personopplysninger/Personopplysninger';
 import Inngangsvilkår from '../Inngangsvilkår/Inngangsvilkår';
 import { FunctionComponent } from 'react';
 import Aktivitet from '../Aktivitet/Aktivitetsvilkår';
@@ -8,6 +7,7 @@ import Blankett from '../Blankett/Blankett';
 import { Behandling } from '../../typer/fagsak';
 import { Behandlingstype } from '../../typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
+import Personopplysninger from '../Personopplysninger/Personopplysninger';
 
 export interface ISide {
     href: string;

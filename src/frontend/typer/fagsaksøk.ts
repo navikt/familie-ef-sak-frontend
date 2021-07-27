@@ -3,10 +3,6 @@
 import { kjønnType } from '@navikt/familie-typer';
 import { Stønadstype } from './behandlingstema';
 
-export interface ISakSøkPersonIdent {
-    personIdent: string;
-}
-
 export interface IFagsaksøk {
     fagsaker: {
         fagsakId: string;

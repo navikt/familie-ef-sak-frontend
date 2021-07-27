@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ISøkeresultatPerson } from '../../typer/personopplysninger';
 import { useApp } from '../../context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursStatus } from '../../typer/ressurs';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import DataViewer from '../DataViewer/DataViewer';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import styled from 'styled-components';
 import { useBehandling } from '../../context/BehandlingContext';
