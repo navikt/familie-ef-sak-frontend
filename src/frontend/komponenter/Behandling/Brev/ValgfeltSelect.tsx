@@ -1,4 +1,4 @@
-import { Select } from 'nav-frontend-skjema';
+import { Select, Checkbox } from 'nav-frontend-skjema';
 import {
     BrevStruktur,
     Delmal,
@@ -66,17 +66,29 @@ export const ValgfeltSelect: React.FC<Props> = ({
 
     return (
         <StyledValgfeltSelect>
-            <Select
-                label={valgFelt.valgfeltVisningsnavn}
-                onChange={(e) => doSettValgteFelt(valgFelt.valgFeltApiNavn, e.target.value, delmal)}
-            >
-                <option value="">Ikke valgt</option>
-                {valgFelt.valgMuligheter.map((valMulighet: Valgmulighet) => (
-                    <option value={valMulighet.valgmulighet} key={valMulighet.valgmulighet}>
-                        {valMulighet.visningsnavnValgmulighet}
-                    </option>
-                ))}
-            </Select>
+            {valgFelt.valgMuligheter.length > 1 ? (
+                <Select
+                    label={valgFelt.valgfeltVisningsnavn}
+                    onChange={(e) =>
+                        doSettValgteFelt(valgFelt.valgFeltApiNavn, e.target.value, delmal)
+                    }
+                >
+                    <option value="">Ikke valgt</option>
+                    {valgFelt.valgMuligheter.map((valMulighet: Valgmulighet) => (
+                        <option value={valMulighet.valgmulighet} key={valMulighet.valgmulighet}>
+                            {valMulighet.visningsnavnValgmulighet}
+                        </option>
+                    ))}
+                </Select>
+            ) : (
+                <Checkbox
+                    onClick={(e) => {
+                        console.log(e.target.checked);
+                        console.log('SEPP KLIKK');
+                    }}
+                    label={valgFelt.valgMuligheter[0].visningsnavnValgmulighet}
+                />
+            )}
             {Object.entries(valgteFelt)
                 .filter(([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn)
                 .map(([_, valg]) =>
