@@ -1,4 +1,4 @@
-import { Select, Checkbox } from 'nav-frontend-skjema';
+import { Select, Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
 import {
     BrevStruktur,
     Delmal,
@@ -81,13 +81,22 @@ export const ValgfeltSelect: React.FC<Props> = ({
                     ))}
                 </Select>
             ) : (
-                <Checkbox
-                    onClick={(e) => {
-                        console.log(e.target.checked);
-                        console.log('SEPP KLIKK');
-                    }}
-                    label={valgFelt.valgMuligheter[0].visningsnavnValgmulighet}
-                />
+                <CheckboxGruppe legend={valgFelt.valgfeltVisningsnavn}>
+                    <Checkbox
+                        onClick={(e) => {
+                            if ((e.target as HTMLInputElement).checked) {
+                                doSettValgteFelt(
+                                    valgFelt.valgFeltApiNavn,
+                                    valgFelt.valgMuligheter[0].valgmulighet,
+                                    delmal
+                                );
+                            } else {
+                                doSettValgteFelt(valgFelt.valgFeltApiNavn, '', delmal);
+                            }
+                        }}
+                        label={valgFelt.valgMuligheter[0].visningsnavnValgmulighet}
+                    />
+                </CheckboxGruppe>
             )}
             {Object.entries(valgteFelt)
                 .filter(([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn)
