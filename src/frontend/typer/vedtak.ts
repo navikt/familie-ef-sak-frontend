@@ -1,14 +1,27 @@
-import { PeriodeVariant } from '../komponenter/Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import { PeriodeVariant } from '../Felleskomponenter/MånedÅr/MånedÅrPeriode';
 
 export type IAvslåVedtak = {
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåBegrunnelse: string;
 };
+export interface IBeløpsperiode {
+    periode: { fradato: string; tildato: string };
+    beregningsgrunnlag: IBeregningsgrunnlag;
+    beløp: number;
+    beløpFørSamordning: number;
+}
 
+export interface IBeregningsgrunnlag {
+    inntekt: number;
+    samordningsfradrag: number;
+    avkortningPerMåned: number;
+    fullOvergangsStønadPerMåned: number | null;
+    grunnbeløp: number | null;
+}
 export type IInnvilgeVedtak = {
     resultatType: EBehandlingResultat.INNVILGE;
-    periodeBegrunnelse: string;
-    inntektBegrunnelse: string;
+    periodeBegrunnelse?: string;
+    inntektBegrunnelse?: string;
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
 };
@@ -22,23 +35,9 @@ export interface IInntektsperiode {
     endretKey?: string; // intern for re-rendring
 }
 
-export interface IBeløpsperiode {
-    periode: { fradato: string; tildato: string };
-    beregningsgrunnlag: IBeregningsgrunnlag;
-    beløp: number;
-}
-
-export interface IBeregningsgrunnlag {
-    inntekt: number;
-    samordningsfradrag?: number;
-    avkortningPerMåned: number;
-    fullOvergangsStønadPerMåned: number;
-    grunnbeløp: number;
-}
-
 export interface IVedtaksperiode {
-    periodeType: EPeriodetype;
-    aktivitet: EAktivitet;
+    periodeType: EPeriodetype | '' | undefined;
+    aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;
     årMånedTil?: string;
 }
@@ -47,20 +46,6 @@ export type IBeregningsrequest = {
     vedtaksperioder: IVedtaksperiode[];
     inntekt: IInntektsperiode[];
 };
-
-export interface IBeløpsperiode {
-    fraOgMedDato: string;
-    tilDato: string;
-    beløp: number;
-    beregningsgrunnlag: IBeregningsgrunnlag;
-    beløpFørSamordning: number;
-    inntektsreduksjon: number;
-}
-
-export interface IValideringsfeil {
-    vedtaksperioder: string[];
-    inntektsperioder: string[];
-}
 
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',
@@ -111,9 +96,10 @@ export enum EAktivitet {
     BARNET_ER_SYKT = 'BARNET_ER_SYKT',
 }
 
-export const periodetypeTilTekst: Record<EPeriodetype, string> = {
+export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
     HOVEDPERIODE: 'Hovedperiode',
+    '': '',
 };
 
 export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
