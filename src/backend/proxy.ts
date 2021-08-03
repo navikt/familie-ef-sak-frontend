@@ -1,22 +1,22 @@
 import { Client, getOnBehalfOfAccessToken } from '@navikt/familie-backend';
-import { NextFunction, Request, Response } from 'express';
-import { ClientRequest } from 'http';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { ClientRequest, IncomingMessage, ServerResponse } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
 import { oboConfig } from './config';
 import { logError, logInfo } from '@navikt/familie-logging';
 
-const restream = (proxyReq: ClientRequest, req: Request, _res: Response) => {
-    if (req.body) {
-        const bodyData = JSON.stringify(req.body);
+const restream = (proxyReq: ClientRequest, req: IncomingMessage, _res: ServerResponse) => {
+    const requestBody = (req as Request).body;
+    if (requestBody) {
+        const bodyData = JSON.stringify(requestBody);
         proxyReq.setHeader('Content-Type', 'application/json');
         proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
         proxyReq.write(bodyData);
     }
 };
 
-// eslint-disable-next-line
-export const doProxy: any = (context: string, targetUrl: string) => {
+export const doProxy = (context: string, targetUrl: string): RequestHandler => {
     return createProxyMiddleware(context, {
         changeOrigin: true,
         logLevel: 'info',

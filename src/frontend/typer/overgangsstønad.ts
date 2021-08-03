@@ -1,13 +1,13 @@
 //interfaces
 
 import { IDokumentasjon } from './felles';
-import { ESagtOppEllerRedusert } from '../komponenter/Behandling/Inngangsvilkår/Samliv/typer';
+import { ESagtOppEllerRedusert } from '../Behandling/Inngangsvilkår/Samliv/typer';
 import {
     EDinSituasjon,
     EStilling,
     EStudieandel,
     EUtdanningsform,
-} from '../komponenter/Behandling/Aktivitet/Aktivitet/typer';
+} from '../Behandling/Aktivitet/Aktivitet/typer';
 
 export interface IAktivitet {
     arbeidssituasjon: string[];

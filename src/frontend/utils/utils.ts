@@ -1,6 +1,6 @@
 import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
-import { IOppgaveRequest } from '../komponenter/Oppgavebenk/oppgaverequest';
+import { IOppgaveRequest } from '../Oppgavebenk/typer/oppgaverequest';
 
 export const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothing<string> => {
     if (!valgtDatoFra || !valgtDatoTil) {
