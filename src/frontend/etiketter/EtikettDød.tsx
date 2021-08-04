@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import EtikettBase from 'nav-frontend-etiketter';
+import { formaterIsoDato } from '../utils/formatter';
 
 const SortEtikett = styled(EtikettBase)`
     background-color: black;
@@ -9,8 +10,10 @@ const SortEtikett = styled(EtikettBase)`
     border: none;
 `;
 
-export const EtikettDød = (): React.ReactElement => (
+const EtikettDød: React.FC<{ dødsdato: string }> = ({ dødsdato }) => (
     <SortEtikett mini type={'info'}>
-        Død
+        Død {formaterIsoDato(dødsdato)}
     </SortEtikett>
 );
+
+export default EtikettDød;

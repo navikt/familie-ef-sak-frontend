@@ -4,8 +4,8 @@ import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/Kop
 import { formaterNullableIsoDato } from '../../../utils/formatter';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { EtikettDød } from '../../../etiketter/EtikettDød';
 import { harVerdi } from '../../../utils/utils';
+import EtikettDød from '../../../etiketter/EtikettDød';
 
 interface Props {
     forelder: IAnnenForelder;
@@ -28,7 +28,7 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder }) => {
                     '- '
                 )}
             </Normaltekst>
-            {dødsfall && <EtikettDød />}
+            {dødsfall && <EtikettDød dødsdato={dødsfall} />}
         </FlexDiv>
     );
 };

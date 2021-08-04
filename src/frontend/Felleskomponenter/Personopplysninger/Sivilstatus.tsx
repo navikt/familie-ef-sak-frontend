@@ -6,18 +6,16 @@ import { ISivilstand, sivilstandTilTekst } from '../../typer/personopplysninger'
 import { KopierbartNullableFødselsnummer } from '../KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../utils/formatter';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { EtikettDød } from '../../etiketter/EtikettDød';
+import EtikettDød from '../../etiketter/EtikettDød';
 
 const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
-const titlerMedDødsdato = [...titler, 'Dødsdato'];
 
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
-    const harDødsdato = sivilstander.some((sivilstand) => sivilstand.dødsdato);
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={Hjerte} tittel={'Sivilstatus'} />
             <table className="tabell">
-                <KolonneTitler titler={harDødsdato ? titlerMedDødsdato : titler} />
+                <KolonneTitler titler={titler} />
                 <tbody>
                     {sivilstander.map((sivilstand, indeks) => {
                         return (
@@ -26,7 +24,9 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                 <td>{formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}</td>
                                 <td>
                                     {sivilstand.navn}
-                                    {sivilstand.dødsdato && <EtikettDød />}
+                                    {sivilstand.dødsdato && (
+                                        <EtikettDød dødsdato={sivilstand.dødsdato} />
+                                    )}
                                 </td>
                                 <td>
                                     {sivilstand.relatertVedSivilstand ? (
@@ -37,7 +37,6 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                         <Normaltekst>-</Normaltekst>
                                     )}
                                 </td>
-                                {harDødsdato && <td>{sivilstand.dødsdato}</td>}
                             </tr>
                         );
                     })}
