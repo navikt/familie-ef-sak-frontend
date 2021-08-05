@@ -27,7 +27,7 @@ const GenererBrev = styled(Knapp)`
     margin: 0 auto;
 `;
 
-const StyledBrevMeny = styled.div`
+const BrevFelter = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -158,7 +158,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
-        <StyledBrevMeny>
+        <BrevFelter>
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
                     <Panel key={key}>
@@ -187,7 +187,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 );
             })}
             <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-        </StyledBrevMeny>
+        </BrevFelter>
     );
 };
 

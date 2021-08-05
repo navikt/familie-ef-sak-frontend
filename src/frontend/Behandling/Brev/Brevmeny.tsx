@@ -7,6 +7,7 @@ import { IPersonopplysninger } from '../../typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
 import { TilkjentYtelse } from '../../typer/tilkjentytelse';
 import { Select } from 'nav-frontend-skjema';
+import styled from 'styled-components';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -15,11 +16,17 @@ export interface BrevmenyProps {
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
 }
 
+const StyledBrevMeny = styled.div`
+    display: flex;
+    flex-direction: column;
+    min-width: 450px;
+`;
+
 const datasett = 'ef-brev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
-    const [brevMal, settBrevmal] = useState<string>('revurderingbrevOvergangsstonad');
+    const [brevMal, settBrevmal] = useState<string>('');
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [dokumentnavn, settDokumentnavn] = useState<DokumentNavn | undefined>();
     const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
@@ -63,7 +70,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     console.log('dok', dokumentnavn);
 
     return (
-        <>
+        <StyledBrevMeny>
             <Select
                 label="Velg dokument"
                 onChange={(e) => {
@@ -88,7 +95,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     />
                 )}
             </DataViewer>
-        </>
+        </StyledBrevMeny>
     );
 };
 
