@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur } from './BrevTyper';
+import { BrevStruktur, DokumentNavn } from './BrevTyper';
 import { byggTomRessurs, Ressurs } from '../../typer/ressurs';
 import { useApp } from '../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
 import { TilkjentYtelse } from '../../typer/tilkjentytelse';
+import { Select } from 'nav-frontend-skjema';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -14,25 +15,40 @@ export interface BrevmenyProps {
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
 }
 
-export const brevMal = 'innvilgetOvergangsstonadHoved2';
 const datasett = 'ef-brev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
+    const [brevMal, settBrevmal] = useState<string>('revurderingbrevOvergangsstonad');
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
+    const [dokumentnavn, settDokumentnavn] = useState<DokumentNavn | undefined>();
     const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
         byggTomRessurs()
     );
 
     useEffect(() => {
-        axiosRequest<BrevStruktur, null>({
+        axiosRequest<DokumentNavn[], null>({
             method: 'GET',
-            url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
-        }).then((respons: Ressurs<BrevStruktur>) => {
-            settBrevStruktur(respons);
+            url: `/familie-brev/api/${datasett}/avansert-dokument/navn`,
+        }).then((respons: Ressurs<DokumentNavn[]>) => {
+            console.log('RESPONS', respons);
+            settDokumentnavn(respons);
         });
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        if (brevMal) {
+            axiosRequest<BrevStruktur, null>({
+                method: 'GET',
+                url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
+            }).then((respons: Ressurs<BrevStruktur>) => {
+                console.log('BREVSTRUKTUR', respons);
+                settBrevStruktur(respons);
+            });
+        }
+        // eslint-disable-next-line
+    }, [brevMal]);
 
     useEffect(() => {
         axiosRequest<TilkjentYtelse, null>({
@@ -42,18 +58,37 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
             settTilkjentYtelse(respons);
         });
         // eslint-disable-next-line
-    }, []);
+    }, [brevMal]);
+
+    console.log('dok', dokumentnavn);
 
     return (
-        <DataViewer response={{ brevStruktur, tilkjentYtelse }}>
-            {({ brevStruktur, tilkjentYtelse }) => (
-                <BrevmenyVisning
-                    {...props}
-                    brevStruktur={brevStruktur}
-                    tilkjentYtelse={tilkjentYtelse}
-                />
-            )}
-        </DataViewer>
+        <>
+            <Select
+                label="Velg dokument"
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    settBrevmal(e.target.value);
+                }}
+            >
+                <option value="">Ikke valgt</option>
+                {dokumentnavn?.data.map((navn: DokumentNavn) => (
+                    <option value={navn.apiNavn} key={navn.apiNavn}>
+                        {navn.visningsnavn}
+                    </option>
+                ))}
+            </Select>
+            <DataViewer response={{ brevStruktur, tilkjentYtelse }}>
+                {({ brevStruktur, tilkjentYtelse }) => (
+                    <BrevmenyVisning
+                        {...props}
+                        brevStruktur={brevStruktur}
+                        tilkjentYtelse={tilkjentYtelse}
+                        brevMal={brevMal}
+                    />
+                )}
+            </DataViewer>
+        </>
     );
 };
 
