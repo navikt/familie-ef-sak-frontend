@@ -28,21 +28,12 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
     const [brevMal, settBrevmal] = useState<string>('');
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
-    const [dokumentnavn, settDokumentnavn] = useState<DokumentNavn | undefined>();
+    const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
+        byggTomRessurs()
+    );
     const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
         byggTomRessurs()
     );
-
-    useEffect(() => {
-        axiosRequest<DokumentNavn[], null>({
-            method: 'GET',
-            url: `/familie-brev/api/${datasett}/avansert-dokument/navn`,
-        }).then((respons: Ressurs<DokumentNavn[]>) => {
-            console.log('RESPONS', respons);
-            settDokumentnavn(respons);
-        });
-        // eslint-disable-next-line
-    }, []);
 
     useEffect(() => {
         if (brevMal) {
@@ -50,12 +41,21 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 method: 'GET',
                 url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
             }).then((respons: Ressurs<BrevStruktur>) => {
-                console.log('BREVSTRUKTUR', respons);
                 settBrevStruktur(respons);
             });
         }
         // eslint-disable-next-line
     }, [brevMal]);
+
+    useEffect(() => {
+        axiosRequest<DokumentNavn[], null>({
+            method: 'GET',
+            url: `/familie-brev/api/${datasett}/avansert-dokument/navn`,
+        }).then((respons: Ressurs<DokumentNavn[]>) => {
+            settDokumentnavn(respons);
+        });
+        // eslint-disable-next-line
+    }, []);
 
     useEffect(() => {
         axiosRequest<TilkjentYtelse, null>({
@@ -67,24 +67,25 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         // eslint-disable-next-line
     }, [brevMal]);
 
-    console.log('dok', dokumentnavn);
-
     return (
         <StyledBrevMeny>
-            <Select
-                label="Velg dokument"
-                onChange={(e) => {
-                    console.log(e.target.value);
-                    settBrevmal(e.target.value);
-                }}
-            >
-                <option value="">Ikke valgt</option>
-                {dokumentnavn?.data.map((navn: DokumentNavn) => (
-                    <option value={navn.apiNavn} key={navn.apiNavn}>
-                        {navn.visningsnavn}
-                    </option>
-                ))}
-            </Select>
+            <DataViewer response={{ dokumentnavn }}>
+                {({ dokumentnavn }) => (
+                    <Select
+                        label="Velg dokument"
+                        onChange={(e) => {
+                            settBrevmal(e.target.value);
+                        }}
+                    >
+                        <option value="">Ikke valgt</option>
+                        {dokumentnavn?.map((navn: DokumentNavn) => (
+                            <option value={navn.apiNavn} key={navn.apiNavn}>
+                                {navn.visningsnavn}
+                            </option>
+                        ))}
+                    </Select>
+                )}
+            </DataViewer>
             <DataViewer response={{ brevStruktur, tilkjentYtelse }}>
                 {({ brevStruktur, tilkjentYtelse }) => (
                     <BrevmenyVisning
