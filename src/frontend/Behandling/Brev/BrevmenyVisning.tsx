@@ -17,7 +17,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { dagensDatoFormatert } from '../../utils/formatter';
 import Panel from 'nav-frontend-paneler';
-import { brevMal, BrevmenyProps } from './Brevmeny';
+import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../api/axios';
 import { delmalTilHtml } from './Htmlfelter';
 import { TilkjentYtelse } from '../../typer/tilkjentytelse';
@@ -27,7 +27,7 @@ const GenererBrev = styled(Knapp)`
     margin: 0 auto;
 `;
 
-const StyledBrevMeny = styled.div`
+const BrevFelter = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -53,6 +53,7 @@ const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerd
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     tilkjentYtelse?: TilkjentYtelse;
+    brevMal: string;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -62,6 +63,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     settKanSendesTilBeslutter,
     brevStruktur,
     tilkjentYtelse,
+    brevMal,
 }) => {
     const { axiosRequest } = useApp();
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
@@ -156,7 +158,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
-        <StyledBrevMeny>
+        <BrevFelter>
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
                     <Panel key={key}>
@@ -185,7 +187,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 );
             })}
             <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
-        </StyledBrevMeny>
+        </BrevFelter>
     );
 };
 

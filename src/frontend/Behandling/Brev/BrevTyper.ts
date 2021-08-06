@@ -47,3 +47,8 @@ export interface Delmal {
     delmalFlettefelter: Flettefelter[]; // referanse til flettefelt
     mappe: string;
 }
+
+export interface DokumentNavn {
+    apiNavn: string;
+    visningsnavn: string;
+}
