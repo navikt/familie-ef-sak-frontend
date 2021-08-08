@@ -32,6 +32,7 @@ interface Props {
     flettefelter: FlettefeltMedVerdi[];
     settValgteDelmaler: Dispatch<SetStateAction<Record<string, boolean>>>;
     settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
+    valgt: boolean;
 }
 
 export const BrevMenyDelmal: React.FC<Props> = ({
@@ -43,10 +44,11 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     flettefelter,
     settValgteDelmaler,
     settKanSendeTilBeslutter,
+    valgt,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
-    const [checkboxValgt, settCheckboxValgt] = useState<boolean>(false);
+    const [checkboxValgt, settCheckboxValgt] = useState<boolean>(valgt);
 
     const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
         settFlettefelter((prevState) =>

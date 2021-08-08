@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur } from './BrevTyper';
+import { BrevStruktur, ValgtFelt } from './BrevTyper';
 import { byggTomRessurs, Ressurs } from '../../typer/ressurs';
 import { useApp } from '../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
 import { TilkjentYtelse } from '../../typer/tilkjentytelse';
+import { useMellomlagringBrev } from '../../hooks/useMellomlagringBrev';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -19,6 +20,7 @@ const datasett = 'ef-brev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
+    const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
         byggTomRessurs()
@@ -45,12 +47,13 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     return (
-        <DataViewer response={{ brevStruktur, tilkjentYtelse }}>
-            {({ brevStruktur, tilkjentYtelse }) => (
+        <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
+            {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) => (
                 <BrevmenyVisning
                     {...props}
                     brevStruktur={brevStruktur}
                     tilkjentYtelse={tilkjentYtelse}
+                    mellomlagretBrev={mellomlagretBrev as ValgtFelt}
                 />
             )}
         </DataViewer>

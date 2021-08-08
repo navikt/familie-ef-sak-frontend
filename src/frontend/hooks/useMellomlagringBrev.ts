@@ -1,35 +1,71 @@
 import { useApp } from '../context/AppContext';
-import { useCallback } from 'react';
-import { Ressurs, RessursStatus } from '../typer/ressurs';
-import { AxiosRequestConfig } from 'axios';
+import { byggTomRessurs, RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
+import { useCallback, useEffect, useState } from 'react';
+import { FlettefeltMedVerdi, ValgteDelmaler, ValgtFelt } from '../Behandling/Brev/BrevTyper';
 
-export const useMellomlagringBrev = (brevstate: any) => {
+export interface IMellomlagretBrev {
+    behandlingId: string;
+    brevverdier: string;
+    brevmal: string;
+    saksbehandlerId: string;
+    versjon: string;
+}
+
+export interface IBrevverdier {
+    flettefeltFraMellomlager: FlettefeltMedVerdi[];
+    valgteFeltFraMellomlager: ValgtFelt;
+    valgteDelmalerFraMellomlager: ValgteDelmaler;
+}
+
+export const useMellomlagringBrev = (behandlingId: string) => {
     const { axiosRequest } = useApp();
+    const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] = useState(byggTomRessurs());
 
-    const mellomlagreBrev = useCallback(() => {
-        const config: AxiosRequestConfig = {
+    const mellomlagreBrev = (
+        flettefelt: FlettefeltMedVerdi[],
+        valgteFelt: ValgtFelt,
+        valgteDelmaler: ValgteDelmaler
+    ): void => {
+        axiosRequest<string, IMellomlagretBrev>({
             method: 'POST',
-            url: '/familie-ef-sak/api/brev/mellomlager',
-            data: brevstate,
-        };
-        axiosRequest<string, null>(config).then((res: Ressurs<string>) => {
-            console.log(res);
+            url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}`,
+            data: {
+                behandlingId,
+                brevverdier: JSON.stringify({
+                    flettefeltFraMellomlager: flettefelt,
+                    valgteFeltFraMellomlager: valgteFelt,
+                    valgteDelmalerFraMellomlager: valgteDelmaler,
+                }),
+                brevmal: 'test123',
+                saksbehandlerId: 'test123',
+                versjon: '1',
+            },
+        }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                Promise.resolve();
+            }
+            Promise.reject();
         });
-    }, []);
+    };
 
-    const hentMellomlagretBrev = useCallback(() => {
-        const config: AxiosRequestConfig = {
-            method: 'GET',
-            url: '/familie-ef-sak/api/brev/mellomlager',
-        };
+    const hentMellomlagretBrev = useCallback(
+        () =>
+            axiosRequest<IMellomlagretBrev | null, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}`,
+            }).then((res: RessursSuksess<IMellomlagretBrev | null> | RessursFeilet) => {
+                settMellomlagretBrevRessurs(res);
+            }),
+        // eslint-disable-next-line
+        [behandlingId]
+    );
 
-        axiosRequest<any, null>(config).then((res: Ressurs<any>) => {
-            return res.status === RessursStatus.SUKSESS && res.data;
-        });
-    }, []);
+    useEffect(() => {
+        hentMellomlagretBrev();
+    }, [behandlingId, hentMellomlagretBrev]);
 
     return {
         mellomlagreBrev,
-        hentMellomlagretBrev,
+        mellomlagretBrev: mellomlagretBrevRessurs,
     };
 };
