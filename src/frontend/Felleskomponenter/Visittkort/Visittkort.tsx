@@ -27,8 +27,14 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     data,
     behandling,
 }) => {
-    const { personIdent, kjønn, navn, folkeregisterpersonstatus, adressebeskyttelse, egenAnsatt } =
-        data;
+    const {
+        personIdent,
+        kjønn,
+        navn,
+        folkeregisterpersonstatus,
+        adressebeskyttelse,
+        egenAnsatt,
+    } = data;
     return (
         <VisittkortWrapper>
             <Visittkort alder={20} ident={personIdent} kjønn={kjønn} navn={navn.visningsnavn}>

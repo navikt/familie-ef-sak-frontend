@@ -32,23 +32,21 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
                         vurdering.vilkårType ===
                         TidligereVedtaksperioderType.TIDLIGERE_VEDTAKSPERIODER
                 );
-                const harTidligereMottattOvergansstønad =
-                    vurderingTidligereVedtaksperioder?.delvilkårsvurderinger.find(
-                        (delvilkårvurdering) =>
-                            delvilkårvurdering.vurderinger.find(
-                                (vurdering) =>
-                                    vurdering.regelId === 'HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD'
-                            )
-                    );
-                const harTidligereMottattAndreStønader =
-                    vurderingTidligereVedtaksperioder?.delvilkårsvurderinger.find(
-                        (delvilkårvurdering) =>
-                            delvilkårvurdering.vurderinger.find(
-                                (vurdering) =>
-                                    vurdering.regelId ===
-                                    'HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING'
-                            )
-                    );
+                const harTidligereMottattOvergansstønad = vurderingTidligereVedtaksperioder?.delvilkårsvurderinger.find(
+                    (delvilkårvurdering) =>
+                        delvilkårvurdering.vurderinger.find(
+                            (vurdering) =>
+                                vurdering.regelId === 'HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD'
+                        )
+                );
+                const harTidligereMottattAndreStønader = vurderingTidligereVedtaksperioder?.delvilkårsvurderinger.find(
+                    (delvilkårvurdering) =>
+                        delvilkårvurdering.vurderinger.find(
+                            (vurdering) =>
+                                vurdering.regelId ===
+                                'HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING'
+                        )
+                );
                 return (
                     <Container>
                         <InformasjonsElement

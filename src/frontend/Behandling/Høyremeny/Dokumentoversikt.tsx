@@ -78,11 +78,12 @@ const Dokumentoversikt: React.FC = () => {
             )}
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
-                    const dokumenterKnyttetTilBehandlingenMedDato =
-                        dokumentResponse.dokumenterKnyttetTilBehandlingen.map((dokument) => ({
+                    const dokumenterKnyttetTilBehandlingenMedDato = dokumentResponse.dokumenterKnyttetTilBehandlingen.map(
+                        (dokument) => ({
                             ...dokument,
                             dato: formaterNullableIsoDatoTid(dokument.dato),
-                        }));
+                        })
+                    );
                     const andraDokumenterMedDato = dokumentResponse.andreDokumenter.map(
                         (dokument) => ({
                             ...dokument,

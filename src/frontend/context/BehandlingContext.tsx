@@ -15,14 +15,17 @@ import { useHentNavKontor } from '../hooks/useHentNavKontor';
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { behandlingId } = useParams<IBehandlingParams>();
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
-    const { hentPersonopplysninger, personopplysningerResponse } =
-        useHentPersonopplysninger(behandlingId);
+    const { hentPersonopplysninger, personopplysningerResponse } = useHentPersonopplysninger(
+        behandlingId
+    );
     const { hentNavKontor, navKontorResponse } = useHentNavKontor(behandlingId);
     const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
-    const { hentBehandlingshistorikkCallback, behandlingHistorikk } =
-        useHentBehandlingHistorikk(behandlingId);
-    const { hentTotrinnskontrollCallback, totrinnskontroll } =
-        useHentTotrinnskontroll(behandlingId);
+    const { hentBehandlingshistorikkCallback, behandlingHistorikk } = useHentBehandlingHistorikk(
+        behandlingId
+    );
+    const { hentTotrinnskontrollCallback, totrinnskontroll } = useHentTotrinnskontroll(
+        behandlingId
+    );
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
