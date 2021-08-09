@@ -30,9 +30,16 @@
     "sivilstand":[
       {
         "type":"SEPARERT",
-        "gyldigFraOgMed":"20.20.2015",
+        "gyldigFraOgMed":"2015-02-20",
         "relatertVedSivilstand":"66666999999",
         "navn":"Annen Forelder"
+      },
+      {
+        "type":"GIFT",
+        "gyldigFraOgMed":"2014-01-02",
+        "relatertVedSivilstand":"66666999999",
+        "navn":"Annen Forelder",
+        "dødsdato": "2020-01-01"
       }
     ],
     "adresse":[
