@@ -21,9 +21,9 @@ export const useHentBehandlingHistorikk = (
             method: 'GET',
             url: `/familie-ef-sak/api/behandlingshistorikk/${behandlingId}`,
         };
-        axiosRequest<Behandlingshistorikk[], null>(
-            behandlingConfig
-        ).then((res: Ressurs<Behandlingshistorikk[]>) => settBehandlingHistorikk(res));
+        axiosRequest<Behandlingshistorikk[], null>(behandlingConfig).then(
+            (res: Ressurs<Behandlingshistorikk[]>) => settBehandlingHistorikk(res)
+        );
         // eslint-disable-next-line
     }, [behandlingId]);
 

@@ -32,14 +32,18 @@ interface WithSortingProps {
     className?: string;
 }
 
-const withSorting = <P extends WithSortingProps>(
-    Component: React.ComponentType<P>
-): React.FC<P & WithSortingProps> => ({ rekkefolge, className, ...props }: WithSortingProps) => {
-    const classNameWithSoring = classNames(className, {
-        'tabell__th--sortert-desc': rekkefolge === 'descending',
-        'tabell__th--sortert-asc': rekkefolge === 'ascending',
-    });
-    return <Component {...(props as P)} className={classNameWithSoring} rekkefolge={rekkefolge} />;
-};
+const withSorting =
+    <P extends WithSortingProps>(
+        Component: React.ComponentType<P>
+    ): React.FC<P & WithSortingProps> =>
+    ({ rekkefolge, className, ...props }: WithSortingProps) => {
+        const classNameWithSoring = classNames(className, {
+            'tabell__th--sortert-desc': rekkefolge === 'descending',
+            'tabell__th--sortert-asc': rekkefolge === 'ascending',
+        });
+        return (
+            <Component {...(props as P)} className={classNameWithSoring} rekkefolge={rekkefolge} />
+        );
+    };
 
 export default withSorting(SorteringsHeader);

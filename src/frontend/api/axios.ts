@@ -9,9 +9,8 @@ export const preferredAxios = axios;
 
 // eslint-disable-next-line
 const errorMessage = (frontendFeilmelding: string, headers?: any) => {
-    const location = window.location.href;
     const callId = headers?.['nav-call-id'];
-    return `${frontendFeilmelding} (url=${location} callId=${callId})`;
+    return `${frontendFeilmelding} \n\nFeilkode: ${callId}`;
 };
 
 const lagUkjentFeilRessurs = (headers?: Headers): RessursFeilet => ({

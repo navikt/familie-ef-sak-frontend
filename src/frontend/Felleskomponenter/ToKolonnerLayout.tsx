@@ -7,7 +7,7 @@ const Container = styled.div`
     border-bottom: ${(props: { skillelinje: boolean }) =>
         props.skillelinje ? '3px solid #e9e7e7' : 'none'};
 
-    @media (max-width: 1800px) {
+    @media (max-width: 1600px) {
         flex-direction: column;
     }
 
@@ -15,7 +15,7 @@ const Container = styled.div`
         padding: 1.5rem 0;
         width: 50%;
 
-        @media (max-width: 1800px) {
+        @media (max-width: 1600px) {
             width: 100%;
         }
     }
@@ -23,7 +23,7 @@ const Container = styled.div`
         padding: 1.5rem 0;
         width: 50%;
         max-width: 50rem;
-        @media (max-width: 1800px) {
+        @media (max-width: 1600px) {
             width: 100%;
         }
     }

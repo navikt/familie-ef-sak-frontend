@@ -1,8 +1,8 @@
 import { Textarea } from 'nav-frontend-skjema';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import React, { FormEvent } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
+import AlertStripeFeilPreWrap from '../../../Felleskomponenter/AlertStripeFeilPreWrap';
 
 const StyledForm = styled.form`
     margin-top: 2rem;
@@ -43,7 +43,9 @@ const AvslåVedtakForm: React.FC<Props> = ({
                 </StyledHovedKnapp>
             </StyledForm>
             {feilmelding && (
-                <AlertStripeFeil style={{ marginTop: '2rem' }}>{feilmelding}</AlertStripeFeil>
+                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
+                    {feilmelding}
+                </AlertStripeFeilPreWrap>
             )}
         </>
     );

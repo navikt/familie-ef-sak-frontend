@@ -18,7 +18,6 @@ import { useHistory } from 'react-router-dom';
 import { useApp } from '../../../context/AppContext';
 import { Behandling } from '../../../typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import hiddenIf from '../../../Felleskomponenter/HiddenIf/hiddenIf';
 import { FieldState } from '../../../hooks/felles/useFieldState';
 import { ListState } from '../../../hooks/felles/useListState';
@@ -29,6 +28,7 @@ import { FamilieTextarea } from '@navikt/familie-form-elements';
 import Utregningstabell from './Utregningstabell';
 import useFormState, { FormState } from '../../../hooks/felles/useFormState';
 import { validerVedtaksperioder } from '../vedtaksvalidering';
+import AlertStripeFeilPreWrap from '../../../Felleskomponenter/AlertStripeFeilPreWrap';
 
 const StyledFamilieTextarea = styled(FamilieTextarea)`
     white-space: pre-wrap;
@@ -245,7 +245,9 @@ export const InnvilgeVedtak: React.FC<{
                 Lagre vedtak
             </Hovedknapp>
             {feilmelding && (
-                <AlertStripeFeil style={{ marginTop: '2rem' }}>{feilmelding}</AlertStripeFeil>
+                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
+                    {feilmelding}
+                </AlertStripeFeilPreWrap>
             )}
         </form>
     );

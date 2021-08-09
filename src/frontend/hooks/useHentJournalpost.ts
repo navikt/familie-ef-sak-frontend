@@ -25,9 +25,9 @@ export const useHentJournalpost = (
 
     const hentJournalPost = useCallback(() => {
         settJournalResponse(byggHenterRessurs());
-        axiosRequest<IJojurnalpostResponse, null>(
-            hentJournalpostConfig
-        ).then((res: Ressurs<IJojurnalpostResponse>) => settJournalResponse(res));
+        axiosRequest<IJojurnalpostResponse, null>(hentJournalpostConfig).then(
+            (res: Ressurs<IJojurnalpostResponse>) => settJournalResponse(res)
+        );
         // eslint-disable-next-line
     }, [hentJournalpostConfig]);
 
