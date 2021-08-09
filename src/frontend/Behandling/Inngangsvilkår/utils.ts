@@ -10,5 +10,5 @@ export const hentPersonInfo = (person?: IPersonDetaljer): string => {
 
     return person && !erNavnUtfylt
         ? 'Ikke utfylt'
-        : `${person?.navn || ''} - ${hvisFinnesFnrEllerFdato || 'Ikke utfylt'}`;
+        : `${person?.navn || ''} - ${hvisFinnesFnrEllerFdato || 'Ikke utfylt!'}`;
 };

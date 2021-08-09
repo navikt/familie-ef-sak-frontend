@@ -9,6 +9,7 @@ import SystemetLaster from '../SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import AlertStripeFeilPreWrap from '../AlertStripeFeilPreWrap';
 
 /**
  * Input: { behandling: Ressurss<Behandling>, personopslyninger: Ressurss<IPersonopplysninger> }
@@ -34,7 +35,11 @@ const renderFeil = (responses: Ressurs<any>[]) => (
                 feilet.status === RessursStatus.FUNKSJONELL_FEIL ||
                 feilet.status === RessursStatus.FEILET
             ) {
-                return <AlertStripeFeil key={index}>{feilet.frontendFeilmelding}</AlertStripeFeil>;
+                return (
+                    <AlertStripeFeilPreWrap key={index}>
+                        {feilet.frontendFeilmelding}
+                    </AlertStripeFeilPreWrap>
+                );
             } else {
                 return null;
             }

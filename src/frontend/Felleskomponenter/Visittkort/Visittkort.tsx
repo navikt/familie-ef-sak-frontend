@@ -2,13 +2,14 @@ import React, { FC } from 'react';
 import { IPersonopplysninger } from '../../typer/personopplysninger';
 import Visittkort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
-import PersonStatusVarsel from '../PersonStatusVarsel';
-import AdressebeskyttelseVarsel from '../AdressebeskyttelseVarsel';
-import { EtikettAdvarsel } from 'nav-frontend-etiketter';
+import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
+import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
+import { EtikettFokus } from 'nav-frontend-etiketter';
 import { Behandling } from '../../typer/fagsak';
 import Behandlingsinfo from './Behandlingsinfo';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Sticky';
+import { erEtterDagensDato } from '../../utils/dato';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -34,6 +35,8 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         folkeregisterpersonstatus,
         adressebeskyttelse,
         egenAnsatt,
+        fullmakt,
+        vergemål,
     } = data;
     return (
         <VisittkortWrapper>
@@ -50,7 +53,17 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
                 {egenAnsatt && (
                     <ElementWrapper>
-                        <EtikettAdvarsel mini>Egen ansatt</EtikettAdvarsel>
+                        <EtikettFokus mini>Egen ansatt</EtikettFokus>
+                    </ElementWrapper>
+                )}
+                {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
+                    <ElementWrapper>
+                        <EtikettFokus mini>Fullmakt</EtikettFokus>
+                    </ElementWrapper>
+                )}
+                {vergemål.length > 0 && (
+                    <ElementWrapper>
+                        <EtikettFokus mini>Verge</EtikettFokus>
                     </ElementWrapper>
                 )}
             </Visittkort>

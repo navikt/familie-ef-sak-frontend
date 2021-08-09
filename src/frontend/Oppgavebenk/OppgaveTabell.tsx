@@ -11,6 +11,7 @@ import { useSorteringState } from '../hooks/felles/useSorteringState';
 import { usePagineringState } from '../hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import Pagination from 'paginering';
+import AlertStripeFeilPreWrap from '../Felleskomponenter/AlertStripeFeilPreWrap';
 
 const SIDE_STORRELSE = 15;
 
@@ -47,7 +48,9 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs }) => {
         return <AlertStripeFeil children="Ikke tilgang!" />;
     } else if (oppgaveRessurs.status === RessursStatus.FEILET) {
         return (
-            <AlertStripeFeil children={`Noe gikk galt - ${oppgaveRessurs.frontendFeilmelding}`} />
+            <AlertStripeFeilPreWrap
+                children={`Noe gikk galt - ${oppgaveRessurs.frontendFeilmelding}`}
+            />
         );
     } else if (status === RessursStatus.IKKE_HENTET) {
         return <AlertStripeInfo> Du må gjøre ett søk for å se oppgaver i listen.</AlertStripeInfo>; //TODO FIKS TEKST

@@ -5,7 +5,7 @@ import { FnrInput, Select } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import { useHistory } from 'react-router';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import AlertStripeFeilPreWrap from '../Felleskomponenter/AlertStripeFeilPreWrap';
 
 const StyledFnrInput = styled(FnrInput)`
     width: 150px;
@@ -81,7 +81,7 @@ export const OpprettDummyBehandling: React.FC = () => {
             <Knapp mini disabled={!harSattPersonIdent} onClick={opprettBehandling}>
                 Lag behandling
             </Knapp>
-            {harFeil && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+            {harFeil && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
         </StyledOpprettDummyBehandling>
     );
 };

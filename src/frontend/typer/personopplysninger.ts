@@ -21,6 +21,7 @@ export interface IPersonopplysninger {
     innflyttingTilNorge: IInnflyttingTilNorge[];
     utflyttingFraNorge: IUtflyttingFraNorge[];
     oppholdstillatelse: IOppholdstillatelse[];
+    vergemål: IVergemål[];
 }
 
 export interface IBarn {
@@ -65,6 +66,14 @@ export interface IFullmakt {
     navn?: string;
 }
 
+export interface IVergemål {
+    embete?: string;
+    type?: string;
+    motpartsPersonident?: string;
+    navn?: string;
+    omfang?: string;
+}
+
 export interface INavn {
     fornavn: string;
     mellomnavn: string;
@@ -88,6 +97,7 @@ export interface ISivilstand {
     gyldigFraOgMed?: string;
     relatertVedSivilstand?: string;
     navn?: string;
+    dødsdato?: string;
 }
 
 export interface IInnflyttingTilNorge {
@@ -170,6 +180,25 @@ export const oppholdTilTekst: Record<OppholdType, string> = {
     MIDLERTIDIG: 'Midlertidig',
     PERMANENT: 'Permanent',
     UKJENT: 'Ukjent',
+};
+
+export const vergemålTypeTilTekst: Record<string, string> = {
+    ensligMindreaarigAsylsoeker: 'Enslig mindreårig asylsøker',
+    ensligMindreaarigFlyktning:
+        'Enslig mindreårig flyktning inklusive midlertidige saker for denne gruppen',
+    voksen: 'Voksen',
+    midlertidigForVoksen: 'Voksen midlertidig',
+    mindreaarig: 'Mindreårig (unntatt EMF)',
+    midlertidigForMindreaarig: 'Mindreårig midlertidig (unntatt EMF)',
+    forvaltningUtenforVergemaal: 'Forvaltning utenfor vergemål',
+};
+
+export const vergemålOmfangTilTekst: Record<string, string> = {
+    utlendingssakerPersonligeOgOekonomiskeInteresser:
+        'Personlige og økonomiske, herunder utlendingssaken (kun for EMA)',
+    personligeOgOekonomiskeInteresser: 'Personlige og økonomiske',
+    oekonomiskeInteresser: 'Økonomiske',
+    personligeInteresser: 'Personlige',
 };
 
 export interface INavKontor {
