@@ -74,9 +74,16 @@ export const ValgfeltSelect: React.FC<Props> = ({
                     }
                 >
                     <option value="">Ikke valgt</option>
-                    {valgFelt.valgMuligheter.map((valMulighet: Valgmulighet) => (
-                        <option value={valMulighet.valgmulighet} key={valMulighet.valgmulighet}>
-                            {valMulighet.visningsnavnValgmulighet}
+                    {valgFelt.valgMuligheter.map((valgMulighet: Valgmulighet) => (
+                        <option
+                            value={valgMulighet.valgmulighet}
+                            key={valgMulighet.valgmulighet}
+                            selected={
+                                valgteFelt[valgFelt.valgFeltApiNavn].valgmulighet ===
+                                valgMulighet.valgmulighet
+                            }
+                        >
+                            {valgMulighet.visningsnavnValgmulighet}
                         </option>
                     ))}
                 </Select>
