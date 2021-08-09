@@ -28,7 +28,9 @@ const datasett = 'ef-brev';
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
     const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
-    const [brevMal, settBrevmal] = useState<string>('');
+
+    const defaultBrevmal = 'innvilgetOvergangsstonadHoved2';
+    const [brevMal, settBrevmal] = useState<string>(defaultBrevmal);
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
@@ -75,6 +77,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 {({ dokumentnavn }) => (
                     <Select
                         label="Velg dokument"
+                        defaultValue={defaultBrevmal}
                         onChange={(e) => {
                             settBrevmal(e.target.value);
                         }}
