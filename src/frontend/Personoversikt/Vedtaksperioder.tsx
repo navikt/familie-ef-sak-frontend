@@ -3,12 +3,12 @@ import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../hooks/felles/useDataHenter';
 import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
 import {
-    AndelHistorikk,
     AndelEndringType,
+    AndelHistorikk,
     AndelHistorikkTypeTilTekst,
 } from '../typer/tilkjentytelse';
 import {
-    formaterIsoDato,
+    formaterIsoDatoTid,
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../utils/formatter';
@@ -32,7 +32,7 @@ const VedtaksperioderTabell: React.FC<{ perioder: AndelHistorikk[] }> = ({ perio
                     <th>Periode</th>
                     <th>Inntektsgrunnlag</th>
                     <th>Stønadsbeløp</th>
-                    <th>Vedtaksdato</th>
+                    <th>Vedtakstidspunkt</th>
                     <th>Saksbehandler</th>
                     <th>Endring</th>
                 </tr>
@@ -55,7 +55,7 @@ const VedtaksperioderTabell: React.FC<{ perioder: AndelHistorikk[] }> = ({ perio
                                         pathname: `/behandling/${periode.behandlingId}`,
                                     }}
                                 >
-                                    {formaterIsoDato(periode.vedtaksdato)}
+                                    {formaterIsoDatoTid(periode.vedtakstidspunkt)}
                                 </Link>
                             }
                         </td>
@@ -69,7 +69,7 @@ const VedtaksperioderTabell: React.FC<{ perioder: AndelHistorikk[] }> = ({ perio
                                     }}
                                 >
                                     {AndelHistorikkTypeTilTekst[periode.endring.type]} (
-                                    {formaterIsoDato(periode.endring.vedtaksdato)})
+                                    {formaterIsoDatoTid(periode.endring.vedtakstidspunkt)})
                                 </Link>
                             )}
                         </td>

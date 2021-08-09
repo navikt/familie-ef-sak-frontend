@@ -13,7 +13,7 @@ export interface AndelTilkjentYtelse {
 
 export interface AndelHistorikk {
     behandlingId: string;
-    vedtaksdato: string;
+    vedtakstidspunkt: string;
     saksbehandler: string;
     andel: AndelTilkjentYtelse;
     endring?: AndelHistorikkEndring;
@@ -22,7 +22,7 @@ export interface AndelHistorikk {
 export interface AndelHistorikkEndring {
     type: AndelEndringType;
     behandlingId: string;
-    vedtaksdato: string;
+    vedtakstidspunkt: string;
 }
 
 export enum AndelEndringType {
