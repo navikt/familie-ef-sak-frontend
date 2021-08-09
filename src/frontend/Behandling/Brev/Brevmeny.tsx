@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur, ValgtFelt } from './BrevTyper';
+import { BrevStruktur } from './BrevTyper';
 import { byggTomRessurs, Ressurs } from '../../typer/ressurs';
 import { useApp } from '../../context/AppContext';
 import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
@@ -53,7 +53,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     {...props}
                     brevStruktur={brevStruktur}
                     tilkjentYtelse={tilkjentYtelse}
-                    mellomlagretBrev={mellomlagretBrev as ValgtFelt}
+                    mellomlagretBrev={mellomlagretBrev}
                 />
             )}
         </DataViewer>

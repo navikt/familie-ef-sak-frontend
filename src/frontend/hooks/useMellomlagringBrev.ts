@@ -1,5 +1,11 @@
 import { useApp } from '../context/AppContext';
-import { byggTomRessurs, RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../typer/ressurs';
 import { useCallback, useEffect, useState } from 'react';
 import { FlettefeltMedVerdi, ValgteDelmaler, ValgtFelt } from '../Behandling/Brev/BrevTyper';
 
@@ -19,7 +25,9 @@ export interface IBrevverdier {
 
 export const useMellomlagringBrev = (behandlingId: string) => {
     const { axiosRequest } = useApp();
-    const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] = useState(byggTomRessurs());
+    const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] = useState<
+        Ressurs<string | undefined>
+    >(byggTomRessurs());
 
     const mellomlagreBrev = (
         flettefelt: FlettefeltMedVerdi[],
@@ -50,10 +58,10 @@ export const useMellomlagringBrev = (behandlingId: string) => {
 
     const hentMellomlagretBrev = useCallback(
         () =>
-            axiosRequest<IMellomlagretBrev | null, null>({
+            axiosRequest<string | undefined, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}`,
-            }).then((res: RessursSuksess<IMellomlagretBrev | null> | RessursFeilet) => {
+            }).then((res: RessursSuksess<string | undefined> | RessursFeilet) => {
                 settMellomlagretBrevRessurs(res);
             }),
         // eslint-disable-next-line

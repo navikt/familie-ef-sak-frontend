@@ -22,7 +22,7 @@ import { brevMal, BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../api/axios';
 import { delmalTilHtml } from './Htmlfelter';
 import { TilkjentYtelse } from '../../typer/tilkjentytelse';
-import { IMellomlagretBrev, useMellomlagringBrev } from '../../hooks/useMellomlagringBrev';
+import { IBrevverdier, useMellomlagringBrev } from '../../hooks/useMellomlagringBrev';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -55,7 +55,7 @@ const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerd
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     tilkjentYtelse?: TilkjentYtelse;
-    mellomlagretBrev?: IMellomlagretBrev;
+    mellomlagretBrev?: string;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -69,9 +69,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreBrev } = useMellomlagringBrev(behandlingId);
-    const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } = {
-        ...mellomlagretBrev?.brevverdier,
-    };
+    const parsetMellomlagretBrev =
+        mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
+
+    const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
+        parsetMellomlagretBrev || {};
 
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
         flettefeltFraMellomlager || initFlettefelterMedVerdi(brevStruktur)
