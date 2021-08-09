@@ -41,6 +41,4 @@ export const formaterNullableFødsesnummer = (fødselsnummer?: string): string |
     fødselsnummer && formaterFødselsnummer(fødselsnummer);
 
 export const formaterTallMedTusenSkille = (verdi?: number): string =>
-    harTallverdi(verdi)
-        ? Number(verdi).toLocaleString('no-NO', { style: 'currency', currency: 'NOK' })
-        : '';
+    harTallverdi(verdi) ? Number(verdi).toLocaleString('no-NO', { currency: 'NOK' }) : '';
