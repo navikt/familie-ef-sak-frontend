@@ -5,11 +5,11 @@ import { FormEvent, useState } from 'react';
 import { Radio, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../context/AppContext';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BorderBox } from './Totrinnskontroll';
 import { RessursStatus } from '@navikt/familie-typer';
 import { ModalAction, ModalType, useModal } from '../../context/ModalContext';
 import { useBehandling } from '../../context/BehandlingContext';
+import AlertStripeFeilPreWrap from '../../Felleskomponenter/AlertStripeFeilPreWrap';
 
 const RadioButtonWrapper = styled.div`
     display: flex;
@@ -125,7 +125,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                         </Hovedknapp>
                     </SubmitButtonWrapper>
                 )}
-                {feil && <AlertStripeFeil>Lagring feilet: {feil}</AlertStripeFeil>}
+                {feil && <AlertStripeFeilPreWrap>{feil}</AlertStripeFeilPreWrap>}
             </BorderBox>
         </StyledForm>
     );

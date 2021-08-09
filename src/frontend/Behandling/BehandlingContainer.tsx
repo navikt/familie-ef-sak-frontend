@@ -14,7 +14,7 @@ import { GodkjennEndringer } from './GodkjennEndringer';
 
 const Container = styled.div`
     display: flex;
-    height: calc(100vh - 3rem);
+    height: calc(100vh - 6rem);
 `;
 
 const VenstreMenyWrapper = styled.div`

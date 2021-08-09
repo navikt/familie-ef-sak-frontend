@@ -4,9 +4,10 @@ import { Ressurs, RessursStatus } from '../../../typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
 import { useApp } from '../../../context/AppContext';
 import styled from 'styled-components';
-import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import hiddenIf from '../../../Felleskomponenter/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../context/BehandlingContext';
+import AlertStripeFeilPreWrap from '../../../Felleskomponenter/AlertStripeFeilPreWrap';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`
@@ -57,7 +58,9 @@ export const BehandleIGosys: React.FC<{ behandlingId: string }> = ({ behandlingI
                 Avslutt og behandle i Gosys
             </Hovedknapp>
             {feilmelding && (
-                <AlertStripeFeil style={{ marginTop: '2rem' }}>{feilmelding}</AlertStripeFeil>
+                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
+                    {feilmelding}
+                </AlertStripeFeilPreWrap>
             )}
         </>
     );

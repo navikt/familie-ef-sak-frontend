@@ -4,7 +4,6 @@ import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
 import { Ressurs, RessursStatus } from '../../typer/ressurs';
 import { useApp } from '../../context/AppContext';
 import { saveAs } from 'file-saver';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
 import { base64toBlob } from '../../utils/utils';
 import { AxiosRequestConfig } from 'axios';
@@ -16,6 +15,7 @@ import styled from 'styled-components';
 import { formaterNullableIsoDatoTid } from '../../utils/formatter';
 import { Undertittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
+import AlertStripeFeilPreWrap from '../../Felleskomponenter/AlertStripeFeilPreWrap';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,
@@ -73,7 +73,9 @@ const Dokumentoversikt: React.FC = () => {
 
     return (
         <>
-            {lastNedDokumentFeilet && <AlertStripeFeil>{lastNedDokumentFeilet}</AlertStripeFeil>}
+            {lastNedDokumentFeilet && (
+                <AlertStripeFeilPreWrap>{lastNedDokumentFeilet}</AlertStripeFeilPreWrap>
+            )}
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
                     const dokumenterKnyttetTilBehandlingenMedDato = dokumentResponse.dokumenterKnyttetTilBehandlingen.map(
