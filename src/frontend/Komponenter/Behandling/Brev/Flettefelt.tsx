@@ -34,6 +34,7 @@ export const Flettefelt: React.FC<Props> = ({
                     handleFlettefeltInput(e.target.value, flettefelt);
                 }}
                 value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
+                maxLength={0}
             />
         );
     } else {
