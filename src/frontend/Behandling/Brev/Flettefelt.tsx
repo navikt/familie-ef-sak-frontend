@@ -4,10 +4,10 @@ import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 import styled from 'styled-components';
 
-const StyledInput = styled(Input)<{ fetLabel: boolean }>`
+const StyledInput = styled(({ fetLabel, ...props }) => <Input {...props} />)`
     padding-top: 0.5rem;
     .skjemaelement__label {
-        font-weight: ${(props) => (props.fetLabel ? 600 : 300)};
+        font-weight: ${(fetLabel) => (fetLabel ? 600 : 300)};
     }
 `;
 
@@ -29,7 +29,7 @@ export const Flettefelt: React.FC<Props> = ({
     <StyledInput
         fetLabel={fetLabel}
         label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}
-        onChange={(e) => {
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             handleFlettefeltInput(e.target.value, flettefelt);
         }}
         value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
