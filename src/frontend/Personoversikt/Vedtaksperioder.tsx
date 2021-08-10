@@ -1,20 +1,21 @@
 import React, { useMemo } from 'react';
 import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../hooks/felles/useDataHenter';
-import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import 'nav-frontend-tabell-style';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import {
     AndelEndringType,
     AndelHistorikk,
+    AndelHistorikkEndring,
     AndelHistorikkTypeTilTekst,
-} from '../typer/tilkjentytelse';
+} from '../App/typer/tilkjentytelse';
 import {
     formaterIsoDatoTid,
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
-} from '../utils/formatter';
-import 'nav-frontend-tabell-style';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+} from '../App/utils/formatter';
+import { useDataHenter } from '../App/hooks/felles/useDataHenter';
+import DataViewer from '../Felles/DataViewer/DataViewer';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
@@ -24,7 +25,46 @@ const Rad = styled.tr<{ type?: AndelEndringType }>`
     opacity: ${(props) => (props.type === AndelEndringType.FJERNET ? '50%' : '100%')};
 `;
 
-const VedtaksperioderTabell: React.FC<{ perioder: AndelHistorikk[] }> = ({ perioder }) => {
+const vedtakstidspunkt = (andel: AndelHistorikk) => (
+    <Link
+        className="lenke"
+        to={{
+            pathname: `/behandling/${andel.behandlingId}`,
+        }}
+    >
+        {formaterIsoDatoTid(andel.vedtakstidspunkt)}
+    </Link>
+);
+
+const endring = (endring?: AndelHistorikkEndring) =>
+    endring && (
+        <Link
+            className="lenke"
+            to={{
+                pathname: `/behandling/${endring.behandlingId}`,
+            }}
+        >
+            {AndelHistorikkTypeTilTekst[endring.type]} (
+            {formaterIsoDatoTid(endring.vedtakstidspunkt)})
+        </Link>
+    );
+
+const historikkRad = (andel: AndelHistorikk) => (
+    <Rad type={andel.endring?.type}>
+        <td>
+            {formaterNullableMånedÅr(andel.andel.stønadFra)}
+            {' - '}
+            {formaterNullableMånedÅr(andel.andel.stønadTil)}
+        </td>
+        <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
+        <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
+        <td>{vedtakstidspunkt(andel)}</td>
+        <td>{andel.saksbehandler}</td>
+        <td>{endring(andel.endring)}</td>
+    </Rad>
+);
+
+const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
         <StyledTabell className="tabell">
             <thead>
@@ -37,45 +77,7 @@ const VedtaksperioderTabell: React.FC<{ perioder: AndelHistorikk[] }> = ({ perio
                     <th>Endring</th>
                 </tr>
             </thead>
-            <tbody>
-                {perioder.map((periode) => (
-                    <Rad type={periode.endring?.type}>
-                        <td>
-                            {formaterNullableMånedÅr(periode.andel.stønadFra)}
-                            {' - '}
-                            {formaterNullableMånedÅr(periode.andel.stønadTil)}
-                        </td>
-                        <td>{formaterTallMedTusenSkille(periode.andel.inntekt)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.andel.beløp)}</td>
-                        <td>
-                            {
-                                <Link
-                                    className="lenke"
-                                    to={{
-                                        pathname: `/behandling/${periode.behandlingId}`,
-                                    }}
-                                >
-                                    {formaterIsoDatoTid(periode.vedtakstidspunkt)}
-                                </Link>
-                            }
-                        </td>
-                        <td>{periode.saksbehandler}</td>
-                        <td>
-                            {periode.endring && (
-                                <Link
-                                    className="lenke"
-                                    to={{
-                                        pathname: `/behandling/${periode.endring.behandlingId}`,
-                                    }}
-                                >
-                                    {AndelHistorikkTypeTilTekst[periode.endring.type]} (
-                                    {formaterIsoDatoTid(periode.endring.vedtakstidspunkt)})
-                                </Link>
-                            )}
-                        </td>
-                    </Rad>
-                ))}
-            </tbody>
+            <tbody>{andeler.map((periode) => historikkRad(periode))}</tbody>
         </StyledTabell>
     );
 };
@@ -92,7 +94,7 @@ const Vedtaksperioder: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
     return (
         <DataViewer response={{ perioder }}>
-            {({ perioder }) => <VedtaksperioderTabell perioder={perioder} />}
+            {({ perioder }) => <VedtaksperioderTabell andeler={perioder} />}
         </DataViewer>
     );
 };
