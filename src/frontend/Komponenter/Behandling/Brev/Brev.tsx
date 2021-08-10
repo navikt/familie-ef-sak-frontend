@@ -31,11 +31,8 @@ interface Props {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const {
-        behandlingErRedigerbar,
-        personopplysningerResponse,
-        totrinnskontroll,
-    } = useBehandling();
+    const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll } =
+        useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
 
     const lagBeslutterBrev = () => {

@@ -12,9 +12,8 @@ interface IProps {
 
 const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) => {
     const [autentisert, settAutentisert] = React.useState(true);
-    const [innloggetSaksbehandler, settInnloggetSaksbehandler] = React.useState(
-        autentisertSaksbehandler
-    );
+    const [innloggetSaksbehandler, settInnloggetSaksbehandler] =
+        React.useState(autentisertSaksbehandler);
 
     useEffect(() => {
         settInnloggetSaksbehandler(autentisertSaksbehandler);
