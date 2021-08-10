@@ -8,14 +8,14 @@ import {
     AndelHistorikk,
     AndelHistorikkEndring,
     AndelHistorikkTypeTilTekst,
-} from '../App/typer/tilkjentytelse';
+} from '../../App/typer/tilkjentytelse';
 import {
     formaterIsoDatoTid,
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
-} from '../App/utils/formatter';
-import { useDataHenter } from '../App/hooks/felles/useDataHenter';
-import DataViewer from '../Felles/DataViewer/DataViewer';
+} from '../../App/utils/formatter';
+import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
