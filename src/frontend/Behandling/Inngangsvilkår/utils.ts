@@ -1,5 +1,5 @@
 import { IPersonDetaljer } from './Sivilstand/typer';
-import { formaterNullableIsoDato } from '../../utils/formatter';
+import { formaterNullableIsoDato } from '../../App/utils/formatter';
 
 export const hentBooleanTekst = (value: boolean): string => (value ? 'Ja' : 'Nei');
 

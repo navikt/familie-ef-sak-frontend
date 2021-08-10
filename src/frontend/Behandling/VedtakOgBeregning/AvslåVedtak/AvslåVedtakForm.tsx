@@ -2,7 +2,7 @@ import { Textarea } from 'nav-frontend-skjema';
 import React, { FormEvent } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
-import AlertStripeFeilPreWrap from '../../../Felleskomponenter/AlertStripeFeilPreWrap';
+import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const StyledForm = styled.form`
     margin-top: 2rem;

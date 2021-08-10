@@ -1,19 +1,16 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import Samvær from './Samvær';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
-import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
+import { StyledLesmerpanel } from '../../../Felles/Visningskomponenter/StyledLesmerpanel';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
-import { harVerdi } from '../../../utils/utils';
+import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import { harVerdi } from '../../../App/utils/utils';
 
 const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;

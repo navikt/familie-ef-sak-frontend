@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import variables from 'nav-frontend-core';
-import { useHentVilkår } from '../../hooks/useHentVilkår';
+import { useHentVilkår } from '../../App/hooks/useHentVilkår';
 import { TidligereVedtaksperioderType } from '../Inngangsvilkår/vilkår';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 import InformasjonsElement from './InformasjonsElement';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from '../Vurdering/tekster';
 

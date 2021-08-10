@@ -9,9 +9,9 @@ import {
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
-import { Ressurs, RessursStatus } from '../../typer/ressurs';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { KnappWrapper } from '../../Oppgavebenk/OppgaveFiltrering';
-import { useBehandling } from '../../context/BehandlingContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
 
 export enum Redigeringsmodus {
     REDIGERING = 'REDIGERING',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
+import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import SivilstandInfo from './SivilstandInfo';

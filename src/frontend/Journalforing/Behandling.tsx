@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Flatknapp } from 'nav-frontend-knapper';
-import LeggtilMedSirkel from '../ikoner/LeggtilMedSirkel';
+import LeggtilMedSirkel from '../Felles/Ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
-import { Behandlingstype } from '../typer/behandlingstype';
-import { Behandling, Fagsak } from '../typer/fagsak';
-import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import { BehandlingRequest } from '../hooks/useJournalføringState';
-import { formaterIsoDatoTid } from '../utils/formatter';
-import { Ressurs } from '../typer/ressurs';
+import { Behandlingstype } from '../App/typer/behandlingstype';
+import { Behandling, Fagsak } from '../App/typer/fagsak';
+import DataViewer from '../Felles/DataViewer/DataViewer';
+import { BehandlingRequest } from '../App/hooks/useJournalføringState';
+import { formaterIsoDatoTid } from '../App/utils/formatter';
+import { Ressurs } from '../App/typer/ressurs';
 
 interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;

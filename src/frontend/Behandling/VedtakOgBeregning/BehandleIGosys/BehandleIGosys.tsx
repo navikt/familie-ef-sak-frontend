@@ -1,13 +1,13 @@
 import { Hovedknapp as HovedknappNAV } from 'nav-frontend-knapper';
 import React, { useState } from 'react';
-import { Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { ModalAction, ModalType, useModal } from '../../../context/ModalContext';
-import { useApp } from '../../../context/AppContext';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
+import { useApp } from '../../../App/context/AppContext';
 import styled from 'styled-components';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import hiddenIf from '../../../Felleskomponenter/HiddenIf/hiddenIf';
-import { useBehandling } from '../../../context/BehandlingContext';
-import AlertStripeFeilPreWrap from '../../../Felleskomponenter/AlertStripeFeilPreWrap';
+import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`

@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { useBehandling } from '../../context/BehandlingContext';
-import { RessursStatus } from '../../typer/ressurs';
+import { useBehandling } from '../../App/context/BehandlingContext';
+import { RessursStatus } from '../../App/typer/ressurs';
 import {
     TotrinnskontrollMedBegrunnelse,
     TotrinnskontrollOpprettet,
     TotrinnskontrollStatus,
-} from '../../typer/totrinnskontroll';
+} from '../../App/typer/totrinnskontroll';
 import FatterVedtak from './FatterVedtak';
 import styled from 'styled-components';
-import Advarsel from '../../ikoner/Advarsel';
-import { formaterIsoDatoTid } from '../../utils/formatter';
-import Info from '../../ikoner/Info';
-import { BreakWordNormaltekst } from '../../Felleskomponenter/BreakWordNormaltekst';
+import Advarsel from '../../Felles/Ikoner/Advarsel';
+import { formaterIsoDatoTid } from '../../App/utils/formatter';
+import Info from '../../Felles/Ikoner/Info';
+import { BreakWordNormaltekst } from '../../Felles/Visningskomponenter/BreakWordNormaltekst';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;

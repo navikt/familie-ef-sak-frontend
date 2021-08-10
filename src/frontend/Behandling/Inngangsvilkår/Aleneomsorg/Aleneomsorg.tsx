@@ -1,6 +1,6 @@
 import React from 'react';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
-import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
+import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
 import { VilkårProps } from '../vilkårprops';

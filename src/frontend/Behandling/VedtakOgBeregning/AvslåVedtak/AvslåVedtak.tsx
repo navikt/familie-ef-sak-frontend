@@ -1,10 +1,10 @@
 import React, { FormEvent, useState } from 'react';
-import { useApp } from '../../../context/AppContext';
-import { Ressurs, RessursStatus } from '../../../typer/ressurs';
+import { useApp } from '../../../App/context/AppContext';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useHistory } from 'react-router-dom';
-import { useBehandling } from '../../../context/BehandlingContext';
-import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../typer/vedtak';
-import { Behandling } from '../../../typer/fagsak';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../App/typer/vedtak';
+import { Behandling } from '../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { Element, Normaltekst } from 'nav-frontend-typografi';

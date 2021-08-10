@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../typer/ressurs';
-import PdfVisning from '../../Felleskomponenter/PdfVisning';
+import { useApp } from '../../App/context/AppContext';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import styled from 'styled-components';
-import { useBehandling } from '../../context/BehandlingContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 
 interface Props {

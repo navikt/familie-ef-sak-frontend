@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Normaltekst } from 'nav-frontend-typografi';
 
-import { ISagtOppEllerRedusertStilling } from '../../../typer/overgangsstønad';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { ISagtOppEllerRedusertStilling } from '../../../App/typer/overgangsstønad';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import {
     ESagtOppEllerRedusert,
     SagtOppEllerRedusertTilTekst,
 } from '../../Inngangsvilkår/Samliv/typer';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;

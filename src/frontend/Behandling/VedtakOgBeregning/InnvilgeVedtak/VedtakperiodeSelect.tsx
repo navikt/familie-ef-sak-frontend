@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { EPeriodeProperty, EPeriodetype, periodetypeTilTekst } from '../../../typer/vedtak';
+import { EPeriodeProperty, EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 

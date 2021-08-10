@@ -1,4 +1,4 @@
-import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårsresultatIkon';
+import { VilkårsresultatIkon } from '../../Felles/Ikoner/VilkårsresultatIkon';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React from 'react';
 import styled from 'styled-components';

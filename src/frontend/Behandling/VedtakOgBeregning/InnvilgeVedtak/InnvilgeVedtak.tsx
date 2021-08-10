@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
-import { Behandlingstype } from '../../../typer/behandlingstype';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
     IBeløpsperiode,
@@ -11,24 +11,24 @@ import {
     IInnvilgeVedtak,
     IVedtak,
     IVedtaksperiode,
-} from '../../../typer/vedtak';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../typer/ressurs';
-import { useBehandling } from '../../../context/BehandlingContext';
+} from '../../../App/typer/vedtak';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 import { useHistory } from 'react-router-dom';
-import { useApp } from '../../../context/AppContext';
-import { Behandling } from '../../../typer/fagsak';
+import { useApp } from '../../../App/context/AppContext';
+import { Behandling } from '../../../App/typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
-import hiddenIf from '../../../Felleskomponenter/HiddenIf/hiddenIf';
-import { FieldState } from '../../../hooks/felles/useFieldState';
-import { ListState } from '../../../hooks/felles/useListState';
+import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
+import { FieldState } from '../../../App/hooks/felles/useFieldState';
+import { ListState } from '../../../App/hooks/felles/useListState';
 import { Undertittel } from 'nav-frontend-typografi';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import styled from 'styled-components';
 import { FamilieTextarea } from '@navikt/familie-form-elements';
 import Utregningstabell from './Utregningstabell';
-import useFormState, { FormState } from '../../../hooks/felles/useFormState';
+import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
 import { validerVedtaksperioder } from '../vedtaksvalidering';
-import AlertStripeFeilPreWrap from '../../../Felleskomponenter/AlertStripeFeilPreWrap';
+import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const StyledFamilieTextarea = styled(FamilieTextarea)`
     white-space: pre-wrap;

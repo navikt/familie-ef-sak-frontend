@@ -1,8 +1,8 @@
 import React from 'react';
 import 'nav-frontend-tabell-style';
-import { useBehandling } from '../../context/BehandlingContext';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import PersonopplysningerMedNavKontor from '../../Felleskomponenter/Personopplysninger/PersonopplysningerMedNavKontor';
+import { useBehandling } from '../../App/context/BehandlingContext';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import PersonopplysningerMedNavKontor from '../../Felles/Personopplysninger/PersonopplysningerMedNavKontor';
 
 const Personopplysninger: React.FC = () => {
     const { personopplysningerResponse, navKontorResponse } = useBehandling();

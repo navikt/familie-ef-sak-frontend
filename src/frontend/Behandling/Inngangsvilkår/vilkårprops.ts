@@ -5,7 +5,7 @@ import {
     SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from './vilkår';
-import { Ressurs } from '../../typer/ressurs';
+import { Ressurs } from '../../App/typer/ressurs';
 
 export interface VilkårProps {
     vurderinger: IVurdering[];

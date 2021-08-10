@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import Fanemeny from './Fanemeny/Fanemeny';
 import navFarger from 'nav-frontend-core';
 import BehandlingRoutes from './BehandlingRoutes';
-import { BehandlingProvider, useBehandling } from '../context/BehandlingContext';
-import { ModalProvider } from '../context/ModalContext';
-import ModalController from '../Felleskomponenter/Modal/ModalController';
-import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import VisittkortComponent from '../Felleskomponenter/Visittkort/Visittkort';
-import { GodkjennEndringer } from './GodkjennEndringer';
+import { BehandlingProvider, useBehandling } from '../App/context/BehandlingContext';
+import { ModalProvider } from '../App/context/ModalContext';
+import ModalController from '../Felles/Modal/ModalController';
+import DataViewer from '../Felles/DataViewer/DataViewer';
+import VisittkortComponent from '../Felles/Visittkort/Visittkort';
+import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
 
 const Container = styled.div`
     display: flex;

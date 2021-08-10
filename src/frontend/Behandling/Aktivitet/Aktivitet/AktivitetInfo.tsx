@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { IAktivitet } from '../../../typer/overgangsstønad';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { IAktivitet } from '../../../App/typer/overgangsstønad';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import SelvstendigNæringsdrivendeEllerFrilanser from './SelvstendigNæringsdrivendeEllerFrilanser';
 import Arbeidssøker from './Arbeidssøker';
 import { TidligereUtdanninger, UnderUtdanning } from './Utdanning';
-import { SeksjonWrapper } from '../../../Felleskomponenter/SeksjonWrapper';
+import { SeksjonWrapper } from '../../../Felles/Visningskomponenter/SeksjonWrapper';
 import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmottakerSomFrilanser';
 
 interface Props {

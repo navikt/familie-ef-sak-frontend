@@ -2,7 +2,7 @@ import { IMedlemskap } from './Medlemskap/typer';
 import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon, ISivilstandsplaner } from './Samliv/typer';
 import { IBarnMedSamvær } from './Aleneomsorg/typer';
-import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../typer/overgangsstønad';
+import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../App/typer/overgangsstønad';
 import { Begrunnelse, SvarId } from '../Vurdering/typer';
 
 export interface IVilkår {

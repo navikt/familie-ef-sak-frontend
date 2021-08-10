@@ -1,7 +1,7 @@
-import { EAktivitet, EPeriodetype, IVedtaksperiode } from '../../typer/vedtak';
-import { erMånedÅrEtter, erMånedÅrEtterEllerLik, erMånedÅrLik } from '../../utils/dato';
+import { EAktivitet, EPeriodetype, IVedtaksperiode } from '../../App/typer/vedtak';
+import { erMånedÅrEtter, erMånedÅrEtterEllerLik, erMånedÅrLik } from '../../App/utils/dato';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
-import { FormErrors } from '../../hooks/felles/useFormState';
+import { FormErrors } from '../../App/hooks/felles/useFormState';
 
 export const validerVedtaksperioder = ({
     perioder,

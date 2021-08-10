@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Dialog from '../../ikoner/Dialog';
-import Mappe from '../../ikoner/Mappe';
-import Logg from '../../ikoner/Logg';
+import Dialog from '../../Felles/Ikoner/Dialog';
+import Mappe from '../../Felles/Ikoner/Mappe';
+import Logg from '../../Felles/Ikoner/Logg';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { Høyremenyvalg } from './Høyremeny';

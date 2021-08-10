@@ -1,14 +1,11 @@
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import React, { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import LiteBarn from '../../../ikoner/LiteBarn';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
-import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
+import LiteBarn from '../../../Felles/Ikoner/LiteBarn';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
+import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];

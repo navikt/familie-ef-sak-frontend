@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { ISelvstendig } from '../../../typer/overgangsstønad';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { ISelvstendig } from '../../../App/typer/overgangsstønad';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 const SelvstendigNæringsdrivendeEllerFrilanser: FC<{ firma: ISelvstendig }> = ({ firma }) => {
     return (

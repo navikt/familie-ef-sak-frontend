@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Input, Select } from 'nav-frontend-skjema';
 import { oppgaveTypeTilTekst } from './typer/oppgavetema';
-import { behandlingstemaTilTekst } from '../typer/behandlingstema';
-import { useApp } from '../context/AppContext';
+import { behandlingstemaTilTekst } from '../App/typer/behandlingstema';
+import { useApp } from '../App/context/AppContext';
 import { enhetsmappeTilTekst } from './typer/enhetsmappe';
 import CustomSelect from './CustomSelect';
 import { enhetTilTekst } from './typer/enhet';
 import DatoPeriode from './DatoPeriode';
-import { datoFeil, oppdaterFilter } from '../utils/utils';
+import { datoFeil, oppdaterFilter } from '../App/utils/utils';
 import { IOppgaveRequest } from './typer/oppgaverequest';
-import { OrNothing } from '../hooks/felles/useSorteringState';
+import { OrNothing } from '../App/hooks/felles/useSorteringState';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,

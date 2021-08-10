@@ -3,12 +3,12 @@ import {
     EAktivitet,
     EPeriodeProperty,
     EPeriodetype,
-} from '../../../typer/vedtak';
+} from '../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { OrNothing } from '../../../hooks/felles/useSorteringState';
+import { OrNothing } from '../../../App/hooks/felles/useSorteringState';
 
 interface Props {
     periodeType: EPeriodetype | '' | undefined;
