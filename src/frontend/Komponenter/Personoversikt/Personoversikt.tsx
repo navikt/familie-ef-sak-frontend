@@ -37,9 +37,7 @@ const Personoversikt: React.FC = () => {
                             { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
                             { label: 'Dokumentoversikt', disabled: true },
                         ]}
-                        onChange={(e, tabNumber) =>
-                            e.target && tabNumber !== 3 && settTabvalg(tabNumber)
-                        }
+                        onChange={(_, tabNumber) => tabNumber !== 3 && settTabvalg(tabNumber)}
                     />
                     {tabvalg === 0 && (
                         <Personopplysninger personopplysninger={personopplysninger} />
