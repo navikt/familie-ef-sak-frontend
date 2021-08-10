@@ -10,10 +10,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { FlettefeltMedVerdi, ValgteDelmaler, ValgtFelt } from '../Behandling/Brev/BrevTyper';
 
 export interface IMellomlagretBrev {
-    behandlingId: string;
     brevverdier: string;
     brevmal: string;
-    saksbehandlerId: string;
     versjon: string;
 }
 
@@ -32,20 +30,19 @@ export const useMellomlagringBrev = (behandlingId: string) => {
     const mellomlagreBrev = (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
-        valgteDelmaler: ValgteDelmaler
+        valgteDelmaler: ValgteDelmaler,
+        brevmal: string
     ): void => {
         axiosRequest<string, IMellomlagretBrev>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}`,
             data: {
-                behandlingId,
                 brevverdier: JSON.stringify({
                     flettefeltFraMellomlager: flettefelt,
                     valgteFeltFraMellomlager: valgteFelt,
                     valgteDelmalerFraMellomlager: valgteDelmaler,
                 }),
-                brevmal: 'test123',
-                saksbehandlerId: 'test123',
+                brevmal,
                 versjon: '1',
             },
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
