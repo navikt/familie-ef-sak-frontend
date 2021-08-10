@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Oppfylt from './Oppfylt';
 import IkkeOppfylt from './IkkeOppfylt';
 import IkkeVurdert from './IkkeVurdert';
-import { Vilkårsresultat } from '../../Behandling/Inngangsvilkår/vilkår';
+import { Vilkårsresultat } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
 import Info from './Info';
 
 export const VilkårsresultatIkon: FC<{
