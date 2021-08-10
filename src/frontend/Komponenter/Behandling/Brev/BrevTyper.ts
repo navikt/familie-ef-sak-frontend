@@ -13,6 +13,7 @@ export interface AlleFlettefelter {
 }
 interface Flettefelt {
     felt: string;
+    erFritektsfelt?: boolean;
     feltVisningsnavn?: string;
     _id: string;
 }

@@ -1,5 +1,5 @@
-import { finnFlettefeltVisningsnavnFraRef } from './BrevUtils';
-import { Input } from 'nav-frontend-skjema';
+import { erFlettefeltFritektsfelt, finnFlettefeltVisningsnavnFraRef } from './BrevUtils';
+import { Input, Textarea } from 'nav-frontend-skjema';
 import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 import styled from 'styled-components';
@@ -25,13 +25,27 @@ export const Flettefelt: React.FC<Props> = ({
     dokument,
     flettefelter,
     handleFlettefeltInput,
-}) => (
-    <StyledInput
-        fetLabel={fetLabel}
-        label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}
-        onChange={(e) => {
-            handleFlettefeltInput(e.target.value, flettefelt);
-        }}
-        value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
-    />
-);
+}) => {
+    if (erFlettefeltFritektsfelt(dokument, flettefelt._ref)) {
+        return (
+            <Textarea
+                label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    handleFlettefeltInput(e.target.value, flettefelt);
+                }}
+                value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
+            />
+        );
+    } else {
+        return (
+            <StyledInput
+                fetLabel={fetLabel}
+                label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    handleFlettefeltInput(e.target.value, flettefelt);
+                }}
+                value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
+            />
+        );
+    }
+};
