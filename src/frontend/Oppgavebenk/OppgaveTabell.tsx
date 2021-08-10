@@ -1,17 +1,17 @@
 import React from 'react';
-import { RessursStatus, RessursSuksess } from '../typer/ressurs';
-import SystemetLaster from '../Felleskomponenter/SystemetLaster/SystemetLaster';
+import { RessursStatus, RessursSuksess } from '../App/typer/ressurs';
+import SystemetLaster from '../Felles/SystemetLaster/SystemetLaster';
 import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { OppgaveRessurs } from './OppgavebenkApp';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './typer/oppgave';
 import 'nav-frontend-tabell-style';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
-import { useSorteringState } from '../hooks/felles/useSorteringState';
-import { usePagineringState } from '../hooks/felles/usePaginerState';
+import { useSorteringState } from '../App/hooks/felles/useSorteringState';
+import { usePagineringState } from '../App/hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import Pagination from 'paginering';
-import AlertStripeFeilPreWrap from '../Felleskomponenter/AlertStripeFeilPreWrap';
+import AlertStripeFeilPreWrap from '../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const SIDE_STORRELSE = 15;
 

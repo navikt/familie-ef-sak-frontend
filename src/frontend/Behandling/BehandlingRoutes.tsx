@@ -1,9 +1,9 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as React from 'react';
 import { filtrerSiderEtterBehandlingstype, sider } from './Fanemeny/sider';
-import { useBehandling } from '../context/BehandlingContext';
-import { RessursSuksess } from '../typer/ressurs';
-import { Behandling } from '../typer/fagsak';
+import { useBehandling } from '../App/context/BehandlingContext';
+import { RessursSuksess } from '../App/typer/ressurs';
+import { Behandling } from '../App/typer/fagsak';
 
 const BehandlingRoutes: React.FC = () => {
     const { behandling } = useBehandling();

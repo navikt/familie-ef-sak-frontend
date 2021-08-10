@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
-import { IArbeidssøker } from '../../../typer/overgangsstønad';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
+import { IArbeidssøker } from '../../../App/typer/overgangsstønad';
 
 const Arbeidssøker: FC<{ arbeidssøker: IArbeidssøker }> = ({ arbeidssøker }) => {
     return (

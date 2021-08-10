@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../App/context/AppContext';
 import OppgaveFiltering from './OppgaveFiltrering';
 import OppgaveTabell, { IOppgaverResponse } from './OppgaveTabell';
-import { byggTomRessurs, Ressurs } from '../typer/ressurs';
+import { byggTomRessurs, Ressurs } from '../App/typer/ressurs';
 import { IOppgaveRequest } from './typer/oppgaverequest';
 import { OpprettDummyBehandling } from './OpprettDummyBehandling';
-import { Side } from '../Felleskomponenter/Side/Side';
+import { Side } from '../Felles/Visningskomponenter/Side';
 
 export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
 

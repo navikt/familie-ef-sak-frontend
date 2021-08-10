@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { Folkeregisterpersonstatus } from '../../../typer/personopplysninger';
-import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Folkeregisterpersonstatus } from '../../../App/typer/personopplysninger';
+import { Registergrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
-import { toTitleCase } from '../../../utils/utils';
+import { toTitleCase } from '../../../App/utils/utils';
 
 const StyledDiv = styled.div`
     display: grid;

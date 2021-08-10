@@ -1,8 +1,5 @@
 import React, { FC } from 'react';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {

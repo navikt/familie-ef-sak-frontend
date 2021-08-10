@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { IOppgave } from './typer/oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
 import { enhetsmappeTilTekst } from './typer/enhetsmappe';
-import { Behandlingstema, behandlingstemaTilTekst } from '../typer/behandlingstema';
-import { formaterIsoDato, formaterIsoDatoTid } from '../utils/formatter';
+import { Behandlingstema, behandlingstemaTilTekst } from '../App/typer/behandlingstema';
+import { formaterIsoDato, formaterIsoDatoTid } from '../App/utils/formatter';
 import { Flatknapp as Knapp } from 'nav-frontend-knapper';
-import UIModalWrapper from '../Felleskomponenter/Modal/UIModalWrapper';
+import UIModalWrapper from '../Felles/Modal/UIModalWrapper';
 import { Normaltekst } from 'nav-frontend-typografi';
-import hiddenIf from '../Felleskomponenter/HiddenIf/hiddenIf';
-import { useOppgave } from '../hooks/useOppgave';
+import hiddenIf from '../Felles/HiddenIf/hiddenIf';
+import { useOppgave } from '../App/hooks/useOppgave';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import styled from 'styled-components';
 

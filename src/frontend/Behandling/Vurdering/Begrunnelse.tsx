@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Textarea as TextareaNav } from 'nav-frontend-skjema';
 import { BegrunnelseRegel, Regel } from './typer';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
-import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
+import hiddenIf from '../../Felles/HiddenIf/hiddenIf';
 
 const Textarea = hiddenIf(TextareaNav);
 

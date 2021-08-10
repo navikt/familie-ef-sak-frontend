@@ -6,11 +6,11 @@ import {
     hvorMyeSammenTilTekst,
     IBarnMedSamværSøknadsgrunnlag,
 } from './typer';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 
 interface Props {
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;

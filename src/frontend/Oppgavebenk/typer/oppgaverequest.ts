@@ -1,4 +1,4 @@
-import { Behandlingstema } from '../../typer/behandlingstema';
+import { Behandlingstema } from '../../App/typer/behandlingstema';
 import { Oppgavetype } from './oppgavetema';
 import { Enhet } from './enhet';
 import { Enhetsmappe } from './enhetsmappe';

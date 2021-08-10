@@ -2,13 +2,13 @@ import * as React from 'react';
 import { FC } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
-import { IBehandlingParams } from '../../typer/routing';
+import { IBehandlingParams } from '../../App/typer/routing';
 import { filtrerSiderEtterBehandlingstype, sider } from './sider';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { NavLink } from 'react-router-dom';
-import { useBehandling } from '../../context/BehandlingContext';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { Sticky } from '../../Felleskomponenter/Sticky';
+import { useBehandling } from '../../App/context/BehandlingContext';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { Sticky } from '../../Felles/Visningskomponenter/Sticky';
 import navFarger from 'nav-frontend-core';
 
 const StickyMedBoxShadow = styled(Sticky)`

@@ -1,6 +1,6 @@
 import { Oppgavetype, Prioritet } from './oppgavetema';
 import { Enhetsmappe } from './enhetsmappe';
-import { Behandlingstema } from '../../typer/behandlingstema';
+import { Behandlingstema } from '../../App/typer/behandlingstema';
 import { IOppgaveIdent } from '@navikt/familie-typer/dist/oppgave';
 
 export interface IOppgave {

@@ -1,17 +1,14 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Normaltekst } from 'nav-frontend-typografi';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import Statsborgerskap from './Statsborgerskap';
 import Oppholdstillatelse from './Oppholdstillatelse';
 import Utenlandsopphold from './Utenlandsopphold';
-import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
+import { StyledLesmerpanel } from '../../../Felles/Visningskomponenter/StyledLesmerpanel';
 import { IMedlemskap } from './typer';
 import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
 import InnflyttingUtflytting from './InnflyttingUtflytting';

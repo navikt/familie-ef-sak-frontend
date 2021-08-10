@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
-import { IStatsborgerskap } from '../../../typer/personopplysninger';
-import TabellVisning, { TabellIkon } from '../../TabellVisning';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
+import { IStatsborgerskap } from '../../../App/typer/personopplysninger';
+import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 
 interface Props {
     statsborgerskap: IStatsborgerskap[];

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { Element, Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import RedigerBlyant from '../../ikoner/RedigerBlyant';
+import RedigerBlyant from '../../Felles/Ikoner/RedigerBlyant';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
-import SlettSøppelkasse from '../../ikoner/SlettSøppelkasse';
+import SlettSøppelkasse from '../../Felles/Ikoner/SlettSøppelkasse';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
-import LenkeKnapp from '../../Felleskomponenter/LenkeKnapp';
-import { BrukerMedBlyantIkon } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import LenkeKnapp from '../../Felles/Knapper/LenkeKnapp';
+import { BrukerMedBlyantIkon } from '../../Felles/Ikoner/DataGrunnlagIkoner';
 import { resultatTilTekst } from '../Vilkårresultat/ResultatVisning';
-import { BreakWordNormaltekst } from '../../Felleskomponenter/BreakWordNormaltekst';
+import { BreakWordNormaltekst } from '../../Felles/Visningskomponenter/BreakWordNormaltekst';
 
 const StyledVurdering = styled.div`
     display: grid;

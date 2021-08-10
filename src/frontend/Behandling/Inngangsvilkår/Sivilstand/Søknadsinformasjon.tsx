@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { SivilstandType } from '../../../typer/personopplysninger';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { SivilstandType } from '../../../App/typer/personopplysninger';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag, ÅrsakEnsligTilTekst } from './typer';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { hentBooleanTekst } from '../utils';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 interface Props {
     sivilstandtype: SivilstandType;

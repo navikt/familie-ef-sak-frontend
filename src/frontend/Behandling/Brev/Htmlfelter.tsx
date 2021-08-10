@@ -1,5 +1,5 @@
-import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../utils/formatter';
-import { AndelTilkjentYtelse, TilkjentYtelse } from '../../typer/tilkjentytelse';
+import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../App/utils/formatter';
+import { AndelTilkjentYtelse, TilkjentYtelse } from '../../App/typer/tilkjentytelse';
 
 export const delmalTilHtml = (
     delmalNavn: string,

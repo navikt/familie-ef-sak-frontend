@@ -4,7 +4,7 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
 import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
-import { VilkårsresultatIkon } from '../../Felleskomponenter/Visning/VilkårsresultatIkon';
+import { VilkårsresultatIkon } from '../../Felles/Ikoner/VilkårsresultatIkon';
 
 const Container = styled.div`
     padding: 2rem 1rem;

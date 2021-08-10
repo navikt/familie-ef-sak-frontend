@@ -1,6 +1,6 @@
 import React from 'react';
-import Rediger from '../ikoner/Rediger';
-import VisPdf from '../ikoner/VisPdf';
+import Rediger from '../Felles/Ikoner/Rediger';
+import VisPdf from '../Felles/Ikoner/VisPdf';
 import styled from 'styled-components';
 import { Flatknapp } from 'nav-frontend-knapper';
 

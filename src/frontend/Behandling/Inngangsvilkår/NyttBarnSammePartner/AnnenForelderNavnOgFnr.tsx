@@ -1,11 +1,11 @@
 import React from 'react';
 import { IAnnenForelder } from '../Aleneomsorg/typer';
-import { KopierbartNullableFødselsnummer } from '../../../Felleskomponenter/KopierbartNullableFødselsnummer';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { harVerdi } from '../../../utils/utils';
-import EtikettDød from '../../../etiketter/EtikettDød';
+import { harVerdi } from '../../../App/utils/utils';
+import EtikettDød from '../../../Felles/Etiketter/EtikettDød';
 
 interface Props {
     forelder: IAnnenForelder;

@@ -16,7 +16,7 @@ import {
     oppdaterSvarIListe,
 } from './utils';
 
-import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
+import hiddenIf from '../../Felles/HiddenIf/hiddenIf';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Begrunnelse from './Begrunnelse';
 import Delvilkår from './Delvilkår';

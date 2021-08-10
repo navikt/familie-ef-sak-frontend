@@ -1,5 +1,5 @@
 import { IPersonDetaljer } from '../Sivilstand/typer';
-import { IDokumentasjon } from '../../../typer/felles';
+import { IDokumentasjon } from '../../../App/typer/felles';
 
 export interface IBosituasjon {
     delerDuBolig: ESøkerDelerBolig;

@@ -4,8 +4,8 @@ import { FunctionComponent } from 'react';
 import Aktivitet from '../Aktivitet/Aktivitetsvilkår';
 import Brev from '../Brev/Brev';
 import Blankett from '../Blankett/Blankett';
-import { Behandling } from '../../typer/fagsak';
-import { Behandlingstype } from '../../typer/behandlingstype';
+import { Behandling } from '../../App/typer/fagsak';
+import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
 import Personopplysninger from '../Personopplysninger/Personopplysninger';
 

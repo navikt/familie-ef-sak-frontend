@@ -1,8 +1,8 @@
-import { behandlingResultatTilTekst, EBehandlingResultat } from '../../typer/vedtak';
+import { behandlingResultatTilTekst, EBehandlingResultat } from '../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
-import { useBehandling } from '../../context/BehandlingContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
 import { Undertittel } from 'nav-frontend-typografi';
 
 interface Props {

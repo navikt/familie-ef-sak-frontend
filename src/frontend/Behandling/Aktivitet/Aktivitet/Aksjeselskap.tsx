@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
-import { IAksjeselskap } from '../../../typer/overgangsstønad';
+import { IAksjeselskap } from '../../../App/typer/overgangsstønad';
 
 const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap }> = ({ aksjeselskap }) => {
     return (

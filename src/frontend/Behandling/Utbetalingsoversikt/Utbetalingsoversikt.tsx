@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { useApp } from '../../context/AppContext';
+import { useApp } from '../../App/context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
-import { Ressurs } from '../../typer/ressurs';
+import { Ressurs } from '../../App/typer/ressurs';
 
 interface Props {
     behandlingId: string;

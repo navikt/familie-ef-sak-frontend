@@ -3,9 +3,9 @@ import { FC, useState } from 'react';
 import { IVurdering, SvarPåVilkårsvurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Feilmelding } from 'nav-frontend-typografi';
-import { Ressurs, RessursStatus } from '../../typer/ressurs';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import EndreVurderingComponent from './EndreVurderingComponent';
-import { useBehandling } from '../../context/BehandlingContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 
 const StyledEndreVurdering = styled.div`

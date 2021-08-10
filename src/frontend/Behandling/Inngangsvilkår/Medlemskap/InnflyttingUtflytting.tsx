@@ -1,9 +1,9 @@
 import React from 'react';
-import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../../typer/personopplysninger';
+import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../../App/typer/personopplysninger';
 import { Element } from 'nav-frontend-typografi';
-import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
-import { slåSammenTekst } from '../../../utils/utils';
+import { Registergrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
+import { slåSammenTekst } from '../../../App/utils/utils';
 import { Tabell } from '../NyttBarnSammePartner/Tabell';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 
