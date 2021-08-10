@@ -4,7 +4,7 @@ import { Behandling, behandlingResultatTilTekst } from '../../App/typer/fagsak';
 import { Menyknapp } from 'nav-frontend-ikonknapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
-import { stegTypeTilTekst } from '../../Behandling/Høyremeny/Steg';
+import { stegTypeTilTekst } from '../../Komponenter/Behandling/Høyremeny/Steg';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';

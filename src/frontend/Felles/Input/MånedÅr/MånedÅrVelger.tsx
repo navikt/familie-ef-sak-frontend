@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
+import { FlexDiv } from '../../../Komponenter/Oppgavebenk/OppgaveFiltrering';
 import styled from 'styled-components';
 import MånedVelger from './MånedVelger';
 import Årvelger from './ÅrVelger';

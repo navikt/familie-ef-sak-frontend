@@ -7,7 +7,7 @@ import {
     OppdaterVilkårsvurdering,
     SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
-} from '../../Behandling/Inngangsvilkår/vilkår';
+} from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
