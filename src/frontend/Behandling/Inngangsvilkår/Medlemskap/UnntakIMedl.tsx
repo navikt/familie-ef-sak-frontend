@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import TabellVisning, { TabellIkon } from '../../TabellVisning';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { IGyldigVedtakPeriode } from './typer';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { differenceInDays } from 'date-fns';
 
 interface Props {

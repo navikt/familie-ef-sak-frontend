@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../App/typer/ressurs';
 import { FnrInput, Select } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../App/context/AppContext';
 import { useHistory } from 'react-router';
-import AlertStripeFeilPreWrap from '../Felleskomponenter/AlertStripeFeilPreWrap';
+import AlertStripeFeilPreWrap from '../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const StyledFnrInput = styled(FnrInput)`
     width: 150px;

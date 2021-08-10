@@ -1,7 +1,7 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../Felleskomponenter/ToKolonnerLayout';
+import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AktivitetInfo from './AktivitetInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';

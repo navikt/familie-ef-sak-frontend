@@ -4,12 +4,12 @@ import * as React from 'react';
 import { FormEvent, useState } from 'react';
 import { Radio, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { useApp } from '../../context/AppContext';
+import { useApp } from '../../App/context/AppContext';
 import { BorderBox } from './Totrinnskontroll';
 import { RessursStatus } from '@navikt/familie-typer';
-import { ModalAction, ModalType, useModal } from '../../context/ModalContext';
-import { useBehandling } from '../../context/BehandlingContext';
-import AlertStripeFeilPreWrap from '../../Felleskomponenter/AlertStripeFeilPreWrap';
+import { ModalAction, ModalType, useModal } from '../../App/context/ModalContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
+import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const RadioButtonWrapper = styled.div`
     display: flex;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Element, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import ToKolonnerLayout from '../../Felleskomponenter/ToKolonnerLayout';
+import ToKolonnerLayout from '../../Felles/Visningskomponenter/ToKolonnerLayout';
 
 interface Props {
     tittel: string;

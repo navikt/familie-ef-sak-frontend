@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
-import { IPersonopplysninger } from '../typer/personopplysninger';
-import VisittkortComponent from '../Felleskomponenter/Visittkort/Visittkort';
-import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
-import { Side } from '../Felleskomponenter/Side/Side';
+import { IPersonopplysninger } from '../App/typer/personopplysninger';
+import VisittkortComponent from '../Felles/Visittkort/Visittkort';
+import DataViewer from '../Felles/DataViewer/DataViewer';
+import { Side } from '../Felles/Visningskomponenter/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';
 import Tabs from 'nav-frontend-tabs';
 import Personopplysninger from './Personopplysninger';
-import { useDataHenter } from '../hooks/felles/useDataHenter';
+import { useDataHenter } from '../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 
 const Personoversikt: React.FC = () => {

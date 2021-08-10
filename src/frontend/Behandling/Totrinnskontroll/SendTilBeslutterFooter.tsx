@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
-import { useApp } from '../../context/AppContext';
-import { Ressurs, RessursStatus } from '../../typer/ressurs';
-import { ModalAction, ModalType, useModal } from '../../context/ModalContext';
-import { useBehandling } from '../../context/BehandlingContext';
-import UIModalWrapper from '../../Felleskomponenter/Modal/UIModalWrapper';
+import { useApp } from '../../App/context/AppContext';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import { ModalAction, ModalType, useModal } from '../../App/context/ModalContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
+import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 
 const Footer = styled.footer`
     width: calc(100% - 571px);

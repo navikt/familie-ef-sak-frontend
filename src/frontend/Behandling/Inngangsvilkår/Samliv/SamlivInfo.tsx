@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IVilkårGrunnlag } from '../vilkår';
-import { SivilstandType } from '../../../typer/personopplysninger';
+import { SivilstandType } from '../../../App/typer/personopplysninger';
 import ÅrsakEnslig from './ÅrsakEnslig';
 import { Bosituasjon } from './Bosituasjon';
 import { SøkerDelerBoligTilTekst } from './typer';

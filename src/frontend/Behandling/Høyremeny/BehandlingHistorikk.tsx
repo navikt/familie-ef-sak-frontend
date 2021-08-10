@@ -1,12 +1,12 @@
 import * as React from 'react';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { Steg, stegTypeTilTekst, StegUtfall, stegUtfallTilTekst } from './Steg';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import { formaterIsoDatoTid } from '../../utils/formatter';
-import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
-import { useBehandling } from '../../context/BehandlingContext';
+import { formaterIsoDatoTid } from '../../App/utils/formatter';
+import hiddenIf from '../../Felles/HiddenIf/hiddenIf';
+import { useBehandling } from '../../App/context/BehandlingContext';
 
 export interface Behandlingshistorikk {
     behandlingId: string;

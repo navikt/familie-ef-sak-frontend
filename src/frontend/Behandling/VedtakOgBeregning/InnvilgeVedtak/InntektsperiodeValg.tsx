@@ -1,15 +1,15 @@
-import { EInntektsperiodeProperty, IInntektsperiode } from '../../../typer/vedtak';
+import { EInntektsperiodeProperty, IInntektsperiode } from '../../../App/typer/vedtak';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import InputMedTusenSkille from '../../../Felleskomponenter/InputMedTusenskille';
-import { harTallverdi, tilTallverdi } from '../../../utils/utils';
-import { useBehandling } from '../../../context/BehandlingContext';
-import MånedÅrVelger from '../../../Felleskomponenter/MånedÅr/MånedÅrVelger';
-import FjernKnapp from '../../../Felleskomponenter/Knapper/FjernKnapp';
-import LeggTilKnapp from '../../../Felleskomponenter/Knapper/LeggTilKnapp';
-import { ListState } from '../../../hooks/felles/useListState';
+import InputMedTusenSkille from '../../../Felles/Visningskomponenter/InputMedTusenskille';
+import { harTallverdi, tilTallverdi } from '../../../App/utils/utils';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
+import FjernKnapp from '../../../Felles/Knapper/FjernKnapp';
+import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
+import { ListState } from '../../../App/hooks/felles/useListState';
 import { Element } from 'nav-frontend-typografi';
-import { FormErrors } from '../../../hooks/felles/useFormState';
+import { FormErrors } from '../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`

@@ -3,7 +3,7 @@ import {
     IInnflyttingTilNorge,
     IStatsborgerskap,
     IUtflyttingFraNorge,
-} from '../../../typer/personopplysninger';
+} from '../../../App/typer/personopplysninger';
 
 export interface IMedlemskap {
     søknadsgrunnlag: IMedlemskapSøknadsgrunnlag;

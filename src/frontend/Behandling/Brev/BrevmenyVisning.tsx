@@ -10,17 +10,17 @@ import {
 } from './BrevTyper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
-import { Ressurs } from '../../typer/ressurs';
+import { Ressurs } from '../../App/typer/ressurs';
 import { finnFletteFeltApinavnFraRef, grupperDelmaler } from './BrevUtils';
-import { useApp } from '../../context/AppContext';
+import { useApp } from '../../App/context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
-import { dagensDatoFormatert } from '../../utils/formatter';
+import { dagensDatoFormatert } from '../../App/utils/formatter';
 import Panel from 'nav-frontend-paneler';
 import { BrevmenyProps } from './Brevmeny';
-import { apiLoggFeil } from '../../api/axios';
+import { apiLoggFeil } from '../../App/api/axios';
 import { delmalTilHtml } from './Htmlfelter';
-import { TilkjentYtelse } from '../../typer/tilkjentytelse';
+import { TilkjentYtelse } from '../../App/typer/tilkjentytelse';
 
 const GenererBrev = styled(Knapp)`
     display: block;

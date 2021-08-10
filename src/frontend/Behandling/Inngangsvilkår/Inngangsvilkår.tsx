@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { RessursStatus } from '../../typer/ressurs';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { useHentVilkår } from '../../hooks/useHentVilkår';
+import { RessursStatus } from '../../App/typer/ressurs';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { useHentVilkår } from '../../App/hooks/useHentVilkår';
 import { NyttBarnSammePartner } from './NyttBarnSammePartner/NyttBarnSammePartner';
 import { Aleneomsorg } from './Aleneomsorg/Aleneomsorg';
 import { MorEllerFar } from './MorEllerFar/MorEllerFar';

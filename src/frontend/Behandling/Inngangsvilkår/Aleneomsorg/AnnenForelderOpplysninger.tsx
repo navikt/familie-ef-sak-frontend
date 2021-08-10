@@ -1,14 +1,11 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
 import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
-import { harVerdi } from '../../../utils/utils';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { harVerdi } from '../../../App/utils/utils';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 interface Props {
     forelderRegister?: IAnnenForelder;

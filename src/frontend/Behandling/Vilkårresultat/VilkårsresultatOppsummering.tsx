@@ -5,8 +5,8 @@ import {
     TidligereVedtaksperioderType,
 } from '../Inngangsvilkår/vilkår';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { useHentVilkår } from '../../hooks/useHentVilkår';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import { useHentVilkår } from '../../App/hooks/useHentVilkår';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { ResultatVisning } from './ResultatVisning';
 

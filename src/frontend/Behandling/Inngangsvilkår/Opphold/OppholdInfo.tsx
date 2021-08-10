@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Normaltekst } from 'nav-frontend-typografi';
-import {
-    Registergrunnlag,
-    Søknadsgrunnlag,
-} from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import { StyledLesmerpanel } from '../../../Felleskomponenter/Visning/StyledNavKomponenter';
+import { StyledLesmerpanel } from '../../../Felles/Visningskomponenter/StyledLesmerpanel';
 import { IMedlemskap } from '../Medlemskap/typer';
 import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';

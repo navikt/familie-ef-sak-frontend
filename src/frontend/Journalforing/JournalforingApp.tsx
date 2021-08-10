@@ -1,31 +1,38 @@
 import React, { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router';
-import { RessursStatus } from '../typer/ressurs';
+import { RessursStatus } from '../App/typer/ressurs';
 import styled from 'styled-components';
-import PdfVisning from '../Felleskomponenter/PdfVisning';
+import PdfVisning from '../Felles/Pdf/PdfVisning';
 import Behandling from './Behandling';
 import Brukerinfo from './Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
-import { behandlingstemaTilStønadstype, behandlingstemaTilTekst } from '../typer/behandlingstema';
+import {
+    behandlingstemaTilStønadstype,
+    behandlingstemaTilTekst,
+} from '../App/typer/behandlingstema';
+
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
-import { useQueryParams } from '../hooks/felles/useQueryParams';
-import DataViewer from '../Felleskomponenter/DataViewer/DataViewer';
+import { useQueryParams } from '../App/hooks/felles/useQueryParams';
+import DataViewer from '../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { JournalføringStateRequest, useJournalføringState } from '../hooks/useJournalføringState';
-import { useHentJournalpost } from '../hooks/useHentJournalpost';
-import { useHentDokument } from '../hooks/useHentDokument';
-import { useHentFagsak } from '../hooks/useHentFagsak';
-import { useApp } from '../context/AppContext';
+import {
+    JournalføringStateRequest,
+    useJournalføringState,
+} from '../App/hooks/useJournalføringState';
+import { useHentJournalpost } from '../App/hooks/useHentJournalpost';
+import { useHentDokument } from '../App/hooks/useHentDokument';
+import { useHentFagsak } from '../App/hooks/useHentFagsak';
+import { useApp } from '../App/context/AppContext';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../Oppgavebenk/oppgavefilterStorage';
-import { useToggles } from '../context/TogglesContext';
-import { ToggleName } from '../context/toggles';
+import { useToggles } from '../App/context/TogglesContext';
+import { ToggleName } from '../App/context/toggles';
 
 const SideLayout = styled.div`
     max-width: 1600px;

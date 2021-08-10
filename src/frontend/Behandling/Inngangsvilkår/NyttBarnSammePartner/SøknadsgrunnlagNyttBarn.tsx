@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { SøknadsgrunnlagNyttBarn } from './typer';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
-import LiteBarn from '../../../ikoner/LiteBarn';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
+import LiteBarn from '../../../Felles/Ikoner/LiteBarn';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { mapBarnNavnTekst } from './utils';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
-import { harVerdi } from '../../../utils/utils';
+import { harVerdi } from '../../../App/utils/utils';
 
 interface Props {
     barn: SøknadsgrunnlagNyttBarn;

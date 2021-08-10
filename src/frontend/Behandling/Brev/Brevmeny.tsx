@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { BrevStruktur, DokumentNavn } from './BrevTyper';
-import { byggTomRessurs, Ressurs } from '../../typer/ressurs';
-import { useApp } from '../../context/AppContext';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { IPersonopplysninger } from '../../typer/personopplysninger';
+import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
+import { useApp } from '../../App/context/AppContext';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
-import { TilkjentYtelse } from '../../typer/tilkjentytelse';
+import { TilkjentYtelse } from '../../App/typer/tilkjentytelse';
 import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 

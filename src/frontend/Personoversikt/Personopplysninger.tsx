@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { INavKontor, IPersonopplysninger } from '../typer/personopplysninger';
-import PersonopplysningerMedNavKontor from '../Felleskomponenter/Personopplysninger/PersonopplysningerMedNavKontor';
-import { IPersonIdent } from '../typer/felles';
+import { INavKontor, IPersonopplysninger } from '../App/typer/personopplysninger';
+import PersonopplysningerMedNavKontor from '../Felles/Personopplysninger/PersonopplysningerMedNavKontor';
+import { IPersonIdent } from '../App/typer/felles';
 import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../hooks/felles/useDataHenter';
+import { useDataHenter } from '../App/hooks/felles/useDataHenter';
 
 const Personopplysninger: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,

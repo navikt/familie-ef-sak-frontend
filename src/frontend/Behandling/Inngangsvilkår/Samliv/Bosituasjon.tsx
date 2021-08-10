@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { IPersonDetaljer } from '../Sivilstand/typer';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
 

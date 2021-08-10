@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
-import { ISærligeTilsynsbehov } from '../../../typer/overgangsstønad';
-import { GridTabell, GridTabellRad } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { ISærligeTilsynsbehov } from '../../../App/typer/overgangsstønad';
+import { GridTabell, GridTabellRad } from '../../../Felles/Visningskomponenter/GridTabell';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 const StyledList = styled.ul`
     list-style-type: square;

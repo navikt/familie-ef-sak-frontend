@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../Felleskomponenter/Visning/StyledTabell';
+import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Registergrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Registergrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ISivilstandInngangsvilkår } from './typer';
-import { sivilstandTilTekst } from '../../../typer/personopplysninger';
+import { sivilstandTilTekst } from '../../../App/typer/personopplysninger';
 import Søknadsinformasjon from './Søknadsinformasjon';
-import { formaterIsoDato } from '../../../utils/formatter';
+import { formaterIsoDato } from '../../../App/utils/formatter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;

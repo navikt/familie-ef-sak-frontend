@@ -1,12 +1,12 @@
-import { GridTabell } from '../../Felleskomponenter/Visning/StyledTabell';
-import { Søknadsgrunnlag } from '../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { GridTabell } from '../../Felles/Visningskomponenter/GridTabell';
+import { Søknadsgrunnlag } from '../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../utils/formatter';
+import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../App/utils/formatter';
 import React, { useMemo } from 'react';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { Ressurs } from '../../typer/ressurs';
-import { ISøknadData } from '../../typer/beregningssøknadsdata';
-import { useDataHenter } from '../../hooks/felles/useDataHenter';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { Ressurs } from '../../App/typer/ressurs';
+import { ISøknadData } from '../../App/typer/beregningssøknadsdata';
+import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 

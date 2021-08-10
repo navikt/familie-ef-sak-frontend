@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../typer/ressurs';
-import PdfVisning from '../../Felleskomponenter/PdfVisning';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import styled from 'styled-components';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
-import { useBehandling } from '../../context/BehandlingContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
 import Brevmeny from './Brevmeny';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { useApp } from '../../context/AppContext';
-import { TotrinnskontrollStatus } from '../../typer/totrinnskontroll';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { useApp } from '../../App/context/AppContext';
+import { TotrinnskontrollStatus } from '../../App/typer/totrinnskontroll';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;

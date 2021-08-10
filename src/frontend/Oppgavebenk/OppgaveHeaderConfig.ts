@@ -1,5 +1,5 @@
 import { IOppgave } from './typer/oppgave';
-import { OrNothing } from '../hooks/felles/useSorteringState';
+import { OrNothing } from '../App/hooks/felles/useSorteringState';
 
 interface OppgaveHeaderConfig<T> {
     tekst: string;

@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { ITidligereUtdanning, IUnderUtdanning } from '../../../typer/overgangsstønad';
+import { ITidligereUtdanning, IUnderUtdanning } from '../../../App/typer/overgangsstønad';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import {
     ArbeidssituasjonTilTekst,
     EArbeidssituasjon,
     StudieandelTilTekst,
     UtdanningsformTilTekst,
 } from './typer';
-import { BooleanTekst } from '../../../Felleskomponenter/Visning/StyledTekst';
-import { StyledTabellWrapper } from '../../../Felleskomponenter/Visning/StyledTabell';
-import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../utils/formatter';
+import { BooleanTekst } from '../../../Felles/Visningskomponenter/BooleanTilTekst';
+import { GridTabellWrapper } from '../../../Felles/Visningskomponenter/GridTabell';
+import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 export const UnderUtdanning: FC<{
     underUtdanning: IUnderUtdanning;
@@ -68,7 +68,7 @@ export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanni
             <Element>Tidsperiode</Element>
 
             {tidligereUtdanninger?.map((utdanning, index) => (
-                <StyledTabellWrapper key={utdanning.linjeKursGrad + index}>
+                <GridTabellWrapper key={utdanning.linjeKursGrad + index}>
                     <Normaltekst className={'førsteDataKolonne'}>
                         {utdanning.linjeKursGrad}
                     </Normaltekst>
@@ -77,7 +77,7 @@ export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanni
                             utdanning.til
                         )}`}
                     </Normaltekst>
-                </StyledTabellWrapper>
+                </GridTabellWrapper>
             ))}
         </>
     );

@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { useMemo, useState } from 'react';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { Ressurs, RessursStatus } from '../../typer/ressurs';
-import { useApp } from '../../context/AppContext';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import { useApp } from '../../App/context/AppContext';
 import { saveAs } from 'file-saver';
 import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
-import { base64toBlob } from '../../utils/utils';
+import { base64toBlob } from '../../App/utils/utils';
 import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../../hooks/felles/useDataHenter';
+import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { useParams } from 'react-router';
-import { IBehandlingParams } from '../../typer/routing';
-import hiddenIf from '../../Felleskomponenter/HiddenIf/hiddenIf';
+import { IBehandlingParams } from '../../App/typer/routing';
+import hiddenIf from '../../Felles/HiddenIf/hiddenIf';
 import styled from 'styled-components';
-import { formaterNullableIsoDatoTid } from '../../utils/formatter';
+import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { Undertittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import AlertStripeFeilPreWrap from '../../Felleskomponenter/AlertStripeFeilPreWrap';
+import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Regel } from './typer';
-import { DelvilkårContainer } from '../../Felleskomponenter/Visning/StyledFormElements';
+import { DelvilkårContainer } from './DelvilkårContainer';
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import { Vurdering } from '../Inngangsvilkår/vilkår';

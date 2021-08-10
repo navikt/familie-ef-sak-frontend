@@ -4,19 +4,19 @@ import {
     EPeriodetype,
     IVedtaksperiode,
     periodeVariantTilProperty,
-} from '../../../typer/vedtak';
+} from '../../../App/typer/vedtak';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
-import MånedÅrPeriode from '../../../Felleskomponenter/MånedÅr/MånedÅrPeriode';
+import MånedÅrPeriode from '../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useBehandling } from '../../../context/BehandlingContext';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
-import LeggTilKnapp from '../../../Felleskomponenter/Knapper/LeggTilKnapp';
-import FjernKnapp from '../../../Felleskomponenter/Knapper/FjernKnapp';
-import { ListState } from '../../../hooks/felles/useListState';
-import { månederMellom, månedÅrTilDate } from '../../../utils/dato';
+import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
+import FjernKnapp from '../../../Felles/Knapper/FjernKnapp';
+import { ListState } from '../../../App/hooks/felles/useListState';
+import { månederMellom, månedÅrTilDate } from '../../../App/utils/dato';
 import { Element } from 'nav-frontend-typografi';
-import { FormErrors } from '../../../hooks/felles/useFormState';
+import { FormErrors } from '../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`

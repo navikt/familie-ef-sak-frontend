@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
-import TabellVisning, { TabellIkon } from '../../TabellVisning';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { IOppholdstatus, oppholdsstatusTypeTilTekst } from './typer';
 
 interface Props {

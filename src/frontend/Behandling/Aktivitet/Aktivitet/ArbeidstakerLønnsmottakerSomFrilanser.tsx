@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { IArbeidsforhold } from '../../../typer/overgangsstønad';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { IArbeidsforhold } from '../../../App/typer/overgangsstønad';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon, EStilling, StillingTilTekst } from './typer';
 
 export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{ arbeidsforhold: IArbeidsforhold }> = ({

@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Ressurs, RessursStatus } from '../../typer/ressurs';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
-import { useDataHenter } from '../../hooks/felles/useDataHenter';
-import { EBehandlingResultat, IVedtak } from '../../typer/vedtak';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
+import { EBehandlingResultat, IVedtak } from '../../App/typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import SelectVedtaksresultat from './SelectVedtaksresultat';
-import { Behandling } from '../../typer/fagsak';
+import { Behandling } from '../../App/typer/fagsak';
 
 interface Props {
     behandling: Behandling;

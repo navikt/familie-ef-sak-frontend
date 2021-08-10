@@ -1,6 +1,6 @@
 import React from 'react';
-import { EBehandlingResultat, IVedtak } from '../../typer/vedtak';
-import { Behandling } from '../../typer/fagsak';
+import { EBehandlingResultat, IVedtak } from '../../App/typer/vedtak';
+import { Behandling } from '../../App/typer/fagsak';
 import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
 import { BehandleIGosys } from './BehandleIGosys/BehandleIGosys';
 import { AvslåVedtak } from './AvslåVedtak/AvslåVedtak';

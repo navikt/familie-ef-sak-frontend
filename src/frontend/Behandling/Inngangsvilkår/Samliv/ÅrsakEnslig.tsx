@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../Felleskomponenter/Visning/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { formaterNullableIsoDato } from '../../../utils/formatter';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from '../Sivilstand/typer';
 import { hentPersonInfo } from '../utils';
 

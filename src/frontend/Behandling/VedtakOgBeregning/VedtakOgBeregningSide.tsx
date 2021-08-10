@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useBehandling } from '../../context/BehandlingContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
 import { Steg } from '../Høyremeny/Steg';
 import { Søknadsdatoer } from './Søknadsdatoer';
 import { Element } from 'nav-frontend-typografi';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { VilkårsresultatOppsummering } from '../Vilkårresultat/VilkårsresultatOppsummering';
 import VedtakOgBeregning from './VedtakOgBeregning';
-import DataViewer from '../../Felleskomponenter/DataViewer/DataViewer';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
