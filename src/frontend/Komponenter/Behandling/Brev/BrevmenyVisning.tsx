@@ -85,9 +85,8 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             if (!valgtMulighet) {
                 return acc;
             }
-            const flettefelterMedReferanse: Flettefeltreferanse[] = valgtMulighet.flettefelter.flatMap(
-                (felter) => felter.flettefelt
-            );
+            const flettefelterMedReferanse: Flettefeltreferanse[] =
+                valgtMulighet.flettefelter.flatMap((felter) => felter.flettefelt);
             const flettefelterForValg = lagFlettefeltForAvsnitt(flettefelterMedReferanse);
 
             const valgMedflettefelt = {
