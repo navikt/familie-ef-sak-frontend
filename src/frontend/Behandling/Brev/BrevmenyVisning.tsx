@@ -46,10 +46,25 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerdi[] =>
+const hentVerdiFraMellomlagerEllerNull = (
+    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined,
+    feltId: string
+) => {
+    if (flettefeltFraMellomlager) {
+        return (
+            flettefeltFraMellomlager.find((flettefelt) => flettefelt._ref === feltId)?.verdi || null
+        );
+    }
+    return null;
+};
+
+const initFlettefelterMedVerdi = (
+    brevStruktur: BrevStruktur,
+    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined
+): FlettefeltMedVerdi[] =>
     brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
         _ref: felt._id,
-        verdi: null,
+        verdi: hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, felt._id),
     }));
 
 export interface BrevmenyVisningProps extends BrevmenyProps {
@@ -78,7 +93,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         parsetMellomlagretBrev || {};
 
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
-        flettefeltFraMellomlager || initFlettefelterMedVerdi(brevStruktur)
+        initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager)
     );
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(valgteFeltFraMellomlager || {});
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>(
