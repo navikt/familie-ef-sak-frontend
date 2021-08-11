@@ -14,7 +14,7 @@ import { erEtterDagensDato } from '../../App/utils/dato';
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
     border-bottom: 1px solid ${navFarger.navGra80};
-
+    z-index: 22;
     .visittkort {
         padding: 0 1.5rem;
         border-bottom: none;

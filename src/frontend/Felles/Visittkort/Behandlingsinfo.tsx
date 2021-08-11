@@ -21,7 +21,7 @@ const PopoverInnehold = styled.div`
 
 const PopoverTabell = styled.div`
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1.5fr 1fr;
     margin-bottom: 0.75rem;
 
     > * {
