@@ -61,7 +61,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
                     </ElementWrapper>
                 )}
-                {vergemål.length > 0 && (
+                {vergemål?.length > 0 && (
                     <ElementWrapper>
                         <EtikettFokus mini>Verge</EtikettFokus>
                     </ElementWrapper>
