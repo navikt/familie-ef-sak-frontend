@@ -8,7 +8,7 @@ import {
     ValgFelt,
     ValgtFelt,
 } from './BrevTyper';
-import { Systemtittel } from 'nav-frontend-typografi';
+import { Undertittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { finnFletteFeltApinavnFraRef, grupperDelmaler } from './BrevUtils';
@@ -35,7 +35,7 @@ const BrevFelter = styled.div`
     min-width: 450px;
 `;
 
-const BrevMenyTittel = styled(Systemtittel)`
+const BrevMenyTittel = styled(Undertittel)`
     margin-bottom: 1rem;
 `;
 
