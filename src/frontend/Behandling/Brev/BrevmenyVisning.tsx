@@ -12,7 +12,12 @@ import {
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import { Ressurs } from '../../typer/ressurs';
-import { finnFletteFeltApinavnFraRef, grupperDelmaler } from './BrevUtils';
+import {
+    finnFletteFeltApinavnFraRef,
+    grupperDelmaler,
+    initFlettefelterMedVerdi,
+    initValgteFeltMedMellomlager,
+} from './BrevUtils';
 import { useApp } from '../../context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -46,27 +51,6 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const hentVerdiFraMellomlagerEllerNull = (
-    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined,
-    feltId: string
-) => {
-    if (flettefeltFraMellomlager) {
-        return (
-            flettefeltFraMellomlager.find((flettefelt) => flettefelt._ref === feltId)?.verdi || null
-        );
-    }
-    return null;
-};
-
-const initFlettefelterMedVerdi = (
-    brevStruktur: BrevStruktur,
-    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined
-): FlettefeltMedVerdi[] =>
-    brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
-        _ref: felt._id,
-        verdi: hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, felt._id),
-    }));
-
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     tilkjentYtelse?: TilkjentYtelse;
@@ -95,7 +79,9 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
         initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager)
     );
-    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(valgteFeltFraMellomlager || {});
+    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(
+        initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur)
+    );
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>(
         valgteDelmalerFraMellomlager || {}
     );

@@ -1,4 +1,4 @@
-import { BrevStruktur, Delmal } from './BrevTyper';
+import { BrevStruktur, Delmal, FlettefeltMedVerdi, ValgtFelt } from './BrevTyper';
 
 export const finnFlettefeltVisningsnavnFraRef = (dokument: BrevStruktur, ref: string): string => {
     const flettefeltNavnFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
@@ -26,3 +26,47 @@ export const grupperDelmaler = (delmaler: Delmal[]): { [mappeNavn: string]: Delm
         return acc;
     }, {});
 };
+
+const hentVerdiFraMellomlagerEllerNull = (
+    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined,
+    feltId: string
+) => {
+    if (flettefeltFraMellomlager) {
+        return (
+            flettefeltFraMellomlager.find((flettefelt) => flettefelt._ref === feltId)?.verdi || null
+        );
+    }
+    return null;
+};
+export const initFlettefelterMedVerdi = (
+    brevStruktur: BrevStruktur,
+    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined
+): FlettefeltMedVerdi[] =>
+    brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
+        _ref: felt._id,
+        verdi: hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, felt._id),
+    }));
+export const initValgteFeltMedMellomlager = (
+    valgteFeltFraMellomlager: ValgtFelt | undefined,
+    brevStruktur: BrevStruktur
+): ValgtFelt =>
+    Object.entries(valgteFeltFraMellomlager || {}).reduce(
+        (andreValgteFelt, [valgfeltApiNavn, mulighet]) => {
+            const flettefeltForValgmulighetUtenVerdiFraSanity = brevStruktur.dokument.delmalerSortert.flatMap(
+                (delmal) =>
+                    delmal.delmalValgfelt
+                        .find((valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn)
+                        ?.valgMuligheter.find(
+                            (valgmulighet) => valgmulighet.valgmulighet === mulighet.valgmulighet
+                        )?.flettefelter
+            );
+            return {
+                ...andreValgteFelt,
+                [valgfeltApiNavn]: {
+                    ...mulighet,
+                    flettefelter: flettefeltForValgmulighetUtenVerdiFraSanity.filter(Boolean),
+                },
+            };
+        },
+        {}
+    );
