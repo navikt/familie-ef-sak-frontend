@@ -25,7 +25,24 @@ export interface IBrevverdier {
     valgteDelmalerFraMellomlager: ValgteDelmaler;
 }
 
-export const useMellomlagringBrev = (behandlingId: string) => {
+export interface IMellomlagreBrevReuest {
+    flettefelt: FlettefeltMedVerdi[];
+    valgteFelt: ValgtFelt;
+    valgteDelmaler: ValgteDelmaler;
+    brevmal: string;
+}
+
+export const useMellomlagringBrev = (
+    behandlingId: string
+): {
+    mellomlagreBrev: (
+        flettefelt: FlettefeltMedVerdi[],
+        valgteFelt: ValgtFelt,
+        valgteDelmaler: ValgteDelmaler,
+        brevmal: string
+    ) => void;
+    mellomlagretBrev: Ressurs<string | undefined>;
+} => {
     const { axiosRequest } = useApp();
     const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] = useState<
         Ressurs<string | undefined>
