@@ -6,7 +6,7 @@ import { hot } from 'react-hot-loader';
 
 import App from './App';
 import './index.less';
-import { oppgaveRequestKey } from './Oppgavebenk/oppgavefilterStorage';
+import { oppgaveRequestKey } from './Komponenter/Oppgavebenk/oppgavefilterStorage';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');

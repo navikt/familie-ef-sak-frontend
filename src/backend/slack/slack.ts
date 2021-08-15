@@ -9,12 +9,12 @@ import { LOG_LEVEL } from '@navikt/familie-logging';
 const token = process.env.SLACK_TOKEN;
 const agent =
     process.env.ENV !== 'local' && process.env.ENV !== 'e2e'
-        ? ((new HttpsProxyAgent({
+        ? (new HttpsProxyAgent({
               host: 'webproxy.nais',
               secureProxy: true,
               port: 8088,
               rejectUnauthorized: false,
-          }) as unknown) as Agent)
+          }) as unknown as Agent)
         : undefined;
 
 /**
