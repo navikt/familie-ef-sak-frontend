@@ -1,4 +1,4 @@
-import { Select, Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
+import { Checkbox, CheckboxGruppe, Select } from 'nav-frontend-skjema';
 import {
     BrevStruktur,
     Delmal,
@@ -13,7 +13,7 @@ import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
 
 const StyledValgfeltSelect = styled.div`
-    padding-bottom: 2.5rem;
+    padding-bottom: 0.5rem;
 `;
 
 interface Props {
