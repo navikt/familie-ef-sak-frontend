@@ -33,13 +33,13 @@ export interface IMellomlagreBrevReuest {
 }
 
 export const useMellomlagringBrev = (
-    behandlingId: string
+    behandlingId: string,
+    brevmal: string
 ): {
     mellomlagreBrev: (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
-        valgteDelmaler: ValgteDelmaler,
-        brevmal: string
+        valgteDelmaler: ValgteDelmaler
     ) => void;
     mellomlagretBrev: Ressurs<string | undefined>;
 } => {
@@ -51,8 +51,7 @@ export const useMellomlagringBrev = (
     const mellomlagreBrev = (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
-        valgteDelmaler: ValgteDelmaler,
-        brevmal: string
+        valgteDelmaler: ValgteDelmaler
     ): void => {
         axiosRequest<string, IMellomlagretBrev>({
             method: 'POST',
@@ -78,7 +77,7 @@ export const useMellomlagringBrev = (
         () =>
             axiosRequest<string | undefined, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}`,
+                url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}/${brevmal}`,
             }).then((res: RessursSuksess<string | undefined> | RessursFeilet) => {
                 settMellomlagretBrevRessurs(res);
             }),

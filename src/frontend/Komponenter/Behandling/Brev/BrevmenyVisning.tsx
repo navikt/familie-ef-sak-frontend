@@ -69,7 +69,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     brevMal,
 }) => {
     const { axiosRequest } = useApp();
-    const { mellomlagreBrev } = useMellomlagringBrev(behandlingId);
+    const { mellomlagreBrev } = useMellomlagringBrev(behandlingId, brevMal);
     const parsetMellomlagretBrev =
         mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
 
@@ -152,7 +152,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
-        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
+        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler);
         axiosRequest<string, unknown>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
