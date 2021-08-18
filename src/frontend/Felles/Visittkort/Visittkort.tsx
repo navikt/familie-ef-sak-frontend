@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import Visittkort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
+import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
 import { EtikettFokus } from 'nav-frontend-etiketter';
@@ -10,6 +11,11 @@ import Behandlingsinfo from './Behandlingsinfo';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato } from '../../App/utils/dato';
+import { RessursStatus, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
+import { useApp } from '../../App/context/AppContext';
+import { IFagsaksøk } from '../../App/typer/fagsaksøk';
+import Lenke from 'nav-frontend-lenker';
+import { IPersonIdent } from '../../App/typer/felles';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -38,9 +44,48 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         fullmakt,
         vergemål,
     } = data;
+
+    const { axiosRequest } = useApp();
+    const [fagsakId, settFagsakId] = useState('');
+
+    useEffect(() => {
+        const hentFagsak = (personIdent: string): void => {
+            if (!personIdent) return;
+
+            axiosRequest<IFagsaksøk, IPersonIdent>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/sok/`,
+                data: { personIdent: personIdent },
+            }).then((response: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    if (response.data?.fagsaker?.length) {
+                        settFagsakId(response.data.fagsaker[0].fagsakId);
+                    } else {
+                        console.log('Fant ingen fagsak.');
+                    }
+                } else {
+                    console.log('Feil.');
+                }
+            });
+        };
+
+        hentFagsak(personIdent);
+
+        // eslint-disable-next-line
+    }, []);
+
     return (
         <VisittkortWrapper>
-            <Visittkort alder={20} ident={personIdent} kjønn={kjønn} navn={navn.visningsnavn}>
+            <Visittkort
+                alder={20}
+                ident={personIdent}
+                kjønn={kjønn}
+                navn={
+                    <Lenke href={'/fagsak/' + fagsakId}>
+                        <Element>{navn.visningsnavn}</Element>
+                    </Lenke>
+                }
+            >
                 {folkeregisterpersonstatus && (
                     <ElementWrapper>
                         <PersonStatusVarsel folkeregisterpersonstatus={folkeregisterpersonstatus} />
