@@ -118,7 +118,15 @@
       "oppholdstillatelse" : "PERMANENT",
       "fraDato" : "2020-01-01",
       "tilDato" : null
-    } ]
+    } ],
+    "vergemål": [
+      {
+        "type": "ensligMindreaarigAsylsoeker",
+        "navn": "Vergis Veggis",
+        "omfang": "personligeOgOekonomiskeInteresser",
+        "motpartsPersonident": "05101822222"
+      }
+    ]
   },
   "status":"SUKSESS",
   "melding":"Innhenting av data var vellykket",
