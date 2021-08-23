@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router';
+import { useLocation, useParams, useHistory } from 'react-router';
 import { IBehandlingParams } from '../../../App/typer/routing';
-import { filtrerSiderEtterBehandlingstype, sider } from './sider';
+import { filtrerSiderEtterBehandlingstype, ISide, SideNavn, sider } from './sider';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { NavLink } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
 import navFarger from 'nav-frontend-core';
+import { Knapp } from 'nav-frontend-knapper';
+import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -50,26 +52,108 @@ const StyledNavLink = styled(NavLink)`
         }
     }
 `;
+
+const erInngangsvilkårAktivitetEllerVedtakSide = (side: ISide) =>
+    side.navn === SideNavn.INNGANGSVILKÅR ||
+    side.navn === SideNavn.AKTIVITET ||
+    side.navn === SideNavn.VEDTAK_OG_BEREGNING;
+
+const hentAktivSide = (path: string) => sider.find((side) => side.href === path);
+
 const Fanemeny: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
     const { behandling } = useBehandling();
+    const location = useLocation();
+    const history = useHistory();
+    const path = location.pathname.split('/')[3];
+    const initSide = hentAktivSide(path) || sider[1];
 
+    // ulagret Data på denne siden vi er på
+    // ULAGRET DATA: Sjekk om man er på en av de tre sidene.
+    const [ulagretData, settUlagretData] = useState(true);
+    const [aktivSide, settAktivSide] = useState<ISide>(initSide);
+    const [valgtSide, settValgtSide] = useState<ISide | undefined>(undefined);
+    const [visModal, settVisModal] = useState(false);
+
+    useEffect(() => {
+        const hentetSide = hentAktivSide(path);
+        path !== aktivSide.href && hentetSide !== undefined && settAktivSide(hentetSide);
+    }, [location.pathname, aktivSide, path]);
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => (
-                <StickyMedBoxShadow>
-                    <StyledFanemeny>
-                        {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
-                            <StyledNavLink
-                                key={side.navn}
-                                to={`/behandling/${behandlingId}/${side.href}`}
-                                activeClassName="aktiv"
-                            >
-                                <Normaltekst>{side.navn}</Normaltekst>
-                            </StyledNavLink>
-                        ))}
-                    </StyledFanemeny>
-                </StickyMedBoxShadow>
+                <>
+                    <StickyMedBoxShadow>
+                        <StyledFanemeny>
+                            {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
+                                <>
+                                    <StyledNavLink
+                                        key={side.navn}
+                                        to={`/behandling/${behandlingId}/${side.href}`}
+                                        activeClassName="aktiv"
+                                        onClick={(e) => {
+                                            if (
+                                                ulagretData &&
+                                                aktivSide.navn !== side.navn &&
+                                                erInngangsvilkårAktivitetEllerVedtakSide(side)
+                                            ) {
+                                                e.preventDefault();
+                                                settValgtSide(side);
+                                                settVisModal(true);
+                                            }
+                                        }}
+                                    >
+                                        <Normaltekst>{side.navn}</Normaltekst>
+                                    </StyledNavLink>
+                                    <UIModalWrapper
+                                        modal={{
+                                            tittel: 'Du har ikke lagret dine siste endringer og vil miste disse om du forlater siden.',
+                                            lukkKnapp: false,
+                                            visModal: visModal,
+                                            onClose: () => settVisModal(false),
+                                        }}
+                                    >
+                                        <Knapp
+                                            key={'Forlat siden'}
+                                            type={'standard'}
+                                            onClick={() => {
+                                                settAktivSide(side);
+                                                valgtSide &&
+                                                    console.log(
+                                                        `Forlat siden! ${aktivSide.href} -> ${valgtSide?.href}`
+                                                    );
+                                                if (valgtSide) {
+                                                    settUlagretData(false);
+                                                    const valgtSidePath = location.pathname.replace(
+                                                        aktivSide.href,
+                                                        valgtSide.href
+                                                    );
+                                                    console.log('ny path', valgtSidePath);
+                                                    history.push(valgtSidePath);
+                                                }
+                                                settVisModal(false);
+                                            }}
+                                        >
+                                            Forlat siden
+                                        </Knapp>
+                                        <Knapp
+                                            key={'Gå tilbake'}
+                                            type={'flat'}
+                                            onClick={() => {
+                                                console.log(
+                                                    `Bli på siden! ${aktivSide.href} -> ${aktivSide.href}`
+                                                );
+                                                settVisModal(false);
+                                            }}
+                                        >
+                                            Gå tilbake for å lagre
+                                        </Knapp>
+                                    </UIModalWrapper>
+                                </>
+                            ))}
+                        </StyledFanemeny>
+                    </StickyMedBoxShadow>
+                </>
             )}
         </DataViewer>
     );
