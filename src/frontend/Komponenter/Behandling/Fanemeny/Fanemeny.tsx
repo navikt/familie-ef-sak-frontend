@@ -53,7 +53,7 @@ const StyledNavLink = styled(NavLink)`
     }
 `;
 
-const erInngangsvilkårAktivitetEllerVedtakSide = (side: ISide) =>
+const erPåInngangsvilkårAktivitetEllerVedtakFane = (side: ISide) =>
     side.navn === SideNavn.INNGANGSVILKÅR ||
     side.navn === SideNavn.AKTIVITET ||
     side.navn === SideNavn.VEDTAK_OG_BEREGNING;
@@ -62,23 +62,24 @@ const hentAktivSide = (path: string) => sider.find((side) => side.href === path)
 
 const Fanemeny: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
-    const { behandling } = useBehandling();
+    const { behandling, ulagretData, settAntallIRedigeringsmodus } = useBehandling();
     const location = useLocation();
     const history = useHistory();
     const path = location.pathname.split('/')[3];
-    const initSide = hentAktivSide(path) || sider[1];
+    const initSide = hentAktivSide(path);
 
-    // ulagret Data på denne siden vi er på
-    // ULAGRET DATA: Sjekk om man er på en av de tre sidene.
-    const [ulagretData, settUlagretData] = useState(true);
-    const [aktivSide, settAktivSide] = useState<ISide>(initSide);
+    const [aktivSide, settAktivSide] = useState<ISide | undefined>(initSide);
     const [valgtSide, settValgtSide] = useState<ISide | undefined>(undefined);
     const [visModal, settVisModal] = useState(false);
 
     useEffect(() => {
         const hentetSide = hentAktivSide(path);
-        path !== aktivSide.href && hentetSide !== undefined && settAktivSide(hentetSide);
+        aktivSide &&
+            path !== aktivSide?.href &&
+            hentetSide !== undefined &&
+            settAktivSide(hentetSide);
     }, [location.pathname, aktivSide, path]);
+
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => (
@@ -94,8 +95,11 @@ const Fanemeny: FC = () => {
                                         onClick={(e) => {
                                             if (
                                                 ulagretData &&
+                                                aktivSide &&
                                                 aktivSide.navn !== side.navn &&
-                                                erInngangsvilkårAktivitetEllerVedtakSide(side)
+                                                erPåInngangsvilkårAktivitetEllerVedtakFane(
+                                                    aktivSide
+                                                )
                                             ) {
                                                 e.preventDefault();
                                                 settValgtSide(side);
@@ -118,17 +122,13 @@ const Fanemeny: FC = () => {
                                             type={'standard'}
                                             onClick={() => {
                                                 settAktivSide(side);
-                                                valgtSide &&
-                                                    console.log(
-                                                        `Forlat siden! ${aktivSide.href} -> ${valgtSide?.href}`
-                                                    );
-                                                if (valgtSide) {
-                                                    settUlagretData(false);
+
+                                                if (valgtSide && aktivSide) {
+                                                    settAntallIRedigeringsmodus(0);
                                                     const valgtSidePath = location.pathname.replace(
                                                         aktivSide.href,
                                                         valgtSide.href
                                                     );
-                                                    console.log('ny path', valgtSidePath);
                                                     history.push(valgtSidePath);
                                                 }
                                                 settVisModal(false);
@@ -140,9 +140,6 @@ const Fanemeny: FC = () => {
                                             key={'Gå tilbake'}
                                             type={'flat'}
                                             onClick={() => {
-                                                console.log(
-                                                    `Bli på siden! ${aktivSide.href} -> ${aktivSide.href}`
-                                                );
                                                 settVisModal(false);
                                             }}
                                         >
