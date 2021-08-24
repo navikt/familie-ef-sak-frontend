@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useLocation, useParams, useHistory } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import { filtrerSiderEtterBehandlingstype, ISide, SideNavn, sider } from './sider';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -10,8 +10,8 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
 import navFarger from 'nav-frontend-core';
-import { Knapp } from 'nav-frontend-knapper';
-import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
+
+import UlagretDataModal from './UlagretDataModal';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -62,13 +62,11 @@ const hentAktivSide = (path: string) => sider.find((side) => side.href === path)
 
 const Fanemeny: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
-    const { behandling, ulagretData, settAntallIRedigeringsmodus } = useBehandling();
+    const { behandling, ulagretData } = useBehandling();
     const location = useLocation();
-    const history = useHistory();
     const path = location.pathname.split('/')[3];
-    const initSide = hentAktivSide(path);
 
-    const [aktivSide, settAktivSide] = useState<ISide | undefined>(initSide);
+    const [aktivSide, settAktivSide] = useState<ISide | undefined>(hentAktivSide(path));
     const [valgtSide, settValgtSide] = useState<ISide | undefined>(undefined);
     const [visModal, settVisModal] = useState(false);
 
@@ -109,43 +107,14 @@ const Fanemeny: FC = () => {
                                     >
                                         <Normaltekst>{side.navn}</Normaltekst>
                                     </StyledNavLink>
-                                    <UIModalWrapper
-                                        modal={{
-                                            tittel: 'Du har ikke lagret dine siste endringer og vil miste disse om du forlater siden.',
-                                            lukkKnapp: false,
-                                            visModal: visModal,
-                                            onClose: () => settVisModal(false),
-                                        }}
-                                    >
-                                        <Knapp
-                                            key={'Forlat siden'}
-                                            type={'standard'}
-                                            onClick={() => {
-                                                settAktivSide(side);
-
-                                                if (valgtSide && aktivSide) {
-                                                    settAntallIRedigeringsmodus(0);
-                                                    const valgtSidePath = location.pathname.replace(
-                                                        aktivSide.href,
-                                                        valgtSide.href
-                                                    );
-                                                    history.push(valgtSidePath);
-                                                }
-                                                settVisModal(false);
-                                            }}
-                                        >
-                                            Forlat siden
-                                        </Knapp>
-                                        <Knapp
-                                            key={'Gå tilbake'}
-                                            type={'flat'}
-                                            onClick={() => {
-                                                settVisModal(false);
-                                            }}
-                                        >
-                                            Gå tilbake for å lagre
-                                        </Knapp>
-                                    </UIModalWrapper>
+                                    <UlagretDataModal
+                                        visModal={visModal}
+                                        side={side}
+                                        aktivSide={aktivSide}
+                                        valgtSide={valgtSide}
+                                        settVisModal={settVisModal}
+                                        settAktivSide={settAktivSide}
+                                    />
                                 </>
                             ))}
                         </StyledFanemeny>
