@@ -15,12 +15,16 @@ import styled from 'styled-components';
 const DelmalValg = styled.div`
     display: flex;
     flex-direction: row;
-
     justify-content: flex-start;
 `;
 
 const StyledEkspanderbartpanelBase = styled(EkspanderbartpanelBase)`
     flex: 100%;
+    .ingressTittel {
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 600;
+    }
 `;
 
 interface Props {
@@ -81,6 +85,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                 onClick={() => {
                     settEkspanderbartPanelÅpen(!ekspanderbartPanelÅpen);
                 }}
+                className={'ingressTittel'}
             >
                 {delmalValgfelt &&
                     delmalValgfelt.map((valgFelt, index) => (

@@ -28,9 +28,9 @@ export const erFlettefeltFritektsfelt = (dokument: BrevStruktur, ref: string): b
     return flettefeltFraRef?.erFritektsfelt || false;
 };
 
-export const grupperDelmaler = (delmaler: Delmal[]): { [mappeNavn: string]: Delmal[] } => {
-    return delmaler.reduce((acc: { [mappeNavn: string]: Delmal[] }, delmal: Delmal) => {
-        (acc[delmal.mappe] = acc[delmal.mappe] || []).push(delmal);
+export const grupperDelmaler = (delmaler: Delmal[]): { [gruppeVisningsnavn: string]: Delmal[] } => {
+    return delmaler.reduce((acc: { [gruppeVisningsnavn: string]: Delmal[] }, delmal: Delmal) => {
+        (acc[delmal.gruppeVisningsnavn] = acc[delmal.gruppeVisningsnavn] || []).push(delmal);
         return acc;
     }, {});
 };

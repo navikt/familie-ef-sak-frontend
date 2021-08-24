@@ -9,7 +9,7 @@ import {
     ValgteDelmaler,
     ValgtFelt,
 } from './BrevTyper';
-import { Systemtittel } from 'nav-frontend-typografi';
+import { Undertittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
     finnFletteFeltApinavnFraRef,
@@ -39,11 +39,10 @@ const BrevFelter = styled.div`
     flex-direction: column;
     gap: 2rem;
     padding: 2rem 0;
-    margin: 1rem;
     min-width: 450px;
 `;
 
-const BrevMenyTittel = styled(Systemtittel)`
+const BrevMenyTittel = styled(Undertittel)`
     margin-bottom: 1rem;
 `;
 
