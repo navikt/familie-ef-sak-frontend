@@ -18,7 +18,8 @@ secret kan hentes fra cluster med
 
 Appen krever en del environment variabler og legges til i .env fila i root på prosjektet.  
 ```
-
+    ENV=local
+    APP_VERSION=0.0.1
     COOKIE_KEY1='<any string of length 32>'
     COOKIE_KEY2='<any string of length 32>'
     PASSPORTCOOKIE_KEY1='<any string of length 32>'
@@ -32,12 +33,7 @@ Appen krever en del environment variabler og legges til i .env fila i root på p
     CLIENT_SECRET='<AZURE_APP_CLIENT_SECRET fra secret>'
     AZURE_APP_WELL_KNOWN_URL='<AZURE_APP_WELL_KNOWN_URL fra secret>'
     
-    ENV=local
-    APP_VERSION=0.0.1
 ```
-Disse kan hentes ut fra Secrets i Vault under kv/preprod/fss/familie-ef-sak-frontend/default, med unntak av ENV og APP_VERSION som er gitt over.
-
-CLIENT_ID og CLIENT_SECRET kan man finne under: /azuread/data/dev/creds/familie-ef-sak-frontend 
 
 
 For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokalt med mindre det gjøres en del endringer i forbindelse med uthenting av environment variabler og URLer for uthenting av informasjon.
