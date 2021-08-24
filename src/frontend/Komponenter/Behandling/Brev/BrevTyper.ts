@@ -46,7 +46,7 @@ export interface Delmal {
     delmalNavn: string;
     delmalValgfelt: ValgFelt[];
     delmalFlettefelter: Flettefelter[]; // referanse til flettefelt
-    mappe: string;
+    gruppeVisningsnavn: string;
 }
 
 export interface DokumentNavn {
