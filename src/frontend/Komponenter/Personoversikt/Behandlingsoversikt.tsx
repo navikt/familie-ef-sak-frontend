@@ -24,7 +24,7 @@ const StyledTable = styled.table`
     margin-left: 1rem;
 `;
 
-const TekniskOpphørKnapp = styled(Knapp)`
+const KnappMedMargin = styled(Knapp)`
     margin: 1rem;
 `;
 
@@ -102,13 +102,16 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
 
                     {kanStarteRevurdering && (
-                        <Knapp onClick={() => startRevurdering(fagsakId)}> Start revurdering</Knapp>
+                        <KnappMedMargin onClick={() => startRevurdering(fagsakId)}>
+                            {' '}
+                            Start revurdering
+                        </KnappMedMargin>
                     )}
 
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
-                        <TekniskOpphørKnapp onClick={() => gjørTekniskOpphør(personIdent)}>
+                        <KnappMedMargin onClick={() => gjørTekniskOpphør(personIdent)}>
                             Teknisk opphør
-                        </TekniskOpphørKnapp>
+                        </KnappMedMargin>
                     )}
                     {tekniskOpphørFeilet && (
                         <AlertStripeFeil style={{ maxWidth: '15rem' }}>
