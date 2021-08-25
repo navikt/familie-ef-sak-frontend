@@ -17,6 +17,7 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
+import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -35,6 +36,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
+    const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -102,11 +104,30 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
 
                     {kanStarteRevurdering && (
-                        <KnappMedMargin onClick={() => startRevurdering(fagsakId)}>
+                        <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
                             {' '}
                             Start revurdering
                         </KnappMedMargin>
                     )}
+
+                    <UIModalWrapper
+                        modal={{
+                            tittel: 'Revurdering',
+                            lukkKnapp: true,
+                            visModal: visRevurderingvalg,
+                            onClose: () => settVisRevurderingvalg(false),
+                        }}
+                    >
+                        <KnappMedMargin
+                            onClick={() => {
+                                settKanStarteRevurdering(false);
+                                settVisRevurderingvalg(false);
+                                startRevurdering(fagsakId);
+                            }}
+                        >
+                            Start revurdering
+                        </KnappMedMargin>
+                    </UIModalWrapper>
 
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør(personIdent)}>
