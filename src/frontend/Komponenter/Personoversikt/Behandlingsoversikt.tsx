@@ -102,10 +102,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
 
                     {kanStarteRevurdering && (
-                        <Knapp onClick={() => startRevurdering(fagsakId)}>
-                            {' '}
-                            Start revurdering {fagsakId}
-                        </Knapp>
+                        <Knapp onClick={() => startRevurdering(fagsakId)}> Start revurdering</Knapp>
                     )}
 
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
