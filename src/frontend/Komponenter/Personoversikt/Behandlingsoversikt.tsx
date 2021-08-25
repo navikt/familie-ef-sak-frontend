@@ -16,6 +16,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
+import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -33,6 +34,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
 }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
+    const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -59,12 +61,36 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
         });
     };
 
+    const startRevurdering = (fagsakId: string) => {
+        axiosRequest<Ressurs<void>, { fagsakId: string }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
+            data: { fagsakId: fagsakId },
+        }).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                hentFagsak();
+            }
+        });
+    };
+
     useEffect(() => {
         if (fagsakId) {
             hentFagsak();
         }
         // eslint-disable-next-line
     }, [fagsakId]);
+
+    useEffect(() => {
+        if (fagsak.status === RessursStatus.SUKSESS) {
+            const alleBehandlingerErFerdige =
+                fagsak.data.behandlinger.length > 0 &&
+                fagsak.data.behandlinger.find(
+                    (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
+                ) === undefined;
+            settKanStarteRevurdering(alleBehandlingerErFerdige);
+        }
+        // eslint-disable-next-line
+    }, [fagsak]);
 
     return (
         <DataViewer response={{ fagsak }}>
@@ -74,6 +100,14 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                         Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
                     </Systemtittel>
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
+
+                    {kanStarteRevurdering && (
+                        <Knapp onClick={() => startRevurdering(fagsakId)}>
+                            {' '}
+                            Start revurdering {fagsakId}
+                        </Knapp>
+                    )}
+
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <TekniskOpphørKnapp onClick={() => gjørTekniskOpphør(personIdent)}>
                             Teknisk opphør
