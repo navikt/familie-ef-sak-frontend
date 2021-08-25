@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "behandlingId": "e3a13ad5-50c7-4cdd-9144-75dd888bd661",
+      "vedtakstidspunkt": "2021-02-12T11:27:15Z",
+      "saksbehandler": "Charlie",
+      "andel": {
+        "beløp": 123,
+        "stønadFra": "2021-01-01",
+        "stønadTil": "2021-01-31",
+        "inntekt": 100,
+        "inntektsreduksjon": 12,
+        "samordningsfradrag": 31
+      },
+      "endring": null
+    }
+  ],
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}
