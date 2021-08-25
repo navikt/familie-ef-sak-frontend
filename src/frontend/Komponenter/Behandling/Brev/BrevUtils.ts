@@ -54,29 +54,32 @@ export const initFlettefelterMedVerdi = (
         _ref: felt._id,
         verdi: hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, felt._id),
     }));
+
 export const initValgteFeltMedMellomlager = (
     valgteFeltFraMellomlager: ValgtFelt | undefined,
     brevStruktur: BrevStruktur
 ): ValgtFelt =>
-    Object.entries(valgteFeltFraMellomlager || {}).reduce(
-        (andreValgteFelt, [valgfeltApiNavn, mulighet]) => {
-            const flettefeltForValgmulighetUtenVerdiFraSanity =
-                brevStruktur.dokument.delmalerSortert.flatMap(
-                    (delmal) =>
-                        delmal.delmalValgfelt
-                            .find((valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn)
-                            ?.valgMuligheter.find(
-                                (valgmulighet) =>
-                                    valgmulighet.valgmulighet === mulighet.valgmulighet
-                            )?.flettefelter
+    Object.entries(valgteFeltFraMellomlager || {}).reduce((acc, [valgfeltApiNavn, mulighet]) => {
+        const utledOppdaterteFlettefeltFraSanity = () =>
+            brevStruktur.dokument.delmalerSortert.flatMap((delmal) => {
+                const valgfelt = delmal.delmalValgfelt.find(
+                    (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
                 );
-            return {
-                ...andreValgteFelt,
-                [valgfeltApiNavn]: {
-                    ...mulighet,
-                    flettefelter: flettefeltForValgmulighetUtenVerdiFraSanity.filter(Boolean),
-                },
-            };
-        },
-        {}
-    );
+
+                const valgtValgmulighet = valgfelt?.valgMuligheter.find(
+                    (valgmulighet) => valgmulighet.valgmulighet === mulighet.valgmulighet
+                );
+
+                const flettefeltFraSanity = valgtValgmulighet?.flettefelter || [];
+
+                return flettefeltFraSanity;
+            });
+
+        return {
+            ...acc,
+            [valgfeltApiNavn]: {
+                ...mulighet,
+                flettefelter: utledOppdaterteFlettefeltFraSanity(),
+            },
+        };
+    }, {});

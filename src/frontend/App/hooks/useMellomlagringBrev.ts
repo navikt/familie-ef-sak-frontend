@@ -48,6 +48,8 @@ export const useMellomlagringBrev = (
         Ressurs<string | undefined>
     >(byggTomRessurs());
 
+    const sanityVersjon = '1';
+
     const mellomlagreBrev = (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
@@ -63,7 +65,7 @@ export const useMellomlagringBrev = (
                     valgteDelmalerFraMellomlager: valgteDelmaler,
                 }),
                 brevmal,
-                versjon: '1',
+                versjon: sanityVersjon,
             },
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
@@ -77,7 +79,8 @@ export const useMellomlagringBrev = (
         () =>
             axiosRequest<string | undefined, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}/${brevmal}`,
+                url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}`,
+                params: { brevmal, sanityVersjon },
             }).then((res: RessursSuksess<string | undefined> | RessursFeilet) => {
                 settMellomlagretBrevRessurs(res);
             }),
