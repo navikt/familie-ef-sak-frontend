@@ -19,3 +19,21 @@ export interface ISimuleringPeriode {
     resultat: number;
     feilutbetaling: number;
 }
+
+export interface ISimuleringTabellRad {
+    måned: string;
+    nyttBeløp: string;
+    tidligereUtbetalt: string;
+    resultat: string;
+    erFremtidigVerdi: boolean;
+}
+export interface ISimuleringÅrsvelger {
+    valgtÅr: number;
+    settÅr: (år: number) => void;
+    muligeÅr: number[];
+}
+
+export interface ISimuleringTabell {
+    perioder: ISimuleringTabellRad[];
+    årsvelger: ISimuleringÅrsvelger;
+}

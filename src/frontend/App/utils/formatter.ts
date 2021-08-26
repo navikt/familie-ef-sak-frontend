@@ -8,6 +8,7 @@ export const datoFormat = {
 } as const;
 export const datoTidFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
 export const datoMånedÅrFormat = { month: 'short', year: 'numeric' } as const;
+export const månedFormat = { month: 'short' } as const;
 
 export const formaterNullableIsoDato = (dato?: string): string | undefined =>
     dato && formaterIsoDato(dato);
@@ -34,6 +35,14 @@ export const formaterIsoMånedÅr = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormat);
 };
 
+export const formaterIsoMåned = (dato: string): string => {
+    return parseISO(dato).toLocaleDateString('no-NO', månedFormat);
+};
+
+export const formaterIsoÅr = (dato: string): number => {
+    return parseISO(dato).getFullYear();
+};
+
 export const formaterFødselsnummer = (fødselsnummer: string): string =>
     fødselsnummer.substring(0, 6) + ' ' + fødselsnummer.substring(6);
 
@@ -42,3 +51,8 @@ export const formaterNullableFødsesnummer = (fødselsnummer?: string): string |
 
 export const formaterTallMedTusenSkille = (verdi?: number): string =>
     harTallverdi(verdi) ? Number(verdi).toLocaleString('no-NO', { currency: 'NOK' }) : '';
+
+export const formaterTallMedTusenSkilleEllerStrek = (verdi?: number): string =>
+    harTallverdi(verdi) && verdi !== 0
+        ? Number(verdi).toLocaleString('no-NO', { currency: 'NOK' })
+        : '-';
