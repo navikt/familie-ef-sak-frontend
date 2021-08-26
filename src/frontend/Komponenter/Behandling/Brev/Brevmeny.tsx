@@ -8,6 +8,7 @@ import BrevmenyVisning from './BrevmenyVisning';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
+import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -26,7 +27,9 @@ const datasett = 'ef-brev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
-    const [brevMal, settBrevmal] = useState<string>('');
+
+    const defaultBrevmal = 'innvilgetOvergangsstonadHoved2';
+    const [brevMal, settBrevmal] = useState<string>(defaultBrevmal);
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
@@ -34,6 +37,8 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
         byggTomRessurs()
     );
+
+    const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId, brevMal);
 
     useEffect(() => {
         if (brevMal) {
@@ -73,6 +78,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 {({ dokumentnavn }) => (
                     <Select
                         label="Velg dokument"
+                        defaultValue={defaultBrevmal}
                         onChange={(e) => {
                             settBrevmal(e.target.value);
                         }}
@@ -86,13 +92,14 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     </Select>
                 )}
             </DataViewer>
-            <DataViewer response={{ brevStruktur, tilkjentYtelse }}>
-                {({ brevStruktur, tilkjentYtelse }) => (
+            <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
+                {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) => (
                     <BrevmenyVisning
                         {...props}
                         brevStruktur={brevStruktur}
                         tilkjentYtelse={tilkjentYtelse}
                         brevMal={brevMal}
+                        mellomlagretBrev={mellomlagretBrev}
                     />
                 )}
             </DataViewer>
