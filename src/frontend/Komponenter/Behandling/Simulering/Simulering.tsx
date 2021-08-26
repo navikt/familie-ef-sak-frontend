@@ -7,7 +7,7 @@ export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
 
     return (
         <DataViewer response={{ simuleringsresultat }}>
-            {/*{({ simuleringsresultat }) => <></>}*/}
+            {({ simuleringsresultat }) => <div>{simuleringsresultat.toString()}</div>}
         </DataViewer>
     );
 };

@@ -2,10 +2,7 @@ import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useEffect, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
-
-interface ISimulering {
-    dummy: string;
-}
+import { ISimulering } from '../../Komponenter/Behandling/Simulering/SimuleringTyper';
 
 export const useSimulering = (
     behandlingId: string
