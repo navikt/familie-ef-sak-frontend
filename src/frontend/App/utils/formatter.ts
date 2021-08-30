@@ -61,3 +61,6 @@ export const formaterTallMedTusenSkilleEllerStrek = (verdi?: number): string =>
     harTallverdi(verdi) && verdi !== 0
         ? Number(verdi).toLocaleString('no-NO', { currency: 'NOK' })
         : '-';
+
+export const formaterStrengMedStorForbokstav = (verdi: string): string =>
+    verdi[0].toUpperCase() + verdi.slice(1).toLowerCase();
