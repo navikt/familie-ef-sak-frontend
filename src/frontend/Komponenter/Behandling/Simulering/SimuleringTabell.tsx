@@ -1,9 +1,10 @@
 import { ISimuleringTabell } from './SimuleringTyper';
 import React from 'react';
 import styled from 'styled-components';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
+import SimuleringÅrvelger from './SimuleringÅrvelger';
 
 const Tabell = styled.table`
     border-collapse: collapse;
@@ -39,7 +40,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
             <thead>
                 <tr>
                     <ÅrHeader>
-                        <Undertittel>{årsvelger.valgtÅr}</Undertittel>
+                        <SimuleringÅrvelger årsvelger={årsvelger} />
                     </ÅrHeader>
                     {perioder.map((p) => {
                         return (
