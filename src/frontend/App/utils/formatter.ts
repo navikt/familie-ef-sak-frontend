@@ -8,6 +8,7 @@ export const datoFormat = {
 } as const;
 export const datoTidFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
 export const datoMånedÅrFormat = { month: 'short', year: 'numeric' } as const;
+export const datoMånedÅrFormatFull = { month: 'long', year: 'numeric' } as const;
 export const månedFormat = { month: 'short' } as const;
 
 export const formaterNullableIsoDato = (dato?: string): string | undefined =>
@@ -33,6 +34,10 @@ export const formaterNullableMånedÅr = (dato?: string): string | undefined =>
 
 export const formaterIsoMånedÅr = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormat);
+};
+
+export const formaterIsoMånedÅrFull = (dato: string): string => {
+    return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormatFull);
 };
 
 export const formaterIsoMåned = (dato: string): string => {

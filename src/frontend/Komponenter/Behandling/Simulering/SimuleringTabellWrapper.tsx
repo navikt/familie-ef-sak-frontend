@@ -4,6 +4,7 @@ import SimuleringTabell from './SimuleringTabell';
 import { formaterIsoMåned, formaterIsoÅr } from '../../../App/utils/formatter';
 import { gjelderÅr } from '../../../App/utils/dato';
 import styled from 'styled-components';
+import SimuleringOversikt from './SimuleringOversikt';
 
 const SimuleringsContainer = styled.div`
     margin: 1rem;
@@ -39,6 +40,7 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
 
     return (
         <SimuleringsContainer>
+            <SimuleringOversikt simulering={simuleringsresultat} />
             <SimuleringTabell
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
