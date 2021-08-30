@@ -22,10 +22,10 @@ export interface ISimuleringPeriode {
 
 export interface ISimuleringTabellRad {
     måned: string;
-    nyttBeløp: string;
-    tidligereUtbetalt: string;
-    resultat: string;
-    erFremtidigVerdi: boolean;
+    nyttBeløp: number;
+    tidligereUtbetalt: number;
+    resultat: number;
+    gjelderNestePeriode: boolean;
 }
 export interface ISimuleringÅrsvelger {
     valgtÅr: number;

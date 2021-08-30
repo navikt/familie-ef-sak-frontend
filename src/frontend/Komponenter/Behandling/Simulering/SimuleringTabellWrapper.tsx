@@ -1,12 +1,32 @@
 import React, { useState } from 'react';
-import { ISimulering } from './SimuleringTyper';
+import { ISimulering, ISimuleringTabellRad } from './SimuleringTyper';
 import SimuleringTabell from './SimuleringTabell';
-import {
-    formaterIsoMåned,
-    formaterIsoÅr,
-    formaterTallMedTusenSkilleEllerStrek,
-} from '../../../App/utils/formatter';
+import { formaterIsoMåned, formaterIsoÅr } from '../../../App/utils/formatter';
 import { gjelderÅr } from '../../../App/utils/dato';
+import styled from 'styled-components';
+
+const SimuleringsContainer = styled.div`
+    margin: 1rem;
+`;
+
+const mapSimuleringstabellRader = (
+    simuleringsresultat: ISimulering,
+    år: number
+): ISimuleringTabellRad[] => {
+    return simuleringsresultat.perioder
+        .filter((p) => {
+            return gjelderÅr(p.fom, år);
+        })
+        .map((p) => {
+            return {
+                måned: formaterIsoMåned(p.fom),
+                nyttBeløp: p.nyttBeløp,
+                tidligereUtbetalt: p.tidligereUtbetalt,
+                resultat: p.resultat,
+                gjelderNestePeriode: p.fom === simuleringsresultat.fomDatoNestePeriode,
+            };
+        });
+};
 
 const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = ({
     simuleringsresultat,
@@ -15,24 +35,15 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
 
     const [år, settÅr] = useState(Math.max(...muligeÅr));
 
-    const simuleringsperioder = simuleringsresultat.perioder
-        .filter((p) => {
-            return gjelderÅr(p.fom, år);
-        })
-        .map((p) => {
-            return {
-                måned: formaterIsoMåned(p.fom),
-                nyttBeløp: formaterTallMedTusenSkilleEllerStrek(p.nyttBeløp),
-                tidligereUtbetalt: formaterTallMedTusenSkilleEllerStrek(p.tidligereUtbetalt),
-                resultat: formaterTallMedTusenSkilleEllerStrek(p.resultat),
-                erFremtidigVerdi: false,
-            };
-        }); // Legg inn tomme perioder
+    const simuleringTabellRader = mapSimuleringstabellRader(simuleringsresultat, år);
+
     return (
-        <SimuleringTabell
-            perioder={simuleringsperioder}
-            årsvelger={{ valgtÅr: 2021, settÅr: settÅr, muligeÅr: muligeÅr }}
-        />
+        <SimuleringsContainer>
+            <SimuleringTabell
+                perioder={simuleringTabellRader}
+                årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
+            />
+        </SimuleringsContainer>
     );
 };
 

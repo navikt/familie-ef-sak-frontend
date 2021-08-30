@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
+import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
 
 const Tabell = styled.table`
     border-collapse: collapse;
@@ -13,21 +14,22 @@ const ÅrHeader = styled.th`
     border-bottom: 1px solid ${navFarger.navGra80};
 `;
 
-const MånedHeader = styled.th`
+const BasisKolonne = styled.td`
     padding: 0.75rem;
+    border-bottom: 1px solid ${navFarger.navGra20};
+`;
+
+const VerdiKolonne = styled(BasisKolonne)<{ gjelderNestePeriode: boolean }>`
     text-align: right;
+    border-left: ${(props) => props.gjelderNestePeriode && `1px dashed ${navFarger.navGra60}`};
+`;
+
+const MånedHeader = styled(VerdiKolonne)<{ gjelderNestePeriode: boolean }>`
     border-bottom: 1px solid ${navFarger.navGra80};
 `;
 
-const EtikettKolonne = styled.td`
-    padding: 0.75rem;
-    border-bottom: 1px solid ${navFarger.navGra20};
-`;
-
-const VerdiKolonne = styled.td`
-    padding: 0.75rem;
-    text-align: right;
-    border-bottom: 1px solid ${navFarger.navGra20};
+const ResultatVerdi = styled(Normaltekst)<{ verdi: number }>`
+    color: ${(props) => (props.verdi > 0 ? navFarger.navGronn : navFarger.redError)};
 `;
 
 const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
@@ -41,7 +43,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                     </ÅrHeader>
                     {perioder.map((p) => {
                         return (
-                            <MånedHeader key={p.måned}>
+                            <MånedHeader key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
                                 <Element>{p.måned}</Element>
                             </MånedHeader>
                         );
@@ -50,37 +52,43 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
             </thead>
             <tbody>
                 <tr>
-                    <EtikettKolonne>
+                    <BasisKolonne>
                         <Element>Nytt beløp</Element>
-                    </EtikettKolonne>
+                    </BasisKolonne>
                     {perioder.map((p) => {
                         return (
-                            <VerdiKolonne key={p.måned}>
-                                <Normaltekst>{p.nyttBeløp}</Normaltekst>
+                            <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
+                                <Normaltekst>
+                                    {formaterTallMedTusenSkilleEllerStrek(p.nyttBeløp)}
+                                </Normaltekst>
                             </VerdiKolonne>
                         );
                     })}
                 </tr>
                 <tr>
-                    <EtikettKolonne>
+                    <BasisKolonne>
                         <Element>Tidligere utbetalt</Element>
-                    </EtikettKolonne>
+                    </BasisKolonne>
                     {perioder.map((p) => {
                         return (
-                            <VerdiKolonne key={p.måned}>
-                                <Normaltekst>{p.tidligereUtbetalt}</Normaltekst>
+                            <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
+                                <Normaltekst>
+                                    {formaterTallMedTusenSkilleEllerStrek(p.tidligereUtbetalt)}
+                                </Normaltekst>
                             </VerdiKolonne>
                         );
                     })}
                 </tr>
                 <tr>
-                    <EtikettKolonne>
+                    <BasisKolonne>
                         <Element>Resultat</Element>
-                    </EtikettKolonne>
+                    </BasisKolonne>
                     {perioder.map((p) => {
                         return (
-                            <VerdiKolonne key={p.måned}>
-                                <Normaltekst>{p.resultat}</Normaltekst>
+                            <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
+                                <ResultatVerdi verdi={p.resultat}>
+                                    {formaterTallMedTusenSkilleEllerStrek(p.resultat)}
+                                </ResultatVerdi>
                             </VerdiKolonne>
                         );
                     })}
