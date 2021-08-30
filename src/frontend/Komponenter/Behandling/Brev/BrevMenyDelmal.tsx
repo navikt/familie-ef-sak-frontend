@@ -104,16 +104,21 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     ))}
 
                 {delmalFlettefelter.flatMap((f) =>
-                    f.flettefelt.map((flettefelt) => (
-                        <Flettefelt
-                            fetLabel={true}
-                            flettefelt={flettefelt}
-                            dokument={dokument}
-                            flettefelter={flettefelter}
-                            handleFlettefeltInput={handleFlettefeltInput}
-                            key={flettefelt._ref}
-                        />
-                    ))
+                    f.flettefelt
+                        .filter(
+                            (felt, index, self) =>
+                                index === self.findIndex((t) => t._ref === felt._ref)
+                        )
+                        .map((flettefelt) => (
+                            <Flettefelt
+                                fetLabel={true}
+                                flettefelt={flettefelt}
+                                dokument={dokument}
+                                flettefelter={flettefelter}
+                                handleFlettefeltInput={handleFlettefeltInput}
+                                key={flettefelt._ref}
+                            />
+                        ))
                 )}
             </StyledEkspanderbartpanelBase>
         </DelmalValg>
