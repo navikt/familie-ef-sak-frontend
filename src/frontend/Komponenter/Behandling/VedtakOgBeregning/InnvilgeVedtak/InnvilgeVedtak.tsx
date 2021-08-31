@@ -186,10 +186,9 @@ export const InnvilgeVedtak: React.FC<{
                 lagBlankett(vedtaksRequest);
                 break;
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
+            case Behandlingstype.REVURDERING:
                 lagreVedtak(vedtaksRequest);
                 break;
-            case Behandlingstype.REVURDERING:
-                throw Error('Støtter ikke behandlingstype revurdering ennå...');
         }
     };
 
