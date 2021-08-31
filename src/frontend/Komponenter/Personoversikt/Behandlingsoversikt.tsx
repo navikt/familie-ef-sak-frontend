@@ -84,16 +84,19 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
-            const alleBehandlingerErFerdige =
-                fagsak.data.behandlinger.length > 0 &&
-                fagsak.data.behandlinger.find(
-                    (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
-                ) === undefined;
-            settKanStarteRevurdering(alleBehandlingerErFerdige);
+            settKanStarteRevurdering(erAlleBehandlingerErFerdigstilt(fagsak.data));
         }
         // eslint-disable-next-line
     }, [fagsak]);
 
+    function erAlleBehandlingerErFerdigstilt(fagsak: Fagsak) {
+        return (
+            fagsak.behandlinger.length > 0 &&
+            fagsak.behandlinger.find(
+                (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
+            ) === undefined
+        );
+    }
     return (
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
@@ -105,7 +108,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
 
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                            {' '}
                             Start revurdering
                         </KnappMedMargin>
                     )}
