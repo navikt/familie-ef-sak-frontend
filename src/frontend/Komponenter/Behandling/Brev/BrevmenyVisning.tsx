@@ -6,12 +6,18 @@ import {
     FlettefeltMedVerdi,
     Flettefeltreferanse,
     ValgFelt,
+    ValgteDelmaler,
     ValgtFelt,
 } from './BrevTyper';
 import { Undertittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
+import {
+    finnFletteFeltApinavnFraRef,
+    grupperDelmaler,
+    initFlettefelterMedVerdi,
+    initValgteFeltMedMellomlager,
+} from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
-import { finnFletteFeltApinavnFraRef, grupperDelmaler } from './BrevUtils';
 import { useApp } from '../../../App/context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -21,6 +27,7 @@ import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { delmalTilHtml } from './Htmlfelter';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
+import { useMellomlagringBrev, IBrevverdier } from '../../../App/hooks/useMellomlagringBrev';
 
 const GenererBrev = styled(Knapp)`
     display: block;
@@ -43,15 +50,10 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const initFlettefelterMedVerdi = (brevStruktur: BrevStruktur): FlettefeltMedVerdi[] =>
-    brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
-        _ref: felt._id,
-        verdi: null,
-    }));
-
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     tilkjentYtelse?: TilkjentYtelse;
+    mellomlagretBrev?: string;
     brevMal: string;
 }
 
@@ -62,14 +64,26 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     settKanSendesTilBeslutter,
     brevStruktur,
     tilkjentYtelse,
+    mellomlagretBrev,
     brevMal,
 }) => {
     const { axiosRequest } = useApp();
+    const { mellomlagreBrev } = useMellomlagringBrev(behandlingId, brevMal);
+    const parsetMellomlagretBrev =
+        mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
+
+    const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
+        parsetMellomlagretBrev || {};
+
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
-        initFlettefelterMedVerdi(brevStruktur)
+        initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager)
     );
-    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
-    const [valgteDelmaler, settValgteDelmaler] = useState<{ [delmalNavn: string]: boolean }>({});
+    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(
+        initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur)
+    );
+    const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>(
+        valgteDelmalerFraMellomlager || {}
+    );
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
@@ -137,6 +151,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
+        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler);
         axiosRequest<string, unknown>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
@@ -168,6 +183,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                     key={`${delmal.delmalApiNavn}_wrapper`}
                                 >
                                     <BrevMenyDelmal
+                                        valgt={valgteDelmaler[delmal.delmalApiNavn]}
                                         delmal={delmal}
                                         dokument={brevStruktur}
                                         valgteFelt={valgteFelt}

@@ -1,4 +1,5 @@
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
+export type ValgteDelmaler = { [delmalNavn: string]: boolean };
 
 export interface BrevStruktur {
     dokument: DokumentMal;
