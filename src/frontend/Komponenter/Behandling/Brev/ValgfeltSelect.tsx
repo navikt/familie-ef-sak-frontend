@@ -103,16 +103,21 @@ export const ValgfeltSelect: React.FC<Props> = ({
                 .filter(([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn)
                 .map(([_, valg]) =>
                     valg.flettefelter.map((felter) =>
-                        felter.flettefelt.map((flettefelt) => (
-                            <Flettefelt
-                                fetLabel={false}
-                                flettefelt={flettefelt}
-                                dokument={dokument}
-                                flettefelter={flettefelter}
-                                handleFlettefeltInput={handleFlettefeltInput}
-                                key={flettefelt._ref}
-                            />
-                        ))
+                        felter.flettefelt
+                            .filter(
+                                (felt, index, self) =>
+                                    index === self.findIndex((t) => t._ref === felt._ref)
+                            )
+                            .map((flettefelt) => (
+                                <Flettefelt
+                                    fetLabel={false}
+                                    flettefelt={flettefelt}
+                                    dokument={dokument}
+                                    flettefelter={flettefelter}
+                                    handleFlettefeltInput={handleFlettefeltInput}
+                                    key={flettefelt._ref}
+                                />
+                            ))
                     )
                 )}
         </StyledValgfeltSelect>
