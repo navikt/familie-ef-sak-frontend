@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import SimuleringOversikt from './SimuleringOversikt';
 
 const SimuleringsContainer = styled.div`
-    margin: 1rem;
+    margin: 2rem;
 `;
 
 const mapSimuleringstabellRader = (
