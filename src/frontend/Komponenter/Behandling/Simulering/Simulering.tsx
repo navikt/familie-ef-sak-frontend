@@ -1,10 +1,19 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { useSimulering } from '../../../App/hooks/useSimulering';
 import SimuleringTabellWrapper from './SimuleringTabellWrapper';
+import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import { ISimulering } from './SimuleringTyper';
+import { AxiosRequestConfig } from 'axios';
 
 export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { simuleringsresultat } = useSimulering(behandlingId);
+    const simuleringConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/simulering/${behandlingId}`,
+        }),
+        [behandlingId]
+    );
+    const simuleringsresultat = useDataHenter<ISimulering, null>(simuleringConfig);
 
     return (
         <DataViewer response={{ simuleringsresultat }}>

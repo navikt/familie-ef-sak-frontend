@@ -15,16 +15,16 @@ const mapSimuleringstabellRader = (
     år: number
 ): ISimuleringTabellRad[] => {
     return simuleringsresultat.perioder
-        .filter((p) => {
-            return gjelderÅr(p.fom, år);
+        .filter((periode) => {
+            return gjelderÅr(periode.fom, år);
         })
-        .map((p) => {
+        .map((periode) => {
             return {
-                måned: formaterIsoMåned(p.fom),
-                nyttBeløp: p.nyttBeløp,
-                tidligereUtbetalt: p.tidligereUtbetalt,
-                resultat: p.resultat,
-                gjelderNestePeriode: p.fom === simuleringsresultat.fomDatoNestePeriode,
+                måned: formaterIsoMåned(periode.fom),
+                nyttBeløp: periode.nyttBeløp,
+                tidligereUtbetalt: periode.tidligereUtbetalt,
+                resultat: periode.resultat,
+                gjelderNestePeriode: periode.fom === simuleringsresultat.fomDatoNestePeriode,
             };
         });
 };
