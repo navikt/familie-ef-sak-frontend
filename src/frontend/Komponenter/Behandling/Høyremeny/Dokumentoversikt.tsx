@@ -16,6 +16,7 @@ import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { Undertittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { compareDesc } from 'date-fns';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,
@@ -32,6 +33,24 @@ const StyledUndertittel = styled(Undertittel)`
 type AlleDokument = {
     dokumenterKnyttetTilBehandlingen: DokumentProps[];
     andreDokumenter: DokumentProps[];
+};
+
+const sorterDokumentlisten = (dokumentResponse: AlleDokument) => {
+    return [
+        ...dokumentResponse.dokumenterKnyttetTilBehandlingen,
+        ...dokumentResponse.andreDokumenter,
+    ]
+        .sort((a, b) => {
+            if (a.dato === undefined) {
+                return 1;
+            } else if (b.dato === undefined) {
+                return -1;
+            }
+            return compareDesc(new Date(a.dato), new Date(b.dato));
+        })
+        .map((dokument) => {
+            return { ...dokument, dato: formaterNullableIsoDatoTid(dokument.dato) };
+        });
 };
 
 const Dokumentoversikt: React.FC = () => {
@@ -78,27 +97,12 @@ const Dokumentoversikt: React.FC = () => {
             )}
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
-                    const dokumenterKnyttetTilBehandlingenMedDato =
-                        dokumentResponse.dokumenterKnyttetTilBehandlingen.map((dokument) => ({
-                            ...dokument,
-                            dato: formaterNullableIsoDatoTid(dokument.dato),
-                        }));
-                    const andraDokumenterMedDato = dokumentResponse.andreDokumenter.map(
-                        (dokument) => ({
-                            ...dokument,
-                            dato: formaterNullableIsoDatoTid(dokument.dato),
-                        })
-                    );
+                    const sortertDokumentliste = sorterDokumentlisten(dokumentResponse);
                     return (
                         <>
-                            <StyledUndertittel>Knyttet til behandlingen</StyledUndertittel>
+                            <StyledUndertittel>Dokumentoversikt</StyledUndertittel>
                             <StyledDokumentliste
-                                dokumenter={dokumenterKnyttetTilBehandlingenMedDato}
-                                onClick={lastNedDokument}
-                            />
-                            <StyledUndertittel>Andre dokumenter</StyledUndertittel>
-                            <StyledDokumentliste
-                                dokumenter={andraDokumenterMedDato}
+                                dokumenter={sortertDokumentliste}
                                 onClick={lastNedDokument}
                             />
                         </>
