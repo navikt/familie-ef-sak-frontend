@@ -51,7 +51,7 @@
     "@types/react-select": "^4.0.13",
     "@types/redis": "^2.8.28",
     "@types/request-promise": "^4.1.44",
-    "@types/styled-components": "^5.1.12",
+    "@types/styled-components": "^5.1.13",
     "@types/uuid": "^8.3.0",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
