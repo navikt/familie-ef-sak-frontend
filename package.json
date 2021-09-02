@@ -20,7 +20,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css}": [
       "prettier --write",
-      "eslint --fix src/ --max-warnings=0"
+      "eslint --fix --max-warnings=0"
     ]
   },
   "dependencies": {
@@ -38,7 +38,7 @@
     "@navikt/nap-popover": "^1.0.6",
     "@navikt/nap-user-panel": "^1.1.0",
     "@sentry/browser": "^5.23.0",
-    "@sentry/core": "^6.9.0",
+    "@sentry/core": "^6.12.0",
     "@types/classnames": "^2.2.11",
     "@types/express": "^4.17.13",
     "@types/file-saver": "^2.0.3",
