@@ -1,0 +1,90 @@
+{
+  "data": {
+    "perioder": [
+      {
+        "fom": "2021-02-01",
+        "tom": "2021-02-28",
+        "forfallsdato": "2021-08-25",
+        "nyttBeløp": 0,
+        "tidligereUtbetalt": 18903,
+        "resultat": -18903,
+        "feilutbetaling": 18903
+      },
+      {
+        "fom": "2021-03-01",
+        "tom": "2021-03-31",
+        "forfallsdato": "2021-08-25",
+        "nyttBeløp": 7778,
+        "tidligereUtbetalt": 18903,
+        "resultat": -11125,
+        "feilutbetaling": 11125
+      },
+      {
+        "fom": "2021-04-01",
+        "tom": "2021-04-30",
+        "forfallsdato": "2021-08-25",
+        "nyttBeløp": 7778,
+        "tidligereUtbetalt": 18903,
+        "resultat": -11125,
+        "feilutbetaling": 11125
+      },
+      {
+        "fom": "2021-05-01",
+        "tom": "2021-05-31",
+        "forfallsdato": "2021-08-25",
+        "nyttBeløp": 8820,
+        "tidligereUtbetalt": 19850,
+        "resultat": -11030,
+        "feilutbetaling": 11030
+      },
+      {
+        "fom": "2021-06-01",
+        "tom": "2021-06-30",
+        "forfallsdato": "2021-08-25",
+        "nyttBeløp": 8820,
+        "tidligereUtbetalt": 19850,
+        "resultat": -11030,
+        "feilutbetaling": 11030
+      },
+      {
+        "fom": "2021-07-01",
+        "tom": "2021-07-31",
+        "forfallsdato": "2021-07-19",
+        "nyttBeløp": 6945,
+        "tidligereUtbetalt": 0,
+        "resultat": 6945,
+        "feilutbetaling": 0
+      },
+      {
+        "fom": "2021-08-01",
+        "tom": "2021-08-31",
+        "forfallsdato": "2021-08-25",
+        "nyttBeløp": 6945,
+        "tidligereUtbetalt": 19850,
+        "resultat": -12905,
+        "feilutbetaling": 12905
+      },
+      {
+        "fom": "2021-09-01",
+        "tom": "2021-09-30",
+        "forfallsdato": "2021-09-17",
+        "nyttBeløp": 6945,
+        "tidligereUtbetalt": 0,
+        "resultat": 6945,
+        "feilutbetaling": 0
+      }
+    ],
+    "fomDatoNestePeriode": "2021-09-01",
+    "etterbetaling": 6945,
+    "feilutbetaling": 76118,
+    "fom": "2021-02-01",
+    "tomDatoNestePeriode": "2021-09-30",
+    "forfallsdatoNestePeriode": "2021-09-17",
+    "tidSimuleringHentet": "2021-09-02",
+    "tomSisteUtbetaling": "2021-08-31"
+  },
+  "status": "SUKSESS",
+  "melding": "Innhenting av data var vellykket",
+  "frontendFeilmelding": null,
+  "stacktrace": null
+}

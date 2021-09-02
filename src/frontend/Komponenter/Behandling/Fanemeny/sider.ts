@@ -8,6 +8,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
 import Personopplysninger from '../Personopplysninger/Personopplysninger';
+import { Simulering } from '../Simulering/Simulering';
 
 export interface ISide {
     href: string;
@@ -21,6 +22,7 @@ export enum SideNavn {
     INNGANGSVILKÅR = 'Inngangsvilkår',
     AKTIVITET = 'Aktivitet',
     VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
+    SIMULERING = 'Simulering',
     BREV = 'Brev',
     BLANKETT = 'Blankett',
 }
@@ -50,6 +52,11 @@ export const sider: ISide[] = [
         href: 'vedtak-og-beregning',
         navn: SideNavn.VEDTAK_OG_BEREGNING,
         komponent: VedtakOgBeregningSide,
+    },
+    {
+        href: 'simulering',
+        navn: SideNavn.SIMULERING,
+        komponent: Simulering,
     },
     {
         href: 'brev',
