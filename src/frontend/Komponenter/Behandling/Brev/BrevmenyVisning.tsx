@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     BrevStruktur,
     Delmal,
@@ -150,24 +150,29 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
-    const genererBrev = () => {
-        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler);
-        axiosRequest<string, unknown>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
-            data: {
-                valgfelter: {},
-                delmaler: utledDelmalerForBrev(),
-                flettefelter: {
-                    navn: [personopplysninger.navn.visningsnavn],
-                    fodselsnummer: [personopplysninger.personIdent],
-                    brevOpprettetDato: [dagensDatoFormatert()],
+    const genererBrev = useCallback(
+        () => {
+            mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler);
+            axiosRequest<string, unknown>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
+                data: {
+                    valgfelter: {},
+                    delmaler: utledDelmalerForBrev(),
+                    flettefelter: {
+                        navn: [personopplysninger.navn.visningsnavn],
+                        fodselsnummer: [personopplysninger.personIdent],
+                        brevOpprettetDato: [dagensDatoFormatert()],
+                    },
                 },
-            },
-        }).then((respons: Ressurs<string>) => {
-            oppdaterBrevRessurs(respons);
-        });
-    };
+            }).then((respons: Ressurs<string>) => {
+                oppdaterBrevRessurs(respons);
+            });
+        }, // eslint-disable-next-line
+        [alleFlettefelter, valgteFelt, valgteDelmaler, behandlingId, brevMal]
+    );
+
+    useEffect(() => genererBrev(), [genererBrev]);
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
