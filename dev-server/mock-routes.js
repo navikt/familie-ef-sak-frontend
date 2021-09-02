@@ -203,4 +203,8 @@ app.get('/familie-brev/api/ef-brev/avansert-dokument/bokmaal/:mal/felter', (req,
     setTimeout(() => res.send(lesMockFil(`innvilgetOvergangsstønadBrevMal.json`)), delayMs);
 });
 
+app.get('/familie-ef-sak/api/simulering/:behandlingId', (req, res) => {
+    setTimeout(() => res.send(lesMockFil('simulering.json')), delayMs);
+});
+
 module.exports = app;
