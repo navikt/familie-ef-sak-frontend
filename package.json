@@ -12,6 +12,7 @@
     "build": "yarn build:prod",
     "build:dev": "webpack --config ./build_n_deploy/webpack/webpack.dev.js",
     "build:prod": "tsc & webpack --config ./build_n_deploy/webpack/webpack.prod.js",
+    "snyk-protect": "snyk protect",
     "lint": "eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
     "postinstall": "husky install"
@@ -127,6 +128,7 @@
     "react-select": "^4.3.1",
     "redis": "^3.1.2",
     "request-promise": "^4.2.6",
+    "snyk": "^1.466.0",
     "styled-components": "^5.3.0",
     "svg-inline-loader": "^0.8.2",
     "uuid": "^8.3.2"
@@ -179,5 +181,6 @@
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-merge": "^5.8.0"
-  }
+  },
+  "snyk": true
 }
