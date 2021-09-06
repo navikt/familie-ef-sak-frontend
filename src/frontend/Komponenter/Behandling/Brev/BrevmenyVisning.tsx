@@ -29,7 +29,7 @@ import { delmalTilHtml } from './Htmlfelter';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { useMellomlagringBrev, IBrevverdier } from '../../../App/hooks/useMellomlagringBrev';
 
-const GenererBrev = styled(Knapp)`
+const ForhåndsvisBrev = styled(Knapp)`
     display: block;
     margin: 0 auto;
 `;
@@ -205,7 +205,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     </Panel>
                 );
             })}
-            <GenererBrev onClick={genererBrev}>Generer brev</GenererBrev>
+            <ForhåndsvisBrev onClick={genererBrev}>Forhåndsvis brev</ForhåndsvisBrev>
         </BrevFelter>
     );
 };
