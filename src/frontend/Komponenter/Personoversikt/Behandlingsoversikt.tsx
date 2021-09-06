@@ -18,6 +18,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import { EtikettInfo } from 'nav-frontend-etiketter';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -27,6 +28,16 @@ const StyledTable = styled.table`
 
 const KnappMedMargin = styled(Knapp)`
     margin: 1rem;
+`;
+
+const StyledEtikettInfo = styled(EtikettInfo)`
+    margin-left: 1rem;
+`;
+
+const TittelLinje = styled.div`
+    margin-top: 1rem;
+    display: flex;
+    align-items: flex-start;
 `;
 
 const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> = ({
@@ -101,9 +112,12 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
                 <>
-                    <Systemtittel tag="h3">
-                        Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                    </Systemtittel>
+                    <TittelLinje>
+                        <Systemtittel tag="h3">
+                            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+                        </Systemtittel>
+                        {!fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
+                    </TittelLinje>
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
 
                     {kanStarteRevurdering && (
