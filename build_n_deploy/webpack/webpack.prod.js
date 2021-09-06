@@ -1,4 +1,5 @@
 const common = require('./webpack.common');
+const backend = require('./webpack.backend.prod');
 const { mergeWithCustomize } = require('webpack-merge');
 const path = require('path');
 const webpack = require('webpack');
@@ -73,4 +74,4 @@ const config = mergeWithCustomize({
     },
 });
 
-module.exports = config;
+module.exports = [config, backend];

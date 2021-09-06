@@ -3,8 +3,8 @@ import './konfigurerApp';
 import backend, { IApp, ensureAuthenticated } from '@navikt/familie-backend';
 import bodyParser from 'body-parser';
 import path from 'path';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
+//import webpack from 'webpack';
+//import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import { brevProxyUrl, sakProxyUrl, sessionConfig } from './config';
@@ -14,7 +14,7 @@ import setupRouter from './router';
 import expressStaticGzip from 'express-static-gzip';
 import { logError, logInfo } from '@navikt/familie-logging';
 // eslint-disable-next-line
-const config = require('../../build_n_deploy/webpack/webpack.dev');
+//const config = require('../../build_n_deploy/webpack/webpack.dev');
 
 const port = 8000;
 
@@ -22,13 +22,13 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     let middleware;
 
     if (process.env.NODE_ENV === 'development') {
-        const compiler = webpack(config);
+        //const compiler = webpack(config);
         // @ts-ignore
-        middleware = webpackDevMiddleware(compiler, {
-            publicPath: config.output.publicPath,
-        });
+        //middleware = webpackDevMiddleware(compiler, {
+        //    publicPath: config.output.publicPath,
+        //});
 
-        app.use(middleware);
+        //app.use(middleware);
         // @ts-ignore
         app.use(webpackHotMiddleware(compiler));
     } else {
