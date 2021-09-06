@@ -1,43 +1,21 @@
 import './konfigurerApp';
 
-import backend, { IApp, ensureAuthenticated } from '@navikt/familie-backend';
+import { ensureAuthenticated, IApp } from '@navikt/familie-backend';
 import bodyParser from 'body-parser';
-import path from 'path';
-//import webpack from 'webpack';
-//import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+import WebpackDevMiddleware from 'webpack-dev-middleware';
 
-import { brevProxyUrl, sakProxyUrl, sessionConfig } from './config';
-import { prometheusTellere } from './metrikker';
+import { brevProxyUrl, sakProxyUrl } from './config';
 import { attachToken, doProxy } from './proxy';
 import setupRouter from './router';
-import expressStaticGzip from 'express-static-gzip';
 import { logError, logInfo } from '@navikt/familie-logging';
-// eslint-disable-next-line
-//const config = require('../../build_n_deploy/webpack/webpack.dev');
+import { NextHandleFunction } from 'connect';
 
 const port = 8000;
 
-backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }: IApp) => {
-    let middleware;
-
-    if (process.env.NODE_ENV === 'development') {
-        //const compiler = webpack(config);
-        // @ts-ignore
-        //middleware = webpackDevMiddleware(compiler, {
-        //    publicPath: config.output.publicPath,
-        //});
-
-        //app.use(middleware);
-        // @ts-ignore
-        app.use(webpackHotMiddleware(compiler));
-    } else {
-        app.use(
-            '/assets',
-            expressStaticGzip(path.join(__dirname, '../../frontend_production'), {})
-        );
-    }
-
+export const setupServer = (
+    { app, azureAuthClient, router }: IApp,
+    middleware?: WebpackDevMiddleware.WebpackDevMiddleware & NextHandleFunction
+): void => {
     app.use(
         '/familie-ef-sak/api',
         ensureAuthenticated(azureAuthClient, true),
@@ -62,4 +40,4 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     }).on('error', (err: Error) => {
         logError(`server startup failed - ${err}`);
     });
-});
+};

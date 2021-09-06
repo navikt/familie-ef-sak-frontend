@@ -8,7 +8,7 @@
   "scripts": {
     "start": "NODE_ENV=production node backend_production/backend/server.js",
     "start:mock": "NODE_ENV=development node dev-server/mock-server.js",
-    "start:dev": "tsc && NODE_ENV=development node node_dist/backend/server.js",
+    "start:dev": "tsc && NODE_ENV=development node node_dist/backend/server-dev.js",
     "build": "yarn build:prod",
     "build:dev": "webpack --config ./build_n_deploy/webpack/webpack.dev.js",
     "build:prod": "webpack --config ./build_n_deploy/webpack/webpack.prod.js",
