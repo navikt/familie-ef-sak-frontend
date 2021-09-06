@@ -27,7 +27,8 @@ import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { delmalTilHtml } from './Htmlfelter';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
-import { useMellomlagringBrev, IBrevverdier } from '../../../App/hooks/useMellomlagringBrev';
+import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
+import { useDebouncedCallback } from 'use-debounce';
 
 const ForhåndsvisBrev = styled(Knapp)`
     display: block;
@@ -150,29 +151,35 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
-    const genererBrev = useCallback(
-        () => {
-            mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler);
-            axiosRequest<string, unknown>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
-                data: {
-                    valgfelter: {},
-                    delmaler: utledDelmalerForBrev(),
-                    flettefelter: {
-                        navn: [personopplysninger.navn.visningsnavn],
-                        fodselsnummer: [personopplysninger.personIdent],
-                        brevOpprettetDato: [dagensDatoFormatert()],
-                    },
+    const genererBrev = () => {
+        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler);
+        axiosRequest<string, unknown>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
+            data: {
+                valgfelter: {},
+                delmaler: utledDelmalerForBrev(),
+                flettefelter: {
+                    navn: [personopplysninger.navn.visningsnavn],
+                    fodselsnummer: [personopplysninger.personIdent],
+                    brevOpprettetDato: [dagensDatoFormatert()],
                 },
-            }).then((respons: Ressurs<string>) => {
-                oppdaterBrevRessurs(respons);
-            });
-        }, // eslint-disable-next-line
-        [alleFlettefelter, valgteFelt, valgteDelmaler, behandlingId, brevMal]
+            },
+        }).then((respons: Ressurs<string>) => {
+            oppdaterBrevRessurs(respons);
+        });
+    };
+
+    const delayedGenererBrev = useDebouncedCallback(genererBrev, 2000);
+    const immediateGenererBrev = useCallback(
+        genererBrev,
+        // eslint-disable-next-line
+        [valgteFelt, valgteDelmaler, behandlingId, brevMal]
     );
 
-    useEffect(() => genererBrev(), [genererBrev]);
+    // eslint-disable-next-line
+    useEffect(delayedGenererBrev, [alleFlettefelter]);
+    useEffect(immediateGenererBrev, [immediateGenererBrev]);
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (

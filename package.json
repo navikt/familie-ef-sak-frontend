@@ -131,6 +131,7 @@
     "snyk": "^1.466.0",
     "styled-components": "^5.3.0",
     "svg-inline-loader": "^0.8.2",
+    "use-debounce": "^7.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
