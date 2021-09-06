@@ -24,8 +24,8 @@ backend(sessionConfig, prometheusTellere).then((iApp: IApp) => {
         app.use(middleware);
         // @ts-ignore
         app.use(webpackHotMiddleware(compiler));
-        setupServer(iApp, middleware);
     } else {
         throw new Error(`Cannot start dev with process.env.NODE_ENV=${process.env.NODE_ENV}`);
     }
+    setupServer(iApp, middleware);
 });
