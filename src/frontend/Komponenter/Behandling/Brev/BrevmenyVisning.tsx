@@ -19,7 +19,6 @@ import {
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import Panel from 'nav-frontend-paneler';
@@ -29,11 +28,6 @@ import { delmalTilHtml } from './Htmlfelter';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
-
-const ForhåndsvisBrev = styled(Knapp)`
-    display: block;
-    margin: 0 auto;
-`;
 
 const BrevFelter = styled.div`
     display: flex;
@@ -170,7 +164,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         });
     };
 
-    const delayedGenererBrev = useDebouncedCallback(genererBrev, 2000);
+    const delayedGenererBrev = useDebouncedCallback(genererBrev, 1000);
     const immediateGenererBrev = useCallback(
         genererBrev,
         // eslint-disable-next-line
@@ -212,7 +206,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     </Panel>
                 );
             })}
-            <ForhåndsvisBrev onClick={genererBrev}>Forhåndsvis brev</ForhåndsvisBrev>
         </BrevFelter>
     );
 };
