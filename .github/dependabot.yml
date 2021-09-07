@@ -9,4 +9,5 @@ updates:
     time: "04:00"
   open-pull-requests-limit: 30
   ignore:
-   - update-types: ["version-update:semver-patch"]
+   - dependency-name: "*"
+     update-types: ["version-update:semver-patch"]
