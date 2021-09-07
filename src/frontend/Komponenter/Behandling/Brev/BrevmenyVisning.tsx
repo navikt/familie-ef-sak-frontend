@@ -164,16 +164,16 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         });
     };
 
-    const delayedGenererBrev = useDebouncedCallback(genererBrev, 1000);
-    const immediateGenererBrev = useCallback(
+    const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
+    const genererBrevCallback = useCallback(
         genererBrev,
         // eslint-disable-next-line
         [valgteFelt, valgteDelmaler, behandlingId, brevMal]
     );
 
     // eslint-disable-next-line
-    useEffect(delayedGenererBrev, [alleFlettefelter]);
-    useEffect(immediateGenererBrev, [immediateGenererBrev]);
+    useEffect(utsattGenererBrev, [alleFlettefelter]);
+    useEffect(genererBrevCallback, [genererBrevCallback]);
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
