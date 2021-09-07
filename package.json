@@ -59,7 +59,7 @@
     "body-parser": "^1.19.0",
     "classnames": "^2.3.1",
     "color-string": "^1.6.0",
-    "connect-redis": "^4.0.3",
+    "connect-redis": "^6.0.0",
     "constate": "^3.3.0",
     "date-fns": "^2.23.0",
     "dayjs": "^1.10.6",
