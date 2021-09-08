@@ -1,4 +1,4 @@
-name: Yarn install
+name: Yarn cache
 description: "Brukes inline i andre filer for å unngå duplikat"
 
 runs:

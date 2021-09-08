@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: ./.github/yarn-cache
+      - uses: navikt/familie-action-yarn-cache/@v1
         if: github.actor != 'dependabot[bot]'
       - name: Yarn install
         run: yarn --prefer-offline --frozen-lockfile
