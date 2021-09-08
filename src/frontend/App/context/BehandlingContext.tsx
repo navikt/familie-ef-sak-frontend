@@ -24,6 +24,10 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
         useHentTotrinnskontroll(behandlingId);
 
+    const [antallIRedigeringsmodus, settAntallIRedigeringsmodus] = useState<number>(0);
+    const [ulagretData, settUlagretData] = useState<boolean>(antallIRedigeringsmodus !== 0);
+    useEffect(() => settUlagretData(antallIRedigeringsmodus > 0), [antallIRedigeringsmodus]);
+
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
         behandlingId,
@@ -58,6 +62,9 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentTotrinnskontroll,
         hentBehandlingshistorikk,
         regler,
+        antallIRedigeringsmodus,
+        settAntallIRedigeringsmodus,
+        ulagretData,
     };
 });
 
