@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 
 const Footer = styled.footer`
     width: calc(100% - 571px);
@@ -27,13 +26,6 @@ const StyledHovedknapp = styled(Hovedknapp)`
     margin-right: 1rem;
 `;
 
-const StyledKnapp = styled(Knapp)`
-    margin-left: 1rem;
-    margin-right: 1rem;
-    box-shadow: none;
-    transform: none;
-`;
-
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
     kanSendesTilBeslutter?: boolean;
@@ -42,7 +34,6 @@ const SendTilBeslutterFooter: React.FC<{
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
-    const [simuleringsdata, settSimuleringsdata] = useState<string | null>();
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -64,43 +55,15 @@ const SendTilBeslutterFooter: React.FC<{
             .finally(() => settLaster(false));
     };
 
-    const kjørSimulering = () => {
-        settLaster(true);
-        axiosRequest<string, undefined>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/simulering/${behandlingId}`,
-        })
-            .then((res: Ressurs<string>) => {
-                if (res.status === RessursStatus.SUKSESS) {
-                    settSimuleringsdata(res.data);
-                } else {
-                    window.alert('Simulering feilet');
-                }
-            })
-            .finally(() => settLaster(false));
-    };
-
     return (
         <Footer>
-            <UIModalWrapper
-                modal={{
-                    tittel: 'Simulering',
-                    lukkKnapp: true,
-                    visModal: !!simuleringsdata,
-                    onClose: () => settSimuleringsdata(null),
-                }}
-            >
-                <pre>{JSON.stringify(simuleringsdata, null, 2)}</pre>
-            </UIModalWrapper>
             <MidtstiltInnhold>
-                <StyledKnapp>Lagre</StyledKnapp>
                 <StyledHovedknapp
                     onClick={sendTilBeslutter}
                     disabled={laster || kanSendesTilBeslutter === false}
                 >
                     Send til beslutter
                 </StyledHovedknapp>
-                <StyledKnapp onClick={kjørSimulering}>Simulér</StyledKnapp>
             </MidtstiltInnhold>
         </Footer>
     );

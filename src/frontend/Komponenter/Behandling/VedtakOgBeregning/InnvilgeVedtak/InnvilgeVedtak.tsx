@@ -166,7 +166,7 @@ export const InnvilgeVedtak: React.FC<{
             url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/brev`))
+            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
             .finally(() => {
                 settLaster(false);
             });
