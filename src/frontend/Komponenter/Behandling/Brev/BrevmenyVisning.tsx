@@ -50,6 +50,7 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     tilkjentYtelse?: TilkjentYtelse;
     mellomlagretBrev?: string;
     brevMal: string;
+    flettefeltStore: { [navn: string]: string };
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -61,6 +62,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     tilkjentYtelse,
     mellomlagretBrev,
     brevMal,
+    flettefeltStore,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreBrev } = useMellomlagringBrev(behandlingId, brevMal);
@@ -71,8 +73,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         parsetMellomlagretBrev || {};
 
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
-        initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager)
+        initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
     );
+
+    // TODO: Håndter oppdateringer i flettefeltStore
+
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(
         initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur)
     );
