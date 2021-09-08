@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     BrevStruktur,
     Delmal,
@@ -19,7 +19,6 @@ import {
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import Panel from 'nav-frontend-paneler';
@@ -27,12 +26,8 @@ import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { delmalTilHtml } from './Htmlfelter';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
-import { useMellomlagringBrev, IBrevverdier } from '../../../App/hooks/useMellomlagringBrev';
-
-const ForhåndsvisBrev = styled(Knapp)`
-    display: block;
-    margin: 0 auto;
-`;
+import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
+import { useDebouncedCallback } from 'use-debounce';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -169,6 +164,17 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         });
     };
 
+    const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
+    const genererBrevCallback = useCallback(
+        genererBrev,
+        // eslint-disable-next-line
+        [valgteFelt, valgteDelmaler, behandlingId, brevMal]
+    );
+
+    // eslint-disable-next-line
+    useEffect(utsattGenererBrev, [alleFlettefelter]);
+    useEffect(genererBrevCallback, [genererBrevCallback]);
+
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
         <BrevFelter>
@@ -200,7 +206,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     </Panel>
                 );
             })}
-            <ForhåndsvisBrev onClick={genererBrev}>Forhåndsvis brev</ForhåndsvisBrev>
         </BrevFelter>
     );
 };
