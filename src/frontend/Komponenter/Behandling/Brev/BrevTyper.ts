@@ -13,7 +13,7 @@ export interface AlleFlettefelter {
     flettefeltReferanse: Flettefelt[];
 }
 interface Flettefelt {
-    felt: string;
+    apiNavn: string;
     erFritektsfelt?: boolean;
     feltVisningsnavn?: string;
     _id: string;
