@@ -72,11 +72,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
         parsetMellomlagretBrev || {};
 
-    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
-        initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
-    );
+    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
 
-    // TODO: Håndter oppdateringer i flettefeltStore
+    useEffect(() => {
+        settAlleFlettefelter(
+            initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
+        );
+    }, [brevStruktur, flettefeltStore, flettefeltFraMellomlager]);
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(
         initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur)
