@@ -9,7 +9,7 @@ export const finnFlettefeltVisningsnavnFraRef = (dokument: BrevStruktur, ref: st
 
     return flettefeltNavnFraRef.feltVisningsnavn
         ? flettefeltNavnFraRef.feltVisningsnavn
-        : flettefeltNavnFraRef.apiNavn;
+        : flettefeltNavnFraRef.felt;
 };
 
 export const finnFletteFeltApinavnFraRef = (dokument: BrevStruktur, ref: string): string => {
@@ -17,7 +17,7 @@ export const finnFletteFeltApinavnFraRef = (dokument: BrevStruktur, ref: string)
         (felt) => felt._id === ref
     );
 
-    return flettefeltNavnFraRef ? flettefeltNavnFraRef.apiNavn : '';
+    return flettefeltNavnFraRef ? flettefeltNavnFraRef.felt : '';
 };
 
 export const erFlettefeltFritektsfelt = (dokument: BrevStruktur, ref: string): boolean => {
@@ -55,7 +55,7 @@ export const initFlettefelterMedVerdi = (
         _ref: felt._id,
         verdi:
             hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, felt._id) ||
-            flettefeltStore[felt.apiNavn],
+            flettefeltStore[felt.felt],
     }));
 
 export const initValgteFeltMedMellomlager = (
