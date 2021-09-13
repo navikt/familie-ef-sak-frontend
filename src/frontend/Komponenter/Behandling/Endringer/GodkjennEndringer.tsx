@@ -3,7 +3,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { Knapp } from 'nav-frontend-knapper';

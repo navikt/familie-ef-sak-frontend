@@ -1,6 +1,6 @@
 import { ISøkeresultat, Søk } from '@navikt/familie-header';
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import {
     byggHenterRessurs,
     byggSuksessRessurs,
