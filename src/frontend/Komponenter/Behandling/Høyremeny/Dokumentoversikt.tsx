@@ -8,7 +8,7 @@ import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
 import { base64toBlob } from '../../../App/utils/utils';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import styled from 'styled-components';

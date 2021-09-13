@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Redirect, useHistory } from 'react-router';
+import { Redirect, useHistory } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';

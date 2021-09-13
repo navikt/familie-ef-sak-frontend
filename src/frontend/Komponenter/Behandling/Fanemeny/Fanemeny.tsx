@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useLocation, useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import { filtrerSiderEtterBehandlingstype, ISide, SideNavn, sider } from './sider';
 import { Normaltekst } from 'nav-frontend-typografi';

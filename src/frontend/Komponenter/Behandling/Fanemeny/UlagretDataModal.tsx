@@ -3,7 +3,7 @@ import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import { Knapp } from 'nav-frontend-knapper';
 import { ISide } from './sider';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledKnapp = styled(Knapp)`
