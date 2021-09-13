@@ -12,21 +12,12 @@ const StyledKnapp = styled(Knapp)`
 
 interface Props {
     visModal: boolean;
-    side: ISide;
     aktivSide: ISide | undefined;
     valgtSide: ISide | undefined;
     settVisModal: (visModal: boolean) => void;
-    settAktivSide: (side: ISide) => void;
 }
 
-const UlagretDataModal: FC<Props> = ({
-    visModal,
-    side,
-    aktivSide,
-    valgtSide,
-    settVisModal,
-    settAktivSide,
-}) => {
+const UlagretDataModal: FC<Props> = ({ visModal, aktivSide, valgtSide, settVisModal }) => {
     const { settAntallIRedigeringsmodus } = useBehandling();
     const history = useHistory();
 
@@ -44,8 +35,6 @@ const UlagretDataModal: FC<Props> = ({
                 key={'Forlat siden'}
                 type={'standard'}
                 onClick={() => {
-                    settAktivSide(side);
-
                     if (valgtSide && aktivSide) {
                         settAntallIRedigeringsmodus(0);
                         const valgtSidePath = history.location.pathname.replace(

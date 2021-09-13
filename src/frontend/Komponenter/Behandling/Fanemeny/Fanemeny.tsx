@@ -107,18 +107,16 @@ const Fanemeny: FC = () => {
                                     >
                                         <Normaltekst>{side.navn}</Normaltekst>
                                     </StyledNavLink>
-                                    <UlagretDataModal
-                                        visModal={visModal}
-                                        side={side}
-                                        aktivSide={aktivSide}
-                                        valgtSide={valgtSide}
-                                        settVisModal={settVisModal}
-                                        settAktivSide={settAktivSide}
-                                    />
                                 </>
                             ))}
                         </StyledFanemeny>
                     </StickyMedBoxShadow>
+                    <UlagretDataModal
+                        visModal={visModal}
+                        aktivSide={aktivSide}
+                        valgtSide={valgtSide}
+                        settVisModal={settVisModal}
+                    />
                 </>
             )}
         </DataViewer>
