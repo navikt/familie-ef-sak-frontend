@@ -18,8 +18,7 @@ const StyledKnapp = styled(Knapp)`
     margin-top: 2rem;
 `;
 
-//eslint-disable-next-line
-const ManueltBrev: React.FC = ({}) => {
+const ManueltBrev = () => {
     const førsteRad = [
         {
             id: 1,
@@ -28,6 +27,7 @@ const ManueltBrev: React.FC = ({}) => {
         },
     ];
 
+    const [overskrift, settOverskrift] = useState('');
     const [rader, settRader] = useState(førsteRad);
 
     const leggTilRad = () => {
@@ -68,12 +68,16 @@ const ManueltBrev: React.FC = ({}) => {
         });
     };
 
-    console.log('rad', rader);
-
     return (
         <StyledManueltBrev>
             <h1>Manuelt brev</h1>
-            <Input label="Overskrift" />
+            <Input
+                label="Overskrift"
+                value={overskrift}
+                onChange={(e) => {
+                    settOverskrift(e.target.value);
+                }}
+            />
 
             {rader.map((rad, i) => {
                 return (
