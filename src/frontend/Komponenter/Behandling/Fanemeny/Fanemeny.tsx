@@ -66,17 +66,18 @@ const Fanemeny: FC = () => {
     const location = useLocation();
     const path = location.pathname.split('/')[3];
 
-    const [aktivSide, settAktivSide] = useState<ISide | undefined>(hentAktivSide(path));
-    const [valgtSide, settValgtSide] = useState<ISide | undefined>(undefined);
+    const [aktivSide, settAktivSide] = useState<ISide | undefined>();
+    const [valgtSide, settValgtSide] = useState<ISide | undefined>();
     const [visModal, settVisModal] = useState(false);
 
     useEffect(() => {
         const hentetSide = hentAktivSide(path);
-        aktivSide &&
-            path !== aktivSide?.href &&
-            hentetSide !== undefined &&
+        if (!aktivSide && hentetSide) {
             settAktivSide(hentetSide);
-    }, [location.pathname, aktivSide, path]);
+        } else if (aktivSide && path !== aktivSide.href && hentetSide) {
+            settAktivSide(hentetSide);
+        }
+    }, [aktivSide, path]);
 
     return (
         <DataViewer response={{ behandling }}>
