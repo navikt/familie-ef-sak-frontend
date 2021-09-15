@@ -7,8 +7,8 @@ import { useBehandling } from '../../App/context/BehandlingContext';
 
 const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
-    VEDTAK_GODKJENT: 'Vedtaker er godkjent',
-    VEDTAK_UNDERKJENT: 'Vedtaker er undergodkjent',
+    VEDTAK_GODKJENT: 'Vedtaket er godkjent',
+    VEDTAK_UNDERKJENT: 'Vedtaket er undergodkjent',
     BEHANDLES_I_GOSYS: 'Saken er avsluttet og må behandles i Gosys',
 };
 

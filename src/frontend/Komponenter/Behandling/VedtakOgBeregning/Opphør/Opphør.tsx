@@ -79,6 +79,7 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
                         antallÅrTilbake={3}
                         antallÅrFrem={3}
                         disabled={!behandlingErRedigerbar}
+                        årMånedInitiell={opphørtFra}
                     />
                 </StyledFormElement>
                 <StyledFormElement>
