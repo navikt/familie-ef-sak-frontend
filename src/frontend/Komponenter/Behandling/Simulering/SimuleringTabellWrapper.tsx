@@ -34,7 +34,9 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
 }) => {
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
-    const [år, settÅr] = useState(Math.max(...muligeÅr));
+    const [år, settÅr] = useState(
+        muligeÅr.length ? Math.max(...muligeÅr) : new Date().getFullYear()
+    );
 
     const simuleringTabellRader = mapSimuleringstabellRader(simuleringsresultat, år);
 
