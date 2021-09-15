@@ -1,13 +1,18 @@
 import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger';
-import React, { useState } from 'react';
-import { FamilieTextarea } from '@navikt/familie-form-elements';
+import React, { FormEvent, useState } from 'react';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../../App/context/AppContext';
 import { EBehandlingResultat, IOpphørtVedtak, IVedtak } from '../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useHistory } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import styled from 'styled-components';
+import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+
+const StyledFormElement = styled.div`
+    margin-bottom: 2rem;
+`;
 
 export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }> = ({
     behandlingId,
@@ -27,7 +32,8 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
     const { axiosRequest } = useApp();
     const history = useHistory();
 
-    const lagreVedtak = () => {
+    const lagreVedtak = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (opphørtBegrunnelse && opphørtFra) {
             settLaster(true);
             axiosRequest<string, IOpphørtVedtak>({
@@ -66,23 +72,33 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
     return (
         <>
             <form onSubmit={lagreVedtak}>
-                <MånedÅrVelger
-                    label={'Opphør fra og med'}
-                    onEndret={(årMåned) => årMåned && settOpphørtFra(årMåned)}
-                    antallÅrTilbake={3}
-                    antallÅrFrem={3}
-                    disabled={!behandlingErRedigerbar}
-                />
-                <FamilieTextarea
-                    label={'Begrunnelse for opphør'}
-                    maxLength={0}
-                    erLesevisning={!behandlingErRedigerbar}
-                    value={opphørtBegrunnelse}
-                    onChange={(begrunnelse) => settOpphørtBegrunnelse(begrunnelse.target.value)}
-                />
-                <Knapp htmlType={'submit'} disabled={laster || !behandlingErRedigerbar}>
-                    Lagre vedtak
-                </Knapp>
+                <StyledFormElement>
+                    <MånedÅrVelger
+                        label={'Opphør fra og med'}
+                        onEndret={(årMåned) => årMåned && settOpphørtFra(årMåned)}
+                        antallÅrTilbake={3}
+                        antallÅrFrem={3}
+                        disabled={!behandlingErRedigerbar}
+                    />
+                </StyledFormElement>
+                <StyledFormElement>
+                    <EnsligTextArea
+                        label={'Begrunnelse for opphør'}
+                        maxLength={0}
+                        erLesevisning={!behandlingErRedigerbar}
+                        value={opphørtBegrunnelse}
+                        onChange={(begrunnelse) => settOpphørtBegrunnelse(begrunnelse.target.value)}
+                    />
+                </StyledFormElement>
+                <StyledFormElement>
+                    <Hovedknapp
+                        htmlType={'submit'}
+                        disabled={laster}
+                        hidden={!behandlingErRedigerbar}
+                    >
+                        Lagre vedtak
+                    </Hovedknapp>
+                </StyledFormElement>
             </form>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
         </>

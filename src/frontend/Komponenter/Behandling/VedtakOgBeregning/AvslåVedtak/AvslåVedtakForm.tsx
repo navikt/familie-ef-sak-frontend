@@ -1,8 +1,8 @@
-import { Textarea } from 'nav-frontend-skjema';
 import React, { FormEvent } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const StyledForm = styled.form`
     margin-top: 2rem;
@@ -18,6 +18,7 @@ interface Props {
     settAvslåBegrunnelse: (begrunnelse: string) => void;
     laster: boolean;
     feilmelding?: string;
+    behandlingErRedigerbar: boolean;
 }
 
 const AvslåVedtakForm: React.FC<Props> = ({
@@ -26,19 +27,25 @@ const AvslåVedtakForm: React.FC<Props> = ({
     settAvslåBegrunnelse,
     feilmelding,
     laster,
+    behandlingErRedigerbar,
 }) => {
     return (
         <>
             <StyledForm onSubmit={lagBlankett}>
-                <Textarea
+                <EnsligTextArea
                     value={avslåBegrunnelse}
                     onChange={(e) => {
                         settAvslåBegrunnelse(e.target.value);
                     }}
                     label="Begrunnelse"
                     maxLength={0}
+                    erLesevisning={!behandlingErRedigerbar}
                 />
-                <StyledHovedKnapp htmlType="submit" disabled={laster}>
+                <StyledHovedKnapp
+                    htmlType="submit"
+                    disabled={laster}
+                    hidden={!behandlingErRedigerbar}
+                >
                     Lagre vedtak
                 </StyledHovedKnapp>
             </StyledForm>
