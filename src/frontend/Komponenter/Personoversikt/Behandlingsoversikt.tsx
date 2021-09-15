@@ -29,10 +29,7 @@ const KnappMedMargin = styled(Knapp)`
     margin: 1rem;
 `;
 
-const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> = ({
-    fagsakId,
-    personIdent,
-}) => {
+const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
@@ -46,11 +43,10 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
         }).then((response) => settFagsak(response));
 
-    const gjørTekniskOpphør = (personIdent: string) => {
-        axiosRequest<Ressurs<void>, { ident: string }>({
+    const gjørTekniskOpphør = () => {
+        axiosRequest<Ressurs<void>, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor`,
-            data: { ident: personIdent },
+            url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
         }).then((response) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
@@ -132,7 +128,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                     </UIModalWrapper>
 
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
-                        <KnappMedMargin onClick={() => gjørTekniskOpphør(personIdent)}>
+                        <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
                             Teknisk opphør
                         </KnappMedMargin>
                     )}
