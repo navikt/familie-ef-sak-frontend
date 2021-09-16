@@ -24,6 +24,16 @@ const Knapper = styled.div`
     justify-content: space-between;
 `;
 
+const BrevKolonner = styled.div`
+    display: flex;
+`;
+
+const BrevWrapper = styled.div`
+    margin-left: 4rem;
+`;
+
+const VenstreKolonne = styled.div``;
+
 const ManueltBrev = () => {
     const førsteRad = [
         {
@@ -96,40 +106,48 @@ const ManueltBrev = () => {
     return (
         <StyledManueltBrev>
             <h1>Manuelt brev</h1>
-            <Input
-                label="Overskrift"
-                value={overskrift}
-                onChange={(e) => {
-                    settOverskrift(e.target.value);
-                }}
-            />
+            <BrevKolonner>
+                <VenstreKolonne>
+                    <Input
+                        label="Overskrift"
+                        value={overskrift}
+                        onChange={(e) => {
+                            settOverskrift(e.target.value);
+                        }}
+                    />
 
-            {avsnitt.map((rad, i) => {
-                return (
-                    <Innholdsrad border>
-                        <Input
-                            onChange={endreDeloverskrift}
-                            label="Deloverskrift (valgfri)"
-                            id={i.toString()}
-                            value={rad.deloverskrift}
-                        />
-                        <Textarea
-                            onChange={endreInnhold}
-                            defaultValue=""
-                            label="Innhold"
-                            id={i.toString()}
-                            value={rad.innhold}
-                        />
-                    </Innholdsrad>
-                );
-            })}
+                    {avsnitt.map((rad, i) => {
+                        return (
+                            <Innholdsrad border>
+                                <Input
+                                    onChange={endreDeloverskrift}
+                                    label="Deloverskrift (valgfri)"
+                                    id={i.toString()}
+                                    value={rad.deloverskrift}
+                                />
+                                <Textarea
+                                    onChange={endreInnhold}
+                                    defaultValue=""
+                                    label="Innhold"
+                                    id={i.toString()}
+                                    value={rad.innhold}
+                                />
+                            </Innholdsrad>
+                        );
+                    })}
 
-            <Knapper>
-                <Knapp onClick={leggTilRad}>Legg til rad</Knapp>
-                <Hovedknapp onClick={genererBrev}>Generer brev</Hovedknapp>
-            </Knapper>
+                    <Knapper>
+                        <Knapp onClick={leggTilRad}>Legg til rad</Knapp>
+                        <Hovedknapp onClick={genererBrev}>Generer brev</Hovedknapp>
+                    </Knapper>
+                </VenstreKolonne>
 
-            {brev && <PdfVisning pdfFilInnhold={brev} />}
+                {brev && (
+                    <BrevWrapper>
+                        <PdfVisning pdfFilInnhold={brev} />
+                    </BrevWrapper>
+                )}
+            </BrevKolonner>
         </StyledManueltBrev>
     );
 };
