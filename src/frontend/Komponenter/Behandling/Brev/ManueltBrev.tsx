@@ -43,10 +43,12 @@ const ManueltBrev = () => {
             return { deloverskrift: rad.deloverskrift, innhold: rad.innhold };
         });
 
+        const signatur = 'Navn navnesen';
+
         axiosRequest<any, { overskrift: string; avsnitt: any }>({
             method: 'POST',
-            url: `/familie-brev/api/json2pdf`,
-            data: { overskrift, avsnitt: avsnittUtenId },
+            url: `/familie-ef-sak/api/manueltbrev`,
+            data: { overskrift, avsnitt: avsnittUtenId, saksbehandlersignatur: signatur },
         }).then((respons: Ressurs<string>) => {
             console.log('respons', respons);
             settBrev(respons);
