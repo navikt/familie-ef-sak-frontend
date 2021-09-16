@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { Input } from 'nav-frontend-skjema';
 import Panel from 'nav-frontend-paneler';
 import { Textarea } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
+import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
+import { useApp } from '../../../App/context/AppContext';
+import PdfVisning from '../../../Felles/Pdf/PdfVisning';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 
 const StyledManueltBrev = styled.div`
     width: 50%;
@@ -14,8 +17,11 @@ const Innholdsrad = styled(Panel)`
     margin-top: 1rem;
 `;
 
-const StyledKnapp = styled(Knapp)`
+const Knapper = styled.div`
     margin-top: 2rem;
+
+    display: flex;
+    justify-content: space-between;
 `;
 
 const ManueltBrev = () => {
@@ -28,10 +34,27 @@ const ManueltBrev = () => {
     ];
 
     const [overskrift, settOverskrift] = useState('');
-    const [rader, settRader] = useState(førsteRad);
+    const [avsnitt, settAvsnitt] = useState(førsteRad);
+    const [brev, settBrev] = useState<Ressurs<string>>(byggTomRessurs());
+    const { axiosRequest } = useApp();
+
+    const genererBrev = () => {
+        const avsnittUtenId = avsnitt.map((rad) => {
+            return { deloverskrift: rad.deloverskrift, innhold: rad.innhold };
+        });
+
+        axiosRequest<any, { overskrift: string; avsnitt: any }>({
+            method: 'POST',
+            url: `/familie-brev/api/json2pdf`,
+            data: { overskrift, avsnitt: avsnittUtenId },
+        }).then((respons: Ressurs<string>) => {
+            console.log('respons', respons);
+            settBrev(respons);
+        });
+    };
 
     const leggTilRad = () => {
-        settRader((s: any) => {
+        settAvsnitt((s: any) => {
             return [
                 ...s,
                 {
@@ -47,7 +70,7 @@ const ManueltBrev = () => {
 
         const index = e.target.id;
 
-        settRader((s) => {
+        settAvsnitt((s) => {
             const newArr = s.slice();
             newArr[index].deloverskrift = e.target.value;
 
@@ -60,7 +83,7 @@ const ManueltBrev = () => {
 
         const index = e.target.id;
 
-        settRader((s) => {
+        settAvsnitt((s) => {
             const newArr = s.slice();
             newArr[index].innhold = e.target.value;
 
@@ -79,7 +102,7 @@ const ManueltBrev = () => {
                 }}
             />
 
-            {rader.map((rad, i) => {
+            {avsnitt.map((rad, i) => {
                 return (
                     <Innholdsrad border>
                         <Input
@@ -99,7 +122,12 @@ const ManueltBrev = () => {
                 );
             })}
 
-            <StyledKnapp onClick={leggTilRad}>Legg til rad</StyledKnapp>
+            <Knapper>
+                <Knapp onClick={leggTilRad}>Legg til rad</Knapp>
+                <Hovedknapp onClick={genererBrev}>Generer brev</Hovedknapp>
+            </Knapper>
+
+            {brev && <PdfVisning pdfFilInnhold={brev} />}
         </StyledManueltBrev>
     );
 };
