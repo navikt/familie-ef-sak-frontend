@@ -42,12 +42,7 @@ const Personoversikt: React.FC = () => {
                     {tabvalg === 0 && (
                         <Personopplysninger personopplysninger={personopplysninger} />
                     )}
-                    {tabvalg === 1 && (
-                        <Behandlingsoversikt
-                            fagsakId={fagsakId}
-                            personIdent={personopplysninger.personIdent}
-                        />
-                    )}
+                    {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
                     {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
                 </Side>
             )}
