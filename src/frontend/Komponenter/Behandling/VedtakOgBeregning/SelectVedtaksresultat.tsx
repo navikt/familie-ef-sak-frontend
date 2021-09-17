@@ -36,6 +36,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 <option value="">Velg</option>
                 <option value={EBehandlingResultat.INNVILGE}>Innvilge</option>
                 <option value={EBehandlingResultat.AVSLÅ}>Avslå</option>
+                <option value={EBehandlingResultat.OPPHØRT}>Opphørt</option>
                 <option value={EBehandlingResultat.HENLEGGE} disabled>
                     Henlegge
                 </option>
