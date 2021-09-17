@@ -144,7 +144,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                         </AlertStripeFeil>
                     )}
 
-                    <ManueltBrev />
+                    <ManueltBrev fagsakId={fagsakId} />
                 </>
             )}
         </DataViewer>

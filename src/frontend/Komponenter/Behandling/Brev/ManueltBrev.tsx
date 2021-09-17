@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Input } from 'nav-frontend-skjema';
+import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import Panel from 'nav-frontend-paneler';
 import { Textarea } from 'nav-frontend-skjema';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { dagensDatoFormatert } from '../../../App/utils/formatter';
+import { AxiosRequestConfig } from 'axios';
+import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import { hentInnloggetBruker } from '../../../App/api/saksbehandler';
+import { ISaksbehandler } from '../../../App/typer/saksbehandler';
 
 const StyledManueltBrev = styled.div`
     width: 50%;
@@ -35,7 +40,11 @@ const BrevWrapper = styled.div`
 
 const VenstreKolonne = styled.div``;
 
-const ManueltBrev = () => {
+interface Props {
+    fagsakId: string;
+}
+
+const ManueltBrev = ({ fagsakId }: Props) => {
     const førsteRad = [
         {
             id: 1,
@@ -47,30 +56,49 @@ const ManueltBrev = () => {
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState(førsteRad);
     const [brev, settBrev] = useState<Ressurs<string>>(byggTomRessurs());
-    const { axiosRequest } = useApp();
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
+
+    const personopplysningerConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
+        }),
+        [fagsakId]
+    );
+
+    const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
 
     const genererBrev = () => {
+        if (personopplysninger.status !== RessursStatus.SUKSESS) return;
+
         const avsnittUtenId = avsnitt.map((rad) => {
             return { deloverskrift: rad.deloverskrift, innhold: rad.innhold };
         });
 
-        const signatur = 'Navn navnesen';
         const brevdato = dagensDatoFormatert();
 
         axiosRequest<
             any,
-            { overskrift: string; avsnitt: any; saksbehandlersignatur: string; brevdato: string }
+            {
+                overskrift: string;
+                avsnitt: any;
+                saksbehandlersignatur: string;
+                brevdato: string;
+                ident: string;
+                navn: string;
+            }
         >({
             method: 'POST',
             url: `/familie-ef-sak/api/manueltbrev`,
             data: {
                 overskrift,
                 avsnitt: avsnittUtenId,
-                saksbehandlersignatur: signatur,
+                saksbehandlersignatur: innloggetSaksbehandler?.displayName || 'Ukjent',
                 brevdato: brevdato,
+                ident: personopplysninger.data.personIdent,
+                navn: personopplysninger.data.navn.visningsnavn,
             },
         }).then((respons: Ressurs<string>) => {
-            console.log('respons', respons);
             settBrev(respons);
         });
     };
