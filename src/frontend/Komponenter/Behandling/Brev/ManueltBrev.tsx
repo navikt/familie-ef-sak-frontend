@@ -11,8 +11,6 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressu
 import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { hentInnloggetBruker } from '../../../App/api/saksbehandler';
-import { ISaksbehandler } from '../../../App/typer/saksbehandler';
 
 const StyledManueltBrev = styled.div`
     width: 50%;
@@ -175,7 +173,7 @@ const ManueltBrev = ({ fagsakId }: Props) => {
                     })}
 
                     <Knapper>
-                        <Knapp onClick={leggTilRad}>Legg til rad</Knapp>
+                        <Knapp onClick={leggTilRad}>Legg til nytt avsnitt </Knapp>
                         <Hovedknapp onClick={genererBrev}>Generer brev</Hovedknapp>
                     </Knapper>
                 </VenstreKolonne>
