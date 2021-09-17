@@ -16,6 +16,7 @@ import { useApp } from '../../App/context/AppContext';
 import { IFagsaksøk } from '../../App/typer/fagsaksøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
+import Alertstripe from 'nav-frontend-alertstriper';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -47,9 +48,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
     const { axiosRequest } = useApp();
     const [fagsakId, settFagsakId] = useState('');
+    const [feilFagsakHenting, settFeilFagsakHenting] = useState(false);
 
     useEffect(() => {
         const hentFagsak = (personIdent: string): void => {
+            settFeilFagsakHenting(false);
             if (!personIdent) return;
 
             axiosRequest<IFagsaksøk, IPersonIdent>({
@@ -60,11 +63,10 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 if (response.status === RessursStatus.SUKSESS) {
                     if (response.data?.fagsaker?.length) {
                         settFagsakId(response.data.fagsaker[0].fagsakId);
-                    } else {
-                        console.log('Fant ingen fagsak.');
                     }
                 } else {
-                    console.log('Feil.');
+                    console.log('Kunne ikke hente fagsak.');
+                    settFeilFagsakHenting(true);
                 }
             });
         };
@@ -76,6 +78,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
     return (
         <VisittkortWrapper>
+            {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
             <Visittkort
                 alder={20}
                 ident={personIdent}
