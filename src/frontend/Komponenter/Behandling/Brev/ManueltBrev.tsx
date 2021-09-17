@@ -6,7 +6,8 @@ import { Textarea } from 'nav-frontend-skjema';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
+import { dagensDatoFormatert } from '../../../App/utils/formatter';
 
 const StyledManueltBrev = styled.div`
     width: 50%;
@@ -54,11 +55,20 @@ const ManueltBrev = () => {
         });
 
         const signatur = 'Navn navnesen';
+        const brevdato = dagensDatoFormatert();
 
-        axiosRequest<any, { overskrift: string; avsnitt: any }>({
+        axiosRequest<
+            any,
+            { overskrift: string; avsnitt: any; saksbehandlersignatur: string; brevdato: string }
+        >({
             method: 'POST',
             url: `/familie-ef-sak/api/manueltbrev`,
-            data: { overskrift, avsnitt: avsnittUtenId, saksbehandlersignatur: signatur },
+            data: {
+                overskrift,
+                avsnitt: avsnittUtenId,
+                saksbehandlersignatur: signatur,
+                brevdato: brevdato,
+            },
         }).then((respons: Ressurs<string>) => {
             console.log('respons', respons);
             settBrev(respons);
