@@ -1,4 +1,4 @@
-import { Select, Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
+import { Checkbox, CheckboxGruppe, Select } from 'nav-frontend-skjema';
 import {
     BrevStruktur,
     Delmal,
@@ -13,7 +13,7 @@ import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
 
 const StyledValgfeltSelect = styled.div`
-    padding-bottom: 2.5rem;
+    padding-bottom: 0.5rem;
 `;
 
 interface Props {
@@ -69,14 +69,15 @@ export const ValgfeltSelect: React.FC<Props> = ({
             {valgFelt.valgMuligheter.length > 1 ? (
                 <Select
                     label={valgFelt.valgfeltVisningsnavn}
+                    defaultValue={valgteFelt[valgFelt.valgFeltApiNavn]?.valgmulighet}
                     onChange={(e) =>
                         doSettValgteFelt(valgFelt.valgFeltApiNavn, e.target.value, delmal)
                     }
                 >
                     <option value="">Ikke valgt</option>
-                    {valgFelt.valgMuligheter.map((valMulighet: Valgmulighet) => (
-                        <option value={valMulighet.valgmulighet} key={valMulighet.valgmulighet}>
-                            {valMulighet.visningsnavnValgmulighet}
+                    {valgFelt.valgMuligheter.map((valgMulighet: Valgmulighet) => (
+                        <option value={valgMulighet.valgmulighet} key={valgMulighet.valgmulighet}>
+                            {valgMulighet.visningsnavnValgmulighet}
                         </option>
                     ))}
                 </Select>
@@ -100,20 +101,30 @@ export const ValgfeltSelect: React.FC<Props> = ({
             )}
             {Object.entries(valgteFelt)
                 .filter(([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn)
-                .map(([_, valg]) =>
-                    valg.flettefelter.map((felter) =>
-                        felter.flettefelt.map((flettefelt) => (
-                            <Flettefelt
-                                fetLabel={false}
-                                flettefelt={flettefelt}
-                                dokument={dokument}
-                                flettefelter={flettefelter}
-                                handleFlettefeltInput={handleFlettefeltInput}
-                                key={flettefelt._ref}
-                            />
-                        ))
-                    )
-                )}
+                .map(([_, valg]) => {
+                    const refs: string[] = [];
+
+                    return valg.flettefelter.map((felter) =>
+                        felter.flettefelt.map((flettefelt) => {
+                            if (!refs.includes(flettefelt._ref)) {
+                                refs.push(flettefelt._ref);
+
+                                return (
+                                    <Flettefelt
+                                        fetLabel={false}
+                                        flettefelt={flettefelt}
+                                        dokument={dokument}
+                                        flettefelter={flettefelter}
+                                        handleFlettefeltInput={handleFlettefeltInput}
+                                        key={flettefelt._ref}
+                                    />
+                                );
+                            } else {
+                                return null;
+                            }
+                        })
+                    );
+                })}
         </StyledValgfeltSelect>
     );
 };

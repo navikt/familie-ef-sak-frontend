@@ -1,6 +1,6 @@
 import constate from 'constate';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../typer/routing';
 import { useRerunnableEffect } from '../hooks/felles/useRerunnableEffect';
 import { useHentPersonopplysninger } from '../hooks/useHentPersonopplysninger';
@@ -23,6 +23,10 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         useHentBehandlingHistorikk(behandlingId);
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
         useHentTotrinnskontroll(behandlingId);
+
+    const [antallIRedigeringsmodus, settAntallIRedigeringsmodus] = useState<number>(0);
+    const [ulagretData, settUlagretData] = useState<boolean>(antallIRedigeringsmodus !== 0);
+    useEffect(() => settUlagretData(antallIRedigeringsmodus > 0), [antallIRedigeringsmodus]);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
@@ -58,6 +62,9 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentTotrinnskontroll,
         hentBehandlingshistorikk,
         regler,
+        antallIRedigeringsmodus,
+        settAntallIRedigeringsmodus,
+        ulagretData,
     };
 });
 

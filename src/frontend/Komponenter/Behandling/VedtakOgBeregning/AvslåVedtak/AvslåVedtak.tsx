@@ -6,8 +6,6 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVedtak }> = ({
     behandling,
@@ -23,7 +21,7 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
-    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar, settAntallIRedigeringsmodus } = useBehandling();
     const { axiosRequest } = useApp();
 
     const vedtakRequest: IAvslåVedtak = {
@@ -37,6 +35,7 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
                 case RessursStatus.SUKSESS:
                     history.push(nesteUrl);
                     hentBehandling.rerun();
+                    settAntallIRedigeringsmodus(0);
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:
@@ -61,18 +60,14 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
             });
     };
 
-    return behandlingErRedigerbar ? (
+    return (
         <AvslåVedtakForm
             avslåBegrunnelse={avslåBegrunnelse}
             settAvslåBegrunnelse={settAvslåBegrunnelse}
             laster={laster ?? false}
             lagBlankett={lagBlankett}
             feilmelding={feilmelding}
+            behandlingErRedigerbar={behandlingErRedigerbar}
         />
-    ) : (
-        <FlexDiv>
-            <Element style={{ marginRight: '0.25rem' }}>Begrunnelse for avslag:</Element>
-            <Normaltekst children={avslåBegrunnelse} />
-        </FlexDiv>
     );
 };

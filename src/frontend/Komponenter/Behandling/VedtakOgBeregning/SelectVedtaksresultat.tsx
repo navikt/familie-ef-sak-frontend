@@ -19,7 +19,7 @@ const StyledSelect = styled(FamilieSelect)`
 `;
 
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, settAntallIRedigeringsmodus } = useBehandling();
     const { resultatType, settResultatType } = props;
     return (
         <section className="blokk-xl">
@@ -27,12 +27,16 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
             <StyledSelect
                 value={resultatType}
                 erLesevisning={!behandlingErRedigerbar}
-                onChange={(e) => settResultatType(e.target.value as EBehandlingResultat)}
+                onChange={(e) => {
+                    settResultatType(e.target.value as EBehandlingResultat);
+                    settAntallIRedigeringsmodus(1);
+                }}
                 lesevisningVerdi={resultatType && behandlingResultatTilTekst[resultatType]}
             >
                 <option value="">Velg</option>
                 <option value={EBehandlingResultat.INNVILGE}>Innvilge</option>
                 <option value={EBehandlingResultat.AVSLÅ}>Avslå</option>
+                <option value={EBehandlingResultat.OPPHØRT}>Opphørt</option>
                 <option value={EBehandlingResultat.HENLEGGE} disabled>
                     Henlegge
                 </option>

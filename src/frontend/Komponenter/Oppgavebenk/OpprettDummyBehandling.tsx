@@ -4,7 +4,7 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs'
 import { FnrInput, Select } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../App/context/AppContext';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const StyledFnrInput = styled(FnrInput)`

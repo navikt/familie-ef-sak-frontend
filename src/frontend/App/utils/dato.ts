@@ -43,3 +43,7 @@ export const erEtter = (first: string | Date, second: string | Date): boolean =>
     const d2: Date = typeof second === 'string' ? parseISO(second) : second;
     return isAfter(d2, d1);
 };
+
+export const gjelderÅr = (dato: string, år: number): boolean => {
+    return parseISO(dato).getFullYear() === år;
+};

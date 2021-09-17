@@ -45,6 +45,9 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
     const [pageNumber, setPageNumber] = useState(1);
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+        if (pageNumber > numPages) {
+            setPageNumber(numPages);
+        }
         setNumPages(numPages);
     }
 

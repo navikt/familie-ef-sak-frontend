@@ -15,7 +15,7 @@ const lesMockFil = (filnavn) => {
     }
 };
 
-app.get('/familie-ef-sak/api/fagsak/1', (req, res) => {
+app.get('/familie-ef-sak/api/fagsak/:id', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`fagsak-1.json`)), delayMs);
 });
 
@@ -39,6 +39,11 @@ app.get('/familie-ef-sak/api/personopplysninger/fagsak/:id', (req, res) => {
 
 app.get('/familie-ef-sak/api/personopplysninger/behandling/:id', (req, res) => {
     const filnavn = `personopplysninger.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
+
+app.get('/familie-ef-sak/api/perioder/fagsak/:id/historikk', (req, res) => {
+    const filnavn = `vedtaksperioder-historikk.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
@@ -190,8 +195,16 @@ app.get('/familie-ef-sak/api/personopplysninger/nav-kontor/behandling/:id', (req
     setTimeout(() => res.send(lesMockFil(`nav-kontor.json`)), delayMs);
 });
 
+app.post('/familie-ef-sak/api/personopplysninger/nav-kontor', (req, res) => {
+    setTimeout(() => res.send(lesMockFil(`nav-kontor.json`)), delayMs);
+});
+
 app.get('/familie-brev/api/ef-brev/avansert-dokument/bokmaal/:mal/felter', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`innvilgetOvergangsstønadBrevMal.json`)), delayMs);
+});
+
+app.get('/familie-ef-sak/api/simulering/:behandlingId', (req, res) => {
+    setTimeout(() => res.send(lesMockFil('simulering.json')), delayMs);
 });
 
 module.exports = app;

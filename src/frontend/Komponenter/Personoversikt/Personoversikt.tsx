@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -42,12 +42,7 @@ const Personoversikt: React.FC = () => {
                     {tabvalg === 0 && (
                         <Personopplysninger personopplysninger={personopplysninger} />
                     )}
-                    {tabvalg === 1 && (
-                        <Behandlingsoversikt
-                            fagsakId={fagsakId}
-                            personIdent={personopplysninger.personIdent}
-                        />
-                    )}
+                    {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
                     {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
                 </Side>
             )}

@@ -1,4 +1,5 @@
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
+export type ValgteDelmaler = { [delmalNavn: string]: boolean };
 
 export interface BrevStruktur {
     dokument: DokumentMal;
@@ -46,7 +47,7 @@ export interface Delmal {
     delmalNavn: string;
     delmalValgfelt: ValgFelt[];
     delmalFlettefelter: Flettefelter[]; // referanse til flettefelt
-    mappe: string;
+    gruppeVisningsnavn: string;
 }
 
 export interface DokumentNavn {

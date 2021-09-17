@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
-import { filtrerSiderEtterBehandlingstype, sider } from './sider';
+import { filtrerSiderEtterBehandlingstype, ISide, SideNavn, sider } from './sider';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { NavLink } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
 import navFarger from 'nav-frontend-core';
+
+import UlagretDataModal from './UlagretDataModal';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -50,26 +52,73 @@ const StyledNavLink = styled(NavLink)`
         }
     }
 `;
+
+const erPåInngangsvilkårAktivitetEllerVedtakFane = (side: ISide) =>
+    side.navn === SideNavn.INNGANGSVILKÅR ||
+    side.navn === SideNavn.AKTIVITET ||
+    side.navn === SideNavn.VEDTAK_OG_BEREGNING;
+
+const hentAktivSide = (path: string) => sider.find((side) => side.href === path);
+
 const Fanemeny: FC = () => {
     const { behandlingId } = useParams<IBehandlingParams>();
-    const { behandling } = useBehandling();
+    const { behandling, ulagretData } = useBehandling();
+    const location = useLocation();
+    const path = location.pathname.split('/')[3];
+
+    const [aktivSide, settAktivSide] = useState<ISide | undefined>();
+    const [valgtSide, settValgtSide] = useState<ISide | undefined>();
+    const [visModal, settVisModal] = useState(false);
+
+    useEffect(() => {
+        const hentetSide = hentAktivSide(path);
+        if (!aktivSide && hentetSide) {
+            settAktivSide(hentetSide);
+        } else if (aktivSide && path !== aktivSide.href && hentetSide) {
+            settAktivSide(hentetSide);
+        }
+    }, [aktivSide, path]);
 
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => (
-                <StickyMedBoxShadow>
-                    <StyledFanemeny>
-                        {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
-                            <StyledNavLink
-                                key={side.navn}
-                                to={`/behandling/${behandlingId}/${side.href}`}
-                                activeClassName="aktiv"
-                            >
-                                <Normaltekst>{side.navn}</Normaltekst>
-                            </StyledNavLink>
-                        ))}
-                    </StyledFanemeny>
-                </StickyMedBoxShadow>
+                <>
+                    <StickyMedBoxShadow>
+                        <StyledFanemeny>
+                            {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
+                                <>
+                                    <StyledNavLink
+                                        key={side.navn}
+                                        to={`/behandling/${behandlingId}/${side.href}`}
+                                        activeClassName="aktiv"
+                                        onClick={(e) => {
+                                            if (
+                                                ulagretData &&
+                                                aktivSide &&
+                                                aktivSide.navn !== side.navn &&
+                                                erPåInngangsvilkårAktivitetEllerVedtakFane(
+                                                    aktivSide
+                                                )
+                                            ) {
+                                                e.preventDefault();
+                                                settValgtSide(side);
+                                                settVisModal(true);
+                                            }
+                                        }}
+                                    >
+                                        <Normaltekst>{side.navn}</Normaltekst>
+                                    </StyledNavLink>
+                                </>
+                            ))}
+                        </StyledFanemeny>
+                    </StickyMedBoxShadow>
+                    <UlagretDataModal
+                        visModal={visModal}
+                        aktivSide={aktivSide}
+                        valgtSide={valgtSide}
+                        settVisModal={settVisModal}
+                    />
+                </>
             )}
         </DataViewer>
     );

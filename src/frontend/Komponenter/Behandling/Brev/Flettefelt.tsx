@@ -4,10 +4,10 @@ import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 import styled from 'styled-components';
 
-const StyledInput = styled(Input)<{ fetLabel: boolean }>`
+const StyledInput = styled(({ fetLabel, ...props }) => <Input {...props} />)`
     padding-top: 0.5rem;
     .skjemaelement__label {
-        font-weight: ${(props) => (props.fetLabel ? 600 : 300)};
+        font-weight: ${(fetLabel) => (fetLabel ? 600 : 300)};
     }
 `;
 

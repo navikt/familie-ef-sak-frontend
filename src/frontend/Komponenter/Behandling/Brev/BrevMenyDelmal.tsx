@@ -15,12 +15,16 @@ import styled from 'styled-components';
 const DelmalValg = styled.div`
     display: flex;
     flex-direction: row;
-
     justify-content: flex-start;
 `;
 
 const StyledEkspanderbartpanelBase = styled(EkspanderbartpanelBase)`
     flex: 100%;
+    .ingressTittel {
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 600;
+    }
 `;
 
 interface Props {
@@ -32,6 +36,7 @@ interface Props {
     flettefelter: FlettefeltMedVerdi[];
     settValgteDelmaler: Dispatch<SetStateAction<Record<string, boolean>>>;
     settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
+    valgt: boolean;
 }
 
 export const BrevMenyDelmal: React.FC<Props> = ({
@@ -43,10 +48,11 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     flettefelter,
     settValgteDelmaler,
     settKanSendeTilBeslutter,
+    valgt,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
-    const [checkboxValgt, settCheckboxValgt] = useState<boolean>(false);
+    const [checkboxValgt, settCheckboxValgt] = useState<boolean>(valgt);
 
     const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
         settFlettefelter((prevState) =>
@@ -79,6 +85,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                 onClick={() => {
                     settEkspanderbartPanelÅpen(!ekspanderbartPanelÅpen);
                 }}
+                className={'ingressTittel'}
             >
                 {delmalValgfelt &&
                     delmalValgfelt.map((valgFelt, index) => (
@@ -97,16 +104,21 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     ))}
 
                 {delmalFlettefelter.flatMap((f) =>
-                    f.flettefelt.map((flettefelt) => (
-                        <Flettefelt
-                            fetLabel={true}
-                            flettefelt={flettefelt}
-                            dokument={dokument}
-                            flettefelter={flettefelter}
-                            handleFlettefeltInput={handleFlettefeltInput}
-                            key={flettefelt._ref}
-                        />
-                    ))
+                    f.flettefelt
+                        .filter(
+                            (felt, index, self) =>
+                                index === self.findIndex((t) => t._ref === felt._ref)
+                        )
+                        .map((flettefelt) => (
+                            <Flettefelt
+                                fetLabel={true}
+                                flettefelt={flettefelt}
+                                dokument={dokument}
+                                flettefelter={flettefelter}
+                                handleFlettefeltInput={handleFlettefeltInput}
+                                key={flettefelt._ref}
+                            />
+                        ))
                 )}
             </StyledEkspanderbartpanelBase>
         </DelmalValg>

@@ -23,22 +23,12 @@ import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { ListState } from '../../../../App/hooks/felles/useListState';
 import { Undertittel } from 'nav-frontend-typografi';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
-import styled from 'styled-components';
-import { FamilieTextarea } from '@navikt/familie-form-elements';
 import Utregningstabell from './Utregningstabell';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
 import { validerVedtaksperioder } from '../vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 
-const StyledFamilieTextarea = styled(FamilieTextarea)`
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 60rem;
-    margin-bottom: 2rem;
-    .typo-element {
-        padding-bottom: 0.5rem;
-    }
-`;
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtak, 'resultatType'>;
@@ -51,7 +41,7 @@ export const InnvilgeVedtak: React.FC<{
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtak)
             : undefined;
-    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar, settAntallIRedigeringsmodus } = useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
     const [laster, settLaster] = useState<boolean>(false);
@@ -136,6 +126,7 @@ export const InnvilgeVedtak: React.FC<{
                 case RessursStatus.SUKSESS:
                     history.push(nesteUrl);
                     hentBehandling.rerun();
+                    settAntallIRedigeringsmodus(0);
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:
@@ -166,7 +157,7 @@ export const InnvilgeVedtak: React.FC<{
             url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/brev`))
+            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
             .finally(() => {
                 settLaster(false);
             });
@@ -186,10 +177,9 @@ export const InnvilgeVedtak: React.FC<{
                 lagBlankett(vedtaksRequest);
                 break;
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
+            case Behandlingstype.REVURDERING:
                 lagreVedtak(vedtaksRequest);
                 break;
-            case Behandlingstype.REVURDERING:
-                throw Error('Støtter ikke behandlingstype revurdering ennå...');
         }
     };
 
@@ -205,7 +195,7 @@ export const InnvilgeVedtak: React.FC<{
                 {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
                     <IngenBegrunnelseOppgitt />
                 ) : (
-                    <StyledFamilieTextarea
+                    <EnsligTextArea
                         value={periodeBegrunnelse.value}
                         onChange={periodeBegrunnelse.onChange}
                         label="Begrunnelse"
@@ -232,7 +222,7 @@ export const InnvilgeVedtak: React.FC<{
                 {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
                     <IngenBegrunnelseOppgitt />
                 ) : (
-                    <StyledFamilieTextarea
+                    <EnsligTextArea
                         value={inntektBegrunnelse.value}
                         onChange={inntektBegrunnelse.onChange}
                         label="Begrunnelse"

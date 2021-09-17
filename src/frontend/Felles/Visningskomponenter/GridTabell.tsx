@@ -14,7 +14,8 @@ export const GridTabell = styled.div<{
         );
     grid-auto-rows: min-content;
     grid-gap: ${(props) => props.gridGap || 0.5}rem;
-    margin-bottom: ${(props) => props.underTabellMargin || 3}rem;
+    margin-bottom: ${(props) =>
+        props.underTabellMargin === 0 ? 0 : props.underTabellMargin || 3}rem;
 
     > .typo-normal {
         padding-right: 2.5rem;
