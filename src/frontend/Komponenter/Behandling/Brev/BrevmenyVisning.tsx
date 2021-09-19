@@ -66,26 +66,25 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreBrev } = useMellomlagringBrev(behandlingId, brevMal);
-    const parsetMellomlagretBrev =
-        mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
-
-    const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
-        parsetMellomlagretBrev || {};
-
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
 
     useEffect(() => {
+        const parsetMellomlagretBrev =
+            mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
+
+        const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
+            parsetMellomlagretBrev || {};
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
         );
-    }, [brevStruktur, flettefeltStore, flettefeltFraMellomlager]);
+        settValgteFelt(initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur));
+        if (valgteDelmalerFraMellomlager) {
+            settValgteDelmaler(valgteDelmalerFraMellomlager);
+        }
+    }, [brevStruktur, flettefeltStore, mellomlagretBrev]);
 
-    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(
-        initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur)
-    );
-    const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>(
-        valgteDelmalerFraMellomlager || {}
-    );
+    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
+    const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
@@ -196,7 +195,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                     key={`${delmal.delmalApiNavn}_wrapper`}
                                 >
                                     <BrevMenyDelmal
-                                        valgt={valgteDelmaler[delmal.delmalApiNavn]}
+                                        valgt={!!valgteDelmaler[delmal.delmalApiNavn]}
                                         delmal={delmal}
                                         dokument={brevStruktur}
                                         valgteFelt={valgteFelt}

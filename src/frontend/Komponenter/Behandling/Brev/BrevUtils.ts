@@ -51,11 +51,11 @@ export const initFlettefelterMedVerdi = (
     flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined,
     flettefeltStore: { [flettefeltNavn: string]: string }
 ): FlettefeltMedVerdi[] =>
-    brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
-        _ref: felt._id,
+    brevStruktur.flettefelter.flettefeltReferanse.map((flettefeltReferanse) => ({
+        _ref: flettefeltReferanse._id,
         verdi:
-            hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, felt._id) ||
-            flettefeltStore[felt.felt],
+            hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, flettefeltReferanse._id) ||
+            flettefeltStore[flettefeltReferanse.felt],
     }));
 
 export const initValgteFeltMedMellomlager = (
