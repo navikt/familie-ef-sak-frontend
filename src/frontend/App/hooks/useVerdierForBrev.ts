@@ -8,13 +8,16 @@ enum EBehandlingFlettefelt {
     tomdatoInnvilgelse = 'tomdatoInnvilgelse',
 }
 
-export const useBrevData = (
+export const useVerdierForBrev = (
     tilkjentYtelse: Ressurs<TilkjentYtelse>
 ): { flettefeltStore: { [navn: string]: string } } => {
     const [flettefeltStore, settFlettefeltStore] = useState<{ [navn: string]: string }>({});
 
     useEffect(() => {
-        if (tilkjentYtelse.status === RessursStatus.SUKSESS) {
+        if (
+            tilkjentYtelse.status === RessursStatus.SUKSESS &&
+            tilkjentYtelse.data.andeler.length > 0
+        ) {
             const { andeler } = tilkjentYtelse.data;
             settFlettefeltStore((prevState) => ({
                 ...prevState,
