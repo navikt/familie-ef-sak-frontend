@@ -70,8 +70,9 @@ export const useMellomlagringBrev = (
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 Promise.resolve();
+            } else {
+                Promise.reject();
             }
-            Promise.reject();
         });
     };
 
