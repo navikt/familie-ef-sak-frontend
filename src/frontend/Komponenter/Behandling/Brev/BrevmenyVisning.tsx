@@ -50,6 +50,7 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     tilkjentYtelse?: TilkjentYtelse;
     mellomlagretBrev?: string;
     brevMal: string;
+    flettefeltStore: { [navn: string]: string };
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -61,24 +62,29 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     tilkjentYtelse,
     mellomlagretBrev,
     brevMal,
+    flettefeltStore,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreBrev } = useMellomlagringBrev(behandlingId, brevMal);
-    const parsetMellomlagretBrev =
-        mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
+    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
 
-    const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
-        parsetMellomlagretBrev || {};
+    useEffect(() => {
+        const parsetMellomlagretBrev =
+            mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
 
-    const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>(
-        initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager)
-    );
-    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>(
-        initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur)
-    );
-    const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>(
-        valgteDelmalerFraMellomlager || {}
-    );
+        const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
+            parsetMellomlagretBrev || {};
+        settAlleFlettefelter(
+            initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
+        );
+        settValgteFelt(initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur));
+        if (valgteDelmalerFraMellomlager) {
+            settValgteDelmaler(valgteDelmalerFraMellomlager);
+        }
+    }, [brevStruktur, flettefeltStore, mellomlagretBrev]);
+
+    const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
+    const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
@@ -189,7 +195,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                     key={`${delmal.delmalApiNavn}_wrapper`}
                                 >
                                     <BrevMenyDelmal
-                                        valgt={valgteDelmaler[delmal.delmalApiNavn]}
+                                        valgt={!!valgteDelmaler[delmal.delmalApiNavn]}
                                         delmal={delmal}
                                         dokument={brevStruktur}
                                         valgteFelt={valgteFelt}

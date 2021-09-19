@@ -9,6 +9,7 @@ import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
+import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -34,11 +35,12 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
     );
-    const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
+    const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse>>(
         byggTomRessurs()
     );
 
     const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId, brevMal);
+    const { flettefeltStore } = useVerdierForBrev(tilkjentYtelse);
 
     useEffect(() => {
         if (brevMal) {
@@ -100,6 +102,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                         tilkjentYtelse={tilkjentYtelse}
                         brevMal={brevMal}
                         mellomlagretBrev={mellomlagretBrev}
+                        flettefeltStore={flettefeltStore}
                     />
                 )}
             </DataViewer>
