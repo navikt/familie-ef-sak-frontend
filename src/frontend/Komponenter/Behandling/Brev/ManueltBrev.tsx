@@ -161,7 +161,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                     })}
 
                     <Knapper>
-                        <Knapp onClick={leggTilRad}>Legg til rad</Knapp>
+                        <Knapp onClick={leggTilRad}>Legg til nytt avsnitt </Knapp>
                         <Hovedknapp onClick={genererBrev}>Generer brev</Hovedknapp>
                     </Knapper>
                 </VenstreKolonne>
