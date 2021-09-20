@@ -37,8 +37,6 @@ const BrevWrapper = styled.div`
     margin-left: 4rem;
 `;
 
-const VenstreKolonne = styled.div``;
-
 interface Props {
     fagsakId: string;
 }
@@ -131,7 +129,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
         <StyledManueltBrev>
             <h1>Manuelt brev</h1>
             <BrevKolonner>
-                <VenstreKolonne>
+                <div>
                     <Input
                         label="Overskrift"
                         value={overskrift}
@@ -164,7 +162,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                         <Knapp onClick={leggTilRad}>Legg til nytt avsnitt </Knapp>
                         <Hovedknapp onClick={genererBrev}>Generer brev</Hovedknapp>
                     </Knapper>
-                </VenstreKolonne>
+                </div>
 
                 {brev && (
                     <BrevWrapper>
