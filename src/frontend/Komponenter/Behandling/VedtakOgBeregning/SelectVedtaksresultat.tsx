@@ -4,8 +4,11 @@ import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Undertittel } from 'nav-frontend-typografi';
+import { Behandling } from '../../../App/typer/fagsak';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
 
 interface Props {
+    behandling: Behandling;
     resultatType?: EBehandlingResultat;
     settResultatType: (val: EBehandlingResultat) => void;
 }
@@ -21,6 +24,7 @@ const StyledSelect = styled(FamilieSelect)`
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar, settAntallIRedigeringsmodus } = useBehandling();
     const { resultatType, settResultatType } = props;
+    const opphørMulig = props.behandling.type === Behandlingstype.REVURDERING;
     return (
         <section className="blokk-xl">
             <Undertittel className={'blokk-s'}>Vedtak</Undertittel>
@@ -36,7 +40,9 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 <option value="">Velg</option>
                 <option value={EBehandlingResultat.INNVILGE}>Innvilge</option>
                 <option value={EBehandlingResultat.AVSLÅ}>Avslå</option>
-                <option value={EBehandlingResultat.OPPHØRT}>Opphørt</option>
+                <option value={EBehandlingResultat.OPPHØRT} disabled={!opphørMulig}>
+                    Opphørt
+                </option>
                 <option value={EBehandlingResultat.HENLEGGE} disabled>
                     Henlegge
                 </option>
