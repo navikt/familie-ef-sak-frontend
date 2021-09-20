@@ -45,6 +45,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandling }) => {
                 return (
                     <Wrapper>
                         <SelectVedtaksresultat
+                            behandling={behandling}
                             resultatType={resultatType}
                             settResultatType={settResultatType}
                         />
