@@ -65,7 +65,6 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         settFagsakId(response.data.fagsaker[0].fagsakId);
                     }
                 } else {
-                    console.log('Kunne ikke hente fagsak.');
                     settFeilFagsakHenting(true);
                 }
             });
