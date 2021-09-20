@@ -11,8 +11,7 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressu
 import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { hentInnloggetBruker } from '../../../App/api/saksbehandler';
-import { ISaksbehandler } from '../../../App/typer/saksbehandler';
+import { IManueltBrev, IAvsnitt } from '../../../App/typer/brev';
 
 const StyledManueltBrev = styled.div`
     width: 50%;
@@ -44,17 +43,16 @@ interface Props {
     fagsakId: string;
 }
 
-const ManueltBrev = ({ fagsakId }: Props) => {
+const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
     const førsteRad = [
         {
-            id: 1,
             deloverskrift: '',
             innhold: '',
         },
     ];
 
     const [overskrift, settOverskrift] = useState('');
-    const [avsnitt, settAvsnitt] = useState(førsteRad);
+    const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
     const [brev, settBrev] = useState<Ressurs<string>>(byggTomRessurs());
     const { axiosRequest, innloggetSaksbehandler } = useApp();
 
@@ -71,30 +69,16 @@ const ManueltBrev = ({ fagsakId }: Props) => {
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
 
-        const avsnittUtenId = avsnitt.map((rad) => {
-            return { deloverskrift: rad.deloverskrift, innhold: rad.innhold };
-        });
-
         const brevdato = dagensDatoFormatert();
 
-        axiosRequest<
-            any,
-            {
-                overskrift: string;
-                avsnitt: any;
-                saksbehandlersignatur: string;
-                brevdato: string;
-                ident: string;
-                navn: string;
-            }
-        >({
+        axiosRequest<string, IManueltBrev>({
             method: 'POST',
             url: `/familie-ef-sak/api/manueltbrev`,
             data: {
                 overskrift,
-                avsnitt: avsnittUtenId,
+                avsnitt,
                 saksbehandlersignatur: innloggetSaksbehandler?.displayName || 'Ukjent',
-                brevdato: brevdato,
+                brevdato,
                 ident: personopplysninger.data.personIdent,
                 navn: personopplysninger.data.navn.visningsnavn,
             },
@@ -104,9 +88,9 @@ const ManueltBrev = ({ fagsakId }: Props) => {
     };
 
     const leggTilRad = () => {
-        settAvsnitt((s: any) => {
+        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
             return [
-                ...s,
+                ...eksisterendeAvsnitt,
                 {
                     deloverskrift: '',
                     innhold: '',
@@ -115,29 +99,31 @@ const ManueltBrev = ({ fagsakId }: Props) => {
         });
     };
 
-    const endreDeloverskrift = (e: any) => {
+    const endreDeloverskrift = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
-        const index = e.target.id;
+        const index = parseInt(e.target.id, 10);
 
-        settAvsnitt((s) => {
-            const newArr = s.slice();
-            newArr[index].deloverskrift = e.target.value;
+        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
+            const oppdatertAvsnitt = eksisterendeAvsnitt.slice();
 
-            return newArr;
+            oppdatertAvsnitt[index].deloverskrift = e.target.value;
+
+            return oppdatertAvsnitt;
         });
     };
 
-    const endreInnhold = (e: any) => {
+    const endreInnhold = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
-        const index = e.target.id;
+        const index = parseInt(e.target.id, 10);
 
-        settAvsnitt((s) => {
-            const newArr = s.slice();
-            newArr[index].innhold = e.target.value;
+        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
+            const oppdatertAvsnitt = eksisterendeAvsnitt.slice();
 
-            return newArr;
+            oppdatertAvsnitt[index].innhold = e.target.value;
+
+            return oppdatertAvsnitt;
         });
     };
 
