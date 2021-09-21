@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import { Input } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -97,32 +97,14 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
         });
     };
 
-    const endreDeloverskrift = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
+    const endreAvsnitt = (e: SyntheticEvent<HTMLInputElement>) => {
+        const oppdaterteAvsnitt: IAvsnitt[] = [...avsnitt];
 
-        const index = parseInt(e.target.id, 10);
+        const t: keyof IAvsnitt = e.target.dataset.type;
 
-        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
-            const oppdatertAvsnitt = eksisterendeAvsnitt.slice();
+        oppdaterteAvsnitt[e.target.dataset.index][t] = (e.target as HTMLInputElement).value;
 
-            oppdatertAvsnitt[index].deloverskrift = e.target.value;
-
-            return oppdatertAvsnitt;
-        });
-    };
-
-    const endreInnhold = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-
-        const index = parseInt(e.target.id, 10);
-
-        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
-            const oppdatertAvsnitt = eksisterendeAvsnitt.slice();
-
-            oppdatertAvsnitt[index].innhold = e.target.value;
-
-            return oppdatertAvsnitt;
-        });
+        settAvsnitt(oppdaterteAvsnitt);
     };
 
     return (
@@ -139,19 +121,28 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                     />
 
                     {avsnitt.map((rad, i) => {
+                        const deloverskriftId = `deloverskrift-${i}`;
+                        const innholdId = `innhold-${i}`;
+
                         return (
                             <Innholdsrad border>
                                 <Input
-                                    onChange={endreDeloverskrift}
+                                    onChange={endreAvsnitt}
                                     label="Deloverskrift (valgfri)"
-                                    id={i.toString()}
+                                    id={deloverskriftId}
+                                    name={deloverskriftId}
+                                    data-index={i}
+                                    data-type="deloverskrift"
                                     value={rad.deloverskrift}
                                 />
                                 <Textarea
-                                    onChange={endreInnhold}
+                                    onChange={endreAvsnitt}
                                     defaultValue=""
                                     label="Innhold"
-                                    id={i.toString()}
+                                    id={innholdId}
+                                    name={innholdId}
+                                    data-index={i}
+                                    data-type="innhold"
                                     value={rad.innhold}
                                 />
                             </Innholdsrad>
