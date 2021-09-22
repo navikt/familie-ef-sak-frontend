@@ -1,6 +1,7 @@
 export interface IAvsnitt {
     deloverskrift: string;
     innhold: string;
+    id?: string;
 }
 
 export interface IManueltBrev {

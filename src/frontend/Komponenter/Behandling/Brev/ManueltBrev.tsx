@@ -12,6 +12,7 @@ import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { IManueltBrev, IAvsnitt } from '../../../App/typer/brev';
+import { v4 as uuidv4 } from 'uuid';
 
 const StyledManueltBrev = styled.div`
     width: 50%;
@@ -46,6 +47,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
         {
             deloverskrift: '',
             innhold: '',
+            id: uuidv4(),
         },
     ];
 
@@ -92,6 +94,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                 {
                     deloverskrift: '',
                     innhold: '',
+                    id: uuidv4(),
                 },
             ];
         });
@@ -102,7 +105,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
 
         const t: keyof IAvsnitt = e.target.dataset.type;
 
-        oppdaterteAvsnitt[e.target.dataset.index][t] = (e.target as HTMLInputElement).value;
+        oppdaterteAvsnitt[e.target.dataset.id][t] = (e.target as HTMLInputElement).value;
 
         settAvsnitt(oppdaterteAvsnitt);
     };
@@ -121,17 +124,13 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                     />
 
                     {avsnitt.map((rad, i) => {
-                        const deloverskriftId = `deloverskrift-${i}`;
-                        const innholdId = `innhold-${i}`;
-
                         return (
-                            <Innholdsrad border>
+                            <Innholdsrad key={i} border>
                                 <Input
                                     onChange={endreAvsnitt}
                                     label="Deloverskrift (valgfri)"
-                                    id={deloverskriftId}
-                                    name={deloverskriftId}
-                                    data-index={i}
+                                    id={rad.id}
+                                    data-id={i}
                                     data-type="deloverskrift"
                                     value={rad.deloverskrift}
                                 />
@@ -139,11 +138,11 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                                     onChange={endreAvsnitt}
                                     defaultValue=""
                                     label="Innhold"
-                                    id={innholdId}
-                                    name={innholdId}
-                                    data-index={i}
+                                    id={rad.id}
+                                    data-id={i}
                                     data-type="innhold"
                                     value={rad.innhold}
+                                    maxLength={0}
                                 />
                             </Innholdsrad>
                         );
