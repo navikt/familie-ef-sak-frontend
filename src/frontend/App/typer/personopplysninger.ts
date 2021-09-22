@@ -31,11 +31,13 @@ export interface IBarn {
     adresse: IAdresse[];
     borHosSøker: boolean;
     fødselsdato?: string;
+    dødsdato?: string;
 }
 
 export interface IAnnenForelderMinimum {
     personIdent: string;
     navn: string;
+    dødsdato?: string;
 }
 
 export interface IAdresse {
