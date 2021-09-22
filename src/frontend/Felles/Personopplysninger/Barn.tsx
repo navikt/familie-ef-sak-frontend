@@ -7,6 +7,7 @@ import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etikette
 import styled from 'styled-components';
 import { differenceInYears } from 'date-fns';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
+import EtikettDød from '../Etiketter/EtikettDød';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -16,19 +17,22 @@ const FlexDiv = styled.div`
     display: flex;
 `;
 
+const titler = ['Navn', 'Fødselsnummer', 'Annen forelder', 'Bor med bruker'];
+
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={LiteBarn} tittel={'Barn'} />
             <table className="tabell">
-                <KolonneTitler
-                    titler={['Navn', 'Fødselsnummer', 'Annen forelder', 'Bor med bruker']}
-                />
+                <KolonneTitler titler={titler} />
                 <tbody>
                     {barn.map((barn) => {
                         return (
                             <tr key={barn.personIdent}>
-                                <BredTd>{barn.navn}</BredTd>
+                                <BredTd>
+                                    {barn.navn}
+                                    {barn.dødsdato && <EtikettDød dødsdato={barn.dødsdato} />}
+                                </BredTd>
                                 <FødselsnummerBarn
                                     fødselsnummer={barn.personIdent}
                                     fødselsdato={barn.fødselsdato}
@@ -41,6 +45,11 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                             />
                                             {', '}
                                             {barn.annenForelder.navn}
+                                            {barn.annenForelder.dødsdato && (
+                                                <EtikettDød
+                                                    dødsdato={barn.annenForelder.dødsdato}
+                                                />
+                                            )}
                                         </>
                                     )}
                                 </BredTd>
