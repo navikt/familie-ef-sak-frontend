@@ -98,10 +98,14 @@ export const InnvilgeVedtak: React.FC<{
     }, [axiosRequest, behandling]);
 
     useEffect(() => {
-        if (!behandlingErRedigerbar && lagretInnvilgetVedtak) {
+        if (
+            !behandlingErRedigerbar &&
+            lagretInnvilgetVedtak &&
+            behandling.type !== Behandlingstype.BLANKETT
+        ) {
             hentLagretBeløpForYtelse();
         }
-    }, [behandlingErRedigerbar, lagretInnvilgetVedtak, hentLagretBeløpForYtelse]);
+    }, [behandlingErRedigerbar, lagretInnvilgetVedtak, hentLagretBeløpForYtelse, behandling]);
 
     const beregnPerioder = () => {
         if (formState.validateForm()) {
