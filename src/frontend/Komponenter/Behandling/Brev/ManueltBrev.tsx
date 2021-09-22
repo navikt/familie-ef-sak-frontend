@@ -125,7 +125,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
 
                     {avsnitt.map((rad, i) => {
                         return (
-                            <Innholdsrad key={i} border>
+                            <Innholdsrad key={rad.id} border>
                                 <Input
                                     onChange={endreAvsnitt}
                                     label="Deloverskrift (valgfri)"
