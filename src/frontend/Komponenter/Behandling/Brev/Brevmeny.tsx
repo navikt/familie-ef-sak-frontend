@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrevStruktur, DokumentNavn } from './BrevTyper';
-import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -30,7 +30,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
 
     const defaultBrevmal = 'innvilgetOvergangsstonadHoved2';
-    const [brevMal, settBrevmal] = useState<string>(defaultBrevmal);
+    const [brevMal, settBrevmal] = useState<string>();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
@@ -39,7 +39,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         byggTomRessurs()
     );
 
-    const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId, brevMal);
+    const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
     const { flettefeltStore } = useVerdierForBrev(tilkjentYtelse);
 
     useEffect(() => {
@@ -72,7 +72,13 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
             settTilkjentYtelse(respons);
         });
         // eslint-disable-next-line
-    }, [brevMal]);
+    }, [props.behandlingId]);
+
+    useEffect(() => {
+        if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
+            settBrevmal(mellomlagretBrev?.data?.brevmal || defaultBrevmal);
+        }
+    }, [mellomlagretBrev]);
 
     return (
         <StyledBrevMeny>
@@ -80,10 +86,11 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 {({ dokumentnavn }) => (
                     <Select
                         label="Velg dokument"
-                        defaultValue={defaultBrevmal}
+                        defaultValue={brevMal}
                         onChange={(e) => {
                             settBrevmal(e.target.value);
                         }}
+                        value={brevMal}
                     >
                         <option value="">Ikke valgt</option>
                         {dokumentnavn?.map((navn: DokumentNavn) => (
@@ -95,16 +102,18 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 )}
             </DataViewer>
             <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
-                {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) => (
-                    <BrevmenyVisning
-                        {...props}
-                        brevStruktur={brevStruktur}
-                        tilkjentYtelse={tilkjentYtelse}
-                        brevMal={brevMal}
-                        mellomlagretBrev={mellomlagretBrev}
-                        flettefeltStore={flettefeltStore}
-                    />
-                )}
+                {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) =>
+                    brevMal && (
+                        <BrevmenyVisning
+                            {...props}
+                            brevStruktur={brevStruktur}
+                            tilkjentYtelse={tilkjentYtelse}
+                            brevMal={brevMal}
+                            mellomlagretBrevVerdier={mellomlagretBrev?.brevverdier}
+                            flettefeltStore={flettefeltStore}
+                        />
+                    )
+                }
             </DataViewer>
         </StyledBrevMeny>
     );

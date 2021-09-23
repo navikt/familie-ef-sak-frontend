@@ -48,7 +48,7 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     tilkjentYtelse?: TilkjentYtelse;
-    mellomlagretBrev?: string;
+    mellomlagretBrevVerdier?: string;
     brevMal: string;
     flettefeltStore: { [navn: string]: string };
 }
@@ -60,17 +60,17 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     settKanSendesTilBeslutter,
     brevStruktur,
     tilkjentYtelse,
-    mellomlagretBrev,
+    mellomlagretBrevVerdier,
     brevMal,
     flettefeltStore,
 }) => {
     const { axiosRequest } = useApp();
-    const { mellomlagreBrev } = useMellomlagringBrev(behandlingId, brevMal);
+    const { mellomlagreBrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
 
     useEffect(() => {
         const parsetMellomlagretBrev =
-            mellomlagretBrev && (JSON.parse(mellomlagretBrev) as IBrevverdier);
+            mellomlagretBrevVerdier && (JSON.parse(mellomlagretBrevVerdier) as IBrevverdier);
 
         const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
             parsetMellomlagretBrev || {};
@@ -81,7 +81,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
         }
-    }, [brevStruktur, flettefeltStore, mellomlagretBrev]);
+    }, [brevStruktur, flettefeltStore, mellomlagretBrevVerdier]);
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
@@ -152,7 +152,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
-        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler);
+        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
         axiosRequest<string, unknown>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
