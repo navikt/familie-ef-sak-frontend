@@ -6,8 +6,7 @@ import Panel from 'nav-frontend-paneler';
 import { Textarea } from 'nav-frontend-skjema';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
-import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
@@ -34,15 +33,19 @@ const BrevKolonner = styled.div`
     display: flex;
 `;
 
-const BrevWrapper = styled.div`
-    margin-left: 4rem;
-`;
+type Props =
+    | {
+          oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
+          fagsakId: string;
+          behandlingId?: string;
+      }
+    | {
+          oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
+          fagsakId?: string;
+          behandlingId: string;
+      };
 
-interface Props {
-    fagsakId: string;
-}
-
-const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
+const ManueltBrev: React.FC<Props> = (props) => {
     const førsteRad = [
         {
             deloverskrift: '',
@@ -53,24 +56,29 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
 
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
-    const [brev, settBrev] = useState<Ressurs<string>>(byggTomRessurs());
     const { axiosRequest, innloggetSaksbehandler } = useApp();
 
-    const personopplysningerConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
-        }),
-        [fagsakId]
-    );
+    const personopplysningerConfig: AxiosRequestConfig = useMemo(() => {
+        if (props.fagsakId) {
+            return {
+                method: 'GET',
+                url: `/familie-ef-sak/api/personopplysninger/fagsak/${props.fagsakId}`,
+            };
+        } else {
+            return {
+                method: 'GET',
+                url: `/familie-ef-sak/api/personopplysninger/behandling/${props.behandlingId}`,
+            };
+        }
+    }, [props.fagsakId, props.behandlingId]);
 
     const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
 
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
-
+        console.log('he');
         const brevdato = dagensDatoFormatert();
-
+        console.log('ha');
         axiosRequest<string, IManueltBrev>({
             method: 'POST',
             url: `/familie-ef-sak/api/manueltbrev`,
@@ -83,7 +91,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                 navn: personopplysninger.data.navn.visningsnavn,
             },
         }).then((respons: Ressurs<string>) => {
-            settBrev(respons);
+            props.oppdaterBrevressurs(respons);
         });
     };
 
@@ -103,8 +111,10 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
     const endreAvsnitt = (e: SyntheticEvent<HTMLInputElement>) => {
         const oppdaterteAvsnitt: IAvsnitt[] = [...avsnitt];
 
+        // @ts-ignore
         const t: keyof IAvsnitt = e.target.dataset.type;
 
+        // @ts-ignore
         oppdaterteAvsnitt[e.target.dataset.id][t] = (e.target as HTMLInputElement).value;
 
         settAvsnitt(oppdaterteAvsnitt);
@@ -138,6 +148,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                                     value={rad.deloverskrift}
                                 />
                                 <Textarea
+                                    // @ts-ignore
                                     onChange={endreAvsnitt}
                                     defaultValue=""
                                     label="Innhold"
@@ -156,12 +167,6 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                         <Hovedknapp onClick={genererBrev}>Generer brev</Hovedknapp>
                     </Knapper>
                 </div>
-
-                {brev && (
-                    <BrevWrapper>
-                        <PdfVisning pdfFilInnhold={brev} />
-                    </BrevWrapper>
-                )}
             </BrevKolonner>
         </StyledManueltBrev>
     );
