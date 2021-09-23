@@ -124,12 +124,15 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                     />
 
                     {avsnitt.map((rad, i) => {
+                        const deloverskriftId = `deloverskrift-${rad.id}`;
+                        const innholdId = `innhold-${rad.id}`;
+
                         return (
                             <Innholdsrad key={rad.id} border>
                                 <Input
                                     onChange={endreAvsnitt}
                                     label="Deloverskrift (valgfri)"
-                                    id={rad.id}
+                                    id={deloverskriftId}
                                     data-id={i}
                                     data-type="deloverskrift"
                                     value={rad.deloverskrift}
@@ -138,7 +141,7 @@ const ManueltBrev: React.FC<Props> = ({ fagsakId }) => {
                                     onChange={endreAvsnitt}
                                     defaultValue=""
                                     label="Innhold"
-                                    id={rad.id}
+                                    id={innholdId}
                                     data-id={i}
                                     data-type="innhold"
                                     value={rad.innhold}
