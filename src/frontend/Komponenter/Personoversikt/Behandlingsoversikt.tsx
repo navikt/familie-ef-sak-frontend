@@ -18,6 +18,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import ManueltBrev from '../../Komponenter/Behandling/Brev/ManueltBrev';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -138,6 +139,8 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                             som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
                         </AlertStripeFeil>
                     )}
+
+                    <ManueltBrev fagsakId={fagsakId} />
                 </>
             )}
         </DataViewer>
