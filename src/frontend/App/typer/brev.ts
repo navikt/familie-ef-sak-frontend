@@ -7,8 +7,6 @@ export interface IAvsnitt {
 export interface IManueltBrev {
     overskrift: string;
     avsnitt: IAvsnitt[];
-    saksbehandlersignatur: string;
-    brevdato: string;
-    ident: string;
-    navn: string;
+    fagsakId?: string;
+    behandlingId?: string;
 }

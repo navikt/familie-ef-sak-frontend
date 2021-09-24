@@ -7,7 +7,6 @@ import { Textarea } from 'nav-frontend-skjema';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { IManueltBrev, IAvsnitt } from '../../../App/typer/brev';
@@ -56,7 +55,7 @@ const ManueltBrev: React.FC<Props> = (props) => {
 
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
 
     const personopplysningerConfig: AxiosRequestConfig = useMemo(() => {
         if (props.fagsakId) {
@@ -76,19 +75,16 @@ const ManueltBrev: React.FC<Props> = (props) => {
 
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
-        console.log('he');
-        const brevdato = dagensDatoFormatert();
-        console.log('ha');
+        const { fagsakId, behandlingId } = props;
+
         axiosRequest<string, IManueltBrev>({
             method: 'POST',
             url: `/familie-ef-sak/api/manueltbrev`,
             data: {
                 overskrift,
                 avsnitt,
-                saksbehandlersignatur: innloggetSaksbehandler?.displayName || 'Ukjent',
-                brevdato,
-                ident: personopplysninger.data.personIdent,
-                navn: personopplysninger.data.navn.visningsnavn,
+                fagsakId,
+                behandlingId,
             },
         }).then((respons: Ressurs<string>) => {
             props.oppdaterBrevressurs(respons);
