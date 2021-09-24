@@ -79,7 +79,7 @@ const ManueltBrev: React.FC<Props> = (props) => {
 
         axiosRequest<string, IManueltBrev>({
             method: 'POST',
-            url: `/familie-ef-sak/api/manueltbrev`,
+            url: `/familie-ef-sak/api/brev/fritekst`,
             data: {
                 overskrift,
                 avsnitt,
