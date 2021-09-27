@@ -30,10 +30,12 @@ enum BehandlingResultat {
     INNVILGET = 'INNVILGET',
     IKKE_SATT = 'IKKE_SATT',
     ANNULERT = 'ANNULERT',
+    OPPHØRT = 'OPPHØRT',
 }
 
 export const behandlingResultatTilTekst: Record<BehandlingResultat, string> = {
     INNVILGET: 'Innvilget',
     IKKE_SATT: 'Ikke satt',
     ANNULERT: 'Annulert',
+    OPPHØRT: 'Opphørt',
 };
