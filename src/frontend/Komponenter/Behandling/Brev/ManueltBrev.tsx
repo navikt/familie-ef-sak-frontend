@@ -32,18 +32,11 @@ const BrevKolonner = styled.div`
     display: flex;
 `;
 
-type Props =
-    | {
-          oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
-          fagsakId: string;
-          behandlingId?: string;
-      }
-    | {
-          oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
-          fagsakId?: string;
-          behandlingId: string;
-      };
-
+type Props = {
+    oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
+    behandlingId?: string;
+    fagsakId?: string;
+};
 const ManueltBrev: React.FC<Props> = (props) => {
     const førsteRad = [
         {
@@ -57,19 +50,25 @@ const ManueltBrev: React.FC<Props> = (props) => {
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
     const { axiosRequest } = useApp();
 
-    const personopplysningerConfig: AxiosRequestConfig = useMemo(() => {
-        if (props.fagsakId) {
-            return {
-                method: 'GET',
-                url: `/familie-ef-sak/api/personopplysninger/fagsak/${props.fagsakId}`,
-            };
-        } else {
-            return {
-                method: 'GET',
-                url: `/familie-ef-sak/api/personopplysninger/behandling/${props.behandlingId}`,
-            };
-        }
-    }, [props.fagsakId, props.behandlingId]);
+    const personopplysningerFagsakConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/personopplysninger/fagsak/${props.fagsakId}`,
+        }),
+        [props.fagsakId]
+    );
+
+    const personopplysningerBehandlingConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/personopplysninger/behandling/${props.behandlingId}`,
+        }),
+        [props.behandlingId]
+    );
+
+    const personopplysningerConfig = props.fagsakId
+        ? personopplysningerFagsakConfig
+        : personopplysningerBehandlingConfig;
 
     const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
 
@@ -77,18 +76,33 @@ const ManueltBrev: React.FC<Props> = (props) => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
         const { fagsakId, behandlingId } = props;
 
-        axiosRequest<string, IManueltBrev>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/brev/fritekst`,
-            data: {
-                overskrift,
-                avsnitt,
-                fagsakId,
-                behandlingId,
-            },
-        }).then((respons: Ressurs<string>) => {
-            props.oppdaterBrevressurs(respons);
-        });
+        if (fagsakId) {
+            axiosRequest<string, IManueltBrev>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/manueltbrev`,
+                data: {
+                    overskrift,
+                    avsnitt,
+                    fagsakId,
+                },
+            }).then((respons: Ressurs<string>) => {
+                if (props.oppdaterBrevressurs) props.oppdaterBrevressurs(respons);
+            });
+        }
+
+        if (behandlingId) {
+            axiosRequest<string, IManueltBrev>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/brev/fritekst`,
+                data: {
+                    overskrift,
+                    avsnitt,
+                    behandlingId,
+                },
+            }).then((respons: Ressurs<string>) => {
+                if (props.oppdaterBrevressurs) props.oppdaterBrevressurs(respons);
+            });
+        }
     };
 
     const leggTilRad = () => {

@@ -4,7 +4,8 @@ import { Ressurs } from '../../../App/typer/ressurs';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
-    behandlingId: string;
+    behandlingId?: string;
+    fagsakId?: string;
 }
 
 export const ManueltBrevWrapper: React.FC<BrevmenyProps> = (props) => {
@@ -12,6 +13,7 @@ export const ManueltBrevWrapper: React.FC<BrevmenyProps> = (props) => {
         <ManueltBrev
             oppdaterBrevressurs={props.oppdaterBrevRessurs}
             behandlingId={props.behandlingId}
+            fagsakId={props.fagsakId}
         />
     );
 };

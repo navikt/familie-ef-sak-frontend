@@ -10,7 +10,7 @@ import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
-import { ManueltBrevWrapper } from './ManueltBrevWrapper';
+import ManueltBrev from './ManueltBrev';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -107,9 +107,9 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 )}
             </DataViewer>
             {brevMal === 'Manuelt Brev' ? (
-                <ManueltBrevWrapper
+                <ManueltBrev
                     behandlingId={props.behandlingId}
-                    oppdaterBrevRessurs={props.oppdaterBrevRessurs}
+                    oppdaterBrevressurs={props.oppdaterBrevRessurs}
                 />
             ) : (
                 <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
