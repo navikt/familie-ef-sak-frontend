@@ -18,7 +18,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
-import ManueltBrev from '../../Komponenter/Behandling/Brev/ManueltBrev';
+import FrittståendeBrev from '../Behandling/Brev/FrittståendeBrev';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
 
 const StyledTable = styled.table`
@@ -150,7 +150,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         </AlertStripeFeil>
                     )}
                     <BrevWrapper>
-                        <ManueltBrev
+                        <FrittståendeBrev
                             oppdaterBrevressurs={oppdaterBrevRessurs}
                             fagsakId={fagsakId}
                         />

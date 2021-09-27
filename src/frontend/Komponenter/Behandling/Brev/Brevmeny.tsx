@@ -10,7 +10,7 @@ import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
-import ManueltBrev from './ManueltBrev';
+import FrittståendeBrev from './FrittståendeBrev';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -99,15 +99,15 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                 {navn.visningsnavn}
                             </option>
                         ))}
-                        <option value={'Manuelt Brev'} key={'Manuelt Brev'}>
+                        <option value={'Frittstående Brev'} key={'Frittstående Brev'}>
                             {' '}
-                            Manuelt Brev
+                            Frittstående Brev
                         </option>
                     </Select>
                 )}
             </DataViewer>
-            {brevMal === 'Manuelt Brev' ? (
-                <ManueltBrev
+            {brevMal === 'Frittstående Brev' ? (
+                <FrittståendeBrev
                     behandlingId={props.behandlingId}
                     oppdaterBrevressurs={props.oppdaterBrevRessurs}
                 />

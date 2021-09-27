@@ -9,10 +9,10 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { IManueltBrev, IAvsnitt } from '../../../App/typer/brev';
+import { IFrittståendeBrev, IAvsnitt } from '../../../App/typer/brev';
 import { v4 as uuidv4 } from 'uuid';
 
-const StyledManueltBrev = styled.div`
+const StyledFrittståendeBrev = styled.div`
     width: 50%;
     margin-bottom: 10rem;
 `;
@@ -37,7 +37,7 @@ type Props = {
     behandlingId?: string;
     fagsakId?: string;
 };
-const ManueltBrev: React.FC<Props> = (props) => {
+const FrittståendeBrev: React.FC<Props> = (props) => {
     const førsteRad = [
         {
             deloverskrift: '',
@@ -77,9 +77,9 @@ const ManueltBrev: React.FC<Props> = (props) => {
         const { fagsakId, behandlingId } = props;
 
         if (fagsakId) {
-            axiosRequest<string, IManueltBrev>({
+            axiosRequest<string, IFrittståendeBrev>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/manueltbrev`,
+                url: `/familie-ef-sak/api/brev/frittstående`,
                 data: {
                     overskrift,
                     avsnitt,
@@ -91,7 +91,7 @@ const ManueltBrev: React.FC<Props> = (props) => {
         }
 
         if (behandlingId) {
-            axiosRequest<string, IManueltBrev>({
+            axiosRequest<string, IFrittståendeBrev>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/brev/fritekst`,
                 data: {
@@ -131,8 +131,8 @@ const ManueltBrev: React.FC<Props> = (props) => {
     };
 
     return (
-        <StyledManueltBrev>
-            <h1>Manuelt brev</h1>
+        <StyledFrittståendeBrev>
+            <h1>Frittstående brev</h1>
             <BrevKolonner>
                 <div>
                     <Input
@@ -178,8 +178,8 @@ const ManueltBrev: React.FC<Props> = (props) => {
                     </Knapper>
                 </div>
             </BrevKolonner>
-        </StyledManueltBrev>
+        </StyledFrittståendeBrev>
     );
 };
 
-export default ManueltBrev;
+export default FrittståendeBrev;
