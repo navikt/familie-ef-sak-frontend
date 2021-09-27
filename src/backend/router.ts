@@ -37,15 +37,25 @@ export default (
 
     // APP
     if (process.env.NODE_ENV === 'development' && middleware) {
-        router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
-            prometheusTellere.appLoad.inc();
+        router.get(
+            '*',
+            ensureAuthenticated(authClient, false),
+            (_req: Request, res: Response, next) => {
+                prometheusTellere.appLoad.inc();
 
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.write(
-                middleware.fileSystem.readFileSync(path.join(__dirname, `${buildPath}/index.html`))
-            );
-            res.end();
-        });
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                middleware.context.outputFileSystem.readFile(
+                    path.join(__dirname, `${buildPath}/index.html`),
+                    (error, result) => {
+                        if (error) {
+                            return next(error);
+                        }
+                        res.write(result);
+                    }
+                );
+                res.end();
+            }
+        );
     } else {
         router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
