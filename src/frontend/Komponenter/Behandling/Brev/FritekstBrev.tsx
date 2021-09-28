@@ -9,7 +9,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { IFrittståendeBrev, IAvsnitt } from '../../../App/typer/brev';
+import { IFritekstBrev, IAvsnitt } from '../../../App/typer/brev';
 import { v4 as uuidv4 } from 'uuid';
 
 const StyledFrittståendeBrev = styled.div`
@@ -37,7 +37,8 @@ type Props = {
     behandlingId?: string;
     fagsakId?: string;
 };
-const FrittståendeBrev: React.FC<Props> = (props) => {
+
+const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fagsakId }) => {
     const førsteRad = [
         {
             deloverskrift: '',
@@ -53,20 +54,20 @@ const FrittståendeBrev: React.FC<Props> = (props) => {
     const personopplysningerFagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/fagsak/${props.fagsakId}`,
+            url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
         }),
-        [props.fagsakId]
+        [fagsakId]
     );
 
     const personopplysningerBehandlingConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/behandling/${props.behandlingId}`,
+            url: `/familie-ef-sak/api/personopplysninger/behandling/${behandlingId}`,
         }),
-        [props.behandlingId]
+        [behandlingId]
     );
 
-    const personopplysningerConfig = props.fagsakId
+    const personopplysningerConfig = fagsakId
         ? personopplysningerFagsakConfig
         : personopplysningerBehandlingConfig;
 
@@ -74,10 +75,9 @@ const FrittståendeBrev: React.FC<Props> = (props) => {
 
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
-        const { fagsakId, behandlingId } = props;
 
         if (fagsakId) {
-            axiosRequest<string, IFrittståendeBrev>({
+            axiosRequest<string, IFritekstBrev>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/brev/frittstående`,
                 data: {
@@ -86,12 +86,10 @@ const FrittståendeBrev: React.FC<Props> = (props) => {
                     fagsakId,
                 },
             }).then((respons: Ressurs<string>) => {
-                if (props.oppdaterBrevressurs) props.oppdaterBrevressurs(respons);
+                if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
             });
-        }
-
-        if (behandlingId) {
-            axiosRequest<string, IFrittståendeBrev>({
+        } else if (behandlingId) {
+            axiosRequest<string, IFritekstBrev>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/brev/fritekst`,
                 data: {
@@ -100,7 +98,7 @@ const FrittståendeBrev: React.FC<Props> = (props) => {
                     behandlingId,
                 },
             }).then((respons: Ressurs<string>) => {
-                if (props.oppdaterBrevressurs) props.oppdaterBrevressurs(respons);
+                if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
             });
         }
     };
@@ -182,4 +180,4 @@ const FrittståendeBrev: React.FC<Props> = (props) => {
     );
 };
 
-export default FrittståendeBrev;
+export default FritekstBrev;

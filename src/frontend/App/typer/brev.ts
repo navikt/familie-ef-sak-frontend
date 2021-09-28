@@ -4,7 +4,7 @@ export interface IAvsnitt {
     id?: string;
 }
 
-export interface IFrittståendeBrev {
+export interface IFritekstBrev {
     overskrift: string;
     avsnitt: IAvsnitt[];
     fagsakId?: string;
