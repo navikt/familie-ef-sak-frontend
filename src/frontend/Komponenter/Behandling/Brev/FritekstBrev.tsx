@@ -1,4 +1,4 @@
-import React, { useMemo, useState, SyntheticEvent } from 'react';
+import React, { useMemo, useState, SyntheticEvent, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { Input } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -116,16 +116,26 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         });
     };
 
-    const endreAvsnitt = (e: SyntheticEvent<HTMLInputElement>) => {
-        const oppdaterteAvsnitt: IAvsnitt[] = [...avsnitt];
+    const endreInnholdAvsnitt = (radId: string) => {
+        return (e: ChangeEvent<HTMLTextAreaElement>) => {
+            const oppdaterteAvsnitt = avsnitt.map((rad) => {
+                return rad.id === radId
+                    ? { ...rad, innhold: (e.target as HTMLTextAreaElement).value }
+                    : rad;
+            });
+            settAvsnitt(oppdaterteAvsnitt);
+        };
+    };
 
-        // @ts-ignore
-        const t: keyof IAvsnitt = e.target.dataset.type;
-
-        // @ts-ignore
-        oppdaterteAvsnitt[e.target.dataset.id][t] = (e.target as HTMLInputElement).value;
-
-        settAvsnitt(oppdaterteAvsnitt);
+    const endreDeloverskriftAvsnitt = (radId: string) => {
+        return (e: SyntheticEvent<HTMLInputElement>) => {
+            const oppdaterteAvsnitt = avsnitt.map((rad) => {
+                return rad.id === radId
+                    ? { ...rad, deloverskrift: (e.target as HTMLInputElement).value }
+                    : rad;
+            });
+            settAvsnitt(oppdaterteAvsnitt);
+        };
     };
 
     return (
@@ -141,28 +151,23 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                         }}
                     />
 
-                    {avsnitt.map((rad, i) => {
+                    {avsnitt.map((rad) => {
                         const deloverskriftId = `deloverskrift-${rad.id}`;
                         const innholdId = `innhold-${rad.id}`;
 
                         return (
                             <Innholdsrad key={rad.id} border>
                                 <Input
-                                    onChange={endreAvsnitt}
+                                    onChange={endreDeloverskriftAvsnitt(rad.id)}
                                     label="Deloverskrift (valgfri)"
                                     id={deloverskriftId}
-                                    data-id={i}
-                                    data-type="deloverskrift"
                                     value={rad.deloverskrift}
                                 />
                                 <Textarea
-                                    // @ts-ignore
-                                    onChange={endreAvsnitt}
+                                    onChange={endreInnholdAvsnitt(rad.id)}
                                     defaultValue=""
                                     label="Innhold"
                                     id={innholdId}
-                                    data-id={i}
-                                    data-type="innhold"
                                     value={rad.innhold}
                                     maxLength={0}
                                 />
