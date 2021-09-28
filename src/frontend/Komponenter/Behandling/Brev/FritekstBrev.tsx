@@ -79,7 +79,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         if (fagsakId) {
             axiosRequest<string, IFritekstBrev>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/brev/frittstående`,
+                url: `/familie-ef-sak/api/brev/frittstaende`,
                 data: {
                     overskrift,
                     avsnitt,
