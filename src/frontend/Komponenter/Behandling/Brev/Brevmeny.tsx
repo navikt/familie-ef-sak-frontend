@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
+import FritekstBrev from './FritekstBrev';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -106,23 +107,34 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                 {navn.visningsnavn}
                             </option>
                         ))}
+                        <option value={'Fritekstbrev'} key={'Fritekstbrev'}>
+                            {' '}
+                            Fritekstbrev
+                        </option>
                     </Select>
                 )}
             </DataViewer>
-            <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
-                {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) =>
-                    brevMal && (
-                        <BrevmenyVisning
-                            {...props}
-                            brevStruktur={brevStruktur}
-                            tilkjentYtelse={tilkjentYtelse}
-                            brevMal={brevMal}
-                            mellomlagretBrevVerdier={mellomlagretBrev?.brevverdier}
-                            flettefeltStore={flettefeltStore}
-                        />
-                    )
-                }
-            </DataViewer>
+            {brevMal === 'Fritekstbrev' ? (
+                <FritekstBrev
+                    behandlingId={props.behandlingId}
+                    oppdaterBrevressurs={props.oppdaterBrevRessurs}
+                />
+            ) : (
+                <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
+                    {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) =>
+                        brevMal && (
+                            <BrevmenyVisning
+                                {...props}
+                                brevStruktur={brevStruktur}
+                                tilkjentYtelse={tilkjentYtelse}
+                                brevMal={brevMal}
+                                mellomlagretBrevVerdier={mellomlagretBrev?.brevverdier}
+                                flettefeltStore={flettefeltStore}
+                            />
+                        )
+                    }
+                </DataViewer>
+            )}
         </StyledBrevMeny>
     );
 };

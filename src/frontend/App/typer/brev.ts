@@ -1,14 +1,12 @@
 export interface IAvsnitt {
     deloverskrift: string;
     innhold: string;
-    id?: string;
+    id: string;
 }
 
-export interface IManueltBrev {
+export interface IFritekstBrev {
     overskrift: string;
     avsnitt: IAvsnitt[];
-    saksbehandlersignatur: string;
-    brevdato: string;
-    ident: string;
-    navn: string;
+    fagsakId?: string;
+    behandlingId?: string;
 }
