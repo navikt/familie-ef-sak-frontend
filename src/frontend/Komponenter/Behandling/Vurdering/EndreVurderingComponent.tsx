@@ -33,7 +33,7 @@ const EndreVurderingComponent: FC<{
     oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
-    const { antallIRedigeringsmodus, settAntallIRedigeringsmodus } = useBehandling();
+    const { nullstillIkkePersistertKomponent } = useBehandling(); // TODO: Løfte state opp (kanskje)
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
@@ -136,7 +136,7 @@ const EndreVurderingComponent: FC<{
                 style={{ marginTop: '1rem' }}
                 mini
                 hidden={!erAllaDelvilkårBesvarte(delvilkårsvurderinger, regler)}
-                onClick={() => settAntallIRedigeringsmodus(antallIRedigeringsmodus - 1)}
+                onClick={() => nullstillIkkePersistertKomponent(vurdering.id)}
             >
                 Lagre
             </Lagreknapp>

@@ -21,7 +21,8 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
-    const { hentBehandling, behandlingErRedigerbar, settAntallIRedigeringsmodus } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar, nullstillIkkePersistertKomponent } =
+        useBehandling();
     const { axiosRequest } = useApp();
 
     const vedtakRequest: IAvslåVedtak = {
@@ -35,7 +36,7 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
                 case RessursStatus.SUKSESS:
                     history.push(nesteUrl);
                     hentBehandling.rerun();
-                    settAntallIRedigeringsmodus(0);
+                    nullstillIkkePersistertKomponent('vedtak-og-beregning');
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

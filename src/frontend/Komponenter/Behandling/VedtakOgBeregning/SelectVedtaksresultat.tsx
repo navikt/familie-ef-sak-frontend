@@ -22,7 +22,7 @@ const StyledSelect = styled(FamilieSelect)`
 `;
 
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
-    const { behandlingErRedigerbar, settAntallIRedigeringsmodus } = useBehandling();
+    const { behandlingErRedigerbar, settIkkePersistertKomponent } = useBehandling();
     const { resultatType, settResultatType } = props;
     const opphørMulig = props.behandling.type === Behandlingstype.REVURDERING;
     return (
@@ -33,7 +33,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 erLesevisning={!behandlingErRedigerbar}
                 onChange={(e) => {
                     settResultatType(e.target.value as EBehandlingResultat);
-                    settAntallIRedigeringsmodus(1);
+                    settIkkePersistertKomponent('vedtak-og-beregning');
                 }}
                 lesevisningVerdi={resultatType && behandlingResultatTilTekst[resultatType]}
             >

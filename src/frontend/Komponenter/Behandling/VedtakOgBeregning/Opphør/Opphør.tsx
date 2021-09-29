@@ -28,7 +28,8 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
         lagretOpphørtVedtak?.begrunnelse || ''
     );
     const [feilmelding, settFeilmelding] = useState<string | undefined>();
-    const { behandlingErRedigerbar, hentBehandling, settAntallIRedigeringsmodus } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling, nullstillIkkePersisterteKomponenter } =
+        useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
 
@@ -59,7 +60,7 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
             case RessursStatus.SUKSESS:
                 history.push(`/behandling/${behandlingId}/simulering`);
                 hentBehandling.rerun();
-                settAntallIRedigeringsmodus(0);
+                nullstillIkkePersisterteKomponenter();
                 break;
             case RessursStatus.HENTER:
             case RessursStatus.IKKE_HENTET:

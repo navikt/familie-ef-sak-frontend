@@ -41,7 +41,8 @@ export const InnvilgeVedtak: React.FC<{
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtak)
             : undefined;
-    const { hentBehandling, behandlingErRedigerbar, settAntallIRedigeringsmodus } = useBehandling();
+    const { hentBehandling, behandlingErRedigerbar, nullstillIkkePersisterteKomponenter } =
+        useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
     const [laster, settLaster] = useState<boolean>(false);
@@ -130,7 +131,7 @@ export const InnvilgeVedtak: React.FC<{
                 case RessursStatus.SUKSESS:
                     history.push(nesteUrl);
                     hentBehandling.rerun();
-                    settAntallIRedigeringsmodus(0);
+                    nullstillIkkePersisterteKomponenter();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

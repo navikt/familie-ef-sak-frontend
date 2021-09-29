@@ -18,7 +18,7 @@ interface Props {
 }
 
 const UlagretDataModal: FC<Props> = ({ visModal, aktivSide, valgtSide, settVisModal }) => {
-    const { settAntallIRedigeringsmodus } = useBehandling();
+    const { nullstillIkkePersisterteKomponenter } = useBehandling();
     const history = useHistory();
 
     return (
@@ -36,7 +36,7 @@ const UlagretDataModal: FC<Props> = ({ visModal, aktivSide, valgtSide, settVisMo
                 type={'standard'}
                 onClick={() => {
                     if (valgtSide && aktivSide) {
-                        settAntallIRedigeringsmodus(0);
+                        nullstillIkkePersisterteKomponenter();
                         const valgtSidePath = history.location.pathname.replace(
                             aktivSide.href,
                             valgtSide.href
