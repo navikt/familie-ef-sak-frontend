@@ -6,6 +6,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
+import { VEDTAK_OG_BEREGNING } from '../konstanter';
 
 export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVedtak }> = ({
     behandling,
@@ -36,7 +37,7 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
                 case RessursStatus.SUKSESS:
                     history.push(nesteUrl);
                     hentBehandling.rerun();
-                    nullstillIkkePersistertKomponent('vedtak-og-beregning');
+                    nullstillIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

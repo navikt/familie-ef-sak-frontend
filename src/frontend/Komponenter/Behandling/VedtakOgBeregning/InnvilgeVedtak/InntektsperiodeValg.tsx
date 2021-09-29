@@ -11,6 +11,7 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
+import { VEDTAK_OG_BEREGNING } from '../konstanter';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -46,7 +47,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     valideringsfeil,
     setValideringsFeil,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, settIkkePersistertKomponent } = useBehandling();
 
     const oppdaterInntektslisteElement = (
         index: number,
@@ -99,6 +100,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             type="number"
                             value={harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''}
                             onChange={(e) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterInntektslisteElement(
                                     index,
                                     EInntektsperiodeProperty.forventetInntekt,
@@ -115,6 +117,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 harTallverdi(rad.samordningsfradrag) ? rad.samordningsfradrag : ''
                             }
                             onChange={(e) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterInntektslisteElement(
                                     index,
                                     EInntektsperiodeProperty.samordningsfradrag,

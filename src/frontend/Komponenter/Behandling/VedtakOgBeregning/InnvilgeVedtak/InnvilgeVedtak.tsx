@@ -28,6 +28,7 @@ import useFormState, { FormState } from '../../../../App/hooks/felles/useFormSta
 import { validerVedtaksperioder } from '../vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../konstanter';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -41,8 +42,12 @@ export const InnvilgeVedtak: React.FC<{
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtak)
             : undefined;
-    const { hentBehandling, behandlingErRedigerbar, nullstillIkkePersisterteKomponenter } =
-        useBehandling();
+    const {
+        hentBehandling,
+        behandlingErRedigerbar,
+        nullstillIkkePersisterteKomponenter,
+        settIkkePersistertKomponent,
+    } = useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
     const [laster, settLaster] = useState<boolean>(false);
@@ -65,12 +70,12 @@ export const InnvilgeVedtak: React.FC<{
         },
         validerVedtaksperioder
     );
-    const inntektsperiodState = formState.getProps('inntekter') as ListState<IInntektsperiode>;
+    const inntektsperiodeState = formState.getProps('inntekter') as ListState<IInntektsperiode>;
     const vedtaksperiodeState = formState.getProps('perioder') as ListState<IVedtaksperiode>;
     const periodeBegrunnelse = formState.getProps('periodeBegrunnelse') as FieldState;
     const inntektBegrunnelse = formState.getProps('inntektBegrunnelse') as FieldState;
 
-    const inntektsperioder = inntektsperiodState.value;
+    const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
     useEffect(() => {
@@ -80,7 +85,7 @@ export const InnvilgeVedtak: React.FC<{
             førsteInntektsperiode &&
             førsteVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra
         ) {
-            inntektsperiodState.update(
+            inntektsperiodeState.update(
                 {
                     ...inntektsperioder[0],
                     årMånedFra: førsteVedtaksperiode.årMånedFra,
@@ -89,7 +94,7 @@ export const InnvilgeVedtak: React.FC<{
                 0
             );
         }
-    }, [vedtaksperioder, inntektsperiodState, inntektsperioder]);
+    }, [vedtaksperioder, inntektsperiodeState, inntektsperioder]);
 
     const hentLagretBeløpForYtelse = useCallback(() => {
         axiosRequest<IBeløpsperiode[], void>({
@@ -202,7 +207,10 @@ export const InnvilgeVedtak: React.FC<{
                 ) : (
                     <EnsligTextArea
                         value={periodeBegrunnelse.value}
-                        onChange={periodeBegrunnelse.onChange}
+                        onChange={(event) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            periodeBegrunnelse.onChange(event);
+                        }}
                         label="Begrunnelse"
                         maxLength={0}
                         erLesevisning={!behandlingErRedigerbar}
@@ -212,7 +220,7 @@ export const InnvilgeVedtak: React.FC<{
             <section>
                 <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
                 <InntektsperiodeValg
-                    inntektsperiodeListe={inntektsperiodState}
+                    inntektsperiodeListe={inntektsperiodeState}
                     valideringsfeil={formState.errors.inntekter}
                     setValideringsFeil={formState.setErrors}
                 />
@@ -229,7 +237,10 @@ export const InnvilgeVedtak: React.FC<{
                 ) : (
                     <EnsligTextArea
                         value={inntektBegrunnelse.value}
-                        onChange={inntektBegrunnelse.onChange}
+                        onChange={(event) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            inntektBegrunnelse.onChange(event);
+                        }}
                         label="Begrunnelse"
                         maxLength={0}
                         erLesevisning={!behandlingErRedigerbar}

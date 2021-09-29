@@ -6,6 +6,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import { VEDTAK_OG_BEREGNING } from './konstanter';
 
 interface Props {
     behandling: Behandling;
@@ -33,7 +34,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 erLesevisning={!behandlingErRedigerbar}
                 onChange={(e) => {
                     settResultatType(e.target.value as EBehandlingResultat);
-                    settIkkePersistertKomponent('vedtak-og-beregning');
+                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                 }}
                 lesevisningVerdi={resultatType && behandlingResultatTilTekst[resultatType]}
             >
