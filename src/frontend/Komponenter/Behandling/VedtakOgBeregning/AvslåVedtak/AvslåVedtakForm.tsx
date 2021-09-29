@@ -13,7 +13,7 @@ const StyledHovedKnapp = styled(HovedKnappNAV)`
 `;
 
 interface Props {
-    lagBlankett: (e: FormEvent<HTMLFormElement>) => void;
+    lagreVedtak: (e: FormEvent<HTMLFormElement>) => void;
     avslåBegrunnelse: string;
     settAvslåBegrunnelse: (begrunnelse: string) => void;
     laster: boolean;
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const AvslåVedtakForm: React.FC<Props> = ({
-    lagBlankett,
+    lagreVedtak,
     avslåBegrunnelse,
     settAvslåBegrunnelse,
     feilmelding,
@@ -31,7 +31,7 @@ const AvslåVedtakForm: React.FC<Props> = ({
 }) => {
     return (
         <>
-            <StyledForm onSubmit={lagBlankett}>
+            <StyledForm onSubmit={lagreVedtak}>
                 <EnsligTextArea
                     value={avslåBegrunnelse}
                     onChange={(e) => {

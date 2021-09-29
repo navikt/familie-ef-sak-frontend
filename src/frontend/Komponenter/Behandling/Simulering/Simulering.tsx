@@ -1,19 +1,33 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import SimuleringTabellWrapper from './SimuleringTabellWrapper';
-import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { ISimulering } from './SimuleringTyper';
-import { AxiosRequestConfig } from 'axios';
+import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
+import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../App/typer/ressurs';
+import { useApp } from '../../../App/context/AppContext';
 
 export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const simuleringConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/simulering/${behandlingId}`,
-        }),
-        [behandlingId]
+    const { axiosRequest } = useApp();
+    const { harVedtaksresultatMedTilkjentYtelse, hentVedtak, vedtaksresultat } =
+        useHentVedtak(behandlingId);
+    const [simuleringsresultat, settSimuleringsresultat] = useState<Ressurs<ISimulering>>(
+        byggTomRessurs()
     );
-    const simuleringsresultat = useDataHenter<ISimulering, null>(simuleringConfig);
+
+    useEffect(() => {
+        if (harVedtaksresultatMedTilkjentYtelse()) {
+            axiosRequest<ISimulering, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/simulering/${behandlingId}`,
+            }).then((respons: Ressurs<ISimulering> | RessursFeilet) => {
+                settSimuleringsresultat(respons);
+            });
+        }
+    }, [vedtaksresultat, harVedtaksresultatMedTilkjentYtelse, behandlingId, axiosRequest]);
+
+    useEffect(() => {
+        hentVedtak();
+    }, [hentVedtak]);
 
     return (
         <DataViewer response={{ simuleringsresultat }}>

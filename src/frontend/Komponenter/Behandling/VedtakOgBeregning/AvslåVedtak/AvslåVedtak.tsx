@@ -6,6 +6,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
+import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 
 export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVedtak }> = ({
     behandling,
@@ -46,12 +47,11 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
         };
     };
 
-    const lagBlankett = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const avslåBlankett = () => {
         settLaster(true);
         axiosRequest<string, IAvslåVedtak>({
             method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-vedtak`,
+            url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-blankettvedtak`,
             data: vedtakRequest,
         })
             .then(håndterVedtaksresultat(`/behandling/${behandling.id}/blankett`))
@@ -60,12 +60,38 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
             });
     };
 
+    const avslåBehandling = () => {
+        settLaster(true);
+        axiosRequest<string, IAvslåVedtak>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
+            data: vedtakRequest,
+        })
+            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/brev`))
+            .finally(() => {
+                settLaster(false);
+            });
+    };
+
+    const lagreVedtak = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        switch (behandling.type) {
+            case Behandlingstype.BLANKETT:
+                avslåBlankett();
+                break;
+            case Behandlingstype.FØRSTEGANGSBEHANDLING:
+            case Behandlingstype.REVURDERING:
+                avslåBehandling();
+                break;
+        }
+    };
+
     return (
         <AvslåVedtakForm
             avslåBegrunnelse={avslåBegrunnelse}
             settAvslåBegrunnelse={settAvslåBegrunnelse}
             laster={laster ?? false}
-            lagBlankett={lagBlankett}
+            lagreVedtak={lagreVedtak}
             feilmelding={feilmelding}
             behandlingErRedigerbar={behandlingErRedigerbar}
         />

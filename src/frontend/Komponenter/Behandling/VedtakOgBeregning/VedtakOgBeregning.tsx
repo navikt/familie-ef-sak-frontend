@@ -1,13 +1,12 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { AxiosRequestConfig } from 'axios';
+import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { EBehandlingResultat, IVedtak } from '../../../App/typer/vedtak';
+import { EBehandlingResultat } from '../../../App/typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import SelectVedtaksresultat from './SelectVedtaksresultat';
 import { Behandling } from '../../../App/typer/fagsak';
+import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 
 interface Props {
     behandling: Behandling;
@@ -19,29 +18,21 @@ const Wrapper = styled.div`
 const VedtakOgBeregning: FC<Props> = ({ behandling }) => {
     const behandlingId = behandling.id;
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
-
-    const lagretVedtakConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
-        }),
-        [behandlingId]
-    );
-
-    const lagretVedtakResponse: Ressurs<IVedtak | undefined> = useDataHenter<
-        IVedtak | undefined,
-        null
-    >(lagretVedtakConfig);
+    const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
     useEffect(() => {
-        if (lagretVedtakResponse.status === RessursStatus.SUKSESS && lagretVedtakResponse.data) {
-            settResultatType(lagretVedtakResponse.data.resultatType);
+        hentVedtak();
+    }, [hentVedtak]);
+
+    useEffect(() => {
+        if (vedtak.status === RessursStatus.SUKSESS && vedtak.data) {
+            settResultatType(vedtak.data.resultatType);
         }
-    }, [lagretVedtakResponse]);
+    }, [vedtak]);
 
     return (
-        <DataViewer response={{ lagretVedtakResponse }}>
-            {({ lagretVedtakResponse }) => {
+        <DataViewer response={{ vedtak }}>
+            {({ vedtak }) => {
                 return (
                     <Wrapper>
                         <SelectVedtaksresultat
@@ -52,7 +43,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandling }) => {
                         <VedtaksresultatSwitch
                             vedtaksresultatType={resultatType}
                             behandling={behandling}
-                            lagretVedtak={lagretVedtakResponse}
+                            lagretVedtak={vedtak}
                         />
                     </Wrapper>
                 );

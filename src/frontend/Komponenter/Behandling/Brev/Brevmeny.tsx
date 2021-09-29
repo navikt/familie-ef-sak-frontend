@@ -10,6 +10,7 @@ import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
+import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -28,7 +29,9 @@ const datasett = 'ef-brev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
-
+    const { hentVedtak, vedtaksresultat, harVedtaksresultatMedTilkjentYtelse } = useHentVedtak(
+        props.behandlingId
+    );
     const defaultBrevmal = 'innvilgetOvergangsstonadHoved2';
     const [brevMal, settBrevmal] = useState<string>();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
@@ -65,14 +68,19 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        axiosRequest<TilkjentYtelse, null>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/tilkjentytelse/behandling/${props.behandlingId}`,
-        }).then((respons: Ressurs<TilkjentYtelse>) => {
-            settTilkjentYtelse(respons);
-        });
+        if (harVedtaksresultatMedTilkjentYtelse())
+            axiosRequest<TilkjentYtelse, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/tilkjentytelse/behandling/${props.behandlingId}`,
+            }).then((respons: Ressurs<TilkjentYtelse>) => {
+                settTilkjentYtelse(respons);
+            });
         // eslint-disable-next-line
-    }, [props.behandlingId]);
+    }, [harVedtaksresultatMedTilkjentYtelse, vedtaksresultat]);
+
+    useEffect(() => {
+        hentVedtak();
+    }, [hentVedtak]);
 
     useEffect(() => {
         if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
