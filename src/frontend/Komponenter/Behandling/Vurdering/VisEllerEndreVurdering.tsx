@@ -51,7 +51,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
     lagreVurdering,
     feilmelding,
 }) => {
-    const { behandlingErRedigerbar, hentBehandling, settIkkePersistertKomponent } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering)
     );
@@ -88,7 +88,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
                         mini
                         onClick={() => {
                             settRedigeringsmodus(Redigeringsmodus.REDIGERING);
-                            settIkkePersistertKomponent(vurdering.id);
                         }}
                     >
                         Vurder vilkår

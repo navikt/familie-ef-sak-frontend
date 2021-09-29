@@ -33,7 +33,7 @@ const EndreVurderingComponent: FC<{
     oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
-    const { nullstillIkkePersistertKomponent } = useBehandling(); // TODO: Løfte state opp (kanskje)
+    const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useBehandling();
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
@@ -68,9 +68,9 @@ const EndreVurderingComponent: FC<{
                     begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse) &&
                     !vurderinger.find((v) => v.regelId === nesteStegId)
             );
-
             oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
         }
+        settIkkePersistertKomponent(vurdering.id);
     };
 
     const oppdaterSvar = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
@@ -91,6 +91,7 @@ const EndreVurderingComponent: FC<{
 
             oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
         }
+        settIkkePersistertKomponent(vurdering.id);
     };
 
     return (
