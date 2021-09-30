@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Dialog from '../../../Felles/Ikoner/Dialog';
 import Mappe from '../../../Felles/Ikoner/Mappe';
 import Logg from '../../../Felles/Ikoner/Logg';
 import styled from 'styled-components';
@@ -52,13 +51,6 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
                 onClick={() => settAktiv(Høyremenyvalg.Logg)}
             >
                 <Logg />
-            </StyledIkon>
-            <StyledIkon
-                role={'button'}
-                erAktiv={aktiv === Høyremenyvalg.Dialog}
-                onClick={() => settAktiv(Høyremenyvalg.Dialog)}
-            >
-                <Dialog />
             </StyledIkon>
             <StyledIkon
                 role={'button'}
