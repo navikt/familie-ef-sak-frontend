@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlexDiv } from '../../../Komponenter/Oppgavebenk/OppgaveFiltrering';
 import styled from 'styled-components';
 import MånedVelger from './MånedVelger';
 import Årvelger from './ÅrVelger';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
+import { useEffectNotInitialRender } from '../../../App/hooks/felles/useEffectNotInitialRender';
 
 interface Props {
     className?: string;
@@ -43,7 +44,7 @@ const MånedÅrVelger: React.FC<Props> = ({
         årMånedInitiell ? årMånedInitiell.split('-')[1] : undefined
     );
 
-    useEffect(() => {
+    useEffectNotInitialRender(() => {
         if (år && måned) {
             onEndret(`${år}-${måned}`);
         } else {

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { VEDTAK_OG_BEREGNING } from '../konstanter';
 
 const StyledForm = styled.form`
     margin-top: 2rem;
@@ -29,12 +31,15 @@ const AvslåVedtakForm: React.FC<Props> = ({
     laster,
     behandlingErRedigerbar,
 }) => {
+    const { settIkkePersistertKomponent } = useBehandling();
+
     return (
         <>
             <StyledForm onSubmit={lagBlankett}>
                 <EnsligTextArea
                     value={avslåBegrunnelse}
                     onChange={(e) => {
+                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                         settAvslåBegrunnelse(e.target.value);
                     }}
                     label="Begrunnelse"

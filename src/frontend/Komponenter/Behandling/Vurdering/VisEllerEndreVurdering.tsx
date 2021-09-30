@@ -51,12 +51,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
     lagreVurdering,
     feilmelding,
 }) => {
-    const {
-        behandlingErRedigerbar,
-        hentBehandling,
-        antallIRedigeringsmodus,
-        settAntallIRedigeringsmodus,
-    } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering)
     );
@@ -93,7 +88,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
                         mini
                         onClick={() => {
                             settRedigeringsmodus(Redigeringsmodus.REDIGERING);
-                            settAntallIRedigeringsmodus(antallIRedigeringsmodus + 1);
                         }}
                     >
                         Vurder vilkår

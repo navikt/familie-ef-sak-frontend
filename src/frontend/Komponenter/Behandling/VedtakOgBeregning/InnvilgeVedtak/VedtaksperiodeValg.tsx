@@ -18,6 +18,7 @@ import { månederMellom, månedÅrTilDate } from '../../../../App/utils/dato';
 import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
+import { VEDTAK_OG_BEREGNING } from '../konstanter';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
   display: grid;
@@ -61,7 +62,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     valideringsfeil,
     setValideringsFeil,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, settIkkePersistertKomponent } = useBehandling();
     const oppdaterVedtakslisteElement = (
         index: number,
         property: EPeriodeProperty,
@@ -80,6 +81,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             },
             index
         );
+        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
     };
 
     return (
@@ -97,6 +99,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     behandlingErRedigerbar &&
                     index === vedtaksperiodeListe.value.length - 1 &&
                     index !== 0;
+
                 return (
                     <VedtakPeriodeContainer key={index} lesevisning={!behandlingErRedigerbar}>
                         <VedtakperiodeSelect

@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../konstanter';
 
 const StyledFormElement = styled.div`
     margin-bottom: 2rem;
@@ -28,7 +29,12 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
         lagretOpphørtVedtak?.begrunnelse || ''
     );
     const [feilmelding, settFeilmelding] = useState<string | undefined>();
-    const { behandlingErRedigerbar, hentBehandling, settAntallIRedigeringsmodus } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentBehandling,
+        nullstillIkkePersisterteKomponenter,
+        settIkkePersistertKomponent,
+    } = useBehandling();
     const { axiosRequest } = useApp();
     const history = useHistory();
 
@@ -59,7 +65,7 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
             case RessursStatus.SUKSESS:
                 history.push(`/behandling/${behandlingId}/simulering`);
                 hentBehandling.rerun();
-                settAntallIRedigeringsmodus(0);
+                nullstillIkkePersisterteKomponenter();
                 break;
             case RessursStatus.HENTER:
             case RessursStatus.IKKE_HENTET:
@@ -75,7 +81,10 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
                 <StyledFormElement>
                     <MånedÅrVelger
                         label={'Opphør fra og med'}
-                        onEndret={(årMåned) => årMåned && settOpphørtFra(årMåned)}
+                        onEndret={(årMåned) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            årMåned && settOpphørtFra(årMåned);
+                        }}
                         antallÅrTilbake={3}
                         antallÅrFrem={3}
                         disabled={!behandlingErRedigerbar}
@@ -88,7 +97,10 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
                         maxLength={0}
                         erLesevisning={!behandlingErRedigerbar}
                         value={opphørtBegrunnelse}
-                        onChange={(begrunnelse) => settOpphørtBegrunnelse(begrunnelse.target.value)}
+                        onChange={(begrunnelse) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            settOpphørtBegrunnelse(begrunnelse.target.value);
+                        }}
                     />
                 </StyledFormElement>
                 <StyledFormElement>
