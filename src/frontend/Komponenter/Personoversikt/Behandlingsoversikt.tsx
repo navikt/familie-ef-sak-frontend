@@ -18,8 +18,6 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
-import FritekstBrev from '../Behandling/Brev/FritekstBrev';
-import PdfVisning from '../../Felles/Pdf/PdfVisning';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -31,16 +29,11 @@ const KnappMedMargin = styled(Knapp)`
     margin: 1rem;
 `;
 
-const BrevWrapper = styled.div`
-    display: flex;
-`;
-
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
-    const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -76,10 +69,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                 hentFagsak();
             }
         });
-    };
-
-    const oppdaterBrevRessurs = (respons: Ressurs<string>) => {
-        settBrevRessurs(respons);
     };
 
     useEffect(() => {
@@ -149,13 +138,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                             som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
                         </AlertStripeFeil>
                     )}
-                    <BrevWrapper>
-                        <FritekstBrev
-                            oppdaterBrevressurs={oppdaterBrevRessurs}
-                            fagsakId={fagsakId}
-                        />
-                        <PdfVisning pdfFilInnhold={brevRessurs} />
-                    </BrevWrapper>
                 </>
             )}
         </DataViewer>
