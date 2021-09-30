@@ -23,10 +23,14 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         useHentBehandlingHistorikk(behandlingId);
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
         useHentTotrinnskontroll(behandlingId);
-
-    const [antallIRedigeringsmodus, settAntallIRedigeringsmodus] = useState<number>(0);
-    const [ulagretData, settUlagretData] = useState<boolean>(antallIRedigeringsmodus !== 0);
-    useEffect(() => settUlagretData(antallIRedigeringsmodus > 0), [antallIRedigeringsmodus]);
+    const [ikkePersisterteKomponenter, settIkkePersisterteKomponenter] = useState<Set<string>>(
+        new Set()
+    );
+    const [ulagretData, settUlagretData] = useState<boolean>(ikkePersisterteKomponenter.size > 0);
+    useEffect(
+        () => settUlagretData(ikkePersisterteKomponenter.size > 0),
+        [ikkePersisterteKomponenter]
+    );
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
@@ -50,7 +54,17 @@ const [BehandlingProvider, useBehandling] = constate(() => {
             ),
         [behandling]
     );
-
+    const settIkkePersistertKomponent = (komponentId: string) => {
+        settIkkePersisterteKomponenter(new Set(ikkePersisterteKomponenter).add(komponentId));
+    };
+    const nullstillIkkePersistertKomponent = (komponentId: string) => {
+        const kopi = new Set(ikkePersisterteKomponenter);
+        kopi.delete(komponentId);
+        settIkkePersisterteKomponenter(kopi);
+    };
+    const nullstillIkkePersisterteKomponenter = () => {
+        settIkkePersisterteKomponenter(new Set());
+    };
     return {
         behandling,
         behandlingErRedigerbar,
@@ -62,9 +76,10 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentTotrinnskontroll,
         hentBehandlingshistorikk,
         regler,
-        antallIRedigeringsmodus,
-        settAntallIRedigeringsmodus,
         ulagretData,
+        settIkkePersistertKomponent,
+        nullstillIkkePersistertKomponent,
+        nullstillIkkePersisterteKomponenter,
     };
 });
 
