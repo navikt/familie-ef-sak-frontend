@@ -18,7 +18,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     SKRIFTLIG_AVTALE_OM_DELT_BOSTED: 'Har foreldrene inngått skriftlig avtale om delt bosted?',
     NÆRE_BOFORHOLD: 'Har bruker og den andre forelderen nære boforhold?',
     MER_AV_DAGLIG_OMSORG: 'Har bruker klart mer av den daglige omsorgen?',
-    OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Har bruker omsorgen for egne/adopterte barn? ',
+    OMSORG_FOR_EGNE_ELLER_ADOPTERTE_BARN: 'Søker brukeren stønad for egne/adopterte barn? ',
     HAR_FÅTT_ELLER_VENTER_NYTT_BARN_MED_SAMME_PARTNER:
         'Har søker fått nytt barn med samme partner (født etter 01.01.2016) eller venter nytt barn med samme partner, etter at en av foreldrene tidligere har mottatt eller fortsatt mottar stønad for et annet felles barn?',
     SAGT_OPP_ELLER_REDUSERT:
