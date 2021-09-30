@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { BrevStruktur, DokumentNavn } from './BrevTyper';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import {
+    byggSuksessRessurs,
+    byggTomRessurs,
+    Ressurs,
+    RessursStatus,
+} from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -10,7 +15,10 @@ import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
-import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
+import {
+    harVedtaksresultatMedTilkjentYtelse,
+    useHentVedtak,
+} from '../../../App/hooks/useHentVedtak';
 import FritekstBrev from './FritekstBrev';
 
 export interface BrevmenyProps {
@@ -30,16 +38,14 @@ const datasett = 'ef-brev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
-    const { hentVedtak, vedtaksresultat, harVedtaksresultatMedTilkjentYtelse } = useHentVedtak(
-        props.behandlingId
-    );
+    const { hentVedtak, vedtaksresultat } = useHentVedtak(props.behandlingId);
     const defaultBrevmal = 'innvilgetOvergangsstonadHoved2';
     const [brevMal, settBrevmal] = useState<string>();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
     );
-    const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse>>(
+    const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
         byggTomRessurs()
     );
 
@@ -69,13 +75,16 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (harVedtaksresultatMedTilkjentYtelse())
+        if (harVedtaksresultatMedTilkjentYtelse(vedtaksresultat)) {
             axiosRequest<TilkjentYtelse, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/tilkjentytelse/behandling/${props.behandlingId}`,
             }).then((respons: Ressurs<TilkjentYtelse>) => {
                 settTilkjentYtelse(respons);
             });
+        } else {
+            settTilkjentYtelse(byggSuksessRessurs<TilkjentYtelse | undefined>(undefined));
+        }
         // eslint-disable-next-line
     }, [harVedtaksresultatMedTilkjentYtelse, vedtaksresultat]);
 

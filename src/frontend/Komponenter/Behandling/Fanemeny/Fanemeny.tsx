@@ -86,29 +86,25 @@ const Fanemeny: FC = () => {
                     <StickyMedBoxShadow>
                         <StyledFanemeny>
                             {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
-                                <>
-                                    <StyledNavLink
-                                        key={side.navn}
-                                        to={`/behandling/${behandlingId}/${side.href}`}
-                                        activeClassName="aktiv"
-                                        onClick={(e) => {
-                                            if (
-                                                ulagretData &&
-                                                aktivSide &&
-                                                aktivSide.navn !== side.navn &&
-                                                erPåInngangsvilkårAktivitetEllerVedtakFane(
-                                                    aktivSide
-                                                )
-                                            ) {
-                                                e.preventDefault();
-                                                settValgtSide(side);
-                                                settVisModal(true);
-                                            }
-                                        }}
-                                    >
-                                        <Normaltekst>{side.navn}</Normaltekst>
-                                    </StyledNavLink>
-                                </>
+                                <StyledNavLink
+                                    key={side.navn}
+                                    to={`/behandling/${behandlingId}/${side.href}`}
+                                    activeClassName="aktiv"
+                                    onClick={(e) => {
+                                        if (
+                                            ulagretData &&
+                                            aktivSide &&
+                                            aktivSide.navn !== side.navn &&
+                                            erPåInngangsvilkårAktivitetEllerVedtakFane(aktivSide)
+                                        ) {
+                                            e.preventDefault();
+                                            settValgtSide(side);
+                                            settVisModal(true);
+                                        }
+                                    }}
+                                >
+                                    <Normaltekst>{side.navn}</Normaltekst>
+                                </StyledNavLink>
                             ))}
                         </StyledFanemeny>
                     </StickyMedBoxShadow>
