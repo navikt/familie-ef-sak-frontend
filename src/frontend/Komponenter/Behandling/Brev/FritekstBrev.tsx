@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Input, Textarea } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -129,20 +129,16 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
     const endreInnholdAvsnitt = (radId: string) => {
         return (e: ChangeEvent<HTMLTextAreaElement>) => {
             const oppdaterteAvsnitt = avsnitt.map((rad) => {
-                return rad.id === radId
-                    ? { ...rad, innhold: (e.target as HTMLTextAreaElement).value }
-                    : rad;
+                return rad.id === radId ? { ...rad, innhold: e.target.value } : rad;
             });
             settAvsnitt(oppdaterteAvsnitt);
         };
     };
 
     const endreDeloverskriftAvsnitt = (radId: string) => {
-        return (e: SyntheticEvent<HTMLInputElement>) => {
+        return (e: ChangeEvent<HTMLInputElement>) => {
             const oppdaterteAvsnitt = avsnitt.map((rad) => {
-                return rad.id === radId
-                    ? { ...rad, deloverskrift: (e.target as HTMLInputElement).value }
-                    : rad;
+                return rad.id === radId ? { ...rad, deloverskrift: e.target.value } : rad;
             });
             settAvsnitt(oppdaterteAvsnitt);
         };
