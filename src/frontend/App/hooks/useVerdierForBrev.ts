@@ -9,13 +9,14 @@ enum EBehandlingFlettefelt {
 }
 
 export const useVerdierForBrev = (
-    tilkjentYtelse: Ressurs<TilkjentYtelse>
+    tilkjentYtelse: Ressurs<TilkjentYtelse | undefined>
 ): { flettefeltStore: { [navn: string]: string } } => {
     const [flettefeltStore, settFlettefeltStore] = useState<{ [navn: string]: string }>({});
 
     useEffect(() => {
         if (
             tilkjentYtelse.status === RessursStatus.SUKSESS &&
+            tilkjentYtelse.data &&
             tilkjentYtelse.data.andeler.length > 0
         ) {
             const { andeler } = tilkjentYtelse.data;
