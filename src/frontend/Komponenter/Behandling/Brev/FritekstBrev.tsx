@@ -149,7 +149,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
     return (
         <StyledFrittståendeBrev>
-            <h1>Frittstående brev</h1>
+            <h1>Fritekstbrev</h1>
             <BrevKolonner>
                 <Input
                     label="Overskrift"
