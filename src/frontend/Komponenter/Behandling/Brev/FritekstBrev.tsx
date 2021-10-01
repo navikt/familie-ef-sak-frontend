@@ -14,6 +14,17 @@ import { useDebouncedCallback } from 'use-debounce';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
+
+enum StønadOgBrevType {
+    MANGELBREV_OVERGANGSSTØNAD = 'MANGELBREV_OVERGANGSSTØNAD',
+    MANGELBREV_BARNETILSYN = 'MANGELBREV_BARNETILSYN',
+    MANGELBREV_SKOLEPENGER = 'MANGELBREV_SKOLEPENGER',
+    INFOBREV_OVERGANGSSTØNAD = 'INFOBREV_OVERGANGSSTØNAD',
+    INFOBREV_BARNETILSYN = 'INFOBREV_BARNETILSYN',
+    INFOBREV_SKOLEPENGER = 'INFOBREV_SKOLEPENGER',
+}
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
@@ -31,7 +42,7 @@ const Innholdsrad = styled(Panel)`
     grid-template-columns: 90% 10%;
 `;
 
-const Knapper = styled.div`
+const LeggTilKnappWrapper = styled.div`
     margin-top: 1.5rem;
     display: flex;
     justify-content: flex-start;
@@ -40,6 +51,15 @@ const Knapper = styled.div`
 const BrevKolonner = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+const ModalKnapper = styled.div`
+    margin-top: 1rem;
+
+    width: 70%;
+
+    display: flex;
+    justify-content: space-between;
 `;
 
 type Props = {
@@ -60,9 +80,21 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
     const [stønadType, settStønadType] = useState<string>();
     const [brevType, settBrevType] = useState<string>();
 
+    const [stønadOgBrevType, settStønadOgBrevType] = useState<StønadOgBrevType>();
+
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
+
+    const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest } = useApp();
+
+    useEffect(() => {
+        if (!(stønadType && brevType)) return;
+
+        const stønadOgBrev = `${brevType}_${stønadType}` as StønadOgBrevType;
+
+        settStønadOgBrevType(stønadOgBrev);
+    }, [stønadType, brevType]);
 
     const personopplysningerFagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -98,7 +130,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     avsnitt,
                     fagsakId,
                     stønadType,
-                    brevType,
+                    brevType: stønadOgBrevType,
                 },
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
@@ -179,9 +211,9 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     }}
                     value={stønadType}
                 >
-                    <option value={'overgangsstonad'}>Overgangsstønad</option>
-                    <option value={'barnetilsyn'}>Barnetilsyn</option>
-                    <option value={'skolepenger'}>Skolepenger</option>
+                    <option value={'OVERGANGSSTØNAD'}>Overgangsstønad</option>
+                    <option value={'BARNETILSYN'}>Barnetilsyn</option>
+                    <option value={'SKOLEPENGER'}>Skolepenger</option>
                 </StyledSelect>
 
                 <StyledSelect
@@ -192,8 +224,8 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     }}
                     value={brevType}
                 >
-                    <option value={'infobrev'}>Infobrev</option>
-                    <option value={'mangelbrev'}>Mangelbrev</option>
+                    <option value={'INFOBREV'}>Infobrev</option>
+                    <option value={'MANGELBREV'}>Mangelbrev</option>
                 </StyledSelect>
 
                 {avsnitt.map((rad) => {
@@ -224,10 +256,30 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     );
                 })}
 
-                <Knapper>
+                <LeggTilKnappWrapper>
                     <LeggTilKnapp onClick={leggTilRad} knappetekst="Legg til seksjon" />
-                </Knapper>
+                </LeggTilKnappWrapper>
+
+                <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>
             </BrevKolonner>
+
+            {visModal && (
+                <UIModalWrapper
+                    modal={{
+                        tittel: 'Bekreft utsending av brev',
+                        lukkKnapp: true,
+                        visModal: true,
+                        onClose: () => {
+                            settVisModal(false);
+                        },
+                    }}
+                >
+                    <ModalKnapper>
+                        <Knapp onClick={() => settVisModal(false)}>Avbryt</Knapp>
+                        <Hovedknapp>Send brev</Hovedknapp>
+                    </ModalKnapper>
+                </UIModalWrapper>
+            )}
         </StyledFrittståendeBrev>
     );
 };
