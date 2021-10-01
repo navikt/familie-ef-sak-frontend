@@ -151,7 +151,7 @@ export const InnvilgeVedtak: React.FC<{
         settLaster(true);
         axiosRequest<string, IInnvilgeVedtak>({
             method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-vedtak`,
+            url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-blankettvedtak`,
             data: vedtaksRequest,
         })
             .then(håndterVedtaksresultat(`/behandling/${behandling.id}/blankett`))
