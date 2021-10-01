@@ -16,15 +16,11 @@ import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
-
-enum StønadOgBrevType {
-    MANGELBREV_OVERGANGSSTØNAD = 'MANGELBREV_OVERGANGSSTØNAD',
-    MANGELBREV_BARNETILSYN = 'MANGELBREV_BARNETILSYN',
-    MANGELBREV_SKOLEPENGER = 'MANGELBREV_SKOLEPENGER',
-    INFOBREV_OVERGANGSSTØNAD = 'INFOBREV_OVERGANGSSTØNAD',
-    INFOBREV_BARNETILSYN = 'INFOBREV_BARNETILSYN',
-    INFOBREV_SKOLEPENGER = 'INFOBREV_SKOLEPENGER',
-}
+import {
+    FrittståendeBrevStønadType,
+    FrittståendeBrevType,
+    FrittståendeBrevStønadOgBrevType,
+} from './BrevTyper';
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
@@ -77,10 +73,12 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         },
     ];
 
-    const [stønadType, settStønadType] = useState<string>();
-    const [brevType, settBrevType] = useState<string>();
+    const [stønadType, settStønadType] = useState<FrittståendeBrevStønadType>(
+        FrittståendeBrevStønadType.OVERGANGSSTØNAD
+    );
+    const [brevType, settBrevType] = useState<FrittståendeBrevType>(FrittståendeBrevType.INFOBREV);
 
-    const [stønadOgBrevType, settStønadOgBrevType] = useState<StønadOgBrevType>();
+    const [stønadOgBrevType, settStønadOgBrevType] = useState<FrittståendeBrevStønadOgBrevType>();
 
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
@@ -91,7 +89,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
     useEffect(() => {
         if (!(stønadType && brevType)) return;
 
-        const stønadOgBrev = `${brevType}_${stønadType}` as StønadOgBrevType;
+        const stønadOgBrev = `${brevType}_${stønadType}` as FrittståendeBrevStønadOgBrevType;
 
         settStønadOgBrevType(stønadOgBrev);
     }, [stønadType, brevType]);
@@ -129,8 +127,6 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     overskrift,
                     avsnitt,
                     fagsakId,
-                    stønadType,
-                    brevType: stønadOgBrevType,
                 },
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
@@ -207,25 +203,27 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     label="Stønadtype"
                     defaultValue="overgangsstonad"
                     onChange={(e) => {
-                        settStønadType(e.target.value);
+                        settStønadType(e.target.value as FrittståendeBrevStønadType);
                     }}
                     value={stønadType}
                 >
-                    <option value={'OVERGANGSSTØNAD'}>Overgangsstønad</option>
-                    <option value={'BARNETILSYN'}>Barnetilsyn</option>
-                    <option value={'SKOLEPENGER'}>Skolepenger</option>
+                    <option value={FrittståendeBrevStønadType.OVERGANGSSTØNAD}>
+                        Overgangsstønad
+                    </option>
+                    <option value={FrittståendeBrevStønadType.BARNETILSYN}>Barnetilsyn</option>
+                    <option value={FrittståendeBrevStønadType.SKOLEPENGER}>Skolepenger</option>
                 </StyledSelect>
 
                 <StyledSelect
                     label="Brevtype"
                     defaultValue="infobrev"
                     onChange={(e) => {
-                        settBrevType(e.target.value);
+                        settBrevType(e.target.value as FrittståendeBrevType);
                     }}
                     value={brevType}
                 >
-                    <option value={'INFOBREV'}>Infobrev</option>
-                    <option value={'MANGELBREV'}>Mangelbrev</option>
+                    <option value={FrittståendeBrevType.INFOBREV}>Infobrev</option>
+                    <option value={FrittståendeBrevType.MANGELBREV}>Mangelbrev</option>
                 </StyledSelect>
 
                 {avsnitt.map((rad) => {
