@@ -13,7 +13,7 @@ const BehandlingRoutes: React.FC = () => {
             <Redirect
                 exact={true}
                 from="/behandling/:behandlingId/"
-                to="/behandling/:behandlingId/inngangsvilkar"
+                to="/behandling/:behandlingId/tidligere-vedtaksperioder"
             />
             {filtrerSiderEtterBehandlingstype(sider, behandlingSuksess.data).map((side) => (
                 <Route key={side.navn} exact={true} path={`/behandling/:behandlingId/${side.href}`}>
