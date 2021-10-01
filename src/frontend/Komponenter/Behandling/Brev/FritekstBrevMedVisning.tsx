@@ -12,12 +12,16 @@ const BrevMedVisning = styled.div`
     display: flex;
 `;
 
-const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId }) => {
+const StyledFritekstBrev = styled(FritekstBrev)`
+    margin-right: 10px;
+`;
+
+const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
 
     return (
         <BrevMedVisning>
-            <FritekstBrev oppdaterBrevressurs={oppdaterBrevressurs} fagsakId={fagsakId} />
+            <StyledFritekstBrev oppdaterBrevressurs={oppdaterBrevressurs} fagsakId={fagsakId} />
             <PdfVisning pdfFilInnhold={brevRessurs} />
         </BrevMedVisning>
     );

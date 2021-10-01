@@ -3,19 +3,26 @@ import styled from 'styled-components';
 import { Input, Textarea } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import Panel from 'nav-frontend-paneler';
-import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { IAvsnitt, IFritekstBrev } from '../../../App/typer/brev';
 import { v4 as uuidv4 } from 'uuid';
+import { Select } from 'nav-frontend-skjema';
 import { useDebouncedCallback } from 'use-debounce';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
+import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
+    margin-right: 2rem;
+    width: 50%;
+`;
+
+const StyledSelect = styled(Select)`
+    margin-top: 1rem;
 `;
 
 const Innholdsrad = styled(Panel)`
@@ -25,9 +32,9 @@ const Innholdsrad = styled(Panel)`
 `;
 
 const Knapper = styled.div`
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 `;
 
 const BrevKolonner = styled.div`
@@ -49,6 +56,9 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
             id: uuidv4(),
         },
     ];
+
+    const [stønadType, settStønadType] = useState<string>();
+    const [brevType, settBrevType] = useState<string>();
 
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
@@ -87,6 +97,8 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     overskrift,
                     avsnitt,
                     fagsakId,
+                    stønadType,
+                    brevType,
                 },
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
@@ -159,6 +171,31 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     }}
                 />
 
+                <StyledSelect
+                    label="Stønadtype"
+                    defaultValue="overgangsstonad"
+                    onChange={(e) => {
+                        settStønadType(e.target.value);
+                    }}
+                    value={stønadType}
+                >
+                    <option value={'overgangsstonad'}>Overgangsstønad</option>
+                    <option value={'barnetilsyn'}>Barnetilsyn</option>
+                    <option value={'skolepenger'}>Skolepenger</option>
+                </StyledSelect>
+
+                <StyledSelect
+                    label="Brevtype"
+                    defaultValue="infobrev"
+                    onChange={(e) => {
+                        settBrevType(e.target.value);
+                    }}
+                    value={brevType}
+                >
+                    <option value={'infobrev'}>Infobrev</option>
+                    <option value={'mangelbrev'}>Mangelbrev</option>
+                </StyledSelect>
+
                 {avsnitt.map((rad) => {
                     const deloverskriftId = `deloverskrift-${rad.id}`;
                     const innholdId = `innhold-${rad.id}`;
@@ -188,7 +225,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                 })}
 
                 <Knapper>
-                    <Knapp onClick={leggTilRad}>Legg til nytt avsnitt</Knapp>
+                    <LeggTilKnapp onClick={leggTilRad} knappetekst="Legg til seksjon" />
                 </Knapper>
             </BrevKolonner>
         </StyledFrittståendeBrev>
