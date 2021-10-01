@@ -48,7 +48,7 @@ export const OpprettDummyBehandling: React.FC = () => {
                 );
                 return;
             case RessursStatus.SUKSESS:
-                history.push(`/behandling/${nyBehandlingRessurs.data}/inngangsvilkar`);
+                history.push(`/behandling/${nyBehandlingRessurs.data}/tidligere-vedtaksperioder`);
         }
     }, [nyBehandlingRessurs, history]);
     const harSattPersonIdent = personIdent.length === 11;
