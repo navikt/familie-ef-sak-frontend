@@ -131,6 +131,8 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     overskrift,
                     avsnitt,
                     fagsakId,
+                    stønadType,
+                    brevType: stønadOgBrevType,
                 },
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
@@ -284,8 +286,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                 <LeggTilKnappWrapper>
                     <LeggTilKnapp onClick={leggTilRad} knappetekst="Legg til seksjon" />
                 </LeggTilKnappWrapper>
-
-                <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>
+                {fagsakId && <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>}
             </BrevKolonner>
 
             {visModal && (
