@@ -55,6 +55,27 @@ export interface DokumentNavn {
     visningsnavn: string;
 }
 
+export interface IAvsnitt {
+    deloverskrift: string;
+    innhold: string;
+    id: string;
+}
+
+export interface IFritekstBrev {
+    overskrift: string;
+    avsnitt: IAvsnitt[];
+    fagsakId?: string;
+    behandlingId?: string;
+}
+
+export interface IFrittståendeBrev {
+    overskrift: string;
+    avsnitt: IAvsnitt[];
+    fagsakId: string;
+    stønadType: string;
+    brevType: string;
+}
+
 export enum FrittståendeBrevType {
     INFOBREV = 'INFOBREV',
     MANGELBREV = 'MANGELBREV',

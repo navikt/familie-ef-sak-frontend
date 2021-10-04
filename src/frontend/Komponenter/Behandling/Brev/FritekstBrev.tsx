@@ -7,7 +7,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { IAvsnitt, IFritekstBrev } from '../../../App/typer/brev';
 import { v4 as uuidv4 } from 'uuid';
 import { Select } from 'nav-frontend-skjema';
 import { useDebouncedCallback } from 'use-debounce';
@@ -15,11 +14,15 @@ import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
     FrittståendeBrevStønadType,
     FrittståendeBrevType,
     FrittståendeBrevStønadOgBrevType,
+    IAvsnitt,
+    IFritekstBrev,
+    IFrittståendeBrev,
 } from './BrevTyper';
 
 const StyledFrittståendeBrev = styled.div`
@@ -82,6 +85,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
+    const [utsendingFeilet, settUtsendingFeilet] = useState(false);
 
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest } = useApp();
@@ -144,6 +148,29 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
             });
         }
+    };
+
+    const sendBrev = () => {
+        settUtsendingFeilet(false);
+        if (!(fagsakId && stønadType && stønadOgBrevType)) return;
+
+        axiosRequest<string, IFrittståendeBrev>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/frittstaende-brev/send`,
+            data: {
+                overskrift,
+                avsnitt,
+                fagsakId,
+                stønadType,
+                brevType: stønadOgBrevType,
+            },
+        }).then((respons: Ressurs<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settVisModal(false);
+            } else {
+                settUtsendingFeilet(true);
+            }
+        });
     };
 
     const leggTilRad = () => {
@@ -272,9 +299,10 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                         },
                     }}
                 >
+                    {utsendingFeilet && <AlertStripeFeil>Utsending feilet.</AlertStripeFeil>}
                     <ModalKnapper>
                         <Knapp onClick={() => settVisModal(false)}>Avbryt</Knapp>
-                        <Hovedknapp>Send brev</Hovedknapp>
+                        <Hovedknapp onClick={sendBrev}>Send brev</Hovedknapp>
                     </ModalKnapper>
                 </UIModalWrapper>
             )}
