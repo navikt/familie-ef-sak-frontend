@@ -175,7 +175,7 @@ app.get('/familie-ef-sak/api/soknad/:behandlingId/datoer', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`vedtak-søknad-data.json`)), delayMs);
 });
 
-app.post('/familie-ef-sak/api/beregning/:behandlingId/lagre-vedtak', (req, res) => {
+app.post('/familie-ef-sak/api/beregning/:behandlingId/lagre-blankettvedtak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`lagre-vedtak.json`)), delayMs);
 });
 

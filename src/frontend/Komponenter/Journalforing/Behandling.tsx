@@ -6,7 +6,7 @@ import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Behandling, Fagsak } from '../../App/typer/fagsak';
+import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
@@ -29,6 +29,19 @@ const StyledNyBehandlingRad = styled.tr`
 const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
     const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
+
+    const utledRiktigBehandlingstype = (tidligereBehandlinger: Behandling[]): Behandlingstype => {
+        const harIverksattTidligereBehandlinger =
+            tidligereBehandlinger.filter(
+                (tidligereBehandling) =>
+                    tidligereBehandling.resultat !== BehandlingResultat.ANNULERT &&
+                    tidligereBehandling.resultat !== BehandlingResultat.AVSLÅTT
+            ).length > 0;
+
+        return harIverksattTidligereBehandlinger
+            ? Behandlingstype.REVURDERING
+            : Behandlingstype.FØRSTEGANGSBEHANDLING;
+    };
 
     const håndterCheck = (behandlingsId: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,9 +119,9 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
                                 <Flatknapp
                                     onClick={() => {
                                         settNyBehandling({
-                                            behandlingstype: fagsak.behandlinger.length
-                                                ? Behandlingstype.REVURDERING
-                                                : Behandlingstype.FØRSTEGANGSBEHANDLING,
+                                            behandlingstype: utledRiktigBehandlingstype(
+                                                fagsak.behandlinger
+                                            ),
                                         });
                                     }}
                                 >
