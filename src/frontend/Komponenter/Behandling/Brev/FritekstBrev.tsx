@@ -228,7 +228,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
                 <StyledSelect
                     label="Stønadtype"
-                    defaultValue="overgangsstonad"
+                    defaultValue={FrittståendeBrevStønadType.OVERGANGSSTØNAD}
                     onChange={(e) => {
                         settStønadType(e.target.value as FrittståendeBrevStønadType);
                     }}
@@ -243,7 +243,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
                 <StyledSelect
                     label="Brevtype"
-                    defaultValue="infobrev"
+                    defaultValue={FrittståendeBrevType.INFOBREV}
                     onChange={(e) => {
                         settBrevType(e.target.value as FrittståendeBrevType);
                     }}
