@@ -14,7 +14,7 @@ import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
     FrittståendeBrevStønadType,
@@ -86,6 +86,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
     const [utsendingFeilet, settUtsendingFeilet] = useState(false);
+    const [utsendingSuksess, setUtsendingSuksess] = useState(false);
 
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest } = useApp();
@@ -152,8 +153,15 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         }
     };
 
+    const lukkModal = () => {
+        settVisModal(false);
+        settUtsendingFeilet(false);
+        setUtsendingSuksess(false);
+    };
+
     const sendBrev = () => {
         settUtsendingFeilet(false);
+        setUtsendingSuksess(false);
         if (!(fagsakId && stønadType && stønadOgBrevType)) return;
 
         axiosRequest<string, IFrittståendeBrev>({
@@ -168,7 +176,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
             },
         }).then((respons: Ressurs<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
-                settVisModal(false);
+                setUtsendingSuksess(true);
             } else {
                 settUtsendingFeilet(true);
             }
@@ -296,14 +304,19 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                         lukkKnapp: true,
                         visModal: true,
                         onClose: () => {
-                            settVisModal(false);
+                            lukkModal();
                         },
                     }}
                 >
                     {utsendingFeilet && <AlertStripeFeil>Utsending feilet.</AlertStripeFeil>}
+                    {utsendingSuksess && (
+                        <AlertStripeSuksess>Brevet er nå sendt.</AlertStripeSuksess>
+                    )}
                     <ModalKnapper>
-                        <Knapp onClick={() => settVisModal(false)}>Avbryt</Knapp>
-                        <Hovedknapp onClick={sendBrev}>Send brev</Hovedknapp>
+                        <Knapp onClick={lukkModal}>Avbryt</Knapp>
+                        <Hovedknapp onClick={sendBrev} disabled={utsendingSuksess}>
+                            Send brev
+                        </Hovedknapp>
                     </ModalKnapper>
                 </UIModalWrapper>
             )}
