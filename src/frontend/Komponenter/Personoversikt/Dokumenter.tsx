@@ -9,22 +9,20 @@ import styled from 'styled-components';
 import { base64toBlob } from '../../App/utils/utils';
 import { saveAs } from 'file-saver';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
-import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
+import { DokumentProps } from '@navikt/familie-dokumentliste';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { useApp } from '../../App/context/AppContext';
-import { byggTomRessurs } from '../../App/typer/ressurs';
 import { Hovedknapp } from 'nav-frontend-knapper';
-
-const StyledDokumentliste = styled(Dokumentliste)`
-    .typo-element,
-    .typo-undertekst {
-        text-align: left;
-    }
-`;
+import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper';
+import Mappe from '../../Felles/Ikoner/Mappe';
+import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
+import { Element } from 'nav-frontend-typografi';
+import Lenke from 'nav-frontend-lenker';
 
 const DokumentVisning = styled.div`
     display: flex;
+    flex-direction: column;
 `;
 
 const lagDokumentliste = (dokumentResponse: any) => {
@@ -100,30 +98,60 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
 
     const dokumentResponse = useDataHenter<any[], null>(dokumentConfig);
 
+    const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
+        <Td width={`${width}%`}>
+            <Element>{text}</Element>
+        </Td>
+    );
+
     return (
         <DataViewer response={{ dokumentResponse }}>
             {({ dokumentResponse }) => {
                 const dokumentListe = lagDokumentliste(dokumentResponse);
 
                 return (
-                    <DokumentVisning>
-                        <StyledDokumentliste
-                            dokumenter={dokumentListe}
-                            onClick={hentDokument}
-                        ></StyledDokumentliste>
-                        {dokumentFil && (
-                            <div>
-                                <PdfVisning pdfFilInnhold={dokumentFil} />
-                                <Hovedknapp
-                                    onClick={() => {
-                                        lastNedDokument(vistDokument);
-                                    }}
-                                >
-                                    Last ned dokument
-                                </Hovedknapp>
-                            </div>
-                        )}
-                    </DokumentVisning>
+                    <>
+                        <DokumentVisning>
+                            <TabellWrapper>
+                                <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
+                                <table className="tabell">
+                                    <thead>
+                                        <Kolonnetittel text={'Dato'} width={35} />
+                                        <Kolonnetittel text={'Tittel'} width={35} />
+                                    </thead>
+                                    <tbody>
+                                        {dokumentListe.map((dokument: any, indeks: number) => {
+                                            return (
+                                                <tr key={indeks}>
+                                                    <Td>{dokument.dato}</Td>
+                                                    <Td>
+                                                        <Lenke
+                                                            onClick={() => hentDokument(dokument)}
+                                                            href={'#'}
+                                                        >
+                                                            {dokument.tittel}
+                                                        </Lenke>
+                                                    </Td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </TabellWrapper>
+                            {dokumentFil && (
+                                <div>
+                                    <PdfVisning pdfFilInnhold={dokumentFil} />
+                                    <Hovedknapp
+                                        onClick={() => {
+                                            lastNedDokument(vistDokument);
+                                        }}
+                                    >
+                                        Last ned dokument
+                                    </Hovedknapp>
+                                </div>
+                            )}
+                        </DokumentVisning>
+                    </>
                 );
             }}
         </DataViewer>
