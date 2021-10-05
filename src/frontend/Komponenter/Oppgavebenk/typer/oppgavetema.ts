@@ -17,6 +17,7 @@ export type Oppgavetype =
     | 'VUR'
     | 'VURD_HENV'
     | 'VUR_KONS_YTE'
+    | 'VURD_LIVS'
     | 'VUR_SVAR';
 
 export const oppgaveTypeTilTekst: Record<Oppgavetype, string> = {
@@ -38,6 +39,7 @@ export const oppgaveTypeTilTekst: Record<Oppgavetype, string> = {
     VUR: 'Vurder dokument',
     VURD_HENV: 'Vurder henvendelse',
     VUR_KONS_YTE: 'Vurder konsekvens for ytelse',
+    VURD_LIVS: 'Vurder livshendelse',
     VUR_SVAR: 'Vurder svar',
 };
 
