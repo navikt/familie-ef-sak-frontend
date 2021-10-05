@@ -14,6 +14,7 @@ import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { useApp } from '../../App/context/AppContext';
 import { byggTomRessurs } from '../../App/typer/ressurs';
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,
@@ -44,8 +45,30 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
 }) => {
     const { axiosRequest } = useApp();
     const [dokumentFil, settDokumentFil] = useState<any>();
+    const [vistDokument, settVistDokument] = useState<any>();
+    const [lastNedDokumentFeilet, settLastNedDokumentFeilet] = useState<string>();
 
     const hentDokument = (dokument: DokumentProps) => {
+        axiosRequest<string, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
+        }).then((res: Ressurs<string>) => {
+            switch (res.status) {
+                case RessursStatus.SUKSESS:
+                    settDokumentFil(res);
+                    settVistDokument(dokument);
+                    break;
+                case RessursStatus.FUNKSJONELL_FEIL:
+                case RessursStatus.IKKE_TILGANG:
+                case RessursStatus.FEILET:
+                    break;
+                default:
+                    break;
+            }
+        });
+    };
+
+    const lastNedDokument = (dokument: DokumentProps) => {
         axiosRequest<string, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
@@ -54,11 +77,12 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 dokument.tittel || dokument.filnavn || `dokument-${dokument.journalpostId}`;
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    settDokumentFil(res);
+                    saveAs(base64toBlob(res.data, 'application/pdf'), `${dokumentnavn}.pdf`);
                     break;
                 case RessursStatus.FUNKSJONELL_FEIL:
                 case RessursStatus.IKKE_TILGANG:
                 case RessursStatus.FEILET:
+                    settLastNedDokumentFeilet(res.frontendFeilmelding);
                     break;
                 default:
                     break;
@@ -87,7 +111,18 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                             dokumenter={dokumentListe}
                             onClick={hentDokument}
                         ></StyledDokumentliste>
-                        {dokumentFil && <PdfVisning pdfFilInnhold={dokumentFil} />}
+                        {dokumentFil && (
+                            <div>
+                                <PdfVisning pdfFilInnhold={dokumentFil} />
+                                <Hovedknapp
+                                    onClick={() => {
+                                        lastNedDokument(vistDokument);
+                                    }}
+                                >
+                                    Last ned dokument
+                                </Hovedknapp>
+                            </div>
+                        )}
                     </DokumentVisning>
                 );
             }}
