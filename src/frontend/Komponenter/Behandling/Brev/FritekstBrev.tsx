@@ -3,19 +3,36 @@ import styled from 'styled-components';
 import { Input, Textarea } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import Panel from 'nav-frontend-paneler';
-import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { IAvsnitt, IFritekstBrev } from '../../../App/typer/brev';
 import { v4 as uuidv4 } from 'uuid';
+import { Select } from 'nav-frontend-skjema';
 import { useDebouncedCallback } from 'use-debounce';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
+import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
+import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
+import {
+    FrittståendeBrevStønadType,
+    FrittståendeBrevType,
+    FrittståendeBrevStønadOgBrevType,
+    IAvsnitt,
+    IFritekstBrev,
+    IFrittståendeBrev,
+} from './BrevTyper';
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
+    margin-right: 2rem;
+    width: 50%;
+`;
+
+const StyledSelect = styled(Select)`
+    margin-top: 1rem;
 `;
 
 const Innholdsrad = styled(Panel)`
@@ -24,15 +41,24 @@ const Innholdsrad = styled(Panel)`
     grid-template-columns: 90% 10%;
 `;
 
-const Knapper = styled.div`
-    margin-top: 2rem;
+const LeggTilKnappWrapper = styled.div`
+    margin-top: 1.5rem;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 `;
 
 const BrevKolonner = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+const ModalKnapper = styled.div`
+    margin-top: 1rem;
+
+    width: 70%;
+
+    display: flex;
+    justify-content: space-between;
 `;
 
 type Props = {
@@ -50,9 +76,28 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         },
     ];
 
+    const [stønadType, settStønadType] = useState<FrittståendeBrevStønadType>(
+        FrittståendeBrevStønadType.OVERGANGSSTØNAD
+    );
+    const [brevType, settBrevType] = useState<FrittståendeBrevType>(FrittståendeBrevType.INFOBREV);
+
+    const [stønadOgBrevType, settStønadOgBrevType] = useState<FrittståendeBrevStønadOgBrevType>();
+
     const [overskrift, settOverskrift] = useState('');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
+    const [utsendingFeilet, settUtsendingFeilet] = useState(false);
+    const [utsendingSuksess, setUtsendingSuksess] = useState(false);
+
+    const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest } = useApp();
+
+    useEffect(() => {
+        if (!(stønadType && brevType)) return;
+
+        const stønadOgBrev = `${brevType}_${stønadType}` as FrittståendeBrevStønadOgBrevType;
+
+        settStønadOgBrevType(stønadOgBrev);
+    }, [stønadType, brevType]);
 
     const personopplysningerFagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -87,6 +132,8 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     overskrift,
                     avsnitt,
                     fagsakId,
+                    stønadType,
+                    brevType: stønadOgBrevType,
                 },
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
@@ -104,6 +151,36 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
             });
         }
+    };
+
+    const lukkModal = () => {
+        settVisModal(false);
+        settUtsendingFeilet(false);
+        setUtsendingSuksess(false);
+    };
+
+    const sendBrev = () => {
+        settUtsendingFeilet(false);
+        setUtsendingSuksess(false);
+        if (!(fagsakId && stønadType && stønadOgBrevType)) return;
+
+        axiosRequest<string, IFrittståendeBrev>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/frittstaende-brev/send`,
+            data: {
+                overskrift,
+                avsnitt,
+                fagsakId,
+                stønadType,
+                brevType: stønadOgBrevType,
+            },
+        }).then((respons: Ressurs<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                setUtsendingSuksess(true);
+            } else {
+                settUtsendingFeilet(true);
+            }
+        });
     };
 
     const leggTilRad = () => {
@@ -159,6 +236,33 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     }}
                 />
 
+                <StyledSelect
+                    label="Stønadtype"
+                    defaultValue={FrittståendeBrevStønadType.OVERGANGSSTØNAD}
+                    onChange={(e) => {
+                        settStønadType(e.target.value as FrittståendeBrevStønadType);
+                    }}
+                    value={stønadType}
+                >
+                    <option value={FrittståendeBrevStønadType.OVERGANGSSTØNAD}>
+                        Overgangsstønad
+                    </option>
+                    <option value={FrittståendeBrevStønadType.BARNETILSYN}>Barnetilsyn</option>
+                    <option value={FrittståendeBrevStønadType.SKOLEPENGER}>Skolepenger</option>
+                </StyledSelect>
+
+                <StyledSelect
+                    label="Brevtype"
+                    defaultValue={FrittståendeBrevType.INFOBREV}
+                    onChange={(e) => {
+                        settBrevType(e.target.value as FrittståendeBrevType);
+                    }}
+                    value={brevType}
+                >
+                    <option value={FrittståendeBrevType.INFOBREV}>Infobrev</option>
+                    <option value={FrittståendeBrevType.MANGELBREV}>Mangelbrev</option>
+                </StyledSelect>
+
                 {avsnitt.map((rad) => {
                     const deloverskriftId = `deloverskrift-${rad.id}`;
                     const innholdId = `innhold-${rad.id}`;
@@ -187,10 +291,35 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     );
                 })}
 
-                <Knapper>
-                    <Knapp onClick={leggTilRad}>Legg til nytt avsnitt</Knapp>
-                </Knapper>
+                <LeggTilKnappWrapper>
+                    <LeggTilKnapp onClick={leggTilRad} knappetekst="Legg til seksjon" />
+                </LeggTilKnappWrapper>
+                {fagsakId && <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>}
             </BrevKolonner>
+
+            {visModal && (
+                <UIModalWrapper
+                    modal={{
+                        tittel: 'Bekreft utsending av brev',
+                        lukkKnapp: true,
+                        visModal: true,
+                        onClose: () => {
+                            lukkModal();
+                        },
+                    }}
+                >
+                    {utsendingFeilet && <AlertStripeFeil>Utsending feilet.</AlertStripeFeil>}
+                    {utsendingSuksess && (
+                        <AlertStripeSuksess>Brevet er nå sendt.</AlertStripeSuksess>
+                    )}
+                    <ModalKnapper>
+                        <Knapp onClick={lukkModal}>Avbryt</Knapp>
+                        <Hovedknapp onClick={sendBrev} disabled={utsendingSuksess}>
+                            Send brev
+                        </Hovedknapp>
+                    </ModalKnapper>
+                </UIModalWrapper>
+            )}
         </StyledFrittståendeBrev>
     );
 };
