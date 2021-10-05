@@ -166,48 +166,46 @@ const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ beh
     );
 
     return (
-        <>
-            <StyledTable className="tabell">
-                <thead>
-                    <tr>
-                        {Object.entries(TabellData).map(([felt, tekst]) => (
-                            <SorteringsHeader
-                                rekkefolge={
-                                    sortConfig?.sorteringsfelt === felt
-                                        ? sortConfig?.rekkefolge
-                                        : undefined
-                                }
-                                tekst={tekst}
-                                onClick={() => settSortering(felt as keyof Behandling)}
-                            />
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {sortertListe.map((behandling) => {
-                        return (
-                            <tr key={behandling.id}>
-                                <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
-                                <td>{formatterEnumVerdi(behandling.type)}</td>
-                                <td>{formatterEnumVerdi(behandling.status)}</td>
-                                <td>
-                                    {behandling.type === Behandlingstype.TEKNISK_OPPHØR ? (
-                                        <span>{formatterEnumVerdi(behandling.resultat)}</span>
-                                    ) : (
-                                        <Link
-                                            className="lenke"
-                                            to={{ pathname: `/behandling/${behandling.id}` }}
-                                        >
-                                            {formatterEnumVerdi(behandling.resultat)}
-                                        </Link>
-                                    )}
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </StyledTable>
-        </>
+        <StyledTable className="tabell">
+            <thead>
+                <tr>
+                    {Object.entries(TabellData).map(([felt, tekst]) => (
+                        <SorteringsHeader
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === felt
+                                    ? sortConfig?.rekkefolge
+                                    : undefined
+                            }
+                            tekst={tekst}
+                            onClick={() => settSortering(felt as keyof Behandling)}
+                        />
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {sortertListe.map((behandling) => {
+                    return (
+                        <tr key={behandling.id}>
+                            <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
+                            <td>{formatterEnumVerdi(behandling.type)}</td>
+                            <td>{formatterEnumVerdi(behandling.status)}</td>
+                            <td>
+                                {behandling.type === Behandlingstype.TEKNISK_OPPHØR ? (
+                                    <span>{formatterEnumVerdi(behandling.resultat)}</span>
+                                ) : (
+                                    <Link
+                                        className="lenke"
+                                        to={{ pathname: `/behandling/${behandling.id}` }}
+                                    >
+                                        {formatterEnumVerdi(behandling.resultat)}
+                                    </Link>
+                                )}
+                            </td>
+                        </tr>
+                    );
+                })}
+            </tbody>
+        </StyledTable>
     );
 };
 
