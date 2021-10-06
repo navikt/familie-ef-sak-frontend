@@ -6,7 +6,6 @@ export const EnsligTextArea: React.FC<IFamilieTextareaProps> = styled(FamilieTex
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 60rem;
-    margin-bottom: 2rem;
     .typo-element {
         padding-bottom: 0.5rem;
     }
