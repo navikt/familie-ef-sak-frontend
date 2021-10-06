@@ -7,7 +7,9 @@ import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
 
 const Container = styled.div`
-    padding: 2rem 1rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 `;
 
 export const resultatTilTekst: Record<string, string> = {
