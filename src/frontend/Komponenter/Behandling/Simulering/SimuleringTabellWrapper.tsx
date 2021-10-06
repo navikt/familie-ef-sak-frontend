@@ -48,7 +48,7 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
             />
-            <Tilbakekreving simuleringsresultat={simuleringsresultat} />
+            {simuleringsresultat.feilutbetaling > 0 && <Tilbakekreving />}
         </SimuleringsContainer>
     );
 };

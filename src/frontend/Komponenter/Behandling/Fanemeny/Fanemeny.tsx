@@ -56,7 +56,8 @@ const StyledNavLink = styled(NavLink)`
 const erPåInngangsvilkårAktivitetEllerVedtakFane = (side: ISide) =>
     side.navn === SideNavn.INNGANGSVILKÅR ||
     side.navn === SideNavn.AKTIVITET ||
-    side.navn === SideNavn.VEDTAK_OG_BEREGNING;
+    side.navn === SideNavn.VEDTAK_OG_BEREGNING ||
+    side.navn === SideNavn.SIMULERING;
 
 const hentAktivSide = (path: string) => sider.find((side) => side.href === path);
 

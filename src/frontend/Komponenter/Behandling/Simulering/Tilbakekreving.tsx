@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { ISimulering } from './SimuleringTyper';
+import React, { useEffect, useState } from 'react';
 import { Radio } from 'nav-frontend-skjema';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
@@ -12,6 +11,7 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useHistory, useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -19,7 +19,7 @@ enum ITilbakekrevingsvalg {
     AVVENT = 'AVVENT',
 }
 
-interface TilbakekrevingRequest {
+interface ITilbakekreving {
     valg?: ITilbakekrevingsvalg;
     varseltekst?: string;
     begrunnelse: string;
@@ -29,9 +29,8 @@ const VarselValg = styled.div`
     margin-bottom: 1rem;
 `;
 
-export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
-    simuleringsresultat,
-}) => {
+export const Tilbakekreving: React.FC = () => {
+    const { nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } = useBehandling();
     const { axiosRequest } = useApp();
     const { behandlingId } = useParams<IBehandlingParams>();
     const history = useHistory();
@@ -40,16 +39,28 @@ export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
     const [begrunnelse, settBegrunnelse] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
-    // TODO: Hent eksisterende tilbakekreving
     // TODO: HarÅpenTilbakekreving - vis info om dette istedenfor skjema
-    console.log(simuleringsresultat);
+
+    useEffect(() => {
+        axiosRequest<ITilbakekreving, null>({
+            method: 'GET',
+            url: `familie-ef-sak/api/tilbakekreving/${behandlingId}`,
+        }).then((respons: Ressurs<ITilbakekreving>) => {
+            if (respons.status === RessursStatus.SUKSESS && respons.data) {
+                settBegrunnelse(respons.data.begrunnelse);
+                settTilbakekrevingsvalg(respons.data.valg);
+                settVarseltekst(respons.data.varseltekst || '');
+            }
+        });
+        // eslint-disable-next-line
+    }, []);
 
     const lagreTilbakekrevingsvalg = () => {
         if (låsKnapp) {
             return;
         }
         settLåsKnapp(true);
-        axiosRequest<string, TilbakekrevingRequest>({
+        axiosRequest<string, ITilbakekreving>({
             method: 'POST',
             url: `/familie-ef-sak/api/tilbakekreving/${behandlingId}`,
             data: {
@@ -62,7 +73,7 @@ export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
                 switch (response.status) {
                     case RessursStatus.SUKSESS:
                         history.push(`/behandling/${behandlingId}/brev`);
-                        // nullstillIkkePersisterteKomponenter();
+                        nullstillIkkePersisterteKomponenter();
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
@@ -76,12 +87,13 @@ export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
 
     return (
         <div>
-            <FamilieRadioGruppe erLesevisning={false} legend={'Tilbakekreving'}>
+            <FamilieRadioGruppe erLesevisning={false} legend={<h2>Tilbakekreving</h2>}>
                 <Radio
                     checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
                     label="Opprett tilbakekreving, send varsel"
                     name="tilbakekrevingRadio"
                     onChange={() => {
+                        settIkkePersistertKomponent('tilbakekreving');
                         settTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_MED_VARSEL);
                     }}
                 />
@@ -92,7 +104,10 @@ export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
                             erLesevisning={false}
                             value={varseltekst}
                             maxLength={0}
-                            onChange={(e) => settVarseltekst(e.target.value)}
+                            onChange={(e) => {
+                                settIkkePersistertKomponent('tilbakekreving');
+                                settVarseltekst(e.target.value);
+                            }}
                         />
                         <IkonKnapp
                             kompakt={true}
@@ -112,6 +127,7 @@ export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
                     label="Opprett tilbakekreving, ikke send varsel"
                     name="tilbakekrevingRadio"
                     onChange={() => {
+                        settIkkePersistertKomponent('tilbakekreving');
                         settTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL);
                     }}
                 />
@@ -120,6 +136,7 @@ export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
                     label="Avvent"
                     name="tilbakekrevingRadio"
                     onChange={() => {
+                        settIkkePersistertKomponent('tilbakekreving');
                         settTilbakekrevingsvalg(ITilbakekrevingsvalg.AVVENT);
                     }}
                 />
@@ -128,13 +145,16 @@ export const Tilbakekreving: React.FC<{ simuleringsresultat: ISimulering }> = ({
                     erLesevisning={false}
                     value={begrunnelse}
                     maxLength={0}
-                    onChange={(e) => settBegrunnelse(e.target.value)}
+                    onChange={(e) => {
+                        settIkkePersistertKomponent('tilbakekreving');
+                        settBegrunnelse(e.target.value);
+                    }}
                 />
             </FamilieRadioGruppe>
             <Hovedknapp htmlType={'submit'} onClick={lagreTilbakekrevingsvalg} disabled={låsKnapp}>
                 Lagre tilbakekrevingsvalg
             </Hovedknapp>
-            <AlertStripeFeil>{feilmelding}</AlertStripeFeil>
+            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
         </div>
     );
 };
