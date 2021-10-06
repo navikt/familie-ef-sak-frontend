@@ -39,6 +39,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+    const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -72,6 +73,8 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         }).then((response) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
+            } else {
+                settFeilmelding(response.frontendFeilmelding || response.melding);
             }
         });
     };
@@ -139,8 +142,13 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     )}
                     {tekniskOpphørFeilet && (
                         <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                            Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen som
-                            som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
+                            Kan ikke iverksette teknisk opphør
+                        </AlertStripeFeil>
+                    )}
+
+                    {feilmelding && (
+                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
+                            {feilmelding}
                         </AlertStripeFeil>
                     )}
                 </>
