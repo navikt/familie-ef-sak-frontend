@@ -29,6 +29,11 @@ const KnappMedMargin = styled(Knapp)`
     margin: 1rem;
 `;
 
+const StyledSystemtittel = styled(Systemtittel)`
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+`;
+
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
@@ -97,9 +102,9 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
                 <>
-                    <Systemtittel tag="h3">
+                    <StyledSystemtittel tag="h3">
                         Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                    </Systemtittel>
+                    </StyledSystemtittel>
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
 
                     {kanStarteRevurdering && (

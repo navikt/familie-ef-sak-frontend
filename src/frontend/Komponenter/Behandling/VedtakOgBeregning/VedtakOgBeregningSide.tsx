@@ -11,6 +11,7 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
+    margin-top: 1rem;
 `;
 
 const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
