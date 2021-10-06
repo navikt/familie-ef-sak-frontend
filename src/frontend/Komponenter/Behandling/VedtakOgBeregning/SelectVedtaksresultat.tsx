@@ -27,7 +27,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { resultatType, settResultatType } = props;
     const opphørMulig = props.behandling.type === Behandlingstype.REVURDERING;
     return (
-        <section className="blokk-xl">
+        <section>
             <Undertittel className={'blokk-s'}>Vedtak</Undertittel>
             <StyledSelect
                 value={resultatType}

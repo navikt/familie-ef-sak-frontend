@@ -47,7 +47,7 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
                 return (
                     <Container>
                         <InnerContainer>
-                            <div style={{ padding: '2rem 1rem' }}>
+                            <div style={{ padding: '0rem 1rem' }}>
                                 <Undertittel className="blokk-xs">
                                     Tidligere stønadsperioder
                                 </Undertittel>

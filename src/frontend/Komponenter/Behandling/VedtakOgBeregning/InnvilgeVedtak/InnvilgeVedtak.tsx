@@ -29,10 +29,15 @@ import { validerVedtaksperioder } from '../vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import styled from 'styled-components';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtak, 'resultatType'>;
+
+const Wrapper = styled.section`
+    padding-top: 1rem;
+`;
 
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
@@ -195,7 +200,7 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <section className={'blokk-xl'}>
+            <Wrapper>
                 <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
                 <VedtaksperiodeValg
                     vedtaksperiodeListe={vedtaksperiodeState}
@@ -216,7 +221,7 @@ export const InnvilgeVedtak: React.FC<{
                         erLesevisning={!behandlingErRedigerbar}
                     />
                 )}
-            </section>
+            </Wrapper>
             <section>
                 <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
                 <InntektsperiodeValg
