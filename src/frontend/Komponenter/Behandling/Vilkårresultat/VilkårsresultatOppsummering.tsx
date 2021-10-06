@@ -49,7 +49,7 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
                         <InnerContainer>
                             <div style={{ padding: '0rem 1rem' }}>
                                 <Undertittel className="blokk-xs">
-                                    Tidligere stønadsperioder
+                                    Tidligere vedtaksperioder
                                 </Undertittel>
                                 <Normaltekst>Søker har ingen tidligere stønadsperioder</Normaltekst>
                             </div>
