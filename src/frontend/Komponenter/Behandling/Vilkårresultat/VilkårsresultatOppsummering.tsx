@@ -18,6 +18,10 @@ const InnerContainer = styled.div`
     padding: 1rem;
 `;
 
+const TekstWrapper = styled.div`
+    padding: 0rem 1rem;
+`;
+
 export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = ({
     behandlingId,
 }) => {
@@ -47,12 +51,12 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
                 return (
                     <Container>
                         <InnerContainer>
-                            <div style={{ padding: '0rem 1rem' }}>
+                            <TekstWrapper>
                                 <Undertittel className="blokk-xs">
                                     Tidligere vedtaksperioder
                                 </Undertittel>
                                 <Normaltekst>Søker har ingen tidligere stønadsperioder</Normaltekst>
-                            </div>
+                            </TekstWrapper>
                             <ResultatVisning
                                 vilkårsvurderinger={inngangsvilkår}
                                 tittel="Inngangsvilkår"
