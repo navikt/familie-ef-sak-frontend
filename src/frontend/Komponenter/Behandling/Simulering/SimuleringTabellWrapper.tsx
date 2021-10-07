@@ -41,6 +41,10 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
 
     const simuleringTabellRader = mapSimuleringstabellRader(simuleringsresultat, år);
 
+    function harFeilutbetaling() {
+        return simuleringsresultat.feilutbetaling > 0;
+    }
+
     return (
         <SimuleringsContainer>
             <SimuleringOversikt simulering={simuleringsresultat} />
@@ -48,7 +52,7 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
             />
-            {simuleringsresultat.feilutbetaling > 0 && <Tilbakekreving />}
+            {harFeilutbetaling() && <Tilbakekreving />}
         </SimuleringsContainer>
     );
 };

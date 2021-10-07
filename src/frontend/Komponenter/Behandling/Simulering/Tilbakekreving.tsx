@@ -39,6 +39,7 @@ export const Tilbakekreving: React.FC = () => {
     const [begrunnelse, settBegrunnelse] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
+
     // TODO: HarÅpenTilbakekreving - vis info om dette istedenfor skjema
 
     useEffect(() => {
@@ -46,10 +47,19 @@ export const Tilbakekreving: React.FC = () => {
             method: 'GET',
             url: `familie-ef-sak/api/tilbakekreving/${behandlingId}`,
         }).then((respons: Ressurs<ITilbakekreving>) => {
-            if (respons.status === RessursStatus.SUKSESS && respons.data) {
-                settBegrunnelse(respons.data.begrunnelse);
-                settTilbakekrevingsvalg(respons.data.valg);
-                settVarseltekst(respons.data.varseltekst || '');
+            if (respons.status === RessursStatus.SUKSESS) {
+                settFeilmelding('');
+                if (respons.data) {
+                    settBegrunnelse(respons.data.begrunnelse);
+                    settTilbakekrevingsvalg(respons.data.valg);
+                    settVarseltekst(respons.data.varseltekst || '');
+                }
+            } else if (
+                respons.status === RessursStatus.FEILET ||
+                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
+                respons.status === RessursStatus.IKKE_TILGANG
+            ) {
+                settFeilmelding(respons.frontendFeilmelding);
             }
         });
         // eslint-disable-next-line
@@ -74,6 +84,7 @@ export const Tilbakekreving: React.FC = () => {
                     case RessursStatus.SUKSESS:
                         history.push(`/behandling/${behandlingId}/brev`);
                         nullstillIkkePersisterteKomponenter();
+                        settFeilmelding('');
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
