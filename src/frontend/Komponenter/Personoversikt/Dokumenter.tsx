@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import { base64toBlob } from '../../App/utils/utils';
 import { saveAs } from 'file-saver';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
-import { DokumentProps } from '@navikt/familie-dokumentliste';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { useApp } from '../../App/context/AppContext';
@@ -19,10 +18,28 @@ import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
 import { Element } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
+import { DokumentProps } from '../../App/typer/dokumentliste';
 
-const DokumentVisning = styled.div`
+const DokumentMedTittel = styled.div`
+    display: flex;
+
+    flex-direction: column;
+`;
+
+const DokumentTittel = styled.h3`
+    text-align: center;
+`;
+
+const DokumenterVisning = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+const DokumentVisning = styled.div`
+    margin-top: 2rem;
+    display: flex;
+
+    flex-direction: row;
 `;
 
 const lagDokumentliste = (dokumentResponse: any) => {
@@ -32,7 +49,6 @@ const lagDokumentliste = (dokumentResponse: any) => {
                 ...dokument,
                 dato: formaterNullableIsoDatoTid(journalpost.datoMottatt),
                 journalpostId: journalpost.journalpostId,
-                dokumentinfoId: dokument.dokumentInfoId,
             };
         });
     });
@@ -49,7 +65,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     const hentDokument = (dokument: DokumentProps) => {
         axiosRequest<string, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
+            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentInfoId}`,
         }).then((res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
@@ -69,7 +85,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     const lastNedDokument = (dokument: DokumentProps) => {
         axiosRequest<string, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
+            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentInfoId}`,
         }).then((res: Ressurs<string>) => {
             const dokumentnavn =
                 dokument.tittel || dokument.filnavn || `dokument-${dokument.journalpostId}`;
@@ -111,7 +127,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
 
                 return (
                     <>
-                        <DokumentVisning>
+                        <DokumenterVisning>
                             <TabellWrapper>
                                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
                                 <table className="tabell">
@@ -139,18 +155,23 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                 </table>
                             </TabellWrapper>
                             {dokumentFil && (
-                                <div>
-                                    <PdfVisning pdfFilInnhold={dokumentFil} />
-                                    <Hovedknapp
-                                        onClick={() => {
-                                            lastNedDokument(vistDokument);
-                                        }}
-                                    >
-                                        Last ned dokument
-                                    </Hovedknapp>
-                                </div>
+                                <DokumentVisning>
+                                    <DokumentMedTittel>
+                                        <DokumentTittel>{vistDokument?.tittel}</DokumentTittel>
+                                        <PdfVisning pdfFilInnhold={dokumentFil} />
+                                    </DokumentMedTittel>
+                                    <div>
+                                        <Hovedknapp
+                                            onClick={() => {
+                                                lastNedDokument(vistDokument);
+                                            }}
+                                        >
+                                            Last ned dokument
+                                        </Hovedknapp>
+                                    </div>
+                                </DokumentVisning>
                             )}
-                        </DokumentVisning>
+                        </DokumenterVisning>
                     </>
                 );
             }}
