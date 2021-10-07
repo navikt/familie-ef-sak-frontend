@@ -47,12 +47,10 @@ export const Tilbakekreving: React.FC = () => {
             method: 'GET',
             url: `familie-ef-sak/api/tilbakekreving/${behandlingId}`,
         }).then((respons: Ressurs<ITilbakekreving>) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                if (respons.data) {
-                    settBegrunnelse(respons.data.begrunnelse);
-                    settTilbakekrevingsvalg(respons.data.valg);
-                    settVarseltekst(respons.data.varseltekst || '');
-                }
+            if (respons.status === RessursStatus.SUKSESS && respons.data) {
+                settBegrunnelse(respons.data.begrunnelse);
+                settTilbakekrevingsvalg(respons.data.valg);
+                settVarseltekst(respons.data.varseltekst || '');
             } else if (
                 respons.status === RessursStatus.FEILET ||
                 respons.status === RessursStatus.FUNKSJONELL_FEIL ||
