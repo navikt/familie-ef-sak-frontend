@@ -69,6 +69,7 @@ export const Tilbakekreving: React.FC = () => {
         if (låsKnapp) {
             return;
         }
+        settFeilmelding('');
         settLåsKnapp(true);
         axiosRequest<string, ITilbakekreving>({
             method: 'POST',
@@ -84,7 +85,6 @@ export const Tilbakekreving: React.FC = () => {
                     case RessursStatus.SUKSESS:
                         history.push(`/behandling/${behandlingId}/brev`);
                         nullstillIkkePersisterteKomponenter();
-                        settFeilmelding('');
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
