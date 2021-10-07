@@ -48,7 +48,6 @@ export const Tilbakekreving: React.FC = () => {
             url: `familie-ef-sak/api/tilbakekreving/${behandlingId}`,
         }).then((respons: Ressurs<ITilbakekreving>) => {
             if (respons.status === RessursStatus.SUKSESS) {
-                settFeilmelding('');
                 if (respons.data) {
                     settBegrunnelse(respons.data.begrunnelse);
                     settTilbakekrevingsvalg(respons.data.valg);
