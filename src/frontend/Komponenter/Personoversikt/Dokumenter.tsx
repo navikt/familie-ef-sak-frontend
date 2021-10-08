@@ -17,7 +17,8 @@ import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
 import { Element } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
-import { Dokumentinfo, DokumentProps } from '../../App/typer/dokumentliste';
+import { Dokumentinfo } from '../../App/typer/dokumentliste';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const DokumentMedTittel = styled.div`
     display: flex;
@@ -45,8 +46,8 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,
 }) => {
     const { axiosRequest } = useApp();
-    const [dokumentFil, settDokumentFil] = useState<any>();
-    const [vistDokument, settVistDokument] = useState<any>();
+    const [dokumentFil, settDokumentFil] = useState<Ressurs<string>>();
+    const [vistDokument, settVistDokument] = useState<Dokumentinfo>();
     const [lastNedDokumentFeilet, settLastNedDokumentFeilet] = useState<string>();
 
     const hentDokument = (dokument: Dokumentinfo) => {
@@ -69,10 +70,12 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
         });
     };
 
-    const lastNedDokument = (dokument: DokumentProps) => {
+    const lastNedDokument = (dokument: Dokumentinfo) => {
+        settLastNedDokumentFeilet('');
+
         axiosRequest<string, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentInfoId}`,
+            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
         }).then((res: Ressurs<string>) => {
             const dokumentnavn =
                 dokument.tittel || dokument.filnavn || `dokument-${dokument.journalpostId}`;
@@ -96,7 +99,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
             method: 'GET',
             url: `/familie-ef-sak/api/vedlegg/person/${personopplysninger.personIdent}`,
         }),
-        []
+        [personopplysninger.personIdent]
     );
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
@@ -143,7 +146,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                     </tbody>
                                 </table>
                             </TabellWrapper>
-                            {dokumentFil && (
+                            {dokumentFil?.status === RessursStatus.SUKSESS && vistDokument && (
                                 <DokumentVisning>
                                     <DokumentMedTittel>
                                         <DokumentTittel>{vistDokument?.tittel}</DokumentTittel>
@@ -158,6 +161,9 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                             Last ned dokument
                                         </Hovedknapp>
                                     </div>
+                                    {lastNedDokumentFeilet && (
+                                        <AlertStripeFeil>{lastNedDokumentFeilet}</AlertStripeFeil>
+                                    )}
                                 </DokumentVisning>
                             )}
                         </DokumenterVisning>

@@ -5,7 +5,7 @@ export interface DokumentProps {
     dato?: string;
     journalpostId: string;
     journalposttype: Journalposttype;
-    dokumentInfoId: string;
+    dokumentinfoId: string;
     filnavn?: string;
 }
 export interface DokumentElementProps {
