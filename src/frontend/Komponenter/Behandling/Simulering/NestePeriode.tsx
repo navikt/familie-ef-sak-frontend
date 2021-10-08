@@ -21,18 +21,22 @@ export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefin
         <>
             <Element>Neste utbetaling</Element>
             <SimuleringOversiktTabell>
-                <tr>
-                    <RadTittel>
-                        <Normaltekst>
-                            {formaterStrengMedStorForbokstav(formaterIsoMånedÅrFull(fomDato))}
-                        </Normaltekst>
-                    </RadTittel>
-                    <RadVerdi>
-                        <ResultatVerdi verdi={resultat}>
-                            <Element>{formaterTallMedTusenSkilleEllerStrek(resultat)} kr</Element>
-                        </ResultatVerdi>
-                    </RadVerdi>
-                </tr>
+                <tbody>
+                    <tr>
+                        <RadTittel>
+                            <Normaltekst>
+                                {formaterStrengMedStorForbokstav(formaterIsoMånedÅrFull(fomDato))}
+                            </Normaltekst>
+                        </RadTittel>
+                        <RadVerdi>
+                            <ResultatVerdi verdi={resultat}>
+                                <Element>
+                                    {formaterTallMedTusenSkilleEllerStrek(resultat)} kr
+                                </Element>
+                            </ResultatVerdi>
+                        </RadVerdi>
+                    </tr>
+                </tbody>
             </SimuleringOversiktTabell>
         </>
     );

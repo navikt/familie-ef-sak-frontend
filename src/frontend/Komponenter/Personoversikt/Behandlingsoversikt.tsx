@@ -29,11 +29,17 @@ const KnappMedMargin = styled(Knapp)`
     margin: 1rem;
 `;
 
+const StyledSystemtittel = styled(Systemtittel)`
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+`;
+
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+    const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -67,6 +73,8 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         }).then((response) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
+            } else {
+                settFeilmelding(response.frontendFeilmelding || response.melding);
             }
         });
     };
@@ -97,9 +105,9 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
                 <>
-                    <Systemtittel tag="h3">
+                    <StyledSystemtittel tag="h3">
                         Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                    </Systemtittel>
+                    </StyledSystemtittel>
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
 
                     {kanStarteRevurdering && (
@@ -134,8 +142,13 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     )}
                     {tekniskOpphørFeilet && (
                         <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                            Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen som
-                            som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
+                            Kan ikke iverksette teknisk opphør
+                        </AlertStripeFeil>
+                    )}
+
+                    {feilmelding && (
+                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
+                            {feilmelding}
                         </AlertStripeFeil>
                     )}
                 </>
