@@ -19,6 +19,7 @@ import { Element } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 
 const DokumentMedTittel = styled.div`
     display: flex;
@@ -128,7 +129,11 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                             (dokument: Dokumentinfo, indeks: number) => {
                                                 return (
                                                     <tr key={indeks}>
-                                                        <Td>{dokument.dato}</Td>
+                                                        <Td>
+                                                            {formaterNullableIsoDatoTid(
+                                                                dokument.dato
+                                                            )}
+                                                        </Td>
                                                         <Td>
                                                             <Lenke
                                                                 onClick={() =>
