@@ -8,7 +8,6 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { base64toBlob } from '../../App/utils/utils';
 import { saveAs } from 'file-saver';
-import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import { Ressurs, RessursStatus } from '@navikt/familie-typer';
 import { useApp } from '../../App/context/AppContext';
@@ -18,7 +17,7 @@ import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
 import { Element } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
-import { DokumentProps } from '../../App/typer/dokumentliste';
+import { Dokumentinfo, DokumentProps } from '../../App/typer/dokumentliste';
 
 const DokumentMedTittel = styled.div`
     display: flex;
@@ -42,18 +41,6 @@ const DokumentVisning = styled.div`
     flex-direction: row;
 `;
 
-const lagDokumentliste = (dokumentResponse: any) => {
-    return dokumentResponse.flatMap((journalpost: any) => {
-        return journalpost.dokumenter.map((dokument: any) => {
-            return {
-                ...dokument,
-                dato: formaterNullableIsoDatoTid(journalpost.datoMottatt),
-                journalpostId: journalpost.journalpostId,
-            };
-        });
-    });
-};
-
 const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,
 }) => {
@@ -62,10 +49,10 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     const [vistDokument, settVistDokument] = useState<any>();
     const [lastNedDokumentFeilet, settLastNedDokumentFeilet] = useState<string>();
 
-    const hentDokument = (dokument: DokumentProps) => {
+    const hentDokument = (dokument: Dokumentinfo) => {
         axiosRequest<string, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentInfoId}`,
+            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
         }).then((res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
@@ -112,7 +99,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
         []
     );
 
-    const dokumentResponse = useDataHenter<any[], null>(dokumentConfig);
+    const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
 
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
         <Td width={`${width}%`}>
@@ -123,8 +110,6 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     return (
         <DataViewer response={{ dokumentResponse }}>
             {({ dokumentResponse }) => {
-                const dokumentListe = lagDokumentliste(dokumentResponse);
-
                 return (
                     <>
                         <DokumenterVisning>
@@ -136,21 +121,25 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                         <Kolonnetittel text={'Tittel'} width={35} />
                                     </thead>
                                     <tbody>
-                                        {dokumentListe.map((dokument: any, indeks: number) => {
-                                            return (
-                                                <tr key={indeks}>
-                                                    <Td>{dokument.dato}</Td>
-                                                    <Td>
-                                                        <Lenke
-                                                            onClick={() => hentDokument(dokument)}
-                                                            href={'#'}
-                                                        >
-                                                            {dokument.tittel}
-                                                        </Lenke>
-                                                    </Td>
-                                                </tr>
-                                            );
-                                        })}
+                                        {dokumentResponse.map(
+                                            (dokument: Dokumentinfo, indeks: number) => {
+                                                return (
+                                                    <tr key={indeks}>
+                                                        <Td>{dokument.dato}</Td>
+                                                        <Td>
+                                                            <Lenke
+                                                                onClick={() =>
+                                                                    hentDokument(dokument)
+                                                                }
+                                                                href={'#'}
+                                                            >
+                                                                {dokument.tittel}
+                                                            </Lenke>
+                                                        </Td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </TabellWrapper>

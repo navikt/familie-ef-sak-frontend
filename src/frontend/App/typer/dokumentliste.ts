@@ -17,6 +17,14 @@ export interface DokumentlisteProps {
     onClick: (dokument: DokumentProps) => void;
     className?: string;
 }
+export interface Dokumentinfo {
+    dokumentinfoId: string;
+    filnavn?: string;
+    tittel: string;
+    journalpostId: string;
+    dato: string;
+    journalposttype: Journalposttype;
+}
 export declare const DokumentElement: React.FC<DokumentElementProps>;
 declare const Dokumentliste: React.FC<DokumentlisteProps>;
 export default Dokumentliste;
