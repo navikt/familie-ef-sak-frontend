@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Input, Textarea } from 'nav-frontend-skjema';
+import { Input, Select, Textarea } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import Panel from 'nav-frontend-paneler';
 import { useApp } from '../../../App/context/AppContext';
@@ -8,7 +8,6 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { v4 as uuidv4 } from 'uuid';
-import { Select } from 'nav-frontend-skjema';
 import { useDebouncedCallback } from 'use-debounce';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
@@ -17,9 +16,9 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
+    FrittståendeBrevStønadOgBrevType,
     FrittståendeBrevStønadType,
     FrittståendeBrevType,
-    FrittståendeBrevStønadOgBrevType,
     IAvsnitt,
     IFritekstBrev,
     IFrittståendeBrev,
@@ -83,7 +82,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
     const [stønadOgBrevType, settStønadOgBrevType] = useState<FrittståendeBrevStønadOgBrevType>();
 
-    const [overskrift, settOverskrift] = useState('');
+    const [overskrift, settOverskrift] = useState('Vi vil informere deg om...');
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
     const [utsendingFeilet, settUtsendingFeilet] = useState(false);
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
@@ -196,6 +195,19 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         });
     };
 
+    const forhåndsfyllBrevoverskrift = (brevType: FrittståendeBrevType) => {
+        const infobrevTittel = 'Vi vil informere deg om...';
+        const mangelbrevTittel = 'Vi trenger mer informasjon fra deg';
+
+        if (brevType === FrittståendeBrevType.MANGELBREV) {
+            if (overskrift === infobrevTittel || overskrift === '')
+                settOverskrift(mangelbrevTittel);
+        } else if (brevType === FrittståendeBrevType.INFOBREV) {
+            if (overskrift === mangelbrevTittel || overskrift === '')
+                settOverskrift(infobrevTittel);
+        }
+    };
+
     const fjernRad = (radId: string) => {
         return () =>
             settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
@@ -255,7 +267,9 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     label="Brevtype"
                     defaultValue={FrittståendeBrevType.INFOBREV}
                     onChange={(e) => {
-                        settBrevType(e.target.value as FrittståendeBrevType);
+                        const nyBrevType = e.target.value as FrittståendeBrevType;
+                        settBrevType(nyBrevType);
+                        forhåndsfyllBrevoverskrift(nyBrevType);
                     }}
                     value={brevType}
                 >
