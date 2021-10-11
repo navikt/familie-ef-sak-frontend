@@ -75,6 +75,9 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         },
     ];
 
+    const infobrevTittel = 'Vi vil informere deg om...';
+    const mangelbrevTittel = 'Vi trenger mer informasjon fra deg';
+
     const [stønadType, settStønadType] = useState<FrittståendeBrevStønadType>(
         FrittståendeBrevStønadType.OVERGANGSSTØNAD
     );
@@ -82,7 +85,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
     const [stønadOgBrevType, settStønadOgBrevType] = useState<FrittståendeBrevStønadOgBrevType>();
 
-    const [overskrift, settOverskrift] = useState('Vi vil informere deg om...');
+    const [overskrift, settOverskrift] = useState(infobrevTittel);
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
     const [utsendingFeilet, settUtsendingFeilet] = useState(false);
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
@@ -196,9 +199,6 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
     };
 
     const forhåndsfyllBrevoverskrift = (brevType: FrittståendeBrevType) => {
-        const infobrevTittel = 'Vi vil informere deg om...';
-        const mangelbrevTittel = 'Vi trenger mer informasjon fra deg';
-
         if (brevType === FrittståendeBrevType.MANGELBREV) {
             if (overskrift === infobrevTittel || overskrift === '')
                 settOverskrift(mangelbrevTittel);
