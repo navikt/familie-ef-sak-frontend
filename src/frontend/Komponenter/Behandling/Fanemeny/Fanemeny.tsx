@@ -53,7 +53,7 @@ const StyledNavLink = styled(NavLink)`
     }
 `;
 
-const erPåInngangsvilkårAktivitetEllerVedtakFane = (side: ISide) =>
+const erPåSideSomSkalTriggeAdvarsel = (side: ISide) =>
     side.navn === SideNavn.INNGANGSVILKÅR ||
     side.navn === SideNavn.AKTIVITET ||
     side.navn === SideNavn.VEDTAK_OG_BEREGNING ||
@@ -96,7 +96,7 @@ const Fanemeny: FC = () => {
                                             ulagretData &&
                                             aktivSide &&
                                             aktivSide.navn !== side.navn &&
-                                            erPåInngangsvilkårAktivitetEllerVedtakFane(aktivSide)
+                                            erPåSideSomSkalTriggeAdvarsel(aktivSide)
                                         ) {
                                             e.preventDefault();
                                             settValgtSide(side);

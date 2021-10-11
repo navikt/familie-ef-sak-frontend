@@ -60,7 +60,7 @@ export const Tilbakekreving: React.FC = () => {
             }
         });
         // eslint-disable-next-line
-    }, []);
+    }, [behandlingId]);
 
     const lagreTilbakekrevingsvalg = () => {
         if (låsKnapp) {
