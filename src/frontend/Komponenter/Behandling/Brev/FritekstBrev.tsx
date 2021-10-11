@@ -199,12 +199,15 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
     };
 
     const forhåndsfyllBrevoverskrift = (brevType: FrittståendeBrevType) => {
-        if (brevType === FrittståendeBrevType.MANGELBREV) {
-            if (overskrift === infobrevTittel || overskrift === '')
-                settOverskrift(mangelbrevTittel);
-        } else if (brevType === FrittståendeBrevType.INFOBREV) {
-            if (overskrift === mangelbrevTittel || overskrift === '')
-                settOverskrift(infobrevTittel);
+        switch (brevType) {
+            case FrittståendeBrevType.MANGELBREV:
+                if (overskrift === infobrevTittel || overskrift === '')
+                    settOverskrift(mangelbrevTittel);
+                break;
+            case FrittståendeBrevType.INFOBREV:
+                if (overskrift === mangelbrevTittel || overskrift === '')
+                    settOverskrift(infobrevTittel);
+                break;
         }
     };
 
