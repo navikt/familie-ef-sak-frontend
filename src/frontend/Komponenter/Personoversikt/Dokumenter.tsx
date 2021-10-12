@@ -49,9 +49,11 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     const { axiosRequest } = useApp();
     const [dokumentFil, settDokumentFil] = useState<Ressurs<string>>();
     const [vistDokument, settVistDokument] = useState<Dokumentinfo>();
-    const [lastNedDokumentFeilet, settLastNedDokumentFeilet] = useState<string>();
+    const [hentDokumentFeilet, settHentDokumentFeilet] = useState<string>();
 
     const hentDokument = (dokument: Dokumentinfo) => {
+        settHentDokumentFeilet('');
+
         axiosRequest<string, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
@@ -64,6 +66,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 case RessursStatus.FUNKSJONELL_FEIL:
                 case RessursStatus.IKKE_TILGANG:
                 case RessursStatus.FEILET:
+                    settHentDokumentFeilet(res.frontendFeilmelding);
                     break;
                 default:
                     break;
@@ -72,7 +75,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     };
 
     const lastNedDokument = (dokument: Dokumentinfo) => {
-        settLastNedDokumentFeilet('');
+        settHentDokumentFeilet('');
 
         axiosRequest<string, null>({
             method: 'GET',
@@ -87,7 +90,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 case RessursStatus.FUNKSJONELL_FEIL:
                 case RessursStatus.IKKE_TILGANG:
                 case RessursStatus.FEILET:
-                    settLastNedDokumentFeilet(res.frontendFeilmelding);
+                    settHentDokumentFeilet(res.frontendFeilmelding);
                     break;
                 default:
                     break;
@@ -166,10 +169,10 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                             Last ned dokument
                                         </Hovedknapp>
                                     </div>
-                                    {lastNedDokumentFeilet && (
-                                        <AlertStripeFeil>{lastNedDokumentFeilet}</AlertStripeFeil>
-                                    )}
                                 </DokumentVisning>
+                            )}
+                            {hentDokumentFeilet && (
+                                <AlertStripeFeil>{hentDokumentFeilet}</AlertStripeFeil>
                             )}
                         </DokumenterVisning>
                     </>
