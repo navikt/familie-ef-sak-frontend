@@ -7,7 +7,6 @@ import Blankett from '../Blankett/Blankett';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
-import Personopplysninger from '../Personopplysninger/Personopplysninger';
 import { Simulering } from '../Simulering/Simulering';
 
 export interface ISide {
@@ -17,7 +16,6 @@ export interface ISide {
 }
 
 export enum SideNavn {
-    PERSONOPPLYSNINGER = 'Personopplysninger',
     TIDLIGEREVEDTAKSPERIODER = 'Tidligere vedtaksperioder',
     INNGANGSVILKÅR = 'Inngangsvilkår',
     AKTIVITET = 'Aktivitet',
@@ -28,11 +26,6 @@ export enum SideNavn {
 }
 
 export const sider: ISide[] = [
-    {
-        href: 'personopplysninger',
-        navn: SideNavn.PERSONOPPLYSNINGER,
-        komponent: Personopplysninger,
-    },
     {
         href: 'tidligere-vedtaksperioder',
         navn: SideNavn.TIDLIGEREVEDTAKSPERIODER,
