@@ -3,7 +3,7 @@ import { Behandling, Fagsak } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../App/utils/utils';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import SorteringsHeader from '../Oppgavebenk/OppgaveSorteringHeader';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
@@ -25,6 +25,7 @@ import {
     behandlingsårsakTilTekst,
 } from '../../App/typer/Behandlingsårsak';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import { compareDesc } from 'date-fns';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -71,8 +72,10 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [feilmelding, settFeilmelding] = useState<string>();
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtDato, settValgtDato] = useState<string>();
+    const [skalNavigereTilBehandlingen, settSkalNavigereTilBehandlingen] = useState<boolean>(false);
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
+    const history = useHistory();
 
     const hentFagsak = () =>
         axiosRequest<Fagsak, null>({
@@ -104,9 +107,14 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
             axiosRequest<Ressurs<void>, { fagsakId: string }>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-                data: { fagsakId: fagsakId },
+                data: {
+                    fagsakId,
+                    behandlingsårsak: valgtBehandlingsårsak,
+                    kravMottatt: valgtDato,
+                },
             }).then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
+                    settSkalNavigereTilBehandlingen(true);
                     hentFagsak();
                 } else {
                     settFeilmelding(response.frontendFeilmelding || response.melding);
@@ -121,6 +129,21 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         return !!(valgtBehandlingstype && valgtBehandlingsårsak && valgtDato);
     };
 
+    const sorterBehandlingerNyesteFørst = (behandlinger: Behandling[]) => {
+        const listeKopi = [...behandlinger];
+        listeKopi.sort((a, b) => {
+            return compareDesc(new Date(a.opprettet), new Date(b.opprettet));
+        });
+        return listeKopi;
+    };
+
+    const hentBehandlingsIdTilRevurdering = (behandlinger: Behandling[]) => {
+        const sorterteBehandlinger = sorterBehandlingerNyesteFørst(behandlinger);
+        const nyesteBehandling = sorterteBehandlinger[0];
+        const behandlingsId = nyesteBehandling.id;
+        return behandlingsId;
+    };
+
     useEffect(() => {
         if (fagsakId) {
             hentFagsak();
@@ -130,6 +153,11 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
+            if (skalNavigereTilBehandlingen) {
+                settSkalNavigereTilBehandlingen(false);
+                const behandlingsId = hentBehandlingsIdTilRevurdering(fagsak.data.behandlinger);
+                history.push(`/behandling/${behandlingsId}`);
+            }
             settKanStarteRevurdering(erAlleBehandlingerErFerdigstilt(fagsak.data));
         }
         // eslint-disable-next-line
@@ -143,6 +171,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
             ) === undefined
         );
     }
+
     return (
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
@@ -184,11 +213,13 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                                     settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
                                 }}
                             >
-                                {behandlingsårsaker.map((behandlingsårsak, index) => (
-                                    <option key={index} value={behandlingsårsak}>
-                                        {behandlingsårsakTilTekst[behandlingsårsak]}
-                                    </option>
-                                ))}
+                                {behandlingsårsaker.map(
+                                    (behandlingsårsak: Behandlingsårsak, index: number) => (
+                                        <option key={index} value={behandlingsårsak}>
+                                            {behandlingsårsakTilTekst[behandlingsårsak]}
+                                        </option>
+                                    )
+                                )}
                             </StyledSelect>
                         )}
                         <StyledFamilieDatovelgder
