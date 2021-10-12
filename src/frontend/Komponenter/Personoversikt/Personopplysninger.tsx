@@ -17,6 +17,7 @@ const Personopplysninger: React.FC<{ personopplysninger: IPersonopplysninger }> 
         }),
         [personIdent]
     );
+
     const navKontor = useDataHenter<INavKontor, IPersonIdent>(navKontorConfig);
 
     return (
@@ -26,4 +27,5 @@ const Personopplysninger: React.FC<{ personopplysninger: IPersonopplysninger }> 
         />
     );
 };
+
 export default Personopplysninger;

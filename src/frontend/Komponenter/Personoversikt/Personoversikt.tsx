@@ -11,6 +11,7 @@ import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import Vedtaksperioder from './Vedtaksperioder';
 import FritekstBrevMedVisning from '../Behandling/Brev/FritekstBrevMedVisning';
+import Dokumenter from './Dokumenter';
 
 const Personoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
@@ -36,16 +37,17 @@ const Personoversikt: React.FC = () => {
                             { label: 'Personopplysninger', aktiv: tabvalg === 0 },
                             { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
                             { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
-                            { label: 'Dokumentoversikt', disabled: true },
+                            { label: 'Dokumentoversikt', aktiv: tabvalg === 3 },
                             { label: 'Brev', aktiv: tabvalg === 4 },
                         ]}
-                        onChange={(_, tabNumber) => tabNumber !== 3 && settTabvalg(tabNumber)}
+                        onChange={(_, tabNumber) => settTabvalg(tabNumber)}
                     />
                     {tabvalg === 0 && (
                         <Personopplysninger personopplysninger={personopplysninger} />
                     )}
                     {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
                     {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
+                    {tabvalg === 3 && <Dokumenter personopplysninger={personopplysninger} />}
                     {tabvalg === 4 && <FritekstBrevMedVisning fagsakId={fagsakId} />}
                 </Side>
             )}
