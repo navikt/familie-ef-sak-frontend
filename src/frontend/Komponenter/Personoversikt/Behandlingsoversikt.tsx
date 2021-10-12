@@ -14,10 +14,17 @@ import { PartialRecord } from '../../App/typer/common';
 import { ToggleName } from '../../App/context/toggles';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useToggles } from '../../App/context/TogglesContext';
-import { Knapp } from 'nav-frontend-knapper';
+import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import { Select } from 'nav-frontend-skjema';
+import {
+    Behandlingsårsak,
+    behandlingsårsaker,
+    behandlingsårsakTilTekst,
+} from '../../App/typer/Behandlingsårsak';
+import { FamilieDatovelger } from '@navikt/familie-form-elements';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -26,7 +33,8 @@ const StyledTable = styled.table`
 `;
 
 const KnappMedMargin = styled(Knapp)`
-    margin: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
 `;
 
 const StyledSystemtittel = styled(Systemtittel)`
@@ -34,12 +42,35 @@ const StyledSystemtittel = styled(Systemtittel)`
     margin-bottom: 0.5rem;
 `;
 
+const StyledSelect = styled(Select)`
+    margin-top: 2rem;
+`;
+
+const StyledHovedknapp = styled(Hovedknapp)`
+    margin-right: 1rem;
+`;
+
+const KnappeWrapper = styled.div`
+    margin-top: 16rem;
+    margin-bottom: 1rem;
+`;
+
+const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
+    margin-top: 2rem;
+`;
+
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+    const [valgtBehandlingstype, settValgtBehandlingstype] = useState<string>(
+        Behandlingstype.REVURDERING
+    );
+    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<string>();
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
+    const [valgtDato, settValgtDato] = useState<string>();
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -66,17 +97,28 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     };
 
     const startRevurdering = (fagsakId: string) => {
-        axiosRequest<Ressurs<void>, { fagsakId: string }>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-            data: { fagsakId: fagsakId },
-        }).then((response) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                hentFagsak();
-            } else {
-                settFeilmelding(response.frontendFeilmelding || response.melding);
-            }
-        });
+        settFeilmeldingModal('');
+        if (validerKanStarteRevurdering()) {
+            settKanStarteRevurdering(false);
+            settVisRevurderingvalg(false);
+            axiosRequest<Ressurs<void>, { fagsakId: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
+                data: { fagsakId: fagsakId },
+            }).then((response) => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    hentFagsak();
+                } else {
+                    settFeilmelding(response.frontendFeilmelding || response.melding);
+                }
+            });
+        } else {
+            settFeilmeldingModal('Vennligst fyll ut alle felter');
+        }
+    };
+
+    const validerKanStarteRevurdering = (): boolean => {
+        return !!(valgtBehandlingstype && valgtBehandlingsårsak && valgtDato);
     };
 
     useEffect(() => {
@@ -112,27 +154,66 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                            Start revurdering
+                            Opprett ny behandling
                         </KnappMedMargin>
                     )}
 
                     <UIModalWrapper
                         modal={{
-                            tittel: 'Revurdering',
+                            tittel: 'Opprett ny behandling',
                             lukkKnapp: true,
                             visModal: visRevurderingvalg,
                             onClose: () => settVisRevurderingvalg(false),
+                            className: 'long',
                         }}
                     >
-                        <KnappMedMargin
-                            onClick={() => {
-                                settKanStarteRevurdering(false);
-                                settVisRevurderingvalg(false);
-                                startRevurdering(fagsakId);
+                        <StyledSelect
+                            label="Behandlingstype"
+                            value={valgtBehandlingstype || ''}
+                            onChange={(e) => {
+                                settValgtBehandlingstype(e.target.value as Behandlingstype);
                             }}
                         >
-                            Start revurdering
-                        </KnappMedMargin>
+                            <option value={Behandlingstype.REVURDERING}>Revurdering</option>
+                        </StyledSelect>
+                        {Behandlingstype.REVURDERING && (
+                            <StyledSelect
+                                label="Årsak revurdering"
+                                value={valgtBehandlingsårsak || ''}
+                                onChange={(e) => {
+                                    settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
+                                }}
+                            >
+                                {behandlingsårsaker.map((behandlingsårsak, index) => (
+                                    <option key={index} value={behandlingsårsak}>
+                                        {behandlingsårsakTilTekst[behandlingsårsak]}
+                                    </option>
+                                ))}
+                            </StyledSelect>
+                        )}
+                        <StyledFamilieDatovelgder
+                            id={'krav-mottatt'}
+                            label={'Krav mottatt'}
+                            onChange={settValgtDato}
+                            valgtDato={valgtDato}
+                        />
+                        <KnappeWrapper>
+                            <StyledHovedknapp
+                                onClick={() => {
+                                    startRevurdering(fagsakId);
+                                }}
+                            >
+                                Start revurdering
+                            </StyledHovedknapp>
+                            <Flatknapp
+                                onClick={() => {
+                                    settVisRevurderingvalg(false);
+                                }}
+                            >
+                                Avbryt
+                            </Flatknapp>
+                        </KnappeWrapper>
+                        {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
                     </UIModalWrapper>
 
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
