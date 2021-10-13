@@ -68,7 +68,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<string>(
         Behandlingstype.REVURDERING
     );
-    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<string>();
+    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [feilmelding, settFeilmelding] = useState<string>();
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtDato, settValgtDato] = useState<string>();
