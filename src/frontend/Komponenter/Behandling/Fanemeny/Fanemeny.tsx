@@ -86,27 +86,31 @@ const Fanemeny: FC = () => {
                 <>
                     <StickyMedBoxShadow>
                         <StyledFanemeny>
-                            {filtrerSiderEtterBehandlingstype(sider, behandling).map((side) => (
-                                <StyledNavLink
-                                    key={side.navn}
-                                    to={`/behandling/${behandlingId}/${side.href}`}
-                                    activeClassName="aktiv"
-                                    onClick={(e) => {
-                                        if (
-                                            ulagretData &&
-                                            aktivSide &&
-                                            aktivSide.navn !== side.navn &&
-                                            erPåSideSomSkalTriggeAdvarsel(aktivSide)
-                                        ) {
-                                            e.preventDefault();
-                                            settValgtSide(side);
-                                            settVisModal(true);
-                                        }
-                                    }}
-                                >
-                                    <Normaltekst>{side.navn}</Normaltekst>
-                                </StyledNavLink>
-                            ))}
+                            {filtrerSiderEtterBehandlingstype(sider, behandling).map(
+                                (side, index) => (
+                                    <StyledNavLink
+                                        key={side.navn}
+                                        to={`/behandling/${behandlingId}/${side.href}`}
+                                        activeClassName="aktiv"
+                                        onClick={(e) => {
+                                            if (
+                                                ulagretData &&
+                                                aktivSide &&
+                                                aktivSide.navn !== side.navn &&
+                                                erPåSideSomSkalTriggeAdvarsel(aktivSide)
+                                            ) {
+                                                e.preventDefault();
+                                                settValgtSide(side);
+                                                settVisModal(true);
+                                            }
+                                        }}
+                                    >
+                                        <Normaltekst>
+                                            {index + 1}. {side.navn}
+                                        </Normaltekst>
+                                    </StyledNavLink>
+                                )
+                            )}
                         </StyledFanemeny>
                     </StickyMedBoxShadow>
                     <UlagretDataModal
