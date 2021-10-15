@@ -13,7 +13,6 @@ export interface Fagsak {
 export interface Behandling {
     id: string;
     type: Behandlingstype;
-    aktiv: boolean;
     steg: Steg;
     status: BehandlingStatus;
     sistEndret: string;
