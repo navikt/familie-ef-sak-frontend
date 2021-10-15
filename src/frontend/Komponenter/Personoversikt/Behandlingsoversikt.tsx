@@ -14,18 +14,11 @@ import { PartialRecord } from '../../App/typer/common';
 import { ToggleName } from '../../App/context/toggles';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useToggles } from '../../App/context/TogglesContext';
-import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
-import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
-import { Select } from 'nav-frontend-skjema';
-import {
-    Behandlingsårsak,
-    behandlingsårsaker,
-    behandlingsårsakTilTekst,
-} from '../../App/typer/Behandlingsårsak';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { compareDesc } from 'date-fns';
+import RevurderingModal from './RevurderingModal';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -43,35 +36,11 @@ const StyledSystemtittel = styled(Systemtittel)`
     margin-bottom: 0.5rem;
 `;
 
-const StyledSelect = styled(Select)`
-    margin-top: 2rem;
-`;
-
-const StyledHovedknapp = styled(Hovedknapp)`
-    margin-right: 1rem;
-`;
-
-const KnappeWrapper = styled.div`
-    margin-top: 16rem;
-    margin-bottom: 1rem;
-`;
-
-const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
-    margin-top: 2rem;
-`;
-
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
-    const [valgtBehandlingstype, settValgtBehandlingstype] = useState<string>(
-        Behandlingstype.REVURDERING
-    );
-    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
-    const [feilmelding, settFeilmelding] = useState<string>();
-    const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
-    const [valgtDato, settValgtDato] = useState<string>();
     const [skalNavigereTilBehandlingen, settSkalNavigereTilBehandlingen] = useState<boolean>(false);
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
@@ -97,36 +66,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                 settTekniskOpphørFeilet(true);
             }
         });
-    };
-
-    const startRevurdering = (fagsakId: string) => {
-        settFeilmeldingModal('');
-        if (validerKanStarteRevurdering()) {
-            settKanStarteRevurdering(false);
-            settVisRevurderingvalg(false);
-            axiosRequest<Ressurs<void>, { fagsakId: string }>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-                data: {
-                    fagsakId,
-                    behandlingsårsak: valgtBehandlingsårsak,
-                    kravMottatt: valgtDato,
-                },
-            }).then((response) => {
-                if (response.status === RessursStatus.SUKSESS) {
-                    settSkalNavigereTilBehandlingen(true);
-                    hentFagsak();
-                } else {
-                    settFeilmelding(response.frontendFeilmelding || response.melding);
-                }
-            });
-        } else {
-            settFeilmeldingModal('Vennligst fyll ut alle felter');
-        }
-    };
-
-    const validerKanStarteRevurdering = (): boolean => {
-        return !!(valgtBehandlingstype && valgtBehandlingsårsak && valgtDato);
     };
 
     const sorterBehandlingerNyesteFørst = (behandlinger: Behandling[]) => {
@@ -186,67 +125,14 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                             Opprett ny behandling
                         </KnappMedMargin>
                     )}
-
-                    <UIModalWrapper
-                        modal={{
-                            tittel: 'Opprett ny behandling',
-                            lukkKnapp: true,
-                            visModal: visRevurderingvalg,
-                            onClose: () => settVisRevurderingvalg(false),
-                            className: 'long',
-                        }}
-                    >
-                        <StyledSelect
-                            label="Behandlingstype"
-                            value={valgtBehandlingstype || ''}
-                            onChange={(e) => {
-                                settValgtBehandlingstype(e.target.value as Behandlingstype);
-                            }}
-                        >
-                            <option value={Behandlingstype.REVURDERING}>Revurdering</option>
-                        </StyledSelect>
-                        {Behandlingstype.REVURDERING && (
-                            <StyledSelect
-                                label="Årsak revurdering"
-                                value={valgtBehandlingsårsak || ''}
-                                onChange={(e) => {
-                                    settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
-                                }}
-                            >
-                                {behandlingsårsaker.map(
-                                    (behandlingsårsak: Behandlingsårsak, index: number) => (
-                                        <option key={index} value={behandlingsårsak}>
-                                            {behandlingsårsakTilTekst[behandlingsårsak]}
-                                        </option>
-                                    )
-                                )}
-                            </StyledSelect>
-                        )}
-                        <StyledFamilieDatovelgder
-                            id={'krav-mottatt'}
-                            label={'Krav mottatt'}
-                            onChange={settValgtDato}
-                            valgtDato={valgtDato}
-                        />
-                        <KnappeWrapper>
-                            <StyledHovedknapp
-                                onClick={() => {
-                                    startRevurdering(fagsakId);
-                                }}
-                            >
-                                Start revurdering
-                            </StyledHovedknapp>
-                            <Flatknapp
-                                onClick={() => {
-                                    settVisRevurderingvalg(false);
-                                }}
-                            >
-                                Avbryt
-                            </Flatknapp>
-                        </KnappeWrapper>
-                        {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
-                    </UIModalWrapper>
-
+                    <RevurderingModal
+                        visModal={visRevurderingvalg}
+                        settVisModal={settVisRevurderingvalg}
+                        fagsakId={fagsakId}
+                        hentFagsak={hentFagsak}
+                        settSkalNavigereTilBehandlingen={settSkalNavigereTilBehandlingen}
+                        settKanStarteRevurdering={settKanStarteRevurdering}
+                    />
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
                             Teknisk opphør
@@ -255,12 +141,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     {tekniskOpphørFeilet && (
                         <AlertStripeFeil style={{ maxWidth: '15rem' }}>
                             Kan ikke iverksette teknisk opphør
-                        </AlertStripeFeil>
-                    )}
-
-                    {feilmelding && (
-                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                            {feilmelding}
                         </AlertStripeFeil>
                     )}
                 </>
