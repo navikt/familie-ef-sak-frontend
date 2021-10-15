@@ -53,10 +53,11 @@ const StyledNavLink = styled(NavLink)`
     }
 `;
 
-const erPåInngangsvilkårAktivitetEllerVedtakFane = (side: ISide) =>
+const erPåSideSomSkalTriggeAdvarsel = (side: ISide) =>
     side.navn === SideNavn.INNGANGSVILKÅR ||
     side.navn === SideNavn.AKTIVITET ||
-    side.navn === SideNavn.VEDTAK_OG_BEREGNING;
+    side.navn === SideNavn.VEDTAK_OG_BEREGNING ||
+    side.navn === SideNavn.SIMULERING;
 
 const hentAktivSide = (path: string) => sider.find((side) => side.href === path);
 
@@ -96,9 +97,7 @@ const Fanemeny: FC = () => {
                                                 ulagretData &&
                                                 aktivSide &&
                                                 aktivSide.navn !== side.navn &&
-                                                erPåInngangsvilkårAktivitetEllerVedtakFane(
-                                                    aktivSide
-                                                )
+                                                erPåSideSomSkalTriggeAdvarsel(aktivSide)
                                             ) {
                                                 e.preventDefault();
                                                 settValgtSide(side);
