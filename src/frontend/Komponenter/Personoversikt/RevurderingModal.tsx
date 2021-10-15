@@ -64,7 +64,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
             const revurderingInnhold: RevurderingInnhold = {
                 fagsakId: fagsakId,
                 behandlingsårsak: valgtBehandlingsårsak as Behandlingsårsak,
-                kravMottat: valgtDato as string,
+                kravMottatt: valgtDato as string,
             };
             axiosRequest<Ressurs<void>, RevurderingInnhold>({
                 method: 'POST',
