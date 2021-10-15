@@ -14,6 +14,7 @@ import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
+import { useHistory } from 'react-router-dom';
 
 const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -36,18 +37,12 @@ interface IProps {
     visModal: boolean;
     settVisModal: (bool: boolean) => void;
     fagsakId: string;
-    hentFagsak: () => void;
-    settSkalNavigereTilBehandlingen: (bool: boolean) => void;
-    settKanStarteRevurdering: (bool: boolean) => void;
 }
 
 const RevurderingsModal: React.FunctionComponent<IProps> = ({
     visModal,
     settVisModal,
     fagsakId,
-    hentFagsak,
-    settSkalNavigereTilBehandlingen,
-    settKanStarteRevurdering,
 }) => {
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>(
@@ -55,17 +50,17 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
     );
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
-
-    const validerKanStarteRevurdering = (): boolean => {
+    const [senderInnRevurdering, settSenderInnRevurdering] = useState<boolean>(false);
+    const kanStarteRevurdering = (): boolean => {
         return !!(valgtBehandlingstype && valgtBehandlingsårsak && valgtDato);
     };
     const { axiosRequest } = useApp();
+    const history = useHistory();
 
     const opprettRevurdering = () => {
         settFeilmeldingModal('');
-        if (validerKanStarteRevurdering()) {
-            settKanStarteRevurdering(false);
-            settVisModal(false);
+        if (kanStarteRevurdering()) {
+            settSenderInnRevurdering(true);
             const revurderingInnhold: RevurderingInnhold = {
                 fagsakId: fagsakId,
                 behandlingsårsak: valgtBehandlingsårsak as Behandlingsårsak,
@@ -75,14 +70,17 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                 method: 'POST',
                 url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
                 data: revurderingInnhold,
-            }).then((response) => {
-                if (response.status === RessursStatus.SUKSESS) {
-                    settSkalNavigereTilBehandlingen(true);
-                    hentFagsak();
-                } else {
-                    settFeilmeldingModal(response.frontendFeilmelding || response.melding);
-                }
-            });
+            })
+                .then((response) => {
+                    if (response.status === RessursStatus.SUKSESS) {
+                        history.push(`/behandling/${response.data}`);
+                    } else {
+                        settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                    }
+                })
+                .finally(() => {
+                    settSenderInnRevurdering(false);
+                });
         } else {
             settFeilmeldingModal('Vennligst fyll ut alle felter');
         }
@@ -133,7 +131,9 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
             <KnappeWrapper>
                 <StyledHovedknapp
                     onClick={() => {
-                        opprettRevurdering();
+                        if (!senderInnRevurdering) {
+                            opprettRevurdering();
+                        }
                     }}
                 >
                     Opprett
@@ -150,7 +150,5 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
         </UIModalWrapper>
     );
 };
-
-RevurderingsModal.propTypes = {};
 
 export default RevurderingsModal;
