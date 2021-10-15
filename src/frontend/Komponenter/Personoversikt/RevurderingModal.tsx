@@ -13,6 +13,7 @@ import { Select } from 'nav-frontend-skjema';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
+import { RevurderingInnhold } from '../../App/typer/revurderingstype';
 
 const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -60,19 +61,20 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
     };
     const { axiosRequest } = useApp();
 
-    const opprettRevurdering = (fagsakId: string) => {
+    const opprettRevurdering = () => {
         settFeilmeldingModal('');
         if (validerKanStarteRevurdering()) {
             settKanStarteRevurdering(false);
             settVisModal(false);
-            axiosRequest<Ressurs<void>, { fagsakId: string }>({
+            const revurderingInnhold: RevurderingInnhold = {
+                fagsakId: fagsakId,
+                behandlingsårsak: valgtBehandlingsårsak as Behandlingsårsak,
+                kravMottat: valgtDato as string,
+            };
+            axiosRequest<Ressurs<void>, RevurderingInnhold>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-                data: {
-                    fagsakId,
-                    behandlingsårsak: valgtBehandlingsårsak,
-                    kravMottatt: valgtDato,
-                },
+                data: revurderingInnhold,
             }).then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
                     settSkalNavigereTilBehandlingen(true);
@@ -131,7 +133,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
             <KnappeWrapper>
                 <StyledHovedknapp
                     onClick={() => {
-                        opprettRevurdering(fagsakId);
+                        opprettRevurdering();
                     }}
                 >
                     Opprett
