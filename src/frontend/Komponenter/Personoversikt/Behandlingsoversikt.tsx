@@ -17,7 +17,7 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
-import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import RevurderingModal from './RevurderingModal';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -26,7 +26,8 @@ const StyledTable = styled.table`
 `;
 
 const KnappMedMargin = styled(Knapp)`
-    margin: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
 `;
 
 const StyledSystemtittel = styled(Systemtittel)`
@@ -39,7 +40,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
-    const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -61,20 +61,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                 response.status === RessursStatus.FUNKSJONELL_FEIL
             ) {
                 settTekniskOpphørFeilet(true);
-            }
-        });
-    };
-
-    const startRevurdering = (fagsakId: string) => {
-        axiosRequest<Ressurs<void>, { fagsakId: string }>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-            data: { fagsakId: fagsakId },
-        }).then((response) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                hentFagsak();
-            } else {
-                settFeilmelding(response.frontendFeilmelding || response.melding);
             }
         });
     };
@@ -101,6 +87,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
             ) === undefined
         );
     }
+
     return (
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
@@ -112,29 +99,14 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                            Start revurdering
+                            Opprett ny behandling
                         </KnappMedMargin>
                     )}
-
-                    <UIModalWrapper
-                        modal={{
-                            tittel: 'Revurdering',
-                            lukkKnapp: true,
-                            visModal: visRevurderingvalg,
-                            onClose: () => settVisRevurderingvalg(false),
-                        }}
-                    >
-                        <KnappMedMargin
-                            onClick={() => {
-                                settKanStarteRevurdering(false);
-                                settVisRevurderingvalg(false);
-                                startRevurdering(fagsakId);
-                            }}
-                        >
-                            Start revurdering
-                        </KnappMedMargin>
-                    </UIModalWrapper>
-
+                    <RevurderingModal
+                        visModal={visRevurderingvalg}
+                        settVisModal={settVisRevurderingvalg}
+                        fagsakId={fagsakId}
+                    />
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
                             Teknisk opphør
@@ -143,12 +115,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     {tekniskOpphørFeilet && (
                         <AlertStripeFeil style={{ maxWidth: '15rem' }}>
                             Kan ikke iverksette teknisk opphør
-                        </AlertStripeFeil>
-                    )}
-
-                    {feilmelding && (
-                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                            {feilmelding}
                         </AlertStripeFeil>
                     )}
                 </>
