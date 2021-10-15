@@ -36,8 +36,13 @@ const StyledSelect = styled(Select)`
 
 const Innholdsrad = styled(Panel)`
     margin-top: 1rem;
-    display: grid;
-    grid-template-columns: 90% 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const Overskrift = styled(Input)`
+    margin-top: 1rem;
 `;
 
 const LeggTilKnappWrapper = styled.div`
@@ -243,14 +248,6 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         <StyledFrittståendeBrev>
             <h1>Fritekstbrev</h1>
             <BrevKolonner>
-                <Input
-                    label="Overskrift"
-                    value={overskrift}
-                    onChange={(e) => {
-                        settOverskrift(e.target.value);
-                    }}
-                />
-
                 <StyledSelect
                     label="Stønadtype"
                     defaultValue={FrittståendeBrevStønadType.OVERGANGSSTØNAD}
@@ -279,7 +276,13 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     <option value={FrittståendeBrevType.INFOBREV}>Infobrev</option>
                     <option value={FrittståendeBrevType.MANGELBREV}>Mangelbrev</option>
                 </StyledSelect>
-
+                <Overskrift
+                    label="Overskrift"
+                    value={overskrift}
+                    onChange={(e) => {
+                        settOverskrift(e.target.value);
+                    }}
+                />
                 {avsnitt.map((rad) => {
                     const deloverskriftId = `deloverskrift-${rad.id}`;
                     const innholdId = `innhold-${rad.id}`;
@@ -292,10 +295,6 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                                 id={deloverskriftId}
                                 value={rad.deloverskrift}
                             />
-                            <LenkeKnapp onClick={fjernRad(rad.id)}>
-                                <SlettSøppelkasse withDefaultStroke={false} />
-                                Slett
-                            </LenkeKnapp>
                             <Textarea
                                 onChange={endreInnholdAvsnitt(rad.id)}
                                 defaultValue=""
@@ -304,12 +303,16 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                                 value={rad.innhold}
                                 maxLength={0}
                             />
+                            <LenkeKnapp onClick={fjernRad(rad.id)}>
+                                <SlettSøppelkasse withDefaultStroke={false} />
+                                Slett avsnitt
+                            </LenkeKnapp>
                         </Innholdsrad>
                     );
                 })}
 
                 <LeggTilKnappWrapper>
-                    <LeggTilKnapp onClick={leggTilRad} knappetekst="Legg til seksjon" />
+                    <LeggTilKnapp onClick={leggTilRad} knappetekst="Legg til avsnitt" />
                 </LeggTilKnappWrapper>
                 {fagsakId && <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>}
             </BrevKolonner>

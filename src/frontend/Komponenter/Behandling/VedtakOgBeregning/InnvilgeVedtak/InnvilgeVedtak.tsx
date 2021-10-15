@@ -222,7 +222,7 @@ export const InnvilgeVedtak: React.FC<{
                     />
                 )}
             </Wrapper>
-            <section>
+            <section className={'blokk-m'}>
                 <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
                 <InntektsperiodeValg
                     inntektsperiodeListe={inntektsperiodeState}
