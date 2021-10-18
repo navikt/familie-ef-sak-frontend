@@ -17,9 +17,9 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
-import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import RevurderingModal from './RevurderingModal';
+import Alertstripe from 'nav-frontend-alertstriper';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -47,6 +47,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+    const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -54,7 +55,17 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-        }).then((response) => settFagsak(response));
+        }).then((respons) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settFagsak(respons);
+            } else if (
+                respons.status === RessursStatus.FEILET ||
+                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
+                respons.status === RessursStatus.IKKE_TILGANG
+            ) {
+                settFeilFagsakHenting(respons.frontendFeilmelding);
+            }
+        });
 
     const gjørTekniskOpphør = () => {
         axiosRequest<Ressurs<void>, null>({
@@ -103,6 +114,10 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         <Systemtittel tag="h3">
                             Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
                         </Systemtittel>
+                        {feilFagsakHenting && (
+                            <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>
+                        )}
+
                         {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
                     </TittelLinje>
 
