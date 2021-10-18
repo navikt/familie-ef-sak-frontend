@@ -26,7 +26,13 @@ export type IInnvilgeVedtak = {
     inntekter: IInntektsperiode[];
 };
 
-export type IVedtak = IAvslåVedtak | IInnvilgeVedtak;
+export interface IOpphørtVedtak {
+    resultatType: EBehandlingResultat.OPPHØRT;
+    opphørFom: string;
+    begrunnelse: string;
+}
+
+export type IVedtak = IAvslåVedtak | IInnvilgeVedtak | IOpphørtVedtak;
 
 export interface IInntektsperiode {
     årMånedFra?: string;
@@ -60,6 +66,7 @@ export enum EBehandlingResultat {
     AVSLÅ = 'AVSLÅ',
     HENLEGGE = 'HENLEGGE',
     BEHANDLE_I_GOSYS = 'BEHANDLE_I_GOSYS',
+    OPPHØRT = 'OPPHØRT',
 }
 
 export enum EPeriodetype {
@@ -107,6 +114,7 @@ export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
     AVSLÅ: 'Avslå',
     HENLEGGE: 'Henlegge',
     BEHANDLE_I_GOSYS: 'Behandle i Gosys',
+    OPPHØRT: 'Opphørt',
 };
 
 export const aktivitetTilTekst: Record<EAktivitet, string> = {

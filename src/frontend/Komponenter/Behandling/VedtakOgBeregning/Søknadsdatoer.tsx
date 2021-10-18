@@ -11,7 +11,7 @@ import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    padding: 2rem;
+    padding: 0 2rem;
 `;
 
 export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
@@ -32,7 +32,7 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingI
             {({ søknadDataResponse }) => (
                 <Container>
                     <Undertittel className={'blokk-xs'}>Søknadsinformasjon</Undertittel>
-                    <GridTabell gridGap={0.5} style={{ marginBottom: '2rem' }}>
+                    <GridTabell gridGap={0.5} underTabellMargin={0}>
                         <Søknadsgrunnlag />
                         <Normaltekst>Søknadsdato</Normaltekst>
                         <Normaltekst>

@@ -14,7 +14,6 @@ export interface Fagsak {
 export interface Behandling {
     id: string;
     type: Behandlingstype;
-    aktiv: boolean;
     steg: Steg;
     status: BehandlingStatus;
     sistEndret: string;
@@ -27,14 +26,18 @@ export interface IEndringerRegistergrunnlag {
     [key: string]: string[];
 }
 
-enum BehandlingResultat {
+export enum BehandlingResultat {
     INNVILGET = 'INNVILGET',
     IKKE_SATT = 'IKKE_SATT',
     ANNULERT = 'ANNULERT',
+    AVSLÅTT = 'AVSLÅTT',
+    OPPHØRT = 'OPPHØRT',
 }
 
 export const behandlingResultatTilTekst: Record<BehandlingResultat, string> = {
     INNVILGET: 'Innvilget',
     IKKE_SATT: 'Ikke satt',
     ANNULERT: 'Annulert',
+    OPPHØRT: 'Opphørt',
+    AVSLÅTT: 'Avslått',
 };

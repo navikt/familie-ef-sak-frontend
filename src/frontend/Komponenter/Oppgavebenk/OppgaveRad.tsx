@@ -24,10 +24,11 @@ const Flatknapp = hiddenIf(Knapp);
 const kanJournalføres = (oppgave: IOppgave) => {
     const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
     return (
-        behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' &&
+        (behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' ||
+            behandlesAvApplikasjon === 'familie-ef-sak') &&
         oppgavetype === 'JFR' &&
         behandlingstema &&
-        ['ab0071', 'ab0177', 'ab0028'].includes(behandlingstema)
+        ['ab0071'].includes(behandlingstema)
     );
 };
 
@@ -38,7 +39,7 @@ const måBehandlesIEFSak = (oppgave: IOppgave) => {
         oppgavetype &&
         ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype) &&
         behandlingstema &&
-        ['ab0071', 'ab0177', 'ab0028'].includes(behandlingstema)
+        ['ab0071'].includes(behandlingstema)
     );
 };
 

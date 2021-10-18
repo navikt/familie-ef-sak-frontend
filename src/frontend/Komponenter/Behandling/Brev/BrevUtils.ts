@@ -48,11 +48,14 @@ const hentVerdiFraMellomlagerEllerNull = (
 };
 export const initFlettefelterMedVerdi = (
     brevStruktur: BrevStruktur,
-    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined
+    flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined,
+    flettefeltStore: { [flettefeltNavn: string]: string }
 ): FlettefeltMedVerdi[] =>
-    brevStruktur.flettefelter.flettefeltReferanse.map((felt) => ({
-        _ref: felt._id,
-        verdi: hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, felt._id),
+    brevStruktur.flettefelter.flettefeltReferanse.map((flettefeltReferanse) => ({
+        _ref: flettefeltReferanse._id,
+        verdi:
+            hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, flettefeltReferanse._id) ||
+            flettefeltStore[flettefeltReferanse.felt],
     }));
 
 export const initValgteFeltMedMellomlager = (

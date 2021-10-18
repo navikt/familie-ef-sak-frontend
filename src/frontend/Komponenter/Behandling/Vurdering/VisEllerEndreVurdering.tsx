@@ -86,7 +86,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Knapp
                         className="flex-item"
                         mini
-                        onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
+                        onClick={() => {
+                            settRedigeringsmodus(Redigeringsmodus.REDIGERING);
+                        }}
                     >
                         Vurder vilkår
                     </Knapp>

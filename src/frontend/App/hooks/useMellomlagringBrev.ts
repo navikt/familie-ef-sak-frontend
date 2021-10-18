@@ -32,20 +32,25 @@ export interface IMellomlagreBrevReuest {
     brevmal: string;
 }
 
+export interface IMellomlagretBrevResponse {
+    brevverdier?: string;
+    brevmal: string;
+}
+
 export const useMellomlagringBrev = (
-    behandlingId: string,
-    brevmal: string
+    behandlingId: string
 ): {
     mellomlagreBrev: (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
-        valgteDelmaler: ValgteDelmaler
+        valgteDelmaler: ValgteDelmaler,
+        brevmal: string
     ) => void;
-    mellomlagretBrev: Ressurs<string | undefined>;
+    mellomlagretBrev: Ressurs<IMellomlagretBrevResponse | undefined>;
 } => {
     const { axiosRequest } = useApp();
     const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] = useState<
-        Ressurs<string | undefined>
+        Ressurs<IMellomlagretBrevResponse | undefined>
     >(byggTomRessurs());
 
     const sanityVersjon = '1';
@@ -53,7 +58,8 @@ export const useMellomlagringBrev = (
     const mellomlagreBrev = (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
-        valgteDelmaler: ValgteDelmaler
+        valgteDelmaler: ValgteDelmaler,
+        brevmal: string
     ): void => {
         axiosRequest<string, IMellomlagretBrev>({
             method: 'POST',
@@ -70,20 +76,23 @@ export const useMellomlagringBrev = (
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 Promise.resolve();
+            } else {
+                Promise.reject();
             }
-            Promise.reject();
         });
     };
 
     const hentMellomlagretBrev = useCallback(
         () =>
-            axiosRequest<string | undefined, null>({
+            axiosRequest<IMellomlagretBrevResponse | undefined, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/brev/mellomlager/${behandlingId}`,
-                params: { brevmal, sanityVersjon },
-            }).then((res: RessursSuksess<string | undefined> | RessursFeilet) => {
-                settMellomlagretBrevRessurs(res);
-            }),
+                params: { sanityVersjon },
+            }).then(
+                (res: RessursSuksess<IMellomlagretBrevResponse | undefined> | RessursFeilet) => {
+                    settMellomlagretBrevRessurs(res);
+                }
+            ),
         // eslint-disable-next-line
         [behandlingId]
     );

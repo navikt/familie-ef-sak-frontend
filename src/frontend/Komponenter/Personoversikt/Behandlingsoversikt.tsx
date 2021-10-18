@@ -19,6 +19,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { EtikettInfo } from 'nav-frontend-etiketter';
+import RevurderingModal from './RevurderingModal';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -27,7 +28,8 @@ const StyledTable = styled.table`
 `;
 
 const KnappMedMargin = styled(Knapp)`
-    margin: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
 `;
 
 const StyledEtikettInfo = styled(EtikettInfo)`
@@ -35,15 +37,12 @@ const StyledEtikettInfo = styled(EtikettInfo)`
 `;
 
 const TittelLinje = styled.div`
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     display: flex;
     align-items: flex-start;
 `;
 
-const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> = ({
-    fagsakId,
-    personIdent,
-}) => {
+const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
@@ -57,11 +56,10 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
         }).then((response) => settFagsak(response));
 
-    const gjørTekniskOpphør = (personIdent: string) => {
-        axiosRequest<Ressurs<void>, { ident: string }>({
+    const gjørTekniskOpphør = () => {
+        axiosRequest<Ressurs<void>, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor`,
-            data: { ident: personIdent },
+            url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
         }).then((response) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
@@ -70,18 +68,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                 response.status === RessursStatus.FUNKSJONELL_FEIL
             ) {
                 settTekniskOpphørFeilet(true);
-            }
-        });
-    };
-
-    const startRevurdering = (fagsakId: string) => {
-        axiosRequest<Ressurs<void>, { fagsakId: string }>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-            data: { fagsakId: fagsakId },
-        }).then((response) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                hentFagsak();
             }
         });
     };
@@ -108,6 +94,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
             ) === undefined
         );
     }
+
     return (
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
@@ -118,42 +105,27 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string; personIdent: string }> =
                         </Systemtittel>
                         {!fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
                     </TittelLinje>
+
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
 
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                            Start revurdering
+                            Opprett ny behandling
                         </KnappMedMargin>
                     )}
-
-                    <UIModalWrapper
-                        modal={{
-                            tittel: 'Revurdering',
-                            lukkKnapp: true,
-                            visModal: visRevurderingvalg,
-                            onClose: () => settVisRevurderingvalg(false),
-                        }}
-                    >
-                        <KnappMedMargin
-                            onClick={() => {
-                                settKanStarteRevurdering(false);
-                                settVisRevurderingvalg(false);
-                                startRevurdering(fagsakId);
-                            }}
-                        >
-                            Start revurdering
-                        </KnappMedMargin>
-                    </UIModalWrapper>
-
+                    <RevurderingModal
+                        visModal={visRevurderingvalg}
+                        settVisModal={settVisRevurderingvalg}
+                        fagsakId={fagsakId}
+                    />
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
-                        <KnappMedMargin onClick={() => gjørTekniskOpphør(personIdent)}>
+                        <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
                             Teknisk opphør
                         </KnappMedMargin>
                     )}
                     {tekniskOpphørFeilet && (
                         <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                            Kunde inte iverksetta teknisk opphør. Ta venligest kontakt med noen som
-                            som har tilgang til secureloggs och kan førtelle dig hva som gikk galt
+                            Kan ikke iverksette teknisk opphør
                         </AlertStripeFeil>
                     )}
                 </>

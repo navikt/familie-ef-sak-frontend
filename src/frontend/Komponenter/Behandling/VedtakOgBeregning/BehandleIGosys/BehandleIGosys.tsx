@@ -16,7 +16,7 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
 
 export const BehandleIGosys: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, nullstillIkkePersisterteKomponenter } = useBehandling();
     const { modalDispatch } = useModal();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -33,6 +33,7 @@ export const BehandleIGosys: React.FC<{ behandlingId: string }> = ({ behandlingI
                             type: ModalAction.VIS_MODAL,
                             modalType: ModalType.BEHANDLES_I_GOSYS,
                         });
+                        nullstillIkkePersisterteKomponenter();
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:

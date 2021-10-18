@@ -5,6 +5,7 @@ import { formaterIsoMåned, formaterIsoÅr } from '../../../App/utils/formatter'
 import { gjelderÅr } from '../../../App/utils/dato';
 import styled from 'styled-components';
 import SimuleringOversikt from './SimuleringOversikt';
+import { Tilbakekreving } from './Tilbakekreving';
 
 const SimuleringsContainer = styled.div`
     margin: 2rem;
@@ -34,9 +35,15 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
 }) => {
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
-    const [år, settÅr] = useState(Math.max(...muligeÅr));
+    const [år, settÅr] = useState(
+        muligeÅr.length ? Math.max(...muligeÅr) : new Date().getFullYear()
+    );
 
     const simuleringTabellRader = mapSimuleringstabellRader(simuleringsresultat, år);
+
+    function harFeilutbetaling() {
+        return simuleringsresultat.feilutbetaling > 0;
+    }
 
     return (
         <SimuleringsContainer>
@@ -45,6 +52,7 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
             />
+            {harFeilutbetaling() && <Tilbakekreving />}
         </SimuleringsContainer>
     );
 };

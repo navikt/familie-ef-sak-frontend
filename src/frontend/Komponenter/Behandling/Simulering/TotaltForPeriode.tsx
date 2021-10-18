@@ -27,24 +27,26 @@ export const TotaltForPeriode: React.FC<{
             </Element>
         </div>
         <SimuleringOversiktTabell>
-            <tr>
-                <RadTittel>
-                    <Normaltekst>Feilutbetaling</Normaltekst>
-                </RadTittel>
-                <RadVerdi>
-                    <Element>
-                        {`-${formaterTallMedTusenSkilleEllerStrek(feilutbetaling)}`} kr
-                    </Element>
-                </RadVerdi>
-            </tr>
-            <tr>
-                <RadTittel>
-                    <Normaltekst>Etterbetaling</Normaltekst>
-                </RadTittel>
-                <RadVerdi>
-                    <Element>{formaterTallMedTusenSkilleEllerStrek(etterbetaling)} kr</Element>
-                </RadVerdi>
-            </tr>
+            <tbody>
+                <tr>
+                    <RadTittel>
+                        <Normaltekst>Feilutbetaling</Normaltekst>
+                    </RadTittel>
+                    <RadVerdi>
+                        <Element>
+                            {`-${formaterTallMedTusenSkilleEllerStrek(feilutbetaling)}`} kr
+                        </Element>
+                    </RadVerdi>
+                </tr>
+                <tr>
+                    <RadTittel>
+                        <Normaltekst>Etterbetaling</Normaltekst>
+                    </RadTittel>
+                    <RadVerdi>
+                        <Element>{formaterTallMedTusenSkilleEllerStrek(etterbetaling)} kr</Element>
+                    </RadVerdi>
+                </tr>
+            </tbody>
         </SimuleringOversiktTabell>
     </BoksMedBottomBorder>
 );
