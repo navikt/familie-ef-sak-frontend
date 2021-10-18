@@ -103,7 +103,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         <Systemtittel tag="h3">
                             Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
                         </Systemtittel>
-                        {!fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
+                        {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
                     </TittelLinje>
 
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
