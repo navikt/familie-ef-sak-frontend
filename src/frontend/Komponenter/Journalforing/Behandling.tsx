@@ -34,8 +34,7 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
         const harIverksattTidligereBehandlinger =
             tidligereBehandlinger.filter(
                 (tidligereBehandling) =>
-                    tidligereBehandling.resultat !== BehandlingResultat.ANNULERT &&
-                    tidligereBehandling.resultat !== BehandlingResultat.AVSLÅTT
+                    tidligereBehandling.resultat !== BehandlingResultat.ANNULERT
             ).length > 0;
 
         return harIverksattTidligereBehandlinger
