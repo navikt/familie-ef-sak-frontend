@@ -12,6 +12,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -39,8 +40,25 @@ export const Tilbakekreving: React.FC = () => {
     const [begrunnelse, settBegrunnelse] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
+    const [harÅpenTilbakekreving, settHarÅpenTilbakekreving] = useState<boolean>(false);
 
-    // TODO: HarÅpenTilbakekreving - vis info om dette istedenfor skjema
+    useEffect(() => {
+        axiosRequest<boolean, null>({
+            method: 'GET',
+            url: `familie-ef-sak/api/tilbakekreving/${behandlingId}/er-allerede-opprettet`,
+        }).then((respons: Ressurs<boolean>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settHarÅpenTilbakekreving(respons.data === true);
+            } else if (
+                respons.status === RessursStatus.FEILET ||
+                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
+                respons.status === RessursStatus.IKKE_TILGANG
+            ) {
+                settFeilmelding(respons.frontendFeilmelding);
+            }
+        });
+        // eslint-disable-next-line
+    }, [behandlingId]);
 
     useEffect(() => {
         axiosRequest<ITilbakekreving, null>({
@@ -93,76 +111,88 @@ export const Tilbakekreving: React.FC = () => {
             .finally(() => settLåsKnapp(false));
     };
 
-    return (
-        <div>
-            <FamilieRadioGruppe erLesevisning={false} legend={<h2>Tilbakekreving</h2>}>
-                <Radio
-                    checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
-                    label="Opprett tilbakekreving, send varsel"
-                    name="tilbakekrevingRadio"
-                    onChange={() => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        settTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_MED_VARSEL);
-                    }}
-                />
-                {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
-                    <VarselValg>
-                        <EnsligTextArea
-                            label={'Fritekst i varselet'}
-                            erLesevisning={false}
-                            value={varseltekst}
-                            maxLength={0}
-                            onChange={(e) => {
-                                settIkkePersistertKomponent('tilbakekreving');
-                                settVarseltekst(e.target.value);
-                            }}
-                        />
-                        <IkonKnapp
-                            kompakt={true}
-                            mini={true}
-                            erLesevisning={false}
-                            onClick={() => {
-                                console.log('hurra');
-                            }}
-                            knappPosisjon={'venstre'}
-                            ikon={<Søknad />}
-                            label={'Forhåndsvis varsel'}
-                        />
-                    </VarselValg>
-                )}
-                <Radio
-                    checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL}
-                    label="Opprett tilbakekreving, ikke send varsel"
-                    name="tilbakekrevingRadio"
-                    onChange={() => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        settTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL);
-                    }}
-                />
-                <Radio
-                    checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.AVVENT}
-                    label="Avvent"
-                    name="tilbakekrevingRadio"
-                    onChange={() => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        settTilbakekrevingsvalg(ITilbakekrevingsvalg.AVVENT);
-                    }}
-                />
-                <EnsligTextArea
-                    label={'Begrunnelse (internt notat)'}
-                    erLesevisning={false}
-                    value={begrunnelse}
-                    maxLength={0}
-                    onChange={(e) => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        settBegrunnelse(e.target.value);
-                    }}
-                />
-            </FamilieRadioGruppe>
-            <Hovedknapp htmlType={'submit'} onClick={lagreTilbakekrevingsvalg} disabled={låsKnapp}>
-                Lagre tilbakekrevingsvalg
-            </Hovedknapp>
-            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
-        </div>
-    );
+    if (harÅpenTilbakekreving) {
+        return (
+            <div>
+                <h2>Tilbakekreving</h2>
+                <Normaltekst>Det finnes allerede en åpen tilbakekrevingssak.</Normaltekst>
+            </div>
+        );
+    } else
+        return (
+            <div>
+                <FamilieRadioGruppe erLesevisning={false} legend={<h2>Tilbakekreving</h2>}>
+                    <Radio
+                        checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
+                        label="Opprett tilbakekreving, send varsel"
+                        name="tilbakekrevingRadio"
+                        onChange={() => {
+                            settIkkePersistertKomponent('tilbakekreving');
+                            settTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_MED_VARSEL);
+                        }}
+                    />
+                    {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
+                        <VarselValg>
+                            <EnsligTextArea
+                                label={'Fritekst i varselet'}
+                                erLesevisning={false}
+                                value={varseltekst}
+                                maxLength={0}
+                                onChange={(e) => {
+                                    settIkkePersistertKomponent('tilbakekreving');
+                                    settVarseltekst(e.target.value);
+                                }}
+                            />
+                            <IkonKnapp
+                                kompakt={true}
+                                mini={true}
+                                erLesevisning={false}
+                                onClick={() => {
+                                    console.log('hurra');
+                                }}
+                                knappPosisjon={'venstre'}
+                                ikon={<Søknad />}
+                                label={'Forhåndsvis varsel'}
+                            />
+                        </VarselValg>
+                    )}
+                    <Radio
+                        checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL}
+                        label="Opprett tilbakekreving, ikke send varsel"
+                        name="tilbakekrevingRadio"
+                        onChange={() => {
+                            settIkkePersistertKomponent('tilbakekreving');
+                            settTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL);
+                        }}
+                    />
+                    <Radio
+                        checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.AVVENT}
+                        label="Avvent"
+                        name="tilbakekrevingRadio"
+                        onChange={() => {
+                            settIkkePersistertKomponent('tilbakekreving');
+                            settTilbakekrevingsvalg(ITilbakekrevingsvalg.AVVENT);
+                        }}
+                    />
+                    <EnsligTextArea
+                        label={'Begrunnelse (internt notat)'}
+                        erLesevisning={false}
+                        value={begrunnelse}
+                        maxLength={0}
+                        onChange={(e) => {
+                            settIkkePersistertKomponent('tilbakekreving');
+                            settBegrunnelse(e.target.value);
+                        }}
+                    />
+                </FamilieRadioGruppe>
+                <Hovedknapp
+                    htmlType={'submit'}
+                    onClick={lagreTilbakekrevingsvalg}
+                    disabled={låsKnapp}
+                >
+                    Lagre tilbakekrevingsvalg
+                </Hovedknapp>
+                {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+            </div>
+        );
 };
