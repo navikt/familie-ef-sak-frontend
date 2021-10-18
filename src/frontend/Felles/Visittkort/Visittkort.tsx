@@ -74,7 +74,6 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 data: { personIdent: personIdent },
             }).then((respons: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
-                    console.log('RESP', respons);
                     if (respons.data?.fagsaker?.length) {
                         settFagsakId(respons.data.fagsaker[0].fagsakId);
                     }
