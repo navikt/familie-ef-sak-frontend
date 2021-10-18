@@ -155,11 +155,15 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
             </Visittkort>
             <DataViewer response={{ fagsak }}>
                 {({ fagsak }) => {
-                    !fagsak.erLøpende && (
-                        <ElementWrapper>
-                            <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
-                        </ElementWrapper>
-                    );
+                    if (fagsak.erLøpende) {
+                        return (
+                            <ElementWrapper>
+                                <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
+                            </ElementWrapper>
+                        );
+                    } else {
+                        return null;
+                    }
                 }}
             </DataViewer>
             {behandling && <Behandlingsinfo behandling={behandling} />}
