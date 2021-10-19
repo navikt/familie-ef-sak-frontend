@@ -49,6 +49,7 @@ const BehandlingContainer: FC = () => {
 
 const Behandling: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
+
     return (
         <DataViewer response={{ personopplysningerResponse, behandling }}>
             {({ personopplysningerResponse, behandling }) => (

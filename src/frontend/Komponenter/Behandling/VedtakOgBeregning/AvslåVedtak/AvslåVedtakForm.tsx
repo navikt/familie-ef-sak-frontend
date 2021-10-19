@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import { useApp } from '../../../../App/context/AppContext';
 
 const StyledForm = styled.form`
     margin-top: 2rem;
@@ -31,7 +31,7 @@ const AvslåVedtakForm: React.FC<Props> = ({
     laster,
     behandlingErRedigerbar,
 }) => {
-    const { settIkkePersistertKomponent } = useBehandling();
+    const { settIkkePersistertKomponent } = useApp();
 
     return (
         <>

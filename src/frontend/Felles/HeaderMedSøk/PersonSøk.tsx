@@ -1,6 +1,5 @@
 import { ISøkeresultat, Søk } from '@navikt/familie-header';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import {
     byggHenterRessurs,
     byggSuksessRessurs,
@@ -27,8 +26,7 @@ const tilSøkeresultatListe = (resultat: IFagsaksøk): ISøkeresultat[] => {
 };
 
 const PersonSøk: React.FC = () => {
-    const history = useHistory();
-    const { axiosRequest } = useApp();
+    const { gåTilUrl, axiosRequest } = useApp();
     const [resultat, settResultat] = React.useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
 
     const nullstillResultat = (): void => {
@@ -36,7 +34,7 @@ const PersonSøk: React.FC = () => {
     };
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
-        history.push(`/fagsak/${søkeresultat.fagsakId}`);
+        gåTilUrl(`/fagsak/${søkeresultat.fagsakId}`);
     };
 
     const søk = (personIdent: string): void => {

@@ -22,9 +22,8 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
-    const { hentBehandling, behandlingErRedigerbar, nullstillIkkePersisterteKomponenter } =
-        useBehandling();
-    const { axiosRequest } = useApp();
+    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
 
     const vedtakRequest: IAvslåVedtak = {
         resultatType: EBehandlingResultat.AVSLÅ,
