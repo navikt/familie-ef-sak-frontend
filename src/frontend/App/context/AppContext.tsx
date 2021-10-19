@@ -21,13 +21,40 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
     const [valgtSide, settValgtSide] = useState<string | undefined>();
     const [visUlagretDataModal, settVisUlagretDataModal] = useState(false);
     const [byttUrl, settByttUrl] = useState(false);
+
     useEffect(
         () => settUlagretData(ikkePersisterteKomponenter.size > 0),
         [ikkePersisterteKomponenter]
     );
+
     useEffect(() => {
         settInnloggetSaksbehandler(autentisertSaksbehandler);
     }, [autentisertSaksbehandler]);
+
+    const settIkkePersistertKomponent = (komponentId: string) => {
+        settIkkePersisterteKomponenter(new Set(ikkePersisterteKomponenter).add(komponentId));
+    };
+
+    const nullstillIkkePersistertKomponent = (komponentId: string) => {
+        const kopi = new Set(ikkePersisterteKomponenter);
+        kopi.delete(komponentId);
+        settIkkePersisterteKomponenter(kopi);
+    };
+
+    const nullstillIkkePersisterteKomponenter = () => {
+        settIkkePersisterteKomponenter(new Set());
+    };
+
+    const gåTilUrl = (url: string) => {
+        if (ulagretData) {
+            settValgtSide(url);
+            settVisUlagretDataModal(true);
+        } else {
+            settValgtSide(url);
+            settByttUrl(true);
+        }
+    };
+
     const axiosRequest = <T, D>(
         config: AxiosRequestConfig & { data?: D }
     ): Promise<RessursFeilet | RessursSuksess<T>> => {
@@ -44,26 +71,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
                 return håndterFeil(error, innloggetSaksbehandler);
             });
     };
-    const settIkkePersistertKomponent = (komponentId: string) => {
-        settIkkePersisterteKomponenter(new Set(ikkePersisterteKomponenter).add(komponentId));
-    };
-    const nullstillIkkePersistertKomponent = (komponentId: string) => {
-        const kopi = new Set(ikkePersisterteKomponenter);
-        kopi.delete(komponentId);
-        settIkkePersisterteKomponenter(kopi);
-    };
-    const nullstillIkkePersisterteKomponenter = () => {
-        settIkkePersisterteKomponenter(new Set());
-    };
-    const gåTilUrl = (url: string) => {
-        if (ulagretData) {
-            settValgtSide(url);
-            settVisUlagretDataModal(true);
-        } else {
-            settValgtSide(url);
-            settByttUrl(true);
-        }
-    };
+
     return {
         axiosRequest,
         autentisert,

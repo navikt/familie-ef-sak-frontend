@@ -52,7 +52,7 @@ const Routes: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
     return (
         <Router>
             {autentisert ? (
-                <AppEtterRouter innloggetSaksbehandler={innloggetSaksbehandler} />
+                <AppInnhold innloggetSaksbehandler={innloggetSaksbehandler} />
             ) : (
                 <UgyldigSesjon />
             )}
@@ -60,7 +60,7 @@ const Routes: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
     );
 };
 
-const AppEtterRouter: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
+const AppInnhold: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
     const history = useHistory();
