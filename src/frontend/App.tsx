@@ -64,12 +64,7 @@ const AppEtterRouter: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
     const history = useHistory();
-    const { settGjeldendeLocation, valgtSide, byttUrl, settByttUrl } = useApp();
-
-    useEffect(() => {
-        settGjeldendeLocation(history.location.pathname);
-        //eslint-disable-next-line
-    }, [history]);
+    const { valgtSide, byttUrl, settByttUrl } = useApp();
 
     useEffect(() => {
         if (valgtSide && byttUrl) {

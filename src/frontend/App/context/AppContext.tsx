@@ -18,7 +18,6 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         new Set()
     );
     const [ulagretData, settUlagretData] = useState<boolean>(ikkePersisterteKomponenter.size > 0);
-    const [gjeldendeLocation, settGjeldendeLocation] = useState<string | undefined>();
     const [valgtSide, settValgtSide] = useState<string | undefined>();
     const [visUlagretDataModal, settVisUlagretDataModal] = useState(false);
     const [byttUrl, settByttUrl] = useState(false);
@@ -57,9 +56,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         settIkkePersisterteKomponenter(new Set());
     };
     const gåTilUrl = (url: string) => {
-        if (gjeldendeLocation === url) {
-            return;
-        } else if (ulagretData) {
+        if (ulagretData) {
             settValgtSide(url);
             settVisUlagretDataModal(true);
         } else {
@@ -77,7 +74,6 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         gåTilUrl,
         valgtSide,
         visUlagretDataModal,
-        settGjeldendeLocation,
         settVisUlagretDataModal,
         byttUrl,
         settByttUrl,

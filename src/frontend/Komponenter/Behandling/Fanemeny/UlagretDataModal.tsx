@@ -32,7 +32,6 @@ const UlagretDataModal: FC = () => {
                 key={'Forlat siden'}
                 type={'standard'}
                 onClick={() => {
-                    console.log('valgtSide', valgtSide);
                     if (valgtSide) {
                         nullstillIkkePersisterteKomponenter();
                         history.push(valgtSide);
