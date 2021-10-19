@@ -106,6 +106,8 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         );
     }
 
+    console.log('fagsak', fagsak);
+
     return (
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
@@ -118,7 +120,11 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                             <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>
                         )}
 
-                        {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
+                        {!fagsak.erLøpende && (
+                            <StyledEtikettInfo mini>
+                                Løpende {fagsak.stønadstype?.toLowerCase()}
+                            </StyledEtikettInfo>
+                        )}
                     </TittelLinje>
 
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
