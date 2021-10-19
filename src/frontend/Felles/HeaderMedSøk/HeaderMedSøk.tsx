@@ -24,7 +24,6 @@ const eksterneLenker: PopoverItem[] = [
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    //const history = useHistory();
     const { gåTilUrl } = useApp();
     return (
         <Header
