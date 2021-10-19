@@ -46,7 +46,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         vergemål,
     } = data;
 
-    const { axiosRequest } = useApp();
+    const { axiosRequest, gåTilUrl } = useApp();
     const [fagsakId, settFagsakId] = useState('');
     const [feilFagsakHenting, settFeilFagsakHenting] = useState(false);
 
@@ -74,7 +74,6 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
         // eslint-disable-next-line
     }, []);
-
     return (
         <VisittkortWrapper>
             {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
@@ -83,7 +82,13 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 ident={personIdent}
                 kjønn={kjønn}
                 navn={
-                    <Lenke href={'/fagsak/' + fagsakId}>
+                    <Lenke
+                        role={'link'}
+                        href={'#'}
+                        onClick={() => {
+                            gåTilUrl(`/fagsak/${fagsakId}`);
+                        }}
+                    >
                         <Element>{navn.visningsnavn}</Element>
                     </Lenke>
                 }

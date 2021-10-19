@@ -1,6 +1,5 @@
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { useHistory } from 'react-router-dom';
 import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
 import { useState } from 'react';
 
@@ -11,8 +10,7 @@ interface OppgaveDto {
 
 // eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
-    const history = useHistory();
+    const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
 
@@ -44,9 +42,7 @@ export const useOppgave = (oppgave: IOppgave) => {
                 });
             })
             .then((behandlingId) => {
-                settOppgaveTilSaksbehandler().then(() =>
-                    history.push(`/behandling/${behandlingId}`)
-                );
+                settOppgaveTilSaksbehandler().then(() => gåTilUrl(`/behandling/${behandlingId}`));
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
@@ -69,9 +65,7 @@ export const useOppgave = (oppgave: IOppgave) => {
                 });
             })
             .then((behandlingId) => {
-                settOppgaveTilSaksbehandler().then(() =>
-                    history.push(`/behandling/${behandlingId}`)
-                );
+                settOppgaveTilSaksbehandler().then(() => gåTilUrl(`/behandling/${behandlingId}`));
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
@@ -83,7 +77,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         settLaster(true);
         settOppgaveTilSaksbehandler()
             .then(() =>
-                history.push(
+                gåTilUrl(
                     `/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`
                 )
             )

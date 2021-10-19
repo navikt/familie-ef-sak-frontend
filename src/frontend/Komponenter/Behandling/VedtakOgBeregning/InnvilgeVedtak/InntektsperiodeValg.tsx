@@ -12,6 +12,7 @@ import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import { useApp } from '../../../../App/context/AppContext';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -47,7 +48,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
     valideringsfeil,
     setValideringsFeil,
 }) => {
-    const { behandlingErRedigerbar, settIkkePersistertKomponent } = useBehandling();
+    const { behandlingErRedigerbar } = useBehandling();
+    const { settIkkePersistertKomponent } = useApp();
 
     const oppdaterInntektslisteElement = (
         index: number,

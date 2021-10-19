@@ -11,7 +11,6 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useHistory, useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { useBehandling } from '../../../App/context/BehandlingContext';
 
 enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -30,8 +29,8 @@ const VarselValg = styled.div`
 `;
 
 export const Tilbakekreving: React.FC = () => {
-    const { nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } = useBehandling();
-    const { axiosRequest } = useApp();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
     const { behandlingId } = useParams<IBehandlingParams>();
     const history = useHistory();
     const [tilbakekrevingsvalg, settTilbakekrevingsvalg] = useState<ITilbakekrevingsvalg>();

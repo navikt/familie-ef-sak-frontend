@@ -29,13 +29,9 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
         lagretOpphørtVedtak?.begrunnelse || ''
     );
     const [feilmelding, settFeilmelding] = useState<string | undefined>();
-    const {
-        behandlingErRedigerbar,
-        hentBehandling,
-        nullstillIkkePersisterteKomponenter,
-        settIkkePersistertKomponent,
-    } = useBehandling();
-    const { axiosRequest } = useApp();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
     const history = useHistory();
 
     const lagreVedtak = (e: FormEvent<HTMLFormElement>) => {

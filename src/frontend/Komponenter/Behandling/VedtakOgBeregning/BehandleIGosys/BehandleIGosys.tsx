@@ -15,8 +15,8 @@ const StyledAdvarsel = styled(AlertStripeAdvarsel)`
 `;
 
 export const BehandleIGosys: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { axiosRequest } = useApp();
-    const { behandlingErRedigerbar, nullstillIkkePersisterteKomponenter } = useBehandling();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
+    const { behandlingErRedigerbar } = useBehandling();
     const { modalDispatch } = useModal();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();

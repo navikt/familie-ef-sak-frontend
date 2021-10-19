@@ -1,24 +1,21 @@
 import React, { FC } from 'react';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import { Knapp } from 'nav-frontend-knapper';
-import { ISide } from './sider';
-import { useBehandling } from '../../../App/context/BehandlingContext';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { useApp } from '../../../App/context/AppContext';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 3rem;
 `;
 
-interface Props {
-    visModal: boolean;
-    aktivSide: ISide | undefined;
-    valgtSide: ISide | undefined;
-    settVisModal: (visModal: boolean) => void;
-}
-
-const UlagretDataModal: FC<Props> = ({ visModal, aktivSide, valgtSide, settVisModal }) => {
-    const { nullstillIkkePersisterteKomponenter } = useBehandling();
+const UlagretDataModal: FC = () => {
+    const {
+        nullstillIkkePersisterteKomponenter,
+        visUlagretDataModal,
+        valgtSide,
+        settVisUlagretDataModal,
+    } = useApp();
     const history = useHistory();
 
     return (
@@ -26,8 +23,8 @@ const UlagretDataModal: FC<Props> = ({ visModal, aktivSide, valgtSide, settVisMo
             modal={{
                 tittel: 'Du har ikke lagret dine siste endringer og vil miste disse om du forlater siden.',
                 lukkKnapp: false,
-                visModal: visModal,
-                onClose: () => settVisModal(false),
+                visModal: visUlagretDataModal,
+                onClose: () => settVisUlagretDataModal(false),
                 className: 'cake',
             }}
         >
@@ -35,15 +32,12 @@ const UlagretDataModal: FC<Props> = ({ visModal, aktivSide, valgtSide, settVisMo
                 key={'Forlat siden'}
                 type={'standard'}
                 onClick={() => {
-                    if (valgtSide && aktivSide) {
+                    console.log('valgtSide', valgtSide);
+                    if (valgtSide) {
                         nullstillIkkePersisterteKomponenter();
-                        const valgtSidePath = history.location.pathname.replace(
-                            aktivSide.href,
-                            valgtSide.href
-                        );
-                        history.push(valgtSidePath);
+                        history.push(valgtSide);
                     }
-                    settVisModal(false);
+                    settVisUlagretDataModal(false);
                 }}
             >
                 Forlat siden
@@ -52,7 +46,7 @@ const UlagretDataModal: FC<Props> = ({ visModal, aktivSide, valgtSide, settVisMo
                 key={'Gå tilbake'}
                 type={'hoved'}
                 onClick={() => {
-                    settVisModal(false);
+                    settVisUlagretDataModal(false);
                 }}
             >
                 Gå tilbake for å lagre
