@@ -47,13 +47,9 @@ export const InnvilgeVedtak: React.FC<{
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtak)
             : undefined;
-    const {
-        hentBehandling,
-        behandlingErRedigerbar,
-        nullstillIkkePersisterteKomponenter,
-        settIkkePersistertKomponent,
-    } = useBehandling();
-    const { axiosRequest } = useApp();
+    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
     const history = useHistory();
     const [laster, settLaster] = useState<boolean>(false);
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(

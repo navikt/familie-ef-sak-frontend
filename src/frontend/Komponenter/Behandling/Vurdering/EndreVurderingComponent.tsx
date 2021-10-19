@@ -20,7 +20,7 @@ import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Begrunnelse from './Begrunnelse';
 import Delvilkår from './Delvilkår';
-import { useBehandling } from '../../../App/context/BehandlingContext';
+import { useApp } from '../../../App/context/AppContext';
 
 const Lagreknapp = hiddenIf(Hovedknapp);
 /**
@@ -33,7 +33,7 @@ const EndreVurderingComponent: FC<{
     oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
-    const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useBehandling();
+    const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );

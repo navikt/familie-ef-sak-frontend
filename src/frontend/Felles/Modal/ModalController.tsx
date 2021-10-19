@@ -2,8 +2,8 @@ import React from 'react';
 import { ModalAction, ModalType, useModal } from '../../App/context/ModalContext';
 import UIModalWrapper from './UIModalWrapper';
 import { Knapp } from 'nav-frontend-knapper';
-import { useHistory } from 'react-router-dom';
 import { useBehandling } from '../../App/context/BehandlingContext';
+import { useApp } from '../../App/context/AppContext';
 
 const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
@@ -15,7 +15,7 @@ const modalTittelToTekst: Record<ModalType, string> = {
 const ModalController: React.FC = () => {
     const { modalState, modalDispatch } = useModal();
     const { hentBehandling, hentBehandlingshistorikk } = useBehandling();
-    const history = useHistory();
+    const { gåTilUrl } = useApp();
 
     switch (modalState.modalType) {
         case ModalType.SENDT_TIL_BESLUTTER:
@@ -46,7 +46,7 @@ const ModalController: React.FC = () => {
                                 key={'oppgavebenk'}
                                 type={'hoved'}
                                 mini={true}
-                                onClick={() => history.push('/oppgavebenk')}
+                                onClick={() => gåTilUrl('/oppgavebenk')}
                                 children="Til oppgavebenk"
                             />,
                         ],
@@ -65,7 +65,7 @@ const ModalController: React.FC = () => {
                                 key={'oppgavebenk'}
                                 type={'hoved'}
                                 mini={true}
-                                onClick={() => history.push('/oppgavebenk')}
+                                onClick={() => gåTilUrl('/oppgavebenk')}
                                 children="Til oppgavebenk"
                             />,
                         ],

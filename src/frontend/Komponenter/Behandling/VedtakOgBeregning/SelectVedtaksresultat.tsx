@@ -7,6 +7,7 @@ import { Undertittel } from 'nav-frontend-typografi';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VEDTAK_OG_BEREGNING } from './konstanter';
+import { useApp } from '../../../App/context/AppContext';
 
 interface Props {
     behandling: Behandling;
@@ -23,7 +24,8 @@ const StyledSelect = styled(FamilieSelect)`
 `;
 
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
-    const { behandlingErRedigerbar, settIkkePersistertKomponent } = useBehandling();
+    const { behandlingErRedigerbar } = useBehandling();
+    const { settIkkePersistertKomponent } = useApp();
     const { resultatType, settResultatType } = props;
     const opphørMulig = props.behandling.type === Behandlingstype.REVURDERING;
     return (
