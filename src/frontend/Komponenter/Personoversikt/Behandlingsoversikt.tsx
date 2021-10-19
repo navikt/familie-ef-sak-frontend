@@ -106,8 +106,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         );
     }
 
-    console.log('fagsak', fagsak);
-
     return (
         <DataViewer response={{ fagsak }}>
             {({ fagsak }) => (
