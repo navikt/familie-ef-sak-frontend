@@ -11,15 +11,7 @@ import Behandlingsinfo from './Behandlingsinfo';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato } from '../../App/utils/dato';
-import { Fagsak } from '../../App/typer/fagsak';
-import {
-    Ressurs,
-    byggTomRessurs,
-    RessursStatus,
-    RessursFeilet,
-    RessursSuksess,
-} from '../../App/typer/ressurs';
-import DataViewer from '../DataViewer/DataViewer';
+import { RessursStatus, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { IFagsaksøk } from '../../App/typer/fagsaksøk';
 import Lenke from 'nav-frontend-lenker';
@@ -62,10 +54,10 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     const { axiosRequest } = useApp();
     const [fagsakId, settFagsakId] = useState('');
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
-    const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+    const [erLøpende, settErLøpende] = useState<boolean>(false);
 
     useEffect(() => {
-        const hentFagsakId = (personIdent: string): void => {
+        const hentFagsak = (personIdent: string): void => {
             if (!personIdent) return;
 
             axiosRequest<IFagsaksøk, IPersonIdent>({
@@ -76,6 +68,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 if (respons.status === RessursStatus.SUKSESS) {
                     if (respons.data?.fagsaker?.length) {
                         settFagsakId(respons.data.fagsaker[0].fagsakId);
+                        settErLøpende(respons.data.fagsaker[0].erLøpende);
                     }
                 } else if (
                     respons.status === RessursStatus.FEILET ||
@@ -87,32 +80,10 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
             });
         };
 
-        hentFagsakId(personIdent);
+        hentFagsak(personIdent);
 
         // eslint-disable-next-line
     }, []);
-
-    useEffect(() => {
-        if (!fagsakId) return;
-
-        const hentFagsak = () =>
-            axiosRequest<Fagsak, null>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-            }).then((respons) => {
-                if (respons.status === RessursStatus.SUKSESS) {
-                    settFagsak(respons);
-                } else if (
-                    respons.status === RessursStatus.FEILET ||
-                    respons.status === RessursStatus.FUNKSJONELL_FEIL ||
-                    respons.status === RessursStatus.IKKE_TILGANG
-                ) {
-                    settFeilFagsakHenting(respons.frontendFeilmelding);
-                }
-            });
-
-        hentFagsak();
-    }, [fagsakId]);
 
     return (
         <VisittkortWrapper>
@@ -153,19 +124,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     </ElementWrapper>
                 )}
             </Visittkort>
-            <DataViewer response={{ fagsak }}>
-                {({ fagsak }) => {
-                    if (fagsak.erLøpende) {
-                        return (
-                            <ElementWrapper>
-                                <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
-                            </ElementWrapper>
-                        );
-                    } else {
-                        return null;
-                    }
-                }}
-            </DataViewer>
+            {erLøpende && (
+                <ElementWrapper>
+                    <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
+                </ElementWrapper>
+            )}
             {behandling && <Behandlingsinfo behandling={behandling} />}
         </VisittkortWrapper>
     );
