@@ -108,10 +108,11 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
                     </StyledSystemtittel>
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
-                    <TilbakekrevingBehandlingerTabell
-                        tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
-                    />
-
+                    {tilbakekrevingBehandlinger.length > 0 && (
+                        <TilbakekrevingBehandlingerTabell
+                            tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
+                        />
+                    )}
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
                             Opprett ny behandling
