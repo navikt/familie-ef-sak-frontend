@@ -18,6 +18,8 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import RevurderingModal from './RevurderingModal';
+import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
+import { TilbakekrevingBehandlingerTabell } from './TilbakekrevingBehandlingerTabell';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -40,6 +42,9 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+    const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
+        Ressurs<TilbakekrevingBehandling[]>
+    >(byggTomRessurs());
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -48,6 +53,12 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
         }).then((response) => settFagsak(response));
+
+    const hentTilbakekrevingBehandlinger = () =>
+        axiosRequest<TilbakekrevingBehandling[], null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsakId}`,
+        }).then((response) => settTilbakekrevingbehandlinger(response));
 
     const gjørTekniskOpphør = () => {
         axiosRequest<Ressurs<void>, null>({
@@ -68,6 +79,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     useEffect(() => {
         if (fagsakId) {
             hentFagsak();
+            hentTilbakekrevingBehandlinger();
         }
         // eslint-disable-next-line
     }, [fagsakId]);
@@ -89,13 +101,16 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     }
 
     return (
-        <DataViewer response={{ fagsak }}>
-            {({ fagsak }) => (
+        <DataViewer response={{ fagsak, tilbakekrevingBehandlinger }}>
+            {({ fagsak, tilbakekrevingBehandlinger }) => (
                 <>
                     <StyledSystemtittel tag="h3">
                         Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
                     </StyledSystemtittel>
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
+                    <TilbakekrevingBehandlingerTabell
+                        tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
+                    />
 
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
