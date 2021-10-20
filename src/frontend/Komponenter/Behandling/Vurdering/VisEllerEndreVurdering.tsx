@@ -55,6 +55,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering)
     );
+    const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
 
     const ikkeVurder = () => {
         ikkeVurderVilkår({
@@ -76,6 +77,13 @@ const VisEllerEndreVurdering: FC<Props> = ({
             if (response.status === RessursStatus.SUKSESS) {
                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
                 hentBehandling.rerun();
+                settResetFeilmelding(undefined);
+            } else if (
+                response.status === RessursStatus.FEILET ||
+                response.status === RessursStatus.FUNKSJONELL_FEIL ||
+                response.status === RessursStatus.IKKE_TILGANG
+            ) {
+                settResetFeilmelding(response.frontendFeilmelding);
             }
         });
 
@@ -102,7 +110,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 <EndreVurdering
                     data={vurdering}
                     lagreVurdering={lagreVurdering}
-                    feilmelding={feilmelding}
+                    feilmelding={feilmelding || resetFeilmelding}
                     settRedigeringsmodus={settRedigeringsmodus}
                 />
             );
@@ -112,7 +120,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     vurdering={vurdering}
                     settRedigeringsmodus={settRedigeringsmodus}
                     resetVurdering={resetVurdering}
-                    feilmelding={feilmelding}
+                    feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar}
                 />
             );
