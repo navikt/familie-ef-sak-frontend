@@ -59,12 +59,12 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         config: AxiosRequestConfig & { data?: D }
     ): Promise<RessursFeilet | RessursSuksess<T>> => {
         return preferredAxios
-            .request(config)
+            .request<Ressurs<T>>(config)
             .then((response: AxiosResponse<Ressurs<T>>) => {
                 const responsRessurs: Ressurs<T> = response.data;
                 return håndterRessurs(responsRessurs, innloggetSaksbehandler, response.headers);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<Ressurs<T>>) => {
                 if (error.message.includes('401')) {
                     settAutentisert(false);
                 }

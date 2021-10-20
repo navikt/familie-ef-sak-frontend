@@ -1,5 +1,5 @@
 import { captureException, configureScope, withScope } from '@sentry/core';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import { slackKanaler } from '../typer/slack';
@@ -20,7 +20,7 @@ const lagUkjentFeilRessurs = (headers?: Headers): RessursFeilet => ({
 });
 
 export const håndterFeil = <T>(
-    error: AxiosError,
+    error: AxiosError<Ressurs<T>>,
     innloggetSaksbehandler?: ISaksbehandler
 ): RessursSuksess<T> | RessursFeilet => {
     const headers = error.response?.headers;
@@ -149,7 +149,7 @@ export const apiLoggFeil = (melding: string, headers?: Headers, isWarning = fals
         {
             headers: {
                 ...((callId && { 'nav-call-id': callId }) as Headers),
-            },
+            } as AxiosRequestHeaders,
         }
     );
 };
