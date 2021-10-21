@@ -28,6 +28,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { settIkkePersistertKomponent } = useApp();
     const { resultatType, settResultatType } = props;
     const opphørMulig = props.behandling.type === Behandlingstype.REVURDERING;
+    const erBlankettBehandling = props.behandling.type === Behandlingstype.BLANKETT;
     return (
         <section>
             <Undertittel className={'blokk-s'}>Vedtak</Undertittel>
@@ -46,10 +47,9 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 <option value={EBehandlingResultat.OPPHØRT} disabled={!opphørMulig}>
                     Opphørt
                 </option>
-                <option value={EBehandlingResultat.HENLEGGE} disabled>
-                    Henlegge
-                </option>
-                <option value={EBehandlingResultat.BEHANDLE_I_GOSYS}>Behandle i Gosys</option>
+                {erBlankettBehandling && (
+                    <option value={EBehandlingResultat.BEHANDLE_I_GOSYS}>Behandle i Gosys</option>
+                )}
             </StyledSelect>
         </section>
     );
