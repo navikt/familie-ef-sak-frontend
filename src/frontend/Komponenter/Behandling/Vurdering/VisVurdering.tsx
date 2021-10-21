@@ -39,6 +39,11 @@ const StyledVilkår = styled.div`
     }
 `;
 
+const StyledFeilmelding = styled.div`
+    grid-column: 2/4;
+    max-width: 30rem;
+`;
+
 const StyledIkonOgTittel = styled.span`
     margin-bottom: 1.5rem;
     display: flex;
@@ -90,7 +95,9 @@ const VisVurdering: FC<Props> = ({
                         </LenkeKnapp>
                     </StyledRedigerOgSlettKnapp>
                     {feilmelding && (
-                        <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>
+                        <StyledFeilmelding>
+                            <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>{' '}
+                        </StyledFeilmelding>
                     )}
                 </>
             )}

@@ -92,7 +92,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
     const [overskrift, settOverskrift] = useState(infobrevTittel);
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
-    const [utsendingFeilet, settUtsendingFeilet] = useState(false);
+    const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
 
     const [visModal, settVisModal] = useState<boolean>(false);
@@ -162,13 +162,13 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
 
     const lukkModal = () => {
         settVisModal(false);
-        settUtsendingFeilet(false);
+        settFeilmelding('');
         setUtsendingSuksess(false);
     };
 
     const sendBrev = () => {
-        settUtsendingFeilet(false);
         setUtsendingSuksess(false);
+        settFeilmelding('');
         if (!(fagsakId && stønadType && stønadOgBrevType)) return;
 
         axiosRequest<string, IFrittståendeBrev>({
@@ -184,8 +184,12 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         }).then((respons: Ressurs<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 setUtsendingSuksess(true);
-            } else {
-                settUtsendingFeilet(true);
+            } else if (
+                respons.status === RessursStatus.FEILET ||
+                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
+                respons.status === RessursStatus.IKKE_TILGANG
+            ) {
+                settFeilmelding(respons.frontendFeilmelding);
             }
         });
     };
@@ -328,7 +332,9 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                         },
                     }}
                 >
-                    {utsendingFeilet && <AlertStripeFeil>Utsending feilet.</AlertStripeFeil>}
+                    {feilmelding && (
+                        <AlertStripeFeil>Utsending feilet. {feilmelding}</AlertStripeFeil>
+                    )}
                     {utsendingSuksess && (
                         <AlertStripeSuksess>Brevet er nå sendt.</AlertStripeSuksess>
                     )}
