@@ -8,6 +8,7 @@ export interface Fagsak {
     personIdent: string;
     stønadstype: Stønadstype;
     behandlinger: Behandling[];
+    erLøpende: boolean;
 }
 
 export interface Behandling {

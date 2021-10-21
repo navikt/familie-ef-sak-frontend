@@ -17,6 +17,7 @@ import { IFagsaksøk } from '../../App/typer/fagsaksøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
+import { EtikettInfo } from 'nav-frontend-etiketter';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -29,6 +30,10 @@ export const VisittkortWrapper = styled(Sticky)`
 `;
 const ElementWrapper = styled.div`
     margin-left: 1rem;
+`;
+
+const StyledEtikettInfo = styled(EtikettInfo)`
+    margin-top: 0.5rem;
 `;
 
 const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
@@ -48,24 +53,29 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
     const { axiosRequest, gåTilUrl } = useApp();
     const [fagsakId, settFagsakId] = useState('');
-    const [feilFagsakHenting, settFeilFagsakHenting] = useState(false);
+    const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
+    const [erLøpende, settErLøpende] = useState<boolean>(false);
 
     useEffect(() => {
         const hentFagsak = (personIdent: string): void => {
-            settFeilFagsakHenting(false);
             if (!personIdent) return;
 
             axiosRequest<IFagsaksøk, IPersonIdent>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/sok/`,
                 data: { personIdent: personIdent },
-            }).then((response: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
-                if (response.status === RessursStatus.SUKSESS) {
-                    if (response.data?.fagsaker?.length) {
-                        settFagsakId(response.data.fagsaker[0].fagsakId);
+            }).then((respons: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    if (respons.data?.fagsaker?.length) {
+                        settFagsakId(respons.data.fagsaker[0].fagsakId);
+                        settErLøpende(respons.data.fagsaker[0].erLøpende);
                     }
-                } else {
-                    settFeilFagsakHenting(true);
+                } else if (
+                    respons.status === RessursStatus.FEILET ||
+                    respons.status === RessursStatus.FUNKSJONELL_FEIL ||
+                    respons.status === RessursStatus.IKKE_TILGANG
+                ) {
+                    settFeilFagsakHenting(respons.frontendFeilmelding);
                 }
             });
         };
@@ -119,6 +129,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     </ElementWrapper>
                 )}
             </Visittkort>
+            {erLøpende && (
+                <ElementWrapper>
+                    <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
+                </ElementWrapper>
+            )}
             {behandling && <Behandlingsinfo behandling={behandling} />}
         </VisittkortWrapper>
     );
