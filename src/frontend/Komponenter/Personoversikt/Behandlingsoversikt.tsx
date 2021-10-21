@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Behandling, Fagsak } from '../../App/typer/fagsak';
+import { Behandling, behandlingResultatTilTekst, Fagsak } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../App/utils/utils';
@@ -213,7 +213,7 @@ const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ beh
                                         className="lenke"
                                         to={{ pathname: `/behandling/${behandling.id}` }}
                                     >
-                                        {formatterEnumVerdi(behandling.resultat)}
+                                        {behandlingResultatTilTekst[behandling.resultat]}
                                     </Link>
                                 )}
                             </td>
