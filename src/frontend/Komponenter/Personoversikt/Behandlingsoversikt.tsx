@@ -130,11 +130,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                             <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>
                         )}
 
-                        {fagsak.erLøpende && (
-                            <StyledEtikettInfo mini>
-                                Løpende {fagsak.stønadstype?.toLowerCase()}
-                            </StyledEtikettInfo>
-                        )}
+                        {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
                     </TittelLinje>
 
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
