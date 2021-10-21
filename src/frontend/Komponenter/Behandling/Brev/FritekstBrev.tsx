@@ -339,7 +339,9 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                         <AlertStripeSuksess>Brevet er nå sendt.</AlertStripeSuksess>
                     )}
                     <ModalKnapper>
-                        <Knapp onClick={lukkModal}>Avbryt</Knapp>
+                        <Knapp onClick={lukkModal} disabled={utsendingSuksess}>
+                            Avbryt
+                        </Knapp>
                         <Hovedknapp onClick={sendBrev} disabled={utsendingSuksess}>
                             Send brev
                         </Hovedknapp>
