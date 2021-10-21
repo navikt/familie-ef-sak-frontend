@@ -24,7 +24,7 @@ export const BehandleIGosys: React.FC<{ behandlingId: string }> = ({ behandlingI
         settLaster(true);
         axiosRequest<{ id: string }, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/behandling/${behandlingId}/annuller`,
+            url: `/familie-ef-sak/api/behandling/${behandlingId}/henlegg`,
         })
             .then((res: Ressurs<{ id: string }>) => {
                 switch (res.status) {
