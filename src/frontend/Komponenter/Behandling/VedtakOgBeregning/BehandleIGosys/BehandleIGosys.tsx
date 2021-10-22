@@ -22,9 +22,12 @@ export const BehandleIGosys: React.FC<{ behandlingId: string }> = ({ behandlingI
     const [feilmelding, settFeilmelding] = useState<string>();
     const behandleIGosys = () => {
         settLaster(true);
-        axiosRequest<{ id: string }, null>({
+        axiosRequest<{ id: string }, any>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandlingId}/henlegg`,
+            data: {
+                årsak: 'BEHANDLES_I_GOSYS',
+            },
         })
             .then((res: Ressurs<{ id: string }>) => {
                 switch (res.status) {

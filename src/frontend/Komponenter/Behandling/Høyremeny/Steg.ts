@@ -31,9 +31,11 @@ export const stegTypeTilTekst: Record<Steg, string> = {
 export const enum StegUtfall {
     BESLUTTE_VEDTAK_GODKJENT = 'BESLUTTE_VEDTAK_GODKJENT',
     BESLUTTE_VEDTAK_UNDERKJENT = 'BESLUTTE_VEDTAK_UNDERKJENT',
+    HENLAGT = 'HENLAGT',
 }
 
 export const stegUtfallTilTekst: Record<StegUtfall, string> = {
     BESLUTTE_VEDTAK_GODKJENT: 'Vedtak godkjent',
     BESLUTTE_VEDTAK_UNDERKJENT: 'Vedtak underkjent',
+    HENLAGT: 'Behandling henlagt',
 };
