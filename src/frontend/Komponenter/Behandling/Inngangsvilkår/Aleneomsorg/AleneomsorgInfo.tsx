@@ -12,7 +12,10 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 
-const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn }) => {
+const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalSkjuleSøknadsdata?: boolean }> = ({
+    gjeldendeBarn,
+    skalSkjuleSøknadsdata,
+}) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -25,7 +28,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                         <Element>Barnets navn</Element>
                         <Element>{registergrunnlag.navn}</Element>
                     </>
-                ) : (
+                ) : !skalSkjuleSøknadsdata ? (
                     <>
                         <Søknadsgrunnlag />
                         <Element>Barnets navn</Element>
@@ -35,7 +38,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                                 : 'Ikke født'}
                         </Element>
                     </>
-                )}
+                ) : null}
                 {registergrunnlag.fødselsnummer ? (
                     <>
                         <Registergrunnlag />
@@ -44,7 +47,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
                     </>
-                ) : (
+                ) : !skalSkjuleSøknadsdata ? (
                     søknadsgrunnlag.fødselTermindato && (
                         <>
                             <Søknadsgrunnlag />
@@ -54,7 +57,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                             </Normaltekst>
                         </>
                     )
-                )}
+                ) : null}
 
                 <Bosted
                     harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
@@ -62,7 +65,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                     erBarnetFødt={!!registergrunnlag.fødselsnummer}
                 />
 
-                {søknadsgrunnlag.skalBoBorHosSøker && (
+                {!skalSkjuleSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Barnet skal ha adresse hos søker</Normaltekst>
@@ -72,7 +75,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                     </>
                 )}
 
-                {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
+                {!skalSkjuleSøknadsdata && harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Annen forelder </Normaltekst>
@@ -90,10 +93,12 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær }> = ({ gjeldendeBarn
                     <Lesmerpanel apneTekst={'Vis info om barnet'} lukkTekst={'Lukk info om barnet'}>
                         {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
                             <>
-                                <AnnenForelderOpplysninger
-                                    søknadsgrunnlag={søknadsgrunnlag}
-                                    forelderRegister={registergrunnlag.forelder}
-                                />
+                                {!skalSkjuleSøknadsdata && (
+                                    <AnnenForelderOpplysninger
+                                        søknadsgrunnlag={søknadsgrunnlag}
+                                        forelderRegister={registergrunnlag.forelder}
+                                    />
+                                )}
                                 {!registergrunnlag.forelder?.dødsfall && (
                                     <Samvær søknadsgrunnlag={søknadsgrunnlag} />
                                 )}

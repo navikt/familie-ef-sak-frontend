@@ -9,9 +9,10 @@ import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnum
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
+    skalSkjuleSøknadsdata?: boolean;
 }
 
-const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
+const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalSkjuleSøknadsdata }) => {
     return (
         <>
             {barnMedSamvær.map((barn: IBarnMedSamvær) => {
@@ -25,14 +26,14 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                     <LiteBarn />
                                     <Element>{registergrunnlag.navn}</Element>
                                 </>
-                            ) : (
+                            ) : !skalSkjuleSøknadsdata ? (
                                 <>
                                     <LiteBarn />
                                     <Element>
                                         {søknadsgrunnlag.navn ? søknadsgrunnlag.navn : 'Ikke født'}
                                     </Element>
                                 </>
-                            )}
+                            ) : null}
                             {registergrunnlag.fødselsnummer ? (
                                 <>
                                     <Registergrunnlag />
@@ -41,7 +42,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                         fødselsnummer={registergrunnlag.fødselsnummer}
                                     />
                                 </>
-                            ) : (
+                            ) : !skalSkjuleSøknadsdata ? (
                                 <>
                                     <Søknadsgrunnlag />
                                     <Normaltekst>Termindato</Normaltekst>
@@ -49,7 +50,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær }) => {
                                         {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                                     </Normaltekst>
                                 </>
-                            )}
+                            ) : null}
                         </GridTabell>
                     </React.Fragment>
                 );

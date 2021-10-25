@@ -18,5 +18,5 @@ export interface VilkårProps {
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
     feilmeldinger: Vurderingsfeilmelding;
-    skalSkjuleSøknadsdata: boolean;
+    skalSkjuleSøknadsdata?: boolean;
 }

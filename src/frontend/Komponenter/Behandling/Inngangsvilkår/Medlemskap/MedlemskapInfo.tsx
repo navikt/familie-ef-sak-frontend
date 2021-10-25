@@ -17,7 +17,7 @@ import UnntakIMedl from './UnntakIMedl';
 
 interface Props {
     medlemskap: IMedlemskap;
-    skalSkjuleSøknadsdata: boolean;
+    skalSkjuleSøknadsdata?: boolean;
 }
 
 const MedlemskapInfo: FC<Props> = ({ medlemskap, skalSkjuleSøknadsdata }) => {

@@ -14,6 +14,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
     feilmeldinger,
     grunnlag,
     ikkeVurderVilkår,
+    skalSkjuleSøknadsdata,
 }) => {
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
@@ -36,7 +37,10 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                             vilkårsresultat={utleddResultat}
                                         />
                                     )}
-                                    <AleneomsorgInfo gjeldendeBarn={barn} />
+                                    <AleneomsorgInfo
+                                        gjeldendeBarn={barn}
+                                        skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                                    />
                                 </>
                             ),
                             høyre: (

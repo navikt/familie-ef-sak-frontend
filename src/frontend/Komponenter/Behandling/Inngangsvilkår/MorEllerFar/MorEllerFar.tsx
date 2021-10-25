@@ -13,6 +13,7 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
     feilmeldinger,
     grunnlag,
     ikkeVurderVilkår,
+    skalSkjuleSøknadsdata,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.MOR_ELLER_FAR);
     if (!vurdering) {
@@ -28,7 +29,10 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
                             tittel="Mor eller Far"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <MorEllerFarInfo barnMedSamvær={grunnlag.barnMedSamvær} />
+                        <MorEllerFarInfo
+                            barnMedSamvær={grunnlag.barnMedSamvær}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                        />
                     </>
                 ),
                 høyre: (

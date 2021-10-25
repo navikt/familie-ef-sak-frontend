@@ -13,6 +13,7 @@ export const Opphold: React.FC<VilkårProps> = ({
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    skalSkjuleSøknadsdata,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.LOVLIG_OPPHOLD);
     if (!vurdering) {
@@ -28,7 +29,10 @@ export const Opphold: React.FC<VilkårProps> = ({
                             tittel="Opphold i Norge"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <OppholdInfo medlemskap={grunnlag.medlemskap} />
+                        <OppholdInfo
+                            medlemskap={grunnlag.medlemskap}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                        />
                     </>
                 ),
                 høyre: (

@@ -62,6 +62,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
                         />
                         <MorEllerFar
                             nullstillVurdering={nullstillVurdering}
@@ -70,6 +71,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
                         />
                         <NyttBarnSammePartner
                             nullstillVurdering={nullstillVurdering}
@@ -78,6 +80,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
                         />
                         <Sivilstand
                             nullstillVurdering={nullstillVurdering}
@@ -86,6 +89,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
                         />
                         <Samliv
                             nullstillVurdering={nullstillVurdering}
@@ -94,6 +98,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
                         />
                         <Aleneomsorg
                             nullstillVurdering={nullstillVurdering}
@@ -102,6 +107,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
                         />
                     </>
                 );

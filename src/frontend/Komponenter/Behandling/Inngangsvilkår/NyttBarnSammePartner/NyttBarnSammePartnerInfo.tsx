@@ -9,6 +9,7 @@ import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
+    skalSkjuleSøknadsdata?: boolean;
 }
 
 const Overskrift = styled(Element)`
@@ -16,7 +17,7 @@ const Overskrift = styled(Element)`
     margin-bottom: 1rem;
 `;
 
-const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, skalSkjuleSøknadsdata }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
 
@@ -36,20 +37,24 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær }) => {
                     </Normaltekst>
                 )}
             </div>
-            <div>
-                <FlexDiv>
-                    <Overskrift className="tittel" tag="h3">
-                        Brukers fremtidige barn lagt til i søknad
-                    </Overskrift>
-                </FlexDiv>
-                {søknadsgrunnlagNyttBarn.length ? (
-                    søknadsgrunnlagNyttBarn.map((barn) => <SøknadgrunnlagNyttBarn barn={barn} />)
-                ) : (
-                    <Normaltekst>
-                        <i>Bruker har ingen barn lagt til i søknad</i>
-                    </Normaltekst>
-                )}
-            </div>
+            {!skalSkjuleSøknadsdata && (
+                <div>
+                    <FlexDiv>
+                        <Overskrift className="tittel" tag="h3">
+                            Brukers fremtidige barn lagt til i søknad
+                        </Overskrift>
+                    </FlexDiv>
+                    {søknadsgrunnlagNyttBarn.length ? (
+                        søknadsgrunnlagNyttBarn.map((barn) => (
+                            <SøknadgrunnlagNyttBarn barn={barn} />
+                        ))
+                    ) : (
+                        <Normaltekst>
+                            <i>Bruker har ingen barn lagt til i søknad</i>
+                        </Normaltekst>
+                    )}
+                </div>
+            )}
         </>
     );
 };

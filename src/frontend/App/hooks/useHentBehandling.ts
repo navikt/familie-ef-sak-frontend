@@ -18,9 +18,9 @@ export const useHentBehandling = (
             method: 'GET',
             url: `/familie-ef-sak/api/behandling/${behandlingId}`,
         };
-        axiosRequest<Behandling, null>(behandlingConfig).then((res: Ressurs<Behandling>) =>
-            settBehandling(res)
-        );
+        axiosRequest<Behandling, null>(behandlingConfig).then((res: Ressurs<Behandling>) => {
+            settBehandling(res);
+        });
         // eslint-disable-next-line
     }, [behandlingId]);
 

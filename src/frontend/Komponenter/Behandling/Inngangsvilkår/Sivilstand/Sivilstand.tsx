@@ -13,6 +13,7 @@ export const Sivilstand: React.FC<VilkårProps> = ({
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    skalSkjuleSøknadsdata,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.SIVILSTAND);
     if (!vurdering) {
@@ -28,7 +29,10 @@ export const Sivilstand: React.FC<VilkårProps> = ({
                             tittel="Sivilstand"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <SivilstandInfo sivilstand={grunnlag.sivilstand} />
+                        <SivilstandInfo
+                            sivilstand={grunnlag.sivilstand}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                        />
                     </>
                 ),
                 høyre: (
