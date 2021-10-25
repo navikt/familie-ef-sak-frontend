@@ -17,9 +17,10 @@ import UnntakIMedl from './UnntakIMedl';
 
 interface Props {
     medlemskap: IMedlemskap;
+    skalSkjuleSøknadsdata: boolean;
 }
 
-const MedlemskapInfo: FC<Props> = ({ medlemskap }) => {
+const MedlemskapInfo: FC<Props> = ({ medlemskap, skalSkjuleSøknadsdata }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
     const { oppholdstatus, medlUnntak, innflytting, utflytting } = registergrunnlag;
     const finnesOppholdsstatus = oppholdstatus.length > 0;
@@ -29,18 +30,20 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap }) => {
 
     return (
         <>
-            <GridTabell>
-                <Søknadsgrunnlag />
-                <Normaltekst>Har bodd i Norge siste 5 år</Normaltekst>
-                <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
-                {finnesUnntakIMedl && (
-                    <>
-                        <Registergrunnlag />
-                        <Normaltekst>Medlemskapstatus i MEDL</Normaltekst>
-                        <Etikett type="fokus">Innslag funnet</Etikett>
-                    </>
-                )}
-            </GridTabell>
+            {!skalSkjuleSøknadsdata && (
+                <GridTabell>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Har bodd i Norge siste 5 år</Normaltekst>
+                    <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
+                    {finnesUnntakIMedl && (
+                        <>
+                            <Registergrunnlag />
+                            <Normaltekst>Medlemskapstatus i MEDL</Normaltekst>
+                            <Etikett type="fokus">Innslag funnet</Etikett>
+                        </>
+                    )}
+                </GridTabell>
+            )}
 
             <StyledLesmerpanel>
                 <Lesmerpanel
@@ -65,7 +68,7 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap }) => {
                         />
                     )}
 
-                    {finnesUtenlandsperioder && (
+                    {!skalSkjuleSøknadsdata && finnesUtenlandsperioder && (
                         <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
                     )}
                 </Lesmerpanel>

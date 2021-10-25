@@ -13,6 +13,7 @@ export const Medlemskap: React.FC<VilkårProps> = ({
     nullstillVurdering,
     feilmeldinger,
     ikkeVurderVilkår,
+    skalSkjuleSøknadsdata,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === InngangsvilkårType.FORUTGÅENDE_MEDLEMSKAP
@@ -30,7 +31,10 @@ export const Medlemskap: React.FC<VilkårProps> = ({
                             tittel="Forutgående medlemskap"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <MedlemskapInfo medlemskap={grunnlag.medlemskap} />
+                        <MedlemskapInfo
+                            medlemskap={grunnlag.medlemskap}
+                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                        />
                     </>
                 ),
                 høyre: (
