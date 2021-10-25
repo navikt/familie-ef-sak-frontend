@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Behandling, Fagsak } from '../../App/typer/fagsak';
+import { Behandling, behandlingResultatTilTekst, Fagsak } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../App/utils/utils';
@@ -17,7 +17,9 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
+import { EtikettInfo } from 'nav-frontend-etiketter';
 import RevurderingModal from './RevurderingModal';
+import Alertstripe from 'nav-frontend-alertstriper';
 import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
 import { TilbakekrevingBehandlingerTabell } from './TilbakekrevingBehandlingerTabell';
 
@@ -32,9 +34,14 @@ const KnappMedMargin = styled(Knapp)`
     margin-right: 1rem;
 `;
 
-const StyledSystemtittel = styled(Systemtittel)`
+const StyledEtikettInfo = styled(EtikettInfo)`
+    margin-left: 1rem;
+`;
+
+const TittelLinje = styled.div`
     margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: flex-start;
 `;
 
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
@@ -42,6 +49,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+    const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
         Ressurs<TilbakekrevingBehandling[]>
     >(byggTomRessurs());
@@ -52,7 +60,17 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-        }).then((response) => settFagsak(response));
+        }).then((respons) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settFagsak(respons);
+            } else if (
+                respons.status === RessursStatus.FEILET ||
+                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
+                respons.status === RessursStatus.IKKE_TILGANG
+            ) {
+                settFeilFagsakHenting(respons.frontendFeilmelding);
+            }
+        });
 
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
@@ -104,9 +122,17 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         <DataViewer response={{ fagsak, tilbakekrevingBehandlinger }}>
             {({ fagsak, tilbakekrevingBehandlinger }) => (
                 <>
-                    <StyledSystemtittel tag="h3">
-                        Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                    </StyledSystemtittel>
+                    <TittelLinje>
+                        <Systemtittel tag="h3">
+                            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+                        </Systemtittel>
+                        {feilFagsakHenting && (
+                            <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>
+                        )}
+
+                        {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
+                    </TittelLinje>
+
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
                     {tilbakekrevingBehandlinger.length > 0 && (
                         <TilbakekrevingBehandlingerTabell
@@ -187,7 +213,7 @@ const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ beh
                                         className="lenke"
                                         to={{ pathname: `/behandling/${behandling.id}` }}
                                     >
-                                        {formatterEnumVerdi(behandling.resultat)}
+                                        {behandlingResultatTilTekst[behandling.resultat]}
                                     </Link>
                                 )}
                             </td>

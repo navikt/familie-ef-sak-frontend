@@ -48,24 +48,27 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
     const { axiosRequest, gåTilUrl } = useApp();
     const [fagsakId, settFagsakId] = useState('');
-    const [feilFagsakHenting, settFeilFagsakHenting] = useState(false);
+    const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
 
     useEffect(() => {
         const hentFagsak = (personIdent: string): void => {
-            settFeilFagsakHenting(false);
             if (!personIdent) return;
 
             axiosRequest<IFagsaksøk, IPersonIdent>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/sok/`,
                 data: { personIdent: personIdent },
-            }).then((response: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
-                if (response.status === RessursStatus.SUKSESS) {
-                    if (response.data?.fagsaker?.length) {
-                        settFagsakId(response.data.fagsaker[0].fagsakId);
+            }).then((respons: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    if (respons.data?.fagsaker?.length) {
+                        settFagsakId(respons.data.fagsaker[0].fagsakId);
                     }
-                } else {
-                    settFeilFagsakHenting(true);
+                } else if (
+                    respons.status === RessursStatus.FEILET ||
+                    respons.status === RessursStatus.FUNKSJONELL_FEIL ||
+                    respons.status === RessursStatus.IKKE_TILGANG
+                ) {
+                    settFeilFagsakHenting(respons.frontendFeilmelding);
                 }
             });
         };
