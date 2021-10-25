@@ -77,8 +77,8 @@ export interface IFrittståendeBrev {
 }
 
 export enum FrittståendeBrevType {
-    INFOBREV = 'INFOBREV',
-    MANGELBREV = 'MANGELBREV',
+    INFORMASJONSBREV = 'INFORMASJONSBREV',
+    INNHENTING_AV_OPPLYSNINGER = 'INNHENTING_AV_OPPLYSNINGER',
 }
 
 export enum FrittståendeBrevStønadType {
@@ -95,3 +95,8 @@ export enum FrittståendeBrevStønadOgBrevType {
     INFOBREV_BARNETILSYN = 'INFOBREV_BARNETILSYN',
     INFOBREV_SKOLEPENGER = 'INFOBREV_SKOLEPENGER',
 }
+
+export const BrevtypeTilForhåndstekst: Record<FrittståendeBrevType, string> = {
+    INFORMASJONSBREV: 'Vi vil informere deg om...',
+    INNHENTING_AV_OPPLYSNINGER: 'Vi trenger mer informasjon fra deg',
+};
