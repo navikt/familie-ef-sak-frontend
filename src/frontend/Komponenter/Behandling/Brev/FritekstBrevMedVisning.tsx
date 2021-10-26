@@ -9,19 +9,19 @@ type Props = {
 };
 
 const BrevMedVisning = styled.div`
-    display: flex;
-`;
-
-const StyledFritekstBrev = styled(FritekstBrev)`
-    margin-right: 10px;
+    width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
 `;
 
 const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
-
     return (
         <BrevMedVisning>
-            <StyledFritekstBrev oppdaterBrevressurs={oppdaterBrevressurs} fagsakId={fagsakId} />
+            <FritekstBrev oppdaterBrevressurs={oppdaterBrevressurs} fagsakId={fagsakId} />
             <PdfVisning pdfFilInnhold={brevRessurs} />
         </BrevMedVisning>
     );

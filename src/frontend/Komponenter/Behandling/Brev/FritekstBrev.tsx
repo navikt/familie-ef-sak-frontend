@@ -26,8 +26,7 @@ import {
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
-    margin-right: 2rem;
-    width: 50%;
+    width: inherit;
 `;
 
 const StyledSelect = styled(Select)`
