@@ -31,7 +31,7 @@ export interface IEndringerRegistergrunnlag {
 export enum BehandlingResultat {
     INNVILGET = 'INNVILGET',
     IKKE_SATT = 'IKKE_SATT',
-    ANNULERT = 'ANNULERT',
+    HENLAGT = 'HENLAGT',
     AVSLÅTT = 'AVSLÅTT',
     OPPHØRT = 'OPPHØRT',
 }
@@ -39,7 +39,7 @@ export enum BehandlingResultat {
 export const behandlingResultatTilTekst: Record<BehandlingResultat, string> = {
     INNVILGET: 'Innvilget',
     IKKE_SATT: 'Ikke satt',
-    ANNULERT: 'Annulert',
+    HENLAGT: 'Henlagt',
     OPPHØRT: 'Opphørt',
     AVSLÅTT: 'Avslått',
 };

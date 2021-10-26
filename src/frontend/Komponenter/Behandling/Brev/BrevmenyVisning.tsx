@@ -20,7 +20,6 @@ import {
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import styled from 'styled-components';
-import { dagensDatoFormatert } from '../../../App/utils/formatter';
 import Panel from 'nav-frontend-paneler';
 import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
@@ -162,7 +161,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
-                    brevOpprettetDato: [dagensDatoFormatert()],
                 },
             },
         }).then((respons: Ressurs<string>) => {
