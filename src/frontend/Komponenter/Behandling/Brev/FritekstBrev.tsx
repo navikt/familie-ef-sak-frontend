@@ -16,16 +16,18 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
-    BrevtypeTilDeloverskriftTekst,
-    BrevtypeTilInnholdTekst,
-    BrevtypeTilSelectNavn,
-    BrevtypeTilTittelTekst,
-    FrittståendeBrevStønadType,
-    FrittståendeBrevType,
+    BrevtyperTilDeloverskriftTekst,
+    BrevtyperTilInnholdTekst,
+    BrevtyperTilOverskrift,
+    BrevtyperTilSelectNavn,
+    FritekstBrevContext,
+    FritekstBrevtype,
+    FrittståendeBrevtype,
     IAvsnitt,
     IFritekstBrev,
     IFrittståendeBrev,
 } from './BrevTyper';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
@@ -72,25 +74,31 @@ type Props = {
     oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
     behandlingId?: string;
     fagsakId?: string;
+    context: FritekstBrevContext;
 };
 
-const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fagsakId }) => {
+const FritekstBrev: React.FC<Props> = ({
+    oppdaterBrevressurs,
+    behandlingId,
+    fagsakId,
+    context,
+}) => {
+    const initiellBrevtype =
+        context === FritekstBrevContext.FRITTSTÅENDE
+            ? FrittståendeBrevtype.INFORMASJONSBREV
+            : FritekstBrevtype.VEDTAK_INVILGELSE;
     const førsteRad = [
         {
-            deloverskrift: '',
-            innhold: '',
+            deloverskrift: BrevtyperTilDeloverskriftTekst[initiellBrevtype],
+            innhold: BrevtyperTilInnholdTekst[initiellBrevtype],
             id: uuidv4(),
         },
     ];
-
-    const [stønadType, settStønadType] = useState<FrittståendeBrevStønadType>(
-        FrittståendeBrevStønadType.OVERGANGSSTØNAD
+    const [stønadType, settStønadType] = useState<Stønadstype>(Stønadstype.OVERGANGSSTØNAD);
+    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>(
+        initiellBrevtype
     );
-    const [brevType, settBrevType] = useState<FrittståendeBrevType>(
-        FrittståendeBrevType.INFORMASJONSBREV
-    );
-
-    const [overskrift, settOverskrift] = useState(BrevtypeTilTittelTekst[brevType]);
+    const [overskrift, settOverskrift] = useState(BrevtyperTilOverskrift[brevType]);
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
     const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
@@ -239,42 +247,44 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
             <BrevKolonner>
                 <StyledSelect
                     label="Stønadtype"
-                    defaultValue={FrittståendeBrevStønadType.OVERGANGSSTØNAD}
+                    defaultValue={Stønadstype.OVERGANGSSTØNAD}
                     onChange={(e) => {
-                        settStønadType(e.target.value as FrittståendeBrevStønadType);
+                        settStønadType(e.target.value as Stønadstype);
                     }}
                     value={stønadType}
                 >
-                    <option value={FrittståendeBrevStønadType.OVERGANGSSTØNAD}>
-                        Overgangsstønad
-                    </option>
-                    <option value={FrittståendeBrevStønadType.BARNETILSYN}>Barnetilsyn</option>
-                    <option value={FrittståendeBrevStønadType.SKOLEPENGER}>Skolepenger</option>
+                    <option value={Stønadstype.OVERGANGSSTØNAD}>Overgangsstønad</option>
+                    <option value={Stønadstype.BARNETILSYN}>Barnetilsyn</option>
+                    <option value={Stønadstype.SKOLEPENGER}>Skolepenger</option>
                 </StyledSelect>
 
                 <StyledSelect
                     label="Brevtype"
-                    defaultValue={FrittståendeBrevType.INFORMASJONSBREV}
+                    defaultValue={FrittståendeBrevtype.INFORMASJONSBREV}
                     onChange={(e) => {
-                        const nyBrevType = e.target.value as FrittståendeBrevType;
+                        const nyBrevType = e.target.value as
+                            | FritekstBrevtype
+                            | FrittståendeBrevtype;
                         settBrevType(nyBrevType);
-                        settOverskrift(BrevtypeTilTittelTekst[nyBrevType]);
-                        settAvsnitt((avsnitt) => {
+                        settOverskrift(BrevtyperTilOverskrift[nyBrevType]);
+                        settAvsnitt(() => {
                             return [
                                 lagAvsnitt(
-                                    BrevtypeTilDeloverskriftTekst[nyBrevType],
-                                    BrevtypeTilInnholdTekst[nyBrevType]
+                                    BrevtyperTilDeloverskriftTekst[nyBrevType],
+                                    BrevtyperTilInnholdTekst[nyBrevType]
                                 ),
-                                ...avsnitt,
                             ];
                         });
                     }}
                     value={brevType}
                 >
-                    {fagsakId &&
-                        Object.values(FrittståendeBrevType).map((brevType) => {
-                            <option value={brevType}>{BrevtypeTilSelectNavn[brevType]}</option>;
-                        })}
+                    {Object.values(
+                        context === FritekstBrevContext.FRITTSTÅENDE
+                            ? FrittståendeBrevtype
+                            : FritekstBrevtype
+                    ).map((brevType: FrittståendeBrevtype | FritekstBrevtype) => (
+                        <option value={brevType}>{BrevtyperTilSelectNavn[brevType]}</option>
+                    ))}
                 </StyledSelect>
                 <Overskrift
                     label="Overskrift"
