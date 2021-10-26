@@ -15,8 +15,9 @@ import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmott
 
 interface Props {
     aktivitet: IAktivitet;
+    skalSkjuleSøknadsdata?: boolean;
 }
-const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
+const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -34,16 +35,22 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
     return (
         <>
             <SeksjonWrapper>
-                {arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
-                    <GridTabell kolonner={3}>
-                        <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
-                            {ArbeidssituasjonTilTekst[EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr]}
-                        </Element>
-                    </GridTabell>
-                )}
+                {!skalSkjuleSøknadsdata &&
+                    arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
+                        <GridTabell kolonner={3}>
+                            <Søknadsgrunnlag />
+                            <Element className={'undertittel'}>
+                                {
+                                    ArbeidssituasjonTilTekst[
+                                        EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr
+                                    ]
+                                }
+                            </Element>
+                        </GridTabell>
+                    )}
 
-                {arbeidsforhold &&
+                {!skalSkjuleSøknadsdata &&
+                    arbeidsforhold &&
                     arbeidsforhold.map((arbeidsgiver, index) => (
                         <GridTabell kolonner={3} key={arbeidsgiver.arbeidsgivernavn + index}>
                             <ArbeidstakerLønnsmottakerSomFrilanser
@@ -53,7 +60,8 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                         </GridTabell>
                     ))}
 
-                {selvstendig &&
+                {!skalSkjuleSøknadsdata &&
+                    selvstendig &&
                     selvstendig.map((firma, index) => (
                         <GridTabell kolonner={3} key={firma.organisasjonsnummer + index}>
                             <SelvstendigNæringsdrivendeEllerFrilanser
@@ -63,14 +71,15 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                         </GridTabell>
                     ))}
 
-                {aksjeselskap &&
+                {!skalSkjuleSøknadsdata &&
+                    aksjeselskap &&
                     aksjeselskap.map((selskap, index) => (
                         <GridTabell kolonner={3} key={selskap.navn + index}>
                             <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />
                         </GridTabell>
                     ))}
 
-                {datoOppstartJobb && (
+                {!skalSkjuleSøknadsdata && datoOppstartJobb && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
                         <Element className={'undertittel'}>
@@ -81,7 +90,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                     </GridTabell>
                 )}
 
-                {virksomhet && (
+                {!skalSkjuleSøknadsdata && virksomhet && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
                         <Element className={'undertittel'}>
@@ -94,13 +103,13 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                     </GridTabell>
                 )}
 
-                {arbeidssøker && (
+                {!skalSkjuleSøknadsdata && arbeidssøker && (
                     <GridTabell kolonner={3}>
                         <Arbeidssøker arbeidssøker={arbeidssøker} />{' '}
                     </GridTabell>
                 )}
 
-                {underUtdanning && (
+                {!skalSkjuleSøknadsdata && underUtdanning && (
                     <GridTabell kolonner={3}>
                         <UnderUtdanning underUtdanning={underUtdanning} />
                         {underUtdanning.utdanningEtterGrunnskolen && (
@@ -109,23 +118,24 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                     </GridTabell>
                 )}
 
-                {arbeidssituasjon.includes(
-                    EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                ) && (
-                    <GridTabell kolonner={3}>
-                        <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
-                            {
-                                ArbeidssituasjonTilTekst[
-                                    EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                                ]
-                            }
-                        </Element>
-                    </GridTabell>
-                )}
+                {!skalSkjuleSøknadsdata &&
+                    arbeidssituasjon.includes(
+                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                    ) && (
+                        <GridTabell kolonner={3}>
+                            <Søknadsgrunnlag />
+                            <Element className={'undertittel'}>
+                                {
+                                    ArbeidssituasjonTilTekst[
+                                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                                    ]
+                                }
+                            </Element>
+                        </GridTabell>
+                    )}
             </SeksjonWrapper>
 
-            {særligeTilsynsbehov && (
+            {!skalSkjuleSøknadsdata && særligeTilsynsbehov && (
                 <SeksjonWrapper>
                     <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
                 </SeksjonWrapper>
