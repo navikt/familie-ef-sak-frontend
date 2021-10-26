@@ -11,19 +11,19 @@ type Props = {
 };
 
 const BrevMedVisning = styled.div`
-    display: flex;
-`;
-
-const StyledFritekstBrev = styled(FritekstBrev)`
-    margin-right: 10px;
+    width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
 `;
 
 const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId, context }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
-
     return (
         <BrevMedVisning>
-            <StyledFritekstBrev
+            <FritekstBrev
                 oppdaterBrevressurs={oppdaterBrevressurs}
                 fagsakId={fagsakId}
                 context={context}
