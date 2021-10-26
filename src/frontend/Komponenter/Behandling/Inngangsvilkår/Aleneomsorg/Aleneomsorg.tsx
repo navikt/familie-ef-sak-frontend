@@ -7,14 +7,16 @@ import { VilkårProps } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 import { InngangsvilkårType } from '../vilkår';
 
-export const Aleneomsorg: React.FC<VilkårProps> = ({
+type AleneomsorgVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
+
+export const Aleneomsorg: React.FC<AleneomsorgVilkårProps> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
     grunnlag,
     ikkeVurderVilkår,
-    skalSkjuleSøknadsdata,
+    skalViseSøknadsdata,
 }) => {
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
@@ -39,7 +41,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                     )}
                                     <AleneomsorgInfo
                                         gjeldendeBarn={barn}
-                                        skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
                                     />
                                 </>
                             ),

@@ -17,10 +17,10 @@ import UnntakIMedl from './UnntakIMedl';
 
 interface Props {
     medlemskap: IMedlemskap;
-    skalSkjuleSøknadsdata?: boolean;
+    skalViseSøknadsdata: boolean;
 }
 
-const MedlemskapInfo: FC<Props> = ({ medlemskap, skalSkjuleSøknadsdata }) => {
+const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
     const { oppholdstatus, medlUnntak, innflytting, utflytting } = registergrunnlag;
     const finnesOppholdsstatus = oppholdstatus.length > 0;
@@ -30,7 +30,7 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalSkjuleSøknadsdata }) => {
 
     return (
         <>
-            {!skalSkjuleSøknadsdata && (
+            {skalViseSøknadsdata && (
                 <GridTabell>
                     <Søknadsgrunnlag />
                     <Normaltekst>Har bodd i Norge siste 5 år</Normaltekst>
@@ -68,7 +68,7 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalSkjuleSøknadsdata }) => {
                         />
                     )}
 
-                    {!skalSkjuleSøknadsdata && finnesUtenlandsperioder && (
+                    {skalViseSøknadsdata && finnesUtenlandsperioder && (
                         <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
                     )}
                 </Lesmerpanel>

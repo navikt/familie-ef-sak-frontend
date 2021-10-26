@@ -11,15 +11,15 @@ import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
-    skalSkjuleSøknadsdata?: boolean;
+    skalViseSøknadsdata: boolean;
 }
 
-const SamlivInfo: FC<Props> = ({ grunnlag, skalSkjuleSøknadsdata }) => {
+const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata }) => {
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
 
     return (
         <>
-            {!skalSkjuleSøknadsdata && (
+            {skalViseSøknadsdata && (
                 <GridTabell>
                     {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                         <>

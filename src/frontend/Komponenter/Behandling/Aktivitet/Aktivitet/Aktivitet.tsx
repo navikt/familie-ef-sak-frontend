@@ -26,9 +26,7 @@ export const Aktivitet: React.FC<VilkårProps> = ({
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => {
-                const skalSkjuleSøknadsdata = !!(
-                    behandling.behandlingsårsak !== Behandlingsårsak.SØKNAD
-                );
+                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
                 return (
                     <ToKolonnerLayout>
@@ -41,7 +39,7 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                                     />
                                     <AktivitetInfo
                                         aktivitet={grunnlag.aktivitet}
-                                        skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
                                     />
                                 </>
                             ),

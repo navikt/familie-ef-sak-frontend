@@ -12,9 +12,9 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 
-const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalSkjuleSøknadsdata?: boolean }> = ({
+const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
     gjeldendeBarn,
-    skalSkjuleSøknadsdata,
+    skalViseSøknadsdata,
 }) => {
     const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
@@ -28,7 +28,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalSkjuleSøknadsda
                         <Element>Barnets navn</Element>
                         <Element>{registergrunnlag.navn}</Element>
                     </>
-                ) : !skalSkjuleSøknadsdata ? (
+                ) : skalViseSøknadsdata ? (
                     <>
                         <Søknadsgrunnlag />
                         <Element>Barnets navn</Element>
@@ -47,7 +47,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalSkjuleSøknadsda
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
                     </>
-                ) : !skalSkjuleSøknadsdata ? (
+                ) : skalViseSøknadsdata ? (
                     søknadsgrunnlag.fødselTermindato && (
                         <>
                             <Søknadsgrunnlag />
@@ -65,7 +65,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalSkjuleSøknadsda
                     erBarnetFødt={!!registergrunnlag.fødselsnummer}
                 />
 
-                {!skalSkjuleSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
+                {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Barnet skal ha adresse hos søker</Normaltekst>
@@ -75,7 +75,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalSkjuleSøknadsda
                     </>
                 )}
 
-                {!skalSkjuleSøknadsdata && harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
+                {skalViseSøknadsdata && harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Annen forelder </Normaltekst>
@@ -93,7 +93,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalSkjuleSøknadsda
                     <Lesmerpanel apneTekst={'Vis info om barnet'} lukkTekst={'Lukk info om barnet'}>
                         {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
                             <>
-                                {!skalSkjuleSøknadsdata && (
+                                {skalViseSøknadsdata && (
                                     <AnnenForelderOpplysninger
                                         søknadsgrunnlag={søknadsgrunnlag}
                                         forelderRegister={registergrunnlag.forelder}

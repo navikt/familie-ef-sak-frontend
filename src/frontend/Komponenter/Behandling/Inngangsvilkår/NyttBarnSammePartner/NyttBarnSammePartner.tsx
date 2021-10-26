@@ -6,14 +6,16 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
+type NyttBarnSammePartnerVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
+
+export const NyttBarnSammePartner: React.FC<NyttBarnSammePartnerVilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
     ikkeVurderVilkår,
-    skalSkjuleSøknadsdata,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
@@ -34,7 +36,7 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                         />
                         <NyttBarnSammePartnerInfo
                             barnMedSamvær={barnMedSamvær}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>
                 ),

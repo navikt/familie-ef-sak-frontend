@@ -27,14 +27,12 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => {
-                const skalSkjuleSøknadsdata = !!(
-                    behandling.behandlingsårsak !== Behandlingsårsak.SØKNAD
-                );
+                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
                 return (
                     <>
                         <VilkårsresultatOppsummering behandlingId={behandlingId} />
-                        {!skalSkjuleSøknadsdata && <Søknadsdatoer behandlingId={behandlingId} />}
+                        {skalViseSøknadsdata && <Søknadsdatoer behandlingId={behandlingId} />}
                         {behandling.steg === Steg.VILKÅR ? (
                             <AlertStripeIkkeFerdigBehandletVilkår />
                         ) : (

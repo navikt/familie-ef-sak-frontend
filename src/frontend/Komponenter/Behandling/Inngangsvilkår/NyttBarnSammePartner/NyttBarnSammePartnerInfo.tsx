@@ -9,7 +9,7 @@ import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    skalSkjuleSøknadsdata?: boolean;
+    skalViseSøknadsdata: boolean;
 }
 
 const Overskrift = styled(Element)`
@@ -17,7 +17,7 @@ const Overskrift = styled(Element)`
     margin-bottom: 1rem;
 `;
 
-const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, skalSkjuleSøknadsdata }) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
 
@@ -37,7 +37,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, skalSkjuleSøknad
                     </Normaltekst>
                 )}
             </div>
-            {!skalSkjuleSøknadsdata && (
+            {skalViseSøknadsdata && (
                 <div>
                     <FlexDiv>
                         <Overskrift className="tittel" tag="h3">

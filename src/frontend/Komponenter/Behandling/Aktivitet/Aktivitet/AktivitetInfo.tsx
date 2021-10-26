@@ -15,9 +15,10 @@ import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmott
 
 interface Props {
     aktivitet: IAktivitet;
-    skalSkjuleSøknadsdata?: boolean;
+    skalViseSøknadsdata: boolean;
 }
-const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
+
+const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -35,7 +36,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
     return (
         <>
             <SeksjonWrapper>
-                {!skalSkjuleSøknadsdata &&
+                {skalViseSøknadsdata &&
                     arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
                         <GridTabell kolonner={3}>
                             <Søknadsgrunnlag />
@@ -49,7 +50,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                         </GridTabell>
                     )}
 
-                {!skalSkjuleSøknadsdata &&
+                {skalViseSøknadsdata &&
                     arbeidsforhold &&
                     arbeidsforhold.map((arbeidsgiver, index) => (
                         <GridTabell kolonner={3} key={arbeidsgiver.arbeidsgivernavn + index}>
@@ -60,7 +61,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                         </GridTabell>
                     ))}
 
-                {!skalSkjuleSøknadsdata &&
+                {skalViseSøknadsdata &&
                     selvstendig &&
                     selvstendig.map((firma, index) => (
                         <GridTabell kolonner={3} key={firma.organisasjonsnummer + index}>
@@ -71,7 +72,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                         </GridTabell>
                     ))}
 
-                {!skalSkjuleSøknadsdata &&
+                {skalViseSøknadsdata &&
                     aksjeselskap &&
                     aksjeselskap.map((selskap, index) => (
                         <GridTabell kolonner={3} key={selskap.navn + index}>
@@ -79,7 +80,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                         </GridTabell>
                     ))}
 
-                {!skalSkjuleSøknadsdata && datoOppstartJobb && (
+                {skalViseSøknadsdata && datoOppstartJobb && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
                         <Element className={'undertittel'}>
@@ -90,7 +91,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                     </GridTabell>
                 )}
 
-                {!skalSkjuleSøknadsdata && virksomhet && (
+                {skalViseSøknadsdata && virksomhet && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
                         <Element className={'undertittel'}>
@@ -103,13 +104,13 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                     </GridTabell>
                 )}
 
-                {!skalSkjuleSøknadsdata && arbeidssøker && (
+                {skalViseSøknadsdata && arbeidssøker && (
                     <GridTabell kolonner={3}>
                         <Arbeidssøker arbeidssøker={arbeidssøker} />{' '}
                     </GridTabell>
                 )}
 
-                {!skalSkjuleSøknadsdata && underUtdanning && (
+                {skalViseSøknadsdata && underUtdanning && (
                     <GridTabell kolonner={3}>
                         <UnderUtdanning underUtdanning={underUtdanning} />
                         {underUtdanning.utdanningEtterGrunnskolen && (
@@ -118,7 +119,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                     </GridTabell>
                 )}
 
-                {!skalSkjuleSøknadsdata &&
+                {skalViseSøknadsdata &&
                     arbeidssituasjon.includes(
                         EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
                     ) && (
@@ -135,7 +136,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalSkjuleSøknadsdata }) => {
                     )}
             </SeksjonWrapper>
 
-            {!skalSkjuleSøknadsdata && særligeTilsynsbehov && (
+            {skalViseSøknadsdata && særligeTilsynsbehov && (
                 <SeksjonWrapper>
                     <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
                 </SeksjonWrapper>

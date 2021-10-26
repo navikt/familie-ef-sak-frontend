@@ -6,14 +6,16 @@ import { VilkårProps } from '../vilkårprops';
 import SivilstandInfo from './SivilstandInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-export const Sivilstand: React.FC<VilkårProps> = ({
+type SivilstandVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
+
+export const Sivilstand: React.FC<SivilstandVilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
-    skalSkjuleSøknadsdata,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.SIVILSTAND);
     if (!vurdering) {
@@ -31,7 +33,7 @@ export const Sivilstand: React.FC<VilkårProps> = ({
                         />
                         <SivilstandInfo
                             sivilstand={grunnlag.sivilstand}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>
                 ),

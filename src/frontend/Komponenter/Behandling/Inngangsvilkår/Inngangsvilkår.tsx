@@ -40,9 +40,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     return (
         <DataViewer response={{ vilkår, behandling }}>
             {({ vilkår, behandling }) => {
-                const skalSkjuleSøknadsdata = !!(
-                    behandling.behandlingsårsak !== Behandlingsårsak.SØKNAD
-                );
+                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
                 return (
                     <>
@@ -53,7 +51,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Opphold
                             nullstillVurdering={nullstillVurdering}
@@ -62,7 +60,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <MorEllerFar
                             nullstillVurdering={nullstillVurdering}
@@ -71,7 +69,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <NyttBarnSammePartner
                             nullstillVurdering={nullstillVurdering}
@@ -80,7 +78,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Sivilstand
                             nullstillVurdering={nullstillVurdering}
@@ -89,7 +87,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Samliv
                             nullstillVurdering={nullstillVurdering}
@@ -98,7 +96,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Aleneomsorg
                             nullstillVurdering={nullstillVurdering}
@@ -107,7 +105,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalSkjuleSøknadsdata={skalSkjuleSøknadsdata}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>
                 );

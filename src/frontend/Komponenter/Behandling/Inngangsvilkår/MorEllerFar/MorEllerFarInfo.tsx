@@ -9,10 +9,10 @@ import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnum
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
-    skalSkjuleSøknadsdata?: boolean;
+    skalViseSøknadsdata: boolean;
 }
 
-const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalSkjuleSøknadsdata }) => {
+const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata }) => {
     return (
         <>
             {barnMedSamvær.map((barn: IBarnMedSamvær) => {
@@ -26,7 +26,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalSkjuleSøknadsdata }) 
                                     <LiteBarn />
                                     <Element>{registergrunnlag.navn}</Element>
                                 </>
-                            ) : !skalSkjuleSøknadsdata ? (
+                            ) : skalViseSøknadsdata ? (
                                 <>
                                     <LiteBarn />
                                     <Element>
@@ -42,7 +42,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalSkjuleSøknadsdata }) 
                                         fødselsnummer={registergrunnlag.fødselsnummer}
                                     />
                                 </>
-                            ) : !skalSkjuleSøknadsdata ? (
+                            ) : skalViseSøknadsdata ? (
                                 <>
                                     <Søknadsgrunnlag />
                                     <Normaltekst>Termindato</Normaltekst>

@@ -9,10 +9,10 @@ import { formaterIsoDato } from '../../../../App/utils/formatter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
-    skalSkjuleSøknadsdata?: boolean;
+    skalViseSøknadsdata: boolean;
 }
 
-const SivilstandInfo: FC<Props> = ({ sivilstand, skalSkjuleSøknadsdata }) => {
+const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     return (
         <>
@@ -26,7 +26,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalSkjuleSøknadsdata }) => {
                         ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`}
                 </Normaltekst>
 
-                {!skalSkjuleSøknadsdata && (
+                {skalViseSøknadsdata && (
                     <Søknadsinformasjon
                         sivilstandtype={registergrunnlag.type}
                         søknad={søknadsgrunnlag}
