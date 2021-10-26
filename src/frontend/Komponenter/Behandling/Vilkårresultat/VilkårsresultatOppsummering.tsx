@@ -4,11 +4,11 @@ import {
     InngangsvilkårType,
     TidligereVedtaksperioderType,
 } from '../Inngangsvilkår/vilkår';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { ResultatVisning } from './ResultatVisning';
+import TidligereVedtakOppsummering from './TidligereVedtakOppsummering';
 
 const Container = styled.div`
     max-width: 1180px;
@@ -16,10 +16,6 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
     padding: 1rem;
-`;
-
-const TekstWrapper = styled.div`
-    padding: 0rem 1rem;
 `;
 
 export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = ({
@@ -38,25 +34,23 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
     return (
         <DataViewer response={{ vilkår }}>
             {({ vilkår }) => {
-                const vurderingerUtenTidligereVedtaksperioder = vilkår.vurderinger.filter(
-                    (v) => v.vilkårType !== TidligereVedtaksperioderType.TIDLIGERE_VEDTAKSPERIODER
-                );
-
-                const inngangsvilkår = vurderingerUtenTidligereVedtaksperioder.filter(
+                const inngangsvilkår = vilkår.vurderinger.filter(
                     (v) => v.vilkårType in InngangsvilkårType
                 );
-                const aktivitetsvilkår = vurderingerUtenTidligereVedtaksperioder.filter(
+                const aktivitetsvilkår = vilkår.vurderinger.filter(
                     (v) => v.vilkårType in AktivitetsvilkårType
                 );
+                const tidligereVedtaksvilkår = vilkår.vurderinger.filter(
+                    (v) => v.vilkårType in TidligereVedtaksperioderType
+                );
+
                 return (
                     <Container>
                         <InnerContainer>
-                            <TekstWrapper>
-                                <Undertittel className="blokk-xs">
-                                    Tidligere vedtaksperioder
-                                </Undertittel>
-                                <Normaltekst>Søker har ingen tidligere stønadsperioder</Normaltekst>
-                            </TekstWrapper>
+                            <ResultatVisning
+                                vilkårsvurderinger={tidligereVedtaksvilkår}
+                                tittel="Tidligere vedtaksperioder"
+                            />
                             <ResultatVisning
                                 vilkårsvurderinger={inngangsvilkår}
                                 tittel="Inngangsvilkår"
@@ -64,6 +58,9 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
                             <ResultatVisning
                                 vilkårsvurderinger={aktivitetsvilkår}
                                 tittel="Aktivitet"
+                            />
+                            <TidligereVedtakOppsummering
+                                tidligereVedtaksvilkår={tidligereVedtaksvilkår}
                             />
                         </InnerContainer>
                     </Container>
