@@ -16,8 +16,10 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
-    BrevtypeTilForhåndstekst,
-    FrittståendeBrevStønadOgBrevType,
+    BrevtypeTilDeloverskriftTekst,
+    BrevtypeTilInnholdTekst,
+    BrevtypeTilSelectNavn,
+    BrevtypeTilTittelTekst,
     FrittståendeBrevStønadType,
     FrittståendeBrevType,
     IAvsnitt,
@@ -88,23 +90,13 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         FrittståendeBrevType.INFORMASJONSBREV
     );
 
-    const [stønadOgBrevType, settStønadOgBrevType] = useState<FrittståendeBrevStønadOgBrevType>();
-
-    const [overskrift, settOverskrift] = useState(BrevtypeTilForhåndstekst[brevType]);
+    const [overskrift, settOverskrift] = useState(BrevtypeTilTittelTekst[brevType]);
     const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
     const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
 
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest } = useApp();
-
-    useEffect(() => {
-        if (!(stønadType && brevType)) return;
-
-        const stønadOgBrev = utledStønadOgBrevtype(brevType, stønadType);
-
-        settStønadOgBrevType(stønadOgBrev);
-    }, [stønadType, brevType]);
 
     const personopplysningerFagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -121,26 +113,6 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         }),
         [behandlingId]
     );
-
-    const utledStønadOgBrevtype = (
-        brevType: FrittståendeBrevType,
-        stønadType: FrittståendeBrevStønadType
-    ): FrittståendeBrevStønadOgBrevType => {
-        switch (stønadType) {
-            case FrittståendeBrevStønadType.OVERGANGSSTØNAD:
-                return brevType === FrittståendeBrevType.INFORMASJONSBREV
-                    ? FrittståendeBrevStønadOgBrevType.INFOBREV_OVERGANGSSTØNAD
-                    : FrittståendeBrevStønadOgBrevType.MANGELBREV_OVERGANGSSTØNAD;
-            case FrittståendeBrevStønadType.BARNETILSYN:
-                return brevType === FrittståendeBrevType.INFORMASJONSBREV
-                    ? FrittståendeBrevStønadOgBrevType.INFOBREV_BARNETILSYN
-                    : FrittståendeBrevStønadOgBrevType.MANGELBREV_BARNETILSYN;
-            case FrittståendeBrevStønadType.SKOLEPENGER:
-                return brevType === FrittståendeBrevType.INFORMASJONSBREV
-                    ? FrittståendeBrevStønadOgBrevType.INFOBREV_SKOLEPENGER
-                    : FrittståendeBrevStønadOgBrevType.MANGELBREV_SKOLEPENGER;
-        }
-    };
 
     const personopplysningerConfig = fagsakId
         ? personopplysningerFagsakConfig
@@ -160,7 +132,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     avsnitt,
                     fagsakId,
                     stønadType,
-                    brevType: stønadOgBrevType,
+                    brevType,
                 },
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
@@ -189,7 +161,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
     const sendBrev = () => {
         setUtsendingSuksess(false);
         settFeilmelding('');
-        if (!(fagsakId && stønadType && stønadOgBrevType)) return;
+        if (!(fagsakId && stønadType)) return;
 
         axiosRequest<string, IFrittståendeBrev>({
             method: 'POST',
@@ -199,7 +171,7 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                 avsnitt,
                 fagsakId,
                 stønadType,
-                brevType: stønadOgBrevType,
+                brevType,
             },
         }).then((respons: Ressurs<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
@@ -252,6 +224,12 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
         };
     };
 
+    const lagAvsnitt = (deloverskrfit?: string, innhold?: string): IAvsnitt => ({
+        deloverskrift: deloverskrfit || '',
+        innhold: innhold || '',
+        id: uuidv4(),
+    });
+
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
 
@@ -280,14 +258,23 @@ const FritekstBrev: React.FC<Props> = ({ oppdaterBrevressurs, behandlingId, fags
                     onChange={(e) => {
                         const nyBrevType = e.target.value as FrittståendeBrevType;
                         settBrevType(nyBrevType);
-                        settOverskrift(BrevtypeTilForhåndstekst[nyBrevType]);
+                        settOverskrift(BrevtypeTilTittelTekst[nyBrevType]);
+                        settAvsnitt((avsnitt) => {
+                            return [
+                                lagAvsnitt(
+                                    BrevtypeTilDeloverskriftTekst[nyBrevType],
+                                    BrevtypeTilInnholdTekst[nyBrevType]
+                                ),
+                                ...avsnitt,
+                            ];
+                        });
                     }}
                     value={brevType}
                 >
-                    <option value={FrittståendeBrevType.INFORMASJONSBREV}>Informasjonsbrev</option>
-                    <option value={FrittståendeBrevType.INNHENTING_AV_OPPLYSNINGER}>
-                        Innhenting av opplysninger
-                    </option>
+                    {fagsakId &&
+                        Object.values(FrittståendeBrevType).map((brevType) => {
+                            <option value={brevType}>{BrevtypeTilSelectNavn[brevType]}</option>;
+                        })}
                 </StyledSelect>
                 <Overskrift
                     label="Overskrift"
