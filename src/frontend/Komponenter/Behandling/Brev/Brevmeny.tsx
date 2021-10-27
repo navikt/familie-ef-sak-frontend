@@ -52,7 +52,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { flettefeltStore } = useVerdierForBrev(tilkjentYtelse);
 
     useEffect(() => {
-        if (brevMal) {
+        if (brevMal && brevMal !== 'Fritekstbrev') {
             axiosRequest<BrevStruktur, null>({
                 method: 'GET',
                 url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
@@ -99,6 +99,8 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
 
     return (
         <StyledBrevMeny>
+            {console.log('brevmal', brevMal)}
+            {console.log('brevstruktur', brevStruktur)}
             <DataViewer response={{ dokumentnavn }}>
                 {({ dokumentnavn }) => (
                     <Select
