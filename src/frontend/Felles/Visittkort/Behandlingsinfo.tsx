@@ -9,6 +9,7 @@ import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
+import { Henlegg } from '../../Komponenter/Behandling/Henleggelse/Henlegg';
 
 const BehandlingsinfoWrapper = styled.div`
     margin: auto;
@@ -39,7 +40,10 @@ const StyledMenyKnapp = styled(Menyknapp)`
 
 const popoverId = 'visBehandlingsinfo-popover';
 
-const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
+const Behandlingsinfo: FC<{ behandling: Behandling; fagsakId: string }> = ({
+    behandling,
+    fagsakId,
+}) => {
     const [anker, settAnker] = useState<HTMLButtonElement>();
 
     const togglePopover = (nyAnker: HTMLButtonElement | undefined) => {
@@ -84,6 +88,7 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
                         <Normaltekst>{stegTypeTilTekst[behandling.steg]}</Normaltekst>
                     </PopoverTabell>
                     <GråTekst>Id: {behandling.id}</GråTekst>
+                    <Henlegg behandling={behandling} fagsakId={fagsakId} />
                 </PopoverInnehold>
             </Popover>
         </BehandlingsinfoWrapper>

@@ -45,7 +45,7 @@ const StyledListElement = styled.li`
 `;
 
 const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
-    if (behandlingshistorikk.steg === Steg.BESLUTTE_VEDTAK && !!behandlingshistorikk.utfall) {
+    if (behandlingshistorikk.utfall) {
         return stegUtfallTilTekst[behandlingshistorikk.utfall];
     }
     return stegTypeTilTekst[behandlingshistorikk.steg];
@@ -69,6 +69,11 @@ const BehandlingHistorikk: React.FC = () => {
                                 {behandlingshistorikk.metadata?.begrunnelse && (
                                     <Undertekst>
                                         Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
+                                    </Undertekst>
+                                )}
+                                {behandlingshistorikk.metadata?.årsak && (
+                                    <Undertekst>
+                                        Årsak: {behandlingshistorikk.metadata?.årsak}
                                     </Undertekst>
                                 )}
                             </StyledListElement>
