@@ -8,6 +8,7 @@ import { Behandling } from '../../App/typer/fagsak';
 const BehandlingRoutes: React.FC = () => {
     const { behandling } = useBehandling();
     const behandlingSuksess = behandling as RessursSuksess<Behandling>;
+
     return (
         <Switch>
             <Redirect

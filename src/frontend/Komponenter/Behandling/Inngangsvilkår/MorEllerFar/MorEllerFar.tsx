@@ -6,13 +6,16 @@ import MorEllerFarInfo from './MorEllerFarInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-export const MorEllerFar: React.FC<VilkårProps> = ({
+type MorEllerFarVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
+
+export const MorEllerFar: React.FC<MorEllerFarVilkårProps> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
     grunnlag,
     ikkeVurderVilkår,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.MOR_ELLER_FAR);
     if (!vurdering) {
@@ -28,7 +31,10 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
                             tittel="Mor eller Far"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <MorEllerFarInfo barnMedSamvær={grunnlag.barnMedSamvær} />
+                        <MorEllerFarInfo
+                            barnMedSamvær={grunnlag.barnMedSamvær}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
                     </>
                 ),
                 høyre: (

@@ -11,33 +11,38 @@ import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
+    skalViseSøknadsdata: boolean;
 }
 
-const SamlivInfo: FC<Props> = ({ grunnlag }) => {
+const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata }) => {
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
 
     return (
         <>
-            <GridTabell>
-                {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>Alene med barn fordi</Normaltekst>
-                        <Normaltekst>
-                            {(sivilstand.søknadsgrunnlag.årsakEnslig &&
-                                ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
-                                ''}
-                        </Normaltekst>
-                        <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
-                    </>
-                )}
+            {skalViseSøknadsdata && (
+                <GridTabell>
+                    {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
+                        <>
+                            <Søknadsgrunnlag />
+                            <Normaltekst>Alene med barn fordi</Normaltekst>
+                            <Normaltekst>
+                                {(sivilstand.søknadsgrunnlag.årsakEnslig &&
+                                    ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
+                                    ''}
+                            </Normaltekst>
+                            <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
+                        </>
+                    )}
 
-                <Søknadsgrunnlag />
-                <Normaltekst>Bosituasjon</Normaltekst>
-                <Normaltekst>{SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}</Normaltekst>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Bosituasjon</Normaltekst>
+                    <Normaltekst>
+                        {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
+                    </Normaltekst>
 
-                <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
-            </GridTabell>
+                    <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
+                </GridTabell>
+            )}
         </>
     );
 };

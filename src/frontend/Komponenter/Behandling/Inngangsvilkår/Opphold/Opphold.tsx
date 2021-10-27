@@ -6,13 +6,16 @@ import { VilkårProps } from '../vilkårprops';
 import OppholdInfo from './OppholdInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-export const Opphold: React.FC<VilkårProps> = ({
+type OppholdVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
+
+export const Opphold: React.FC<OppholdVilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.LOVLIG_OPPHOLD);
     if (!vurdering) {
@@ -28,7 +31,10 @@ export const Opphold: React.FC<VilkårProps> = ({
                             tittel="Opphold i Norge"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <OppholdInfo medlemskap={grunnlag.medlemskap} />
+                        <OppholdInfo
+                            medlemskap={grunnlag.medlemskap}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
                     </>
                 ),
                 høyre: (

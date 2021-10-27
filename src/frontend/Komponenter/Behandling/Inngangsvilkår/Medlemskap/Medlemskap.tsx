@@ -6,13 +6,16 @@ import { VilkårProps } from '../vilkårprops';
 import MedlemskapInfo from './MedlemskapInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-export const Medlemskap: React.FC<VilkårProps> = ({
+type MedlemskapVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
+
+export const Medlemskap: React.FC<MedlemskapVilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
     ikkeVurderVilkår,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === InngangsvilkårType.FORUTGÅENDE_MEDLEMSKAP
@@ -30,7 +33,10 @@ export const Medlemskap: React.FC<VilkårProps> = ({
                             tittel="Forutgående medlemskap"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <MedlemskapInfo medlemskap={grunnlag.medlemskap} />
+                        <MedlemskapInfo
+                            medlemskap={grunnlag.medlemskap}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
                     </>
                 ),
                 høyre: (

@@ -9,6 +9,8 @@ import { Opphold } from './Opphold/Opphold';
 import { Medlemskap } from './Medlemskap/Medlemskap';
 import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 interface Props {
     behandlingId: string;
@@ -24,6 +26,8 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         ikkeVurderVilkår,
     } = useHentVilkår();
 
+    const { behandling } = useBehandling();
+
     React.useEffect(() => {
         if (behandlingId !== undefined) {
             if (vilkår.status !== RessursStatus.SUKSESS) {
@@ -34,8 +38,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     }, [behandlingId]);
 
     return (
-        <DataViewer response={{ vilkår }}>
-            {({ vilkår }) => {
+        <DataViewer response={{ vilkår, behandling }}>
+            {({ vilkår, behandling }) => {
+                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+
                 return (
                     <>
                         <Medlemskap
@@ -45,6 +51,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Opphold
                             nullstillVurdering={nullstillVurdering}
@@ -53,6 +60,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <MorEllerFar
                             nullstillVurdering={nullstillVurdering}
@@ -61,6 +69,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <NyttBarnSammePartner
                             nullstillVurdering={nullstillVurdering}
@@ -69,6 +78,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Sivilstand
                             nullstillVurdering={nullstillVurdering}
@@ -77,6 +87,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Samliv
                             nullstillVurdering={nullstillVurdering}
@@ -85,6 +96,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <Aleneomsorg
                             nullstillVurdering={nullstillVurdering}
@@ -93,6 +105,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>
                 );

@@ -8,6 +8,7 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import { VilkårsresultatOppsummering } from '../Vilkårresultat/VilkårsresultatOppsummering';
 import VedtakOgBeregning from './VedtakOgBeregning';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -25,17 +26,21 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
 
     return (
         <DataViewer response={{ behandling }}>
-            {({ behandling }) => (
-                <>
-                    <VilkårsresultatOppsummering behandlingId={behandlingId} />
-                    <Søknadsdatoer behandlingId={behandlingId} />
-                    {behandling.steg === Steg.VILKÅR ? (
-                        <AlertStripeIkkeFerdigBehandletVilkår />
-                    ) : (
-                        <VedtakOgBeregning behandling={behandling} />
-                    )}
-                </>
-            )}
+            {({ behandling }) => {
+                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+
+                return (
+                    <>
+                        <VilkårsresultatOppsummering behandlingId={behandlingId} />
+                        {skalViseSøknadsdata && <Søknadsdatoer behandlingId={behandlingId} />}
+                        {behandling.steg === Steg.VILKÅR ? (
+                            <AlertStripeIkkeFerdigBehandletVilkår />
+                        ) : (
+                            <VedtakOgBeregning behandling={behandling} />
+                        )}
+                    </>
+                );
+            }}
         </DataViewer>
     );
 };

@@ -14,9 +14,10 @@ import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
 
 interface Props {
     medlemskap: IMedlemskap;
+    skalViseSøknadsdata: boolean;
 }
 
-const OppholdInfo: FC<Props> = ({ medlemskap }) => {
+const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
@@ -31,9 +32,13 @@ const OppholdInfo: FC<Props> = ({ medlemskap }) => {
                 <Normaltekst>Statsborgerskap</Normaltekst>
                 <Normaltekst>{registergrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
 
-                <Søknadsgrunnlag />
-                <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
-                <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
+                {skalViseSøknadsdata && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
+                        <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
+                    </>
+                )}
             </GridTabell>
 
             <StyledLesmerpanel>
@@ -52,7 +57,7 @@ const OppholdInfo: FC<Props> = ({ medlemskap }) => {
                         />
                     )}
 
-                    {finnesUtenlandsperioder && (
+                    {skalViseSøknadsdata && finnesUtenlandsperioder && (
                         <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
                     )}
                 </Lesmerpanel>

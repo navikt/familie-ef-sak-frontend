@@ -2,6 +2,7 @@ import { Stønadstype } from './behandlingstema';
 import { Behandlingstype } from './behandlingstype';
 import { BehandlingStatus } from './behandlingstatus';
 import { Steg } from '../../Komponenter/Behandling/Høyremeny/Steg';
+import { Behandlingsårsak } from '../typer/Behandlingsårsak';
 
 export interface Fagsak {
     id: string;
@@ -20,6 +21,7 @@ export interface Behandling {
     endringerIRegistergrunnlag?: IEndringerRegistergrunnlag;
     opprettet: string;
     resultat: BehandlingResultat;
+    behandlingsårsak: Behandlingsårsak;
 }
 
 export interface IEndringerRegistergrunnlag {

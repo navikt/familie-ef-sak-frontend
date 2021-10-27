@@ -6,13 +6,16 @@ import { VilkårProps } from '../vilkårprops';
 import SamlivInfo from './SamlivInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-export const Samliv: React.FC<VilkårProps> = ({
+type SamlivVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
+
+export const Samliv: React.FC<SamlivVilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.SAMLIV);
     if (!vurdering) {
@@ -28,7 +31,7 @@ export const Samliv: React.FC<VilkårProps> = ({
                             tittel="Samliv"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <SamlivInfo grunnlag={grunnlag} />
+                        <SamlivInfo grunnlag={grunnlag} skalViseSøknadsdata={skalViseSøknadsdata} />
                     </>
                 ),
                 høyre: (

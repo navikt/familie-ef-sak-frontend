@@ -15,8 +15,10 @@ import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmott
 
 interface Props {
     aktivitet: IAktivitet;
+    skalViseSøknadsdata: boolean;
 }
-const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
+
+const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -34,16 +36,22 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
     return (
         <>
             <SeksjonWrapper>
-                {arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
-                    <GridTabell kolonner={3}>
-                        <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
-                            {ArbeidssituasjonTilTekst[EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr]}
-                        </Element>
-                    </GridTabell>
-                )}
+                {skalViseSøknadsdata &&
+                    arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
+                        <GridTabell kolonner={3}>
+                            <Søknadsgrunnlag />
+                            <Element className={'undertittel'}>
+                                {
+                                    ArbeidssituasjonTilTekst[
+                                        EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr
+                                    ]
+                                }
+                            </Element>
+                        </GridTabell>
+                    )}
 
-                {arbeidsforhold &&
+                {skalViseSøknadsdata &&
+                    arbeidsforhold &&
                     arbeidsforhold.map((arbeidsgiver, index) => (
                         <GridTabell kolonner={3} key={arbeidsgiver.arbeidsgivernavn + index}>
                             <ArbeidstakerLønnsmottakerSomFrilanser
@@ -53,7 +61,8 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                         </GridTabell>
                     ))}
 
-                {selvstendig &&
+                {skalViseSøknadsdata &&
+                    selvstendig &&
                     selvstendig.map((firma, index) => (
                         <GridTabell kolonner={3} key={firma.organisasjonsnummer + index}>
                             <SelvstendigNæringsdrivendeEllerFrilanser
@@ -63,14 +72,15 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                         </GridTabell>
                     ))}
 
-                {aksjeselskap &&
+                {skalViseSøknadsdata &&
+                    aksjeselskap &&
                     aksjeselskap.map((selskap, index) => (
                         <GridTabell kolonner={3} key={selskap.navn + index}>
                             <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />
                         </GridTabell>
                     ))}
 
-                {datoOppstartJobb && (
+                {skalViseSøknadsdata && datoOppstartJobb && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
                         <Element className={'undertittel'}>
@@ -81,7 +91,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                     </GridTabell>
                 )}
 
-                {virksomhet && (
+                {skalViseSøknadsdata && virksomhet && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
                         <Element className={'undertittel'}>
@@ -94,13 +104,13 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                     </GridTabell>
                 )}
 
-                {arbeidssøker && (
+                {skalViseSøknadsdata && arbeidssøker && (
                     <GridTabell kolonner={3}>
                         <Arbeidssøker arbeidssøker={arbeidssøker} />{' '}
                     </GridTabell>
                 )}
 
-                {underUtdanning && (
+                {skalViseSøknadsdata && underUtdanning && (
                     <GridTabell kolonner={3}>
                         <UnderUtdanning underUtdanning={underUtdanning} />
                         {underUtdanning.utdanningEtterGrunnskolen && (
@@ -109,23 +119,24 @@ const AktivitetInfo: FC<Props> = ({ aktivitet }) => {
                     </GridTabell>
                 )}
 
-                {arbeidssituasjon.includes(
-                    EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                ) && (
-                    <GridTabell kolonner={3}>
-                        <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
-                            {
-                                ArbeidssituasjonTilTekst[
-                                    EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                                ]
-                            }
-                        </Element>
-                    </GridTabell>
-                )}
+                {skalViseSøknadsdata &&
+                    arbeidssituasjon.includes(
+                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                    ) && (
+                        <GridTabell kolonner={3}>
+                            <Søknadsgrunnlag />
+                            <Element className={'undertittel'}>
+                                {
+                                    ArbeidssituasjonTilTekst[
+                                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                                    ]
+                                }
+                            </Element>
+                        </GridTabell>
+                    )}
             </SeksjonWrapper>
 
-            {særligeTilsynsbehov && (
+            {skalViseSøknadsdata && særligeTilsynsbehov && (
                 <SeksjonWrapper>
                     <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
                 </SeksjonWrapper>
