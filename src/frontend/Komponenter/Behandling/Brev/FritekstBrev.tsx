@@ -16,8 +16,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
-    BrevtyperTilDeloverskriftTekst,
-    BrevtyperTilInnholdTekst,
+    BrevtyperTilAvsnitt,
     BrevtyperTilOverskrift,
     BrevtyperTilSelectNavn,
     FritekstBrevContext,
@@ -86,19 +85,13 @@ const FritekstBrev: React.FC<Props> = ({
         context === FritekstBrevContext.FRITTSTÅENDE
             ? FrittståendeBrevtype.INFORMASJONSBREV
             : FritekstBrevtype.VEDTAK_INVILGELSE;
-    const førsteRad = [
-        {
-            deloverskrift: BrevtyperTilDeloverskriftTekst[initiellBrevtype],
-            innhold: BrevtyperTilInnholdTekst[initiellBrevtype],
-            id: uuidv4(),
-        },
-    ];
+    const initielleAvsnitt = BrevtyperTilAvsnitt[initiellBrevtype];
     const [stønadType, settStønadType] = useState<Stønadstype>(Stønadstype.OVERGANGSSTØNAD);
     const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>(
         initiellBrevtype
     );
     const [overskrift, settOverskrift] = useState(BrevtyperTilOverskrift[brevType]);
-    const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(førsteRad);
+    const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(initielleAvsnitt);
     const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
 
@@ -193,7 +186,7 @@ const FritekstBrev: React.FC<Props> = ({
         });
     };
 
-    const leggTilRad = () => {
+    const leggTilAvsnittBak = () => {
         settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
             return [
                 ...eksisterendeAvsnitt,
@@ -202,6 +195,19 @@ const FritekstBrev: React.FC<Props> = ({
                     innhold: '',
                     id: uuidv4(),
                 },
+            ];
+        });
+    };
+
+    const leggTilAvsnittForan = () => {
+        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
+            return [
+                {
+                    deloverskrift: '',
+                    innhold: '',
+                    id: uuidv4(),
+                },
+                ...eksisterendeAvsnitt,
             ];
         });
     };
@@ -230,12 +236,6 @@ const FritekstBrev: React.FC<Props> = ({
             settAvsnitt(oppdaterteAvsnitt);
         };
     };
-
-    const lagAvsnitt = (deloverskrfit?: string, innhold?: string): IAvsnitt => ({
-        deloverskrift: deloverskrfit || '',
-        innhold: innhold || '',
-        id: uuidv4(),
-    });
 
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
@@ -267,12 +267,7 @@ const FritekstBrev: React.FC<Props> = ({
                         settBrevType(nyBrevType);
                         settOverskrift(BrevtyperTilOverskrift[nyBrevType]);
                         settAvsnitt(() => {
-                            return [
-                                lagAvsnitt(
-                                    BrevtyperTilDeloverskriftTekst[nyBrevType],
-                                    BrevtyperTilInnholdTekst[nyBrevType]
-                                ),
-                            ];
+                            return BrevtyperTilAvsnitt[nyBrevType];
                         });
                     }}
                     value={brevType}
@@ -292,6 +287,9 @@ const FritekstBrev: React.FC<Props> = ({
                         settOverskrift(e.target.value);
                     }}
                 />
+                <LeggTilKnappWrapper>
+                    <LeggTilKnapp onClick={leggTilAvsnittForan} knappetekst="Legg til avsnitt" />
+                </LeggTilKnappWrapper>
                 {avsnitt.map((rad) => {
                     const deloverskriftId = `deloverskrift-${rad.id}`;
                     const innholdId = `innhold-${rad.id}`;
@@ -321,7 +319,7 @@ const FritekstBrev: React.FC<Props> = ({
                 })}
 
                 <LeggTilKnappWrapper>
-                    <LeggTilKnapp onClick={leggTilRad} knappetekst="Legg til avsnitt" />
+                    <LeggTilKnapp onClick={leggTilAvsnittBak} knappetekst="Legg til avsnitt" />
                 </LeggTilKnappWrapper>
                 {fagsakId && <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>}
             </BrevKolonner>

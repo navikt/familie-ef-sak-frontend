@@ -1,3 +1,11 @@
+import {
+    initielleAvsnittInformasjonsbrev,
+    initielleAvsnittInnhentingAvOpplysninger,
+    initielleAvsnittVarselOmAktivitetsplikt,
+    initielleAvsnittVedtakAvslag,
+    initielleAvsnittVedtakInvilgelse,
+} from './BrevUtils';
+
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 export type ValgteDelmaler = { [delmalNavn: string]: boolean };
 
@@ -103,49 +111,12 @@ export const BrevtyperTilSelectNavn: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_AVSLAG: 'Vedtak avslag',
 };
 
-export const BrevtyperTilDeloverskriftTekst: Record<
-    FrittståendeBrevtype | FritekstBrevtype,
-    string
-> = {
-    INFORMASJONSBREV: '',
-    INNHENTING_AV_OPPLYSNINGER: '',
-    VARSEL_OM_AKTIVITETSPLIKT: 'Dette er en deloverskrift til varsel om aktivitetsplikt', // TODO: tekst
-    VEDTAK_INVILGELSE: '',
-    VEDTAK_AVSLAG: '',
-};
-
-export const BrevtyperTilInnholdTekst: Record<FrittståendeBrevtype | FritekstBrevtype, string> = {
-    INFORMASJONSBREV: '',
-    INNHENTING_AV_OPPLYSNINGER: '',
-    VARSEL_OM_AKTIVITETSPLIKT: 'Her skal det komme tekst etterhvert', // TODO: tekst
-    VEDTAK_INVILGELSE:
-        'Du må si ifra om endringer\n' +
-        'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/familie/alene¿med¿barn/overgangsstonad#melde. Du sier ifra om endringer ved å skrive en beskjed til oss på nav.no/person/kontakt¿oss/nb/skriv¿til¿oss.\n' +
-        '\n' +
-        'Slik beregner vi inntekten din\n' +
-        'Du kan lese mer om hvordan vi beregner inntekten din på nav.no/overgangsstonad¿enslig#hvor¿mye.\n' +
-        '\n' +
-        'Du har rett til å klage\n' +
-        'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.\n' +
-        '\n' +
-        'Du har rett til innsyn\n' +
-        'På nav.no/dittnav kan du se dokumentene i saken din.\n' +
-        '\n' +
-        'Har du spørsmål?\n' +
-        'Du finner informasjon som kan være nyttig for deg på nav.no/familie. Du kan også kontakte oss på nav.no/kontakt.',
-    VEDTAK_AVSLAG:
-        'Du har rett til å klage\n' +
-        'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.\n' +
-        '\n' +
-        'Du har rett til innsyn\n' +
-        'På nav.no/dittnav kan du se dokumentene i saken din.\n' +
-        '\n' +
-        'Har du spørsmål?\n' +
-        'Du finner nyttig informasjon på nav.no/overgangsstonad-enslig. Du kan også kontakte oss på nav.no/kontakt.\n' +
-        '\n' +
-        'Med vennlig hilsen\n' +
-        'NAV Arbeid og ytelser [geografisk enhet]\n' +
-        '[Saksbehandler] - [Beslutter]',
+export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtype, IAvsnitt[]> = {
+    INFORMASJONSBREV: initielleAvsnittInformasjonsbrev,
+    INNHENTING_AV_OPPLYSNINGER: initielleAvsnittInnhentingAvOpplysninger,
+    VARSEL_OM_AKTIVITETSPLIKT: initielleAvsnittVarselOmAktivitetsplikt,
+    VEDTAK_INVILGELSE: initielleAvsnittVedtakInvilgelse,
+    VEDTAK_AVSLAG: initielleAvsnittVedtakAvslag,
 };
 
 export enum FritekstBrevContext {
