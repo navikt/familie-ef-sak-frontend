@@ -199,7 +199,7 @@ const FritekstBrev: React.FC<Props> = ({
         });
     };
 
-    const leggTilAvsnittForran = () => {
+    const leggTilAvsnittForan = () => {
         settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
             return [
                 {
@@ -288,7 +288,7 @@ const FritekstBrev: React.FC<Props> = ({
                     }}
                 />
                 <LeggTilKnappWrapper>
-                    <LeggTilKnapp onClick={leggTilAvsnittForran} knappetekst="Legg til avsnitt" />
+                    <LeggTilKnapp onClick={leggTilAvsnittForan} knappetekst="Legg til avsnitt" />
                 </LeggTilKnappWrapper>
                 {avsnitt.map((rad) => {
                     const deloverskriftId = `deloverskrift-${rad.id}`;
