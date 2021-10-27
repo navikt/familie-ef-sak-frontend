@@ -8,6 +8,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import hiddenIf from '../../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { EHenlagtårsak } from '../../Henleggelse/Henlegg';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`
@@ -22,9 +23,12 @@ export const BehandleIGosys: React.FC<{ behandlingId: string }> = ({ behandlingI
     const [feilmelding, settFeilmelding] = useState<string>();
     const behandleIGosys = () => {
         settLaster(true);
-        axiosRequest<{ id: string }, null>({
+        axiosRequest<{ id: string }, { årsak: EHenlagtårsak }>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandlingId}/henlegg`,
+            data: {
+                årsak: EHenlagtårsak.BEHANDLES_I_GOSYS,
+            },
         })
             .then((res: Ressurs<{ id: string }>) => {
                 switch (res.status) {
