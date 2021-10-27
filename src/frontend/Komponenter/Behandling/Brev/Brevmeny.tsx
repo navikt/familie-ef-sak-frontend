@@ -99,8 +99,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
 
     return (
         <StyledBrevMeny>
-            {console.log('brevmal', brevMal)}
-            {console.log('brevstruktur', brevStruktur)}
             <DataViewer response={{ dokumentnavn }}>
                 {({ dokumentnavn }) => (
                     <Select
