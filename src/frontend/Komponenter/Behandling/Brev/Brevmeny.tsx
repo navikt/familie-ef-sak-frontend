@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur, DokumentNavn } from './BrevTyper';
+import { BrevStruktur, DokumentNavn, FritekstBrevContext } from './BrevTyper';
 import {
     byggSuksessRessurs,
     byggTomRessurs,
@@ -126,6 +126,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 <FritekstBrev
                     behandlingId={props.behandlingId}
                     oppdaterBrevressurs={props.oppdaterBrevRessurs}
+                    context={FritekstBrevContext.BEHANDLING}
                 />
             ) : (
                 <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
