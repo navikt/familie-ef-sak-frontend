@@ -154,11 +154,6 @@ export const initielleAvsnittVedtakAvslag: IAvsnitt[] = [
             'Du finner nyttig informasjon på nav.no/overgangsstonad-enslig. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Med vennlig hilsen',
-        innhold: 'NAV Arbeid og ytelser [GEOGRAFISK_ENHET]\n[SAKSBEHANDLER] - [BESLUTTER]',
-        id: uuidv4(),
-    },
 ];
 
 export const initielleAvsnittVarselOmAktivitetsplikt: IAvsnitt[] = [
