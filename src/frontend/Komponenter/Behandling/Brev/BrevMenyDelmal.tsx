@@ -100,12 +100,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                         />
                     ))}
                 {delmalFlettefelter
-                    .flatMap((f) =>
-                        f.flettefelt.filter(
-                            (felt, index, self) =>
-                                self.findIndex((t) => t._ref === felt._ref) === index
-                        )
-                    )
+                    .flatMap((f) => f.flettefelt)
                     .filter(
                         (felt, index, self) => self.findIndex((t) => t._ref === felt._ref) === index
                     )
