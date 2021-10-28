@@ -47,9 +47,8 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
                 return (
                     <Container>
                         <InnerContainer>
-                            <ResultatVisning
-                                vilkårsvurderinger={tidligereVedtaksvilkår}
-                                tittel="Tidligere vedtaksperioder"
+                            <TidligereVedtakOppsummering
+                                tidligereVedtaksvilkår={tidligereVedtaksvilkår}
                             />
                             <ResultatVisning
                                 vilkårsvurderinger={inngangsvilkår}
@@ -58,9 +57,6 @@ export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = 
                             <ResultatVisning
                                 vilkårsvurderinger={aktivitetsvilkår}
                                 tittel="Aktivitet"
-                            />
-                            <TidligereVedtakOppsummering
-                                tidligereVedtaksvilkår={tidligereVedtaksvilkår}
                             />
                         </InnerContainer>
                     </Container>
