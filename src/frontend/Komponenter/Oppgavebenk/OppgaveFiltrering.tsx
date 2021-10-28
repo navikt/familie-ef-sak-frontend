@@ -5,7 +5,6 @@ import { Input, Select } from 'nav-frontend-skjema';
 import { oppgaveTypeTilTekst } from './typer/oppgavetema';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
-import { enhetsmappeTilTekst } from './typer/enhetsmappe';
 import CustomSelect from './CustomSelect';
 import { enhetTilTekst } from './typer/enhet';
 import DatoPeriode from './DatoPeriode';
@@ -41,6 +40,7 @@ export const KnappWrapper = styled.div`
 
 interface IOppgaveFiltrering {
     hentOppgaver: (data: IOppgaveRequest) => void;
+    mapper: Record<number, string>;
 }
 
 interface Feil {
@@ -50,12 +50,12 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
-const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
+const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }) => {
     const { innloggetSaksbehandler } = useApp();
     const tomOppgaveRequest = {};
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
-
+    console.log(mapper);
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
             settOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
@@ -131,10 +131,10 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver }) => {
                     value={oppgaveRequest.enhet}
                 />
                 <CustomSelect
-                    onChange={(val) => settOppgave('enhetsmappe')(parseInt(val))}
+                    onChange={(val) => settOppgave('mappeId')(parseInt(val))}
                     label="Enhetsmappe"
-                    options={enhetsmappeTilTekst}
-                    value={oppgaveRequest.enhetsmappe}
+                    options={mapper}
+                    value={oppgaveRequest.mappeId}
                 />
 
                 <Select
