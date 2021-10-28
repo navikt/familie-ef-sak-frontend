@@ -4,7 +4,7 @@ import {
     initielleAvsnittVarselOmAktivitetsplikt,
     initielleAvsnittVedtakAvslag,
     initielleAvsnittVedtakInvilgelse,
-} from './BrevUtils';
+} from './BrevTyperTekst';
 
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 export type ValgteDelmaler = { [delmalNavn: string]: boolean };
