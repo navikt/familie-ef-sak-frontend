@@ -1,5 +1,4 @@
 import { Oppgavetype, Prioritet } from './oppgavetema';
-import { Enhetsmappe } from './enhetsmappe';
 import { Behandlingstema } from '../../../App/typer/behandlingstema';
 import { IOppgaveIdent } from '@navikt/familie-typer/dist/oppgave';
 
@@ -26,7 +25,7 @@ export interface IOppgave {
     oppgavetype?: Oppgavetype;
     behandlingstype?: string;
     versjon?: number;
-    mappeId?: Enhetsmappe;
+    mappeId?: number;
     fristFerdigstillelse?: string;
     aktivDato?: string;
     opprettetTidspunkt?: string;
