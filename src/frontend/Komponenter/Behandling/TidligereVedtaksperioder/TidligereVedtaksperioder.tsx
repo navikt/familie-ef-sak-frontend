@@ -55,6 +55,9 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
                                         feilmelding={feilmeldinger[vurdering.id]}
                                         lagreVurdering={lagreVurdering}
                                         nullstillVurdering={nullstillVurdering}
+                                        venstreKnappetekst={'Vurder'}
+                                        høyreKnappetekst={'Ikke vurder'}
+                                        tittelTekstVisVurdering={'Vurdert'}
                                     />
                                 ),
                             }}

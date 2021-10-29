@@ -22,9 +22,10 @@ export interface IOppgaverResponse {
 
 interface Props {
     oppgaveRessurs: OppgaveRessurs;
+    mapper: Record<number, string>;
 }
 
-const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs }) => {
+const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper }) => {
     const { status } = oppgaveRessurs;
     const oppgaveListe =
         status === RessursStatus.SUKSESS
@@ -53,7 +54,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs }) => {
             />
         );
     } else if (status === RessursStatus.IKKE_HENTET) {
-        return <AlertStripeInfo> Du må gjøre ett søk for å se oppgaver i listen.</AlertStripeInfo>; //TODO FIKS TEKST
+        return <AlertStripeInfo> Du må utføre et søk for å se oppgaver i listen.</AlertStripeInfo>;
     }
 
     return (
@@ -89,7 +90,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs }) => {
                 </thead>
                 <tbody>
                     {slicedListe.map((v) => (
-                        <OppgaveRad key={v.id} oppgave={v} />
+                        <OppgaveRad key={v.id} oppgave={v} mapper={mapper} />
                     ))}
                 </tbody>
             </table>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IOppgave } from './typer/oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
-import { enhetsmappeTilTekst } from './typer/enhetsmappe';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Flatknapp as Knapp } from 'nav-frontend-knapper';
@@ -14,6 +13,7 @@ import styled from 'styled-components';
 
 interface Props {
     oppgave: IOppgave;
+    mapper: Record<number, string>;
 }
 
 const StyledPopoverinnhold = styled.p`
@@ -43,7 +43,7 @@ const måBehandlesIEFSak = (oppgave: IOppgave) => {
     );
 };
 
-const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
+const OppgaveRad: React.FC<Props> = ({ oppgave, mapper }) => {
     const {
         feilmelding,
         gåTilBehandleSakOppgave,
@@ -69,7 +69,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave }) => {
         oppgave.fristFerdigstillelse && formaterIsoDato(oppgave.fristFerdigstillelse);
 
     const prioritet = oppgave.prioritet && prioritetTilTekst[oppgave.prioritet];
-    const enhetsmappe = oppgave.mappeId && enhetsmappeTilTekst[oppgave.mappeId];
+    const enhetsmappe = oppgave.mappeId && mapper[oppgave.mappeId];
 
     const behandlingstema =
         oppgave.behandlingstema &&
