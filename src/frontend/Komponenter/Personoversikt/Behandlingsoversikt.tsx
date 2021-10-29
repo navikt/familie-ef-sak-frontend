@@ -132,7 +132,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
                         {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
                     </TittelLinje>
-
                     <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
                     {tilbakekrevingBehandlinger.length > 0 && (
                         <TilbakekrevingBehandlingerTabell
