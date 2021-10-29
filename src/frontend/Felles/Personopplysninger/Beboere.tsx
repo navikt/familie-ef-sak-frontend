@@ -1,27 +1,25 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ISøkeresultatPerson } from '../../App/typer/personopplysninger';
 import { useApp } from '../../App/context/AppContext';
-import { byggTomRessurs, Ressurs, RessursFeilet, RessursStatus } from '../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursFeilet } from '../../App/typer/ressurs';
 import DataViewer from '../DataViewer/DataViewer';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import styled from 'styled-components';
-import { useBehandling } from '../../App/context/BehandlingContext';
 
 const StyledModalTabellWrapper = styled(TabellWrapper)`
     padding-top: 0rem;
     grid-template-columns: max-content;
 `;
 
-const Beboere: React.FC = () => {
+const Beboere: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const { axiosRequest } = useApp();
-    const { behandling } = useBehandling();
     const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
 
-    const sokPerson = useCallback(
-        (behandlingId: string) => {
+    const søkPerson = useCallback(
+        (fagsakId: string) => {
             axiosRequest<ISøkeresultatPerson, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/sok/${behandlingId}/samme-adresse`,
+                url: `/familie-ef-sak/api/sok/fagsak/${fagsakId}/samme-adresse`,
             }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
                 settSøkResultat(respons);
             });
@@ -30,10 +28,8 @@ const Beboere: React.FC = () => {
     );
 
     useEffect(() => {
-        if (behandling.status === RessursStatus.SUKSESS) {
-            sokPerson(behandling.data.id);
-        }
-    }, [behandling, sokPerson]);
+        søkPerson(fagsakId);
+    }, [fagsakId, søkPerson]);
 
     return (
         <DataViewer response={{ søkResultat }}>

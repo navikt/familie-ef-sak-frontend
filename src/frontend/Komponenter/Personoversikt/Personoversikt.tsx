@@ -44,7 +44,10 @@ const Personoversikt: React.FC = () => {
                         onChange={(_, tabNumber) => settTabvalg(tabNumber)}
                     />
                     {tabvalg === 0 && (
-                        <Personopplysninger personopplysninger={personopplysninger} />
+                        <Personopplysninger
+                            personopplysninger={personopplysninger}
+                            fagsakId={fagsakId}
+                        />
                     )}
                     {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
                     {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
