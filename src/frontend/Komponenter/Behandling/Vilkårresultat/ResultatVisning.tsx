@@ -12,6 +12,10 @@ const Container = styled.div`
     padding-right: 1rem;
 `;
 
+const Ikontekst = styled(Normaltekst)`
+    margin-left: 0.25rem;
+`;
+
 export const resultatTilTekst: Record<string, string> = {
     IKKE_AKTUELL: 'ikke aktuell',
     IKKE_OPPFYLT: 'ikke oppfylt',
@@ -34,9 +38,9 @@ export const ResultatVisning: React.FC<{
                 ([vilkårsresultat, antallVilkårsresultat], i) => (
                     <FlexDiv flexDirection="row" className="blokk-xxs" key={i}>
                         <VilkårsresultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
-                        <Normaltekst style={{ marginLeft: '0.25rem' }}>
+                        <Ikontekst>
                             {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                        </Normaltekst>
+                        </Ikontekst>
                     </FlexDiv>
                 )
             )}

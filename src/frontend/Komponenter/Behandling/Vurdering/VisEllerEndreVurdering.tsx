@@ -29,6 +29,9 @@ interface Props {
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<Ressurs<IVurdering>>;
     feilmelding: string | undefined;
+    venstreKnappetekst?: string;
+    høyreKnappetekst?: string;
+    tittelTekstVisVurdering?: string;
 }
 
 function utledRedigeringsmodus(
@@ -50,6 +53,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
     ikkeVurderVilkår,
     lagreVurdering,
     feilmelding,
+    venstreKnappetekst,
+    høyreKnappetekst,
+    tittelTekstVisVurdering,
 }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
@@ -98,10 +104,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
                             settRedigeringsmodus(Redigeringsmodus.REDIGERING);
                         }}
                     >
-                        Vurder vilkår
+                        {venstreKnappetekst ? venstreKnappetekst : 'Vurder vilkår'}
                     </Knapp>
                     <Flatknapp className="lenke" mini htmlType="button" onClick={ikkeVurder}>
-                        Ikke vurder vilkår
+                        {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Flatknapp>
                 </KnappWrapper>
             );
@@ -122,6 +128,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     resetVurdering={resetVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar}
+                    tittelTekst={tittelTekstVisVurdering}
                 />
             );
     }
