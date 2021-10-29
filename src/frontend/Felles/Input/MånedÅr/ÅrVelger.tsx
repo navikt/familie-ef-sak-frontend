@@ -15,7 +15,7 @@ const lagÅrOptions = (år: number | undefined, antallÅrFrem: number, antallÅr
     const gjeldendeÅr = new Date().getFullYear();
     const start = år ? Math.min(år, gjeldendeÅr - antallÅrTilbake) : gjeldendeÅr - antallÅrTilbake;
     const slutt = år ? Math.max(år, gjeldendeÅr + antallÅrFrem) : gjeldendeÅr + antallÅrFrem;
-    return range(start, slutt).map((år) => (
+    return range(start, slutt + 1).map((år) => (
         <option value={år} key={år}>
             {år}
         </option>
