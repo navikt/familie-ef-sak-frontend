@@ -55,7 +55,7 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }
     const tomOppgaveRequest = {};
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
-    console.log(mapper);
+
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
             settOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
