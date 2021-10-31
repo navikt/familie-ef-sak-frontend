@@ -1,13 +1,12 @@
 import { Behandlingstema } from '../../../App/typer/behandlingstema';
 import { Oppgavetype } from './oppgavetema';
 import { Enhet } from './enhet';
-import { Enhetsmappe } from './enhetsmappe';
 
 export interface IOppgaveRequest {
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
     enhet?: Enhet;
-    enhetsmappe?: Enhetsmappe;
+    mappeId?: number;
     saksbehandler?: string;
     journalpostId?: string;
     tilordnetRessurs?: string;

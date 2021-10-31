@@ -267,7 +267,7 @@ const FritekstBrev: React.FC<Props> = ({
             <h1>Fritekstbrev</h1>
             <BrevKolonner>
                 <StyledSelect
-                    label="Stønadtype"
+                    label="Stønadstype"
                     defaultValue={Stønadstype.OVERGANGSSTØNAD}
                     onChange={(e) => {
                         settStønadType(e.target.value as Stønadstype);
@@ -275,8 +275,8 @@ const FritekstBrev: React.FC<Props> = ({
                     value={stønadType}
                 >
                     <option value={Stønadstype.OVERGANGSSTØNAD}>Overgangsstønad</option>
-                    <option value={Stønadstype.BARNETILSYN}>Barnetilsyn</option>
-                    <option value={Stønadstype.SKOLEPENGER}>Skolepenger</option>
+                    <option value={Stønadstype.BARNETILSYN}>Stønad til barnetilsyn</option>
+                    <option value={Stønadstype.SKOLEPENGER}>Stønad til skolepenger</option>
                 </StyledSelect>
 
                 <StyledSelect

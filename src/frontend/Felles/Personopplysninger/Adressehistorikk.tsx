@@ -29,10 +29,13 @@ const StyledLesmer = styled(Lesmerpanel)`
 
 const MAX_LENGDE_ADRESSER = 5;
 
-const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
+const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({
+    adresser,
+    fagsakId,
+}) => {
     const [isClosed, setIsClosed] = useState<boolean>(true);
     if (adresser.length <= MAX_LENGDE_ADRESSER) {
-        return <Adresser adresser={adresser} />;
+        return <Adresser adresser={adresser} fagsakId={fagsakId} />;
     } else {
         const introAdresser = adresser.slice(0, MAX_LENGDE_ADRESSER);
         return (
@@ -40,11 +43,11 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                 onOpen={() => setIsClosed(false)}
                 onClose={() => setIsClosed(true)}
                 className={'adresser'}
-                intro={isClosed && <Adresser adresser={introAdresser} />}
+                intro={isClosed && <Adresser adresser={introAdresser} fagsakId={fagsakId} />}
                 apneTekst={'Vis flere adresser'}
                 lukkTekst={'Skjul adresser'}
             >
-                <Adresser adresser={adresser} />
+                <Adresser adresser={adresser} fagsakId={fagsakId} />
             </StyledLesmer>
         );
     }
@@ -56,7 +59,7 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
     </Td>
 );
 
-const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
+const Adresser: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresser, fagsakId }) => {
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={Bygning} tittel={'Adressehistorikk'} />
@@ -70,7 +73,7 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                         <Kolonnetittel text={'Til'} width={20} />
                     </tr>
                 </thead>
-                <Innhold adresser={adresser} />
+                <Innhold adresser={adresser} fagsakId={fagsakId} />
             </table>
         </TabellWrapper>
     );
@@ -79,7 +82,7 @@ const Adresser: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
 const gyldigTilOgMedErNullEllerFremITid = (adresse: IAdresse) =>
     !adresse.gyldigTilOgMed || datoErEtterDagensDato(adresse.gyldigTilOgMed);
 
-const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
+const Innhold: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresser, fagsakId }) => {
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
     return (
         <>
@@ -120,7 +123,7 @@ const Innhold: React.FC<{ adresser: IAdresse[] }> = ({ adresser }) => {
                         onClose: () => settBeboereAdresseIModal(undefined),
                     }}
                 >
-                    <Beboere />
+                    <Beboere fagsakId={fagsakId} />
                 </UIModalWrapper>
             )}
         </>

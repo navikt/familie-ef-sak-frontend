@@ -58,6 +58,7 @@ interface Props {
     feilmelding: string | undefined;
     settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
     behandlingErRedigerbar: boolean;
+    tittelTekst?: string;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -66,6 +67,7 @@ const VisVurdering: FC<Props> = ({
     resetVurdering,
     feilmelding,
     behandlingErRedigerbar,
+    tittelTekst,
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const vurderingerBesvaradeAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
@@ -77,7 +79,9 @@ const VisVurdering: FC<Props> = ({
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
             <StyledIkonOgTittel>
-                <Undertittel>{`Vilkår ${resultatTilTekst[vurdering.resultat]}`}</Undertittel>
+                <Undertittel>
+                    {tittelTekst ? tittelTekst : `Vilkår ${resultatTilTekst[vurdering.resultat]}`}
+                </Undertittel>
             </StyledIkonOgTittel>
             {behandlingErRedigerbar && (
                 <>
