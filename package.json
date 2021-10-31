@@ -132,7 +132,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
-    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-react": "^7.16.0",
     "@types/react-axe": "^3.5.0",
     "@types/webpack": "4.41.22",
     "@types/webpack-dev-middleware": "^5.0.2",
