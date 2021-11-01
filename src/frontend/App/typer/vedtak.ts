@@ -72,6 +72,7 @@ export enum EBehandlingResultat {
 export enum EPeriodetype {
     PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
     HOVEDPERIODE = 'HOVEDPERIODE',
+    UTVIDELSE = 'UTVIDELSE',
 }
 
 export enum EPeriodeProperty {
@@ -101,11 +102,14 @@ export enum EAktivitet {
     FORSØRGER_MANGLER_TILSYNSORDNING = 'FORSØRGER_MANGLER_TILSYNSORDNING',
     FORSØRGER_ER_SYK = 'FORSØRGER_ER_SYK',
     BARNET_ER_SYKT = 'BARNET_ER_SYKT',
+    UTVIDELSE_FORSØRGER_I_UTDANNING = 'UTVIDELSE_FORSØRGER_I_UTDANNING',
+    UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE = 'UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE',
 }
 
 export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
     HOVEDPERIODE: 'Hovedperiode',
+    UTVIDELSE: 'Utvidelse',
     '': '',
 };
 
@@ -121,11 +125,13 @@ export const aktivitetTilTekst: Record<EAktivitet, string> = {
     IKKE_AKTIVITETSPLIKT: '',
     BARN_UNDER_ETT_ÅR: 'Barn er under 1 år',
     FORSØRGER_I_ARBEID: 'Forsørger er i arbeid (§15-6 første ledd)',
-    FORSØRGER_I_UTDANNING: 'Forsørger er i utdannings (§15-6 første ledd)',
+    FORSØRGER_I_UTDANNING: 'Forsørger er i utdanning (§15-6 første ledd)',
     FORSØRGER_REELL_ARBEIDSSØKER: 'Forsørger er reell arbeidssøker (§15-6 første ledd)',
     FORSØRGER_ETABLERER_VIRKSOMHET: 'Forsørger etablerer egen virksomhet (§15-6 første ledd)',
     BARNET_SÆRLIG_TILSYNSKREVENDE: 'Barnet er særlig tilsynskrevende (§15-6 fjerde ledd)',
     FORSØRGER_MANGLER_TILSYNSORDNING: 'Forsørger mangler tilsynsordning (§15-6 femte ledd)',
     FORSØRGER_ER_SYK: 'Forsørger er syk (§15-6 femte ledd)',
     BARNET_ER_SYKT: 'Barnet er sykt (§15-6 femte ledd)',
+    UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE: 'Barnet er særlig tilsynskrevende (§15-8 tredje ledd)',
+    UTVIDELSE_FORSØRGER_I_UTDANNING: 'Forsørgeren er i utdanning (§15-8 andre ledd)',
 };

@@ -92,6 +92,31 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     </optgroup>
                 </StyledSelect>
             );
+        case EPeriodetype.UTVIDELSE:
+            return (
+                <StyledSelect
+                    aria-label={'Aktivitet'}
+                    value={aktivitet}
+                    feil={aktivitetfeil}
+                    onChange={(e) => {
+                        oppdaterVedtakslisteElement(
+                            index,
+                            EPeriodeProperty.aktivitet,
+                            e.target.value
+                        );
+                    }}
+                    erLesevisning={erLesevisning}
+                    lesevisningVerdi={aktivitet && aktivitetTilTekst[aktivitet]}
+                >
+                    <option value="">Velg</option>
+                    <option value={EAktivitet.UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE}>
+                        {aktivitetTilTekst[EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE]}
+                    </option>
+                    <option value={EAktivitet.UTVIDELSE_FORSØRGER_I_UTDANNING}>
+                        {aktivitetTilTekst[EAktivitet.FORSØRGER_I_UTDANNING]}
+                    </option>
+                </StyledSelect>
+            );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
                 <AktivitetKolonne>

@@ -47,6 +47,9 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 <option value={EBehandlingResultat.OPPHØRT} disabled={!opphørMulig}>
                     Opphørt
                 </option>
+                <option value={EBehandlingResultat.OPPHØRT} disabled={!opphørMulig}>
+                    Opphørt
+                </option>
                 {erBlankettBehandling && (
                     <option value={EBehandlingResultat.BEHANDLE_I_GOSYS}>Behandle i Gosys</option>
                 )}
