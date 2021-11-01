@@ -73,6 +73,7 @@ type Props = {
     behandlingId?: string;
     fagsakId?: string;
     context: FritekstBrevContext;
+    mellomlagretFritekstbrev?: IFritekstBrev;
 };
 
 const FritekstBrev: React.FC<Props> = ({
@@ -80,6 +81,7 @@ const FritekstBrev: React.FC<Props> = ({
     behandlingId,
     fagsakId,
     context,
+    mellomlagretFritekstbrev,
 }) => {
     const initiellBrevtype =
         context === FritekstBrevContext.FRITTSTÅENDE
@@ -90,8 +92,13 @@ const FritekstBrev: React.FC<Props> = ({
     const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>(
         initiellBrevtype
     );
-    const [overskrift, settOverskrift] = useState(BrevtyperTilOverskrift[brevType]);
-    const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(initielleAvsnitt);
+    const [overskrift, settOverskrift] = useState(
+        (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) ||
+            BrevtyperTilOverskrift[brevType]
+    );
+    const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(
+        (mellomlagretFritekstbrev && mellomlagretFritekstbrev.avsnitt) || initielleAvsnitt
+    );
     const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
 
@@ -120,10 +127,18 @@ const FritekstBrev: React.FC<Props> = ({
 
     const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
 
+    const mellomlagreFritekstbrev = (brev: IFritekstBrev): void => {
+        axiosRequest<string, IFritekstBrev>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/brev/mellomlager/fritekst`,
+            data: brev,
+        });
+    };
+
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
 
-        if (fagsakId) {
+        if (context === FritekstBrevContext.FRITTSTÅENDE) {
             axiosRequest<string, IFritekstBrev>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/frittstaende-brev`,
@@ -137,7 +152,8 @@ const FritekstBrev: React.FC<Props> = ({
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
             });
-        } else if (behandlingId) {
+        } else if (context === FritekstBrevContext.BEHANDLING) {
+            mellomlagreFritekstbrev({ behandlingId, overskrift, avsnitt });
             axiosRequest<string, IFritekstBrev>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/brev/fritekst`,

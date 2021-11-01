@@ -64,7 +64,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     flettefeltStore,
 }) => {
     const { axiosRequest } = useApp();
-    const { mellomlagreBrev } = useMellomlagringBrev(behandlingId);
+    const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
 
     useEffect(() => {
@@ -151,7 +151,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
-        mellomlagreBrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
+        mellomlagreSanitybrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
         axiosRequest<string, unknown>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,

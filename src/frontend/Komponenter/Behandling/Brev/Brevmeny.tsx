@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur, DokumentNavn, FritekstBrevContext } from './BrevTyper';
+import {
+    BrevStruktur,
+    Brevtype,
+    DokumentNavn,
+    FritekstBrevContext,
+    IMellomlagretBrevFritekst,
+} from './BrevTyper';
 import {
     byggSuksessRessurs,
     byggTomRessurs,
@@ -13,7 +19,10 @@ import BrevmenyVisning from './BrevmenyVisning';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
-import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
+import {
+    IMellomlagretBrevResponse,
+    useMellomlagringBrev,
+} from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import {
     harVedtaksresultatMedTilkjentYtelse,
@@ -35,6 +44,7 @@ const StyledBrevMeny = styled.div`
 `;
 
 const datasett = 'ef-brev';
+const fritekstmal = 'Fritekstbrev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { axiosRequest } = useApp();
@@ -52,7 +62,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { flettefeltStore } = useVerdierForBrev(tilkjentYtelse);
 
     useEffect(() => {
-        if (brevMal && brevMal !== 'Fritekstbrev') {
+        if (brevMal && brevMal !== fritekstmal) {
             axiosRequest<BrevStruktur, null>({
                 method: 'GET',
                 url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
@@ -93,7 +103,11 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
 
     useEffect(() => {
         if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
-            settBrevmal(mellomlagretBrev?.data?.brevmal);
+            settBrevmal(
+                mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV
+                    ? mellomlagretBrev.data.brevmal
+                    : fritekstmal
+            );
         }
     }, [mellomlagretBrev]);
 
@@ -123,11 +137,18 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 )}
             </DataViewer>
             {brevMal === 'Fritekstbrev' ? (
-                <FritekstBrev
-                    behandlingId={props.behandlingId}
-                    oppdaterBrevressurs={props.oppdaterBrevRessurs}
-                    context={FritekstBrevContext.BEHANDLING}
-                />
+                <DataViewer response={{ mellomlagretBrev }}>
+                    {({ mellomlagretBrev }) => (
+                        <FritekstBrev
+                            behandlingId={props.behandlingId}
+                            oppdaterBrevressurs={props.oppdaterBrevRessurs}
+                            context={FritekstBrevContext.BEHANDLING}
+                            mellomlagretFritekstbrev={
+                                (mellomlagretBrev as IMellomlagretBrevFritekst)?.brev
+                            }
+                        />
+                    )}
+                </DataViewer>
             ) : (
                 <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
                     {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) =>
@@ -137,7 +158,9 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                 brevStruktur={brevStruktur}
                                 tilkjentYtelse={tilkjentYtelse}
                                 brevMal={brevMal}
-                                mellomlagretBrevVerdier={mellomlagretBrev?.brevverdier}
+                                mellomlagretBrevVerdier={
+                                    (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
+                                }
                                 flettefeltStore={flettefeltStore}
                             />
                         )

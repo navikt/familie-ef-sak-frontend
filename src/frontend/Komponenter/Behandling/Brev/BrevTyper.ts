@@ -5,6 +5,7 @@ import {
     initielleAvsnittVedtakAvslag,
     initielleAvsnittVedtakInvilgelse,
 } from './BrevTyperTekst';
+import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 export type ValgteDelmaler = { [delmalNavn: string]: boolean };
@@ -122,4 +123,16 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
 export enum FritekstBrevContext {
     FRITTSTÅENDE,
     BEHANDLING,
+}
+
+export interface IMellomlagretBrevFritekst {
+    brev?: IFritekstBrev;
+    brevtype: Brevtype.FRITEKSTBREV;
+}
+
+export type MellomlagerRespons = IMellomlagretBrevResponse | IMellomlagretBrevFritekst;
+
+export enum Brevtype {
+    SANITYBREV = 'SANITYBREV',
+    FRITEKSTBREV = 'FRITEKSTBREV',
 }
