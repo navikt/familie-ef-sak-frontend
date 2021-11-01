@@ -1,11 +1,5 @@
 import { useApp } from '../context/AppContext';
-import {
-    byggTomRessurs,
-    Ressurs,
-    RessursFeilet,
-    RessursStatus,
-    RessursSuksess,
-} from '../typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../typer/ressurs';
 import { useCallback, useEffect, useState } from 'react';
 import {
     Brevtype,
@@ -76,12 +70,6 @@ export const useMellomlagringBrev = (
                 brevmal,
                 versjon: sanityVersjon,
             },
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                Promise.resolve();
-            } else {
-                Promise.reject();
-            }
         });
     };
 

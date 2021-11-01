@@ -4,7 +4,7 @@ import { Input, Select, Textarea } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import Panel from 'nav-frontend-paneler';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { v4 as uuidv4 } from 'uuid';
@@ -132,12 +132,6 @@ const FritekstBrev: React.FC<Props> = ({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/mellomlager/fritekst`,
             data: brev,
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                Promise.resolve();
-            } else {
-                Promise.reject();
-            }
         });
     };
 
