@@ -91,6 +91,14 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }
             ? 'Fordelte'
             : 'Ufordelte';
 
+    const sjekkFeilOgHentOppgaver = () => {
+        if (Object.values(periodeFeil).some((val?: string) => val)) {
+            return;
+        }
+        lagreTilLocalStorage(oppgaveRequestKey, oppgaveRequest);
+        hentOppgaver(oppgaveRequest);
+    };
+
     return (
         <>
             <FlexDiv>
@@ -186,20 +194,16 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }
                     onChange={(e) => {
                         settOppgave('ident')(e.target.value);
                     }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            sjekkFeilOgHentOppgaver();
+                        }
+                    }}
                 />
             </FlexDiv>
 
             <KnappWrapper>
-                <Hovedknapp
-                    className="flex-item"
-                    onClick={() => {
-                        if (Object.values(periodeFeil).some((val?: string) => val)) {
-                            return;
-                        }
-                        lagreTilLocalStorage(oppgaveRequestKey, oppgaveRequest);
-                        hentOppgaver(oppgaveRequest);
-                    }}
-                >
+                <Hovedknapp className="flex-item" onClick={sjekkFeilOgHentOppgaver}>
                     Hent oppgaver
                 </Hovedknapp>
                 <Knapp
