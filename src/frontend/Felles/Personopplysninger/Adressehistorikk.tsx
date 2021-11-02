@@ -100,6 +100,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresse
                                         {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
                                     </div>
                                     {adresse.type === AdresseType.BOSTEDADRESSE &&
+                                        indeks === 0 &&
                                         gyldigTilOgMedErNullEllerFremITid(adresse) && (
                                             <StyledKnapp
                                                 onClick={() => settBeboereAdresseIModal(adresse)}
