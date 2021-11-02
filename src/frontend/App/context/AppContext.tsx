@@ -32,6 +32,8 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
     }, [autentisertSaksbehandler]);
 
     const settIkkePersistertKomponent = (komponentId: string) => {
+        if (ikkePersisterteKomponenter.has(komponentId)) return;
+
         settIkkePersisterteKomponenter(new Set(ikkePersisterteKomponenter).add(komponentId));
     };
 
