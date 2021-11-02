@@ -70,8 +70,9 @@ export enum EBehandlingResultat {
 }
 
 export enum EPeriodetype {
-    PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
+    FORLENGELSE = 'FORLENGELSE',
     HOVEDPERIODE = 'HOVEDPERIODE',
+    PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
     UTVIDELSE = 'UTVIDELSE',
 }
 
@@ -104,12 +105,51 @@ export enum EAktivitet {
     BARNET_ER_SYKT = 'BARNET_ER_SYKT',
     UTVIDELSE_FORSØRGER_I_UTDANNING = 'UTVIDELSE_FORSØRGER_I_UTDANNING',
     UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE = 'UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE',
+    FORLENGELSE_MIDLERTIDIG_SYKDOM = 'FORLENGELSE_STØNAD_UT_SKOLEÅRET',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID = 'FORLENGELSE_STØNAD_PÅVENTE_ARBEID',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER = 'FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER',
+    FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM = 'FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM',
+    FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING = 'FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING',
+    FORLENGELSE_STØNAD_PÅVENTE_UTDANNING = 'FORLENGELSE_STØNAD_PÅVENTE_UTDANNING',
+    FORLENGELSE_STØNAD_UT_SKOLEÅRET = 'FORLENGELSE_MIDLERTIDIG_SYKDOM',
 }
+
+export const aktiviteterForlengelse: EAktivitet[] = [
+    EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_UTDANNING,
+    EAktivitet.FORLENGELSE_STØNAD_UT_SKOLEÅRET,
+];
+
+export const aktiviteterHovedIngenPlikt: EAktivitet[] = [EAktivitet.BARN_UNDER_ETT_ÅR];
+
+export const aktiviteterHovedFyllerPlikt: EAktivitet[] = [
+    EAktivitet.FORSØRGER_I_ARBEID,
+    EAktivitet.FORSØRGER_I_UTDANNING,
+    EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER,
+    EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET,
+];
+
+export const aktiviteterHovedFyllerUnntak: EAktivitet[] = [
+    EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE,
+    EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING,
+    EAktivitet.FORSØRGER_ER_SYK,
+    EAktivitet.BARNET_ER_SYKT,
+];
+
+export const aktiviteterUtvidelse: EAktivitet[] = [
+    EAktivitet.UTVIDELSE_FORSØRGER_I_UTDANNING,
+    EAktivitet.UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE,
+];
 
 export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
     HOVEDPERIODE: 'Hovedperiode',
     UTVIDELSE: 'Utvidelse',
+    FORLENGELSE: 'Forlengelse',
     '': '',
 };
 
@@ -134,4 +174,36 @@ export const aktivitetTilTekst: Record<EAktivitet, string> = {
     BARNET_ER_SYKT: 'Barnet er sykt (§15-6 femte ledd)',
     UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE: 'Barnet er særlig tilsynskrevende (§15-8 tredje ledd)',
     UTVIDELSE_FORSØRGER_I_UTDANNING: 'Forsørgeren er i utdanning (§15-8 andre ledd)',
+    FORLENGELSE_MIDLERTIDIG_SYKDOM:
+        'Forsørger eller barnet har en midlertidig sykdom (§15-8 fjerde ledd)',
+    FORLENGELSE_STØNAD_UT_SKOLEÅRET: 'Stønad ut skoleåret (§15-8 andre ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID: 'Stønad i påvente av arbeid (§15-8 femte ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_UTDANNING: 'Stønad i påvente av utdanning (§15-8 femte ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER:
+        'Stønad i påvente av arbeid - reell arnbeidssøker (§15-8 femte ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM:
+        'Stønad i påvente av oppstart kvalifiseringsprogram',
+    FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING:
+        'Stønad i påvente av tilsynsordning (§15-8 femte ledd)',
+};
+
+const sorterAktiviteterAlfabetisk = (a: EAktivitet, b: EAktivitet) =>
+    aktivitetTilTekst[a] > aktivitetTilTekst[b] ? 1 : -1;
+
+export const aktiviteterForPeriodetype = (periodeType: EPeriodetype): EAktivitet[] => {
+    switch (periodeType) {
+        case EPeriodetype.FORLENGELSE:
+            return aktiviteterForlengelse.sort(sorterAktiviteterAlfabetisk);
+        case EPeriodetype.UTVIDELSE:
+            return aktiviteterUtvidelse.sort(sorterAktiviteterAlfabetisk);
+        default:
+            return (Object.keys(EAktivitet) as Array<EAktivitet>).sort(sorterAktiviteterAlfabetisk);
+    }
+};
+
+export const aktiviteterForPeriodetypeHoved = (): EAktivitet[][] => {
+    const ingen_plikt = aktiviteterHovedIngenPlikt.sort(sorterAktiviteterAlfabetisk);
+    const fyller_plikt = aktiviteterHovedFyllerPlikt.sort(sorterAktiviteterAlfabetisk);
+    const fyller_unntak = aktiviteterHovedFyllerUnntak.sort(sorterAktiviteterAlfabetisk);
+    return [ingen_plikt, fyller_plikt, fyller_unntak];
 };
