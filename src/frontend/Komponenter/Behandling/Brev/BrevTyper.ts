@@ -67,8 +67,9 @@ export interface DokumentNavn {
 export interface IAvsnitt {
     deloverskrift: string;
     innhold: string;
-    id: string;
 }
+
+export type AvsnittMedId = IAvsnitt & { id: string };
 
 export interface IFritekstBrev {
     overskrift: string;
@@ -112,13 +113,14 @@ export const BrevtyperTilSelectNavn: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_AVSLAG: 'Vedtak avslag',
 };
 
-export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtype, IAvsnitt[]> = {
-    INFORMASJONSBREV: initielleAvsnittInformasjonsbrev,
-    INNHENTING_AV_OPPLYSNINGER: initielleAvsnittInnhentingAvOpplysninger,
-    VARSEL_OM_AKTIVITETSPLIKT: initielleAvsnittVarselOmAktivitetsplikt,
-    VEDTAK_INVILGELSE: initielleAvsnittVedtakInvilgelse,
-    VEDTAK_AVSLAG: initielleAvsnittVedtakAvslag,
-};
+export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtype, AvsnittMedId[]> =
+    {
+        INFORMASJONSBREV: initielleAvsnittInformasjonsbrev,
+        INNHENTING_AV_OPPLYSNINGER: initielleAvsnittInnhentingAvOpplysninger,
+        VARSEL_OM_AKTIVITETSPLIKT: initielleAvsnittVarselOmAktivitetsplikt,
+        VEDTAK_INVILGELSE: initielleAvsnittVedtakInvilgelse,
+        VEDTAK_AVSLAG: initielleAvsnittVedtakAvslag,
+    };
 
 export enum FritekstBrevContext {
     FRITTSTÅENDE,

@@ -16,17 +16,18 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
+    AvsnittMedId,
     BrevtyperTilAvsnitt,
     BrevtyperTilOverskrift,
     BrevtyperTilSelectNavn,
     FritekstBrevContext,
     FritekstBrevtype,
     FrittståendeBrevtype,
-    IAvsnitt,
     IFritekstBrev,
     IFrittståendeBrev,
 } from './BrevTyper';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { initielleAvsnittEllerMellomlager } from './BrevUtils';
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
@@ -96,9 +97,10 @@ const FritekstBrev: React.FC<Props> = ({
         (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) ||
             BrevtyperTilOverskrift[brevType]
     );
-    const [avsnitt, settAvsnitt] = useState<IAvsnitt[]>(
-        (mellomlagretFritekstbrev && mellomlagretFritekstbrev.avsnitt) || initielleAvsnitt
+    const [avsnitt, settAvsnitt] = useState<AvsnittMedId[]>(
+        initielleAvsnittEllerMellomlager(mellomlagretFritekstbrev, initielleAvsnitt)
     );
+
     const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
 
@@ -203,7 +205,7 @@ const FritekstBrev: React.FC<Props> = ({
     };
 
     const leggTilAvsnittBak = () => {
-        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
+        settAvsnitt((eksisterendeAvsnitt: AvsnittMedId[]) => {
             return [
                 ...eksisterendeAvsnitt,
                 {
@@ -216,7 +218,7 @@ const FritekstBrev: React.FC<Props> = ({
     };
 
     const leggTilAvsnittForan = () => {
-        settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
+        settAvsnitt((eksisterendeAvsnitt: AvsnittMedId[]) => {
             return [
                 {
                     deloverskrift: '',
@@ -230,7 +232,7 @@ const FritekstBrev: React.FC<Props> = ({
 
     const fjernRad = (radId: string) => {
         return () =>
-            settAvsnitt((eksisterendeAvsnitt: IAvsnitt[]) => {
+            settAvsnitt((eksisterendeAvsnitt: AvsnittMedId[]) => {
                 return eksisterendeAvsnitt.filter((rad) => radId !== rad.id);
             });
     };
