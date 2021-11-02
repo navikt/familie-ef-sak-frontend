@@ -1,4 +1,6 @@
 import {
+    aktiviteterForPeriodetype,
+    aktiviteterForPeriodetypeHoved,
     aktivitetTilTekst,
     EAktivitet,
     EPeriodeProperty,
@@ -38,6 +40,11 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
         erLesevisning,
         aktivitetfeil,
     } = props;
+    const labels = [
+        'Ingen aktivitetsplikt',
+        'Fyller aktivitetsplikt',
+        'Fyller unntak for aktivitetsplikt',
+    ];
 
     switch (periodeType) {
         case EPeriodetype.FORLENGELSE:
@@ -56,38 +63,16 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     erLesevisning={erLesevisning}
                     lesevisningVerdi={aktivitet && aktivitetTilTekst[aktivitet]}
                 >
-                    <option value="">Velg</option>
-                    <option value={EAktivitet.FORLENGELSE_STØNAD_UT_SKOLEÅRET}>
-                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_UT_SKOLEÅRET]}
+                    <option value="" key={'option'}>
+                        Velg
                     </option>
-                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID}>
-                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID]}
-                    </option>
-                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER}>
-                        {
-                            aktivitetTilTekst[
-                                EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER
-                            ]
-                        }
-                    </option>
-                    <option
-                        value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM}
-                    >
-                        {
-                            aktivitetTilTekst[
-                                EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM
-                            ]
-                        }
-                    </option>
-                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING}>
-                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING]}
-                    </option>
-                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_UTDANNING}>
-                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_UTDANNING]}
-                    </option>
-                    <option value={EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM}>
-                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM]}
-                    </option>
+                    {aktiviteterForPeriodetype(EPeriodetype.FORLENGELSE).map((aktivitet, index) => {
+                        return (
+                            <option value={aktivitet} key={index}>
+                                {aktivitetTilTekst[aktivitet]}
+                            </option>
+                        );
+                    })}
                 </StyledSelect>
             );
         case EPeriodetype.HOVEDPERIODE:
@@ -106,40 +91,22 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     erLesevisning={erLesevisning}
                     lesevisningVerdi={aktivitet && aktivitetTilTekst[aktivitet]}
                 >
-                    <option value="">Velg</option>
-                    <optgroup label="Ingen aktivitetsplikt">
-                        <option value={EAktivitet.BARN_UNDER_ETT_ÅR}>
-                            {aktivitetTilTekst[EAktivitet.BARN_UNDER_ETT_ÅR]}
-                        </option>
-                    </optgroup>
-                    <optgroup label="Fyller aktivitetsplikt">
-                        <option value={EAktivitet.FORSØRGER_I_ARBEID}>
-                            {aktivitetTilTekst[EAktivitet.FORSØRGER_I_ARBEID]}
-                        </option>
-                        <option value={EAktivitet.FORSØRGER_I_UTDANNING}>
-                            {aktivitetTilTekst[EAktivitet.FORSØRGER_I_UTDANNING]}
-                        </option>
-                        <option value={EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER}>
-                            {aktivitetTilTekst[EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER]}
-                        </option>
-                        <option value={EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET}>
-                            {aktivitetTilTekst[EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET]}
-                        </option>
-                    </optgroup>
-                    <optgroup label="Fyller unntak for aktivitetsplikt">
-                        <option value={EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE}>
-                            {aktivitetTilTekst[EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE]}
-                        </option>
-                        <option value={EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING}>
-                            {aktivitetTilTekst[EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING]}
-                        </option>
-                        <option value={EAktivitet.FORSØRGER_ER_SYK}>
-                            {aktivitetTilTekst[EAktivitet.FORSØRGER_ER_SYK]}
-                        </option>
-                        <option value={EAktivitet.BARNET_ER_SYKT}>
-                            {aktivitetTilTekst[EAktivitet.BARNET_ER_SYKT]}
-                        </option>
-                    </optgroup>
+                    <option value="" key={'option'}>
+                        Velg
+                    </option>
+                    {aktiviteterForPeriodetypeHoved().map((aktivitetsListe, index) => {
+                        return (
+                            <optgroup label={labels[index]} key={index}>
+                                {aktivitetsListe.map((aktivitet, index) => {
+                                    return (
+                                        <option value={aktivitet} key={index}>
+                                            {aktivitetTilTekst[aktivitet]}
+                                        </option>
+                                    );
+                                })}
+                            </optgroup>
+                        );
+                    })}
                 </StyledSelect>
             );
         case EPeriodetype.UTVIDELSE:
@@ -158,13 +125,16 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     erLesevisning={erLesevisning}
                     lesevisningVerdi={aktivitet && aktivitetTilTekst[aktivitet]}
                 >
-                    <option value="">Velg</option>
-                    <option value={EAktivitet.UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE}>
-                        {aktivitetTilTekst[EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE]}
+                    <option value="" key={'option'}>
+                        Velg
                     </option>
-                    <option value={EAktivitet.UTVIDELSE_FORSØRGER_I_UTDANNING}>
-                        {aktivitetTilTekst[EAktivitet.FORSØRGER_I_UTDANNING]}
-                    </option>
+                    {aktiviteterForPeriodetype(EPeriodetype.UTVIDELSE).map((aktivitet, index) => {
+                        return (
+                            <option value={aktivitet} key={index}>
+                                {aktivitetTilTekst[aktivitet]}
+                            </option>
+                        );
+                    })}
                 </StyledSelect>
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:

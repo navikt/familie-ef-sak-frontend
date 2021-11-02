@@ -70,10 +70,10 @@ export enum EBehandlingResultat {
 }
 
 export enum EPeriodetype {
-    PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
-    HOVEDPERIODE = 'HOVEDPERIODE',
-    UTVIDELSE = 'UTVIDELSE',
     FORLENGELSE = 'FORLENGELSE',
+    HOVEDPERIODE = 'HOVEDPERIODE',
+    PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
+    UTVIDELSE = 'UTVIDELSE',
 }
 
 export enum EPeriodeProperty {
@@ -113,6 +113,37 @@ export enum EAktivitet {
     FORLENGELSE_STØNAD_PÅVENTE_UTDANNING = 'FORLENGELSE_STØNAD_PÅVENTE_UTDANNING',
     FORLENGELSE_STØNAD_UT_SKOLEÅRET = 'FORLENGELSE_MIDLERTIDIG_SYKDOM',
 }
+
+export const aktiviteterForlengelse: EAktivitet[] = [
+    EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING,
+    EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_UTDANNING,
+    EAktivitet.FORLENGELSE_STØNAD_UT_SKOLEÅRET,
+];
+
+export const aktiviteterHovedIngenPlikt: EAktivitet[] = [EAktivitet.BARN_UNDER_ETT_ÅR];
+
+export const aktiviteterHovedFyllerPlikt: EAktivitet[] = [
+    EAktivitet.FORSØRGER_I_ARBEID,
+    EAktivitet.FORSØRGER_I_UTDANNING,
+    EAktivitet.FORSØRGER_REELL_ARBEIDSSØKER,
+    EAktivitet.FORSØRGER_ETABLERER_VIRKSOMHET,
+];
+
+export const aktiviteterHovedFyllerUnntak: EAktivitet[] = [
+    EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE,
+    EAktivitet.FORSØRGER_MANGLER_TILSYNSORDNING,
+    EAktivitet.FORSØRGER_ER_SYK,
+    EAktivitet.BARNET_ER_SYKT,
+];
+
+export const aktiviteterUtvidelse: EAktivitet[] = [
+    EAktivitet.UTVIDELSE_FORSØRGER_I_UTDANNING,
+    EAktivitet.UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE,
+];
 
 export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
@@ -154,4 +185,25 @@ export const aktivitetTilTekst: Record<EAktivitet, string> = {
         'Stønad i påvente av oppstart kvalifiseringsprogram',
     FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING:
         'Stønad i påvente av tilsynsordning (§15-8 femte ledd)',
+};
+
+const sorterAktiviteterAlfabetisk = (a: EAktivitet, b: EAktivitet) =>
+    aktivitetTilTekst[a] > aktivitetTilTekst[b] ? 1 : -1;
+
+export const aktiviteterForPeriodetype = (periodeType: EPeriodetype): EAktivitet[] => {
+    switch (periodeType) {
+        case EPeriodetype.FORLENGELSE:
+            return aktiviteterForlengelse.sort(sorterAktiviteterAlfabetisk);
+        case EPeriodetype.UTVIDELSE:
+            return aktiviteterUtvidelse.sort(sorterAktiviteterAlfabetisk);
+        default:
+            return (Object.keys(EAktivitet) as Array<EAktivitet>).sort(sorterAktiviteterAlfabetisk);
+    }
+};
+
+export const aktiviteterForPeriodetypeHoved = (): EAktivitet[][] => {
+    const ingen_plikt = aktiviteterHovedIngenPlikt.sort(sorterAktiviteterAlfabetisk);
+    const fyller_plikt = aktiviteterHovedFyllerPlikt.sort(sorterAktiviteterAlfabetisk);
+    const fyller_unntak = aktiviteterHovedFyllerUnntak.sort(sorterAktiviteterAlfabetisk);
+    return [ingen_plikt, fyller_plikt, fyller_unntak];
 };
