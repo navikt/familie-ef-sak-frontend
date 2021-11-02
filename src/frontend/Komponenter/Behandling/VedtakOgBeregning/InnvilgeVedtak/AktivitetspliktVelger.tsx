@@ -40,6 +40,56 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     } = props;
 
     switch (periodeType) {
+        case EPeriodetype.FORLENGELSE:
+            return (
+                <StyledSelect
+                    aria-label={'Aktivitet'}
+                    value={aktivitet}
+                    feil={aktivitetfeil}
+                    onChange={(e) => {
+                        oppdaterVedtakslisteElement(
+                            index,
+                            EPeriodeProperty.aktivitet,
+                            e.target.value
+                        );
+                    }}
+                    erLesevisning={erLesevisning}
+                    lesevisningVerdi={aktivitet && aktivitetTilTekst[aktivitet]}
+                >
+                    <option value="">Velg</option>
+                    <option value={EAktivitet.FORLENGELSE_STØNAD_UT_SKOLEÅRET}>
+                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_UT_SKOLEÅRET]}
+                    </option>
+                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID}>
+                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID]}
+                    </option>
+                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER}>
+                        {
+                            aktivitetTilTekst[
+                                EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER
+                            ]
+                        }
+                    </option>
+                    <option
+                        value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM}
+                    >
+                        {
+                            aktivitetTilTekst[
+                                EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM
+                            ]
+                        }
+                    </option>
+                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING}>
+                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING]}
+                    </option>
+                    <option value={EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_UTDANNING}>
+                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_UTDANNING]}
+                    </option>
+                    <option value={EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM}>
+                        {aktivitetTilTekst[EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM]}
+                    </option>
+                </StyledSelect>
+            );
         case EPeriodetype.HOVEDPERIODE:
             return (
                 <StyledSelect

@@ -73,6 +73,7 @@ export enum EPeriodetype {
     PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
     HOVEDPERIODE = 'HOVEDPERIODE',
     UTVIDELSE = 'UTVIDELSE',
+    FORLENGELSE = 'FORLENGELSE',
 }
 
 export enum EPeriodeProperty {
@@ -104,12 +105,20 @@ export enum EAktivitet {
     BARNET_ER_SYKT = 'BARNET_ER_SYKT',
     UTVIDELSE_FORSØRGER_I_UTDANNING = 'UTVIDELSE_FORSØRGER_I_UTDANNING',
     UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE = 'UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE',
+    FORLENGELSE_MIDLERTIDIG_SYKDOM = 'FORLENGELSE_STØNAD_UT_SKOLEÅRET',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID = 'FORLENGELSE_STØNAD_PÅVENTE_ARBEID',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER = 'FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER',
+    FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM = 'FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM',
+    FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING = 'FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING',
+    FORLENGELSE_STØNAD_PÅVENTE_UTDANNING = 'FORLENGELSE_STØNAD_PÅVENTE_UTDANNING',
+    FORLENGELSE_STØNAD_UT_SKOLEÅRET = 'FORLENGELSE_MIDLERTIDIG_SYKDOM',
 }
 
 export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
     HOVEDPERIODE: 'Hovedperiode',
     UTVIDELSE: 'Utvidelse',
+    FORLENGELSE: 'Forlengelse',
     '': '',
 };
 
@@ -134,4 +143,15 @@ export const aktivitetTilTekst: Record<EAktivitet, string> = {
     BARNET_ER_SYKT: 'Barnet er sykt (§15-6 femte ledd)',
     UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE: 'Barnet er særlig tilsynskrevende (§15-8 tredje ledd)',
     UTVIDELSE_FORSØRGER_I_UTDANNING: 'Forsørgeren er i utdanning (§15-8 andre ledd)',
+    FORLENGELSE_MIDLERTIDIG_SYKDOM:
+        'Forsørger eller barnet har en midlertidig sykdom (§15-8 fjerde ledd)',
+    FORLENGELSE_STØNAD_UT_SKOLEÅRET: 'Stønad ut skoleåret (§15-8 andre ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID: 'Stønad i påvente av arbeid (§15-8 femte ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_UTDANNING: 'Stønad i påvente av utdanning (§15-8 femte ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER:
+        'Stønad i påvente av arbeid - reell arnbeidssøker (§15-8 femte ledd)',
+    FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM:
+        'Stønad i påvente av oppstart kvalifiseringsprogram',
+    FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING:
+        'Stønad i påvente av tilsynsordning (§15-8 femte ledd)',
 };
