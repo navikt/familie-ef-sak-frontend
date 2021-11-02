@@ -184,7 +184,7 @@ const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ beh
         <StyledTable className="tabell">
             <thead>
                 <tr>
-                    {Object.entries(TabellData).map(([felt, tekst]) => (
+                    {Object.entries(TabellData).map(([felt, tekst], index) => (
                         <SorteringsHeader
                             rekkefolge={
                                 sortConfig?.sorteringsfelt === felt
@@ -193,6 +193,7 @@ const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ beh
                             }
                             tekst={tekst}
                             onClick={() => settSortering(felt as keyof Behandling)}
+                            key={`${index}${felt}`}
                         />
                     ))}
                 </tr>

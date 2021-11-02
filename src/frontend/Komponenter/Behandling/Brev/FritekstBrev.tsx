@@ -293,7 +293,9 @@ const FritekstBrev: React.FC<Props> = ({
                             ? FrittståendeBrevtype
                             : FritekstBrevtype
                     ).map((brevType: FrittståendeBrevtype | FritekstBrevtype) => (
-                        <option value={brevType}>{BrevtyperTilSelectNavn[brevType]}</option>
+                        <option value={brevType} key={brevType}>
+                            {BrevtyperTilSelectNavn[brevType]}
+                        </option>
                     ))}
                 </StyledSelect>
                 <Overskrift
