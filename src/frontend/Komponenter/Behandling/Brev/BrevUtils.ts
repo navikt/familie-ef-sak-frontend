@@ -1,4 +1,12 @@
-import { BrevStruktur, Delmal, FlettefeltMedVerdi, ValgtFelt } from './BrevTyper';
+import {
+    AvsnittMedId,
+    BrevStruktur,
+    Delmal,
+    FlettefeltMedVerdi,
+    IFritekstBrev,
+    ValgtFelt,
+} from './BrevTyper';
+import { v4 as uuidv4 } from 'uuid';
 
 export const finnFlettefeltVisningsnavnFraRef = (dokument: BrevStruktur, ref: string): string => {
     const flettefeltNavnFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
@@ -86,3 +94,11 @@ export const initValgteFeltMedMellomlager = (
             },
         };
     }, {});
+
+export const initielleAvsnittEllerMellomlager = (
+    mellomlagretFritekstbrev: IFritekstBrev | undefined,
+    initielleAvsnitt: AvsnittMedId[]
+): AvsnittMedId[] =>
+    mellomlagretFritekstbrev
+        ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))
+        : initielleAvsnitt;

@@ -1,7 +1,7 @@
-import { IAvsnitt } from './BrevTyper';
+import { AvsnittMedId } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 
-export const initielleAvsnittInformasjonsbrev: IAvsnitt[] = [
+export const initielleAvsnittInformasjonsbrev: AvsnittMedId[] = [
     {
         deloverskrift: '',
         innhold: '',
@@ -9,7 +9,7 @@ export const initielleAvsnittInformasjonsbrev: IAvsnitt[] = [
     },
 ];
 
-export const initielleAvsnittInnhentingAvOpplysninger: IAvsnitt[] = [
+export const initielleAvsnittInnhentingAvOpplysninger: AvsnittMedId[] = [
     {
         deloverskrift: '',
         innhold: '',
@@ -17,7 +17,7 @@ export const initielleAvsnittInnhentingAvOpplysninger: IAvsnitt[] = [
     },
 ];
 
-export const initielleAvsnittVedtakInvilgelse: IAvsnitt[] = [
+export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
     {
         deloverskrift: 'Du må si ifra om endringer',
         innhold:
@@ -49,7 +49,7 @@ export const initielleAvsnittVedtakInvilgelse: IAvsnitt[] = [
     },
 ];
 
-export const initielleAvsnittVedtakAvslag: IAvsnitt[] = [
+export const initielleAvsnittVedtakAvslag: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
@@ -69,7 +69,7 @@ export const initielleAvsnittVedtakAvslag: IAvsnitt[] = [
     },
 ];
 
-export const initielleAvsnittVarselOmAktivitetsplikt: IAvsnitt[] = [
+export const initielleAvsnittVarselOmAktivitetsplikt: AvsnittMedId[] = [
     {
         deloverskrift: '',
         innhold:
