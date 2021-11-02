@@ -31,34 +31,36 @@ const Personoversikt: React.FC = () => {
     return (
         <DataViewer response={{ personopplysninger }}>
             {({ personopplysninger }) => (
-                <Side className={'container'}>
+                <>
                     <VisittkortComponent data={personopplysninger} />
-                    <TabsPure
-                        tabs={[
-                            { label: 'Personopplysninger', aktiv: tabvalg === 0 },
-                            { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
-                            { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
-                            { label: 'Dokumentoversikt', aktiv: tabvalg === 3 },
-                            { label: 'Brev', aktiv: tabvalg === 4 },
-                        ]}
-                        onChange={(_, tabNumber) => settTabvalg(tabNumber)}
-                    />
-                    {tabvalg === 0 && (
-                        <Personopplysninger
-                            personopplysninger={personopplysninger}
-                            fagsakId={fagsakId}
+                    <Side className={'container'}>
+                        <TabsPure
+                            tabs={[
+                                { label: 'Personopplysninger', aktiv: tabvalg === 0 },
+                                { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
+                                { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
+                                { label: 'Dokumentoversikt', aktiv: tabvalg === 3 },
+                                { label: 'Brev', aktiv: tabvalg === 4 },
+                            ]}
+                            onChange={(_, tabNumber) => settTabvalg(tabNumber)}
                         />
-                    )}
-                    {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
-                    {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
-                    {tabvalg === 3 && <Dokumenter personopplysninger={personopplysninger} />}
-                    {tabvalg === 4 && (
-                        <FritekstBrevMedVisning
-                            fagsakId={fagsakId}
-                            context={FritekstBrevContext.FRITTSTÅENDE}
-                        />
-                    )}
-                </Side>
+                        {tabvalg === 0 && (
+                            <Personopplysninger
+                                personopplysninger={personopplysninger}
+                                fagsakId={fagsakId}
+                            />
+                        )}
+                        {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
+                        {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
+                        {tabvalg === 3 && <Dokumenter personopplysninger={personopplysninger} />}
+                        {tabvalg === 4 && (
+                            <FritekstBrevMedVisning
+                                fagsakId={fagsakId}
+                                context={FritekstBrevContext.FRITTSTÅENDE}
+                            />
+                        )}
+                    </Side>
+                </>
             )}
         </DataViewer>
     );
