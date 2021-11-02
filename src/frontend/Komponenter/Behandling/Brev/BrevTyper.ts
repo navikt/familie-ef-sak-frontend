@@ -67,6 +67,7 @@ export interface DokumentNavn {
 export interface IAvsnitt {
     deloverskrift: string;
     innhold: string;
+    skalSkjulesIBrevbygger?: boolean;
 }
 
 export type AvsnittMedId = IAvsnitt & { id: string };
