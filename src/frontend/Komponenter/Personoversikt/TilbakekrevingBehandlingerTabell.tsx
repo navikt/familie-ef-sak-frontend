@@ -28,7 +28,7 @@ export const TilbakekrevingBehandlingerTabell: React.FC<{
                 <tbody>
                     {tilbakekrevingBehandlinger.map((tilbakekreving) => {
                         return (
-                            <tr>
+                            <tr key={tilbakekreving.behandlingId}>
                                 <td>{formaterIsoDatoTid(tilbakekreving.opprettetTidspunkt)}</td>
                                 <td>{tilbakekreving.type}</td>
                                 <td>{tilbakekreving.status}</td>
