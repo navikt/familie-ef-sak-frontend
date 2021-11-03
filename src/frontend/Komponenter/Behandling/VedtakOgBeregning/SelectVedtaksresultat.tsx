@@ -13,7 +13,7 @@ interface Props {
     behandling: Behandling;
     resultatType?: EBehandlingResultat;
     settResultatType: (val: EBehandlingResultat) => void;
-    alleOppfylt: boolean;
+    alleVilkårOppfylt: boolean;
 }
 
 const StyledSelect = styled(FamilieSelect)`
@@ -27,7 +27,7 @@ const StyledSelect = styled(FamilieSelect)`
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { resultatType, settResultatType, alleOppfylt, behandling } = props;
+    const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig = behandling.type === Behandlingstype.REVURDERING;
     const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
 
@@ -44,7 +44,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 lesevisningVerdi={resultatType && behandlingResultatTilTekst[resultatType]}
             >
                 <option value="">Velg</option>
-                <option value={EBehandlingResultat.INNVILGE} disabled={!alleOppfylt}>
+                <option value={EBehandlingResultat.INNVILGE} disabled={!alleVilkårOppfylt}>
                     Innvilge
                 </option>
                 <option value={EBehandlingResultat.AVSLÅ}>Avslå</option>

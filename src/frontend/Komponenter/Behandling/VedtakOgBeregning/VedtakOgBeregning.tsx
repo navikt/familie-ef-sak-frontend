@@ -7,7 +7,7 @@ import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import SelectVedtaksresultat from './SelectVedtaksresultat';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
-import { IVilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { InngangsvilkårType, IVilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 
 interface Props {
     behandling: Behandling;
@@ -17,14 +17,30 @@ interface Props {
 const Wrapper = styled.div`
     padding: 1rem 2rem;
 `;
+
+const erAlleVilkårOppfylt = (vilkår: IVilkår) => {
+    const alleOppfyltBortsettFraAleneomsorg = vilkår.vurderinger.every((vurdering: IVurdering) => {
+        if (vurdering.vilkårType !== InngangsvilkårType.ALENEOMSORG) {
+            return vurdering.resultat === Vilkårsresultat.OPPFYLT;
+        } else {
+            return true;
+        }
+    });
+
+    const aleneomsorgOppfylt = vilkår.vurderinger
+        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
+        .some((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
+
+    return alleOppfyltBortsettFraAleneomsorg && aleneomsorgOppfylt;
+};
+
 const VedtakOgBeregning: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
-    const alleOppfylt = vilkår.vurderinger.every(
-        (vurdering: IVurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT
-    );
+    const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
+
     useEffect(() => {
         hentVedtak();
     }, [hentVedtak]);
@@ -44,7 +60,7 @@ const VedtakOgBeregning: FC<Props> = ({ behandling, vilkår }) => {
                             behandling={behandling}
                             resultatType={resultatType}
                             settResultatType={settResultatType}
-                            alleOppfylt={alleOppfylt}
+                            alleVilkårOppfylt={alleVilkårOppfylt}
                         />
                         <VedtaksresultatSwitch
                             vedtaksresultatType={resultatType}
