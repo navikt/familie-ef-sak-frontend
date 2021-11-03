@@ -5,4 +5,5 @@ export const Sticky = styled.div`
     position: -webkit-sticky;
     top: 0;
     z-index: 21;
+    background-color: white;
 `;

@@ -7,6 +7,7 @@ import { OpprettDummyBehandling } from './OpprettDummyBehandling';
 import { Side } from '../../Felles/Visningskomponenter/Side';
 import { IMappe } from './typer/mappe';
 import OppgaveFiltering from './OppgaveFiltrering';
+import { erProd } from '../../App/utils/miljø';
 
 export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
 
@@ -42,7 +43,7 @@ export const OppgavebenkApp: React.FC = () => {
 
     return (
         <Side className={'container'}>
-            {process.env.ENV !== 'production' && <OpprettDummyBehandling />}
+            {!erProd() && <OpprettDummyBehandling />}
             <OppgaveFiltering hentOppgaver={hentOppgaver} mapper={mapper} />
             <OppgaveTabell oppgaveRessurs={oppgaveResurs} mapper={mapper} />
         </Side>
