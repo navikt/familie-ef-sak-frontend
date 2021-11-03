@@ -176,6 +176,16 @@ const FritekstBrev: React.FC<Props> = ({
         setUtsendingSuksess(false);
     };
 
+    const nulstillBrev = () => {
+        settAvsnitt([]);
+        settOverskrift('');
+        settBrevType(
+            context === FritekstBrevContext.FRITTSTÅENDE
+                ? FrittståendeBrevtype.INFORMASJONSBREV
+                : FritekstBrevtype.VEDTAK_INVILGELSE
+        );
+    };
+
     const sendBrev = () => {
         setUtsendingSuksess(false);
         settFeilmelding('');
@@ -194,6 +204,7 @@ const FritekstBrev: React.FC<Props> = ({
         }).then((respons: Ressurs<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 setUtsendingSuksess(true);
+                nulstillBrev();
             } else if (
                 respons.status === RessursStatus.FEILET ||
                 respons.status === RessursStatus.FUNKSJONELL_FEIL ||
