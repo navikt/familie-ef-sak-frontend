@@ -45,9 +45,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
     fagsakId,
 }) => {
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
-    const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>(
-        Behandlingstype.REVURDERING
-    );
+    const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
     const [senderInnRevurdering, settSenderInnRevurdering] = useState<boolean>(false);
@@ -101,25 +99,27 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                 value={valgtBehandlingstype || ''}
                 onChange={(e) => {
                     settValgtBehandlingstype(e.target.value as Behandlingstype);
+                    settValgtBehandlingsårsak(undefined);
                 }}
             >
+                <option value="">Velg</option>
                 <option value={Behandlingstype.REVURDERING}>Revurdering</option>
             </StyledSelect>
-            {Behandlingstype.REVURDERING && (
-                <StyledSelect
-                    label="Årsak revurdering"
-                    value={valgtBehandlingsårsak || ''}
-                    onChange={(e) => {
-                        settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
-                    }}
-                >
-                    {behandlingsårsaker.map((behandlingsårsak: Behandlingsårsak, index: number) => (
+            <StyledSelect
+                label="Årsak"
+                value={valgtBehandlingsårsak || ''}
+                onChange={(e) => {
+                    settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
+                }}
+            >
+                <option value="">Velg</option>
+                {valgtBehandlingstype === Behandlingstype.REVURDERING &&
+                    behandlingsårsaker.map((behandlingsårsak: Behandlingsårsak, index: number) => (
                         <option key={index} value={behandlingsårsak}>
                             {behandlingsårsakTilTekst[behandlingsårsak]}
                         </option>
                     ))}
-                </StyledSelect>
-            )}
+            </StyledSelect>
             <StyledFamilieDatovelgder
                 id={'krav-mottatt'}
                 label={'Krav mottatt'}
