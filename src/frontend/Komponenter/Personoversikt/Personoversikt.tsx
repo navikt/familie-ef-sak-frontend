@@ -13,6 +13,7 @@ import Vedtaksperioder from './Vedtaksperioder';
 import FritekstBrevMedVisning from '../Behandling/Brev/FritekstBrevMedVisning';
 import Dokumenter from './Dokumenter';
 import { FritekstBrevContext } from '../Behandling/Brev/BrevTyper';
+import Inntektsoversikt from './Inntektsoversikt';
 
 const Personoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
@@ -41,6 +42,7 @@ const Personoversikt: React.FC = () => {
                                 { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
                                 { label: 'Dokumentoversikt', aktiv: tabvalg === 3 },
                                 { label: 'Brev', aktiv: tabvalg === 4 },
+                                { label: 'Inntekt', aktiv: tabvalg === 5 },
                             ]}
                             onChange={(_, tabNumber) => settTabvalg(tabNumber)}
                         />
@@ -59,6 +61,7 @@ const Personoversikt: React.FC = () => {
                                 context={FritekstBrevContext.FRITTSTÅENDE}
                             />
                         )}
+                        {tabvalg === 5 && <Inntektsoversikt fagsakId={fagsakId} />}
                     </Side>
                 </>
             )}

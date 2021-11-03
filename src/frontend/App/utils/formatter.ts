@@ -36,12 +36,20 @@ export const formaterIsoMånedÅr = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormat);
 };
 
+export const formaterMånedÅrTilIsoFormat = (dato: Date): string => {
+    return format(dato, 'yyyy-MM');
+};
+
 export const formaterIsoMånedÅrFull = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormatFull);
 };
 
 export const formaterIsoMåned = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', månedFormat);
+};
+
+export const formaterÅrMåned = (dato: Date): string => {
+    return dato.toLocaleDateString('no-NO', datoMånedÅrFormatFull);
 };
 
 export const formaterIsoÅr = (dato: string): number => {
