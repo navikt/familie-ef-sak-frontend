@@ -102,3 +102,6 @@ export const initielleAvsnittEllerMellomlager = (
     mellomlagretFritekstbrev
         ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))
         : initielleAvsnitt;
+
+export const skjulAvsnittIBrevbygger = (avsnitt: AvsnittMedId[]): AvsnittMedId[] =>
+    avsnitt.map((avsnitt) => ({ ...avsnitt, skalSkjulesIBrevbygger: true }));
