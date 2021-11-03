@@ -103,6 +103,7 @@ const FritekstBrev: React.FC<Props> = ({
 
     const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
+    const [senderInnBrev, settSenderInnBrev] = useState(false);
 
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest } = useApp();
@@ -187,6 +188,8 @@ const FritekstBrev: React.FC<Props> = ({
     };
 
     const sendBrev = () => {
+        if (senderInnBrev) return;
+        settSenderInnBrev(true);
         setUtsendingSuksess(false);
         settFeilmelding('');
         if (!(fagsakId && stønadType)) return;
@@ -212,6 +215,7 @@ const FritekstBrev: React.FC<Props> = ({
             ) {
                 settFeilmelding(respons.frontendFeilmelding);
             }
+            settSenderInnBrev(false);
         });
     };
 
@@ -386,7 +390,7 @@ const FritekstBrev: React.FC<Props> = ({
                         <Knapp onClick={lukkModal} disabled={utsendingSuksess}>
                             Avbryt
                         </Knapp>
-                        <Hovedknapp onClick={sendBrev} disabled={utsendingSuksess}>
+                        <Hovedknapp onClick={sendBrev} disabled={senderInnBrev || utsendingSuksess}>
                             Send brev
                         </Hovedknapp>
                     </ModalKnapper>
