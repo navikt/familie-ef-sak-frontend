@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import {
     AktivitetsvilkårType,
     InngangsvilkårType,
+    IVilkår,
     TidligereVedtaksperioderType,
 } from '../Inngangsvilkår/vilkår';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
-import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { ResultatVisning } from './ResultatVisning';
 import TidligereVedtakOppsummering from './TidligereVedtakOppsummering';
@@ -18,50 +17,20 @@ const InnerContainer = styled.div`
     padding: 1rem;
 `;
 
-export const VilkårsresultatOppsummering: React.FC<{ behandlingId: string }> = ({
-    behandlingId,
-}) => {
-    const { vilkår, hentVilkår } = useHentVilkår();
-
-    const hentVilkårCallback = useCallback(() => {
-        hentVilkår(behandlingId);
-    }, [behandlingId, hentVilkår]);
-
-    useEffect(() => {
-        hentVilkårCallback();
-    }, [hentVilkårCallback]);
+export const VilkårsresultatOppsummering: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
+    const inngangsvilkår = vilkår.vurderinger.filter((v) => v.vilkårType in InngangsvilkårType);
+    const aktivitetsvilkår = vilkår.vurderinger.filter((v) => v.vilkårType in AktivitetsvilkårType);
+    const tidligereVedtaksvilkår = vilkår.vurderinger.filter(
+        (v) => v.vilkårType in TidligereVedtaksperioderType
+    );
 
     return (
-        <DataViewer response={{ vilkår }}>
-            {({ vilkår }) => {
-                const inngangsvilkår = vilkår.vurderinger.filter(
-                    (v) => v.vilkårType in InngangsvilkårType
-                );
-                const aktivitetsvilkår = vilkår.vurderinger.filter(
-                    (v) => v.vilkårType in AktivitetsvilkårType
-                );
-                const tidligereVedtaksvilkår = vilkår.vurderinger.filter(
-                    (v) => v.vilkårType in TidligereVedtaksperioderType
-                );
-
-                return (
-                    <Container>
-                        <InnerContainer>
-                            <TidligereVedtakOppsummering
-                                tidligereVedtaksvilkår={tidligereVedtaksvilkår}
-                            />
-                            <ResultatVisning
-                                vilkårsvurderinger={inngangsvilkår}
-                                tittel="Inngangsvilkår"
-                            />
-                            <ResultatVisning
-                                vilkårsvurderinger={aktivitetsvilkår}
-                                tittel="Aktivitet"
-                            />
-                        </InnerContainer>
-                    </Container>
-                );
-            }}
-        </DataViewer>
+        <Container>
+            <InnerContainer>
+                <TidligereVedtakOppsummering tidligereVedtaksvilkår={tidligereVedtaksvilkår} />
+                <ResultatVisning vilkårsvurderinger={inngangsvilkår} tittel="Inngangsvilkår" />
+                <ResultatVisning vilkårsvurderinger={aktivitetsvilkår} tittel="Aktivitet" />
+            </InnerContainer>
+        </Container>
     );
 };
