@@ -117,7 +117,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 {({ dokumentnavn }) => (
                     <Select
                         label="Velg dokument"
-                        defaultValue={brevMal}
                         onChange={(e) => {
                             settBrevmal(e.target.value);
                         }}

@@ -281,7 +281,6 @@ const FritekstBrev: React.FC<Props> = ({
             <BrevKolonner>
                 <StyledSelect
                     label="Stønadstype"
-                    defaultValue={Stønadstype.OVERGANGSSTØNAD}
                     onChange={(e) => {
                         settStønadType(e.target.value as Stønadstype);
                     }}
@@ -294,7 +293,6 @@ const FritekstBrev: React.FC<Props> = ({
 
                 <StyledSelect
                     label="Brevtype"
-                    defaultValue={FrittståendeBrevtype.INFORMASJONSBREV}
                     onChange={(e) => {
                         const nyBrevType = e.target.value as
                             | FritekstBrevtype
@@ -346,7 +344,6 @@ const FritekstBrev: React.FC<Props> = ({
                                 />
                                 <Textarea
                                     onChange={endreInnholdAvsnitt(rad.id)}
-                                    defaultValue=""
                                     label="Innhold"
                                     id={innholdId}
                                     value={rad.innhold}
@@ -359,7 +356,6 @@ const FritekstBrev: React.FC<Props> = ({
                             </Innholdsrad>
                         );
                     })}
-
                 <LeggTilKnappWrapper>
                     <LeggTilKnapp
                         onClick={leggAvsnittBakSisteSynligeAvsnitt}
