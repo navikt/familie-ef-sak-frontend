@@ -16,13 +16,6 @@ const Container = styled.div`
     display: flex;
 `;
 
-const VenstreMenyWrapper = styled.div`
-    min-width: 3rem;
-    max-width: 15rem;
-    border-right: 2px solid ${navFarger.navGra40};
-    overflow: hidden;
-`;
-
 const HøyreMenyWrapper = styled.div`
     border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
@@ -32,7 +25,6 @@ const HøyreMenyWrapper = styled.div`
 
 const InnholdWrapper = styled.div`
     flex: 1;
-    overflow: auto;
 `;
 
 const BehandlingContainer: FC = () => {
@@ -58,7 +50,6 @@ const Behandling: FC = () => {
                         behandling={behandling}
                     />
                     <Container>
-                        <VenstreMenyWrapper />
                         <InnholdWrapper>
                             <Fanemeny />
                             <BehandlingRoutes />

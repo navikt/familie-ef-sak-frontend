@@ -1,4 +1,12 @@
-import { BrevStruktur, Delmal, FlettefeltMedVerdi, ValgtFelt } from './BrevTyper';
+import {
+    AvsnittMedId,
+    BrevStruktur,
+    Delmal,
+    FlettefeltMedVerdi,
+    IFritekstBrev,
+    ValgtFelt,
+} from './BrevTyper';
+import { v4 as uuidv4 } from 'uuid';
 
 export const finnFlettefeltVisningsnavnFraRef = (dokument: BrevStruktur, ref: string): string => {
     const flettefeltNavnFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
@@ -54,8 +62,8 @@ export const initFlettefelterMedVerdi = (
     brevStruktur.flettefelter.flettefeltReferanse.map((flettefeltReferanse) => ({
         _ref: flettefeltReferanse._id,
         verdi:
-            hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, flettefeltReferanse._id) ||
-            flettefeltStore[flettefeltReferanse.felt],
+            flettefeltStore[flettefeltReferanse.felt] ||
+            hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, flettefeltReferanse._id),
     }));
 
 export const initValgteFeltMedMellomlager = (
@@ -86,3 +94,14 @@ export const initValgteFeltMedMellomlager = (
             },
         };
     }, {});
+
+export const initielleAvsnittEllerMellomlager = (
+    mellomlagretFritekstbrev: IFritekstBrev | undefined,
+    initielleAvsnitt: AvsnittMedId[]
+): AvsnittMedId[] =>
+    mellomlagretFritekstbrev
+        ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))
+        : initielleAvsnitt;
+
+export const skjulAvsnittIBrevbygger = (avsnitt: AvsnittMedId[]): AvsnittMedId[] =>
+    avsnitt.map((avsnitt) => ({ ...avsnitt, skalSkjulesIBrevbygger: true }));
