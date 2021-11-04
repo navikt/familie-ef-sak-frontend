@@ -8,7 +8,7 @@ import { useApp } from '../../App/context/AppContext';
 const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
     VEDTAK_GODKJENT: 'Vedtaket er godkjent',
-    VEDTAK_UNDERKJENT: 'Vedtaket er undergodkjent',
+    VEDTAK_UNDERKJENT: 'Vedtaket er underkjent',
     BEHANDLES_I_GOSYS: 'Saken er avsluttet og må behandles i Gosys',
 };
 
