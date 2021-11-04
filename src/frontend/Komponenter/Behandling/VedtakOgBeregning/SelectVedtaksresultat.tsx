@@ -13,6 +13,7 @@ interface Props {
     behandling: Behandling;
     resultatType?: EBehandlingResultat;
     settResultatType: (val: EBehandlingResultat) => void;
+    alleVilkårOppfylt: boolean;
 }
 
 const StyledSelect = styled(FamilieSelect)`
@@ -26,9 +27,10 @@ const StyledSelect = styled(FamilieSelect)`
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { resultatType, settResultatType } = props;
-    const opphørMulig = props.behandling.type === Behandlingstype.REVURDERING;
-    const erBlankettBehandling = props.behandling.type === Behandlingstype.BLANKETT;
+    const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
+    const opphørMulig = behandling.type === Behandlingstype.REVURDERING;
+    const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
+
     return (
         <section>
             <Undertittel className={'blokk-s'}>Vedtak</Undertittel>
@@ -42,7 +44,9 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 lesevisningVerdi={resultatType && behandlingResultatTilTekst[resultatType]}
             >
                 <option value="">Velg</option>
-                <option value={EBehandlingResultat.INNVILGE}>Innvilge</option>
+                <option value={EBehandlingResultat.INNVILGE} disabled={!alleVilkårOppfylt}>
+                    Innvilge
+                </option>
                 <option value={EBehandlingResultat.AVSLÅ}>Avslå</option>
                 <option value={EBehandlingResultat.OPPHØRT} disabled={!opphørMulig}>
                     Opphørt
