@@ -3,9 +3,8 @@ import { useMemo, useState } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { saveAs } from 'file-saver';
 import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
-import { base64toBlob } from '../../../App/utils/utils';
+import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { useParams } from 'react-router-dom';
@@ -77,7 +76,10 @@ const Dokumentoversikt: React.FC = () => {
                 dokument.tittel || dokument.filnavn || `dokument-${dokument.journalpostId}`;
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    saveAs(base64toBlob(res.data, 'application/pdf'), `${dokumentnavn}.pdf`);
+                    åpnePdfIEgenTab(
+                        base64toBlob(res.data, 'application/pdf'),
+                        `${dokumentnavn}.pdf`
+                    );
                     break;
                 case RessursStatus.FUNKSJONELL_FEIL:
                 case RessursStatus.IKKE_TILGANG:
