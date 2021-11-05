@@ -215,6 +215,7 @@ export const InnvilgeVedtak: React.FC<{
                         label="Begrunnelse"
                         maxLength={0}
                         erLesevisning={!behandlingErRedigerbar}
+                        feilmelding={formState.errors.periodeBegrunnelse}
                     />
                 )}
             </Wrapper>
@@ -245,6 +246,7 @@ export const InnvilgeVedtak: React.FC<{
                         label="Begrunnelse"
                         maxLength={0}
                         erLesevisning={!behandlingErRedigerbar}
+                        feilmelding={formState.errors.inntektBegrunnelse}
                     />
                 )}
             </section>
