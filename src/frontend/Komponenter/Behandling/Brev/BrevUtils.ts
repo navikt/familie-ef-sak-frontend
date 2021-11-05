@@ -95,13 +95,12 @@ export const initValgteFeltMedMellomlager = (
         };
     }, {});
 
-export const initielleAvsnittEllerMellomlager = (
-    mellomlagretFritekstbrev: IFritekstBrev | undefined,
-    initielleAvsnitt: AvsnittMedId[]
+export const initielleAvsnittMellomlager = (
+    mellomlagretFritekstbrev: IFritekstBrev | undefined
 ): AvsnittMedId[] =>
     mellomlagretFritekstbrev
         ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))
-        : initielleAvsnitt;
+        : [];
 
 export const skjulAvsnittIBrevbygger = (avsnitt: AvsnittMedId[]): AvsnittMedId[] =>
     avsnitt.map((avsnitt) => ({ ...avsnitt, skalSkjulesIBrevbygger: true }));

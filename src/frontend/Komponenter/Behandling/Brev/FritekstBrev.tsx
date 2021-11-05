@@ -27,7 +27,7 @@ import {
     IFrittståendeBrev,
 } from './BrevTyper';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { initielleAvsnittEllerMellomlager, skjulAvsnittIBrevbygger } from './BrevUtils';
+import { initielleAvsnittMellomlager, skjulAvsnittIBrevbygger } from './BrevUtils';
 
 const StyledFrittståendeBrev = styled.div`
     margin-bottom: 10rem;
@@ -84,21 +84,13 @@ const FritekstBrev: React.FC<Props> = ({
     context,
     mellomlagretFritekstbrev,
 }) => {
-    const initiellBrevtype =
-        context === FritekstBrevContext.FRITTSTÅENDE
-            ? FrittståendeBrevtype.INFORMASJONSBREV
-            : FritekstBrevtype.VEDTAK_INVILGELSE;
-    const initielleAvsnitt = skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[initiellBrevtype]);
     const [stønadType, settStønadType] = useState<Stønadstype>(Stønadstype.OVERGANGSSTØNAD);
-    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>(
-        initiellBrevtype
-    );
+    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>();
     const [overskrift, settOverskrift] = useState(
-        (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) ||
-            BrevtyperTilOverskrift[brevType]
+        (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) || ''
     );
     const [avsnitt, settAvsnitt] = useState<AvsnittMedId[]>(
-        initielleAvsnittEllerMellomlager(mellomlagretFritekstbrev, initielleAvsnitt)
+        initielleAvsnittMellomlager(mellomlagretFritekstbrev)
     );
 
     const [feilmelding, settFeilmelding] = useState('');
@@ -140,6 +132,7 @@ const FritekstBrev: React.FC<Props> = ({
 
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
+        if (!brevType) return;
 
         if (context === FritekstBrevContext.FRITTSTÅENDE) {
             axiosRequest<string, IFritekstBrev>({
@@ -189,10 +182,11 @@ const FritekstBrev: React.FC<Props> = ({
 
     const sendBrev = () => {
         if (senderInnBrev) return;
+        if (!brevType) return;
+        if (!(fagsakId && stønadType)) return;
         settSenderInnBrev(true);
         setUtsendingSuksess(false);
         settFeilmelding('');
-        if (!(fagsakId && stønadType)) return;
 
         axiosRequest<string, IFrittståendeBrev>({
             method: 'POST',
@@ -298,11 +292,16 @@ const FritekstBrev: React.FC<Props> = ({
                             | FritekstBrevtype
                             | FrittståendeBrevtype;
                         settBrevType(nyBrevType);
-                        settOverskrift(BrevtyperTilOverskrift[nyBrevType]);
-                        settAvsnitt(() => skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[nyBrevType]));
+                        settOverskrift(nyBrevType ? BrevtyperTilOverskrift[nyBrevType] : '');
+                        settAvsnitt(
+                            nyBrevType
+                                ? skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[nyBrevType])
+                                : []
+                        );
                     }}
                     value={brevType}
                 >
+                    <option value={''}>Ikke valgt</option>
                     {Object.values(
                         context === FritekstBrevContext.FRITTSTÅENDE
                             ? FrittståendeBrevtype
@@ -313,56 +312,62 @@ const FritekstBrev: React.FC<Props> = ({
                         </option>
                     ))}
                 </StyledSelect>
-                <Overskrift
-                    label="Overskrift"
-                    value={overskrift}
-                    onChange={(e) => {
-                        settOverskrift(e.target.value);
-                    }}
-                />
-                {finnesSynligeAvsnitt && (
-                    <LeggTilKnappWrapper>
-                        <LeggTilKnapp
-                            onClick={leggTilAvsnittForan}
-                            knappetekst="Legg til avsnitt"
+                {brevType && (
+                    <>
+                        <Overskrift
+                            label="Overskrift"
+                            value={overskrift}
+                            onChange={(e) => {
+                                settOverskrift(e.target.value);
+                            }}
                         />
-                    </LeggTilKnappWrapper>
-                )}
-                {avsnitt
-                    .filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger)
-                    .map((rad) => {
-                        const deloverskriftId = `deloverskrift-${rad.id}`;
-                        const innholdId = `innhold-${rad.id}`;
+                        {finnesSynligeAvsnitt && (
+                            <LeggTilKnappWrapper>
+                                <LeggTilKnapp
+                                    onClick={leggTilAvsnittForan}
+                                    knappetekst="Legg til avsnitt"
+                                />
+                            </LeggTilKnappWrapper>
+                        )}
+                        {avsnitt
+                            .filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger)
+                            .map((rad) => {
+                                const deloverskriftId = `deloverskrift-${rad.id}`;
+                                const innholdId = `innhold-${rad.id}`;
 
-                        return (
-                            <Innholdsrad key={rad.id} border>
-                                <Input
-                                    onChange={endreDeloverskriftAvsnitt(rad.id)}
-                                    label="Deloverskrift (valgfri)"
-                                    id={deloverskriftId}
-                                    value={rad.deloverskrift}
-                                />
-                                <Textarea
-                                    onChange={endreInnholdAvsnitt(rad.id)}
-                                    label="Innhold"
-                                    id={innholdId}
-                                    value={rad.innhold}
-                                    maxLength={0}
-                                />
-                                <LenkeKnapp onClick={fjernRad(rad.id)}>
-                                    <SlettSøppelkasse withDefaultStroke={false} />
-                                    Slett avsnitt
-                                </LenkeKnapp>
-                            </Innholdsrad>
-                        );
-                    })}
-                <LeggTilKnappWrapper>
-                    <LeggTilKnapp
-                        onClick={leggAvsnittBakSisteSynligeAvsnitt}
-                        knappetekst="Legg til avsnitt"
-                    />
-                </LeggTilKnappWrapper>
-                {fagsakId && <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>}
+                                return (
+                                    <Innholdsrad key={rad.id} border>
+                                        <Input
+                                            onChange={endreDeloverskriftAvsnitt(rad.id)}
+                                            label="Deloverskrift (valgfri)"
+                                            id={deloverskriftId}
+                                            value={rad.deloverskrift}
+                                        />
+                                        <Textarea
+                                            onChange={endreInnholdAvsnitt(rad.id)}
+                                            label="Innhold"
+                                            id={innholdId}
+                                            value={rad.innhold}
+                                            maxLength={0}
+                                        />
+                                        <LenkeKnapp onClick={fjernRad(rad.id)}>
+                                            <SlettSøppelkasse withDefaultStroke={false} />
+                                            Slett avsnitt
+                                        </LenkeKnapp>
+                                    </Innholdsrad>
+                                );
+                            })}
+                        <LeggTilKnappWrapper>
+                            <LeggTilKnapp
+                                onClick={leggAvsnittBakSisteSynligeAvsnitt}
+                                knappetekst="Legg til avsnitt"
+                            />
+                        </LeggTilKnappWrapper>
+                        {fagsakId && (
+                            <Hovedknapp onClick={() => settVisModal(true)}>Send brev</Hovedknapp>
+                        )}
+                    </>
+                )}
             </BrevKolonner>
 
             {visModal && (
