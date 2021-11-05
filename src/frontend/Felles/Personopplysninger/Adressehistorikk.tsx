@@ -131,7 +131,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresse
                             <Td>
                                 {formaterNullableIsoDato(
                                     adresse.type === AdresseType.BOSTEDADRESSE
-                                        ? adresse.angittFlyttedato
+                                        ? adresse.angittFlyttedato || adresse.gyldigFraOgMed
                                         : adresse.gyldigFraOgMed
                                 )}
                             </Td>
