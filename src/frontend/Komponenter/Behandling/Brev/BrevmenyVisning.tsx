@@ -150,7 +150,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
+    const [generererBrev, settGenerererBrev] = useState(false);
     const genererBrev = () => {
+        if (generererBrev) return;
+        settGenerererBrev(true);
         mellomlagreSanitybrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
         axiosRequest<string, unknown>({
             method: 'POST',
@@ -163,9 +166,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     fodselsnummer: [personopplysninger.personIdent],
                 },
             },
-        }).then((respons: Ressurs<string>) => {
-            oppdaterBrevRessurs(respons);
-        });
+        })
+            .then((respons: Ressurs<string>) => {
+                oppdaterBrevRessurs(respons);
+            })
+            .finally(() => settGenerererBrev(false));
     };
 
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
