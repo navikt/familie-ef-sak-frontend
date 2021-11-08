@@ -1,21 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 
 import { AxiosRequestConfig } from 'axios';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { base64toBlob, åpnePdfIEgenTab } from '../../App/utils/utils';
-import { Ressurs, RessursStatus } from '@navikt/familie-typer';
-import { useApp } from '../../App/context/AppContext';
 import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper';
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
 import { Element } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
+import { åpneFilIEgenTab } from '../../App/utils/utils';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -25,32 +22,12 @@ const DokumenterVisning = styled.div`
 const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,
 }) => {
-    const { axiosRequest } = useApp();
-    const [hentDokumentFeilet, settHentDokumentFeilet] = useState<string>();
-
     const hentDokument = (dokument: Dokumentinfo) => {
-        settHentDokumentFeilet('');
-
-        axiosRequest<string, null>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
-        }).then((res: Ressurs<string>) => {
-            switch (res.status) {
-                case RessursStatus.SUKSESS:
-                    åpnePdfIEgenTab(
-                        base64toBlob(res.data, 'application/pdf'),
-                        `${dokument.tittel}.pdf`
-                    );
-                    break;
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                case RessursStatus.FEILET:
-                    settHentDokumentFeilet(res.frontendFeilmelding);
-                    break;
-                default:
-                    break;
-            }
-        });
+        åpneFilIEgenTab(
+            dokument.journalpostId,
+            dokument.dokumentinfoId,
+            dokument.tittel || dokument.filnavn || ''
+        );
     };
 
     const dokumentConfig: AxiosRequestConfig = useMemo(
@@ -109,9 +86,6 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                     </tbody>
                                 </table>
                             </TabellWrapper>
-                            {hentDokumentFeilet && (
-                                <AlertStripeFeil>{hentDokumentFeilet}</AlertStripeFeil>
-                            )}
                         </DokumenterVisning>
                     </>
                 );

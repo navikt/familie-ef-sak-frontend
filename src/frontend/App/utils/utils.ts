@@ -89,3 +89,19 @@ export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
         }
     }, 500);
 };
+
+export const åpneFilIEgenTab = (
+    journalpostId: string,
+    dokumentinfoId: string,
+    filnavn: string
+): void => {
+    const newWindow = window.open(
+        `/dokument/journalpost/${journalpostId}/dokument-pdf/${dokumentinfoId}`,
+        '_blank'
+    );
+    setTimeout(function () {
+        if (newWindow) {
+            newWindow.document.title = filnavn;
+        }
+    }, 500);
+};
