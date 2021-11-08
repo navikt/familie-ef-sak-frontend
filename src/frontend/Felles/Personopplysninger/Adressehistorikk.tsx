@@ -33,9 +33,29 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = (
     adresser,
     fagsakId,
 }) => {
+    return (
+        <>
+            <AdressehistorikkMedLesMerKnapp
+                fagsakId={fagsakId}
+                adresser={adresser.filter((adresse) => adresse.type === AdresseType.BOSTEDADRESSE)}
+                type={AdresseType.BOSTEDADRESSE}
+            />
+            <AdressehistorikkMedLesMerKnapp
+                fagsakId={fagsakId}
+                adresser={adresser.filter((adresse) => adresse.type !== AdresseType.BOSTEDADRESSE)}
+            />
+        </>
+    );
+};
+
+const AdressehistorikkMedLesMerKnapp: React.FC<{
+    adresser: IAdresse[];
+    fagsakId: string;
+    type?: AdresseType;
+}> = ({ adresser, fagsakId, type }) => {
     const [isClosed, setIsClosed] = useState<boolean>(true);
     if (adresser.length <= MAX_LENGDE_ADRESSER) {
-        return <Adresser adresser={adresser} fagsakId={fagsakId} />;
+        return <Adresser adresser={adresser} fagsakId={fagsakId} type={type} />;
     } else {
         const introAdresser = adresser.slice(0, MAX_LENGDE_ADRESSER);
         return (
@@ -43,11 +63,15 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = (
                 onOpen={() => setIsClosed(false)}
                 onClose={() => setIsClosed(true)}
                 className={'adresser'}
-                intro={isClosed && <Adresser adresser={introAdresser} fagsakId={fagsakId} />}
+                intro={
+                    isClosed && (
+                        <Adresser adresser={introAdresser} fagsakId={fagsakId} type={type} />
+                    )
+                }
                 apneTekst={'Vis flere adresser'}
                 lukkTekst={'Skjul adresser'}
             >
-                <Adresser adresser={adresser} fagsakId={fagsakId} />
+                <Adresser adresser={adresser} fagsakId={fagsakId} type={type} />
             </StyledLesmer>
         );
     }
@@ -59,17 +83,29 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
     </Td>
 );
 
-const Adresser: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresser, fagsakId }) => {
+const Adresser: React.FC<{ adresser: IAdresse[]; fagsakId: string; type?: AdresseType }> = ({
+    adresser,
+    fagsakId,
+    type,
+}) => {
     return (
         <TabellWrapper>
-            <TabellOverskrift Ikon={Bygning} tittel={'Adressehistorikk'} />
+            <TabellOverskrift
+                Ikon={Bygning}
+                tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
+            />
             <table className="tabell">
                 <thead>
                     <tr>
                         <Kolonnetittel text={'Adresse'} width={35} />
-                        <Kolonnetittel text={'Adressetype'} width={15} />
-                        <Kolonnetittel text={'Angitt flyttedato'} width={15} />
-                        <Kolonnetittel text={'Fra'} width={15} />
+                        <Kolonnetittel
+                            text={type === AdresseType.BOSTEDADRESSE ? '' : 'Adressetype'}
+                            width={15}
+                        />
+                        <Kolonnetittel
+                            text={type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Fra'}
+                            width={15}
+                        />
                         <Kolonnetittel text={'Til'} width={20} />
                     </tr>
                 </thead>
@@ -91,9 +127,14 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresse
                     return (
                         <tr key={indeks}>
                             <Td>{adresse.visningsadresse}</Td>
-                            <Td>{adresse.type}</Td>
-                            <Td>{formaterNullableIsoDato(adresse.angittFlyttedato)}</Td>
-                            <Td>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</Td>
+                            <Td>{adresse.type !== AdresseType.BOSTEDADRESSE && adresse.type}</Td>
+                            <Td>
+                                {formaterNullableIsoDato(
+                                    adresse.type === AdresseType.BOSTEDADRESSE
+                                        ? adresse.angittFlyttedato || adresse.gyldigFraOgMed
+                                        : adresse.gyldigFraOgMed
+                                )}
+                            </Td>
                             <Td>
                                 <StyledFlexDiv>
                                     <div style={{ margin: 'auto 0' }}>

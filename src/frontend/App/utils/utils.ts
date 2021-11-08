@@ -79,3 +79,13 @@ export const tilTallverdi = (verdi: number | string | undefined): number | strin
 
 export const range = (start: number, end: number): number[] =>
     Array.from({ length: end - start }, (_, k) => k + start);
+
+export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
+    const blobUrl = URL.createObjectURL(blob);
+    const newWindow = window.open(blobUrl, '_blank');
+    setTimeout(function () {
+        if (newWindow) {
+            newWindow.document.title = filnavn;
+        }
+    }, 500);
+};
