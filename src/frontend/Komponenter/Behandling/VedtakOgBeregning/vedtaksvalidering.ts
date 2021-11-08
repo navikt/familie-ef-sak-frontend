@@ -6,6 +6,8 @@ import { FormErrors } from '../../../App/hooks/felles/useFormState';
 export const validerVedtaksperioder = ({
     perioder,
     inntekter,
+    periodeBegrunnelse,
+    inntektBegrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
@@ -79,10 +81,20 @@ export const validerVedtaksperioder = ({
         return { årMånedFra: undefined };
     });
 
+    const periodeBegrunnelseFeil =
+        periodeBegrunnelse === '' || periodeBegrunnelse === undefined
+            ? 'Mangelfull utfylling av periodebegrunnelse'
+            : undefined;
+
+    const inntektBegrunnelseFeil =
+        inntektBegrunnelse === '' || inntektBegrunnelse === undefined
+            ? 'Mangelfull utfylling av inntektsbegrunnelse'
+            : undefined;
+
     return {
         perioder: feilIVedtaksPerioder,
         inntekter: inntektsperiodeFeil,
-        inntektBegrunnelse: undefined,
-        periodeBegrunnelse: undefined,
+        inntektBegrunnelse: inntektBegrunnelseFeil,
+        periodeBegrunnelse: periodeBegrunnelseFeil,
     };
 };
