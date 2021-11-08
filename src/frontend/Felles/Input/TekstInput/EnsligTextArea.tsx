@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FamilieTextarea, IFamilieTextareaProps } from '@navikt/familie-form-elements';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
@@ -12,14 +12,7 @@ const StyledFamilieTextArea: React.FC<IFamilieTextareaProps> = styled(FamilieTex
     }
 `;
 
-interface Props {
-    value: string;
-    onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
-    label: string;
-    maxLength: number;
-    erLesevisning: boolean;
-    feilmelding?: string;
-}
+type Props = { feilmelding?: string } & IFamilieTextareaProps;
 
 export const EnsligTextArea: React.FC<Props> = ({
     value,
