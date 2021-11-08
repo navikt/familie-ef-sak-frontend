@@ -269,6 +269,11 @@ const FritekstBrev: React.FC<Props> = ({
 
     const finnesSynligeAvsnitt = avsnitt.some((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
 
+    const utfylteAvsnitt = (brevType: FrittståendeBrevtype | FritekstBrevtype): AvsnittMedId[] =>
+        brevType === FrittståendeBrevtype.VARSEL_OM_AKTIVITETSPLIKT
+            ? BrevtyperTilAvsnitt[brevType]
+            : skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[brevType]);
+
     return (
         <StyledFrittståendeBrev>
             <h1>Fritekstbrev</h1>
@@ -293,11 +298,7 @@ const FritekstBrev: React.FC<Props> = ({
                             | FrittståendeBrevtype;
                         settBrevType(nyBrevType);
                         settOverskrift(nyBrevType ? BrevtyperTilOverskrift[nyBrevType] : '');
-                        settAvsnitt(
-                            nyBrevType
-                                ? skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[nyBrevType])
-                                : []
-                        );
+                        settAvsnitt(nyBrevType ? utfylteAvsnitt(nyBrevType) : []);
                     }}
                     value={brevType}
                 >
