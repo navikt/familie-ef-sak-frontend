@@ -51,29 +51,40 @@ const endring = (endring?: AndelHistorikkEndring) =>
 
 const historikkRad = (andel: AndelHistorikk) => (
     <Rad type={andel.endring?.type}>
+        <td>NY stønad</td>
         <td>
             {formaterNullableMånedÅr(andel.andel.stønadFra)}
             {' - '}
             {formaterNullableMånedÅr(andel.andel.stønadTil)}
         </td>
+        <td>NY periodetype</td>
+        <td>NY aktivitet</td>
         <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
+        <td>NY samordningsfradrag</td>
         <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
         <td>{vedtakstidspunkt(andel)}</td>
         <td>{andel.saksbehandler}</td>
+        <td>NY behandlingstype</td>
         <td>{endring(andel.endring)}</td>
     </Rad>
 );
 
 const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
+    console.log('ANDELER', andeler);
     return (
         <StyledTabell className="tabell">
             <thead>
                 <tr>
-                    <th>Periode</th>
+                    <th>Stønad</th>
+                    <th>Periode (fom-tom)</th>
+                    <th>Periodetype</th>
+                    <th>Aktivitet</th>
                     <th>Inntektsgrunnlag</th>
+                    <th>Samordningsfradrag</th>
                     <th>Stønadsbeløp</th>
                     <th>Vedtakstidspunkt</th>
                     <th>Saksbehandler</th>
+                    <th>Behandlingstype</th>
                     <th>Endring</th>
                 </tr>
             </thead>
