@@ -77,7 +77,7 @@ const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[]; dobbelTabell?:
 }) => {
     return (
         <table className={dobbelTabell ? 'tabell andre-tabell' : 'tabell'}>
-            <KolonneTitler titler={['Utvandret til', 'Dato', '', '']} />
+            <KolonneTitler titler={['Utvandret til', 'Utflyttingsdato', '', '']} />
             <tbody>
                 {utvandringer.map((utflytting, indeks) => {
                     return (
