@@ -3,6 +3,7 @@ import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../App/typer/perso
 import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import TabellOverskrift from './TabellOverskrift';
 import FlyMedSky from '../Ikoner/FlyMedSky';
+import { formaterNullableIsoDato } from '../../App/utils/formatter';
 
 interface Props {
     innvandringer: IInnflyttingTilNorge[];
@@ -76,7 +77,7 @@ const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[]; dobbelTabell?:
 }) => {
     return (
         <table className={dobbelTabell ? 'tabell andre-tabell' : 'tabell'}>
-            <KolonneTitler titler={['Utvandret til', '', '', '']} />
+            <KolonneTitler titler={['Utvandret til', 'Utflyttingsdato', '', '']} />
             <tbody>
                 {utvandringer.map((utflytting, indeks) => {
                     return (
@@ -87,7 +88,7 @@ const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[]; dobbelTabell?:
                                         ? ', ' + utflytting.tilflyttingssted
                                         : '')}
                             </BredTd>
-                            <BredTd />
+                            <BredTd>{formaterNullableIsoDato(utflytting.dato)}</BredTd>
                             <BredTd />
                             <BredTd />
                         </tr>
