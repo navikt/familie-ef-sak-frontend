@@ -6,7 +6,7 @@ import navFarger from 'nav-frontend-core';
 interface Props<T> {
     data: T[];
     kolonner: {
-        overskrift: string;
+        overskrift: string | React.ReactNode;
         tekstVerdi: (data: T) => React.ReactNode;
     }[];
     onEmpty?: string;
