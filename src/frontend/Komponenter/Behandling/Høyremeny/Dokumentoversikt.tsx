@@ -1,10 +1,7 @@
 import * as React from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { useApp } from '../../../App/context/AppContext';
 import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
-import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { useParams } from 'react-router-dom';
@@ -14,8 +11,8 @@ import styled from 'styled-components';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { Undertittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { compareDesc } from 'date-fns';
+import { åpneFilIEgenTab } from '../../../App/utils/utils';
 
 const StyledDokumentliste = styled(Dokumentliste)`
     .typo-element,
@@ -53,10 +50,7 @@ const sorterDokumentlisten = (dokumentResponse: AlleDokument) => {
 };
 
 const Dokumentoversikt: React.FC = () => {
-    const { axiosRequest } = useApp();
     const { behandlingId } = useParams<IBehandlingParams>();
-
-    const [lastNedDokumentFeilet, settLastNedDokumentFeilet] = useState<string>();
 
     const dokumentConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -68,35 +62,15 @@ const Dokumentoversikt: React.FC = () => {
     const dokumentResponse = useDataHenter<AlleDokument, null>(dokumentConfig);
 
     const lastNedDokument = (dokument: DokumentProps) => {
-        axiosRequest<string, null>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/dokument/${dokument.dokumentinfoId}`,
-        }).then((res: Ressurs<string>) => {
-            const dokumentnavn =
-                dokument.tittel || dokument.filnavn || `dokument-${dokument.journalpostId}`;
-            switch (res.status) {
-                case RessursStatus.SUKSESS:
-                    åpnePdfIEgenTab(
-                        base64toBlob(res.data, 'application/pdf'),
-                        `${dokumentnavn}.pdf`
-                    );
-                    break;
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                case RessursStatus.FEILET:
-                    settLastNedDokumentFeilet(res.frontendFeilmelding);
-                    break;
-                default:
-                    break;
-            }
-        });
+        åpneFilIEgenTab(
+            dokument.journalpostId,
+            dokument.dokumentinfoId,
+            dokument.tittel || dokument.filnavn || ''
+        );
     };
 
     return (
         <>
-            {lastNedDokumentFeilet && (
-                <AlertStripeFeilPreWrap>{lastNedDokumentFeilet}</AlertStripeFeilPreWrap>
-            )}
             <DataViewer response={{ dokumentResponse }}>
                 {({ dokumentResponse }) => {
                     const sortertDokumentliste = sorterDokumentlisten(dokumentResponse);
