@@ -4,6 +4,7 @@ import {
     Delmal,
     FlettefeltMedVerdi,
     IFritekstBrev,
+    IFrittståendeBrev,
     ValgtFelt,
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
@@ -96,7 +97,7 @@ export const initValgteFeltMedMellomlager = (
     }, {});
 
 export const initielleAvsnittMellomlager = (
-    mellomlagretFritekstbrev: IFritekstBrev | undefined
+    mellomlagretFritekstbrev: IFritekstBrev | IFrittståendeBrev | undefined
 ): AvsnittMedId[] =>
     mellomlagretFritekstbrev
         ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))

@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import FritekstBrev from './FritekstBrev';
 import styled from 'styled-components';
-import { Ressurs, byggTomRessurs } from '../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import { FritekstBrevContext } from './BrevTyper';
+import { FritekstBrevContext, IFrittståendeBrev } from './BrevTyper';
+import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import { AxiosRequestConfig } from 'axios';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
 type Props = {
     fagsakId?: string;
@@ -21,13 +24,29 @@ const BrevMedVisning = styled.div`
 
 const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId, context }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
+    const hentMellomlagretFrittståendeBrev: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/brev/mellomlager/frittstaende/${fagsakId}`,
+        }),
+        [fagsakId]
+    );
+    const mellomlagretFrittståendeBrev = useDataHenter<IFrittståendeBrev | undefined, null>(
+        hentMellomlagretFrittståendeBrev
+    );
+
     return (
         <BrevMedVisning>
-            <FritekstBrev
-                oppdaterBrevressurs={oppdaterBrevressurs}
-                fagsakId={fagsakId}
-                context={context}
-            />
+            <DataViewer response={{ mellomlagretFrittståendeBrev }}>
+                {({ mellomlagretFrittståendeBrev }) => (
+                    <FritekstBrev
+                        oppdaterBrevressurs={oppdaterBrevressurs}
+                        fagsakId={fagsakId}
+                        context={context}
+                        mellomlagretFrittståendeBrev={mellomlagretFrittståendeBrev}
+                    />
+                )}
+            </DataViewer>
             <PdfVisning pdfFilInnhold={brevRessurs} />
         </BrevMedVisning>
     );

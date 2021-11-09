@@ -75,6 +75,7 @@ type Props = {
     fagsakId?: string;
     context: FritekstBrevContext;
     mellomlagretFritekstbrev?: IFritekstBrev;
+    mellomlagretFrittståendeBrev?: IFrittståendeBrev;
 };
 
 const FritekstBrev: React.FC<Props> = ({
@@ -83,14 +84,19 @@ const FritekstBrev: React.FC<Props> = ({
     fagsakId,
     context,
     mellomlagretFritekstbrev,
+    mellomlagretFrittståendeBrev,
 }) => {
     const [stønadType, settStønadType] = useState<Stønadstype>(Stønadstype.OVERGANGSSTØNAD);
-    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>();
+    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype | undefined>(
+        mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.brevType
+    );
     const [overskrift, settOverskrift] = useState(
-        (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) || ''
+        (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) ||
+            (mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.overskrift) ||
+            ''
     );
     const [avsnitt, settAvsnitt] = useState<AvsnittMedId[]>(
-        initielleAvsnittMellomlager(mellomlagretFritekstbrev)
+        initielleAvsnittMellomlager(mellomlagretFritekstbrev || mellomlagretFrittståendeBrev)
     );
 
     const [feilmelding, settFeilmelding] = useState('');
@@ -130,21 +136,31 @@ const FritekstBrev: React.FC<Props> = ({
         });
     };
 
+    const mellomlagreFrittståendeBrev = (brev: IFrittståendeBrev): void => {
+        axiosRequest<string, IFrittståendeBrev>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/brev/mellomlager/frittstaende`,
+            data: brev,
+        });
+    };
+
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
         if (!brevType) return;
 
-        if (context === FritekstBrevContext.FRITTSTÅENDE) {
-            axiosRequest<string, IFritekstBrev>({
+        if (context === FritekstBrevContext.FRITTSTÅENDE && fagsakId) {
+            const brev: IFrittståendeBrev = {
+                overskrift,
+                avsnitt,
+                fagsakId,
+                stønadType,
+                brevType: brevType as FrittståendeBrevtype,
+            };
+            mellomlagreFrittståendeBrev(brev);
+            axiosRequest<string, IFrittståendeBrev>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/frittstaende-brev`,
-                data: {
-                    overskrift,
-                    avsnitt,
-                    fagsakId,
-                    stønadType,
-                    brevType,
-                },
+                data: brev,
             }).then((respons: Ressurs<string>) => {
                 if (oppdaterBrevressurs) oppdaterBrevressurs(respons);
             });
@@ -197,7 +213,7 @@ const FritekstBrev: React.FC<Props> = ({
                 fagsakId,
                 stønadType,
                 brevType,
-            },
+            } as IFrittståendeBrev,
         }).then((respons: Ressurs<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 setUtsendingSuksess(true);

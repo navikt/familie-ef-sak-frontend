@@ -84,7 +84,7 @@ export interface IFrittståendeBrev {
     avsnitt: IAvsnitt[];
     fagsakId: string;
     stønadType: string;
-    brevType: string;
+    brevType: FrittståendeBrevtype;
 }
 
 export enum FrittståendeBrevtype {
