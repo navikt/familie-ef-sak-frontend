@@ -29,7 +29,7 @@ export const headerForInnflyttingTabell: React.ReactNode = (
             Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting.
             Denne har nødvendigvis ikke noen sammenheng med når innflyttingen skjedde i
             virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på
-            andre opplysninger, feks den norske bostedsadressens fra dato.
+            andre opplysninger, f.eks. den norske bostedsadressens fra-dato.
         </StyledHjelpetekst>
     </div>
 );
