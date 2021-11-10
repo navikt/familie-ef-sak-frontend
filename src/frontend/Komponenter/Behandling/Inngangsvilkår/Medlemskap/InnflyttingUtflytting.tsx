@@ -5,10 +5,11 @@ import {
 } from '../../../../App/typer/personopplysninger';
 import { Element } from 'nav-frontend-typografi';
 import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../../../App/utils/formatter';
 import { slåSammenTekst } from '../../../../App/utils/utils';
 import { Tabell } from '../NyttBarnSammePartner/Tabell';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
+import { headerForInnflyttingTabell } from '../../../../Felles/Personopplysninger/InnvandringUtvandring';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -35,9 +36,8 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                             ),
                     },
                     {
-                        overskrift: 'Dato',
-                        tekstVerdi: (innflytting) =>
-                            formaterNullableIsoDato(innflytting.dato) || '',
+                        overskrift: headerForInnflyttingTabell,
+                        tekstVerdi: (innflytting) => formaterNullableIsoÅr(innflytting.dato) || '',
                     },
                 ]}
                 data={innflytting}

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 export const BredTd = styled.td`
     width: ${(props) => props.width ?? '25%'};
@@ -21,6 +21,9 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
             ? "'. ikon tittel .' '. . første-tabell .' '. . andre-tabell .'"
             : "'. ikon tittel .' '. . innhold .'"};
     .tabell {
+        .columnHeader {
+            font-weight: bold;
+        }
         grid-area: innhold;
         td {
             padding-left: 0;
@@ -39,13 +42,15 @@ export const StyledInnholdWrapper = styled.div`
     grid-area: innhold;
 `;
 
-export const KolonneTitler: React.FC<{ titler: string[] }> = ({ titler }) => {
+type Kolonnetittel = string | React.ReactNode;
+
+export const KolonneTitler: React.FC<{ titler: Kolonnetittel[] }> = ({ titler }) => {
     return (
         <thead>
             <tr>
                 {titler.map((tittel, indeks) => (
-                    <BredTd key={indeks} width={100 / titler.length}>
-                        <Element>{tittel}</Element>
+                    <BredTd key={indeks} width={100 / titler.length} className={'columnHeader'}>
+                        {tittel}
                     </BredTd>
                 ))}
             </tr>
