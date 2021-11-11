@@ -85,7 +85,9 @@ const FritekstBrev: React.FC<Props> = ({
     mellomlagretFritekstbrev,
 }) => {
     const [stønadType, settStønadType] = useState<Stønadstype>(Stønadstype.OVERGANGSSTØNAD);
-    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>();
+    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype | undefined>(
+        mellomlagretFritekstbrev && FritekstBrevtype.VEDTAK_INVILGELSE
+    );
     const [overskrift, settOverskrift] = useState(
         (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) || ''
     );
