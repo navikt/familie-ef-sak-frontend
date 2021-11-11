@@ -44,6 +44,10 @@ export const formaterIsoMåned = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', månedFormat);
 };
 
+export const formaterNullableIsoÅr = (dato?: string): number | undefined => {
+    return dato ? formaterIsoÅr(dato) : undefined;
+};
+
 export const formaterIsoÅr = (dato: string): number => {
     return parseISO(dato).getFullYear();
 };
