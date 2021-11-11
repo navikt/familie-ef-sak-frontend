@@ -75,15 +75,14 @@ export type AvsnittMedId = IAvsnitt & { id: string };
 export interface IFritekstBrev {
     overskrift: string;
     avsnitt: IAvsnitt[];
-    fagsakId?: string;
     behandlingId?: string;
+    brevType: FritekstBrevtype;
 }
 
 export interface IFrittståendeBrev {
     overskrift: string;
     avsnitt: IAvsnitt[];
     fagsakId: string;
-    stønadType: string;
     brevType: FrittståendeBrevtype;
 }
 
@@ -106,7 +105,10 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_AVSLAG: 'Vi har avslått søknaden din om overgangsstønad',
 };
 
-export const BrevtyperTilSelectNavn: Record<FrittståendeBrevtype | FritekstBrevtype, string> = {
+export const BrevtyperTilSelectNavn: Record<
+    FrittståendeBrevtype | FritekstBrevtype | string,
+    string
+> = {
     INFORMASJONSBREV: 'Informasjonsbrev',
     INNHENTING_AV_OPPLYSNINGER: 'Innhenting av opplysninger',
     VARSEL_OM_AKTIVITETSPLIKT: 'Varsel om aktivitetsplikt',
@@ -130,6 +132,7 @@ export enum FritekstBrevContext {
 
 export interface IMellomlagretBrevFritekst {
     brev?: IFritekstBrev;
+    brevType: FritekstBrevtype;
     brevtype: Brevtype.FRITEKSTBREV;
 }
 

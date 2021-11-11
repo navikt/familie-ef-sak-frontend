@@ -1,16 +1,15 @@
 import React, { useMemo, useState } from 'react';
-import FritekstBrev from './FritekstBrev';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import { FritekstBrevContext, IFrittståendeBrev } from './BrevTyper';
+import { IFrittståendeBrev } from './BrevTyper';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import FrittståendeBrev from './FrittståendeBrev';
 
 type Props = {
-    fagsakId?: string;
-    context: FritekstBrevContext;
+    fagsakId: string;
 };
 
 const BrevMedVisning = styled.div`
@@ -22,7 +21,7 @@ const BrevMedVisning = styled.div`
     grid-gap: 1rem;
 `;
 
-const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId, context }: Props) => {
+const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
     const hentMellomlagretFrittståendeBrev: AxiosRequestConfig = useMemo(
         () => ({
@@ -39,10 +38,9 @@ const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId, context }: Props) =
         <BrevMedVisning>
             <DataViewer response={{ mellomlagretFrittståendeBrev }}>
                 {({ mellomlagretFrittståendeBrev }) => (
-                    <FritekstBrev
+                    <FrittståendeBrev
                         oppdaterBrevressurs={oppdaterBrevressurs}
                         fagsakId={fagsakId}
-                        context={context}
                         mellomlagretFrittståendeBrev={mellomlagretFrittståendeBrev}
                     />
                 )}
@@ -52,4 +50,4 @@ const FritekstBrevMedVisning: React.FC<Props> = ({ fagsakId, context }: Props) =
     );
 };
 
-export default FritekstBrevMedVisning;
+export default FrittståendeBrevMedVisning;
