@@ -19,12 +19,19 @@ const Container = styled.div`
 const HøyreMenyWrapper = styled.div`
     border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
-    max-width: 20rem;
+    width: 15rem;
+    @media (max-width: 800px) {
+        width: 0rem;
+    }
     overflow-y: auto;
 `;
 
 const InnholdWrapper = styled.div`
     flex: 1;
+    max-width: calc(100% - 15rem);
+    @media (max-width: 800px) {
+        max-width: 100%;
+    }
 `;
 
 const BehandlingContainer: FC = () => {
