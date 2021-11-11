@@ -57,8 +57,8 @@ const historikkRad = (andel: AndelHistorikk) => (
             {' - '}
             {formaterNullableMånedÅr(andel.andel.stønadTil)}
         </td>
-        <td>NY periodetype</td>
-        <td>NY aktivitet</td>
+        <td>{andel.periodeType}</td>
+        <td>{andel.aktivitet}</td>
         <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
         <td>NY samordningsfradrag</td>
         <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>

@@ -1,3 +1,5 @@
+import { EAktivitet, EPeriodetype } from './vedtak';
+
 export interface TilkjentYtelse {
     andeler: AndelTilkjentYtelse[];
 }
@@ -17,6 +19,8 @@ export interface AndelHistorikk {
     saksbehandler: string;
     andel: AndelTilkjentYtelse;
     endring?: AndelHistorikkEndring;
+    aktivitet: EAktivitet;
+    periodeType: EPeriodetype;
 }
 
 export interface AndelHistorikkEndring {
