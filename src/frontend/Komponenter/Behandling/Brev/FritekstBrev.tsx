@@ -85,9 +85,7 @@ const FritekstBrev: React.FC<Props> = ({
     mellomlagretFritekstbrev,
 }) => {
     const [stønadType, settStønadType] = useState<Stønadstype>(Stønadstype.OVERGANGSSTØNAD);
-    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype | undefined>(
-        mellomlagretFritekstbrev && FritekstBrevtype.VEDTAK_INVILGELSE
-    );
+    const [brevType, settBrevType] = useState<FrittståendeBrevtype | FritekstBrevtype>();
     const [overskrift, settOverskrift] = useState(
         (mellomlagretFritekstbrev && mellomlagretFritekstbrev.overskrift) || ''
     );
@@ -134,7 +132,7 @@ const FritekstBrev: React.FC<Props> = ({
 
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
-        if (!brevType) return;
+        if (!brevType && context === FritekstBrevContext.FRITTSTÅENDE) return;
 
         if (context === FritekstBrevContext.FRITTSTÅENDE) {
             axiosRequest<string, IFritekstBrev>({
@@ -315,7 +313,7 @@ const FritekstBrev: React.FC<Props> = ({
                         </option>
                     ))}
                 </StyledSelect>
-                {brevType && (
+                {(brevType || context === FritekstBrevContext.BEHANDLING) && (
                     <>
                         <Overskrift
                             label="Overskrift"
