@@ -43,7 +43,7 @@ export const stegTypeTilHistorikkTekst: Record<Steg, string> = {
     BESLUTTE_VEDTAK: 'Besluttet vedtak',
     DISTRIBUER_VEDTAKSBREV: 'Distribuere vedtaksbrev',
     FERDIGSTILLE_BEHANDLING: 'Ferdigstilt behandling',
-    IVERKSETT_MOT_OPPDRAG: 'Iverksette mot oppdrag',
+    IVERKSETT_MOT_OPPDRAG: 'Iverksatt mot oppdrag',
     JOURNALFØR_VEDTAKSBREV: 'Journalføre vedtaksbrev',
     SEND_TIL_BESLUTTER: 'Vedtak sendt til godkjenning',
     VENTE_PÅ_STATUS_FRA_IVERKSETT: 'Vente på status fra økonomi',
