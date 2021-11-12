@@ -132,7 +132,7 @@ const FritekstBrev: React.FC<Props> = ({
 
     const genererBrev = () => {
         if (personopplysninger.status !== RessursStatus.SUKSESS) return;
-        if (!brevType) return;
+        if (!brevType && context === FritekstBrevContext.FRITTSTÅENDE) return;
 
         if (context === FritekstBrevContext.FRITTSTÅENDE) {
             axiosRequest<string, IFritekstBrev>({
@@ -313,7 +313,7 @@ const FritekstBrev: React.FC<Props> = ({
                         </option>
                     ))}
                 </StyledSelect>
-                {brevType && (
+                {(brevType || context === FritekstBrevContext.BEHANDLING) && (
                     <>
                         <Overskrift
                             label="Overskrift"
