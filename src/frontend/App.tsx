@@ -14,6 +14,7 @@ import { JournalforingApp } from './Komponenter/Journalforing/JournalforingApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
 import UgyldigSesjon from './Felles/Modal/SesjonUtløpt';
 import UlagretDataModal from './Komponenter/Behandling/Fanemeny/UlagretDataModal';
+import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -78,6 +79,10 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
         <>
             <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
             <Switch>
+                <Route
+                    path="/ekstern/fagsak/:eksternFagsakId/:behandlingIdEllerSaksoversikt"
+                    component={EksternRedirectContainer}
+                />
                 <Route path="/behandling/:behandlingId" component={BehandlingContainer} />
                 <Route path="/oppgavebenk" component={OppgavebenkApp} />
                 <Route path="/journalfor" component={JournalforingApp} />
