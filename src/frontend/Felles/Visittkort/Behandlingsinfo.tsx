@@ -4,7 +4,7 @@ import { Behandling, behandlingResultatTilTekst } from '../../App/typer/fagsak';
 import { Menyknapp } from 'nav-frontend-ikonknapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
-import { stegTypeTilTekst } from '../../Komponenter/Behandling/Høyremeny/Steg';
+import { stegTypeTilStegtekst } from '../../Komponenter/Behandling/Høyremeny/Steg';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -85,7 +85,7 @@ const Behandlingsinfo: FC<{ behandling: Behandling; fagsakId: string }> = ({
                         <Normaltekst>{formaterIsoDatoTid(behandling.sistEndret)}</Normaltekst>
 
                         <GråTekst>Steg</GråTekst>
-                        <Normaltekst>{stegTypeTilTekst[behandling.steg]}</Normaltekst>
+                        <Normaltekst>{stegTypeTilStegtekst[behandling.steg]}</Normaltekst>
                     </PopoverTabell>
                     <GråTekst>Id: {behandling.id}</GråTekst>
                     <Henlegg behandling={behandling} fagsakId={fagsakId} />
