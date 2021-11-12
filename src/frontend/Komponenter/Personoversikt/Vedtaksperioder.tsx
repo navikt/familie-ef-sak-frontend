@@ -64,7 +64,7 @@ const historikkRad = (andel: AndelHistorikk) => (
         <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
         <td>{vedtakstidspunkt(andel)}</td>
         <td>{andel.saksbehandler}</td>
-        <td>NY behandlingstype</td>
+        <td>{andel.behandlingType}</td>
         <td>{endring(andel.endring)}</td>
     </Rad>
 );

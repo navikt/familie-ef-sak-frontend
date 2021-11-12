@@ -1,3 +1,4 @@
+import { Behandlingstype } from './behandlingstype';
 import { EAktivitet, EPeriodetype } from './vedtak';
 
 export interface TilkjentYtelse {
@@ -21,6 +22,7 @@ export interface AndelHistorikk {
     endring?: AndelHistorikkEndring;
     aktivitet: EAktivitet;
     periodeType: EPeriodetype;
+    behandlingType: Behandlingstype;
 }
 
 export interface AndelHistorikkEndring {
