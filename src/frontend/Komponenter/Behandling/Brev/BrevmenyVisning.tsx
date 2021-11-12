@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     BrevStruktur,
     Delmal,
@@ -169,15 +169,15 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
-    const genererBrevCallback = useCallback(
-        genererBrev,
-        // eslint-disable-next-line
-        [valgteFelt, valgteDelmaler, behandlingId, brevMal]
-    );
 
-    // eslint-disable-next-line
-    useEffect(utsattGenererBrev, [alleFlettefelter]);
-    useEffect(genererBrevCallback, [genererBrevCallback]);
+    useEffect(utsattGenererBrev, [
+        utsattGenererBrev,
+        alleFlettefelter,
+        valgteFelt,
+        valgteDelmaler,
+        behandlingId,
+        brevMal,
+    ]);
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
