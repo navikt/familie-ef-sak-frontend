@@ -11,8 +11,9 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useHistory, useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -26,11 +27,25 @@ interface ITilbakekreving {
     begrunnelse: string;
 }
 
+const TilbakekrevingsvalgTilTekst: Record<ITilbakekrevingsvalg, string> = {
+    OPPRETT_MED_VARSEL: 'Opprett med advarsel',
+    OPPRETT_UTEN_VARSEL: 'Opprett uten advarsel',
+    AVVENT: 'Avvent',
+};
+
 const VarselValg = styled.div`
     margin-bottom: 1rem;
 `;
 
-enum ÅpenTilbakekrevingStatus {
+const VisTilbakekreving = styled.div`
+    margin-top: 1rem;
+`;
+
+const UnderOverskrfit = styled(Element)`
+    margin-top: 1rem;
+`;
+
+const enum ÅpenTilbakekrevingStatus {
     LASTER = 'LASTER',
     HAR_ÅPEN = 'HAR_ÅPEN',
     HAR_IKKE_ÅPEN = 'HAR_IKKE_ÅPEN',
@@ -39,6 +54,7 @@ enum ÅpenTilbakekrevingStatus {
 export const Tilbakekreving: React.FC = () => {
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
+    const { behandlingErRedigerbar } = useBehandling();
     const { behandlingId } = useParams<IBehandlingParams>();
     const history = useHistory();
     const [tilbakekrevingsvalg, settTilbakekrevingsvalg] = useState<ITilbakekrevingsvalg>();
@@ -122,7 +138,6 @@ export const Tilbakekreving: React.FC = () => {
             })
             .finally(() => settLåsKnapp(false));
     };
-
     switch (åpenTilbakekrevingStatus) {
         case ÅpenTilbakekrevingStatus.LASTER:
             return <NavFrontendSpinner />;
@@ -136,7 +151,10 @@ export const Tilbakekreving: React.FC = () => {
         default:
             return (
                 <div>
-                    <FamilieRadioGruppe erLesevisning={false} legend={<h2>Tilbakekreving</h2>}>
+                    <FamilieRadioGruppe
+                        erLesevisning={!behandlingErRedigerbar}
+                        legend={<h2>Tilbakekreving</h2>}
+                    >
                         <Radio
                             checked={
                                 tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL
@@ -204,13 +222,31 @@ export const Tilbakekreving: React.FC = () => {
                             }}
                         />
                     </FamilieRadioGruppe>
-                    <Hovedknapp
-                        htmlType={'submit'}
-                        onClick={lagreTilbakekrevingsvalg}
-                        disabled={låsKnapp}
-                    >
-                        Lagre tilbakekrevingsvalg
-                    </Hovedknapp>
+                    {behandlingErRedigerbar && (
+                        <Hovedknapp
+                            htmlType={'submit'}
+                            onClick={lagreTilbakekrevingsvalg}
+                            disabled={låsKnapp}
+                        >
+                            Lagre tilbakekrevingsvalg
+                        </Hovedknapp>
+                    )}
+                    {!behandlingErRedigerbar && (
+                        <VisTilbakekreving>
+                            <UnderOverskrfit>Valg for tilbakekreving:</UnderOverskrfit>
+                            <Normaltekst>
+                                {
+                                    TilbakekrevingsvalgTilTekst[
+                                        tilbakekrevingsvalg as ITilbakekrevingsvalg
+                                    ]
+                                }
+                            </Normaltekst>
+                            <UnderOverskrfit>Valg for begrunnelse:</UnderOverskrfit>
+                            <Normaltekst>
+                                {begrunnelse ? begrunnelse : 'Ingen begrunnelse'}
+                            </Normaltekst>
+                        </VisTilbakekreving>
+                    )}
                     {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
                 </div>
             );
