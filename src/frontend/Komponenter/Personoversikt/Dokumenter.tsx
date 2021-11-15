@@ -12,7 +12,7 @@ import { Element } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
-import { åpneFilIEgenTab } from '../../App/utils/utils';
+import { groupBy, åpneFilIEgenTab } from '../../App/utils/utils';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -49,6 +49,11 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     return (
         <DataViewer response={{ dokumentResponse }}>
             {({ dokumentResponse }) => {
+                console.log('dok', dokumentResponse);
+                const grouped = groupBy(dokumentResponse, (i) => i.journalpostId);
+
+                console.log('test', grouped);
+
                 return (
                     <>
                         <DokumenterVisning>
