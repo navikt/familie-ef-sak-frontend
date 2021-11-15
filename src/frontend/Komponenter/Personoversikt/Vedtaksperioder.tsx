@@ -95,7 +95,6 @@ const historikkRad = (andel: AndelHistorikk) => {
 };
 
 const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
-    console.log('ANDELER', andeler);
     return (
         <StyledTabell className="tabell">
             <thead>
