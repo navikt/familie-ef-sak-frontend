@@ -60,6 +60,7 @@ const etikettType = (periodeType: EPeriodetype) => {
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return 'info';
         case EPeriodetype.UTVIDELSE:
+            return 'fokus';
         case EPeriodetype.FORLENGELSE:
             return 'advarsel';
     }
