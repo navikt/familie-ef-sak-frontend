@@ -52,8 +52,6 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
         };
     };
 
-    console.log('DOKUMENTER', journalPost);
-
     return (
         <StyledDokumentWrapper>
             <Systemtittel>Dokumenter</Systemtittel>

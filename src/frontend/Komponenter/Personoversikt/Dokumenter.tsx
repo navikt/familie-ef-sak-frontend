@@ -19,6 +19,14 @@ const DokumenterVisning = styled.div`
     flex-direction: column;
 `;
 
+const TrHoveddokument = styled.tr`
+    background-color: #f7f7f7;
+`;
+
+const LenkeVenstrePadding = styled(Lenke)`
+    padding-left: 2rem;
+`;
+
 const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,
 }) => {
@@ -49,10 +57,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     return (
         <DataViewer response={{ dokumentResponse }}>
             {({ dokumentResponse }) => {
-                console.log('dok', dokumentResponse);
-                const grouped = groupBy(dokumentResponse, (i) => i.journalpostId);
-
-                console.log('test', grouped);
+                const grupperteDokumenter = groupBy(dokumentResponse, (i) => i.journalpostId);
 
                 return (
                     <>
@@ -65,29 +70,48 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                         <Kolonnetittel text={'Tittel'} width={35} />
                                     </thead>
                                     <tbody>
-                                        {dokumentResponse.map(
-                                            (dokument: Dokumentinfo, indeks: number) => {
-                                                return (
-                                                    <tr key={indeks}>
-                                                        <Td>
-                                                            {formaterNullableIsoDatoTid(
-                                                                dokument.dato
-                                                            )}
-                                                        </Td>
-                                                        <Td>
-                                                            <Lenke
-                                                                onClick={() =>
-                                                                    hentDokument(dokument)
-                                                                }
-                                                                href={'#'}
-                                                            >
-                                                                {dokument.tittel}
-                                                            </Lenke>
-                                                        </Td>
-                                                    </tr>
-                                                );
-                                            }
-                                        )}
+                                        {Object.keys(grupperteDokumenter).map((key) => {
+                                            return grupperteDokumenter[key].map(
+                                                (dokument: Dokumentinfo, indeks: number) => {
+                                                    if (indeks === 0) {
+                                                        return (
+                                                            <TrHoveddokument key={indeks}>
+                                                                <Td>
+                                                                    {formaterNullableIsoDatoTid(
+                                                                        dokument.dato
+                                                                    )}
+                                                                </Td>
+                                                                <Td>
+                                                                    <Lenke
+                                                                        onClick={() =>
+                                                                            hentDokument(dokument)
+                                                                        }
+                                                                        href={'#'}
+                                                                    >
+                                                                        {dokument.tittel}
+                                                                    </Lenke>
+                                                                </Td>
+                                                            </TrHoveddokument>
+                                                        );
+                                                    } else
+                                                        return (
+                                                            <tr key={indeks}>
+                                                                <Td></Td>
+                                                                <Td style={{ marginLeft: '2rem' }}>
+                                                                    <LenkeVenstrePadding
+                                                                        onClick={() =>
+                                                                            hentDokument(dokument)
+                                                                        }
+                                                                        href={'#'}
+                                                                    >
+                                                                        {dokument.tittel}
+                                                                    </LenkeVenstrePadding>
+                                                                </Td>
+                                                            </tr>
+                                                        );
+                                                }
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </TabellWrapper>
