@@ -67,7 +67,6 @@ const etikettType = (periodeType: EPeriodetype) => {
 const historikkRad = (andel: AndelHistorikk) => {
     return (
         <Rad type={andel.endring?.type}>
-            <td>NY stønad</td>
             <td>
                 {formaterNullableMånedÅr(andel.andel.stønadFra)}
                 {' - '}
@@ -80,11 +79,11 @@ const historikkRad = (andel: AndelHistorikk) => {
             </td>
             <td>{andel.aktivitet}</td>
             <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-            <td>NY samordningsfradrag</td>
+            <td>{andel.andel.samordningsfradrag}</td>
             <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
             <td>{vedtakstidspunkt(andel)}</td>
             <td>{andel.saksbehandler}</td>
-            <td>{andel.behandlingType}</td>
+            <td>{storForbokstavOgRestenSmå(andel.behandlingType)}</td>
             <td>{endring(andel.endring)}</td>
         </Rad>
     );
@@ -96,7 +95,6 @@ const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andele
         <StyledTabell className="tabell">
             <thead>
                 <tr>
-                    <th>Stønad</th>
                     <th>Periode (fom-tom)</th>
                     <th>Periodetype</th>
                     <th>Aktivitet</th>
