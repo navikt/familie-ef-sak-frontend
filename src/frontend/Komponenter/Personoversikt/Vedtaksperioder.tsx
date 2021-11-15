@@ -14,6 +14,7 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../App/utils/formatter';
+import { NavLink } from 'react-router-dom';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import EtikettBase from 'nav-frontend-etiketter';
@@ -83,7 +84,11 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
             <td>{vedtakstidspunkt(andel)}</td>
             <td>{andel.saksbehandler}</td>
-            <td>{storForbokstavOgRestenSmå(andel.behandlingType)}</td>
+            <td>
+                <NavLink to={`/behandling/${andel.behandlingId}`}>
+                    {storForbokstavOgRestenSmå(andel.behandlingType)}
+                </NavLink>
+            </td>
             <td>{endring(andel.endring)}</td>
         </Rad>
     );
