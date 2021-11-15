@@ -96,12 +96,11 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, [hentVedtak]);
 
     useEffect(() => {
-        if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
-            settBrevmal(
-                mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV
-                    ? mellomlagretBrev.data.brevmal
-                    : fritekstmal
-            );
+        if (
+            mellomlagretBrev.status === RessursStatus.SUKSESS &&
+            mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV
+        ) {
+            settBrevmal(mellomlagretBrev.data.brevmal);
         }
     }, [mellomlagretBrev]);
 
