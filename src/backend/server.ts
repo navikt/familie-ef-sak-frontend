@@ -46,6 +46,13 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     );
 
     app.use(
+        '/dokument',
+        ensureAuthenticated(azureAuthClient, false),
+        attachToken(azureAuthClient),
+        doProxy('/dokument', sakProxyUrl)
+    );
+
+    app.use(
         '/familie-brev/api',
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),

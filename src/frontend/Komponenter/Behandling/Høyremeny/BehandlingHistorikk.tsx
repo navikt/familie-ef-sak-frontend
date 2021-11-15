@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { Steg, stegTypeTilTekst, StegUtfall, stegUtfallTilTekst } from './Steg';
+import { Steg, stegTypeTilHistorikkTekst, StegUtfall, stegUtfallTilTekst } from './Steg';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
@@ -48,7 +48,7 @@ const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
     if (behandlingshistorikk.utfall) {
         return stegUtfallTilTekst[behandlingshistorikk.utfall];
     }
-    return stegTypeTilTekst[behandlingshistorikk.steg];
+    return stegTypeTilHistorikkTekst[behandlingshistorikk.steg];
 };
 
 const BehandlingHistorikk: React.FC = () => {

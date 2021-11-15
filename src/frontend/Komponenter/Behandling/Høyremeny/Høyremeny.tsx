@@ -7,7 +7,7 @@ import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 
 const StyledHøyremeny = styled.div`
-    width: 300px;
+    width: 100%;
 `;
 
 export enum Høyremenyvalg {

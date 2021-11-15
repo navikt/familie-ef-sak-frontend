@@ -4,7 +4,7 @@ import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
 import UIModalWrapper from '../Modal/UIModalWrapper';
 import { Element } from 'nav-frontend-typografi';
-import { TabellWrapper, Td } from './TabellWrapper';
+import { IngenData, TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
@@ -94,23 +94,22 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakId: string; type?: Adress
                 Ikon={Bygning}
                 tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
             />
-            <table className="tabell">
-                <thead>
-                    <tr>
-                        <Kolonnetittel text={'Adresse'} width={35} />
-                        <Kolonnetittel
-                            text={type === AdresseType.BOSTEDADRESSE ? '' : 'Adressetype'}
-                            width={15}
-                        />
-                        <Kolonnetittel
-                            text={type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Fra'}
-                            width={15}
-                        />
-                        <Kolonnetittel text={'Til'} width={20} />
-                    </tr>
-                </thead>
-                <Innhold adresser={adresser} fagsakId={fagsakId} />
-            </table>
+            {(adresser.length !== 0 && (
+                <table className="tabell">
+                    <thead>
+                        <tr>
+                            <Kolonnetittel text={'Adresse'} width={35} />
+                            <Kolonnetittel
+                                text={type === AdresseType.BOSTEDADRESSE ? '' : 'Adressetype'}
+                                width={15}
+                            />
+                            <Kolonnetittel text={'Fra'} width={15} />
+                            <Kolonnetittel text={'Til'} width={20} />
+                        </tr>
+                    </thead>
+                    <Innhold adresser={adresser} fagsakId={fagsakId} />
+                </table>
+            )) || <IngenData />}
         </TabellWrapper>
     );
 };
