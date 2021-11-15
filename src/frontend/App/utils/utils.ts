@@ -105,3 +105,9 @@ export const åpneFilIEgenTab = (
         }
     }, 500);
 };
+
+export const storForbokstavOgRestenSmå = (streng: string): string => {
+    return streng.replace(/\S*/g, function (ord) {
+        return ord.charAt(0).toUpperCase() + ord.slice(1).toLowerCase();
+    });
+};

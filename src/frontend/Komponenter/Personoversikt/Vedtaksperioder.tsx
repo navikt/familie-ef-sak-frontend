@@ -16,6 +16,9 @@ import {
 } from '../../App/utils/formatter';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
+import EtikettBase from 'nav-frontend-etiketter';
+import { EPeriodetype } from '../../App/typer/vedtak';
+import { storForbokstavOgRestenSmå } from '../../App/utils/utils';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
@@ -49,25 +52,43 @@ const endring = (endring?: AndelHistorikkEndring) =>
         </Link>
     );
 
-const historikkRad = (andel: AndelHistorikk) => (
-    <Rad type={andel.endring?.type}>
-        <td>NY stønad</td>
-        <td>
-            {formaterNullableMånedÅr(andel.andel.stønadFra)}
-            {' - '}
-            {formaterNullableMånedÅr(andel.andel.stønadTil)}
-        </td>
-        <td>{andel.periodeType}</td>
-        <td>{andel.aktivitet}</td>
-        <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-        <td>NY samordningsfradrag</td>
-        <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
-        <td>{vedtakstidspunkt(andel)}</td>
-        <td>{andel.saksbehandler}</td>
-        <td>{andel.behandlingType}</td>
-        <td>{endring(andel.endring)}</td>
-    </Rad>
-);
+const etikettType = (periodeType: EPeriodetype) => {
+    switch (periodeType) {
+        case EPeriodetype.HOVEDPERIODE:
+            return 'suksess';
+        case EPeriodetype.PERIODE_FØR_FØDSEL:
+            return 'info';
+        case EPeriodetype.UTVIDELSE:
+        case EPeriodetype.FORLENGELSE:
+            return 'advarsel';
+    }
+};
+
+const historikkRad = (andel: AndelHistorikk) => {
+    return (
+        <Rad type={andel.endring?.type}>
+            <td>NY stønad</td>
+            <td>
+                {formaterNullableMånedÅr(andel.andel.stønadFra)}
+                {' - '}
+                {formaterNullableMånedÅr(andel.andel.stønadTil)}
+            </td>
+            <td>
+                <EtikettBase mini type={etikettType(andel.periodeType)}>
+                    {storForbokstavOgRestenSmå(andel.periodeType)}
+                </EtikettBase>
+            </td>
+            <td>{andel.aktivitet}</td>
+            <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
+            <td>NY samordningsfradrag</td>
+            <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
+            <td>{vedtakstidspunkt(andel)}</td>
+            <td>{andel.saksbehandler}</td>
+            <td>{andel.behandlingType}</td>
+            <td>{endring(andel.endring)}</td>
+        </Rad>
+    );
+};
 
 const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     console.log('ANDELER', andeler);
