@@ -10,9 +10,8 @@ import Personopplysninger from './Personopplysninger';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import Vedtaksperioder from './Vedtaksperioder';
-import FritekstBrevMedVisning from '../Behandling/Brev/FritekstBrevMedVisning';
+import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import Dokumenter from './Dokumenter';
-import { FritekstBrevContext } from '../Behandling/Brev/BrevTyper';
 
 const Personoversikt: React.FC = () => {
     const { fagsakId } = useParams<{ fagsakId: string }>();
@@ -53,12 +52,7 @@ const Personoversikt: React.FC = () => {
                         {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
                         {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
                         {tabvalg === 3 && <Dokumenter personopplysninger={personopplysninger} />}
-                        {tabvalg === 4 && (
-                            <FritekstBrevMedVisning
-                                fagsakId={fagsakId}
-                                context={FritekstBrevContext.FRITTSTÅENDE}
-                            />
-                        )}
+                        {tabvalg === 4 && <FrittståendeBrevMedVisning fagsakId={fagsakId} />}
                     </Side>
                 </>
             )}

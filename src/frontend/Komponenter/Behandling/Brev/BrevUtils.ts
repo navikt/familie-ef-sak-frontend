@@ -4,9 +4,16 @@ import {
     Delmal,
     FlettefeltMedVerdi,
     IFritekstBrev,
+    IFrittståendeBrev,
     ValgtFelt,
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
+
+const lagTomtAvsnitt = (): AvsnittMedId => ({
+    deloverskrift: '',
+    innhold: '',
+    id: uuidv4(),
+});
 
 export const finnFlettefeltVisningsnavnFraRef = (dokument: BrevStruktur, ref: string): string => {
     const flettefeltNavnFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
@@ -96,7 +103,7 @@ export const initValgteFeltMedMellomlager = (
     }, {});
 
 export const initielleAvsnittMellomlager = (
-    mellomlagretFritekstbrev: IFritekstBrev | undefined
+    mellomlagretFritekstbrev: IFritekstBrev | IFrittståendeBrev | undefined
 ): AvsnittMedId[] =>
     mellomlagretFritekstbrev
         ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))
@@ -104,3 +111,21 @@ export const initielleAvsnittMellomlager = (
 
 export const skjulAvsnittIBrevbygger = (avsnitt: AvsnittMedId[]): AvsnittMedId[] =>
     avsnitt.map((avsnitt) => ({ ...avsnitt, skalSkjulesIBrevbygger: true }));
+
+export const leggAvsnittBakSisteSynligeAvsnitt = (
+    eksisterendeAvsnitt: AvsnittMedId[]
+): AvsnittMedId[] => {
+    const førsteSkjulteAvsnitt = eksisterendeAvsnitt.findIndex(
+        (avsnitt) => avsnitt.skalSkjulesIBrevbygger
+    );
+
+    return [
+        ...eksisterendeAvsnitt.slice(0, førsteSkjulteAvsnitt),
+        lagTomtAvsnitt(),
+        ...eksisterendeAvsnitt.slice(førsteSkjulteAvsnitt),
+    ];
+};
+
+export const leggTilAvsnittForran = (eksisterendeAvsnitt: AvsnittMedId[]): AvsnittMedId[] => {
+    return [lagTomtAvsnitt(), ...eksisterendeAvsnitt];
+};
