@@ -14,7 +14,6 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../App/utils/formatter';
-import { NavLink } from 'react-router-dom';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import EtikettBase from 'nav-frontend-etiketter';
@@ -86,9 +85,9 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{vedtakstidspunkt(andel)}</td>
             <td>{andel.saksbehandler}</td>
             <td>
-                <NavLink to={`/behandling/${andel.behandlingId}`}>
+                <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
                     {storForbokstavOgRestenSmå(andel.behandlingType)}
-                </NavLink>
+                </Link>
             </td>
             <td>{endring(andel.endring)}</td>
         </Rad>
