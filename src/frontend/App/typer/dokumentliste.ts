@@ -1,4 +1,4 @@
-import { Journalposttype } from '@navikt/familie-typer';
+import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
 
 export interface Dokumentinfo {
     dokumentinfoId: string;
@@ -7,4 +7,5 @@ export interface Dokumentinfo {
     journalpostId: string;
     dato: string;
     journalposttype: Journalposttype;
+    journalstatus: Journalstatus;
 }

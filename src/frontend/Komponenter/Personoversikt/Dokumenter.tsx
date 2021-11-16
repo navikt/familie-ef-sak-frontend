@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper';
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
@@ -66,8 +66,9 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
                                 <table className="tabell">
                                     <thead>
-                                        <Kolonnetittel text={'Dato'} width={35} />
-                                        <Kolonnetittel text={'Tittel'} width={35} />
+                                        <Kolonnetittel text={'Dato'} width={15} />
+                                        <Kolonnetittel text={'Tittel'} width={75} />
+                                        <Kolonnetittel text={'Status'} width={10} />
                                     </thead>
                                     <tbody>
                                         {Object.keys(grupperteDokumenter).map(
@@ -94,6 +95,11 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                                                             {dokument.tittel}
                                                                         </Lenke>
                                                                     </Td>
+                                                                    <Td>
+                                                                        <Normaltekst>
+                                                                            {dokument.journalstatus}
+                                                                        </Normaltekst>
+                                                                    </Td>
                                                                 </TrHoveddokument>
                                                             );
                                                         } else
@@ -116,6 +122,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                                                             {dokument.tittel}
                                                                         </LenkeVenstrePadding>
                                                                     </Td>
+                                                                    <Td></Td>
                                                                 </tr>
                                                             );
                                                     }
