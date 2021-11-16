@@ -1,9 +1,9 @@
 export interface ITidligereVedtaksperioder {
-    infotrygd?: IFinnesTidligereVedtaksperioder;
+    infotrygd?: ITidligereInnvilgetVedtak;
 }
 
-export interface IFinnesTidligereVedtaksperioder {
-    overgangsstønad: boolean;
-    barnetilsyn: boolean;
-    skolepenger: boolean;
+export interface ITidligereInnvilgetVedtak {
+    harTidligereOvergangsstønad: boolean;
+    harTidligereBarnetilsyn: boolean;
+    harTidligereSkolepenger: boolean;
 }

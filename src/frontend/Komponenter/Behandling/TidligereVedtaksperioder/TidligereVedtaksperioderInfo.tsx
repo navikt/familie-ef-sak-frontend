@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IFinnesTidligereVedtaksperioder, ITidligereVedtaksperioder } from './typer';
+import { ITidligereInnvilgetVedtak, ITidligereVedtaksperioder } from './typer';
 import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import TabellVisning, { TabellIkon } from '../Tabell/TabellVisning';
 
@@ -8,9 +8,10 @@ function mapTrueFalse(bool: boolean): string {
 }
 
 const FinnesTidligereVedtaksperioder: FC<{
-    finnesTidligereVedtaksperioder: IFinnesTidligereVedtaksperioder;
-}> = ({ finnesTidligereVedtaksperioder }) => {
-    const { overgangsstønad, barnetilsyn, skolepenger } = finnesTidligereVedtaksperioder;
+    tidligereInnvilgetVedtak: ITidligereInnvilgetVedtak;
+}> = ({ tidligereInnvilgetVedtak }) => {
+    const { harTidligereOvergangsstønad, harTidligereBarnetilsyn, harTidligereSkolepenger } =
+        tidligereInnvilgetVedtak;
     return (
         <GridTabell kolonner={3}>
             <>
@@ -18,9 +19,9 @@ const FinnesTidligereVedtaksperioder: FC<{
                     ikon={TabellIkon.REGISTER}
                     tittel="Har bruker historikk i Infotrygd"
                     verdier={[
-                        { stønad: 'Overgangsstønad', verdi: overgangsstønad },
-                        { stønad: 'Barnetilsyn', verdi: barnetilsyn },
-                        { stønad: 'Skolepenger', verdi: skolepenger },
+                        { stønad: 'Overgangsstønad', verdi: harTidligereOvergangsstønad },
+                        { stønad: 'Barnetilsyn', verdi: harTidligereBarnetilsyn },
+                        { stønad: 'Skolepenger', verdi: harTidligereSkolepenger },
                     ]}
                     kolonner={[
                         {
@@ -47,7 +48,7 @@ const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVed
         return null;
     }
 
-    return <FinnesTidligereVedtaksperioder finnesTidligereVedtaksperioder={infotrygd} />;
+    return <FinnesTidligereVedtaksperioder tidligereInnvilgetVedtak={infotrygd} />;
 };
 
 export default TidligereVedtaksperioderInfo;
