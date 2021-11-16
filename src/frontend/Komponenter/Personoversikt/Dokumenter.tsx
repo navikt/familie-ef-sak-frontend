@@ -70,48 +70,58 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                         <Kolonnetittel text={'Tittel'} width={35} />
                                     </thead>
                                     <tbody>
-                                        {Object.keys(grupperteDokumenter).map((key) => {
-                                            return grupperteDokumenter[key].map(
-                                                (dokument: Dokumentinfo, indeks: number) => {
-                                                    if (indeks === 0) {
-                                                        return (
-                                                            <TrHoveddokument key={indeks}>
-                                                                <Td>
-                                                                    {formaterNullableIsoDatoTid(
-                                                                        dokument.dato
-                                                                    )}
-                                                                </Td>
-                                                                <Td>
-                                                                    <Lenke
-                                                                        onClick={() =>
-                                                                            hentDokument(dokument)
-                                                                        }
-                                                                        href={'#'}
+                                        {Object.keys(grupperteDokumenter).map(
+                                            (journalpostId: string) => {
+                                                return grupperteDokumenter[journalpostId].map(
+                                                    (dokument: Dokumentinfo, indeks: number) => {
+                                                        if (indeks === 0) {
+                                                            return (
+                                                                <TrHoveddokument key={indeks}>
+                                                                    <Td>
+                                                                        {formaterNullableIsoDatoTid(
+                                                                            dokument.dato
+                                                                        )}
+                                                                    </Td>
+                                                                    <Td>
+                                                                        <Lenke
+                                                                            onClick={() =>
+                                                                                hentDokument(
+                                                                                    dokument
+                                                                                )
+                                                                            }
+                                                                            href={'#'}
+                                                                        >
+                                                                            {dokument.tittel}
+                                                                        </Lenke>
+                                                                    </Td>
+                                                                </TrHoveddokument>
+                                                            );
+                                                        } else
+                                                            return (
+                                                                <tr key={indeks}>
+                                                                    <Td></Td>
+                                                                    <Td
+                                                                        style={{
+                                                                            marginLeft: '2rem',
+                                                                        }}
                                                                     >
-                                                                        {dokument.tittel}
-                                                                    </Lenke>
-                                                                </Td>
-                                                            </TrHoveddokument>
-                                                        );
-                                                    } else
-                                                        return (
-                                                            <tr key={indeks}>
-                                                                <Td></Td>
-                                                                <Td style={{ marginLeft: '2rem' }}>
-                                                                    <LenkeVenstrePadding
-                                                                        onClick={() =>
-                                                                            hentDokument(dokument)
-                                                                        }
-                                                                        href={'#'}
-                                                                    >
-                                                                        {dokument.tittel}
-                                                                    </LenkeVenstrePadding>
-                                                                </Td>
-                                                            </tr>
-                                                        );
-                                                }
-                                            );
-                                        })}
+                                                                        <LenkeVenstrePadding
+                                                                            onClick={() =>
+                                                                                hentDokument(
+                                                                                    dokument
+                                                                                )
+                                                                            }
+                                                                            href={'#'}
+                                                                        >
+                                                                            {dokument.tittel}
+                                                                        </LenkeVenstrePadding>
+                                                                    </Td>
+                                                                </tr>
+                                                            );
+                                                    }
+                                                );
+                                            }
+                                        )}
                                     </tbody>
                                 </table>
                             </TabellWrapper>
