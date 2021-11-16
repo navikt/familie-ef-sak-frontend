@@ -13,6 +13,7 @@ export type FormHook<T extends Record<string, any>> = {
     setErrors: Dispatch<SetStateAction<FormErrors<T>>>;
     validateForm: () => boolean;
     onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement>;
+    customValidate: (fn: Valideringsfunksjon<T>) => boolean;
 };
 
 export type FormErrors<T extends Record<string, any | undefined>> = {
@@ -70,6 +71,10 @@ export default function useFormState<T extends Record<string, unknown>>(
                 if (isValid(errors)) fn(tilFormstate);
             };
         },
+        customValidate(validate) {
+            setErrors(validate(tilFormstate));
+            return isValid(errors);
+        },
     };
 }
 
@@ -77,7 +82,7 @@ function isValid<T extends Record<string, any>>(errors: FormErrors<T>): boolean 
     return Object.keys(errors).reduce<boolean>((acc, key) => {
         const value = errors[key];
         if (typeof value === 'object') {
-            return acc && isValid(value);
+            return acc && isValid(value as FormErrors<T[string]>);
         } else if (Array.isArray(value)) {
             return acc && value.map((v) => isValid(v)).every((result) => result);
         } else if (value === undefined) {
