@@ -7,9 +7,10 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const Footer = styled.footer`
-    width: calc(100% - 571px);
+    width: calc(100%);
     position: fixed;
     bottom: 0;
     background-color: ${navFarger.navGra80};
@@ -34,9 +35,11 @@ const SendTilBeslutterFooter: React.FC<{
     const { modalDispatch } = useModal();
     const { hentTotrinnskontroll } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
+    const [feilmelding, settFeilmelding] = useState<string>();
 
     const sendTilBeslutter = () => {
         settLaster(true);
+        settFeilmelding(undefined);
         axiosRequest<string, undefined>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
@@ -48,24 +51,31 @@ const SendTilBeslutterFooter: React.FC<{
                         type: ModalAction.VIS_MODAL,
                         modalType: ModalType.SENDT_TIL_BESLUTTER,
                     });
-                } else {
-                    window.alert('Det gikk mindre bra! :(((');
+                } else if (
+                    res.status === RessursStatus.FEILET ||
+                    res.status === RessursStatus.FUNKSJONELL_FEIL ||
+                    res.status === RessursStatus.IKKE_TILGANG
+                ) {
+                    settFeilmelding(res.frontendFeilmelding);
                 }
             })
             .finally(() => settLaster(false));
     };
 
     return (
-        <Footer>
-            <MidtstiltInnhold>
-                <StyledHovedknapp
-                    onClick={sendTilBeslutter}
-                    disabled={laster || kanSendesTilBeslutter === false}
-                >
-                    Send til beslutter
-                </StyledHovedknapp>
-            </MidtstiltInnhold>
-        </Footer>
+        <>
+            <Footer>
+                {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                <MidtstiltInnhold>
+                    <StyledHovedknapp
+                        onClick={sendTilBeslutter}
+                        disabled={laster || kanSendesTilBeslutter === false}
+                    >
+                        Send til beslutter
+                    </StyledHovedknapp>
+                </MidtstiltInnhold>
+            </Footer>
+        </>
     );
 };
 
