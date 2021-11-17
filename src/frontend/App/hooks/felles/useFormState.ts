@@ -72,7 +72,8 @@ export default function useFormState<T extends Record<string, unknown>>(
             };
         },
         customValidate(validate) {
-            setErrors(validate(tilFormstate));
+            const errors = validate(tilFormstate);
+            setErrors(errors);
             return isValid(errors);
         },
     };
