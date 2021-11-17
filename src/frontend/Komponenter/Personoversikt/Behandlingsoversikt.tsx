@@ -136,6 +136,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     {tilbakekrevingBehandlinger.length > 0 && (
                         <TilbakekrevingBehandlingerTabell
                             tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
+                            eksternFagsakId={fagsak.eksternId}
                         />
                     )}
                     {kanStarteRevurdering && (

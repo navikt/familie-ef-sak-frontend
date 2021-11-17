@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-    BrevStruktur,
-    Brevtype,
-    DokumentNavn,
-    FritekstBrevContext,
-    IMellomlagretBrevFritekst,
-} from './BrevTyper';
+import { BrevStruktur, Brevtype, DokumentNavn, IMellomlagretBrevFritekst } from './BrevTyper';
 import {
     byggSuksessRessurs,
     byggTomRessurs,
@@ -102,12 +96,11 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, [hentVedtak]);
 
     useEffect(() => {
-        if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
-            settBrevmal(
-                mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV
-                    ? mellomlagretBrev.data.brevmal
-                    : fritekstmal
-            );
+        if (
+            mellomlagretBrev.status === RessursStatus.SUKSESS &&
+            mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV
+        ) {
+            settBrevmal(mellomlagretBrev.data.brevmal);
         }
     }, [mellomlagretBrev]);
 
@@ -141,10 +134,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                         <FritekstBrev
                             behandlingId={props.behandlingId}
                             oppdaterBrevressurs={props.oppdaterBrevRessurs}
-                            context={FritekstBrevContext.BEHANDLING}
-                            mellomlagretFritekstbrev={
-                                (mellomlagretBrev as IMellomlagretBrevFritekst)?.brev
-                            }
+                            mellomlagretFritekstbrev={mellomlagretBrev as IMellomlagretBrevFritekst}
                         />
                     )}
                 </DataViewer>

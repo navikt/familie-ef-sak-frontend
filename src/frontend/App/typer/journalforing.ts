@@ -15,6 +15,21 @@ type Journalstatus =
     | 'OPPLASTING_DOKUMENT'
     | 'UKJENT';
 
+export const journalstatusTilTekst: Record<string, string> = {
+    MOTTATT: 'Mottatt',
+    JOURNALFOERT: 'Journalført',
+    FERDIGSTILT: 'Ferdigstilt',
+    EKSPEDERT: 'Ekspedert',
+    UNDER_ARBEID: 'Under arbeid',
+    FEILREGISTRERT: 'Feilregistrert',
+    UTGAAR: 'Utgår',
+    AVBRUTT: 'Avbrutt',
+    UKJENT_BRUKER: 'Ukjent bruker',
+    RESERVERT: 'Reservert',
+    OPPLASTING_DOKUMENT: 'Opplasting',
+    UKJENT: 'Ukjent',
+};
+
 type BrukerId = 'AKTOERID' | 'FNR';
 
 type Dokumentstatus = 'FERDIGSTILT' | 'AVBRUTT' | 'UNDER_REDIGERING' | 'KASSERT';
