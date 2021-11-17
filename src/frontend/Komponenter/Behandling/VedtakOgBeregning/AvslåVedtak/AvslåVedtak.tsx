@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useApp } from '../../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useHistory } from 'react-router-dom';
@@ -30,6 +30,13 @@ export const AvslåVedtak: React.FC<{
         lagretAvslåBehandling?.avslåÅrsak ?? EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT
     );
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmeldingÅrsak, settFeilmeldingÅrsak] = useState<string>('');
+    const [årsaksmenyVises, settÅrsaksmenyVises] = useState<boolean>(
+        alleVilkårOppfylt || !ikkeOppfyltVilkårEksisterer
+    );
+    const [ugyldigAvslagÅrsak, settUgyldigAvslagÅrsak] = useState<boolean>(
+        !avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT
+    );
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
@@ -40,6 +47,11 @@ export const AvslåVedtak: React.FC<{
         avslåÅrsak: avslagÅrsak,
         avslåBegrunnelse: avslagBegrunnelse,
     };
+
+    useEffect(() => {
+        settÅrsaksmenyVises(alleVilkårOppfylt || !ikkeOppfyltVilkårEksisterer);
+        settUgyldigAvslagÅrsak(!avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
+    }, [alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer, avslagÅrsak]);
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
         return (res: Ressurs<string>) => {
@@ -86,6 +98,12 @@ export const AvslåVedtak: React.FC<{
 
     const lagreVedtak = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        settFeilmeldingÅrsak('');
+        if (årsaksmenyVises && ugyldigAvslagÅrsak) {
+            settFeilmeldingÅrsak('Manglende årsak');
+            return;
+        }
+
         switch (behandling.type) {
             case Behandlingstype.BLANKETT:
                 avslåBlankett();
@@ -109,6 +127,7 @@ export const AvslåVedtak: React.FC<{
             behandlingErRedigerbar={behandlingErRedigerbar}
             alleVilkårOppfylt={alleVilkårOppfylt}
             ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
+            feilmeldingÅrsak={feilmeldingÅrsak}
         />
     );
 };

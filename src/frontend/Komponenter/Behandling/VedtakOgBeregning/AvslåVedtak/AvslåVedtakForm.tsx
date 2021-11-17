@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
@@ -27,6 +27,7 @@ interface Props {
     behandlingErRedigerbar: boolean;
     alleVilkårOppfylt: boolean;
     ikkeOppfyltVilkårEksisterer: boolean;
+    feilmeldingÅrsak: string;
 }
 
 const AvslåVedtakForm: React.FC<Props> = ({
@@ -40,11 +41,14 @@ const AvslåVedtakForm: React.FC<Props> = ({
     behandlingErRedigerbar,
     alleVilkårOppfylt,
     ikkeOppfyltVilkårEksisterer,
+    feilmeldingÅrsak,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
-    if (ikkeOppfyltVilkårEksisterer) {
-        settAvslagÅrsak(EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
-    }
+
+    useEffect(() => {
+        ikkeOppfyltVilkårEksisterer && settAvslagÅrsak(EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
+    }, [ikkeOppfyltVilkårEksisterer, settAvslagÅrsak]);
+
     return (
         <>
             <StyledForm onSubmit={lagreVedtak}>
@@ -52,6 +56,7 @@ const AvslåVedtakForm: React.FC<Props> = ({
                     <SelectAvslagÅrsak
                         avslagÅrsak={avslagÅrsak}
                         settAvslagÅrsak={settAvslagÅrsak}
+                        feilmelding={feilmeldingÅrsak}
                     />
                 )}
                 <EnsligTextArea

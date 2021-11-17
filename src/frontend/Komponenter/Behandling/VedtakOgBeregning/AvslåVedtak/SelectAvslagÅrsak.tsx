@@ -5,11 +5,12 @@ import { FamilieSelect } from '@navikt/familie-form-elements';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '..//konstanter';
 import { useApp } from '../../../../App/context/AppContext';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     avslagÅrsak?: EAvslagÅrsak;
     settAvslagÅrsak: (val: EAvslagÅrsak) => void;
+    feilmelding: string;
 }
 
 const StyledSelect = styled(FamilieSelect)`
@@ -22,10 +23,17 @@ const StyledSelect = styled(FamilieSelect)`
     margin-bottom: 1rem;
 `;
 
+const FeilmeldingTekst = styled(Normaltekst)`
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    color: #ba3a26;
+`;
+
 const SelectAvslagÅrsak = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { avslagÅrsak, settAvslagÅrsak } = props;
+    const { avslagÅrsak, settAvslagÅrsak, feilmelding } = props;
 
     return (
         <>
@@ -48,6 +56,7 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
                     );
                 })}
             </StyledSelect>
+            {feilmelding && <FeilmeldingTekst>{feilmelding}</FeilmeldingTekst>}
         </>
     );
 };
