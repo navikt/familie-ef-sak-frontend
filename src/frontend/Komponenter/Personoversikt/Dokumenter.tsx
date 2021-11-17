@@ -13,6 +13,8 @@ import Lenke from 'nav-frontend-lenker';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy, åpneFilIEgenTab } from '../../App/utils/utils';
+import { tekstMapping } from '../../App/utils/tekstmapping';
+import { journalstatusTilTekst } from '../../App/typer/journalforing';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -79,7 +81,9 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 </Lenke>
             </Td>
             <Td>
-                <Normaltekst>{dokument.journalstatus}</Normaltekst>
+                <Normaltekst>
+                    {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
+                </Normaltekst>
             </Td>
         </TrHoveddokument>
     );
