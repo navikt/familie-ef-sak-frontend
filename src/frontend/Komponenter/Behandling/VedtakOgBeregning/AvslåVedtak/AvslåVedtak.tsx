@@ -26,7 +26,9 @@ export const AvslåVedtak: React.FC<{
     const [avslagBegrunnelse, settAvslagBegrunnelse] = useState<string>(
         lagretAvslåBehandling?.avslåBegrunnelse ?? ''
     );
-    const [avslagÅrsak, settAvslagÅrsak] = useState<EAvslagÅrsak>();
+    const [avslagÅrsak, settAvslagÅrsak] = useState<EAvslagÅrsak>(
+        lagretAvslåBehandling?.avslåÅrsak ?? EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT
+    );
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
@@ -35,6 +37,7 @@ export const AvslåVedtak: React.FC<{
 
     const vedtakRequest: IAvslåVedtak = {
         resultatType: EBehandlingResultat.AVSLÅ,
+        avslåÅrsak: avslagÅrsak,
         avslåBegrunnelse: avslagBegrunnelse,
     };
 

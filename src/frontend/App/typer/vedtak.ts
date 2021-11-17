@@ -2,6 +2,7 @@ import { PeriodeVariant } from '../../Felles/Input/MånedÅr/MånedÅrPeriode';
 
 export type IAvslåVedtak = {
     resultatType: EBehandlingResultat.AVSLÅ;
+    avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
 };
 export interface IBeløpsperiode {

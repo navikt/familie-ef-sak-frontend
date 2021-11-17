@@ -42,6 +42,9 @@ const AvslåVedtakForm: React.FC<Props> = ({
     ikkeOppfyltVilkårEksisterer,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
+    if (ikkeOppfyltVilkårEksisterer) {
+        settAvslagÅrsak(EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
+    }
     return (
         <>
             <StyledForm onSubmit={lagreVedtak}>
