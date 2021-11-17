@@ -54,6 +54,36 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
         </Td>
     );
 
+    const Tabellrad: React.FC<{ dokument: Dokumentinfo }> = ({ dokument }) => (
+        <tr>
+            <Td></Td>
+            <Td
+                style={{
+                    marginLeft: '2rem',
+                }}
+            >
+                <LenkeVenstrePadding onClick={() => hentDokument(dokument)} href={'#'}>
+                    {dokument.tittel}
+                </LenkeVenstrePadding>
+            </Td>
+            <Td></Td>
+        </tr>
+    );
+
+    const HovedTabellrad: React.FC<{ dokument: Dokumentinfo }> = ({ dokument }) => (
+        <TrHoveddokument>
+            <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
+            <Td>
+                <Lenke onClick={() => hentDokument(dokument)} href={'#'}>
+                    {dokument.tittel}
+                </Lenke>
+            </Td>
+            <Td>
+                <Normaltekst>{dokument.journalstatus}</Normaltekst>
+            </Td>
+        </TrHoveddokument>
+    );
+
     return (
         <DataViewer response={{ dokumentResponse }}>
             {({ dokumentResponse }) => {
@@ -77,53 +107,17 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                                     (dokument: Dokumentinfo, indeks: number) => {
                                                         if (indeks === 0) {
                                                             return (
-                                                                <TrHoveddokument key={indeks}>
-                                                                    <Td>
-                                                                        {formaterNullableIsoDatoTid(
-                                                                            dokument.dato
-                                                                        )}
-                                                                    </Td>
-                                                                    <Td>
-                                                                        <Lenke
-                                                                            onClick={() =>
-                                                                                hentDokument(
-                                                                                    dokument
-                                                                                )
-                                                                            }
-                                                                            href={'#'}
-                                                                        >
-                                                                            {dokument.tittel}
-                                                                        </Lenke>
-                                                                    </Td>
-                                                                    <Td>
-                                                                        <Normaltekst>
-                                                                            {dokument.journalstatus}
-                                                                        </Normaltekst>
-                                                                    </Td>
-                                                                </TrHoveddokument>
+                                                                <HovedTabellrad
+                                                                    key={`${journalpostId}-${indeks}`}
+                                                                    dokument={dokument}
+                                                                />
                                                             );
                                                         } else
                                                             return (
-                                                                <tr key={indeks}>
-                                                                    <Td></Td>
-                                                                    <Td
-                                                                        style={{
-                                                                            marginLeft: '2rem',
-                                                                        }}
-                                                                    >
-                                                                        <LenkeVenstrePadding
-                                                                            onClick={() =>
-                                                                                hentDokument(
-                                                                                    dokument
-                                                                                )
-                                                                            }
-                                                                            href={'#'}
-                                                                        >
-                                                                            {dokument.tittel}
-                                                                        </LenkeVenstrePadding>
-                                                                    </Td>
-                                                                    <Td></Td>
-                                                                </tr>
+                                                                <Tabellrad
+                                                                    key={`${journalpostId}-${indeks}`}
+                                                                    dokument={dokument}
+                                                                />
                                                             );
                                                     }
                                                 );
