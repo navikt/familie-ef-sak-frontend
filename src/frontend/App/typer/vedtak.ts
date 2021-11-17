@@ -83,6 +83,19 @@ export enum EPeriodeProperty {
     årMånedTil = 'årMånedTil',
 }
 
+export enum EAvslagÅrsak {
+    VILKÅR_IKKE_OPPFYLT = 'VILKÅR_IKKE_OPPFYLT',
+    BARN_OVER_ÅTTE_ÅR = 'BARN_OVER_ÅTTE_ÅR',
+    STØNADSTID_OPPBRUKT = 'STØNADSTID_OPPBRUKT',
+    MANGLENDE_OPPLYSNINGER = 'MANGLENDE_OPPLYSNINGER',
+}
+
+export const årsakerTilAvslag: EAvslagÅrsak[] = [
+    EAvslagÅrsak.BARN_OVER_ÅTTE_ÅR,
+    EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
+    EAvslagÅrsak.STØNADSTID_OPPBRUKT,
+];
+
 export const periodeVariantTilProperty = (periodeVariant: PeriodeVariant): EPeriodeProperty => {
     switch (periodeVariant) {
         case PeriodeVariant.ÅR_MÅNED_FRA:
@@ -185,6 +198,13 @@ export const aktivitetTilTekst: Record<EAktivitet, string> = {
         'Stønad i påvente av oppstart kvalifiseringsprogram',
     FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING:
         'Stønad i påvente av tilsynsordning (§15-8 femte ledd)',
+};
+
+export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
+    VILKÅR_IKKE_OPPFYLT: 'Vilkår ikke oppfylt',
+    BARN_OVER_ÅTTE_ÅR: 'Barnet er over 8 år',
+    STØNADSTID_OPPBRUKT: 'Stønadstiden er brukt opp',
+    MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
 };
 
 const sorterAktiviteterAlfabetisk = (a: EAktivitet, b: EAktivitet) =>

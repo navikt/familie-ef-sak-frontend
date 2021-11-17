@@ -7,7 +7,8 @@ import VedtaksresultatSwitch from './VedtaksresultatSwitch';
 import SelectVedtaksresultat from './SelectVedtaksresultat';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
-import { InngangsvilkårType, IVilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
+import { erAlleVilkårOppfylt, eksistererIkkeOppfyltVilkår } from '../Vilkårresultat/utils';
 
 interface Props {
     behandling: Behandling;
@@ -18,28 +19,13 @@ const Wrapper = styled.div`
     padding: 1rem 2rem;
 `;
 
-const erAlleVilkårOppfylt = (vilkår: IVilkår) => {
-    const alleOppfyltBortsettFraAleneomsorg = vilkår.vurderinger.every((vurdering: IVurdering) => {
-        if (vurdering.vilkårType !== InngangsvilkårType.ALENEOMSORG) {
-            return vurdering.resultat === Vilkårsresultat.OPPFYLT;
-        } else {
-            return true;
-        }
-    });
-
-    const aleneomsorgOppfylt = vilkår.vurderinger
-        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
-        .some((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
-
-    return alleOppfyltBortsettFraAleneomsorg && aleneomsorgOppfylt;
-};
-
 const VedtakOgBeregning: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
+    const ikkeOppfyltVilkårEksisterer = eksistererIkkeOppfyltVilkår(vilkår);
 
     useEffect(() => {
         hentVedtak();
@@ -66,6 +52,8 @@ const VedtakOgBeregning: FC<Props> = ({ behandling, vilkår }) => {
                             vedtaksresultatType={resultatType}
                             behandling={behandling}
                             lagretVedtak={vedtak}
+                            alleVilkårOppfylt={alleVilkårOppfylt}
+                            ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
                         />
                     </Wrapper>
                 );

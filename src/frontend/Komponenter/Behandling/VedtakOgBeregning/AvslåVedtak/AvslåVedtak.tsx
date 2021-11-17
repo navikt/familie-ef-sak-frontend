@@ -3,22 +3,30 @@ import { useApp } from '../../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useHistory } from 'react-router-dom';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { EBehandlingResultat, IAvslåVedtak, IVedtak } from '../../../../App/typer/vedtak';
+import {
+    EAvslagÅrsak,
+    EBehandlingResultat,
+    IAvslåVedtak,
+    IVedtak,
+} from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
 import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 
-export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVedtak }> = ({
-    behandling,
-    lagretVedtak,
-}) => {
+export const AvslåVedtak: React.FC<{
+    behandling: Behandling;
+    lagretVedtak?: IVedtak;
+    alleVilkårOppfylt: boolean;
+    ikkeOppfyltVilkårEksisterer: boolean;
+}> = ({ behandling, lagretVedtak, alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer }) => {
     const lagretAvslåBehandling =
         lagretVedtak?.resultatType === EBehandlingResultat.AVSLÅ
             ? (lagretVedtak as IAvslåVedtak)
             : undefined;
-    const [avslåBegrunnelse, settAvslåBegrunnelse] = useState<string>(
+    const [avslagBegrunnelse, settAvslagBegrunnelse] = useState<string>(
         lagretAvslåBehandling?.avslåBegrunnelse ?? ''
     );
+    const [avslagÅrsak, settAvslagÅrsak] = useState<EAvslagÅrsak>();
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>();
     const history = useHistory();
@@ -27,7 +35,7 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
 
     const vedtakRequest: IAvslåVedtak = {
         resultatType: EBehandlingResultat.AVSLÅ,
-        avslåBegrunnelse,
+        avslåBegrunnelse: avslagBegrunnelse,
     };
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
@@ -88,12 +96,16 @@ export const AvslåVedtak: React.FC<{ behandling: Behandling; lagretVedtak?: IVe
 
     return (
         <AvslåVedtakForm
-            avslåBegrunnelse={avslåBegrunnelse}
-            settAvslåBegrunnelse={settAvslåBegrunnelse}
+            avslagÅrsak={avslagÅrsak}
+            settAvslagÅrsak={settAvslagÅrsak}
+            avslagBegrunnelse={avslagBegrunnelse}
+            settAvslagBegrunnelse={settAvslagBegrunnelse}
             laster={laster ?? false}
             lagreVedtak={lagreVedtak}
             feilmelding={feilmelding}
             behandlingErRedigerbar={behandlingErRedigerbar}
+            alleVilkårOppfylt={alleVilkårOppfylt}
+            ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
         />
     );
 };

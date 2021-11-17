@@ -10,17 +10,28 @@ interface Props {
     vedtaksresultatType?: EBehandlingResultat;
     behandling: Behandling;
     lagretVedtak?: IVedtak;
+    alleVilkårOppfylt: boolean;
+    ikkeOppfyltVilkårEksisterer: boolean;
 }
 
 const VedtaksresultatSwitch: React.FC<Props> = ({
     vedtaksresultatType,
     behandling,
     lagretVedtak,
+    alleVilkårOppfylt,
+    ikkeOppfyltVilkårEksisterer,
 }) => {
     if (!vedtaksresultatType) return null;
     switch (vedtaksresultatType) {
         case EBehandlingResultat.AVSLÅ:
-            return <AvslåVedtak behandling={behandling} lagretVedtak={lagretVedtak} />;
+            return (
+                <AvslåVedtak
+                    behandling={behandling}
+                    lagretVedtak={lagretVedtak}
+                    alleVilkårOppfylt={alleVilkårOppfylt}
+                    ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
+                />
+            );
         case EBehandlingResultat.INNVILGE:
             return <InnvilgeVedtak behandling={behandling} lagretVedtak={lagretVedtak} />;
         case EBehandlingResultat.BEHANDLE_I_GOSYS:
