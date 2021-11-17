@@ -6,6 +6,7 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Vilkårstittel } from '../Inngangsvilkår/Vilkårstittel';
 import VisEllerEndreVurdering from '../Vurdering/VisEllerEndreVurdering';
 import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
+import TidligereVedtaksperioderInfo from './TidligereVedtaksperioderInfo';
 
 const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const {
@@ -45,6 +46,11 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
                                             paragrafTittel="§15-8" // TODO: Sjekk om riktig paragraf
                                             tittel="Tidligere vedtaksperioder"
                                             vilkårsresultat={vurdering.resultat}
+                                        />
+                                        <TidligereVedtaksperioderInfo
+                                            tidligereVedtaksperioder={
+                                                vilkår.grunnlag.tidligereVedtaksperioder
+                                            }
                                         />
                                     </>
                                 ),

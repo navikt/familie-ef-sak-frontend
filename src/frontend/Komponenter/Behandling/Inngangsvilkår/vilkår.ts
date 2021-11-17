@@ -4,6 +4,7 @@ import { IBosituasjon, ISivilstandsplaner } from './Samliv/typer';
 import { IBarnMedSamvær } from './Aleneomsorg/typer';
 import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../../App/typer/overgangsstønad';
 import { Begrunnelse, SvarId } from '../Vurdering/typer';
+import { ITidligereVedtaksperioder } from '../TidligereVedtaksperioder/typer';
 
 export interface IVilkår {
     vurderinger: IVurdering[];
@@ -11,6 +12,7 @@ export interface IVilkår {
 }
 
 export interface IVilkårGrunnlag {
+    tidligereVedtaksperioder: ITidligereVedtaksperioder;
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
     bosituasjon: IBosituasjon;

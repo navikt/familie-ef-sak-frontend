@@ -6,6 +6,7 @@ import { Behandlingsårsak } from '../typer/Behandlingsårsak';
 
 export interface Fagsak {
     id: string;
+    eksternId: number;
     personIdent: string;
     stønadstype: Stønadstype;
     behandlinger: Behandling[];
