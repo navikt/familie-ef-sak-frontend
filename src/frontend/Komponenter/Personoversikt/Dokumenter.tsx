@@ -19,6 +19,8 @@ import { journalstatusTilTekst } from '../../App/typer/journalforing';
 const DokumenterVisning = styled.div`
     display: flex;
     flex-direction: column;
+
+    margin-bottom: 5rem;
 `;
 
 const TrHoveddokument = styled.tr`
@@ -105,8 +107,14 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                         <Kolonnetittel text={'Status'} width={10} />
                                     </thead>
                                     <tbody>
-                                        {Object.keys(grupperteDokumenter).map(
-                                            (journalpostId: string) => {
+                                        {Object.keys(grupperteDokumenter)
+                                            .sort(function (a, b) {
+                                                return grupperteDokumenter[a][0].dato >
+                                                    grupperteDokumenter[b][0].dato
+                                                    ? -1
+                                                    : 1;
+                                            })
+                                            .map((journalpostId: string) => {
                                                 return grupperteDokumenter[journalpostId].map(
                                                     (dokument: Dokumentinfo, indeks: number) => {
                                                         if (indeks === 0) {
@@ -125,8 +133,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                                             );
                                                     }
                                                 );
-                                            }
-                                        )}
+                                            })}
                                     </tbody>
                                 </table>
                             </TabellWrapper>
