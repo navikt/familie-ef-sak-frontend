@@ -1,5 +1,5 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { håndterFeil, håndterRessurs, preferredAxios } from '../api/axios';
 import { Ressurs, RessursFeilet, RessursSuksess } from '../typer/ressurs';
@@ -57,22 +57,25 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         }
     };
 
-    const axiosRequest = <T, D>(
-        config: AxiosRequestConfig & { data?: D }
-    ): Promise<RessursFeilet | RessursSuksess<T>> => {
-        return preferredAxios
-            .request<Ressurs<T>>(config)
-            .then((response: AxiosResponse<Ressurs<T>>) => {
-                const responsRessurs: Ressurs<T> = response.data;
-                return håndterRessurs(responsRessurs, innloggetSaksbehandler, response.headers);
-            })
-            .catch((error: AxiosError<Ressurs<T>>) => {
-                if (error.message.includes('401')) {
-                    settAutentisert(false);
-                }
-                return håndterFeil(error, innloggetSaksbehandler);
-            });
-    };
+    const axiosRequest = useCallback(
+        <T, D>(
+            config: AxiosRequestConfig & { data?: D }
+        ): Promise<RessursFeilet | RessursSuksess<T>> => {
+            return preferredAxios
+                .request<Ressurs<T>>(config)
+                .then((response: AxiosResponse<Ressurs<T>>) => {
+                    const responsRessurs: Ressurs<T> = response.data;
+                    return håndterRessurs(responsRessurs, innloggetSaksbehandler, response.headers);
+                })
+                .catch((error: AxiosError<Ressurs<T>>) => {
+                    if (error.message.includes('401')) {
+                        settAutentisert(false);
+                    }
+                    return håndterFeil(error, innloggetSaksbehandler);
+                });
+        },
+        [innloggetSaksbehandler]
+    );
 
     return {
         axiosRequest,
