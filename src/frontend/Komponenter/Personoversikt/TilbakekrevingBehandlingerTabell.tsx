@@ -1,7 +1,13 @@
 import React from 'react';
-import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
+import {
+    TilbakekrevingBehandling,
+    tilbakekrevingBehandlingsresultattypeTilTekst,
+    tilbakekrevingBehandlingsstatusTilTekst,
+    tilbakekrevingBehandlingstypeTilTekst,
+} from '../../App/typer/tilbakekreving';
 import styled from 'styled-components';
 import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../App/utils/formatter';
+import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -9,9 +15,14 @@ const StyledTable = styled.table`
     margin-left: 1rem;
 `;
 
+const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string) => {
+    return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
+};
+
 export const TilbakekrevingBehandlingerTabell: React.FC<{
     tilbakekrevingBehandlinger: TilbakekrevingBehandling[];
-}> = ({ tilbakekrevingBehandlinger }) => {
+    eksternFagsakId: number;
+}> = ({ tilbakekrevingBehandlinger, eksternFagsakId }) => {
     return (
         <>
             <h3>Fagsak: Tilbakekrevinger</h3>
@@ -30,10 +41,30 @@ export const TilbakekrevingBehandlingerTabell: React.FC<{
                         return (
                             <tr key={tilbakekreving.behandlingId}>
                                 <td>{formaterIsoDatoTid(tilbakekreving.opprettetTidspunkt)}</td>
-                                <td>{tilbakekreving.type}</td>
-                                <td>{tilbakekreving.status}</td>
+                                <td>
+                                    {tilbakekreving.type &&
+                                        tilbakekrevingBehandlingstypeTilTekst[tilbakekreving.type]}
+                                </td>
+                                <td>
+                                    {tilbakekrevingBehandlingsstatusTilTekst[tilbakekreving.status]}
+                                </td>
                                 <td>{formaterNullableIsoDato(tilbakekreving.vedtaksdato)}</td>
-                                <td>{tilbakekreving.resultat}</td>
+                                <td>
+                                    <a
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        href={lagTilbakekrevingslenke(
+                                            eksternFagsakId,
+                                            tilbakekreving.behandlingId
+                                        )}
+                                    >
+                                        {tilbakekreving.resultat
+                                            ? tilbakekrevingBehandlingsresultattypeTilTekst[
+                                                  tilbakekreving.resultat
+                                              ]
+                                            : 'Ikke satt'}
+                                    </a>
+                                </td>
                             </tr>
                         );
                     })}

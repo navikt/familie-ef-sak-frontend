@@ -8,15 +8,27 @@ import styled from 'styled-components';
 import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper';
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
-import { åpneFilIEgenTab } from '../../App/utils/utils';
+import { groupBy, åpneFilIEgenTab } from '../../App/utils/utils';
+import { tekstMapping } from '../../App/utils/tekstmapping';
+import { journalstatusTilTekst } from '../../App/typer/journalforing';
 
 const DokumenterVisning = styled.div`
     display: flex;
     flex-direction: column;
+
+    margin-bottom: 5rem;
+`;
+
+const TrHoveddokument = styled.tr`
+    background-color: #f7f7f7;
+`;
+
+const LenkeVenstrePadding = styled(Lenke)`
+    padding-left: 2rem;
 `;
 
 const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
@@ -46,9 +58,43 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
         </Td>
     );
 
+    const Tabellrad: React.FC<{ dokument: Dokumentinfo }> = ({ dokument }) => (
+        <tr>
+            <Td></Td>
+            <Td
+                style={{
+                    marginLeft: '2rem',
+                }}
+            >
+                <LenkeVenstrePadding onClick={() => hentDokument(dokument)} href={'#'}>
+                    {dokument.tittel}
+                </LenkeVenstrePadding>
+            </Td>
+            <Td></Td>
+        </tr>
+    );
+
+    const HovedTabellrad: React.FC<{ dokument: Dokumentinfo }> = ({ dokument }) => (
+        <TrHoveddokument>
+            <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
+            <Td>
+                <Lenke onClick={() => hentDokument(dokument)} href={'#'}>
+                    {dokument.tittel}
+                </Lenke>
+            </Td>
+            <Td>
+                <Normaltekst>
+                    {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
+                </Normaltekst>
+            </Td>
+        </TrHoveddokument>
+    );
+
     return (
         <DataViewer response={{ dokumentResponse }}>
             {({ dokumentResponse }) => {
+                const grupperteDokumenter = groupBy(dokumentResponse, (i) => i.journalpostId);
+
                 return (
                     <>
                         <DokumenterVisning>
@@ -56,33 +102,38 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
                                 <table className="tabell">
                                     <thead>
-                                        <Kolonnetittel text={'Dato'} width={35} />
-                                        <Kolonnetittel text={'Tittel'} width={35} />
+                                        <Kolonnetittel text={'Dato'} width={15} />
+                                        <Kolonnetittel text={'Tittel'} width={75} />
+                                        <Kolonnetittel text={'Status'} width={10} />
                                     </thead>
                                     <tbody>
-                                        {dokumentResponse.map(
-                                            (dokument: Dokumentinfo, indeks: number) => {
-                                                return (
-                                                    <tr key={indeks}>
-                                                        <Td>
-                                                            {formaterNullableIsoDatoTid(
-                                                                dokument.dato
-                                                            )}
-                                                        </Td>
-                                                        <Td>
-                                                            <Lenke
-                                                                onClick={() =>
-                                                                    hentDokument(dokument)
-                                                                }
-                                                                href={'#'}
-                                                            >
-                                                                {dokument.tittel}
-                                                            </Lenke>
-                                                        </Td>
-                                                    </tr>
+                                        {Object.keys(grupperteDokumenter)
+                                            .sort(function (a, b) {
+                                                return grupperteDokumenter[a][0].dato >
+                                                    grupperteDokumenter[b][0].dato
+                                                    ? -1
+                                                    : 1;
+                                            })
+                                            .map((journalpostId: string) => {
+                                                return grupperteDokumenter[journalpostId].map(
+                                                    (dokument: Dokumentinfo, indeks: number) => {
+                                                        if (indeks === 0) {
+                                                            return (
+                                                                <HovedTabellrad
+                                                                    key={`${journalpostId}-${indeks}`}
+                                                                    dokument={dokument}
+                                                                />
+                                                            );
+                                                        } else
+                                                            return (
+                                                                <Tabellrad
+                                                                    key={`${journalpostId}-${indeks}`}
+                                                                    dokument={dokument}
+                                                                />
+                                                            );
+                                                    }
                                                 );
-                                            }
-                                        )}
+                                            })}
                                     </tbody>
                                 </table>
                             </TabellWrapper>

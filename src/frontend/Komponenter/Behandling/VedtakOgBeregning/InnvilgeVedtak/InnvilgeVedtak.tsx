@@ -25,7 +25,7 @@ import { Undertittel } from 'nav-frontend-typografi';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import Utregningstabell from './Utregningstabell';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
-import { validerVedtaksperioder } from '../vedtaksvalidering';
+import { validerInnvilgetVedtakForm, validerVedtaksperioder } from '../vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
@@ -69,7 +69,7 @@ export const InnvilgeVedtak: React.FC<{
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad],
         },
-        validerVedtaksperioder
+        validerInnvilgetVedtakForm
     );
     const inntektsperiodeState = formState.getProps('inntekter') as ListState<IInntektsperiode>;
     const vedtaksperiodeState = formState.getProps('perioder') as ListState<IVedtaksperiode>;
@@ -115,7 +115,7 @@ export const InnvilgeVedtak: React.FC<{
     }, [behandlingErRedigerbar, lagretInnvilgetVedtak, hentLagretBeløpForYtelse, behandling]);
 
     const beregnPerioder = () => {
-        if (formState.validateForm()) {
+        if (formState.customValidate(validerVedtaksperioder)) {
             axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/`,
