@@ -19,6 +19,8 @@ import { journalstatusTilTekst } from '../../App/typer/journalforing';
 const DokumenterVisning = styled.div`
     display: flex;
     flex-direction: column;
+
+    margin-bottom: 5rem;
 `;
 
 const TrHoveddokument = styled.tr`
@@ -92,8 +94,6 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
         <DataViewer response={{ dokumentResponse }}>
             {({ dokumentResponse }) => {
                 const grupperteDokumenter = groupBy(dokumentResponse, (i) => i.journalpostId);
-
-                console.log('g', grupperteDokumenter);
 
                 return (
                     <>
