@@ -38,10 +38,14 @@ export const erEtterDagensDato = (dato: string | Date): boolean => {
     return erEtter(dato, new Date());
 };
 
+/**
+ * @param first date the date that should be after the other one to return true
+ * @param second dateToCompare the date to compare with
+ */
 export const erEtter = (first: string | Date, second: string | Date): boolean => {
     const d1: Date = typeof first === 'string' ? parseISO(first) : first;
     const d2: Date = typeof second === 'string' ? parseISO(second) : second;
-    return isAfter(d2, d1);
+    return isAfter(d1, d2);
 };
 
 export const gjelderÅr = (dato: string, år: number): boolean => {
