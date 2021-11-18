@@ -17,7 +17,7 @@ import {
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import EtikettBase from 'nav-frontend-etiketter';
-import { EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
+import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
 import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 
 const StyledTabell = styled.table`
@@ -78,7 +78,7 @@ const historikkRad = (andel: AndelHistorikk) => {
                     {periodetypeTilTekst[andel.periodeType]}
                 </EtikettBase>
             </td>
-            <td>{andel.aktivitet}</td>
+            <td>{aktivitetTilTekst[andel.aktivitet]}</td>
             <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
             <td>{andel.andel.samordningsfradrag}</td>
             <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
