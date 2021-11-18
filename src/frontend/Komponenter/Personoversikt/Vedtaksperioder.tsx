@@ -17,8 +17,8 @@ import {
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import EtikettBase from 'nav-frontend-etiketter';
-import { EPeriodetype } from '../../App/typer/vedtak';
-import { storForbokstavOgRestenSmå } from '../../App/utils/utils';
+import { EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
+import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
@@ -75,7 +75,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             </td>
             <td>
                 <EtikettBase mini type={etikettType(andel.periodeType)}>
-                    {storForbokstavOgRestenSmå(andel.periodeType)}
+                    {periodetypeTilTekst[andel.periodeType]}
                 </EtikettBase>
             </td>
             <td>{andel.aktivitet}</td>
@@ -86,7 +86,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{andel.saksbehandler}</td>
             <td>
                 <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
-                    {storForbokstavOgRestenSmå(andel.behandlingType)}
+                    {behandlingstypeTilTekst[andel.behandlingType]}
                 </Link>
             </td>
             <td>{endring(andel.endring)}</td>

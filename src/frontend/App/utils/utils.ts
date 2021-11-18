@@ -106,12 +106,6 @@ export const åpneFilIEgenTab = (
     }, 500);
 };
 
-export const storForbokstavOgRestenSmå = (streng: string): string => {
-    return streng.replace(/\S*/g, function (ord) {
-        return ord.charAt(0).toUpperCase() + ord.slice(1).toLowerCase();
-    });
-};
-
 // eslint-disable-next-line
 export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
     list.reduce((previous, currentItem) => {
