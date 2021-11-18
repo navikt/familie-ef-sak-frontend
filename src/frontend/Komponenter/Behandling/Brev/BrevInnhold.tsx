@@ -71,7 +71,11 @@ const BrevInnhold: React.FC<Props> = ({
     leggAvsnittBakSisteSynligeAvsnitt,
     context,
 }) => {
+    const ikkeRedigerBareBrev: (FrittståendeBrevtype | FritekstBrevtype | undefined)[] = [
+        FrittståendeBrevtype.VARSEL_OM_AKTIVITETSPLIKT,
+    ];
     const finnesSynligeAvsnitt = avsnitt.some((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
+    const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
 
     return (
         <BrevKolonner>
@@ -100,14 +104,16 @@ const BrevInnhold: React.FC<Props> = ({
             </StyledSelect>
             {brevType && (
                 <>
-                    <Overskrift
-                        label="Overskrift"
-                        value={overskrift}
-                        onChange={(e) => {
-                            endreOverskrift(e.target.value);
-                        }}
-                    />
-                    {finnesSynligeAvsnitt && (
+                    {brevSkalKunneRedigeres && (
+                        <Overskrift
+                            label="Overskrift"
+                            value={overskrift}
+                            onChange={(e) => {
+                                endreOverskrift(e.target.value);
+                            }}
+                        />
+                    )}
+                    {finnesSynligeAvsnitt && brevSkalKunneRedigeres && (
                         <LeggTilKnappWrapper>
                             <LeggTilKnapp
                                 onClick={leggTilAvsnittForan}
@@ -143,12 +149,14 @@ const BrevInnhold: React.FC<Props> = ({
                                 </Innholdsrad>
                             );
                         })}
-                    <LeggTilKnappWrapper>
-                        <LeggTilKnapp
-                            onClick={leggAvsnittBakSisteSynligeAvsnitt}
-                            knappetekst="Legg til avsnitt"
-                        />
-                    </LeggTilKnappWrapper>
+                    {brevSkalKunneRedigeres && (
+                        <LeggTilKnappWrapper>
+                            <LeggTilKnapp
+                                onClick={leggAvsnittBakSisteSynligeAvsnitt}
+                                knappetekst="Legg til avsnitt"
+                            />
+                        </LeggTilKnappWrapper>
+                    )}
                 </>
             )}
         </BrevKolonner>
