@@ -18,6 +18,7 @@ const FinnesTidligereVedtaksperioder: FC<{
                 <TabellVisning
                     ikon={TabellIkon.REGISTER}
                     tittel="Har bruker historikk i Infotrygd"
+                    undertittel="(inkluderer kun EF VP, ikke PE PP)"
                     verdier={[
                         { stønad: 'Overgangsstønad', verdi: harTidligereOvergangsstønad },
                         { stønad: 'Barnetilsyn', verdi: harTidligereBarnetilsyn },
