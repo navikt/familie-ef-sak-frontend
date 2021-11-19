@@ -99,7 +99,7 @@ export const initielleAvsnittVarselOmAktivitetsplikt: AvsnittMedId[] = [
             '\n\nDu kan lese mer om aktivitetsplikten på nav.no/overgangsstonad-enslig#aktivitet.' +
             '\n\n\nVi ber deg sende inn dokumentasjon som viser hva du gjør av aktivitetene nevnt over, eventuelt' +
             '\ndokumentasjon som viser at du fyller vilkårene for å få unntak fra aktivitetsplikten.' +
-            '\n\nDette må du gjøre innen [BARNETS_ETÅRSDAG].' +
+            '\n\nDette må du gjøre innen barnet fyller 1 år.' +
             '\n\nVi minner om at du har plikt til å gi de opplysningene og levere de dokumentene som er nødvendige' +
             '\nfor at vi skal kunne vurdere om du fortsatt har rett til stønaden. Dersom vi ikke har fått' +
             '\nopplysningene innen fristens utløp, kan vi stanse stønaden din. Dette står i folketrygdloven § 21-3.',

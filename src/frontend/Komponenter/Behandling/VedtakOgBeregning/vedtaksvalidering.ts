@@ -1,14 +1,46 @@
-import { EAktivitet, EPeriodetype, IVedtaksperiode } from '../../../App/typer/vedtak';
+import {
+    EAktivitet,
+    EPeriodetype,
+    IInntektsperiode,
+    IVedtaksperiode,
+} from '../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik, erMånedÅrLik } from '../../../App/utils/dato';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
 import { FormErrors } from '../../../App/hooks/felles/useFormState';
 
-export const validerVedtaksperioder = ({
+export const validerInnvilgetVedtakForm = ({
     perioder,
     inntekter,
     periodeBegrunnelse,
     inntektBegrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
+    const periodeBegrunnelseFeil =
+        periodeBegrunnelse === '' || periodeBegrunnelse === undefined
+            ? 'Mangelfull utfylling av periodebegrunnelse'
+            : undefined;
+
+    const inntektBegrunnelseFeil =
+        inntektBegrunnelse === '' || inntektBegrunnelse === undefined
+            ? 'Mangelfull utfylling av inntektsbegrunnelse'
+            : undefined;
+
+    return {
+        ...validerVedtaksperioder({ perioder, inntekter }),
+        inntektBegrunnelse: inntektBegrunnelseFeil,
+        periodeBegrunnelse: periodeBegrunnelseFeil,
+    };
+};
+
+export const validerVedtaksperioder = ({
+    perioder,
+    inntekter,
+}: {
+    perioder: IVedtaksperiode[];
+    inntekter: IInntektsperiode[];
+}): FormErrors<{
+    perioder: IVedtaksperiode[];
+    inntekter: IInntektsperiode[];
+}> => {
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
@@ -81,20 +113,8 @@ export const validerVedtaksperioder = ({
         return { årMånedFra: undefined };
     });
 
-    const periodeBegrunnelseFeil =
-        periodeBegrunnelse === '' || periodeBegrunnelse === undefined
-            ? 'Mangelfull utfylling av periodebegrunnelse'
-            : undefined;
-
-    const inntektBegrunnelseFeil =
-        inntektBegrunnelse === '' || inntektBegrunnelse === undefined
-            ? 'Mangelfull utfylling av inntektsbegrunnelse'
-            : undefined;
-
     return {
         perioder: feilIVedtaksPerioder,
         inntekter: inntektsperiodeFeil,
-        inntektBegrunnelse: inntektBegrunnelseFeil,
-        periodeBegrunnelse: periodeBegrunnelseFeil,
     };
 };

@@ -76,7 +76,8 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper }) => {
         behandlingstemaTilTekst[oppgave.behandlingstema as Behandlingstema];
 
     const kanStarteBlankettBehandling =
-        oppgave.behandlesAvApplikasjon === 'familie-ef-sak-blankett';
+        oppgave.behandlesAvApplikasjon === 'familie-ef-sak-blankett' &&
+        oppgave.behandlingstema === 'ab0071';
 
     const måHåndteresIGosys =
         !måBehandlesIEFSak(oppgave) && !kanJournalføres(oppgave) && !kanStarteBlankettBehandling;

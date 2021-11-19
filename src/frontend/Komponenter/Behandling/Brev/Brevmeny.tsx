@@ -96,11 +96,12 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, [hentVedtak]);
 
     useEffect(() => {
-        if (
-            mellomlagretBrev.status === RessursStatus.SUKSESS &&
-            mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV
-        ) {
-            settBrevmal(mellomlagretBrev.data.brevmal);
+        if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
+            if (mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV) {
+                settBrevmal(mellomlagretBrev.data.brevmal);
+            } else if (mellomlagretBrev.data?.brevtype === Brevtype.FRITEKSTBREV) {
+                settBrevmal('Fritekstbrev');
+            }
         }
     }, [mellomlagretBrev]);
 
@@ -121,14 +122,14 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                 {navn.visningsnavn}
                             </option>
                         ))}
-                        <option value={'Fritekstbrev'} key={'Fritekstbrev'}>
+                        <option value={fritekstmal} key={fritekstmal}>
                             {' '}
                             Fritekstbrev
                         </option>
                     </Select>
                 )}
             </DataViewer>
-            {brevMal === 'Fritekstbrev' ? (
+            {brevMal === fritekstmal ? (
                 <DataViewer response={{ mellomlagretBrev }}>
                     {({ mellomlagretBrev }) => (
                         <FritekstBrev
