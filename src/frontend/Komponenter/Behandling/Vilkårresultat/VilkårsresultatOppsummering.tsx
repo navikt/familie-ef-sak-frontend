@@ -1,13 +1,13 @@
 import React from 'react';
-import {
-    AktivitetsvilkårType,
-    InngangsvilkårType,
-    IVilkår,
-    TidligereVedtaksperioderType,
-} from '../Inngangsvilkår/vilkår';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { ResultatVisning } from './ResultatVisning';
 import TidligereVedtakOppsummering from './TidligereVedtakOppsummering';
+import {
+    sorterUtAktivitetsVilkår,
+    sorterUtInngangsvilkår,
+    sorterUtTidligereVedtaksvilkår,
+} from './utils';
 
 const Container = styled.div`
     max-width: 1180px;
@@ -18,11 +18,9 @@ const InnerContainer = styled.div`
 `;
 
 export const VilkårsresultatOppsummering: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
-    const inngangsvilkår = vilkår.vurderinger.filter((v) => v.vilkårType in InngangsvilkårType);
-    const aktivitetsvilkår = vilkår.vurderinger.filter((v) => v.vilkårType in AktivitetsvilkårType);
-    const tidligereVedtaksvilkår = vilkår.vurderinger.filter(
-        (v) => v.vilkårType in TidligereVedtaksperioderType
-    );
+    const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
+    const aktivitetsvilkår = sorterUtAktivitetsVilkår(vilkår);
+    const tidligereVedtaksvilkår = sorterUtTidligereVedtaksvilkår(vilkår);
 
     return (
         <Container>
