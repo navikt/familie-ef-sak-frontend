@@ -16,6 +16,9 @@ import {
 } from '../../App/utils/formatter';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
+import EtikettBase from 'nav-frontend-etiketter';
+import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
+import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
@@ -49,31 +52,62 @@ const endring = (endring?: AndelHistorikkEndring) =>
         </Link>
     );
 
-const historikkRad = (andel: AndelHistorikk) => (
-    <Rad type={andel.endring?.type}>
-        <td>
-            {formaterNullableMånedÅr(andel.andel.stønadFra)}
-            {' - '}
-            {formaterNullableMånedÅr(andel.andel.stønadTil)}
-        </td>
-        <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-        <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
-        <td>{vedtakstidspunkt(andel)}</td>
-        <td>{andel.saksbehandler}</td>
-        <td>{endring(andel.endring)}</td>
-    </Rad>
-);
+const etikettType = (periodeType: EPeriodetype) => {
+    switch (periodeType) {
+        case EPeriodetype.HOVEDPERIODE:
+            return 'suksess';
+        case EPeriodetype.PERIODE_FØR_FØDSEL:
+            return 'info';
+        case EPeriodetype.UTVIDELSE:
+            return 'fokus';
+        case EPeriodetype.FORLENGELSE:
+            return 'advarsel';
+    }
+};
+
+const historikkRad = (andel: AndelHistorikk) => {
+    return (
+        <Rad type={andel.endring?.type}>
+            <td>
+                {formaterNullableMånedÅr(andel.andel.stønadFra)}
+                {' - '}
+                {formaterNullableMånedÅr(andel.andel.stønadTil)}
+            </td>
+            <td>
+                <EtikettBase mini type={etikettType(andel.periodeType)}>
+                    {periodetypeTilTekst[andel.periodeType]}
+                </EtikettBase>
+            </td>
+            <td>{aktivitetTilTekst[andel.aktivitet]}</td>
+            <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
+            <td>{andel.andel.samordningsfradrag}</td>
+            <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
+            <td>{vedtakstidspunkt(andel)}</td>
+            <td>{andel.saksbehandler}</td>
+            <td>
+                <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
+                    {behandlingstypeTilTekst[andel.behandlingType]}
+                </Link>
+            </td>
+            <td>{endring(andel.endring)}</td>
+        </Rad>
+    );
+};
 
 const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
         <StyledTabell className="tabell">
             <thead>
                 <tr>
-                    <th>Periode</th>
+                    <th>Periode (fom-tom)</th>
+                    <th>Periodetype</th>
+                    <th>Aktivitet</th>
                     <th>Inntektsgrunnlag</th>
+                    <th>Samordningsfradrag</th>
                     <th>Stønadsbeløp</th>
                     <th>Vedtakstidspunkt</th>
                     <th>Saksbehandler</th>
+                    <th>Behandlingstype</th>
                     <th>Endring</th>
                 </tr>
             </thead>

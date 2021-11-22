@@ -1,10 +1,12 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { useApp } from '../../../../App/context/AppContext';
+import SelectAvslagÅrsak from './SelectAvslagÅrsak';
+import { EAvslagÅrsak } from '../../../../App/typer/vedtak';
 
 const StyledForm = styled.form`
     margin-top: 2rem;
@@ -15,32 +17,53 @@ const StyledHovedKnapp = styled(HovedKnappNAV)`
 `;
 
 interface Props {
+    avslagÅrsak?: EAvslagÅrsak;
+    settAvslagÅrsak: (årsak: EAvslagÅrsak) => void;
     lagreVedtak: (e: FormEvent<HTMLFormElement>) => void;
-    avslåBegrunnelse: string;
-    settAvslåBegrunnelse: (begrunnelse: string) => void;
+    avslagBegrunnelse: string;
+    settAvslagBegrunnelse: (begrunnelse: string) => void;
     laster: boolean;
     feilmelding?: string;
     behandlingErRedigerbar: boolean;
+    alleVilkårOppfylt: boolean;
+    ikkeOppfyltVilkårEksisterer: boolean;
+    feilmeldingÅrsak: string;
 }
 
 const AvslåVedtakForm: React.FC<Props> = ({
+    avslagÅrsak,
+    settAvslagÅrsak,
     lagreVedtak,
-    avslåBegrunnelse,
-    settAvslåBegrunnelse,
+    avslagBegrunnelse,
+    settAvslagBegrunnelse,
     feilmelding,
     laster,
     behandlingErRedigerbar,
+    alleVilkårOppfylt,
+    ikkeOppfyltVilkårEksisterer,
+    feilmeldingÅrsak,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
+
+    useEffect(() => {
+        ikkeOppfyltVilkårEksisterer && settAvslagÅrsak(EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
+    }, [ikkeOppfyltVilkårEksisterer, settAvslagÅrsak]);
 
     return (
         <>
             <StyledForm onSubmit={lagreVedtak}>
+                {(alleVilkårOppfylt || !ikkeOppfyltVilkårEksisterer) && (
+                    <SelectAvslagÅrsak
+                        avslagÅrsak={avslagÅrsak}
+                        settAvslagÅrsak={settAvslagÅrsak}
+                        feilmelding={feilmeldingÅrsak}
+                    />
+                )}
                 <EnsligTextArea
-                    value={avslåBegrunnelse}
+                    value={avslagBegrunnelse}
                     onChange={(e) => {
                         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                        settAvslåBegrunnelse(e.target.value);
+                        settAvslagBegrunnelse(e.target.value);
                     }}
                     label="Begrunnelse"
                     maxLength={0}

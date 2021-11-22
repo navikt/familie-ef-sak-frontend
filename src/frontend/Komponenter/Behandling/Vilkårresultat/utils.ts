@@ -1,6 +1,9 @@
 import {
+    AktivitetsvilkårType,
     InngangsvilkårType,
+    IVilkår,
     IVurdering,
+    TidligereVedtaksperioderType,
     Vilkårsresultat,
     VilkårType,
 } from '../Inngangsvilkår/vilkår';
@@ -31,4 +34,65 @@ export const summerVilkårsresultat = (
         acc[resultat] = (acc[resultat] ?? 0) + 1;
         return acc;
     }, {} as Record<Vilkårsresultat, number>);
+};
+
+export const eksistererVilkårsResultat = (
+    vilkårstypeTilResultat: Record<VilkårType, [Vilkårsresultat]>,
+    resultat: Vilkårsresultat
+): boolean => {
+    // @ts-ignore
+    return [].concat(...Object.values(vilkårstypeTilResultat)).includes(resultat);
+};
+
+export const mapFraVilkårTilVurderinger = (vilkår: IVilkår): IVurdering[] => {
+    return vilkår.vurderinger.filter(
+        (v) =>
+            v.vilkårType in InngangsvilkårType ||
+            v.vilkårType in AktivitetsvilkårType ||
+            v.vilkårType in TidligereVedtaksperioderType
+    );
+};
+
+export const sorterUtInngangsvilkår = (vilkår: IVilkår): IVurdering[] => {
+    return vilkår.vurderinger.filter((v) => v.vilkårType in InngangsvilkårType);
+};
+
+export const sorterUtAktivitetsVilkår = (vilkår: IVilkår): IVurdering[] => {
+    return vilkår.vurderinger.filter((v) => v.vilkårType in AktivitetsvilkårType);
+};
+
+export const sorterUtTidligereVedtaksvilkår = (vilkår: IVilkår): IVurdering[] => {
+    return vilkår.vurderinger.filter((v) => v.vilkårType in TidligereVedtaksperioderType);
+};
+
+export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
+    const alleOppfyltBortsettFraAleneomsorg = vilkår.vurderinger.every((vurdering: IVurdering) => {
+        if (vurdering.vilkårType !== InngangsvilkårType.ALENEOMSORG) {
+            return vurdering.resultat === Vilkårsresultat.OPPFYLT;
+        } else {
+            return true;
+        }
+    });
+
+    const aleneomsorgOppfylt = vilkår.vurderinger
+        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
+        .some((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
+
+    return alleOppfyltBortsettFraAleneomsorg && aleneomsorgOppfylt;
+};
+
+export const eksistererIkkeOppfyltVilkår = (vilkår: IVilkår): boolean => {
+    const vurderinger = mapFraVilkårTilVurderinger(vilkår);
+    const vilkårsresultatAleneomsorg = vurderinger
+        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
+        .map((v) => v.resultat);
+    const vurderingerUtenAleneomsorg = vurderinger.filter(
+        (vurdering) => vurdering.vilkårType !== InngangsvilkårType.ALENEOMSORG
+    );
+    const resultater = mapVilkårtypeTilResultat(vurderingerUtenAleneomsorg);
+
+    return (
+        eksistererVilkårsResultat(resultater, Vilkårsresultat.IKKE_OPPFYLT) ||
+        vilkårStatusAleneomsorg(vilkårsresultatAleneomsorg) === Vilkårsresultat.IKKE_OPPFYLT
+    );
 };

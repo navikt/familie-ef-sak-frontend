@@ -18,7 +18,7 @@ const StyledTable = styled.table`
     }
     td,
     th {
-        padding: 0.5rem 1.5rem;
+        padding: 0.25rem 1.5rem;
         border-bottom: none;
         text-align: unset;
     }
