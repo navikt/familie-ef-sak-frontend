@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useHistory, useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -52,18 +52,14 @@ export const Tilbakekreving: React.FC = () => {
         axiosRequest<boolean, null>({
             method: 'GET',
             url: `familie-ef-sak/api/tilbakekreving/${behandlingId}/er-allerede-opprettet`,
-        }).then((respons: Ressurs<boolean>) => {
+        }).then((respons: RessursSuksess<boolean> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settÅpenTilbakekrevingStatus(
                     respons.data === true
                         ? ÅpenTilbakekrevingStatus.HAR_ÅPEN
                         : ÅpenTilbakekrevingStatus.HAR_IKKE_ÅPEN
                 );
-            } else if (
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
-                respons.status === RessursStatus.IKKE_TILGANG
-            ) {
+            } else {
                 settFeilmelding(respons.frontendFeilmelding);
             }
         });
@@ -74,16 +70,14 @@ export const Tilbakekreving: React.FC = () => {
         axiosRequest<ITilbakekreving, null>({
             method: 'GET',
             url: `familie-ef-sak/api/tilbakekreving/${behandlingId}`,
-        }).then((respons: Ressurs<ITilbakekreving>) => {
-            if (respons.status === RessursStatus.SUKSESS && respons.data) {
-                settBegrunnelse(respons.data.begrunnelse);
-                settTilbakekrevingsvalg(respons.data.valg);
-                settVarseltekst(respons.data.varseltekst || '');
-            } else if (
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
-                respons.status === RessursStatus.IKKE_TILGANG
-            ) {
+        }).then((respons: RessursSuksess<ITilbakekreving> | RessursFeilet) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                if (respons.data) {
+                    settBegrunnelse(respons.data.begrunnelse);
+                    settTilbakekrevingsvalg(respons.data.valg);
+                    settVarseltekst(respons.data.varseltekst || '');
+                }
+            } else {
                 settFeilmelding(respons.frontendFeilmelding);
             }
         });

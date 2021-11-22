@@ -7,7 +7,13 @@ import { Link } from 'react-router-dom';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import SorteringsHeader from '../Oppgavebenk/OppgaveSorteringHeader';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PartialRecord } from '../../App/typer/common';
@@ -60,14 +66,10 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-        }).then((respons) => {
+        }).then((respons: RessursSuksess<Fagsak> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settFagsak(respons);
-            } else if (
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
-                respons.status === RessursStatus.IKKE_TILGANG
-            ) {
+            } else {
                 settFeilFagsakHenting(respons.frontendFeilmelding);
             }
         });

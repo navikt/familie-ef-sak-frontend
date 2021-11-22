@@ -21,6 +21,8 @@ export type FeilMelding = {
     frontendFeilmelding: string;
 };
 
+export type RessursHentet<T> = RessursSuksess<T> | RessursFeilet;
+
 export type RessursFeilet =
     | (FeilMelding & { status: RessursStatus.IKKE_TILGANG })
     | (FeilMelding & { status: RessursStatus.FEILET })

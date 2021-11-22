@@ -9,7 +9,7 @@ import {
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { KnappWrapper } from '../../Oppgavebenk/OppgaveFiltrering';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 
@@ -24,10 +24,10 @@ interface Props {
     lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     nullstillVurdering: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ) => Promise<Ressurs<IVurdering>>;
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ) => Promise<Ressurs<IVurdering>>;
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     feilmelding: string | undefined;
     venstreKnappetekst?: string;
     høyreKnappetekst?: string;
@@ -84,11 +84,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET);
                 hentBehandling.rerun();
                 settResetFeilmelding(undefined);
-            } else if (
-                response.status === RessursStatus.FEILET ||
-                response.status === RessursStatus.FUNKSJONELL_FEIL ||
-                response.status === RessursStatus.IKKE_TILGANG
-            ) {
+            } else {
                 settResetFeilmelding(response.frontendFeilmelding);
             }
         });
