@@ -81,16 +81,13 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         }).then((response) => settTilbakekrevingbehandlinger(response));
 
     const gjørTekniskOpphør = () => {
-        axiosRequest<Ressurs<void>, null>({
+        axiosRequest<void, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
-        }).then((response) => {
+        }).then((response: RessursSuksess<void> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
-            } else if (
-                response.status === RessursStatus.FEILET ||
-                response.status === RessursStatus.FUNKSJONELL_FEIL
-            ) {
+            } else {
                 settTekniskOpphørFeilet(true);
             }
         });
