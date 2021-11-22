@@ -118,6 +118,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     lagreVurdering={lagreVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
                     settRedigeringsmodus={settRedigeringsmodus}
+                    resetVurdering={resetVurdering}
                 />
             );
         case Redigeringsmodus.VISNING:
