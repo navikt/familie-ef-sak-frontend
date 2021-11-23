@@ -3,6 +3,7 @@ import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataG
 import {
     Element,
     Normaltekst as NormaltekstNavFrontend,
+    Undertekst,
     Undertittel,
 } from 'nav-frontend-typografi';
 import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
@@ -20,6 +21,7 @@ export enum TabellIkon {
 export interface Kolonndata<T> {
     ikon?: TabellIkon;
     tittel: string;
+    undertittel?: string;
     tittelType?: 'element' | 'undertittel';
     verdier: T[];
     kolonner: Kolonner<T>[];
@@ -42,7 +44,7 @@ const mapIkon = (ikon: TabellIkon) => {
 };
 
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
-    const { ikon, tittel, tittelType, verdier, kolonner } = props;
+    const { ikon, tittel, undertittel, tittelType, verdier, kolonner } = props;
     return (
         <GridTabell kolonner={kolonner.length + 1} utenIkon={!ikon}>
             {ikon && mapIkon(ikon)}
@@ -54,6 +56,9 @@ function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T
                 <Element className="tittel" tag="h3">
                     {' '}
                     {tittel}
+                    {undertittel && (
+                        <Undertekst style={{ marginLeft: '0.25rem' }}>{undertittel}</Undertekst>
+                    )}
                 </Element>
             )}
 
