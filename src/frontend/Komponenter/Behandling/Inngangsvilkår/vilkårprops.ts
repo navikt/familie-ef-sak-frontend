@@ -5,17 +5,19 @@ import {
     SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from './vilkår';
-import { Ressurs } from '../../../App/typer/ressurs';
+import { RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
 
 export interface VilkårProps {
     vurderinger: IVurdering[];
     grunnlag: IVilkårGrunnlag;
-    lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (
+        vurdering: SvarPåVilkårsvurdering
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ) => Promise<Ressurs<IVurdering>>;
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     nullstillVurdering: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ) => Promise<Ressurs<IVurdering>>;
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     feilmeldinger: Vurderingsfeilmelding;
 }

@@ -64,11 +64,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     if (respons.data?.fagsaker?.length) {
                         settFagsakId(respons.data.fagsaker[0].fagsakId);
                     }
-                } else if (
-                    respons.status === RessursStatus.FEILET ||
-                    respons.status === RessursStatus.FUNKSJONELL_FEIL ||
-                    respons.status === RessursStatus.IKKE_TILGANG
-                ) {
+                } else {
                     settFeilFagsakHenting(respons.frontendFeilmelding);
                 }
             });

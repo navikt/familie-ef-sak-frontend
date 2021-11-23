@@ -4,7 +4,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
@@ -44,18 +44,14 @@ const SendTilBeslutterFooter: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
         })
-            .then((res: Ressurs<string>) => {
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     hentTotrinnskontroll.rerun();
                     modalDispatch({
                         type: ModalAction.VIS_MODAL,
                         modalType: ModalType.SENDT_TIL_BESLUTTER,
                     });
-                } else if (
-                    res.status === RessursStatus.FEILET ||
-                    res.status === RessursStatus.FUNKSJONELL_FEIL ||
-                    res.status === RessursStatus.IKKE_TILGANG
-                ) {
+                } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }
             })

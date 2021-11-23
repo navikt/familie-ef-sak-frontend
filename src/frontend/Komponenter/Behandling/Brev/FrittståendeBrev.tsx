@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { useDebouncedCallback } from 'use-debounce';
@@ -176,15 +176,11 @@ const FrittståendeBrev: React.FC<Props> = ({
                 fagsakId,
                 brevType,
             } as IFrittståendeBrev,
-        }).then((respons: Ressurs<string>) => {
+        }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 setUtsendingSuksess(true);
                 nulstillBrev();
-            } else if (
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
-                respons.status === RessursStatus.IKKE_TILGANG
-            ) {
+            } else {
                 settFeilmelding(respons.frontendFeilmelding);
             }
             settSenderInnBrev(false);
