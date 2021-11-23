@@ -7,7 +7,13 @@ import { Link } from 'react-router-dom';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import SorteringsHeader from '../Oppgavebenk/OppgaveSorteringHeader';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PartialRecord } from '../../App/typer/common';
@@ -60,14 +66,10 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-        }).then((respons) => {
+        }).then((respons: RessursSuksess<Fagsak> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settFagsak(respons);
-            } else if (
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL ||
-                respons.status === RessursStatus.IKKE_TILGANG
-            ) {
+            } else {
                 settFeilFagsakHenting(respons.frontendFeilmelding);
             }
         });
@@ -79,16 +81,13 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         }).then((response) => settTilbakekrevingbehandlinger(response));
 
     const gjørTekniskOpphør = () => {
-        axiosRequest<Ressurs<void>, null>({
+        axiosRequest<void, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
-        }).then((response) => {
+        }).then((response: RessursSuksess<void> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
-            } else if (
-                response.status === RessursStatus.FEILET ||
-                response.status === RessursStatus.FUNKSJONELL_FEIL
-            ) {
+            } else {
                 settTekniskOpphørFeilet(true);
             }
         });

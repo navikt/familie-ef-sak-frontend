@@ -1,4 +1,10 @@
-import { byggTomRessurs, Ressurs, RessursStatus, RessursSuksess } from '../typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import {
@@ -25,14 +31,16 @@ const oppdaterInngangsvilkårMedVurdering = (
 export const useHentVilkår = (): {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
-    lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
+    lagreVurdering: (
+        vurdering: SvarPåVilkårsvurdering
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     feilmeldinger: Vurderingsfeilmelding;
     nullstillVurdering: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ) => Promise<Ressurs<IVurdering>>;
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ) => Promise<Ressurs<IVurdering>>;
+    ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
 } => {
     const { axiosRequest } = useApp();
 
@@ -57,83 +65,65 @@ export const useHentVilkår = (): {
         });
     }
 
-    const lagreVurdering = (vurdering: SvarPåVilkårsvurdering): Promise<Ressurs<IVurdering>> => {
+    const lagreVurdering = (
+        vurdering: SvarPåVilkårsvurdering
+    ): Promise<RessursSuksess<IVurdering> | RessursFeilet> => {
         return axiosRequest<IVurdering, SvarPåVilkårsvurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/vilkar`,
             data: vurdering,
-        }).then((respons: Ressurs<IVurdering>) => {
-            switch (respons.status) {
-                case RessursStatus.SUKSESS:
-                    fjernFeilmelding(respons.data.id);
-                    settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
-                        oppdaterInngangsvilkårMedVurdering(
-                            prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
-                            respons.data
-                        )
-                    );
-                    return respons;
-                case RessursStatus.FEILET:
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                    leggTilFeilmelding(vurdering.id, respons.frontendFeilmelding);
-                    return respons;
-                default:
-                    return respons;
+        }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                fjernFeilmelding(respons.data.id);
+                settVilkår((prevInngangsvilkår) =>
+                    oppdaterInngangsvilkårMedVurdering(
+                        prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
+                        respons.data
+                    )
+                );
+            } else {
+                leggTilFeilmelding(vurdering.id, respons.frontendFeilmelding);
             }
+            return respons;
         });
     };
 
     const nullstillVurdering = (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ): Promise<Ressurs<IVurdering>> => {
+    ): Promise<RessursSuksess<IVurdering> | RessursFeilet> => {
         return axiosRequest<IVurdering, OppdaterVilkårsvurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/nullstill`,
             data: nullstillVilkårsvurdering,
-        }).then((respons: Ressurs<IVurdering>) => {
-            switch (respons.status) {
-                case RessursStatus.SUKSESS:
-                    settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
-                        oppdaterInngangsvilkårMedVurdering(
-                            prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
-                            respons.data
-                        )
-                    );
-                    return respons;
-                case RessursStatus.FEILET:
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                    return respons;
-                default:
-                    return respons;
+        }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settVilkår((prevInngangsvilkår) =>
+                    oppdaterInngangsvilkårMedVurdering(
+                        prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
+                        respons.data
+                    )
+                );
             }
+            return respons;
         });
     };
     const ikkeVurderVilkår = (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
-    ): Promise<Ressurs<IVurdering>> => {
+    ): Promise<RessursSuksess<IVurdering> | RessursFeilet> => {
         return axiosRequest<IVurdering, OppdaterVilkårsvurdering>({
             method: 'POST',
             url: `/familie-ef-sak/api/vurdering/ikkevurder`,
             data: nullstillVilkårsvurdering,
-        }).then((respons: Ressurs<IVurdering>) => {
-            switch (respons.status) {
-                case RessursStatus.SUKSESS:
-                    settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
-                        oppdaterInngangsvilkårMedVurdering(
-                            prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
-                            respons.data
-                        )
-                    );
-                    return respons;
-                case RessursStatus.FEILET:
-                case RessursStatus.FUNKSJONELL_FEIL:
-                case RessursStatus.IKKE_TILGANG:
-                    return respons;
-                default:
-                    return respons;
+        }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settVilkår((prevInngangsvilkår: Ressurs<IVilkår>) =>
+                    oppdaterInngangsvilkårMedVurdering(
+                        prevInngangsvilkår as RessursSuksess<IVilkår>, // prevInngangsvilkår kan ikke være != SUKESS her
+                        respons.data
+                    )
+                );
             }
+            return respons;
         });
     };
     const hentVilkår = useCallback(
@@ -141,7 +131,7 @@ export const useHentVilkår = (): {
             axiosRequest<IVilkår, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
-            }).then((hentetInngangsvilkår: Ressurs<IVilkår>) => {
+            }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
                 settVilkår(hentetInngangsvilkår);
             });
         },
