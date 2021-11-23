@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Radio } from 'nav-frontend-skjema';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
@@ -8,6 +8,11 @@ import IkonKnapp from '../../../Felles/Knapper/IkonKnapp';
 import styled from 'styled-components';
 import { ITilbakekrevingsvalg } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { ToggleName } from '../../../App/context/toggles';
+import { useToggles } from '../../../App/context/TogglesContext';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -22,6 +27,7 @@ interface Props {
     endreBegrunnelse: (nyBegrunnelse: string) => void;
     lagreTilbakekrevingsValg: () => void;
     låsKnapp: boolean;
+    behandlingId: string;
 }
 
 export const TilbakekrevingSkjema: React.FC<Props> = ({
@@ -33,8 +39,35 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     endreBegrunnelse,
     lagreTilbakekrevingsValg,
     låsKnapp,
+    behandlingId,
 }) => {
-    const { settIkkePersistertKomponent } = useApp();
+    const { settIkkePersistertKomponent, axiosRequest } = useApp();
+
+    const [forhåndsvisningsFeil, settForhåndsvisningsFeil] = useState<string>();
+
+    const { toggles } = useToggles();
+
+    const åpneBrevINyFane = () => {
+        axiosRequest<string, { varseltekst: string }>({
+            method: 'POST',
+            url: `familie-ef-sak/api/tilbakekreving/${behandlingId}/brev/generer`,
+            data: { varseltekst },
+        }).then((respons: Ressurs<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                åpnePdfIEgenTab(
+                    base64toBlob(respons.data, 'application/pdf'),
+                    'Forhåndsvisning av varselbrev'
+                );
+            } else if (
+                respons.status === RessursStatus.IKKE_TILGANG ||
+                respons.status === RessursStatus.FEILET ||
+                respons.status === RessursStatus.FUNKSJONELL_FEIL
+            ) {
+                settForhåndsvisningsFeil(respons.frontendFeilmelding);
+            }
+        });
+    };
+
     return (
         <>
             <FamilieRadioGruppe erLesevisning={false} legend={<h2>Tilbakekreving</h2>}>
@@ -59,17 +92,21 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                                 endreVarseltekst(e.target.value);
                             }}
                         />
-                        <IkonKnapp
-                            kompakt={true}
-                            mini={true}
-                            erLesevisning={false}
-                            onClick={() => {
-                                console.log('hurra');
-                            }}
-                            knappPosisjon={'venstre'}
-                            ikon={<Søknad />}
-                            label={'Forhåndsvis varsel'}
-                        />
+                        {toggles[ToggleName.visTilbakekrevingsVarselToggle] && (
+                            <IkonKnapp
+                                kompakt={true}
+                                mini={true}
+                                erLesevisning={false}
+                                onClick={åpneBrevINyFane}
+                                knappPosisjon={'venstre'}
+                                ikon={<Søknad />}
+                                label={'Forhåndsvis varsel'}
+                            />
+                        )}
+                        {toggles[ToggleName.visTilbakekrevingsVarselToggle] &&
+                            forhåndsvisningsFeil && (
+                                <AlertStripeFeil>{forhåndsvisningsFeil}</AlertStripeFeil>
+                            )}
                     </VarselValg>
                 )}
                 <Radio

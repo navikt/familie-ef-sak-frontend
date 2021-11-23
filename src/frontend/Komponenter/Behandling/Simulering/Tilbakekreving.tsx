@@ -9,6 +9,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VisTilbakekreving } from './VisTilbakekreving';
 import { TilbakekrevingSkjema } from './TilbakekrevingSkjema';
+import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 
 export enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -36,7 +37,7 @@ const enum ÅpenTilbakekrevingStatus {
 
 export const Tilbakekreving: React.FC = () => {
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, behandling } = useBehandling();
     const { behandlingId } = useParams<IBehandlingParams>();
     const history = useHistory();
     const [tilbakekrevingsvalg, settTilbakekrevingsvalg] = useState<ITilbakekrevingsvalg>();
@@ -44,9 +45,16 @@ export const Tilbakekreving: React.FC = () => {
     const [begrunnelse, settBegrunnelse] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
+    const [kanForhåndsvise, settKanForhåndsvise] = useState<boolean>(false);
 
     const [åpenTilbakekrevingStatus, settÅpenTilbakekrevingStatus] =
         useState<ÅpenTilbakekrevingStatus>(ÅpenTilbakekrevingStatus.LASTER);
+
+    useEffect(() => {
+        if (behandling.status === RessursStatus.SUKSESS) {
+            settKanForhåndsvise(behandling.data.status !== BehandlingStatus.FERDIGSTILT);
+        }
+    }, [behandling]);
 
     useEffect(() => {
         axiosRequest<boolean, null>({
@@ -149,6 +157,7 @@ export const Tilbakekreving: React.FC = () => {
                             endreBegrunnelse={endreBegrunnelse}
                             lagreTilbakekrevingsValg={lagreTilbakekrevingsvalg}
                             låsKnapp={låsKnapp}
+                            behandlingId={behandlingId}
                         />
                     )}
                     {!behandlingErRedigerbar && (
@@ -156,6 +165,8 @@ export const Tilbakekreving: React.FC = () => {
                             tilbakekrevingsvalg={tilbakekrevingsvalg as ITilbakekrevingsvalg}
                             begrunnelse={begrunnelse}
                             varseltekst={varseltekst}
+                            kanForhåndsvise={kanForhåndsvise}
+                            behandlingId={behandlingId}
                         />
                     )}
                     {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
