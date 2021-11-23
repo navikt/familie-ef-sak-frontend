@@ -6,6 +6,7 @@ import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
 import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 
 interface Props {
     forelderRegister?: IAnnenForelder;
@@ -25,6 +26,8 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
         ((forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad)) ||
             harVerdi(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse));
 
+    const sjekkMotPdlMatch = forelderSøknad?.fødselsnummer === forelderRegister?.fødselsnummer;
+
     return (
         <GridTabell>
             {visForelderSøknadInfo && (
@@ -35,7 +38,16 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         {forelderSøknad &&
                         harNavnFødselsdatoEllerFnr(forelderSøknad) &&
                         !søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse ? (
-                            <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
+                            <>
+                                <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
+                                {sjekkMotPdlMatch && (
+                                    <AlertStripeAdvarsel>
+                                        Sjekk av manuelt innlagte opplysninger mot PDL.
+                                        Fødselsnummer {forelderRegister?.fødselsnummer} tilhører{' '}
+                                        {forelderRegister?.navn}
+                                    </AlertStripeAdvarsel>
+                                )}
+                            </>
                         ) : (
                             <>
                                 {søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
