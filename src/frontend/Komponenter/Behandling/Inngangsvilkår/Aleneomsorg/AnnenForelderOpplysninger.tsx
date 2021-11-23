@@ -47,19 +47,21 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 </>
             )}
 
-            {forelderRegister && harNavnFødselsdatoEllerFnr(forelderRegister) && (
-                <>
-                    <Registergrunnlag />
-                    <Normaltekst>Annen forelder</Normaltekst>
-                    <Normaltekst>
-                        {forelderRegister ? (
-                            <AnnenForelderNavnOgFnr forelder={forelderRegister} />
-                        ) : (
-                            '-'
-                        )}
-                    </Normaltekst>
-                </>
-            )}
+            {!visForelderSøknadInfo &&
+                forelderRegister &&
+                harNavnFødselsdatoEllerFnr(forelderRegister) && (
+                    <>
+                        <Registergrunnlag />
+                        <Normaltekst>Annen forelder</Normaltekst>
+                        <Normaltekst>
+                            {forelderRegister ? (
+                                <AnnenForelderNavnOgFnr forelder={forelderRegister} />
+                            ) : (
+                                '-'
+                            )}
+                        </Normaltekst>
+                    </>
+                )}
 
             {forelderRegister?.dødsfall && (
                 <>
