@@ -42,9 +42,14 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                                 <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
                                 {sjekkMotPdlMatch && (
                                     <AlertStripeAdvarsel>
-                                        Sjekk av manuelt innlagte opplysninger mot PDL.
-                                        Fødselsnummer {forelderRegister?.fødselsnummer} tilhører{' '}
-                                        {forelderRegister?.navn}
+                                        <Normaltekst>
+                                            Sjekk av manuelt innlagte opplysninger mot PDL.
+                                        </Normaltekst>
+                                        <Normaltekst>
+                                            Fødselsnummer {forelderRegister?.fødselsnummer} tilhører
+                                        </Normaltekst>
+                                        <Registergrunnlag />
+                                        <Normaltekst>{forelderRegister?.navn}</Normaltekst>
                                     </AlertStripeAdvarsel>
                                 )}
                             </>
