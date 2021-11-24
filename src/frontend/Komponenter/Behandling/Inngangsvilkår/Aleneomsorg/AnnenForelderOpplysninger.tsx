@@ -7,11 +7,18 @@ import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNav
 import { harVerdi } from '../../../../App/utils/utils';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import styled from 'styled-components';
 
 interface Props {
     forelderRegister?: IAnnenForelder;
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
 }
+
+const NavnOgIkon = styled.div`
+    display: flex;
+
+    flex-direction: row;
+`;
 
 const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
     const forelderSøknad = søknadsgrunnlag.forelder;
@@ -48,8 +55,10 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                                         <Normaltekst>
                                             Fødselsnummer {forelderRegister?.fødselsnummer} tilhører
                                         </Normaltekst>
-                                        <Registergrunnlag />
-                                        <Normaltekst>{forelderRegister?.navn}</Normaltekst>
+                                        <NavnOgIkon>
+                                            <Registergrunnlag />
+                                            <Normaltekst>{forelderRegister?.navn}</Normaltekst>
+                                        </NavnOgIkon>
                                     </AlertStripeAdvarsel>
                                 )}
                             </>
