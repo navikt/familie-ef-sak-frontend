@@ -104,11 +104,10 @@ const UttrekkArbeidssøker: React.FC = () => {
 
     const settKontrollert = useCallback(
         (id: string, kontrollert: boolean): void => {
+            const kontrollertQuery = kontrollert ? '?kontrollert=false' : '';
             axiosRequest<UttrekkArbeidssøkere, null>({
                 method: 'POST',
-                url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${
-                    !kontrollert ? '?kontrollert=false' : ''
-                }`,
+                url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${kontrollertQuery}`,
             }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
                 settFeilmelding(undefined);
                 if (respons.status === RessursStatus.SUKSESS) {
