@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { formaterIsoMånedÅr, formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import {
@@ -11,9 +11,12 @@ import {
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PartialRecord } from '../../App/typer/common';
-import { Knapp } from 'nav-frontend-knapper';
 import { Element, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
+import Pagination from 'paginering';
+import { useHistory } from 'react-router-dom';
+import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
+import { Checkbox } from 'nav-frontend-skjema';
 
 const UttrekkArbeidssøkerContent = styled.div`
     padding: 1rem;
@@ -25,12 +28,13 @@ const StyledTable = styled.table`
     margin-left: 1rem;
 `;
 
-const KnappMedMargin = styled(Knapp)`
-    margin-top: 0.25rem;
+const StyledPagination = styled(Pagination)`
+    padding: 1rem;
 `;
 
 interface UttrekkArbeidssøkere {
     årMåned: string;
+    side: number;
     antallTotalt: number;
     antallKontrollert: number;
     arbeidssøkere: UttrekkArbeidsssøker[];
@@ -41,68 +45,90 @@ interface UttrekkArbeidsssøker {
     fagsakId: string;
     behandlingIdForVedtak: string;
     kontrollert: boolean;
-    tidKontrollert?: string;
+    kontrollertTid?: string;
+    kontrollertAv?: string;
 }
 
 const URL_ARBEIDSSØKER = '/familie-ef-sak/api/uttrekk/arbeidssoker';
 
 const settArbeidssøkereTilKontrollert = (
     prevState: RessursSuksess<UttrekkArbeidssøkere>,
-    id: string
+    id: string,
+    kontrollert: boolean
 ) => {
     return {
         ...prevState,
         data: {
             ...prevState.data,
             arbeidssøkere: prevState.data.arbeidssøkere.map((arbeidssøker) =>
-                arbeidssøker.id === id ? { ...arbeidssøker, kontrollert: true } : arbeidssøker
+                arbeidssøker.id === id ? { ...arbeidssøker, kontrollert } : arbeidssøker
             ),
         },
     };
 };
 
+const ANTALL_PER_SIDE = 20;
+const QUERY_PARAM_SIDE = 'side';
+const QUERY_PARAM_KONTROLLERTE = 'kontrollerte';
+
 const UttrekkArbeidssøker: React.FC = () => {
+    const query = useQueryParams();
+    const history = useHistory();
+
+    const side = query.get(QUERY_PARAM_SIDE) || 1;
+    const visKontrollerte = query.get(QUERY_PARAM_KONTROLLERTE) === 'true';
+
     const [arbeidssøkere, settArbeidssøkere] = useState<Ressurs<UttrekkArbeidssøkere>>(
         byggTomRessurs()
     );
     const [feilmelding, settFeilmelding] = useState<string>();
     const { axiosRequest, gåTilUrl } = useApp();
 
-    const hentUttrekk = () =>
-        axiosRequest<UttrekkArbeidssøkere, null>({
-            method: 'GET',
-            url: URL_ARBEIDSSØKER,
-        }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                settArbeidssøkere(respons);
-            } else {
-                settFeilmelding(respons.frontendFeilmelding);
-            }
-        });
+    const hentUttrekk = useCallback(
+        (side, visKontrollerte: boolean) => {
+            return axiosRequest<UttrekkArbeidssøkere, null>({
+                method: 'GET',
+                url: `${URL_ARBEIDSSØKER}?side=${side}${
+                    visKontrollerte ? '&visKontrollerte=true' : ''
+                }`,
+            }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settArbeidssøkere(respons);
+                } else {
+                    settFeilmelding(respons.frontendFeilmelding);
+                }
+            });
+        },
+        [axiosRequest]
+    );
 
-    const settKontrollert = (id: string): void => {
-        axiosRequest<UttrekkArbeidssøkere, null>({
-            method: 'POST',
-            url: `${URL_ARBEIDSSØKER}/${id}/kontrollert`,
-        }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
-            settFeilmelding(undefined);
-            if (respons.status === RessursStatus.SUKSESS) {
-                settArbeidssøkere((prevState) => {
-                    if (prevState.status !== RessursStatus.SUKSESS) {
-                        throw Error('Kan ikke oppdatere prevstate som ikke har status suksess');
-                    }
-                    return settArbeidssøkereTilKontrollert(prevState, id);
-                });
-            } else {
-                settFeilmelding(respons.frontendFeilmelding);
-            }
-        });
-    };
+    const settKontrollert = useCallback(
+        (id: string, kontrollert: boolean): void => {
+            axiosRequest<UttrekkArbeidssøkere, null>({
+                method: 'POST',
+                url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${
+                    !kontrollert ? '?kontrollert=false' : ''
+                }`,
+            }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
+                settFeilmelding(undefined);
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settArbeidssøkere((prevState) => {
+                        if (prevState.status !== RessursStatus.SUKSESS) {
+                            throw Error('Kan ikke oppdatere prevstate som ikke har status suksess');
+                        }
+                        return settArbeidssøkereTilKontrollert(prevState, id, kontrollert);
+                    });
+                } else {
+                    settFeilmelding(respons.frontendFeilmelding);
+                }
+            });
+        },
+        [axiosRequest]
+    );
 
     useEffect(() => {
-        hentUttrekk();
-        // eslint-disable-next-line
-    }, []);
+        hentUttrekk(side, visKontrollerte);
+    }, [hentUttrekk, side, visKontrollerte]);
 
     return (
         <UttrekkArbeidssøkerContent>
@@ -112,10 +138,32 @@ const UttrekkArbeidssøker: React.FC = () => {
                 {({ arbeidssøkere }) => (
                     <>
                         <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
+                        <Checkbox
+                            label={'Vis kontrollerte'}
+                            onClick={() => {
+                                if (visKontrollerte) {
+                                    query.delete(QUERY_PARAM_KONTROLLERTE);
+                                } else {
+                                    query.set(QUERY_PARAM_KONTROLLERTE, String(true));
+                                }
+                                query.set(QUERY_PARAM_SIDE, String(1));
+                                history.push(`${window.location.pathname}?${query.toString()}`);
+                            }}
+                            checked={visKontrollerte}
+                        />
                         <UttrekkArbeidssøkerTabell
                             arbeidssøkere={arbeidssøkere.arbeidssøkere}
                             settKontrollert={settKontrollert}
                             gåTilUrl={gåTilUrl}
+                        />
+                        <StyledPagination
+                            numberOfItems={arbeidssøkere.antallTotalt}
+                            onChange={(side: number) => {
+                                query.set(QUERY_PARAM_SIDE, String(side));
+                                history.push(`${window.location.pathname}?${query.toString()}`);
+                            }}
+                            itemsPerPage={ANTALL_PER_SIDE}
+                            currentPage={arbeidssøkere.side}
                         />
                     </>
                 )}
@@ -126,35 +174,27 @@ const UttrekkArbeidssøker: React.FC = () => {
 
 const TabellData: PartialRecord<keyof UttrekkArbeidsssøker, string> = {
     fagsakId: 'Fagsak',
+    kontrollertTid: 'Tid kontrollert',
+    kontrollertAv: 'Kontrollert av',
     kontrollert: 'Kontrollert',
-    tidKontrollert: 'Tid kontrollert',
 };
 
 const UttrekkArbeidssøkerTabell: React.FC<{
     arbeidssøkere: UttrekkArbeidsssøker[];
-    settKontrollert: (id: string) => void;
+    settKontrollert: (id: string, kontrollert: boolean) => void;
     gåTilUrl: (url: string) => void;
 }> = ({ arbeidssøkere, settKontrollert, gåTilUrl }) => {
     return (
         <StyledTable className="tabell">
             <thead>
                 <tr>
-                    {Object.entries(TabellData).map(([_, tekst]) => (
-                        <th>{tekst}</th>
+                    {Object.entries(TabellData).map(([field, tekst]) => (
+                        <th key={field}>{tekst}</th>
                     ))}
-                    <th>Sett til kontrollert</th>
                 </tr>
             </thead>
             <tbody>
                 {arbeidssøkere.map((arbeidssøker) => {
-                    const settTilKontrollertKnapp = (
-                        <KnappMedMargin
-                            onClick={() => settKontrollert(arbeidssøker.id)}
-                            disabled={arbeidssøker.kontrollert}
-                        >
-                            Sett til kontrollert
-                        </KnappMedMargin>
-                    );
                     return (
                         <tr key={arbeidssøker.id}>
                             <td>
@@ -168,9 +208,17 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                     <Element>{arbeidssøker.id}</Element>
                                 </Lenke>
                             </td>
-                            <td>{arbeidssøker.kontrollert ? 'Ja' : 'Nei'}</td>
-                            <td>{formaterNullableIsoDatoTid(arbeidssøker.tidKontrollert)}</td>
-                            <td>{settTilKontrollertKnapp}</td>
+                            <td>{formaterNullableIsoDatoTid(arbeidssøker.kontrollertTid)}</td>
+                            <td>{arbeidssøker.kontrollertAv}</td>
+                            <td>
+                                <Checkbox
+                                    label={''}
+                                    onClick={() =>
+                                        settKontrollert(arbeidssøker.id, !arbeidssøker.kontrollert)
+                                    }
+                                    checked={arbeidssøker.kontrollert}
+                                />
+                            </td>
                         </tr>
                     );
                 })}
