@@ -139,7 +139,7 @@ const UttrekkArbeidssøker: React.FC = () => {
                         <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
                         <Checkbox
                             label={'Vis kontrollerte'}
-                            onClick={() => {
+                            onChange={() => {
                                 if (visKontrollerte) {
                                     query.delete(QUERY_PARAM_KONTROLLERTE);
                                 } else {
@@ -212,7 +212,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                             <td>
                                 <Checkbox
                                     label={''}
-                                    onClick={() =>
+                                    onChange={() =>
                                         settKontrollert(arbeidssøker.id, !arbeidssøker.kontrollert)
                                     }
                                     checked={arbeidssøker.kontrollert}
