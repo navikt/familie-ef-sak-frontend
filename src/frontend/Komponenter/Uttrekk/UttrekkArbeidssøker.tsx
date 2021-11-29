@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { formaterIsoMånedÅr, formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import {
+    byggFeiletRessurs,
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
@@ -88,9 +89,11 @@ const UttrekkArbeidssøker: React.FC = () => {
         (side, visKontrollerte: boolean) => {
             return axiosRequest<UttrekkArbeidssøkere, null>({
                 method: 'GET',
-                url: `${URL_ARBEIDSSØKER}?side=${side}${
-                    visKontrollerte ? '&visKontrollerte=true' : ''
-                }`,
+                url: URL_ARBEIDSSØKER,
+                params: {
+                    side,
+                    visKontrollerte,
+                },
             }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
                     settArbeidssøkere(respons);
@@ -104,18 +107,22 @@ const UttrekkArbeidssøker: React.FC = () => {
 
     const settKontrollert = useCallback(
         (id: string, kontrollert: boolean): void => {
-            const kontrollertQuery = kontrollert ? '?kontrollert=false' : '';
+            settFeilmelding(undefined);
+            const kontrollertQuery = kontrollert ? '' : '?kontrollert=false';
             axiosRequest<UttrekkArbeidssøkere, null>({
                 method: 'POST',
                 url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${kontrollertQuery}`,
             }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
-                settFeilmelding(undefined);
                 if (respons.status === RessursStatus.SUKSESS) {
                     settArbeidssøkere((prevState) => {
                         if (prevState.status !== RessursStatus.SUKSESS) {
-                            throw Error('Kan ikke oppdatere prevstate som ikke har status suksess');
+                            const kanIkkeSetteArbeidssøkereFeilmelding =
+                                'Kan ikke oppdatere siden, last om siden på nytt';
+                            settFeilmelding(kanIkkeSetteArbeidssøkereFeilmelding);
+                            return byggFeiletRessurs(kanIkkeSetteArbeidssøkereFeilmelding);
+                        } else {
+                            return settArbeidssøkereTilKontrollert(prevState, id, kontrollert);
                         }
-                        return settArbeidssøkereTilKontrollert(prevState, id, kontrollert);
                     });
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
@@ -140,11 +147,7 @@ const UttrekkArbeidssøker: React.FC = () => {
                         <Checkbox
                             label={'Vis kontrollerte'}
                             onChange={() => {
-                                if (visKontrollerte) {
-                                    query.delete(QUERY_PARAM_KONTROLLERTE);
-                                } else {
-                                    query.set(QUERY_PARAM_KONTROLLERTE, String(true));
-                                }
+                                query.set(QUERY_PARAM_KONTROLLERTE, String(!visKontrollerte));
                                 query.set(QUERY_PARAM_SIDE, String(1));
                                 history.push(`${window.location.pathname}?${query.toString()}`);
                             }}
@@ -211,7 +214,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                             <td>{arbeidssøker.kontrollertAv}</td>
                             <td>
                                 <Checkbox
-                                    label={''}
+                                    label={<span>&nbsp;</span>} // hack for å ikke vise noen tekst, men beholde styling
                                     onChange={() =>
                                         settKontrollert(arbeidssøker.id, !arbeidssøker.kontrollert)
                                     }
