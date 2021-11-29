@@ -8,21 +8,27 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer
 import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { SendTilBeslutterFooterVerge } from './SendTilBeslutterFooterVerge';
 
-const Footer = styled.footer`
+export const Footer = styled.footer`
     width: calc(100%);
     position: fixed;
     bottom: 0;
+    display: flex;
+    align-items: center;
     background-color: ${navFarger.navGra80};
 `;
 
-const MidtstiltInnhold = styled.div`
-    width: 30%;
-    margin: 0 auto;
+export const MidtstiltInnhold = styled.div`
     display: flex;
+    padding: 1rem;
+    align-items: center;
+    margin: 0 auto;
+    color: white;
 `;
 
-const StyledHovedknapp = styled(Hovedknapp)`
+export const StyledHovedknapp = styled(Hovedknapp)`
     margin-left: 1rem;
     margin-right: 1rem;
 `;
@@ -33,7 +39,7 @@ const SendTilBeslutterFooter: React.FC<{
 }> = ({ behandlingId, kanSendesTilBeslutter }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
-    const { hentTotrinnskontroll } = useBehandling();
+    const { hentTotrinnskontroll, personopplysningerResponse } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
@@ -60,17 +66,31 @@ const SendTilBeslutterFooter: React.FC<{
 
     return (
         <>
-            <Footer>
-                {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
-                <MidtstiltInnhold>
-                    <StyledHovedknapp
-                        onClick={sendTilBeslutter}
-                        disabled={laster || kanSendesTilBeslutter === false}
-                    >
-                        Send til beslutter
-                    </StyledHovedknapp>
-                </MidtstiltInnhold>
-            </Footer>
+            <DataViewer response={{ personopplysningerResponse }}>
+                {({ personopplysningerResponse }) => {
+                    const harVerge = personopplysningerResponse.vergemål.length !== 0;
+                    return harVerge ? (
+                        <SendTilBeslutterFooterVerge
+                            behandlingId={behandlingId}
+                            personopplysninger={personopplysningerResponse}
+                        />
+                    ) : (
+                        <Footer>
+                            {feilmelding && (
+                                <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
+                            )}
+                            <MidtstiltInnhold>
+                                <StyledHovedknapp
+                                    onClick={sendTilBeslutter}
+                                    disabled={laster || kanSendesTilBeslutter === false}
+                                >
+                                    Send til beslutter
+                                </StyledHovedknapp>
+                            </MidtstiltInnhold>
+                        </Footer>
+                    );
+                }}
+            </DataViewer>
         </>
     );
 };
