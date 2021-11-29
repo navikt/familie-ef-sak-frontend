@@ -38,6 +38,7 @@ interface UttrekkArbeidssøkere {
     side: number;
     antallTotalt: number;
     antallKontrollert: number;
+    antallManglerTilgang: number;
     arbeidssøkere: UttrekkArbeidsssøker[];
 }
 
@@ -45,6 +46,8 @@ interface UttrekkArbeidsssøker {
     id: string;
     fagsakId: string;
     behandlingIdForVedtak: string;
+    personIdent: string;
+    navn: string;
     kontrollert: boolean;
     kontrollertTid?: string;
     kontrollertAv?: string;
@@ -52,6 +55,9 @@ interface UttrekkArbeidsssøker {
 
 const URL_ARBEIDSSØKER = '/familie-ef-sak/api/uttrekk/arbeidssoker';
 
+/**
+ * Brukes for å ikke laste all data på nytt i det att man endrer til/sletter kontrollert
+ */
 const settArbeidssøkereTilKontrollert = (
     prevState: RessursSuksess<UttrekkArbeidssøkere>,
     id: string,
@@ -141,36 +147,59 @@ const UttrekkArbeidssøker: React.FC = () => {
             <Sidetittel>Uttrekk arbeidssøkere (P43)</Sidetittel>
             <div>{feilmelding}</div>
             <DataViewer response={{ arbeidssøkere }}>
-                {({ arbeidssøkere }) => (
-                    <>
-                        <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
-                        <Checkbox
-                            label={'Vis kontrollerte'}
-                            onChange={() => {
-                                query.set(QUERY_PARAM_KONTROLLERTE, String(!visKontrollerte));
-                                query.set(QUERY_PARAM_SIDE, String(1));
-                                history.push(`${window.location.pathname}?${query.toString()}`);
-                            }}
-                            checked={visKontrollerte}
-                        />
-                        <UttrekkArbeidssøkerTabell
-                            arbeidssøkere={arbeidssøkere.arbeidssøkere}
-                            settKontrollert={settKontrollert}
-                            gåTilUrl={gåTilUrl}
-                        />
-                        <StyledPagination
-                            numberOfItems={arbeidssøkere.antallTotalt}
-                            onChange={(side: number) => {
-                                query.set(QUERY_PARAM_SIDE, String(side));
-                                history.push(`${window.location.pathname}?${query.toString()}`);
-                            }}
-                            itemsPerPage={ANTALL_PER_SIDE}
-                            currentPage={arbeidssøkere.side}
-                        />
-                    </>
-                )}
+                {({ arbeidssøkere }) => {
+                    return (
+                        <>
+                            <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
+                            <Infoboks
+                                visKontrollerte={visKontrollerte}
+                                arbeidssøkere={arbeidssøkere}
+                            />
+                            <Checkbox
+                                label={'Vis kontrollerte'}
+                                onChange={() => {
+                                    query.set(QUERY_PARAM_KONTROLLERTE, String(!visKontrollerte));
+                                    query.set(QUERY_PARAM_SIDE, String(1));
+                                    history.push(`${window.location.pathname}?${query.toString()}`);
+                                }}
+                                checked={visKontrollerte}
+                            />
+                            <UttrekkArbeidssøkerTabell
+                                arbeidssøkere={arbeidssøkere.arbeidssøkere}
+                                settKontrollert={settKontrollert}
+                                gåTilUrl={gåTilUrl}
+                            />
+                            <StyledPagination
+                                numberOfItems={arbeidssøkere.antallTotalt}
+                                onChange={(side: number) => {
+                                    query.set(QUERY_PARAM_SIDE, String(side));
+                                    history.push(`${window.location.pathname}?${query.toString()}`);
+                                }}
+                                itemsPerPage={ANTALL_PER_SIDE}
+                                currentPage={arbeidssøkere.side}
+                            />
+                        </>
+                    );
+                }}
             </DataViewer>
         </UttrekkArbeidssøkerContent>
+    );
+};
+
+const Infoboks: React.FC<{ visKontrollerte: boolean; arbeidssøkere: UttrekkArbeidssøkere }> = ({
+    visKontrollerte,
+    arbeidssøkere,
+}) => {
+    const antallTotalt = visKontrollerte
+        ? arbeidssøkere.antallTotalt
+        : arbeidssøkere.antallTotalt + arbeidssøkere.antallKontrollert;
+    const antallManglerKontroll = antallTotalt - arbeidssøkere.antallKontrollert;
+    return (
+        <div>
+            <div>Disse tallene blir ikke oppdatert før man laster om siden på nytt</div>
+            <div>Antall mangler kontroll: {antallManglerKontroll}</div>
+            <div>Antall mangler tilgang: {arbeidssøkere.antallManglerTilgang}</div>
+        </div>
     );
 };
 
@@ -207,7 +236,9 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                         gåTilUrl(`/fagsak/${arbeidssøker.fagsakId}`);
                                     }}
                                 >
-                                    <Element>{arbeidssøker.id}</Element>
+                                    <Element>
+                                        {arbeidssøker.navn} ({arbeidssøker.personIdent})
+                                    </Element>
                                 </Lenke>
                             </td>
                             <td>{formaterNullableIsoDatoTid(arbeidssøker.kontrollertTid)}</td>
