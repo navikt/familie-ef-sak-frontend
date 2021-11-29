@@ -27,6 +27,9 @@ const StyledTable = styled.table`
     width: 60%;
     padding: 2rem;
     margin-left: 1rem;
+    td {
+        padding: 0.75rem;
+    }
 `;
 
 const StyledPagination = styled(Pagination)`
@@ -194,11 +197,14 @@ const Infoboks: React.FC<{ visKontrollerte: boolean; arbeidssøkere: UttrekkArbe
         ? arbeidssøkere.antallTotalt
         : arbeidssøkere.antallTotalt + arbeidssøkere.antallKontrollert;
     const antallManglerKontroll = antallTotalt - arbeidssøkere.antallKontrollert;
+    const rødMarkertTekst = arbeidssøkere.antallManglerTilgang > 0 ? { color: 'red' } : {};
     return (
         <div>
             <div>Disse tallene blir ikke oppdatert før man laster om siden på nytt</div>
             <div>Antall mangler kontroll: {antallManglerKontroll}</div>
-            <div>Antall mangler tilgang: {arbeidssøkere.antallManglerTilgang}</div>
+            <div style={rødMarkertTekst}>
+                Antall mangler tilgang: {arbeidssøkere.antallManglerTilgang}
+            </div>
         </div>
     );
 };
