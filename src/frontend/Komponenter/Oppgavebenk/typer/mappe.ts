@@ -4,4 +4,4 @@ export interface IMappe {
     enhetsnr: string;
 }
 
-export const tomMappeListe = [{ id: 0, navn: '', enhetsnr: '' }] as IMappe[];
+export const tomMappeListe = [] as IMappe[];

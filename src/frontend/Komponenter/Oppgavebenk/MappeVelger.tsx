@@ -14,7 +14,6 @@ function MappeVelger(props: Props): ReactElement {
     const mapperPerEnhet = props.options.reduce((acc, mappe) => {
         return { ...acc, [mappe.enhetsnr]: [...(acc[mappe.enhetsnr] ?? []), mappe] };
     }, {} as Record<string, IMappe[]>);
-    console.log(mapperPerEnhet);
     return (
         <Select
             value={props.value || ''}
@@ -28,7 +27,6 @@ function MappeVelger(props: Props): ReactElement {
             <option value="">Alle</option>
 
             {Object.entries<IMappe[]>(mapperPerEnhet).map<ReactElement>(([val, mapper], index) => {
-                console.log(val);
                 return (
                     <optgroup label={enhetTilTekstPåString[val]} key={index}>
                         {mapper.map((mappe) => {
