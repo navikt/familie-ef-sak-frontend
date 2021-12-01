@@ -120,6 +120,12 @@ export const SendTilBeslutterFooterVerge: React.FC<{
                                         mottaker.navn
                                     } (${mottaker.mottakerRolle.toLowerCase()})`}
                                     onChange={toggleMottaker(mottaker)}
+                                    checked={
+                                        !!valgteMottakere.find(
+                                            (valgtMottaker) =>
+                                                valgtMottaker.personIdent === mottaker.personIdent
+                                        )
+                                    }
                                 />
                             ))}
                         </CheckboxGruppe>
