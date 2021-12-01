@@ -16,6 +16,8 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from './oppgavefilterStorage';
+import MappeVelger from './MappeVelger';
+import { IMappe } from './typer/mappe';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -40,7 +42,7 @@ export const KnappWrapper = styled.div`
 
 interface IOppgaveFiltrering {
     hentOppgaver: (data: IOppgaveRequest) => void;
-    mapper: Record<number, string>;
+    mapper: IMappe[];
 }
 
 interface Feil {
@@ -50,7 +52,7 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
-const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }) => {
+const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }) => {
     const { innloggetSaksbehandler } = useApp();
     const tomOppgaveRequest = {};
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
@@ -137,8 +139,9 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }
                     label="Enhet"
                     options={enhetTilTekst}
                     value={oppgaveRequest.enhet}
+                    sortDesc={true}
                 />
-                <CustomSelect
+                <MappeVelger
                     onChange={(val) => settOppgave('mappeId')(parseInt(val))}
                     label="Enhetsmappe"
                     options={mapper}
@@ -221,4 +224,4 @@ const OppgaveFiltering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }
     );
 };
 
-export default OppgaveFiltering;
+export default OppgaveFiltrering;
