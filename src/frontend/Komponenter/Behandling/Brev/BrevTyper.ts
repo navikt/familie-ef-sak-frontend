@@ -99,7 +99,7 @@ export enum FritekstBrevtype {
 
 export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrevtype, string> = {
     INFORMASJONSBREV: 'Vi vil informere deg om...',
-    INNHENTING_AV_OPPLYSNINGER: 'Vi trenger mer informasjon av deg',
+    INNHENTING_AV_OPPLYSNINGER: 'Vi trenger mer informasjon fra deg',
     VARSEL_OM_AKTIVITETSPLIKT: 'Varsel om aktivitetsplikt',
     VEDTAK_INVILGELSE: 'Du får overgangsstønad',
     VEDTAK_AVSLAG: 'Vi har avslått søknaden din om overgangsstønad',
