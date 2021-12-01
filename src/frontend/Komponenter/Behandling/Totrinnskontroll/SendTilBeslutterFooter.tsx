@@ -10,6 +10,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { SendTilBeslutterFooterVerge } from './SendTilBeslutterFooterVerge';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
 
 export const Footer = styled.footer`
     width: calc(100%);
@@ -39,7 +40,7 @@ const SendTilBeslutterFooter: React.FC<{
 }> = ({ behandlingId, kanSendesTilBeslutter }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
-    const { hentTotrinnskontroll, personopplysningerResponse } = useBehandling();
+    const { hentTotrinnskontroll, personopplysningerResponse, behandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
@@ -66,9 +67,11 @@ const SendTilBeslutterFooter: React.FC<{
 
     return (
         <>
-            <DataViewer response={{ personopplysningerResponse }}>
-                {({ personopplysningerResponse }) => {
-                    const harVerge = personopplysningerResponse.vergemål.length !== 0;
+            <DataViewer response={{ personopplysningerResponse, behandling }}>
+                {({ personopplysningerResponse, behandling }) => {
+                    const harVerge =
+                        personopplysningerResponse.vergemål.length !== 0 &&
+                        behandling.type !== Behandlingstype.BLANKETT;
                     return harVerge ? (
                         <SendTilBeslutterFooterVerge
                             behandlingId={behandlingId}
