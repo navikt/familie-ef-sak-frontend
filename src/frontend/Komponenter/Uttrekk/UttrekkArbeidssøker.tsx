@@ -11,29 +11,25 @@ import {
 } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { PartialRecord } from '../../App/typer/common';
 import { Element, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
-import Pagination from 'paginering';
 import { useHistory } from 'react-router-dom';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import { Checkbox } from 'nav-frontend-skjema';
+import { Flatknapp, Knapp } from 'nav-frontend-knapper';
+import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 
 const UttrekkArbeidssøkerContent = styled.div`
     padding: 1rem;
 `;
 
 const StyledTable = styled.table`
-    width: 60%;
+    width: 70%;
     padding: 2rem;
     margin-left: 1rem;
     td {
         padding: 0.75rem;
     }
-`;
-
-const StyledPagination = styled(Pagination)`
-    padding: 1rem;
 `;
 
 interface UttrekkArbeidssøkere {
@@ -42,10 +38,10 @@ interface UttrekkArbeidssøkere {
     antallTotalt: number;
     antallKontrollert: number;
     antallManglerTilgang: number;
-    arbeidssøkere: UttrekkArbeidsssøker[];
+    arbeidssøkere: UttrekkArbeidssøker[];
 }
 
-interface UttrekkArbeidsssøker {
+interface UttrekkArbeidssøker {
     id: string;
     fagsakId: string;
     behandlingIdForVedtak: string;
@@ -63,29 +59,27 @@ const URL_ARBEIDSSØKER = '/familie-ef-sak/api/uttrekk/arbeidssoker';
  */
 const settArbeidssøkereTilKontrollert = (
     prevState: RessursSuksess<UttrekkArbeidssøkere>,
-    id: string,
-    kontrollert: boolean
+    oppdatertUttrekkArbeidssøkere: UttrekkArbeidssøker
 ) => {
     return {
         ...prevState,
         data: {
             ...prevState.data,
             arbeidssøkere: prevState.data.arbeidssøkere.map((arbeidssøker) =>
-                arbeidssøker.id === id ? { ...arbeidssøker, kontrollert } : arbeidssøker
+                arbeidssøker.id === oppdatertUttrekkArbeidssøkere.id
+                    ? oppdatertUttrekkArbeidssøkere
+                    : arbeidssøker
             ),
         },
     };
 };
 
-const ANTALL_PER_SIDE = 20;
-const QUERY_PARAM_SIDE = 'side';
 const QUERY_PARAM_KONTROLLERTE = 'kontrollerte';
 
 const UttrekkArbeidssøker: React.FC = () => {
     const query = useQueryParams();
     const history = useHistory();
 
-    const side = query.get(QUERY_PARAM_SIDE) || 1;
     const visKontrollerte = query.get(QUERY_PARAM_KONTROLLERTE) === 'true';
 
     const [arbeidssøkere, settArbeidssøkere] = useState<Ressurs<UttrekkArbeidssøkere>>(
@@ -95,12 +89,11 @@ const UttrekkArbeidssøker: React.FC = () => {
     const { axiosRequest, gåTilUrl } = useApp();
 
     const hentUttrekk = useCallback(
-        (side, visKontrollerte: boolean) => {
+        (visKontrollerte: boolean) => {
             return axiosRequest<UttrekkArbeidssøkere, null>({
                 method: 'GET',
                 url: URL_ARBEIDSSØKER,
                 params: {
-                    side,
                     visKontrollerte,
                 },
             }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
@@ -118,10 +111,10 @@ const UttrekkArbeidssøker: React.FC = () => {
         (id: string, kontrollert: boolean): void => {
             settFeilmelding(undefined);
             const kontrollertQuery = kontrollert ? '' : '?kontrollert=false';
-            axiosRequest<UttrekkArbeidssøkere, null>({
+            axiosRequest<UttrekkArbeidssøker, null>({
                 method: 'POST',
                 url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${kontrollertQuery}`,
-            }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
+            }).then((respons: RessursSuksess<UttrekkArbeidssøker> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
                     settArbeidssøkere((prevState) => {
                         if (prevState.status !== RessursStatus.SUKSESS) {
@@ -130,7 +123,7 @@ const UttrekkArbeidssøker: React.FC = () => {
                             settFeilmelding(kanIkkeSetteArbeidssøkereFeilmelding);
                             return byggFeiletRessurs(kanIkkeSetteArbeidssøkereFeilmelding);
                         } else {
-                            return settArbeidssøkereTilKontrollert(prevState, id, kontrollert);
+                            return settArbeidssøkereTilKontrollert(prevState, respons.data);
                         }
                     });
                 } else {
@@ -142,8 +135,8 @@ const UttrekkArbeidssøker: React.FC = () => {
     );
 
     useEffect(() => {
-        hentUttrekk(side, visKontrollerte);
-    }, [hentUttrekk, side, visKontrollerte]);
+        hentUttrekk(visKontrollerte);
+    }, [hentUttrekk, visKontrollerte]);
 
     return (
         <UttrekkArbeidssøkerContent>
@@ -162,7 +155,6 @@ const UttrekkArbeidssøker: React.FC = () => {
                                 label={'Vis kontrollerte'}
                                 onChange={() => {
                                     query.set(QUERY_PARAM_KONTROLLERTE, String(!visKontrollerte));
-                                    query.set(QUERY_PARAM_SIDE, String(1));
                                     history.push(`${window.location.pathname}?${query.toString()}`);
                                 }}
                                 checked={visKontrollerte}
@@ -171,15 +163,6 @@ const UttrekkArbeidssøker: React.FC = () => {
                                 arbeidssøkere={arbeidssøkere.arbeidssøkere}
                                 settKontrollert={settKontrollert}
                                 gåTilUrl={gåTilUrl}
-                            />
-                            <StyledPagination
-                                numberOfItems={arbeidssøkere.antallTotalt}
-                                onChange={(side: number) => {
-                                    query.set(QUERY_PARAM_SIDE, String(side));
-                                    history.push(`${window.location.pathname}?${query.toString()}`);
-                                }}
-                                itemsPerPage={ANTALL_PER_SIDE}
-                                currentPage={arbeidssøkere.side}
                             />
                         </>
                     );
@@ -209,15 +192,8 @@ const Infoboks: React.FC<{ visKontrollerte: boolean; arbeidssøkere: UttrekkArbe
     );
 };
 
-const TabellData: PartialRecord<keyof UttrekkArbeidsssøker, string> = {
-    fagsakId: 'Fagsak',
-    kontrollertTid: 'Tid kontrollert',
-    kontrollertAv: 'Kontrollert av',
-    kontrollert: 'Kontrollert',
-};
-
 const UttrekkArbeidssøkerTabell: React.FC<{
-    arbeidssøkere: UttrekkArbeidsssøker[];
+    arbeidssøkere: UttrekkArbeidssøker[];
     settKontrollert: (id: string, kontrollert: boolean) => void;
     gåTilUrl: (url: string) => void;
 }> = ({ arbeidssøkere, settKontrollert, gåTilUrl }) => {
@@ -225,9 +201,8 @@ const UttrekkArbeidssøkerTabell: React.FC<{
         <StyledTable className="tabell">
             <thead>
                 <tr>
-                    {Object.entries(TabellData).map(([field, tekst]) => (
-                        <th key={field}>{tekst}</th>
-                    ))}
+                    <th>Person</th>
+                    <th>Kontrollert</th>
                 </tr>
             </thead>
             <tbody>
@@ -235,28 +210,52 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                     return (
                         <tr key={arbeidssøker.id}>
                             <td>
-                                <Lenke
-                                    role={'link'}
-                                    href={'#'}
-                                    onClick={() => {
-                                        gåTilUrl(`/fagsak/${arbeidssøker.fagsakId}`);
-                                    }}
-                                >
-                                    <Element>
-                                        {arbeidssøker.navn} ({arbeidssøker.personIdent})
-                                    </Element>
-                                </Lenke>
+                                <div style={{ display: 'flex' }}>
+                                    <Lenke
+                                        role={'link'}
+                                        href={'#'}
+                                        onClick={() => {
+                                            gåTilUrl(`/fagsak/${arbeidssøker.fagsakId}`);
+                                        }}
+                                        style={{ marginRight: '1rem' }}
+                                    >
+                                        <Element>{arbeidssøker.navn}</Element>
+                                    </Lenke>
+                                    <KopierbartNullableFødselsnummer
+                                        fødselsnummer={arbeidssøker.personIdent}
+                                    />
+                                </div>
                             </td>
-                            <td>{formaterNullableIsoDatoTid(arbeidssøker.kontrollertTid)}</td>
-                            <td>{arbeidssøker.kontrollertAv}</td>
                             <td>
-                                <Checkbox
-                                    label={<span>&nbsp;</span>} // hack for å ikke vise noen tekst, men beholde styling
-                                    onChange={() =>
-                                        settKontrollert(arbeidssøker.id, !arbeidssøker.kontrollert)
-                                    }
-                                    checked={arbeidssøker.kontrollert}
-                                />
+                                {!arbeidssøker.kontrollert ? (
+                                    <Knapp
+                                        onClick={() =>
+                                            settKontrollert(
+                                                arbeidssøker.id,
+                                                !arbeidssøker.kontrollert
+                                            )
+                                        }
+                                    >
+                                        Sett kontrollert
+                                    </Knapp>
+                                ) : (
+                                    <>
+                                        {formaterNullableIsoDatoTid(arbeidssøker.kontrollertTid)} (
+                                        {arbeidssøker.kontrollertAv})
+                                        <Flatknapp
+                                            mini
+                                            style={{ marginLeft: '1rem' }}
+                                            onClick={() =>
+                                                settKontrollert(
+                                                    arbeidssøker.id,
+                                                    !arbeidssøker.kontrollert
+                                                )
+                                            }
+                                        >
+                                            Tilbakestill
+                                        </Flatknapp>
+                                    </>
+                                )}
                             </td>
                         </tr>
                     );
