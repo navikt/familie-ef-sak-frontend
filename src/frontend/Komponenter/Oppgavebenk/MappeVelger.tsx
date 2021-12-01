@@ -11,9 +11,16 @@ interface Props {
 }
 
 function MappeVelger(props: Props): ReactElement {
-    const mapperPerEnhet = props.options.reduce((acc, mappe) => {
+    const mapperPerEnhet = [...props.options].reduce((acc, mappe) => {
         return { ...acc, [mappe.enhetsnr]: [...(acc[mappe.enhetsnr] ?? []), mappe] };
     }, {} as Record<string, IMappe[]>);
+
+    const sorterMapperPåEnhetsnummer = (a: [string, IMappe[]], b: [string, IMappe[]]) => {
+        if (a[0] > b[0]) return -1;
+        else if (a[0] < b[0]) return 1;
+        return 0;
+    };
+
     return (
         <Select
             value={props.value || ''}
@@ -25,20 +32,21 @@ function MappeVelger(props: Props): ReactElement {
             }}
         >
             <option value="">Alle</option>
-
-            {Object.entries<IMappe[]>(mapperPerEnhet).map<ReactElement>(([val, mapper], index) => {
-                return (
-                    <optgroup label={enhetTilTekstPåString[val]} key={index}>
-                        {mapper.map((mappe) => {
-                            return (
-                                <option value={mappe.id} key={mappe.id}>
-                                    {mappe.navn}
-                                </option>
-                            );
-                        })}
-                    </optgroup>
-                );
-            })}
+            {[...Object.entries<IMappe[]>(mapperPerEnhet)]
+                .sort(sorterMapperPåEnhetsnummer)
+                .map<ReactElement>(([val, mapper], index) => {
+                    return (
+                        <optgroup label={enhetTilTekstPåString[val]} key={index}>
+                            {mapper.map((mappe) => {
+                                return (
+                                    <option value={mappe.id} key={mappe.id}>
+                                        {mappe.navn}
+                                    </option>
+                                );
+                            })}
+                        </optgroup>
+                    );
+                })}
         </Select>
     );
 }

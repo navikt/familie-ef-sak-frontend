@@ -139,6 +139,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
                     label="Enhet"
                     options={enhetTilTekst}
                     value={oppgaveRequest.enhet}
+                    sortDesc={true}
                 />
                 <MappeVelger
                     onChange={(val) => settOppgave('mappeId')(parseInt(val))}
