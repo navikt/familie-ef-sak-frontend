@@ -15,9 +15,15 @@ function MappeVelger(props: Props): ReactElement {
         return { ...acc, [mappe.enhetsnr]: [...(acc[mappe.enhetsnr] ?? []), mappe] };
     }, {} as Record<string, IMappe[]>);
 
-    const sorterMapperPåEnhetsnummer = (a: [string, IMappe[]], b: [string, IMappe[]]) => {
+    const sorterMappeListerPåEnhetsnummer = (a: [string, IMappe[]], b: [string, IMappe[]]) => {
         if (a[0] > b[0]) return -1;
         else if (a[0] < b[0]) return 1;
+        return 0;
+    };
+
+    const sorterMapperPåNavn = (a: IMappe, b: IMappe) => {
+        if (a.navn > b.navn) return 1;
+        else if (a.navn < b.navn) return -1;
         return 0;
     };
 
@@ -33,11 +39,11 @@ function MappeVelger(props: Props): ReactElement {
         >
             <option value="">Alle</option>
             {[...Object.entries<IMappe[]>(mapperPerEnhet)]
-                .sort(sorterMapperPåEnhetsnummer)
+                .sort(sorterMappeListerPåEnhetsnummer)
                 .map<ReactElement>(([val, mapper], index) => {
                     return (
                         <optgroup label={enhetTilTekstPåString[val]} key={index}>
-                            {mapper.map((mappe) => {
+                            {[...mapper].sort(sorterMapperPåNavn).map((mappe) => {
                                 return (
                                     <option value={mappe.id} key={mappe.id}>
                                         {mappe.navn}
