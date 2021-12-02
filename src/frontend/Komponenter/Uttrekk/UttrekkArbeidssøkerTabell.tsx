@@ -60,6 +60,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                             <td>
                                 {!arbeidssøker.kontrollert ? (
                                     <Knapp
+                                        mini
                                         onClick={() =>
                                             settKontrollert(
                                                 arbeidssøker.id,
