@@ -13,8 +13,6 @@ import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Element, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
-import { useHistory } from 'react-router-dom';
-import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
@@ -77,14 +75,8 @@ const settArbeidssøkereTilKontrollert = (
     };
 };
 
-const QUERY_PARAM_KONTROLLERTE = 'kontrollerte';
-
 const UttrekkArbeidssøker: React.FC = () => {
-    const query = useQueryParams();
-    const history = useHistory();
-
-    const visKontrollerte = query.get(QUERY_PARAM_KONTROLLERTE) === 'true';
-
+    const [visKontrollerte, settVisKontrollerte] = useState<boolean>(false);
     const [arbeidssøkere, settArbeidssøkere] = useState<Ressurs<UttrekkArbeidssøkere>>(
         byggTomRessurs()
     );
@@ -100,6 +92,7 @@ const UttrekkArbeidssøker: React.FC = () => {
                     visKontrollerte,
                 },
             }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
+                settArbeidssøkere(byggTomRessurs());
                 if (respons.status === RessursStatus.SUKSESS) {
                     settArbeidssøkere(respons);
                 } else {
@@ -156,10 +149,7 @@ const UttrekkArbeidssøker: React.FC = () => {
                             />
                             <Checkbox
                                 label={'Vis kontrollerte'}
-                                onChange={() => {
-                                    query.set(QUERY_PARAM_KONTROLLERTE, String(!visKontrollerte));
-                                    history.push(`${window.location.pathname}?${query.toString()}`);
-                                }}
+                                onChange={() => settVisKontrollerte((prevState) => !prevState)}
                                 checked={visKontrollerte}
                             />
                             <UttrekkArbeidssøkerTabell
