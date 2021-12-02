@@ -63,7 +63,7 @@ export const Tilbakekreving: React.FC = () => {
         }).then((respons: RessursSuksess<boolean> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settÅpenTilbakekrevingStatus(
-                    respons.data === true
+                    respons.data
                         ? ÅpenTilbakekrevingStatus.HAR_ÅPEN
                         : ÅpenTilbakekrevingStatus.HAR_IKKE_ÅPEN
                 );
@@ -140,8 +140,23 @@ export const Tilbakekreving: React.FC = () => {
         case ÅpenTilbakekrevingStatus.HAR_ÅPEN:
             return (
                 <div>
-                    <h2>Tilbakekreving</h2>
-                    <Normaltekst>Det finnes allerede en åpen tilbakekrevingssak.</Normaltekst>
+                    {(behandlingErRedigerbar || !tilbakekrevingsvalg) && (
+                        <>
+                            <h2>Tilbakekreving</h2>
+                            <Normaltekst>
+                                Det finnes allerede en åpen tilbakekrevingssak.
+                            </Normaltekst>
+                        </>
+                    )}
+                    {!behandlingErRedigerbar && tilbakekrevingsvalg && (
+                        <VisTilbakekreving
+                            tilbakekrevingsvalg={tilbakekrevingsvalg as ITilbakekrevingsvalg}
+                            begrunnelse={begrunnelse}
+                            varseltekst={varseltekst}
+                            kanForhåndsvise={kanForhåndsvise}
+                            behandlingId={behandlingId}
+                        />
+                    )}
                 </div>
             );
         default:
