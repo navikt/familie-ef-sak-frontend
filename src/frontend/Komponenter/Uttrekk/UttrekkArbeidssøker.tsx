@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { formaterIsoMånedÅr } from '../../App/utils/formatter';
 import {
+    byggFeiletRessurs,
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
@@ -46,16 +47,19 @@ const URL_ARBEIDSSØKER = '/familie-ef-sak/api/uttrekk/arbeidssoker';
  * Brukes for å ikke laste all data på nytt i det att man endrer til/sletter kontrollert
  */
 const settArbeidssøkereTilKontrollert = (
-    prevState: IUttrekkArbeidssøkere,
+    prevState: RessursSuksess<IUttrekkArbeidssøkere>,
     oppdatertUttrekkArbeidssøkere: IUttrekkArbeidssøker
-): IUttrekkArbeidssøkere => {
+): RessursSuksess<IUttrekkArbeidssøkere> => {
     return {
         ...prevState,
-        arbeidssøkere: prevState.arbeidssøkere.map((arbeidssøker) =>
-            arbeidssøker.id === oppdatertUttrekkArbeidssøkere.id
-                ? oppdatertUttrekkArbeidssøkere
-                : arbeidssøker
-        ),
+        data: {
+            ...prevState.data,
+            arbeidssøkere: prevState.data.arbeidssøkere.map((arbeidssøker) =>
+                arbeidssøker.id === oppdatertUttrekkArbeidssøkere.id
+                    ? oppdatertUttrekkArbeidssøkere
+                    : arbeidssøker
+            ),
+        },
     };
 };
 
@@ -64,6 +68,7 @@ const UttrekkArbeidssøker: React.FC = () => {
     const [arbeidssøkere, settArbeidssøkere] = useState<Ressurs<IUttrekkArbeidssøkere>>(
         byggTomRessurs()
     );
+    const [feilmelding, settFeilmelding] = useState<string>();
     const [visKontrollerte, settVisKontrollerte] = useState<boolean>(false);
 
     const hentUttrekk = useCallback(
@@ -79,6 +84,32 @@ const UttrekkArbeidssøker: React.FC = () => {
         [axiosRequest]
     );
 
+    const settKontrollert = useCallback(
+        (id: string, kontrollert: boolean): void => {
+            settFeilmelding(undefined);
+            const kontrollertQuery = kontrollert ? '' : '?kontrollert=false';
+            axiosRequest<IUttrekkArbeidssøker, null>({
+                method: 'POST',
+                url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${kontrollertQuery}`,
+            }).then((respons: RessursSuksess<IUttrekkArbeidssøker> | RessursFeilet) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settArbeidssøkere((prevState) => {
+                        if (prevState.status !== RessursStatus.SUKSESS) {
+                            const kanIkkeSetteArbeidssøkereFeilmelding =
+                                'Kan ikke oppdatere siden, last om siden på nytt';
+                            return byggFeiletRessurs(kanIkkeSetteArbeidssøkereFeilmelding);
+                        } else {
+                            return settArbeidssøkereTilKontrollert(prevState, respons.data);
+                        }
+                    });
+                } else {
+                    settFeilmelding(respons.frontendFeilmelding);
+                }
+            });
+        },
+        [axiosRequest, settFeilmelding]
+    );
+
     useEffect(() => {
         hentUttrekk(visKontrollerte);
     }, [hentUttrekk, visKontrollerte]);
@@ -90,10 +121,12 @@ const UttrekkArbeidssøker: React.FC = () => {
     return (
         <UttrekkArbeidssøkerContent>
             <Sidetittel>Uttrekk arbeidssøkere (P43)</Sidetittel>
+            {feilmelding && <div style={{ color: 'red' }}>Feilmelding: {feilmelding}</div>}
             <DataViewer response={{ arbeidssøkere }}>
                 {({ arbeidssøkere }) => (
                     <UttrekkArbeidssøkerMedMetadata
-                        initState={arbeidssøkere}
+                        arbeidssøkere={arbeidssøkere}
+                        settKontrollert={settKontrollert}
                         visKontrollerte={visKontrollerte}
                         toggleVisKontrollerte={toggleVisKontrollerte}
                     />
@@ -104,74 +137,43 @@ const UttrekkArbeidssøker: React.FC = () => {
 };
 
 const UttrekkArbeidssøkerMedMetadata: React.FC<{
-    initState: IUttrekkArbeidssøkere;
+    arbeidssøkere: IUttrekkArbeidssøkere;
+    settKontrollert: (id: string, kontrolllert: boolean) => void;
     visKontrollerte: boolean;
     toggleVisKontrollerte: () => void;
-}> = ({ initState, visKontrollerte, toggleVisKontrollerte }) => {
-    const { axiosRequest, gåTilUrl } = useApp();
-    const [feilmelding, settFeilmelding] = useState<string>();
-    const [uttrekkArbeidssøkere, settUttrekkArbeidssøkere] =
-        useState<IUttrekkArbeidssøkere>(initState);
-
-    useEffect(() => {
-        settUttrekkArbeidssøkere(initState);
-    }, [settUttrekkArbeidssøkere, initState]);
-
-    const settKontrollert = useCallback(
-        (id: string, kontrollert: boolean): void => {
-            settFeilmelding(undefined);
-            const kontrollertQuery = kontrollert ? '' : '?kontrollert=false';
-            axiosRequest<IUttrekkArbeidssøker, null>({
-                method: 'POST',
-                url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${kontrollertQuery}`,
-            }).then((respons: RessursSuksess<IUttrekkArbeidssøker> | RessursFeilet) => {
-                if (respons.status === RessursStatus.SUKSESS) {
-                    settUttrekkArbeidssøkere((prevState) =>
-                        settArbeidssøkereTilKontrollert(prevState, respons.data)
-                    );
-                } else {
-                    settFeilmelding(respons.frontendFeilmelding);
-                }
-            });
-        },
-        [axiosRequest, settFeilmelding]
-    );
-
+}> = ({ arbeidssøkere, settKontrollert, visKontrollerte, toggleVisKontrollerte }) => {
     return (
         <>
-            {feilmelding && <div style={{ color: 'red' }}>Feilmelding: {feilmelding}</div>}
-            <Systemtittel>{formaterIsoMånedÅr(uttrekkArbeidssøkere.årMåned)}</Systemtittel>
-            <Infoboks uttrekkArbeidssøkere={uttrekkArbeidssøkere} />
+            <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
+            <Infoboks arbeidssøkere={arbeidssøkere} />
             <Checkbox
                 label={'Vis kontrollerte'}
                 onChange={() => toggleVisKontrollerte()}
                 checked={visKontrollerte}
             />
             <UttrekkArbeidssøkerTabell
-                arbeidssøkere={uttrekkArbeidssøkere.arbeidssøkere}
+                arbeidssøkere={arbeidssøkere.arbeidssøkere}
                 settKontrollert={settKontrollert}
-                gåTilUrl={gåTilUrl}
             />
         </>
     );
 };
 
 const Infoboks: React.FC<{
-    uttrekkArbeidssøkere: IUttrekkArbeidssøkere;
-}> = ({ uttrekkArbeidssøkere }) => {
-    const antallManglerKontroll =
-        uttrekkArbeidssøkere.antallTotalt - uttrekkArbeidssøkere.antallKontrollert;
+    arbeidssøkere: IUttrekkArbeidssøkere;
+}> = ({ arbeidssøkere }) => {
+    const antallManglerKontroll = arbeidssøkere.antallTotalt - arbeidssøkere.antallKontrollert;
     const rødMarkertTekst = (antall: number) => (antall > 0 ? { color: 'red' } : {});
     return (
         <div>
             <div>Disse tallene blir ikke oppdatert før man laster om siden på nytt</div>
-            <div>Antall totalt: {uttrekkArbeidssøkere.antallTotalt}</div>
+            <div>Antall totalt: {arbeidssøkere.antallTotalt}</div>
             <div style={rødMarkertTekst(antallManglerKontroll)}>
                 Antall mangler kontroll: {antallManglerKontroll}
             </div>
-            <div style={rødMarkertTekst(uttrekkArbeidssøkere.antallManglerKontrollUtenTilgang)}>
+            <div style={rødMarkertTekst(arbeidssøkere.antallManglerKontrollUtenTilgang)}>
                 Antall mangler kontroll - mangler tilgang:{' '}
-                {uttrekkArbeidssøkere.antallManglerKontrollUtenTilgang}
+                {arbeidssøkere.antallManglerKontrollUtenTilgang}
             </div>
         </div>
     );

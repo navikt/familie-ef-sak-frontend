@@ -7,6 +7,7 @@ import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
+import { useApp } from '../../App/context/AppContext';
 
 const StyledTable = styled.table`
     width: 70%;
@@ -20,9 +21,8 @@ const StyledTable = styled.table`
 const UttrekkArbeidssøkerTabell: React.FC<{
     arbeidssøkere: IUttrekkArbeidssøker[];
     settKontrollert: (id: string, kontrollert: boolean) => void;
-    gåTilUrl: (url: string) => void;
-}> = ({ arbeidssøkere, settKontrollert, gåTilUrl }) => {
-    console.log('table');
+}> = ({ arbeidssøkere, settKontrollert }) => {
+    const { gåTilUrl } = useApp();
     return (
         <StyledTable className="tabell">
             <thead>
