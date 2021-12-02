@@ -18,6 +18,8 @@ import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
+import { Adressebeskyttelse } from '../../App/typer/personopplysninger';
 
 const UttrekkArbeidssøkerContent = styled.div`
     padding: 1rem;
@@ -47,6 +49,7 @@ interface UttrekkArbeidssøker {
     behandlingIdForVedtak: string;
     personIdent: string;
     navn: string;
+    adressebeskyttelse?: Adressebeskyttelse;
     kontrollert: boolean;
     kontrollertTid?: string;
     kontrollertAv?: string;
@@ -224,6 +227,11 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                     <KopierbartNullableFødselsnummer
                                         fødselsnummer={arbeidssøker.personIdent}
                                     />
+                                    {arbeidssøker.adressebeskyttelse && (
+                                        <AdressebeskyttelseVarsel
+                                            adressebeskyttelse={arbeidssøker.adressebeskyttelse}
+                                        />
+                                    )}
                                 </div>
                             </td>
                             <td>
