@@ -15,6 +15,7 @@ import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
 import UgyldigSesjon from './Felles/Modal/SesjonUtløpt';
 import UlagretDataModal from './Komponenter/Behandling/Fanemeny/UlagretDataModal';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
+import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -87,6 +88,7 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
                 <Route path="/oppgavebenk" component={OppgavebenkApp} />
                 <Route path="/journalfor" component={JournalforingApp} />
                 <Route path="/fagsak/:fagsakId" component={Personoversikt} />
+                <Route path="/uttrekk/arbeidssoker" component={UttrekkArbeidssøker} />
                 <Redirect from="/" to="/oppgavebenk" />
             </Switch>
             <UlagretDataModal />

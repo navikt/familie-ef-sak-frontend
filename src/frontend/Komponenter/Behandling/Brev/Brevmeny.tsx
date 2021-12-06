@@ -23,6 +23,8 @@ import {
     useHentVedtak,
 } from '../../../App/hooks/useHentVedtak';
 import FritekstBrev from './FritekstBrev';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -54,6 +56,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
 
     const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
     const { flettefeltStore } = useVerdierForBrev(tilkjentYtelse);
+    const { toggles } = useToggles();
 
     useEffect(() => {
         if (brevMal && brevMal !== fritekstmal) {
@@ -68,9 +71,11 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, [brevMal]);
 
     useEffect(() => {
+        const skalViseUpubliserteMaler = toggles[ToggleName.visIkkePubliserteBrevmaler] || false;
+
         axiosRequest<DokumentNavn[], null>({
             method: 'GET',
-            url: `/familie-brev/api/${datasett}/avansert-dokument/navn`,
+            url: `/familie-brev/api/${datasett}/avansert-dokument/navn/${skalViseUpubliserteMaler}`,
         }).then((respons: Ressurs<DokumentNavn[]>) => {
             settDokumentnavn(respons);
         });

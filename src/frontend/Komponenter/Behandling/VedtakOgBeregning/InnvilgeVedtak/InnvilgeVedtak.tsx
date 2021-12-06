@@ -35,8 +35,20 @@ const Hovedknapp = hiddenIf(HovedknappNAV);
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtak, 'resultatType'>;
 
-const Wrapper = styled.section`
+const VedtaksperiodeWrapper = styled.section`
     padding-top: 1rem;
+`;
+
+const InntekWrapper = styled.section`
+    padding-top: 2rem;
+`;
+
+const FormContentWrapper = styled.div`
+    padding-top: 2rem;
+`;
+
+const EnsligTextAreaWrapper = styled.div`
+    padding-bottom: 1rem;
 `;
 
 export const InnvilgeVedtak: React.FC<{
@@ -196,68 +208,72 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <Wrapper>
-                <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
-                <VedtaksperiodeValg
-                    vedtaksperiodeListe={vedtaksperiodeState}
-                    valideringsfeil={formState.errors.perioder}
-                    setValideringsFeil={formState.setErrors}
-                />
-                {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
-                    <IngenBegrunnelseOppgitt />
-                ) : (
-                    <EnsligTextArea
-                        value={periodeBegrunnelse.value}
-                        onChange={(event) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            periodeBegrunnelse.onChange(event);
-                        }}
-                        label="Begrunnelse"
-                        maxLength={0}
-                        erLesevisning={!behandlingErRedigerbar}
-                        feilmelding={formState.errors.periodeBegrunnelse}
+            <FormContentWrapper>
+                <VedtaksperiodeWrapper>
+                    <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
+                    <VedtaksperiodeValg
+                        vedtaksperiodeListe={vedtaksperiodeState}
+                        valideringsfeil={formState.errors.perioder}
+                        setValideringsFeil={formState.setErrors}
                     />
-                )}
-            </Wrapper>
-            <section className={'blokk-m'}>
-                <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
-                <InntektsperiodeValg
-                    inntektsperiodeListe={inntektsperiodeState}
-                    valideringsfeil={formState.errors.inntekter}
-                    setValideringsFeil={formState.setErrors}
-                />
-                {behandlingErRedigerbar && (
-                    <div className={'blokk-m'}>
-                        <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
-                            Beregn
-                        </Knapp>
-                    </div>
-                )}
-                <Utregningstabell beregnetStønad={beregnetStønad} />
-                {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
-                    <IngenBegrunnelseOppgitt />
-                ) : (
-                    <EnsligTextArea
-                        value={inntektBegrunnelse.value}
-                        onChange={(event) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            inntektBegrunnelse.onChange(event);
-                        }}
-                        label="Begrunnelse"
-                        maxLength={0}
-                        erLesevisning={!behandlingErRedigerbar}
-                        feilmelding={formState.errors.inntektBegrunnelse}
+                    {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
+                        <IngenBegrunnelseOppgitt />
+                    ) : (
+                        <EnsligTextArea
+                            value={periodeBegrunnelse.value}
+                            onChange={(event) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                periodeBegrunnelse.onChange(event);
+                            }}
+                            label="Begrunnelse"
+                            maxLength={0}
+                            erLesevisning={!behandlingErRedigerbar}
+                            feilmelding={formState.errors.periodeBegrunnelse}
+                        />
+                    )}
+                </VedtaksperiodeWrapper>
+                <InntekWrapper className={'blokk-m'}>
+                    <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
+                    {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
+                        <IngenBegrunnelseOppgitt />
+                    ) : (
+                        <EnsligTextAreaWrapper>
+                            <EnsligTextArea
+                                value={inntektBegrunnelse.value}
+                                onChange={(event) => {
+                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                    inntektBegrunnelse.onChange(event);
+                                }}
+                                label="Begrunnelse for inntektsfastsettelse"
+                                maxLength={0}
+                                erLesevisning={!behandlingErRedigerbar}
+                                feilmelding={formState.errors.inntektBegrunnelse}
+                            />
+                        </EnsligTextAreaWrapper>
+                    )}
+                    <InntektsperiodeValg
+                        inntektsperiodeListe={inntektsperiodeState}
+                        valideringsfeil={formState.errors.inntekter}
+                        setValideringsFeil={formState.setErrors}
                     />
+                    {behandlingErRedigerbar && (
+                        <div className={'blokk-m'}>
+                            <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
+                                Beregn
+                            </Knapp>
+                        </div>
+                    )}
+                    <Utregningstabell beregnetStønad={beregnetStønad} />
+                </InntekWrapper>
+                <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
+                    Lagre vedtak
+                </Hovedknapp>
+                {feilmelding && (
+                    <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
+                        {feilmelding}
+                    </AlertStripeFeilPreWrap>
                 )}
-            </section>
-            <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
-                Lagre vedtak
-            </Hovedknapp>
-            {feilmelding && (
-                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                    {feilmelding}
-                </AlertStripeFeilPreWrap>
-            )}
+            </FormContentWrapper>
         </form>
     );
 };

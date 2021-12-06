@@ -12,6 +12,7 @@ import { usePagineringState } from '../../App/hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import Pagination from 'paginering';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { IMappe } from './typer/mappe';
 
 const SIDE_STORRELSE = 15;
 
@@ -22,7 +23,7 @@ export interface IOppgaverResponse {
 
 interface Props {
     oppgaveRessurs: OppgaveRessurs;
-    mapper: Record<number, string>;
+    mapper: IMappe[];
 }
 
 const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper }) => {
@@ -42,6 +43,13 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper }) => {
         1,
         SIDE_STORRELSE
     );
+    const mapperAsRecord = (mapper: IMappe[]): Record<number, string> =>
+        mapper.reduce((acc, item) => {
+            acc[item.id] = item.navn;
+            return acc;
+        }, {} as Record<number, string>);
+
+    const formaterteMapper = mapperAsRecord(mapper);
 
     if (status === RessursStatus.HENTER) {
         return <SystemetLaster />;
@@ -90,7 +98,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper }) => {
                 </thead>
                 <tbody>
                     {slicedListe.map((v) => (
-                        <OppgaveRad key={v.id} oppgave={v} mapper={mapper} />
+                        <OppgaveRad key={v.id} oppgave={v} mapper={formaterteMapper} />
                     ))}
                 </tbody>
             </table>
