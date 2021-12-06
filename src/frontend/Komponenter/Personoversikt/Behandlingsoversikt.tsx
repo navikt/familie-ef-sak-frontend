@@ -177,10 +177,11 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     );
 };
 
-const TabellData: PartialRecord<keyof Behandling, string> = {
+const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
     opprettet: 'Behandling opprettetdato',
     type: 'Type',
     status: 'Status',
+    vedtaksdato: 'Vedtaksdato',
     resultat: 'Resultat',
 };
 
@@ -255,6 +256,10 @@ const BehandlingsoversiktTabell: React.FC<{
                             <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
                             <td>{formatterEnumVerdi(behandling.type)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
+                            <td>
+                                {behandling.vedtaksdato &&
+                                    formaterIsoDatoTid(behandling.vedtaksdato)}
+                            </td>
                             <td>
                                 {behandling.type === Behandlingstype.TEKNISK_OPPHØR &&
                                 behandling.resultat ? (
