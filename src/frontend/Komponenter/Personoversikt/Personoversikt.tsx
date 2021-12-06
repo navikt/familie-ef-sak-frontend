@@ -9,7 +9,7 @@ import { TabsPure } from 'nav-frontend-tabs';
 import Personopplysninger from './Personopplysninger';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
-import Vedtaksperioder from './Vedtaksperioder';
+import Vedtaksperioderoversikt from './Vedtaksperioderoversikt';
 import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import Dokumenter from './Dokumenter';
 
@@ -50,7 +50,7 @@ const Personoversikt: React.FC = () => {
                             />
                         )}
                         {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
-                        {tabvalg === 2 && <Vedtaksperioder fagsakId={fagsakId} />}
+                        {tabvalg === 2 && <Vedtaksperioderoversikt fagsakId={fagsakId} />}
                         {tabvalg === 3 && <Dokumenter personopplysninger={personopplysninger} />}
                         {tabvalg === 4 && <FrittståendeBrevMedVisning fagsakId={fagsakId} />}
                     </Side>
