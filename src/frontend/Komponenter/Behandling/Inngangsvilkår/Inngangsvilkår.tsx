@@ -11,6 +11,7 @@ import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { OppdaterOpplysninger } from './Medlemskap/OppdaterOpplysninger';
 
 interface Props {
     behandlingId: string;
@@ -44,6 +45,11 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
                 return (
                     <>
+                        <OppdaterOpplysninger
+                            visningstekst={
+                                'Opplysninger oppdatert fra Folkeregisteret 05.05.2021 13:45:01'
+                            }
+                        />
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
