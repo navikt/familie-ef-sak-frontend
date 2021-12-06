@@ -18,6 +18,12 @@ const StyledTable = styled.table`
     }
 `;
 
+const nullableBooleanTilTekst = (bool?: boolean) => {
+    if (bool === true) return 'Ja';
+    else if (bool === false) return 'Nei';
+    else return '';
+};
+
 const UttrekkArbeidssøkerTabell: React.FC<{
     arbeidssøkere: IUttrekkArbeidssøker[];
     settKontrollert: (id: string, kontrollert: boolean) => void;
@@ -28,6 +34,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
             <thead>
                 <tr>
                     <th>Person</th>
+                    <th>Registrert som arbeidssøker i Arena</th>
                     <th>Kontrollert</th>
                 </tr>
             </thead>
@@ -57,6 +64,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                     )}
                                 </div>
                             </td>
+                            <td>{nullableBooleanTilTekst(arbeidssøker.registrertArbeidssøker)}</td>
                             <td>
                                 {!arbeidssøker.kontrollert ? (
                                     <Knapp
