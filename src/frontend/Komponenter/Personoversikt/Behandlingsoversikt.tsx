@@ -59,6 +59,11 @@ const TittelLinje = styled.div`
     align-items: flex-start;
 `;
 
+export enum BehandlingApplikasjon {
+    EF_SAK = 'EF_SAK',
+    TILBAKEKREVING = 'TILBAKEKREVING',
+}
+
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
@@ -201,7 +206,7 @@ const BehandlingsoversiktTabell: React.FC<{
             status: behandling.status,
             resultat: behandling.resultat,
             opprettet: behandling.opprettet,
-            applikasjon: 'ef-sak',
+            applikasjon: BehandlingApplikasjon.EF_SAK,
         };
     });
 
@@ -214,7 +219,7 @@ const BehandlingsoversiktTabell: React.FC<{
                 vedtaksdato: tilbakekrevingBehandling.vedtaksdato,
                 resultat: tilbakekrevingBehandling.resultat,
                 opprettet: tilbakekrevingBehandling.opprettetTidspunkt,
-                applikasjon: 'tilbakekreving',
+                applikasjon: BehandlingApplikasjon.TILBAKEKREVING,
             };
         });
 
@@ -261,7 +266,7 @@ const BehandlingsoversiktTabell: React.FC<{
                                 {behandling.type === Behandlingstype.TEKNISK_OPPHØR &&
                                 behandling.resultat ? (
                                     <span>{formatterEnumVerdi(behandling.resultat)}</span>
-                                ) : behandling.applikasjon === 'ef-sak' ? (
+                                ) : behandling.applikasjon === BehandlingApplikasjon.EF_SAK ? (
                                     <Link
                                         className="lenke"
                                         to={{ pathname: `/behandling/${behandling.id}` }}
