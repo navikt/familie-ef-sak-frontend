@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Header } from '@navikt/familie-header';
 import PersonSøk from './PersonSøk';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
@@ -35,11 +35,11 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
     const { gåTilUrl, appEnv, valgtPersonIdent } = useApp();
-    const [eksterneLenker, settEksterneLenker] = useState<PopoverItem[]>([]);
 
-    useEffect(() => {
-        settEksterneLenker(lagEksterneLenker(appEnv, valgtPersonIdent));
-    }, [settEksterneLenker, appEnv, valgtPersonIdent]);
+    const eksterneLenker = useMemo(
+        () => lagEksterneLenker(appEnv, valgtPersonIdent),
+        [appEnv, valgtPersonIdent]
+    );
 
     return (
         <Header
