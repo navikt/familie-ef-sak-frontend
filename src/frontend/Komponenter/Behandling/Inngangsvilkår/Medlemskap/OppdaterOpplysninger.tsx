@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Undertekst } from 'nav-frontend-typografi';
+import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { Refresh } from '@navikt/ds-icons';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
@@ -16,27 +16,52 @@ const Container = styled.div`
 
 const Oppdateringstekst = styled(Undertekst)`
     color: ${navFarger.navGra60};
+    padding-right: 0.25rem;
 `;
 
-type Props = { visningstekst: string };
+const KnappTekst = styled(Element)`
+    padding-left: 0.25rem;
+`;
 
-export const OppdaterOpplysninger: React.FC<Props> = ({ visningstekst }) => {
+type Props = {
+    visningstekst: string;
+    oppdatertDato: string;
+    behandlingErRedigerbar: boolean;
+    oppdaterGrunnlagsdata: (behandlingId: string) => void;
+    behandlingId: string;
+};
+
+export const OppdaterOpplysninger: React.FC<Props> = ({
+    visningstekst,
+    oppdatertDato,
+    behandlingErRedigerbar,
+    oppdaterGrunnlagsdata,
+    behandlingId,
+}) => {
+    const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
+    const grunnlagsdataSistOppdatert = visningstekst + ' ' + oppdatertDato;
+
+    React.useEffect(() => {
+        settNyGrunnlagsdataHentes(false);
+    }, [oppdatertDato]);
+
     return (
         <Container>
-            <Oppdateringstekst children={visningstekst} />
+            <Oppdateringstekst children={grunnlagsdataSistOppdatert} />
             <FamilieKnapp
                 aria-label={'Oppdater registeropplysninger'}
                 title={'Oppdater'}
                 onClick={() => {
-                    console.log('klikk');
+                    settNyGrunnlagsdataHentes(true);
+                    oppdaterGrunnlagsdata(behandlingId);
                 }}
-                spinner={false}
+                spinner={nyGrunnlagsdataHentes}
                 type={'flat'}
                 mini={true}
                 kompakt={true}
-                erLesevisning={false}
+                erLesevisning={!behandlingErRedigerbar}
             >
-                <Refresh role="img" focusable="false" />
+                <Refresh role="img" focusable="false" /> <KnappTekst>Oppdater</KnappTekst>
             </FamilieKnapp>
         </Container>
     );

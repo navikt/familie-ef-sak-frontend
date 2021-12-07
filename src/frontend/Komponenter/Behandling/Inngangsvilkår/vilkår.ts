@@ -9,6 +9,7 @@ import { ITidligereVedtaksperioder } from '../TidligereVedtaksperioder/typer';
 export interface IVilkår {
     vurderinger: IVurdering[];
     grunnlag: IVilkårGrunnlag;
+    opprettetTid: string;
 }
 
 export interface IVilkårGrunnlag {

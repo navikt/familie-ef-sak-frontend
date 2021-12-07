@@ -12,6 +12,7 @@ import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { OppdaterOpplysninger } from './Medlemskap/OppdaterOpplysninger';
+import { formaterIsoDatoMedTid } from '../../../App/utils/formatter';
 
 interface Props {
     behandlingId: string;
@@ -25,9 +26,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
+        oppdaterGrunnlagsdataOgHentVilkår,
     } = useHentVilkår();
 
-    const { behandling } = useBehandling();
+    const { behandling, behandlingErRedigerbar } = useBehandling();
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {
@@ -42,13 +44,16 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <DataViewer response={{ vilkår, behandling }}>
             {({ vilkår, behandling }) => {
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+                const grunnlagsdataInnhentetDato = formaterIsoDatoMedTid(vilkår.opprettetTid);
 
                 return (
                     <>
                         <OppdaterOpplysninger
-                            visningstekst={
-                                'Opplysninger oppdatert fra Folkeregisteret 05.05.2021 13:45:01'
-                            }
+                            visningstekst={'Opplysninger hentet fra Folkeregisteret'}
+                            oppdatertDato={grunnlagsdataInnhentetDato}
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
+                            behandlingId={behandlingId}
                         />
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
