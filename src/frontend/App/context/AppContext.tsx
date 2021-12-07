@@ -5,6 +5,7 @@ import { håndterFeil, håndterRessurs, preferredAxios } from '../api/axios';
 import { Ressurs, RessursFeilet, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import constate from 'constate';
+import { EToast } from '../typer/toast';
 import { AppEnv } from '../api/env';
 
 interface IProps {
@@ -23,6 +24,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     const [valgtSide, settValgtSide] = useState<string | undefined>();
     const [visUlagretDataModal, settVisUlagretDataModal] = useState(false);
     const [byttUrl, settByttUrl] = useState(false);
+    const [toast, settToast] = useState<EToast | undefined>();
     const [valgtPersonIdent, settValgtPersonIdent] = useState<string>();
 
     useEffect(
@@ -93,6 +95,8 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         settVisUlagretDataModal,
         byttUrl,
         settByttUrl,
+        toast,
+        settToast,
         appEnv,
         valgtPersonIdent,
         settValgtPersonIdent,
