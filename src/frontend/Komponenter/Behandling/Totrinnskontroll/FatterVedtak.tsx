@@ -10,10 +10,10 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { EToast } from '../../../App/typer/toast';
 
 const RadioButtonWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
+    display: block;
     margin: 1rem;
 `;
 
@@ -34,6 +34,10 @@ const StyledUndertittel = styled(Undertittel)`
     margin: 0.5rem 0;
 `;
 
+const RadioMedPadding = styled(Radio)`
+    padding-bottom: 4px;
+`;
+
 interface TotrinnskontrollForm {
     godkjent: boolean;
     beskrivelse?: string;
@@ -46,7 +50,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const [laster, settLaster] = useState<boolean>(false);
     const { modalDispatch } = useModal();
 
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settToast, gåTilUrl } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
     const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
 
@@ -67,14 +71,19 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
         })
             .then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    hentBehandlingshistorikk.rerun();
-                    hentTotrinnskontroll.rerun();
-                    modalDispatch({
-                        type: ModalAction.VIS_MODAL,
-                        modalType: godkjent
-                            ? ModalType.VEDTAK_GODKJENT
-                            : ModalType.VEDTAK_UNDERKJENT,
-                    });
+                    if (godkjent) {
+                        hentBehandlingshistorikk.rerun();
+                        hentTotrinnskontroll.rerun();
+                        modalDispatch({
+                            type: ModalAction.VIS_MODAL,
+                            modalType: godkjent
+                                ? ModalType.VEDTAK_GODKJENT
+                                : ModalType.VEDTAK_UNDERKJENT,
+                        });
+                    } else {
+                        settToast(EToast.VEDTAK_UNDERKJENT);
+                        gåTilUrl('/oppgavebenk');
+                    }
                 } else {
                     settFeil(response.frontendFeilmelding);
                 }
@@ -90,7 +99,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                     Kontroller opplysninger og faglige vurderinger gjort under behandlingen
                 </Normaltekst>
                 <RadioButtonWrapper>
-                    <Radio
+                    <RadioMedPadding
                         checked={godkjent === true}
                         label="Godkjenn"
                         name="minRadioKnapp"
@@ -99,7 +108,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                             settBegrunnelse(undefined);
                         }}
                     />
-                    <Radio
+                    <RadioMedPadding
                         checked={godkjent === false}
                         label="Underkjenn"
                         name="minRadioKnapp"
