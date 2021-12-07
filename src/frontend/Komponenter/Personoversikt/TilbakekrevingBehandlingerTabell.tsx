@@ -15,7 +15,7 @@ const StyledTable = styled.table`
     margin-left: 1rem;
 `;
 
-const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string) => {
+export const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string => {
     return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
 };
 

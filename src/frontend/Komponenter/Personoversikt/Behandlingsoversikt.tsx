@@ -36,7 +36,7 @@ import {
     TilbakekrevingBehandlingsresultatstype,
     TilbakekrevingBehandlingstype,
 } from '../../App/typer/tilbakekreving';
-import { TilbakekrevingBehandlingerTabell } from './TilbakekrevingBehandlingerTabell';
+import { lagTilbakekrevingslenke } from './TilbakekrevingBehandlingerTabell';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -145,12 +145,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         eksternFagsakId={fagsak.eksternId}
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                     />
-                    {tilbakekrevingBehandlinger.length > 0 && (
-                        <TilbakekrevingBehandlingerTabell
-                            tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
-                            eksternFagsakId={fagsak.eksternId}
-                        />
-                    )}
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
                             Opprett ny behandling
@@ -192,6 +186,7 @@ interface GenerellBehandling {
     vedtaksdato?: string;
     resultat?: BehandlingResultat | TilbakekrevingBehandlingsresultatstype;
     opprettet: string;
+    applikasjon: string;
 }
 
 const BehandlingsoversiktTabell: React.FC<{
@@ -206,6 +201,7 @@ const BehandlingsoversiktTabell: React.FC<{
             status: behandling.status,
             resultat: behandling.resultat,
             opprettet: behandling.opprettet,
+            applikasjon: 'ef-sak',
         };
     });
 
@@ -218,6 +214,7 @@ const BehandlingsoversiktTabell: React.FC<{
                 vedtaksdato: tilbakekrevingBehandling.vedtaksdato,
                 resultat: tilbakekrevingBehandling.resultat,
                 opprettet: tilbakekrevingBehandling.opprettetTidspunkt,
+                applikasjon: 'tilbakekreving',
             };
         });
 
@@ -264,7 +261,7 @@ const BehandlingsoversiktTabell: React.FC<{
                                 {behandling.type === Behandlingstype.TEKNISK_OPPHØR &&
                                 behandling.resultat ? (
                                     <span>{formatterEnumVerdi(behandling.resultat)}</span>
-                                ) : (
+                                ) : behandling.applikasjon === 'ef-sak' ? (
                                     <Link
                                         className="lenke"
                                         to={{ pathname: `/behandling/${behandling.id}` }}
@@ -274,6 +271,23 @@ const BehandlingsoversiktTabell: React.FC<{
                                                 behandling.resultat
                                             ]}
                                     </Link>
+                                ) : (
+                                    <td>
+                                        <a
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            href={lagTilbakekrevingslenke(
+                                                eksternFagsakId,
+                                                behandling.id
+                                            )}
+                                        >
+                                            {behandling.resultat
+                                                ? behandlingResultatInkludertTilbakekrevingTilTekst[
+                                                      behandling.resultat
+                                                  ]
+                                                : 'Ikke satt'}
+                                        </a>
+                                    </td>
                                 )}
                             </td>
                         </tr>
