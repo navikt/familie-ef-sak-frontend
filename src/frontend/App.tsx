@@ -16,6 +16,7 @@ import UgyldigSesjon from './Felles/Modal/SesjonUtløpt';
 import UlagretDataModal from './Komponenter/Behandling/Fanemeny/UlagretDataModal';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
+import { Toast } from './Felles/Toast/Toast';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -92,6 +93,7 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
                 <Redirect from="/" to="/oppgavebenk" />
             </Switch>
             <UlagretDataModal />
+            <Toast />
         </>
     );
 };
