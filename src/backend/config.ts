@@ -9,6 +9,7 @@ const Environment = () => {
             namespace: 'local',
             sakProxyUrl: 'http://localhost:8093',
             brevProxyUrl: 'http://localhost:8001',
+            aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
         };
     } else if (process.env.ENV === 'e2e') {
         return {
@@ -16,6 +17,7 @@ const Environment = () => {
             namespace: 'e2e',
             sakProxyUrl: 'http://familie-ef-sak:8093',
             brevProxyUrl: '', // TODO
+            aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             //Har ikke satt opp redis
         };
     } else if (process.env.ENV === 'preprod') {
@@ -24,6 +26,7 @@ const Environment = () => {
             namespace: 'preprod',
             sakProxyUrl: 'http://familie-ef-sak',
             brevProxyUrl: 'http://familie-brev',
+            aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             redisUrl: 'familie-ef-sak-frontend-redis',
         };
     }
@@ -33,6 +36,7 @@ const Environment = () => {
         namespace: 'production',
         sakProxyUrl: 'http://familie-ef-sak',
         brevProxyUrl: 'http://familie-brev',
+        aInntekt: 'https://arbeid-og-inntekt.nais.adeo.no',
         redisUrl: 'familie-ef-sak-frontend-redis',
     };
 };
@@ -60,3 +64,4 @@ export const buildPath = env.buildPath;
 export const sakProxyUrl = env.sakProxyUrl;
 export const brevProxyUrl = env.brevProxyUrl;
 export const namespace = env.namespace;
+export const urlAInntekt = env.aInntekt;
