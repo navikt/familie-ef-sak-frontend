@@ -6,6 +6,7 @@ import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import { LOG_LEVEL } from '@navikt/familie-logging';
+import { registretEfProxyEndpoints } from './efProxyRouter';
 
 // eslint-disable-next-line
 const packageJson = require('../../package.json');
@@ -23,6 +24,8 @@ export default (
     router.get('/env', (_req: Request, res: Response) => {
         res.status(200).send({ aInntekt: urlAInntekt }).end();
     });
+
+    registretEfProxyEndpoints(router);
 
     router.get('/error', (_req: Request, res: Response) => {
         prometheusTellere.errorRoute.inc();
