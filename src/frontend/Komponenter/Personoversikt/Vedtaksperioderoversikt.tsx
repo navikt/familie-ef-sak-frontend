@@ -47,14 +47,13 @@ const vedtakstidspunkt = (andel: AndelHistorikk) => (
     </Link>
 );
 
+function innvilgetEllerOpphørt(b: Behandling) {
+    return b.resultat === BehandlingResultat.INNVILGET || b.resultat === BehandlingResultat.OPPHØRT;
+}
+
 const sortBehandlinger = (fagsak: Fagsak): Behandling[] =>
     fagsak.behandlinger
-        .filter(
-            (b) =>
-                b.type !== Behandlingstype.BLANKETT &&
-                (b.resultat === BehandlingResultat.INNVILGET ||
-                    b.resultat === BehandlingResultat.OPPHØRT)
-        )
+        .filter((b) => b.type !== Behandlingstype.BLANKETT && innvilgetEllerOpphørt(b))
         .sort((a, b) => compareDesc(new Date(a.opprettet), new Date(b.opprettet)));
 
 const endring = (endring?: AndelHistorikkEndring) =>
@@ -134,17 +133,19 @@ const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andele
     );
 };
 
-const Vedtaksperioder: React.FC<{ fagsakId: string; tomBehandlingId?: string }> = ({
+const Vedtaksperioder: React.FC<{ fagsakId: string; perioderTilOgMedBehandlingId?: string }> = ({
     fagsakId,
-    tomBehandlingId,
+    perioderTilOgMedBehandlingId,
 }) => {
     const periodeHistorikkConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
             url: `/familie-ef-sak/api/perioder/fagsak/${fagsakId}/historikk`,
-            params: tomBehandlingId && { tomBehandlingId },
+            params: perioderTilOgMedBehandlingId && {
+                tilOgMedBehandlingId: perioderTilOgMedBehandlingId,
+            },
         }),
-        [fagsakId, tomBehandlingId]
+        [fagsakId, perioderTilOgMedBehandlingId]
     );
     const perioder = useDataHenter<AndelHistorikk[], null>(periodeHistorikkConfig);
     return (
@@ -157,7 +158,7 @@ const Vedtaksperioder: React.FC<{ fagsakId: string; tomBehandlingId?: string }> 
 };
 
 const Vedtaksperioderoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
-    const [tomBehandlingId, settTomBehandlingId] = useState<string>();
+    const [valgtBehandlingId, settValgtBehandlingId] = useState<string>();
     const fagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -177,12 +178,10 @@ const Vedtaksperioderoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) =
                             label="Behandling"
                             className="flex-item"
                             onChange={(event) => {
-                                event.persist();
-                                const førsteBehandling = behandlinger[0].id;
+                                const nyesteBehandling = behandlinger[0].id;
                                 const nyBehandlingId = event.target.value;
-                                settTomBehandlingId(
-                                    nyBehandlingId === førsteBehandling ? undefined : nyBehandlingId
-                                );
+                                const skalNullstille = nyBehandlingId === nyesteBehandling;
+                                settValgtBehandlingId(skalNullstille ? undefined : nyBehandlingId);
                             }}
                         >
                             {behandlinger.map((b) => (
@@ -192,7 +191,10 @@ const Vedtaksperioderoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) =
                                 </option>
                             ))}
                         </BehandlingSelect>
-                        <Vedtaksperioder fagsakId={fagsakId} tomBehandlingId={tomBehandlingId} />
+                        <Vedtaksperioder
+                            fagsakId={fagsakId}
+                            perioderTilOgMedBehandlingId={valgtBehandlingId}
+                        />
                     </>
                 );
             }}
