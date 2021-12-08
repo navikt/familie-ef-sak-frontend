@@ -1,6 +1,6 @@
 import Modal from 'nav-frontend-modal';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppProvider, useApp } from './App/context/AppContext';
 import { hentInnloggetBruker } from './App/api/saksbehandler';
 import { ISaksbehandler } from './App/typer/saksbehandler';
@@ -16,13 +16,14 @@ import UgyldigSesjon from './Felles/Modal/SesjonUtløpt';
 import UlagretDataModal from './Komponenter/Behandling/Fanemeny/UlagretDataModal';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
+import { AppEnv, hentEnv } from './App/api/env';
+import { Toast } from './Felles/Toast/Toast';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
 const App: React.FC = () => {
-    const [innloggetSaksbehandler, settInnloggetSaksbehandler] = React.useState<
-        ISaksbehandler | undefined
-    >(undefined);
+    const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler>();
+    const [appEnv, settAppEnv] = useState<AppEnv>();
 
     React.useEffect(() => {
         hentInnloggetBruker().then((innhentetInnloggetSaksbehandler: ISaksbehandler) => {
@@ -30,12 +31,18 @@ const App: React.FC = () => {
         });
     }, []);
 
-    if (!innloggetSaksbehandler) {
+    React.useEffect(() => {
+        hentEnv().then((env: AppEnv) => {
+            settAppEnv(env);
+        });
+    }, []);
+
+    if (!innloggetSaksbehandler || !appEnv) {
         return null;
     }
     return (
         <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
-            <AppProvider autentisertSaksbehandler={innloggetSaksbehandler}>
+            <AppProvider autentisertSaksbehandler={innloggetSaksbehandler} appEnv={appEnv}>
                 <TogglesProvider>
                     <Routes innloggetSaksbehandler={innloggetSaksbehandler} />
                 </TogglesProvider>
@@ -92,6 +99,7 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
                 <Redirect from="/" to="/oppgavebenk" />
             </Switch>
             <UlagretDataModal />
+            <Toast />
         </>
     );
 };
