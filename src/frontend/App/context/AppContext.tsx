@@ -6,12 +6,14 @@ import { Ressurs, RessursFeilet, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
 import constate from 'constate';
 import { EToast } from '../typer/toast';
+import { AppEnv } from '../api/env';
 
 interface IProps {
-    autentisertSaksbehandler: ISaksbehandler | undefined;
+    autentisertSaksbehandler: ISaksbehandler;
+    appEnv: AppEnv;
 }
 
-const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) => {
+const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IProps) => {
     const [autentisert, settAutentisert] = React.useState(true);
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] =
         React.useState(autentisertSaksbehandler);
@@ -23,6 +25,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
     const [visUlagretDataModal, settVisUlagretDataModal] = useState(false);
     const [byttUrl, settByttUrl] = useState(false);
     const [toast, settToast] = useState<EToast | undefined>();
+    const [valgtPersonIdent, settValgtPersonIdent] = useState<string>();
 
     useEffect(
         () => settUlagretData(ikkePersisterteKomponenter.size > 0),
@@ -94,6 +97,9 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler }: IProps) =>
         settByttUrl,
         toast,
         settToast,
+        appEnv,
+        valgtPersonIdent,
+        settValgtPersonIdent,
     };
 });
 

@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Header } from '@navikt/familie-header';
 import PersonSøk from './PersonSøk';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
 import './headermedsøk.less';
+import { AppEnv } from '../../App/api/env';
+import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-// TODO: Må finne riktige lenker her
-const eksterneLenker: PopoverItem[] = [
-    { name: 'Rettskildene', href: '#/1' },
-    { name: 'Rutinebeskrivelser', href: '#/2' },
-    { name: 'A-inntekt', href: '#/3' },
-    { name: 'Aareg', href: '#/4' },
-    { name: 'Gosys', href: '#/5' },
-    { name: 'Modia', href: '#/6' },
-    { name: 'Pesys', href: '#/7' },
-];
+const lagAInntekt = (appEnv: AppEnv, personIdent?: string): PopoverItem => {
+    if (!personIdent) {
+        return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
+    }
+
+    return {
+        name: 'A-inntekt',
+        href: '#/a-inntekt',
+        onClick: async (e: React.SyntheticEvent) => {
+            e.preventDefault();
+            window.open(await lagAInntektLink(appEnv, personIdent));
+        },
+    };
+};
+
+const lagEksterneLenker = (appEnv: AppEnv, personIdent?: string): PopoverItem[] => {
+    return [lagAInntekt(appEnv, personIdent)];
+};
 
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { gåTilUrl } = useApp();
+    const { gåTilUrl, appEnv, valgtPersonIdent } = useApp();
+
+    const eksterneLenker = useMemo(
+        () => lagEksterneLenker(appEnv, valgtPersonIdent),
+        [appEnv, valgtPersonIdent]
+    );
+
     return (
         <Header
             tittelOnClick={() => {

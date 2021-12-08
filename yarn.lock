@@ -1268,10 +1268,10 @@
     nav-frontend-typografi-style "^2.0.1"
     react-select "^4.0.13"
 
-"@navikt/familie-header@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@navikt/familie-header/-/familie-header-3.2.0.tgz#18998edf5414200b53f3b29c29f7de040c95604a"
-  integrity sha512-IOpxEZRmxvBZpk9oFKKVskmPRulA3b12wsQbSO15Fjqqv3frE+DRpjGCB0yJpPJnWndoNhdVCi/l/IbFb51KlQ==
+"@navikt/familie-header@^3.2.1-alpha.1+be02b59":
+  version "3.2.1-alpha.1"
+  resolved "https://registry.yarnpkg.com/@navikt/familie-header/-/familie-header-3.2.1-alpha.1.tgz#e187caf3c9181e94d44a4b339e85824741ef8354"
+  integrity sha512-lHt9EPd+lTqWASW2lpTZfaRvujs/ETgDy1QWy1pxp/CsdqHshUnFDRKbpFV+6yMR9wiM0JXJiLUwc+8usxsB5A==
   dependencies:
     "@babel/preset-typescript" "^7.15.0"
     "@navikt/boxed-list-with-links" "^1.0.2"

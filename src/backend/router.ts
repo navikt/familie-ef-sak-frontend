@@ -1,7 +1,7 @@
 import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
 import { Request, Response, Router } from 'express';
 import path from 'path';
-import { buildPath } from './config';
+import { buildPath, urlAInntekt } from './config';
 import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
@@ -20,6 +20,10 @@ export default (
             .send({ version: process.env.APP_VERSION, reduxVersion: packageJson.redux_version })
             .end();
     });
+    router.get('/env', (_req: Request, res: Response) => {
+        res.status(200).send({ aInntekt: urlAInntekt }).end();
+    });
+
     router.get('/error', (_req: Request, res: Response) => {
         prometheusTellere.errorRoute.inc();
         res.sendFile('error.html', { root: path.join(`assets/`) });
