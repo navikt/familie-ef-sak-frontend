@@ -6,6 +6,7 @@ import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import { LOG_LEVEL } from '@navikt/familie-logging';
+import { customCspHeader } from './headerUtils';
 
 // eslint-disable-next-line
 const packageJson = require('../../package.json');
@@ -63,6 +64,7 @@ export default (
     } else {
         router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
+            customCspHeader(res);
 
             res.sendFile('index.html', { root: path.join(__dirname, buildPath) });
         });
