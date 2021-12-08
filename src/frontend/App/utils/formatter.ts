@@ -25,16 +25,16 @@ export const formaterIsoDato = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoFormat);
 };
 
-export const formaterIsoDatoMedTid = (dato: string): string => {
-    return parseISO(dato).toLocaleDateString('no-NO', datoTidFormat).replace(/,/g, '');
-};
-
 export const dagensDatoFormatert = (): string => {
     return new Date().toLocaleDateString('no-NO', datoFormat);
 };
 
 export const formaterIsoDatoTid = (dato: string): string => {
     return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm");
+};
+
+export const formaterIsoDatoTidMedSekunder = (dato: string): string => {
+    return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm:ss");
 };
 
 export const formaterNullableIsoDatoTid = (dato?: string): string | undefined => {

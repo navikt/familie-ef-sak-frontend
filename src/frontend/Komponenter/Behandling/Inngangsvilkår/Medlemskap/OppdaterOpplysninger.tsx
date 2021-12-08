@@ -24,7 +24,6 @@ const KnappTekst = styled(Element)`
 `;
 
 type Props = {
-    visningstekst: string;
     oppdatertDato: string;
     behandlingErRedigerbar: boolean;
     oppdaterGrunnlagsdata: (behandlingId: string) => void;
@@ -32,14 +31,13 @@ type Props = {
 };
 
 export const OppdaterOpplysninger: React.FC<Props> = ({
-    visningstekst,
     oppdatertDato,
     behandlingErRedigerbar,
     oppdaterGrunnlagsdata,
     behandlingId,
 }) => {
     const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
-    const grunnlagsdataSistOppdatert = visningstekst + ' ' + oppdatertDato;
+    const grunnlagsdataSistOppdatert = 'Opplysninger hentet fra Folkeregisteret ' + oppdatertDato;
 
     React.useEffect(() => {
         settNyGrunnlagsdataHentes(false);

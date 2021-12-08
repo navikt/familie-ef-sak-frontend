@@ -12,7 +12,7 @@ import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { OppdaterOpplysninger } from './Medlemskap/OppdaterOpplysninger';
-import { formaterIsoDatoMedTid } from '../../../App/utils/formatter';
+import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 
 interface Props {
     behandlingId: string;
@@ -44,12 +44,13 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <DataViewer response={{ vilkår, behandling }}>
             {({ vilkår, behandling }) => {
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-                const grunnlagsdataInnhentetDato = formaterIsoDatoMedTid(vilkår.opprettetTid);
+                const grunnlagsdataInnhentetDato = formaterIsoDatoTidMedSekunder(
+                    vilkår.grunnlag.registeropplysningerOpprettetTid
+                );
 
                 return (
                     <>
                         <OppdaterOpplysninger
-                            visningstekst={'Opplysninger hentet fra Folkeregisteret'}
                             oppdatertDato={grunnlagsdataInnhentetDato}
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
