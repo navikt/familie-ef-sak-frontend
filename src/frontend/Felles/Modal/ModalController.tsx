@@ -8,7 +8,6 @@ import { useApp } from '../../App/context/AppContext';
 const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
     VEDTAK_GODKJENT: 'Vedtaket er godkjent',
-    VEDTAK_UNDERKJENT: 'Vedtaket er underkjent',
     BEHANDLES_I_GOSYS: 'Saken er avsluttet og må behandles i Gosys',
 };
 
@@ -20,7 +19,6 @@ const ModalController: React.FC = () => {
     switch (modalState.modalType) {
         case ModalType.SENDT_TIL_BESLUTTER:
         case ModalType.VEDTAK_GODKJENT:
-        case ModalType.VEDTAK_UNDERKJENT:
             return (
                 <UIModalWrapper
                     modal={{
@@ -28,8 +26,7 @@ const ModalController: React.FC = () => {
                         lukkKnapp: true,
                         visModal:
                             modalState.modalType === ModalType.SENDT_TIL_BESLUTTER ||
-                            modalState.modalType === ModalType.VEDTAK_GODKJENT ||
-                            modalState.modalType === ModalType.VEDTAK_UNDERKJENT,
+                            modalState.modalType === ModalType.VEDTAK_GODKJENT,
                         onClose: () => modalDispatch({ type: ModalAction.SKJUL_MODAL }),
                         actions: [
                             <Knapp
