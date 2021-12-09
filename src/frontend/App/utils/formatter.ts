@@ -6,7 +6,14 @@ export const datoFormat = {
     month: '2-digit',
     year: 'numeric',
 } as const;
-export const datoTidFormat = { day: '2-digit', month: '2-digit', year: 'numeric' };
+export const datoTidFormat = {
+    second: '2-digit',
+    minute: '2-digit',
+    hour: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+} as const;
 export const datoMånedÅrFormat = { month: 'short', year: 'numeric' } as const;
 export const datoMånedÅrFormatFull = { month: 'long', year: 'numeric' } as const;
 export const månedFormat = { month: 'short' } as const;
@@ -24,6 +31,10 @@ export const dagensDatoFormatert = (): string => {
 
 export const formaterIsoDatoTid = (dato: string): string => {
     return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm");
+};
+
+export const formaterIsoDatoTidMedSekunder = (dato: string): string => {
+    return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm:ss");
 };
 
 export const formaterNullableIsoDatoTid = (dato?: string): string | undefined => {

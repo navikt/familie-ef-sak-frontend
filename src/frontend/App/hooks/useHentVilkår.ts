@@ -31,6 +31,7 @@ const oppdaterInngangsvilkårMedVurdering = (
 export const useHentVilkår = (): {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
+    oppdaterGrunnlagsdataOgHentVilkår: (behandlingId: string) => void;
     lagreVurdering: (
         vurdering: SvarPåVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
@@ -137,6 +138,17 @@ export const useHentVilkår = (): {
         },
         [axiosRequest]
     );
+    const oppdaterGrunnlagsdataOgHentVilkår = useCallback(
+        (behandlingId) => {
+            axiosRequest<IVilkår, void>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/vurdering/${behandlingId}/oppdater`,
+            }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
+                settVilkår(hentetInngangsvilkår);
+            });
+        },
+        [axiosRequest]
+    );
 
     return {
         vilkår,
@@ -145,5 +157,6 @@ export const useHentVilkår = (): {
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
+        oppdaterGrunnlagsdataOgHentVilkår,
     };
 };

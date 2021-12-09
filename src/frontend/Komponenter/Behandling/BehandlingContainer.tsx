@@ -11,6 +11,9 @@ import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
+import { Behandling } from '../../App/typer/fagsak';
+import { IPersonopplysninger } from '../../App/typer/personopplysninger';
+import { useSetValgtPersonIdent } from '../../App/hooks/useSetValgtPersonIdent';
 
 const Container = styled.div`
     display: flex;
@@ -45,28 +48,39 @@ const BehandlingContainer: FC = () => {
     );
 };
 
+const BehandlingContent: FC<{
+    behandling: Behandling;
+    personopplysninger: IPersonopplysninger;
+}> = ({ behandling, personopplysninger }) => {
+    useSetValgtPersonIdent(personopplysninger);
+
+    return (
+        <>
+            <VisittkortComponent data={personopplysninger} behandling={behandling} />
+            <Container>
+                <InnholdWrapper>
+                    <Fanemeny />
+                    <BehandlingRoutes />
+                    <GodkjennEndringer behandling={behandling} />
+                </InnholdWrapper>
+                <HøyreMenyWrapper>
+                    <Høyremeny />
+                </HøyreMenyWrapper>
+            </Container>
+        </>
+    );
+};
+
 const Behandling: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
 
     return (
         <DataViewer response={{ personopplysningerResponse, behandling }}>
             {({ personopplysningerResponse, behandling }) => (
-                <>
-                    <VisittkortComponent
-                        data={personopplysningerResponse}
-                        behandling={behandling}
-                    />
-                    <Container>
-                        <InnholdWrapper>
-                            <Fanemeny />
-                            <BehandlingRoutes />
-                            <GodkjennEndringer behandling={behandling} />
-                        </InnholdWrapper>
-                        <HøyreMenyWrapper>
-                            <Høyremeny />
-                        </HøyreMenyWrapper>
-                    </Container>
-                </>
+                <BehandlingContent
+                    behandling={behandling}
+                    personopplysninger={personopplysningerResponse}
+                />
             )}
         </DataViewer>
     );

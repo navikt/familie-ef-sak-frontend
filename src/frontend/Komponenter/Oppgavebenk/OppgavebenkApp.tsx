@@ -5,16 +5,16 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs'
 import { IOppgaveRequest } from './typer/oppgaverequest';
 import { OpprettDummyBehandling } from './OpprettDummyBehandling';
 import { Side } from '../../Felles/Visningskomponenter/Side';
-import { IMappe } from './typer/mappe';
-import OppgaveFiltering from './OppgaveFiltrering';
+import { IMappe, tomMappeListe } from './typer/mappe';
+import OppgaveFiltrering from './OppgaveFiltrering';
 import { erProd } from '../../App/utils/miljø';
 
 export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
 
 export const OppgavebenkApp: React.FC = () => {
     const { axiosRequest } = useApp();
-    const [oppgaveResurs, settOppgaveResurs] = useState<OppgaveRessurs>(byggTomRessurs());
-    const [mapper, settMapper] = useState<Record<number, string>>({});
+    const [oppgaveRessurs, settOppgaveRessurs] = useState<OppgaveRessurs>(byggTomRessurs());
+    const [mapper, settMapper] = useState<IMappe[]>(tomMappeListe);
 
     const hentOppgaver = useCallback(
         (data: IOppgaveRequest) => {
@@ -22,30 +22,25 @@ export const OppgavebenkApp: React.FC = () => {
                 method: 'POST',
                 url: `/familie-ef-sak/api/oppgave/soek`,
                 data,
-            }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveResurs(res));
+            }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveRessurs(res));
         },
         [axiosRequest]
     );
-    const mapperAsRecord = (mapper: IMappe[]): Record<number, string> =>
-        mapper.reduce((acc, item) => {
-            acc[item.id] = item.navn;
-            return acc;
-        }, {} as Record<number, string>);
 
     useEffect(() => {
         axiosRequest<IMappe[], null>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/mapper`,
         }).then((res: Ressurs<IMappe[]>) => {
-            res.status === RessursStatus.SUKSESS && settMapper(mapperAsRecord(res.data));
+            res.status === RessursStatus.SUKSESS && settMapper(res.data);
         });
     }, [axiosRequest]);
 
     return (
         <Side className={'container'}>
             {!erProd() && <OpprettDummyBehandling />}
-            <OppgaveFiltering hentOppgaver={hentOppgaver} mapper={mapper} />
-            <OppgaveTabell oppgaveRessurs={oppgaveResurs} mapper={mapper} />
+            <OppgaveFiltrering hentOppgaver={hentOppgaver} mapper={mapper} />
+            <OppgaveTabell oppgaveRessurs={oppgaveRessurs} mapper={mapper} />
         </Side>
     );
 };
