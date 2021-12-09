@@ -21,8 +21,14 @@ import EtikettBase from 'nav-frontend-etiketter';
 import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
 import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
-import { Select } from 'nav-frontend-skjema';
+import { Select, Checkbox } from 'nav-frontend-skjema';
 import { compareDesc } from 'date-fns';
+
+const StyledInputs = styled.div`
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+`;
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
@@ -36,23 +42,13 @@ const Rad = styled.tr<{ type?: AndelEndringType }>`
     opacity: ${(props) => (skalMarkeresSomFjernet(props.type) ? '50%' : '100%')};
 `;
 
+const erAktuell = (periode: AndelHistorikk) => !skalMarkeresSomFjernet(periode.endring?.type);
+
 const skalMarkeresSomFjernet = (type?: AndelEndringType) =>
     type === AndelEndringType.FJERNET || type === AndelEndringType.ERSTATTET;
 
-const vedtakstidspunkt = (andel: AndelHistorikk) => (
-    <Link
-        className="lenke"
-        to={{
-            pathname: `/behandling/${andel.behandlingId}`,
-        }}
-    >
-        {formaterIsoDatoTid(andel.vedtakstidspunkt)}
-    </Link>
-);
-
-function innvilgetEllerOpphørt(b: Behandling) {
-    return b.resultat === BehandlingResultat.INNVILGET || b.resultat === BehandlingResultat.OPPHØRT;
-}
+const innvilgetEllerOpphørt = (b: Behandling) =>
+    b.resultat === BehandlingResultat.INNVILGET || b.resultat === BehandlingResultat.OPPHØRT;
 
 const sortBehandlinger = (fagsak: Fagsak): Behandling[] =>
     fagsak.behandlinger
@@ -102,7 +98,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
             <td>{andel.andel.samordningsfradrag}</td>
             <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
-            <td>{vedtakstidspunkt(andel)}</td>
+            <td>{formaterIsoDatoTid(andel.vedtakstidspunkt)}</td>
             <td>{andel.saksbehandler}</td>
             <td>
                 <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
@@ -136,10 +132,11 @@ const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andele
     );
 };
 
-const Vedtaksperioder: React.FC<{ fagsakId: string; perioderTilOgMedBehandlingId?: string }> = ({
-    fagsakId,
-    perioderTilOgMedBehandlingId,
-}) => {
+const Vedtaksperioder: React.FC<{
+    fagsakId: string;
+    perioderTilOgMedBehandlingId?: string;
+    visUaktuelle: boolean;
+}> = ({ fagsakId, perioderTilOgMedBehandlingId, visUaktuelle }) => {
     const periodeHistorikkConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -154,7 +151,8 @@ const Vedtaksperioder: React.FC<{ fagsakId: string; perioderTilOgMedBehandlingId
     return (
         <DataViewer response={{ perioder }}>
             {({ perioder }) => {
-                return <VedtaksperioderTabell andeler={perioder} />;
+                const filtrertePerioder = visUaktuelle ? perioder : perioder.filter(erAktuell);
+                return <VedtaksperioderTabell andeler={filtrertePerioder} />;
             }}
         </DataViewer>
     );
@@ -162,6 +160,8 @@ const Vedtaksperioder: React.FC<{ fagsakId: string; perioderTilOgMedBehandlingId
 
 const Vedtaksperioderoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [valgtBehandlingId, settValgtBehandlingId] = useState<string>();
+    const [visUaktuelle, settVisUaktuelle] = useState<boolean>(true);
+
     const fagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -177,26 +177,38 @@ const Vedtaksperioderoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) =
                 const behandlinger = sortBehandlinger(fagsak);
                 return (
                     <>
-                        <BehandlingSelect
-                            label="Behandling"
-                            className="flex-item"
-                            onChange={(event) => {
-                                const nyesteBehandling = behandlinger[0].id;
-                                const nyBehandlingId = event.target.value;
-                                const skalNullstille = nyBehandlingId === nyesteBehandling;
-                                settValgtBehandlingId(skalNullstille ? undefined : nyBehandlingId);
-                            }}
-                        >
-                            {behandlinger.map((b) => (
-                                <option key={b.id} value={b.id}>
-                                    {behandlingstypeTilTekst[b.type]}{' '}
-                                    {formaterNullableIsoDatoTid(b.opprettet)}
-                                </option>
-                            ))}
-                        </BehandlingSelect>
+                        <StyledInputs>
+                            <BehandlingSelect
+                                label="Behandling"
+                                className="flex-item"
+                                onChange={(event) => {
+                                    const nyesteBehandling = behandlinger[0].id;
+                                    const nyBehandlingId = event.target.value;
+                                    const skalNullstille = nyBehandlingId === nyesteBehandling;
+                                    settValgtBehandlingId(
+                                        skalNullstille ? undefined : nyBehandlingId
+                                    );
+                                }}
+                            >
+                                {behandlinger.map((b) => (
+                                    <option key={b.id} value={b.id}>
+                                        {behandlingstypeTilTekst[b.type]}{' '}
+                                        {formaterNullableIsoDatoTid(b.opprettet)}
+                                    </option>
+                                ))}
+                            </BehandlingSelect>
+                            <Checkbox
+                                label={'Vis uaktuelle perioder'}
+                                onClick={() => {
+                                    settVisUaktuelle((prevState) => !prevState);
+                                }}
+                                checked={visUaktuelle}
+                            />
+                        </StyledInputs>
                         <Vedtaksperioder
                             fagsakId={fagsakId}
                             perioderTilOgMedBehandlingId={valgtBehandlingId}
+                            visUaktuelle={visUaktuelle}
                         />
                     </>
                 );

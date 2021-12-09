@@ -33,16 +33,12 @@ export interface AndelHistorikkEndring {
 
 export enum AndelEndringType {
     FJERNET = 'FJERNET',
-    ERSTATTET = 'ERSTATTET', // Deprecated
-    SPLITTET = 'SPLITTET', // Deprecated
-    ENDRET = 'ENDRET',
-    ENDRING_I_INNTEKT = 'ENDRING_I_INNTEKT',
+    ERSTATTET = 'ERSTATTET',
+    SPLITTET = 'SPLITTET',
 }
 
 export const AndelHistorikkTypeTilTekst: Record<AndelEndringType, string> = {
     FJERNET: 'Fjernet',
     ERSTATTET: 'Erstattet',
     SPLITTET: 'Splittet',
-    ENDRET: 'Endret', // Deprecated
-    ENDRING_I_INNTEKT: 'Endring i inntekt', // Deprecated
 };
