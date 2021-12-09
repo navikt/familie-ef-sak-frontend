@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { formaterIsoMånedÅr, formaterNullableIsoDatoTid } from '../../App/utils/formatter';
+import { formaterIsoMånedÅr } from '../../App/utils/formatter';
 import {
     byggFeiletRessurs,
     byggTomRessurs,
@@ -11,40 +11,31 @@ import {
 } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { PartialRecord } from '../../App/typer/common';
-import { Element, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
-import Pagination from 'paginering';
-import { useHistory } from 'react-router-dom';
-import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
+import { Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import { Checkbox } from 'nav-frontend-skjema';
+import { Adressebeskyttelse } from '../../App/typer/personopplysninger';
+import UttrekkArbeidssøkerTabell from './UttrekkArbeidssøkerTabell';
 
 const UttrekkArbeidssøkerContent = styled.div`
     padding: 1rem;
 `;
 
-const StyledTable = styled.table`
-    width: 60%;
-    padding: 2rem;
-    margin-left: 1rem;
-`;
-
-const StyledPagination = styled(Pagination)`
-    padding: 1rem;
-`;
-
-interface UttrekkArbeidssøkere {
+export interface IUttrekkArbeidssøkere {
     årMåned: string;
     side: number;
     antallTotalt: number;
     antallKontrollert: number;
-    arbeidssøkere: UttrekkArbeidsssøker[];
+    antallManglerKontrollUtenTilgang: number;
+    arbeidssøkere: IUttrekkArbeidssøker[];
 }
 
-interface UttrekkArbeidsssøker {
+export interface IUttrekkArbeidssøker {
     id: string;
     fagsakId: string;
     behandlingIdForVedtak: string;
+    personIdent: string;
+    navn: string;
+    adressebeskyttelse?: Adressebeskyttelse;
     kontrollert: boolean;
     kontrollertTid?: string;
     kontrollertAv?: string;
@@ -52,55 +43,43 @@ interface UttrekkArbeidsssøker {
 
 const URL_ARBEIDSSØKER = '/familie-ef-sak/api/uttrekk/arbeidssoker';
 
+/**
+ * Brukes for å ikke laste all data på nytt i det att man endrer til/sletter kontrollert
+ */
 const settArbeidssøkereTilKontrollert = (
-    prevState: RessursSuksess<UttrekkArbeidssøkere>,
-    id: string,
-    kontrollert: boolean
-) => {
+    prevState: RessursSuksess<IUttrekkArbeidssøkere>,
+    oppdatertUttrekkArbeidssøkere: IUttrekkArbeidssøker
+): RessursSuksess<IUttrekkArbeidssøkere> => {
     return {
         ...prevState,
         data: {
             ...prevState.data,
             arbeidssøkere: prevState.data.arbeidssøkere.map((arbeidssøker) =>
-                arbeidssøker.id === id ? { ...arbeidssøker, kontrollert } : arbeidssøker
+                arbeidssøker.id === oppdatertUttrekkArbeidssøkere.id
+                    ? oppdatertUttrekkArbeidssøkere
+                    : arbeidssøker
             ),
         },
     };
 };
 
-const ANTALL_PER_SIDE = 20;
-const QUERY_PARAM_SIDE = 'side';
-const QUERY_PARAM_KONTROLLERTE = 'kontrollerte';
-
 const UttrekkArbeidssøker: React.FC = () => {
-    const query = useQueryParams();
-    const history = useHistory();
-
-    const side = query.get(QUERY_PARAM_SIDE) || 1;
-    const visKontrollerte = query.get(QUERY_PARAM_KONTROLLERTE) === 'true';
-
-    const [arbeidssøkere, settArbeidssøkere] = useState<Ressurs<UttrekkArbeidssøkere>>(
+    const { axiosRequest } = useApp();
+    const [arbeidssøkere, settArbeidssøkere] = useState<Ressurs<IUttrekkArbeidssøkere>>(
         byggTomRessurs()
     );
     const [feilmelding, settFeilmelding] = useState<string>();
-    const { axiosRequest, gåTilUrl } = useApp();
+    const [visKontrollerte, settVisKontrollerte] = useState<boolean>(false);
 
     const hentUttrekk = useCallback(
-        (side, visKontrollerte: boolean) => {
-            return axiosRequest<UttrekkArbeidssøkere, null>({
+        (visKontrollerte: boolean) => {
+            return axiosRequest<IUttrekkArbeidssøkere, null>({
                 method: 'GET',
                 url: URL_ARBEIDSSØKER,
-                params: {
-                    side,
-                    visKontrollerte,
-                },
-            }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
-                if (respons.status === RessursStatus.SUKSESS) {
-                    settArbeidssøkere(respons);
-                } else {
-                    settFeilmelding(respons.frontendFeilmelding);
-                }
-            });
+                params: { visKontrollerte: visKontrollerte },
+            }).then((respons: RessursSuksess<IUttrekkArbeidssøkere> | RessursFeilet) =>
+                settArbeidssøkere(respons)
+            );
         },
         [axiosRequest]
     );
@@ -109,19 +88,18 @@ const UttrekkArbeidssøker: React.FC = () => {
         (id: string, kontrollert: boolean): void => {
             settFeilmelding(undefined);
             const kontrollertQuery = kontrollert ? '' : '?kontrollert=false';
-            axiosRequest<UttrekkArbeidssøkere, null>({
+            axiosRequest<IUttrekkArbeidssøker, null>({
                 method: 'POST',
                 url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${kontrollertQuery}`,
-            }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) => {
+            }).then((respons: RessursSuksess<IUttrekkArbeidssøker> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
                     settArbeidssøkere((prevState) => {
                         if (prevState.status !== RessursStatus.SUKSESS) {
                             const kanIkkeSetteArbeidssøkereFeilmelding =
                                 'Kan ikke oppdatere siden, last om siden på nytt';
-                            settFeilmelding(kanIkkeSetteArbeidssøkereFeilmelding);
                             return byggFeiletRessurs(kanIkkeSetteArbeidssøkereFeilmelding);
                         } else {
-                            return settArbeidssøkereTilKontrollert(prevState, id, kontrollert);
+                            return settArbeidssøkereTilKontrollert(prevState, respons.data);
                         }
                     });
                 } else {
@@ -129,103 +107,75 @@ const UttrekkArbeidssøker: React.FC = () => {
                 }
             });
         },
-        [axiosRequest]
+        [axiosRequest, settFeilmelding]
     );
 
     useEffect(() => {
-        hentUttrekk(side, visKontrollerte);
-    }, [hentUttrekk, side, visKontrollerte]);
+        hentUttrekk(visKontrollerte);
+    }, [hentUttrekk, visKontrollerte]);
+
+    const toggleVisKontrollerte = useCallback(() => {
+        settVisKontrollerte((prevState) => !prevState);
+    }, [settVisKontrollerte]);
 
     return (
         <UttrekkArbeidssøkerContent>
             <Sidetittel>Uttrekk arbeidssøkere (P43)</Sidetittel>
-            <div>{feilmelding}</div>
+            {feilmelding && <div style={{ color: 'red' }}>Feilmelding: {feilmelding}</div>}
             <DataViewer response={{ arbeidssøkere }}>
                 {({ arbeidssøkere }) => (
-                    <>
-                        <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
-                        <Checkbox
-                            label={'Vis kontrollerte'}
-                            onChange={() => {
-                                query.set(QUERY_PARAM_KONTROLLERTE, String(!visKontrollerte));
-                                query.set(QUERY_PARAM_SIDE, String(1));
-                                history.push(`${window.location.pathname}?${query.toString()}`);
-                            }}
-                            checked={visKontrollerte}
-                        />
-                        <UttrekkArbeidssøkerTabell
-                            arbeidssøkere={arbeidssøkere.arbeidssøkere}
-                            settKontrollert={settKontrollert}
-                            gåTilUrl={gåTilUrl}
-                        />
-                        <StyledPagination
-                            numberOfItems={arbeidssøkere.antallTotalt}
-                            onChange={(side: number) => {
-                                query.set(QUERY_PARAM_SIDE, String(side));
-                                history.push(`${window.location.pathname}?${query.toString()}`);
-                            }}
-                            itemsPerPage={ANTALL_PER_SIDE}
-                            currentPage={arbeidssøkere.side}
-                        />
-                    </>
+                    <UttrekkArbeidssøkerMedMetadata
+                        arbeidssøkere={arbeidssøkere}
+                        settKontrollert={settKontrollert}
+                        visKontrollerte={visKontrollerte}
+                        toggleVisKontrollerte={toggleVisKontrollerte}
+                    />
                 )}
             </DataViewer>
         </UttrekkArbeidssøkerContent>
     );
 };
 
-const TabellData: PartialRecord<keyof UttrekkArbeidsssøker, string> = {
-    fagsakId: 'Fagsak',
-    kontrollertTid: 'Tid kontrollert',
-    kontrollertAv: 'Kontrollert av',
-    kontrollert: 'Kontrollert',
+const UttrekkArbeidssøkerMedMetadata: React.FC<{
+    arbeidssøkere: IUttrekkArbeidssøkere;
+    settKontrollert: (id: string, kontrolllert: boolean) => void;
+    visKontrollerte: boolean;
+    toggleVisKontrollerte: () => void;
+}> = ({ arbeidssøkere, settKontrollert, visKontrollerte, toggleVisKontrollerte }) => {
+    return (
+        <>
+            <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
+            <Infoboks arbeidssøkere={arbeidssøkere} />
+            <Checkbox
+                label={'Vis kontrollerte'}
+                onChange={() => toggleVisKontrollerte()}
+                checked={visKontrollerte}
+            />
+            <UttrekkArbeidssøkerTabell
+                arbeidssøkere={arbeidssøkere.arbeidssøkere}
+                settKontrollert={settKontrollert}
+            />
+        </>
+    );
 };
 
-const UttrekkArbeidssøkerTabell: React.FC<{
-    arbeidssøkere: UttrekkArbeidsssøker[];
-    settKontrollert: (id: string, kontrollert: boolean) => void;
-    gåTilUrl: (url: string) => void;
-}> = ({ arbeidssøkere, settKontrollert, gåTilUrl }) => {
+const Infoboks: React.FC<{
+    arbeidssøkere: IUttrekkArbeidssøkere;
+}> = ({ arbeidssøkere }) => {
+    const antallManglerKontroll = arbeidssøkere.antallTotalt - arbeidssøkere.antallKontrollert;
+    const rødMarkertTekst = (antall: number) => (antall > 0 ? { color: 'red' } : {});
     return (
-        <StyledTable className="tabell">
-            <thead>
-                <tr>
-                    {Object.entries(TabellData).map(([field, tekst]) => (
-                        <th key={field}>{tekst}</th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {arbeidssøkere.map((arbeidssøker) => {
-                    return (
-                        <tr key={arbeidssøker.id}>
-                            <td>
-                                <Lenke
-                                    role={'link'}
-                                    href={'#'}
-                                    onClick={() => {
-                                        gåTilUrl(`/fagsak/${arbeidssøker.fagsakId}`);
-                                    }}
-                                >
-                                    <Element>{arbeidssøker.id}</Element>
-                                </Lenke>
-                            </td>
-                            <td>{formaterNullableIsoDatoTid(arbeidssøker.kontrollertTid)}</td>
-                            <td>{arbeidssøker.kontrollertAv}</td>
-                            <td>
-                                <Checkbox
-                                    label={<span>&nbsp;</span>} // hack for å ikke vise noen tekst, men beholde styling
-                                    onChange={() =>
-                                        settKontrollert(arbeidssøker.id, !arbeidssøker.kontrollert)
-                                    }
-                                    checked={arbeidssøker.kontrollert}
-                                />
-                            </td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        </StyledTable>
+        <div>
+            <div>Disse tallene blir ikke oppdatert før man laster om siden på nytt</div>
+            <div>Antall totalt: {arbeidssøkere.antallTotalt}</div>
+            <div style={rødMarkertTekst(antallManglerKontroll)}>
+                Antall mangler kontroll: {antallManglerKontroll}
+            </div>
+            <div style={rødMarkertTekst(arbeidssøkere.antallManglerKontrollUtenTilgang)}>
+                Antall mangler kontroll - mangler tilgang:{' '}
+                {arbeidssøkere.antallManglerKontrollUtenTilgang}
+            </div>
+        </div>
     );
 };
 

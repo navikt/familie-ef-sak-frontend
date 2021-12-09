@@ -20,6 +20,7 @@ export interface IVilkårGrunnlag {
     barnMedSamvær: IBarnMedSamvær[];
     sagtOppEllerRedusertStilling: ISagtOppEllerRedusertStilling;
     aktivitet: IAktivitet;
+    registeropplysningerOpprettetTid: string;
 }
 
 export interface IVurdering {
