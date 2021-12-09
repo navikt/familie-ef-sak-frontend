@@ -33,8 +33,11 @@ const BehandlingSelect = styled(Select)`
 `;
 
 const Rad = styled.tr<{ type?: AndelEndringType }>`
-    opacity: ${(props) => (props.type === AndelEndringType.FJERNET ? '50%' : '100%')};
+    opacity: ${(props) => (skalMarkeresSomFjernet(props.type) ? '50%' : '100%')};
 `;
+
+const skalMarkeresSomFjernet = (type?: AndelEndringType) =>
+    type === AndelEndringType.FJERNET || type === AndelEndringType.ERSTATTET;
 
 const vedtakstidspunkt = (andel: AndelHistorikk) => (
     <Link
