@@ -18,6 +18,15 @@ const NavnOgIkon = styled.div`
     display: flex;
 
     flex-direction: row;
+
+    margin-top: 1rem;
+`;
+
+const SjekkMotPdlBoks = styled(AlertStripeAdvarsel)`
+    width: 400px;
+
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 `;
 
 const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
@@ -33,7 +42,8 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
         ((forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad)) ||
             harVerdi(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse));
 
-    const sjekkMotPdlMatch = forelderSøknad?.fødselsnummer === forelderRegister?.fødselsnummer;
+    const fødselsnummerManueltOgRegister =
+        forelderSøknad?.fødselsnummer && forelderRegister?.fødselsnummer;
 
     return (
         <GridTabell>
@@ -47,8 +57,8 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         !søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse ? (
                             <>
                                 <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
-                                {sjekkMotPdlMatch && (
-                                    <AlertStripeAdvarsel>
+                                {fødselsnummerManueltOgRegister && (
+                                    <SjekkMotPdlBoks>
                                         <Normaltekst>
                                             Sjekk av manuelt innlagte opplysninger mot PDL.
                                         </Normaltekst>
@@ -59,7 +69,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                                             <Registergrunnlag />
                                             <Normaltekst>{forelderRegister?.navn}</Normaltekst>
                                         </NavnOgIkon>
-                                    </AlertStripeAdvarsel>
+                                    </SjekkMotPdlBoks>
                                 )}
                             </>
                         ) : (
