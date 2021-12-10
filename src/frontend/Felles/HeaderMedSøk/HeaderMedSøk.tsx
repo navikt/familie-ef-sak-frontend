@@ -16,9 +16,9 @@ export interface IHeaderMedSøkProps {
 const lagAInntekt = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
-    valgtFagsakId?: string
+    fagsakId?: string
 ): PopoverItem => {
-    if (!valgtFagsakId) {
+    if (!fagsakId) {
         return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
     }
 
@@ -27,7 +27,7 @@ const lagAInntekt = (
         href: '#/a-inntekt',
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
-            window.open(await lagAInntektLink(axiosRequest, appEnv, valgtFagsakId));
+            window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId));
         },
     };
 };
@@ -35,9 +35,9 @@ const lagAInntekt = (
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
-    valgtFagsakId?: string
+    fagsakId?: string
 ): PopoverItem[] => {
-    return [lagAInntekt(axiosRequest, appEnv, valgtFagsakId)];
+    return [lagAInntekt(axiosRequest, appEnv, fagsakId)];
 };
 
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
