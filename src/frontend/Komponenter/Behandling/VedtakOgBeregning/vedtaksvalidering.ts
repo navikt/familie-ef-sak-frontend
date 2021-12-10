@@ -4,7 +4,13 @@ import {
     IInntektsperiode,
     IVedtaksperiode,
 } from '../../../App/typer/vedtak';
-import { erMånedÅrEtter, erMånedÅrEtterEllerLik, erMånedÅrLik } from '../../../App/utils/dato';
+import {
+    erMånedÅrEtter,
+    erMånedÅrEtterEllerLik,
+    erMånedÅrLik,
+    plusMåneder,
+    tilÅrMåned,
+} from '../../../App/utils/dato';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
 import { FormErrors } from '../../../App/hooks/felles/useFormState';
 
@@ -41,6 +47,7 @@ export const validerVedtaksperioder = ({
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
 }> => {
+    const seksMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 6));
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
@@ -85,6 +92,12 @@ export const validerVedtaksperioder = ({
                 };
             }
         }
+        if (erMånedÅrEtter(seksMånederFremITiden, årMånedFra)) {
+            return {
+                ...vedtaksperiodeFeil,
+                årMånedFra: `FOM dato (${årMånedFra}) mer enn 6mnd frem i tid`,
+            };
+        }
         return vedtaksperiodeFeil;
     });
 
@@ -109,6 +122,11 @@ export const validerVedtaksperioder = ({
                     årMånedFra: `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`,
                 };
             }
+        }
+        if (erMånedÅrEtter(seksMånederFremITiden, årMånedFra)) {
+            return {
+                årMånedFra: `FOM dato (${årMånedFra}) mer enn 6mnd frem i tid`,
+            };
         }
         return { årMånedFra: undefined };
     });
