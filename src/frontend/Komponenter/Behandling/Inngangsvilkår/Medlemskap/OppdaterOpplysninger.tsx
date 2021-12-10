@@ -50,8 +50,10 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
                 aria-label={'Oppdater registeropplysninger'}
                 title={'Oppdater'}
                 onClick={() => {
-                    settNyGrunnlagsdataHentes(true);
-                    oppdaterGrunnlagsdata(behandlingId);
+                    if (!nyGrunnlagsdataHentes) {
+                        settNyGrunnlagsdataHentes(true);
+                        oppdaterGrunnlagsdata(behandlingId);
+                    }
                 }}
                 spinner={nyGrunnlagsdataHentes}
                 type={'flat'}
