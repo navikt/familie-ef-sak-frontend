@@ -36,7 +36,7 @@ import {
     TilbakekrevingBehandlingsresultatstype,
     TilbakekrevingBehandlingstype,
 } from '../../App/typer/tilbakekreving';
-import { lagTilbakekrevingslenke } from './TilbakekrevingBehandlingerTabell';
+import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -63,6 +63,10 @@ export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
     TILBAKEKREVING = 'TILBAKEKREVING',
 }
+
+const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string => {
+    return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
+};
 
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
@@ -277,22 +281,21 @@ const BehandlingsoversiktTabell: React.FC<{
                                             ]}
                                     </Link>
                                 ) : (
-                                    <td>
-                                        <a
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            href={lagTilbakekrevingslenke(
-                                                eksternFagsakId,
-                                                behandling.id
-                                            )}
-                                        >
-                                            {behandling.resultat
-                                                ? behandlingResultatInkludertTilbakekrevingTilTekst[
-                                                      behandling.resultat
-                                                  ]
-                                                : 'Ikke satt'}
-                                        </a>
-                                    </td>
+                                    <a
+                                        className="lenke"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        href={lagTilbakekrevingslenke(
+                                            eksternFagsakId,
+                                            behandling.id
+                                        )}
+                                    >
+                                        {behandling.resultat
+                                            ? behandlingResultatInkludertTilbakekrevingTilTekst[
+                                                  behandling.resultat
+                                              ]
+                                            : 'Ikke satt'}
+                                    </a>
                                 )}
                             </td>
                         </tr>
