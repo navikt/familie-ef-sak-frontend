@@ -35,7 +35,7 @@ const StyledNavLink = styled(NavLink)`
 
 const StyledTekst = styled(Normaltekst)`
     border-bottom: 5px solid white;
-    color: ${navFarger.navGra60};
+    color: ${navFarger.navGra20};
     text-align: center;
     text-decoration: none;
     width: 100%;
