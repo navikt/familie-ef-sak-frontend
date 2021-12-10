@@ -1,14 +1,23 @@
-import { preferredAxios } from '../../../App/api/axios';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { AppEnv } from '../../../App/api/env';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { AxiosRequestCallback } from '../../../App/typer/axiosRequest';
 
-export const lagAInntektLink = async (appEnv: AppEnv, personIdent: string): Promise<string> => {
-    return await preferredAxios
-        .post(`/api/generer-ainmtekt-url`, {
-            ident: personIdent,
-        })
-        .then((response: AxiosResponse<string>) => {
-            return response.data;
+export const lagAInntektLink = async (
+    axiosRequest: AxiosRequestCallback,
+    appEnv: AppEnv,
+    fagsakId: string
+): Promise<string> => {
+    return await axiosRequest<string, null>({
+        method: 'GET',
+        url: `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url`,
+    })
+        .then((response: Ressurs<string>) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                return response.data;
+            } else {
+                return appEnv.aInntekt;
+            }
         })
         .catch((_: AxiosError<string>) => {
             return appEnv.aInntekt;
