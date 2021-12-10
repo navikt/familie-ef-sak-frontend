@@ -65,7 +65,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
 
     const axiosRequest: AxiosRequestCallback = useCallback(
         <RES, REQ>(
-            config: AxiosRequestConfig & { data?: REQ }
+            config: AxiosRequestConfig<REQ>
         ): Promise<RessursFeilet | RessursSuksess<RES>> => {
             return preferredAxios
                 .request<Ressurs<RES>>(config)
