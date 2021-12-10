@@ -13,11 +13,7 @@ export const lagAInntektLink = async (
         url: `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url`,
     })
         .then((response: Ressurs<string>) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                return response.data;
-            } else {
-                return appEnv.aInntekt;
-            }
+            return response.status === RessursStatus.SUKSESS ? response.data : appEnv.aInntekt;
         })
         .catch((_: AxiosError<string>) => {
             return appEnv.aInntekt;
