@@ -188,7 +188,7 @@ const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
     resultat: 'Resultat',
 };
 
-interface GenerellBehandling {
+interface BehandlingsoversiktTabellBehandling {
     id: string;
     type: Behandlingstype | TilbakekrevingBehandlingstype;
     status: string;
@@ -203,18 +203,20 @@ const BehandlingsoversiktTabell: React.FC<{
     eksternFagsakId: number;
     tilbakekrevingBehandlinger: TilbakekrevingBehandling[];
 }> = ({ behandlinger, eksternFagsakId, tilbakekrevingBehandlinger }) => {
-    const generelleBehandlinger: GenerellBehandling[] = behandlinger.map((behandling) => {
-        return {
-            id: behandling.id,
-            type: behandling.type,
-            status: behandling.status,
-            resultat: behandling.resultat,
-            opprettet: behandling.opprettet,
-            applikasjon: BehandlingApplikasjon.EF_SAK,
-        };
-    });
+    const generelleBehandlinger: BehandlingsoversiktTabellBehandling[] = behandlinger.map(
+        (behandling) => {
+            return {
+                id: behandling.id,
+                type: behandling.type,
+                status: behandling.status,
+                resultat: behandling.resultat,
+                opprettet: behandling.opprettet,
+                applikasjon: BehandlingApplikasjon.EF_SAK,
+            };
+        }
+    );
 
-    const generelleTilbakekrevingBehandlinger: GenerellBehandling[] =
+    const generelleTilbakekrevingBehandlinger: BehandlingsoversiktTabellBehandling[] =
         tilbakekrevingBehandlinger.map((tilbakekrevingBehandling) => {
             return {
                 id: tilbakekrevingBehandling.behandlingId,
@@ -229,13 +231,11 @@ const BehandlingsoversiktTabell: React.FC<{
 
     const alleBehandlinger = generelleBehandlinger.concat(generelleTilbakekrevingBehandlinger);
 
-    const { sortertListe, settSortering, sortConfig } = useSorteringState<GenerellBehandling>(
-        alleBehandlinger,
-        {
+    const { sortertListe, settSortering, sortConfig } =
+        useSorteringState<BehandlingsoversiktTabellBehandling>(alleBehandlinger, {
             sorteringsfelt: 'opprettet',
             rekkefolge: 'descending',
-        }
-    );
+        });
 
     return (
         <StyledTable className="tabell">
@@ -249,7 +249,9 @@ const BehandlingsoversiktTabell: React.FC<{
                                     : undefined
                             }
                             tekst={tekst}
-                            onClick={() => settSortering(felt as keyof GenerellBehandling)}
+                            onClick={() =>
+                                settSortering(felt as keyof BehandlingsoversiktTabellBehandling)
+                            }
                             key={`${index}${felt}`}
                         />
                     ))}
