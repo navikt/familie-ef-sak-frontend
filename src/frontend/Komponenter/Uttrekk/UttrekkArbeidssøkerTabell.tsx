@@ -4,7 +4,7 @@ import { Element } from 'nav-frontend-typografi';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
-import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
+import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/utils/formatter';
 import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
@@ -17,12 +17,6 @@ const StyledTable = styled.table`
         padding: 0.75rem;
     }
 `;
-
-const nullableBooleanTilTekst = (bool?: boolean) => {
-    if (bool === true) return 'Ja';
-    else if (bool === false) return 'Nei';
-    else return '';
-};
 
 const UttrekkArbeidssøkerTabell: React.FC<{
     arbeidssøkere: IUttrekkArbeidssøker[];

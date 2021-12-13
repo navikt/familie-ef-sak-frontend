@@ -79,3 +79,9 @@ export const formaterTallMedTusenSkilleEllerStrek = (verdi?: number): string =>
 
 export const formaterStrengMedStorForbokstav = (verdi: string): string =>
     verdi[0].toUpperCase() + verdi.slice(1).toLowerCase();
+
+export const nullableBooleanTilTekst = (bool?: boolean): string => {
+    if (bool === true) return 'Ja';
+    else if (bool === false) return 'Nei';
+    else return '';
+};
