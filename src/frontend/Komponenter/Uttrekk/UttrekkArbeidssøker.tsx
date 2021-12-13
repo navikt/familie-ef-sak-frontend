@@ -35,6 +35,7 @@ export interface IUttrekkArbeidssøker {
     behandlingIdForVedtak: string;
     personIdent: string;
     navn: string;
+    registrertArbeidssøker?: boolean;
     adressebeskyttelse?: Adressebeskyttelse;
     kontrollert: boolean;
     kontrollertTid?: string;

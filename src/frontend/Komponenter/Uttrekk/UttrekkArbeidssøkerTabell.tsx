@@ -4,7 +4,7 @@ import { Element } from 'nav-frontend-typografi';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
-import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
+import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/utils/formatter';
 import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
@@ -28,6 +28,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
             <thead>
                 <tr>
                     <th>Person</th>
+                    <th>Registrert som arbeidssøker i Arena</th>
                     <th>Kontrollert</th>
                 </tr>
             </thead>
@@ -57,6 +58,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                     )}
                                 </div>
                             </td>
+                            <td>{nullableBooleanTilTekst(arbeidssøker.registrertArbeidssøker)}</td>
                             <td>
                                 {!arbeidssøker.kontrollert ? (
                                     <Knapp
