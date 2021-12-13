@@ -15,6 +15,7 @@ export interface Fagsak {
 
 export interface Behandling {
     id: string;
+    fagsakId: string;
     type: Behandlingstype;
     steg: Steg;
     status: BehandlingStatus;

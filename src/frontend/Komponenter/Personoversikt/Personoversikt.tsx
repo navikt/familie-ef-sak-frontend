@@ -12,14 +12,14 @@ import { AxiosRequestConfig } from 'axios';
 import Vedtaksperioderoversikt from './Vedtaksperioderoversikt';
 import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import Dokumenter from './Dokumenter';
-import { useSetValgtPersonIdent } from '../../App/hooks/useSetValgtPersonIdent';
+import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 
 const PersonoversiktContent: React.FC<{
     fagsakId: string;
     personopplysninger: IPersonopplysninger;
 }> = ({ fagsakId, personopplysninger }) => {
     const [tabvalg, settTabvalg] = useState<number>(1);
-    useSetValgtPersonIdent(personopplysninger);
+    useSetValgtFagsakId(fagsakId);
 
     return (
         <>

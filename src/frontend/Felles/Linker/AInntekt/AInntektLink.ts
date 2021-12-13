@@ -1,21 +1,21 @@
-import { apiLoggFeil, preferredAxios } from '../../../App/api/axios';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { AppEnv } from '../../../App/api/env';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { AxiosRequestCallback } from '../../../App/typer/axiosRequest';
 
-const errorMelding = 'Noe feilet vid henting av link mot a-inntekt';
-
-export const lagAInntektLink = async (appEnv: AppEnv, personIdent: string): Promise<string> => {
-    return await preferredAxios
-        .get(`${appEnv.aInntekt}/api/v2/redirect/sok/a-inntekt`, {
-            headers: {
-                'Nav-Personident': personIdent,
-            },
+export const lagAInntektLink = async (
+    axiosRequest: AxiosRequestCallback,
+    appEnv: AppEnv,
+    fagsakId: string
+): Promise<string> => {
+    return await axiosRequest<string, null>({
+        method: 'GET',
+        url: `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url`,
+    })
+        .then((response: Ressurs<string>) => {
+            return response.status === RessursStatus.SUKSESS ? response.data : appEnv.aInntekt;
         })
-        .then((response: AxiosResponse<string>) => {
-            return response.data;
-        })
-        .catch((error: AxiosError<string>) => {
-            apiLoggFeil(`${errorMelding} ${error}`);
+        .catch((_: AxiosError<string>) => {
             return appEnv.aInntekt;
         });
 };
