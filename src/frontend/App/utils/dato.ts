@@ -8,6 +8,12 @@ import {
     parseISO,
 } from 'date-fns';
 
+export const plusMåneder = (date: Date, antall: number): Date => addMonths(date, antall);
+
+export const tilÅrMåned = (date: Date): string => {
+    return date.toISOString().substr(0, 7);
+};
+
 export const månedÅrTilDate = (årMåned: string): Date => {
     return parse(årMåned, 'yyyy-MM', new Date());
 };
@@ -43,11 +49,11 @@ export const erEtterDagensDato = (dato: string | Date): boolean => {
  * @param second dateToCompare the date to compare with
  */
 export const erEtter = (first: string | Date, second: string | Date): boolean => {
-    const d1: Date = typeof first === 'string' ? parseISO(first) : first;
-    const d2: Date = typeof second === 'string' ? parseISO(second) : second;
-    return isAfter(d1, d2);
+    return isAfter(tilDato(first), tilDato(second));
 };
 
 export const gjelderÅr = (dato: string, år: number): boolean => {
     return parseISO(dato).getFullYear() === år;
 };
+
+const tilDato = (dato: string | Date): Date => (typeof dato === 'string' ? parseISO(dato) : dato);
