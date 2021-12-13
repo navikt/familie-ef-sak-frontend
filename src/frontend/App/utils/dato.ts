@@ -49,11 +49,11 @@ export const erEtterDagensDato = (dato: string | Date): boolean => {
  * @param second dateToCompare the date to compare with
  */
 export const erEtter = (first: string | Date, second: string | Date): boolean => {
-    return isAfter(asDate(first), asDate(second));
+    return isAfter(tilDato(first), tilDato(second));
 };
 
 export const gjelderÅr = (dato: string, år: number): boolean => {
     return parseISO(dato).getFullYear() === år;
 };
 
-const asDate = (dato: string | Date): Date => (typeof dato === 'string' ? parseISO(dato) : dato);
+const tilDato = (dato: string | Date): Date => (typeof dato === 'string' ? parseISO(dato) : dato);

@@ -95,7 +95,7 @@ export const validerVedtaksperioder = ({
         if (erMånedÅrEtter(seksMånederFremITiden, årMånedFra)) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `FOM dato (${årMånedFra}) mer enn 6mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 6mnd frem i tid`,
             };
         }
         return vedtaksperiodeFeil;
@@ -125,7 +125,7 @@ export const validerVedtaksperioder = ({
         }
         if (erMånedÅrEtter(seksMånederFremITiden, årMånedFra)) {
             return {
-                årMånedFra: `FOM dato (${årMånedFra}) mer enn 6mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 6mnd frem i tid`,
             };
         }
         return { årMånedFra: undefined };
