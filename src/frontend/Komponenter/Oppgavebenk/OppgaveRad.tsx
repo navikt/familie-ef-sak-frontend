@@ -112,7 +112,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper }) => {
         oppgave.behandlingstype &&
         oppgaveBehandlingstypeTilTekst[oppgave.behandlingstype as OppgaveBehandlingstype];
 
-    const gjelder = behandlingstype ? `${behandlingstype} (${behandlingstema})` : behandlingstema;
+    const typeBehandling = behandlingstype
+        ? `${behandlingstype} (${behandlingstema})`
+        : behandlingstema;
 
     const utledKnappPåHandling = () => {
         switch (utledHandling(oppgave)) {
@@ -169,7 +171,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper }) => {
                     </Popover>
                 </td>
                 <td>{oppgavetype}</td>
-                <td>{gjelder}</td>
+                <td>{typeBehandling}</td>
                 <td>{fristFerdigstillelseDato}</td>
                 <td>{prioritet}</td>
                 <td>{oppgave.beskrivelse}</td>
