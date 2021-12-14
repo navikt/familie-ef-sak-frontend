@@ -7,6 +7,7 @@ import { ISaksbehandler } from '../typer/saksbehandler';
 import constate from 'constate';
 import { EToast } from '../typer/toast';
 import { AppEnv } from '../api/env';
+import { AxiosRequestCallback } from '../typer/axiosRequest';
 
 interface IProps {
     autentisertSaksbehandler: ISaksbehandler;
@@ -25,7 +26,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     const [visUlagretDataModal, settVisUlagretDataModal] = useState(false);
     const [byttUrl, settByttUrl] = useState(false);
     const [toast, settToast] = useState<EToast | undefined>();
-    const [valgtPersonIdent, settValgtPersonIdent] = useState<string>();
+    const [valgtFagsakId, settValgtFagsakId] = useState<string>();
 
     useEffect(
         () => settUlagretData(ikkePersisterteKomponenter.size > 0),
@@ -62,17 +63,17 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         }
     };
 
-    const axiosRequest = useCallback(
-        <T, D>(
-            config: AxiosRequestConfig & { data?: D }
-        ): Promise<RessursFeilet | RessursSuksess<T>> => {
+    const axiosRequest: AxiosRequestCallback = useCallback(
+        <RES, REQ>(
+            config: AxiosRequestConfig<REQ>
+        ): Promise<RessursFeilet | RessursSuksess<RES>> => {
             return preferredAxios
-                .request<Ressurs<T>>(config)
-                .then((response: AxiosResponse<Ressurs<T>>) => {
-                    const responsRessurs: Ressurs<T> = response.data;
+                .request<Ressurs<RES>>(config)
+                .then((response: AxiosResponse<Ressurs<RES>>) => {
+                    const responsRessurs: Ressurs<RES> = response.data;
                     return håndterRessurs(responsRessurs, innloggetSaksbehandler, response.headers);
                 })
-                .catch((error: AxiosError<Ressurs<T>>) => {
+                .catch((error: AxiosError<Ressurs<RES>>) => {
                     if (error.message.includes('401')) {
                         settAutentisert(false);
                     }
@@ -98,8 +99,8 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         toast,
         settToast,
         appEnv,
-        valgtPersonIdent,
-        settValgtPersonIdent,
+        valgtFagsakId,
+        settValgtFagsakId,
     };
 });
 

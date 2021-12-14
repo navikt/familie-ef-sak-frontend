@@ -3,6 +3,7 @@ import { Behandlingstype } from './behandlingstype';
 import { BehandlingStatus } from './behandlingstatus';
 import { Steg } from '../../Komponenter/Behandling/Høyremeny/Steg';
 import { Behandlingsårsak } from '../typer/Behandlingsårsak';
+import { TilbakekrevingBehandlingsresultatstype } from './tilbakekreving';
 
 export interface Fagsak {
     id: string;
@@ -15,6 +16,7 @@ export interface Fagsak {
 
 export interface Behandling {
     id: string;
+    fagsakId: string;
     type: Behandlingstype;
     steg: Steg;
     status: BehandlingStatus;
@@ -44,3 +46,24 @@ export const behandlingResultatTilTekst: Record<BehandlingResultat, string> = {
     OPPHØRT: 'Opphørt',
     AVSLÅTT: 'Avslått',
 };
+
+export const tilbakekrevingBehandlingsresultattypeTilTekst: Record<
+    TilbakekrevingBehandlingsresultatstype,
+    string
+> = {
+    IKKE_FASTSATT: 'Ikke fastsatt',
+    INGEN_TILBAKEBETALING: 'Ingen tilbakebetaling',
+    DELVIS_TILBAKEBETALING: 'Delvis tilbakebetaling',
+    FULL_TILBAKEBETALING: 'Full tilbakebetaling',
+    HENLAGT: 'Henlagt',
+};
+
+export const BehandlingResultatInkludertTilbakekreving = {
+    ...BehandlingResultat,
+    ...TilbakekrevingBehandlingsresultatstype,
+};
+
+export const behandlingResultatInkludertTilbakekrevingTilTekst: Record<
+    BehandlingResultat | TilbakekrevingBehandlingsresultatstype,
+    string
+> = { ...behandlingResultatTilTekst, ...tilbakekrevingBehandlingsresultattypeTilTekst };

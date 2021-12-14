@@ -13,7 +13,7 @@ import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import { useSetValgtPersonIdent } from '../../App/hooks/useSetValgtPersonIdent';
+import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 
 const Container = styled.div`
     display: flex;
@@ -52,7 +52,7 @@ const BehandlingContent: FC<{
     behandling: Behandling;
     personopplysninger: IPersonopplysninger;
 }> = ({ behandling, personopplysninger }) => {
-    useSetValgtPersonIdent(personopplysninger);
+    useSetValgtFagsakId(behandling.fagsakId);
 
     return (
         <>

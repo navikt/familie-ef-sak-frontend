@@ -7,13 +7,18 @@ import { useApp } from '../../App/context/AppContext';
 import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
+import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-const lagAInntekt = (appEnv: AppEnv, personIdent?: string): PopoverItem => {
-    if (!personIdent) {
+const lagAInntekt = (
+    axiosRequest: AxiosRequestCallback,
+    appEnv: AppEnv,
+    fagsakId?: string
+): PopoverItem => {
+    if (!fagsakId) {
         return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
     }
 
@@ -22,23 +27,27 @@ const lagAInntekt = (appEnv: AppEnv, personIdent?: string): PopoverItem => {
         href: '#/a-inntekt',
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
-            window.open(await lagAInntektLink(appEnv, personIdent));
+            window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId));
         },
     };
 };
 
-const lagEksterneLenker = (appEnv: AppEnv, personIdent?: string): PopoverItem[] => {
-    return [lagAInntekt(appEnv, personIdent)];
+const lagEksterneLenker = (
+    axiosRequest: AxiosRequestCallback,
+    appEnv: AppEnv,
+    fagsakId?: string
+): PopoverItem[] => {
+    return [lagAInntekt(axiosRequest, appEnv, fagsakId)];
 };
 
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { gåTilUrl, appEnv, valgtPersonIdent } = useApp();
+    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
 
     const eksterneLenker = useMemo(
-        () => lagEksterneLenker(appEnv, valgtPersonIdent),
-        [appEnv, valgtPersonIdent]
+        () => lagEksterneLenker(axiosRequest, appEnv, valgtFagsakId),
+        [axiosRequest, appEnv, valgtFagsakId]
     );
 
     return (
