@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { IVurdering, SvarPåVilkårsvurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { Feilmelding } from 'nav-frontend-typografi';
+import { Feilmelding, Undertittel } from 'nav-frontend-typografi';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import EndreVurderingComponent from './EndreVurderingComponent';
 import { useBehandling } from '../../../App/context/BehandlingContext';
@@ -17,12 +17,16 @@ const OuterEndreVurderingContainer = styled.div`
 
 const AvbrytKnappContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 `;
 
 const InnerEndreVurderingContainer = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+const StyledSpan = styled.span`
+    margin-left: 12rem;
 `;
 
 interface Props {
@@ -63,8 +67,9 @@ const EndreVurdering: FC<Props> = ({
             {regler.status === RessursStatus.SUKSESS && (
                 <InnerEndreVurderingContainer>
                     <AvbrytKnappContainer>
+                        <Undertittel>Vilkår vurderes</Undertittel>
                         <LenkeKnapp onClick={resetVurdering}>
-                            <span>Avbryt</span>
+                            <StyledSpan>Avbryt</StyledSpan>
                         </LenkeKnapp>
                     </AvbrytKnappContainer>
                     <EndreVurderingComponent
