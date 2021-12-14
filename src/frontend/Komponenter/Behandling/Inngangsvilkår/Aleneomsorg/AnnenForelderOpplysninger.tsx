@@ -6,28 +6,11 @@ import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
 import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import styled from 'styled-components';
 
 interface Props {
     forelderRegister?: IAnnenForelder;
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
 }
-
-const NavnOgIkon = styled.div`
-    display: flex;
-
-    flex-direction: row;
-
-    margin-top: 1rem;
-`;
-
-const SjekkMotPdlBoks = styled(AlertStripeAdvarsel)`
-    width: 400px;
-
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-`;
 
 const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnlag }) => {
     const forelderSøknad = søknadsgrunnlag.forelder;
@@ -42,9 +25,6 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
         ((forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad)) ||
             harVerdi(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse));
 
-    const fødselsnummerManueltOgRegister =
-        forelderSøknad?.fødselsnummer && forelderRegister?.fødselsnummer;
-
     return (
         <GridTabell>
             {visForelderSøknadInfo && (
@@ -57,20 +37,6 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         !søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse ? (
                             <>
                                 <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
-                                {fødselsnummerManueltOgRegister && (
-                                    <SjekkMotPdlBoks>
-                                        <Normaltekst>
-                                            Sjekk av manuelt innlagte opplysninger mot PDL.
-                                        </Normaltekst>
-                                        <Normaltekst>
-                                            Fødselsnummer {forelderRegister?.fødselsnummer} tilhører
-                                        </Normaltekst>
-                                        <NavnOgIkon>
-                                            <Registergrunnlag />
-                                            <Normaltekst>{forelderRegister?.navn}</Normaltekst>
-                                        </NavnOgIkon>
-                                    </SjekkMotPdlBoks>
-                                )}
                             </>
                         ) : (
                             <>
