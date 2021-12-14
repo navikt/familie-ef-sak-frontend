@@ -1,0 +1,7 @@
+export enum Handling {
+    BLANKETT = 'BLANKETT',
+    JOURNALFØR = 'JOURNALFØR',
+    SAKSBEHANDLE = 'SAKSBEHANDLE',
+    TILBAKE = 'TILBAKE',
+    INGEN = 'INGEN',
+}

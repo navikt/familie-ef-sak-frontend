@@ -1,4 +1,5 @@
 export type Behandlingstema = 'ab0177' | 'ab0028' | 'ab0071';
+export type OppgaveBehandlingstype = 'ae0161';
 
 export const behandlingstemaTilTekst: Record<Behandlingstema, string> = {
     ab0071: 'Overgangsstønad',
@@ -25,4 +26,8 @@ export const behandlingstemaTilStønadstype = (
         default:
             return undefined;
     }
+};
+
+export const oppgaveBehandlingstypeTilTekst: Record<OppgaveBehandlingstype, string> = {
+    ae0161: 'Tilbakekreving',
 };
