@@ -1,16 +1,18 @@
 import * as React from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { Steg, stegTypeTilHistorikkTekst, StegUtfall, stegUtfallTilTekst } from './Steg';
+import { Steg, StegUtfall } from './Steg';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Hendelse, hendelseTilHistorikkTekst } from './Historikk';
 
 export interface Behandlingshistorikk {
     behandlingId: string;
     steg: Steg;
+    hendelse: Hendelse;
     endretAvNavn: string;
     endretAvMail: string;
     endretTid: string;
@@ -45,10 +47,7 @@ const StyledListElement = styled.li`
 `;
 
 const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
-    if (behandlingshistorikk.utfall) {
-        return stegUtfallTilTekst[behandlingshistorikk.utfall];
-    }
-    return stegTypeTilHistorikkTekst[behandlingshistorikk.steg];
+    return hendelseTilHistorikkTekst[behandlingshistorikk.hendelse];
 };
 
 const BehandlingHistorikk: React.FC = () => {
