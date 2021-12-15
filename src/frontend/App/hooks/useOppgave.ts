@@ -1,7 +1,9 @@
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useHentFagsak } from './useHentFagsak';
+import { Stønadstype } from '../typer/behandlingstema';
 
 interface OppgaveDto {
     behandlingId: string;
@@ -13,6 +15,13 @@ export const useOppgave = (oppgave: IOppgave) => {
     const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
+    const { fagsak, hentFagsak } = useHentFagsak();
+
+    useEffect(() => {
+        if (fagsak.status === RessursStatus.SUKSESS) {
+            gåTilUrl(`/fagsak/${fagsak.data.id}`);
+        }
+    }, [fagsak, gåTilUrl]);
 
     const settOppgaveTilSaksbehandler = () => {
         return axiosRequest<string, null>({
@@ -87,6 +96,16 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
+    const gåTilFagsak = (personIdent: string) => {
+        settLaster(true);
+        settOppgaveTilSaksbehandler()
+            .then(() => hentFagsak(personIdent, Stønadstype.OVERGANGSSTØNAD)) //TODO: Når vi får behandlingstema på tilbakekrevingsoppgaver vi bruke behandlingstema til å sjekke stønadstype
+            .catch((error: Error) => {
+                settFeilmelding(error.message);
+            })
+            .finally(() => settLaster(false));
+    };
+
     return {
         feilmelding,
         settFeilmelding,
@@ -94,5 +113,6 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilJournalføring,
         startBlankettBehandling,
         laster,
+        gåTilFagsak,
     };
 };
