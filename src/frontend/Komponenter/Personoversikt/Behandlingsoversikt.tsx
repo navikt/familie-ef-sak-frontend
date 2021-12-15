@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Behandling, behandlingResultatTilTekst, Fagsak } from '../../App/typer/fagsak';
+import {
+    Behandling,
+    BehandlingResultat,
+    behandlingResultatInkludertTilbakekrevingTilTekst,
+    Fagsak,
+} from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../App/utils/utils';
@@ -26,8 +31,12 @@ import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import RevurderingModal from './RevurderingModal';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
-import { TilbakekrevingBehandlingerTabell } from './TilbakekrevingBehandlingerTabell';
+import {
+    TilbakekrevingBehandling,
+    TilbakekrevingBehandlingsresultatstype,
+    TilbakekrevingBehandlingstype,
+} from '../../App/typer/tilbakekreving';
+import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 
 const StyledTable = styled.table`
     width: 40%;
@@ -49,6 +58,15 @@ const TittelLinje = styled.div`
     display: flex;
     align-items: flex-start;
 `;
+
+export enum BehandlingApplikasjon {
+    EF_SAK = 'EF_SAK',
+    TILBAKEKREVING = 'TILBAKEKREVING',
+}
+
+const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string => {
+    return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
+};
 
 const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
@@ -131,13 +149,11 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
                         {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
                     </TittelLinje>
-                    <BehandlingsoversiktTabell behandlinger={fagsak.behandlinger} />
-                    {tilbakekrevingBehandlinger.length > 0 && (
-                        <TilbakekrevingBehandlingerTabell
-                            tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
-                            eksternFagsakId={fagsak.eksternId}
-                        />
-                    )}
+                    <BehandlingsoversiktTabell
+                        behandlinger={fagsak.behandlinger}
+                        eksternFagsakId={fagsak.eksternId}
+                        tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
+                    />
                     {kanStarteRevurdering && (
                         <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
                             Opprett ny behandling
@@ -164,21 +180,62 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     );
 };
 
-const TabellData: PartialRecord<keyof Behandling, string> = {
+const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
     opprettet: 'Behandling opprettetdato',
     type: 'Type',
     status: 'Status',
+    vedtaksdato: 'Vedtaksdato',
     resultat: 'Resultat',
 };
 
-const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ behandlinger }) => {
-    const { sortertListe, settSortering, sortConfig } = useSorteringState<Behandling>(
-        behandlinger,
-        {
-            sorteringsfelt: 'opprettet',
-            rekkefolge: 'ascending',
+interface BehandlingsoversiktTabellBehandling {
+    id: string;
+    type: Behandlingstype | TilbakekrevingBehandlingstype;
+    status: string;
+    vedtaksdato?: string;
+    resultat?: BehandlingResultat | TilbakekrevingBehandlingsresultatstype;
+    opprettet: string;
+    applikasjon: string;
+}
+
+const BehandlingsoversiktTabell: React.FC<{
+    behandlinger: Behandling[];
+    eksternFagsakId: number;
+    tilbakekrevingBehandlinger: TilbakekrevingBehandling[];
+}> = ({ behandlinger, eksternFagsakId, tilbakekrevingBehandlinger }) => {
+    const generelleBehandlinger: BehandlingsoversiktTabellBehandling[] = behandlinger.map(
+        (behandling) => {
+            return {
+                id: behandling.id,
+                type: behandling.type,
+                status: behandling.status,
+                resultat: behandling.resultat,
+                opprettet: behandling.opprettet,
+                applikasjon: BehandlingApplikasjon.EF_SAK,
+            };
         }
     );
+
+    const generelleTilbakekrevingBehandlinger: BehandlingsoversiktTabellBehandling[] =
+        tilbakekrevingBehandlinger.map((tilbakekrevingBehandling) => {
+            return {
+                id: tilbakekrevingBehandling.behandlingId,
+                type: tilbakekrevingBehandling.type,
+                status: tilbakekrevingBehandling.status,
+                vedtaksdato: tilbakekrevingBehandling.vedtaksdato,
+                resultat: tilbakekrevingBehandling.resultat,
+                opprettet: tilbakekrevingBehandling.opprettetTidspunkt,
+                applikasjon: BehandlingApplikasjon.TILBAKEKREVING,
+            };
+        });
+
+    const alleBehandlinger = generelleBehandlinger.concat(generelleTilbakekrevingBehandlinger);
+
+    const { sortertListe, settSortering, sortConfig } =
+        useSorteringState<BehandlingsoversiktTabellBehandling>(alleBehandlinger, {
+            sorteringsfelt: 'opprettet',
+            rekkefolge: 'descending',
+        });
 
     return (
         <StyledTable className="tabell">
@@ -192,7 +249,9 @@ const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ beh
                                     : undefined
                             }
                             tekst={tekst}
-                            onClick={() => settSortering(felt as keyof Behandling)}
+                            onClick={() =>
+                                settSortering(felt as keyof BehandlingsoversiktTabellBehandling)
+                            }
                             key={`${index}${felt}`}
                         />
                     ))}
@@ -206,15 +265,39 @@ const BehandlingsoversiktTabell: React.FC<Pick<Fagsak, 'behandlinger'>> = ({ beh
                             <td>{formatterEnumVerdi(behandling.type)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
-                                {behandling.type === Behandlingstype.TEKNISK_OPPHØR ? (
+                                {behandling.vedtaksdato &&
+                                    formaterIsoDatoTid(behandling.vedtaksdato)}
+                            </td>
+                            <td>
+                                {behandling.type === Behandlingstype.TEKNISK_OPPHØR &&
+                                behandling.resultat ? (
                                     <span>{formatterEnumVerdi(behandling.resultat)}</span>
-                                ) : (
+                                ) : behandling.applikasjon === BehandlingApplikasjon.EF_SAK ? (
                                     <Link
                                         className="lenke"
                                         to={{ pathname: `/behandling/${behandling.id}` }}
                                     >
-                                        {behandlingResultatTilTekst[behandling.resultat]}
+                                        {behandling.resultat &&
+                                            behandlingResultatInkludertTilbakekrevingTilTekst[
+                                                behandling.resultat
+                                            ]}
                                     </Link>
+                                ) : (
+                                    <a
+                                        className="lenke"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        href={lagTilbakekrevingslenke(
+                                            eksternFagsakId,
+                                            behandling.id
+                                        )}
+                                    >
+                                        {behandling.resultat
+                                            ? behandlingResultatInkludertTilbakekrevingTilTekst[
+                                                  behandling.resultat
+                                              ]
+                                            : 'Ikke satt'}
+                                    </a>
                                 )}
                             </td>
                         </tr>
