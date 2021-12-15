@@ -71,6 +71,16 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     return (
         <>
             <FamilieRadioGruppe erLesevisning={false} legend={<h2>Tilbakekreving</h2>}>
+                <EnsligTextArea
+                    label={'Begrunnelse (internt notat)'}
+                    erLesevisning={false}
+                    value={begrunnelse}
+                    maxLength={0}
+                    onChange={(e) => {
+                        settIkkePersistertKomponent('tilbakekreving');
+                        endreBegrunnelse(e.target.value);
+                    }}
+                />
                 <Radio
                     checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
                     label="Opprett tilbakekreving, send varsel"
@@ -125,16 +135,6 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                     onChange={() => {
                         settIkkePersistertKomponent('tilbakekreving');
                         endreTilbakekrevingsvalg(ITilbakekrevingsvalg.AVVENT);
-                    }}
-                />
-                <EnsligTextArea
-                    label={'Begrunnelse (internt notat)'}
-                    erLesevisning={false}
-                    value={begrunnelse}
-                    maxLength={0}
-                    onChange={(e) => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        endreBegrunnelse(e.target.value);
                     }}
                 />
             </FamilieRadioGruppe>
