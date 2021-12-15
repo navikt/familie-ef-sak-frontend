@@ -27,6 +27,7 @@ export const mapTilRegistergrunnlagNyttBarn = (
             annenForelderRegister: barn.registergrunnlag.forelder,
             ikkeOppgittAnnenForelderBegrunnelse:
                 barn.søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse,
+            dødsdato: barn.registergrunnlag.dødsdato,
         }))
         .filter((barn) => barn.fødselsnummer);
 };

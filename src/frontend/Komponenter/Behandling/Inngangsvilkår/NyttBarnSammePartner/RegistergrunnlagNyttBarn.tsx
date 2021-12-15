@@ -7,6 +7,7 @@ import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/Da
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
+import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
@@ -21,7 +22,10 @@ const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
         <GridTabell>
             <>
                 <LiteBarn />
-                <Element>{barn.navn}</Element>
+                <Element>
+                    {barn.navn}
+                    {barn.dødsdato && <EtikettDød dødsdato={barn.dødsdato} />}
+                </Element>
             </>
             <>
                 <Registergrunnlag />
