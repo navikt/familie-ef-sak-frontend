@@ -118,6 +118,10 @@ export const JournalforingApp: React.FC = () => {
         // eslint-disable-next-line
     }, [fagsak]);
 
+    useEffect(() => {
+        document.title = 'Journalpost';
+    }, []);
+
     if (!oppgaveIdParam || !journalpostIdParam) {
         return <Redirect to="/oppgavebenk" />;
     }

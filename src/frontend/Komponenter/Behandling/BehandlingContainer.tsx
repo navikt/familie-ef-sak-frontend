@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import Høyremeny from './Høyremeny/Høyremeny';
 import styled from 'styled-components';
 import Fanemeny from './Fanemeny/Fanemeny';
@@ -73,6 +73,10 @@ const BehandlingContent: FC<{
 
 const Behandling: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
+
+    useEffect(() => {
+        document.title = 'Behandling';
+    }, []);
 
     return (
         <DataViewer response={{ personopplysningerResponse, behandling }}>
