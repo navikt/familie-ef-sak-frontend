@@ -24,9 +24,8 @@ const InnerEndreVurderingContainer = styled.div`
     display: flex;
     flex-direction: column;
 `;
-
-const StyledSpan = styled.span`
-    margin-left: 12rem;
+const StyledUndertittel = styled(Undertittel)`
+    padding-right: 10rem;
 `;
 
 interface Props {
@@ -35,6 +34,8 @@ interface Props {
     settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
     feilmelding: string | undefined;
     resetVurdering: () => void;
+    settVurderingVarTom: (bool: boolean) => void;
+    vurderingVarTom: boolean;
 }
 
 const EndreVurdering: FC<Props> = ({
@@ -42,11 +43,14 @@ const EndreVurdering: FC<Props> = ({
     lagreVurdering,
     feilmelding,
     settRedigeringsmodus,
+    settVurderingVarTom,
+    vurderingVarTom,
     resetVurdering,
 }) => {
     const { regler, hentBehandling } = useBehandling();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
+    const [vurderingFørAvbrytelse] = useState<IVurdering>(vurdering);
 
     const oppdaterVurdering = (vurdering: SvarPåVilkårsvurdering) => {
         if (!oppdatererVurdering) {
@@ -61,15 +65,26 @@ const EndreVurdering: FC<Props> = ({
             });
         }
     };
+
+    const avbrytVurdering = () => {
+        vurderingVarTom
+            ? resetVurdering()
+            : oppdaterVurdering({
+                  id: vurderingFørAvbrytelse.id,
+                  behandlingId: vurderingFørAvbrytelse.behandlingId,
+                  delvilkårsvurderinger: vurderingFørAvbrytelse.delvilkårsvurderinger,
+              });
+    };
+
     return (
         <OuterEndreVurderingContainer>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             {regler.status === RessursStatus.SUKSESS && (
                 <InnerEndreVurderingContainer>
                     <AvbrytKnappContainer>
-                        <Undertittel>Vilkår vurderes</Undertittel>
-                        <LenkeKnapp onClick={resetVurdering}>
-                            <StyledSpan>Avbryt</StyledSpan>
+                        <StyledUndertittel>Vilkår vurderes</StyledUndertittel>
+                        <LenkeKnapp onClick={avbrytVurdering}>
+                            <span>Avbryt</span>
                         </LenkeKnapp>
                     </AvbrytKnappContainer>
                     <EndreVurderingComponent
@@ -77,6 +92,7 @@ const EndreVurdering: FC<Props> = ({
                         vilkårType={vurdering.vilkårType}
                         regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
                         vurdering={vurdering}
+                        settVurderingVarTom={settVurderingVarTom}
                     />
                 </InnerEndreVurderingContainer>
             )}

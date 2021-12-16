@@ -62,6 +62,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         utledRedigeringsmodus(feilmelding, vurdering)
     );
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
+    const [vurderingVarTom, settVurderingVarTom] = useState<boolean>(false);
 
     const ikkeVurder = () => {
         ikkeVurderVilkår({
@@ -97,6 +98,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                         className="flex-item"
                         mini
                         onClick={() => {
+                            settVurderingVarTom(true);
                             settRedigeringsmodus(Redigeringsmodus.REDIGERING);
                         }}
                     >
@@ -115,6 +117,8 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     settRedigeringsmodus={settRedigeringsmodus}
                     resetVurdering={resetVurdering}
+                    settVurderingVarTom={settVurderingVarTom}
+                    vurderingVarTom={vurderingVarTom}
                 />
             );
         case Redigeringsmodus.VISNING:
