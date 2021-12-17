@@ -36,6 +36,10 @@ export const OppgavebenkApp: React.FC = () => {
         });
     }, [axiosRequest]);
 
+    useEffect(() => {
+        document.title = 'Oppgavebenk';
+    }, []);
+
     return (
         <Side className={'container'}>
             {!erProd() && <OpprettDummyBehandling />}

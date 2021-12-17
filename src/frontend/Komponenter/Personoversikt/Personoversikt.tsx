@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
@@ -60,6 +60,10 @@ const Personoversikt: React.FC = () => {
         }),
         [fagsakId]
     );
+
+    useEffect(() => {
+        document.title = 'Brukeroversikt';
+    }, []);
 
     const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
 

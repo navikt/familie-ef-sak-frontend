@@ -6,6 +6,7 @@ import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -24,13 +25,21 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata }) =>
                             {registergrunnlag.navn ? (
                                 <>
                                     <LiteBarn />
-                                    <Element>{registergrunnlag.navn}</Element>
+                                    <Element>
+                                        {registergrunnlag.navn}
+                                        {registergrunnlag.dødsdato && (
+                                            <EtikettDød dødsdato={registergrunnlag.dødsdato} />
+                                        )}
+                                    </Element>
                                 </>
                             ) : skalViseSøknadsdata ? (
                                 <>
                                     <LiteBarn />
                                     <Element>
                                         {søknadsgrunnlag.navn ? søknadsgrunnlag.navn : 'Ikke født'}
+                                        {registergrunnlag.dødsdato && (
+                                            <EtikettDød dødsdato={registergrunnlag.dødsdato} />
+                                        )}
                                     </Element>
                                 </>
                             ) : null}

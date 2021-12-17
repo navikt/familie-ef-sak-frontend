@@ -6,6 +6,7 @@ export interface RegistergrunnlagNyttBarn {
     annenForelderSoknad?: IAnnenForelder;
     annenForelderRegister?: IAnnenForelder;
     ikkeOppgittAnnenForelderBegrunnelse?: string;
+    dødsdato?: string;
 }
 
 export interface SøknadsgrunnlagNyttBarn {
