@@ -32,8 +32,7 @@ const EndreVurderingComponent: FC<{
     regler: Regler;
     oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
-    settVurderingVarTom: (bool: boolean) => void;
-}> = ({ regler, oppdaterVurdering, vurdering, settVurderingVarTom }) => {
+}> = ({ regler, oppdaterVurdering, vurdering }) => {
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
@@ -141,7 +140,6 @@ const EndreVurderingComponent: FC<{
                 hidden={!erAllaDelvilkårBesvarte(delvilkårsvurderinger, regler)}
                 onClick={() => {
                     nullstillIkkePersistertKomponent(vurdering.id);
-                    settVurderingVarTom(false);
                 }}
             >
                 Lagre

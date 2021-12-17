@@ -33,9 +33,7 @@ interface Props {
     lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
     feilmelding: string | undefined;
-    resetVurdering: () => void;
-    settVurderingVarTom: (bool: boolean) => void;
-    vurderingVarTom: boolean;
+    initiellRedigeringsmodus: Redigeringsmodus;
 }
 
 const EndreVurdering: FC<Props> = ({
@@ -43,14 +41,11 @@ const EndreVurdering: FC<Props> = ({
     lagreVurdering,
     feilmelding,
     settRedigeringsmodus,
-    settVurderingVarTom,
-    vurderingVarTom,
-    resetVurdering,
+    initiellRedigeringsmodus,
 }) => {
     const { regler, hentBehandling } = useBehandling();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
-    const [vurderingFørAvbrytelse] = useState<IVurdering>(vurdering);
 
     const oppdaterVurdering = (vurdering: SvarPåVilkårsvurdering) => {
         if (!oppdatererVurdering) {
@@ -67,13 +62,9 @@ const EndreVurdering: FC<Props> = ({
     };
 
     const avbrytVurdering = () => {
-        vurderingVarTom
-            ? resetVurdering()
-            : oppdaterVurdering({
-                  id: vurderingFørAvbrytelse.id,
-                  behandlingId: vurderingFørAvbrytelse.behandlingId,
-                  delvilkårsvurderinger: vurderingFørAvbrytelse.delvilkårsvurderinger,
-              });
+        initiellRedigeringsmodus === Redigeringsmodus.IKKE_PÅSTARTET
+            ? settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET)
+            : settRedigeringsmodus(Redigeringsmodus.VISNING);
     };
 
     return (
@@ -92,7 +83,6 @@ const EndreVurdering: FC<Props> = ({
                         vilkårType={vurdering.vilkårType}
                         regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
                         vurdering={vurdering}
-                        settVurderingVarTom={settVurderingVarTom}
                     />
                 </InnerEndreVurderingContainer>
             )}
