@@ -37,6 +37,7 @@ const EndreVurderingComponent: FC<{
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
+    // const [vilkårsvurderingerFørEndring, settVilkårsvurderingerFørEndring] =
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
         settDelvilkårsvurderinger((prevSvar) => {
@@ -137,7 +138,9 @@ const EndreVurderingComponent: FC<{
                 style={{ marginTop: '1rem' }}
                 mini
                 hidden={!erAllaDelvilkårBesvarte(delvilkårsvurderinger, regler)}
-                onClick={() => nullstillIkkePersistertKomponent(vurdering.id)}
+                onClick={() => {
+                    nullstillIkkePersistertKomponent(vurdering.id);
+                }}
             >
                 Lagre
             </Lagreknapp>
