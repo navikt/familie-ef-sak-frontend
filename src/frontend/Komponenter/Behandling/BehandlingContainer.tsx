@@ -11,6 +11,7 @@ import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
+import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
 
 const Container = styled.div`
     display: flex;
@@ -61,6 +62,10 @@ const Behandling: FC = () => {
                             <Fanemeny />
                             <BehandlingRoutes />
                             <GodkjennEndringer behandling={behandling} />
+                            <BrevmottakereModal
+                                behandlingId={behandling.id}
+                                personopplysninger={personopplysningerResponse}
+                            />
                         </InnholdWrapper>
                         <HøyreMenyWrapper>
                             <Høyremeny />
