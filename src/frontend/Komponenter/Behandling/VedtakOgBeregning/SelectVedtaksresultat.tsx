@@ -8,6 +8,8 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../App/context/AppContext';
+import { ToggleName } from '../../../App/context/toggles';
+import { useToggles } from '../../../App/context/TogglesContext';
 
 interface Props {
     behandling: Behandling;
@@ -30,6 +32,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig = behandling.type === Behandlingstype.REVURDERING;
     const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
+    const { toggles } = useToggles();
 
     return (
         <section>
@@ -47,6 +50,11 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                 <option value={EBehandlingResultat.INNVILGE} disabled={!alleVilkårOppfylt}>
                     Innvilge
                 </option>
+                {toggles[ToggleName.innvilgeMedOpphørToggle] && (
+                    <option value={EBehandlingResultat.INNVILGE_MED_OPPHØR} disabled={!opphørMulig}>
+                        Innvilge med opphør
+                    </option>
+                )}
                 <option value={EBehandlingResultat.AVSLÅ}>Avslå</option>
                 <option value={EBehandlingResultat.OPPHØRT} disabled={!opphørMulig}>
                     Opphørt

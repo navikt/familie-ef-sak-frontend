@@ -10,6 +10,7 @@ export const harVedtaksresultatMedTilkjentYtelse = (
     if (vedtaksresultat) {
         return (
             vedtaksresultat === EBehandlingResultat.INNVILGE ||
+            vedtaksresultat === EBehandlingResultat.INNVILGE_MED_OPPHØR ||
             vedtaksresultat === EBehandlingResultat.OPPHØRT
         );
     }

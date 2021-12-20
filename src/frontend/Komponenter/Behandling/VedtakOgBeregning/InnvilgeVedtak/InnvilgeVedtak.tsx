@@ -5,6 +5,7 @@ import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
+    EPeriodetype,
     IBeløpsperiode,
     IBeregningsrequest,
     IInntektsperiode,
@@ -54,9 +55,11 @@ const EnsligTextAreaWrapper = styled.div`
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtak;
-}> = ({ behandling, lagretVedtak }) => {
+    vedtaksresultatType: EBehandlingResultat.INNVILGE | EBehandlingResultat.INNVILGE_MED_OPPHØR;
+}> = ({ behandling, lagretVedtak, vedtaksresultatType }) => {
     const lagretInnvilgetVedtak =
-        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
+        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE ||
+        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE_MED_OPPHØR
             ? (lagretVedtak as IInnvilgeVedtak)
             : undefined;
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
@@ -92,16 +95,19 @@ export const InnvilgeVedtak: React.FC<{
     const vedtaksperioder = vedtaksperiodeState.value;
 
     useEffect(() => {
-        const førsteVedtaksperiode = vedtaksperioder[0];
+        const førsteInnvilgedeVedtaksperiode =
+            vedtaksperioder.find(
+                (vedtaksperiode) => vedtaksperiode.periodeType !== EPeriodetype.MIDLERTIDIG_OPPHØR
+            ) || vedtaksperioder[0];
         const førsteInntektsperiode = inntektsperioder.length > 0 && inntektsperioder[0];
         if (
             førsteInntektsperiode &&
-            førsteVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra
+            førsteInnvilgedeVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra
         ) {
             inntektsperiodeState.update(
                 {
                     ...inntektsperioder[0],
-                    årMånedFra: førsteVedtaksperiode.årMånedFra,
+                    årMånedFra: førsteInnvilgedeVedtaksperiode.årMånedFra,
                     endretKey: uuidv4(),
                 },
                 0
@@ -188,7 +194,7 @@ export const InnvilgeVedtak: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         const vedtaksRequest: IInnvilgeVedtak = {
-            resultatType: EBehandlingResultat.INNVILGE,
+            resultatType: vedtaksresultatType,
             periodeBegrunnelse: form.periodeBegrunnelse,
             inntektBegrunnelse: form.inntektBegrunnelse,
             perioder: form.perioder,
@@ -215,6 +221,7 @@ export const InnvilgeVedtak: React.FC<{
                         vedtaksperiodeListe={vedtaksperiodeState}
                         valideringsfeil={formState.errors.perioder}
                         setValideringsFeil={formState.setErrors}
+                        vedtaksresultatType={vedtaksresultatType}
                     />
                     {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
                         <IngenBegrunnelseOppgitt />
