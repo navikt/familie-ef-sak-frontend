@@ -75,6 +75,11 @@ const VisEllerEndreVurdering: FC<Props> = ({
         });
     };
 
+    const initiellRedigeringsmodus =
+        vurdering.resultat === Vilkårsresultat.IKKE_TATT_STILLING_TIL
+            ? Redigeringsmodus.IKKE_PÅSTARTET
+            : Redigeringsmodus.VISNING;
+
     const resetVurdering = () =>
         nullstillVurdering({
             id: vurdering.id,
@@ -114,7 +119,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     lagreVurdering={lagreVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
                     settRedigeringsmodus={settRedigeringsmodus}
-                    resetVurdering={resetVurdering}
+                    initiellRedigeringsmodus={initiellRedigeringsmodus}
                 />
             );
         case Redigeringsmodus.VISNING:

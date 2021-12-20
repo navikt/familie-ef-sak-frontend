@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { IVurdering, SvarPåVilkårsvurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { Feilmelding } from 'nav-frontend-typografi';
+import { Feilmelding, Undertittel } from 'nav-frontend-typografi';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import EndreVurderingComponent from './EndreVurderingComponent';
 import { useBehandling } from '../../../App/context/BehandlingContext';
@@ -17,12 +17,15 @@ const OuterEndreVurderingContainer = styled.div`
 
 const AvbrytKnappContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 `;
 
 const InnerEndreVurderingContainer = styled.div`
     display: flex;
     flex-direction: column;
+`;
+const StyledUndertittel = styled(Undertittel)`
+    padding-right: 10rem;
 `;
 
 interface Props {
@@ -30,7 +33,7 @@ interface Props {
     lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
     feilmelding: string | undefined;
-    resetVurdering: () => void;
+    initiellRedigeringsmodus: Redigeringsmodus;
 }
 
 const EndreVurdering: FC<Props> = ({
@@ -38,7 +41,7 @@ const EndreVurdering: FC<Props> = ({
     lagreVurdering,
     feilmelding,
     settRedigeringsmodus,
-    resetVurdering,
+    initiellRedigeringsmodus,
 }) => {
     const { regler, hentBehandling } = useBehandling();
     const vurdering = data;
@@ -57,13 +60,21 @@ const EndreVurdering: FC<Props> = ({
             });
         }
     };
+
+    const avbrytVurdering = () => {
+        initiellRedigeringsmodus === Redigeringsmodus.IKKE_PÅSTARTET
+            ? settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET)
+            : settRedigeringsmodus(Redigeringsmodus.VISNING);
+    };
+
     return (
         <OuterEndreVurderingContainer>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             {regler.status === RessursStatus.SUKSESS && (
                 <InnerEndreVurderingContainer>
                     <AvbrytKnappContainer>
-                        <LenkeKnapp onClick={resetVurdering}>
+                        <StyledUndertittel>Vilkår vurderes</StyledUndertittel>
+                        <LenkeKnapp onClick={avbrytVurdering}>
                             <span>Avbryt</span>
                         </LenkeKnapp>
                     </AvbrytKnappContainer>

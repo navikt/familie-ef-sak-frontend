@@ -28,7 +28,7 @@
     "@navikt/familie-backend": "5.0.28",
     "@navikt/familie-dokumentliste": "^1.0.13",
     "@navikt/familie-form-elements": "^3.2.2",
-    "@navikt/familie-header": "^3.2.0",
+    "@navikt/familie-header": "^3.2.1",
     "@navikt/familie-ikoner": "^3.1.11",
     "@navikt/familie-logging": "^1.0.5",
     "@navikt/familie-typer": "^3.0.13",

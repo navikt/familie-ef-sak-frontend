@@ -1,30 +1,55 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Header } from '@navikt/familie-header';
 import PersonSøk from './PersonSøk';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
 import './headermedsøk.less';
+import { AppEnv } from '../../App/api/env';
+import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
+import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler?: ISaksbehandler;
 }
 
-// TODO: Må finne riktige lenker her
-const eksterneLenker: PopoverItem[] = [
-    { name: 'Rettskildene', href: '#/1' },
-    { name: 'Rutinebeskrivelser', href: '#/2' },
-    { name: 'A-inntekt', href: '#/3' },
-    { name: 'Aareg', href: '#/4' },
-    { name: 'Gosys', href: '#/5' },
-    { name: 'Modia', href: '#/6' },
-    { name: 'Pesys', href: '#/7' },
-];
+const lagAInntekt = (
+    axiosRequest: AxiosRequestCallback,
+    appEnv: AppEnv,
+    fagsakId?: string
+): PopoverItem => {
+    if (!fagsakId) {
+        return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
+    }
+
+    return {
+        name: 'A-inntekt',
+        href: '#/a-inntekt',
+        onClick: async (e: React.SyntheticEvent) => {
+            e.preventDefault();
+            window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId));
+        },
+    };
+};
+
+const lagEksterneLenker = (
+    axiosRequest: AxiosRequestCallback,
+    appEnv: AppEnv,
+    fagsakId?: string
+): PopoverItem[] => {
+    return [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+};
 
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { gåTilUrl } = useApp();
+    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
+
+    const eksterneLenker = useMemo(
+        () => lagEksterneLenker(axiosRequest, appEnv, valgtFagsakId),
+        [axiosRequest, appEnv, valgtFagsakId]
+    );
+
     return (
         <Header
             tittelOnClick={() => {

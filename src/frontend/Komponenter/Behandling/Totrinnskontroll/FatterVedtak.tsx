@@ -76,9 +76,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                         hentTotrinnskontroll.rerun();
                         modalDispatch({
                             type: ModalAction.VIS_MODAL,
-                            modalType: godkjent
-                                ? ModalType.VEDTAK_GODKJENT
-                                : ModalType.VEDTAK_UNDERKJENT,
+                            modalType: ModalType.VEDTAK_GODKJENT,
                         });
                     } else {
                         settToast(EToast.VEDTAK_UNDERKJENT);

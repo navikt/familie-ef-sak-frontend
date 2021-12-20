@@ -11,6 +11,7 @@ import { StyledLesmerpanel } from '../../../../Felles/Visningskomponenter/Styled
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
+import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 
 const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
     gjeldendeBarn,
@@ -26,7 +27,12 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata
                     <>
                         <Registergrunnlag />
                         <Element>Barnets navn</Element>
-                        <Element>{registergrunnlag.navn}</Element>
+                        <Element>
+                            {registergrunnlag.navn}
+                            {registergrunnlag.dødsdato && (
+                                <EtikettDød dødsdato={registergrunnlag.dødsdato} />
+                            )}
+                        </Element>
                     </>
                 ) : skalViseSøknadsdata ? (
                     <>

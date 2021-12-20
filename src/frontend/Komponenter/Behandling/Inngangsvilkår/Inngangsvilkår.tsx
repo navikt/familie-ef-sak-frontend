@@ -11,6 +11,10 @@ import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { OppdaterOpplysninger } from './Medlemskap/OppdaterOpplysninger';
+import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 interface Props {
     behandlingId: string;
@@ -24,9 +28,11 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
+        oppdaterGrunnlagsdataOgHentVilkår,
     } = useHentVilkår();
 
-    const { behandling } = useBehandling();
+    const { behandling, behandlingErRedigerbar } = useBehandling();
+    const { toggles } = useToggles();
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {
@@ -41,9 +47,20 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         <DataViewer response={{ vilkår, behandling }}>
             {({ vilkår, behandling }) => {
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+                const grunnlagsdataInnhentetDato = formaterIsoDatoTidMedSekunder(
+                    vilkår.grunnlag.registeropplysningerOpprettetTid
+                );
 
                 return (
                     <>
+                        {toggles[ToggleName.visOppdateringAvRegisteropplysninger] && (
+                            <OppdaterOpplysninger
+                                oppdatertDato={grunnlagsdataInnhentetDato}
+                                behandlingErRedigerbar={behandlingErRedigerbar}
+                                oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
+                                behandlingId={behandlingId}
+                            />
+                        )}
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}

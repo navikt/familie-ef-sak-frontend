@@ -6,7 +6,7 @@ import { showReportDialog } from '@sentry/browser';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 
 interface IProps {
-    innloggetSaksbehandler?: ISaksbehandler;
+    innloggetSaksbehandler: ISaksbehandler;
 }
 
 class ErrorBoundary extends React.Component<IProps> {
@@ -21,9 +21,7 @@ class ErrorBoundary extends React.Component<IProps> {
         if (process.env.NODE_ENV !== 'development') {
             configureScope((scope) => {
                 scope.setUser({
-                    username: this.props.innloggetSaksbehandler
-                        ? this.props.innloggetSaksbehandler.displayName
-                        : 'Ukjent bruker',
+                    username: this.props.innloggetSaksbehandler.displayName,
                 });
             });
 

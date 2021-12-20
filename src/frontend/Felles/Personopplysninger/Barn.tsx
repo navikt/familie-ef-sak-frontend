@@ -36,6 +36,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                 <FødselsnummerBarn
                                     fødselsnummer={barn.personIdent}
                                     fødselsdato={barn.fødselsdato}
+                                    dødsdato={barn.dødsdato}
                                 />
                                 <BredTd>
                                     {barn.annenForelder && (
@@ -63,27 +64,30 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     );
 };
 
-const FødselsnummerBarn: React.FC<{ fødselsnummer: string; fødselsdato?: string }> = ({
-    fødselsnummer,
-    fødselsdato,
-}) => {
+const FødselsnummerBarn: React.FC<{
+    fødselsnummer: string;
+    fødselsdato?: string;
+    dødsdato?: string;
+}> = ({ fødselsnummer, fødselsdato, dødsdato }) => {
     const alder = fødselsdato ? differenceInYears(new Date(), new Date(fødselsdato)) : NaN;
 
     return (
         <BredTd>
             <FlexDiv>
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
-                <SpanMedVenstreMargin>
-                    {!isNaN(alder) ? (
-                        alder < 18 ? (
-                            <EtikettSuksess>{alder} år</EtikettSuksess>
+                {!dødsdato && (
+                    <SpanMedVenstreMargin>
+                        {!isNaN(alder) ? (
+                            alder < 18 ? (
+                                <EtikettSuksess>{alder} år</EtikettSuksess>
+                            ) : (
+                                <EtikettInfo>Over 18 år</EtikettInfo>
+                            )
                         ) : (
-                            <EtikettInfo>Over 18 år</EtikettInfo>
-                        )
-                    ) : (
-                        <EtikettFokus>Ukjent alder</EtikettFokus>
-                    )}
-                </SpanMedVenstreMargin>
+                            <EtikettFokus>Ukjent alder</EtikettFokus>
+                        )}
+                    </SpanMedVenstreMargin>
+                )}
             </FlexDiv>
         </BredTd>
     );
