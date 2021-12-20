@@ -24,9 +24,8 @@ const InnerEndreVurderingContainer = styled.div`
     display: flex;
     flex-direction: column;
 `;
-
-const StyledSpan = styled.span`
-    margin-left: 12rem;
+const StyledUndertittel = styled(Undertittel)`
+    padding-right: 10rem;
 `;
 
 interface Props {
@@ -34,7 +33,7 @@ interface Props {
     lagreVurdering: (vurdering: SvarPåVilkårsvurdering) => Promise<Ressurs<IVurdering>>;
     settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
     feilmelding: string | undefined;
-    resetVurdering: () => void;
+    initiellRedigeringsmodus: Redigeringsmodus;
 }
 
 const EndreVurdering: FC<Props> = ({
@@ -42,7 +41,7 @@ const EndreVurdering: FC<Props> = ({
     lagreVurdering,
     feilmelding,
     settRedigeringsmodus,
-    resetVurdering,
+    initiellRedigeringsmodus,
 }) => {
     const { regler, hentBehandling } = useBehandling();
     const vurdering = data;
@@ -61,15 +60,22 @@ const EndreVurdering: FC<Props> = ({
             });
         }
     };
+
+    const avbrytVurdering = () => {
+        initiellRedigeringsmodus === Redigeringsmodus.IKKE_PÅSTARTET
+            ? settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET)
+            : settRedigeringsmodus(Redigeringsmodus.VISNING);
+    };
+
     return (
         <OuterEndreVurderingContainer>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             {regler.status === RessursStatus.SUKSESS && (
                 <InnerEndreVurderingContainer>
                     <AvbrytKnappContainer>
-                        <Undertittel>Vilkår vurderes</Undertittel>
-                        <LenkeKnapp onClick={resetVurdering}>
-                            <StyledSpan>Avbryt</StyledSpan>
+                        <StyledUndertittel>Vilkår vurderes</StyledUndertittel>
+                        <LenkeKnapp onClick={avbrytVurdering}>
+                            <span>Avbryt</span>
                         </LenkeKnapp>
                     </AvbrytKnappContainer>
                     <EndreVurderingComponent
