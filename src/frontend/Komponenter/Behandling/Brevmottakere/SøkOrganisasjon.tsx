@@ -24,19 +24,14 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
 
     useEffect(() => {
         if (organisasjonsnummer?.length === 9) {
-            const søkOrganisasjon = () => {
-                axiosRequest<IOrganisasjon, null>({
-                    method: 'GET',
-                    url: `familie-ef-sak/api/organisasjon/${organisasjonsnummer}`,
-                }).then((response: Ressurs<IOrganisasjon>) => {
-                    settOrganisasjonRessurs(response);
-                });
-            };
-
-            søkOrganisasjon();
+            axiosRequest<IOrganisasjon, null>({
+                method: 'GET',
+                url: `familie-ef-sak/api/organisasjon/${organisasjonsnummer}`,
+            }).then((response: Ressurs<IOrganisasjon>) => {
+                settOrganisasjonRessurs(response);
+            });
         }
-        // eslint-disable-next-line
-    }, [organisasjonsnummer]);
+    }, [axiosRequest, organisasjonsnummer]);
 
     const leggTilOrganisasjon = (organisasjonsnummer: string, organisasjonsnavn: string) => () => {
         if (!navnHosOrganisasjon) {

@@ -77,8 +77,7 @@ export const BrevmottakereModal: FC<{
         if (visBrevmottakereModal) {
             hentBrevmottakere();
         }
-        // eslint-disable-next-line
-    }, [behandlingId, visBrevmottakereModal]);
+    }, [axiosRequest, behandlingId, visBrevmottakereModal]);
 
     return (
         <Modal

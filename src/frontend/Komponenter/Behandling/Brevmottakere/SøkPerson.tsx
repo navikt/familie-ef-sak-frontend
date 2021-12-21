@@ -22,24 +22,18 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
     const [søkRessurs, settSøkRessurs] = useState(byggTomRessurs<PersonSøk>());
 
     useEffect(() => {
-        const søk = () => {
-            if (søkIdent)
-                axiosRequest<PersonSøk, { personIdent: string }>({
-                    method: 'POST',
-                    url: 'familie-ef-sak/api/sok/',
-                    data: {
-                        personIdent: søkIdent,
-                    },
-                }).then((resp: Ressurs<PersonSøk>) => {
-                    settSøkRessurs(resp);
-                });
-        };
-
-        if (søkIdent.length === 11) {
-            søk();
+        if (søkIdent && søkIdent.length === 11) {
+            axiosRequest<PersonSøk, { personIdent: string }>({
+                method: 'POST',
+                url: 'familie-ef-sak/api/sok/',
+                data: {
+                    personIdent: søkIdent,
+                },
+            }).then((resp: Ressurs<PersonSøk>) => {
+                settSøkRessurs(resp);
+            });
         }
-        // eslint-disable-next-line
-    }, [søkIdent]);
+    }, [axiosRequest, søkIdent]);
 
     const leggTilBrevmottaker = (personIdent: string, navn: string) => () => {
         settValgteMottakere((prevState) => [
