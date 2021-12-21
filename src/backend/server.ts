@@ -9,7 +9,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import { brevProxyUrl, sakProxyUrl, sessionConfig } from './config';
 import { prometheusTellere } from './metrikker';
-import { attachToken, doProxy } from './proxy';
+import { addCallId, attachToken, doProxy } from './proxy';
 import setupRouter from './router';
 import expressStaticGzip from 'express-static-gzip';
 import { logError, logInfo } from '@navikt/familie-logging';
@@ -40,6 +40,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
 
     app.use(
         '/familie-ef-sak/api',
+        addCallId(),
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),
         doProxy('/familie-ef-sak/api', sakProxyUrl)
@@ -47,6 +48,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
 
     app.use(
         '/dokument',
+        addCallId(),
         ensureAuthenticated(azureAuthClient, false),
         attachToken(azureAuthClient),
         doProxy('/dokument', sakProxyUrl)
@@ -54,6 +56,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
 
     app.use(
         '/familie-brev/api',
+        addCallId(),
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),
         doProxy('/familie-brev/api', brevProxyUrl)
