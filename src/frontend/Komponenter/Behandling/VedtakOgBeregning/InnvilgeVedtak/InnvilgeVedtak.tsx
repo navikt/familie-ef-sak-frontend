@@ -272,14 +272,14 @@ export const InnvilgeVedtak: React.FC<{
                     )}
                     <Utregningstabell beregnetStønad={beregnetStønad} />
                 </InntekWrapper>
-                <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
-                    Lagre vedtak
-                </Hovedknapp>
                 {feilmelding && (
                     <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                         {feilmelding}
                     </AlertStripeFeilPreWrap>
                 )}
+                <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
+                    Lagre vedtak
+                </Hovedknapp>
             </FormContentWrapper>
         </form>
     );
