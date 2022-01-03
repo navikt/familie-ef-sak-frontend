@@ -12,6 +12,7 @@ import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { resultatTilTekst } from '../Vilkårresultat/ResultatVisning';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
+import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 
 const StyledVurdering = styled.div`
     display: grid;
@@ -84,7 +85,7 @@ const VisVurdering: FC<Props> = ({
     tittelTekst,
 }) => {
     const vilkårsresultat = vurdering.resultat;
-    const sistOppdatert = 'Sist endret dato - 16.12.2021 kl.12.31';
+    const sistOppdatert = formaterIsoDatoTidMedSekunder(vurdering.endretTid);
     const vurderingerBesvaradeAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
         (delvilkårsvurdering) =>
             delvilkårsvurdering.resultat === Vilkårsresultat.OPPFYLT ||
@@ -137,7 +138,7 @@ const VisVurdering: FC<Props> = ({
                 {sistOppdatert &&
                     (vilkårsresultat === Vilkårsresultat.OPPFYLT ||
                         vilkårsresultat === Vilkårsresultat.IKKE_OPPFYLT) && (
-                        <SistOppdatertTekst>{sistOppdatert}</SistOppdatertTekst>
+                        <SistOppdatertTekst>Sist endret dato - {sistOppdatert}</SistOppdatertTekst>
                     )}
                 <StyledVilkår>
                     {vurderingerBesvaradeAvSaksbehandler.map((delvilkårsvurdering) =>
