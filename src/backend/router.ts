@@ -1,7 +1,7 @@
 import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
 import { Request, Response, Router } from 'express';
 import path from 'path';
-import { buildPath, urlAInntekt } from './config';
+import { buildPath, roller, urlAInntekt } from './config';
 import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
@@ -21,7 +21,7 @@ export default (
             .end();
     });
     router.get('/env', (_req: Request, res: Response) => {
-        res.status(200).send({ aInntekt: urlAInntekt }).end();
+        res.status(200).send({ aInntekt: urlAInntekt, roller }).end();
     });
 
     router.get('/error', (_req: Request, res: Response) => {
