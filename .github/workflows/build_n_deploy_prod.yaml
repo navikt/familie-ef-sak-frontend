@@ -46,14 +46,14 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: build_n_deploy/naiserator/nais.yaml
-          VARS: build_n_deploy/naiserator/dev.json
+          VARS: build_n_deploy/naiserator/dev.yaml
       - name: Deploy til prod-gcp
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: build_n_deploy/naiserator/nais.yaml
-          VARS: build_n_deploy/naiserator/prod.json
+          VARS: build_n_deploy/naiserator/prod.yaml
       - name: Post deploy failures to Slack
         if: failure()
         run: |

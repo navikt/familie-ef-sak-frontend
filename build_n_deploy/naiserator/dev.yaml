@@ -1,0 +1,12 @@
+ingresses:
+  - "https://ensligmorellerfar.dev.intern.nav.no"
+externals:
+  - "familie-ef-sak.dev-fss-pub.nais.io"
+envEnv: "preprod"
+claimGroups:
+  - "01166863-22f1-4e16-9785-d7a05a22df74" # 0000-GA-Enslig-Forsorger-Beslutter
+  - "ee5e0b5e-454c-4612-b931-1fe363df7c2c" # 0000-GA-Enslig-Forsorger-Saksbehandler
+  - "19dcbfde-4cdb-4c64-a1ea-ac9802b03339" # 0000-GA-Enslig-Forsorger-Veileder
+  - "de44052d-b062-4497-89a2-0c85b935b808" # 0000-GA-GOSYS_UTVIDET
+  - "5ef775f2-61f8-4283-bf3d-8d03f428aa14" # 0000-GA-Strengt_Fortrolig_Adresse
+  - "ea930b6b-9397-44d9-b9e6-f4cf527a632a" # 0000-GA-Fortrolig_Adresse

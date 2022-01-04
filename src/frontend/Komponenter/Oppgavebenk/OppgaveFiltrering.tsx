@@ -193,7 +193,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
                     value={oppgaveRequest.ident || ''}
                     label="Personident"
                     inputMode="numeric"
-                    pattern="[0-9]*"
                     onChange={(e) => {
                         settOppgave('ident')(e.target.value);
                     }}

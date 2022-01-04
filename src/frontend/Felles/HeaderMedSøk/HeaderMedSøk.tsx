@@ -12,9 +12,10 @@ import Endringslogg from '@navikt/familie-endringslogg';
 import { endringsloggUrl } from '../../App/utils/miljø';
 import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
+import { harTilgangTilRolle } from '../../App/utils/roller';
 
 export interface IHeaderMedSøkProps {
-    innloggetSaksbehandler?: ISaksbehandler;
+    innloggetSaksbehandler: ISaksbehandler;
 }
 
 const lagAInntekt = (
@@ -39,9 +40,17 @@ const lagAInntekt = (
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
+    innloggetSaksbehandler: ISaksbehandler,
     fagsakId?: string
 ): PopoverItem[] => {
-    return [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
+        eksterneLenker.push({
+            name: 'Uttrekk arbeidssøkere (P43)',
+            href: '/uttrekk/arbeidssoker',
+        });
+    }
+    return eksterneLenker;
 };
 
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
@@ -51,8 +60,8 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     const { toggles } = useToggles();
 
     const eksterneLenker = useMemo(
-        () => lagEksterneLenker(axiosRequest, appEnv, valgtFagsakId),
-        [axiosRequest, appEnv, valgtFagsakId]
+        () => lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId),
+        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId]
     );
 
     return (
