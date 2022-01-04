@@ -9,7 +9,6 @@ import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
-import { endringsloggUrl } from '../../App/utils/miljø';
 import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
 import { harTilgangTilRolle } from '../../App/utils/roller';
@@ -82,7 +81,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
                 <Endringslogg
                     userId={innloggetSaksbehandler.navIdent}
                     appId={'EF'}
-                    backendUrl={endringsloggUrl()}
+                    backendUrl={'/endringslogg'}
                     dataset={'production'}
                     maxEntries={50}
                     appName={'Enslig forsørger'}
