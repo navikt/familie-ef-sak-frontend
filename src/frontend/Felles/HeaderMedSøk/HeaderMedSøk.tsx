@@ -77,7 +77,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
             eksterneLenker={eksterneLenker}
         >
             {innloggetSaksbehandler && <PersonSøk />}
-            {toggles[ToggleName.innvilgeMedOpphørToggle] && innloggetSaksbehandler && (
+            {toggles[ToggleName.endringslogg] && innloggetSaksbehandler && (
                 <Endringslogg
                     userId={innloggetSaksbehandler.navIdent}
                     appId={'EF'}
