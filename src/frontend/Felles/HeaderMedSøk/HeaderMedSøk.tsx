@@ -8,6 +8,10 @@ import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
+import Endringslogg from '@navikt/familie-endringslogg';
+import { endringsloggUrl } from '../../App/utils/miljø';
+import { ToggleName } from '../../App/context/toggles';
+import { useToggles } from '../../App/context/TogglesContext';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler?: ISaksbehandler;
@@ -44,6 +48,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
     const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
+    const { toggles } = useToggles();
 
     const eksterneLenker = useMemo(
         () => lagEksterneLenker(axiosRequest, appEnv, valgtFagsakId),
@@ -64,6 +69,18 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
             eksterneLenker={eksterneLenker}
         >
             {innloggetSaksbehandler && <PersonSøk />}
+            {toggles[ToggleName.innvilgeMedOpphørToggle] && innloggetSaksbehandler && (
+                <Endringslogg
+                    userId={innloggetSaksbehandler.navIdent}
+                    appId={'EF'}
+                    backendUrl={endringsloggUrl()}
+                    dataset={'production'}
+                    maxEntries={50}
+                    appName={'Enslig forsørger'}
+                    alignLeft={true}
+                    stil={'lys'}
+                />
+            )}
         </Header>
     );
 };
