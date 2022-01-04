@@ -29,7 +29,6 @@ spec:
   azure:
     application:
       enabled: true
-      tenant: {{tenant}}
       replyURLs:
       {{#each ingresses as |url|}}
         - {{url}}/auth/openid/callback
