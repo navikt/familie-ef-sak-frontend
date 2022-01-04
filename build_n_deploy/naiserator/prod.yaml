@@ -2,7 +2,7 @@ ingresses:
   - "https://ensligmorellerfar.intern.nav.no"
 externals:
   - "familie-ef-sak.prod-fss-pub.nais.io"
-envEnv: "prod"
+envEnv: "production"
 claimGroups:
   - "31778fd8-3b71-4867-8db6-a81235fbe001" # 0000-GA-Enslig-Forsorger-Veileder
   - "6406aba2-b930-41d3-a85b-dd13731bc974" # 0000-GA-Enslig-Forsorger-Saksbehandler
