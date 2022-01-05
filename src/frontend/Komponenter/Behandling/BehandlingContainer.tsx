@@ -11,6 +11,7 @@ import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
+import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
@@ -62,6 +63,10 @@ const BehandlingContent: FC<{
                     <Fanemeny />
                     <BehandlingRoutes />
                     <GodkjennEndringer behandling={behandling} />
+                    <BrevmottakereModal
+                        behandlingId={behandling.id}
+                        personopplysninger={personopplysninger}
+                    />
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
                     <Høyremeny />

@@ -10,6 +10,7 @@ import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { Henlegg } from '../../Komponenter/Behandling/Henleggelse/Henlegg';
+import { SettBrevmottakere } from '../../Komponenter/Behandling/Brevmottakere/SettBrevmottakere';
 
 const BehandlingsinfoWrapper = styled.div`
     margin: auto;
@@ -89,6 +90,7 @@ const Behandlingsinfo: FC<{ behandling: Behandling; fagsakId: string }> = ({
                     </PopoverTabell>
                     <GråTekst>Id: {behandling.id}</GråTekst>
                     <Henlegg behandling={behandling} fagsakId={fagsakId} />
+                    <SettBrevmottakere behandlingId={behandling.id} />
                 </PopoverInnehold>
             </Popover>
         </BehandlingsinfoWrapper>
