@@ -8,9 +8,10 @@ import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
+import { harTilgangTilRolle } from '../../App/utils/roller';
 
 export interface IHeaderMedSøkProps {
-    innloggetSaksbehandler?: ISaksbehandler;
+    innloggetSaksbehandler: ISaksbehandler;
 }
 
 const lagAInntekt = (
@@ -35,9 +36,17 @@ const lagAInntekt = (
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
+    innloggetSaksbehandler: ISaksbehandler,
     fagsakId?: string
 ): PopoverItem[] => {
-    return [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
+        eksterneLenker.push({
+            name: 'Uttrekk arbeidssøkere (P43)',
+            href: '/uttrekk/arbeidssoker',
+        });
+    }
+    return eksterneLenker;
 };
 
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
@@ -46,8 +55,8 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
 
     const eksterneLenker = useMemo(
-        () => lagEksterneLenker(axiosRequest, appEnv, valgtFagsakId),
-        [axiosRequest, appEnv, valgtFagsakId]
+        () => lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId),
+        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId]
     );
 
     return (

@@ -106,12 +106,15 @@ export const validerVedtaksperioder = ({
         if (!årMånedFra) {
             return { årMånedFra: 'Mangelfull utfylling av inntektsperiode' };
         }
-        const førsteVedtaksperiode = perioder[0];
+        const førsteInnvilgedeVedtaksperiode =
+            perioder.find(
+                (vedtaksperiode) => vedtaksperiode.periodeType !== EPeriodetype.MIDLERTIDIG_OPPHØR
+            ) || perioder[0];
         if (
             index === 0 &&
-            førsteVedtaksperiode &&
-            førsteVedtaksperiode.årMånedFra &&
-            !erMånedÅrLik(årMånedFra, førsteVedtaksperiode.årMånedFra)
+            førsteInnvilgedeVedtaksperiode &&
+            førsteInnvilgedeVedtaksperiode.årMånedFra &&
+            !erMånedÅrLik(årMånedFra, førsteInnvilgedeVedtaksperiode.årMånedFra)
         ) {
             return { årMånedFra: 'Første inntektsperiode må være lik vedtaksperiode' };
         }
