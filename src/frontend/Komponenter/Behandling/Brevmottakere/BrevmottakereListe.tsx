@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Ingress } from 'nav-frontend-typografi';
+import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
@@ -48,9 +48,10 @@ export const BrevmottakereListe: FC<Props> = ({
             {valgtePersonMottakere.map((mottaker) => (
                 <StyledMottakerBoks>
                     <Flexboks>
-                        {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
-                        <br />
-                        <KopierbartNullableFødselsnummer fødselsnummer={mottaker.personIdent} />
+                        <Normaltekst>
+                            {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
+                            <KopierbartNullableFødselsnummer fødselsnummer={mottaker.personIdent} />
+                        </Normaltekst>
                     </Flexboks>
                     <LenkeKnapp onClick={fjernPersonMottaker(mottaker.personIdent)}>
                         <SlettSøppelkasse withDefaultStroke={false} />
@@ -59,11 +60,12 @@ export const BrevmottakereListe: FC<Props> = ({
             ))}
             {valgteOrganisasjonMottakere.map((mottaker) => (
                 <StyledMottakerBoks>
-                    {`${mottaker.organisasjonsnavn}`}
-                    <br />
-                    {`Organisasjonsnummer: ${mottaker.organisasjonsnummer}`}
-                    <br />
-                    {`Kontaktperson: ${mottaker.navnHosOrganisasjon}`}
+                    <div>
+                        <Normaltekst>{`${mottaker.navnHosOrganisasjon}`}</Normaltekst>
+                        <Normaltekst>
+                            {`Organisasjonsnummer: ${mottaker.organisasjonsnummer}`}
+                        </Normaltekst>
+                    </div>
                     <LenkeKnapp onClick={fjernOrganisasjonMottaker(mottaker.organisasjonsnummer)}>
                         <SlettSøppelkasse withDefaultStroke={false} />
                     </LenkeKnapp>
