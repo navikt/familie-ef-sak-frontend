@@ -10,4 +10,5 @@ export enum ToggleName {
     visOppdateringAvRegisteropplysninger = 'familie.ef.sak.frontend-vis-oppdatering-av-registeropplysninger',
     visSettBrevmottakereKnapp = 'familie.ef.sak.brevmottakere-verge-og-fullmakt',
     innvilgeMedOpphørToggle = 'familie.ef.sak.innvilge-med-opphoer',
+    endringslogg = 'familie.ef.sak.endringslogg',
 }

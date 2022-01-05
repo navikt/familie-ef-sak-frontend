@@ -13,6 +13,7 @@ interface IEnvironment {
     namespace: string;
     sakProxyUrl: string;
     brevProxyUrl: string;
+    endringsloggProxyUrl: string;
     aInntekt: string;
     redisUrl?: string;
     roller: Roller;
@@ -42,6 +43,7 @@ const Environment = (): IEnvironment => {
             sakProxyUrl: 'http://localhost:8093',
             brevProxyUrl: 'http://localhost:8001',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
+            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
         };
     } else if (process.env.ENV === 'e2e') {
@@ -51,6 +53,7 @@ const Environment = (): IEnvironment => {
             sakProxyUrl: 'http://familie-ef-sak:8093',
             brevProxyUrl: '', // TODO
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
+            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
             //Har ikke satt opp redis
         };
@@ -62,6 +65,7 @@ const Environment = (): IEnvironment => {
             brevProxyUrl: 'http://familie-brev',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             redisUrl: 'familie-ef-sak-frontend-redis',
+            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
         };
     }
@@ -73,6 +77,7 @@ const Environment = (): IEnvironment => {
         brevProxyUrl: 'http://familie-brev',
         aInntekt: 'https://arbeid-og-inntekt.nais.adeo.no',
         redisUrl: 'familie-ef-sak-frontend-redis',
+        endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
         roller: rollerProd,
     };
 };
@@ -99,6 +104,7 @@ export const oboConfig: IApi = {
 export const buildPath = env.buildPath;
 export const sakProxyUrl = env.sakProxyUrl;
 export const brevProxyUrl = env.brevProxyUrl;
+export const endringsloggProxyUrl = env.endringsloggProxyUrl;
 export const namespace = env.namespace;
 export const urlAInntekt = env.aInntekt;
 export const roller = env.roller;
