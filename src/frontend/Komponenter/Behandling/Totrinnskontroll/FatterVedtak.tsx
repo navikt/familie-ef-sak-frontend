@@ -49,7 +49,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
     const { modalDispatch } = useModal();
-
+    console.log(feil);
     const { axiosRequest, settToast, gåTilUrl } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
     const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
@@ -83,7 +83,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                         gåTilUrl('/oppgavebenk');
                     }
                 } else {
-                    settFeil(response.frontendFeilmelding);
+                    settFeil(response.frontendFeilmeldingUtenFeilkode);
                 }
             })
             .finally(() => settLaster(false));

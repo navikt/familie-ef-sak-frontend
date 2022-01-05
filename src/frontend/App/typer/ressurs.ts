@@ -19,6 +19,7 @@ export type FeilMelding = {
     errorMelding?: string;
     melding: string;
     frontendFeilmelding: string;
+    frontendFeilmeldingUtenFeilkode?: string;
 };
 
 export type RessursFeilet =
