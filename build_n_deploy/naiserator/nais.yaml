@@ -29,11 +29,15 @@ spec:
   azure:
     application:
       enabled: true
-      tenant: {{tenant}}
       replyURLs:
       {{#each ingresses as |url|}}
         - {{url}}/auth/openid/callback
       {{/each}}
+      claims:
+        groups:
+        {{#each claimGroups as |group|}}
+          - id: {{group}}
+        {{/each}}
   resources:
     limits:
       cpu: 2000m
@@ -46,6 +50,7 @@ spec:
         - application: familie-ef-sak
         - application: familie-ef-sak-frontend-redis
         - application: familie-brev
+        - application: familie-endringslogg
       external:
         {{#each externals as |host|}}
         - host: {{host}}
@@ -57,7 +62,5 @@ spec:
   env:
     - name: APP_VERSION
       value: "{{version}}"
-    {{#each env}}
-    - name: {{@key}}
-      value: "{{this}}"
-    {{/each}}
+    - name: ENV
+      value: "{{envEnv}}"

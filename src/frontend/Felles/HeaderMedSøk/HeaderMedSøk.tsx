@@ -8,9 +8,13 @@ import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
+import Endringslogg from '@navikt/familie-endringslogg';
+import { ToggleName } from '../../App/context/toggles';
+import { useToggles } from '../../App/context/TogglesContext';
+import { harTilgangTilRolle } from '../../App/utils/roller';
 
 export interface IHeaderMedSøkProps {
-    innloggetSaksbehandler?: ISaksbehandler;
+    innloggetSaksbehandler: ISaksbehandler;
 }
 
 const lagAInntekt = (
@@ -35,19 +39,28 @@ const lagAInntekt = (
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
+    innloggetSaksbehandler: ISaksbehandler,
     fagsakId?: string
 ): PopoverItem[] => {
-    return [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
+        eksterneLenker.push({
+            name: 'Uttrekk arbeidssøkere (P43)',
+            href: '/uttrekk/arbeidssoker',
+        });
+    }
+    return eksterneLenker;
 };
 
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
     const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
+    const { toggles } = useToggles();
 
     const eksterneLenker = useMemo(
-        () => lagEksterneLenker(axiosRequest, appEnv, valgtFagsakId),
-        [axiosRequest, appEnv, valgtFagsakId]
+        () => lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId),
+        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId]
     );
 
     return (
@@ -64,6 +77,18 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
             eksterneLenker={eksterneLenker}
         >
             {innloggetSaksbehandler && <PersonSøk />}
+            {toggles[ToggleName.endringslogg] && innloggetSaksbehandler && (
+                <Endringslogg
+                    userId={innloggetSaksbehandler.navIdent}
+                    appId={'EF'}
+                    backendUrl={'/endringslogg'}
+                    dataset={'production'}
+                    maxEntries={50}
+                    appName={'Enslig forsørger'}
+                    alignLeft={true}
+                    stil={'lys'}
+                />
+            )}
         </Header>
     );
 };

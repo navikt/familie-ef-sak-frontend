@@ -7,7 +7,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import { brevProxyUrl, sakProxyUrl, sessionConfig } from './config';
+import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl, sessionConfig } from './config';
 import { prometheusTellere } from './metrikker';
 import { addCallId, attachToken, doProxy } from './proxy';
 import setupRouter from './router';
@@ -60,6 +60,13 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),
         doProxy('/familie-brev/api', brevProxyUrl)
+    );
+
+    app.use(
+        '/endringslogg',
+        ensureAuthenticated(azureAuthClient, true),
+        attachToken(azureAuthClient),
+        doProxy('/endringslogg', endringsloggProxyUrl, '')
     );
 
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser

@@ -53,7 +53,7 @@ const App: React.FC = () => {
 
 export default App;
 
-const Routes: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
+const Routes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
     const { autentisert } = useApp();
@@ -69,7 +69,7 @@ const Routes: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
     );
 };
 
-const AppInnhold: React.FC<{ innloggetSaksbehandler?: ISaksbehandler }> = ({
+const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
     const history = useHistory();
