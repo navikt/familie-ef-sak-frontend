@@ -50,6 +50,7 @@ spec:
         - application: familie-ef-sak
         - application: familie-ef-sak-frontend-redis
         - application: familie-brev
+        - application: familie-endringslogg
       external:
         {{#each externals as |host|}}
         - host: {{host}}

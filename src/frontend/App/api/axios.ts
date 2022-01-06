@@ -16,6 +16,7 @@ const errorMessage = (frontendFeilmelding: string, headers?: any) => {
 const lagUkjentFeilRessurs = (headers?: Headers): RessursFeilet => ({
     melding: 'Mest sannsynlig ukjent api feil',
     frontendFeilmelding: errorMessage('Mest sannsynlig ukjent api feil', headers),
+    frontendFeilmeldingUtenFeilkode: 'Mest sannsynlig ukjent api feil',
     status: RessursStatus.FEILET,
 });
 
@@ -52,6 +53,7 @@ export const håndterRessurs = <T>(
             typetRessurs = {
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
+                frontendFeilmeldingUtenFeilkode: ressurs.frontendFeilmelding,
                 status: RessursStatus.IKKE_TILGANG,
             };
             break;
@@ -61,6 +63,7 @@ export const håndterRessurs = <T>(
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
+                frontendFeilmeldingUtenFeilkode: ressurs.frontendFeilmelding,
                 status: RessursStatus.FEILET,
             };
             break;
@@ -68,6 +71,7 @@ export const håndterRessurs = <T>(
             typetRessurs = {
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
+                frontendFeilmeldingUtenFeilkode: ressurs.frontendFeilmelding,
                 status: RessursStatus.FUNKSJONELL_FEIL,
             };
             break;
