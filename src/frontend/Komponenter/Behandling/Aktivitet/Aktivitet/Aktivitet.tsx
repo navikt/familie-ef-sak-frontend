@@ -37,10 +37,12 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                                         tittel="Aktivitet"
                                         vilkårsresultat={vurdering.resultat}
                                     />
-                                    <AktivitetInfo
-                                        aktivitet={grunnlag.aktivitet}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                    />
+                                    {grunnlag.aktivitet && (
+                                        <AktivitetInfo
+                                            aktivitet={grunnlag.aktivitet}
+                                            skalViseSøknadsdata={skalViseSøknadsdata}
+                                        />
+                                    )}
                                 </>
                             ),
                             høyre: (

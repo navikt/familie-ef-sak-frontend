@@ -36,8 +36,12 @@ interface Props {
 
 function utledRedigeringsmodus(
     feilmelding: string | undefined,
-    vurdering: IVurdering
+    vurdering: IVurdering,
+    behandlingErRedigerbar: boolean
 ): Redigeringsmodus {
+    if (!behandlingErRedigerbar) {
+        return Redigeringsmodus.VISNING;
+    }
     if (feilmelding !== undefined) {
         return Redigeringsmodus.REDIGERING;
     }
@@ -59,7 +63,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
-        utledRedigeringsmodus(feilmelding, vurdering)
+        utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
     );
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
 
