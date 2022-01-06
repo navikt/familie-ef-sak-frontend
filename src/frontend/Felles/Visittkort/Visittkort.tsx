@@ -39,6 +39,12 @@ const Statuser = styled.div`
     width: 100%;
 
     margin-left: 1rem;
+
+    display: flex;
+
+    > div {
+        margin: 0.8rem;
+    }
 `;
 
 const Status = styled.div`
@@ -48,7 +54,7 @@ const Status = styled.div`
     flex-gap: 0.5rem;
 
     > p {
-        margin: 0.25rem;
+        margin: 0.2rem;
     }
 `;
 
