@@ -20,7 +20,7 @@ export interface IBeregningsgrunnlag {
     grunnbeløp: number | null;
 }
 export type IInnvilgeVedtak = {
-    resultatType: EBehandlingResultat.INNVILGE | EBehandlingResultat.INNVILGE_MED_OPPHØR;
+    resultatType: EBehandlingResultat.INNVILGE;
     periodeBegrunnelse?: string;
     inntektBegrunnelse?: string;
     perioder: IVedtaksperiode[];
@@ -64,7 +64,6 @@ export enum EInntektsperiodeProperty {
 
 export enum EBehandlingResultat {
     INNVILGE = 'INNVILGE',
-    INNVILGE_MED_OPPHØR = 'INNVILGE_MED_OPPHØR',
     AVSLÅ = 'AVSLÅ',
     HENLEGGE = 'HENLEGGE',
     BEHANDLE_I_GOSYS = 'BEHANDLE_I_GOSYS',
@@ -166,13 +165,12 @@ export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     HOVEDPERIODE: 'Hovedperiode',
     UTVIDELSE: 'Utvidelse',
     FORLENGELSE: 'Forlengelse',
-    MIDLERTIDIG_OPPHØR: 'Opphør',
+    MIDLERTIDIG_OPPHØR: 'Opphør/Ingen stønad',
     '': '',
 };
 
 export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
     INNVILGE: 'Innvilge',
-    INNVILGE_MED_OPPHØR: 'Innvilge med opphør',
     AVSLÅ: 'Avslå',
     HENLEGGE: 'Henlegge',
     BEHANDLE_I_GOSYS: 'Behandle i Gosys',

@@ -1,10 +1,5 @@
 import React, { FC } from 'react';
-import {
-    EBehandlingResultat,
-    EPeriodeProperty,
-    EPeriodetype,
-    periodetypeTilTekst,
-} from '../../../../App/typer/vedtak';
+import { EPeriodeProperty, EPeriodetype, periodetypeTilTekst } from '../../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { useToggles } from '../../../../App/context/TogglesContext';
@@ -25,7 +20,6 @@ interface VedtakperiodeSelectProps {
     periodeType: EPeriodetype | '' | undefined;
     index: number;
     feil?: string;
-    vedtaksresultatType: EBehandlingResultat;
 }
 
 const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
@@ -33,7 +27,6 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     behandlingErRedigerbar,
     periodeType,
     feil,
-    vedtaksresultatType,
 }) => {
     const { toggles } = useToggles();
     return (
@@ -61,10 +54,7 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
                 {periodetypeTilTekst[EPeriodetype.UTVIDELSE]}
             </option>
             {toggles[ToggleName.innvilgeMedOpphørToggle] && (
-                <option
-                    value={EPeriodetype.MIDLERTIDIG_OPPHØR}
-                    disabled={vedtaksresultatType !== EBehandlingResultat.INNVILGE_MED_OPPHØR}
-                >
+                <option value={EPeriodetype.MIDLERTIDIG_OPPHØR}>
                     {periodetypeTilTekst[EPeriodetype.MIDLERTIDIG_OPPHØR]}
                 </option>
             )}
