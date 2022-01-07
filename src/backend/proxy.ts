@@ -16,26 +16,35 @@ const restream = (proxyReq: ClientRequest, req: IncomingMessage, _res: ServerRes
     }
 };
 
-export const doProxy = (context: string, targetUrl: string): RequestHandler => {
+export const doProxy = (
+    context: string,
+    targetUrl: string,
+    pathPrefix = '/api'
+): RequestHandler => {
     return createProxyMiddleware(context, {
         changeOrigin: true,
         logLevel: 'info',
         onProxyReq: restream,
         pathRewrite: (path: string, _req: Request) => {
             const newPath = path.replace(context, '');
-            return `/api${newPath}`;
+            return `${pathPrefix}${newPath}`;
         },
         secure: true,
         target: `${targetUrl}`,
     });
 };
 
-// eslint-disable-next-line
-export const attachToken: any = (authClient: Client) => {
+export const addCallId = (): RequestHandler => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        req.headers['nav-call-id'] = uuidv4();
+        next();
+    };
+};
+
+export const attachToken = (authClient: Client): RequestHandler => {
     return async (req: Request, _res: Response, next: NextFunction) => {
         getOnBehalfOfAccessToken(authClient, req, oboConfig)
             .then((accessToken: string) => {
-                req.headers['Nav-Call-Id'] = uuidv4();
                 req.headers.Authorization = `Bearer ${accessToken}`;
                 return next();
             })

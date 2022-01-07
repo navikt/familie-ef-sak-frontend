@@ -4,6 +4,7 @@ export enum Hendelse {
     VEDTAK_GODKJENT = 'VEDTAK_GODKJENT',
     VEDTAK_UNDERKJENT = 'VEDTAK_UNDERKJENT',
     VEDTAK_IVERKSATT = 'VEDTAK_IVERKSATT',
+    VEDTAK_AVSLÅTT = 'VEDTAK_AVSLÅTT',
     HENLAGT = 'HENLAGT',
 }
 
@@ -13,5 +14,6 @@ export const hendelseTilHistorikkTekst: Record<Hendelse, string> = {
     VEDTAK_GODKJENT: 'Vedtak godkjent',
     VEDTAK_UNDERKJENT: 'Vedtak underkjent',
     VEDTAK_IVERKSATT: 'Vedtak iverksatt',
-    HENLAGT: 'Henlagt',
+    VEDTAK_AVSLÅTT: 'Vedtak avslått',
+    HENLAGT: 'Behandling henlagt',
 };
