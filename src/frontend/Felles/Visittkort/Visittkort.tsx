@@ -33,11 +33,11 @@ export const VisittkortWrapper = styled(Sticky)`
     }
 `;
 
-interface MenyInnholdProps {
+interface HamburgerMenyInnholdProps {
     åpen: boolean;
 }
 
-const HamburgerMeny = styled(Hamburger)`
+const HamburgerMenyIkon = styled(Hamburger)`
     margin: 1rem 1rem 0 1rem;
 
     &:hover {
@@ -45,10 +45,8 @@ const HamburgerMeny = styled(Hamburger)`
     }
 `;
 
-const MenyWrapper = styled.div``;
-
-const MenyInnhold = styled.div`
-    display: ${(props: MenyInnholdProps) => (props.åpen ? 'block' : 'none')};
+const HamburgerMenyInnhold = styled.div`
+    display: ${(props: HamburgerMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
 
     position: absolute;
 
@@ -180,13 +178,13 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
-            <MenyWrapper>
-                <HamburgerMeny
+            <div>
+                <HamburgerMenyIkon
                     onClick={() => {
                         settÅpenHamburgerMeny(!åpenHamburgerMeny);
                     }}
                 />
-                <MenyInnhold åpen={åpenHamburgerMeny}>
+                <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
                     <ul>
                         {skalViseSettBrevmottakereKnapp && (
                             <li>
@@ -200,8 +198,8 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                             </li>
                         )}
                     </ul>
-                </MenyInnhold>
-            </MenyWrapper>
+                </HamburgerMenyInnhold>
+            </div>
         </VisittkortWrapper>
     );
 };
