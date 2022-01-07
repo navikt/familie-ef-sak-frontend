@@ -32,13 +32,23 @@ export const VisittkortWrapper = styled(Sticky)`
     }
 `;
 
+interface MenyInnholdProps {
+    åpen: boolean;
+}
+
 const HamburgerMeny = styled(Hamburger)`
     margin: 1rem 1rem 0 1rem;
+
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const MenyWrapper = styled.div``;
 
 const MenyInnhold = styled.div`
+    display: ${(props: MenyInnholdProps) => (props.åpen ? 'block' : 'none')};
+
     position: absolute;
 
     background-color: white;
@@ -50,6 +60,24 @@ const MenyInnhold = styled.div`
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        padding: 0.5rem;
+
+        list-style-type: none;
+    }
+
+    li:hover {
+        background-color: #0166c5;
+        color: white;
+        cursor: pointer;
+    }
 `;
 
 const GråTekst = styled(Normaltekst)`
@@ -101,6 +129,8 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     const { axiosRequest, gåTilUrl } = useApp();
     const [fagsakId, settFagsakId] = useState('');
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
+
+    const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
     useEffect(() => {
         const hentFagsak = (personIdent: string): void => {
@@ -194,10 +224,14 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
             <MenyWrapper>
-                <HamburgerMeny />
-                <MenyInnhold>
+                <HamburgerMeny
+                    onClick={() => {
+                        settÅpenHamburgerMeny(!åpenHamburgerMeny);
+                    }}
+                />
+                <MenyInnhold åpen={åpenHamburgerMeny}>
                     <ul>
-                        <li>Sett på vent</li>
+                        <li>Sett på vdent</li>
                         <li>Henlegg</li>
                         <li>Sett Verge/Fullmakt mottakere</li>
                     </ul>
