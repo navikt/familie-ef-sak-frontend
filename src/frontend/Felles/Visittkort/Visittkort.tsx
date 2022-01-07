@@ -17,8 +17,11 @@ import { IFagsaksøk } from '../../App/typer/fagsaksøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
+import { useBehandling } from '../../App/context/BehandlingContext';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
+import { ToggleName } from '../../App/context/toggles';
+import { useToggles } from '../../App/context/TogglesContext';
 import { Hamburger } from '@navikt/ds-icons';
 
 export const VisittkortWrapper = styled(Sticky)`
@@ -132,6 +135,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
+    const { settVisBrevmottakereModal } = useBehandling();
+
+    const { toggles } = useToggles();
+    const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
+
     useEffect(() => {
         const hentFagsak = (personIdent: string): void => {
             if (!personIdent) return;
@@ -231,9 +239,17 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 />
                 <MenyInnhold åpen={åpenHamburgerMeny}>
                     <ul>
-                        <li>Sett på vdent</li>
-                        <li>Henlegg</li>
-                        <li>Sett Verge/Fullmakt mottakere</li>
+                        {skalViseSettBrevmottakereKnapp && (
+                            <li>
+                                <button
+                                    onClick={() => {
+                                        settVisBrevmottakereModal(true);
+                                    }}
+                                >
+                                    Sett Verge/Fullmakt mottakere
+                                </button>
+                            </li>
+                        )}
                     </ul>
                 </MenyInnhold>
             </MenyWrapper>
