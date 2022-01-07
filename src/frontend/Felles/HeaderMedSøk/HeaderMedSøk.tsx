@@ -80,6 +80,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
             {toggles[ToggleName.endringslogg] && innloggetSaksbehandler && (
                 <Endringslogg
                     userId={innloggetSaksbehandler.navIdent}
+                    dataFetchingIntervalSeconds={60 * 15}
                     appId={'EF'}
                     backendUrl={'/endringslogg'}
                     dataset={'production'}

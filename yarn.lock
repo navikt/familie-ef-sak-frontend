@@ -1221,10 +1221,10 @@
     nav-frontend-typografi-style "^1.1.1"
     prop-types "^15.7.2"
 
-"@navikt/familie-endringslogg@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@navikt/familie-endringslogg/-/familie-endringslogg-1.1.0.tgz#17ce3ec8898c3b8ed9c8b6b84faf922a9adceb9d"
-  integrity sha512-f+9/cMHcIuPwgS/XOSs96RySqiCNv/2LhhJDfHECJ7ijeE9D6593ZtAJRXZTxOpeDqfe2RX3rAiXW8ZPvHzFJQ==
+"@navikt/familie-endringslogg@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@navikt/familie-endringslogg/-/familie-endringslogg-1.2.0.tgz#9f414e152476c26fc6a8a6dfe208f4b6d9d1da6a"
+  integrity sha512-wrLXawkrQ/F7O59om+K+3P5wItvG7TCfJwOrL1EY7tOUm3UyvVTxIZdVWmimIJmgMbiloveUyBzD1EaXCAArtA==
   dependencies:
     "@sanity/block-content-to-react" "^3.0.0"
     "@types/react-modal" "^3.13.1"
