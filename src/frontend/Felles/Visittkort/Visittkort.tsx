@@ -19,6 +19,7 @@ import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
+import { Hamburger } from '@navikt/ds-icons';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -29,6 +30,26 @@ export const VisittkortWrapper = styled(Sticky)`
         padding: 0 1.5rem;
         border-bottom: none;
     }
+`;
+
+const HamburgerMeny = styled(Hamburger)`
+    margin: 1rem 1rem 0 1rem;
+`;
+
+const MenyWrapper = styled.div``;
+
+const MenyInnhold = styled.div`
+    position: absolute;
+
+    background-color: white;
+
+    right: 1rem;
+
+    border: 1px solid grey;
+
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
 `;
 
 const GråTekst = styled(Normaltekst)`
@@ -148,7 +169,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Verge</EtikettFokus>
                     </ElementWrapper>
                 )}
-                {behandling && (
+                {behandling && false && (
                     <Statuser>
                         <Status>
                             <GråTekst>Behandlingsstatus</GråTekst>
@@ -172,6 +193,16 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
+            <MenyWrapper>
+                <HamburgerMeny />
+                <MenyInnhold>
+                    <ul>
+                        <li>Sett på vent</li>
+                        <li>Henlegg</li>
+                        <li>Sett Verge/Fullmakt mottakere</li>
+                    </ul>
+                </MenyInnhold>
+            </MenyWrapper>
         </VisittkortWrapper>
     );
 };
