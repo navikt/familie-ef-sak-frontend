@@ -34,12 +34,17 @@ export const doProxy = (
     });
 };
 
-// eslint-disable-next-line
-export const attachToken: any = (authClient: Client) => {
+export const addCallId = (): RequestHandler => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        req.headers['nav-call-id'] = uuidv4();
+        next();
+    };
+};
+
+export const attachToken = (authClient: Client): RequestHandler => {
     return async (req: Request, _res: Response, next: NextFunction) => {
         getOnBehalfOfAccessToken(authClient, req, oboConfig)
             .then((accessToken: string) => {
-                req.headers['Nav-Call-Id'] = uuidv4();
                 req.headers.Authorization = `Bearer ${accessToken}`;
                 return next();
             })

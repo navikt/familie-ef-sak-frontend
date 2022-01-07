@@ -8,6 +8,8 @@ import Brevmeny from './Brevmeny';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
+import { IBrevmottakere } from '../Brevmottakere/typer';
+import { InfostripeBrevmottakere } from './InfostripeBrevmottakere';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -34,6 +36,9 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll } =
         useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
+    const [brevmottakereRessurs, settBrevMottakereRessurs] = useState(
+        byggTomRessurs<IBrevmottakere | undefined>()
+    );
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -74,8 +79,28 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
+    useEffect(() => {
+        const hentBrevmottakere = () => {
+            axiosRequest<IBrevmottakere | undefined, null>({
+                url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
+                method: 'GET',
+            }).then((resp: Ressurs<IBrevmottakere | undefined>) => {
+                settBrevMottakereRessurs(resp);
+            });
+        };
+
+        hentBrevmottakere();
+    }, [axiosRequest, behandlingId, settBrevMottakereRessurs]);
+
     return (
         <>
+            <DataViewer response={{ brevmottakereRessurs }}>
+                {({ brevmottakereRessurs }) =>
+                    brevmottakereRessurs && (
+                        <InfostripeBrevmottakere brevmottakere={brevmottakereRessurs} />
+                    )
+                }
+            </DataViewer>
             <StyledBrev>
                 {behandlingErRedigerbar && (
                     <DataViewer response={{ personopplysningerResponse }}>
