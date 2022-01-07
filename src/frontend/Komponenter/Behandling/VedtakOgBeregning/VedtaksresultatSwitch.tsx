@@ -33,14 +33,7 @@ const VedtaksresultatSwitch: React.FC<Props> = ({
                 />
             );
         case EBehandlingResultat.INNVILGE:
-        case EBehandlingResultat.INNVILGE_MED_OPPHØR:
-            return (
-                <InnvilgeVedtak
-                    behandling={behandling}
-                    lagretVedtak={lagretVedtak}
-                    vedtaksresultatType={vedtaksresultatType}
-                />
-            );
+            return <InnvilgeVedtak behandling={behandling} lagretVedtak={lagretVedtak} />;
         case EBehandlingResultat.BEHANDLE_I_GOSYS:
             return <BehandleIGosys behandlingId={behandling.id} />;
         case EBehandlingResultat.OPPHØRT:

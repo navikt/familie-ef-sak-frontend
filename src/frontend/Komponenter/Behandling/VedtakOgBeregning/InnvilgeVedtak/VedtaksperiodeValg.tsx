@@ -1,6 +1,5 @@
 import {
     EAktivitet,
-    EBehandlingResultat,
     EPeriodeProperty,
     EPeriodetype,
     IVedtaksperiode,
@@ -45,7 +44,6 @@ interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
     setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
-    vedtaksresultatType: EBehandlingResultat;
 }
 
 export const tomVedtaksperiodeRad: IVedtaksperiode = {
@@ -64,7 +62,6 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     vedtaksperiodeListe,
     valideringsfeil,
     setValideringsFeil,
-    vedtaksresultatType,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -117,7 +114,6 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             periodeType={periodeType}
                             index={index}
-                            vedtaksresultatType={vedtaksresultatType}
                         />
                         <AktivitetspliktVelger
                             index={index}

@@ -55,11 +55,9 @@ const EnsligTextAreaWrapper = styled.div`
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtak;
-    vedtaksresultatType: EBehandlingResultat.INNVILGE | EBehandlingResultat.INNVILGE_MED_OPPHØR;
-}> = ({ behandling, lagretVedtak, vedtaksresultatType }) => {
+}> = ({ behandling, lagretVedtak }) => {
     const lagretInnvilgetVedtak =
-        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE ||
-        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE_MED_OPPHØR
+        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtak)
             : undefined;
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
@@ -194,7 +192,7 @@ export const InnvilgeVedtak: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         const vedtaksRequest: IInnvilgeVedtak = {
-            resultatType: vedtaksresultatType,
+            resultatType: EBehandlingResultat.INNVILGE,
             periodeBegrunnelse: form.periodeBegrunnelse,
             inntektBegrunnelse: form.inntektBegrunnelse,
             perioder: form.perioder,
@@ -221,7 +219,6 @@ export const InnvilgeVedtak: React.FC<{
                         vedtaksperiodeListe={vedtaksperiodeState}
                         valideringsfeil={formState.errors.perioder}
                         setValideringsFeil={formState.setErrors}
-                        vedtaksresultatType={vedtaksresultatType}
                     />
                     {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
                         <IngenBegrunnelseOppgitt />
