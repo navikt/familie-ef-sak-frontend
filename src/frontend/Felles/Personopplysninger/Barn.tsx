@@ -44,7 +44,6 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                             <KopierbartNullableFødselsnummer
                                                 fødselsnummer={barn.annenForelder.personIdent}
                                             />
-                                            {', '}
                                             {barn.annenForelder.navn}
                                             {barn.annenForelder.dødsdato && (
                                                 <EtikettDød
