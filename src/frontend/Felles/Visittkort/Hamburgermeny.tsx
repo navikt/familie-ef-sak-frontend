@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { useBehandling } from '../../App/context/BehandlingContext';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -51,11 +52,18 @@ const HamburgerMenyInnhold = styled.div`
     }
 `;
 
+const Knapp = styled.button`
+    height: 100%;
+    width: 100%;
+
+    text-align: left;
+`;
+
 export const Hamburgermeny: FC = () => {
     const { toggles } = useToggles();
     const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
 
-    const { settVisBrevmottakereModal } = useBehandling();
+    const { settVisBrevmottakereModal, settVisHenleggModal } = useBehandling();
 
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
@@ -70,15 +78,24 @@ export const Hamburgermeny: FC = () => {
                 <ul>
                     {skalViseSettBrevmottakereKnapp && (
                         <li>
-                            <button
+                            <Knapp
                                 onClick={() => {
                                     settVisBrevmottakereModal(true);
                                 }}
                             >
-                                Sett Verge/Fullmakt mottakere
-                            </button>
+                                <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
+                            </Knapp>
                         </li>
                     )}
+                    <li>
+                        <Knapp
+                            onClick={() => {
+                                settVisHenleggModal(true);
+                            }}
+                        >
+                            <div>Henlegg</div>
+                        </Knapp>
+                    </li>
                 </ul>
             </HamburgerMenyInnhold>
         </div>
