@@ -3,7 +3,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
-import { Element } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { Knapp } from 'nav-frontend-knapper';
 import { StyledSøkInput, StyledSøkResultat } from './brevmottakereStyling';
 
@@ -25,7 +25,7 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
         if (søkIdent && søkIdent.length === 11) {
             axiosRequest<PersonSøk, { personIdent: string }>({
                 method: 'POST',
-                url: 'familie-ef-sak/api/sok/',
+                url: 'familie-ef-sak/api/sok/uten-fagsak',
                 data: {
                     personIdent: søkIdent,
                 },
@@ -55,7 +55,7 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
                     return (
                         <StyledSøkResultat>
                             <div>
-                                <Element>{søkRessurs.navn}</Element>
+                                <Normaltekst>{søkRessurs.navn}</Normaltekst>
                                 {søkRessurs.personIdent}
                             </div>
                             <Knapp
