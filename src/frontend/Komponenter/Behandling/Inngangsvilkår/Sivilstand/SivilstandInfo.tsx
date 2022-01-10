@@ -26,7 +26,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata }) => {
                         ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`}
                 </Normaltekst>
 
-                {skalViseSøknadsdata && (
+                {skalViseSøknadsdata && søknadsgrunnlag && (
                     <Søknadsinformasjon
                         sivilstandtype={registergrunnlag.type}
                         søknad={søknadsgrunnlag}
