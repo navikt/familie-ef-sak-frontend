@@ -11,8 +11,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { ToggleName } from '../../../App/context/toggles';
-import { useToggles } from '../../../App/context/TogglesContext';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -44,8 +42,6 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     const { settIkkePersistertKomponent, axiosRequest } = useApp();
 
     const [forhåndsvisningsFeil, settForhåndsvisningsFeil] = useState<string>();
-
-    const { toggles } = useToggles();
 
     const åpneBrevINyFane = () => {
         axiosRequest<string, { varseltekst: string }>({
@@ -102,21 +98,18 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                                 endreVarseltekst(e.target.value);
                             }}
                         />
-                        {toggles[ToggleName.visTilbakekrevingsVarselToggle] && (
-                            <IkonKnapp
-                                kompakt={true}
-                                mini={true}
-                                erLesevisning={false}
-                                onClick={åpneBrevINyFane}
-                                knappPosisjon={'venstre'}
-                                ikon={<Søknad />}
-                                label={'Forhåndsvis varsel'}
-                            />
+                        <IkonKnapp
+                            kompakt={true}
+                            mini={true}
+                            erLesevisning={false}
+                            onClick={åpneBrevINyFane}
+                            knappPosisjon={'venstre'}
+                            ikon={<Søknad />}
+                            label={'Forhåndsvis varsel'}
+                        />
+                        {forhåndsvisningsFeil && (
+                            <AlertStripeFeil>{forhåndsvisningsFeil}</AlertStripeFeil>
                         )}
-                        {toggles[ToggleName.visTilbakekrevingsVarselToggle] &&
-                            forhåndsvisningsFeil && (
-                                <AlertStripeFeil>{forhåndsvisningsFeil}</AlertStripeFeil>
-                            )}
                     </VarselValg>
                 )}
                 <Radio

@@ -30,8 +30,6 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../Oppgavebenk/oppgavefilterStorage';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -58,7 +56,6 @@ const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 export const JournalforingApp: React.FC = () => {
-    const { toggles } = useToggles();
     const { innloggetSaksbehandler } = useApp();
     const history = useHistory();
     const query: URLSearchParams = useQueryParams();
@@ -164,23 +161,20 @@ export const JournalforingApp: React.FC = () => {
                             )}
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                                {toggles[ToggleName.journalfoer] && (
-                                    <Hovedknapp
-                                        onClick={() =>
-                                            journalpostState.fullførJournalføring(
-                                                journalpostIdParam,
-                                                innloggetSaksbehandler?.enhet || '9999',
-                                                innloggetSaksbehandler?.navIdent
-                                            )
-                                        }
-                                        spinner={
-                                            journalpostState.innsending.status ===
-                                            RessursStatus.HENTER
-                                        }
-                                    >
-                                        Journalfør
-                                    </Hovedknapp>
-                                )}
+                                <Hovedknapp
+                                    onClick={() =>
+                                        journalpostState.fullførJournalføring(
+                                            journalpostIdParam,
+                                            innloggetSaksbehandler?.enhet || '9999',
+                                            innloggetSaksbehandler?.navIdent
+                                        )
+                                    }
+                                    spinner={
+                                        journalpostState.innsending.status === RessursStatus.HENTER
+                                    }
+                                >
+                                    Journalfør
+                                </Hovedknapp>
                             </FlexKnapper>
                         </Venstrekolonne>
                         <Høyrekolonne>
