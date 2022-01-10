@@ -17,10 +17,7 @@ import { IFagsaksøk } from '../../App/typer/fagsaksøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { useBehandling } from '../../App/context/BehandlingContext';
-import { ToggleName } from '../../App/context/toggles';
-import { useToggles } from '../../App/context/TogglesContext';
-import { Hamburger } from '@navikt/ds-icons';
+import { Hamburgermeny } from './Hamburgermeny';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -30,52 +27,6 @@ export const VisittkortWrapper = styled(Sticky)`
     .visittkort {
         padding: 0 1.5rem;
         border-bottom: none;
-    }
-`;
-
-interface HamburgerMenyInnholdProps {
-    åpen: boolean;
-}
-
-const HamburgerMenyIkon = styled(Hamburger)`
-    margin: 1rem 1rem 0 1rem;
-
-    &:hover {
-        cursor: pointer;
-    }
-`;
-
-const HamburgerMenyInnhold = styled.div`
-    display: ${(props: HamburgerMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
-
-    position: absolute;
-
-    background-color: white;
-
-    right: 1rem;
-
-    border: 1px solid grey;
-
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-
-    ul,
-    li {
-        margin: 0;
-        padding: 0;
-    }
-
-    li {
-        padding: 0.5rem;
-
-        list-style-type: none;
-    }
-
-    li:hover {
-        background-color: #0166c5;
-        color: white;
-        cursor: pointer;
     }
 `;
 
@@ -101,13 +52,6 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     const { axiosRequest, gåTilUrl } = useApp();
     const [fagsakId, settFagsakId] = useState('');
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
-
-    const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
-
-    const { settVisBrevmottakereModal } = useBehandling();
-
-    const { toggles } = useToggles();
-    const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
 
     useEffect(() => {
         const hentFagsak = (personIdent: string): void => {
@@ -178,30 +122,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
-            {behandling && (
-                <div>
-                    <HamburgerMenyIkon
-                        onClick={() => {
-                            settÅpenHamburgerMeny(!åpenHamburgerMeny);
-                        }}
-                    />
-                    <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
-                        <ul>
-                            {skalViseSettBrevmottakereKnapp && (
-                                <li>
-                                    <button
-                                        onClick={() => {
-                                            settVisBrevmottakereModal(true);
-                                        }}
-                                    >
-                                        Sett Verge/Fullmakt mottakere
-                                    </button>
-                                </li>
-                            )}
-                        </ul>
-                    </HamburgerMenyInnhold>
-                </div>
-            )}
+            {behandling && <Hamburgermeny />}
         </VisittkortWrapper>
     );
 };
