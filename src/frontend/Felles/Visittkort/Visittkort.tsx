@@ -178,28 +178,30 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
-            <div>
-                <HamburgerMenyIkon
-                    onClick={() => {
-                        settÅpenHamburgerMeny(!åpenHamburgerMeny);
-                    }}
-                />
-                <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
-                    <ul>
-                        {skalViseSettBrevmottakereKnapp && (
-                            <li>
-                                <button
-                                    onClick={() => {
-                                        settVisBrevmottakereModal(true);
-                                    }}
-                                >
-                                    Sett Verge/Fullmakt mottakere
-                                </button>
-                            </li>
-                        )}
-                    </ul>
-                </HamburgerMenyInnhold>
-            </div>
+            {behandling && (
+                <div>
+                    <HamburgerMenyIkon
+                        onClick={() => {
+                            settÅpenHamburgerMeny(!åpenHamburgerMeny);
+                        }}
+                    />
+                    <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
+                        <ul>
+                            {skalViseSettBrevmottakereKnapp && (
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            settVisBrevmottakereModal(true);
+                                        }}
+                                    >
+                                        Sett Verge/Fullmakt mottakere
+                                    </button>
+                                </li>
+                            )}
+                        </ul>
+                    </HamburgerMenyInnhold>
+                </div>
+            )}
         </VisittkortWrapper>
     );
 };
