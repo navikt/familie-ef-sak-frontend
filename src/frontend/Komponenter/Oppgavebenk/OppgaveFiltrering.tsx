@@ -55,13 +55,16 @@ const initFeilObjekt = {} as Feil;
 
 const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }) => {
     const { innloggetSaksbehandler, appEnv } = useApp();
-    const tomOppgaveRequest = {};
-    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
-    const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
     const harSaksbehandlerStrengtFortroligRolle = harStrengtFortroligRolle(
         appEnv,
         innloggetSaksbehandler
     );
+    const tomOppgaveRequest = harSaksbehandlerStrengtFortroligRolle
+        ? { enhet: fortroligEnhet }
+        : {};
+    const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
+    const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
+
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
             settOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
