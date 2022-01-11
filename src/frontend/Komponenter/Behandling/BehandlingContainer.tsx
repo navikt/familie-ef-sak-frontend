@@ -68,7 +68,7 @@ const BehandlingContent: FC<{
                         behandlingId={behandling.id}
                         personopplysninger={personopplysninger}
                     />
-                    <HenleggModal />
+                    <HenleggModal behandling={behandling} fagsakId={behandling.fagsakId} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
                     <Høyremeny />

@@ -5,6 +5,8 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
+import { Behandling } from '../../App/typer/fagsak';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -59,9 +61,11 @@ const Knapp = styled.button`
     text-align: left;
 `;
 
-export const Hamburgermeny: FC = () => {
+export const Hamburgermeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { toggles } = useToggles();
     const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
+
+    const behandlingRedigerbar = erBehandlingRedigerbar(behandling);
 
     const { settVisBrevmottakereModal, settVisHenleggModal } = useBehandling();
 
@@ -76,7 +80,7 @@ export const Hamburgermeny: FC = () => {
             />
             <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
                 <ul>
-                    {skalViseSettBrevmottakereKnapp && (
+                    {skalViseSettBrevmottakereKnapp && behandlingRedigerbar && (
                         <li>
                             <Knapp
                                 onClick={() => {
@@ -87,15 +91,17 @@ export const Hamburgermeny: FC = () => {
                             </Knapp>
                         </li>
                     )}
-                    <li>
-                        <Knapp
-                            onClick={() => {
-                                settVisHenleggModal(true);
-                            }}
-                        >
-                            <div>Henlegg</div>
-                        </Knapp>
-                    </li>
+                    {behandlingRedigerbar && (
+                        <li>
+                            <Knapp
+                                onClick={() => {
+                                    settVisHenleggModal(true);
+                                }}
+                            >
+                                <div>Henlegg</div>
+                            </Knapp>
+                        </li>
+                    )}
                 </ul>
             </HamburgerMenyInnhold>
         </div>

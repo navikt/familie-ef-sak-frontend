@@ -122,7 +122,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
-            {behandling && <Hamburgermeny />}
+            {behandling && <Hamburgermeny behandling={behandling} />}
         </VisittkortWrapper>
     );
 };
