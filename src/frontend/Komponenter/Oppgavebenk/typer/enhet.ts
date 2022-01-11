@@ -1,6 +1,11 @@
-export type IkkeFortroligEnhet = '4489' | '4483';
-export type FortroligEnhet = '2103';
-export type Enhet = IkkeFortroligEnhet | FortroligEnhet;
+export enum IkkeFortroligEnhet {
+    NAY = '4489',
+    EGNE_ANSATTE = '4483',
+}
+
+export enum FortroligEnhet {
+    VIKAFOSSEN = '2103',
+}
 
 export const enhetTilTekstIkkeFortrolig: Record<IkkeFortroligEnhet, string> = {
     '4489': '4489 NAY',
@@ -24,5 +29,3 @@ export const enhetTilTekst = (
         ? enhetTilTekstFortrolig
         : enhetTilTekstIkkeFortrolig;
 };
-
-export const fortroligEnhet = '2103';
