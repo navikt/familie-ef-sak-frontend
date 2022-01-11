@@ -24,3 +24,5 @@ export const enhetTilTekst = (
         ? enhetTilTekstFortrolig
         : enhetTilTekstIkkeFortrolig;
 };
+
+export const fortroligEnhet = '2103';

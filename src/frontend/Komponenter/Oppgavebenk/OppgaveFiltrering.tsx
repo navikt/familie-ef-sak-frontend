@@ -6,7 +6,7 @@ import { oppgaveTypeTilTekst } from './typer/oppgavetema';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
 import CustomSelect from './CustomSelect';
-import { enhetTilTekst } from './typer/enhet';
+import { enhetTilTekst, fortroligEnhet } from './typer/enhet';
 import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../App/utils/utils';
 import { IOppgaveRequest } from './typer/oppgaverequest';
@@ -86,10 +86,16 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
             if (harSaksbehandlerStrengtFortroligRolle) {
                 settOppgaveRequest({
                     ...fraLocalStorage,
-                    enhet: '2103',
+                    enhet: fortroligEnhet,
                 });
+            } else {
+                settOppgaveRequest(fraLocalStorage);
             }
             hentOppgaver(fraLocalStorage);
+        } else {
+            if (harSaksbehandlerStrengtFortroligRolle) {
+                settOppgaveRequest({ enhet: fortroligEnhet });
+            }
         }
     }, [hentOppgaver, harSaksbehandlerStrengtFortroligRolle]);
 
@@ -149,7 +155,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
                     options={enhetTilTekst(harSaksbehandlerStrengtFortroligRolle)}
                     value={oppgaveRequest.enhet}
                     sortDesc={true}
-                    skalSkjuleValgetAlle={true}
+                    skalSkjuleValgetAlle={harSaksbehandlerStrengtFortroligRolle}
                 />
                 <MappeVelger
                     onChange={(val) => settOppgave('mappeId')(parseInt(val))}
