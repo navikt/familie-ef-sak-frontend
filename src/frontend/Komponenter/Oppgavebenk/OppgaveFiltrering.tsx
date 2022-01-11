@@ -18,6 +18,7 @@ import {
 } from './oppgavefilterStorage';
 import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
+import { harStrengtFortroligRolle } from '../../App/utils/roller';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -53,11 +54,14 @@ interface Feil {
 const initFeilObjekt = {} as Feil;
 
 const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }) => {
-    const { innloggetSaksbehandler } = useApp();
+    const { innloggetSaksbehandler, appEnv } = useApp();
     const tomOppgaveRequest = {};
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
-
+    const harSaksbehandlerStrengtFortroligRolle = harStrengtFortroligRolle(
+        appEnv,
+        innloggetSaksbehandler
+    );
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
             settOppgaveRequest((prevState: IOppgaveRequest) => oppdaterFilter(prevState, key, val));
@@ -77,12 +81,17 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
 
     useEffect(() => {
-        const fraLocalStorage = hentFraLocalStorage(oppgaveRequestKey, undefined);
+        const fraLocalStorage = hentFraLocalStorage(oppgaveRequestKey, {});
         if (fraLocalStorage) {
-            settOppgaveRequest(fraLocalStorage);
+            if (harSaksbehandlerStrengtFortroligRolle) {
+                settOppgaveRequest({
+                    ...fraLocalStorage,
+                    enhet: '2103',
+                });
+            }
             hentOppgaver(fraLocalStorage);
         }
-    }, [hentOppgaver]);
+    }, [hentOppgaver, harSaksbehandlerStrengtFortroligRolle]);
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
@@ -137,9 +146,10 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
                 <CustomSelect
                     onChange={settOppgave('enhet')}
                     label="Enhet"
-                    options={enhetTilTekst}
+                    options={enhetTilTekst(harSaksbehandlerStrengtFortroligRolle)}
                     value={oppgaveRequest.enhet}
                     sortDesc={true}
+                    skalSkjuleValgetAlle={true}
                 />
                 <MappeVelger
                     onChange={(val) => settOppgave('mappeId')(parseInt(val))}
