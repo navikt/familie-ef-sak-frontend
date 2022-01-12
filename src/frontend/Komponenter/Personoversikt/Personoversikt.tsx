@@ -13,6 +13,7 @@ import Vedtaksperioderoversikt from './Vedtaksperioderoversikt';
 import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import Dokumenter from './Dokumenter';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
+import Infotrygdperioderoversikt from './Infotrygdperioderoversikt';
 
 const PersonoversiktContent: React.FC<{
     fagsakId: string;
@@ -30,8 +31,9 @@ const PersonoversiktContent: React.FC<{
                         { label: 'Personopplysninger', aktiv: tabvalg === 0 },
                         { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
                         { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
-                        { label: 'Dokumentoversikt', aktiv: tabvalg === 3 },
-                        { label: 'Brev', aktiv: tabvalg === 4 },
+                        { label: 'Infotrygdperioder', aktiv: tabvalg === 3 },
+                        { label: 'Dokumentoversikt', aktiv: tabvalg === 5 },
+                        { label: 'Brev', aktiv: tabvalg === 5 },
                     ]}
                     onChange={(_, tabNumber) => settTabvalg(tabNumber)}
                 />
@@ -43,8 +45,11 @@ const PersonoversiktContent: React.FC<{
                 )}
                 {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
                 {tabvalg === 2 && <Vedtaksperioderoversikt fagsakId={fagsakId} />}
-                {tabvalg === 3 && <Dokumenter personopplysninger={personopplysninger} />}
-                {tabvalg === 4 && <FrittståendeBrevMedVisning fagsakId={fagsakId} />}
+                {tabvalg === 3 && (
+                    <Infotrygdperioderoversikt personIdent={personopplysninger.personIdent} />
+                )}
+                {tabvalg === 4 && <Dokumenter personopplysninger={personopplysninger} />}
+                {tabvalg === 5 && <FrittståendeBrevMedVisning fagsakId={fagsakId} />}
             </Side>
         </>
     );
