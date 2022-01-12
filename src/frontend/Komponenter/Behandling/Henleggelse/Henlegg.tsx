@@ -21,10 +21,7 @@ const PaddingTop = styled.div`
     padding-top: 1rem;
 `;
 
-export const Henlegg: FC<{ behandling: Behandling; fagsakId: string }> = ({
-    behandling,
-    fagsakId,
-}) => {
+export const Henlegg: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { axiosRequest } = useApp();
     const behandlingRedigerbar = erBehandlingRedigerbar(behandling);
     const erBlankett = behandling.type === Behandlingstype.BLANKETT;
@@ -52,7 +49,7 @@ export const Henlegg: FC<{ behandling: Behandling; fagsakId: string }> = ({
             .then((respons: Ressurs<string>) => {
                 switch (respons.status) {
                     case RessursStatus.SUKSESS:
-                        history.push(`/fagsak/${fagsakId}`);
+                        history.push(`/fagsak/${behandling.fagsakId}`);
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
