@@ -5,7 +5,6 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 import { Behandling } from '../../App/typer/fagsak';
 
 interface HamburgerMenyInnholdProps {
@@ -65,8 +64,6 @@ export const Hamburgermeny: FC<{ behandling: Behandling }> = ({ behandling }) =>
     const { toggles } = useToggles();
     const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
 
-    const behandlingRedigerbar = erBehandlingRedigerbar(behandling);
-
     const { settVisBrevmottakereModal, settVisHenleggModal } = useBehandling();
 
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
@@ -80,7 +77,7 @@ export const Hamburgermeny: FC<{ behandling: Behandling }> = ({ behandling }) =>
             />
             <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
                 <ul>
-                    {skalViseSettBrevmottakereKnapp && behandlingRedigerbar && (
+                    {skalViseSettBrevmottakereKnapp && (
                         <li>
                             <Knapp
                                 onClick={() => {
