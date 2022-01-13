@@ -12,7 +12,6 @@ import { AxiosRequestConfig } from 'axios';
 import Vedtaksperioderoversikt from './Vedtaksperioderoversikt';
 import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import Dokumenter from './Dokumenter';
-import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import Infotrygdperioderoversikt from './Infotrygdperioderoversikt';
 
 const PersonoversiktContent: React.FC<{
@@ -20,7 +19,6 @@ const PersonoversiktContent: React.FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ fagsakId, personopplysninger }) => {
     const [tabvalg, settTabvalg] = useState<number>(1);
-    useSetValgtFagsakId(fagsakId);
 
     return (
         <>
@@ -32,7 +30,7 @@ const PersonoversiktContent: React.FC<{
                         { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
                         { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
                         { label: 'Infotrygdperioder', aktiv: tabvalg === 3 },
-                        { label: 'Dokumentoversikt', aktiv: tabvalg === 5 },
+                        { label: 'Dokumentoversikt', aktiv: tabvalg === 4 },
                         { label: 'Brev', aktiv: tabvalg === 5 },
                     ]}
                     onChange={(_, tabNumber) => settTabvalg(tabNumber)}
