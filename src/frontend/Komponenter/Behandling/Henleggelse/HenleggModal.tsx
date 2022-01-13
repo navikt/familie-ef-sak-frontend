@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { EToast } from '../../../App/typer/toast';
 
 export enum EHenlagtårsak {
     TRUKKET_TILBAKE = 'TRUKKET_TILBAKE',
@@ -32,7 +33,7 @@ export const HenleggModal: FC<{ behandling: Behandling; fagsakId: string }> = ({
 }) => {
     const { visHenleggModal, settVisHenleggModal } = useBehandling();
 
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settToast } = useApp();
     const erBlankett = behandling.type === Behandlingstype.BLANKETT;
     const history = useHistory();
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
@@ -59,6 +60,7 @@ export const HenleggModal: FC<{ behandling: Behandling; fagsakId: string }> = ({
                 switch (respons.status) {
                     case RessursStatus.SUKSESS:
                         history.push(`/fagsak/${fagsakId}`);
+                        settToast(EToast.BEHANDLING_HENLAGT);
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
