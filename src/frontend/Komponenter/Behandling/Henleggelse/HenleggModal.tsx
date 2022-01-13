@@ -8,7 +8,7 @@ import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { useHistory } from 'react-router-dom';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
@@ -23,6 +23,7 @@ interface IHenlegg {
     lagreHenleggelse: () => void;
     låsKnapp: boolean;
     henlagtårsak?: EHenlagtårsak;
+    settVisHenleggModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const HenleggModal: FC<{ behandling: Behandling; fagsakId: string }> = ({
@@ -86,6 +87,7 @@ export const HenleggModal: FC<{ behandling: Behandling; fagsakId: string }> = ({
                         lagreHenleggelse={lagreHenleggelse}
                         settHenlagtårsak={settHenlagtårsak}
                         låsKnapp={låsKnapp}
+                        settVisHenleggModal={settVisHenleggModal}
                     />
                 ) : (
                     <Henlegging
@@ -93,6 +95,7 @@ export const HenleggModal: FC<{ behandling: Behandling; fagsakId: string }> = ({
                         henlagtårsak={henlagtårsak}
                         settHenlagtårsak={settHenlagtårsak}
                         låsKnapp={låsKnapp}
+                        settVisHenleggModal={settVisHenleggModal}
                     />
                 )}
                 {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
@@ -106,6 +109,7 @@ const Henlegging: React.FC<IHenlegg> = ({
     lagreHenleggelse,
     låsKnapp,
     henlagtårsak,
+    settVisHenleggModal,
 }) => (
     <>
         <h4>Henlegg</h4>
@@ -129,6 +133,7 @@ const Henlegging: React.FC<IHenlegg> = ({
             <Hovedknapp htmlType={'submit'} onClick={lagreHenleggelse} disabled={låsKnapp}>
                 Henlegg
             </Hovedknapp>
+            <Knapp onClick={() => settVisHenleggModal(false)}>Avbryt</Knapp>
         </FamilieRadioGruppe>
     </>
 );
@@ -137,15 +142,19 @@ const BlankettHenlegging: React.FC<IHenlegg> = ({
     settHenlagtårsak,
     lagreHenleggelse,
     låsKnapp,
+    settVisHenleggModal,
 }) => (
-    <Hovedknapp
-        htmlType={'submit'}
-        onClick={() => {
-            settHenlagtårsak(EHenlagtårsak.BEHANDLES_I_GOSYS);
-            lagreHenleggelse();
-        }}
-        disabled={låsKnapp}
-    >
-        Henlegg
-    </Hovedknapp>
+    <>
+        <Hovedknapp
+            htmlType={'submit'}
+            onClick={() => {
+                settHenlagtårsak(EHenlagtårsak.BEHANDLES_I_GOSYS);
+                lagreHenleggelse();
+            }}
+            disabled={låsKnapp}
+        >
+            Henlegg
+        </Hovedknapp>
+        <Knapp onClick={() => settVisHenleggModal(false)}>Avbryt</Knapp>
+    </>
 );

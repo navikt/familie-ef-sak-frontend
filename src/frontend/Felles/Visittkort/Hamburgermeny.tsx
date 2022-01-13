@@ -91,17 +91,15 @@ export const Hamburgermeny: FC<{ behandling: Behandling }> = ({ behandling }) =>
                             </Knapp>
                         </li>
                     )}
-                    {behandlingRedigerbar && (
-                        <li>
-                            <Knapp
-                                onClick={() => {
-                                    settVisHenleggModal(true);
-                                }}
-                            >
-                                <div>Henlegg</div>
-                            </Knapp>
-                        </li>
-                    )}
+                    <li>
+                        <Knapp
+                            onClick={() => {
+                                settVisHenleggModal(true);
+                            }}
+                        >
+                            <div>Henlegg</div>
+                        </Knapp>
+                    </li>
                 </ul>
             </HamburgerMenyInnhold>
         </div>
