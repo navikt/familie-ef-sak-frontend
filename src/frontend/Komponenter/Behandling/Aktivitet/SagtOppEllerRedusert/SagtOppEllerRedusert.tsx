@@ -29,9 +29,11 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
                             tittel="Sagt opp arbeidsforhold"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <SagtOppEllerRedusertInfo
-                            sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                        />
+                        {grunnlag.sagtOppEllerRedusertStilling && (
+                            <SagtOppEllerRedusertInfo
+                                sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                            />
+                        )}
                     </>
                 ),
                 høyre: (

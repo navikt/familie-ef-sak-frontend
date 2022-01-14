@@ -19,7 +19,7 @@ const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata }) => {
 
     return (
         <>
-            {skalViseSøknadsdata && (
+            {skalViseSøknadsdata && sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
                 <GridTabell>
                     {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                         <>
@@ -35,10 +35,14 @@ const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata }) => {
                     )}
 
                     <Søknadsgrunnlag />
-                    <Normaltekst>Bosituasjon</Normaltekst>
-                    <Normaltekst>
-                        {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
-                    </Normaltekst>
+                    {bosituasjon && (
+                        <>
+                            <Normaltekst>Bosituasjon</Normaltekst>
+                            <Normaltekst>
+                                {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
+                            </Normaltekst>
+                        </>
+                    )}
 
                     <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
                 </GridTabell>

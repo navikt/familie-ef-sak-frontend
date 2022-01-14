@@ -8,8 +8,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { ToggleName } from '../../../App/context/toggles';
-import { useToggles } from '../../../App/context/TogglesContext';
 
 const VisningsContainer = styled.div`
     margin-top: 1rem;
@@ -35,7 +33,6 @@ export const VisTilbakekreving: React.FC<Props> = ({
     behandlingId,
 }) => {
     const { axiosRequest } = useApp();
-    const { toggles } = useToggles();
 
     const [forhåndsvisningsFeil, settForhåndsvisningsFeil] = useState<string>();
 
@@ -70,7 +67,7 @@ export const VisTilbakekreving: React.FC<Props> = ({
                 <>
                     <UnderOverskrfit>Fritekst i varselet</UnderOverskrfit>
                     <Normaltekst>{varseltekst}</Normaltekst>
-                    {toggles[ToggleName.visTilbakekrevingsVarselToggle] && kanForhåndsvise && (
+                    {kanForhåndsvise && (
                         <IkonKnapp
                             erLesevisning={false}
                             ikon={<Søknad />}
@@ -80,7 +77,7 @@ export const VisTilbakekreving: React.FC<Props> = ({
                             onClick={visBrevINyFane}
                         />
                     )}
-                    {toggles[ToggleName.visTilbakekrevingsVarselToggle] && forhåndsvisningsFeil && (
+                    {forhåndsvisningsFeil && (
                         <AlertStripeFeil>{forhåndsvisningsFeil}</AlertStripeFeil>
                     )}
                 </>

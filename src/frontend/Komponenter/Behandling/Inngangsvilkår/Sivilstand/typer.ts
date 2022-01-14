@@ -1,7 +1,7 @@
 import { SivilstandType } from '../../../../App/typer/personopplysninger';
 
 export interface ISivilstandInngangsvilkår {
-    søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
+    søknadsgrunnlag?: ISivilstandSøknadsgrunnlag;
     registergrunnlag: ISivilstandRegistergrunnlag;
 }
 

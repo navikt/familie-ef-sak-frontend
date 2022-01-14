@@ -21,7 +21,7 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
 
     const finnesOppholdsstatus = registergrunnlag.oppholdstatus.length > 0;
-    const finnesUtenlandsperioder = søknadsgrunnlag.utenlandsopphold.length > 0;
+    const finnesUtenlandsperioder = søknadsgrunnlag && søknadsgrunnlag.utenlandsopphold.length > 0;
     const finnesInnflyttingUtflytting =
         registergrunnlag.innflytting.length > 0 || registergrunnlag.utflytting.length > 0;
 
@@ -32,7 +32,7 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
                 <Normaltekst>Statsborgerskap</Normaltekst>
                 <Normaltekst>{registergrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
 
-                {skalViseSøknadsdata && (
+                {skalViseSøknadsdata && søknadsgrunnlag && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>

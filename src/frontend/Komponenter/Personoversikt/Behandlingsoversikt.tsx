@@ -37,9 +37,10 @@ import {
     TilbakekrevingBehandlingstype,
 } from '../../App/typer/tilbakekreving';
 import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
+import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 
 const StyledTable = styled.table`
-    width: 40%;
+    width: 50%;
     padding: 2rem;
     margin-left: 1rem;
 `;
@@ -183,6 +184,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
     opprettet: 'Behandling opprettetdato',
     type: 'Type',
+    behandlingsårsak: 'Årsak',
     status: 'Status',
     vedtaksdato: 'Vedtaksdato',
     resultat: 'Resultat',
@@ -191,6 +193,7 @@ const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
 interface BehandlingsoversiktTabellBehandling {
     id: string;
     type: Behandlingstype | TilbakekrevingBehandlingstype;
+    årsak?: Behandlingsårsak;
     status: string;
     vedtaksdato?: string;
     resultat?: BehandlingResultat | TilbakekrevingBehandlingsresultatstype;
@@ -208,6 +211,7 @@ const BehandlingsoversiktTabell: React.FC<{
             return {
                 id: behandling.id,
                 type: behandling.type,
+                årsak: behandling.behandlingsårsak,
                 status: behandling.status,
                 resultat: behandling.resultat,
                 opprettet: behandling.opprettet,
@@ -263,6 +267,9 @@ const BehandlingsoversiktTabell: React.FC<{
                         <tr key={behandling.id}>
                             <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
                             <td>{formatterEnumVerdi(behandling.type)}</td>
+                            <td>
+                                {behandling.årsak && behandlingsårsakTilTekst[behandling.årsak]}
+                            </td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
                                 {behandling.vedtaksdato &&
