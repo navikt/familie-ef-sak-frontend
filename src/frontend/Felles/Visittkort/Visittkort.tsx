@@ -20,9 +20,11 @@ import Alertstripe from 'nav-frontend-alertstriper';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Hamburgermeny } from './Hamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
+import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
+
     border-bottom: 1px solid ${navFarger.navGra80};
     z-index: 22;
     top: 47px;
@@ -30,6 +32,75 @@ export const VisittkortWrapper = styled(Sticky)`
         padding: 0 1.5rem;
         border-bottom: none;
     }
+`;
+
+interface StatusMenyInnholdProps {
+    åpen: boolean;
+}
+
+const StatusMeny = () => {
+    const [åpenStatusMeny, settÅpenStatusMeny] = useState<boolean>(false);
+
+    return (
+        <div>
+            <button
+                onClick={() => {
+                    settÅpenStatusMeny(!åpenStatusMeny);
+                }}
+            >
+                Sepp
+            </button>
+            <StatusMenyInnhold åpen={åpenStatusMeny}>
+                <ul>
+                    <li>Test</li>
+
+                    <li>Test 2</li>
+                </ul>
+            </StatusMenyInnhold>
+        </div>
+    );
+};
+
+const StatusMenyInnhold = styled.div`
+    display: ${(props: StatusMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
+
+    position: absolute;
+
+    background-color: white;
+
+    right: 1rem;
+
+    border: 1px solid grey;
+
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        padding: 0.5rem;
+
+        list-style-type: none;
+    }
+
+    li:hover {
+        background-color: #0166c5;
+        color: white;
+        cursor: pointer;
+    }
+`;
+
+const StyledHamburgermeny = styled(Hamburgermeny)`
+    margin-left: auto;
+    display: block;
+    position: sticky;
+
+    z-index: 9999;
 `;
 
 const ElementWrapper = styled.div`
@@ -46,6 +117,24 @@ const Statuser = styled.div`
     align-items: center;
 
     white-space: nowrap;
+
+    @media screen and (max-width: 1500px) {
+        display: none;
+    }
+`;
+
+const StatuserLitenSkjerm = styled.div`
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+
+    color: red;
+
+    white-space: nowrap;
+
+    @media screen and (min-width: 1500px) {
+        display: none;
+    }
 `;
 
 const Status = styled.div`
@@ -147,27 +236,43 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && (
-                <Statuser>
-                    <Status>
-                        <GråTekst>Behandlingsstatus</GråTekst>
-                        <Normaltekst>{behandlingStatusTilTekst[behandling.status]}</Normaltekst>
-                    </Status>
-                    <Status>
-                        <GråTekst>Behandlingsresultat</GråTekst>
-                        <Normaltekst>{behandlingResultatTilTekst[behandling.resultat]}</Normaltekst>
-                    </Status>
-                    <Status>
-                        <GråTekst>Opprettet</GråTekst>
-                        <Normaltekst>{formaterIsoDatoTid(behandling.opprettet)}</Normaltekst>
-                    </Status>
-                    <Status>
-                        <GråTekst>Sist endret</GråTekst>
-                        <Normaltekst>{formaterIsoDatoTid(behandling.sistEndret)}</Normaltekst>
-                    </Status>
-                </Statuser>
+                <>
+                    <Statuser>
+                        <Status>
+                            <GråTekst>Behandlingstype</GråTekst>
+                            <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
+                        </Status>
+                        <Status>
+                            <GråTekst>Behandlingsstatus</GråTekst>
+                            <Normaltekst>{behandlingStatusTilTekst[behandling.status]}</Normaltekst>
+                        </Status>
+                        <Status>
+                            <GråTekst>Behandlingsresultat</GråTekst>
+                            <Normaltekst>
+                                {behandlingResultatTilTekst[behandling.resultat]}
+                            </Normaltekst>
+                        </Status>
+                        <Status>
+                            <GråTekst>Opprettet</GråTekst>
+                            <Normaltekst>{formaterIsoDatoTid(behandling.opprettet)}</Normaltekst>
+                        </Status>
+                        <Status>
+                            <GråTekst>Sist endret</GråTekst>
+                            <Normaltekst>{formaterIsoDatoTid(behandling.sistEndret)}</Normaltekst>
+                        </Status>
+                    </Statuser>
+                    <StatuserLitenSkjerm>
+                        <Status>
+                            <GråTekst>Behandlingstype</GråTekst>
+                            <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
+                        </Status>
+                        <button>Sepp</button>
+                        <StatusMeny />
+                    </StatuserLitenSkjerm>
+                </>
             )}
             {behandling && erBehandlingRedigerbar(behandling) && (
-                <Hamburgermeny behandling={behandling} />
+                <StyledHamburgermeny behandling={behandling} />
             )}
         </VisittkortWrapper>
     );
