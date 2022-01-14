@@ -48,6 +48,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     );
 
     const [visBrevmottakereModal, settVisBrevmottakereModal] = useState(false);
+    const [visHenleggModal, settVisHenleggModal] = useState(false);
 
     return {
         behandling,
@@ -62,6 +63,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         regler,
         visBrevmottakereModal,
         settVisBrevmottakereModal,
+        visHenleggModal,
+        settVisHenleggModal,
     };
 });
 

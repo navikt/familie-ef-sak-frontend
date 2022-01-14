@@ -13,7 +13,7 @@ const packageJson = require('../../package.json');
 export default (
     authClient: Client,
     router: Router,
-    middleware?: WebpackDevMiddleware.WebpackDevMiddleware
+    middleware?: WebpackDevMiddleware.API<Request, Response>
 ): Router => {
     router.get('/version', (_req: Request, res: Response) => {
         res.status(200)
@@ -41,25 +41,19 @@ export default (
 
     // APP
     if (process.env.NODE_ENV === 'development' && middleware) {
-        router.get(
-            '*',
-            ensureAuthenticated(authClient, false),
-            (_req: Request, res: Response, next) => {
-                prometheusTellere.appLoad.inc();
+        router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
+            prometheusTellere.appLoad.inc();
 
+            if (middleware.context.outputFileSystem.readFileSync) {
                 res.writeHead(200, { 'Content-Type': 'text/html' });
-                middleware.context.outputFileSystem.readFile(
-                    path.join(__dirname, `${buildPath}/index.html`),
-                    (error, result) => {
-                        if (error) {
-                            return next(error);
-                        }
-                        res.write(result);
-                    }
+                res.write(
+                    middleware.context.outputFileSystem.readFileSync(
+                        path.join(__dirname, `${buildPath}/index.html`)
+                    )
                 );
                 res.end();
             }
-        );
+        });
     } else {
         router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
