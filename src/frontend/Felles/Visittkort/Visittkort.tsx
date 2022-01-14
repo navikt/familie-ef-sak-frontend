@@ -7,7 +7,6 @@ import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
 import { EtikettFokus } from 'nav-frontend-etiketter';
 import { Behandling, behandlingResultatTilTekst } from '../../App/typer/fagsak';
-import Behandlingsinfo from './Behandlingsinfo';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato } from '../../App/utils/dato';
@@ -42,17 +41,18 @@ const GråTekst = styled(Normaltekst)`
 `;
 
 const Statuser = styled.div`
-    width: 100%;
     margin-left: 1rem;
     display: flex;
-    > div {
-        margin: 0.8rem;
-    }
+    align-items: center;
+
+    white-space: nowrap;
 `;
 
 const Status = styled.div`
     display: flex;
-    flex-direction: row;
+    width: 100%;
+    margin-right: 0.5rem;
+
     flex-gap: 0.5rem;
     > p {
         margin: 0.2rem;
@@ -145,30 +145,27 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Verge</EtikettFokus>
                     </ElementWrapper>
                 )}
-                {behandling && (
-                    <Statuser>
-                        <Status>
-                            <GråTekst>Behandlingsstatus</GråTekst>
-                            <Normaltekst>{behandlingStatusTilTekst[behandling.status]}</Normaltekst>
-                        </Status>
-                        <Status>
-                            <GråTekst>Behandlingsresultat</GråTekst>
-                            <Normaltekst>
-                                {behandlingResultatTilTekst[behandling.resultat]}
-                            </Normaltekst>
-                        </Status>
-                        <Status>
-                            <GråTekst>Opprettet</GråTekst>
-                            <Normaltekst>{formaterIsoDatoTid(behandling.opprettet)}</Normaltekst>
-                        </Status>
-                        <Status>
-                            <GråTekst>Sist endret</GråTekst>
-                            <Normaltekst>{formaterIsoDatoTid(behandling.sistEndret)}</Normaltekst>
-                        </Status>
-                    </Statuser>
-                )}
             </Visittkort>
-            {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
+            {behandling && (
+                <Statuser>
+                    <Status>
+                        <GråTekst>Behandlingsstatus</GråTekst>
+                        <Normaltekst>{behandlingStatusTilTekst[behandling.status]}</Normaltekst>
+                    </Status>
+                    <Status>
+                        <GråTekst>Behandlingsresultat</GråTekst>
+                        <Normaltekst>{behandlingResultatTilTekst[behandling.resultat]}</Normaltekst>
+                    </Status>
+                    <Status>
+                        <GråTekst>Opprettet</GråTekst>
+                        <Normaltekst>{formaterIsoDatoTid(behandling.opprettet)}</Normaltekst>
+                    </Status>
+                    <Status>
+                        <GråTekst>Sist endret</GråTekst>
+                        <Normaltekst>{formaterIsoDatoTid(behandling.sistEndret)}</Normaltekst>
+                    </Status>
+                </Statuser>
+            )}
             {behandling && erBehandlingRedigerbar(behandling) && (
                 <Hamburgermeny behandling={behandling} />
             )}
