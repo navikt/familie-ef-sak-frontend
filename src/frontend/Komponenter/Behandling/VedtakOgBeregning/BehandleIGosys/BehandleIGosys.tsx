@@ -8,7 +8,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import hiddenIf from '../../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { EHenlagtårsak } from '../../Henleggelse/Henlegg';
+import { EHenlagtårsak } from '../../Henleggelse/HenleggModal';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 const StyledAdvarsel = styled(AlertStripeAdvarsel)`
