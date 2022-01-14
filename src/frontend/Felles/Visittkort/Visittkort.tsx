@@ -17,6 +17,8 @@ import { IFagsaksøk } from '../../App/typer/fagsaksøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
+import { Hamburgermeny } from './Hamburgermeny';
+import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -28,6 +30,7 @@ export const VisittkortWrapper = styled(Sticky)`
         border-bottom: none;
     }
 `;
+
 const ElementWrapper = styled.div`
     margin-left: 1rem;
 `;
@@ -120,6 +123,9 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} fagsakId={fagsakId} />}
+            {behandling && erBehandlingRedigerbar(behandling) && (
+                <Hamburgermeny behandling={behandling} />
+            )}
         </VisittkortWrapper>
     );
 };

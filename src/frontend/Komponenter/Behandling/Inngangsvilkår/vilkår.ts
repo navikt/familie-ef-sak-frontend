@@ -15,11 +15,11 @@ export interface IVilkårGrunnlag {
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
-    bosituasjon: IBosituasjon;
-    sivilstandsplaner: ISivilstandsplaner;
+    bosituasjon?: IBosituasjon;
+    sivilstandsplaner?: ISivilstandsplaner;
     barnMedSamvær: IBarnMedSamvær[];
-    sagtOppEllerRedusertStilling: ISagtOppEllerRedusertStilling;
-    aktivitet: IAktivitet;
+    sagtOppEllerRedusertStilling?: ISagtOppEllerRedusertStilling;
+    aktivitet?: IAktivitet;
     registeropplysningerOpprettetTid: string;
 }
 

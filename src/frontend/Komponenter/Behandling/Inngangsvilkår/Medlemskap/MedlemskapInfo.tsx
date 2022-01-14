@@ -24,26 +24,28 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     const { registergrunnlag, søknadsgrunnlag } = medlemskap;
     const { oppholdstatus, medlUnntak, innflytting, utflytting } = registergrunnlag;
     const finnesOppholdsstatus = oppholdstatus.length > 0;
-    const finnesUtenlandsperioder = søknadsgrunnlag.utenlandsopphold.length > 0;
+    const finnesUtenlandsperioder = søknadsgrunnlag && søknadsgrunnlag.utenlandsopphold.length > 0;
     const finnesInnflyttingUtflytting = innflytting.length > 0 || utflytting.length > 0;
     const finnesUnntakIMedl = medlUnntak.gyldigeVedtaksPerioder.length > 0;
 
     return (
         <>
-            {skalViseSøknadsdata && (
-                <GridTabell>
-                    <Søknadsgrunnlag />
-                    <Normaltekst>Har bodd i Norge siste 5 år</Normaltekst>
-                    <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
-                    {finnesUnntakIMedl && (
-                        <>
-                            <Registergrunnlag />
-                            <Normaltekst>Medlemskapstatus i MEDL</Normaltekst>
-                            <Etikett type="fokus">Innslag funnet</Etikett>
-                        </>
-                    )}
-                </GridTabell>
-            )}
+            <GridTabell>
+                {skalViseSøknadsdata && søknadsgrunnlag && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Har bodd i Norge siste 5 år</Normaltekst>
+                        <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
+                    </>
+                )}
+                {finnesUnntakIMedl && (
+                    <>
+                        <Registergrunnlag />
+                        <Normaltekst>Medlemskapstatus i MEDL</Normaltekst>
+                        <Etikett type="fokus">Innslag funnet</Etikett>
+                    </>
+                )}
+            </GridTabell>
 
             <StyledLesmerpanel>
                 <Lesmerpanel
