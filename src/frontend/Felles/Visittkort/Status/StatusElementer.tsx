@@ -99,7 +99,7 @@ export const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
                     settÅpenStatusMeny(!åpenStatusMeny);
                 }}
             >
-                <Expand>test</Expand>
+                <Expand />
             </VisStatuserKnapp>
             <StatusMenyInnhold åpen={åpenStatusMeny}>
                 <ul>
