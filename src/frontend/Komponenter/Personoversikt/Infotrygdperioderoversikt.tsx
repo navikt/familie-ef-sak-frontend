@@ -20,12 +20,21 @@ import {
     sakstypeTilTekst,
     SummertPeriode,
 } from '../../App/typer/infotrygd';
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
 `;
 
 const Rad = styled.tr``;
+
+const StyledAlertStripe = styled(AlertStripeInfo)`
+    margin: 1rem 0;
+    max-width: 51rem;
+    .alertstripe__tekst {
+        max-width: 51rem;
+    }
+`;
 
 const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }) => {
     if (perioder.length === 0) {
@@ -133,6 +142,10 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 
     return (
         <>
+            <StyledAlertStripe>
+                Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP må
+                sjekkes manuelt i Infotrygd)
+            </StyledAlertStripe>
             {skalViseCheckbox && (
                 <Checkbox
                     label={'Vis summerte perioder'}
