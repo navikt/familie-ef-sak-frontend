@@ -28,6 +28,9 @@ const StyledTabell = styled.table`
 const Rad = styled.tr``;
 
 const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }) => {
+    if (perioder.length === 0) {
+        return <>Ingen vedtaksperioder i Infotrygd</>;
+    }
     return (
         <StyledTabell className="tabell">
             <thead>
@@ -57,6 +60,9 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
 };
 
 const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ perioder }) => {
+    if (perioder.length === 0) {
+        return <>Ingen vedtaksperioder i Infotrygd</>;
+    }
     return (
         <StyledTabell className="tabell">
             <thead>
@@ -120,15 +126,22 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
         );
     };
 
+    const skalViseCheckbox =
+        perioder.overgangsstønad.perioder.length > 0 ||
+        perioder.barnetilsyn.perioder.length > 0 ||
+        perioder.skolepenger.perioder.length > 0;
+
     return (
         <>
-            <Checkbox
-                label={'Vis summerte perioder'}
-                onClick={() => {
-                    settVisSummert((prevState) => !prevState);
-                }}
-                checked={visSummert}
-            />
+            {skalViseCheckbox && (
+                <Checkbox
+                    label={'Vis summerte perioder'}
+                    onClick={() => {
+                        settVisSummert((prevState) => !prevState);
+                    }}
+                    checked={visSummert}
+                />
+            )}
             <h1>Overgangsstønad</h1>
             {visPerioder(visSummert, perioder.overgangsstønad)}
 
