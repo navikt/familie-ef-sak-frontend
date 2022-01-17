@@ -6,7 +6,7 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
 import { EtikettFokus } from 'nav-frontend-etiketter';
-import { Behandling, behandlingResultatTilTekst } from '../../App/typer/fagsak';
+import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato } from '../../App/utils/dato';
@@ -15,12 +15,17 @@ import { useApp } from '../../App/context/AppContext';
 import { IFagsaksøk } from '../../App/typer/fagsaksøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
-import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Hamburgermeny } from './Hamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
+import {
+    StatuserLitenSkjerm,
+    StatusMeny,
+    Status,
+    AlleStatuser,
+    GråTekst,
+} from './Status/StatusElementer';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -34,67 +39,6 @@ export const VisittkortWrapper = styled(Sticky)`
     }
 `;
 
-interface StatusMenyInnholdProps {
-    åpen: boolean;
-}
-
-const StatusMeny = () => {
-    const [åpenStatusMeny, settÅpenStatusMeny] = useState<boolean>(false);
-
-    return (
-        <div>
-            <button
-                onClick={() => {
-                    settÅpenStatusMeny(!åpenStatusMeny);
-                }}
-            >
-                Sepp
-            </button>
-            <StatusMenyInnhold åpen={åpenStatusMeny}>
-                <ul>
-                    <li>Test</li>
-
-                    <li>Test 2</li>
-                </ul>
-            </StatusMenyInnhold>
-        </div>
-    );
-};
-
-const StatusMenyInnhold = styled.div`
-    display: ${(props: StatusMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
-
-    position: absolute;
-
-    background-color: white;
-
-    right: 1rem;
-
-    border: 1px solid grey;
-
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-
-    ul,
-    li {
-        margin: 0;
-        padding: 0;
-    }
-
-    li {
-        padding: 0.5rem;
-
-        list-style-type: none;
-    }
-
-    li:hover {
-        background-color: #0166c5;
-        color: white;
-        cursor: pointer;
-    }
-`;
-
 const StyledHamburgermeny = styled(Hamburgermeny)`
     margin-left: auto;
     display: block;
@@ -105,47 +49,6 @@ const StyledHamburgermeny = styled(Hamburgermeny)`
 
 const ElementWrapper = styled.div`
     margin-left: 1rem;
-`;
-
-const GråTekst = styled(Normaltekst)`
-    color: ${navFarger.navGra60};
-`;
-
-const Statuser = styled.div`
-    margin-left: 1rem;
-    display: flex;
-    align-items: center;
-
-    white-space: nowrap;
-
-    @media screen and (max-width: 1500px) {
-        display: none;
-    }
-`;
-
-const StatuserLitenSkjerm = styled.div`
-    margin-left: 1rem;
-    display: flex;
-    align-items: center;
-
-    color: red;
-
-    white-space: nowrap;
-
-    @media screen and (min-width: 1500px) {
-        display: none;
-    }
-`;
-
-const Status = styled.div`
-    display: flex;
-    width: 100%;
-    margin-right: 0.5rem;
-
-    flex-gap: 0.5rem;
-    > p {
-        margin: 0.2rem;
-    }
 `;
 
 const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
@@ -238,37 +141,13 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
             {behandling && (
                 <>
-                    <Statuser>
-                        <Status>
-                            <GråTekst>Behandlingstype</GråTekst>
-                            <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
-                        </Status>
-                        <Status>
-                            <GråTekst>Behandlingsstatus</GråTekst>
-                            <Normaltekst>{behandlingStatusTilTekst[behandling.status]}</Normaltekst>
-                        </Status>
-                        <Status>
-                            <GråTekst>Behandlingsresultat</GråTekst>
-                            <Normaltekst>
-                                {behandlingResultatTilTekst[behandling.resultat]}
-                            </Normaltekst>
-                        </Status>
-                        <Status>
-                            <GråTekst>Opprettet</GråTekst>
-                            <Normaltekst>{formaterIsoDatoTid(behandling.opprettet)}</Normaltekst>
-                        </Status>
-                        <Status>
-                            <GråTekst>Sist endret</GråTekst>
-                            <Normaltekst>{formaterIsoDatoTid(behandling.sistEndret)}</Normaltekst>
-                        </Status>
-                    </Statuser>
+                    <AlleStatuser behandling={behandling} />
                     <StatuserLitenSkjerm>
                         <Status>
                             <GråTekst>Behandlingstype</GråTekst>
                             <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
                         </Status>
-                        <button>Sepp</button>
-                        <StatusMeny />
+                        <StatusMeny behandling={behandling} />
                     </StatuserLitenSkjerm>
                 </>
             )}
