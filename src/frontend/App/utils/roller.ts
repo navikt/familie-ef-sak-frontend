@@ -34,3 +34,9 @@ export const harTilgangTilRolle = (
 
     return rollerForBruker.indexOf(env.roller[minimumsrolle]) > -1;
 };
+
+export const harStrengtFortroligRolle = (env: AppEnv, saksbehandler: ISaksbehandler): boolean => {
+    const saksbehandlerGrupper = saksbehandler.groups;
+    if (!saksbehandlerGrupper) return false;
+    return saksbehandlerGrupper.some((gruppe) => gruppe === env.roller['kode6']);
+};

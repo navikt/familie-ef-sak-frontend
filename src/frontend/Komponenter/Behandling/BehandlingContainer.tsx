@@ -15,6 +15,7 @@ import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
+import { HenleggModal } from './Henleggelse/HenleggModal';
 
 const Container = styled.div`
     display: flex;
@@ -67,6 +68,7 @@ const BehandlingContent: FC<{
                         behandlingId={behandling.id}
                         personopplysninger={personopplysninger}
                     />
+                    <HenleggModal behandling={behandling} fagsakId={behandling.fagsakId} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
                     <Høyremeny />

@@ -6,7 +6,7 @@ import { oppgaveTypeTilTekst } from './typer/oppgavetema';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
 import CustomSelect from './CustomSelect';
-import { enhetTilTekst } from './typer/enhet';
+import { enhetTilTekst, FortroligEnhet } from './typer/enhet';
 import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../App/utils/utils';
 import { IOppgaveRequest } from './typer/oppgaverequest';
@@ -18,6 +18,7 @@ import {
 } from './oppgavefilterStorage';
 import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
+import { harStrengtFortroligRolle } from '../../App/utils/roller';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -53,8 +54,14 @@ interface Feil {
 const initFeilObjekt = {} as Feil;
 
 const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }) => {
-    const { innloggetSaksbehandler } = useApp();
-    const tomOppgaveRequest = {};
+    const { innloggetSaksbehandler, appEnv } = useApp();
+    const harSaksbehandlerStrengtFortroligRolle = harStrengtFortroligRolle(
+        appEnv,
+        innloggetSaksbehandler
+    );
+    const tomOppgaveRequest = harSaksbehandlerStrengtFortroligRolle
+        ? { enhet: FortroligEnhet.VIKAFOSSEN }
+        : {};
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
@@ -77,12 +84,26 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
 
     useEffect(() => {
-        const fraLocalStorage = hentFraLocalStorage(oppgaveRequestKey, undefined);
+        const fraLocalStorage = hentFraLocalStorage(
+            oppgaveRequestKey(innloggetSaksbehandler.navIdent),
+            {}
+        );
         if (fraLocalStorage) {
-            settOppgaveRequest(fraLocalStorage);
+            if (harSaksbehandlerStrengtFortroligRolle) {
+                settOppgaveRequest({
+                    ...fraLocalStorage,
+                    enhet: FortroligEnhet.VIKAFOSSEN,
+                });
+            } else {
+                settOppgaveRequest(fraLocalStorage);
+            }
             hentOppgaver(fraLocalStorage);
+        } else {
+            if (harSaksbehandlerStrengtFortroligRolle) {
+                settOppgaveRequest({ enhet: FortroligEnhet.VIKAFOSSEN });
+            }
         }
-    }, [hentOppgaver]);
+    }, [hentOppgaver, harSaksbehandlerStrengtFortroligRolle, innloggetSaksbehandler.navIdent]);
 
     const saksbehandlerTekst =
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
@@ -97,7 +118,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
         if (Object.values(periodeFeil).some((val?: string) => val)) {
             return;
         }
-        lagreTilLocalStorage(oppgaveRequestKey, oppgaveRequest);
+        lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), oppgaveRequest);
         hentOppgaver(oppgaveRequest);
     };
 
@@ -137,9 +158,10 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
                 <CustomSelect
                     onChange={settOppgave('enhet')}
                     label="Enhet"
-                    options={enhetTilTekst}
+                    options={enhetTilTekst(harSaksbehandlerStrengtFortroligRolle)}
                     value={oppgaveRequest.enhet}
                     sortDesc={true}
+                    skalSkjuleValgetAlle={harSaksbehandlerStrengtFortroligRolle}
                 />
                 <MappeVelger
                     onChange={(val) => settOppgave('mappeId')(parseInt(val))}
@@ -211,7 +233,10 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
                 <Knapp
                     className="flex-item"
                     onClick={() => {
-                        lagreTilLocalStorage(oppgaveRequestKey, tomOppgaveRequest);
+                        lagreTilLocalStorage(
+                            oppgaveRequestKey(innloggetSaksbehandler.navIdent),
+                            tomOppgaveRequest
+                        );
                         settOppgaveRequest(tomOppgaveRequest);
                         hentOppgaver(tomOppgaveRequest);
                     }}

@@ -18,6 +18,7 @@ import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Hamburgermeny } from './Hamburgermeny';
+import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
@@ -122,7 +123,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
             </Visittkort>
             {behandling && <Behandlingsinfo behandling={behandling} />}
-            {behandling && <Hamburgermeny />}
+            {behandling && erBehandlingRedigerbar(behandling) && <Hamburgermeny />}
         </VisittkortWrapper>
     );
 };

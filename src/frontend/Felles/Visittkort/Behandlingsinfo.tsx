@@ -9,7 +9,6 @@ import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import { Henlegg } from '../../Komponenter/Behandling/Henleggelse/Henlegg';
 
 const BehandlingsinfoWrapper = styled.div`
     margin: auto;
@@ -85,7 +84,6 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
                         <Normaltekst>{stegTypeTilStegtekst[behandling.steg]}</Normaltekst>
                     </PopoverTabell>
                     <GråTekst>Id: {behandling.id}</GråTekst>
-                    <Henlegg behandling={behandling} />
                 </PopoverInnehold>
             </Popover>
         </BehandlingsinfoWrapper>

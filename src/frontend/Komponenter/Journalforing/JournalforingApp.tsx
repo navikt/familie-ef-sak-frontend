@@ -83,9 +83,12 @@ export const JournalforingApp: React.FC = () => {
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
-            const lagredeOppgaveFiltreringer = hentFraLocalStorage(oppgaveRequestKey, {});
+            const lagredeOppgaveFiltreringer = hentFraLocalStorage(
+                oppgaveRequestKey(innloggetSaksbehandler.navIdent),
+                {}
+            );
 
-            lagreTilLocalStorage(oppgaveRequestKey, {
+            lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), {
                 ...lagredeOppgaveFiltreringer,
                 ident:
                     journalResponse.status === RessursStatus.SUKSESS

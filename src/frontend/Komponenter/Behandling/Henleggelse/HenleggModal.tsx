@@ -1,15 +1,17 @@
 import React, { FC, useState } from 'react';
-import { Behandling } from '../../../App/typer/fagsak';
-import { erBehandlingRedigerbar } from '../../../App/typer/behandlingstatus';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import Modal from 'nav-frontend-modal';
+import styled from 'styled-components';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { Radio } from 'nav-frontend-skjema';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { useHistory } from 'react-router-dom';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import styled from 'styled-components';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { EToast } from '../../../App/typer/toast';
 
 export enum EHenlagtårsak {
     TRUKKET_TILBAKE = 'TRUKKET_TILBAKE',
@@ -17,13 +19,18 @@ export enum EHenlagtårsak {
     BEHANDLES_I_GOSYS = 'BEHANDLES_I_GOSYS',
 }
 
-const PaddingTop = styled.div`
-    padding-top: 1rem;
-`;
+interface IHenlegg {
+    settHenlagtårsak: (årsak: EHenlagtårsak) => void;
+    lagreHenleggelse: () => void;
+    låsKnapp: boolean;
+    henlagtårsak?: EHenlagtårsak;
+    settVisHenleggModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export const Henlegg: FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const { axiosRequest } = useApp();
-    const behandlingRedigerbar = erBehandlingRedigerbar(behandling);
+export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
+    const { visHenleggModal, settVisHenleggModal } = useBehandling();
+
+    const { axiosRequest, settToast } = useApp();
     const erBlankett = behandling.type === Behandlingstype.BLANKETT;
     const history = useHistory();
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
@@ -50,6 +57,7 @@ export const Henlegg: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 switch (respons.status) {
                     case RessursStatus.SUKSESS:
                         history.push(`/fagsak/${behandling.fagsakId}`);
+                        settToast(EToast.BEHANDLING_HENLAGT);
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
@@ -61,14 +69,24 @@ export const Henlegg: FC<{ behandling: Behandling }> = ({ behandling }) => {
             .finally(() => settLåsKnapp(false));
     };
 
-    if (behandlingRedigerbar) {
-        return (
-            <PaddingTop>
+    const ModalInnhold = styled.div`
+        margin-top: 3rem;
+    `;
+
+    return (
+        <Modal
+            isOpen={visHenleggModal}
+            onRequestClose={() => settVisHenleggModal(false)}
+            closeButton={true}
+            contentLabel={'Velg årsak til henleggelse'}
+        >
+            <ModalInnhold>
                 {erBlankett ? (
                     <BlankettHenlegging
                         lagreHenleggelse={lagreHenleggelse}
                         settHenlagtårsak={settHenlagtårsak}
                         låsKnapp={låsKnapp}
+                        settVisHenleggModal={settVisHenleggModal}
                     />
                 ) : (
                     <Henlegging
@@ -76,45 +94,21 @@ export const Henlegg: FC<{ behandling: Behandling }> = ({ behandling }) => {
                         henlagtårsak={henlagtårsak}
                         settHenlagtårsak={settHenlagtårsak}
                         låsKnapp={låsKnapp}
+                        settVisHenleggModal={settVisHenleggModal}
                     />
                 )}
                 {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
-            </PaddingTop>
-        );
-    } else {
-        return <></>;
-    }
+            </ModalInnhold>
+        </Modal>
+    );
 };
-
-interface IHenlegg {
-    settHenlagtårsak: (årsak: EHenlagtårsak) => void;
-    lagreHenleggelse: () => void;
-    låsKnapp: boolean;
-    henlagtårsak?: EHenlagtårsak;
-}
-
-const BlankettHenlegging: React.FC<IHenlegg> = ({
-    settHenlagtårsak,
-    lagreHenleggelse,
-    låsKnapp,
-}) => (
-    <Hovedknapp
-        htmlType={'submit'}
-        onClick={() => {
-            settHenlagtårsak(EHenlagtårsak.BEHANDLES_I_GOSYS);
-            lagreHenleggelse();
-        }}
-        disabled={låsKnapp}
-    >
-        Henlegg
-    </Hovedknapp>
-);
 
 const Henlegging: React.FC<IHenlegg> = ({
     settHenlagtårsak,
     lagreHenleggelse,
     låsKnapp,
     henlagtårsak,
+    settVisHenleggModal,
 }) => (
     <>
         <h4>Henlegg</h4>
@@ -138,6 +132,28 @@ const Henlegging: React.FC<IHenlegg> = ({
             <Hovedknapp htmlType={'submit'} onClick={lagreHenleggelse} disabled={låsKnapp}>
                 Henlegg
             </Hovedknapp>
+            <Knapp onClick={() => settVisHenleggModal(false)}>Avbryt</Knapp>
         </FamilieRadioGruppe>
+    </>
+);
+
+const BlankettHenlegging: React.FC<IHenlegg> = ({
+    settHenlagtårsak,
+    lagreHenleggelse,
+    låsKnapp,
+    settVisHenleggModal,
+}) => (
+    <>
+        <Hovedknapp
+            htmlType={'submit'}
+            onClick={() => {
+                settHenlagtårsak(EHenlagtårsak.BEHANDLES_I_GOSYS);
+                lagreHenleggelse();
+            }}
+            disabled={låsKnapp}
+        >
+            Henlegg
+        </Hovedknapp>
+        <Knapp onClick={() => settVisHenleggModal(false)}>Avbryt</Knapp>
     </>
 );

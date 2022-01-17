@@ -13,7 +13,7 @@ export const Td = styled.td`
 
 export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
     display: grid;
-    padding-top: 3rem;
+    padding-top: 1rem;
     grid-template-columns: 32px 40px auto 72px;
     grid-template-rows: repeat(${(props) => (props.erDobbelTabell ? 3 : 2)}, max-content);
     grid-template-areas: ${(props) =>
@@ -25,7 +25,9 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
             font-weight: bold;
         }
         grid-area: innhold;
+        th,
         td {
+            padding: 0.25rem;
             padding-left: 0;
         }
         table-layout: fixed;

@@ -1,4 +1,8 @@
-export const oppgaveRequestKey = 'oppgaveFiltreringRequest';
+export const oppgaveRequestKeyPrefix = 'oppgaveFiltreringRequest';
+
+export const oppgaveRequestKey = (innloggetIdent: string): string => {
+    return oppgaveRequestKeyPrefix + innloggetIdent;
+};
 
 export const lagreTilLocalStorage = <T>(key: string, request: T): void => {
     try {

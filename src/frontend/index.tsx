@@ -6,7 +6,6 @@ import { hot } from 'react-hot-loader';
 
 import App from './App';
 import './index.less';
-import { oppgaveRequestKey } from './Komponenter/Oppgavebenk/oppgavefilterStorage';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');
@@ -29,8 +28,8 @@ if (process.env.NODE_ENV !== 'production') {
 (function () {
     try {
         if (window.localStorage.getItem('oppgaveRequestVersjon') !== 'v1') {
+            localStorage.clear();
             localStorage.setItem('oppgaveRequestVersjon', 'v1');
-            localStorage.removeItem(oppgaveRequestKey);
         }
     } catch {
         // Never mind
