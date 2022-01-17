@@ -22,7 +22,6 @@ import {
 } from '../../App/typer/infotrygd';
 
 const StyledTabell = styled.table`
-    max-width: 80%;
     margin-top: 2rem;
 `;
 
@@ -72,7 +71,7 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
                     <th>Kode</th>
                     <th>Sakstype</th>
                     <th>Aktivitet</th>
-                    <th>Kode </th>
+                    <th>Periodetype</th>
                     <th>Saksbehandler</th>
                 </tr>
             </thead>
