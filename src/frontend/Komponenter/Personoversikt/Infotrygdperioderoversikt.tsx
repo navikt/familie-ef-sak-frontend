@@ -10,6 +10,16 @@ import {
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Checkbox } from 'nav-frontend-skjema';
+import {
+    aktivitetstypeTilTekst,
+    InfotrygdPeriode,
+    InfotrygdPerioderResponse,
+    kodeTilTekst,
+    overgangsstønadKodeTilTekst,
+    Perioder,
+    sakstypeTilTekst,
+    SummertPeriode,
+} from '../../App/typer/infotrygd';
 
 const StyledTabell = styled.table`
     max-width: 80%;
@@ -17,90 +27,6 @@ const StyledTabell = styled.table`
 `;
 
 const Rad = styled.tr``;
-
-interface InfotrygdPerioderResponse {
-    overgangsstønad: Perioder;
-    barnetilsyn: Perioder;
-    skolepenger: Perioder;
-}
-
-interface Perioder {
-    perioder: InfotrygdPeriode[];
-    summert: SummertPeriode[];
-}
-
-interface SummertPeriode {
-    stønadFom: string;
-    stønadTom: string;
-    beløp: number;
-    inntektsreduksjon: number;
-    samordningsfradrag: number;
-}
-
-interface InfotrygdPeriode {
-    vedtakId: number;
-    vedtakstidspunkt: string;
-
-    stønadFom: string;
-    stønadTom: string;
-    opphørsdato?: string;
-
-    beløp: number;
-    inntektsgrunnlag: number;
-    samordningsfradrag: number;
-
-    kode: Kode;
-    sakstype: Sakstype;
-    brukerId: string;
-}
-
-enum Kode {
-    ANNULERT = 'ANNULERT',
-    ENDRING_BEREGNINGSGRUNNLAG = 'ENDRING_BEREGNINGSGRUNNLAG',
-    FØRSTEGANGSVEDTAK = 'FØRSTEGANGSVEDTAK',
-    G_REGULERING = 'G_REGULERING',
-    NY = 'NY',
-    OPPHØRT = 'OPPHØRT',
-    SATSENDRING = 'SATSENDRING',
-    UAKTUELL = 'UAKTUELL',
-    OVERTFØRT_NY_LØSNING = 'OVERTFØRT_NY_LØSNING',
-}
-
-const kodeTilTekst: Record<Kode, string> = {
-    ANNULERT: 'Annullert (AN)',
-    ENDRING_BEREGNINGSGRUNNLAG: 'Endring i beregningsgrunnlag (E)',
-    FØRSTEGANGSVEDTAK: 'Førstegangsvedtak (F)',
-    G_REGULERING: 'G-regulering (G)',
-    NY: 'Ny (NY)',
-    OPPHØRT: 'Opphørt (O)',
-    SATSENDRING: 'Satsendring (S)',
-    UAKTUELL: 'Uaktuell (UA)',
-    OVERTFØRT_NY_LØSNING: 'Overf ny løsning (OO)',
-};
-
-enum Sakstype {
-    KLAGE = 'KLAGE',
-    MASKINELL_G_OMREGNING = 'MASKINELL_G_OMREGNING',
-    REVURDERING = 'REVURDERING',
-    GRUNNBELØP_OMREGNING = 'GRUNNBELØP_OMREGNING',
-    KONVERTERING = 'KONVERTERING',
-    MASKINELL_SATSOMREGNING = 'MASKINELL_SATSOMREGNING',
-    ANKE = 'ANKE',
-    SØKNAD = 'SØKNAD',
-    SØKNAD_ØKNING_ENDRING = 'SØKNAD_ØKNING_ENDRING',
-}
-
-const sakstypeTilTekst: Record<Sakstype, string> = {
-    KLAGE: 'Klage (K)',
-    MASKINELL_G_OMREGNING: 'Maskinell G-omregning (MG)',
-    REVURDERING: 'Revurdering (R)',
-    GRUNNBELØP_OMREGNING: 'Grunnbeløp omregning (GO)',
-    KONVERTERING: 'Konvertering (KO)',
-    MASKINELL_SATSOMREGNING: 'Maskinell satsomregning (MS)',
-    ANKE: 'Anke (A)',
-    SØKNAD: 'Søknad (S)',
-    SØKNAD_ØKNING_ENDRING: 'Søknad om økning/endring (SØ)',
-};
 
 const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }) => {
     return (
@@ -145,6 +71,8 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
                     <th>Vedtakstidspunkt</th>
                     <th>Kode</th>
                     <th>Sakstype</th>
+                    <th>Aktivitet</th>
+                    <th>Kode </th>
                     <th>Saksbehandler</th>
                 </tr>
             </thead>
@@ -164,6 +92,14 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
                         <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
                         <td>{kodeTilTekst[periode.kode]}</td>
                         <td>{sakstypeTilTekst[periode.sakstype]}</td>
+                        <td>
+                            {periode.aktivitetstype &&
+                                aktivitetstypeTilTekst[periode.aktivitetstype]}
+                        </td>
+                        <td>
+                            {periode.kodeOvergangsstønad &&
+                                overgangsstønadKodeTilTekst[periode.kodeOvergangsstønad]}
+                        </td>
                         <td>{periode.brukerId}</td>
                     </Rad>
                 ))}
