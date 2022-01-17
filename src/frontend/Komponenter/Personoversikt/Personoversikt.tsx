@@ -29,7 +29,7 @@ const PersonoversiktContent: React.FC<{
                         { label: 'Personopplysninger', aktiv: tabvalg === 0 },
                         { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
                         { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
-                        { label: 'Infotrygdperioder', aktiv: tabvalg === 3 },
+                        { label: 'Vedtaksperioder infotrygd', aktiv: tabvalg === 3 },
                         { label: 'Dokumentoversikt', aktiv: tabvalg === 4 },
                         { label: 'Brev', aktiv: tabvalg === 5 },
                     ]}
