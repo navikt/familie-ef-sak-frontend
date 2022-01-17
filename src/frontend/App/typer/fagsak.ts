@@ -12,6 +12,7 @@ export interface Fagsak {
     stønadstype: Stønadstype;
     behandlinger: Behandling[];
     erLøpende: boolean;
+    erMigrert: boolean;
 }
 
 export interface Behandling {

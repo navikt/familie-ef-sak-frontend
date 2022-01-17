@@ -96,7 +96,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             </td>
             <td>{aktivitetTilTekst[andel.aktivitet]}</td>
             <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-            <td>{andel.andel.samordningsfradrag}</td>
+            <td>{formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
             <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
             <td>{formaterIsoDatoTid(andel.vedtakstidspunkt)}</td>
             <td>{andel.saksbehandler}</td>
