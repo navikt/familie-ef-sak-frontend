@@ -44,7 +44,10 @@ const PersonoversiktContent: React.FC<{
                 {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
                 {tabvalg === 2 && <Vedtaksperioderoversikt fagsakId={fagsakId} />}
                 {tabvalg === 3 && (
-                    <Infotrygdperioderoversikt personIdent={personopplysninger.personIdent} />
+                    <Infotrygdperioderoversikt
+                        fagsakId={fagsakId}
+                        personIdent={personopplysninger.personIdent}
+                    />
                 )}
                 {tabvalg === 4 && <Dokumenter personopplysninger={personopplysninger} />}
                 {tabvalg === 5 && <FrittståendeBrevMedVisning fagsakId={fagsakId} />}
