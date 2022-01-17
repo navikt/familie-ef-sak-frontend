@@ -39,10 +39,7 @@ const StyledMenyKnapp = styled(Menyknapp)`
 
 const popoverId = 'visBehandlingsinfo-popover';
 
-const Behandlingsinfo: FC<{ behandling: Behandling; fagsakId: string }> = ({
-    behandling,
-    fagsakId,
-}) => {
+const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [anker, settAnker] = useState<HTMLButtonElement>();
 
     const togglePopover = (nyAnker: HTMLButtonElement | undefined) => {
