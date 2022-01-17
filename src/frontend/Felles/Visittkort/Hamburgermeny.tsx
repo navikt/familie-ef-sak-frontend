@@ -1,11 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { Hamburger } from '@navikt/ds-icons';
 import styled from 'styled-components';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Behandling } from '../../App/typer/fagsak';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -60,7 +59,7 @@ const Knapp = styled.button`
     text-align: left;
 `;
 
-export const Hamburgermeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
+export const Hamburgermeny = () => {
     const { toggles } = useToggles();
     const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
 
@@ -94,7 +93,7 @@ export const Hamburgermeny: FC<{ behandling: Behandling }> = ({ behandling }) =>
                                 settVisHenleggModal(true);
                             }}
                         >
-                            <div>Henlegg</div>
+                            <Normaltekst>Henlegg</Normaltekst>
                         </Knapp>
                     </li>
                 </ul>

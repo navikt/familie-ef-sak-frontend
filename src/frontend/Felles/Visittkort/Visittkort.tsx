@@ -235,6 +235,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     </ElementWrapper>
                 )}
             </Visittkort>
+
             {behandling && (
                 <>
                     <Statuser>

@@ -27,10 +27,7 @@ interface IHenlegg {
     settVisHenleggModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const HenleggModal: FC<{ behandling: Behandling; fagsakId: string }> = ({
-    behandling,
-    fagsakId,
-}) => {
+export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { visHenleggModal, settVisHenleggModal } = useBehandling();
 
     const { axiosRequest, settToast } = useApp();
@@ -59,7 +56,7 @@ export const HenleggModal: FC<{ behandling: Behandling; fagsakId: string }> = ({
             .then((respons: Ressurs<string>) => {
                 switch (respons.status) {
                     case RessursStatus.SUKSESS:
-                        history.push(`/fagsak/${fagsakId}`);
+                        history.push(`/fagsak/${behandling.fagsakId}`);
                         settToast(EToast.BEHANDLING_HENLAGT);
                         break;
                     case RessursStatus.HENTER:
