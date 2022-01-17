@@ -87,8 +87,9 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 navn={
                     <Lenke
                         role={'link'}
-                        href={'#'}
-                        onClick={() => {
+                        href={`/fagsak/${fagsakId}`}
+                        onClick={(e) => {
+                            e.preventDefault();
                             gåTilUrl(`/fagsak/${fagsakId}`);
                         }}
                     >
