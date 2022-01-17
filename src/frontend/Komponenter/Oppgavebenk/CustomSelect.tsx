@@ -7,6 +7,7 @@ interface Props<U extends string> {
     onChange: (value: string) => void;
     options: Record<U, string>;
     sortDesc?: boolean;
+    skalSkjuleValgetAlle?: boolean;
 }
 
 function CustomSelect<U extends string>(props: Props<U>): ReactElement {
@@ -36,7 +37,7 @@ function CustomSelect<U extends string>(props: Props<U>): ReactElement {
                 props.onChange(event.target.value);
             }}
         >
-            <option value="">Alle</option>
+            {!props.skalSkjuleValgetAlle && <option value="">Alle</option>}
             {sorterteProps.map<ReactElement>(([val, tekst]) => (
                 <option key={val} value={val}>
                     {tekst}
