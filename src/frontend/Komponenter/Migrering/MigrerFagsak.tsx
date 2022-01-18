@@ -103,7 +103,7 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         <div>
                             Kan migreres: {nullableBooleanTilTekst(migreringInfo.kanMigreres)}
                         </div>
-                        <div>Årsak: {migreringInfo.årsak}</div>
+                        {migreringInfo.årsak && <div>Årsak: {migreringInfo.årsak}</div>}
                         <Knapp onClick={migrerFagsak} disabled={!migreringInfo.kanMigreres}>
                             Migrer fagsak
                         </Knapp>
