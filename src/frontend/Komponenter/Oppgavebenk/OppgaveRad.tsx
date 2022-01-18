@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IOppgave } from './typer/oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
 import {
@@ -15,16 +15,17 @@ import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import styled from 'styled-components';
 import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
-import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 
 interface Props {
     oppgave: IOppgave;
     mapper: Record<number, string>;
+    settFeilmelding: (feilmelding: string) => void;
 }
 
 const StyledPopoverinnhold = styled.p`
     margin: 1rem;
 `;
+
 const Flatknapp = hiddenIf(Knapp);
 
 const kanJournalføres = (oppgave: IOppgave) => {
@@ -75,18 +76,21 @@ const utledHandling = (oppgave: IOppgave): Handling => {
     return Handling.INGEN;
 };
 
-const OppgaveRad: React.FC<Props> = ({ oppgave, mapper }) => {
+const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
     const {
-        feilmelding,
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
         startBlankettBehandling,
-        settFeilmelding,
         laster,
         gåTilFagsak,
+        feilmelding,
     } = useOppgave(oppgave);
 
     const [anker, settAnker] = useState<HTMLElement>();
+
+    useEffect(() => {
+        settFeilmelding(feilmelding);
+    }, [feilmelding, settFeilmelding]);
 
     const togglePopover = (element: React.MouseEvent<HTMLElement>) => {
         settAnker(anker ? undefined : element.currentTarget);
@@ -181,16 +185,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper }) => {
                 <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
                 <td>{utledKnappPåHandling()}</td>
             </tr>
-            <UIModalWrapper
-                modal={{
-                    tittel: 'Ugyldig oppgave',
-                    lukkKnapp: true,
-                    visModal: !!feilmelding,
-                    onClose: () => settFeilmelding(''),
-                }}
-            >
-                <Normaltekst>{feilmelding}</Normaltekst>
-            </UIModalWrapper>
         </>
     );
 };
