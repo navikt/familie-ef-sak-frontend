@@ -13,7 +13,7 @@ interface OppgaveDto {
 // eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
     const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
-    const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { fagsak, hentFagsak } = useHentFagsak();
 

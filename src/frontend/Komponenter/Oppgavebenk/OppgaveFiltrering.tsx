@@ -19,6 +19,9 @@ import {
 import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
 import { harStrengtFortroligRolle } from '../../App/utils/roller';
+import Alertstripe from 'nav-frontend-alertstriper';
+import { Normaltekst } from 'nav-frontend-typografi';
+import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -41,9 +44,16 @@ export const KnappWrapper = styled.div`
     }
 `;
 
+const MidtstiltKnapp = styled(Hovedknapp)`
+    margin: 1rem auto;
+    display: flex;
+`;
+
 interface IOppgaveFiltrering {
     hentOppgaver: (data: IOppgaveRequest) => void;
     mapper: IMappe[];
+    feilmelding: string;
+    settFeilmelding: (feilmelding: string) => void;
 }
 
 interface Feil {
@@ -53,7 +63,12 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
-const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper }) => {
+const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
+    hentOppgaver,
+    mapper,
+    feilmelding,
+    settFeilmelding,
+}) => {
     const { innloggetSaksbehandler, appEnv } = useApp();
     const harSaksbehandlerStrengtFortroligRolle = harStrengtFortroligRolle(
         appEnv,
@@ -121,6 +136,9 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
         lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), oppgaveRequest);
         hentOppgaver(oppgaveRequest);
     };
+
+    const oppgaveAlleredeFerdigstilt =
+        feilmelding && feilmelding.includes('Prøv å hente oppgaver på nytt.');
 
     return (
         <>
@@ -244,6 +262,32 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({ hentOppgaver, mapper 
                     Tilbakestill filtrering
                 </Knapp>
             </KnappWrapper>
+            <UIModalWrapper
+                modal={{
+                    tittel: 'Ugyldig oppgave',
+                    lukkKnapp: true,
+                    visModal: !!feilmelding,
+                    onClose: () => settFeilmelding(''),
+                }}
+            >
+                {oppgaveAlleredeFerdigstilt ? (
+                    <>
+                        <Alertstripe type={'advarsel'}>{feilmelding}</Alertstripe>
+                        <MidtstiltKnapp
+                            onClick={() => {
+                                settFeilmelding('');
+                                sjekkFeilOgHentOppgaver();
+                            }}
+                        >
+                            Hent oppgaver
+                        </MidtstiltKnapp>
+                    </>
+                ) : (
+                    <>
+                        <Normaltekst>{feilmelding}</Normaltekst>
+                    </>
+                )}
+            </UIModalWrapper>
         </>
     );
 };
