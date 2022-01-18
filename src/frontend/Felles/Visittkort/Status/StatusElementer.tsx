@@ -81,10 +81,11 @@ export const StatuserLitenSkjerm = styled.div`
 export const Status = styled.div`
     display: flex;
     width: 100%;
-    margin-right: 0.5rem;
+    margin-right: 1.3rem;
 
     flex-gap: 0.5rem;
     > p {
+        font-size: 14px;
         margin: 0.2rem;
     }
 `;
