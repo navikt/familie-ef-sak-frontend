@@ -53,7 +53,7 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
             </thead>
             <tbody>
                 {perioder.map((periode) => (
-                    <Rad>
+                    <Rad key={periode.stønadFom}>
                         <td>
                             {formaterNullableMånedÅr(periode.stønadFom)}
                             {' - '}
@@ -93,7 +93,7 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
             </thead>
             <tbody>
                 {perioder.map((periode) => (
-                    <Rad>
+                    <Rad key={`${periode.stønadId}-${periode.vedtakId}`}>
                         <td>{periode.vedtakId}</td>
                         <td>
                             {formaterNullableMånedÅr(periode.stønadFom)}
@@ -150,7 +150,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
             {skalViseCheckbox && (
                 <Checkbox
                     label={'Vis summerte perioder'}
-                    onClick={() => {
+                    onChange={() => {
                         settVisSummert((prevState) => !prevState);
                     }}
                     checked={visSummert}
@@ -189,8 +189,8 @@ const Infotrygdperioderoversikt: React.FC<{
         <DataViewer response={{ infotrygdPerioder }}>
             {({ infotrygdPerioder }) => (
                 <>
-                    <MigrerFagsak fagsakId={fagsakId} />
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
+                    <MigrerFagsak fagsakId={fagsakId} />
                 </>
             )}
         </DataViewer>

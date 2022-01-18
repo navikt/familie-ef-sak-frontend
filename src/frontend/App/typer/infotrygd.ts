@@ -18,6 +18,7 @@ export interface SummertPeriode {
 }
 
 export interface InfotrygdPeriode {
+    stønadId: number;
     vedtakId: number;
     vedtakstidspunkt: string;
 

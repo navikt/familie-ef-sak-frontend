@@ -10,11 +10,18 @@ import { MigreringInfoResponse } from '../../App/typer/migrering';
 import { AxiosRequestConfig } from 'axios';
 import { Knapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { formaterNullableMånedÅr, formaterTallMedTusenSkille } from '../../App/utils/formatter';
+import {
+    formaterNullableMånedÅr,
+    formaterTallMedTusenSkille,
+    nullableBooleanTilTekst,
+} from '../../App/utils/formatter';
 import Utregningstabell from '../Behandling/VedtakOgBeregning/InnvilgeVedtak/Utregningstabell';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
         byggTomRessurs()
     );
@@ -35,6 +42,10 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
         }),
         [fagsakId]
     );
+
+    if (!toggles[ToggleName.MIGRERING]) {
+        return null;
+    }
 
     const hentMigreringInfo = () => {
         settMigreringFeil(undefined);
@@ -57,7 +68,7 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     };
 
     return (
-        <>
+        <div>
             <Knapp onClick={hentMigreringInfo}>Hent info</Knapp>
             <DataViewer response={{ migreringInfo }}>
                 {({ migreringInfo }) => (
@@ -89,7 +100,9 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                                 beregnetStønad={byggSuksessRessurs(migreringInfo.beløpsperioder)}
                             />
                         )}
-                        <div>Kan migreres: {migreringInfo.kanMigreres}</div>
+                        <div>
+                            Kan migreres: {nullableBooleanTilTekst(migreringInfo.kanMigreres)}
+                        </div>
                         <div>Årsak: {migreringInfo.årsak}</div>
                         <Knapp onClick={migrerFagsak} disabled={!migreringInfo.kanMigreres}>
                             Migrer fagsak
@@ -98,7 +111,7 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     </>
                 )}
             </DataViewer>
-        </>
+        </div>
     );
 };
 
