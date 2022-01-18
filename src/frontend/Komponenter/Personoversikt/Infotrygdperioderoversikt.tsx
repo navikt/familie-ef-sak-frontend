@@ -21,10 +21,7 @@ import {
     SummertPeriode,
 } from '../../App/typer/infotrygd';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { Knapp } from 'nav-frontend-knapper';
-import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
-import { MigreringInfo } from '../../App/typer/migrering';
-import { useApp } from '../../App/context/AppContext';
+import MigrerFagsak from '../Migrering/MigrerFagsak';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
@@ -167,72 +164,6 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 
             <h1>Skolepenger</h1>
             {visPerioder(visSummert, perioder.skolepenger)}
-        </>
-    );
-};
-
-const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
-    const { axiosRequest } = useApp();
-    const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfo>>(byggTomRessurs());
-
-    const hentMigreringConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/migrering/${fagsakId}`,
-        }),
-        [fagsakId]
-    );
-
-    const migrerFagsakConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'POST',
-            url: `/familie-ef-sak/api/migrering/${fagsakId}`,
-        }),
-        [fagsakId]
-    );
-
-    const hentMigreringInfo = () =>
-        axiosRequest<MigreringInfo, null>(hentMigreringConfig).then((res: Ressurs<MigreringInfo>) =>
-            settMigreringInfo(res)
-        );
-
-    const migrerFagsak = () => axiosRequest<null, void>(migrerFagsakConfig);
-
-    return (
-        <>
-            <Knapp onClick={hentMigreringInfo}>Hent info</Knapp>
-            <DataViewer response={{ migreringInfo }}>
-                {({ migreringInfo }) => (
-                    <>
-                        {migreringInfo.stønadFom && (
-                            <div>
-                                Stønad fom: {formaterNullableMånedÅr(migreringInfo.stønadFom)}
-                            </div>
-                        )}
-                        {migreringInfo.stønadTom && (
-                            <div>
-                                Stønad tom: {formaterNullableMånedÅr(migreringInfo.stønadTom)}
-                            </div>
-                        )}
-                        {migreringInfo.beløp && (
-                            <div>
-                                Stønadsbeløp: {formaterTallMedTusenSkille(migreringInfo.beløp)}
-                            </div>
-                        )}
-                        {migreringInfo.inntektsgrunnlag && (
-                            <div>
-                                Inntektsgrunnlag:{' '}
-                                {formaterTallMedTusenSkille(migreringInfo.inntektsgrunnlag)}
-                            </div>
-                        )}
-                        <div>Kan migreres: {migreringInfo.kanMigreres}</div>
-                        <div>Årsak: {migreringInfo.årsak}</div>
-                        <Knapp onClick={migrerFagsak} disabled={!migreringInfo.kanMigreres}>
-                            Migrer fagsak
-                        </Knapp>
-                    </>
-                )}
-            </DataViewer>
         </>
     );
 };
