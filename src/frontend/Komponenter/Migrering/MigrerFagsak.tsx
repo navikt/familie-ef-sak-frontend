@@ -25,7 +25,7 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
         byggTomRessurs()
     );
-    const [migreringFeil, settMigreringFeil] = useState<string>();
+    const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
 
     const hentMigreringConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -48,28 +48,21 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     }
 
     const hentMigreringInfo = () => {
-        settMigreringFeil(undefined);
+        settMigrertStatus(byggTomRessurs());
         axiosRequest<MigreringInfoResponse, null>(hentMigreringConfig).then(
             (res: Ressurs<MigreringInfoResponse>) => settMigreringInfo(res)
         );
     };
 
-    const migrerFagsak = () => {
-        settMigreringFeil(undefined);
-        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
-            if (
-                res.status === RessursStatus.FEILET ||
-                res.status === RessursStatus.FUNKSJONELL_FEIL ||
-                res.status === RessursStatus.IKKE_TILGANG
-            ) {
-                settMigreringFeil(res.frontendFeilmelding || res.melding);
-            }
-        });
-    };
+    const migrerFagsak = () =>
+        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) =>
+            settMigrertStatus(res)
+        );
 
     return (
-        <div>
-            <Knapp onClick={hentMigreringInfo}>Hent info</Knapp>
+        <div style={{ marginTop: '1rem' }}>
+            <h1>Migrering</h1>
+            <Knapp onClick={hentMigreringInfo}>Hent migreringinfo</Knapp>
             <DataViewer response={{ migreringInfo }}>
                 {({ migreringInfo }) => (
                     <>
@@ -91,7 +84,7 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         )}
                         {migreringInfo.samordningsfradrag && (
                             <div>
-                                Inntektsgrunnlag:{' '}
+                                Samordningsfradrag:{' '}
                                 {formaterTallMedTusenSkille(migreringInfo.samordningsfradrag)}
                             </div>
                         )}
@@ -104,10 +97,27 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                             Kan migreres: {nullableBooleanTilTekst(migreringInfo.kanMigreres)}
                         </div>
                         {migreringInfo.årsak && <div>Årsak: {migreringInfo.årsak}</div>}
-                        <Knapp onClick={migrerFagsak} disabled={!migreringInfo.kanMigreres}>
+
+                        {migrertStatus.status === RessursStatus.SUKSESS && (
+                            <div style={{ color: 'green' }}>Fagsaken er migrert</div>
+                        )}
+                        {(migrertStatus.status === RessursStatus.FEILET ||
+                            migrertStatus.status === RessursStatus.FUNKSJONELL_FEIL ||
+                            migrertStatus.status === RessursStatus.IKKE_TILGANG) && (
+                            <div style={{ color: 'red' }}>
+                                ${migrertStatus.frontendFeilmelding || migrertStatus.melding}
+                            </div>
+                        )}
+                        <Knapp
+                            onClick={migrerFagsak}
+                            disabled={
+                                !migreringInfo.kanMigreres ||
+                                migrertStatus.status === RessursStatus.HENTER ||
+                                migrertStatus.status === RessursStatus.SUKSESS
+                            }
+                        >
                             Migrer fagsak
                         </Knapp>
-                        {migreringFeil && <div style={{ color: 'red' }}>${migreringFeil}</div>}
                     </>
                 )}
             </DataViewer>
