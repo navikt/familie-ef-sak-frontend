@@ -20,7 +20,6 @@ import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
 import { harStrengtFortroligRolle } from '../../App/utils/roller';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { Normaltekst } from 'nav-frontend-typografi';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
@@ -136,9 +135,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), oppgaveRequest);
         hentOppgaver(oppgaveRequest);
     };
-
-    const oppgaveAlleredeFerdigstilt =
-        feilmelding && feilmelding.includes('Prøv å hente oppgaver på nytt.');
 
     return (
         <>
@@ -270,23 +266,15 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     onClose: () => settFeilmelding(''),
                 }}
             >
-                {oppgaveAlleredeFerdigstilt ? (
-                    <>
-                        <Alertstripe type={'advarsel'}>{feilmelding}</Alertstripe>
-                        <MidtstiltKnapp
-                            onClick={() => {
-                                settFeilmelding('');
-                                sjekkFeilOgHentOppgaver();
-                            }}
-                        >
-                            Hent oppgaver
-                        </MidtstiltKnapp>
-                    </>
-                ) : (
-                    <>
-                        <Normaltekst>{feilmelding}</Normaltekst>
-                    </>
-                )}
+                <Alertstripe type={'advarsel'}>{feilmelding}</Alertstripe>
+                <MidtstiltKnapp
+                    onClick={() => {
+                        settFeilmelding('');
+                        sjekkFeilOgHentOppgaver();
+                    }}
+                >
+                    Hent oppgaver
+                </MidtstiltKnapp>
             </UIModalWrapper>
         </>
     );
