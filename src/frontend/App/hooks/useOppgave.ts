@@ -51,7 +51,12 @@ export const useOppgave = (oppgave: IOppgave) => {
                 });
             })
             .then((behandlingId) => {
-                settOppgaveTilSaksbehandler().then(() => gåTilUrl(`/behandling/${behandlingId}`));
+                settOppgaveTilSaksbehandler()
+                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
+                    .catch((error: Error) => {
+                        settFeilmelding(error.message);
+                    })
+                    .finally(() => settLaster(false));
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
@@ -74,7 +79,12 @@ export const useOppgave = (oppgave: IOppgave) => {
                 });
             })
             .then((behandlingId) => {
-                settOppgaveTilSaksbehandler().then(() => gåTilUrl(`/behandling/${behandlingId}`));
+                settOppgaveTilSaksbehandler()
+                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
+                    .catch((error: Error) => {
+                        settFeilmelding(error.message);
+                    })
+                    .finally(() => settLaster(false));
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
