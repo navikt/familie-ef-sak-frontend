@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { Steg, StegUtfall } from './Steg';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import { formaterIsoDatoTid } from '../../../App/utils/formatter';
+import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Hendelse, hendelseTilHistorikkTekst } from './Historikk';
+import { SaksbehandlerIkon } from '../../../Felles/Ikoner/SaksbehandlerIkon';
 
 export interface Behandlingshistorikk {
     behandlingId: string;
@@ -21,20 +22,29 @@ export interface Behandlingshistorikk {
     metadata?: any;
 }
 
+const IkonMedStipletLinje = styled.div`
+    margin-right: 1rem;
+`;
+
+const Linje = styled.div`
+    margin-right: 13px;
+    border-right: 1px dashed #a0a0a0;
+    height: 100px;
+`;
+
+const Innhold = styled.div``;
+
 const StyledList = styled.ul`
-    padding: 0 0.5rem 1rem 0.5rem;
+    padding: 0 0.5rem 2rem 0.5rem;
     margin: 0;
 `;
 
 const StyledListElement = styled.li`
+    display: flex;
+
     border-bottom: 1px solid ${navFarger.navGra20};
     list-style: none;
     padding: 0.75rem 2rem;
-
-    > :first-child {
-        margin-bottom: 0.25rem;
-        text-decoration: underline;
-    }
 
     .typo-normal,
     .typo-element {
@@ -60,21 +70,28 @@ const BehandlingHistorikk: React.FC = () => {
                     <StyledList>
                         {behandlingHistorikkResponse.map((behandlingshistorikk, idx) => (
                             <StyledListElement key={idx}>
-                                <Element>{renderTittel(behandlingshistorikk)}</Element>
-                                <Undertekst>
-                                    {formaterIsoDatoTid(behandlingshistorikk.endretTid)}
-                                </Undertekst>
-                                <Undertekst>{behandlingshistorikk.endretAvNavn}</Undertekst>
-                                {behandlingshistorikk.metadata?.begrunnelse && (
+                                <IkonMedStipletLinje>
+                                    <SaksbehandlerIkon />
+                                    <Linje />
+                                </IkonMedStipletLinje>
+                                <Innhold>
+                                    <Element>{renderTittel(behandlingshistorikk)}</Element>
                                     <Undertekst>
-                                        Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
+                                        {formaterIsoDatoTidKort(behandlingshistorikk.endretTid)} |{' '}
+                                        {behandlingshistorikk.endretAvNavn}
                                     </Undertekst>
-                                )}
-                                {behandlingshistorikk.metadata?.årsak && (
-                                    <Undertekst>
-                                        Årsak: {behandlingshistorikk.metadata?.årsak}
-                                    </Undertekst>
-                                )}
+                                    {behandlingshistorikk.metadata?.begrunnelse && (
+                                        <Undertekst>
+                                            Begrunnelse:{' '}
+                                            {behandlingshistorikk.metadata?.begrunnelse}
+                                        </Undertekst>
+                                    )}
+                                    {behandlingshistorikk.metadata?.årsak && (
+                                        <Undertekst>
+                                            Årsak: {behandlingshistorikk.metadata?.årsak}
+                                        </Undertekst>
+                                    )}
+                                </Innhold>
                             </StyledListElement>
                         ))}
                     </StyledList>
