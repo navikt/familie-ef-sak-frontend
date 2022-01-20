@@ -9,4 +9,5 @@ export enum ToggleName {
     visSettBrevmottakereKnapp = 'familie.ef.sak.brevmottakere-verge-og-fullmakt',
     innvilgeMedOpphørToggle = 'familie.ef.sak.innvilge-med-opphoer',
     endringslogg = 'familie.ef.sak.endringslogg',
+    MIGRERING = 'familie.ef.sak.migrering',
 }

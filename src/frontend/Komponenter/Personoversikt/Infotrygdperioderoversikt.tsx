@@ -21,6 +21,7 @@ import {
     SummertPeriode,
 } from '../../App/typer/infotrygd';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import MigrerFagsak from '../Migrering/MigrerFagsak';
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
@@ -52,7 +53,7 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
             </thead>
             <tbody>
                 {perioder.map((periode) => (
-                    <Rad>
+                    <Rad key={periode.stønadFom}>
                         <td>
                             {formaterNullableMånedÅr(periode.stønadFom)}
                             {' - '}
@@ -92,7 +93,7 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
             </thead>
             <tbody>
                 {perioder.map((periode) => (
-                    <Rad>
+                    <Rad key={`${periode.stønadId}-${periode.vedtakId}`}>
                         <td>{periode.vedtakId}</td>
                         <td>
                             {formaterNullableMånedÅr(periode.stønadFom)}
@@ -149,7 +150,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
             {skalViseCheckbox && (
                 <Checkbox
                     label={'Vis summerte perioder'}
-                    onClick={() => {
+                    onChange={() => {
                         settVisSummert((prevState) => !prevState);
                     }}
                     checked={visSummert}
@@ -168,8 +169,9 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 };
 
 const Infotrygdperioderoversikt: React.FC<{
+    fagsakId: string;
     personIdent: string;
-}> = ({ personIdent }) => {
+}> = ({ fagsakId, personIdent }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
@@ -185,9 +187,12 @@ const Infotrygdperioderoversikt: React.FC<{
     );
     return (
         <DataViewer response={{ infotrygdPerioder }}>
-            {({ infotrygdPerioder }) => {
-                return <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />;
-            }}
+            {({ infotrygdPerioder }) => (
+                <>
+                    <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
+                    <MigrerFagsak fagsakId={fagsakId} />
+                </>
+            )}
         </DataViewer>
     );
 };
