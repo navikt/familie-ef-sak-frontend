@@ -27,12 +27,12 @@ const TrHoveddokument = styled.tr`
 `;
 
 const HovedLenke = styled(Lenke)<{ erklikket: boolean }>`
-    color: ${(props) => props.erklikket && 'purple'};
+    color: ${(props) => props.erklikket && '#634689'};
 `;
 
 const LenkeVenstrePadding = styled(Lenke)<{ erklikket: boolean }>`
     padding-left: 2rem;
-    color: ${(props) => props.erklikket && 'purple'};
+    color: ${(props) => props.erklikket && '#634689'};
 `;
 
 const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
