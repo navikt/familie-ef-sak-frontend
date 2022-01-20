@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useApp } from '../../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import {
     EAvslagÅrsak,
@@ -38,7 +38,7 @@ export const AvslåVedtak: React.FC<{
         !avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT
     );
     const [laster, settLaster] = useState<boolean>();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
 
@@ -57,7 +57,7 @@ export const AvslåVedtak: React.FC<{
         return (res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    history.push(nesteUrl);
+                    navigate(nesteUrl);
                     hentBehandling.rerun();
                     nullstillIkkePersisterteKomponenter();
                     break;

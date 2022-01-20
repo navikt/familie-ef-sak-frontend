@@ -14,7 +14,7 @@ import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -53,7 +53,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
         return !!(valgtBehandlingstype && valgtBehandlingsårsak && valgtDato);
     };
     const { axiosRequest } = useApp();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const opprettRevurdering = () => {
         settFeilmeldingModal('');
@@ -71,7 +71,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
-                        history.push(`/behandling/${response.data}`);
+                        navigate(`/behandling/${response.data}`);
                     } else {
                         settFeilmeldingModal(response.frontendFeilmelding || response.melding);
                     }
