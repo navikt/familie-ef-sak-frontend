@@ -13,6 +13,7 @@ export interface SummertPeriode {
     stønadFom: string;
     stønadTom: string;
     beløp: number;
+    inntektsgrunnlag: number;
     inntektsreduksjon: number;
     samordningsfradrag: number;
 }
