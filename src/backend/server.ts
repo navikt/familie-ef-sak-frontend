@@ -7,7 +7,13 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl, sessionConfig } from './config';
+import {
+    brevProxyUrl,
+    buildPath,
+    endringsloggProxyUrl,
+    sakProxyUrl,
+    sessionConfig,
+} from './config';
 import { prometheusTellere } from './metrikker';
 import { addCallId, attachToken, doProxy } from './proxy';
 import setupRouter from './router';
@@ -20,6 +26,9 @@ const port = 8000;
 
 backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }: IApp) => {
     let middleware;
+
+    logInfo(`Starter opp med miljø: ${process.env.NODE_ENV}`);
+    logInfo(`Starter opp med buildpath: ${buildPath}`);
 
     if (process.env.NODE_ENV === 'development') {
         const compiler = webpack(config);
