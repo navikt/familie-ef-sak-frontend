@@ -11,19 +11,18 @@ const BehandlingRoutes: React.FC = () => {
 
     return (
         <Routes>
-            <Route
-                path="/behandling/:behandlingId/"
-                element={<Navigate to="/behandling/:behandlingId/tidligere-vedtaksperioder" />}
-            />
             {filtrerSiderEtterBehandlingstype(sider, behandlingSuksess.data).map((side) => (
-                <Route key={side.navn} path={`/behandling/:behandlingId/${side.href}`}>
-                    {React.createElement(
+                <Route
+                    key={side.navn}
+                    path={`${side.href}`}
+                    element={React.createElement(
                         side.komponent,
                         { behandlingId: behandlingSuksess.data.id },
                         null
                     )}
-                </Route>
+                />
             ))}
+            <Route path="*" element={<Navigate to="tidligere-vedtaksperioder" />} />
         </Routes>
     );
 };
