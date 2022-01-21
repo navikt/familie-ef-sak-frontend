@@ -46,6 +46,7 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
                 <tr>
                     <th>Periode (fom-tom)</th>
                     <th>Inntektsgrunnlag</th>
+                    <th>Inntektsreduksjon</th>
                     <th>Samordningsfradrag</th>
                     <th>Stønadsbeløp</th>
                 </tr>
@@ -58,6 +59,7 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
                             {' - '}
                             {formaterNullableMånedÅr(periode.stønadTom)}
                         </td>
+                        <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.inntektsreduksjon)}</td>
                         <td>{formaterTallMedTusenSkille(periode.samordningsfradrag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.beløp)}</td>
