@@ -13,6 +13,12 @@ export enum Stønadstype {
     BARNETILSYN = 'BARNETILSYN',
 }
 
+export const stønadstypeTilTekst: Record<Stønadstype, string> = {
+    OVERGANGSSTØNAD: 'Overgangsstønad',
+    SKOLEPENGER: 'Skolepenger',
+    BARNETILSYN: 'Barnetilsyn',
+};
+
 export const behandlingstemaTilStønadstype = (
     behandlingstema: Behandlingstema | undefined
 ): Stønadstype | undefined => {

@@ -22,10 +22,9 @@ import {
 } from '../../App/typer/infotrygd';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import MigrerFagsak from '../Migrering/MigrerFagsak';
+import InfotrygdSaker from '../Migrering/InfotrygdSaker';
 
-const StyledTabell = styled.table`
-    margin-top: 2rem;
-`;
+const StyledTabell = styled.table``;
 
 const Rad = styled.tr``;
 
@@ -156,13 +155,13 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
                     checked={visSummert}
                 />
             )}
-            <h1>Overgangsstønad</h1>
+            <h2>Overgangsstønad</h2>
             {visPerioder(visSummert, perioder.overgangsstønad)}
 
-            <h1>Barnetilsyn</h1>
+            <h2>Barnetilsyn</h2>
             {visPerioder(visSummert, perioder.barnetilsyn)}
 
-            <h1>Skolepenger</h1>
+            <h2>Skolepenger</h2>
             {visPerioder(visSummert, perioder.skolepenger)}
         </>
     );
@@ -190,6 +189,7 @@ const Infotrygdperioderoversikt: React.FC<{
             {({ infotrygdPerioder }) => (
                 <>
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
+                    <InfotrygdSaker personIdent={personIdent} />
                     <MigrerFagsak fagsakId={fagsakId} />
                 </>
             )}
