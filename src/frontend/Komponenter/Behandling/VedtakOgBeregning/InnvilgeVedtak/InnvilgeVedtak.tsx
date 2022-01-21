@@ -15,7 +15,7 @@ import {
 } from '../../../../App/typer/vedtak';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../../App/context/AppContext';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
@@ -63,7 +63,7 @@ export const InnvilgeVedtak: React.FC<{
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [laster, settLaster] = useState<boolean>(false);
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
@@ -151,7 +151,7 @@ export const InnvilgeVedtak: React.FC<{
         return (res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    history.push(nesteUrl);
+                    navigate(nesteUrl);
                     hentBehandling.rerun();
                     nullstillIkkePersisterteKomponenter();
                     break;

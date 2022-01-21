@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { useHistory, useParams } from 'react-router-dom';
-import { IBehandlingParams } from '../../../App/typer/routing';
+import { useNavigate } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -35,11 +34,14 @@ const enum ÅpenTilbakekrevingStatus {
     HAR_IKKE_ÅPEN = 'HAR_IKKE_ÅPEN',
 }
 
-export const Tilbakekreving: React.FC = () => {
+export interface TilbakekrevingProps {
+    behandlingId: string;
+}
+
+export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) => {
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
     const { behandlingErRedigerbar, behandling } = useBehandling();
-    const { behandlingId } = useParams<IBehandlingParams>();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [tilbakekrevingsvalg, settTilbakekrevingsvalg] = useState<ITilbakekrevingsvalg>();
     const [varseltekst, settVarseltekst] = useState<string>('');
     const [begrunnelse, settBegrunnelse] = useState<string>('');
@@ -122,7 +124,7 @@ export const Tilbakekreving: React.FC = () => {
             .then((response: Ressurs<string>) => {
                 switch (response.status) {
                     case RessursStatus.SUKSESS:
-                        history.push(`/behandling/${behandlingId}/brev`);
+                        navigate(`/behandling/${behandlingId}/brev`);
                         nullstillIkkePersisterteKomponenter();
                         break;
                     case RessursStatus.HENTER:

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import { Knapp } from 'nav-frontend-knapper';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 
@@ -16,7 +16,7 @@ const UlagretDataModal: FC = () => {
         valgtSide,
         settVisUlagretDataModal,
     } = useApp();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     return (
         <UIModalWrapper
@@ -34,7 +34,7 @@ const UlagretDataModal: FC = () => {
                 onClick={() => {
                     if (valgtSide) {
                         nullstillIkkePersisterteKomponenter();
-                        history.push(valgtSide);
+                        navigate(valgtSide);
                     }
                     settVisUlagretDataModal(false);
                 }}

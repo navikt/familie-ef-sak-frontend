@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
@@ -57,7 +57,7 @@ const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
-    const history = useHistory();
+    const navigate = useNavigate();
     const query: URLSearchParams = useQueryParams();
     const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
@@ -95,7 +95,7 @@ export const JournalforingApp: React.FC = () => {
                         ? journalResponse.data.personIdent
                         : undefined,
             });
-            history.push('/oppgavebenk');
+            navigate('/oppgavebenk');
         }
         // eslint-disable-next-line
     }, [journalpostState.innsending]);
@@ -123,7 +123,7 @@ export const JournalforingApp: React.FC = () => {
     }, []);
 
     if (!oppgaveIdParam || !journalpostIdParam) {
-        return <Redirect to="/oppgavebenk" />;
+        return <Navigate to="/oppgavebenk" />;
     }
 
     return (

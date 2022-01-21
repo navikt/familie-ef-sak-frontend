@@ -1,3 +1,3 @@
-export interface IBehandlingParams {
+export type IBehandlingParams = {
     behandlingId: string;
-}
+};

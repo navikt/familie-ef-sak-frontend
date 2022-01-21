@@ -39,6 +39,12 @@ const config = mergeWithCustomize({
                     { loader: require.resolve('less-loader') },
                 ],
             },
+            // would only land a "hot-patch" to react-dom
+            {
+                test: /\.(js|ts)$/,
+                include: /node_modules\/react-dom/,
+                use: ['react-hot-loader/webpack'],
+            },
         ],
     },
     devtool: 'inline-source-map',

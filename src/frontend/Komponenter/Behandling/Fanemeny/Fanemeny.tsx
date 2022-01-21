@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { IBehandlingParams } from '../../../App/typer/routing';
 import { filtrerSiderEtterBehandlingstype, ISide, SideNavn, sider } from './sider';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -24,9 +22,11 @@ const StyledFanemeny = styled.div`
     border-bottom: ${navFarger.navGra40} solid 2px;
     background-color: ${navFarger.white};
 `;
+interface Props {
+    behandlingId: string;
+}
 
-const Fanemeny: FC = () => {
-    const { behandlingId } = useParams<IBehandlingParams>();
+const Fanemeny: FC<Props> = ({ behandlingId }) => {
     const { behandling } = useBehandling();
     const låsendeSteg = [Steg.VILKÅR, Steg.BEREGNE_YTELSE];
     const fanerSomKanLåses = [SideNavn.SIMULERING, SideNavn.BREV];
