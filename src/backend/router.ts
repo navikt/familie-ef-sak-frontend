@@ -4,17 +4,12 @@ import path from 'path';
 import { buildPath, roller, urlAInntekt } from './config';
 import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
-// import WebpackDevMiddleware from 'webpack-dev-middleware';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
 // eslint-disable-next-line
 const packageJson = require('../../package.json');
 
-export default (
-    authClient: Client,
-    router: Router
-    // middleware?: WebpackDevMiddleware.API<Request, Response>
-): Router => {
+export default (authClient: Client, router: Router): Router => {
     router.get('/version', (_req: Request, res: Response) => {
         res.status(200)
             .send({ version: process.env.APP_VERSION, reduxVersion: packageJson.redux_version })
