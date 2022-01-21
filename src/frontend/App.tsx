@@ -91,7 +91,7 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                     path="/ekstern/fagsak/:eksternFagsakId/:behandlingIdEllerSaksoversikt"
                     element={<EksternRedirectContainer />}
                 />
-                <Route path="/behandling/:behandlingId" element={<BehandlingContainer />} />
+                <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
                 <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
                 <Route path="/journalfor" element={<JournalforingApp />} />
                 <Route path="/fagsak/:fagsakId" element={<Personoversikt />} />
