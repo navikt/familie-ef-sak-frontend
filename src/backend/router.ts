@@ -4,7 +4,7 @@ import path from 'path';
 import { buildPath, roller, urlAInntekt } from './config';
 import { prometheusTellere } from './metrikker';
 import { slackNotify } from './slack/slack';
-import WebpackDevMiddleware from 'webpack-dev-middleware';
+// import WebpackDevMiddleware from 'webpack-dev-middleware';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
 // eslint-disable-next-line
@@ -12,8 +12,8 @@ const packageJson = require('../../package.json');
 
 export default (
     authClient: Client,
-    router: Router,
-    middleware?: WebpackDevMiddleware.API<Request, Response>
+    router: Router
+    // middleware?: WebpackDevMiddleware.API<Request, Response>
 ): Router => {
     router.get('/version', (_req: Request, res: Response) => {
         res.status(200)
@@ -39,28 +39,11 @@ export default (
         res.status(200).send();
     });
 
-    // APP
-    if (process.env.NODE_ENV === 'development' && middleware) {
-        router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
-            prometheusTellere.appLoad.inc();
+    router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
+        prometheusTellere.appLoad.inc();
 
-            if (middleware.context.outputFileSystem.readFileSync) {
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.write(
-                    middleware.context.outputFileSystem.readFileSync(
-                        path.join(__dirname, `${buildPath}/index.html`)
-                    )
-                );
-                res.end();
-            }
-        });
-    } else {
-        router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
-            prometheusTellere.appLoad.inc();
-
-            res.sendFile('index.html', { root: path.join(__dirname, buildPath) });
-        });
-    }
+        res.sendFile('index.html', { root: path.join(__dirname, buildPath) });
+    });
 
     return router;
 };

@@ -26,7 +26,7 @@ const StyledNyBehandlingRad = styled.tr`
     background-color: #cce1f3;
 `;
 
-const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => {
+const BehandlingInnold: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
     const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
 
@@ -134,4 +134,4 @@ const Behandling: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => 
     );
 };
 
-export default Behandling;
+export default BehandlingInnold;

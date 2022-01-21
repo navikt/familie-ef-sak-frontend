@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -48,8 +49,6 @@ const config = mergeWithCustomize({
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
-        new webpack.optimize.OccurrenceOrderPlugin(false),
-        new webpack.NoEmitOnErrorsPlugin(),
         new MiniCssExtractPlugin({
             filename: 'familie-ef-sak-frontend.css',
         }),
@@ -69,7 +68,7 @@ const config = mergeWithCustomize({
         }),
     ],
     optimization: {
-        minimizer: [new TerserPlugin()],
+        minimizer: [new TerserPlugin(), new CssMinimizerWebpackPlugin()],
     },
 });
 

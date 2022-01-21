@@ -3,7 +3,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
-import Behandling from './Behandling';
 import Brukerinfo from './Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
@@ -30,6 +29,7 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../Oppgavebenk/oppgavefilterStorage';
+import BehandlingInnold from './Behandling';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -151,7 +151,7 @@ export const JournalforingApp: React.FC = () => {
                                     'Du må velge en behandling for å journalføre'
                                 }
                             >
-                                <Behandling
+                                <BehandlingInnold
                                     settBehandling={journalpostState.settBehandling}
                                     behandling={journalpostState.behandling}
                                     fagsak={fagsak}
