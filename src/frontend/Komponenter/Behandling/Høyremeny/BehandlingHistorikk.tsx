@@ -7,8 +7,7 @@ import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { Hendelse, hendelseTilHistorikkTekst } from './Historikk';
-import { SaksbehandlerIkon } from '../../../Felles/Ikoner/SaksbehandlerIkon';
+import { Hendelse, hendelseTilHistorikkTekst, HendelseIkon } from './Historikk';
 
 export interface Behandlingshistorikk {
     behandlingId: string;
@@ -85,14 +84,14 @@ const BehandlingHistorikk: React.FC = () => {
                             return (
                                 <StyledListElement første={første} key={idx}>
                                     <IkonMedStipletLinje>
-                                        <SaksbehandlerIkon />
+                                        <HendelseIkon behandlingshistorikk={behandlingshistorikk} />
                                         <Linje siste={siste} />
                                     </IkonMedStipletLinje>
                                     <Innhold>
                                         <Element>{renderTittel(behandlingshistorikk)}</Element>
                                         <Undertekst>
                                             {formaterIsoDatoTidKort(behandlingshistorikk.endretTid)}{' '}
-                                            | {behandlingshistorikk.endretAvNavn}
+                                            {behandlingshistorikk.endretAvNavn}
                                         </Undertekst>
                                         {behandlingshistorikk.metadata?.begrunnelse && (
                                             <Undertekst>
