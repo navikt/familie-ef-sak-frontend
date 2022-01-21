@@ -6,7 +6,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -17,7 +16,7 @@ const config = mergeWithCustomize({
         'familie-ef-sak': ['babel-polyfill'],
     },
     output: {
-        path: path.join(__dirname, '../../frontend_production'),
+        path: path.join(process.cwd(), 'frontend_production'),
         filename: '[name].[contenthash].js',
         publicPath: '/assets/',
     },
@@ -32,7 +31,7 @@ const config = mergeWithCustomize({
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                compileType: 'icss',
+                                mode: 'icss',
                             },
                             importLoaders: 2,
                         },
@@ -49,14 +48,12 @@ const config = mergeWithCustomize({
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
-        new MiniCssExtractPlugin({
-            filename: 'familie-ef-sak-frontend.css',
-        }),
+        new MiniCssExtractPlugin(),
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.join(__dirname, '../../assets'),
-                    to: path.join(__dirname, '../../frontend_production'),
+                    from: path.join(process.cwd(), 'assets'),
+                    to: path.join(process.cwd(), 'frontend_production'),
                 },
             ],
         }),
@@ -68,7 +65,7 @@ const config = mergeWithCustomize({
         }),
     ],
     optimization: {
-        minimizer: [new TerserPlugin(), new CssMinimizerWebpackPlugin()],
+        minimizer: [new TerserPlugin()],
     },
 });
 

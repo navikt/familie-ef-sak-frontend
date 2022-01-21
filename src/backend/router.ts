@@ -42,7 +42,7 @@ export default (
     router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
         prometheusTellere.appLoad.inc();
 
-        res.sendFile('index.html', { root: path.join(__dirname, buildPath) });
+        res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
     });
 
     return router;
