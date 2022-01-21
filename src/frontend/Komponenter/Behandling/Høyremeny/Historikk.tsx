@@ -2,6 +2,7 @@ import React from 'react';
 import { BeslutterIkon } from '../../../Felles/Ikoner/BeslutterIkon';
 import { SaksbehandlerIkon } from '../../../Felles/Ikoner/SaksbehandlerIkon';
 import { Behandlingshistorikk } from './BehandlingHistorikk';
+import { SystemIkon } from '../../../Felles/Ikoner/SystemIkon';
 
 export enum Hendelse {
     OPPRETTET = 'OPPRETTET',
@@ -30,10 +31,13 @@ export const HendelseIkon: React.FC<{ behandlingshistorikk: Behandlingshistorikk
     switch (hendelse) {
         case Hendelse.OPPRETTET:
         case Hendelse.SENDT_TIL_BESLUTTER:
+        case Hendelse.HENLAGT:
             return <SaksbehandlerIkon />;
         case Hendelse.VEDTAK_GODKJENT:
         case Hendelse.VEDTAK_UNDERKJENT:
             return <BeslutterIkon />;
+        case Hendelse.VEDTAK_IVERKSATT:
+            return <SystemIkon />;
         default:
             return <SaksbehandlerIkon />;
     }
