@@ -1,7 +1,7 @@
 import React from 'react';
 import { BeslutterIkon } from '../../../Felles/Ikoner/BeslutterIkon';
 import { SaksbehandlerIkon } from '../../../Felles/Ikoner/SaksbehandlerIkon';
-import { Behandlingshistorikk } from './BehandlingHistorikk';
+import { Behandlingshistorikk } from './typer';
 import { SystemIkon } from '../../../Felles/Ikoner/SystemIkon';
 
 export enum Hendelse {
