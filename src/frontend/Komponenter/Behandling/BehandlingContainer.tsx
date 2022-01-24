@@ -44,7 +44,7 @@ const BehandlingContainer: FC = () => {
         <ModalProvider>
             <BehandlingProvider>
                 <ModalController />
-                <Behandling />
+                <BehandlingOverbygg />
             </BehandlingProvider>
         </ModalProvider>
     );
@@ -78,7 +78,7 @@ const BehandlingContent: FC<{
     );
 };
 
-const Behandling: FC = () => {
+const BehandlingOverbygg: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
 
     useEffect(() => {
