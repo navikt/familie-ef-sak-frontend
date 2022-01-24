@@ -16,7 +16,7 @@ const config = mergeWithCustomize({
         'familie-ef-sak': ['babel-polyfill'],
     },
     output: {
-        path: path.join(__dirname, '../../frontend_production'),
+        path: path.join(process.cwd(), 'frontend_production'),
         filename: '[name].[contenthash].js',
         publicPath: '/assets/',
     },
@@ -31,7 +31,7 @@ const config = mergeWithCustomize({
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                compileType: 'icss',
+                                mode: 'icss',
                             },
                             importLoaders: 2,
                         },
@@ -48,16 +48,12 @@ const config = mergeWithCustomize({
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
-        new webpack.optimize.OccurrenceOrderPlugin(false),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new MiniCssExtractPlugin({
-            filename: 'familie-ef-sak-frontend.css',
-        }),
+        new MiniCssExtractPlugin(),
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.join(__dirname, '../../assets'),
-                    to: path.join(__dirname, '../../frontend_production'),
+                    from: path.join(process.cwd(), 'assets'),
+                    to: path.join(process.cwd(), 'frontend_production'),
                 },
             ],
         }),

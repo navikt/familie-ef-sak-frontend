@@ -13,7 +13,7 @@ interface OppgaveDto {
 // eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
     const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
-    const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { fagsak, hentFagsak } = useHentFagsak();
 
@@ -51,7 +51,12 @@ export const useOppgave = (oppgave: IOppgave) => {
                 });
             })
             .then((behandlingId) => {
-                settOppgaveTilSaksbehandler().then(() => gåTilUrl(`/behandling/${behandlingId}`));
+                settOppgaveTilSaksbehandler()
+                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
+                    .catch((error: Error) => {
+                        settFeilmelding(error.message);
+                    })
+                    .finally(() => settLaster(false));
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
@@ -74,7 +79,12 @@ export const useOppgave = (oppgave: IOppgave) => {
                 });
             })
             .then((behandlingId) => {
-                settOppgaveTilSaksbehandler().then(() => gåTilUrl(`/behandling/${behandlingId}`));
+                settOppgaveTilSaksbehandler()
+                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
+                    .catch((error: Error) => {
+                        settFeilmelding(error.message);
+                    })
+                    .finally(() => settLaster(false));
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);

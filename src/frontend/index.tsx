@@ -1,9 +1,7 @@
 import { init } from '@sentry/browser';
-import * as React from 'react';
-import axe from 'react-axe';
-import * as ReactDOM from 'react-dom';
-import { hot } from 'react-hot-loader';
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import axe from '@axe-core/react';
 import App from './App';
 import './index.less';
 
@@ -41,4 +39,4 @@ const renderApp = (Component: React.ComponentType): void => {
     ReactDOM.render(<Component />, rootElement);
 };
 
-renderApp(hot(module)(App));
+renderApp(App);

@@ -5,7 +5,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../../App/context/AppContext';
 import { EBehandlingResultat, IOpphørtVedtak, IVedtak } from '../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
@@ -32,7 +32,7 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const lagreVedtak = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,7 +59,7 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
     const håndterOpphørtVedtak = (res: Ressurs<string>) => {
         switch (res.status) {
             case RessursStatus.SUKSESS:
-                history.push(`/behandling/${behandlingId}/simulering`);
+                navigate(`/behandling/${behandlingId}/simulering`);
                 hentBehandling.rerun();
                 nullstillIkkePersisterteKomponenter();
                 break;

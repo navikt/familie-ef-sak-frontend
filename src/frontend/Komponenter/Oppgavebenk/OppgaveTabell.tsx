@@ -24,9 +24,10 @@ export interface IOppgaverResponse {
 interface Props {
     oppgaveRessurs: OppgaveRessurs;
     mapper: IMappe[];
+    settFeilmelding: (feilmelding: string) => void;
 }
 
-const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper }) => {
+const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmelding }) => {
     const { status } = oppgaveRessurs;
     const oppgaveListe =
         status === RessursStatus.SUKSESS
@@ -98,7 +99,12 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper }) => {
                 </thead>
                 <tbody>
                     {slicedListe.map((v) => (
-                        <OppgaveRad key={v.id} oppgave={v} mapper={formaterteMapper} />
+                        <OppgaveRad
+                            key={v.id}
+                            oppgave={v}
+                            mapper={formaterteMapper}
+                            settFeilmelding={settFeilmelding}
+                        />
                     ))}
                 </tbody>
             </table>

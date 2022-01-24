@@ -23,7 +23,7 @@ const StyledNavLink = styled(NavLink)`
         }
     }
 
-    &.aktiv {
+    &.active {
         background-color: ${navFarger.navLysGra};
         border-bottom: 5px solid ${navFarger.navBla};
 
@@ -64,7 +64,6 @@ const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
                 <StyledNavLink
                     key={side.navn}
                     to={`/behandling/${behandlingId}/${side.href}`}
-                    activeClassName="aktiv"
                     onClick={(e) => {
                         e.preventDefault();
                         gåTilUrl(`/behandling/${behandlingId}/${side.href}`);
