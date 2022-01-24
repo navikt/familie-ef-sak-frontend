@@ -22,8 +22,6 @@ const BehandlingHistorikk: React.FC = () => {
                             const første = idx === 0;
                             const siste = idx === behandlingHistorikkResponse.length - 1;
 
-                            console.log('HISTORIKK', behandlingshistorikk);
-
                             return (
                                 <HistorikkElement
                                     første={første}
