@@ -165,7 +165,7 @@
     "husky": "^7.0.2",
     "less": "^4.1.1",
     "less-loader": "^10.2.0",
-    "lint-staged": "^12.1.5",
+    "lint-staged": "^12.3.1",
     "mini-css-extract-plugin": "^1.6.2",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.5.0",
