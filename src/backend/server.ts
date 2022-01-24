@@ -7,7 +7,13 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl, sessionConfig } from './config';
+import {
+    brevProxyUrl,
+    buildPath,
+    endringsloggProxyUrl,
+    sakProxyUrl,
+    sessionConfig,
+} from './config';
 import { prometheusTellere } from './metrikker';
 import { addCallId, attachToken, doProxy } from './proxy';
 import setupRouter from './router';
@@ -21,21 +27,22 @@ const port = 8000;
 backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }: IApp) => {
     let middleware;
 
+    logInfo(`Starter opp med miljø: ${process.env.NODE_ENV}`);
+    logInfo(`Starter opp med buildpath: ${buildPath}`);
+
     if (process.env.NODE_ENV === 'development') {
         const compiler = webpack(config);
         // @ts-ignore
         middleware = webpackDevMiddleware(compiler, {
             publicPath: config.output.publicPath,
+            writeToDisk: true,
         });
 
         app.use(middleware);
         // @ts-ignore
         app.use(webpackHotMiddleware(compiler));
     } else {
-        app.use(
-            '/assets',
-            expressStaticGzip(path.join(__dirname, '../../frontend_production'), {})
-        );
+        app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'frontend_production'), {}));
     }
 
     app.use(
@@ -73,7 +80,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
     app.use(bodyParser.json({ limit: '200mb' }));
     app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
-    app.use('/', setupRouter(azureAuthClient, router, middleware));
+    app.use('/', setupRouter(azureAuthClient, router));
 
     app.listen(port, '0.0.0.0', () => {
         logInfo(`server startet på port ${port}. Build version: ${process.env.APP_VERSION}.`);

@@ -15,6 +15,7 @@ export const OppgavebenkApp: React.FC = () => {
     const { axiosRequest } = useApp();
     const [oppgaveRessurs, settOppgaveRessurs] = useState<OppgaveRessurs>(byggTomRessurs());
     const [mapper, settMapper] = useState<IMappe[]>(tomMappeListe);
+    const [feilmelding, settFeilmelding] = useState<string>('');
 
     const hentOppgaver = useCallback(
         (data: IOppgaveRequest) => {
@@ -43,8 +44,17 @@ export const OppgavebenkApp: React.FC = () => {
     return (
         <Side className={'container'}>
             {!erProd() && <OpprettDummyBehandling />}
-            <OppgaveFiltrering hentOppgaver={hentOppgaver} mapper={mapper} />
-            <OppgaveTabell oppgaveRessurs={oppgaveRessurs} mapper={mapper} />
+            <OppgaveFiltrering
+                hentOppgaver={hentOppgaver}
+                mapper={mapper}
+                feilmelding={feilmelding}
+                settFeilmelding={settFeilmelding}
+            />
+            <OppgaveTabell
+                oppgaveRessurs={oppgaveRessurs}
+                mapper={mapper}
+                settFeilmelding={settFeilmelding}
+            />
         </Side>
     );
 };

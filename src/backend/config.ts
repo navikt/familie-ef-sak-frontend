@@ -38,7 +38,7 @@ const rollerProd: Roller = {
 const Environment = (): IEnvironment => {
     if (process.env.ENV === 'local') {
         return {
-            buildPath: '../../frontend_development',
+            buildPath: 'frontend_development',
             namespace: 'local',
             sakProxyUrl: 'http://localhost:8093',
             brevProxyUrl: 'http://localhost:8001',
@@ -48,7 +48,7 @@ const Environment = (): IEnvironment => {
         };
     } else if (process.env.ENV === 'e2e') {
         return {
-            buildPath: '../../frontend_production',
+            buildPath: 'frontend_production',
             namespace: 'e2e',
             sakProxyUrl: 'http://familie-ef-sak:8093',
             brevProxyUrl: '', // TODO
@@ -59,7 +59,7 @@ const Environment = (): IEnvironment => {
         };
     } else if (process.env.ENV === 'preprod') {
         return {
-            buildPath: '../../frontend_production',
+            buildPath: 'frontend_production',
             namespace: 'preprod',
             sakProxyUrl: 'http://familie-ef-sak',
             brevProxyUrl: 'http://familie-brev',
@@ -71,7 +71,7 @@ const Environment = (): IEnvironment => {
     }
 
     return {
-        buildPath: '../../frontend_production',
+        buildPath: 'frontend_production',
         namespace: 'production',
         sakProxyUrl: 'http://familie-ef-sak',
         brevProxyUrl: 'http://familie-brev',

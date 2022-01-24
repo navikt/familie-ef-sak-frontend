@@ -34,7 +34,10 @@ export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     return (
         <DataViewer response={{ simuleringsresultat }}>
             {({ simuleringsresultat }) => (
-                <SimuleringTabellWrapper simuleringsresultat={simuleringsresultat} />
+                <SimuleringTabellWrapper
+                    simuleringsresultat={simuleringsresultat}
+                    behandlingId={behandlingId}
+                />
             )}
         </DataViewer>
     );

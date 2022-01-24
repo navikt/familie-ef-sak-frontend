@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { mergeWithCustomize } = require('webpack-merge');
 const common = require('./webpack.common');
 const CopyPlugin = require('copy-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -12,31 +13,40 @@ const config = mergeWithCustomize({
     entry: {
         'familie-ef-sak': [
             'babel-polyfill',
-            'react-hot-loader/patch',
             'webpack-hot-middleware/client?reload=true&overlay=false',
         ],
     },
     output: {
-        path: path.join(__dirname, '../../frontend_development'),
-        filename: '[name].[hash].js',
+        path: path.join(process.cwd(), 'frontend_development'),
+        filename: '[name].[contenthash].js',
         publicPath: '/assets/',
         globalObject: 'this',
     },
     module: {
         rules: [
             {
-                test: /\.(less)$/,
+                test: /\.(jsx|tsx|ts|js)?$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                options: {
+                    presets: ['react-app'],
+                    plugins: ['react-refresh/babel'],
+                },
+            },
+            {
+                test: /\.(less|css)$/,
                 use: [
-                    { loader: require.resolve('style-loader') },
+                    { loader: 'style-loader' },
                     {
-                        loader: require.resolve('css-loader'),
+                        loader: 'css-loader',
                         options: {
                             modules: {
-                                compileType: 'icss',
+                                mode: 'icss',
                             },
+                            importLoaders: 2,
                         },
                     },
-                    { loader: require.resolve('less-loader') },
+                    { loader: 'less-loader' },
                 ],
             },
         ],
@@ -46,12 +56,13 @@ const config = mergeWithCustomize({
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development'),
         }),
+        new ReactRefreshWebpackPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.join(__dirname, '../../assets'),
-                    to: path.join(__dirname, '../../frontend_development'),
+                    from: path.join(process.cwd(), 'assets'),
+                    to: path.join(process.cwd(), 'frontend_development'),
                 },
             ],
         }),

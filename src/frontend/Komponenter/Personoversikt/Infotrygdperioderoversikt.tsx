@@ -21,10 +21,10 @@ import {
     SummertPeriode,
 } from '../../App/typer/infotrygd';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import MigrerFagsak from '../Migrering/MigrerFagsak';
+import InfotrygdSaker from '../Migrering/InfotrygdSaker';
 
-const StyledTabell = styled.table`
-    margin-top: 2rem;
-`;
+const StyledTabell = styled.table``;
 
 const Rad = styled.tr``;
 
@@ -46,18 +46,20 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
                 <tr>
                     <th>Periode (fom-tom)</th>
                     <th>Inntektsgrunnlag</th>
+                    <th>Inntektsreduksjon</th>
                     <th>Samordningsfradrag</th>
                     <th>Stønadsbeløp</th>
                 </tr>
             </thead>
             <tbody>
                 {perioder.map((periode) => (
-                    <Rad>
+                    <Rad key={periode.stønadFom}>
                         <td>
                             {formaterNullableMånedÅr(periode.stønadFom)}
                             {' - '}
                             {formaterNullableMånedÅr(periode.stønadTom)}
                         </td>
+                        <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.inntektsreduksjon)}</td>
                         <td>{formaterTallMedTusenSkille(periode.samordningsfradrag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.beløp)}</td>
@@ -92,7 +94,7 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
             </thead>
             <tbody>
                 {perioder.map((periode) => (
-                    <Rad>
+                    <Rad key={`${periode.stønadId}-${periode.vedtakId}`}>
                         <td>{periode.vedtakId}</td>
                         <td>
                             {formaterNullableMånedÅr(periode.stønadFom)}
@@ -149,27 +151,28 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
             {skalViseCheckbox && (
                 <Checkbox
                     label={'Vis summerte perioder'}
-                    onClick={() => {
+                    onChange={() => {
                         settVisSummert((prevState) => !prevState);
                     }}
                     checked={visSummert}
                 />
             )}
-            <h1>Overgangsstønad</h1>
+            <h2>Overgangsstønad</h2>
             {visPerioder(visSummert, perioder.overgangsstønad)}
 
-            <h1>Barnetilsyn</h1>
+            <h2>Barnetilsyn</h2>
             {visPerioder(visSummert, perioder.barnetilsyn)}
 
-            <h1>Skolepenger</h1>
+            <h2>Skolepenger</h2>
             {visPerioder(visSummert, perioder.skolepenger)}
         </>
     );
 };
 
 const Infotrygdperioderoversikt: React.FC<{
+    fagsakId: string;
     personIdent: string;
-}> = ({ personIdent }) => {
+}> = ({ fagsakId, personIdent }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
@@ -185,9 +188,13 @@ const Infotrygdperioderoversikt: React.FC<{
     );
     return (
         <DataViewer response={{ infotrygdPerioder }}>
-            {({ infotrygdPerioder }) => {
-                return <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />;
-            }}
+            {({ infotrygdPerioder }) => (
+                <>
+                    <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
+                    <InfotrygdSaker personIdent={personIdent} />
+                    <MigrerFagsak fagsakId={fagsakId} />
+                </>
+            )}
         </DataViewer>
     );
 };

@@ -13,7 +13,7 @@ interface Props {
     barn: RegistergrunnlagNyttBarn;
 }
 
-const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
+const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
     const { annenForelderRegister } = barn;
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
@@ -66,4 +66,4 @@ const RegistergrunnlagNyttBarn: FC<Props> = ({ barn }) => {
     );
 };
 
-export default RegistergrunnlagNyttBarn;
+export default RegistergrunnlagNyttBarnInnhold;

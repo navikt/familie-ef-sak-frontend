@@ -1,4 +1,4 @@
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Routes, Navigate, Route } from 'react-router-dom';
 import * as React from 'react';
 import { filtrerSiderEtterBehandlingstype, sider } from './Fanemeny/sider';
 import { useBehandling } from '../../App/context/BehandlingContext';
@@ -10,22 +10,20 @@ const BehandlingRoutes: React.FC = () => {
     const behandlingSuksess = behandling as RessursSuksess<Behandling>;
 
     return (
-        <Switch>
-            <Redirect
-                exact={true}
-                from="/behandling/:behandlingId/"
-                to="/behandling/:behandlingId/tidligere-vedtaksperioder"
-            />
+        <Routes>
             {filtrerSiderEtterBehandlingstype(sider, behandlingSuksess.data).map((side) => (
-                <Route key={side.navn} exact={true} path={`/behandling/:behandlingId/${side.href}`}>
-                    {React.createElement(
+                <Route
+                    key={side.navn}
+                    path={`${side.href}`}
+                    element={React.createElement(
                         side.komponent,
                         { behandlingId: behandlingSuksess.data.id },
                         null
                     )}
-                </Route>
+                />
             ))}
-        </Switch>
+            <Route path="*" element={<Navigate to="tidligere-vedtaksperioder" />} />
+        </Routes>
     );
 };
 

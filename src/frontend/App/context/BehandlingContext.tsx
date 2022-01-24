@@ -13,7 +13,8 @@ import { erBehandlingRedigerbar } from '../typer/behandlingstatus';
 import { useHentNavKontor } from '../hooks/useHentNavKontor';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
-    const { behandlingId } = useParams<IBehandlingParams>();
+    const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
+
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
     const { hentPersonopplysninger, personopplysningerResponse } =
         useHentPersonopplysninger(behandlingId);
