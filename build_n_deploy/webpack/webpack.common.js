@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TypeScriptTypeChecker = require('fork-ts-checker-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -13,19 +14,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.(ts|tsx)$/,
-                enforce: 'pre',
-                exclude: /node_modules/,
-                use: [
-                    {
-                        options: {
-                            eslintPath: require.resolve('eslint'),
-                        },
-                        loader: require.resolve('eslint-loader'),
-                    },
-                ],
-            },
             {
                 test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
                 use: [`file-loader`],
@@ -70,5 +58,8 @@ module.exports = {
             alwaysWriteToDisk: true,
         }),
         new TypeScriptTypeChecker(),
+        new ESLintPlugin({
+            extensions: [`ts`, `tsx`],
+        }),
     ],
 };
