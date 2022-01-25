@@ -25,7 +25,7 @@ const HøyreMenyWrapper = styled.div`
     border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
 
-    width: 30rem;
+    width: 20rem;
 
     @media (max-width: 800px) {
         width: 0rem;
