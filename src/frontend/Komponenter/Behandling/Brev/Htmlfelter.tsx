@@ -1,17 +1,10 @@
 import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 import { AndelTilkjentYtelse, TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 
-export const delmalTilHtml = (
-    delmalNavn: string,
-    tilkjentYtelse?: TilkjentYtelse
-): { [htmlFeltNavn: string]: string } => {
-    switch (delmalNavn) {
-        case 'varierendeInntekt':
-            return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
-        default:
-            return {};
-    }
+export const delmalTilHtml = (tilkjentYtelse?: TilkjentYtelse) => {
+    return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
 };
+
 const borderStyling = 'border: 1px solid black; padding:3px 8px 3px 8px';
 const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
     return `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}"><thead><tr>
