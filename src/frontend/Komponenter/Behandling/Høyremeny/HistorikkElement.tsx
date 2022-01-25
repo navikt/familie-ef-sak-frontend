@@ -18,9 +18,9 @@ const IkonMedStipletLinje = styled.div`
 const Linje = styled.div`
     margin-right: 13px;
     border-right: 1px dashed #a0a0a0;
-    height: 60px;
 
-    height: ${(props: LinjeProps) => (props.siste ? '30px' : '60px')};
+    height: ${(props: LinjeProps) =>
+        props.siste ? '30px' : props.størreMellomrom ? '75px' : '60px'};
 `;
 
 const Innhold = styled.div``;
@@ -52,11 +52,14 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
     første,
     siste,
 }) => {
+    const størreMellomrom =
+        behandlingshistorikk.metadata?.årsak || behandlingshistorikk.metadata?.begrunnelse;
+
     return (
         <StyledHistorikkElement første={første}>
             <IkonMedStipletLinje>
                 <HendelseIkon behandlingshistorikk={behandlingshistorikk} />
-                <Linje siste={siste} />
+                <Linje siste={siste} størreMellomrom={størreMellomrom} />
             </IkonMedStipletLinje>
             <Innhold>
                 <Element>{renderTittel(behandlingshistorikk)}</Element>

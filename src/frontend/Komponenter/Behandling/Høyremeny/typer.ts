@@ -15,6 +15,7 @@ export interface Behandlingshistorikk {
 
 export interface LinjeProps {
     siste: boolean;
+    størreMellomrom: boolean;
 }
 
 export interface HistorikkElementProps {
