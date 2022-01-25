@@ -44,7 +44,7 @@ const BehandlingContainer: FC = () => {
         <ModalProvider>
             <BehandlingProvider>
                 <ModalController />
-                <Behandling />
+                <BehandlingOverbygg />
             </BehandlingProvider>
         </ModalProvider>
     );
@@ -61,14 +61,14 @@ const BehandlingContent: FC<{
             <VisittkortComponent data={personopplysninger} behandling={behandling} />
             <Container>
                 <InnholdWrapper>
-                    <Fanemeny />
+                    <Fanemeny behandlingId={behandling.id} />
                     <BehandlingRoutes />
                     <GodkjennEndringer behandling={behandling} />
                     <BrevmottakereModal
                         behandlingId={behandling.id}
                         personopplysninger={personopplysninger}
                     />
-                    <HenleggModal behandling={behandling} fagsakId={behandling.fagsakId} />
+                    <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
                     <Høyremeny />
@@ -78,7 +78,7 @@ const BehandlingContent: FC<{
     );
 };
 
-const Behandling: FC = () => {
+const BehandlingOverbygg: FC = () => {
     const { behandling, personopplysningerResponse } = useBehandling();
 
     useEffect(() => {

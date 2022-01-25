@@ -66,37 +66,33 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
             <DataViewer response={{ migreringInfo }}>
                 {({ migreringInfo }) => (
                     <>
-                        {migreringInfo.stønadFom && (
-                            <div>
-                                Stønad fom: {formaterNullableMånedÅr(migreringInfo.stønadFom)}
-                            </div>
-                        )}
-                        {migreringInfo.stønadTom && (
-                            <div>
-                                Stønad tom: {formaterNullableMånedÅr(migreringInfo.stønadTom)}
-                            </div>
-                        )}
-                        {migreringInfo.inntektsgrunnlag && (
-                            <div>
-                                Inntektsgrunnlag:{' '}
-                                {formaterTallMedTusenSkille(migreringInfo.inntektsgrunnlag)}
-                            </div>
-                        )}
-                        {migreringInfo.samordningsfradrag && (
-                            <div>
-                                Samordningsfradrag:{' '}
-                                {formaterTallMedTusenSkille(migreringInfo.samordningsfradrag)}
-                            </div>
-                        )}
-                        {migreringInfo.beløpsperioder && (
-                            <Utregningstabell
-                                beregnetStønad={byggSuksessRessurs(migreringInfo.beløpsperioder)}
-                            />
+                        {migreringInfo.kanMigreres && (
+                            <>
+                                <div>
+                                    Stønad fom: {formaterNullableMånedÅr(migreringInfo.stønadFom)}
+                                </div>
+                                <div>
+                                    Stønad tom: {formaterNullableMånedÅr(migreringInfo.stønadTom)}
+                                </div>
+                                <div>
+                                    Inntektsgrunnlag:{' '}
+                                    {formaterTallMedTusenSkille(migreringInfo.inntektsgrunnlag)}
+                                </div>
+                                <div>
+                                    Samordningsfradrag:{' '}
+                                    {formaterTallMedTusenSkille(migreringInfo.samordningsfradrag)}
+                                </div>
+                                <Utregningstabell
+                                    beregnetStønad={byggSuksessRessurs(
+                                        migreringInfo.beløpsperioder
+                                    )}
+                                />
+                            </>
                         )}
                         <div>
                             Kan migreres: {nullableBooleanTilTekst(migreringInfo.kanMigreres)}
                         </div>
-                        {migreringInfo.årsak && <div>Årsak: {migreringInfo.årsak}</div>}
+                        {!migreringInfo.kanMigreres && <div>Årsak: {migreringInfo.årsak}</div>}
 
                         {migrertStatus.status === RessursStatus.SUKSESS && (
                             <div style={{ color: 'green' }}>Fagsaken er migrert</div>

@@ -30,9 +30,10 @@ const mapSimuleringstabellRader = (
         });
 };
 
-const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = ({
-    simuleringsresultat,
-}) => {
+const SimuleringTabellWrapper: React.FC<{
+    simuleringsresultat: ISimulering;
+    behandlingId: string;
+}> = ({ simuleringsresultat, behandlingId }) => {
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
     const [år, settÅr] = useState(
@@ -52,7 +53,7 @@ const SimuleringTabellWrapper: React.FC<{ simuleringsresultat: ISimulering }> = 
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
             />
-            {harFeilutbetaling() && <Tilbakekreving />}
+            {harFeilutbetaling() && <Tilbakekreving behandlingId={behandlingId} />}
         </SimuleringsContainer>
     );
 };

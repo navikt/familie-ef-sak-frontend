@@ -4,7 +4,7 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs'
 import { FnrInput, Select } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../App/context/AppContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 const StyledFnrInput = styled(FnrInput)`
@@ -24,7 +24,7 @@ export const OpprettDummyBehandling: React.FC = () => {
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
     const [personIdent, settPersonIdent] = useState<string>('');
     const [behandlingsType, settBehandlingstype] = useState<string>('FØRSTEGANGSBEHANDLING');
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const opprettBehandling = () => {
         axiosRequest<string, { personIdent: string; behandlingsType: string }>({
@@ -48,9 +48,9 @@ export const OpprettDummyBehandling: React.FC = () => {
                 );
                 return;
             case RessursStatus.SUKSESS:
-                history.push(`/behandling/${nyBehandlingRessurs.data}/tidligere-vedtaksperioder`);
+                navigate(`/behandling/${nyBehandlingRessurs.data}/tidligere-vedtaksperioder`);
         }
-    }, [nyBehandlingRessurs, history]);
+    }, [nyBehandlingRessurs, navigate]);
     const harSattPersonIdent = personIdent.length === 11;
     const harFeil = feilmelding !== undefined && harSattPersonIdent;
 

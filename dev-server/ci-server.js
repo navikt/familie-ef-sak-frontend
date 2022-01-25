@@ -5,11 +5,11 @@ const fs = require('fs');
 
 const port = 8000;
 
-app.use('/assets', express.static(path.join(__dirname, '..', 'frontend_development')));
+app.use('/assets', express.static(path.join(process.cwd(), 'frontend_development')));
 
 app.get('*', (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write(fs.readFileSync(path.join(__dirname, '/../frontend_development/index.html')));
+    res.write(fs.readFileSync(path.join(process.cwd(), 'frontend_development/index.html')));
     res.end();
 });
 
@@ -20,6 +20,6 @@ const server = app.listen(port, '0.0.0.0', function onStart(err) {
     console.info('=== ci-server startet på http://localhost:%s/', port);
 });
 
-process.on('SIGTERM', function() {
+process.on('SIGTERM', function () {
     server.close();
 });

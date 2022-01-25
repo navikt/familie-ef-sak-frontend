@@ -57,7 +57,7 @@ const PersonoversiktContent: React.FC<{
 };
 
 const Personoversikt: React.FC = () => {
-    const { fagsakId } = useParams<{ fagsakId: string }>();
+    const fagsakId = useParams<{ fagsakId: string }>().fagsakId as string;
 
     const personopplysningerConfig: AxiosRequestConfig = useMemo(
         () => ({

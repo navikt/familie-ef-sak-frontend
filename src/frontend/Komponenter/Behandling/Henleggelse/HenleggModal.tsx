@@ -7,7 +7,7 @@ import { Radio } from 'nav-frontend-skjema';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -32,7 +32,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
 
     const { axiosRequest, settToast } = useApp();
     const erBlankett = behandling.type === Behandlingstype.BLANKETT;
-    const history = useHistory();
+    const navigate = useNavigate();
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -56,7 +56,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             .then((respons: Ressurs<string>) => {
                 switch (respons.status) {
                     case RessursStatus.SUKSESS:
-                        history.push(`/fagsak/${behandling.fagsakId}`);
+                        navigate(`/fagsak/${behandling.fagsakId}`);
                         settToast(EToast.BEHANDLING_HENLAGT);
                         break;
                     case RessursStatus.HENTER:
