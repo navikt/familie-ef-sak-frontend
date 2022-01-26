@@ -23,8 +23,8 @@ export interface ITilbakekreving {
 }
 
 export const TilbakekrevingsvalgTilTekst: Record<ITilbakekrevingsvalg, string> = {
-    OPPRETT_MED_VARSEL: 'Opprett med advarsel',
-    OPPRETT_UTEN_VARSEL: 'Opprett uten advarsel',
+    OPPRETT_MED_VARSEL: 'Opprett med varsel',
+    OPPRETT_UTEN_VARSEL: 'Opprett uten varsel',
     AVVENT: 'Avvent',
 };
 

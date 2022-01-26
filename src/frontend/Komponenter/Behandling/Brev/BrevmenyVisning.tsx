@@ -142,7 +142,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                           {
                               flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
                               valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                              htmlfelter: delmalTilHtml(delmal.delmalApiNavn, tilkjentYtelse),
+                              htmlfelter: delmalTilHtml(tilkjentYtelse),
                           },
                       ],
                   }
