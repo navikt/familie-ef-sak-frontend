@@ -5,13 +5,15 @@ export const delmalTilHtml = (tilkjentYtelse?: TilkjentYtelse) => {
     return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
 };
 
-const borderStyling = 'border: 1px solid black; padding: 3px 8px 3px 8px;';
+const borderStyling = 'border: 1px solid black; padding: 3px 5px 3px 5px;';
 const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
-    return `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}"><thead><tr>
-                <th style="width: 160px; ${borderStyling}">Periode</th>
-                <th style="width: 75px; ${borderStyling}">Årsinntekt</th>
-                <th style="width: 190px; word-wrap: break-word; ${borderStyling}">Dette får du i overgangsstønad pr. måned</th></tr></thead>
-                <th style="width: 85px; ${borderStyling}">Samordning</th></tr></thead>
+    return `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}">
+                <thead><tr>
+                    <th style="width: 160px; ${borderStyling}">Periode</th>
+                    <th style="width: 75px; ${borderStyling}">Årsinntekt</th>
+                    <th style="width: 150px; word-wrap: break-word; ${borderStyling}">Dette får du i overgangsstønad pr. måned</th>
+                    <th style="width: 85px; ${borderStyling}">Samordning</th>
+                </tr></thead>
                 <tbody>${lagRaderForVedtak(tilkjentYtelse)}</tbody>
             </table>`;
 };
