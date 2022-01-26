@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
-
 import { AxiosRequestConfig } from 'axios';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -9,17 +8,15 @@ import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
-import { groupBy, åpneFilIEgenTab } from '../../App/utils/utils';
+import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
 import { journalstatusTilTekst } from '../../App/typer/journalforing';
 
 const DokumenterVisning = styled.div`
     display: flex;
     flex-direction: column;
-
     margin-bottom: 5rem;
 `;
 
@@ -27,21 +24,13 @@ const TrHoveddokument = styled.tr`
     background-color: #f7f7f7;
 `;
 
-const LenkeVenstrePadding = styled(Lenke)`
-    padding-left: 2rem;
+const LenkeVenstreMargin = styled.a`
+    margin-left: 2rem;
 `;
 
 const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,
 }) => {
-    const hentDokument = (dokument: Dokumentinfo) => {
-        åpneFilIEgenTab(
-            dokument.journalpostId,
-            dokument.dokumentinfoId,
-            dokument.tittel || dokument.filnavn || ''
-        );
-    };
-
     const dokumentConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -58,29 +47,36 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
         </Td>
     );
 
-    const Tabellrad: React.FC<{ dokument: Dokumentinfo }> = ({ dokument }) => (
+    const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({ dokument }) => (
         <tr>
             <Td></Td>
-            <Td
-                style={{
-                    marginLeft: '2rem',
-                }}
-            >
-                <LenkeVenstrePadding onClick={() => hentDokument(dokument)} href={'#'}>
+            <Td>
+                <LenkeVenstreMargin
+                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                    target={'_blank'}
+                    rel={'noreferrer'}
+                >
                     {dokument.tittel}
-                </LenkeVenstrePadding>
+                </LenkeVenstreMargin>
             </Td>
             <Td></Td>
         </tr>
     );
 
-    const HovedTabellrad: React.FC<{ dokument: Dokumentinfo }> = ({ dokument }) => (
+    const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
+        dokument,
+    }) => (
         <TrHoveddokument>
             <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
             <Td>
-                <Lenke onClick={() => hentDokument(dokument)} href={'#'}>
+                <a
+                    key={dokument.journalpostId}
+                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                    target={'_blank'}
+                    rel={'noreferrer'}
+                >
                     {dokument.tittel}
-                </Lenke>
+                </a>
             </Td>
             <Td>
                 <Normaltekst>
@@ -121,6 +117,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                                             return (
                                                                 <HovedTabellrad
                                                                     key={`${journalpostId}-${indeks}`}
+                                                                    erKlikketId={`${journalpostId}-${indeks}`}
                                                                     dokument={dokument}
                                                                 />
                                                             );
@@ -128,6 +125,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                                                             return (
                                                                 <Tabellrad
                                                                     key={`${journalpostId}-${indeks}`}
+                                                                    erKlikketId={`${journalpostId}-${indeks}`}
                                                                     dokument={dokument}
                                                                 />
                                                             );
