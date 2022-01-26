@@ -96,7 +96,7 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                 <Route path="/journalfor" element={<JournalforingApp />} />
                 <Route path="/fagsak/:fagsakId" element={<Personoversikt />} />
                 <Route path="/uttrekk/arbeidssoker" element={<UttrekkArbeidssøker />} />
-                <Route path="/" element={<Navigate to="/oppgavebenk" />} />
+                <Route path="/" element={<Navigate to="/oppgavebenk" replace={true} />} />
             </Routes>
             <UlagretDataModal />
             <Toast />

@@ -22,7 +22,7 @@ const BehandlingRoutes: React.FC = () => {
                     )}
                 />
             ))}
-            <Route path="*" element={<Navigate to="tidligere-vedtaksperioder" />} />
+            <Route path="*" element={<Navigate to="tidligere-vedtaksperioder" replace={true} />} />
         </Routes>
     );
 };
