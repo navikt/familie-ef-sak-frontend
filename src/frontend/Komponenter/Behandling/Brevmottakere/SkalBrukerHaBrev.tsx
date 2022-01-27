@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Ingress } from 'nav-frontend-typografi';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -14,40 +14,35 @@ export const SkalBrukerHaBrev: FC<Props> = ({
     settValgtBrevMottakere,
     personopplysninger,
 }) => {
-    const skalIntieltVæreAvkrysset = !!valgteBrevmottakere.find(
+    const brukerSkalHaBrev = !!valgteBrevmottakere.find(
         (mottaker) => mottaker.mottakerRolle === EBrevmottakerRolle.BRUKER
     );
-    const [brukerSkalHaBrev, settBrukerSkalHaBrev] = useState<boolean>(skalIntieltVæreAvkrysset);
 
-    useEffect(() => {
-        function leggTilBrukerIBrevmottakere() {
-            settValgtBrevMottakere((prevState) => [
-                ...prevState,
-                {
-                    mottakerRolle: EBrevmottakerRolle.BRUKER,
-                    personIdent: personopplysninger.personIdent,
-                    navn: personopplysninger.navn.visningsnavn,
-                },
-            ]);
-        }
-
-        function fjernBrukerFraBrevmottakere() {
-            settValgtBrevMottakere((prevState) =>
-                prevState.filter((mottaker) => mottaker.mottakerRolle !== EBrevmottakerRolle.BRUKER)
+    const toggleBrukerSkalHaBrev = () => {
+        settValgtBrevMottakere((mottakere) => {
+            const brukerErIListe = !!mottakere.find(
+                (mottaker) => mottaker.mottakerRolle === EBrevmottakerRolle.BRUKER
             );
-        }
 
-        if (brukerSkalHaBrev) {
-            leggTilBrukerIBrevmottakere();
-        } else {
-            fjernBrukerFraBrevmottakere();
-        }
-    }, [
-        brukerSkalHaBrev,
-        personopplysninger.navn.visningsnavn,
-        personopplysninger.personIdent,
-        settValgtBrevMottakere,
-    ]);
+            if (brukerErIListe) {
+                const mottakereUtenBruker = mottakere.filter(
+                    (mottaker) => mottaker.mottakerRolle !== EBrevmottakerRolle.BRUKER
+                );
+
+                return mottakereUtenBruker;
+            } else {
+                const mottakereMedBruker = [
+                    {
+                        mottakerRolle: EBrevmottakerRolle.BRUKER,
+                        personIdent: personopplysninger.personIdent,
+                        navn: personopplysninger.navn.visningsnavn,
+                    },
+                    ...mottakere,
+                ];
+                return mottakereMedBruker;
+            }
+        });
+    };
 
     return (
         <>
@@ -57,13 +52,13 @@ export const SkalBrukerHaBrev: FC<Props> = ({
                     label={'Ja'}
                     name={'brukerHaBrevRadio'}
                     checked={brukerSkalHaBrev}
-                    onChange={() => settBrukerSkalHaBrev(true)}
+                    onChange={toggleBrukerSkalHaBrev}
                 />
                 <Radio
                     label={'Nei'}
                     name={'brukerHaBrevRadio'}
                     checked={!brukerSkalHaBrev}
-                    onChange={() => settBrukerSkalHaBrev(false)}
+                    onChange={toggleBrukerSkalHaBrev}
                 />
             </RadioGruppe>
         </>
