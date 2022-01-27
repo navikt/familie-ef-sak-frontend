@@ -35,7 +35,7 @@ const HøyreMenyWrapper = styled.div`
 
 const InnholdWrapper = styled.div`
     flex: 1;
-    max-width: calc(100% - 15rem);
+    max-width: calc(100% - 20rem);
     @media (max-width: 800px) {
         max-width: 100%;
     }
