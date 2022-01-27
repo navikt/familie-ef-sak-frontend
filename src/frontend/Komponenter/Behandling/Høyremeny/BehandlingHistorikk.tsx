@@ -16,7 +16,7 @@ const BehandlingHistorikk: React.FC = () => {
     return (
         <DataViewer response={{ behandlingHistorikkResponse: behandlingHistorikk }}>
             {({ behandlingHistorikkResponse }) => {
-                console.log('HISTORIKK', historikk);
+                console.log('HISTORIKK', behandlingHistorikkResponse);
                 return (
                     <HistorikkListe>
                         {behandlingHistorikkResponse.map((behandlingshistorikk, idx) => {
