@@ -152,9 +152,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     </StatuserLitenSkjerm>
                 </>
             )}
-            {behandling && erBehandlingRedigerbar(behandling) && (
-                <StyledHamburgermeny behandling={behandling} />
-            )}
+            {behandling && erBehandlingRedigerbar(behandling) && <StyledHamburgermeny />}
         </VisittkortWrapper>
     );
 };
