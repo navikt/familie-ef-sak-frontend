@@ -14,13 +14,13 @@ export const SkalBrukerHaBrev: FC<Props> = ({
     settValgtBrevMottakere,
     personopplysninger,
 }) => {
-    const brukerSkalHaBrev = !!valgteBrevmottakere.find(
+    const brukerSkalHaBrev = valgteBrevmottakere.some(
         (mottaker) => mottaker.mottakerRolle === EBrevmottakerRolle.BRUKER
     );
 
     const toggleBrukerSkalHaBrev = () => {
         settValgtBrevMottakere((mottakere) => {
-            const brukerErIListe = !!mottakere.find(
+            const brukerErIListe = mottakere.some(
                 (mottaker) => mottaker.mottakerRolle === EBrevmottakerRolle.BRUKER
             );
 
