@@ -5,12 +5,16 @@ import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import HistorikkElement from './HistorikkElement';
 
+interface IBehandlingHistorikkProps {
+    behandlingId: string;
+}
+
 const HistorikkListe = styled.ul`
     padding: 0 0.5rem 2rem 0.5rem;
     margin: 0;
 `;
 
-const BehandlingHistorikk: React.FC = () => {
+const BehandlingHistorikk: React.FC<IBehandlingHistorikkProps> = ({ behandlingId }) => {
     const { behandlingHistorikk } = useBehandling();
 
     return (
@@ -28,6 +32,7 @@ const BehandlingHistorikk: React.FC = () => {
                                     siste={siste}
                                     behandlingshistorikk={behandlingshistorikk}
                                     key={idx}
+                                    behandlingId={behandlingId}
                                 />
                             );
                         })}

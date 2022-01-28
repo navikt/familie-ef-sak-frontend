@@ -73,7 +73,7 @@ const BehandlingContent: FC<{
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
-                    <Høyremeny />
+                    <Høyremeny behandlingId={behandling.id} />
                 </HøyreMenyWrapper>
             </Container>
         </>

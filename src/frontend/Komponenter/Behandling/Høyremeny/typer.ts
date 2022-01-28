@@ -22,6 +22,7 @@ export interface HistorikkElementProps {
     første: boolean;
     siste: boolean;
     behandlingshistorikk: Behandlingshistorikk;
+    behandlingId: string;
 }
 
 export interface StyledHistorikkElementProps {

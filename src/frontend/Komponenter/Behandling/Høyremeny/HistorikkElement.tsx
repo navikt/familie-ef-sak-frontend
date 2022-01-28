@@ -3,13 +3,17 @@ import styled from 'styled-components';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
-import { hendelseTilHistorikkTekst, HendelseIkon } from './Historikk';
+import { hendelseTilHistorikkTekst, HendelseIkon, Hendelse } from './Historikk';
 import {
     LinjeProps,
     HistorikkElementProps,
     Behandlingshistorikk,
     StyledHistorikkElementProps,
 } from './typer';
+import { useApp } from '../../../App/context/AppContext';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
+import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -51,9 +55,33 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
     behandlingshistorikk,
     første,
     siste,
+    behandlingId,
 }) => {
+    const { axiosRequest } = useApp();
+
+    const hentOgÅpneVedtaksbrev = () => {
+        axiosRequest<string, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+        }).then((respons: Ressurs<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                åpnePdfIEgenTab(base64toBlob(respons.data, 'application/pdf'), 'Vedtaksbrev');
+            } else if (
+                respons.status === RessursStatus.IKKE_TILGANG ||
+                respons.status === RessursStatus.FEILET ||
+                respons.status === RessursStatus.FUNKSJONELL_FEIL
+            ) {
+                console.error(respons.frontendFeilmelding);
+            }
+        });
+    };
+
+    const vedtakIverksatt = behandlingshistorikk.hendelse === Hendelse.VEDTAK_IVERKSATT;
+
     const harMetadata =
-        behandlingshistorikk.metadata?.årsak || behandlingshistorikk.metadata?.begrunnelse;
+        behandlingshistorikk.metadata?.årsak ||
+        behandlingshistorikk.metadata?.begrunnelse ||
+        vedtakIverksatt;
 
     return (
         <StyledHistorikkElement første={første}>
@@ -74,6 +102,9 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 )}
                 {behandlingshistorikk.metadata?.årsak && (
                     <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
+                )}
+                {vedtakIverksatt && (
+                    <LenkeKnapp onClick={hentOgÅpneVedtaksbrev}>Vedtaksbrev</LenkeKnapp>
                 )}
             </Innhold>
         </StyledHistorikkElement>
