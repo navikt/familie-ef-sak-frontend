@@ -9,7 +9,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { BrevmottakereListe } from './BrevmottakereListe';
-import { IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
+import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
 import Modal from 'nav-frontend-modal';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -33,7 +33,13 @@ export const BrevmottakereModal: FC<{
 }> = ({ personopplysninger, behandlingId }) => {
     const { axiosRequest } = useApp();
     const { visBrevmottakereModal, settVisBrevmottakereModal } = useBehandling();
-    const [valgtePersonMottakere, settValgtePersonMottakere] = useState<IBrevmottaker[]>([]);
+    const [valgtePersonMottakere, settValgtePersonMottakere] = useState<IBrevmottaker[]>([
+        {
+            mottakerRolle: EBrevmottakerRolle.BRUKER,
+            personIdent: personopplysninger.personIdent,
+            navn: personopplysninger.navn.visningsnavn,
+        },
+    ]);
     const [valgteOrganisasjonMottakere, settValgteOrganisasjonMottakere] = useState<
         IOrganisasjonMottaker[]
     >([]);
