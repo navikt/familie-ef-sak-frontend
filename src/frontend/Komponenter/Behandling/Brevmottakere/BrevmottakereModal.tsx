@@ -117,7 +117,7 @@ export const BrevmottakereModal: FC<{
                 </Høyrekolonne>
             </GridContainer>
             <SentrerKnapper>
-                <Knapp>Avbryt</Knapp>
+                <Knapp onClick={() => settVisBrevmottakereModal(false)}>Avbryt</Knapp>
                 <Hovedknapp onClick={settBrevmottakere}>Sett mottakere</Hovedknapp>
             </SentrerKnapper>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
