@@ -26,7 +26,7 @@ export type IInnvilgeVedtak = {
     inntektBegrunnelse?: string;
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
-    samordningsfradagType?: ESamordningsfradagType | '' | undefined;
+    samordningsfradragType?: ESamordningsfradragtype | string | undefined;
 };
 
 export interface IOpphørtVedtak {
@@ -131,7 +131,7 @@ export enum EAktivitet {
     FORLENGELSE_STØNAD_UT_SKOLEÅRET = 'FORLENGELSE_MIDLERTIDIG_SYKDOM',
 }
 
-export enum ESamordningsfradagType {
+export enum ESamordningsfradragtype {
     UFØRETRYGD = 'UFØRETRYGD',
     GJENLEVENDEPENSJON = 'GJENLEVENDEPENSJON',
 }
@@ -217,7 +217,7 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
 };
 
-export const samordningsfradagTilTekst: Record<ESamordningsfradagType, string> = {
+export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {
     UFØRETRYGD: 'Uføretrygd',
     GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
 };
