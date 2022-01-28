@@ -157,7 +157,9 @@ export const JournalforingApp: React.FC = () => {
                                     fagsak={fagsak}
                                 />
                             </SkjemaGruppe>
-                            {journalpostState.innsending.status === RessursStatus.FEILET && (
+                            {(journalpostState.innsending.status === RessursStatus.FEILET ||
+                                journalpostState.innsending.status ===
+                                    RessursStatus.FUNKSJONELL_FEIL) && (
                                 <AlertStripeFeil>
                                     {journalpostState.innsending.frontendFeilmelding}
                                 </AlertStripeFeil>
