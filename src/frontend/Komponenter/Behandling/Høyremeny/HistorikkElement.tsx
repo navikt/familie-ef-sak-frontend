@@ -52,14 +52,14 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
     første,
     siste,
 }) => {
-    const størreMellomrom =
+    const harMetadata =
         behandlingshistorikk.metadata?.årsak || behandlingshistorikk.metadata?.begrunnelse;
 
     return (
         <StyledHistorikkElement første={første}>
             <IkonMedStipletLinje>
                 <HendelseIkon behandlingshistorikk={behandlingshistorikk} />
-                <Linje siste={siste} størreMellomrom={størreMellomrom} />
+                <Linje siste={siste} størreMellomrom={harMetadata} />
             </IkonMedStipletLinje>
             <Innhold>
                 <Element>{renderTittel(behandlingshistorikk)}</Element>
