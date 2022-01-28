@@ -14,6 +14,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
+import { ExternalLink } from '@navikt/ds-icons';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -25,6 +26,10 @@ const Linje = styled.div`
 
     height: ${(props: LinjeProps) =>
         props.siste ? '30px' : props.størreMellomrom ? '75px' : '60px'};
+`;
+
+const LenkeKnappWrapper = styled.div`
+    margin-top: 0.2rem;
 `;
 
 const Innhold = styled.div``;
@@ -104,7 +109,12 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                     <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
                 )}
                 {vedtakIverksatt && (
-                    <LenkeKnapp onClick={hentOgÅpneVedtaksbrev}>Vedtaksbrev</LenkeKnapp>
+                    <LenkeKnappWrapper>
+                        <LenkeKnapp onClick={hentOgÅpneVedtaksbrev}>
+                            <span>Vedtaksdbrev</span>
+                            <ExternalLink />
+                        </LenkeKnapp>
+                    </LenkeKnappWrapper>
                 )}
             </Innhold>
         </StyledHistorikkElement>
