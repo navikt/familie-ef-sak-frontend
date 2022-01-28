@@ -6,7 +6,7 @@ import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
     EPeriodetype,
-    ESamordningsfradag,
+    ESamordningsfradagType,
     IBeløpsperiode,
     IBeregningsrequest,
     IInntektsperiode,
@@ -84,7 +84,7 @@ export const InnvilgeVedtak: React.FC<{
             inntekter: lagretInnvilgetVedtak?.inntekter
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad],
-            typeSamordningsfradag: lagretInnvilgetVedtak?.typeSamordningsfradag || '',
+            samordningsfradagType: lagretInnvilgetVedtak?.samordningsfradagType || '',
         },
         validerInnvilgetVedtakForm
     );
@@ -92,7 +92,7 @@ export const InnvilgeVedtak: React.FC<{
     const vedtaksperiodeState = formState.getProps('perioder') as ListState<IVedtaksperiode>;
     const periodeBegrunnelse = formState.getProps('periodeBegrunnelse') as FieldState;
     const inntektBegrunnelse = formState.getProps('inntektBegrunnelse') as FieldState;
-    const typeSamordningsfradag = formState.getProps('typeSamordningsfradag') as FieldState;
+    const typeSamordningsfradag = formState.getProps('samordningsfradagType') as FieldState;
 
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
@@ -202,7 +202,7 @@ export const InnvilgeVedtak: React.FC<{
             inntektBegrunnelse: form.inntektBegrunnelse,
             perioder: form.perioder,
             inntekter: form.inntekter,
-            typeSamordningsfradag: form.typeSamordningsfradag,
+            samordningsfradagType: form.samordningsfradagType,
         };
         switch (behandling.type) {
             case Behandlingstype.BLANKETT:
@@ -282,13 +282,15 @@ export const InnvilgeVedtak: React.FC<{
                                 erLesevisning={!behandlingErRedigerbar}
                             >
                                 <option value="">Velg</option>
-                                <option value={ESamordningsfradag.GJENLEVENDEPENSJON}>
+                                <option value={ESamordningsfradagType.GJENLEVENDEPENSJON}>
                                     Gjenlevendepensjon
                                 </option>
-                                <option value={ESamordningsfradag.UFØRETRYGD}>Uføretrygd</option>
+                                <option value={ESamordningsfradagType.UFØRETRYGD}>
+                                    Uføretrygd
+                                </option>
                             </FamilieSelect>
                             <SkjemaelementFeilmelding>
-                                {formState.errors.typeSamordningsfradag}
+                                {formState.errors.samordningsfradagType}
                             </SkjemaelementFeilmelding>
                         </>
                     )}

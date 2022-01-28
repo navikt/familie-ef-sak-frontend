@@ -1,8 +1,9 @@
 import { Behandlingstype } from './behandlingstype';
-import { EAktivitet, EPeriodetype } from './vedtak';
+import { EAktivitet, EPeriodetype, ESamordningsfradagType } from './vedtak';
 
 export interface TilkjentYtelse {
     andeler: AndelTilkjentYtelse[];
+    samordningsfradagType: ESamordningsfradagType | null;
 }
 
 export interface AndelTilkjentYtelse {
