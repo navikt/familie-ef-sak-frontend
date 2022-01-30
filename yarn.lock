@@ -8013,7 +8013,7 @@ pdfjs-dist@2.10.377:
   resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.10.377.tgz#feadc9f31bf1790795994e54b18930974cf4970a"
   integrity sha512-i0jRShtvgfsVQUNCoFYH4SVhPO3U0yhtiFLfZ0RR0B+68N+Vnwq+8B3cjWjLEwWGh8wg1XQ/sYMYKUlHn/Qpsw==
 
-pdfjs-dist@^2.10.377:
+pdfjs-dist@2.12.313, pdfjs-dist@^2.10.377:
   version "2.12.313"
   resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.12.313.tgz#62f2273737bb956267ae2e02cdfaddcb1099819c"
   integrity sha512-1x6iXO4Qnv6Eb+YFdN5JdUzt4pAkxSp3aLAYPX93eQCyg/m7QFzXVWJHJVtoW48CI8HCXju4dSkhQZwoheL5mA==
@@ -8407,10 +8407,10 @@ react-modal@^3.14.3, react-modal@^3.14.4:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
-react-pdf@5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-5.6.0.tgz#e6f2a3f2c23116219e17e728a5017e7bdb2cb008"
-  integrity sha512-s2T2ykxI0beC2z+dtfu6EyyrjmeYc8JhtYoD13aXkccBb7Pymd62opw7R4Zb8xMh7VvplBdC4J4V87cizbt+Dw==
+react-pdf@5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-5.7.0.tgz#6d2c78cc603a75fb39ff28a85209727de5245d77"
+  integrity sha512-3jHLnEpN96BHvY+yL1EzacgBfnBZogqBFg52aFN9mzVppONCO1NtVsahigbWydb3/ilSBxH9hnxE0B/uGHSHDQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     file-loader "^6.0.0"
@@ -8418,8 +8418,10 @@ react-pdf@5.6.0:
     make-event-props "^1.1.0"
     merge-class-names "^1.1.1"
     merge-refs "^1.0.0"
-    pdfjs-dist "2.10.377"
+    pdfjs-dist "2.12.313"
     prop-types "^15.6.2"
+    tiny-invariant "^1.0.0"
+    tiny-warning "^1.0.0"
 
 react-popper@^2.2.5:
   version "2.2.5"
@@ -9626,7 +9628,12 @@ through@^2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-tiny-warning@^1.0.2:
+tiny-invariant@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.2.0.tgz#a1141f86b672a9148c72e978a19a73b9b94a15a9"
+  integrity sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==
+
+tiny-warning@^1.0.0, tiny-warning@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
