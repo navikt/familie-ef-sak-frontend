@@ -3,7 +3,7 @@ import { EAktivitet, EPeriodetype, ESamordningsfradragtype } from './vedtak';
 
 export interface TilkjentYtelse {
     andeler: AndelTilkjentYtelse[];
-    samordningsfradagType: ESamordningsfradragtype | null;
+    samordningsfradragType: ESamordningsfradragtype | null;
 }
 
 export interface AndelTilkjentYtelse {

@@ -8,8 +8,8 @@ export const delmalTilHtml = (tilkjentYtelse?: TilkjentYtelse) => {
 
 const borderStyling = 'border: 1px solid black; padding: 3px 5px 3px 5px;';
 const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
-    const samordningskolonneTittel: string = tilkjentYtelse?.samordningsfradagType
-        ? samordningsfradagTilTekst[tilkjentYtelse.samordningsfradagType]
+    const samordningskolonneTittel: string = tilkjentYtelse?.samordningsfradragType
+        ? samordningsfradagTilTekst[tilkjentYtelse.samordningsfradragType]
         : 'Samordning';
     const tabellHeadereUtenSamordning = `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}">
                 <thead><tr>
@@ -19,11 +19,11 @@ const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
     const samordningHeader = `<th style="width: 85px; ${borderStyling}">${samordningskolonneTittel}</th>`;
     const tabellRader = `</tr></thead><tbody>${lagRaderForVedtak(
         tilkjentYtelse,
-        !!tilkjentYtelse?.samordningsfradagType
+        !!tilkjentYtelse?.samordningsfradragType
     )}</tbody></table>`;
     return (
         tabellHeadereUtenSamordning +
-        (tilkjentYtelse?.samordningsfradagType ? samordningHeader : ``) +
+        (tilkjentYtelse?.samordningsfradragType ? samordningHeader : ``) +
         tabellRader
     );
 };
