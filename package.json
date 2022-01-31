@@ -27,7 +27,7 @@
     "@navikt/boxed-list-with-links": "^1.0.4",
     "@navikt/ds-css": "^0.12.11-next.0",
     "@navikt/ds-icons": "^0.7.2",
-    "@navikt/ds-react": "^0.14.10-next.0",
+    "@navikt/ds-react": "^0.15.1",
     "@navikt/familie-backend": "5.0.28",
     "@navikt/familie-dokumentliste": "^1.0.13",
     "@navikt/familie-endringslogg": "^1.2.1",
