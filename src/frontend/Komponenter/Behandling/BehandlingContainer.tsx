@@ -24,7 +24,9 @@ const Container = styled.div`
 const HøyreMenyWrapper = styled.div`
     border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
-    width: 15rem;
+
+    width: 20rem;
+
     @media (max-width: 800px) {
         width: 0rem;
     }
@@ -33,7 +35,7 @@ const HøyreMenyWrapper = styled.div`
 
 const InnholdWrapper = styled.div`
     flex: 1;
-    max-width: calc(100% - 15rem);
+    max-width: calc(100% - 20rem);
     @media (max-width: 800px) {
         max-width: 100%;
     }
@@ -71,7 +73,7 @@ const BehandlingContent: FC<{
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper>
-                    <Høyremeny />
+                    <Høyremeny behandlingId={behandling.id} />
                 </HøyreMenyWrapper>
             </Container>
         </>
