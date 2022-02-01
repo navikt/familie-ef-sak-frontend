@@ -5,6 +5,7 @@ export type IAvslåVedtak = {
     avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
 };
+
 export interface IBeløpsperiode {
     periode: { fradato: string; tildato: string };
     beregningsgrunnlag: IBeregningsgrunnlag;
@@ -25,6 +26,7 @@ export type IInnvilgeVedtak = {
     inntektBegrunnelse?: string;
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
+    samordningsfradragType?: ESamordningsfradragtype | string | undefined;
 };
 
 export interface IOpphørtVedtak {
@@ -129,6 +131,11 @@ export enum EAktivitet {
     FORLENGELSE_STØNAD_UT_SKOLEÅRET = 'FORLENGELSE_MIDLERTIDIG_SYKDOM',
 }
 
+export enum ESamordningsfradragtype {
+    UFØRETRYGD = 'UFØRETRYGD',
+    GJENLEVENDEPENSJON = 'GJENLEVENDEPENSJON',
+}
+
 export const aktiviteterForlengelse: EAktivitet[] = [
     EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM,
     EAktivitet.FORLENGELSE_STØNAD_PÅVENTE_ARBEID,
@@ -208,6 +215,11 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     BARN_OVER_ÅTTE_ÅR: 'Barnet er over 8 år',
     STØNADSTID_OPPBRUKT: 'Stønadstiden er brukt opp',
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
+};
+
+export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {
+    UFØRETRYGD: 'Uføretrygd',
+    GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
 };
 
 const sorterAktiviteterAlfabetisk = (a: EAktivitet, b: EAktivitet) =>
