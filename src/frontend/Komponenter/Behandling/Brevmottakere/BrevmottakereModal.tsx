@@ -27,6 +27,10 @@ const SentrerKnapper = styled.div`
     justify-content: center;
 `;
 
+const StyledSystemtittel = styled(Systemtittel)`
+    margin-bottom: 2rem;
+`;
+
 export const BrevmottakereModal: FC<{
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
@@ -92,7 +96,7 @@ export const BrevmottakereModal: FC<{
             closeButton={true}
             contentLabel={'Velg brevmottakere'}
         >
-            <Systemtittel>Hvem skal motta vedtaksbrevet?</Systemtittel>
+            <StyledSystemtittel>Hvem skal motta vedtaksbrevet?</StyledSystemtittel>
             <GridContainer>
                 <Venstrekolonne>
                     <VergerOgFullmektigeFraRegister

@@ -4,6 +4,8 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { IFullmakt, IVergemål } from '../../../App/typer/personopplysninger';
 import { IBrevmottaker } from './typer';
 import { fullmaktTilBrevMottaker, vergemålTilBrevmottaker } from './brevmottakerUtils';
+import styled from 'styled-components';
+import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 
 interface Props {
     valgteMottakere: IBrevmottaker[];
@@ -11,6 +13,23 @@ interface Props {
     verger: IVergemål[];
     fullmakter: IFullmakt[];
 }
+
+const StyledIngress = styled(Ingress)`
+    margin-bottom: 1rem;
+`;
+
+const StyledMottakerBoks = styled.div`
+    padding: 10px;
+    margin-bottom: 4px;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    background: rgba(196, 196, 196, 0.2);
+`;
+
+const Kolonner = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 export const VergerOgFullmektigeFraRegister: FC<Props> = ({
     valgteMottakere,
@@ -36,18 +55,28 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
     };
     return (
         <>
-            <Ingress>Verge/Fullmektig fra register</Ingress>
+            <StyledIngress>Verge/Fullmektig fra register</StyledIngress>
             {muligeMottakere.map((mottaker, index) => {
                 const mottakerValgt = !!valgteMottakere.find(
                     (valgtMottaker) => valgtMottaker.personIdent === mottaker.personIdent
                 );
                 return (
-                    <Checkbox
-                        key={index}
-                        label={`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
-                        onChange={toggleMottaker(mottaker)}
-                        checked={mottakerValgt}
-                    />
+                    <>
+                        <StyledMottakerBoks>
+                            <Kolonner>
+                                {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
+                                <KopierbartNullableFødselsnummer
+                                    fødselsnummer={mottaker.personIdent}
+                                />
+                            </Kolonner>
+                        </StyledMottakerBoks>
+                        <Checkbox
+                            key={index}
+                            label={`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
+                            onChange={toggleMottaker(mottaker)}
+                            checked={mottakerValgt}
+                        />
+                    </>
                 );
             })}
         </>
