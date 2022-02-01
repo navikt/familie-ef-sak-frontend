@@ -6,6 +6,8 @@ import { IBrevmottaker } from './typer';
 import { fullmaktTilBrevMottaker, vergemålTilBrevmottaker } from './brevmottakerUtils';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import { Button } from '@navikt/ds-react';
+import '@navikt/ds-css';
 
 interface Props {
     valgteMottakere: IBrevmottaker[];
@@ -30,6 +32,12 @@ const Kolonner = styled.div`
     display: flex;
     flex-direction: column;
 `;
+
+const ButtonContainer = styled.div`
+    display: flex;
+`;
+
+const StyledButton = styled(Button)``;
 
 export const VergerOgFullmektigeFraRegister: FC<Props> = ({
     valgteMottakere,
@@ -69,6 +77,11 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
                                     fødselsnummer={mottaker.personIdent}
                                 />
                             </Kolonner>
+                            <ButtonContainer>
+                                <StyledButton variant="secondary" size="medium">
+                                    Legg til
+                                </StyledButton>
+                            </ButtonContainer>
                         </StyledMottakerBoks>
                         <Checkbox
                             key={index}
