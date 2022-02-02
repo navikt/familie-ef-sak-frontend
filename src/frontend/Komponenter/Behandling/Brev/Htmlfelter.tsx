@@ -39,11 +39,12 @@ const lagRaderForVedtak = (inkluderSamordning: string, tilkjentYtelse?: Tilkjent
             const inntekt = formaterTallMedTusenSkille(andel.inntekt);
             const samordningsfradag = formaterTallMedTusenSkille(andel.samordningsfradrag);
             const beløp = formaterTallMedTusenSkille(andel.beløp);
+            const andelsperiode = `${formaterNullableIsoDato(
+                andel.stønadFra
+            )} - ${formaterNullableIsoDato(andel.stønadTil)}`;
 
             return `<tr>
-                        <td style="${borderStyling}">${formaterNullableIsoDato(
-                andel.stønadFra
-            )} - ${formaterNullableIsoDato(andel.stønadTil)}</td>
+                        <td style="${borderStyling}">${andelsperiode}</td>
                         <td style="${borderStyling}">${inntekt}</td>
                         ${
                             inkluderSamordning &&
