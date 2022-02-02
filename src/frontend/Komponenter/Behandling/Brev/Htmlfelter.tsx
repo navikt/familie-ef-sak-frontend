@@ -11,19 +11,20 @@ const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
     const samordningskolonneTittel: string = tilkjentYtelse?.samordningsfradragType
         ? samordningsfradagTilTekst[tilkjentYtelse.samordningsfradragType]
         : 'Samordning';
-    const tabellHeadereUtenSamordning = `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}">
+    const obligatoriskeHeadere = `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}">
                 <thead><tr>
                     <th style="width: 160px; ${borderStyling}">Periode</th>
-                    <th style="width: 75px; ${borderStyling}">Årsinntekt</th>
-                    <th style="width: 150px; word-wrap: break-word; ${borderStyling}">Dette får du i overgangsstønad pr. måned</th>`;
+                    <th style="width: 75px; ${borderStyling}">Årsinntekt</th>`;
     const samordningHeader = `<th style="width: 85px; ${borderStyling}">${samordningskolonneTittel}</th>`;
+    const utbetaltStønadHeader = `<th style="width: 150px; word-wrap: break-word; ${borderStyling}">Dette får du i overgangsstønad pr. måned</th>`;
     const tabellRader = `</tr></thead><tbody>${lagRaderForVedtak(
         tilkjentYtelse,
         !!tilkjentYtelse?.samordningsfradragType
     )}</tbody></table>`;
     return (
-        tabellHeadereUtenSamordning +
+        obligatoriskeHeadere +
         (tilkjentYtelse?.samordningsfradragType ? samordningHeader : ``) +
+        utbetaltStønadHeader +
         tabellRader
     );
 };
@@ -40,16 +41,21 @@ const lagRaderForVedtak = (
             const inntekt = formaterTallMedTusenSkille(andel.inntekt);
             const beløp = formaterTallMedTusenSkille(andel.beløp);
             const samordningsfradag = formaterTallMedTusenSkille(andel.samordningsfradrag);
-            const tabellRaderUtenSamordning = `<tr>
+            const obligatoriskeTabellrader = `<tr>
                     <td style="${borderStyling}">
                         ${formaterNullableIsoDato(andel.stønadFra)} - ${formaterNullableIsoDato(
                 andel.stønadTil
             )}
                     </td>
-                    <td style="${borderStyling}">${inntekt}</td>
-                    <td style="${borderStyling}">${beløp}</td>`;
+                    <td style="${borderStyling}">${inntekt}</td>`;
             const samordningRad = `<td style="${borderStyling}">${samordningsfradag}</td>`;
-            return tabellRaderUtenSamordning + (inkluderSamordning ? samordningRad : ``) + `</tr>`;
+            const utbetaltStønadRad = `<td style="${borderStyling}">${beløp}</td>`;
+            return (
+                obligatoriskeTabellrader +
+                (inkluderSamordning ? samordningRad : ``) +
+                utbetaltStønadRad +
+                `</tr>`
+            );
         })
         .join('');
 };
