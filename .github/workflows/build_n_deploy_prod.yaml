@@ -18,6 +18,8 @@ jobs:
       - uses: navikt/familie-action-yarn-cache/@v1
       - name: Yarn install
         run: yarn --prefer-offline --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Yarn build
         run: yarn build
       - name: Build and publish Docker image
