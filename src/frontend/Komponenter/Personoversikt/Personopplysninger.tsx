@@ -7,8 +7,8 @@ import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 
 const Personopplysninger: React.FC<{
     personopplysninger: IPersonopplysninger;
-    fagsakId: string;
-}> = ({ personopplysninger, fagsakId }) => {
+    fagsakPersonId: string;
+}> = ({ personopplysninger, fagsakPersonId }) => {
     const personIdent = personopplysninger.personIdent;
     const navKontorConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -25,7 +25,7 @@ const Personopplysninger: React.FC<{
         <PersonopplysningerMedNavKontor
             personopplysninger={personopplysninger}
             navKontor={navKontor}
-            fagsakId={fagsakId}
+            fagsakPersonId={fagsakPersonId}
         />
     );
 };

@@ -18,14 +18,17 @@ import {
 import Utregningstabell from '../Behandling/VedtakOgBeregning/InnvilgeVedtak/Utregningstabell';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import { IFagsakPerson } from '../../App/typer/fagsak';
 
-const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
+const MigrerFagsak: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
         byggTomRessurs()
     );
     const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
+
+    const { overgangsstønad: fagsakId } = fagsakPerson;
 
     const hentMigreringConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -61,7 +64,7 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
     return (
         <div style={{ marginTop: '1rem' }}>
-            <h1>Migrering</h1>
+            <h1>Migrering - Overgangsstønad</h1>
             <Knapp onClick={hentMigreringInfo}>Hent migreringinfo</Knapp>
             <DataViewer response={{ migreringInfo }}>
                 {({ migreringInfo }) => (

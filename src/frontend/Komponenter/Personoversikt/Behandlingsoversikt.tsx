@@ -69,7 +69,7 @@ const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string):
     return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
 };
 
-const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
+const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
@@ -84,7 +84,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const hentFagsak = () =>
         axiosRequest<Fagsak, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
+            url: `/familie-ef-sak/api/fagsak/${fagsakPersonId}`,
         }).then((respons: RessursSuksess<Fagsak> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settFagsak(respons);
@@ -96,13 +96,13 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsakId}`,
+            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsakPersonId}`,
         }).then((response) => settTilbakekrevingbehandlinger(response));
 
     const gjørTekniskOpphør = () => {
         axiosRequest<void, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
+            url: `/familie-ef-sak/api/tekniskopphor/${fagsakPersonId}`,
         }).then((response: RessursSuksess<void> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
@@ -113,12 +113,12 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     };
 
     useEffect(() => {
-        if (fagsakId) {
+        if (fagsakPersonId) {
             hentFagsak();
             hentTilbakekrevingBehandlinger();
         }
         // eslint-disable-next-line
-    }, [fagsakId]);
+    }, [fagsakPersonId]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
@@ -163,7 +163,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     <RevurderingModal
                         visModal={visRevurderingvalg}
                         settVisModal={settVisRevurderingvalg}
-                        fagsakId={fagsakId}
+                        fagsakId={fagsakPersonId}
                     />
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør()}>

@@ -32,6 +32,10 @@ app.post('/familie-ef-sak/api/sok/', (req, res) => {
     const filnavn = `søkeresultat.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
+app.get('/familie-ef-sak/api/personopplysninger/fagsak-person/:id', (req, res) => {
+    const filnavn = `personopplysninger.json`;
+    setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
+});
 app.get('/familie-ef-sak/api/personopplysninger/fagsak/:id', (req, res) => {
     const filnavn = `personopplysninger.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);

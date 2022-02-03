@@ -13,12 +13,14 @@ import Vedtaksperioderoversikt from './Vedtaksperioderoversikt';
 import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import Dokumenter from './Dokumenter';
 import Infotrygdperioderoversikt from './Infotrygdperioderoversikt';
+import { IFagsakPerson } from '../../App/typer/fagsak';
 
 const PersonoversiktContent: React.FC<{
-    fagsakId: string;
+    fagsakPerson: IFagsakPerson;
     personopplysninger: IPersonopplysninger;
-}> = ({ fagsakId, personopplysninger }) => {
+}> = ({ fagsakPerson, personopplysninger }) => {
     const [tabvalg, settTabvalg] = useState<number>(1);
+    const { id: fagsakPersonId } = fagsakPerson;
 
     return (
         <>
@@ -38,33 +40,47 @@ const PersonoversiktContent: React.FC<{
                 {tabvalg === 0 && (
                     <Personopplysninger
                         personopplysninger={personopplysninger}
-                        fagsakId={fagsakId}
+                        fagsakPersonId={fagsakPersonId}
                     />
                 )}
-                {tabvalg === 1 && <Behandlingsoversikt fagsakId={fagsakId} />}
-                {tabvalg === 2 && <Vedtaksperioderoversikt fagsakId={fagsakId} />}
+                {tabvalg === 1 && <Behandlingsoversikt fagsakPersonId={fagsakPersonId} />}
+                {/* TODO: Vedtaksperioderoversikt trenger håndtering for hver fagsak  */}
+                {tabvalg === 2 && fagsakPerson.overgangsstønad && (
+                    <Vedtaksperioderoversikt fagsakId={fagsakPerson.overgangsstønad} />
+                )}
                 {tabvalg === 3 && (
                     <Infotrygdperioderoversikt
-                        fagsakId={fagsakId}
+                        fagsakPerson={fagsakPerson}
                         personIdent={personopplysninger.personIdent}
                     />
                 )}
                 {tabvalg === 4 && <Dokumenter personopplysninger={personopplysninger} />}
-                {tabvalg === 5 && <FrittståendeBrevMedVisning fagsakId={fagsakId} />}
+                {/* TODO: FrittståendeBrevMedVisning trenger håndtering for hver fagsak  */}
+                {tabvalg === 5 && fagsakPerson.overgangsstønad && (
+                    <FrittståendeBrevMedVisning fagsakId={fagsakPerson.overgangsstønad} />
+                )}
             </Side>
         </>
     );
 };
 
 const Personoversikt: React.FC = () => {
-    const fagsakId = useParams<{ fagsakId: string }>().fagsakId as string;
+    const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
 
     const personopplysningerConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
+            url: `/familie-ef-sak/api/personopplysninger/fagsak-person/${fagsakPersonId}`,
         }),
-        [fagsakId]
+        [fagsakPersonId]
+    );
+
+    const fagsakPersonConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/fagsak-person/${fagsakPersonId}`,
+        }),
+        [fagsakPersonId]
     );
 
     useEffect(() => {
@@ -72,12 +88,13 @@ const Personoversikt: React.FC = () => {
     }, []);
 
     const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
+    const fagsakPerson = useDataHenter<IFagsakPerson, null>(fagsakPersonConfig);
 
     return (
-        <DataViewer response={{ personopplysninger }}>
-            {({ personopplysninger }) => (
+        <DataViewer response={{ personopplysninger, fagsakPerson }}>
+            {({ personopplysninger, fagsakPerson }) => (
                 <PersonoversiktContent
-                    fagsakId={fagsakId}
+                    fagsakPerson={fagsakPerson}
                     personopplysninger={personopplysninger}
                 />
             )}
