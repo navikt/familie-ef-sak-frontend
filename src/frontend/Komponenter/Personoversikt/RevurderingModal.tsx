@@ -121,8 +121,8 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                     behandlingsårsaker
                         .filter(
                             (behandlingsårsak) =>
-                                behandlingsårsak === Behandlingsårsak.SANKSJON_1_MND &&
-                                !skalViseValgmulighetForSanksjon
+                                behandlingsårsak !== Behandlingsårsak.SANKSJON_1_MND ||
+                                skalViseValgmulighetForSanksjon
                         )
                         .map((behandlingsårsak: Behandlingsårsak, index: number) => (
                             <option key={index} value={behandlingsårsak}>
