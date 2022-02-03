@@ -8,6 +8,7 @@ export interface IFagsaksøk {
         fagsakId: string;
         stønadstype: Stønadstype;
         erLøpende: boolean;
+        erMigrert: boolean;
     }[];
     visningsnavn: string;
     personIdent: string;
