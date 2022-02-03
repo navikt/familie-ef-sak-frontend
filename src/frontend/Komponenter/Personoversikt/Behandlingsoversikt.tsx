@@ -23,14 +23,13 @@ import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PartialRecord } from '../../App/typer/common';
 import { ToggleName } from '../../App/context/toggles';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import Alertstripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import RevurderingModal from './RevurderingModal';
-import Alertstripe from 'nav-frontend-alertstriper';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
@@ -69,7 +68,7 @@ const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string):
     return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
 };
 
-const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
+const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
@@ -84,7 +83,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
     const hentFagsak = () =>
         axiosRequest<Fagsak, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/fagsak/${fagsakPersonId}`,
+            url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
         }).then((respons: RessursSuksess<Fagsak> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settFagsak(respons);
@@ -96,13 +95,13 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsakPersonId}`,
+            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsakId}`,
         }).then((response) => settTilbakekrevingbehandlinger(response));
 
     const gjørTekniskOpphør = () => {
         axiosRequest<void, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor/${fagsakPersonId}`,
+            url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
         }).then((response: RessursSuksess<void> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
                 hentFagsak();
@@ -113,12 +112,12 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
     };
 
     useEffect(() => {
-        if (fagsakPersonId) {
+        if (fagsakId) {
             hentFagsak();
             hentTilbakekrevingBehandlinger();
         }
         // eslint-disable-next-line
-    }, [fagsakPersonId]);
+    }, [fagsakId]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
@@ -163,7 +162,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
                     <RevurderingModal
                         visModal={visRevurderingvalg}
                         settVisModal={settVisRevurderingvalg}
-                        fagsakId={fagsakPersonId}
+                        fagsakId={fagsakId}
                     />
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
