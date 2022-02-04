@@ -68,6 +68,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
 }) => {
     const { toggles } = useToggles();
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
+    const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
@@ -176,7 +177,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                             }}
                             valgtDato={valgtDato}
                         />
-                        {harNyeBarnSidenForrigeBehandling && (
+                        {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
                             <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
                                 <TekstForCheckboxGruppe>
                                     Barna listet opp nedenfor har ikke vært en del av behandlingen
