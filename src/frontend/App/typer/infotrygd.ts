@@ -40,7 +40,7 @@ export interface InfotrygdPeriode {
     brukerId: string;
 }
 
-enum Kode {
+export enum Kode {
     ANNULERT = 'ANNULERT',
     ENDRING_BEREGNINGSGRUNNLAG = 'ENDRING_BEREGNINGSGRUNNLAG',
     FØRSTEGANGSVEDTAK = 'FØRSTEGANGSVEDTAK',
