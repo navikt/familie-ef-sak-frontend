@@ -10,5 +10,5 @@ export interface RevurderingInnhold {
     fagsakId: string;
     behandlingsårsak: Behandlingsårsak;
     kravMottatt: string;
-    nyeBarn: BarnForRevurdering[];
+    barn: BarnForRevurdering[];
 }

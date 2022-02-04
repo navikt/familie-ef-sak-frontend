@@ -11,7 +11,13 @@ import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import styled from 'styled-components';
 import { Checkbox, CheckboxGruppe, Select } from 'nav-frontend-skjema';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { BarnForRevurdering, RevurderingInnhold } from '../../App/typer/revurderingstype';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -22,8 +28,12 @@ const StyledSelect = styled(Select)`
     margin-top: 2rem;
 `;
 
+interface KnappeWrapperProps {
+    ekstraPaddingOverKnapp: boolean;
+}
+
 const KnappeWrapper = styled.div`
-    margin-top: 16rem;
+    margin-top: ${(props: KnappeWrapperProps) => (props.ekstraPaddingOverKnapp ? '16rem' : '2rem')};
     margin-bottom: 1rem;
 `;
 
@@ -37,6 +47,10 @@ const StyledCheckboxGruppe = styled(CheckboxGruppe)`
 
 const StyledHovedknapp = styled(Hovedknapp)`
     margin-right: 1rem;
+`;
+
+const TekstForCheckboxGruppe = styled(Normaltekst)`
+    margin-bottom: 1rem;
 `;
 
 interface IProps {
@@ -67,22 +81,12 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
     >(byggTomRessurs());
 
     useEffect(() => {
-        settNyeBarnSidenForrigeBehandling({
-            status: RessursStatus.SUKSESS,
-            data: [
-                {
-                    fødselsdato: '12.01.2022',
-                    navn: 'Per Jensen',
-                    personIdent: '12340912341',
-                },
-                {
-                    fødselsdato: '30.09.2020',
-                    navn: 'Pål Jensen',
-                    personIdent: '12340912342',
-                },
-            ],
+        axiosRequest<BarnForRevurdering[], null>({
+            url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsakId}/nye-barn`,
+        }).then((response: RessursSuksess<BarnForRevurdering[]> | RessursFeilet) => {
+            settNyeBarnSidenForrigeBehandling(response);
         });
-    }, []);
+    }, [axiosRequest, fagsakId]);
 
     const opprettRevurdering = () => {
         settFeilmeldingModal('');
@@ -92,7 +96,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                 fagsakId: fagsakId,
                 behandlingsårsak: valgtBehandlingsårsak as Behandlingsårsak,
                 kravMottatt: valgtDato as string,
-                nyeBarn: valgtBarn,
+                barn: valgtBarn,
             };
             axiosRequest<Ressurs<void>, RevurderingInnhold>({
                 method: 'POST',
@@ -117,6 +121,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
     return (
         <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
             {({ nyeBarnSidenForrigeBehandling }) => {
+                const harNyeBarnSidenForrigeBehandling = nyeBarnSidenForrigeBehandling.length > 0;
                 return (
                     <UIModalWrapper
                         modal={{
@@ -163,13 +168,13 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                             }}
                             valgtDato={valgtDato}
                         />
-                        {nyeBarnSidenForrigeBehandling.length > 0 && (
+                        {harNyeBarnSidenForrigeBehandling && (
                             <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
-                                <Normaltekst>
+                                <TekstForCheckboxGruppe>
                                     Barna listet opp nedenfor har ikke vært en del av behandlingen
                                     tidligere. Gjør en vurdering på hvorvidt disse skal inkluderes i
-                                    den nye behandlingen og velg de som er relevante.
-                                </Normaltekst>
+                                    den nye revurderingen og velg de som er relevante.
+                                </TekstForCheckboxGruppe>
                                 {nyeBarnSidenForrigeBehandling.map((nyttBarn) => {
                                     return (
                                         <Checkbox
@@ -196,7 +201,7 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                                 })}
                             </StyledCheckboxGruppe>
                         )}
-                        <KnappeWrapper>
+                        <KnappeWrapper ekstraPaddingOverKnapp={!harNyeBarnSidenForrigeBehandling}>
                             <StyledHovedknapp
                                 onClick={() => {
                                     if (!senderInnRevurdering) {
