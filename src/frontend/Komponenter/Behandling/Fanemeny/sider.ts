@@ -8,6 +8,8 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
 import { Simulering } from '../Simulering/Simulering';
+import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 export interface ISide {
     href: string;
@@ -16,13 +18,14 @@ export interface ISide {
 }
 
 export enum SideNavn {
-    TIDLIGEREVEDTAKSPERIODER = 'Tidligere vedtaksperioder',
-    INNGANGSVILKÅR = 'Inngangsvilkår',
     AKTIVITET = 'Aktivitet',
-    VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
-    SIMULERING = 'Simulering',
-    BREV = 'Brev',
     BLANKETT = 'Blankett',
+    BREV = 'Brev',
+    INNGANGSVILKÅR = 'Inngangsvilkår',
+    SIMULERING = 'Simulering',
+    SANKSJON = 'Sanksjonsfastsettelse',
+    TIDLIGEREVEDTAKSPERIODER = 'Tidligere vedtaksperioder',
+    VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
 }
 
 export const sider: ISide[] = [
@@ -47,6 +50,11 @@ export const sider: ISide[] = [
         komponent: VedtakOgBeregningSide,
     },
     {
+        href: 'sanksjonsfastsettelse',
+        navn: SideNavn.SANKSJON,
+        komponent: Sanksjonsfastsettelse,
+    },
+    {
         href: 'simulering',
         navn: SideNavn.SIMULERING,
         komponent: Simulering,
@@ -63,12 +71,28 @@ export const sider: ISide[] = [
     },
 ];
 
+const filtrerVekkHvisBlankett = [SideNavn.BREV, SideNavn.SANKSJON];
+const filtrerVekkHvisSanksjon = [
+    SideNavn.TIDLIGEREVEDTAKSPERIODER,
+    SideNavn.INNGANGSVILKÅR,
+    SideNavn.AKTIVITET,
+    SideNavn.VEDTAK_OG_BEREGNING,
+    SideNavn.BLANKETT,
+];
+const filtrerVekkHvisStandard = [SideNavn.BLANKETT, SideNavn.SANKSJON];
+
 export const filtrerSiderEtterBehandlingstype = (
     sider: ISide[],
     behandling: Behandling
 ): ISide[] => {
     if (behandling.type === Behandlingstype.BLANKETT) {
-        return sider.filter((side) => side.navn !== SideNavn.BREV);
+        return sider.filter((side) => !filtrerVekkHvisBlankett.includes(side.navn as SideNavn));
     }
-    return sider.filter((side) => side.navn !== SideNavn.BLANKETT);
+    if (
+        behandling.type === Behandlingstype.REVURDERING &&
+        behandling.behandlingsårsak === Behandlingsårsak.SANKSJON_1_MND
+    ) {
+        return sider.filter((side) => !filtrerVekkHvisSanksjon.includes(side.navn as SideNavn));
+    }
+    return sider.filter((side) => !filtrerVekkHvisStandard.includes(side.navn as SideNavn));
 };

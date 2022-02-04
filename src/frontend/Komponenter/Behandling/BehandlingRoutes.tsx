@@ -1,13 +1,18 @@
-import { Routes, Navigate, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import * as React from 'react';
 import { filtrerSiderEtterBehandlingstype, sider } from './Fanemeny/sider';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { RessursSuksess } from '../../App/typer/ressurs';
 import { Behandling } from '../../App/typer/fagsak';
+import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 
 const BehandlingRoutes: React.FC = () => {
     const { behandling } = useBehandling();
     const behandlingSuksess = behandling as RessursSuksess<Behandling>;
+    const destinasjonUrl =
+        behandlingSuksess.data.behandlingsårsak === Behandlingsårsak.SANKSJON_1_MND
+            ? 'sanksjonsfastsettelse'
+            : 'tidligere-vedtaksperioder';
 
     return (
         <Routes>
@@ -22,7 +27,7 @@ const BehandlingRoutes: React.FC = () => {
                     )}
                 />
             ))}
-            <Route path="*" element={<Navigate to="tidligere-vedtaksperioder" replace={true} />} />
+            <Route path="*" element={<Navigate to={destinasjonUrl} replace={true} />} />
         </Routes>
     );
 };
