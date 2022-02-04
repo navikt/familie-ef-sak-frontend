@@ -19,6 +19,7 @@ export const validerInnvilgetVedtakForm = ({
     inntekter,
     periodeBegrunnelse,
     inntektBegrunnelse,
+    samordningsfradragType,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     const periodeBegrunnelseFeil =
         periodeBegrunnelse === '' || periodeBegrunnelse === undefined
@@ -30,10 +31,18 @@ export const validerInnvilgetVedtakForm = ({
             ? 'Mangelfull utfylling av inntektsbegrunnelse'
             : undefined;
 
+    const samordningsfradagEksisterer = inntekter.some((rad) => rad.samordningsfradrag);
+
+    const typeSamordningFeil =
+        samordningsfradagEksisterer && !samordningsfradragType
+            ? 'Mangelfull utfylling av type samordningsfradag'
+            : undefined;
+
     return {
         ...validerVedtaksperioder({ perioder, inntekter }),
         inntektBegrunnelse: inntektBegrunnelseFeil,
         periodeBegrunnelse: periodeBegrunnelseFeil,
+        samordningsfradragType: typeSamordningFeil,
     };
 };
 

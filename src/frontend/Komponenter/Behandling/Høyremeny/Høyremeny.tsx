@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 
+interface IHøyremenyProps {
+    behandlingId: string;
+}
+
 const StyledHøyremeny = styled.div`
     width: 100%;
 `;
@@ -16,7 +20,7 @@ export enum Høyremenyvalg {
     Logg = 'Logg',
 }
 
-const Høyremeny: React.FC = () => {
+const Høyremeny: React.FC<IHøyremenyProps> = ({ behandlingId }) => {
     const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Logg);
     return (
         <>
@@ -24,7 +28,10 @@ const Høyremeny: React.FC = () => {
             <StyledHøyremeny>
                 <Valgvisning aktiv={aktivtValg} settAktiv={settAktivtvalg} />
                 <Dokumentoversikt hidden={aktivtValg !== Høyremenyvalg.Mappe} />
-                <BehandlingHistorikk hidden={aktivtValg !== Høyremenyvalg.Logg} />
+                <BehandlingHistorikk
+                    hidden={aktivtValg !== Høyremenyvalg.Logg}
+                    behandlingId={behandlingId}
+                />
                 {aktivtValg === Høyremenyvalg.Dialog && <div>Her kommer dialog</div>}
             </StyledHøyremeny>
         </>

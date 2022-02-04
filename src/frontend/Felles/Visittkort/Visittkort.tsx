@@ -68,6 +68,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
     const { axiosRequest, gåTilUrl } = useApp();
     const [fagsakId, settFagsakId] = useState('');
+    const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
 
     useEffect(() => {
@@ -82,6 +83,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 if (respons.status === RessursStatus.SUKSESS) {
                     if (respons.data?.fagsaker?.length) {
                         settFagsakId(respons.data.fagsaker[0].fagsakId);
+                        settErMigrert(respons.data.fagsaker[0].erMigrert);
                     }
                 } else {
                     settFeilFagsakHenting(respons.frontendFeilmelding);
@@ -123,6 +125,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <AdressebeskyttelseVarsel adressebeskyttelse={adressebeskyttelse} />
                     </ElementWrapper>
                 )}
+                {adressebeskyttelse && (
+                    <ElementWrapper>
+                        <AdressebeskyttelseVarsel adressebeskyttelse={adressebeskyttelse} />
+                    </ElementWrapper>
+                )}
                 {egenAnsatt && (
                     <ElementWrapper>
                         <EtikettFokus mini>Egen ansatt</EtikettFokus>
@@ -136,6 +143,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 {vergemål.length > 0 && (
                     <ElementWrapper>
                         <EtikettFokus mini>Verge</EtikettFokus>
+                    </ElementWrapper>
+                )}
+                {erMigrert && (
+                    <ElementWrapper>
+                        <EtikettFokus mini>Migrert</EtikettFokus>
                     </ElementWrapper>
                 )}
             </Visittkort>
@@ -152,9 +164,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     </StatuserLitenSkjerm>
                 </>
             )}
-            {behandling && erBehandlingRedigerbar(behandling) && (
-                <StyledHamburgermeny behandling={behandling} />
-            )}
+            {behandling && erBehandlingRedigerbar(behandling) && <StyledHamburgermeny />}
         </VisittkortWrapper>
     );
 };

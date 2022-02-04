@@ -33,6 +33,10 @@ export const formaterIsoDatoTid = (dato: string): string => {
     return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm");
 };
 
+export const formaterIsoDatoTidKort = (dato: string): string => {
+    return format(parseISO(dato), 'dd.MM.yyyy HH:mm');
+};
+
 export const formaterIsoDatoTidMedSekunder = (dato: string): string => {
     return format(parseISO(dato), "dd.MM.yyyy 'kl'.HH:mm:ss");
 };

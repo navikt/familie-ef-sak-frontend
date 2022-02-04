@@ -23,6 +23,8 @@ import { BarnForRevurdering, RevurderingInnhold } from '../../App/typer/revurder
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { useNavigate } from 'react-router-dom';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -64,6 +66,8 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
     settVisModal,
     fagsakId,
 }) => {
+    const { toggles } = useToggles();
+    const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
@@ -152,13 +156,17 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
                         >
                             <option value="">Velg</option>
                             {valgtBehandlingstype === Behandlingstype.REVURDERING &&
-                                behandlingsårsaker.map(
-                                    (behandlingsårsak: Behandlingsårsak, index: number) => (
+                                behandlingsårsaker
+                                    .filter(
+                                        (behandlingsårsak) =>
+                                            behandlingsårsak !== Behandlingsårsak.SANKSJON_1_MND ||
+                                            skalViseValgmulighetForSanksjon
+                                    )
+                                    .map((behandlingsårsak: Behandlingsårsak, index: number) => (
                                         <option key={index} value={behandlingsårsak}>
                                             {behandlingsårsakTilTekst[behandlingsårsak]}
                                         </option>
-                                    )
-                                )}
+                                    ))}
                         </StyledSelect>
                         <StyledFamilieDatovelgder
                             id={'krav-mottatt'}

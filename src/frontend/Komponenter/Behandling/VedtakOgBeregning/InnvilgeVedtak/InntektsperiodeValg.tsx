@@ -29,7 +29,7 @@ const TittelContainer = styled.div<{ lesevisning?: boolean }>`
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
 `;
 
-const StyledInput = styled(InputMedTusenSkille)`
+const InputMarginRight = styled(InputMedTusenSkille)`
     margin-right: 2rem;
 `;
 
@@ -98,7 +98,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             lesevisning={!behandlingErRedigerbar}
                         />
 
-                        <StyledInput
+                        <InputMarginRight
                             type="number"
                             value={harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''}
                             onChange={(e) => {
@@ -111,8 +111,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             }}
                             erLesevisning={!behandlingErRedigerbar}
                         />
-
-                        <StyledInput
+                        <InputMarginRight
                             aria-label={'Samordningsfradrag (mnd)'}
                             type="number"
                             value={
@@ -128,7 +127,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             }}
                             erLesevisning={!behandlingErRedigerbar}
                         />
-
                         {skalViseFjernKnapp && (
                             <FjernKnapp
                                 onClick={() => {
