@@ -37,6 +37,11 @@ export type ISanksjonereVedtak = {
     internBegrunnelse: string;
 };
 
+export type ISanksjonereVedtakDto = {
+    sanksjonsårsak: Sanksjonsårsak;
+    internBegrunnelse: string;
+};
+
 export interface IOpphørtVedtak {
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;

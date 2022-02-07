@@ -13,10 +13,14 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { EBehandlingResultat, ISanksjonereVedtak } from '../../../App/typer/vedtak';
+import {
+    EBehandlingResultat,
+    EPeriodetype,
+    ISanksjonereVedtak,
+    ISanksjonereVedtakDto,
+} from '../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
-import { tomVedtaksperiodeRad } from '../VedtakOgBeregning/InnvilgeVedtak/VedtaksperiodeValg';
 import { validerSanksjonereVedtakForm } from '../VedtakOgBeregning/vedtaksvalidering';
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
@@ -25,7 +29,7 @@ import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStr
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { SANKSJONERE_VEDTAK } from './konstanter';
 
-export type SanksjonereVedtakForm = Omit<ISanksjonereVedtak, 'resultatType'>;
+export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
 const SanksjonVelger = styled(FamilieSelect)`
     margin-top: 1rem;
@@ -63,7 +67,6 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
     const formState = useFormState<SanksjonereVedtakForm>(
         {
             sanksjonsårsak: '',
-            periode: tomVedtaksperiodeRad,
             internBegrunnelse: '',
         },
         validerSanksjonereVedtakForm
@@ -108,7 +111,7 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
             resultatType: EBehandlingResultat.SANKSJONERE,
             sanksjonsårsak: form.sanksjonsårsak,
             internBegrunnelse: form.internBegrunnelse,
-            periode: form.periode,
+            periode: { periodeType: EPeriodetype.SANKSJON, aktivitet: undefined },
         };
         lagreVedtak(vedtaksRequest);
     };

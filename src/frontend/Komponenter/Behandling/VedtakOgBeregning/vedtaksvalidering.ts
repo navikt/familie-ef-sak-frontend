@@ -157,15 +157,12 @@ export const validerSanksjonereVedtakForm = ({
     const sanksjonsårsakFeil =
         sanksjonsårsak === undefined ? 'Mangelfull utfylling av sanksjonsårsak' : undefined;
 
-    const periodeFeil = { periodeType: undefined, aktivitet: undefined }; //TODO: Lage en sjekk her?
-
     const internBegrunnelseFeil =
         internBegrunnelse === '' || internBegrunnelse === undefined
             ? 'Mangelfull utfylling av intern begrunnelse'
             : undefined;
     return {
         sanksjonsårsak: sanksjonsårsakFeil,
-        periode: periodeFeil,
         internBegrunnelse: internBegrunnelseFeil,
     };
 };
