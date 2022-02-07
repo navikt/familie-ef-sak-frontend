@@ -132,20 +132,32 @@ const slåSammenVedtak = (
         return acc;
     }, [] as InfotrygdPeriodeMedFlereEndringer[]);
 
-const slåSammenOfSorterPerioder = (
+/**
+ * Sorterer perioder, stønadFom desc, og sen på vedtakId desc, då senere vedtakId har høyere presedens
+ */
+const sortPerioder = (
+    perioder: InfotrygdPeriodeMedFlereEndringer[]
+): InfotrygdPeriodeMedFlereEndringer[] =>
+    perioder.sort((a, b) => {
+        return (
+            new Date(b.stønadFom).getTime() - new Date(a.stønadFom).getTime() ||
+            b.vedtakId - a.vedtakId
+        );
+    });
+
+const slåSammenOgSorterPerioder = (
     perioder: InfotrygdPeriode[]
 ): InfotrygdPeriodeMedFlereEndringer[] => {
     const perioderPerVedtak = Object.values(grupperPerioderPerVedtak(perioder));
     const sammenslåtteVedtak = slåSammenVedtak(perioderPerVedtak);
-    // TODO sorter vedtak
-    return sammenslåtteVedtak;
+    return sortPerioder(sammenslåtteVedtak);
 };
 
 const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ perioder }) => {
     if (perioder.length === 0) {
         return <>Ingen vedtaksperioder i Infotrygd</>;
     }
-    const sammenslåttePerioder = slåSammenOfSorterPerioder(perioder);
+    const sammenslåttePerioder = slåSammenOgSorterPerioder(perioder);
     return (
         <StyledTabell className="tabell">
             <thead>

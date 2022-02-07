@@ -53,15 +53,15 @@ export enum Kode {
 }
 
 export const kodeTilTekst: Record<Kode, string> = {
-    ANNULERT: 'Annullert (AN)',
-    ENDRING_BEREGNINGSGRUNNLAG: 'Endring i beregningsgrunnlag (E)',
-    FØRSTEGANGSVEDTAK: 'Førstegangsvedtak (F)',
-    G_REGULERING: 'G-regulering (G)',
-    NY: 'Ny (NY)',
-    OPPHØRT: 'Opphørt (O)',
-    SATSENDRING: 'Satsendring (S)',
-    UAKTUELL: 'Uaktuell (UA)',
-    OVERTFØRT_NY_LØSNING: 'Overf ny løsning (OO)',
+    ANNULERT: 'Annullert',
+    ENDRING_BEREGNINGSGRUNNLAG: 'Endring i beregningsgrunnlag',
+    FØRSTEGANGSVEDTAK: 'Førstegangsvedtak',
+    G_REGULERING: 'G-regulering',
+    NY: 'Ny',
+    OPPHØRT: 'Opphørt',
+    SATSENDRING: 'Satsendring',
+    UAKTUELL: 'Uaktuell',
+    OVERTFØRT_NY_LØSNING: 'Overf ny løsning',
 };
 
 enum Sakstype {
