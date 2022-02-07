@@ -11,7 +11,7 @@ updates:
   ignore:
    - dependency-name: "*"
      update-types: ["version-update:semver-patch"]
-  - registries:
+  registries:
     npm-github:
       type: npm-registry
       url: https://npm.pkg.github.com
