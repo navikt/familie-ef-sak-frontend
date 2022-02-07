@@ -70,7 +70,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
 
             axiosRequest<Ressurs<void>, null>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/tilbakekreving/manuel/${fagsakId}`,
+                url: `/familie-ef-sak/api/tilbakekreving/fagsak/{fagsakId}/opprett-tilbakekreving`,
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
