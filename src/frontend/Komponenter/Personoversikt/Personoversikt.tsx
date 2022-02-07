@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -14,54 +14,93 @@ import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMed
 import Dokumenter from './Dokumenter';
 import Infotrygdperioderoversikt from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
+import { TabProps } from 'nav-frontend-tabs/lib/tab';
+
+type TabWithPathProp = TabProps & { path: string };
+
+const tabs: TabWithPathProp[] = [
+    { label: 'Personopplysninger', path: 'personopplysninger' },
+    { label: 'Behandlingsoversikt', path: 'behandlinger' },
+    { label: 'Vedtaksperioder', path: 'vedtak' },
+    { label: 'Vedtaksperioder infotrygd', path: 'infotrygd' },
+    { label: 'Dokumentoversikt', path: 'dokumenter' },
+    { label: 'Brev', path: 'frittstaaende-brev' },
+];
 
 const PersonoversiktContent: React.FC<{
     fagsakPerson: IFagsakPerson;
     personopplysninger: IPersonopplysninger;
 }> = ({ fagsakPerson, personopplysninger }) => {
-    const [tabvalg, settTabvalg] = useState<number>(1);
+    const navigate = useNavigate();
     const { id: fagsakPersonId } = fagsakPerson;
 
+    const paths = useLocation().pathname.split('/').slice(-1);
+    const path = paths.length ? paths[paths.length - 1] : '';
     return (
         <>
             <VisittkortComponent data={personopplysninger} />
             <Side className={'container'}>
                 <TabsPure
-                    tabs={[
-                        { label: 'Personopplysninger', aktiv: tabvalg === 0 },
-                        { label: 'Behandlingsoversikt', aktiv: tabvalg === 1 },
-                        { label: 'Vedtaksperioder', aktiv: tabvalg === 2 },
-                        { label: 'Vedtaksperioder infotrygd', aktiv: tabvalg === 3 },
-                        { label: 'Dokumentoversikt', aktiv: tabvalg === 4 },
-                        { label: 'Brev', aktiv: tabvalg === 5 },
-                    ]}
-                    onChange={(_, tabNumber) => settTabvalg(tabNumber)}
+                    tabs={tabs.map((tab) => ({ ...tab, aktiv: tab.path === path }))}
+                    onChange={(_, tabNumber) => {
+                        navigate(tabs[tabNumber].path);
+                    }}
                 />
-                {tabvalg === 0 && (
-                    <Personopplysninger
-                        personopplysninger={personopplysninger}
-                        fagsakPersonId={fagsakPersonId}
+
+                <Routes>
+                    <Route
+                        path="/personopplysninger"
+                        element={
+                            <Personopplysninger
+                                personopplysninger={personopplysninger}
+                                fagsakPersonId={fagsakPersonId}
+                            />
+                        }
                     />
-                )}
-                {/* TODO: Behandlingsoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
-                {tabvalg === 1 && fagsakPerson.overgangsstønad && (
-                    <Behandlingsoversikt fagsakId={fagsakPerson.overgangsstønad} />
-                )}
-                {/* TODO: Vedtaksperioderoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
-                {tabvalg === 2 && fagsakPerson.overgangsstønad && (
-                    <Vedtaksperioderoversikt fagsakId={fagsakPerson.overgangsstønad} />
-                )}
-                {tabvalg === 3 && (
-                    <Infotrygdperioderoversikt
-                        fagsakPerson={fagsakPerson}
-                        personIdent={personopplysninger.personIdent}
+                    {/* TODO: Behandlingsoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
+                    <Route
+                        path="/behandlinger"
+                        element={
+                            fagsakPerson.overgangsstønad && (
+                                <Behandlingsoversikt fagsakId={fagsakPerson.overgangsstønad} />
+                            )
+                        }
                     />
-                )}
-                {tabvalg === 4 && <Dokumenter personopplysninger={personopplysninger} />}
-                {/* TODO: FrittståendeBrevMedVisning trenger håndtering for hver fagsak  */}
-                {tabvalg === 5 && fagsakPerson.overgangsstønad && (
-                    <FrittståendeBrevMedVisning fagsakId={fagsakPerson.overgangsstønad} />
-                )}
+                    {/* TODO: Vedtaksperioderoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
+                    <Route
+                        path="/vedtak"
+                        element={
+                            fagsakPerson.overgangsstønad && (
+                                <Vedtaksperioderoversikt fagsakId={fagsakPerson.overgangsstønad} />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/infotrygd"
+                        element={
+                            <Infotrygdperioderoversikt
+                                fagsakPerson={fagsakPerson}
+                                personIdent={personopplysninger.personIdent}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/dokumenter"
+                        element={<Dokumenter personopplysninger={personopplysninger} />}
+                    />
+                    {/* TODO: FrittståendeBrevMedVisning trenger håndtering for hver fagsak  */}
+                    <Route
+                        path="/frittstaaende-brev"
+                        element={
+                            fagsakPerson.overgangsstønad && (
+                                <FrittståendeBrevMedVisning
+                                    fagsakId={fagsakPerson.overgangsstønad}
+                                />
+                            )
+                        }
+                    />
+                    <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />
+                </Routes>
             </Side>
         </>
     );
