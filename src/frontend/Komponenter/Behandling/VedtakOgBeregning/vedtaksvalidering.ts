@@ -13,6 +13,7 @@ import {
 } from '../../../App/utils/dato';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
 import { FormErrors } from '../../../App/hooks/felles/useFormState';
+import { SanksjonereVedtakForm } from '../Sanksjon/Sanksjonsfastsettelse';
 
 export const validerInnvilgetVedtakForm = ({
     perioder,
@@ -146,5 +147,25 @@ export const validerVedtaksperioder = ({
     return {
         perioder: feilIVedtaksPerioder,
         inntekter: inntektsperiodeFeil,
+    };
+};
+
+export const validerSanksjonereVedtakForm = ({
+    sanksjonsårsak,
+    internBegrunnelse,
+}: SanksjonereVedtakForm): FormErrors<SanksjonereVedtakForm> => {
+    const sanksjonsårsakFeil =
+        sanksjonsårsak === undefined ? 'Mangelfull utfylling av sanksjonsårsak' : undefined;
+
+    const periodeFeil = { periodeType: undefined, aktivitet: undefined }; //TODO: Lage en sjekk her?
+
+    const internBegrunnelseFeil =
+        internBegrunnelse === '' || internBegrunnelse === undefined
+            ? 'Mangelfull utfylling av intern begrunnelse'
+            : undefined;
+    return {
+        sanksjonsårsak: sanksjonsårsakFeil,
+        periode: periodeFeil,
+        internBegrunnelse: internBegrunnelseFeil,
     };
 };
