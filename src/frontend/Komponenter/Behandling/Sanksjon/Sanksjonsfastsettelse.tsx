@@ -14,6 +14,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import {
+    EAktivitet,
     EBehandlingResultat,
     EPeriodetype,
     ISanksjonereVedtak,
@@ -111,7 +112,12 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
             resultatType: EBehandlingResultat.SANKSJONERE,
             sanksjonsårsak: form.sanksjonsårsak,
             internBegrunnelse: form.internBegrunnelse,
-            periode: { periodeType: EPeriodetype.SANKSJON, aktivitet: undefined },
+            periode: {
+                periodeType: EPeriodetype.SANKSJON,
+                aktivitet: EAktivitet.SANKSJON,
+                årMånedFra: '2022-01',
+                årMånedTil: '2022-01',
+            },
         };
         lagreVedtak(vedtaksRequest);
     };
@@ -173,6 +179,8 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
                                     {feilmelding}
                                 </AlertStripeFeilPreWrap>
                             )}
+                        </Seksjon>
+                        <Seksjon>
                             <Hovedknapp
                                 hidden={!behandlingErRedigerbar}
                                 htmlType="submit"

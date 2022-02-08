@@ -125,6 +125,7 @@ export const periodeVariantTilProperty = (periodeVariant: PeriodeVariant): EPeri
 };
 
 export enum EAktivitet {
+    SANKSJON = 'SANKSJON',
     IKKE_AKTIVITETSPLIKT = 'IKKE_AKTIVITETSPLIKT',
     BARN_UNDER_ETT_ÅR = 'BARN_UNDER_ETT_ÅR',
     FORSØRGER_I_ARBEID = 'FORSØRGER_I_ARBEID',
@@ -202,6 +203,7 @@ export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
 };
 
 export const aktivitetTilTekst: Record<EAktivitet, string> = {
+    SANKSJON: 'Sanksjon',
     IKKE_AKTIVITETSPLIKT: '',
     BARN_UNDER_ETT_ÅR: 'Barn er under 1 år',
     FORSØRGER_I_ARBEID: 'Forsørger er i arbeid (§15-6 første ledd)',
