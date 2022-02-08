@@ -35,8 +35,7 @@ const OppgaveMigrering: React.FC<{ oppgaveId: string; journalpostId: string }> =
         if (journalpostId) {
             hentJournalPost();
         }
-        // eslint-disable-next-line
-    }, [journalpostId]);
+    }, [hentJournalPost, journalpostId]);
 
     useEffect(() => {
         if (journalResponse.status === RessursStatus.SUKSESS) {
