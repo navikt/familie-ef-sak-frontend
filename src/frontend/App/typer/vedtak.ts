@@ -48,7 +48,7 @@ export interface IOpphørtVedtak {
     begrunnelse: string;
 }
 
-export type IVedtak = IAvslåVedtak | IInnvilgeVedtak | IOpphørtVedtak;
+export type IVedtak = IAvslåVedtak | IInnvilgeVedtak | IOpphørtVedtak | ISanksjonereVedtak;
 
 export interface IInntektsperiode {
     årMånedFra?: string;

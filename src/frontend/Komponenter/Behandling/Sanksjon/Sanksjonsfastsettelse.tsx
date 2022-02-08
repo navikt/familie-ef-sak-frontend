@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
     sanksjonAdvarsel,
@@ -19,6 +19,7 @@ import {
     EPeriodetype,
     ISanksjonereVedtak,
     ISanksjonereVedtakDto,
+    IVedtak,
 } from '../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
@@ -29,6 +30,8 @@ import { FamilieSelect } from '@navikt/familie-form-elements';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { SANKSJONERE_VEDTAK } from './konstanter';
+import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -57,9 +60,34 @@ interface Props {
 }
 
 const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
+    const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
+    useEffect(() => {
+        hentVedtak();
+    }, [hentVedtak]);
+    return (
+        <DataViewer response={{ vedtak }}>
+            {({ vedtak }) => {
+                return (
+                    <SanksjonsvedtakVisning
+                        behandlingId={behandlingId}
+                        lagretVedtak={vedtak}
+                    ></SanksjonsvedtakVisning>
+                );
+            }}
+        </DataViewer>
+    );
+};
+
+const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak }> = ({
+    behandlingId,
+    lagretVedtak,
+}) => {
+    const lagretSanksjonertVedtak =
+        lagretVedtak?.resultatType === EBehandlingResultat.SANKSJONERE
+            ? (lagretVedtak as ISanksjonereVedtak)
+            : undefined;
     const [feilmelding, settFeilmelding] = useState<string>();
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
-
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const navigate = useNavigate();
@@ -67,8 +95,8 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
 
     const formState = useFormState<SanksjonereVedtakForm>(
         {
-            sanksjonsårsak: '',
-            internBegrunnelse: '',
+            sanksjonsårsak: lagretSanksjonertVedtak?.sanksjonsårsak || '',
+            internBegrunnelse: lagretSanksjonertVedtak?.internBegrunnelse || '',
         },
         validerSanksjonereVedtakForm
     );
