@@ -155,15 +155,17 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                     />
                     {kanStarteRevurdering && (
-                        <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                            Opprett ny behandling
-                        </KnappMedMargin>
+                        <>
+                            <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
+                                Opprett ny behandling
+                            </KnappMedMargin>
+                            <RevurderingModal
+                                visModal={visRevurderingvalg}
+                                settVisModal={settVisRevurderingvalg}
+                                fagsakId={fagsakId}
+                            />
+                        </>
                     )}
-                    <RevurderingModal
-                        visModal={visRevurderingvalg}
-                        settVisModal={settVisRevurderingvalg}
-                        fagsakId={fagsakId}
-                    />
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
                             Teknisk opphør
