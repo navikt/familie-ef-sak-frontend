@@ -16,15 +16,66 @@ import Infotrygdperioderoversikt from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { TabProps } from 'nav-frontend-tabs/lib/tab';
 
-type TabWithPathProp = TabProps & { path: string };
+type TabWithRouter = TabProps & {
+    path: string;
+    komponent: (
+        fagsakPerson: IFagsakPerson,
+        personopplysninger: IPersonopplysninger
+    ) => React.ReactNode | undefined;
+};
 
-const tabs: TabWithPathProp[] = [
-    { label: 'Personopplysninger', path: 'personopplysninger' },
-    { label: 'Behandlingsoversikt', path: 'behandlinger' },
-    { label: 'Vedtaksperioder', path: 'vedtak' },
-    { label: 'Vedtaksperioder infotrygd', path: 'infotrygd' },
-    { label: 'Dokumentoversikt', path: 'dokumenter' },
-    { label: 'Brev', path: 'frittstaaende-brev' },
+const tabs: TabWithRouter[] = [
+    {
+        label: 'Personopplysninger',
+        path: 'personopplysninger',
+        komponent: (fagsakPerson, personopplysninger) => (
+            <Personopplysninger
+                personopplysninger={personopplysninger}
+                fagsakPersonId={fagsakPerson.id}
+            />
+        ),
+    },
+    {
+        label: 'Behandlingsoversikt',
+        path: 'behandlinger',
+        komponent: (fagsakPerson) =>
+            fagsakPerson.overgangsstønad && (
+                <Behandlingsoversikt fagsakId={fagsakPerson.overgangsstønad} />
+            ),
+    },
+    {
+        label: 'Vedtaksperioder',
+        path: 'vedtak',
+        komponent: (fagsakPerson) =>
+            fagsakPerson.overgangsstønad && (
+                <Vedtaksperioderoversikt fagsakId={fagsakPerson.overgangsstønad} />
+            ),
+    },
+    {
+        label: 'Vedtaksperioder infotrygd',
+        path: 'infotrygd',
+        komponent: (fagsakPerson, personopplysninger) => (
+            <Infotrygdperioderoversikt
+                fagsakPerson={fagsakPerson}
+                personIdent={personopplysninger.personIdent}
+            />
+        ),
+    },
+    {
+        label: 'Dokumentoversikt',
+        path: 'dokumenter',
+        komponent: (_, personopplysninger) => (
+            <Dokumenter personopplysninger={personopplysninger} />
+        ),
+    },
+    {
+        label: 'Brev',
+        path: 'frittstaaende-brev',
+        komponent: (fagsakPerson) =>
+            fagsakPerson.overgangsstønad && (
+                <FrittståendeBrevMedVisning fagsakId={fagsakPerson.overgangsstønad} />
+            ),
+    },
 ];
 
 const PersonoversiktContent: React.FC<{
@@ -32,7 +83,6 @@ const PersonoversiktContent: React.FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ fagsakPerson, personopplysninger }) => {
     const navigate = useNavigate();
-    const { id: fagsakPersonId } = fagsakPerson;
 
     const paths = useLocation().pathname.split('/').slice(-1);
     const path = paths.length ? paths[paths.length - 1] : '';
@@ -48,57 +98,12 @@ const PersonoversiktContent: React.FC<{
                 />
 
                 <Routes>
-                    <Route
-                        path="/personopplysninger"
-                        element={
-                            <Personopplysninger
-                                personopplysninger={personopplysninger}
-                                fagsakPersonId={fagsakPersonId}
-                            />
-                        }
-                    />
-                    {/* TODO: Behandlingsoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
-                    <Route
-                        path="/behandlinger"
-                        element={
-                            fagsakPerson.overgangsstønad && (
-                                <Behandlingsoversikt fagsakId={fagsakPerson.overgangsstønad} />
-                            )
-                        }
-                    />
-                    {/* TODO: Vedtaksperioderoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
-                    <Route
-                        path="/vedtak"
-                        element={
-                            fagsakPerson.overgangsstønad && (
-                                <Vedtaksperioderoversikt fagsakId={fagsakPerson.overgangsstønad} />
-                            )
-                        }
-                    />
-                    <Route
-                        path="/infotrygd"
-                        element={
-                            <Infotrygdperioderoversikt
-                                fagsakPerson={fagsakPerson}
-                                personIdent={personopplysninger.personIdent}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/dokumenter"
-                        element={<Dokumenter personopplysninger={personopplysninger} />}
-                    />
-                    {/* TODO: FrittståendeBrevMedVisning trenger håndtering for hver fagsak  */}
-                    <Route
-                        path="/frittstaaende-brev"
-                        element={
-                            fagsakPerson.overgangsstønad && (
-                                <FrittståendeBrevMedVisning
-                                    fagsakId={fagsakPerson.overgangsstønad}
-                                />
-                            )
-                        }
-                    />
+                    {tabs.map((tab) => (
+                        <Route
+                            path={`/${tab.path}`}
+                            element={tab.komponent(fagsakPerson, personopplysninger)}
+                        />
+                    ))}
                     <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />
                 </Routes>
             </Side>
