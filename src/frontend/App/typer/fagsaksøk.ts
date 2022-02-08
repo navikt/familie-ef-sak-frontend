@@ -10,6 +10,7 @@ export interface IFagsaksøk {
         erLøpende: boolean;
         erMigrert: boolean;
     }[];
+    fagsakPersonId?: string;
     visningsnavn: string;
     personIdent: string;
     kjønn: kjønnType;

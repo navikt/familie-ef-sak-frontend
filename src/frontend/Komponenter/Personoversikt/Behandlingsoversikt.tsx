@@ -23,14 +23,13 @@ import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PartialRecord } from '../../App/typer/common';
 import { ToggleName } from '../../App/context/toggles';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import Alertstripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import RevurderingModal from './RevurderingModal';
-import Alertstripe from 'nav-frontend-alertstriper';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
