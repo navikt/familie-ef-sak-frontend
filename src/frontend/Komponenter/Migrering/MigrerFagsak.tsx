@@ -19,7 +19,7 @@ import Utregningstabell from '../Behandling/VedtakOgBeregning/InnvilgeVedtak/Utr
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 
-const MigrerFagsak: React.FC<{ fagsakId: string; onMigrert?: () => void }> = ({
+const MigrerFagsak: React.FC<{ fagsakId: string; onMigrert?: (behandlingId: string) => void }> = ({
     fagsakId,
     onMigrert,
 }) => {
@@ -61,7 +61,7 @@ const MigrerFagsak: React.FC<{ fagsakId: string; onMigrert?: () => void }> = ({
         axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
             settMigrertStatus(res);
             if (res.status === RessursStatus.SUKSESS && onMigrert) {
-                onMigrert();
+                onMigrert(res.data);
             }
         });
 

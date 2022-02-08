@@ -172,7 +172,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 const Infotrygdperioderoversikt: React.FC<{
     fagsakId: string;
     personIdent: string;
-    onMigrert?: () => void;
+    onMigrert?: (behandlingId: string) => void;
 }> = ({ fagsakId, personIdent, onMigrert }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
