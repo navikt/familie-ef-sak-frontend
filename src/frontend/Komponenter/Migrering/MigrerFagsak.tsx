@@ -19,7 +19,10 @@ import Utregningstabell from '../Behandling/VedtakOgBeregning/InnvilgeVedtak/Utr
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 
-const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
+const MigrerFagsak: React.FC<{ fagsakId: string; onMigrert?: () => void }> = ({
+    fagsakId,
+    onMigrert,
+}) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
@@ -55,9 +58,12 @@ const MigrerFagsak: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     };
 
     const migrerFagsak = () =>
-        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) =>
-            settMigrertStatus(res)
-        );
+        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
+            settMigrertStatus(res);
+            if (res.status === RessursStatus.SUKSESS && onMigrert) {
+                onMigrert();
+            }
+        });
 
     return (
         <div style={{ marginTop: '1rem' }}>

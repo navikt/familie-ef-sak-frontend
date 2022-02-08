@@ -172,7 +172,8 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 const Infotrygdperioderoversikt: React.FC<{
     fagsakId: string;
     personIdent: string;
-}> = ({ fagsakId, personIdent }) => {
+    onMigrert?: () => void;
+}> = ({ fagsakId, personIdent, onMigrert }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
@@ -192,7 +193,7 @@ const Infotrygdperioderoversikt: React.FC<{
                 <>
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
                     <InfotrygdSaker personIdent={personIdent} />
-                    <MigrerFagsak fagsakId={fagsakId} />
+                    <MigrerFagsak fagsakId={fagsakId} onMigrert={onMigrert} />
                 </>
             )}
         </DataViewer>

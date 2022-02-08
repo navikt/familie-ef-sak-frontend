@@ -15,6 +15,8 @@ import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import styled from 'styled-components';
 import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { useToggles } from '../../App/context/TogglesContext';
+import { Toggles } from '../../App/context/toggles';
 
 interface Props {
     oppgave: IOppgave;
@@ -28,7 +30,7 @@ const StyledPopoverinnhold = styled.p`
 
 const Flatknapp = hiddenIf(Knapp);
 
-const kanJournalføres = (oppgave: IOppgave) => {
+export const kanJournalføres = (oppgave: IOppgave) => {
     const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
     return (
         (behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' ||
@@ -63,7 +65,15 @@ const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
     );
 };
 
-const utledHandling = (oppgave: IOppgave): Handling => {
+const kanMigreres = (oppgave: IOppgave) => {
+    return (
+        oppgave.behandlesAvApplikasjon === '' &&
+        oppgave.oppgavetype === 'JFR' &&
+        oppgave.behandlingstema === 'ab0071'
+    );
+};
+
+const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
     } else if (kanJournalføres(oppgave)) {
@@ -72,13 +82,18 @@ const utledHandling = (oppgave: IOppgave): Handling => {
         return Handling.BLANKETT;
     } else if (oppgaveErTilbakekreving(oppgave)) {
         return Handling.TILBAKE;
+    } else if (kanMigreres(oppgave) && toggles) {
+        // && TODO toggles[ToggleName.oppgavebenkMigrerFagsak]) {
+        return Handling.JOURNALFØR_MIGRERING;
     }
     return Handling.INGEN;
 };
 
 const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
+    const { toggles } = useToggles();
     const {
         gåTilBehandleSakOppgave,
+        gåTilVurderMigrering,
         gåTilJournalføring,
         startBlankettBehandling,
         laster,
@@ -121,7 +136,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         : behandlingstema;
 
     const utledKnappPåHandling = () => {
-        switch (utledHandling(oppgave)) {
+        switch (utledHandling(oppgave, toggles)) {
             case Handling.BLANKETT:
                 return (
                     <Flatknapp onClick={startBlankettBehandling} disabled={laster}>
@@ -147,6 +162,12 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                         disabled={laster}
                     >
                         Gå til fagsak
+                    </Flatknapp>
+                );
+            case Handling.JOURNALFØR_MIGRERING:
+                return (
+                    <Flatknapp onClick={gåTilVurderMigrering} disabled={laster}>
+                        Journalfør (migrering)
                     </Flatknapp>
                 );
             default:
