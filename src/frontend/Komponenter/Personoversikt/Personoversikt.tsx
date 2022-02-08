@@ -14,9 +14,9 @@ import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMed
 import Dokumenter from './Dokumenter';
 import Infotrygdperioderoversikt from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
-import { TabProps } from 'nav-frontend-tabs/lib/tab';
 
-type TabWithRouter = TabProps & {
+type TabWithRouter = {
+    label: string;
     path: string;
     komponent: (
         fagsakPerson: IFagsakPerson,
@@ -91,7 +91,7 @@ const PersonoversiktContent: React.FC<{
             <VisittkortComponent data={personopplysninger} />
             <Side className={'container'}>
                 <TabsPure
-                    tabs={tabs.map((tab) => ({ ...tab, aktiv: tab.path === path }))}
+                    tabs={tabs.map((tab) => ({ label: tab.label, aktiv: tab.path === path }))}
                     onChange={(_, tabNumber) => {
                         navigate(tabs[tabNumber].path);
                     }}
@@ -100,6 +100,7 @@ const PersonoversiktContent: React.FC<{
                 <Routes>
                     {tabs.map((tab) => (
                         <Route
+                            key={tab.path}
                             path={`/${tab.path}`}
                             element={tab.komponent(fagsakPerson, personopplysninger)}
                         />
