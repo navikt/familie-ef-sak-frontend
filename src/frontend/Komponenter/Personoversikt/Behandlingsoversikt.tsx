@@ -128,7 +128,9 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
     function erAlleBehandlingerErFerdigstilt(fagsak: Fagsak) {
         return (
-            fagsak.behandlinger.length > 0 &&
+            fagsak.behandlinger.some(
+                (behandling) => behandling.resultat !== BehandlingResultat.HENLAGT
+            ) &&
             fagsak.behandlinger.find(
                 (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
             ) === undefined
