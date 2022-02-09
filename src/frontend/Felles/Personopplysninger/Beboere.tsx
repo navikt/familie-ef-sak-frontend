@@ -12,15 +12,15 @@ const StyledModalTabellWrapper = styled(TabellWrapper)`
     grid-template-columns: max-content;
 `;
 
-const Beboere: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
+const Beboere: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { axiosRequest } = useApp();
     const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
 
     const søkPerson = useCallback(
-        (fagsakId: string) => {
+        (fagsakPersonId: string) => {
             axiosRequest<ISøkeresultatPerson, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/sok/fagsak/${fagsakId}/samme-adresse`,
+                url: `/familie-ef-sak/api/sok/fagsak-person/${fagsakPersonId}/samme-adresse`,
             }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
                 settSøkResultat(respons);
             });
@@ -29,8 +29,8 @@ const Beboere: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     );
 
     useEffect(() => {
-        søkPerson(fagsakId);
-    }, [fagsakId, søkPerson]);
+        søkPerson(fagsakPersonId);
+    }, [fagsakPersonId, søkPerson]);
 
     return (
         <>

@@ -26,12 +26,6 @@ export enum SideNavn {
     BLANKETT = 'Blankett',
 }
 
-const vedtakOgBeregning: ISide = {
-    href: 'vedtak-og-beregning',
-    navn: SideNavn.VEDTAK_OG_BEREGNING,
-    komponent: VedtakOgBeregningSide,
-};
-
 export const sider: ISide[] = [
     {
         href: 'tidligere-vedtaksperioder',
@@ -48,7 +42,11 @@ export const sider: ISide[] = [
         navn: SideNavn.AKTIVITET,
         komponent: Aktivitet,
     },
-    vedtakOgBeregning,
+    {
+        href: 'vedtak-og-beregning',
+        navn: SideNavn.VEDTAK_OG_BEREGNING,
+        komponent: VedtakOgBeregningSide,
+    },
     {
         href: 'simulering',
         navn: SideNavn.SIMULERING,
@@ -74,7 +72,7 @@ export const filtrerSiderEtterBehandlingstype = (
         return sider.filter((side) => side.navn !== SideNavn.BREV);
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
-        return [vedtakOgBeregning];
+        return sider.filter((side) => side.navn === SideNavn.VEDTAK_OG_BEREGNING);
     }
     return sider.filter((side) => side.navn !== SideNavn.BLANKETT);
 };

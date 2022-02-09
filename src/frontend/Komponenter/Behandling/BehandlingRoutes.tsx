@@ -23,7 +23,7 @@ const BehandlingRoutes: React.FC = () => {
                     )}
                 />
             ))}
-            <Route path="*" element={<Navigate to={siderForBehandling[0].href} />} />
+            <Route path="*" element={<Navigate to={siderForBehandling[0].href} replace={true} />} />
         </Routes>
     );
 };

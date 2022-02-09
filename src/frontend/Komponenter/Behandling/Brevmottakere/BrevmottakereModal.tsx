@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VergerOgFullmektigeFraRegister } from './VergerOgFullmektigeFraRegister';
@@ -9,7 +9,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { BrevmottakereListe } from './BrevmottakereListe';
-import { IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
+import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
 import Modal from 'nav-frontend-modal';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -33,7 +33,18 @@ export const BrevmottakereModal: FC<{
 }> = ({ personopplysninger, behandlingId }) => {
     const { axiosRequest } = useApp();
     const { visBrevmottakereModal, settVisBrevmottakereModal } = useBehandling();
-    const [valgtePersonMottakere, settValgtePersonMottakere] = useState<IBrevmottaker[]>([]);
+    const initielleBrevmottakere = useMemo(
+        () => [
+            {
+                mottakerRolle: EBrevmottakerRolle.BRUKER,
+                personIdent: personopplysninger.personIdent,
+                navn: personopplysninger.navn.visningsnavn,
+            },
+        ],
+        [personopplysninger]
+    );
+    const [valgtePersonMottakere, settValgtePersonMottakere] =
+        useState<IBrevmottaker[]>(initielleBrevmottakere);
     const [valgteOrganisasjonMottakere, settValgteOrganisasjonMottakere] = useState<
         IOrganisasjonMottaker[]
     >([]);
@@ -65,9 +76,14 @@ export const BrevmottakereModal: FC<{
                 url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
                 method: 'GET',
             }).then((resp: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
-                if (resp.status === RessursStatus.SUKSESS && resp.data) {
-                    settValgtePersonMottakere(resp.data.personer);
-                    settValgteOrganisasjonMottakere(resp.data.organisasjoner);
+                if (resp.status === RessursStatus.SUKSESS) {
+                    if (resp.data) {
+                        settValgtePersonMottakere(resp.data.personer);
+                        settValgteOrganisasjonMottakere(resp.data.organisasjoner);
+                    } else {
+                        settValgtePersonMottakere(initielleBrevmottakere);
+                        settValgteOrganisasjonMottakere([]);
+                    }
                 } else if (resp.status === RessursStatus.FEILET) {
                     settFeilmelding(resp.frontendFeilmelding);
                 }
@@ -77,7 +93,7 @@ export const BrevmottakereModal: FC<{
         if (visBrevmottakereModal) {
             hentBrevmottakere();
         }
-    }, [axiosRequest, behandlingId, visBrevmottakereModal]);
+    }, [axiosRequest, behandlingId, visBrevmottakereModal, initielleBrevmottakere]);
 
     return (
         <Modal
@@ -117,7 +133,7 @@ export const BrevmottakereModal: FC<{
                 </Høyrekolonne>
             </GridContainer>
             <SentrerKnapper>
-                <Knapp>Avbryt</Knapp>
+                <Knapp onClick={() => settVisBrevmottakereModal(false)}>Avbryt</Knapp>
                 <Hovedknapp onClick={settBrevmottakere}>Sett mottakere</Hovedknapp>
             </SentrerKnapper>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}

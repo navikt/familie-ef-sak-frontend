@@ -6,6 +6,7 @@ import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
     EPeriodetype,
+    ESamordningsfradragtype,
     IBeløpsperiode,
     IBeregningsrequest,
     IInntektsperiode,
@@ -31,6 +32,8 @@ import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/Alert
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import styled from 'styled-components';
+import { FamilieSelect } from '@navikt/familie-form-elements';
+import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -40,12 +43,12 @@ const VedtaksperiodeWrapper = styled.section`
     padding-top: 1rem;
 `;
 
-const InntekWrapper = styled.section`
+const WrapperPaddingTop = styled.div`
     padding-top: 2rem;
 `;
 
-const FormContentWrapper = styled.div`
-    padding-top: 2rem;
+const WrapperMarginTop = styled.div`
+    margin-top: 2rem;
 `;
 
 const EnsligTextAreaWrapper = styled.div`
@@ -81,6 +84,7 @@ export const InnvilgeVedtak: React.FC<{
             inntekter: lagretInnvilgetVedtak?.inntekter
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad],
+            samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
         },
         validerInnvilgetVedtakForm
     );
@@ -88,6 +92,7 @@ export const InnvilgeVedtak: React.FC<{
     const vedtaksperiodeState = formState.getProps('perioder') as ListState<IVedtaksperiode>;
     const periodeBegrunnelse = formState.getProps('periodeBegrunnelse') as FieldState;
     const inntektBegrunnelse = formState.getProps('inntektBegrunnelse') as FieldState;
+    const typeSamordningsfradag = formState.getProps('samordningsfradragType') as FieldState;
 
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
@@ -197,8 +202,8 @@ export const InnvilgeVedtak: React.FC<{
             inntektBegrunnelse: form.inntektBegrunnelse,
             perioder: form.perioder,
             inntekter: form.inntekter,
+            samordningsfradragType: skalVelgeSamordningstype ? form.samordningsfradragType : null,
         };
-
         switch (behandling.type) {
             case Behandlingstype.BLANKETT:
                 lagBlankett(vedtaksRequest);
@@ -210,9 +215,13 @@ export const InnvilgeVedtak: React.FC<{
         }
     };
 
+    const skalVelgeSamordningstype = inntektsperiodeState.value.some(
+        (rad) => rad.samordningsfradrag
+    );
+
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <FormContentWrapper>
+            <WrapperPaddingTop>
                 <VedtaksperiodeWrapper>
                     <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
                     <VedtaksperiodeValg
@@ -236,7 +245,7 @@ export const InnvilgeVedtak: React.FC<{
                         />
                     )}
                 </VedtaksperiodeWrapper>
-                <InntekWrapper className={'blokk-m'}>
+                <WrapperPaddingTop className={'blokk-m'}>
                     <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
                     {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
                         <IngenBegrunnelseOppgitt />
@@ -260,15 +269,42 @@ export const InnvilgeVedtak: React.FC<{
                         valideringsfeil={formState.errors.inntekter}
                         setValideringsFeil={formState.setErrors}
                     />
+                    {skalVelgeSamordningstype && (
+                        <>
+                            <FamilieSelect
+                                bredde={'m'}
+                                value={typeSamordningsfradag.value}
+                                label={'Type samordningsfradag'}
+                                onChange={(event) => {
+                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                    typeSamordningsfradag.onChange(event);
+                                }}
+                                erLesevisning={!behandlingErRedigerbar}
+                            >
+                                <option value="">Velg</option>
+                                <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
+                                    Gjenlevendepensjon
+                                </option>
+                                <option value={ESamordningsfradragtype.UFØRETRYGD}>
+                                    Uføretrygd
+                                </option>
+                            </FamilieSelect>
+                            <SkjemaelementFeilmelding>
+                                {formState.errors.samordningsfradragType}
+                            </SkjemaelementFeilmelding>
+                        </>
+                    )}
                     {behandlingErRedigerbar && (
-                        <div className={'blokk-m'}>
-                            <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
-                                Beregn
-                            </Knapp>
-                        </div>
+                        <WrapperMarginTop>
+                            <div className={'blokk-m'}>
+                                <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
+                                    Beregn
+                                </Knapp>
+                            </div>
+                        </WrapperMarginTop>
                     )}
                     <Utregningstabell beregnetStønad={beregnetStønad} />
-                </InntekWrapper>
+                </WrapperPaddingTop>
                 {feilmelding && (
                     <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                         {feilmelding}
@@ -277,7 +313,7 @@ export const InnvilgeVedtak: React.FC<{
                 <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
                     Lagre vedtak
                 </Hovedknapp>
-            </FormContentWrapper>
+            </WrapperPaddingTop>
         </form>
     );
 };
