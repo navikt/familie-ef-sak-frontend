@@ -29,7 +29,7 @@ import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea'
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
-import { nåværendeÅrOgMåned, SANKSJONERE_VEDTAK } from './utils';
+import { nåværendeÅrOgNesteMåned, SANKSJONERE_VEDTAK } from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
@@ -136,7 +136,7 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
     };
 
     const handleSubmit = (form: FormState<SanksjonereVedtakForm>) => {
-        const årOgMåned = nåværendeÅrOgMåned();
+        const årOgMåned = nåværendeÅrOgNesteMåned();
         const vedtaksRequest: ISanksjonereVedtak = {
             resultatType: EBehandlingResultat.SANKSJONERE,
             sanksjonsårsak: form.sanksjonsårsak,
