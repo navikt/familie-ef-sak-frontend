@@ -24,6 +24,7 @@ import {
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import MigrerFagsak from '../Migrering/MigrerFagsak';
 import InfotrygdSaker from '../Migrering/InfotrygdSaker';
+import { IFagsakPerson } from '../../App/typer/fagsak';
 
 const StyledTabell = styled.table``;
 
@@ -255,9 +256,9 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 };
 
 const Infotrygdperioderoversikt: React.FC<{
-    fagsakId: string;
+    fagsakPerson: IFagsakPerson;
     personIdent: string;
-}> = ({ fagsakId, personIdent }) => {
+}> = ({ fagsakPerson, personIdent }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
@@ -277,7 +278,7 @@ const Infotrygdperioderoversikt: React.FC<{
                 <>
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
                     <InfotrygdSaker personIdent={personIdent} />
-                    <MigrerFagsak fagsakId={fagsakId} />
+                    <MigrerFagsak fagsakPerson={fagsakPerson} />
                 </>
             )}
         </DataViewer>
