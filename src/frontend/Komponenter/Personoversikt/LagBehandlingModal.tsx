@@ -75,9 +75,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
         });
     }, [axiosRequest, fagsakId]);
 
-    const opprettBehandling = () => {
-        settFeilmeldingModal('');
-
+    const opprettTilbakekrevingBehandling = () => {
         if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING) {
             settSenderInnBehandling(true);
 
@@ -98,6 +96,10 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     settSenderInnBehandling(false);
                 });
         }
+    };
+
+    const opprettRevurdering = () => {
+        settFeilmeldingModal('');
 
         if (valgtBehandlingstype === Behandlingstype.REVURDERING) {
             if (kanStarteRevurdering()) {
@@ -171,7 +173,13 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                 <StyledHovedknapp
                     onClick={() => {
                         if (!senderInnBehandling) {
-                            opprettBehandling();
+                            if (valgtBehandlingstype === Behandlingstype.REVURDERING) {
+                                opprettRevurdering();
+                            } else if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING) {
+                                opprettTilbakekrevingBehandling();
+                            } else {
+                                settFeilmeldingModal('Du må velge behandlingstype');
+                            }
                         }
                     }}
                 >
