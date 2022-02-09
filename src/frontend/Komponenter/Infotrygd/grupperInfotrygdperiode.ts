@@ -31,7 +31,7 @@ const grupperPerioderPerVedtak = (
 /**
  * Et vedtak kan inneholde 1-2 endringer. Hvis det er 2 endringer blir det duplikat av vedtak, med ulike koder.
  * Denne sammenslåingen slår sammen disse, basert på hvilken typ av kode det er. Eks Opphør og Førstegangsbehandling slås ihop der
- * opphør er koden, mens Førstegangsbehandling initialKode
+ * opphør er koden, mens Førstegangsbehandling initiellKode
  * Det finnes 2 vedtak der det finnes 3 endringer, disse blir ikke direkt håndtert her
  */
 const slåSammenVedtak = (
@@ -46,7 +46,7 @@ const slåSammenVedtak = (
             );
             acc.push({
                 ...sortertePerioder[0],
-                initialKode: sortertePerioder[1].kode,
+                initiellKode: sortertePerioder[1].kode,
             } as InfotrygdPeriodeMedFlereEndringer);
         }
         return acc;

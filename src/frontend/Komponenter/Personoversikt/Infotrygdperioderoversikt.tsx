@@ -120,7 +120,7 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
                         <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
                         <td>
                             {kodeTilTekst[periode.kode]}{' '}
-                            {periode.initialKode && `(${kodeTilTekst[periode.initialKode]})`}
+                            {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
                         </td>
                         <td>{sakstypeTilTekst[periode.sakstype]}</td>
                         <td>
