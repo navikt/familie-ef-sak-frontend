@@ -29,7 +29,11 @@ import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea'
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
-import { nåværendeÅrOgNesteMåned, SANKSJONERE_VEDTAK } from './utils';
+import {
+    nåværendeÅrOgMånedFormatert,
+    nesteMånedOgNesteMånedsÅrFormatert,
+    SANKSJONERE_VEDTAK,
+} from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
@@ -136,7 +140,7 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
     };
 
     const handleSubmit = (form: FormState<SanksjonereVedtakForm>) => {
-        const årOgMåned = nåværendeÅrOgNesteMåned();
+        const årOgMåned = nesteMånedOgNesteMånedsÅrFormatert();
         const vedtaksRequest: ISanksjonereVedtak = {
             resultatType: EBehandlingResultat.SANKSJONERE,
             sanksjonsårsak: form.sanksjonsårsak,
@@ -182,8 +186,9 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
                         <Seksjon>
                             <Undertittel>Sanksjonsperiode</Undertittel>
                             <NormaltekstMedMargin>
-                                Måneden for sanksjon er <b>Februar 2022</b> som er måneden etter
-                                dette vedtaket. Bruker vil ikke få utbetalt stønad i denne perioden.{' '}
+                                Måneden for sanksjon er <b>{nåværendeÅrOgMånedFormatert()}</b> som
+                                er måneden etter dette vedtaket. Bruker vil ikke få utbetalt stønad
+                                i denne perioden.
                             </NormaltekstMedMargin>
                         </Seksjon>
                         <Seksjon>
