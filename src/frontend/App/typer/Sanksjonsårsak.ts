@@ -23,8 +23,18 @@ export const sanksjonsårsaker: Sanksjonsårsak[] = [
     Sanksjonsårsak.UNNLATT_MØTE_INNKALLING,
 ];
 
-export const sanksjonInfo =
-    'Sanksjonen gjelder for alle brukerens stønader etter kapittel 15, herunder stønader etter tilleggsstønadsforskriften. Følgende stønader i EF Sak vil bli stoppet automatisk i overforstående periode av dette vedtaket: - Overgangssstønad Har brukeren andre løpende stønader i Infotrygd eller Arena må disse stanses manuelt';
+export const dagsgrenseForAdvarsel = 6;
 
-export const sanksjonAdvarsel =
-    'Obs! Det er under 2 dager igjen av denne måneden. Det er viktig at du følger opp at beslutter godkjenner vedtaket før månedsslutt da perioden for sanksjon vil endre seg om vedtaket blir godkjent i neste måned.';
+export const sanksjonInfoDel1 =
+    'Sanksjonen gjelder for alle brukerens stønader etter kapittel 15, herunder stønader etter tilleggsstønadsforskriften. Følgende stønader i EF Sak vil bli stoppet automatisk i overforstående periode av dette vedtaket:';
+
+export const stønaderForSanksjonInfo = ['Overgangssstønad'];
+
+export const sanksjonInfoDel2 =
+    'Har brukeren andre løpende stønader i Infotrygd eller Arena må disse stanses manuelt;';
+
+export const sanksjonAdvarsel = (dagerIgjenAvMåned: number) => {
+    const biSetning =
+        dagerIgjenAvMåned === 1 ? `${dagerIgjenAvMåned} dag` : `${dagerIgjenAvMåned} dager`;
+    return `Obs! Det er kun ${biSetning} igjen av denne måneden. Det er viktig at du følger opp at beslutter godkjenner vedtaket før månedsslutt da perioden for sanksjon vil endre seg om vedtaket blir godkjent i neste måned.`;
+};

@@ -1,11 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
+    dagsgrenseForAdvarsel,
     sanksjonAdvarsel,
-    sanksjonInfo,
+    sanksjonInfoDel1,
+    sanksjonInfoDel2,
     Sanksjonsårsak,
     sanksjonsårsaker,
     sanksjonsårsakTilTekst,
+    stønaderForSanksjonInfo,
 } from '../../../App/typer/Sanksjonsårsak';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
@@ -33,6 +36,7 @@ import {
     nåværendeÅrOgMånedFormatert,
     nesteMånedOgNesteMånedsÅrFormatert,
     SANKSJONERE_VEDTAK,
+    antallDagerIgjenAvNåværendeMåned,
 } from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -55,8 +59,19 @@ const NormaltekstMedMargin = styled(Normaltekst)`
     margin-top: 1rem;
 `;
 
-const Advarsel = styled(AlertStripeAdvarsel)`
+const InfoVisning = styled(AlertStripeInfo)`
+    max-width: 60rem;
+    .alertstripe__tekst {
+        max-width: 60rem;
+    }
+`;
+
+const AdvarselVisning = styled(AlertStripeAdvarsel)`
     margin-top: 1.5rem;
+    max-width: 60rem;
+    .alertstripe__tekst {
+        max-width: 60rem;
+    }
 `;
 
 interface Props {
@@ -71,12 +86,7 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
     return (
         <DataViewer response={{ vedtak }}>
             {({ vedtak }) => {
-                return (
-                    <SanksjonsvedtakVisning
-                        behandlingId={behandlingId}
-                        lagretVedtak={vedtak}
-                    ></SanksjonsvedtakVisning>
-                );
+                return <SanksjonsvedtakVisning behandlingId={behandlingId} lagretVedtak={vedtak} />;
             }}
         </DataViewer>
     );
@@ -155,6 +165,8 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
         lagreVedtak(vedtaksRequest);
     };
 
+    const dagerIgjenAvMåned = antallDagerIgjenAvNåværendeMåned();
+
     return (
         <Container>
             <form onSubmit={formState.onSubmit(handleSubmit)}>
@@ -192,8 +204,21 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
                             </NormaltekstMedMargin>
                         </Seksjon>
                         <Seksjon>
-                            <AlertStripeInfo>{sanksjonInfo}</AlertStripeInfo>
-                            <Advarsel>{sanksjonAdvarsel}</Advarsel>
+                            <InfoVisning>
+                                {sanksjonInfoDel1}
+                                <br />
+                                <ul>
+                                    {stønaderForSanksjonInfo.map((stønad) => (
+                                        <li>{stønad}</li>
+                                    ))}
+                                </ul>
+                                {sanksjonInfoDel2}
+                            </InfoVisning>
+                            {dagerIgjenAvMåned < dagsgrenseForAdvarsel && (
+                                <AdvarselVisning>
+                                    {sanksjonAdvarsel(dagerIgjenAvMåned)}
+                                </AdvarselVisning>
+                            )}
                         </Seksjon>
                         <Seksjon>
                             <EnsligTextArea

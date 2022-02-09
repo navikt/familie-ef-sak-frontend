@@ -40,3 +40,14 @@ const nesteMånedOgNesteMånedsÅr = () => {
 
     return [nesteMåned, nesteMånedsÅr];
 };
+
+export const antallDagerIgjenAvNåværendeMåned = (): number => {
+    const dagensDato = new Date();
+    const antallDagerINåværendeMåned = new Date(
+        dagensDato.getFullYear(),
+        dagensDato.getMonth() + 1,
+        0
+    ).getDate();
+
+    return antallDagerINåværendeMåned - dagensDato.getDate();
+};
