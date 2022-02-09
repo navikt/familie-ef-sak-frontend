@@ -30,7 +30,6 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import LagBehandlingModal from './LagBehandlingModal';
-import RevurderingModal from './RevurderingModal';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
@@ -73,9 +72,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
-
-    // gammel løsning
-    const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
 
     const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
     const [hentTilbakekrevingsbehandlinger, settHentTilbakekrevingsbehandlinger] =
@@ -167,25 +163,16 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     />
                     {kanStarteRevurdering && (
                         <>
-                            <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                                Opprett ny behandling
-                            </KnappMedMargin>
-                            <RevurderingModal
-                                visModal={visRevurderingvalg}
-                                settVisModal={settVisRevurderingvalg}
-                                fagsakId={fagsakId}
-                            />
-
-                            <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
-                                Opprett ny behandling
-                            </KnappMedMargin>
-
                             <LagBehandlingModal
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsakId={fagsakId}
                                 settHentTilbakekrevinger={settHentTilbakekrevingsbehandlinger}
                             />
+
+                            <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
+                                Opprett ny behandling
+                            </KnappMedMargin>
                         </>
                     )}
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
