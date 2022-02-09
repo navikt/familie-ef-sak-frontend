@@ -29,7 +29,7 @@ import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea'
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
-import { SANKSJONERE_VEDTAK } from './konstanter';
+import { nåværendeÅrOgMåned, SANKSJONERE_VEDTAK } from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
@@ -136,6 +136,7 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
     };
 
     const handleSubmit = (form: FormState<SanksjonereVedtakForm>) => {
+        const årOgMåned = nåværendeÅrOgMåned();
         const vedtaksRequest: ISanksjonereVedtak = {
             resultatType: EBehandlingResultat.SANKSJONERE,
             sanksjonsårsak: form.sanksjonsårsak,
@@ -143,8 +144,8 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
             periode: {
                 periodeType: EPeriodetype.SANKSJON,
                 aktivitet: EAktivitet.SANKSJON,
-                årMånedFra: '2022-01',
-                årMånedTil: '2022-01',
+                årMånedFra: årOgMåned,
+                årMånedTil: årOgMåned,
             },
         };
         lagreVedtak(vedtaksRequest);
