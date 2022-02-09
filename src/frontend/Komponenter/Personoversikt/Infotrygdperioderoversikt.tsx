@@ -25,6 +25,8 @@ import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import MigrerFagsak from '../Migrering/MigrerFagsak';
 import InfotrygdSaker from '../Migrering/InfotrygdSaker';
 import { IFagsakPerson } from '../../App/typer/fagsak';
+import { InfotrygdPeriodeMedFlereEndringer } from '../Infotrygd/typer';
+import { slåSammenOgSorterPerioder } from '../Infotrygd/grupperInfotrygdperiode';
 
 const StyledTabell = styled.table``;
 
@@ -72,27 +74,6 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
     );
 };
 
-type InfotrygdPeriodeMedFlereEndringer = InfotrygdPeriode & {
-    initialKode?: Kode;
-};
-
-/**
- * Då det finnes flere endringer på en periode/vedtak så har noen av de høyere presedense en andre
- * Vanligt er att man har Førstegangsvedtak/Endring/G-omregning, og sen får ett opphør, då skal opphøret vises primært
- */
-const mapKode = (kode: Kode): number => {
-    switch (kode) {
-        case Kode.OVERTFØRT_NY_LØSNING:
-            return 5;
-        case Kode.UAKTUELL:
-            return 4;
-        case Kode.OPPHØRT:
-            return 3;
-        default:
-            return 0;
-    }
-};
-
 const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string => {
     const stønadTom = formaterNullableMånedÅr(periode.stønadTom) as string;
     if (periode.kode === Kode.OPPHØRT) {
@@ -100,58 +81,6 @@ const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string =>
     } else {
         return stønadTom;
     }
-};
-
-const grupperPerioderPerVedtak = (
-    perioder: InfotrygdPeriode[]
-): { [key: string]: InfotrygdPeriode[] } =>
-    perioder.reduce((acc, periode) => {
-        const prev = acc[periode.vedtakId] || [];
-        prev.push(periode);
-        acc[periode.vedtakId] = prev;
-        return acc;
-    }, {} as { [key: string]: InfotrygdPeriode[] });
-
-/**
- * På ett vedtak kan det finnes flere endringer (1-2), de slås sammen, men beholder initielle koden, for å kunne vise i tabellen
- */
-const slåSammenVedtak = (
-    perioderPerVedtak: InfotrygdPeriode[][]
-): InfotrygdPeriodeMedFlereEndringer[] =>
-    perioderPerVedtak.reduce((acc: InfotrygdPeriodeMedFlereEndringer[], perioder) => {
-        if (perioder.length === 1) {
-            acc.push(perioder[0]);
-        } else {
-            const sortertePerioder = perioder.sort((a, b) =>
-                mapKode(a.kode) > mapKode(b.kode) ? -1 : 1
-            );
-            acc.push({
-                ...sortertePerioder[0],
-                initialKode: sortertePerioder[1].kode,
-            } as InfotrygdPeriodeMedFlereEndringer);
-        }
-        return acc;
-    }, [] as InfotrygdPeriodeMedFlereEndringer[]);
-
-/**
- * Sorterer perioder, stønadFom desc, og sen på vedtakId desc, då senere vedtakId har høyere presedens
- */
-const sortPerioder = (
-    perioder: InfotrygdPeriodeMedFlereEndringer[]
-): InfotrygdPeriodeMedFlereEndringer[] =>
-    perioder.sort((a, b) => {
-        return (
-            new Date(b.stønadFom).getTime() - new Date(a.stønadFom).getTime() ||
-            b.vedtakId - a.vedtakId
-        );
-    });
-
-const slåSammenOgSorterPerioder = (
-    perioder: InfotrygdPeriode[]
-): InfotrygdPeriodeMedFlereEndringer[] => {
-    const perioderPerVedtak = Object.values(grupperPerioderPerVedtak(perioder));
-    const sammenslåtteVedtak = slåSammenVedtak(perioderPerVedtak);
-    return sortPerioder(sammenslåtteVedtak);
 };
 
 const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ perioder }) => {
