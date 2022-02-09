@@ -1,36 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import styled from 'styled-components';
 import { Select } from 'nav-frontend-skjema';
-import {
-    byggTomRessurs,
-    Ressurs,
-    RessursFeilet,
-    RessursStatus,
-    RessursSuksess,
-} from '../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
-import { BarnForRevurdering, RevurderingInnhold } from '../../App/typer/revurderingstype';
 import { useNavigate } from 'react-router-dom';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { EToast } from '../../App/typer/toast';
 import { LagRevurdering } from './LagRevurdering';
+import { RevurderingInnhold } from '../../App/typer/revurderingstype';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
 `;
 
-const KnappeWrapper = styled.div`
+export const KnappeWrapper = styled.div`
     margin-top: 2rem;
     margin-bottom: 1rem;
 `;
 
-const StyledHovedknapp = styled(Hovedknapp)`
+export const StyledHovedknapp = styled(Hovedknapp)`
     margin-right: 1rem;
 `;
 
@@ -48,32 +41,14 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     settHentTilbakekrevinger,
 }) => {
     const { toggles } = useToggles();
-    const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
-    const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
+
     const visOpprettTilbakekreving = toggles[ToggleName.visOpprettTilbakekreving];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
-    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
-    const [valgtDato, settValgtDato] = useState<string>();
-    const [valgtBarn, settValgtBarn] = useState<BarnForRevurdering[]>([]);
+
     const [senderInnBehandling, settSenderInnBehandling] = useState<boolean>(false);
-    const kanStarteRevurdering = (): boolean => {
-        return !!(valgtBehandlingstype && valgtBehandlingsårsak && valgtDato);
-    };
     const { axiosRequest, settToast } = useApp();
     const navigate = useNavigate();
-
-    const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
-        Ressurs<BarnForRevurdering[]>
-    >(byggTomRessurs());
-
-    useEffect(() => {
-        axiosRequest<BarnForRevurdering[], null>({
-            url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsakId}/nye-barn`,
-        }).then((response: RessursSuksess<BarnForRevurdering[]> | RessursFeilet) => {
-            settNyeBarnSidenForrigeBehandling(response);
-        });
-    }, [axiosRequest, fagsakId]);
 
     const opprettTilbakekrevingBehandling = () => {
         if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING) {
@@ -98,37 +73,25 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
         }
     };
 
-    const opprettRevurdering = () => {
+    const lagRevurdering = (revurderingInnhold: RevurderingInnhold) => {
         settFeilmeldingModal('');
 
-        if (valgtBehandlingstype === Behandlingstype.REVURDERING) {
-            if (kanStarteRevurdering()) {
-                settSenderInnBehandling(true);
-                const revurderingInnhold: RevurderingInnhold = {
-                    fagsakId: fagsakId,
-                    behandlingsårsak: valgtBehandlingsårsak as Behandlingsårsak,
-                    kravMottatt: valgtDato as string,
-                    barn: valgtBarn,
-                };
-                axiosRequest<Ressurs<void>, RevurderingInnhold>({
-                    method: 'POST',
-                    url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-                    data: revurderingInnhold,
-                })
-                    .then((response) => {
-                        if (response.status === RessursStatus.SUKSESS) {
-                            navigate(`/behandling/${response.data}`);
-                        } else {
-                            settFeilmeldingModal(response.frontendFeilmelding || response.melding);
-                        }
-                    })
-                    .finally(() => {
-                        settSenderInnBehandling(false);
-                    });
-            } else {
-                settFeilmeldingModal('Vennligst fyll ut alle felter');
-            }
-        }
+        settSenderInnBehandling(true);
+        axiosRequest<Ressurs<void>, RevurderingInnhold>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
+            data: revurderingInnhold,
+        })
+            .then((response) => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    navigate(`/behandling/${response.data}`);
+                } else {
+                    settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                }
+            })
+            .finally(() => {
+                settSenderInnBehandling(false);
+            });
     };
 
     return (
@@ -145,7 +108,6 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                 value={valgtBehandlingstype || ''}
                 onChange={(e) => {
                     settValgtBehandlingstype(e.target.value as Behandlingstype);
-                    settValgtBehandlingsårsak(undefined);
                     settFeilmeldingModal(undefined);
                 }}
             >
@@ -158,15 +120,9 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
 
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
                 <LagRevurdering
-                    kanLeggeTilNyeBarnPåRevurdering={kanLeggeTilNyeBarnPåRevurdering}
-                    nyeBarnSidenForrigeBehandling={nyeBarnSidenForrigeBehandling}
-                    settValgtBarn={settValgtBarn}
-                    settValgtBehandlingsårsak={settValgtBehandlingsårsak}
-                    settValgtDato={settValgtDato}
-                    skalViseValgmulighetForSanksjon={skalViseValgmulighetForSanksjon}
+                    fagsakId={fagsakId}
                     valgtBehandlingstype={valgtBehandlingstype}
-                    valgtBehandlingsårsak={valgtBehandlingsårsak}
-                    valgtDato={valgtDato}
+                    lagRevurdering={lagRevurdering}
                 />
             )}
             <KnappeWrapper>
@@ -174,7 +130,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     onClick={() => {
                         if (!senderInnBehandling) {
                             if (valgtBehandlingstype === Behandlingstype.REVURDERING) {
-                                opprettRevurdering();
+                                // opprettRevurdering(); // TODO
                             } else if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING) {
                                 opprettTilbakekrevingBehandling();
                             } else {
