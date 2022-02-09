@@ -20,18 +20,37 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import EtikettBase from 'nav-frontend-etiketter';
 import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
 import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
-import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
-import { Select, Checkbox } from 'nav-frontend-skjema';
+import {
+    Behandling,
+    BehandlingResultat,
+    Fagsak,
+    IFagsakPerson,
+    IFagsakPersonMedBehandlinger,
+} from '../../App/typer/fagsak';
+import { Checkbox, Select } from 'nav-frontend-skjema';
 import { compareDesc } from 'date-fns';
+import { Stønadstype } from '../../App/typer/behandlingstema';
+import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 
 const StyledInputs = styled.div`
     display: flex;
-    align-items: flex-end;
     justify-content: space-between;
+
+    > div {
+        padding: 0.25rem;
+    }
+
+    > div:last-child {
+        margin-left: auto;
+    }
 `;
 
 const StyledTabell = styled.table`
     margin-top: 2rem;
+`;
+
+const StønadSelect = styled(Select)`
+    width: 12rem;
 `;
 
 const BehandlingSelect = styled(Select)`
@@ -50,10 +69,18 @@ const skalMarkeresSomFjernet = (type?: AndelEndringType) =>
 const innvilgetEllerOpphørt = (b: Behandling) =>
     b.resultat === BehandlingResultat.INNVILGET || b.resultat === BehandlingResultat.OPPHØRT;
 
-const sortBehandlinger = (fagsak: Fagsak): Behandling[] =>
-    fagsak.behandlinger
-        .filter((b) => b.type !== Behandlingstype.BLANKETT && innvilgetEllerOpphørt(b))
-        .sort((a, b) => compareDesc(new Date(a.opprettet), new Date(b.opprettet)));
+const filtrerBehandlinger = (fagsak: Fagsak): Behandling[] =>
+    fagsak.behandlinger.filter(
+        (b) =>
+            b.type !== Behandlingstype.BLANKETT &&
+            innvilgetEllerOpphørt(b) &&
+            b.status === BehandlingStatus.FERDIGSTILT
+    );
+
+const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>
+    filtrerBehandlinger(fagsak).sort((a, b) =>
+        compareDesc(new Date(a.opprettet), new Date(b.opprettet))
+    );
 
 const endring = (endring?: AndelHistorikkEndring) =>
     endring && (
@@ -158,61 +185,117 @@ const Vedtaksperioder: React.FC<{
     );
 };
 
-const Vedtaksperioderoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
+const VedtaksperioderForFagsak: React.FC<{ fagsakPerson: IFagsakPersonMedBehandlinger }> = ({
+    fagsakPerson,
+}) => {
+    const [valgtFagsak, settValgtFagsak] = useState<Fagsak | undefined>(
+        fagsakPerson.overgangsstønad || fagsakPerson.barnetilsyn || fagsakPerson.barnetilsyn
+    );
     const [valgtBehandlingId, settValgtBehandlingId] = useState<string>();
     const [visUaktuelle, settVisUaktuelle] = useState<boolean>(true);
 
-    const fagsakConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-        }),
-        [fagsakId]
-    );
-    const fagsak = useDataHenter<Fagsak, null>(fagsakConfig);
+    const behandlinger = valgtFagsak ? filtrerOgSorterBehandlinger(valgtFagsak) : [];
 
     return (
-        <DataViewer response={{ fagsak }}>
-            {({ fagsak }) => {
-                const behandlinger = sortBehandlinger(fagsak);
-                return (
-                    <>
-                        <StyledInputs>
-                            <BehandlingSelect
-                                label="Behandling"
-                                className="flex-item"
-                                onChange={(event) => {
-                                    const nyesteBehandling = behandlinger[0].id;
-                                    const nyBehandlingId = event.target.value;
-                                    const skalNullstille = nyBehandlingId === nyesteBehandling;
-                                    settValgtBehandlingId(
-                                        skalNullstille ? undefined : nyBehandlingId
-                                    );
-                                }}
-                            >
-                                {behandlinger.map((b) => (
-                                    <option key={b.id} value={b.id}>
-                                        {behandlingstypeTilTekst[b.type]}{' '}
-                                        {formaterNullableIsoDatoTid(b.opprettet)}
-                                    </option>
-                                ))}
-                            </BehandlingSelect>
-                            <Checkbox
-                                label={'Vis uaktuelle perioder'}
-                                onClick={() => {
-                                    settVisUaktuelle((prevState) => !prevState);
-                                }}
-                                checked={visUaktuelle}
-                            />
-                        </StyledInputs>
-                        <Vedtaksperioder
-                            fagsakId={fagsakId}
-                            perioderTilOgMedBehandlingId={valgtBehandlingId}
-                            visUaktuelle={visUaktuelle}
-                        />
-                    </>
-                );
-            }}
+        <>
+            <StyledInputs>
+                <StønadSelect
+                    label="Stønad"
+                    className="flex-item"
+                    defaultValue={valgtFagsak?.stønadstype}
+                    onChange={(event) => {
+                        const valgtStønad = event.target.value as Stønadstype;
+                        switch (valgtStønad) {
+                            case Stønadstype.OVERGANGSSTØNAD:
+                                settValgtFagsak(fagsakPerson.overgangsstønad);
+                                return;
+                            case Stønadstype.BARNETILSYN:
+                                settValgtFagsak(fagsakPerson.barnetilsyn);
+                                return;
+                            case Stønadstype.SKOLEPENGER:
+                                settValgtFagsak(fagsakPerson.skolepenger);
+                                return;
+                        }
+                        settValgtBehandlingId(undefined);
+                    }}
+                >
+                    {!valgtFagsak && <option value={undefined}>Mangler stønader</option>}
+                    <option
+                        value={Stønadstype.OVERGANGSSTØNAD}
+                        disabled={!fagsakPerson.overgangsstønad?.behandlinger}
+                    >
+                        Overgangsstønad
+                    </option>
+                    <option
+                        value={Stønadstype.BARNETILSYN}
+                        disabled={!fagsakPerson.barnetilsyn?.behandlinger}
+                    >
+                        Barnetilsyn
+                    </option>
+                    <option
+                        value={Stønadstype.SKOLEPENGER}
+                        disabled={!fagsakPerson.skolepenger?.behandlinger}
+                    >
+                        Skolepenger
+                    </option>
+                </StønadSelect>
+                <BehandlingSelect
+                    label="Behandling"
+                    className="flex-item"
+                    onChange={(event) => {
+                        const nyesteBehandling = behandlinger[0].id;
+                        const nyBehandlingId = event.target.value;
+                        const skalNullstille = nyBehandlingId === nyesteBehandling;
+                        settValgtBehandlingId(skalNullstille ? undefined : nyBehandlingId);
+                    }}
+                    disabled={!behandlinger.length}
+                >
+                    {behandlinger.map((b) => (
+                        <option key={b.id} value={b.id}>
+                            {behandlingstypeTilTekst[b.type]}{' '}
+                            {formaterNullableIsoDatoTid(b.opprettet)}
+                        </option>
+                    ))}
+                </BehandlingSelect>
+                <Checkbox
+                    label={'Vis uaktuelle perioder'}
+                    onClick={() => {
+                        settVisUaktuelle((prevState) => !prevState);
+                    }}
+                    checked={visUaktuelle}
+                />
+            </StyledInputs>
+            {valgtFagsak && behandlinger.length > 0 && (
+                <Vedtaksperioder
+                    fagsakId={valgtFagsak.id}
+                    perioderTilOgMedBehandlingId={valgtBehandlingId}
+                    visUaktuelle={visUaktuelle}
+                />
+            )}
+            {valgtFagsak && behandlinger.length === 0 && (
+                <div>Mangler innvilget behandlinger på valgt stønad</div>
+            )}
+        </>
+    );
+};
+
+const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
+    const fagsakPersonConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/fagsak-person/${fagsakPerson.id}/utvidet`,
+        }),
+        [fagsakPerson]
+    );
+    const fagsakPersonMedBehandlinger = useDataHenter<IFagsakPersonMedBehandlinger, null>(
+        fagsakPersonConfig
+    );
+
+    return (
+        <DataViewer response={{ fagsakPersonMedBehandlinger }}>
+            {({ fagsakPersonMedBehandlinger }) => (
+                <VedtaksperioderForFagsak fagsakPerson={fagsakPersonMedBehandlinger} />
+            )}
         </DataViewer>
     );
 };
