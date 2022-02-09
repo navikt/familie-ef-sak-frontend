@@ -8,6 +8,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
 import { Simulering } from '../Simulering/Simulering';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 export interface ISide {
     href: string;
@@ -69,6 +70,9 @@ export const filtrerSiderEtterBehandlingstype = (
 ): ISide[] => {
     if (behandling.type === Behandlingstype.BLANKETT) {
         return sider.filter((side) => side.navn !== SideNavn.BREV);
+    }
+    if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
+        return sider.filter((side) => side.navn === SideNavn.VEDTAK_OG_BEREGNING);
     }
     return sider.filter((side) => side.navn !== SideNavn.BLANKETT);
 };

@@ -16,8 +16,8 @@ import Vergemål from './Vergemål';
 const PersonopplysningerMedNavKontor: React.FC<{
     personopplysninger: IPersonopplysninger;
     navKontor: Ressurs<INavKontor>;
-    fagsakId: string;
-}> = ({ personopplysninger, navKontor, fagsakId }) => {
+    fagsakPersonId: string;
+}> = ({ personopplysninger, navKontor, fagsakPersonId }) => {
     const {
         adresse,
         sivilstand,
@@ -32,7 +32,7 @@ const PersonopplysningerMedNavKontor: React.FC<{
     } = personopplysninger;
     return (
         <>
-            <Adressehistorikk adresser={adresse} fagsakId={fagsakId} />
+            <Adressehistorikk adresser={adresse} fagsakPersonId={fagsakPersonId} />
             <Sivilstatus sivilstander={sivilstand} />
             <Barn barn={barn} />
             <Statsborgerskap

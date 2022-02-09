@@ -19,7 +19,7 @@ export const useOppgave = (oppgave: IOppgave) => {
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
-            gåTilUrl(`/fagsak/${fagsak.data.id}`);
+            gåTilUrl(`/person/${fagsak.data.fagsakPersonId}`);
         }
     }, [fagsak, gåTilUrl]);
 

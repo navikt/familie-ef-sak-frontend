@@ -1,26 +1,25 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IFagsak } from './typer/fagsak';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { Behandling } from '../../App/typer/fagsak';
+import { Behandling, Fagsak } from '../../App/typer/fagsak';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 
-export type IFagsakParams = {
+type IFagsakParams = {
     eksternFagsakId: string;
     behandlingIdEllerSaksoversikt: string; // Her vil vi enten få inn variabelen eksternBehandlingId, eller strengen: saksoversikt.
 };
 
 const EksternRedirectContainer: FC = () => {
     const { eksternFagsakId, behandlingIdEllerSaksoversikt } = useParams<IFagsakParams>();
-    const [fagsak, settFagsak] = useState<Ressurs<IFagsak>>(byggTomRessurs());
+    const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [behandling, settBehandling] = useState<Ressurs<Behandling>>(byggTomRessurs());
     const { axiosRequest } = useApp();
     const skalHenteFagsak = behandlingIdEllerSaksoversikt === 'saksoversikt';
     const navigate = useNavigate();
 
     const hentFagsak = () => {
-        axiosRequest<IFagsak, null>({
+        axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/ekstern/${eksternFagsakId}`,
         }).then(settFagsak);

@@ -9,5 +9,6 @@ export enum ToggleName {
     visSettBrevmottakereKnapp = 'familie.ef.sak.brevmottakere-verge-og-fullmakt',
     MIGRERING = 'familie.ef.sak.migrering',
     visValgmulighetForSanksjon = 'familie.ef.sak.frontend-vis-sanksjon-en-maned',
+    kanLeggeTilNyeBarnPaaRevurdering = 'familie.ef.sak.kan-legge-til-nye-barn-paa-revurdering',
     oppgavebenkMigrerFagsak = 'familie.ef.sak.frontend-oppgavebenk-migrer-fagsak',
 }
