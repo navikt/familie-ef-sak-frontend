@@ -30,7 +30,7 @@ const StyledPopoverinnhold = styled.p`
 
 const Flatknapp = hiddenIf(Knapp);
 
-export const kanJournalføres = (oppgave: IOppgave) => {
+const kanJournalføres = (oppgave: IOppgave) => {
     const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
     return (
         (behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' ||
