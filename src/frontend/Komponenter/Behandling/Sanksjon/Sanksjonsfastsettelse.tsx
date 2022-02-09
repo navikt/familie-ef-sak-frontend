@@ -143,7 +143,7 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
             internBegrunnelse: form.internBegrunnelse,
             periode: {
                 periodeType: EPeriodetype.SANKSJON,
-                aktivitet: EAktivitet.SANKSJON,
+                aktivitet: EAktivitet.IKKE_AKTIVITETSPLIKT,
                 årMånedFra: årOgMåned,
                 årMånedTil: årOgMåned,
             },
