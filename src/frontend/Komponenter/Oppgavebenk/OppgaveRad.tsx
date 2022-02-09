@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { useToggles } from '../../App/context/TogglesContext';
-import { Toggles } from '../../App/context/toggles';
+import { ToggleName, Toggles } from '../../App/context/toggles';
 
 interface Props {
     oppgave: IOppgave;
@@ -82,8 +82,7 @@ const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
         return Handling.BLANKETT;
     } else if (oppgaveErTilbakekreving(oppgave)) {
         return Handling.TILBAKE;
-    } else if (kanMigreres(oppgave) && toggles) {
-        // && TODO toggles[ToggleName.oppgavebenkMigrerFagsak]) {
+    } else if (kanMigreres(oppgave) && toggles[ToggleName.oppgavebenkMigrerFagsak]) {
         return Handling.JOURNALFØR_MIGRERING;
     }
     return Handling.INGEN;
