@@ -31,7 +31,7 @@ export const sanksjonInfoDel1 =
 export const stønaderForSanksjonInfo = ['Overgangssstønad'];
 
 export const sanksjonInfoDel2 =
-    'Har brukeren andre løpende stønader i Infotrygd eller Arena må disse stanses manuelt;';
+    'Har brukeren andre løpende stønader i Infotrygd eller Arena må disse stanses manuelt.';
 
 export const sanksjonAdvarsel = (dagerIgjenAvMåned: number) => {
     const biSetning =

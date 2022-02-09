@@ -209,7 +209,6 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
                         <Seksjon>
                             <InfoVisning>
                                 {sanksjonInfoDel1}
-                                <br />
                                 <ul>
                                     {stønaderForSanksjonInfo.map((stønad) => (
                                         <li>{stønad}</li>

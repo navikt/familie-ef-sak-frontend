@@ -8,8 +8,8 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
 import { Simulering } from '../Simulering/Simulering';
-import SanksjonsvedtakVisning from '../Sanksjon/Sanksjonsfastsettelse';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 
 export interface ISide {
     href: string;
@@ -52,7 +52,7 @@ export const sider: ISide[] = [
     {
         href: 'sanksjonsfastsettelse',
         navn: SideNavn.SANKSJON,
-        komponent: SanksjonsvedtakVisning,
+        komponent: Sanksjonsfastsettelse,
     },
     {
         href: 'simulering',
