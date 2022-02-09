@@ -181,6 +181,9 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
                             sanksjonårsak.onChange(e);
                         }}
                         erLesevisning={!behandlingErRedigerbar}
+                        lesevisningVerdi={
+                            sanksjonsårsakTilTekst[sanksjonårsak.value as Sanksjonsårsak]
+                        }
                     >
                         <option value="">Velg</option>
                         {sanksjonsårsaker.map((sanksjonsårsak: Sanksjonsårsak, index: number) => (
