@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -31,14 +31,14 @@ interface IProps {
     visModal: boolean;
     settVisModal: (bool: boolean) => void;
     fagsakId: string;
-    settHentTilbakekrevinger: (bool: boolean) => void;
+    hentTilbakekrevinger: Dispatch<void>;
 }
 
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     visModal,
     settVisModal,
     fagsakId,
-    settHentTilbakekrevinger,
+    hentTilbakekrevinger,
 }) => {
     const { toggles } = useToggles();
 
@@ -60,7 +60,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
-                        settHentTilbakekrevinger(true);
+                        hentTilbakekrevinger();
                         settVisModal(false);
                         settToast(EToast.TILBAKEKREVING_OPPRETTET);
                     } else {
@@ -125,31 +125,30 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     lagRevurdering={lagRevurdering}
                 />
             )}
-            <KnappeWrapper>
-                <StyledHovedknapp
-                    onClick={() => {
-                        if (!senderInnBehandling) {
-                            if (valgtBehandlingstype === Behandlingstype.REVURDERING) {
-                                // opprettRevurdering(); // TODO
-                            } else if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING) {
-                                opprettTilbakekrevingBehandling();
-                            } else {
-                                settFeilmeldingModal('Du må velge behandlingstype');
-                            }
-                        }
-                    }}
-                >
-                    Opprett
-                </StyledHovedknapp>
-                <Flatknapp
-                    onClick={() => {
-                        settVisModal(false);
-                    }}
-                >
-                    Avbryt
-                </Flatknapp>
-            </KnappeWrapper>
-            {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
+
+            {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
+                <>
+                    {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
+                    <KnappeWrapper>
+                        <StyledHovedknapp
+                            onClick={() => {
+                                if (!senderInnBehandling) {
+                                    opprettTilbakekrevingBehandling();
+                                }
+                            }}
+                        >
+                            Opprett
+                        </StyledHovedknapp>
+                        <Flatknapp
+                            onClick={() => {
+                                settVisModal(false);
+                            }}
+                        >
+                            Avbryt
+                        </Flatknapp>
+                    </KnappeWrapper>
+                </>
+            )}
         </UIModalWrapper>
     );
 };

@@ -17,6 +17,7 @@ import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
 import { useApp } from '../../App/context/AppContext';
 import { Flatknapp } from 'nav-frontend-knapper';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -46,6 +47,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
+    const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
 
     const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
         Ressurs<BarnForRevurdering[]>
@@ -140,14 +142,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                     );
                 }}
             </DataViewer>
+            {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
             <KnappeWrapper>
                 <StyledHovedknapp
                     onClick={() => {
-                        const kanStarteRevurdering = !!(
-                            valgtBehandlingstype &&
-                            valgtBehandlingsårsak &&
-                            valgtDato
-                        );
+                        const kanStarteRevurdering = !!(valgtBehandlingsårsak && valgtDato);
                         if (kanStarteRevurdering) {
                             lagRevurdering({
                                 fagsakId,
@@ -155,6 +154,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                 behandlingsårsak: valgtBehandlingsårsak,
                                 kravMottatt: valgtDato,
                             });
+                        } else {
+                            settFeilmeldingModal('Vennligst fyll ut alle felter');
                         }
                     }}
                 >

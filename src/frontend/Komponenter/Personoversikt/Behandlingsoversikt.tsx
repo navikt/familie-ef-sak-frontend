@@ -74,8 +74,6 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
 
     const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
-    const [hentTilbakekrevingsbehandlinger, settHentTilbakekrevingsbehandlinger] =
-        useState<boolean>(true);
 
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
@@ -116,13 +114,12 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     };
 
     useEffect(() => {
-        if (fagsakId && hentTilbakekrevingsbehandlinger) {
+        if (fagsakId) {
             hentFagsak();
             hentTilbakekrevingBehandlinger();
-            settHentTilbakekrevingsbehandlinger(false);
         }
         // eslint-disable-next-line
-    }, [fagsakId, hentTilbakekrevingsbehandlinger]);
+    }, [fagsakId]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
@@ -167,7 +164,7 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsakId={fagsakId}
-                                settHentTilbakekrevinger={settHentTilbakekrevingsbehandlinger}
+                                hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
                             />
 
                             <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
