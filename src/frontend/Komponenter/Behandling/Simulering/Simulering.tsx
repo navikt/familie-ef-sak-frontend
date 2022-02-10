@@ -11,7 +11,7 @@ import { useApp } from '../../../App/context/AppContext';
 
 export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { hentVedtak, vedtaksresultat } = useHentVedtak(behandlingId);
+    const { vedtak, hentVedtak, vedtaksresultat } = useHentVedtak(behandlingId);
     const [simuleringsresultat, settSimuleringsresultat] = useState<Ressurs<ISimulering>>(
         byggTomRessurs()
     );
@@ -32,11 +32,12 @@ export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     }, [hentVedtak]);
 
     return (
-        <DataViewer response={{ simuleringsresultat }}>
-            {({ simuleringsresultat }) => (
+        <DataViewer response={{ simuleringsresultat, vedtak }}>
+            {({ simuleringsresultat, vedtak }) => (
                 <SimuleringTabellWrapper
                     simuleringsresultat={simuleringsresultat}
                     behandlingId={behandlingId}
+                    lagretVedtak={vedtak}
                 />
             )}
         </DataViewer>

@@ -23,11 +23,20 @@ export const nesteMånedOgNesteMånedsÅrFormatert = (): string => {
         : `${nesteMånedsÅr.toString()}-${nesteMåned.toString()}`;
 };
 
-export const nåværendeÅrOgMånedFormatert = (): string => {
+export const nåværendeÅrOgMånedFormatert = (årMåned?: string): string => {
+    return årMåned ? genererNåværendeÅrOgMånedFraStreng(årMåned) : genererNåværendeÅrOgMåned();
+};
+
+const genererNåværendeÅrOgMåned = (): string => {
     const [nesteMånedIndex, nesteMånedsÅr] = nesteMånedOgNesteMånedsÅr();
     const nesteMåned = måneder[nesteMånedIndex - 1];
-
     return `${nesteMåned} ${nesteMånedsÅr}`;
+};
+
+const genererNåværendeÅrOgMånedFraStreng = (årMåned: string) => {
+    const [år, månedIndex] = årMåned.split('-');
+    const måned = måneder[parseInt(månedIndex) - 1];
+    return `${måned.toString()} ${år}`;
 };
 
 const nesteMånedOgNesteMånedsÅr = () => {

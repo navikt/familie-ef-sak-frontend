@@ -86,7 +86,13 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
     return (
         <DataViewer response={{ vedtak }}>
             {({ vedtak }) => {
-                return <SanksjonsvedtakVisning behandlingId={behandlingId} lagretVedtak={vedtak} />;
+                return (
+                    <SanksjonsvedtakVisning
+                        behandlingId={behandlingId}
+                        lagretVedtak={vedtak}
+                        key={'sanksjonsvedtakVisning'}
+                    />
+                );
             }}
         </DataViewer>
     );
@@ -185,9 +191,14 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
                             sanksjonsårsakTilTekst[sanksjonårsak.value as Sanksjonsårsak]
                         }
                     >
-                        <option value="">Velg</option>
-                        {sanksjonsårsaker.map((sanksjonsårsak: Sanksjonsårsak, index: number) => (
-                            <option key={index} value={sanksjonsårsak}>
+                        <option value="" key={'velg'}>
+                            Velg
+                        </option>
+                        {sanksjonsårsaker.map((sanksjonsårsak: Sanksjonsårsak) => (
+                            <option
+                                key={sanksjonsårsakTilTekst[sanksjonsårsak]}
+                                value={sanksjonsårsak}
+                            >
                                 {sanksjonsårsakTilTekst[sanksjonsårsak]}
                             </option>
                         ))}
@@ -201,9 +212,16 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
                         <Seksjon>
                             <Undertittel>Sanksjonsperiode</Undertittel>
                             <NormaltekstMedMargin>
-                                Måneden for sanksjon er <b>{nåværendeÅrOgMånedFormatert()}</b> som
-                                er måneden etter dette vedtaket. Bruker vil ikke få utbetalt stønad
-                                i denne perioden.
+                                Måneden for sanksjon er{' '}
+                                <b>
+                                    {nåværendeÅrOgMånedFormatert(
+                                        !behandlingErRedigerbar
+                                            ? lagretSanksjonertVedtak?.periode.årMånedFra
+                                            : ''
+                                    )}
+                                </b>{' '}
+                                som er måneden etter dette vedtaket. Bruker vil ikke få utbetalt
+                                stønad i denne perioden.
                             </NormaltekstMedMargin>
                         </Seksjon>
                         <Seksjon>
@@ -211,7 +229,7 @@ const SanksjonsvedtakVisning: FC<{ behandlingId: string; lagretVedtak?: IVedtak 
                                 {sanksjonInfoDel1}
                                 <ul>
                                     {stønaderForSanksjonInfo.map((stønad) => (
-                                        <li>{stønad}</li>
+                                        <li key={stønad}>{stønad}</li>
                                     ))}
                                 </ul>
                                 {sanksjonInfoDel2}
