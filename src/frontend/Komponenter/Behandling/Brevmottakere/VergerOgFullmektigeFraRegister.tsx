@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { Button } from '@navikt/ds-react';
 import '@navikt/ds-css';
+import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {
     valgteMottakere: IBrevmottaker[];
@@ -17,15 +18,6 @@ interface Props {
 
 const StyledIngress = styled(Ingress)`
     margin-bottom: 1rem;
-`;
-
-const Linje = styled.div`
-    height: 0px;
-
-    border: 2px solid #f3f3f3;
-
-    margin-top: 2rem;
-    margin-bottom: 1.5rem;
 `;
 
 const StyledMottakerBoks = styled.div`
@@ -40,12 +32,6 @@ const Kolonner = styled.div`
     display: flex;
     flex-direction: column;
 `;
-
-const ButtonContainer = styled.div`
-    display: flex;
-`;
-
-const StyledButton = styled(Button)``;
 
 export const VergerOgFullmektigeFraRegister: FC<Props> = ({
     valgteMottakere,
@@ -91,15 +77,17 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
                                     />
                                 </Kolonner>
                                 {!mottakerValgt && (
-                                    <ButtonContainer>
-                                        <StyledButton
-                                            variant="secondary"
-                                            size="medium"
-                                            onClick={settMottaker(mottaker)}
-                                        >
-                                            Legg til
-                                        </StyledButton>
-                                    </ButtonContainer>
+                                    <VertikalSentrering>
+                                        <div>
+                                            <Button
+                                                variant="secondary"
+                                                size="small"
+                                                onClick={settMottaker(mottaker)}
+                                            >
+                                                Legg til
+                                            </Button>
+                                        </div>
+                                    </VertikalSentrering>
                                 )}
                             </StyledMottakerBoks>
                         </>
@@ -108,7 +96,6 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
             ) : (
                 <Normaltekst>Ingen verge/fullmektig i register</Normaltekst>
             )}
-            <Linje />
         </>
     );
 };

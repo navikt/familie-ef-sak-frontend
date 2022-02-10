@@ -31,6 +31,15 @@ const StyledSystemtittel = styled(Systemtittel)`
     margin-bottom: 2rem;
 `;
 
+const Linje = styled.div`
+    height: 0px;
+
+    border: 2px solid #f3f3f3;
+
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+`;
+
 export const BrevmottakereModal: FC<{
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
@@ -115,12 +124,14 @@ export const BrevmottakereModal: FC<{
                         valgteMottakere={valgtePersonMottakere}
                         settValgteMottakere={settValgtePersonMottakere}
                     />
+                    <Linje />
                     <SøkWrapper
                         valgtePersonMottakere={valgtePersonMottakere}
                         settValgtePersonMottakere={settValgtePersonMottakere}
                         valgteOrganisasjonMottakere={valgteOrganisasjonMottakere}
                         settValgteOrganisasjonMottakere={settValgteOrganisasjonMottakere}
                     />
+                    <Linje />
                     <SkalBrukerHaBrev
                         valgteBrevmottakere={valgtePersonMottakere}
                         settValgtBrevMottakere={settValgtePersonMottakere}
