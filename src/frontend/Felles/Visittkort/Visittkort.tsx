@@ -12,7 +12,7 @@ import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato } from '../../App/utils/dato';
 import { RessursStatus, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
-import { IFagsaksøk } from '../../App/typer/fagsaksøk';
+import { ISøkPerson } from '../../App/typer/personsøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
@@ -75,11 +75,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         const hentFagsak = (personIdent: string): void => {
             if (!personIdent) return;
 
-            axiosRequest<IFagsaksøk, IPersonIdent>({
+            axiosRequest<ISøkPerson, IPersonIdent>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/sok/`,
                 data: { personIdent: personIdent },
-            }).then((respons: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
+            }).then((respons: RessursSuksess<ISøkPerson> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
                     if (respons.data?.fagsaker?.length) {
                         settFagsakId(respons.data.fagsaker[0].fagsakId);
