@@ -11,6 +11,7 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Ressurs } from '../../App/typer/ressurs';
+import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 
 interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;
@@ -89,7 +90,12 @@ const BehandlingInnold: React.FC<Props> = ({ behandling, settBehandling, fagsak 
                                                 label={behandlingsEl.type}
                                             />
                                         </td>
-                                        <td>{behandlingsEl.type}</td>
+                                        <td>
+                                            {behandlingsEl.behandlingsårsak ===
+                                            Behandlingsårsak.MIGRERING
+                                                ? Behandlingsårsak.MIGRERING
+                                                : behandlingsEl.type}
+                                        </td>
                                         <td>{behandlingsEl.status}</td>
                                         <td>{formaterIsoDatoTid(behandlingsEl.sistEndret)}</td>
                                     </tr>

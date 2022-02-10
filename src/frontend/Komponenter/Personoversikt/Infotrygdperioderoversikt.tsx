@@ -14,6 +14,7 @@ import {
     aktivitetstypeTilTekst,
     InfotrygdPeriode,
     InfotrygdPerioderResponse,
+    Kode,
     kodeTilTekst,
     overgangsstønadKodeTilTekst,
     Perioder,
@@ -23,6 +24,9 @@ import {
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import MigrerFagsak from '../Migrering/MigrerFagsak';
 import InfotrygdSaker from '../Migrering/InfotrygdSaker';
+import { IFagsakPerson } from '../../App/typer/fagsak';
+import { InfotrygdPeriodeMedFlereEndringer } from '../Infotrygd/typer';
+import { slåSammenOgSorterPerioder } from '../Infotrygd/grupperInfotrygdperiode';
 
 const StyledTabell = styled.table``;
 
@@ -70,17 +74,26 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
     );
 };
 
+const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string => {
+    const stønadTom = formaterNullableMånedÅr(periode.stønadTom) as string;
+    if (periode.kode === Kode.OPPHØRT) {
+        return `${formaterNullableMånedÅr(periode.opphørsdato)} (${stønadTom})`;
+    } else {
+        return stønadTom;
+    }
+};
+
 const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ perioder }) => {
     if (perioder.length === 0) {
         return <>Ingen vedtaksperioder i Infotrygd</>;
     }
+    const sammenslåttePerioder = slåSammenOgSorterPerioder(perioder);
     return (
         <StyledTabell className="tabell">
             <thead>
                 <tr>
                     <th>VedtakId</th>
                     <th>Periode (fom-tom)</th>
-                    <th>Opphørsdato</th>
                     <th>Inntektsgrunnlag</th>
                     <th>Samordningsfradrag</th>
                     <th>Stønadsbeløp</th>
@@ -93,20 +106,22 @@ const InfotrygdPerioder: React.FC<{ perioder: InfotrygdPeriode[] }> = ({ periode
                 </tr>
             </thead>
             <tbody>
-                {perioder.map((periode) => (
+                {sammenslåttePerioder.map((periode) => (
                     <Rad key={`${periode.stønadId}-${periode.vedtakId}`}>
                         <td>{periode.vedtakId}</td>
                         <td>
                             {formaterNullableMånedÅr(periode.stønadFom)}
                             {' - '}
-                            {formaterNullableMånedÅr(periode.stønadTom)}
+                            {formatStønadTom(periode)}
                         </td>
-                        <td>{formaterNullableMånedÅr(periode.opphørsdato)}</td>
                         <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.samordningsfradrag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.beløp)}</td>
                         <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
-                        <td>{kodeTilTekst[periode.kode]}</td>
+                        <td>
+                            {kodeTilTekst[periode.kode]}{' '}
+                            {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
+                        </td>
                         <td>{sakstypeTilTekst[periode.sakstype]}</td>
                         <td>
                             {periode.aktivitetstype &&
@@ -170,9 +185,10 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 };
 
 const Infotrygdperioderoversikt: React.FC<{
-    fagsakId: string;
+    fagsakPerson: IFagsakPerson;
     personIdent: string;
-}> = ({ fagsakId, personIdent }) => {
+    onMigrert?: (behandlingId: string) => void;
+}> = ({ fagsakPerson, personIdent, onMigrert }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
@@ -192,7 +208,7 @@ const Infotrygdperioderoversikt: React.FC<{
                 <>
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
                     <InfotrygdSaker personIdent={personIdent} />
-                    <MigrerFagsak fagsakId={fagsakId} />
+                    <MigrerFagsak fagsakPerson={fagsakPerson} onMigrert={onMigrert} />
                 </>
             )}
         </DataViewer>
