@@ -1,4 +1,4 @@
-import { Routes, Navigate, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import * as React from 'react';
 import { filtrerSiderEtterBehandlingstype, sider } from './Fanemeny/sider';
 import { useBehandling } from '../../App/context/BehandlingContext';
