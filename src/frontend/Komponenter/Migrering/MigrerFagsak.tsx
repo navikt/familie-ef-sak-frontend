@@ -20,7 +20,10 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 
-const MigrerFagsak: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
+const MigrerFagsak: React.FC<{
+    fagsakPerson: IFagsakPerson;
+    onMigrert?: (behandlingId: string) => void;
+}> = ({ fagsakPerson, onMigrert }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
@@ -58,9 +61,12 @@ const MigrerFagsak: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson 
     };
 
     const migrerFagsak = () =>
-        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) =>
-            settMigrertStatus(res)
-        );
+        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
+            settMigrertStatus(res);
+            if (res.status === RessursStatus.SUKSESS && onMigrert) {
+                onMigrert(res.data);
+            }
+        });
 
     return (
         <div style={{ marginTop: '1rem' }}>
