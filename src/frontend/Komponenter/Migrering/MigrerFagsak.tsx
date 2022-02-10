@@ -31,22 +31,22 @@ const MigrerFagsak: React.FC<{
     );
     const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
 
-    const { overgangsstønad: fagsakId } = fagsakPerson;
+    const { id: fagsakPersonId } = fagsakPerson;
 
     const hentMigreringConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/migrering/${fagsakId}`,
+            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}`,
         }),
-        [fagsakId]
+        [fagsakPersonId]
     );
 
     const migrerFagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
-            url: `/familie-ef-sak/api/migrering/${fagsakId}`,
+            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}`,
         }),
-        [fagsakId]
+        [fagsakPersonId]
     );
 
     if (!toggles[ToggleName.MIGRERING]) {
