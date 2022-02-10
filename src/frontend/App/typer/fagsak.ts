@@ -5,9 +5,24 @@ import { Steg } from '../../Komponenter/Behandling/Høyremeny/Steg';
 import { Behandlingsårsak } from '../typer/Behandlingsårsak';
 import { TilbakekrevingBehandlingsresultatstype } from './tilbakekreving';
 
+export interface IFagsakPerson {
+    id: string;
+    overgangsstønad?: string;
+    barnetilsyn?: string;
+    skolepenger?: string;
+}
+
+export interface IFagsakPersonMedBehandlinger {
+    id: string;
+    overgangsstønad?: Fagsak;
+    barnetilsyn?: Fagsak;
+    skolepenger?: Fagsak;
+}
+
 export interface Fagsak {
     id: string;
     eksternId: number;
+    fagsakPersonId: string;
     personIdent: string;
     stønadstype: Stønadstype;
     behandlinger: Behandling[];

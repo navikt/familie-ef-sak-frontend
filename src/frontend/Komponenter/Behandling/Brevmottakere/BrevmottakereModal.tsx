@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VergerOgFullmektigeFraRegister } from './VergerOgFullmektigeFraRegister';
@@ -37,13 +37,18 @@ export const BrevmottakereModal: FC<{
 }> = ({ personopplysninger, behandlingId }) => {
     const { axiosRequest } = useApp();
     const { visBrevmottakereModal, settVisBrevmottakereModal } = useBehandling();
-    const [valgtePersonMottakere, settValgtePersonMottakere] = useState<IBrevmottaker[]>([
-        {
-            mottakerRolle: EBrevmottakerRolle.BRUKER,
-            personIdent: personopplysninger.personIdent,
-            navn: personopplysninger.navn.visningsnavn,
-        },
-    ]);
+    const initielleBrevmottakere = useMemo(
+        () => [
+            {
+                mottakerRolle: EBrevmottakerRolle.BRUKER,
+                personIdent: personopplysninger.personIdent,
+                navn: personopplysninger.navn.visningsnavn,
+            },
+        ],
+        [personopplysninger]
+    );
+    const [valgtePersonMottakere, settValgtePersonMottakere] =
+        useState<IBrevmottaker[]>(initielleBrevmottakere);
     const [valgteOrganisasjonMottakere, settValgteOrganisasjonMottakere] = useState<
         IOrganisasjonMottaker[]
     >([]);
@@ -75,9 +80,14 @@ export const BrevmottakereModal: FC<{
                 url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
                 method: 'GET',
             }).then((resp: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
-                if (resp.status === RessursStatus.SUKSESS && resp.data) {
-                    settValgtePersonMottakere(resp.data.personer);
-                    settValgteOrganisasjonMottakere(resp.data.organisasjoner);
+                if (resp.status === RessursStatus.SUKSESS) {
+                    if (resp.data) {
+                        settValgtePersonMottakere(resp.data.personer);
+                        settValgteOrganisasjonMottakere(resp.data.organisasjoner);
+                    } else {
+                        settValgtePersonMottakere(initielleBrevmottakere);
+                        settValgteOrganisasjonMottakere([]);
+                    }
                 } else if (resp.status === RessursStatus.FEILET) {
                     settFeilmelding(resp.frontendFeilmelding);
                 }
@@ -87,7 +97,7 @@ export const BrevmottakereModal: FC<{
         if (visBrevmottakereModal) {
             hentBrevmottakere();
         }
-    }, [axiosRequest, behandlingId, visBrevmottakereModal]);
+    }, [axiosRequest, behandlingId, visBrevmottakereModal, initielleBrevmottakere]);
 
     return (
         <Modal

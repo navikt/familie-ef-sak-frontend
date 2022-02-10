@@ -29,19 +29,19 @@ const StyledLesmer = styled(Lesmerpanel)`
 
 const MAX_LENGDE_ADRESSER = 5;
 
-const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({
+const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     adresser,
-    fagsakId,
+    fagsakPersonId,
 }) => {
     return (
         <>
             <AdressehistorikkMedLesMerKnapp
-                fagsakId={fagsakId}
+                fagsakPersonId={fagsakPersonId}
                 adresser={adresser.filter((adresse) => adresse.type === AdresseType.BOSTEDADRESSE)}
                 type={AdresseType.BOSTEDADRESSE}
             />
             <AdressehistorikkMedLesMerKnapp
-                fagsakId={fagsakId}
+                fagsakPersonId={fagsakPersonId}
                 adresser={adresser.filter((adresse) => adresse.type !== AdresseType.BOSTEDADRESSE)}
             />
         </>
@@ -50,12 +50,12 @@ const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = (
 
 const AdressehistorikkMedLesMerKnapp: React.FC<{
     adresser: IAdresse[];
-    fagsakId: string;
+    fagsakPersonId: string;
     type?: AdresseType;
-}> = ({ adresser, fagsakId, type }) => {
+}> = ({ adresser, fagsakPersonId, type }) => {
     const [isClosed, setIsClosed] = useState<boolean>(true);
     if (adresser.length <= MAX_LENGDE_ADRESSER) {
-        return <Adresser adresser={adresser} fagsakId={fagsakId} type={type} />;
+        return <Adresser adresser={adresser} fagsakPersonId={fagsakPersonId} type={type} />;
     } else {
         const introAdresser = adresser.slice(0, MAX_LENGDE_ADRESSER);
         return (
@@ -65,13 +65,17 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
                 className={'adresser'}
                 intro={
                     isClosed && (
-                        <Adresser adresser={introAdresser} fagsakId={fagsakId} type={type} />
+                        <Adresser
+                            adresser={introAdresser}
+                            fagsakPersonId={fagsakPersonId}
+                            type={type}
+                        />
                     )
                 }
                 apneTekst={'Vis flere adresser'}
                 lukkTekst={'Skjul adresser'}
             >
-                <Adresser adresser={adresser} fagsakId={fagsakId} type={type} />
+                <Adresser adresser={adresser} fagsakPersonId={fagsakPersonId} type={type} />
             </StyledLesmer>
         );
     }
@@ -83,9 +87,9 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
     </Td>
 );
 
-const Adresser: React.FC<{ adresser: IAdresse[]; fagsakId: string; type?: AdresseType }> = ({
+const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
     adresser,
-    fagsakId,
+    fagsakPersonId,
     type,
 }) => {
     return (
@@ -107,7 +111,7 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakId: string; type?: Adress
                             <Kolonnetittel text={'Til'} width={20} />
                         </tr>
                     </thead>
-                    <Innhold adresser={adresser} fagsakId={fagsakId} />
+                    <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
                 </table>
             )) || <IngenData />}
         </TabellWrapper>
@@ -117,7 +121,10 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakId: string; type?: Adress
 const gyldigTilOgMedErNullEllerFremITid = (adresse: IAdresse) =>
     !adresse.gyldigTilOgMed || datoErEtterDagensDato(adresse.gyldigTilOgMed);
 
-const Innhold: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresser, fagsakId }) => {
+const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
+    adresser,
+    fagsakPersonId,
+}) => {
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
     return (
         <>
@@ -164,7 +171,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakId: string }> = ({ adresse
                         onClose: () => settBeboereAdresseIModal(undefined),
                     }}
                 >
-                    <Beboere fagsakId={fagsakId} />
+                    <Beboere fagsakPersonId={fagsakPersonId} />
                 </UIModalWrapper>
             )}
         </>

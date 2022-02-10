@@ -23,14 +23,13 @@ import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PartialRecord } from '../../App/typer/common';
 import { ToggleName } from '../../App/context/toggles';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import Alertstripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useToggles } from '../../App/context/TogglesContext';
 import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import RevurderingModal from './RevurderingModal';
-import Alertstripe from 'nav-frontend-alertstriper';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
@@ -129,7 +128,9 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
 
     function erAlleBehandlingerErFerdigstilt(fagsak: Fagsak) {
         return (
-            fagsak.behandlinger.length > 0 &&
+            fagsak.behandlinger.some(
+                (behandling) => behandling.resultat !== BehandlingResultat.HENLAGT
+            ) &&
             fagsak.behandlinger.find(
                 (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
             ) === undefined
@@ -156,15 +157,17 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                     />
                     {kanStarteRevurdering && (
-                        <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                            Opprett ny behandling
-                        </KnappMedMargin>
+                        <>
+                            <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
+                                Opprett ny behandling
+                            </KnappMedMargin>
+                            <RevurderingModal
+                                visModal={visRevurderingvalg}
+                                settVisModal={settVisRevurderingvalg}
+                                fagsakId={fagsakId}
+                            />
+                        </>
                     )}
-                    <RevurderingModal
-                        visModal={visRevurderingvalg}
-                        settVisModal={settVisRevurderingvalg}
-                        fagsakId={fagsakId}
-                    />
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
                             Teknisk opphør

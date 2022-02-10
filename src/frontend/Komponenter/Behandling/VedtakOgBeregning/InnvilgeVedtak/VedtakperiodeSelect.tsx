@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import { EPeriodeProperty, EPeriodetype, periodetypeTilTekst } from '../../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
-import { useToggles } from '../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../App/context/toggles';
 
 const StyledSelect = styled(FamilieSelect)`
     min-width: 140px;
@@ -28,7 +26,6 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     periodeType,
     feil,
 }) => {
-    const { toggles } = useToggles();
     return (
         <StyledSelect
             aria-label="Periodetype"
@@ -53,11 +50,9 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
             <option value={EPeriodetype.UTVIDELSE}>
                 {periodetypeTilTekst[EPeriodetype.UTVIDELSE]}
             </option>
-            {toggles[ToggleName.innvilgeMedOpphørToggle] && (
-                <option value={EPeriodetype.MIDLERTIDIG_OPPHØR}>
-                    {periodetypeTilTekst[EPeriodetype.MIDLERTIDIG_OPPHØR]}
-                </option>
-            )}
+            <option value={EPeriodetype.MIDLERTIDIG_OPPHØR}>
+                {periodetypeTilTekst[EPeriodetype.MIDLERTIDIG_OPPHØR]}
+            </option>
         </StyledSelect>
     );
 };

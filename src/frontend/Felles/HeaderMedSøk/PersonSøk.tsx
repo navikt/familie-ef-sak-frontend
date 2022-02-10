@@ -16,13 +16,17 @@ import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
 import { IPersonIdent } from '../../App/typer/felles';
 
 const tilSøkeresultatListe = (resultat: IFagsaksøk): ISøkeresultat[] => {
-    return resultat.fagsaker.map((fagsak) => ({
-        harTilgang: true, //Alltid true hvis har status RessursStatus.SUKSESS
-        ident: resultat.personIdent,
-        fagsakId: fagsak.fagsakId,
-        navn: resultat.visningsnavn,
-        ikon: resultat.kjønn === kjønnType.MANN ? <MannIkon /> : <KvinneIkon />,
-    }));
+    return resultat.fagsakPersonId
+        ? [
+              {
+                  harTilgang: true, //Alltid true hvis har status RessursStatus.SUKSESS
+                  ident: resultat.personIdent,
+                  fagsakId: resultat.fagsakPersonId, // hak for å få Søk til å virke riktig med fagsakPersonId
+                  navn: resultat.visningsnavn,
+                  ikon: resultat.kjønn === kjønnType.MANN ? <MannIkon /> : <KvinneIkon />,
+              },
+          ]
+        : [];
 };
 
 const PersonSøk: React.FC = () => {
@@ -34,7 +38,7 @@ const PersonSøk: React.FC = () => {
     };
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
-        gåTilUrl(`/fagsak/${søkeresultat.fagsakId}`);
+        gåTilUrl(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
     };
 
     const søk = (personIdent: string): void => {

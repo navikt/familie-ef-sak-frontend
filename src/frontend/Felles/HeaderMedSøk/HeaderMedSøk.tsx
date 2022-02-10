@@ -9,8 +9,6 @@ import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
-import { ToggleName } from '../../App/context/toggles';
-import { useToggles } from '../../App/context/TogglesContext';
 import { harTilgangTilRolle } from '../../App/utils/roller';
 
 export interface IHeaderMedSøkProps {
@@ -56,7 +54,6 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
     const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
-    const { toggles } = useToggles();
 
     const eksterneLenker = useMemo(
         () => lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId),
@@ -77,7 +74,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
             eksterneLenker={eksterneLenker}
         >
             {innloggetSaksbehandler && <PersonSøk />}
-            {toggles[ToggleName.endringslogg] && innloggetSaksbehandler && (
+            {innloggetSaksbehandler && (
                 <Endringslogg
                     userId={innloggetSaksbehandler.navIdent}
                     dataFetchingIntervalSeconds={60 * 15}
