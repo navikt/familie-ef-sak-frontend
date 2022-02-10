@@ -14,11 +14,16 @@ const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
 const finnerIkkeFagsakMelding = 'Finner ikke fagsak for søkte personen';
 
-const OppgaveMigrering: React.FC<{ oppgaveId: string; journalpostId: string }> = ({
+interface OppgaveOgJournalpostId {
+    oppgaveId: string;
+    journalpostId: string;
+}
+
+const SøkEtterPerson: React.FC<OppgaveOgJournalpostId & { personIdent: string }> = ({
     oppgaveId,
     journalpostId,
+    personIdent,
 }) => {
-    const { hentJournalPost, journalResponse } = useHentJournalpost(journalpostId);
     const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
     const { hentSøkPerson, søkPersonResponse } = useHentSøkPerson();
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -26,16 +31,8 @@ const OppgaveMigrering: React.FC<{ oppgaveId: string; journalpostId: string }> =
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (journalpostId) {
-            hentJournalPost();
-        }
-    }, [hentJournalPost, journalpostId]);
-
-    useEffect(() => {
-        if (journalResponse.status === RessursStatus.SUKSESS) {
-            hentSøkPerson(journalResponse.data.personIdent);
-        }
-    }, [hentSøkPerson, journalResponse]);
+        hentSøkPerson(personIdent);
+    }, [personIdent, hentSøkPerson]);
 
     useEffect(() => {
         if (søkPersonResponse.status === RessursStatus.SUKSESS) {
@@ -80,8 +77,8 @@ const OppgaveMigrering: React.FC<{ oppgaveId: string; journalpostId: string }> =
     return (
         <>
             {feilmelding && <div style={{ color: 'red' }}>{feilmelding}</div>}
-            <DataViewer response={{ fagsakPerson, journalResponse }}>
-                {({ fagsakPerson, journalResponse }) => {
+            <DataViewer response={{ fagsakPerson }}>
+                {({ fagsakPerson }) => {
                     if (!fagsakPerson.overgangsstønad?.erMigrert) {
                         return (
                             <>
@@ -92,7 +89,7 @@ const OppgaveMigrering: React.FC<{ oppgaveId: string; journalpostId: string }> =
                                         barnetilsyn: fagsakPerson.barnetilsyn?.id,
                                         skolepenger: fagsakPerson.skolepenger?.id,
                                     }}
-                                    personIdent={journalResponse.personIdent}
+                                    personIdent={personIdent}
                                     onMigrert={() => {
                                         triggerHentFagsak();
                                     }}
@@ -113,6 +110,37 @@ const OppgaveMigrering: React.FC<{ oppgaveId: string; journalpostId: string }> =
                 }}
             </DataViewer>
         </>
+    );
+};
+
+/**
+ * Denne gjør:
+ * * Henter journalpost
+ *  * Søker etter person på ident fra journalpost (som oppretter fagsakPerson hvis den finnes i infotrygd)
+ *   * Henter fagsakPerson for fagsakPersonId
+ *    * Hvis personen ikke er migrert, vis info om migrering
+ *     * Når personen er migrert, trigg henting av fagsak på nytt
+ *    * Hvis personen er migrert, send videre til journalføring
+ */
+const OppgaveMigrering: React.FC<OppgaveOgJournalpostId> = ({ oppgaveId, journalpostId }) => {
+    const { hentJournalPost, journalResponse } = useHentJournalpost(journalpostId);
+
+    useEffect(() => {
+        if (journalpostId) {
+            hentJournalPost();
+        }
+    }, [hentJournalPost, journalpostId]);
+
+    return (
+        <DataViewer response={{ journalResponse }}>
+            {({ journalResponse }) => (
+                <SøkEtterPerson
+                    oppgaveId={oppgaveId}
+                    journalpostId={journalpostId}
+                    personIdent={journalResponse.personIdent}
+                />
+            )}
+        </DataViewer>
     );
 };
 
