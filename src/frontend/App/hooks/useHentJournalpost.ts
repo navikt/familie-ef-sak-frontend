@@ -1,6 +1,6 @@
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { IJojurnalpostResponse } from '../typer/journalforing';
 import { AxiosRequestConfig } from 'axios';
 import { OrNothing } from './felles/useSorteringState';
@@ -18,18 +18,20 @@ export const useHentJournalpost = (
         byggTomRessurs()
     );
 
-    const hentJournalpostConfig: AxiosRequestConfig = {
-        method: 'GET',
-        url: `/familie-ef-sak/api/journalpost/${journalpostIdParam}`,
-    };
+    const hentJournalpostConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/journalpost/${journalpostIdParam}`,
+        }),
+        [journalpostIdParam]
+    );
 
     const hentJournalPost = useCallback(() => {
         settJournalResponse(byggHenterRessurs());
         axiosRequest<IJojurnalpostResponse, null>(hentJournalpostConfig).then(
             (res: Ressurs<IJojurnalpostResponse>) => settJournalResponse(res)
         );
-        // eslint-disable-next-line
-    }, [hentJournalpostConfig]);
+    }, [axiosRequest, hentJournalpostConfig]);
 
     return {
         hentJournalPost,
