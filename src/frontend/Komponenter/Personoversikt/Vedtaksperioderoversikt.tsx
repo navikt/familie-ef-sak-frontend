@@ -21,7 +21,7 @@ import EtikettBase from 'nav-frontend-etiketter';
 import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
 import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
-import { Select, Checkbox } from 'nav-frontend-skjema';
+import { Checkbox, Select } from 'nav-frontend-skjema';
 import { compareDesc } from 'date-fns';
 
 const StyledInputs = styled.div`
@@ -76,12 +76,16 @@ const etikettType = (periodeType: EPeriodetype) => {
             return 'info';
         case EPeriodetype.UTVIDELSE:
             return 'fokus';
+        case EPeriodetype.MIGRERING:
         case EPeriodetype.FORLENGELSE:
             return 'advarsel';
+        default:
+            return 'info';
     }
 };
 
 const historikkRad = (andel: AndelHistorikk) => {
+    const erMigrering = andel.periodeType === EPeriodetype.MIGRERING;
     return (
         <Rad type={andel.endring?.type}>
             <td>
@@ -102,7 +106,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{andel.saksbehandler}</td>
             <td>
                 <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
-                    {behandlingstypeTilTekst[andel.behandlingType]}
+                    {erMigrering ? 'Migrering' : behandlingstypeTilTekst[andel.behandlingType]}
                 </Link>
             </td>
             <td>{endring(andel.endring)}</td>
