@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import axe from '@axe-core/react';
 import App from './App';
 import './index.less';
+import '@navikt/ds-css';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');

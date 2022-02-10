@@ -6,7 +6,6 @@ import { fullmaktTilBrevMottaker, vergemålTilBrevmottaker } from './brevmottake
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { Button } from '@navikt/ds-react';
-import '@navikt/ds-css';
 import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {

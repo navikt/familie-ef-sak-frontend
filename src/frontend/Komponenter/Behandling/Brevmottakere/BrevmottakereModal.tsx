@@ -4,7 +4,6 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VergerOgFullmektigeFraRegister } from './VergerOgFullmektigeFraRegister';
 import { SøkWrapper } from './SøkWrapper';
 import { SkalBrukerHaBrev } from './SkalBrukerHaBrev';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
@@ -13,6 +12,7 @@ import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottake
 import styled from 'styled-components';
 import Modal from 'nav-frontend-modal';
 import { Systemtittel } from 'nav-frontend-typografi';
+import { Button } from '@navikt/ds-react';
 
 const GridContainer = styled.div`
     display: grid;
@@ -25,6 +25,11 @@ const Høyrekolonne = styled.div``;
 const SentrerKnapper = styled.div`
     display: flex;
     justify-content: center;
+
+    > button {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
 `;
 
 const StyledSystemtittel = styled(Systemtittel)`
@@ -148,8 +153,12 @@ export const BrevmottakereModal: FC<{
                 </Høyrekolonne>
             </GridContainer>
             <SentrerKnapper>
-                <Knapp onClick={() => settVisBrevmottakereModal(false)}>Avbryt</Knapp>
-                <Hovedknapp onClick={settBrevmottakere}>Sett mottakere</Hovedknapp>
+                <Button variant="tertiary" onClick={() => settVisBrevmottakereModal(false)}>
+                    Avbryt
+                </Button>
+                <Button variant="primary" onClick={settBrevmottakere}>
+                    Sett mottakere
+                </Button>
             </SentrerKnapper>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             {innsendingSuksess && <AlertStripeSuksess>Brevmottakere er satt</AlertStripeSuksess>}
