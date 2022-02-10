@@ -115,6 +115,12 @@ export const JournalforingAdmin: React.FC = () => {
                 <SideLayout className={'container'}>
                     <Sidetittel>Opprett ny behandling for journalpost</Sidetittel>
                     <Blokk>
+                        <Normaltekst>
+                            Her kan du opprette en ny behandling med søknadsdata for en journalpost
+                            som er ferdigstilt
+                        </Normaltekst>
+                    </Blokk>
+                    <Blokk>
                         <Brukerinfo personIdent={journalResponse.personIdent} />
                     </Blokk>
                     <Blokk>
@@ -134,9 +140,9 @@ export const JournalforingAdmin: React.FC = () => {
                     </Blokk>
                     <Blokk>
                         <Systemtittel>Behandlingstype</Systemtittel>
-                        <Normaltekst>
-                            {nyBehandlingstype && behandlingstypeTilTekst[nyBehandlingstype]}
-                        </Normaltekst>
+                        {nyBehandlingstype && (
+                            <Normaltekst>${behandlingstypeTilTekst[nyBehandlingstype]}</Normaltekst>
+                        )}
                     </Blokk>
 
                     <Hovedknapp
