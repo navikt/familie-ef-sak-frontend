@@ -110,7 +110,7 @@ const MigrerFagsak: React.FC<{
                             migrertStatus.status === RessursStatus.FUNKSJONELL_FEIL ||
                             migrertStatus.status === RessursStatus.IKKE_TILGANG) && (
                             <div style={{ color: 'red' }}>
-                                ${migrertStatus.frontendFeilmelding || migrertStatus.melding}
+                                {migrertStatus.frontendFeilmelding || migrertStatus.melding}
                             </div>
                         )}
                         <Knapp

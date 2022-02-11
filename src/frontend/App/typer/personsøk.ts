@@ -3,7 +3,7 @@
 import { kjønnType } from '@navikt/familie-typer';
 import { Stønadstype } from './behandlingstema';
 
-export interface IFagsaksøk {
+export interface ISøkPerson {
     fagsaker: {
         fagsakId: string;
         stønadstype: Stønadstype;
