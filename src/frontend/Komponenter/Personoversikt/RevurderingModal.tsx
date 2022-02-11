@@ -20,7 +20,6 @@ import {
 } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { BarnForRevurdering, RevurderingInnhold } from '../../App/typer/revurderingstype';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { useNavigate } from 'react-router-dom';
 import { useToggles } from '../../App/context/TogglesContext';
@@ -124,115 +123,106 @@ const RevurderingsModal: React.FunctionComponent<IProps> = ({
     };
 
     return (
-        <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
-            {({ nyeBarnSidenForrigeBehandling }) => {
-                const harNyeBarnSidenForrigeBehandling = nyeBarnSidenForrigeBehandling.length > 0;
-                return (
-                    <UIModalWrapper
-                        modal={{
-                            tittel: 'Opprett ny behandling',
-                            lukkKnapp: true,
-                            visModal: visModal,
-                            onClose: () => settVisModal(false),
-                            className: 'long',
-                        }}
-                    >
-                        <StyledSelect
-                            label="Behandlingstype"
-                            value={valgtBehandlingstype || ''}
-                            onChange={(e) => {
-                                settValgtBehandlingstype(e.target.value as Behandlingstype);
-                                settValgtBehandlingsårsak(undefined);
-                            }}
-                        >
-                            <option value="">Velg</option>
-                            <option value={Behandlingstype.REVURDERING}>Revurdering</option>
-                        </StyledSelect>
-                        <StyledSelect
-                            label="Årsak"
-                            value={valgtBehandlingsårsak || ''}
-                            onChange={(e) => {
-                                settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
-                            }}
-                        >
-                            <option value="">Velg</option>
-                            {valgtBehandlingstype === Behandlingstype.REVURDERING &&
-                                behandlingsårsaker
-                                    .filter(
-                                        (behandlingsårsak) =>
-                                            behandlingsårsak !== Behandlingsårsak.SANKSJON_1_MND ||
-                                            skalViseValgmulighetForSanksjon
-                                    )
-                                    .map((behandlingsårsak: Behandlingsårsak, index: number) => (
-                                        <option key={index} value={behandlingsårsak}>
-                                            {behandlingsårsakTilTekst[behandlingsårsak]}
-                                        </option>
-                                    ))}
-                        </StyledSelect>
-                        <StyledFamilieDatovelgder
-                            id={'krav-mottatt'}
-                            label={'Krav mottatt'}
-                            onChange={(dato) => {
-                                settValgtDato(dato as string);
-                            }}
-                            valgtDato={valgtDato}
-                        />
-                        {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
-                            <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
-                                <TekstForCheckboxGruppe>
-                                    Barna listet opp nedenfor har ikke vært en del av behandlingen
-                                    tidligere. Gjør en vurdering på hvorvidt disse skal inkluderes i
-                                    den nye revurderingen og velg de som er relevante.
-                                </TekstForCheckboxGruppe>
-                                {nyeBarnSidenForrigeBehandling.map((nyttBarn) => {
-                                    return (
-                                        <Checkbox
-                                            key={nyttBarn.personIdent}
-                                            onClick={(e) => {
-                                                if ((e.target as HTMLInputElement).checked) {
-                                                    settValgtBarn((prevState) => [
-                                                        ...prevState,
-                                                        nyttBarn,
-                                                    ]);
-                                                } else {
-                                                    settValgtBarn((prevState) =>
-                                                        prevState.filter(
-                                                            (barn) =>
-                                                                barn.personIdent !==
-                                                                nyttBarn.personIdent
-                                                        )
-                                                    );
-                                                }
-                                            }}
-                                            label={`${nyttBarn.navn} (${nyttBarn.personIdent})`}
-                                        />
-                                    );
-                                })}
-                            </StyledCheckboxGruppe>
-                        )}
-                        <KnappeWrapper ekstraPaddingOverKnapp={!harNyeBarnSidenForrigeBehandling}>
-                            <StyledHovedknapp
-                                onClick={() => {
-                                    if (!senderInnRevurdering) {
-                                        opprettRevurdering();
-                                    }
-                                }}
-                            >
-                                Opprett
-                            </StyledHovedknapp>
-                            <Flatknapp
-                                onClick={() => {
-                                    settVisModal(false);
-                                }}
-                            >
-                                Avbryt
-                            </Flatknapp>
-                        </KnappeWrapper>
-                        {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
-                    </UIModalWrapper>
-                );
+        <UIModalWrapper
+            modal={{
+                tittel: 'Opprett ny behandling',
+                lukkKnapp: true,
+                visModal: visModal,
+                onClose: () => settVisModal(false),
+                className: 'long',
             }}
-        </DataViewer>
+        >
+            <StyledSelect
+                label="Behandlingstype"
+                value={valgtBehandlingstype || ''}
+                onChange={(e) => {
+                    settValgtBehandlingstype(e.target.value as Behandlingstype);
+                    settValgtBehandlingsårsak(undefined);
+                }}
+            >
+                <option value="">Velg</option>
+                <option value={Behandlingstype.REVURDERING}>Revurdering</option>
+            </StyledSelect>
+            <StyledSelect
+                label="Årsak"
+                value={valgtBehandlingsårsak || ''}
+                onChange={(e) => {
+                    settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
+                }}
+            >
+                <option value="">Velg</option>
+                {valgtBehandlingstype === Behandlingstype.REVURDERING &&
+                    behandlingsårsaker
+                        .filter(
+                            (behandlingsårsak) =>
+                                behandlingsårsak !== Behandlingsårsak.SANKSJON_1_MND ||
+                                skalViseValgmulighetForSanksjon
+                        )
+                        .map((behandlingsårsak: Behandlingsårsak, index: number) => (
+                            <option key={index} value={behandlingsårsak}>
+                                {behandlingsårsakTilTekst[behandlingsårsak]}
+                            </option>
+                        ))}
+            </StyledSelect>
+            <StyledFamilieDatovelgder
+                id={'krav-mottatt'}
+                label={'Krav mottatt'}
+                onChange={(dato) => {
+                    settValgtDato(dato as string);
+                }}
+                valgtDato={valgtDato}
+            />
+            {kanLeggeTilNyeBarnPåRevurdering &&
+                nyeBarnSidenForrigeBehandling.status === RessursStatus.SUKSESS &&
+                nyeBarnSidenForrigeBehandling.data.length > 0 && (
+                    <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
+                        <TekstForCheckboxGruppe>
+                            Barna listet opp nedenfor har ikke vært en del av behandlingen
+                            tidligere. Gjør en vurdering på hvorvidt disse skal inkluderes i den nye
+                            revurderingen og velg de som er relevante.
+                        </TekstForCheckboxGruppe>
+                        {nyeBarnSidenForrigeBehandling.data.map((nyttBarn) => {
+                            return (
+                                <Checkbox
+                                    key={nyttBarn.personIdent}
+                                    onClick={(e) => {
+                                        if ((e.target as HTMLInputElement).checked) {
+                                            settValgtBarn((prevState) => [...prevState, nyttBarn]);
+                                        } else {
+                                            settValgtBarn((prevState) =>
+                                                prevState.filter(
+                                                    (barn) =>
+                                                        barn.personIdent !== nyttBarn.personIdent
+                                                )
+                                            );
+                                        }
+                                    }}
+                                    label={`${nyttBarn.navn} (${nyttBarn.personIdent})`}
+                                />
+                            );
+                        })}
+                    </StyledCheckboxGruppe>
+                )}
+            <KnappeWrapper ekstraPaddingOverKnapp={false}>
+                <StyledHovedknapp
+                    onClick={() => {
+                        if (!senderInnRevurdering) {
+                            opprettRevurdering();
+                        }
+                    }}
+                >
+                    Opprett
+                </StyledHovedknapp>
+                <Flatknapp
+                    onClick={() => {
+                        settVisModal(false);
+                    }}
+                >
+                    Avbryt
+                </Flatknapp>
+            </KnappeWrapper>
+            {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
+        </UIModalWrapper>
     );
 };
 
