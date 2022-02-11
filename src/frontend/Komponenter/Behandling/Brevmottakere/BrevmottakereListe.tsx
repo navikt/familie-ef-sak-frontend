@@ -13,6 +13,10 @@ interface Props {
     settValgteOrganisasjonMottakere: Dispatch<SetStateAction<IOrganisasjonMottaker[]>>;
 }
 
+const StyledIngress = styled(Ingress)`
+    margin-bottom: 1rem;
+`;
+
 const StyledMottakerBoks = styled.div`
     padding: 10px;
     margin-bottom: 4px;
@@ -44,7 +48,7 @@ export const BrevmottakereListe: FC<Props> = ({
     };
     return (
         <>
-            <Ingress>Brevmottakere</Ingress>
+            <StyledIngress>Brevmottakere</StyledIngress>
             {valgtePersonMottakere.map((mottaker) => (
                 <StyledMottakerBoks>
                     <Flexboks>

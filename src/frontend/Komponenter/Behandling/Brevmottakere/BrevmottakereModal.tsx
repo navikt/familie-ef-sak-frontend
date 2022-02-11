@@ -16,7 +16,7 @@ import { Button } from '@navikt/ds-react';
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 100fr 1fr 100fr;
     column-gap: 2rem;
 `;
 const Venstrekolonne = styled.div``;
@@ -34,20 +34,27 @@ const SentrerKnapper = styled.div`
 
 const StyledModal = styled(Modal)`
     padding: 3rem;
-    max-width: 1050px;
+    max-width: 1100px;
 `;
 
 const StyledSystemtittel = styled(Systemtittel)`
     margin-bottom: 2rem;
 `;
 
-const Linje = styled.div`
+const HorisontalLinje = styled.div`
     height: 0px;
 
     border: 2px solid #f3f3f3;
 
     margin-top: 2rem;
     margin-bottom: 1.5rem;
+`;
+
+const VertikalLinje = styled.div`
+    border-left: 2px solid #f3f3f3;
+    height: 100%px;
+    width: 5px;
+    margin-bottom: 1rem;
 `;
 
 export const BrevmottakereModal: FC<{
@@ -125,7 +132,7 @@ export const BrevmottakereModal: FC<{
             closeButton={true}
             contentLabel={'Velg brevmottakere'}
         >
-            <StyledSystemtittel>Hvem skal motta vedtaksbrevet?</StyledSystemtittel>
+            <StyledSystemtittel>Hvem skal motta brevet?</StyledSystemtittel>
             <GridContainer>
                 <Venstrekolonne>
                     <VergerOgFullmektigeFraRegister
@@ -134,20 +141,21 @@ export const BrevmottakereModal: FC<{
                         valgteMottakere={valgtePersonMottakere}
                         settValgteMottakere={settValgtePersonMottakere}
                     />
-                    <Linje />
+                    <HorisontalLinje />
                     <SøkWrapper
                         valgtePersonMottakere={valgtePersonMottakere}
                         settValgtePersonMottakere={settValgtePersonMottakere}
                         valgteOrganisasjonMottakere={valgteOrganisasjonMottakere}
                         settValgteOrganisasjonMottakere={settValgteOrganisasjonMottakere}
                     />
-                    <Linje />
+                    <HorisontalLinje />
                     <SkalBrukerHaBrev
                         valgteBrevmottakere={valgtePersonMottakere}
                         settValgtBrevMottakere={settValgtePersonMottakere}
                         personopplysninger={personopplysninger}
                     />
                 </Venstrekolonne>
+                <VertikalLinje />
                 <Høyrekolonne>
                     <BrevmottakereListe
                         valgtePersonMottakere={valgtePersonMottakere}
