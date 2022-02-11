@@ -6,9 +6,20 @@ import { gjelderÅr } from '../../../App/utils/dato';
 import styled from 'styled-components';
 import SimuleringOversikt from './SimuleringOversikt';
 import { Tilbakekreving } from './Tilbakekreving';
+import { EBehandlingResultat, ISanksjonereVedtak, IVedtak } from '../../../App/typer/vedtak';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { nåværendeÅrOgMånedFormatert } from '../Sanksjon/utils';
 
 const SimuleringsContainer = styled.div`
     margin: 2rem;
+`;
+
+const Seksjon = styled.div`
+    margin-top: 2rem;
+`;
+
+const NormaltekstMedMargin = styled(Normaltekst)`
+    margin-top: 1rem;
 `;
 
 const mapSimuleringstabellRader = (
@@ -33,7 +44,8 @@ const mapSimuleringstabellRader = (
 const SimuleringTabellWrapper: React.FC<{
     simuleringsresultat: ISimulering;
     behandlingId: string;
-}> = ({ simuleringsresultat, behandlingId }) => {
+    lagretVedtak?: IVedtak;
+}> = ({ simuleringsresultat, behandlingId, lagretVedtak }) => {
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
     const [år, settÅr] = useState(
@@ -41,6 +53,11 @@ const SimuleringTabellWrapper: React.FC<{
     );
 
     const simuleringTabellRader = mapSimuleringstabellRader(simuleringsresultat, år);
+
+    const lagretSanksjonertVedtak =
+        lagretVedtak?.resultatType === EBehandlingResultat.SANKSJONERE
+            ? (lagretVedtak as ISanksjonereVedtak)
+            : undefined;
 
     function harFeilutbetaling() {
         return simuleringsresultat.feilutbetaling > 0;
@@ -53,7 +70,24 @@ const SimuleringTabellWrapper: React.FC<{
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
             />
-            {harFeilutbetaling() && <Tilbakekreving behandlingId={behandlingId} />}
+            {harFeilutbetaling() && !lagretSanksjonertVedtak && (
+                <Tilbakekreving behandlingId={behandlingId} />
+            )}
+            {lagretSanksjonertVedtak && (
+                <Seksjon>
+                    <Undertittel>Sanksjonsperiode</Undertittel>
+                    <NormaltekstMedMargin>
+                        Måneden for sanksjon er{' '}
+                        <b>
+                            {nåværendeÅrOgMånedFormatert(
+                                lagretSanksjonertVedtak?.periode.årMånedFra
+                            )}
+                        </b>{' '}
+                        som er måneden etter dette vedtaket. Bruker vil ikke få utbetalt stønad i
+                        denne perioden.
+                    </NormaltekstMedMargin>
+                </Seksjon>
+            )}
         </SimuleringsContainer>
     );
 };
