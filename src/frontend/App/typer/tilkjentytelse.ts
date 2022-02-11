@@ -25,7 +25,7 @@ export interface AndelHistorikk {
     aktivitet: EAktivitet;
     periodeType: EPeriodetype;
     behandlingType: Behandlingstype;
-    sanksjonsårsak: Sanksjonsårsak;
+    sanksjonsårsak?: Sanksjonsårsak;
 }
 
 export interface AndelHistorikkEndring {

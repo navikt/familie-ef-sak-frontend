@@ -31,7 +31,7 @@ import { Checkbox, Select } from 'nav-frontend-skjema';
 import { compareDesc } from 'date-fns';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
-import { sanksjonsårsakTilTekst } from '../../App/typer/Sanksjonsårsak';
+import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../App/typer/Sanksjonsårsak';
 
 const StyledInputs = styled.div`
     display: flex;
@@ -130,7 +130,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             </td>
             <td>
                 {erSanksjon
-                    ? sanksjonsårsakTilTekst[andel.sanksjonsårsak]
+                    ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
                     : aktivitetTilTekst[andel.aktivitet]}
             </td>
             <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
