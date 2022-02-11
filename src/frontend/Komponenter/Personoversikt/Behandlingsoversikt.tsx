@@ -29,7 +29,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
-import RevurderingModal from './RevurderingModal';
+import LagBehandlingModal from './LagBehandlingModal';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
@@ -72,7 +72,9 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
-    const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+
+    const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
+
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
         Ressurs<TilbakekrevingBehandling[]>
@@ -158,14 +160,16 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
                     />
                     {kanStarteRevurdering && (
                         <>
-                            <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
+                            <LagBehandlingModal
+                                visModal={visLagBehandlingModal}
+                                settVisModal={settVisLagBehandlingModal}
+                                fagsakId={fagsakId}
+                                hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
+                            />
+
+                            <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
                                 Opprett ny behandling
                             </KnappMedMargin>
-                            <RevurderingModal
-                                visModal={visRevurderingvalg}
-                                settVisModal={settVisRevurderingvalg}
-                                fagsakId={fagsakId}
-                            />
                         </>
                     )}
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (

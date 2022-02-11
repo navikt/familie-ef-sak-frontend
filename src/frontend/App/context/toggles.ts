@@ -10,5 +10,6 @@ export enum ToggleName {
     MIGRERING = 'familie.ef.sak.migrering',
     visValgmulighetForSanksjon = 'familie.ef.sak.frontend-vis-sanksjon-en-maned',
     kanLeggeTilNyeBarnPaaRevurdering = 'familie.ef.sak.kan-legge-til-nye-barn-paa-revurdering',
+    visOpprettTilbakekreving = 'familie.ef.sak.frontend-vis-tilbakekreving',
     oppgavebenkMigrerFagsak = 'familie.ef.sak.frontend-oppgavebenk-migrer-fagsak',
 }
