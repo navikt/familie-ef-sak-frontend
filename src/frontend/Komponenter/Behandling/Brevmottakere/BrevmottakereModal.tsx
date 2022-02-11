@@ -52,7 +52,6 @@ const HorisontalLinje = styled.div`
 
 const VertikalLinje = styled.div`
     border-left: 2px solid #f3f3f3;
-    height: 100%px;
     width: 5px;
     margin-bottom: 1rem;
 `;
