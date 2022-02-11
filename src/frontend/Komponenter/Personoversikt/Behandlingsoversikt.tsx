@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import {
     Behandling,
     BehandlingResultat,
     behandlingResultatInkludertTilbakekrevingTilTekst,
     Fagsak,
+    IFagsakPerson,
 } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
@@ -37,6 +38,7 @@ import {
 } from '../../App/typer/tilbakekreving';
 import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
+import { Stønadstype } from '../../App/typer/behandlingstema';
 
 const StyledTable = styled.table`
     width: 50%;
@@ -68,8 +70,13 @@ const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string):
     return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
 };
 
-const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
-    const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
+    const [fagsakOvergangsstønad, settFagsakOvergangsstønad] = useState<Ressurs<Fagsak>>(
+        byggTomRessurs()
+    );
+    const [fagsakBarnetilsyn, settFagsakBarnetilsyn] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+    const [fagsakSkolepenger, settFagsakSkolepenger] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
     const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
@@ -79,8 +86,13 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     >(byggTomRessurs());
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
+    const {
+        overgangsstønad: overgangsstønadId,
+        barnetilsyn: barnetilsynId,
+        skolepenger: skolepengerId,
+    } = fagsakPerson;
 
-    const hentFagsak = () =>
+    const hentFagsak = (fagsakId: string, settFagsak: Dispatch<Ressurs<Fagsak>>) =>
         axiosRequest<Fagsak, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
@@ -95,16 +107,16 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsakId}`,
+            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${overgangsstønadId}`,
         }).then((response) => settTilbakekrevingbehandlinger(response));
 
     const gjørTekniskOpphør = () => {
         axiosRequest<void, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
+            url: `/familie-ef-sak/api/tekniskopphor/${overgangsstønadId}`,
         }).then((response: RessursSuksess<void> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
-                hentFagsak();
+                overgangsstønadId && hentFagsak(overgangsstønadId, settFagsakOvergangsstønad);
             } else {
                 settTekniskOpphørFeilet(true);
             }
@@ -112,19 +124,27 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     };
 
     useEffect(() => {
-        if (fagsakId) {
-            hentFagsak();
+        if (overgangsstønadId) {
+            hentFagsak(overgangsstønadId, settFagsakOvergangsstønad);
             hentTilbakekrevingBehandlinger();
         }
-        // eslint-disable-next-line
-    }, [fagsakId]);
-
-    useEffect(() => {
-        if (fagsak.status === RessursStatus.SUKSESS) {
-            settKanStarteRevurdering(erAlleBehandlingerErFerdigstilt(fagsak.data));
+        if (barnetilsynId) {
+            hentFagsak(barnetilsynId, settFagsakBarnetilsyn);
+            // TODO: hentTilbakekrevingBehandlinger(barnetilsynId);
+        }
+        if (skolepengerId) {
+            hentFagsak(skolepengerId, settFagsakSkolepenger);
+            // TODO: hentTilbakekrevingBehandlinger(skolepengerId);
         }
         // eslint-disable-next-line
-    }, [fagsak]);
+    }, [overgangsstønadId, barnetilsynId, skolepengerId]);
+
+    useEffect(() => {
+        if (fagsakOvergangsstønad.status === RessursStatus.SUKSESS) {
+            settKanStarteRevurdering(erAlleBehandlingerErFerdigstilt(fagsakOvergangsstønad.data));
+        }
+        // eslint-disable-next-line
+    }, [fagsakOvergangsstønad]);
 
     function erAlleBehandlingerErFerdigstilt(fagsak: Fagsak) {
         return (
@@ -136,46 +156,65 @@ const Behandlingsoversikt: React.FC<{ fagsakId: string }> = ({ fagsakId }) => {
     }
 
     return (
-        <DataViewer response={{ fagsak, tilbakekrevingBehandlinger }}>
-            {({ fagsak, tilbakekrevingBehandlinger }) => (
+        <DataViewer
+            response={{
+                fagsakOvergangsstønad,
+                fagsakBarnetilsyn,
+                tilbakekrevingBehandlinger,
+            }}
+        >
+            {({ fagsakOvergangsstønad, fagsakBarnetilsyn, tilbakekrevingBehandlinger }) => (
                 <>
-                    <TittelLinje>
-                        <Systemtittel tag="h3">
-                            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                        </Systemtittel>
-                        {feilFagsakHenting && (
-                            <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>
-                        )}
+                    {[fagsakOvergangsstønad, fagsakBarnetilsyn].map((fagsak) => {
+                        return fagsak ? (
+                            <>
+                                <TittelLinje>
+                                    <Systemtittel tag="h3">
+                                        Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+                                    </Systemtittel>
+                                    {feilFagsakHenting && (
+                                        <Alertstripe type="feil">
+                                            Kunne ikke hente fagsak
+                                        </Alertstripe>
+                                    )}
 
-                        {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
-                    </TittelLinje>
-                    <BehandlingsoversiktTabell
-                        behandlinger={fagsak.behandlinger}
-                        eksternFagsakId={fagsak.eksternId}
-                        tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
-                    />
-                    {kanStarteRevurdering && (
-                        <>
-                            <KnappMedMargin onClick={() => settVisRevurderingvalg(true)}>
-                                Opprett ny behandling
-                            </KnappMedMargin>
-                            <RevurderingModal
-                                visModal={visRevurderingvalg}
-                                settVisModal={settVisRevurderingvalg}
-                                fagsakId={fagsakId}
-                            />
-                        </>
-                    )}
-                    {toggles[ToggleName.TEKNISK_OPPHØR] && (
-                        <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
-                            Teknisk opphør
-                        </KnappMedMargin>
-                    )}
-                    {tekniskOpphørFeilet && (
-                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                            Kan ikke iverksette teknisk opphør
-                        </AlertStripeFeil>
-                    )}
+                                    {fagsak.erLøpende && (
+                                        <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
+                                    )}
+                                </TittelLinje>
+                                <BehandlingsoversiktTabell
+                                    behandlinger={fagsak.behandlinger}
+                                    eksternFagsakId={fagsak.eksternId}
+                                    tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
+                                />
+                                {fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD &&
+                                    kanStarteRevurdering && (
+                                        <>
+                                            <KnappMedMargin
+                                                onClick={() => settVisRevurderingvalg(true)}
+                                            >
+                                                Opprett ny behandling
+                                            </KnappMedMargin>
+                                            <RevurderingModal
+                                                visModal={visRevurderingvalg}
+                                                settVisModal={settVisRevurderingvalg}
+                                                fagsakId={fagsak.id}
+                                            />
+                                        </>
+                                    )}
+                                {toggles[ToggleName.TEKNISK_OPPHØR] && (
+                                    <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
+                                        Teknisk opphør
+                                    </KnappMedMargin>
+                                )}
+                                {tekniskOpphørFeilet && (
+                                    <AlertStripeFeil style={{ maxWidth: '15rem' }}>
+                                        Kan ikke iverksette teknisk opphør
+                                    </AlertStripeFeil>
+                                )}
+                            </>
+                        ) : null;
+                    })}
                 </>
             )}
         </DataViewer>

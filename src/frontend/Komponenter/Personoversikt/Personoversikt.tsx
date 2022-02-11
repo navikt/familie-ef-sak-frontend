@@ -44,9 +44,7 @@ const PersonoversiktContent: React.FC<{
                     />
                 )}
                 {/* TODO: Behandlingsoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
-                {tabvalg === 1 && fagsakPerson.overgangsstønad && (
-                    <Behandlingsoversikt fagsakId={fagsakPerson.overgangsstønad} />
-                )}
+                {tabvalg === 1 && <Behandlingsoversikt fagsakPerson={fagsakPerson} />}
                 {/* TODO: Vedtaksperioderoversikt trenger håndtering for å rendere behandlinger til ulike fagsaker  */}
                 {tabvalg === 2 && fagsakPerson.overgangsstønad && (
                     <Vedtaksperioderoversikt fagsakId={fagsakPerson.overgangsstønad} />
