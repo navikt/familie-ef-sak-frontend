@@ -185,7 +185,7 @@ const Vedtaksperioder: React.FC<{
     );
 };
 
-const VedtaksperioderForFagsak: React.FC<{ fagsakPerson: IFagsakPersonMedBehandlinger }> = ({
+const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedBehandlinger }> = ({
     fagsakPerson,
 }) => {
     const [valgtFagsak, settValgtFagsak] = useState<Fagsak | undefined>(
@@ -219,7 +219,7 @@ const VedtaksperioderForFagsak: React.FC<{ fagsakPerson: IFagsakPersonMedBehandl
                         settValgtBehandlingId(undefined);
                     }}
                 >
-                    {!valgtFagsak && <option value={undefined}>Mangler stønader</option>}
+                    {!valgtFagsak && <option value={undefined}>Har ingen stønader</option>}
                     <option
                         value={Stønadstype.OVERGANGSSTØNAD}
                         disabled={!fagsakPerson.overgangsstønad?.behandlinger}
@@ -273,7 +273,7 @@ const VedtaksperioderForFagsak: React.FC<{ fagsakPerson: IFagsakPersonMedBehandl
                 />
             )}
             {valgtFagsak && behandlinger.length === 0 && (
-                <div>Mangler innvilget behandlinger på valgt stønad</div>
+                <div>Har ikke noen innvilgede behandlinger på valgt stønad</div>
             )}
         </>
     );
@@ -294,7 +294,7 @@ const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fa
     return (
         <DataViewer response={{ fagsakPersonMedBehandlinger }}>
             {({ fagsakPersonMedBehandlinger }) => (
-                <VedtaksperioderForFagsak fagsakPerson={fagsakPersonMedBehandlinger} />
+                <VedtaksperioderForFagsakPerson fagsakPerson={fagsakPersonMedBehandlinger} />
             )}
         </DataViewer>
     );
