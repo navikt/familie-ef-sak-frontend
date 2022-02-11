@@ -10,6 +10,8 @@ import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName, Toggles } from '../../App/context/toggles';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler: ISaksbehandler;
@@ -38,6 +40,7 @@ const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
     innloggetSaksbehandler: ISaksbehandler,
+    toggles: Toggles,
     fagsakId?: string
 ): PopoverItem[] => {
     const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId)];
@@ -47,6 +50,12 @@ const lagEksterneLenker = (
             href: '/uttrekk/arbeidssoker',
         });
     }
+    if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
+        eksterneLenker.push({
+            name: '[Admin] Lag behandling fra journalpost',
+            href: '/admin/ny-behandling-for-ferdigstilt-journalpost/',
+        });
+    }
     return eksterneLenker;
 };
 
@@ -54,10 +63,11 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
     const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
-
+    const { toggles } = useToggles();
     const eksterneLenker = useMemo(
-        () => lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId),
-        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId]
+        () =>
+            lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, toggles, valgtFagsakId),
+        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId, toggles]
     );
 
     return (

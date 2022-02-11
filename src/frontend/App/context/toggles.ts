@@ -12,4 +12,5 @@ export enum ToggleName {
     kanLeggeTilNyeBarnPaaRevurdering = 'familie.ef.sak.kan-legge-til-nye-barn-paa-revurdering',
     visOpprettTilbakekreving = 'familie.ef.sak.frontend-vis-tilbakekreving',
     oppgavebenkMigrerFagsak = 'familie.ef.sak.frontend-oppgavebenk-migrer-fagsak',
+    opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
 }
