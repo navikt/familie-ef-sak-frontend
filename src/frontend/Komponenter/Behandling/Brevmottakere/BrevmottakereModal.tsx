@@ -32,6 +32,11 @@ const SentrerKnapper = styled.div`
     }
 `;
 
+const StyledModal = styled(Modal)`
+    padding: 3rem;
+    max-width: 1050px;
+`;
+
 const StyledSystemtittel = styled(Systemtittel)`
     margin-bottom: 2rem;
 `;
@@ -114,7 +119,7 @@ export const BrevmottakereModal: FC<{
     }, [axiosRequest, behandlingId, visBrevmottakereModal, initielleBrevmottakere]);
 
     return (
-        <Modal
+        <StyledModal
             isOpen={visBrevmottakereModal}
             onRequestClose={() => settVisBrevmottakereModal(false)}
             closeButton={true}
@@ -162,6 +167,6 @@ export const BrevmottakereModal: FC<{
             </SentrerKnapper>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             {innsendingSuksess && <AlertStripeSuksess>Brevmottakere er satt</AlertStripeSuksess>}
-        </Modal>
+        </StyledModal>
     );
 };
