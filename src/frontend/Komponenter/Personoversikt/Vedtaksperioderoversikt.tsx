@@ -31,6 +31,7 @@ import { Checkbox, Select } from 'nav-frontend-skjema';
 import { compareDesc } from 'date-fns';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
+import { sanksjonsårsakTilTekst } from '../../App/typer/Sanksjonsårsak';
 
 const StyledInputs = styled.div`
     display: flex;
@@ -105,6 +106,7 @@ const etikettType = (periodeType: EPeriodetype) => {
             return 'fokus';
         case EPeriodetype.MIGRERING:
         case EPeriodetype.FORLENGELSE:
+        case EPeriodetype.SANKSJON:
             return 'advarsel';
         default:
             return 'info';
@@ -113,6 +115,7 @@ const etikettType = (periodeType: EPeriodetype) => {
 
 const historikkRad = (andel: AndelHistorikk) => {
     const erMigrering = andel.periodeType === EPeriodetype.MIGRERING;
+    const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
     return (
         <Rad type={andel.endring?.type}>
             <td>
@@ -125,10 +128,14 @@ const historikkRad = (andel: AndelHistorikk) => {
                     {periodetypeTilTekst[andel.periodeType]}
                 </EtikettBase>
             </td>
-            <td>{aktivitetTilTekst[andel.aktivitet]}</td>
-            <td>{formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-            <td>{formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
-            <td>{formaterTallMedTusenSkille(andel.andel.beløp)}</td>
+            <td>
+                {erSanksjon
+                    ? sanksjonsårsakTilTekst[andel.sanksjonsårsak]
+                    : aktivitetTilTekst[andel.aktivitet]}
+            </td>
+            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
+            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
+            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.beløp)}</td>
             <td>{formaterIsoDatoTid(andel.vedtakstidspunkt)}</td>
             <td>{andel.saksbehandler}</td>
             <td>
