@@ -141,7 +141,7 @@ export const JournalforingAdmin: React.FC = () => {
                     <Blokk>
                         <Systemtittel>Behandlingstype</Systemtittel>
                         {nyBehandlingstype && (
-                            <Normaltekst>${behandlingstypeTilTekst[nyBehandlingstype]}</Normaltekst>
+                            <Normaltekst>{behandlingstypeTilTekst[nyBehandlingstype]}</Normaltekst>
                         )}
                     </Blokk>
 
