@@ -21,8 +21,7 @@ export const useHentBehandling = (
         axiosRequest<Behandling, null>(behandlingConfig).then((res: Ressurs<Behandling>) =>
             settBehandling(res)
         );
-        // eslint-disable-next-line
-    }, [behandlingId]);
+    }, [axiosRequest, behandlingId]);
 
     return {
         hentBehandlingCallback,

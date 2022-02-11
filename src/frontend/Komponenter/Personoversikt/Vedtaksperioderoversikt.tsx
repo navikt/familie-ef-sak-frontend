@@ -103,12 +103,16 @@ const etikettType = (periodeType: EPeriodetype) => {
             return 'info';
         case EPeriodetype.UTVIDELSE:
             return 'fokus';
+        case EPeriodetype.MIGRERING:
         case EPeriodetype.FORLENGELSE:
             return 'advarsel';
+        default:
+            return 'info';
     }
 };
 
 const historikkRad = (andel: AndelHistorikk) => {
+    const erMigrering = andel.periodeType === EPeriodetype.MIGRERING;
     return (
         <Rad type={andel.endring?.type}>
             <td>
@@ -129,7 +133,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{andel.saksbehandler}</td>
             <td>
                 <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
-                    {behandlingstypeTilTekst[andel.behandlingType]}
+                    {erMigrering ? 'Migrering' : behandlingstypeTilTekst[andel.behandlingType]}
                 </Link>
             </td>
             <td>{endring(andel.endring)}</td>
