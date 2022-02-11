@@ -53,7 +53,6 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
             />
             <DataViewer response={{ søkRessurs }}>
                 {({ søkRessurs }) => {
-                    console.log('søk', søkRessurs);
                     return (
                         <StyledSøkResultat>
                             <div>
