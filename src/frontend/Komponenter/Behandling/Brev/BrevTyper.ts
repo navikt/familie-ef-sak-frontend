@@ -1,6 +1,5 @@
 import {
-    initielleAvsnittInformasjonsbrev,
-    initielleAvsnittInnhentingAvOpplysninger,
+    initielleAvsnittTom,
     initielleAvsnittVarselOmAktivitetsplikt,
     initielleAvsnittVedtakAvslag,
     initielleAvsnittVedtakInvilgelse,
@@ -93,6 +92,7 @@ export enum FrittståendeBrevtype {
 }
 
 export enum FritekstBrevtype {
+    SANKSJON = 'SANKSJON',
     VEDTAK_INVILGELSE = 'VEDTAK_INVILGELSE',
     VEDTAK_AVSLAG = 'VEDTAK_AVSLAG',
 }
@@ -100,6 +100,7 @@ export enum FritekstBrevtype {
 export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrevtype, string> = {
     INFORMASJONSBREV: 'Vi vil informere deg om...',
     INNHENTING_AV_OPPLYSNINGER: 'Vi trenger mer informasjon fra deg',
+    SANKSJON: 'Varsel om sanksjon',
     VARSEL_OM_AKTIVITETSPLIKT: 'Varsel om aktivitetsplikt',
     VEDTAK_INVILGELSE: 'Du får overgangsstønad',
     VEDTAK_AVSLAG: 'Vi har avslått søknaden din om overgangsstønad',
@@ -111,6 +112,7 @@ export const BrevtyperTilSelectNavn: Record<
 > = {
     INFORMASJONSBREV: 'Informasjonsbrev',
     INNHENTING_AV_OPPLYSNINGER: 'Innhenting av opplysninger',
+    SANKSJON: 'Sanksjon',
     VARSEL_OM_AKTIVITETSPLIKT: 'Varsel om aktivitetsplikt',
     VEDTAK_INVILGELSE: 'Vedtak innvilgelse',
     VEDTAK_AVSLAG: 'Vedtak avslag',
@@ -118,8 +120,9 @@ export const BrevtyperTilSelectNavn: Record<
 
 export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtype, AvsnittMedId[]> =
     {
-        INFORMASJONSBREV: initielleAvsnittInformasjonsbrev,
-        INNHENTING_AV_OPPLYSNINGER: initielleAvsnittInnhentingAvOpplysninger,
+        INFORMASJONSBREV: initielleAvsnittTom,
+        INNHENTING_AV_OPPLYSNINGER: initielleAvsnittTom,
+        SANKSJON: initielleAvsnittTom,
         VARSEL_OM_AKTIVITETSPLIKT: initielleAvsnittVarselOmAktivitetsplikt,
         VEDTAK_INVILGELSE: initielleAvsnittVedtakInvilgelse,
         VEDTAK_AVSLAG: initielleAvsnittVedtakAvslag,

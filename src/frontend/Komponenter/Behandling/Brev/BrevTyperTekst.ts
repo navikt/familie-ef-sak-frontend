@@ -1,15 +1,7 @@
 import { AvsnittMedId } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 
-export const initielleAvsnittInformasjonsbrev: AvsnittMedId[] = [
-    {
-        deloverskrift: '',
-        innhold: '',
-        id: uuidv4(),
-    },
-];
-
-export const initielleAvsnittInnhentingAvOpplysninger: AvsnittMedId[] = [
+export const initielleAvsnittTom: AvsnittMedId[] = [
     {
         deloverskrift: '',
         innhold: '',

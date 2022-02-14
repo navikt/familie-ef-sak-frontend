@@ -70,9 +70,6 @@ const SimuleringTabellWrapper: React.FC<{
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
             />
-            {harFeilutbetaling() && !lagretSanksjonertVedtak && (
-                <Tilbakekreving behandlingId={behandlingId} />
-            )}
             {lagretSanksjonertVedtak && (
                 <Seksjon>
                     <Undertittel>Sanksjonsperiode</Undertittel>
@@ -88,6 +85,7 @@ const SimuleringTabellWrapper: React.FC<{
                     </NormaltekstMedMargin>
                 </Seksjon>
             )}
+            {harFeilutbetaling() && <Tilbakekreving behandlingId={behandlingId} />}
         </SimuleringsContainer>
     );
 };
