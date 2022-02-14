@@ -21,16 +21,10 @@ import {
     RessursSuksess,
 } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PartialRecord } from '../../App/typer/common';
-import { ToggleName } from '../../App/context/toggles';
-import Alertstripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { useToggles } from '../../App/context/TogglesContext';
-import { Knapp } from 'nav-frontend-knapper';
+import Alertstripe from 'nav-frontend-alertstriper';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
-import LagBehandlingModal from './LagBehandlingModal';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
@@ -38,17 +32,13 @@ import {
 } from '../../App/typer/tilbakekreving';
 import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
-import { Stønadstype } from '../../App/typer/behandlingstema';
+import { FagsakOvergangsstønad } from './FagsakOvergangsstønad';
+import { FagsakBarnetilsyn } from './FagsakBarnetilsyn';
 
 const StyledTable = styled.table`
     width: 50%;
     padding: 2rem;
     margin-left: 1rem;
-`;
-
-const KnappMedMargin = styled(Knapp)`
-    margin-top: 1rem;
-    margin-right: 1rem;
 `;
 
 const StyledEtikettInfo = styled(EtikettInfo)`
@@ -75,24 +65,12 @@ const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsak
         byggTomRessurs()
     );
     const [fagsakBarnetilsyn, settFagsakBarnetilsyn] = useState<Ressurs<Fagsak>>(byggTomRessurs());
-    const [fagsakSkolepenger, settFagsakSkolepenger] = useState<Ressurs<Fagsak>>(byggTomRessurs());
-
-    const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
-    const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
-
-    const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
 
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
-    const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
-        Ressurs<TilbakekrevingBehandling[]>
-    >(byggTomRessurs());
+
     const { axiosRequest } = useApp();
-    const { toggles } = useToggles();
-    const {
-        overgangsstønad: overgangsstønadId,
-        barnetilsyn: barnetilsynId,
-        skolepenger: skolepengerId,
-    } = fagsakPerson;
+    const { overgangsstønad: fagsakIdOvergangsstønad, barnetilsyn: fagsakIdBarnetilsyn } =
+        fagsakPerson;
 
     const hentFagsak = (fagsakId: string, settFagsak: Dispatch<Ressurs<Fagsak>>) =>
         axiosRequest<Fagsak, null>({
@@ -106,125 +84,29 @@ const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsak
             }
         });
 
-    const hentTilbakekrevingBehandlinger = () =>
-        axiosRequest<TilbakekrevingBehandling[], null>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${overgangsstønadId}`,
-        }).then((response) => settTilbakekrevingbehandlinger(response));
-
-    const gjørTekniskOpphør = () => {
-        axiosRequest<void, null>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor/${overgangsstønadId}`,
-        }).then((response: RessursSuksess<void> | RessursFeilet) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                overgangsstønadId && hentFagsak(overgangsstønadId, settFagsakOvergangsstønad);
-            } else {
-                settTekniskOpphørFeilet(true);
-            }
-        });
-    };
-
     useEffect(() => {
-        if (overgangsstønadId) {
-            hentFagsak(overgangsstønadId, settFagsakOvergangsstønad);
-            hentTilbakekrevingBehandlinger();
+        if (fagsakIdOvergangsstønad) {
+            hentFagsak(fagsakIdOvergangsstønad, settFagsakOvergangsstønad);
         }
-        if (barnetilsynId) {
-            hentFagsak(barnetilsynId, settFagsakBarnetilsyn);
-            // TODO: hentTilbakekrevingBehandlinger(barnetilsynId);
-        }
-        if (skolepengerId) {
-            hentFagsak(skolepengerId, settFagsakSkolepenger);
-            // TODO: hentTilbakekrevingBehandlinger(skolepengerId);
+        if (fagsakIdBarnetilsyn) {
+            hentFagsak(fagsakIdBarnetilsyn, settFagsakBarnetilsyn);
         }
         // eslint-disable-next-line
-    }, [overgangsstønadId, barnetilsynId, skolepengerId]);
-
-    useEffect(() => {
-        if (fagsakOvergangsstønad.status === RessursStatus.SUKSESS) {
-            settKanStarteRevurdering(erAlleBehandlingerErFerdigstilt(fagsakOvergangsstønad.data));
-        }
-        // eslint-disable-next-line
-    }, [fagsakOvergangsstønad]);
-
-    function erAlleBehandlingerErFerdigstilt(fagsak: Fagsak) {
-        return (
-            fagsak.behandlinger.some(
-                (behandling) => behandling.resultat !== BehandlingResultat.HENLAGT
-            ) &&
-            fagsak.behandlinger.find(
-                (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
-            ) === undefined
-        );
-    }
+    }, [fagsakIdOvergangsstønad, fagsakIdBarnetilsyn]);
 
     return (
-        <DataViewer
-            response={{
-                fagsakOvergangsstønad,
-                fagsakBarnetilsyn,
-                tilbakekrevingBehandlinger,
-            }}
-        >
-            {({ fagsakOvergangsstønad, fagsakBarnetilsyn, tilbakekrevingBehandlinger }) => (
-                <>
-                    {[fagsakOvergangsstønad, fagsakBarnetilsyn].map((fagsak) => {
-                        return fagsak ? (
-                            <>
-                                <TittelLinje>
-                                    <Systemtittel tag="h3">
-                                        Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
-                                    </Systemtittel>
-                                    {feilFagsakHenting && (
-                                        <Alertstripe type="feil">
-                                            Kunne ikke hente fagsak
-                                        </Alertstripe>
-                                    )}
-                                    {fagsak.erLøpende && (
-                                        <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
-                                    )}
-                                </TittelLinje>
-                                <BehandlingsoversiktTabell
-                                    behandlinger={fagsak.behandlinger}
-                                    eksternFagsakId={fagsak.eksternId}
-                                    tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
-                                />
-                                {fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD &&
-                                    kanStarteRevurdering && (
-                                        <>
-                                            <LagBehandlingModal
-                                                visModal={visLagBehandlingModal}
-                                                settVisModal={settVisLagBehandlingModal}
-                                                fagsakId={fagsak.id}
-                                                hentTilbakekrevinger={
-                                                    hentTilbakekrevingBehandlinger
-                                                }
-                                            />
-
-                                            <KnappMedMargin
-                                                onClick={() => settVisLagBehandlingModal(true)}
-                                            >
-                                                Opprett ny behandling
-                                            </KnappMedMargin>
-                                        </>
-                                    )}
-                                {toggles[ToggleName.TEKNISK_OPPHØR] && (
-                                    <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
-                                        Teknisk opphør
-                                    </KnappMedMargin>
-                                )}
-                                {tekniskOpphørFeilet && (
-                                    <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                                        Kan ikke iverksette teknisk opphør
-                                    </AlertStripeFeil>
-                                )}
-                            </>
-                        ) : null;
-                    })}
-                </>
+        <>
+            {fagsakIdOvergangsstønad && (
+                <FagsakOvergangsstønad
+                    fagsakId={fagsakIdOvergangsstønad}
+                    fagsakOvergangsstønad={fagsakOvergangsstønad}
+                    settFagsakOvergangsstønad={settFagsakOvergangsstønad}
+                    hentFagsak={hentFagsak}
+                />
             )}
-        </DataViewer>
+            {fagsakIdBarnetilsyn && <FagsakBarnetilsyn fagsakBarnetilsyn={fagsakBarnetilsyn} />}
+            {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
+        </>
     );
 };
 
@@ -248,7 +130,7 @@ interface BehandlingsoversiktTabellBehandling {
     applikasjon: string;
 }
 
-const BehandlingsoversiktTabell: React.FC<{
+export const BehandlingsoversiktTabell: React.FC<{
     behandlinger: Behandling[];
     eksternFagsakId: number;
     tilbakekrevingBehandlinger: TilbakekrevingBehandling[];
@@ -361,5 +243,14 @@ const BehandlingsoversiktTabell: React.FC<{
         </StyledTable>
     );
 };
+
+export const FagsakTittelLinje: React.FC<{
+    fagsak: Fagsak;
+}> = ({ fagsak }) => (
+    <TittelLinje>
+        <Systemtittel tag="h3">Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}</Systemtittel>
+        {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
+    </TittelLinje>
+);
 
 export default Behandlingsoversikt;
