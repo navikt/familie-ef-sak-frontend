@@ -1,4 +1,5 @@
 import { PeriodeVariant } from '../../Felles/Input/MånedÅr/MånedÅrPeriode';
+import { Sanksjonsårsak } from './Sanksjonsårsak';
 
 export type IAvslåVedtak = {
     resultatType: EBehandlingResultat.AVSLÅ;
@@ -29,13 +30,25 @@ export type IInnvilgeVedtak = {
     samordningsfradragType?: ESamordningsfradragtype | string | undefined;
 };
 
+export type ISanksjonereVedtak = {
+    resultatType: EBehandlingResultat.SANKSJONERE;
+    sanksjonsårsak: Sanksjonsårsak;
+    periode: IVedtaksperiode;
+    internBegrunnelse: string;
+};
+
+export type ISanksjonereVedtakDto = {
+    sanksjonsårsak: Sanksjonsårsak;
+    internBegrunnelse: string;
+};
+
 export interface IOpphørtVedtak {
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
     begrunnelse: string;
 }
 
-export type IVedtak = IAvslåVedtak | IInnvilgeVedtak | IOpphørtVedtak;
+export type IVedtak = IAvslåVedtak | IInnvilgeVedtak | IOpphørtVedtak | ISanksjonereVedtak;
 
 export interface IInntektsperiode {
     årMånedFra?: string;
@@ -66,6 +79,7 @@ export enum EInntektsperiodeProperty {
 
 export enum EBehandlingResultat {
     INNVILGE = 'INNVILGE',
+    SANKSJONERE = 'SANKSJONERE',
     AVSLÅ = 'AVSLÅ',
     HENLEGGE = 'HENLEGGE',
     BEHANDLE_I_GOSYS = 'BEHANDLE_I_GOSYS',
@@ -75,9 +89,11 @@ export enum EBehandlingResultat {
 export enum EPeriodetype {
     FORLENGELSE = 'FORLENGELSE',
     HOVEDPERIODE = 'HOVEDPERIODE',
-    PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
-    UTVIDELSE = 'UTVIDELSE',
     MIDLERTIDIG_OPPHØR = 'MIDLERTIDIG_OPPHØR',
+    PERIODE_FØR_FØDSEL = 'PERIODE_FØR_FØDSEL',
+    SANKSJON = 'SANKSJON',
+    UTVIDELSE = 'UTVIDELSE',
+    MIGRERING = 'MIGRERING',
 }
 
 export enum EPeriodeProperty {
@@ -168,11 +184,13 @@ export const aktiviteterUtvidelse: EAktivitet[] = [
 ];
 
 export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
-    PERIODE_FØR_FØDSEL: 'Periode før fødsel',
-    HOVEDPERIODE: 'Hovedperiode',
-    UTVIDELSE: 'Utvidelse',
     FORLENGELSE: 'Forlengelse',
+    HOVEDPERIODE: 'Hovedperiode',
     MIDLERTIDIG_OPPHØR: 'Opphør/Ingen stønad',
+    PERIODE_FØR_FØDSEL: 'Periode før fødsel',
+    SANKSJON: 'Sanksjon',
+    UTVIDELSE: 'Utvidelse',
+    MIGRERING: 'Migrering',
     '': '',
 };
 
@@ -182,6 +200,7 @@ export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
     HENLEGGE: 'Henlegge',
     BEHANDLE_I_GOSYS: 'Behandle i Gosys',
     OPPHØRT: 'Opphørt',
+    SANKSJONERE: 'Sanksjonere',
 };
 
 export const aktivitetTilTekst: Record<EAktivitet, string> = {

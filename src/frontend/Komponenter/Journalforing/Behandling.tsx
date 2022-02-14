@@ -6,11 +6,13 @@ import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
+import { Behandling, Fagsak } from '../../App/typer/fagsak';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Ressurs } from '../../App/typer/ressurs';
+import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
+import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
 
 interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;
@@ -29,17 +31,6 @@ const StyledNyBehandlingRad = styled.tr`
 const BehandlingInnold: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
     const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
-
-    const utledRiktigBehandlingstype = (tidligereBehandlinger: Behandling[]): Behandlingstype => {
-        const harIverksattTidligereBehandlinger =
-            tidligereBehandlinger.filter(
-                (tidligereBehandling) => tidligereBehandling.resultat !== BehandlingResultat.HENLAGT
-            ).length > 0;
-
-        return harIverksattTidligereBehandlinger
-            ? Behandlingstype.REVURDERING
-            : Behandlingstype.FØRSTEGANGSBEHANDLING;
-    };
 
     const håndterCheck = (behandlingsId: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +80,12 @@ const BehandlingInnold: React.FC<Props> = ({ behandling, settBehandling, fagsak 
                                                 label={behandlingsEl.type}
                                             />
                                         </td>
-                                        <td>{behandlingsEl.type}</td>
+                                        <td>
+                                            {behandlingsEl.behandlingsårsak ===
+                                            Behandlingsårsak.MIGRERING
+                                                ? Behandlingsårsak.MIGRERING
+                                                : behandlingsEl.type}
+                                        </td>
                                         <td>{behandlingsEl.status}</td>
                                         <td>{formaterIsoDatoTid(behandlingsEl.sistEndret)}</td>
                                     </tr>

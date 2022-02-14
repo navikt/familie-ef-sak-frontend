@@ -30,7 +30,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { EtikettInfo } from 'nav-frontend-etiketter';
-import RevurderingModal from './RevurderingModal';
+import LagBehandlingModal from './LagBehandlingModal';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
@@ -79,7 +79,9 @@ const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsak
 
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
-    const [visRevurderingvalg, settVisRevurderingvalg] = useState<boolean>(false);
+
+    const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
+
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
         Ressurs<TilbakekrevingBehandling[]>
@@ -148,7 +150,9 @@ const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsak
 
     function erAlleBehandlingerErFerdigstilt(fagsak: Fagsak) {
         return (
-            fagsak.behandlinger.length > 0 &&
+            fagsak.behandlinger.some(
+                (behandling) => behandling.resultat !== BehandlingResultat.HENLAGT
+            ) &&
             fagsak.behandlinger.find(
                 (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
             ) === undefined
@@ -177,7 +181,6 @@ const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsak
                                             Kunne ikke hente fagsak
                                         </Alertstripe>
                                     )}
-
                                     {fagsak.erLøpende && (
                                         <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>
                                     )}
@@ -190,16 +193,20 @@ const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsak
                                 {fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD &&
                                     kanStarteRevurdering && (
                                         <>
+                                            <LagBehandlingModal
+                                                visModal={visLagBehandlingModal}
+                                                settVisModal={settVisLagBehandlingModal}
+                                                fagsakId={fagsak.id}
+                                                hentTilbakekrevinger={
+                                                    hentTilbakekrevingBehandlinger
+                                                }
+                                            />
+
                                             <KnappMedMargin
-                                                onClick={() => settVisRevurderingvalg(true)}
+                                                onClick={() => settVisLagBehandlingModal(true)}
                                             >
                                                 Opprett ny behandling
                                             </KnappMedMargin>
-                                            <RevurderingModal
-                                                visModal={visRevurderingvalg}
-                                                settVisModal={settVisRevurderingvalg}
-                                                fagsakId={fagsak.id}
-                                            />
                                         </>
                                     )}
                                 {toggles[ToggleName.TEKNISK_OPPHØR] && (

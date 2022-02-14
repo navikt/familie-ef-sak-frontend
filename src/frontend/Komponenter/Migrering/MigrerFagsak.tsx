@@ -20,7 +20,10 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 
-const MigrerFagsak: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
+const MigrerFagsak: React.FC<{
+    fagsakPerson: IFagsakPerson;
+    onMigrert?: (behandlingId: string) => void;
+}> = ({ fagsakPerson, onMigrert }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
@@ -28,22 +31,22 @@ const MigrerFagsak: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson 
     );
     const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
 
-    const { overgangsstønad: fagsakId } = fagsakPerson;
+    const { id: fagsakPersonId } = fagsakPerson;
 
     const hentMigreringConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/migrering/${fagsakId}`,
+            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}`,
         }),
-        [fagsakId]
+        [fagsakPersonId]
     );
 
     const migrerFagsakConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
-            url: `/familie-ef-sak/api/migrering/${fagsakId}`,
+            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}`,
         }),
-        [fagsakId]
+        [fagsakPersonId]
     );
 
     if (!toggles[ToggleName.MIGRERING]) {
@@ -58,9 +61,12 @@ const MigrerFagsak: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson 
     };
 
     const migrerFagsak = () =>
-        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) =>
-            settMigrertStatus(res)
-        );
+        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
+            settMigrertStatus(res);
+            if (res.status === RessursStatus.SUKSESS && onMigrert) {
+                onMigrert(res.data);
+            }
+        });
 
     return (
         <div style={{ marginTop: '1rem' }}>
@@ -104,7 +110,7 @@ const MigrerFagsak: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson 
                             migrertStatus.status === RessursStatus.FUNKSJONELL_FEIL ||
                             migrertStatus.status === RessursStatus.IKKE_TILGANG) && (
                             <div style={{ color: 'red' }}>
-                                ${migrertStatus.frontendFeilmelding || migrertStatus.melding}
+                                {migrertStatus.frontendFeilmelding || migrertStatus.melding}
                             </div>
                         )}
                         <Knapp

@@ -9,13 +9,13 @@ import {
     RessursStatus,
     RessursSuksess,
 } from '../../App/typer/ressurs';
-import { IFagsaksøk } from '../../App/typer/fagsaksøk';
+import { ISøkPerson } from '../../App/typer/personsøk';
 import { useApp } from '../../App/context/AppContext';
 import { kjønnType } from '@navikt/familie-typer';
 import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
 import { IPersonIdent } from '../../App/typer/felles';
 
-const tilSøkeresultatListe = (resultat: IFagsaksøk): ISøkeresultat[] => {
+const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
     return resultat.fagsakPersonId
         ? [
               {
@@ -44,11 +44,11 @@ const PersonSøk: React.FC = () => {
     const søk = (personIdent: string): void => {
         if (!personIdent) return;
         settResultat(byggHenterRessurs());
-        axiosRequest<IFagsaksøk, IPersonIdent>({
+        axiosRequest<ISøkPerson, IPersonIdent>({
             method: 'POST',
             url: `/familie-ef-sak/api/sok/`,
             data: { personIdent: personIdent },
-        }).then((response: RessursSuksess<IFagsaksøk> | RessursFeilet) => {
+        }).then((response: RessursSuksess<ISøkPerson> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
                 const søkeresultater: ISøkeresultat[] = tilSøkeresultatListe(response.data);
                 settResultat(byggSuksessRessurs(søkeresultater));

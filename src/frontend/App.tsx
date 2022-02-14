@@ -19,6 +19,8 @@ import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
 import { AppEnv, hentEnv } from './App/api/env';
 import { Toast } from './Felles/Toast/Toast';
 import FagsakTilFagsakPersonRedirect from './Komponenter/Redirect/FagsakTilFagsakPersonRedirect';
+import OppgaveMigreringApp from './Komponenter/Migrering/OppgaveMigrering';
+import { AdminApp } from './Komponenter/Admin/AdminApp';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -95,8 +97,10 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                 <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
                 <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
                 <Route path="/journalfor" element={<JournalforingApp />} />
+                <Route path="/admin/*" element={<AdminApp />} />
+                <Route path="/oppgavemigrering" element={<OppgaveMigreringApp />} />
                 <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
-                <Route path="/person/:fagsakPersonId" element={<Personoversikt />} />
+                <Route path="/person/:fagsakPersonId/*" element={<Personoversikt />} />
                 <Route path="/uttrekk/arbeidssoker" element={<UttrekkArbeidssøker />} />
                 <Route path="/" element={<Navigate to="/oppgavebenk" replace={true} />} />
             </Routes>
