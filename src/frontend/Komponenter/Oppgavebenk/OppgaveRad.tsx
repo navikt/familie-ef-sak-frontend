@@ -69,7 +69,9 @@ const kanMigreres = (oppgave: IOppgave) => {
     return (
         oppgave.behandlesAvApplikasjon === '' &&
         oppgave.oppgavetype === 'JFR' &&
-        oppgave.behandlingstema === 'ab0071'
+        oppgave.behandlingstema === 'ab0071' &&
+        oppgave.opprettetAv &&
+        oppgave.opprettetAv.indexOf('familie-integrasjoner') > -1
     );
 };
 
