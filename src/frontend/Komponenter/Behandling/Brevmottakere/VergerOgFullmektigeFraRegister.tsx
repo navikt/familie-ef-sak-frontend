@@ -44,17 +44,8 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
     ];
 
     const settMottaker = (mottaker: IBrevmottaker) => () => {
-        if (
-            valgteMottakere.find(
-                (valgtMottaker) => valgtMottaker.personIdent === mottaker.personIdent
-            )
-        )
-            return;
-
         settValgteMottakere((prevState) => {
-            const nyState = [...prevState, mottaker];
-
-            return nyState;
+            return [...prevState, mottaker];
         });
     };
 
