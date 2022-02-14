@@ -7,13 +7,11 @@ export const StyledSøkInput = styled(Input)`
 `;
 
 export const StyledSøkResultat = styled.div`
+    margin-top: 2rem;
+    margin-bottom: 10rem;
     display: grid;
     grid-template-columns: 5fr 1fr;
     padding: 10px;
     margin-bottom: 4px;
     background: rgba(196, 196, 196, 0.2);
-
-    .knapp {
-        width: 5rem;
-    }
 `;

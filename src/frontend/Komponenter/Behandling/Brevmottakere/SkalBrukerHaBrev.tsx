@@ -3,6 +3,19 @@ import { Ingress } from 'nav-frontend-typografi';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
+import styled from 'styled-components';
+
+const StyledRadioGruppe = styled(RadioGruppe)`
+    display: flex;
+
+    > div {
+        margin-right: 2rem;
+    }
+`;
+
+const StyledIngress = styled(Ingress)`
+    margin-bottom: 1rem;
+`;
 
 interface Props {
     valgteBrevmottakere: IBrevmottaker[];
@@ -46,8 +59,8 @@ export const SkalBrukerHaBrev: FC<Props> = ({
 
     return (
         <>
-            <Ingress>Skal bruker motta brevet?</Ingress>
-            <RadioGruppe>
+            <StyledIngress>Skal bruker motta brevet?</StyledIngress>
+            <StyledRadioGruppe>
                 <Radio
                     label={'Ja'}
                     name={'brukerHaBrevRadio'}
@@ -60,7 +73,7 @@ export const SkalBrukerHaBrev: FC<Props> = ({
                     checked={!brukerSkalHaBrev}
                     onChange={toggleBrukerSkalHaBrev}
                 />
-            </RadioGruppe>
+            </StyledRadioGruppe>
         </>
     );
 };

@@ -4,7 +4,6 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VergerOgFullmektigeFraRegister } from './VergerOgFullmektigeFraRegister';
 import { SøkWrapper } from './SøkWrapper';
 import { SkalBrukerHaBrev } from './SkalBrukerHaBrev';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
@@ -13,10 +12,11 @@ import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottake
 import styled from 'styled-components';
 import Modal from 'nav-frontend-modal';
 import { Systemtittel } from 'nav-frontend-typografi';
+import { Button } from '@navikt/ds-react';
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 100fr 1fr 100fr;
     column-gap: 2rem;
 `;
 const Venstrekolonne = styled.div``;
@@ -25,6 +25,35 @@ const Høyrekolonne = styled.div``;
 const SentrerKnapper = styled.div`
     display: flex;
     justify-content: center;
+
+    > button {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+`;
+
+const StyledModal = styled(Modal)`
+    padding: 3rem;
+    max-width: 1100px;
+`;
+
+const StyledSystemtittel = styled(Systemtittel)`
+    margin-bottom: 2rem;
+`;
+
+const HorisontalLinje = styled.div`
+    height: 0px;
+
+    border: 2px solid #f3f3f3;
+
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+`;
+
+const VertikalLinje = styled.div`
+    border-left: 2px solid #f3f3f3;
+    width: 5px;
+    margin-bottom: 1rem;
 `;
 
 export const BrevmottakereModal: FC<{
@@ -96,13 +125,13 @@ export const BrevmottakereModal: FC<{
     }, [axiosRequest, behandlingId, visBrevmottakereModal, initielleBrevmottakere]);
 
     return (
-        <Modal
+        <StyledModal
             isOpen={visBrevmottakereModal}
             onRequestClose={() => settVisBrevmottakereModal(false)}
             closeButton={true}
             contentLabel={'Velg brevmottakere'}
         >
-            <Systemtittel>Hvem skal motta vedtaksbrevet?</Systemtittel>
+            <StyledSystemtittel>Hvem skal motta brevet?</StyledSystemtittel>
             <GridContainer>
                 <Venstrekolonne>
                     <VergerOgFullmektigeFraRegister
@@ -111,18 +140,21 @@ export const BrevmottakereModal: FC<{
                         valgteMottakere={valgtePersonMottakere}
                         settValgteMottakere={settValgtePersonMottakere}
                     />
+                    <HorisontalLinje />
                     <SøkWrapper
                         valgtePersonMottakere={valgtePersonMottakere}
                         settValgtePersonMottakere={settValgtePersonMottakere}
                         valgteOrganisasjonMottakere={valgteOrganisasjonMottakere}
                         settValgteOrganisasjonMottakere={settValgteOrganisasjonMottakere}
                     />
+                    <HorisontalLinje />
                     <SkalBrukerHaBrev
                         valgteBrevmottakere={valgtePersonMottakere}
                         settValgtBrevMottakere={settValgtePersonMottakere}
                         personopplysninger={personopplysninger}
                     />
                 </Venstrekolonne>
+                <VertikalLinje />
                 <Høyrekolonne>
                     <BrevmottakereListe
                         valgtePersonMottakere={valgtePersonMottakere}
@@ -133,11 +165,15 @@ export const BrevmottakereModal: FC<{
                 </Høyrekolonne>
             </GridContainer>
             <SentrerKnapper>
-                <Knapp onClick={() => settVisBrevmottakereModal(false)}>Avbryt</Knapp>
-                <Hovedknapp onClick={settBrevmottakere}>Sett mottakere</Hovedknapp>
+                <Button variant="tertiary" onClick={() => settVisBrevmottakereModal(false)}>
+                    Avbryt
+                </Button>
+                <Button variant="primary" onClick={settBrevmottakere}>
+                    Sett mottakere
+                </Button>
             </SentrerKnapper>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             {innsendingSuksess && <AlertStripeSuksess>Brevmottakere er satt</AlertStripeSuksess>}
-        </Modal>
+        </StyledModal>
     );
 };

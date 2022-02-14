@@ -1,9 +1,12 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { Ingress } from 'nav-frontend-typografi';
-import { Checkbox } from 'nav-frontend-skjema';
+import React, { Dispatch, FC, SetStateAction } from 'react';
+import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import { IFullmakt, IVergemål } from '../../../App/typer/personopplysninger';
 import { IBrevmottaker } from './typer';
 import { fullmaktTilBrevMottaker, vergemålTilBrevmottaker } from './brevmottakerUtils';
+import styled from 'styled-components';
+import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import { Button } from '@navikt/ds-react';
+import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {
     valgteMottakere: IBrevmottaker[];
@@ -11,6 +14,23 @@ interface Props {
     verger: IVergemål[];
     fullmakter: IFullmakt[];
 }
+
+const StyledIngress = styled(Ingress)`
+    margin-bottom: 1rem;
+`;
+
+const StyledMottakerBoks = styled.div`
+    padding: 10px;
+    margin-bottom: 4px;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    background: rgba(196, 196, 196, 0.2);
+`;
+
+const Kolonner = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 export const VergerOgFullmektigeFraRegister: FC<Props> = ({
     valgteMottakere,
@@ -23,33 +43,49 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
         ...fullmakter.map(fullmaktTilBrevMottaker),
     ];
 
-    const toggleMottaker = (mottaker: IBrevmottaker) => (e: ChangeEvent<HTMLInputElement>) => {
+    const settMottaker = (mottaker: IBrevmottaker) => () => {
         settValgteMottakere((prevState) => {
-            return e.target.checked
-                ? [...prevState, mottaker]
-                : [
-                      ...prevState.filter(
-                          (valgtMottaker) => valgtMottaker.personIdent !== mottaker.personIdent
-                      ),
-                  ];
+            return [...prevState, mottaker];
         });
     };
+
     return (
         <>
-            <Ingress>Verge/Fullmektig fra register</Ingress>
-            {muligeMottakere.map((mottaker, index) => {
-                const mottakerValgt = !!valgteMottakere.find(
-                    (valgtMottaker) => valgtMottaker.personIdent === mottaker.personIdent
-                );
-                return (
-                    <Checkbox
-                        key={index}
-                        label={`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
-                        onChange={toggleMottaker(mottaker)}
-                        checked={mottakerValgt}
-                    />
-                );
-            })}
+            <StyledIngress>Verge/Fullmektig fra register</StyledIngress>
+            {muligeMottakere.length ? (
+                muligeMottakere.map((mottaker) => {
+                    const mottakerValgt = !!valgteMottakere.find(
+                        (valgtMottaker) => valgtMottaker.personIdent === mottaker.personIdent
+                    );
+                    return (
+                        <>
+                            <StyledMottakerBoks>
+                                <Kolonner>
+                                    {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
+                                    <KopierbartNullableFødselsnummer
+                                        fødselsnummer={mottaker.personIdent}
+                                    />
+                                </Kolonner>
+                                {!mottakerValgt && (
+                                    <VertikalSentrering>
+                                        <div>
+                                            <Button
+                                                variant="secondary"
+                                                size="small"
+                                                onClick={settMottaker(mottaker)}
+                                            >
+                                                Legg til
+                                            </Button>
+                                        </div>
+                                    </VertikalSentrering>
+                                )}
+                            </StyledMottakerBoks>
+                        </>
+                    );
+                })
+            ) : (
+                <Normaltekst>Ingen verge/fullmektig i register</Normaltekst>
+            )}
         </>
     );
 };

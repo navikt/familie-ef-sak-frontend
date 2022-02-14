@@ -4,8 +4,9 @@ import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Knapp } from 'nav-frontend-knapper';
+import { Button } from '@navikt/ds-react';
 import { StyledSøkInput, StyledSøkResultat } from './brevmottakereStyling';
+import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {
     settValgteMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
@@ -58,14 +59,20 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
                                 <Normaltekst>{søkRessurs.navn}</Normaltekst>
                                 {søkRessurs.personIdent}
                             </div>
-                            <Knapp
-                                onClick={leggTilBrevmottaker(
-                                    søkRessurs.personIdent,
-                                    søkRessurs.navn
-                                )}
-                            >
-                                Legg til
-                            </Knapp>
+                            <VertikalSentrering>
+                                <div>
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={leggTilBrevmottaker(
+                                            søkRessurs.personIdent,
+                                            søkRessurs.navn
+                                        )}
+                                    >
+                                        Legg til
+                                    </Button>
+                                </div>
+                            </VertikalSentrering>
                         </StyledSøkResultat>
                     );
                 }}
