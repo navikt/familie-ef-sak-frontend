@@ -76,7 +76,7 @@ const SummertePerioder: React.FC<{ perioder: SummertPeriode[] }> = ({ perioder }
 
 const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string => {
     const stønadTom = formaterNullableMånedÅr(periode.stønadTom) as string;
-    if (periode.kode === Kode.OPPHØRT) {
+    if (periode.kode === Kode.OPPHØRT || periode.kode === Kode.OVERTFØRT_NY_LØSNING) {
         return `${formaterNullableMånedÅr(periode.opphørsdato)} (${stønadTom})`;
     } else {
         return stønadTom;
