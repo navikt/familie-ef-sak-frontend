@@ -15,6 +15,8 @@ import {
     FrittståendeBrevtype,
 } from './BrevTyper';
 import { skjulAvsnittIBrevbygger } from './BrevUtils';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -76,6 +78,8 @@ const BrevInnhold: React.FC<Props> = ({
     ];
     const finnesSynligeAvsnitt = avsnitt.some((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
     const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
+    const { toggles } = useToggles();
+    const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
 
     return (
         <BrevKolonner>
@@ -96,11 +100,20 @@ const BrevInnhold: React.FC<Props> = ({
                     context === FritekstBrevContext.FRITTSTÅENDE
                         ? FrittståendeBrevtype
                         : FritekstBrevtype
-                ).map((type: FrittståendeBrevtype | FritekstBrevtype) => (
-                    <option value={type} key={type}>
-                        {BrevtyperTilSelectNavn[type as FrittståendeBrevtype | FritekstBrevtype]}
-                    </option>
-                ))}
+                )
+                    .filter(
+                        (type: FrittståendeBrevtype | FritekstBrevtype) =>
+                            type !== FritekstBrevtype.SANKSJON || skalViseValgmulighetForSanksjon
+                    )
+                    .map((type: FrittståendeBrevtype | FritekstBrevtype) => (
+                        <option value={type} key={type}>
+                            {
+                                BrevtyperTilSelectNavn[
+                                    type as FrittståendeBrevtype | FritekstBrevtype
+                                ]
+                            }
+                        </option>
+                    ))}
             </StyledSelect>
             {brevType && (
                 <>
