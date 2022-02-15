@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import Modal from 'nav-frontend-modal';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Button } from '@navikt/ds-react';
+import { EToast } from '../../../App/typer/toast';
 
 const GridContainer = styled.div`
     display: grid;
@@ -79,6 +80,7 @@ export const BrevmottakereModal: FC<{
     >([]);
     const [feilmelding, settFeilmelding] = useState('');
     const [innsendingSuksess, settInnsendingSukksess] = useState(false);
+    const { settToast } = useApp();
 
     const settBrevmottakere = () => {
         settFeilmelding('');
@@ -92,7 +94,9 @@ export const BrevmottakereModal: FC<{
             },
         }).then((response: RessursSuksess<string> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
-                settInnsendingSukksess(true);
+                settInnsendingSukksess(false);
+                settVisBrevmottakereModal(false);
+                settToast(EToast.BREVMOTTAKERE_SATT);
             } else {
                 settFeilmelding(response.frontendFeilmelding);
             }
@@ -127,7 +131,9 @@ export const BrevmottakereModal: FC<{
     return (
         <StyledModal
             isOpen={visBrevmottakereModal}
-            onRequestClose={() => settVisBrevmottakereModal(false)}
+            onRequestClose={() => {
+                settVisBrevmottakereModal(false);
+            }}
             closeButton={true}
             contentLabel={'Velg brevmottakere'}
         >

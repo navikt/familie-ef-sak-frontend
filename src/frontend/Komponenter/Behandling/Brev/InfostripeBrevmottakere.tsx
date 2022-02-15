@@ -15,6 +15,10 @@ export const InfostripeBrevmottakere: React.FC<{ brevmottakere: IBrevmottakere }
                     `${mottaker.navnHosOrganisasjon} (${mottaker.mottakerRolle.toLowerCase()})`
             ),
         ].join(', ') + '.';
-
-    return <AlertStripeInfo>Mottakere av brev: {brevmottakereStreng}</AlertStripeInfo>;
+    return (
+        <AlertStripeInfo>
+            Mottakere av brev:{<br />}
+            {brevmottakereStreng}
+        </AlertStripeInfo>
+    );
 };
