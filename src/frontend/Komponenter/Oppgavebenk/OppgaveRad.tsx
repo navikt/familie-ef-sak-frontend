@@ -30,14 +30,15 @@ const StyledPopoverinnhold = styled.p`
 
 const Flatknapp = hiddenIf(Knapp);
 
-const kanJournalføres = (oppgave: IOppgave) => {
+const kanJournalføres = (oppgave: IOppgave, skalJournalføreBarnetisyn: boolean) => {
     const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
+    const behandlingstemaer = skalJournalføreBarnetisyn ? ['ab0071', 'ab0028'] : ['ab0071'];
     return (
         (behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' ||
             behandlesAvApplikasjon === 'familie-ef-sak') &&
         oppgavetype === 'JFR' &&
         behandlingstema &&
-        ['ab0071', 'ab0028'].includes(behandlingstema)
+        behandlingstemaer.includes(behandlingstema)
     );
 };
 
@@ -78,7 +79,7 @@ const kanMigreres = (oppgave: IOppgave) => {
 const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
-    } else if (kanJournalføres(oppgave)) {
+    } else if (kanJournalføres(oppgave, toggles[ToggleName.kanJournalFøreBarnetilsyn])) {
         return Handling.JOURNALFØR;
     } else if (kanStarteBlankettBehandling(oppgave)) {
         return Handling.BLANKETT;
