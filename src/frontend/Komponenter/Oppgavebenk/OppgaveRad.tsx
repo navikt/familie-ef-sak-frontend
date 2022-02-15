@@ -37,7 +37,7 @@ const kanJournalføres = (oppgave: IOppgave) => {
             behandlesAvApplikasjon === 'familie-ef-sak') &&
         oppgavetype === 'JFR' &&
         behandlingstema &&
-        ['ab0071'].includes(behandlingstema)
+        ['ab0071', 'ab0028'].includes(behandlingstema)
     );
 };
 
