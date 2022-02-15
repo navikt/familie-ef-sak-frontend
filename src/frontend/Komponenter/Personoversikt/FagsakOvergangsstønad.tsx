@@ -1,9 +1,7 @@
-import { Stønadstype } from '../../App/typer/behandlingstema';
 import LagBehandlingModal from './LagBehandlingModal';
 import { ToggleName } from '../../App/context/toggles';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     byggTomRessurs,
     Ressurs,
@@ -19,6 +17,7 @@ import { useApp } from '../../App/context/AppContext';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import { useToggles } from '../../App/context/TogglesContext';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;
@@ -26,28 +25,20 @@ const KnappMedMargin = styled(Knapp)`
 `;
 
 interface Props {
-    fagsakId: string;
-    fagsakOvergangsstønad: Ressurs<Fagsak>;
-    settFagsakOvergangsstønad: Dispatch<SetStateAction<Ressurs<Fagsak>>>;
-    hentFagsak: (id: string, settFagsak: Dispatch<SetStateAction<Ressurs<Fagsak>>>) => void;
+    fagsak: Fagsak;
 }
 
-export const FagsakOvergangsstønad: React.FC<Props> = ({
-    fagsakId,
-    fagsakOvergangsstønad,
-    settFagsakOvergangsstønad,
-    hentFagsak,
-}) => {
+export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
     const gjørTekniskOpphør = () => {
         axiosRequest<void, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor/${fagsakId}`,
+            url: `/familie-ef-sak/api/tekniskopphor/${fagsak.id}`,
         }).then((response: RessursSuksess<void> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
-                hentFagsak(fagsakId, settFagsakOvergangsstønad);
+                // hentFagsak(fagsakId, settFagsakOvergangsstønad); TODO
             } else {
                 settTekniskOpphørFeilet(true);
             }
@@ -57,10 +48,10 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsakId}`,
+            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsak.id}`,
         }).then((response) => settTilbakekrevingbehandlinger(response));
 
-    const [kanStarteRevurdering, settKanStarteRevurdering] = useState<boolean>(false);
+    const kanStarteRevurdering = erAlleBehandlingerErFerdigstilt(fagsak);
     const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
     const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
@@ -79,47 +70,34 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({
     }
 
     useEffect(() => {
-        if (fagsakOvergangsstønad.status === RessursStatus.SUKSESS) {
-            settKanStarteRevurdering(erAlleBehandlingerErFerdigstilt(fagsakOvergangsstønad.data));
-        }
-        // eslint-disable-next-line
-    }, [fagsakOvergangsstønad]);
-
-    useEffect(() => {
         hentTilbakekrevingBehandlinger();
         // eslint-disable-next-line
-    }, [fagsakId]);
+    }, [fagsak.id]);
 
     return (
-        <DataViewer
-            response={{
-                fagsakOvergangsstønad,
-                tilbakekrevingBehandlinger,
-            }}
-        >
-            {({ fagsakOvergangsstønad, tilbakekrevingBehandlinger }) => (
+        <DataViewer response={{ tilbakekrevingBehandlinger }}>
+            {({ tilbakekrevingBehandlinger }) => (
                 <>
-                    <FagsakTittelLinje fagsak={fagsakOvergangsstønad} />
+                    <FagsakTittelLinje fagsak={fagsak} />
                     <BehandlingsoversiktTabell
-                        behandlinger={fagsakOvergangsstønad.behandlinger}
-                        eksternFagsakId={fagsakOvergangsstønad.eksternId}
+                        behandlinger={fagsak.behandlinger}
+                        eksternFagsakId={fagsak.eksternId}
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                     />
-                    {fagsakOvergangsstønad.stønadstype === Stønadstype.OVERGANGSSTØNAD &&
-                        kanStarteRevurdering && (
-                            <>
-                                <LagBehandlingModal
-                                    visModal={visLagBehandlingModal}
-                                    settVisModal={settVisLagBehandlingModal}
-                                    fagsakId={fagsakOvergangsstønad.id}
-                                    hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
-                                />
+                    {kanStarteRevurdering && (
+                        <>
+                            <LagBehandlingModal
+                                visModal={visLagBehandlingModal}
+                                settVisModal={settVisLagBehandlingModal}
+                                fagsakId={fagsak.id}
+                                hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
+                            />
 
-                                <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
-                                    Opprett ny behandling
-                                </KnappMedMargin>
-                            </>
-                        )}
+                            <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
+                                Opprett ny behandling
+                            </KnappMedMargin>
+                        </>
+                    )}
                     {toggles[ToggleName.TEKNISK_OPPHØR] && (
                         <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
                             Teknisk opphør

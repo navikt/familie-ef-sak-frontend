@@ -1,10 +1,9 @@
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
     Behandling,
     BehandlingResultat,
     behandlingResultatInkludertTilbakekrevingTilTekst,
     Fagsak,
-    IFagsakPerson,
 } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
@@ -13,16 +12,7 @@ import { Link } from 'react-router-dom';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import SorteringsHeader from '../Oppgavebenk/OppgaveSorteringHeader';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import {
-    byggTomRessurs,
-    Ressurs,
-    RessursFeilet,
-    RessursStatus,
-    RessursSuksess,
-} from '../../App/typer/ressurs';
-import { useApp } from '../../App/context/AppContext';
 import { PartialRecord } from '../../App/typer/common';
-import Alertstripe from 'nav-frontend-alertstriper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import {
@@ -34,6 +24,8 @@ import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 import { FagsakOvergangsstønad } from './FagsakOvergangsstønad';
 import { FagsakBarnetilsyn } from './FagsakBarnetilsyn';
+import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 
 const StyledTable = styled.table`
     width: 50%;
@@ -60,53 +52,26 @@ const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string):
     return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
 };
 
-const Behandlingsoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
-    const [fagsakOvergangsstønad, settFagsakOvergangsstønad] = useState<Ressurs<Fagsak>>(
-        byggTomRessurs()
-    );
-    const [fagsakBarnetilsyn, settFagsakBarnetilsyn] = useState<Ressurs<Fagsak>>(byggTomRessurs());
-
-    const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
-
-    const { axiosRequest } = useApp();
-    const { overgangsstønad: fagsakIdOvergangsstønad, barnetilsyn: fagsakIdBarnetilsyn } =
-        fagsakPerson;
-
-    const hentFagsak = (fagsakId: string, settFagsak: Dispatch<Ressurs<Fagsak>>) =>
-        axiosRequest<Fagsak, null>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-        }).then((respons: RessursSuksess<Fagsak> | RessursFeilet) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                settFagsak(respons);
-            } else {
-                settFeilFagsakHenting(respons.frontendFeilmelding);
-            }
-        });
+const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
+    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
 
     useEffect(() => {
-        if (fagsakIdOvergangsstønad) {
-            hentFagsak(fagsakIdOvergangsstønad, settFagsakOvergangsstønad);
-        }
-        if (fagsakIdBarnetilsyn) {
-            hentFagsak(fagsakIdBarnetilsyn, settFagsakBarnetilsyn);
-        }
-        // eslint-disable-next-line
-    }, [fagsakIdOvergangsstønad, fagsakIdBarnetilsyn]);
+        hentFagsakPerson(fagsakPersonId);
+    }, [hentFagsakPerson, fagsakPersonId]);
 
     return (
-        <>
-            {fagsakIdOvergangsstønad && (
-                <FagsakOvergangsstønad
-                    fagsakId={fagsakIdOvergangsstønad}
-                    fagsakOvergangsstønad={fagsakOvergangsstønad}
-                    settFagsakOvergangsstønad={settFagsakOvergangsstønad}
-                    hentFagsak={hentFagsak}
-                />
+        <DataViewer response={{ fagsakPerson }}>
+            {({ fagsakPerson }) => (
+                <>
+                    {fagsakPerson.overgangsstønad && (
+                        <FagsakOvergangsstønad fagsak={fagsakPerson.overgangsstønad} />
+                    )}
+                    {fagsakPerson.barnetilsyn && (
+                        <FagsakBarnetilsyn fagsak={fagsakPerson.barnetilsyn} />
+                    )}
+                </>
             )}
-            {fagsakIdBarnetilsyn && <FagsakBarnetilsyn fagsakBarnetilsyn={fagsakBarnetilsyn} />}
-            {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
-        </>
+        </DataViewer>
     );
 };
 

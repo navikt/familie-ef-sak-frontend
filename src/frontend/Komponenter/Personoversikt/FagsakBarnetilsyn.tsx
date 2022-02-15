@@ -1,30 +1,20 @@
-import DataViewer from '../../Felles/DataViewer/DataViewer';
 import React from 'react';
-import { Ressurs } from '../../App/typer/ressurs';
 import { Fagsak } from '../../App/typer/fagsak';
 import { BehandlingsoversiktTabell, FagsakTittelLinje } from './Behandlingsoversikt';
 
 interface Props {
-    fagsakBarnetilsyn: Ressurs<Fagsak>;
+    fagsak: Fagsak;
 }
 
-export const FagsakBarnetilsyn: React.FC<Props> = ({ fagsakBarnetilsyn }) => {
+export const FagsakBarnetilsyn: React.FC<Props> = ({ fagsak }) => {
     return (
-        <DataViewer
-            response={{
-                fagsakBarnetilsyn,
-            }}
-        >
-            {({ fagsakBarnetilsyn }) => (
-                <>
-                    <FagsakTittelLinje fagsak={fagsakBarnetilsyn} />
-                    <BehandlingsoversiktTabell
-                        behandlinger={fagsakBarnetilsyn.behandlinger}
-                        eksternFagsakId={fagsakBarnetilsyn.eksternId}
-                        tilbakekrevingBehandlinger={[]}
-                    />
-                </>
-            )}
-        </DataViewer>
+        <>
+            <FagsakTittelLinje fagsak={fagsak} />
+            <BehandlingsoversiktTabell
+                behandlinger={fagsak.behandlinger}
+                eksternFagsakId={fagsak.eksternId}
+                tilbakekrevingBehandlinger={[]}
+            />
+        </>
     );
 };
