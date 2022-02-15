@@ -111,7 +111,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 {vedtakIverksatt && (
                     <LenkeKnappWrapper>
                         <LenkeKnapp onClick={hentOgÅpneVedtaksbrev}>
-                            <span>Vedtaksdbrev</span>
+                            <span>Vedtaksbrev</span>
                             <ExternalLink />
                         </LenkeKnapp>
                     </LenkeKnappWrapper>
