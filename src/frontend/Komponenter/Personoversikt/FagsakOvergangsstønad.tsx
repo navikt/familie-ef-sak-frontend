@@ -11,13 +11,14 @@ import {
 } from '../../App/typer/ressurs';
 import { BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
 import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
-import { BehandlingsoversiktTabell, FagsakTittelLinje } from './Behandlingsoversikt';
+import { FagsakTittelLinje } from './Behandlingsoversikt';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { useApp } from '../../App/context/AppContext';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import { useToggles } from '../../App/context/TogglesContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;
@@ -26,9 +27,10 @@ const KnappMedMargin = styled(Knapp)`
 
 interface Props {
     fagsak: Fagsak;
+    rehentFagsak: () => void;
 }
 
-export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak }) => {
+export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak, rehentFagsak }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
 
@@ -38,7 +40,7 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak }) => {
             url: `/familie-ef-sak/api/tekniskopphor/${fagsak.id}`,
         }).then((response: RessursSuksess<void> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
-                // hentFagsak(fagsakId, settFagsakOvergangsstønad); TODO
+                rehentFagsak();
             } else {
                 settTekniskOpphørFeilet(true);
             }
