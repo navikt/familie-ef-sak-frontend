@@ -38,10 +38,7 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Behandlingsoversikt',
         path: 'behandlinger',
-        komponent: (fagsakPerson) =>
-            fagsakPerson.overgangsstønad && (
-                <Behandlingsoversikt fagsakId={fagsakPerson.overgangsstønad} />
-            ),
+        komponent: (fagsakPerson) => <Behandlingsoversikt fagsakPersonId={fagsakPerson.id} />,
     },
     {
         label: 'Vedtaksperioder',
