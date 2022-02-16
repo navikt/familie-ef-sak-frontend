@@ -17,13 +17,15 @@ import {
 import { skjulAvsnittIBrevbygger } from './BrevUtils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import OppKnapp from '../../../Felles/Knapper/OppKnapp';
+import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
 `;
 
 const Innholdsrad = styled(Panel)`
-    width: 70%;
+    width: 95%;
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
@@ -52,6 +54,9 @@ const BrevKolonner = styled.div`
 const FlyttAvsnittKnappWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
+    margin-left: 0.5rem;
+    margin-top: 1rem;
 `;
 
 type Props = {
@@ -94,6 +99,7 @@ const BrevInnhold: React.FC<Props> = ({
     const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
     const { toggles } = useToggles();
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
+    const avsnittSomSkalVises = avsnitt.filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
 
     return (
         <BrevKolonner>
@@ -148,59 +154,52 @@ const BrevInnhold: React.FC<Props> = ({
                             />
                         </LeggTilKnappWrapper>
                     )}
-                    {avsnitt
-                        .filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger)
-                        .map((rad, index) => {
-                            const deloverskriftId = `deloverskrift-${rad.id}`;
-                            const innholdId = `innhold-${rad.id}`;
-                            const toKolonneId = `toKolonne-${rad.id}`;
-                            const knappWrapperId = `knappWrapper-${rad.id}`;
+                    {avsnittSomSkalVises.map((rad, index) => {
+                        const deloverskriftId = `deloverskrift-${rad.id}`;
+                        const innholdId = `innhold-${rad.id}`;
+                        const toKolonneId = `toKolonne-${rad.id}`;
+                        const knappWrapperId = `knappWrapper-${rad.id}`;
 
-                            return (
-                                <ToKolonneLayout id={toKolonneId}>
-                                    <Innholdsrad key={rad.id} border>
-                                        <Input
-                                            onChange={endreDeloverskriftAvsnitt(rad.id)}
-                                            label="Deloverskrift (valgfri)"
-                                            id={deloverskriftId}
-                                            value={rad.deloverskrift}
+                        return (
+                            <ToKolonneLayout id={toKolonneId}>
+                                <Innholdsrad key={rad.id} border>
+                                    <Input
+                                        onChange={endreDeloverskriftAvsnitt(rad.id)}
+                                        label="Deloverskrift (valgfri)"
+                                        id={deloverskriftId}
+                                        value={rad.deloverskrift}
+                                    />
+                                    <Textarea
+                                        onChange={endreInnholdAvsnitt(rad.id)}
+                                        label="Innhold"
+                                        id={innholdId}
+                                        value={rad.innhold}
+                                        maxLength={0}
+                                    />
+                                    <LenkeKnapp onClick={() => fjernRad(rad.id)}>
+                                        <SlettSøppelkasse withDefaultStroke={false} />
+                                        Slett avsnitt
+                                    </LenkeKnapp>
+                                </Innholdsrad>
+                                <FlyttAvsnittKnappWrapper id={knappWrapperId}>
+                                    {index > 0 && (
+                                        <OppKnapp
+                                            onClick={() => {
+                                                flyttAvsnittOpp(rad.id);
+                                            }}
                                         />
-                                        <Textarea
-                                            onChange={endreInnholdAvsnitt(rad.id)}
-                                            label="Innhold"
-                                            id={innholdId}
-                                            value={rad.innhold}
-                                            maxLength={0}
+                                    )}
+                                    {index + 1 < avsnittSomSkalVises.length && (
+                                        <NedKnapp
+                                            onClick={() => {
+                                                flyttAvsnittNed(rad.id);
+                                            }}
                                         />
-                                        <LenkeKnapp onClick={() => fjernRad(rad.id)}>
-                                            <SlettSøppelkasse withDefaultStroke={false} />
-                                            Slett avsnitt
-                                        </LenkeKnapp>
-                                    </Innholdsrad>
-                                    <FlyttAvsnittKnappWrapper id={knappWrapperId}>
-                                        {index !== 0 && (
-                                            <LeggTilKnapp
-                                                onClick={() => {
-                                                    flyttAvsnittOpp(rad.id);
-                                                }}
-                                                knappetekst="Flytt avsnitt opp"
-                                            />
-                                        )}
-                                        {index + 1 !==
-                                            avsnitt.filter(
-                                                (avsnitt) => !avsnitt.skalSkjulesIBrevbygger
-                                            ).length && (
-                                            <LeggTilKnapp
-                                                onClick={() => {
-                                                    flyttAvsnittNed(rad.id);
-                                                }}
-                                                knappetekst="Flytt avsnitt ned"
-                                            />
-                                        )}
-                                    </FlyttAvsnittKnappWrapper>
-                                </ToKolonneLayout>
-                            );
-                        })}
+                                    )}
+                                </FlyttAvsnittKnappWrapper>
+                            </ToKolonneLayout>
+                        );
+                    })}
                     {brevSkalKunneRedigeres && (
                         <LeggTilKnappWrapper>
                             <LeggTilKnapp
