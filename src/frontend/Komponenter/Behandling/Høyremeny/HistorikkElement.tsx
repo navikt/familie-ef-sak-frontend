@@ -30,6 +30,7 @@ const Linje = styled.div`
 
 const LenkeKnappWrapper = styled.div`
     margin-top: 0.2rem;
+    font-size: 14px;
 `;
 
 const Innhold = styled.div``;
