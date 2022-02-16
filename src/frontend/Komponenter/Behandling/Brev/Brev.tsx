@@ -31,7 +31,7 @@ interface Props {
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, toast } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll } =
         useBehandling();
@@ -90,7 +90,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         };
 
         hentBrevmottakere();
-    }, [axiosRequest, behandlingId, settBrevMottakereRessurs]);
+    }, [axiosRequest, behandlingId, settBrevMottakereRessurs, toast]);
 
     return (
         <>
