@@ -126,6 +126,41 @@ export const leggAvsnittBakSisteSynligeAvsnitt = (
     ];
 };
 
-export const leggTilAvsnittForran = (eksisterendeAvsnitt: AvsnittMedId[]): AvsnittMedId[] => {
+export const leggTilAvsnittFørst = (eksisterendeAvsnitt: AvsnittMedId[]): AvsnittMedId[] => {
     return [lagTomtAvsnitt(), ...eksisterendeAvsnitt];
+};
+
+export const flyttAvsnittOppover = (
+    avsnittId: string,
+    eksisterendeAvsnitt: AvsnittMedId[]
+): AvsnittMedId[] => {
+    const avsnittSomSkalFlyttesIndeks = eksisterendeAvsnitt.findIndex(
+        (avsnitt) => avsnitt.id === avsnittId
+    );
+    const avsnittFørIndeks = avsnittSomSkalFlyttesIndeks - 1;
+    const avsnittEtterIndeks = avsnittSomSkalFlyttesIndeks + 1;
+
+    return [
+        ...eksisterendeAvsnitt.slice(0, avsnittFørIndeks),
+        eksisterendeAvsnitt[avsnittSomSkalFlyttesIndeks],
+        eksisterendeAvsnitt[avsnittFørIndeks],
+        ...eksisterendeAvsnitt.slice(avsnittEtterIndeks),
+    ];
+};
+
+export const flyttAvsnittNedover = (
+    avsnittId: string,
+    eksisterendeAvsnitt: AvsnittMedId[]
+): AvsnittMedId[] => {
+    const avsnittSomSkalFlyttesIndeks = eksisterendeAvsnitt.findIndex(
+        (avsnitt) => avsnitt.id === avsnittId
+    );
+    const avsnittEtterIndeks = avsnittSomSkalFlyttesIndeks + 1;
+
+    return [
+        ...eksisterendeAvsnitt.slice(0, avsnittSomSkalFlyttesIndeks),
+        eksisterendeAvsnitt[avsnittEtterIndeks],
+        eksisterendeAvsnitt[avsnittSomSkalFlyttesIndeks],
+        ...eksisterendeAvsnitt.slice(avsnittEtterIndeks + 1),
+    ];
 };

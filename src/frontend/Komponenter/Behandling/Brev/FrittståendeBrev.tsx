@@ -19,7 +19,7 @@ import {
 import {
     initielleAvsnittMellomlager,
     leggAvsnittBakSisteSynligeAvsnitt,
-    leggTilAvsnittForran,
+    leggTilAvsnittFørst,
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 
@@ -78,7 +78,7 @@ const FrittståendeBrev: React.FC<Props> = ({
     };
 
     const oppdaterLeggTilAvsnittForan = () => {
-        settAvsnitt(leggTilAvsnittForran(avsnitt));
+        settAvsnitt(leggTilAvsnittFørst(avsnitt));
     };
 
     const oppdaterLeggAvsnittBakSisteSynligeAvsnitt = () => {
