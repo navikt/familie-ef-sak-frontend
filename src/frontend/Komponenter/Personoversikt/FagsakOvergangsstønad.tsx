@@ -11,7 +11,6 @@ import {
 } from '../../App/typer/ressurs';
 import { BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
 import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
-import { FagsakTittelLinje } from './Behandlingsoversikt';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { useApp } from '../../App/context/AppContext';
 import styled from 'styled-components';
@@ -19,6 +18,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { useToggles } from '../../App/context/TogglesContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
+import { FagsakTittelLinje } from './FagsakTittelLinje';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;

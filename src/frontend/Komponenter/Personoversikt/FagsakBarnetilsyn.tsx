@@ -1,7 +1,7 @@
 import React from 'react';
 import { Fagsak } from '../../App/typer/fagsak';
-import { FagsakTittelLinje } from './Behandlingsoversikt';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
+import { FagsakTittelLinje } from './FagsakTittelLinje';
 
 interface Props {
     fagsak: Fagsak;
