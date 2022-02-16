@@ -1,3 +1,5 @@
+import { TilbakekrevingsbehandlingÅrsak } from './tilbakekreving';
+
 export enum Behandlingsårsak {
     KLAGE = 'KLAGE',
     NYE_OPPLYSNINGER = 'NYE_OPPLYSNINGER',
@@ -20,3 +22,21 @@ export const behandlingsårsaker: Behandlingsårsak[] = [
     Behandlingsårsak.SANKSJON_1_MND,
     Behandlingsårsak.SØKNAD,
 ];
+
+export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
+    Behandlingsårsak | TilbakekrevingsbehandlingÅrsak,
+    string
+> = {
+    KLAGE: 'Klage',
+    NYE_OPPLYSNINGER: 'Nye opplysninger',
+    SANKSJON_1_MND: 'Sanksjon 1 måned',
+    SØKNAD: 'Søknad',
+    MIGRERING: 'Migrering',
+    /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
+    REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
+    REVURDERING_KLAGE_KA: 'Klage omgjort av KA',
+    REVURDERING_OPPLYSNINGER_OM_VILKÅR: 'Nye opplysninger',
+    REVURDERING_OPPLYSNINGER_OM_FORELDELSE: 'Nye opplysninger',
+    REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
+        'Feilutbetalt beløp helt eller delvis bortfalt',
+};

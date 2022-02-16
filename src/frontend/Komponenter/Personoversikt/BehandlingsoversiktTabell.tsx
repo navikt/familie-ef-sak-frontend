@@ -13,7 +13,10 @@ import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import SorteringsHeader from '../Oppgavebenk/OppgaveSorteringHeader';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../App/utils/utils';
-import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
+import {
+    behandlingOgTilbakekrevingsårsakTilTekst,
+    Behandlingsårsak,
+} from '../../App/typer/Behandlingsårsak';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
 import { BehandlingApplikasjon } from './Behandlingsoversikt';
@@ -91,6 +94,13 @@ export const BehandlingsoversiktTabell: React.FC<{
         return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
     };
 
+    const finnÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
+        behandling.type === TilbakekrevingBehandlingstype.TILBAKEKREVING
+            ? 'Feilutbetaling'
+            : behandling.årsak
+            ? behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak]
+            : '-';
+
     return (
         <StyledTable className="tabell">
             <thead>
@@ -117,9 +127,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                         <tr key={behandling.id}>
                             <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
                             <td>{formatterEnumVerdi(behandling.type)}</td>
-                            <td>
-                                {behandling.årsak && behandlingsårsakTilTekst[behandling.årsak]}
-                            </td>
+                            <td>{finnÅrsak(behandling)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
                                 {behandling.vedtaksdato &&

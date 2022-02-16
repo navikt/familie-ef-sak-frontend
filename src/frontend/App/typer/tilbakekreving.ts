@@ -4,6 +4,7 @@ export interface TilbakekrevingBehandling {
     aktiv: boolean;
     type: TilbakekrevingBehandlingstype;
     status: TilbakekrevingBehandlingsstatus;
+    årsak?: TilbakekrevingsbehandlingÅrsak;
     vedtaksdato?: string;
     resultat?: TilbakekrevingBehandlingsresultatstype;
 }
@@ -55,4 +56,21 @@ export const tilbakekrevingBehandlingsresultattypeTilTekst: Record<
     DELVIS_TILBAKEBETALING: 'Delvis tilbakebetaling',
     FULL_TILBAKEBETALING: 'Full tilbakebetaling',
     HENLAGT: 'Henlagt',
+};
+
+export enum TilbakekrevingsbehandlingÅrsak {
+    REVURDERING_KLAGE_NFP = 'REVURDERING_KLAGE_NFP',
+    REVURDERING_KLAGE_KA = 'REVURDERING_KLAGE_KA',
+    REVURDERING_OPPLYSNINGER_OM_VILKÅR = 'REVURDERING_OPPLYSNINGER_OM_VILKÅR',
+    REVURDERING_OPPLYSNINGER_OM_FORELDELSE = 'REVURDERING_OPPLYSNINGER_OM_FORELDELSE',
+    REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT = 'REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT',
+}
+
+export const tilbakekrevingsårsakTilTekst: Record<TilbakekrevingsbehandlingÅrsak, string> = {
+    REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
+    REVURDERING_KLAGE_KA: 'Klage omgjort av KA',
+    REVURDERING_OPPLYSNINGER_OM_VILKÅR: 'Nye opplysninger',
+    REVURDERING_OPPLYSNINGER_OM_FORELDELSE: 'Nye opplysninger',
+    REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
+        'Feilutbetalt beløp helt eller delvis bortfalt',
 };
