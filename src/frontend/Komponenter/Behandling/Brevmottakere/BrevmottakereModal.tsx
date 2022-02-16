@@ -94,7 +94,6 @@ export const BrevmottakereModal: FC<{
             },
         }).then((response: RessursSuksess<string> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
-                settInnsendingSukksess(false);
                 settVisBrevmottakereModal(false);
                 settToast(EToast.BREVMOTTAKERE_SATT);
             } else {
