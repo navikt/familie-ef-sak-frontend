@@ -17,6 +17,8 @@ import {
     IFrittståendeBrev,
 } from './BrevTyper';
 import {
+    flyttAvsnittNedover,
+    flyttAvsnittOppover,
     initielleAvsnittMellomlager,
     leggAvsnittBakSisteSynligeAvsnitt,
     leggTilAvsnittFørst,
@@ -77,7 +79,15 @@ const FrittståendeBrev: React.FC<Props> = ({
         settAvsnitt(nyttAvsnitt);
     };
 
-    const oppdaterLeggTilAvsnittForan = () => {
+    const oppdaterFlyttAvsnittOppover = (avsnittId: string) => {
+        settAvsnitt(flyttAvsnittOppover(avsnittId, avsnitt));
+    };
+
+    const oppdaterFlyttAvsnittNedover = (avsnittId: string) => {
+        settAvsnitt(flyttAvsnittNedover(avsnittId, avsnitt));
+    };
+
+    const oppdaterLeggTilAvsnittFørst = () => {
         settAvsnitt(leggTilAvsnittFørst(avsnitt));
     };
 
@@ -203,8 +213,10 @@ const FrittståendeBrev: React.FC<Props> = ({
                 endreDeloverskriftAvsnitt={endreDeloverskriftAvsnitt}
                 endreInnholdAvsnitt={endreInnholdAvsnitt}
                 fjernRad={fjernRad}
-                leggTilAvsnittForan={oppdaterLeggTilAvsnittForan}
+                leggTilAvsnittFørst={oppdaterLeggTilAvsnittFørst}
                 leggAvsnittBakSisteSynligeAvsnitt={oppdaterLeggAvsnittBakSisteSynligeAvsnitt}
+                flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
+                flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
                 context={FritekstBrevContext.FRITTSTÅENDE}
             />
             <StyledHovedKnapp disabled={!brevType} onClick={() => settVisModal(true)}>
