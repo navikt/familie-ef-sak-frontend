@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Hamburger } from '@navikt/ds-icons';
 import styled from 'styled-components';
 import { useToggles } from '../../App/context/TogglesContext';
@@ -61,14 +61,30 @@ const Knapp = styled.button`
 
 export const Hamburgermeny = () => {
     const { toggles } = useToggles();
+    const ref = useRef(null);
     const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
-
     const { settVisBrevmottakereModal, settVisHenleggModal } = useBehandling();
-
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
+    useEffect(() => {
+        const håndterKlikkUtenforKomponent = (event: { target: never }) => {
+            // @ts-ignore
+            if (åpenHamburgerMeny && ref.current && !ref.current.contains(event.target)) {
+                settÅpenHamburgerMeny(false);
+            }
+        };
+
+        // @ts-ignore
+        document.addEventListener('click', håndterKlikkUtenforKomponent, true);
+
+        return () => {
+            // @ts-ignore
+            document.removeEventListener('click', håndterKlikkUtenforKomponent, true);
+        };
+    }, [åpenHamburgerMeny]);
+
     return (
-        <div>
+        <div ref={ref}>
             <HamburgerMenyIkon
                 onClick={() => {
                     settÅpenHamburgerMeny(!åpenHamburgerMeny);
