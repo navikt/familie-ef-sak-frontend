@@ -4,6 +4,7 @@ import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { Refresh } from '@navikt/ds-icons';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
+import { HelpText } from '@navikt/ds-react';
 
 const Container = styled.div`
     display: flex;
@@ -63,6 +64,10 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
             >
                 <Refresh role="img" focusable="false" /> <KnappTekst>Oppdater</KnappTekst>
             </FamilieKnapp>
+            <HelpText>
+                Dersom søker har fått et nytt barn etter å ha sendt inn denne søknaden vil ikke
+                dette bli tatt med i oppdateringen.
+            </HelpText>
         </Container>
     );
 };
