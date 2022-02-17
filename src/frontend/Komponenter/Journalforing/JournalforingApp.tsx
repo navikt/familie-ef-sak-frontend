@@ -4,7 +4,7 @@ import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import Brukerinfo from './Brukerinfo';
-import { Sidetittel } from 'nav-frontend-typografi';
+import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import {
     behandlingstemaTilStønadstype,
@@ -17,6 +17,7 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
+    BehandlingRequest,
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../App/hooks/useJournalføringState';
@@ -30,6 +31,7 @@ import {
     oppgaveRequestKey,
 } from '../Oppgavebenk/oppgavefilterStorage';
 import BehandlingInnold from './Behandling';
+import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -43,6 +45,17 @@ const Kolonner = styled.div`
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
+`;
+
+export const KnappWrapper = styled.div`
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    .flex-item {
+        margin-right: 1.5rem;
+    }
 `;
 
 const Venstrekolonne = styled.div``;
@@ -126,6 +139,17 @@ export const JournalforingApp: React.FC = () => {
         return <Navigate to="/oppgavebenk" />;
     }
 
+    const skalBeOmBekreftelse = (
+        behandling: BehandlingRequest | undefined,
+        harStrukturertSøknad: boolean
+    ) => {
+        if (harStrukturertSøknad) {
+            return behandling?.behandlingsId !== undefined;
+        } else {
+            return behandling?.behandlingsId === undefined;
+        }
+    };
+
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => (
@@ -167,13 +191,22 @@ export const JournalforingApp: React.FC = () => {
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
-                                    onClick={() =>
-                                        journalpostState.fullførJournalføring(
-                                            journalpostIdParam,
-                                            innloggetSaksbehandler?.enhet || '9999',
-                                            innloggetSaksbehandler?.navIdent
-                                        )
-                                    }
+                                    onClick={() => {
+                                        if (
+                                            skalBeOmBekreftelse(
+                                                journalpostState.behandling,
+                                                journalResponse.harStrukturertSøknad
+                                            )
+                                        ) {
+                                            journalpostState.settVisBekreftelsesModal(true);
+                                        } else {
+                                            journalpostState.fullførJournalføring(
+                                                journalpostIdParam,
+                                                innloggetSaksbehandler?.enhet || '9999',
+                                                innloggetSaksbehandler?.navIdent
+                                            );
+                                        }
+                                    }}
                                     spinner={
                                         journalpostState.innsending.status === RessursStatus.HENTER
                                     }
@@ -200,6 +233,54 @@ export const JournalforingApp: React.FC = () => {
                             <PdfVisning pdfFilInnhold={valgtDokument} />
                         </Høyrekolonne>
                     </Kolonner>
+                    <UIModalWrapper
+                        modal={{
+                            tittel: `Bekreft journalføring`,
+                            lukkKnapp: true,
+                            onClose: () => journalpostState.settVisBekreftelsesModal(false),
+                            visModal: journalpostState.visBekreftelsesModal,
+                        }}
+                    >
+                        <div>
+                            {journalResponse.harStrukturertSøknad && (
+                                <Normaltekst>
+                                    Behandlingen du har valgt har allerede en digital søknad
+                                    tilknyttet seg. Om du skal gjennomføre en ny saksbehandling av
+                                    søknaden må du opprette en ny behandling.
+                                </Normaltekst>
+                            )}
+                            {!journalResponse.harStrukturertSøknad && (
+                                <Normaltekst>
+                                    Det finnes ingen digital søknad tilknyttet journalposten og den
+                                    bør derfor journalføres på en eksisterende behandling
+                                </Normaltekst>
+                            )}
+                        </div>
+                        <KnappWrapper>
+                            <Knapp
+                                type={'hoved'}
+                                className={'flex-item'}
+                                onClick={() => {
+                                    journalpostState.settVisBekreftelsesModal(false);
+                                }}
+                                children="Tilbake"
+                            />
+
+                            <Knapp
+                                type={'standard'}
+                                className={'flex-item'}
+                                onClick={() => {
+                                    journalpostState.settVisBekreftelsesModal(false);
+                                    journalpostState.fullførJournalføring(
+                                        journalpostIdParam,
+                                        innloggetSaksbehandler?.enhet || '9999',
+                                        innloggetSaksbehandler?.navIdent
+                                    );
+                                }}
+                                children="Journalfør allikevel"
+                            />
+                        </KnappWrapper>
+                    </UIModalWrapper>
                 </SideLayout>
             )}
         </DataViewer>

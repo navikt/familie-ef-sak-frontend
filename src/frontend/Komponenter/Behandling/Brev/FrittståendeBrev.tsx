@@ -17,9 +17,11 @@ import {
     IFrittståendeBrev,
 } from './BrevTyper';
 import {
+    flyttAvsnittNedover,
+    flyttAvsnittOppover,
     initielleAvsnittMellomlager,
     leggAvsnittBakSisteSynligeAvsnitt,
-    leggTilAvsnittForran,
+    leggTilAvsnittFørst,
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 
@@ -77,8 +79,16 @@ const FrittståendeBrev: React.FC<Props> = ({
         settAvsnitt(nyttAvsnitt);
     };
 
-    const oppdaterLeggTilAvsnittForan = () => {
-        settAvsnitt(leggTilAvsnittForran(avsnitt));
+    const oppdaterFlyttAvsnittOppover = (avsnittId: string) => {
+        settAvsnitt(flyttAvsnittOppover(avsnittId, avsnitt));
+    };
+
+    const oppdaterFlyttAvsnittNedover = (avsnittId: string) => {
+        settAvsnitt(flyttAvsnittNedover(avsnittId, avsnitt));
+    };
+
+    const oppdaterLeggTilAvsnittFørst = () => {
+        settAvsnitt(leggTilAvsnittFørst(avsnitt));
     };
 
     const oppdaterLeggAvsnittBakSisteSynligeAvsnitt = () => {
@@ -203,8 +213,10 @@ const FrittståendeBrev: React.FC<Props> = ({
                 endreDeloverskriftAvsnitt={endreDeloverskriftAvsnitt}
                 endreInnholdAvsnitt={endreInnholdAvsnitt}
                 fjernRad={fjernRad}
-                leggTilAvsnittForan={oppdaterLeggTilAvsnittForan}
+                leggTilAvsnittFørst={oppdaterLeggTilAvsnittFørst}
                 leggAvsnittBakSisteSynligeAvsnitt={oppdaterLeggAvsnittBakSisteSynligeAvsnitt}
+                flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
+                flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
                 context={FritekstBrevContext.FRITTSTÅENDE}
             />
             <StyledHovedKnapp disabled={!brevType} onClick={() => settVisModal(true)}>

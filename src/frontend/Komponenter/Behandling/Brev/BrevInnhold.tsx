@@ -17,16 +17,23 @@ import {
 import { skjulAvsnittIBrevbygger } from './BrevUtils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import OppKnapp from '../../../Felles/Knapper/OppKnapp';
+import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
 `;
 
 const Innholdsrad = styled(Panel)`
+    width: 95%;
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
+`;
+
+const ToKolonneLayout = styled.div`
+    display: flex;
 `;
 
 const Overskrift = styled(Input)`
@@ -44,6 +51,14 @@ const BrevKolonner = styled.div`
     flex-direction: column;
 `;
 
+const FlyttAvsnittKnappWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+`;
+
 type Props = {
     brevType: FrittståendeBrevtype | FritekstBrevtype | undefined;
     endreBrevType: (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => void;
@@ -54,8 +69,10 @@ type Props = {
     endreDeloverskriftAvsnitt: (radId: string) => ChangeEventHandler<HTMLInputElement>;
     endreInnholdAvsnitt: (radId: string) => ChangeEventHandler<HTMLTextAreaElement>;
     fjernRad: (radId: string) => void;
-    leggTilAvsnittForan: () => void;
+    leggTilAvsnittFørst: () => void;
     leggAvsnittBakSisteSynligeAvsnitt: () => void;
+    flyttAvsnittOpp: (avsnittId: string) => void;
+    flyttAvsnittNed: (avsnittId: string) => void;
     context: FritekstBrevContext;
 };
 
@@ -69,8 +86,10 @@ const BrevInnhold: React.FC<Props> = ({
     endreDeloverskriftAvsnitt,
     endreInnholdAvsnitt,
     fjernRad,
-    leggTilAvsnittForan,
+    leggTilAvsnittFørst,
     leggAvsnittBakSisteSynligeAvsnitt,
+    flyttAvsnittOpp,
+    flyttAvsnittNed,
     context,
 }) => {
     const ikkeRedigerBareBrev: (FrittståendeBrevtype | FritekstBrevtype | undefined)[] = [
@@ -80,6 +99,7 @@ const BrevInnhold: React.FC<Props> = ({
     const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
     const { toggles } = useToggles();
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
+    const avsnittSomSkalVises = avsnitt.filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
 
     return (
         <BrevKolonner>
@@ -129,18 +149,19 @@ const BrevInnhold: React.FC<Props> = ({
                     {finnesSynligeAvsnitt && brevSkalKunneRedigeres && (
                         <LeggTilKnappWrapper>
                             <LeggTilKnapp
-                                onClick={leggTilAvsnittForan}
+                                onClick={leggTilAvsnittFørst}
                                 knappetekst="Legg til avsnitt"
                             />
                         </LeggTilKnappWrapper>
                     )}
-                    {avsnitt
-                        .filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger)
-                        .map((rad) => {
-                            const deloverskriftId = `deloverskrift-${rad.id}`;
-                            const innholdId = `innhold-${rad.id}`;
+                    {avsnittSomSkalVises.map((rad, index) => {
+                        const deloverskriftId = `deloverskrift-${rad.id}`;
+                        const innholdId = `innhold-${rad.id}`;
+                        const toKolonneId = `toKolonne-${rad.id}`;
+                        const knappWrapperId = `knappWrapper-${rad.id}`;
 
-                            return (
+                        return (
+                            <ToKolonneLayout id={toKolonneId}>
                                 <Innholdsrad key={rad.id} border>
                                     <Input
                                         onChange={endreDeloverskriftAvsnitt(rad.id)}
@@ -160,8 +181,25 @@ const BrevInnhold: React.FC<Props> = ({
                                         Slett avsnitt
                                     </LenkeKnapp>
                                 </Innholdsrad>
-                            );
-                        })}
+                                <FlyttAvsnittKnappWrapper id={knappWrapperId}>
+                                    {index > 0 && (
+                                        <OppKnapp
+                                            onClick={() => {
+                                                flyttAvsnittOpp(rad.id);
+                                            }}
+                                        />
+                                    )}
+                                    {index + 1 < avsnittSomSkalVises.length && (
+                                        <NedKnapp
+                                            onClick={() => {
+                                                flyttAvsnittNed(rad.id);
+                                            }}
+                                        />
+                                    )}
+                                </FlyttAvsnittKnappWrapper>
+                            </ToKolonneLayout>
+                        );
+                    })}
                     {brevSkalKunneRedigeres && (
                         <LeggTilKnappWrapper>
                             <LeggTilKnapp

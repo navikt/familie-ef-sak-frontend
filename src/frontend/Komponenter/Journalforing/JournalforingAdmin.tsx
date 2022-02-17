@@ -10,7 +10,7 @@ import {
 } from '../../App/typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -151,6 +151,11 @@ export const JournalforingAdmin: React.FC = () => {
                     >
                         Opprett behandling
                     </Hovedknapp>
+                    {!journalResponse.harStrukturertSøknad && (
+                        <AlertStripeAdvarsel>
+                            Kan ikke finne en digital søknad på denne journalposten.
+                        </AlertStripeAdvarsel>
+                    )}
                     {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
                 </SideLayout>
             )}

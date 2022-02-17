@@ -35,6 +35,8 @@ export interface JournalføringStateRequest {
         journalførendeEnhet: string,
         navIdent?: string
     ) => void;
+    visBekreftelsesModal: boolean;
+    settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
@@ -45,6 +47,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [dokumentTitler, settDokumentTitler] = useState<Record<string, string>>();
     const [forsøktJournalført, settForsøktJournalført] = useState<boolean>(false);
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
+    const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
 
     const fullførJournalføring = (
         journalpostId: string,
@@ -86,5 +89,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         innsending,
         settInnsending,
         fullførJournalføring,
+        visBekreftelsesModal,
+        settVisBekreftelsesModal,
     };
 };
