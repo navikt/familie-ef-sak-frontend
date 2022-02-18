@@ -24,9 +24,9 @@ import Panel from 'nav-frontend-paneler';
 import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { delmalTilHtml } from './Htmlfelter';
-import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
+import { IBeløpsperiode } from '../../../App/typer/vedtak';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -46,7 +46,7 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
 
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
-    tilkjentYtelse?: TilkjentYtelse;
+    beløpsperiode?: IBeløpsperiode[];
     mellomlagretBrevVerdier?: string;
     brevMal: string;
     flettefeltStore: { [navn: string]: string };
@@ -58,7 +58,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     personopplysninger,
     settKanSendesTilBeslutter,
     brevStruktur,
-    tilkjentYtelse,
+    beløpsperiode,
     mellomlagretBrevVerdier,
     brevMal,
     flettefeltStore,
@@ -142,7 +142,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                           {
                               flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
                               valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                              htmlfelter: delmalTilHtml(tilkjentYtelse),
+                              htmlfelter: delmalTilHtml(beløpsperiode),
                           },
                       ],
                   }

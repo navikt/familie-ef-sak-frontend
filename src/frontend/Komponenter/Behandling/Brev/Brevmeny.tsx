@@ -25,6 +25,7 @@ import {
 import FritekstBrev from './FritekstBrev';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import { IBeløpsperiode } from '../../../App/typer/vedtak';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -51,6 +52,9 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         byggTomRessurs()
     );
     const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
+        byggTomRessurs()
+    );
+    const [beløpsperiode, settBeløpsperiode] = useState<Ressurs<IBeløpsperiode[] | undefined>>(
         byggTomRessurs()
     );
 
@@ -90,8 +94,15 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
             }).then((respons: Ressurs<TilkjentYtelse>) => {
                 settTilkjentYtelse(respons);
             });
+            axiosRequest<IBeløpsperiode[], null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/beregning/${props.behandlingId}`,
+            }).then((respons: Ressurs<IBeløpsperiode[]>) => {
+                settBeløpsperiode(respons);
+            });
         } else {
             settTilkjentYtelse(byggSuksessRessurs<TilkjentYtelse | undefined>(undefined));
+            settBeløpsperiode(byggSuksessRessurs<IBeløpsperiode[] | undefined>(undefined));
         }
         // eslint-disable-next-line
     }, [harVedtaksresultatMedTilkjentYtelse, vedtaksresultat]);
@@ -145,13 +156,19 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     )}
                 </DataViewer>
             ) : (
-                <DataViewer response={{ brevStruktur, tilkjentYtelse, mellomlagretBrev }}>
-                    {({ brevStruktur, tilkjentYtelse, mellomlagretBrev }) =>
+                <DataViewer
+                    response={{
+                        brevStruktur,
+                        mellomlagretBrev,
+                        beløpsperiode,
+                    }}
+                >
+                    {({ brevStruktur, mellomlagretBrev, beløpsperiode }) =>
                         brevMal && (
                             <BrevmenyVisning
                                 {...props}
                                 brevStruktur={brevStruktur}
-                                tilkjentYtelse={tilkjentYtelse}
+                                beløpsperiode={beløpsperiode}
                                 brevMal={brevMal}
                                 mellomlagretBrevVerdier={
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
