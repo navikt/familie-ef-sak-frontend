@@ -49,7 +49,13 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.IKKE_TILGANG:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers, true);
+            loggFeil(
+                undefined,
+                innloggetSaksbehandler,
+                `Feilmelding: ${ressurs.melding} / Feilmelding til saksbehandler: ${ressurs.frontendFeilmelding}`,
+                headers,
+                true
+            );
             typetRessurs = {
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
@@ -58,7 +64,12 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.FEILET:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers);
+            loggFeil(
+                undefined,
+                innloggetSaksbehandler,
+                `Feilmelding: ${ressurs.melding} / Feilmelding til saksbehandler: ${ressurs.frontendFeilmelding}`,
+                headers
+            );
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
