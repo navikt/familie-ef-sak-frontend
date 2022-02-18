@@ -142,7 +142,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                           {
                               flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
                               valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                              htmlfelter: delmalTilHtml(tilkjentYtelse),
                           },
                       ],
                   }
@@ -158,6 +157,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             data: {
                 valgfelter: {},
                 delmaler: utledDelmalerForBrev(),
+                htmlfelter: delmalTilHtml(tilkjentYtelse),
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
