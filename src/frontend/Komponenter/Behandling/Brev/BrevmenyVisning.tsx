@@ -5,11 +5,13 @@ import {
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
+    Htmlfeltreferanse,
     ValgFelt,
     ValgteDelmaler,
     ValgtFelt,
 } from './BrevTyper';
 import { Undertittel } from 'nav-frontend-typografi';
+import { Input, Textarea } from 'nav-frontend-skjema';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
     finnFletteFeltApinavnFraRef,
@@ -24,6 +26,7 @@ import Panel from 'nav-frontend-paneler';
 import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { delmalTilHtml } from './Htmlfelter';
+import { BrevMenyHtmlfelter } from './BrevMenyHtmlfelter';
 import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
@@ -42,6 +45,13 @@ const BrevMenyTittel = styled(Undertittel)`
 
 const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
+`;
+
+const StyledInput = styled(({ fetLabel, ...props }) => <Input {...props} />)`
+    padding-top: 0.5rem;
+    .skjemaelement__label {
+        font-weight: 600;
+    }
 `;
 
 export interface BrevmenyVisningProps extends BrevmenyProps {
@@ -66,6 +76,9 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
+    const [htmlfelterSomVises, settHtmlFelterSomVises] = useState<any>([]);
+
+    console.log('htmlfelterSom', htmlfelterSomVises);
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -182,6 +195,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
         <BrevFelter>
+            {brevStruktur?.htmlfelter && (
+                <BrevMenyHtmlfelter
+                    dokument={brevStruktur}
+                    htmlfelterSomVises={htmlfelterSomVises}
+                    settHtmlfelterSomVises={settHtmlFelterSomVises}
+                />
+            )}
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
                     <Panel key={key}>

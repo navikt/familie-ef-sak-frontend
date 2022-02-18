@@ -12,6 +12,7 @@ export type ValgteDelmaler = { [delmalNavn: string]: boolean };
 export interface BrevStruktur {
     dokument: DokumentMal;
     flettefelter: AlleFlettefelter;
+    htmlfelter?: any;
 }
 export interface DokumentMal {
     delmalerSortert: Delmal[];
@@ -28,6 +29,10 @@ interface Flettefelt {
 }
 
 export interface Flettefeltreferanse {
+    _ref: string;
+}
+
+export interface Htmlfeltreferanse {
     _ref: string;
 }
 
