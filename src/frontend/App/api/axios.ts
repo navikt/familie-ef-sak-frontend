@@ -26,7 +26,12 @@ export const håndterFeil = <T>(
 ): RessursSuksess<T> | RessursFeilet => {
     const headers = error.response?.headers;
     if (!error.response?.data.status) {
-        loggFeil(error, innloggetSaksbehandler, `Savner body/status i response`, headers);
+        loggFeil(
+            error,
+            innloggetSaksbehandler,
+            `Savner body/status i response - Url: ${window.location.href}`,
+            headers
+        );
         return lagUkjentFeilRessurs(headers);
     }
     const responsRessurs: Ressurs<T> = error.response?.data;
@@ -40,6 +45,7 @@ export const håndterRessurs = <T>(
     headers?: Headers
 ): RessursSuksess<T> | RessursFeilet => {
     let typetRessurs: Ressurs<T>;
+    const gjeldendeUrl = window.location.href;
 
     switch (ressurs.status) {
         case RessursStatus.SUKSESS:
@@ -49,7 +55,13 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.IKKE_TILGANG:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers, true);
+            loggFeil(
+                undefined,
+                innloggetSaksbehandler,
+                `Feilmelding: ${ressurs.melding} - Url: ${gjeldendeUrl}`,
+                headers,
+                true
+            );
             typetRessurs = {
                 melding: ressurs.melding,
                 frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
@@ -58,7 +70,12 @@ export const håndterRessurs = <T>(
             };
             break;
         case RessursStatus.FEILET:
-            loggFeil(undefined, innloggetSaksbehandler, ressurs.melding, headers);
+            loggFeil(
+                undefined,
+                innloggetSaksbehandler,
+                `Feilmelding: ${ressurs.melding} / Feilmelding til saksbehandler: ${ressurs.frontendFeilmelding} - Url: ${gjeldendeUrl}`,
+                headers
+            );
             typetRessurs = {
                 errorMelding: ressurs.errorMelding,
                 melding: ressurs.melding,
@@ -79,7 +96,7 @@ export const håndterRessurs = <T>(
             loggFeil(
                 undefined,
                 innloggetSaksbehandler,
-                `Ukjent feil status=${ressurs.status}`,
+                `Ukjent feil status=${ressurs.status} - Url: ${gjeldendeUrl}`,
                 headers
             );
             typetRessurs = lagUkjentFeilRessurs(headers);
