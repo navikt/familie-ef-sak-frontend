@@ -46,6 +46,7 @@ export const JournalforingAdmin: React.FC = () => {
     const [nyBehandlingstype, settNyBehandlingstype] = useState<Behandlingstype | undefined>();
     const [senderInn, settSenderInn] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>('');
+    const [journalresponsFeilmelding, settJournalresponsFeilmelding] = useState<string>('');
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
@@ -61,7 +62,7 @@ export const JournalforingAdmin: React.FC = () => {
             if (stønadstype) {
                 hentFagsak(journalResponse.data.personIdent, stønadstype);
             } else {
-                settFeilmelding(
+                settJournalresponsFeilmelding(
                     `Kan ikke finne stønadstype for journalposten - Behandlingstema=${journalResponse.data.journalpost.behandlingstema}`
                 );
             }
@@ -114,6 +115,10 @@ export const JournalforingAdmin: React.FC = () => {
                 });
         }
     };
+
+    if (journalresponsFeilmelding) {
+        return <AlertStripeFeil>{journalresponsFeilmelding}</AlertStripeFeil>;
+    }
 
     return (
         <DataViewer response={{ journalResponse, fagsak }}>
