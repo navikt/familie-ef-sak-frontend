@@ -16,6 +16,7 @@ export interface BrevStruktur {
 }
 export interface DokumentMal {
     delmalerSortert: Delmal[];
+    dokumentHtmlfelter?: any;
 }
 
 export interface AlleFlettefelter {

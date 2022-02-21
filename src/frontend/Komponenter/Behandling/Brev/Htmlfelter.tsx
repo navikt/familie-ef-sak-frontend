@@ -2,8 +2,12 @@ import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../../Ap
 import { AndelTilkjentYtelse, TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { samordningsfradagTilTekst } from '../../../App/typer/vedtak';
 
-export const delmalTilHtml = (tilkjentYtelse?: TilkjentYtelse) => {
-    return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
+export const delmalTilHtml = (tilkjentYtelse?: TilkjentYtelse, htmlfelterSomVises: any) => {
+    if (htmlfelterSomVises.indexOf('inntektsperioderHtml') > -1) {
+        return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
+    } else {
+        return { inntektsperioderHtml: `</div>` };
+    }
 };
 
 const borderStyling = 'border: 1px solid black; padding: 3px 5px 3px 5px;';

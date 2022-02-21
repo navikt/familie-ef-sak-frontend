@@ -78,8 +78,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [htmlfelterSomVises, settHtmlFelterSomVises] = useState<any>([]);
 
-    console.log('htmlfelterSom', htmlfelterSomVises);
-
     useEffect(() => {
         const parsetMellomlagretBrev =
             mellomlagretBrevVerdier && (JSON.parse(mellomlagretBrevVerdier) as IBrevverdier);
@@ -146,6 +144,16 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
+    const dokumentHarHtmlfelter = brevStruktur?.htmlfelter?.htmlfeltReferanse?.some(
+        (htmlfelt: any) => {
+            const htmlfelterForDokument = brevStruktur?.dokument?.dokumentHtmlfelter.map(
+                (htmlfelt: any) => htmlfelt.felt
+            );
+
+            return htmlfelterForDokument.indexOf(htmlfelt.felt) > -1;
+        }
+    );
+
     const utledDelmalerForBrev = () => {
         return brevStruktur.dokument.delmalerSortert.reduce((acc, delmal) => {
             return valgteDelmaler[delmal.delmalApiNavn]
@@ -170,7 +178,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             data: {
                 valgfelter: {},
                 delmaler: utledDelmalerForBrev(),
-                htmlfelter: delmalTilHtml(tilkjentYtelse),
+                htmlfelter: delmalTilHtml(tilkjentYtelse, htmlfelterSomVises),
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
@@ -190,12 +198,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         valgteDelmaler,
         behandlingId,
         brevMal,
+        htmlfelterSomVises,
     ]);
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
         <BrevFelter>
-            {brevStruktur?.htmlfelter && (
+            {dokumentHarHtmlfelter && (
                 <BrevMenyHtmlfelter
                     dokument={brevStruktur}
                     htmlfelterSomVises={htmlfelterSomVises}
