@@ -54,7 +54,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
         byggTomRessurs()
     );
-    const [beløpsperiode, settBeløpsperiode] = useState<Ressurs<IBeløpsperiode[] | undefined>>(
+    const [beløpsperioder, settBeløpsperioder] = useState<Ressurs<IBeløpsperiode[] | undefined>>(
         byggTomRessurs()
     );
 
@@ -98,11 +98,11 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 method: 'GET',
                 url: `/familie-ef-sak/api/beregning/${props.behandlingId}`,
             }).then((respons: Ressurs<IBeløpsperiode[]>) => {
-                settBeløpsperiode(respons);
+                settBeløpsperioder(respons);
             });
         } else {
             settTilkjentYtelse(byggSuksessRessurs<TilkjentYtelse | undefined>(undefined));
-            settBeløpsperiode(byggSuksessRessurs<IBeløpsperiode[] | undefined>(undefined));
+            settBeløpsperioder(byggSuksessRessurs<IBeløpsperiode[] | undefined>(undefined));
         }
         // eslint-disable-next-line
     }, [harVedtaksresultatMedTilkjentYtelse, vedtaksresultat]);
@@ -160,15 +160,15 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     response={{
                         brevStruktur,
                         mellomlagretBrev,
-                        beløpsperiode,
+                        beløpsperioder,
                     }}
                 >
-                    {({ brevStruktur, mellomlagretBrev, beløpsperiode }) =>
+                    {({ brevStruktur, mellomlagretBrev, beløpsperioder }) =>
                         brevMal && (
                             <BrevmenyVisning
                                 {...props}
                                 brevStruktur={brevStruktur}
-                                beløpsperiode={beløpsperiode}
+                                beløpsperiode={beløpsperioder}
                                 brevMal={brevMal}
                                 mellomlagretBrevVerdier={
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier

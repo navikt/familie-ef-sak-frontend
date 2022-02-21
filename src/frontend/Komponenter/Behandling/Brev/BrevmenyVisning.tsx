@@ -46,7 +46,7 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
 
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
-    beløpsperiode?: IBeløpsperiode[];
+    beløpsperioder?: IBeløpsperiode[];
     mellomlagretBrevVerdier?: string;
     brevMal: string;
     flettefeltStore: { [navn: string]: string };
@@ -58,7 +58,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     personopplysninger,
     settKanSendesTilBeslutter,
     brevStruktur,
-    beløpsperiode,
+    beløpsperioder,
     mellomlagretBrevVerdier,
     brevMal,
     flettefeltStore,
@@ -142,7 +142,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                           {
                               flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
                               valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                              htmlfelter: delmalTilHtml(beløpsperiode),
+                              htmlfelter: delmalTilHtml(beløpsperioder),
                           },
                       ],
                   }
