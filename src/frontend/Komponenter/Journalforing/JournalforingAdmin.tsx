@@ -58,7 +58,13 @@ export const JournalforingAdmin: React.FC = () => {
             const stønadstype = behandlingstemaTilStønadstype(
                 journalResponse.data.journalpost.behandlingstema
             );
-            stønadstype && hentFagsak(journalResponse.data.personIdent, stønadstype);
+            if (stønadstype) {
+                hentFagsak(journalResponse.data.personIdent, stønadstype);
+            } else {
+                settFeilmelding(
+                    `Kan ikke finne stønadstype for journalposten - Behandlingstema=${journalResponse.data.journalpost.behandlingstema}`
+                );
+            }
         }
         // eslint-disable-next-line
     }, [journalResponse]);
