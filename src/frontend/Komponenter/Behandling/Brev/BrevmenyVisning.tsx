@@ -5,7 +5,7 @@ import {
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
-    Htmlfeltreferanse,
+    Htmlfelt,
     ValgFelt,
     ValgteDelmaler,
     ValgtFelt,
@@ -137,9 +137,9 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const dokumentHarHtmlfelter = brevStruktur?.htmlfelter?.htmlfeltReferanse?.some(
-        (htmlfelt: Htmlfeltreferanse) => {
+        (htmlfelt: Htmlfelt) => {
             const htmlfelterForDokument = brevStruktur?.dokument?.dokumentHtmlfelter.map(
-                (htmlfelt: Htmlfeltreferanse) => htmlfelt.felt
+                (htmlfelt: Htmlfelt) => htmlfelt.felt
             );
 
             return htmlfelterForDokument.indexOf(htmlfelt.felt) > -1;
@@ -192,8 +192,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         brevMal,
         htmlfelterSomVises,
     ]);
-
-    console.log('brevstruktur', brevStruktur);
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (

@@ -17,7 +17,7 @@ export interface BrevStruktur {
 
 export interface DokumentMal {
     delmalerSortert: Delmal[];
-    dokumentHtmlfelter: Htmlfeltreferanse[];
+    dokumentHtmlfelter: Htmlfelt[];
 }
 
 export interface AlleFlettefelter {
@@ -32,19 +32,20 @@ interface Flettefelt {
 }
 
 interface BrevStrukturHtmlfelter {
-    htmlfeltReferanse: Htmlfeltreferanse[];
+    htmlfeltReferanse: Htmlfelt[];
 }
 
 export interface Flettefeltreferanse {
     _ref: string;
 }
 
-export interface Htmlfeltreferanse {
+export interface Htmlfelt {
     felt: string;
+    htmlfeltVisningsnavn: string;
 }
 
 export interface Htmlfelter {
-    htmlfelter: Htmlfeltreferanse[];
+    htmlfelter: Htmlfelt[];
 }
 
 export interface FlettefeltMedVerdi extends Flettefeltreferanse {

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
-import { BrevStruktur, Htmlfeltreferanse } from './BrevTyper';
+import { BrevStruktur, Htmlfelt } from './BrevTyper';
 import styled from 'styled-components';
 
 const StyledBrevMenyHtmlFelter = styled.div``;
@@ -16,9 +16,9 @@ export const BrevMenyHtmlfelter: React.FC<Props> = ({ dokument, settHtmlfelterSo
 
     return (
         <StyledBrevMenyHtmlFelter>
-            {htmlfelter?.htmlfeltReferanse?.map((felt: Htmlfeltreferanse) => {
+            {htmlfelter?.htmlfeltReferanse?.map((felt: Htmlfelt) => {
                 return (
-                    <CheckboxGruppe legend="Tabell">
+                    <CheckboxGruppe legend="HTML-felt">
                         <Checkbox
                             onClick={(e) => {
                                 if ((e.target as HTMLInputElement).checked) {
@@ -36,7 +36,7 @@ export const BrevMenyHtmlfelter: React.FC<Props> = ({ dokument, settHtmlfelterSo
                                     });
                                 }
                             }}
-                            label={felt.felt}
+                            label={felt.htmlfeltVisningsnavn}
                         />
                     </CheckboxGruppe>
                 );
