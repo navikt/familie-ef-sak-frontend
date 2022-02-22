@@ -168,7 +168,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                             <BrevmenyVisning
                                 {...props}
                                 brevStruktur={brevStruktur}
-                                beløpsperiode={beløpsperioder}
+                                beløpsperioder={beløpsperioder}
                                 brevMal={brevMal}
                                 mellomlagretBrevVerdier={
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
