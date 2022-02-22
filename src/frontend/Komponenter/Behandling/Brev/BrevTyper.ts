@@ -12,16 +12,18 @@ export type ValgteDelmaler = { [delmalNavn: string]: boolean };
 export interface BrevStruktur {
     dokument: DokumentMal;
     flettefelter: AlleFlettefelter;
-    htmlfelter?: any;
+    htmlfelter?: BrevStrukturHtmlfelter;
 }
+
 export interface DokumentMal {
     delmalerSortert: Delmal[];
-    dokumentHtmlfelter?: any;
+    dokumentHtmlfelter: Htmlfeltreferanse[];
 }
 
 export interface AlleFlettefelter {
     flettefeltReferanse: Flettefelt[];
 }
+
 interface Flettefelt {
     felt: string;
     erFritektsfelt?: boolean;
@@ -29,12 +31,20 @@ interface Flettefelt {
     _id: string;
 }
 
+interface BrevStrukturHtmlfelter {
+    htmlfeltReferanse: Htmlfeltreferanse[];
+}
+
 export interface Flettefeltreferanse {
     _ref: string;
 }
 
 export interface Htmlfeltreferanse {
-    _ref: string;
+    felt: string;
+}
+
+export interface Htmlfelter {
+    htmlfelter: Htmlfeltreferanse[];
 }
 
 export interface FlettefeltMedVerdi extends Flettefeltreferanse {

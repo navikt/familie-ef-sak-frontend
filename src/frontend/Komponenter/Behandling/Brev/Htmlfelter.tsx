@@ -2,7 +2,7 @@ import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../../Ap
 import { AndelTilkjentYtelse, TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { samordningsfradagTilTekst } from '../../../App/typer/vedtak';
 
-export const delmalTilHtml = (tilkjentYtelse?: TilkjentYtelse, htmlfelterSomVises: any) => {
+export const delmalTilHtml = (htmlfelterSomVises: string[], tilkjentYtelse?: TilkjentYtelse) => {
     if (htmlfelterSomVises.indexOf('inntektsperioderHtml') > -1) {
         return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
     } else {

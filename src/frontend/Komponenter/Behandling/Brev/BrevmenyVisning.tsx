@@ -11,7 +11,6 @@ import {
     ValgtFelt,
 } from './BrevTyper';
 import { Undertittel } from 'nav-frontend-typografi';
-import { Input, Textarea } from 'nav-frontend-skjema';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
     finnFletteFeltApinavnFraRef,
@@ -47,13 +46,6 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-const StyledInput = styled(({ fetLabel, ...props }) => <Input {...props} />)`
-    padding-top: 0.5rem;
-    .skjemaelement__label {
-        font-weight: 600;
-    }
-`;
-
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     tilkjentYtelse?: TilkjentYtelse;
@@ -76,7 +68,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
-    const [htmlfelterSomVises, settHtmlFelterSomVises] = useState<any>([]);
+    const [htmlfelterSomVises, settHtmlFelterSomVises] = useState<string[]>([]);
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -145,9 +137,9 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const dokumentHarHtmlfelter = brevStruktur?.htmlfelter?.htmlfeltReferanse?.some(
-        (htmlfelt: any) => {
+        (htmlfelt: Htmlfeltreferanse) => {
             const htmlfelterForDokument = brevStruktur?.dokument?.dokumentHtmlfelter.map(
-                (htmlfelt: any) => htmlfelt.felt
+                (htmlfelt: Htmlfeltreferanse) => htmlfelt.felt
             );
 
             return htmlfelterForDokument.indexOf(htmlfelt.felt) > -1;
@@ -178,7 +170,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             data: {
                 valgfelter: {},
                 delmaler: utledDelmalerForBrev(),
-                htmlfelter: delmalTilHtml(tilkjentYtelse, htmlfelterSomVises),
+                htmlfelter: delmalTilHtml(htmlfelterSomVises, tilkjentYtelse),
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
@@ -200,6 +192,8 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         brevMal,
         htmlfelterSomVises,
     ]);
+
+    console.log('brevstruktur', brevStruktur);
 
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
