@@ -1,19 +1,31 @@
 import React from 'react';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
 import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
-
-const Container = styled.div`
-    padding-top: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-`;
+import { Label } from '@navikt/ds-react';
 
 const Ikontekst = styled(Normaltekst)`
     margin-left: 0.25rem;
+`;
+
+const BoldTekst = styled(Label)`
+    margin-right: 1rem;
+`;
+
+const Container = styled.div`
+    width: 280px;
+`;
+
+const Div = styled(FlexDiv)`
+    justify-content: space-between;
+`;
+
+const ResultatIkonOgTekstWrapper = styled.div`
+    display: flex;
+    justify-content: flex-start;
 `;
 
 export const resultatTilTekst: Record<string, string> = {
@@ -33,15 +45,19 @@ export const ResultatVisning: React.FC<{
     const oppsummeringAvVilkårsresultat = summerVilkårsresultat(vilkårtypeTilResultat);
     return (
         <Container>
-            <Undertittel className="blokk-xs">{tittel}</Undertittel>
             {Object.entries(oppsummeringAvVilkårsresultat).map(
                 ([vilkårsresultat, antallVilkårsresultat], i) => (
-                    <FlexDiv flexDirection="row" className="blokk-xxs" key={i}>
-                        <VilkårsresultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
-                        <Ikontekst>
-                            {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                        </Ikontekst>
-                    </FlexDiv>
+                    <Div flexDirection="row" className="blokk-xxs" key={i}>
+                        <BoldTekst size="small">{tittel}</BoldTekst>
+                        <ResultatIkonOgTekstWrapper>
+                            <VilkårsresultatIkon
+                                vilkårsresultat={vilkårsresultat as Vilkårsresultat}
+                            />
+                            <Ikontekst>
+                                {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
+                            </Ikontekst>
+                        </ResultatIkonOgTekstWrapper>
+                    </Div>
                 )
             )}
         </Container>

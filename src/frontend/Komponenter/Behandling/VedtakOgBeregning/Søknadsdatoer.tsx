@@ -1,6 +1,5 @@
-import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../App/utils/formatter';
 import React, { useMemo } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -9,9 +8,24 @@ import { ISøknadData } from '../../../App/typer/beregningssøknadsdata';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
+import { Heading, Label } from '@navikt/ds-react';
+import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
+
+const BoldTekst = styled(Label)`
+    margin-left: 1rem;
+`;
 
 const Container = styled.div`
-    padding: 0 2rem;
+    width: 280px;
+`;
+
+const Div = styled(FlexDiv)`
+    justify-content: space-between;
+`;
+
+const IkonOgTekstWrapper = styled.div`
+    display: flex;
+    justify-content: flex-start;
 `;
 
 export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
@@ -31,20 +45,28 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingI
         <DataViewer response={{ søknadDataResponse }}>
             {({ søknadDataResponse }) => (
                 <Container>
-                    <Undertittel className={'blokk-xs'}>Søknadsinformasjon</Undertittel>
-                    <GridTabell gridGap={0.5} underTabellMargin={0}>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>Søknadsdato</Normaltekst>
+                    <Heading spacing size="small" level="5">
+                        Søknadsinformasjon
+                    </Heading>
+                    <Div flexDirection="row" className="blokk-xxs">
+                        <IkonOgTekstWrapper>
+                            <Søknadsgrunnlag />
+                            <BoldTekst size="small">Søknadsdato:</BoldTekst>
+                        </IkonOgTekstWrapper>
                         <Normaltekst>
                             {formaterNullableIsoDato(søknadDataResponse.søknadsdato)}
                         </Normaltekst>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>Søker stønad fra</Normaltekst>
+                    </Div>
+                    <Div flexDirection="row" className="blokk-xxs">
+                        <IkonOgTekstWrapper>
+                            <Søknadsgrunnlag />
+                            <BoldTekst size="small">Søker stønad fra:</BoldTekst>
+                        </IkonOgTekstWrapper>
                         <Normaltekst>
                             {formaterNullableMånedÅr(søknadDataResponse.søkerStønadFra) ||
                                 'Søker ikke stønad fra bestemt tidspunkt'}
                         </Normaltekst>
-                    </GridTabell>
+                    </Div>
                 </Container>
             )}
         </DataViewer>
