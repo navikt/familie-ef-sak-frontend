@@ -42,26 +42,31 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     const { settIkkePersistertKomponent, axiosRequest } = useApp();
 
     const [forhåndsvisningsFeil, settForhåndsvisningsFeil] = useState<string>();
+    const [henterBrev, settHenterBrev] = useState<boolean>(false);
 
     const åpneBrevINyFane = () => {
-        axiosRequest<string, { varseltekst: string }>({
-            method: 'POST',
-            url: `familie-ef-sak/api/tilbakekreving/${behandlingId}/brev/generer`,
-            data: { varseltekst },
-        }).then((respons: Ressurs<string>) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                åpnePdfIEgenTab(
-                    base64toBlob(respons.data, 'application/pdf'),
-                    'Forhåndsvisning av varselbrev'
-                );
-            } else if (
-                respons.status === RessursStatus.IKKE_TILGANG ||
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL
-            ) {
-                settForhåndsvisningsFeil(respons.frontendFeilmelding);
-            }
-        });
+        if (!henterBrev) {
+            settHenterBrev(true);
+            axiosRequest<string, { varseltekst: string }>({
+                method: 'POST',
+                url: `familie-ef-sak/api/tilbakekreving/${behandlingId}/brev/generer`,
+                data: { varseltekst },
+            }).then((respons: Ressurs<string>) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    åpnePdfIEgenTab(
+                        base64toBlob(respons.data, 'application/pdf'),
+                        'Forhåndsvisning av varselbrev'
+                    );
+                } else if (
+                    respons.status === RessursStatus.IKKE_TILGANG ||
+                    respons.status === RessursStatus.FEILET ||
+                    respons.status === RessursStatus.FUNKSJONELL_FEIL
+                ) {
+                    settForhåndsvisningsFeil(respons.frontendFeilmelding);
+                }
+                settHenterBrev(false);
+            });
+        }
     };
 
     return (
