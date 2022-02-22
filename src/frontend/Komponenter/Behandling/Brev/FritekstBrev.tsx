@@ -22,6 +22,8 @@ import {
     leggTilAvsnittFørst,
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -39,6 +41,7 @@ const FritekstBrev: React.FC<Props> = ({
     behandlingId,
     mellomlagretFritekstbrev,
 }) => {
+    const { behandling } = useBehandling();
     const [brevType, settBrevType] = useState<FritekstBrevtype | undefined>(
         mellomlagretFritekstbrev?.brevType
     );
@@ -48,6 +51,13 @@ const FritekstBrev: React.FC<Props> = ({
     const [avsnitt, settAvsnitt] = useState<AvsnittMedId[]>(
         initielleAvsnittMellomlager(mellomlagretFritekstbrev?.brev)
     );
+    const [behandlingsårsak, settBehandlingsårsak] = useState<Behandlingsårsak>();
+
+    useEffect(() => {
+        if (behandling.status === RessursStatus.SUKSESS) {
+            settBehandlingsårsak(behandling.data.behandlingsårsak);
+        }
+    }, [behandling]);
 
     const { axiosRequest } = useApp();
 
@@ -162,6 +172,7 @@ const FritekstBrev: React.FC<Props> = ({
                 flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
                 flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
                 context={FritekstBrevContext.BEHANDLING}
+                behandlingsårsak={behandlingsårsak}
             />
         </StyledBrev>
     );

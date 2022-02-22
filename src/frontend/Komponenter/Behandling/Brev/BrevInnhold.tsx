@@ -19,6 +19,7 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -74,6 +75,7 @@ type Props = {
     flyttAvsnittOpp: (avsnittId: string) => void;
     flyttAvsnittNed: (avsnittId: string) => void;
     context: FritekstBrevContext;
+    behandlingsårsak?: Behandlingsårsak;
 };
 
 const BrevInnhold: React.FC<Props> = ({
@@ -91,6 +93,7 @@ const BrevInnhold: React.FC<Props> = ({
     flyttAvsnittOpp,
     flyttAvsnittNed,
     context,
+    behandlingsårsak,
 }) => {
     const ikkeRedigerBareBrev: (FrittståendeBrevtype | FritekstBrevtype | undefined)[] = [
         FrittståendeBrevtype.VARSEL_OM_AKTIVITETSPLIKT,
@@ -124,6 +127,11 @@ const BrevInnhold: React.FC<Props> = ({
                     .filter(
                         (type: FrittståendeBrevtype | FritekstBrevtype) =>
                             type !== FritekstBrevtype.SANKSJON || skalViseValgmulighetForSanksjon
+                    )
+                    .filter(
+                        (type: FrittståendeBrevtype | FritekstBrevtype) =>
+                            type !== FritekstBrevtype.SANKSJON ||
+                            behandlingsårsak === Behandlingsårsak.SANKSJON_1_MND
                     )
                     .map((type: FrittståendeBrevtype | FritekstBrevtype) => (
                         <option value={type} key={type}>
