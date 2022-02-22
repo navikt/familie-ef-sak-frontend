@@ -3,7 +3,11 @@ import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
 import { BrevStruktur, Htmlfelt } from './BrevTyper';
 import styled from 'styled-components';
 
-const StyledBrevMenyHtmlFelter = styled.div``;
+const StyledBrevMenyHtmlFelter = styled.div`
+    background-color: white;
+    border-radius: 5px;
+    padding: 1.5rem 1rem 0.5rem;
+`;
 
 interface Props {
     dokument: BrevStruktur;
