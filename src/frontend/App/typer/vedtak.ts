@@ -17,6 +17,7 @@ export interface IBeløpsperiode {
 export interface IBeregningsgrunnlag {
     inntekt: number;
     samordningsfradrag: number;
+    samordningsfradragType: ESamordningsfradragtype | null;
     avkortningPerMåned: number;
     fullOvergangsStønadPerMåned: number | null;
     grunnbeløp: number | null;

@@ -1,15 +1,21 @@
 import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
-import { AndelTilkjentYtelse, TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
-import { samordningsfradagTilTekst } from '../../../App/typer/vedtak';
+import {
+    ESamordningsfradragtype,
+    IBeløpsperiode,
+    samordningsfradagTilTekst,
+} from '../../../App/typer/vedtak';
 
-export const delmalTilHtml = (tilkjentYtelse?: TilkjentYtelse) => {
-    return { inntektsperioderHtml: lagInntektsperioder(tilkjentYtelse) };
+export const delmalTilHtml = (beløpsperioder?: IBeløpsperiode[]) => {
+    return { inntektsperioderHtml: lagInntektsperioder(beløpsperioder) };
 };
 
 const borderStyling = 'border: 1px solid black; padding: 3px 5px 3px 5px;';
-const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
-    const samordningskolonneTittel: string = tilkjentYtelse?.samordningsfradragType
-        ? samordningsfradagTilTekst[tilkjentYtelse.samordningsfradragType]
+const lagInntektsperioder = (beløpsperioder?: IBeløpsperiode[]): string => {
+    const samordningsfradragstype: ESamordningsfradragtype | null = beløpsperioder
+        ? beløpsperioder[0].beregningsgrunnlag.samordningsfradragType
+        : null;
+    const samordningskolonneTittel: string = samordningsfradragstype
+        ? samordningsfradagTilTekst[samordningsfradragstype]
         : '';
 
     return `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}">
@@ -25,29 +31,34 @@ const lagInntektsperioder = (tilkjentYtelse?: TilkjentYtelse): string => {
                     </tr>
                 </thead>
                 <tbody>
-                    ${lagRaderForVedtak(samordningskolonneTittel, tilkjentYtelse)}
+                    ${lagRaderForVedtak(samordningskolonneTittel, beløpsperioder)}
                 </tbody>
             </table>`;
 };
 
-const lagRaderForVedtak = (inkluderSamordning: string, tilkjentYtelse?: TilkjentYtelse): string => {
-    if (!tilkjentYtelse) {
+const lagRaderForVedtak = (
+    samordningskolonneTittel: string,
+    beløpsperioder?: IBeløpsperiode[]
+): string => {
+    if (!beløpsperioder) {
         return '';
     }
-    return tilkjentYtelse.andeler
-        .map((andel: AndelTilkjentYtelse) => {
-            const inntekt = formaterTallMedTusenSkille(andel.inntekt);
-            const samordningsfradag = formaterTallMedTusenSkille(andel.samordningsfradrag);
-            const beløp = formaterTallMedTusenSkille(andel.beløp);
+    return beløpsperioder
+        .map((beløpsperiode: IBeløpsperiode) => {
+            const inntekt = formaterTallMedTusenSkille(beløpsperiode.beregningsgrunnlag.inntekt);
+            const samordningsfradag = formaterTallMedTusenSkille(
+                beløpsperiode.beregningsgrunnlag.samordningsfradrag
+            );
+            const beløp = formaterTallMedTusenSkille(beløpsperiode.beløp);
             const andelsperiode = `${formaterNullableIsoDato(
-                andel.stønadFra
-            )} - ${formaterNullableIsoDato(andel.stønadTil)}`;
+                beløpsperiode.periode.fradato
+            )} - ${formaterNullableIsoDato(beløpsperiode.periode.tildato)}`;
 
             return `<tr>
                         <td style="${borderStyling}">${andelsperiode}</td>
                         <td style="${borderStyling}">${inntekt}</td>
                         ${
-                            inkluderSamordning &&
+                            samordningskolonneTittel &&
                             `<td style="${borderStyling}">${samordningsfradag}</td>`
                         }
                         <td style="${borderStyling}">${beløp}</td>
