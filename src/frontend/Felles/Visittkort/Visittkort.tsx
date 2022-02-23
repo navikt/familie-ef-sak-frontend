@@ -168,7 +168,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 <>
                     <AlleStatuser behandling={behandling} />
                     <StatuserLitenSkjerm>
-                        <Status>
+                        <Status singel={true}>
                             <GråTekst>Behandlingstype</GråTekst>
                             <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
                         </Status>
