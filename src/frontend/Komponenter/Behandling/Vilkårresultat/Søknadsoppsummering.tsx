@@ -27,9 +27,8 @@ const Oppsummeringsboks = styled.div`
 
 export const Søknadsoppsummering: React.FC<{
     vilkår: IVilkår;
-    skalViseSøknadsdata: boolean;
     behandlingId: string;
-}> = ({ vilkår, skalViseSøknadsdata, behandlingId }) => {
+}> = ({ vilkår, behandlingId }) => {
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const aktivitetsvilkår = sorterUtAktivitetsVilkår(vilkår);
     const tidligereVedtaksvilkår = sorterUtTidligereVedtaksvilkår(vilkår);
@@ -44,7 +43,7 @@ export const Søknadsoppsummering: React.FC<{
                 <ResultatVisning vilkårsvurderinger={aktivitetsvilkår} tittel="Aktivitet:" />
             </Oppsummeringsboks>
             <Oppsummeringsboks>
-                {skalViseSøknadsdata && <Søknadsdatoer behandlingId={behandlingId} />}
+                <Søknadsdatoer behandlingId={behandlingId} />
             </Oppsummeringsboks>
             <Oppsummeringsboks>
                 <TidligereVedtakOppsummering tidligereVedtaksvilkår={tidligereVedtaksvilkår} />

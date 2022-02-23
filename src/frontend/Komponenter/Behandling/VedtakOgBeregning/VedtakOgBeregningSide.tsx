@@ -8,7 +8,6 @@ import { Søknadsoppsummering } from '../Vilkårresultat/Søknadsoppsummering';
 import VedtakOgBeregning from './VedtakOgBeregning';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -37,15 +36,9 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
     return (
         <DataViewer response={{ behandling, vilkår }}>
             {({ behandling, vilkår }) => {
-                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-
                 return (
                     <>
-                        <Søknadsoppsummering
-                            vilkår={vilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                            behandlingId={behandlingId}
-                        />
+                        <Søknadsoppsummering vilkår={vilkår} behandlingId={behandlingId} />
                         {behandling.steg === Steg.VILKÅR ? (
                             <AlertStripeIkkeFerdigBehandletVilkår />
                         ) : (
