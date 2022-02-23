@@ -15,6 +15,13 @@ const StyledNavLink = styled(NavLink)`
     padding-top: 1rem;
     padding-bottom: 1rem;
 
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    padding-left: 5px;
+    padding-right: 5px;
+
     :hover {
         border-bottom: 5px solid ${navFarger.navBlaLighten20};
 
@@ -33,6 +40,12 @@ const StyledNavLink = styled(NavLink)`
     }
 `;
 
+const StyledLenketekst = styled(Normaltekst)`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`;
+
 const StyledTekst = styled(Normaltekst)`
     border-bottom: 5px solid white;
     color: ${navFarger.navGra20};
@@ -41,6 +54,12 @@ const StyledTekst = styled(Normaltekst)`
     width: 100%;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    padding-left: 5px;
+    padding-right: 5px;
 `;
 
 interface Props {
@@ -69,9 +88,9 @@ const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
                         gåTilUrl(`/behandling/${behandlingId}/${side.href}`);
                     }}
                 >
-                    <Normaltekst>
+                    <StyledLenketekst>
                         {index + 1}. {side.navn}
-                    </Normaltekst>
+                    </StyledLenketekst>
                 </StyledNavLink>
             )}
         </>
