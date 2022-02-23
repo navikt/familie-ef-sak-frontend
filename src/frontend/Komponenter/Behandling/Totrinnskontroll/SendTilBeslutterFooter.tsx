@@ -33,7 +33,7 @@ const SendTilBeslutterFooter: React.FC<{
 }> = ({ behandlingId, kanSendesTilBeslutter }) => {
     const { axiosRequest } = useApp();
     const { modalDispatch } = useModal();
-    const { hentTotrinnskontroll } = useBehandling();
+    const { hentTotrinnskontroll, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
@@ -46,6 +46,7 @@ const SendTilBeslutterFooter: React.FC<{
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
+                    hentBehandling.rerun();
                     hentTotrinnskontroll.rerun();
                     modalDispatch({
                         type: ModalAction.VIS_MODAL,
