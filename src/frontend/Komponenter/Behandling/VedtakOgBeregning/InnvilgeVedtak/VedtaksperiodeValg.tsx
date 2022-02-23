@@ -27,7 +27,6 @@ const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
   grid-template-columns: repeat(4, ${(props) => (props.lesevisning ? 10 : 14)}rem) repeat(2, 4rem);
   grid-template-rows: auto;
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
-    margin-bottom: 1rem;
     }
 `;
 
@@ -36,7 +35,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
     grid-template-columns: repeat(4, ${(props) => (props.lesevisning ? 10 : 14)}rem);   
     grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     }
 `;
 

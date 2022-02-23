@@ -12,7 +12,7 @@ import { Heading, Label } from '@navikt/ds-react';
 import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
 
 const BoldTekst = styled(Label)`
-    margin-left: 1rem;
+    margin-left: 0.25rem;
 `;
 
 const Container = styled.div`

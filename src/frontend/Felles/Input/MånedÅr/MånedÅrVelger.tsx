@@ -23,7 +23,7 @@ const DatolabelStyle = styled.label`
 `;
 
 const StyledMånedVelger = styled(MånedVelger)`
-    padding-right: 1em;
+    padding-right: 0.25em;
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
