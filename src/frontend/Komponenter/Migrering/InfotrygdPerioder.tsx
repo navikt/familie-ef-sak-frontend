@@ -18,11 +18,25 @@ import styled from 'styled-components';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 
 /**
- * Tabellene har like mange kolonner for å få samme kolonner på samme sted i tabellene
+ * Tabellene har alle 10 kolonner for å få samme kolonner på samme sted i tabellene
+ * 6*8 + 10 + 10 + 2*16 = 100
  */
 const StyledTabell = styled.table`
     th {
+        width: 8%;
+    }
+    th:nth-child(1) {
+        // datoer trenger litt ekstra då de iblant viser opphørsdato
+        width: 9%;
+    }
+    th:nth-child(7) {
+        // sakstype
         width: 10%;
+    }
+    th:nth-child(8),
+    th:nth-child(9) {
+        // aktivitet / Periodetype
+        width: 16%;
     }
 `;
 
