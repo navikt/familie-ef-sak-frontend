@@ -29,6 +29,13 @@ const ResultatIkonOgTekstWrapper = styled.div`
     margin-bottom: 0.5rem;
 `;
 
+const ResultatGrid = styled.div<{ lesevisning?: boolean }>`
+    display: grid;
+    grid-template-area: vilkårstype vilkårsoppsummering;
+    grid-template-columns: repeat(2, 280px);
+    grid-gap: 1rem;
+`;
+
 export const resultatTilTekst: Record<string, string> = {
     OPPFYLT: 'oppfylt',
     IKKE_TATT_STILLING_TIL: 'ikke vurdert',
@@ -59,23 +66,25 @@ export const ResultatVisning: React.FC<{
 
     return (
         <Container>
-            <Div flexDirection="row" className="blokk-xxs">
-                <BoldTekst size="small">{tittel}</BoldTekst>
-                <div>
-                    {Object.entries(oppsummeringAvVilkårsresultat)
-                        .sort((a, b) => sorterVilkårsresultat(a, b))
-                        .map(([vilkårsresultat, antallVilkårsresultat], i) => (
-                            <ResultatIkonOgTekstWrapper key={i}>
-                                <VilkårsresultatIkon
-                                    vilkårsresultat={vilkårsresultat as Vilkårsresultat}
-                                />
-                                <Ikontekst>
-                                    {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                                </Ikontekst>
-                            </ResultatIkonOgTekstWrapper>
-                        ))}
-                </div>
-            </Div>
+            <ResultatGrid>
+                <Div flexDirection="row" className="blokk-xxs">
+                    <BoldTekst size="small">{tittel}</BoldTekst>
+                    <div>
+                        {Object.entries(oppsummeringAvVilkårsresultat)
+                            .sort((a, b) => sorterVilkårsresultat(a, b))
+                            .map(([vilkårsresultat, antallVilkårsresultat], i) => (
+                                <ResultatIkonOgTekstWrapper key={i}>
+                                    <VilkårsresultatIkon
+                                        vilkårsresultat={vilkårsresultat as Vilkårsresultat}
+                                    />
+                                    <Ikontekst>
+                                        {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
+                                    </Ikontekst>
+                                </ResultatIkonOgTekstWrapper>
+                            ))}
+                    </div>
+                </Div>
+            </ResultatGrid>
         </Container>
     );
 };

@@ -6,7 +6,6 @@ import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
     EPeriodetype,
-    ESamordningsfradragtype,
     IBeløpsperiode,
     IBeregningsrequest,
     IInntektsperiode,
@@ -31,8 +30,6 @@ import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/Alert
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { Heading } from '@navikt/ds-react';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
@@ -122,6 +119,10 @@ export const InnvilgeVedtak: React.FC<{
             );
         }
     }, [vedtaksperioder, inntektsperiodeState, inntektsperioder]);
+
+    const skalVelgeSamordningstype = inntektsperiodeState.value.some(
+        (rad) => rad.samordningsfradrag
+    );
 
     const hentLagretBeløpForYtelse = useCallback(() => {
         axiosRequest<IBeløpsperiode[], void>({
@@ -220,10 +221,6 @@ export const InnvilgeVedtak: React.FC<{
         }
     };
 
-    const skalVelgeSamordningstype = inntektsperiodeState.value.some(
-        (rad) => rad.samordningsfradrag
-    );
-
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelPaddingTop>
@@ -277,47 +274,22 @@ export const InnvilgeVedtak: React.FC<{
                         inntektsperiodeListe={inntektsperiodeState}
                         valideringsfeil={formState.errors.inntekter}
                         setValideringsFeil={formState.setErrors}
-                        samordningsfradragstype={
-                            typeSamordningsfradag.value as ESamordningsfradragtype
-                        }
+                        samordningsfradragstype={typeSamordningsfradag}
+                        skalVelgeSamordningstype={skalVelgeSamordningstype}
+                        samordningValideringsfeil={formState.errors.samordningsfradragType}
                     />
                 </WrapperPaddingTop>
-                {skalVelgeSamordningstype && behandlingErRedigerbar && (
-                    <>
-                        <FamilieSelect
-                            bredde={'m'}
-                            value={typeSamordningsfradag.value}
-                            label={'Type samordningsfradag'}
-                            onChange={(event) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                typeSamordningsfradag.onChange(event);
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                        >
-                            <option value="">Velg</option>
-                            <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
-                                Gjenlevendepensjon
-                            </option>
-                            <option value={ESamordningsfradragtype.UFØRETRYGD}>Uføretrygd</option>
-                        </FamilieSelect>
-                        <SkjemaelementFeilmelding>
-                            {formState.errors.samordningsfradragType}
-                        </SkjemaelementFeilmelding>
-                    </>
-                )}
                 {behandlingErRedigerbar && (
-                    <WrapperDobbelMarginTop>
-                        <div className={'blokk-m'}>
-                            <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
-                                Beregn
-                            </Knapp>
-                        </div>
-                    </WrapperDobbelMarginTop>
+                    <div className={'blokk-m'}>
+                        <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
+                            Beregn
+                        </Knapp>
+                    </div>
                 )}
             </WrapperDobbelPaddingTop>
-            <WrapperDobbelPaddingTop>
+            <WrapperDobbelMarginTop>
                 <StyledUtregningstabell beregnetStønad={beregnetStønad} />
-            </WrapperDobbelPaddingTop>
+            </WrapperDobbelMarginTop>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}
