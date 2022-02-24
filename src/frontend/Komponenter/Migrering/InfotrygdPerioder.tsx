@@ -25,17 +25,17 @@ const StyledTabell = styled.table`
     th {
         width: 8%;
     }
+    // datoer trenger litt ekstra då de iblant viser opphørsdato
     th:nth-child(1) {
-        // datoer trenger litt ekstra då de iblant viser opphørsdato
         width: 9%;
     }
+    // sakstype
     th:nth-child(7) {
-        // sakstype
         width: 10%;
     }
+    // aktivitet / Periodetype
     th:nth-child(8),
     th:nth-child(9) {
-        // aktivitet / Periodetype
         width: 16%;
     }
 `;
