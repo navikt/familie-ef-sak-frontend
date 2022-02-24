@@ -16,6 +16,7 @@ import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { HenleggModal } from './Henleggelse/HenleggModal';
+import { useWindowSize } from '../../App/hooks/felles/useWindowSize';
 
 const Container = styled.div`
     display: flex;
@@ -33,7 +34,7 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
 
-    width: ${(p) => (p.åpenHøyremeny ? '20rem' : '0rem')};
+    width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
 
     overflow-y: auto;
 `;
@@ -41,7 +42,7 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
 const InnholdWrapper = styled.div<InnholdWrapperProps>`
     flex: 1;
 
-    max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
+    max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 1.5rem)' : '100%')};
 `;
 
 const BehandlingContainer: FC = () => {
@@ -60,6 +61,12 @@ const BehandlingContent: FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
+
+    const { width } = useWindowSize();
+
+    useEffect(() => {
+        console.log('width', width);
+    }, [width]);
 
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
@@ -85,7 +92,11 @@ const BehandlingContent: FC<{
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
-                    <Høyremeny behandlingId={behandling.id} />
+                    <Høyremeny
+                        åpenHøyremeny={åpenHøyremeny}
+                        behandlingId={behandling.id}
+                        settÅpenHøyremeny={settÅpenHøyremeny}
+                    />
                 </HøyreMenyWrapper>
             </Container>
         </>
