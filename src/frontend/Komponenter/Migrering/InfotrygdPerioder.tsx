@@ -17,7 +17,14 @@ import { slåSammenOgSorterPerioder } from '../Infotrygd/grupperInfotrygdperiode
 import styled from 'styled-components';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 
-const StyledTabell = styled.table``;
+/**
+ * Tabellene har like mange kolonner for å få samme kolonner på samme sted i tabellene
+ */
+const StyledTabell = styled.table`
+    th {
+        width: 10%;
+    }
+`;
 
 const Rad = styled.tr``;
 
@@ -38,9 +45,9 @@ const InfotrygdPerioderOvergangsstønad: React.FC<{
             <thead>
                 <tr>
                     <th>Periode (fom-tom)</th>
+                    <th>Månedsbeløp</th>
                     <th>Inntektsgrunnlag</th>
                     <th>Samordningsfradrag</th>
-                    <th>Månedsbeløp</th>
                     <th>Vedtakstidspunkt</th>
                     <th>Kode</th>
                     <th>Sakstype</th>
@@ -57,9 +64,9 @@ const InfotrygdPerioderOvergangsstønad: React.FC<{
                             {' - '}
                             {formatStønadTom(periode)}
                         </td>
+                        <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
                         <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.samordningsfradrag)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
                         <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
                         <td>
                             {kodeTilTekst[periode.kode]}{' '}
@@ -90,11 +97,14 @@ const InfotrygdPerioderBarnetilsyn: React.FC<{ perioder: InfotrygdPeriodeMedFler
             <thead>
                 <tr>
                     <th>Periode (fom-tom)</th>
-                    <th>Inntektsgrunnlag</th>
                     <th>Månedsbeløp</th>
+                    <th>Inntektsgrunnlag</th>
+                    <th>Utgifter barnetilsyn</th>
                     <th>Vedtakstidspunkt</th>
                     <th>Kode</th>
                     <th>Sakstype</th>
+                    <th></th>
+                    <th></th>
                     <th>Saksbehandler</th>
                 </tr>
             </thead>
@@ -106,14 +116,17 @@ const InfotrygdPerioderBarnetilsyn: React.FC<{ perioder: InfotrygdPeriodeMedFler
                             {' - '}
                             {formatStønadTom(periode)}
                         </td>
-                        <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
+                        <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
+                        <td>{formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}</td>
                         <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
                         <td>
                             {kodeTilTekst[periode.kode]}{' '}
                             {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
                         </td>
                         <td>{sakstypeTilTekst[periode.sakstype]}</td>
+                        <td></td>
+                        <td></td>
                         <td>{periode.brukerId}</td>
                     </Rad>
                 ))}
@@ -132,9 +145,12 @@ const InfotrygdPerioderSkolepenger: React.FC<{ perioder: InfotrygdPeriodeMedFler
                     <th>Periode (fom-tom)</th>
                     <th>Månedsbeløp</th>
                     <th>Engangsbeløp</th>
+                    <th></th>
                     <th>Vedtakstidspunkt</th>
                     <th>Kode</th>
                     <th>Sakstype</th>
+                    <th></th>
+                    <th></th>
                     <th>Saksbehandler</th>
                 </tr>
             </thead>
@@ -148,12 +164,15 @@ const InfotrygdPerioderSkolepenger: React.FC<{ perioder: InfotrygdPeriodeMedFler
                         </td>
                         <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
                         <td>{formaterTallMedTusenSkille(periode.engangsbeløp)}</td>
+                        <td></td>
                         <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
                         <td>
                             {kodeTilTekst[periode.kode]}{' '}
                             {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
                         </td>
                         <td>{sakstypeTilTekst[periode.sakstype]}</td>
+                        <td></td>
+                        <td></td>
                         <td>{periode.brukerId}</td>
                     </Rad>
                 ))}
