@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Høyremeny from './Høyremeny/Høyremeny';
 import styled from 'styled-components';
 import Fanemeny from './Fanemeny/Fanemeny';
@@ -21,24 +21,27 @@ const Container = styled.div`
     display: flex;
 `;
 
-const HøyreMenyWrapper = styled.div`
+interface InnholdWrapperProps {
+    åpenHøyremeny: boolean;
+}
+
+interface HøyreMenyWrapperProps {
+    åpenHøyremeny: boolean;
+}
+
+const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     border-left: 2px solid ${navFarger.navGra40};
     overflow-x: hidden;
 
-    width: 20rem;
+    width: ${(p) => (p.åpenHøyremeny ? '20rem' : '0rem')};
 
-    @media (max-width: 800px) {
-        width: 0rem;
-    }
     overflow-y: auto;
 `;
 
-const InnholdWrapper = styled.div`
+const InnholdWrapper = styled.div<InnholdWrapperProps>`
     flex: 1;
-    max-width: calc(100% - 20rem);
-    @media (max-width: 800px) {
-        max-width: 100%;
-    }
+
+    max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 `;
 
 const BehandlingContainer: FC = () => {
@@ -58,11 +61,20 @@ const BehandlingContent: FC<{
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
 
+    const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
+
     return (
         <>
             <VisittkortComponent data={personopplysninger} behandling={behandling} />
+            <button
+                onClick={() => {
+                    settÅpenHøyremeny(!åpenHøyremeny);
+                }}
+            >
+                toggle høyremeny
+            </button>
             <Container>
-                <InnholdWrapper>
+                <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />
                     <BehandlingRoutes />
                     <GodkjennEndringer behandling={behandling} />
@@ -72,7 +84,7 @@ const BehandlingContent: FC<{
                     />
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
-                <HøyreMenyWrapper>
+                <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Høyremeny behandlingId={behandling.id} />
                 </HøyreMenyWrapper>
             </Container>
