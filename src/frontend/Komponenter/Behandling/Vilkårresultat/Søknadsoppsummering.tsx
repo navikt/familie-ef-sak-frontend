@@ -16,6 +16,9 @@ const OppsummeringContainer = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     margin-right: 0.5rem;
+    @media only screen and (max-width: 1450px) {
+        flex-wrap: wrap;
+    }
 `;
 
 const Oppsummeringsboks = styled.div`
