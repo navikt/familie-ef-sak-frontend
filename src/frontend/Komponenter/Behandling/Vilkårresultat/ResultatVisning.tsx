@@ -1,27 +1,50 @@
 import React from 'react';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
-import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
-
-const Container = styled.div`
-    padding-top: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-`;
+import { Label } from '@navikt/ds-react';
 
 const Ikontekst = styled(Normaltekst)`
     margin-left: 0.25rem;
 `;
 
+const BoldTekst = styled(Label)`
+    margin-right: 1rem;
+`;
+
+const Container = styled.div`
+    width: 280px;
+`;
+
+const ResultatIkonOgTekstWrapper = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0.5rem;
+`;
+
+const ResultatGrid = styled.div<{ lesevisning?: boolean }>`
+    display: grid;
+    grid-template-area: vilkårstype vilkårsoppsummering;
+    grid-template-columns: 7rem 10.5rem;
+    grid-gap: 1rem;
+`;
+
 export const resultatTilTekst: Record<string, string> = {
-    IKKE_AKTUELL: 'ikke aktuell',
-    IKKE_OPPFYLT: 'ikke oppfylt',
-    IKKE_TATT_STILLING_TIL: 'ikke tatt stilling til',
     OPPFYLT: 'oppfylt',
+    IKKE_TATT_STILLING_TIL: 'ikke vurdert',
+    IKKE_OPPFYLT: 'ikke oppfylt',
+    IKKE_AKTUELL: 'ikke aktuell',
     SKAL_IKKE_VURDERES: 'ikke vurdert',
+};
+
+export const resultatTilTall: Record<string, number> = {
+    OPPFYLT: 1,
+    IKKE_TATT_STILLING_TIL: 2,
+    IKKE_OPPFYLT: 3,
+    IKKE_AKTUELL: 4,
+    SKAL_IKKE_VURDERES: 5,
 };
 
 export const ResultatVisning: React.FC<{
@@ -31,19 +54,28 @@ export const ResultatVisning: React.FC<{
     const vilkårtypeTilResultat = mapVilkårtypeTilResultat(vilkårsvurderinger);
     const antallVilkårTotalt = Object.keys(vilkårtypeTilResultat).length;
     const oppsummeringAvVilkårsresultat = summerVilkårsresultat(vilkårtypeTilResultat);
+
+    const sorterVilkårsresultat = (a: [string, number], b: [string, number]): number => {
+        return resultatTilTall[a[0] as Vilkårsresultat] - resultatTilTall[b[0] as Vilkårsresultat];
+    };
+
     return (
         <Container>
-            <Undertittel className="blokk-xs">{tittel}</Undertittel>
-            {Object.entries(oppsummeringAvVilkårsresultat).map(
-                ([vilkårsresultat, antallVilkårsresultat], i) => (
-                    <FlexDiv flexDirection="row" className="blokk-xxs" key={i}>
-                        <VilkårsresultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
-                        <Ikontekst>
-                            {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                        </Ikontekst>
-                    </FlexDiv>
-                )
-            )}
+            {Object.entries(oppsummeringAvVilkårsresultat)
+                .sort((a, b) => sorterVilkårsresultat(a, b))
+                .map(([vilkårsresultat, antallVilkårsresultat], i) => (
+                    <ResultatGrid>
+                        <BoldTekst size="small">{i == 0 ? tittel : ''}</BoldTekst>
+                        <ResultatIkonOgTekstWrapper key={i}>
+                            <VilkårsresultatIkon
+                                vilkårsresultat={vilkårsresultat as Vilkårsresultat}
+                            />
+                            <Ikontekst>
+                                {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
+                            </Ikontekst>
+                        </ResultatIkonOgTekstWrapper>
+                    </ResultatGrid>
+                ))}
         </Container>
     );
 };
