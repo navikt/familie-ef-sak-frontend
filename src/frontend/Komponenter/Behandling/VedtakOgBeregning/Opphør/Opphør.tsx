@@ -12,6 +12,7 @@ import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextAr
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 
 const StyledFormElement = styled.div`
+    margin-top: 2rem;
     margin-bottom: 2rem;
 `;
 
