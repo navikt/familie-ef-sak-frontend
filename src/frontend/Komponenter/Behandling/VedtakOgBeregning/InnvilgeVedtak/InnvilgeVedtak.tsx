@@ -36,25 +36,12 @@ const Hovedknapp = hiddenIf(HovedknappNAV);
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtak, 'resultatType'>;
 
-const WrapperPaddingTop = styled.div`
-    padding-top: 1rem;
-`;
-
-const WrapperDobbelPaddingTop = styled.div`
-    padding-top: 2rem;
-`;
-
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
 `;
 
-const StyledUtregningstabell = styled(Utregningstabell)`
-    padding: 0rem;
-    margin: 0rem;
-    .tittel {
-        padding-bottom: 0rem;
-    }
-    grid-gap: 0rem;
+const WrapperMarginTop = styled.div`
+    margin-top: 1rem;
 `;
 
 export const InnvilgeVedtak: React.FC<{
@@ -223,7 +210,7 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <WrapperDobbelPaddingTop>
+            <WrapperDobbelMarginTop>
                 <Heading spacing size="small" level="5">
                     Vedtaksperiode
                 </Heading>
@@ -242,15 +229,15 @@ export const InnvilgeVedtak: React.FC<{
                         feilmelding={formState.errors.periodeBegrunnelse}
                     />
                 )}
-                <WrapperPaddingTop>
+                <WrapperMarginTop>
                     <VedtaksperiodeValg
                         vedtaksperiodeListe={vedtaksperiodeState}
                         valideringsfeil={formState.errors.perioder}
                         setValideringsFeil={formState.setErrors}
                     />
-                </WrapperPaddingTop>
-            </WrapperDobbelPaddingTop>
-            <WrapperDobbelPaddingTop>
+                </WrapperMarginTop>
+            </WrapperDobbelMarginTop>
+            <WrapperMarginTop>
                 <Heading spacing size="small" level="5">
                     Inntekt
                 </Heading>
@@ -269,7 +256,7 @@ export const InnvilgeVedtak: React.FC<{
                         feilmelding={formState.errors.inntektBegrunnelse}
                     />
                 )}
-                <WrapperPaddingTop>
+                <WrapperMarginTop>
                     <InntektsperiodeValg
                         inntektsperiodeListe={inntektsperiodeState}
                         valideringsfeil={formState.errors.inntekter}
@@ -278,26 +265,28 @@ export const InnvilgeVedtak: React.FC<{
                         skalVelgeSamordningstype={skalVelgeSamordningstype}
                         samordningValideringsfeil={formState.errors.samordningsfradragType}
                     />
-                </WrapperPaddingTop>
+                </WrapperMarginTop>
                 {behandlingErRedigerbar && (
-                    <div className={'blokk-m'}>
+                    <WrapperMarginTop>
                         <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
                             Beregn
                         </Knapp>
-                    </div>
+                    </WrapperMarginTop>
                 )}
-            </WrapperDobbelPaddingTop>
+            </WrapperMarginTop>
             <WrapperDobbelMarginTop>
-                <StyledUtregningstabell beregnetStønad={beregnetStønad} />
+                <Utregningstabell beregnetStønad={beregnetStønad} />
             </WrapperDobbelMarginTop>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}
                 </AlertStripeFeilPreWrap>
             )}
-            <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
-                Lagre vedtak
-            </Hovedknapp>
+            <WrapperDobbelMarginTop>
+                <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
+                    Lagre vedtak
+                </Hovedknapp>
+            </WrapperDobbelMarginTop>
         </form>
     );
 };

@@ -34,7 +34,7 @@ const TittelContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 4rem'};
+        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 12rem 4rem'};
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;

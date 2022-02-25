@@ -8,6 +8,7 @@ import {
 import { IBeløpsperiode } from '../../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Heading } from '@navikt/ds-react';
 
 interface Props {
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
@@ -34,6 +35,9 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
             {({ beregnetStønad }) => {
                 return (
                     <>
+                        <Heading spacing size="small" level="5">
+                            Utregning
+                        </Heading>
                         <TittelContainer>
                             <Element>Periode</Element>
                             <Element>Inntekt (år)</Element>
