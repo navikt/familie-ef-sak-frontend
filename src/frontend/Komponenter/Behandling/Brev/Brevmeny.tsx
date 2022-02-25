@@ -25,7 +25,7 @@ import {
 import FritekstBrev from './FritekstBrev';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import { IBeløpsperiode } from '../../../App/typer/vedtak';
+import { EBehandlingResultat, IBeløpsperiode } from '../../../App/typer/vedtak';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -94,12 +94,14 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
             }).then((respons: Ressurs<TilkjentYtelse>) => {
                 settTilkjentYtelse(respons);
             });
-            axiosRequest<IBeløpsperiode[], null>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/beregning/${props.behandlingId}`,
-            }).then((respons: Ressurs<IBeløpsperiode[]>) => {
-                settBeløpsperioder(respons);
-            });
+            if (vedtaksresultat !== EBehandlingResultat.OPPHØRT) {
+                axiosRequest<IBeløpsperiode[], null>({
+                    method: 'GET',
+                    url: `/familie-ef-sak/api/beregning/${props.behandlingId}`,
+                }).then((respons: Ressurs<IBeløpsperiode[]>) => {
+                    settBeløpsperioder(respons);
+                });
+            }
         } else {
             settTilkjentYtelse(byggSuksessRessurs<TilkjentYtelse | undefined>(undefined));
             settBeløpsperioder(byggSuksessRessurs<IBeløpsperiode[] | undefined>(undefined));
