@@ -20,6 +20,8 @@ import { useWindowSize } from '../../App/hooks/felles/useWindowSize';
 
 const Container = styled.div`
     display: flex;
+
+    flex-shrink: 2;
 `;
 
 interface InnholdWrapperProps {
@@ -32,15 +34,19 @@ interface HøyreMenyWrapperProps {
 
 const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     border-left: 2px solid ${navFarger.navGra40};
-    overflow-x: hidden;
+
+    flex-shrink: 1;
+    flex-grow: 0;
 
     width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
-
-    overflow-y: auto;
+    min-width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
 `;
 
 const InnholdWrapper = styled.div<InnholdWrapperProps>`
-    flex: 1;
+    flex-shrink: 0;
+    flex-grow: 1;
+    flex-basis: 0px;
+    min-width: 0px;
 
     max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 1.5rem)' : '100%')};
 `;
@@ -73,13 +79,6 @@ const BehandlingContent: FC<{
     return (
         <>
             <VisittkortComponent data={personopplysninger} behandling={behandling} />
-            <button
-                onClick={() => {
-                    settÅpenHøyremeny(!åpenHøyremeny);
-                }}
-            >
-                toggle høyremeny
-            </button>
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />
