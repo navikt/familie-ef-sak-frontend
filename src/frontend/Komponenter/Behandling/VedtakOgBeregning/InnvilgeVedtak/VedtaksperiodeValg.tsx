@@ -22,22 +22,20 @@ import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
-  display: grid;
-  grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger antallMåneder fjernknapp';
-  grid-template-columns: repeat(4, ${(props) => (props.lesevisning ? 10 : 14)}rem) repeat(2, 4rem);
-  grid-template-rows: auto;
-    grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
-    margin-bottom: 1rem;
-    }
+    display: grid;
+    grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger antallMåneder fjernknapp';
+    grid-template-columns: ${(props) =>
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 11.5rem 11.5rem 4rem'};
+    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
 `;
 
 const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
-    grid-template-columns: repeat(4, ${(props) => (props.lesevisning ? 10 : 14)}rem);   
-    grid-gap: ${(props) => (props.lesevisning ? 0.5 : 1)}rem;
-    margin-bottom: 1rem;
-    }
+    grid-template-columns: ${(props) =>
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 11.5rem 11.5rem 4rem'};
+    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
+    margin-bottom: 0.5rem;
 `;
 
 interface Props {

@@ -21,10 +21,6 @@ interface Props {
     aktivitetfeil: OrNothing<string>;
 }
 
-const StyledSelect = styled(FamilieSelect)`
-    margin-right: 2rem;
-`;
-
 const AktivitetKolonne = styled.div`
     .typo-normal {
         padding: 0.5rem 0 1rem 0;
@@ -49,7 +45,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     switch (periodeType) {
         case EPeriodetype.FORLENGELSE:
             return (
-                <StyledSelect
+                <FamilieSelect
                     aria-label={'Aktivitet'}
                     value={aktivitet}
                     feil={aktivitetfeil}
@@ -73,11 +69,11 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </StyledSelect>
+                </FamilieSelect>
             );
         case EPeriodetype.HOVEDPERIODE:
             return (
-                <StyledSelect
+                <FamilieSelect
                     aria-label={'Aktivitet'}
                     value={aktivitet}
                     feil={aktivitetfeil}
@@ -107,11 +103,11 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </optgroup>
                         );
                     })}
-                </StyledSelect>
+                </FamilieSelect>
             );
         case EPeriodetype.UTVIDELSE:
             return (
-                <StyledSelect
+                <FamilieSelect
                     aria-label={'Aktivitet'}
                     value={aktivitet}
                     feil={aktivitetfeil}
@@ -135,7 +131,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </StyledSelect>
+                </FamilieSelect>
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
