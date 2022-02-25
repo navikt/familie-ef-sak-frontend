@@ -127,28 +127,26 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             )}
 
             {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
-                <>
-                    {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
-                    <KnappeWrapper>
-                        <StyledHovedknapp
-                            onClick={() => {
-                                if (!senderInnBehandling) {
-                                    opprettTilbakekrevingBehandling();
-                                }
-                            }}
-                        >
-                            Opprett
-                        </StyledHovedknapp>
-                        <Flatknapp
-                            onClick={() => {
-                                settVisModal(false);
-                            }}
-                        >
-                            Avbryt
-                        </Flatknapp>
-                    </KnappeWrapper>
-                </>
+                <KnappeWrapper>
+                    <StyledHovedknapp
+                        onClick={() => {
+                            if (!senderInnBehandling) {
+                                opprettTilbakekrevingBehandling();
+                            }
+                        }}
+                    >
+                        Opprett
+                    </StyledHovedknapp>
+                    <Flatknapp
+                        onClick={() => {
+                            settVisModal(false);
+                        }}
+                    >
+                        Avbryt
+                    </Flatknapp>
+                </KnappeWrapper>
             )}
+            {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
         </UIModalWrapper>
     );
 };
