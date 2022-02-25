@@ -48,6 +48,8 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
     flex-basis: 0px;
     min-width: 0px;
 
+    overflow-x: scroll;
+
     max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 1.5rem)' : '100%')};
 `;
 

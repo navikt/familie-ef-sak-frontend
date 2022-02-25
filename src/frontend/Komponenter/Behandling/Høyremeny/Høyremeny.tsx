@@ -13,6 +13,10 @@ interface IHøyremenyProps {
     settÅpenHøyremeny: Dispatch<SetStateAction<boolean>>;
 }
 
+interface StyledButtonProps {
+    åpenHøyremeny: boolean;
+}
+
 const StyledBack = styled(Back)`
     border-radius: 0;
     margin-top: 3px;
@@ -27,7 +31,7 @@ const StyledNext = styled(Next)`
     color: white;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<StyledButtonProps>`
     position: absolute;
 
     background-color: #3386e0;
