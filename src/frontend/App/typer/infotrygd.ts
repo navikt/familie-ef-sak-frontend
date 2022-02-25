@@ -14,10 +14,12 @@ export interface Perioder {
 export interface SummertPeriode {
     stønadFom: string;
     stønadTom: string;
-    beløp: number;
+    månedsbeløp: number;
+    engangsbeløp: number;
     inntektsgrunnlag: number;
     inntektsreduksjon: number;
     samordningsfradrag: number;
+    utgifterBarnetilsyn: number;
 }
 
 export interface InfotrygdPeriode {
@@ -29,9 +31,11 @@ export interface InfotrygdPeriode {
     stønadTom: string;
     opphørsdato?: string;
 
-    beløp: number;
+    månedsbeløp: number;
+    engangsbeløp: number;
     inntektsgrunnlag: number;
     samordningsfradrag: number;
+    utgifterBarnetilsyn: number;
 
     kode: Kode;
     sakstype: Sakstype;
