@@ -3,6 +3,7 @@ import Oppfylt from './Oppfylt';
 import IkkeOppfylt from './IkkeOppfylt';
 import { Vilkårsresultat } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
 import Info from './Info';
+import Advarsel from './Advarsel';
 
 export const VilkårsresultatIkon: FC<{
     vilkårsresultat: Vilkårsresultat;
@@ -12,7 +13,7 @@ export const VilkårsresultatIkon: FC<{
 }> = ({ vilkårsresultat, className, heigth = 23, width = 21 }) => {
     switch (vilkårsresultat) {
         case Vilkårsresultat.IKKE_TATT_STILLING_TIL:
-            return <Info className={className} heigth={heigth} width={width} />;
+            return <Advarsel className={className} heigth={heigth} width={width} />;
         case Vilkårsresultat.OPPFYLT:
             return <Oppfylt className={className} heigth={heigth} width={width} />;
         case Vilkårsresultat.IKKE_OPPFYLT:

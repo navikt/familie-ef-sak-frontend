@@ -25,14 +25,16 @@ import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype fjernRadKnapp;
-    grid-template-columns: repeat(4, 12rem);
+    grid-template-columns: ${(props) =>
+        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 12rem 12rem'};
     grid-gap: 1rem;
 `;
 
 const TittelContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype;
-    grid-template-columns: repeat(4, 12rem);
+    grid-template-columns: ${(props) =>
+        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 12rem'};
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
@@ -78,7 +80,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
 
     return (
         <>
-            <TittelContainer>
+            <TittelContainer lesevisning={!behandlingErRedigerbar}>
                 <Element>Fra</Element>
                 <Element>Forventet inntekt (år)</Element>
                 <Element>Samordningsfradrag (mnd)</Element>

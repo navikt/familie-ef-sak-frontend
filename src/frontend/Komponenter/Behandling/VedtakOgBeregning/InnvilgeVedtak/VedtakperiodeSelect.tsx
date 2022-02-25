@@ -6,7 +6,6 @@ import { FamilieSelect } from '@navikt/familie-form-elements';
 const StyledSelect = styled(FamilieSelect)`
     min-width: 140px;
     max-width: 200px;
-    margin-right: 2rem;
 `;
 
 interface VedtakperiodeSelectProps {

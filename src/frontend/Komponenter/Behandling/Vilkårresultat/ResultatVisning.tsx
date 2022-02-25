@@ -3,7 +3,6 @@ import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
-import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
 import { Label } from '@navikt/ds-react';
 
@@ -19,10 +18,6 @@ const Container = styled.div`
     width: 280px;
 `;
 
-const Div = styled(FlexDiv)`
-    justify-content: space-between;
-`;
-
 const ResultatIkonOgTekstWrapper = styled.div`
     display: flex;
     justify-content: flex-start;
@@ -32,7 +27,7 @@ const ResultatIkonOgTekstWrapper = styled.div`
 const ResultatGrid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: vilkårstype vilkårsoppsummering;
-    grid-template-columns: repeat(2, 280px);
+    grid-template-columns: 7rem 10.5rem;
     grid-gap: 1rem;
 `;
 
@@ -66,25 +61,21 @@ export const ResultatVisning: React.FC<{
 
     return (
         <Container>
-            <ResultatGrid>
-                <Div flexDirection="row" className="blokk-xxs">
-                    <BoldTekst size="small">{tittel}</BoldTekst>
-                    <div>
-                        {Object.entries(oppsummeringAvVilkårsresultat)
-                            .sort((a, b) => sorterVilkårsresultat(a, b))
-                            .map(([vilkårsresultat, antallVilkårsresultat], i) => (
-                                <ResultatIkonOgTekstWrapper key={i}>
-                                    <VilkårsresultatIkon
-                                        vilkårsresultat={vilkårsresultat as Vilkårsresultat}
-                                    />
-                                    <Ikontekst>
-                                        {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                                    </Ikontekst>
-                                </ResultatIkonOgTekstWrapper>
-                            ))}
-                    </div>
-                </Div>
-            </ResultatGrid>
+            {Object.entries(oppsummeringAvVilkårsresultat)
+                .sort((a, b) => sorterVilkårsresultat(a, b))
+                .map(([vilkårsresultat, antallVilkårsresultat], i) => (
+                    <ResultatGrid>
+                        <BoldTekst size="small">{i == 0 ? tittel : ''}</BoldTekst>
+                        <ResultatIkonOgTekstWrapper key={i}>
+                            <VilkårsresultatIkon
+                                vilkårsresultat={vilkårsresultat as Vilkårsresultat}
+                            />
+                            <Ikontekst>
+                                {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
+                            </Ikontekst>
+                        </ResultatIkonOgTekstWrapper>
+                    </ResultatGrid>
+                ))}
         </Container>
     );
 };
