@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
 import { BarnForRevurdering, RevurderingInnhold } from '../../App/typer/revurderingstype';
-import { KnappeWrapper, StyledHovedknapp, StyledSelect } from './LagBehandlingModal';
+import { StyledHovedknapp, StyledSelect } from './LagBehandlingModal';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
@@ -21,6 +21,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
     margin-top: 2rem;
+    margin-bottom: 17.5rem;
 `;
 
 const StyledCheckboxGruppe = styled(CheckboxGruppe)`
@@ -31,16 +32,27 @@ const TekstForCheckboxGruppe = styled(Normaltekst)`
     margin-bottom: 1rem;
 `;
 
+const FlexDiv = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const KnappeWrapper = styled.div`
+    margin-top: 4rem;
+`;
+
 interface IProps {
     fagsakId: string;
     valgtBehandlingstype: Behandlingstype;
     lagRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
+    settVisModal: (bool: boolean) => void;
 }
 
 export const LagRevurdering: React.FunctionComponent<IProps> = ({
     fagsakId,
     valgtBehandlingstype,
     lagRevurdering,
+    settVisModal,
 }) => {
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
@@ -96,14 +108,47 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             )
                                         )}
                             </StyledSelect>
-                            <StyledFamilieDatovelgder
-                                id={'krav-mottatt'}
-                                label={'Krav mottatt'}
-                                onChange={(dato) => {
-                                    settValgtDato(dato as string);
-                                }}
-                                valgtDato={valgtDato}
-                            />
+                            <FlexDiv>
+                                <StyledFamilieDatovelgder
+                                    id={'krav-mottatt'}
+                                    label={'Krav mottatt'}
+                                    onChange={(dato) => {
+                                        settValgtDato(dato as string);
+                                    }}
+                                    valgtDato={valgtDato}
+                                />
+                                <KnappeWrapper>
+                                    <StyledHovedknapp
+                                        onClick={() => {
+                                            const kanStarteRevurdering = !!(
+                                                valgtBehandlingsårsak && valgtDato
+                                            );
+                                            if (kanStarteRevurdering) {
+                                                lagRevurdering({
+                                                    fagsakId,
+                                                    barn: valgtBarn,
+                                                    behandlingsårsak: valgtBehandlingsårsak,
+                                                    kravMottatt: valgtDato,
+                                                });
+                                            } else {
+                                                settFeilmeldingModal(
+                                                    'Vennligst fyll ut alle felter'
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        Opprett
+                                    </StyledHovedknapp>
+                                    <Flatknapp
+                                        onClick={() => {
+                                            settVisModal(false);
+                                        }}
+                                    >
+                                        Avbryt
+                                    </Flatknapp>
+                                </KnappeWrapper>
+                            </FlexDiv>
+
                             {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
                                 <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
                                     <TekstForCheckboxGruppe>
@@ -143,32 +188,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 }}
             </DataViewer>
             {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
-            <KnappeWrapper>
-                <StyledHovedknapp
-                    onClick={() => {
-                        const kanStarteRevurdering = !!(valgtBehandlingsårsak && valgtDato);
-                        if (kanStarteRevurdering) {
-                            lagRevurdering({
-                                fagsakId,
-                                barn: valgtBarn,
-                                behandlingsårsak: valgtBehandlingsårsak,
-                                kravMottatt: valgtDato,
-                            });
-                        } else {
-                            settFeilmeldingModal('Vennligst fyll ut alle felter');
-                        }
-                    }}
-                >
-                    Opprett
-                </StyledHovedknapp>
-                <Flatknapp
-                    onClick={() => {
-                        //settVisModal(false);
-                    }}
-                >
-                    Avbryt
-                </Flatknapp>
-            </KnappeWrapper>
         </>
     );
 };

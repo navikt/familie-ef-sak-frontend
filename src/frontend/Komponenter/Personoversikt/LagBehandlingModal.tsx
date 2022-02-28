@@ -123,6 +123,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     fagsakId={fagsakId}
                     valgtBehandlingstype={valgtBehandlingstype}
                     lagRevurdering={lagRevurdering}
+                    settVisModal={settVisModal}
                 />
             )}
 
