@@ -16,7 +16,6 @@ import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { HenleggModal } from './Henleggelse/HenleggModal';
-import { useWindowSize } from '../../App/hooks/felles/useWindowSize';
 
 const Container = styled.div`
     display: flex;
@@ -69,12 +68,6 @@ const BehandlingContent: FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
-
-    const { width } = useWindowSize();
-
-    useEffect(() => {
-        console.log('width', width);
-    }, [width]);
 
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
