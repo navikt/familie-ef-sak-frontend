@@ -1,4 +1,4 @@
-import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
+import { ILogiskVedlegg, Journalposttype, Journalstatus } from '@navikt/familie-typer';
 
 export interface Dokumentinfo {
     dokumentinfoId: string;
@@ -8,4 +8,5 @@ export interface Dokumentinfo {
     dato: string;
     journalposttype: Journalposttype;
     journalstatus: Journalstatus;
+    logiskeVedlegg?: ILogiskVedlegg[];
 }

@@ -28,6 +28,10 @@ const LenkeVenstreMargin = styled.a`
     margin-left: 2rem;
 `;
 
+const DivMedVenstreMargin = styled.div`
+    margin-left: 2rem;
+`;
+
 const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
     personopplysninger,
 }) => {
@@ -58,6 +62,10 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 >
                     {dokument.tittel}
                 </LenkeVenstreMargin>
+                {dokument.logiskeVedlegg &&
+                    dokument.logiskeVedlegg?.map((logiskVedlegg) => (
+                        <DivMedVenstreMargin>{logiskVedlegg.tittel}</DivMedVenstreMargin>
+                    ))}
             </Td>
             <Td></Td>
         </tr>
