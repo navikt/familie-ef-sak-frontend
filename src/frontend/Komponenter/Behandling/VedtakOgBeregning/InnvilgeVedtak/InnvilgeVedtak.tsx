@@ -6,7 +6,6 @@ import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
     EPeriodetype,
-    ESamordningsfradragtype,
     IBeløpsperiode,
     IBeregningsrequest,
     IInntektsperiode,
@@ -23,7 +22,6 @@ import { v4 as uuidv4 } from 'uuid';
 import hiddenIf from '../../../../Felles/HiddenIf/hiddenIf';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { ListState } from '../../../../App/hooks/felles/useListState';
-import { Undertittel } from 'nav-frontend-typografi';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import Utregningstabell from './Utregningstabell';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
@@ -32,27 +30,18 @@ import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/Alert
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
+import { Heading } from '@navikt/ds-react';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtak, 'resultatType'>;
 
-const VedtaksperiodeWrapper = styled.section`
-    padding-top: 1rem;
-`;
-
-const WrapperPaddingTop = styled.div`
-    padding-top: 2rem;
-`;
-
-const WrapperMarginTop = styled.div`
+const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
 `;
 
-const EnsligTextAreaWrapper = styled.div`
-    padding-bottom: 1rem;
+const WrapperMarginTop = styled.div`
+    margin-top: 1rem;
 `;
 
 export const InnvilgeVedtak: React.FC<{
@@ -117,6 +106,10 @@ export const InnvilgeVedtak: React.FC<{
             );
         }
     }, [vedtaksperioder, inntektsperiodeState, inntektsperioder]);
+
+    const skalVelgeSamordningstype = inntektsperiodeState.value.some(
+        (rad) => rad.samordningsfradrag
+    );
 
     const hentLagretBeløpForYtelse = useCallback(() => {
         axiosRequest<IBeløpsperiode[], void>({
@@ -215,105 +208,85 @@ export const InnvilgeVedtak: React.FC<{
         }
     };
 
-    const skalVelgeSamordningstype = inntektsperiodeState.value.some(
-        (rad) => rad.samordningsfradrag
-    );
-
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <WrapperPaddingTop>
-                <VedtaksperiodeWrapper>
-                    <Undertittel className={'blokk-s'}>Vedtaksperiode</Undertittel>
+            <WrapperDobbelMarginTop>
+                <Heading spacing size="small" level="5">
+                    Vedtaksperiode
+                </Heading>
+                {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
+                    <IngenBegrunnelseOppgitt />
+                ) : (
+                    <EnsligTextArea
+                        value={periodeBegrunnelse.value}
+                        onChange={(event) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            periodeBegrunnelse.onChange(event);
+                        }}
+                        label="Begrunnelse for vedtaksperiode"
+                        maxLength={0}
+                        erLesevisning={!behandlingErRedigerbar}
+                        feilmelding={formState.errors.periodeBegrunnelse}
+                    />
+                )}
+                <WrapperMarginTop>
                     <VedtaksperiodeValg
                         vedtaksperiodeListe={vedtaksperiodeState}
                         valideringsfeil={formState.errors.perioder}
                         setValideringsFeil={formState.setErrors}
                     />
-                    {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
-                        <IngenBegrunnelseOppgitt />
-                    ) : (
-                        <EnsligTextArea
-                            value={periodeBegrunnelse.value}
-                            onChange={(event) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                periodeBegrunnelse.onChange(event);
-                            }}
-                            label="Begrunnelse"
-                            maxLength={0}
-                            erLesevisning={!behandlingErRedigerbar}
-                            feilmelding={formState.errors.periodeBegrunnelse}
-                        />
-                    )}
-                </VedtaksperiodeWrapper>
-                <WrapperPaddingTop className={'blokk-m'}>
-                    <Undertittel className={'blokk-s'}>Inntekt</Undertittel>
-                    {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
-                        <IngenBegrunnelseOppgitt />
-                    ) : (
-                        <EnsligTextAreaWrapper>
-                            <EnsligTextArea
-                                value={inntektBegrunnelse.value}
-                                onChange={(event) => {
-                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                    inntektBegrunnelse.onChange(event);
-                                }}
-                                label="Begrunnelse for inntektsfastsettelse"
-                                maxLength={0}
-                                erLesevisning={!behandlingErRedigerbar}
-                                feilmelding={formState.errors.inntektBegrunnelse}
-                            />
-                        </EnsligTextAreaWrapper>
-                    )}
+                </WrapperMarginTop>
+            </WrapperDobbelMarginTop>
+            <WrapperMarginTop>
+                <Heading spacing size="small" level="5">
+                    Inntekt
+                </Heading>
+                {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
+                    <IngenBegrunnelseOppgitt />
+                ) : (
+                    <EnsligTextArea
+                        value={inntektBegrunnelse.value}
+                        onChange={(event) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            inntektBegrunnelse.onChange(event);
+                        }}
+                        label="Begrunnelse for inntektsfastsettelse"
+                        maxLength={0}
+                        erLesevisning={!behandlingErRedigerbar}
+                        feilmelding={formState.errors.inntektBegrunnelse}
+                    />
+                )}
+                <WrapperMarginTop>
                     <InntektsperiodeValg
                         inntektsperiodeListe={inntektsperiodeState}
                         valideringsfeil={formState.errors.inntekter}
                         setValideringsFeil={formState.setErrors}
+                        samordningsfradragstype={typeSamordningsfradag}
+                        skalVelgeSamordningstype={skalVelgeSamordningstype}
+                        samordningValideringsfeil={formState.errors.samordningsfradragType}
                     />
-                    {skalVelgeSamordningstype && (
-                        <>
-                            <FamilieSelect
-                                bredde={'m'}
-                                value={typeSamordningsfradag.value}
-                                label={'Type samordningsfradag'}
-                                onChange={(event) => {
-                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                    typeSamordningsfradag.onChange(event);
-                                }}
-                                erLesevisning={!behandlingErRedigerbar}
-                            >
-                                <option value="">Velg</option>
-                                <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
-                                    Gjenlevendepensjon
-                                </option>
-                                <option value={ESamordningsfradragtype.UFØRETRYGD}>
-                                    Uføretrygd
-                                </option>
-                            </FamilieSelect>
-                            <SkjemaelementFeilmelding>
-                                {formState.errors.samordningsfradragType}
-                            </SkjemaelementFeilmelding>
-                        </>
-                    )}
-                    {behandlingErRedigerbar && (
-                        <WrapperMarginTop>
-                            <div className={'blokk-m'}>
-                                <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
-                                    Beregn
-                                </Knapp>
-                            </div>
-                        </WrapperMarginTop>
-                    )}
-                    <Utregningstabell beregnetStønad={beregnetStønad} />
-                </WrapperPaddingTop>
-                {feilmelding && (
-                    <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                        {feilmelding}
-                    </AlertStripeFeilPreWrap>
+                </WrapperMarginTop>
+                {behandlingErRedigerbar && (
+                    <WrapperMarginTop>
+                        <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
+                            Beregn
+                        </Knapp>
+                    </WrapperMarginTop>
                 )}
+            </WrapperMarginTop>
+            <WrapperDobbelMarginTop>
+                <Utregningstabell beregnetStønad={beregnetStønad} />
+            </WrapperDobbelMarginTop>
+            {feilmelding && (
+                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
+                    {feilmelding}
+                </AlertStripeFeilPreWrap>
+            )}
+            <WrapperDobbelMarginTop>
                 <Hovedknapp hidden={!behandlingErRedigerbar} htmlType="submit" disabled={laster}>
                     Lagre vedtak
                 </Hovedknapp>
-            </WrapperPaddingTop>
+            </WrapperDobbelMarginTop>
         </form>
     );
 };

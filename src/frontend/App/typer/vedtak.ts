@@ -237,6 +237,11 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
 };
 
+export const samordningsfradragstypeTilTekst: Record<ESamordningsfradragtype, string> = {
+    UFØRETRYGD: 'Uføretrygd',
+    GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
+};
+
 export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {
     UFØRETRYGD: 'Uføretrygd',
     GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
