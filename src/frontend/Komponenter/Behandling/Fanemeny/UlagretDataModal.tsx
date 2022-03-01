@@ -1,12 +1,18 @@
 import React, { FC } from 'react';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
-import { Knapp } from 'nav-frontend-knapper';
+import { Button } from '@navikt/ds-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 
-const StyledKnapp = styled(Knapp)`
-    margin-left: 3rem;
+const SentrerKnapper = styled.div`
+    display: flex;
+    justify-content: center;
+
+    > button {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
 `;
 
 const UlagretDataModal: FC = () => {
@@ -28,28 +34,28 @@ const UlagretDataModal: FC = () => {
                 className: 'cake',
             }}
         >
-            <Knapp
-                key={'Forlat siden'}
-                type={'standard'}
-                onClick={() => {
-                    if (valgtSide) {
-                        nullstillIkkePersisterteKomponenter();
-                        navigate(valgtSide);
-                    }
-                    settVisUlagretDataModal(false);
-                }}
-            >
-                Forlat siden
-            </Knapp>
-            <StyledKnapp
-                key={'Gå tilbake'}
-                type={'hoved'}
-                onClick={() => {
-                    settVisUlagretDataModal(false);
-                }}
-            >
-                Gå tilbake for å lagre
-            </StyledKnapp>
+            <SentrerKnapper>
+                <Button
+                    variant="tertiary"
+                    onClick={() => {
+                        if (valgtSide) {
+                            nullstillIkkePersisterteKomponenter();
+                            navigate(valgtSide);
+                        }
+                        settVisUlagretDataModal(false);
+                    }}
+                >
+                    Forlat siden
+                </Button>
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        settVisUlagretDataModal(false);
+                    }}
+                >
+                    Gå tilbake for å lagre
+                </Button>
+            </SentrerKnapper>
         </UIModalWrapper>
     );
 };
