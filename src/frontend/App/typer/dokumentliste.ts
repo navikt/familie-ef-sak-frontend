@@ -8,4 +8,9 @@ export interface Dokumentinfo {
     dato: string;
     journalposttype: Journalposttype;
     journalstatus: Journalstatus;
+    logiskeVedlegg: ILogiskVedlegg[];
+}
+
+export interface ILogiskVedlegg {
+    tittel: string;
 }
