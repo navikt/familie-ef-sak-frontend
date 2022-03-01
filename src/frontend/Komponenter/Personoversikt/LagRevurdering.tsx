@@ -108,6 +108,40 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             )
                                         )}
                             </StyledSelect>
+                            {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
+                                <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
+                                    <TekstForCheckboxGruppe>
+                                        Barna listet opp nedenfor har ikke vært en del av
+                                        behandlingen tidligere. Gjør en vurdering på hvorvidt disse
+                                        skal inkluderes i den nye revurderingen og velg de som er
+                                        relevante.
+                                    </TekstForCheckboxGruppe>
+                                    {nyeBarnSidenForrigeBehandling.map((nyttBarn) => {
+                                        return (
+                                            <Checkbox
+                                                key={nyttBarn.personIdent}
+                                                onClick={(e) => {
+                                                    if ((e.target as HTMLInputElement).checked) {
+                                                        settValgtBarn((prevState) => [
+                                                            ...prevState,
+                                                            nyttBarn,
+                                                        ]);
+                                                    } else {
+                                                        settValgtBarn((prevState) =>
+                                                            prevState.filter(
+                                                                (barn) =>
+                                                                    barn.personIdent !==
+                                                                    nyttBarn.personIdent
+                                                            )
+                                                        );
+                                                    }
+                                                }}
+                                                label={`${nyttBarn.navn} (${nyttBarn.personIdent})`}
+                                            />
+                                        );
+                                    })}
+                                </StyledCheckboxGruppe>
+                            )}
                             <FlexDiv>
                                 <StyledFamilieDatovelgder
                                     id={'krav-mottatt'}
@@ -148,41 +182,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                     </Flatknapp>
                                 </KnappeWrapper>
                             </FlexDiv>
-
-                            {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
-                                <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
-                                    <TekstForCheckboxGruppe>
-                                        Barna listet opp nedenfor har ikke vært en del av
-                                        behandlingen tidligere. Gjør en vurdering på hvorvidt disse
-                                        skal inkluderes i den nye revurderingen og velg de som er
-                                        relevante.
-                                    </TekstForCheckboxGruppe>
-                                    {nyeBarnSidenForrigeBehandling.map((nyttBarn) => {
-                                        return (
-                                            <Checkbox
-                                                key={nyttBarn.personIdent}
-                                                onClick={(e) => {
-                                                    if ((e.target as HTMLInputElement).checked) {
-                                                        settValgtBarn((prevState) => [
-                                                            ...prevState,
-                                                            nyttBarn,
-                                                        ]);
-                                                    } else {
-                                                        settValgtBarn((prevState) =>
-                                                            prevState.filter(
-                                                                (barn) =>
-                                                                    barn.personIdent !==
-                                                                    nyttBarn.personIdent
-                                                            )
-                                                        );
-                                                    }
-                                                }}
-                                                label={`${nyttBarn.navn} (${nyttBarn.personIdent})`}
-                                            />
-                                        );
-                                    })}
-                                </StyledCheckboxGruppe>
-                            )}
                         </>
                     );
                 }}
