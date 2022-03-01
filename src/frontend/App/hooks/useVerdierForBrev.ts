@@ -4,8 +4,8 @@ import { formaterIsoDato } from '../utils/formatter';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 
 enum EBehandlingFlettefelt {
-    fomdatoInnvilgelseFørstegangsbehandling = 'fomdatoInnvilgelseFørstegangsbehandling',
-    tomdatoInnvilgelseFørstegangsbehandling = 'tomdatoInnvilgelseFørstegangsbehandling',
+    fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
+    tomdatoInnvilgelseForstegangsbehandling = 'tomdatoInnvilgelseForstegangsbehandling',
 }
 
 export const useVerdierForBrev = (
@@ -22,10 +22,10 @@ export const useVerdierForBrev = (
             const { andeler } = tilkjentYtelse.data;
             settFlettefeltStore((prevState) => ({
                 ...prevState,
-                [EBehandlingFlettefelt.tomdatoInnvilgelseFørstegangsbehandling]: formaterIsoDato(
+                [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
                     andeler[andeler.length - 1].stønadTil
                 ),
-                [EBehandlingFlettefelt.fomdatoInnvilgelseFørstegangsbehandling]: formaterIsoDato(
+                [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
                     andeler[0].stønadFra
                 ),
             }));
