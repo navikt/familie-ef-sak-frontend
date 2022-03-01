@@ -7,9 +7,7 @@ import { VilkårProps } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 import { InngangsvilkårType } from '../vilkår';
 
-type AleneomsorgVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
-
-export const Aleneomsorg: React.FC<AleneomsorgVilkårProps> = ({
+export const Aleneomsorg: React.FC<VilkårProps> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,

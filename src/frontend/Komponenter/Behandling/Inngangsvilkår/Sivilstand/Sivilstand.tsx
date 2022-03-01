@@ -6,9 +6,7 @@ import { VilkårProps } from '../vilkårprops';
 import SivilstandInfo from './SivilstandInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-type SivilstandVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
-
-export const Sivilstand: React.FC<SivilstandVilkårProps> = ({
+export const Sivilstand: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,

@@ -6,9 +6,7 @@ import { VilkårProps } from '../vilkårprops';
 import MedlemskapInfo from './MedlemskapInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-type MedlemskapVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
-
-export const Medlemskap: React.FC<MedlemskapVilkårProps> = ({
+export const Medlemskap: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,

@@ -11,7 +11,6 @@ import Fane from './Fane';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    top: 96px;
 `;
 
 const StyledFanemeny = styled.div`

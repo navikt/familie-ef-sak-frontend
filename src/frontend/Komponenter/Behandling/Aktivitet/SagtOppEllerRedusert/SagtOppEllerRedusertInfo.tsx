@@ -13,28 +13,30 @@ import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
+    skalViseSøknadsdata: boolean;
 }
 
-const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert }) => {
+const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, skalViseSøknadsdata }) => {
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
         <>
             <GridTabell>
-                {sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
-                    <>
-                        <HarSagtOppEllerRedusertStilling
-                            sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
-                            årsak={årsak}
-                            dato={dato}
-                        />
-                    </>
-                ) : (
-                    <Normaltekst className="tekstUtenIkon">
-                        Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
-                        blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn 50
-                        %.
-                    </Normaltekst>
-                )}
+                {skalViseSøknadsdata &&
+                    (sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
+                        <>
+                            <HarSagtOppEllerRedusertStilling
+                                sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
+                                årsak={årsak}
+                                dato={dato}
+                            />
+                        </>
+                    ) : (
+                        <Normaltekst className="tekstUtenIkon">
+                            Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har
+                            ikke blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber
+                            mer enn 50 %.
+                        </Normaltekst>
+                    ))}
             </GridTabell>
         </>
     );

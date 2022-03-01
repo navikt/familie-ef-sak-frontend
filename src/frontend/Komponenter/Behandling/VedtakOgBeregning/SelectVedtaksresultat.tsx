@@ -3,11 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { Undertittel } from 'nav-frontend-typografi';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../App/context/AppContext';
+import { Heading } from '@navikt/ds-react';
 
 interface Props {
     behandling: Behandling;
@@ -33,7 +33,9 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
 
     return (
         <section>
-            <Undertittel className={'blokk-s'}>Vedtak</Undertittel>
+            <Heading spacing size="small" level="5">
+                Vedtaksresultat
+            </Heading>
             <StyledSelect
                 value={resultatType}
                 erLesevisning={!behandlingErRedigerbar}

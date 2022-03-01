@@ -6,9 +6,7 @@ import { VilkårProps } from '../vilkårprops';
 import SamlivInfo from './SamlivInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-type SamlivVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
-
-export const Samliv: React.FC<SamlivVilkårProps> = ({
+export const Samliv: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
