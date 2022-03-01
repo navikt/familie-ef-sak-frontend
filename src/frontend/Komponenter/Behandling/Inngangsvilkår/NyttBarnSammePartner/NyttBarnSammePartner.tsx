@@ -6,9 +6,7 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-type NyttBarnSammePartnerVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
-
-export const NyttBarnSammePartner: React.FC<NyttBarnSammePartnerVilkårProps> = ({
+export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
