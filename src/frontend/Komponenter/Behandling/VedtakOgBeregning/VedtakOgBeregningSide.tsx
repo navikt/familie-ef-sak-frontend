@@ -38,7 +38,7 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
             {({ behandling, vilkår }) => {
                 return (
                     <>
-                        <Vedtaksoppsummering vilkår={vilkår} behandlingId={behandlingId} />
+                        <Vedtaksoppsummering vilkår={vilkår} behandling={behandling} />
                         {behandling.steg === Steg.VILKÅR ? (
                             <AlertStripeIkkeFerdigBehandletVilkår />
                         ) : (

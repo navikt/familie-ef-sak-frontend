@@ -11,6 +11,8 @@ import {
 import { Søknadsdatoer } from '../VedtakOgBeregning/Søknadsdatoer';
 import { Heading } from '@navikt/ds-react';
 import navFarger from 'nav-frontend-core';
+import { Behandling } from '../../../App/typer/fagsak';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 const OppsummeringContainer = styled.div`
     display: flex;
@@ -31,8 +33,9 @@ const Oppsummeringsboks = styled.div`
 
 export const Vedtaksoppsummering: React.FC<{
     vilkår: IVilkår;
-    behandlingId: string;
-}> = ({ vilkår, behandlingId }) => {
+    behandling: Behandling;
+}> = ({ vilkår, behandling }) => {
+    const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const aktivitetsvilkår = sorterUtAktivitetsVilkår(vilkår);
     const tidligereVedtaksvilkår = sorterUtTidligereVedtaksvilkår(vilkår);
@@ -46,9 +49,11 @@ export const Vedtaksoppsummering: React.FC<{
                 <ResultatVisning vilkårsvurderinger={inngangsvilkår} tittel="Inngangsvilkår:" />
                 <ResultatVisning vilkårsvurderinger={aktivitetsvilkår} tittel="Aktivitet:" />
             </Oppsummeringsboks>
-            <Oppsummeringsboks>
-                <Søknadsdatoer behandlingId={behandlingId} />
-            </Oppsummeringsboks>
+            {skalViseSøknadsdata && (
+                <Oppsummeringsboks>
+                    <Søknadsdatoer behandlingId={behandling.id} />
+                </Oppsummeringsboks>
+            )}
             <Oppsummeringsboks>
                 <TidligereVedtakOppsummering tidligereVedtaksvilkår={tidligereVedtaksvilkår} />
             </Oppsummeringsboks>
