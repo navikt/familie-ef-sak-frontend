@@ -10,6 +10,7 @@ import {
 } from './utils';
 import { Søknadsdatoer } from '../VedtakOgBeregning/Søknadsdatoer';
 import { Heading } from '@navikt/ds-react';
+import navFarger from 'nav-frontend-core';
 
 const OppsummeringContainer = styled.div`
     display: flex;
@@ -25,10 +26,10 @@ const Oppsummeringsboks = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     padding: 1rem;
-    background-color: #f7f7f7;
+    background-color: ${navFarger.navGraBakgrunn};
 `;
 
-export const Søknadsoppsummering: React.FC<{
+export const Vedtaksoppsummering: React.FC<{
     vilkår: IVilkår;
     behandlingId: string;
 }> = ({ vilkår, behandlingId }) => {

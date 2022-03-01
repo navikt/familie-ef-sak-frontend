@@ -39,7 +39,7 @@ export const resultatTilTekst: Record<string, string> = {
     SKAL_IKKE_VURDERES: 'ikke vurdert',
 };
 
-export const resultatTilTall: Record<string, number> = {
+export const resultatTilTall: Record<Vilkårsresultat, number> = {
     OPPFYLT: 1,
     IKKE_TATT_STILLING_TIL: 2,
     IKKE_OPPFYLT: 3,
@@ -62,7 +62,7 @@ export const ResultatVisning: React.FC<{
     return (
         <Container>
             {Object.entries(oppsummeringAvVilkårsresultat)
-                .sort((a, b) => sorterVilkårsresultat(a, b))
+                .sort(sorterVilkårsresultat)
                 .map(([vilkårsresultat, antallVilkårsresultat], i) => (
                     <ResultatGrid>
                         <BoldTekst size="small">{i == 0 ? tittel : ''}</BoldTekst>

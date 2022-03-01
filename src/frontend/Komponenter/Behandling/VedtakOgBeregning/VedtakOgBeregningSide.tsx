@@ -4,7 +4,7 @@ import { Steg } from '../Høyremeny/Steg';
 import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { Søknadsoppsummering } from '../Vilkårresultat/Søknadsoppsummering';
+import { Vedtaksoppsummering } from '../Vilkårresultat/Vedtaksoppsummering';
 import VedtakOgBeregning from './VedtakOgBeregning';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
@@ -38,7 +38,7 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
             {({ behandling, vilkår }) => {
                 return (
                     <>
-                        <Søknadsoppsummering vilkår={vilkår} behandlingId={behandlingId} />
+                        <Vedtaksoppsummering vilkår={vilkår} behandlingId={behandlingId} />
                         {behandling.steg === Steg.VILKÅR ? (
                             <AlertStripeIkkeFerdigBehandletVilkår />
                         ) : (
