@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 import { Back, Next } from '@navikt/ds-icons';
+import navFarger from 'nav-frontend-core';
 
 interface IHøyremenyProps {
     behandlingId: string;
@@ -34,7 +35,7 @@ const StyledNext = styled(Next)`
 const StyledButton = styled.button<StyledButtonProps>`
     position: absolute;
 
-    background-color: #3386e0;
+    background-color: ${navFarger.navBlaLighten20};
 
     right: ${(p) => (p.åpenHøyremeny ? '19rem' : '12px')};
 
@@ -43,7 +44,6 @@ const StyledButton = styled.button<StyledButtonProps>`
     width: 24px;
     height: 24px;
 
-    z-index: 99999;
     border-radius: 50%;
 
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));

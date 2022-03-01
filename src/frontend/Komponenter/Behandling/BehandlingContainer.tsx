@@ -49,7 +49,7 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
 
     overflow-x: scroll;
 
-    max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 1.5rem)' : '100%')};
+    max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 `;
 
 const BehandlingContainer: FC = () => {

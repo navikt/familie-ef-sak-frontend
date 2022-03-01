@@ -15,7 +15,7 @@ interface StatusMenyInnholdProps {
 }
 
 interface StatusProps {
-    singel?: boolean;
+    kunEttElement?: boolean;
 }
 
 export const GråTekst = styled(Normaltekst)`
@@ -83,7 +83,7 @@ export const StatuserLitenSkjerm = styled.div`
 export const Status = styled.div<StatusProps>`
     display: flex;
     width: 100%;
-    margin-right: ${(props) => (props.singel ? '0' : '1.3rem')};
+    margin-right: ${(props) => (props.kunEttElement ? '0' : '1.3rem')};
 
     flex-gap: 0.5rem;
     > p {

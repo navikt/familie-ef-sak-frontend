@@ -33,7 +33,7 @@ const Visningsnavn = styled(Element)`
     white-space: nowrap;
 `;
 
-const StyledLenke = styled(Lenke)`
+const ResponsivLenke = styled(Lenke)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -115,7 +115,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 ident={personIdent}
                 kjønn={kjønn}
                 navn={
-                    <StyledLenke
+                    <ResponsivLenke
                         role={'link'}
                         href={`/fagsak/${fagsakId}`}
                         onClick={(e) => {
@@ -124,7 +124,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         }}
                     >
                         <Visningsnavn>{navn.visningsnavn}</Visningsnavn>
-                    </StyledLenke>
+                    </ResponsivLenke>
                 }
             >
                 {folkeregisterpersonstatus && (
@@ -168,7 +168,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 <>
                     <AlleStatuser behandling={behandling} />
                     <StatuserLitenSkjerm>
-                        <Status singel={true}>
+                        <Status kunEttElement={true}>
                             <GråTekst>Behandlingstype</GråTekst>
                             <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
                         </Status>
