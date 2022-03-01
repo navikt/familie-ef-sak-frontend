@@ -1,25 +1,16 @@
 import React from 'react';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from '../Vurdering/tekster';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
 import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
+import { BodyLong, Heading, Label } from '@navikt/ds-react';
 
 interface Props {
     tidligereVedtaksvilkår: IVurdering[];
 }
-
-const KomponentWrapper = styled.div`
-    padding-top: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-`;
-
-const DelvilkårWrapper = styled.div`
-    padding-top: 1rem;
-`;
 
 const TekstWrapper = styled.div`
     padding-top: 0.5rem;
@@ -34,16 +25,24 @@ const Ikontekst = styled(Normaltekst)`
     margin-left: 0.25rem;
 `;
 
+const Container = styled.div`
+    margin-top: 0.5rem;
+`;
+
 const TidligereVedtakOppsummering: React.FC<Props> = ({ tidligereVedtaksvilkår }) => {
     return (
-        <KomponentWrapper>
-            <Undertittel>Tidligere vedtaksperioder</Undertittel>
+        <>
+            <Heading spacing size="small" level="5">
+                Tidligere vedtaksperioder
+            </Heading>
             {tidligereVedtaksvilkår.map((vurdering) => {
                 return vurdering.delvilkårsvurderinger.map((delvilkår) => {
                     return delvilkår.vurderinger.map((vurdering) => {
                         return (
-                            <DelvilkårWrapper>
-                                <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
+                            <Container>
+                                <Label size="small">
+                                    {delvilkårTypeTilTekst[vurdering.regelId]}
+                                </Label>
                                 {!vurdering.svar && (
                                     <FlexDiv flexDirection="row" className="blokk-xxs">
                                         <VilkårsresultatIkon
@@ -53,7 +52,11 @@ const TidligereVedtakOppsummering: React.FC<Props> = ({ tidligereVedtaksvilkår 
                                     </FlexDiv>
                                 )}
                                 {vurdering.svar && (
-                                    <TekstWrapper>{svarTypeTilTekst[vurdering.svar]}</TekstWrapper>
+                                    <TekstWrapper>
+                                        <BodyLong size="small">
+                                            {svarTypeTilTekst[vurdering.svar]}
+                                        </BodyLong>
+                                    </TekstWrapper>
                                 )}
                                 {vurdering.begrunnelse && (
                                     <BegrunnelseWrapper>
@@ -65,12 +68,12 @@ const TidligereVedtakOppsummering: React.FC<Props> = ({ tidligereVedtaksvilkår 
                                         </TekstWrapper>
                                     </BegrunnelseWrapper>
                                 )}
-                            </DelvilkårWrapper>
+                            </Container>
                         );
                     });
                 });
             })}
-        </KomponentWrapper>
+        </>
     );
 };
 
