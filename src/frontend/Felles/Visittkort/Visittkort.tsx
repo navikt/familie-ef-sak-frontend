@@ -27,6 +27,18 @@ import {
     GråTekst,
 } from './Status/StatusElementer';
 
+const Visningsnavn = styled(Element)`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`;
+
+const ResponsivLenke = styled(Lenke)`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`;
+
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
 
@@ -103,7 +115,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 ident={personIdent}
                 kjønn={kjønn}
                 navn={
-                    <Lenke
+                    <ResponsivLenke
                         role={'link'}
                         href={`/fagsak/${fagsakId}`}
                         onClick={(e) => {
@@ -111,8 +123,8 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                             gåTilUrl(`/fagsak/${fagsakId}`);
                         }}
                     >
-                        <Element>{navn.visningsnavn}</Element>
-                    </Lenke>
+                        <Visningsnavn>{navn.visningsnavn}</Visningsnavn>
+                    </ResponsivLenke>
                 }
             >
                 {folkeregisterpersonstatus && (
@@ -156,7 +168,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 <>
                     <AlleStatuser behandling={behandling} />
                     <StatuserLitenSkjerm>
-                        <Status>
+                        <Status kunEttElement={true}>
                             <GråTekst>Behandlingstype</GråTekst>
                             <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
                         </Status>

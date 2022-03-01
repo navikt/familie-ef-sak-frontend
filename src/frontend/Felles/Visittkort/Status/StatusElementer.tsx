@@ -14,6 +14,10 @@ interface StatusMenyInnholdProps {
     åpen: boolean;
 }
 
+interface StatusProps {
+    kunEttElement?: boolean;
+}
+
 export const GråTekst = styled(Normaltekst)`
     color: ${navFarger.navGra60};
 `;
@@ -49,9 +53,7 @@ const StatusMenyInnhold = styled.div`
 `;
 
 const VisStatuserKnapp = styled(Button)`
-    padding: 0.5rem;
-    padding-top: 1rem;
-    padding-right: 2rem;
+    color: ${navFarger.navGra60};
 `;
 
 export const Statuser = styled.div`
@@ -78,10 +80,10 @@ export const StatuserLitenSkjerm = styled.div`
     }
 `;
 
-export const Status = styled.div`
+export const Status = styled.div<StatusProps>`
     display: flex;
     width: 100%;
-    margin-right: 1.3rem;
+    margin-right: ${(props) => (props.kunEttElement ? '0' : '1.3rem')};
 
     flex-gap: 0.5rem;
     > p {
@@ -96,6 +98,7 @@ export const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
     return (
         <div>
             <VisStatuserKnapp
+                variant="tertiary"
                 onClick={() => {
                     settÅpenStatusMeny(!åpenStatusMeny);
                 }}
