@@ -13,6 +13,7 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     ikkeVurderVilkår,
     nullstillVurdering,
     feilmeldinger,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === AktivitetsvilkårType.SAGT_OPP_ELLER_REDUSERT
@@ -32,6 +33,7 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
                         {grunnlag.sagtOppEllerRedusertStilling && (
                             <SagtOppEllerRedusertInfo
                                 sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
                             />
                         )}
                     </>
