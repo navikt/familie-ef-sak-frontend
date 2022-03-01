@@ -62,10 +62,11 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 >
                     {dokument.tittel}
                 </LenkeVenstreMargin>
-                {dokument.logiskeVedlegg &&
-                    dokument.logiskeVedlegg?.map((logiskVedlegg) => (
-                        <DivMedVenstreMargin>{logiskVedlegg.tittel}</DivMedVenstreMargin>
-                    ))}
+                {dokument.logiskeVedlegg.map((logiskVedlegg, index) => (
+                    <DivMedVenstreMargin key={`${logiskVedlegg.tittel}${index}`}>
+                        {logiskVedlegg.tittel}
+                    </DivMedVenstreMargin>
+                ))}
             </Td>
             <Td></Td>
         </tr>
