@@ -1,15 +1,13 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Steg } from '../Høyremeny/Steg';
-import { Søknadsdatoer } from './Søknadsdatoer';
 import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { VilkårsresultatOppsummering } from '../Vilkårresultat/VilkårsresultatOppsummering';
+import { Vedtaksoppsummering } from '../Vilkårresultat/Vedtaksoppsummering';
 import VedtakOgBeregning from './VedtakOgBeregning';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -38,12 +36,9 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
     return (
         <DataViewer response={{ behandling, vilkår }}>
             {({ behandling, vilkår }) => {
-                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-
                 return (
                     <>
-                        <VilkårsresultatOppsummering vilkår={vilkår} />
-                        {skalViseSøknadsdata && <Søknadsdatoer behandlingId={behandlingId} />}
+                        <Vedtaksoppsummering vilkår={vilkår} behandlingId={behandlingId} />
                         {behandling.steg === Steg.VILKÅR ? (
                             <AlertStripeIkkeFerdigBehandletVilkår />
                         ) : (
