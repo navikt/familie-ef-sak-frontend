@@ -6,9 +6,7 @@ import { VilkårProps } from '../vilkårprops';
 import OppholdInfo from './OppholdInfo';
 import { Vilkårstittel } from '../Vilkårstittel';
 
-type OppholdVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
-
-export const Opphold: React.FC<OppholdVilkårProps> = ({
+export const Opphold: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,

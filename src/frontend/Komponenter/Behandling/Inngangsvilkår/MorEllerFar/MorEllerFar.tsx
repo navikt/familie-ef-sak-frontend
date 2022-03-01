@@ -1,14 +1,12 @@
 import React from 'react';
-import { VilkårProps } from '../vilkårprops';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import { InngangsvilkårType } from '../vilkår';
 import MorEllerFarInfo from './MorEllerFarInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { Vilkårstittel } from '../Vilkårstittel';
+import { VilkårProps } from '../vilkårprops';
 
-type MorEllerFarVilkårProps = VilkårProps & { skalViseSøknadsdata: boolean };
-
-export const MorEllerFar: React.FC<MorEllerFarVilkårProps> = ({
+export const MorEllerFar: React.FC<VilkårProps> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,

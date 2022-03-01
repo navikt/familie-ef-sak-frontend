@@ -4,6 +4,8 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Aktivitet } from './Aktivitet/Aktivitet';
 import { SagtOppEllerRedusert } from './SagtOppEllerRedusert/SagtOppEllerRedusert';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 interface Props {
     behandlingId: string;
@@ -18,6 +20,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
         nullstillVurdering,
         ikkeVurderVilkår,
     } = useHentVilkår();
+    const { behandling } = useBehandling();
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {
@@ -28,8 +31,9 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
         // eslint-disable-next-line
     }, [behandlingId]);
     return (
-        <DataViewer response={{ vilkår }}>
-            {({ vilkår }) => {
+        <DataViewer response={{ behandling, vilkår }}>
+            {({ behandling, vilkår }) => {
+                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
                 return (
                     <>
                         <Aktivitet
@@ -39,6 +43,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <SagtOppEllerRedusert
                             ikkeVurderVilkår={ikkeVurderVilkår}
@@ -47,6 +52,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
                             grunnlag={vilkår.grunnlag}
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>
                 );

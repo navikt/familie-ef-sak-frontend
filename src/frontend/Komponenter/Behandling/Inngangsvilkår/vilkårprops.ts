@@ -20,4 +20,5 @@ export interface VilkårProps {
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     feilmeldinger: Vurderingsfeilmelding;
+    skalViseSøknadsdata: boolean;
 }
