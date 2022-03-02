@@ -13,13 +13,14 @@ import { Heading } from '@navikt/ds-react';
 import navFarger from 'nav-frontend-core';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
-const OppsummeringContainer = styled.div`
+const OppsummeringContainer = styled.div<{ åpenHøyremeny: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     margin-right: 0.5rem;
-    @media only screen and (max-width: 1450px) {
+    @media only screen and (max-width: ${(p) => (p.åpenHøyremeny ? '1450px' : '1150px')}) {
         flex-wrap: wrap;
     }
 `;
@@ -39,9 +40,10 @@ export const Vedtaksoppsummering: React.FC<{
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const aktivitetsvilkår = sorterUtAktivitetsVilkår(vilkår);
     const tidligereVedtaksvilkår = sorterUtTidligereVedtaksvilkår(vilkår);
+    const { åpenHøyremeny } = useBehandling();
 
     return (
-        <OppsummeringContainer>
+        <OppsummeringContainer åpenHøyremeny={åpenHøyremeny}>
             <Oppsummeringsboks>
                 <Heading spacing size="small" level="5">
                     Vilkårsvurdering

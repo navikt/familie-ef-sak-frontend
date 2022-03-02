@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import Høyremeny from './Høyremeny/Høyremeny';
 import styled from 'styled-components';
 import Fanemeny from './Fanemeny/Fanemeny';
@@ -68,8 +68,7 @@ const BehandlingContent: FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
-
-    const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
+    const { åpenHøyremeny } = useBehandling();
 
     return (
         <>
@@ -86,11 +85,7 @@ const BehandlingContent: FC<{
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
-                    <Høyremeny
-                        åpenHøyremeny={åpenHøyremeny}
-                        behandlingId={behandling.id}
-                        settÅpenHøyremeny={settÅpenHøyremeny}
-                    />
+                    <Høyremeny åpenHøyremeny={åpenHøyremeny} behandlingId={behandling.id} />
                 </HøyreMenyWrapper>
             </Container>
         </>

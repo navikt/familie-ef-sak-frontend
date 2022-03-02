@@ -50,6 +50,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
 
     const [visBrevmottakereModal, settVisBrevmottakereModal] = useState(false);
     const [visHenleggModal, settVisHenleggModal] = useState(false);
+    const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
     return {
         behandling,
@@ -66,6 +67,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         settVisBrevmottakereModal,
         visHenleggModal,
         settVisHenleggModal,
+        åpenHøyremeny,
+        settÅpenHøyremeny,
     };
 });
 

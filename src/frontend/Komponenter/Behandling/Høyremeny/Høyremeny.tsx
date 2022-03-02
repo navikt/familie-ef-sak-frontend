@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import Dokumentoversikt from './Dokumentoversikt';
 import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
@@ -7,11 +7,11 @@ import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 import { Back, Next } from '@navikt/ds-icons';
 import navFarger from 'nav-frontend-core';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 interface IHøyremenyProps {
     behandlingId: string;
     åpenHøyremeny: boolean;
-    settÅpenHøyremeny: Dispatch<SetStateAction<boolean>>;
 }
 
 interface StyledButtonProps {
@@ -59,12 +59,10 @@ export enum Høyremenyvalg {
     Logg = 'Logg',
 }
 
-const Høyremeny: React.FC<IHøyremenyProps> = ({
-    behandlingId,
-    åpenHøyremeny,
-    settÅpenHøyremeny,
-}) => {
+const Høyremeny: React.FC<IHøyremenyProps> = ({ behandlingId, åpenHøyremeny }) => {
     const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Logg);
+    const { settÅpenHøyremeny } = useBehandling();
+
     return (
         <>
             {åpenHøyremeny ? (
