@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { RessursStatus } from '../../App/typer/ressurs';
@@ -8,6 +8,7 @@ import Infotrygdperioderoversikt from '../Personoversikt/Infotrygdperioderoversi
 import { useHentSøkPerson } from '../../App/hooks/useSøkPerson';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import Info from '../../Felles/Ikoner/Info';
+import { Migreringsstatus } from '../../App/typer/migrering';
 
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
@@ -59,18 +60,30 @@ const SøkEtterPerson: React.FC<OppgaveOgJournalpostId & { personIdent: string }
         }
     }, [hentFagsakPerson, søkPersonResponse]);
 
+    const gåVidereTilJournalføring = useCallback(() => {
+        navigate(`/journalfor?journalpostId=${journalpostId}&oppgaveId=${oppgaveId}`);
+    }, [navigate, journalpostId, oppgaveId]);
+
     useEffect(() => {
         if (
             fagsakPerson.status === RessursStatus.SUKSESS &&
             fagsakPerson.data.overgangsstønad?.erMigrert
         ) {
-            navigate(`/journalfor?journalpostId=${journalpostId}&oppgaveId=${oppgaveId}`);
+            gåVidereTilJournalføring();
         }
-    }, [fagsakPerson, navigate, oppgaveId, journalpostId]);
+    }, [fagsakPerson, gåVidereTilJournalføring]);
 
     const triggerHentFagsak = () => {
         if (fagsakPerson.status === RessursStatus.SUKSESS && fagsakPerson.data.id) {
             hentFagsakPerson(fagsakPerson.data.id);
+        }
+    };
+
+    const onMigrert = (status: Migreringsstatus) => {
+        if (status === Migreringsstatus.ER_MIGRERT) {
+            triggerHentFagsak();
+        } else if (status === Migreringsstatus.KAN_GÅ_VIDERE_TIL_JOURNALFØRING) {
+            gåVidereTilJournalføring();
         }
     };
 
@@ -90,9 +103,8 @@ const SøkEtterPerson: React.FC<OppgaveOgJournalpostId & { personIdent: string }
                                         skolepenger: fagsakPerson.skolepenger?.id,
                                     }}
                                     personIdent={personIdent}
-                                    onMigrert={() => {
-                                        triggerHentFagsak();
-                                    }}
+                                    onMigrert={onMigrert}
+                                    fraOppgavebenken={true}
                                 />
                                 <div>
                                     <Info heigth={24} width={24} /> Etter migrering vil du bli sendt
