@@ -19,7 +19,7 @@ const Wrapper = styled.div`
     padding: 1rem 2rem;
 `;
 
-const VedtakOgBeregning: FC<Props> = ({ behandling, vilkår }) => {
+const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
@@ -62,4 +62,4 @@ const VedtakOgBeregning: FC<Props> = ({ behandling, vilkår }) => {
     );
 };
 
-export default VedtakOgBeregning;
+export default VedtakOgBeregningOvergangsstønad;

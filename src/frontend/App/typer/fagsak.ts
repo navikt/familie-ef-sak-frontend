@@ -41,6 +41,7 @@ export interface Behandling {
     opprettet: string;
     resultat: BehandlingResultat;
     behandlingsårsak: Behandlingsårsak;
+    stønadstype: Stønadstype;
 }
 
 export interface IEndringerRegistergrunnlag {

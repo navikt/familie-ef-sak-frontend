@@ -64,9 +64,9 @@ export const ResultatVisning: React.FC<{
             {Object.entries(oppsummeringAvVilkårsresultat)
                 .sort(sorterVilkårsresultat)
                 .map(([vilkårsresultat, antallVilkårsresultat], i) => (
-                    <ResultatGrid>
+                    <ResultatGrid key={i}>
                         <BoldTekst size="small">{i == 0 ? tittel : ''}</BoldTekst>
-                        <ResultatIkonOgTekstWrapper key={i}>
+                        <ResultatIkonOgTekstWrapper>
                             <VilkårsresultatIkon
                                 vilkårsresultat={vilkårsresultat as Vilkårsresultat}
                             />
