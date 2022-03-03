@@ -51,9 +51,8 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     const navigate = useNavigate();
 
     const opprettTilbakekrevingBehandling = () => {
-        if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING) {
+        if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && !senderInnBehandling) {
             settSenderInnBehandling(true);
-
             axiosRequest<Ressurs<void>, null>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/tilbakekreving/fagsak/${fagsakId}/opprett-tilbakekreving`,
