@@ -51,9 +51,8 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     const navigate = useNavigate();
 
     const opprettTilbakekrevingBehandling = () => {
-        if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING) {
+        if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && !senderInnBehandling) {
             settSenderInnBehandling(true);
-
             axiosRequest<Ressurs<void>, null>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/tilbakekreving/fagsak/${fagsakId}/opprett-tilbakekreving`,
@@ -76,22 +75,24 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     const lagRevurdering = (revurderingInnhold: RevurderingInnhold) => {
         settFeilmeldingModal('');
 
-        settSenderInnBehandling(true);
-        axiosRequest<Ressurs<void>, RevurderingInnhold>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
-            data: revurderingInnhold,
-        })
-            .then((response) => {
-                if (response.status === RessursStatus.SUKSESS) {
-                    navigate(`/behandling/${response.data}`);
-                } else {
-                    settFeilmeldingModal(response.frontendFeilmelding || response.melding);
-                }
+        if (!senderInnBehandling) {
+            settSenderInnBehandling(true);
+            axiosRequest<Ressurs<void>, RevurderingInnhold>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
+                data: revurderingInnhold,
             })
-            .finally(() => {
-                settSenderInnBehandling(false);
-            });
+                .then((response) => {
+                    if (response.status === RessursStatus.SUKSESS) {
+                        navigate(`/behandling/${response.data}`);
+                    } else {
+                        settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                    }
+                })
+                .finally(() => {
+                    settSenderInnBehandling(false);
+                });
+        }
     };
 
     return (
