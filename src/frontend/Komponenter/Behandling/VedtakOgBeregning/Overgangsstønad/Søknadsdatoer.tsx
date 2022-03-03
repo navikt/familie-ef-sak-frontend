@@ -1,15 +1,15 @@
-import { Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../App/utils/formatter';
+import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../../App/utils/formatter';
 import React, { useMemo } from 'react';
-import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { Ressurs } from '../../../App/typer/ressurs';
-import { ISøknadData } from '../../../App/typer/beregningssøknadsdata';
-import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import DataViewer from '../../../../Felles/DataViewer/DataViewer';
+import { Ressurs } from '../../../../App/typer/ressurs';
+import { ISøknadData } from '../../../../App/typer/beregningssøknadsdata';
+import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
-import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
+import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 
 const BoldTekst = styled(Label)`
     margin-left: 0.25rem;

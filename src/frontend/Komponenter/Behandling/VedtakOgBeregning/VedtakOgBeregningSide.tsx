@@ -4,15 +4,15 @@ import { Steg } from '../Høyremeny/Steg';
 import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { Vedtaksoppsummering } from '../Vilkårresultat/Vedtaksoppsummering';
-import VedtakOgBeregningOvergangsstønad from './VedtakOgBeregningOvergangsstønad';
+import { VedtaksoppsummeringOvergangsstønad } from './Overgangsstønad/VedtaksoppsummeringOvergangsstønad';
+import VedtakOgBeregningOvergangsstønad from './Overgangsstønad/VedtakOgBeregningOvergangsstønad';
+import VedtakOgBeregningBarnetilsyn from './Barnetilsyn/VedtakOgBeregningBarnetilsyn';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
-import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
-import { RessursStatus } from '../../../App/typer/ressurs';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { Behandling } from '../../../App/typer/fagsak';
+import { VedtaksoppsummeringBarnetilsyn } from './Barnetilsyn/VedtaksoppsummeringBarnetilsyn';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -27,19 +27,12 @@ const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
 
 export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { behandling } = useBehandling();
-    const { fagsak } = useHentFagsak();
 
     const { vilkår, hentVilkår } = useHentVilkår();
 
     const hentVilkårCallback = useCallback(() => {
         hentVilkår(behandlingId);
     }, [behandlingId, hentVilkår]);
-
-    useEffect(() => {
-        if (fagsak.status === RessursStatus.SUKSESS) {
-            console.log(fagsak.data.stønadstype);
-        }
-    }, [fagsak]);
 
     useEffect(() => {
         hentVilkårCallback();
@@ -74,7 +67,7 @@ const VedtakOgBeregningSideOvergangsstønad: React.FC<{
 }> = ({ behandling, vilkår }) => {
     return (
         <>
-            <Vedtaksoppsummering vilkår={vilkår} behandling={behandling} />
+            <VedtaksoppsummeringOvergangsstønad vilkår={vilkår} behandling={behandling} />
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (
@@ -90,11 +83,11 @@ const VedtakOgBeregningSideBarnetilsyn: React.FC<{
 }> = ({ behandling, vilkår }) => {
     return (
         <>
-            <Vedtaksoppsummering vilkår={vilkår} behandling={behandling} />
+            <VedtaksoppsummeringBarnetilsyn vilkår={vilkår} behandling={behandling} />
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (
-                <VedtakOgBeregningOvergangsstønad behandling={behandling} vilkår={vilkår} />
+                <VedtakOgBeregningBarnetilsyn behandling={behandling} vilkår={vilkår} />
             )}
         </>
     );

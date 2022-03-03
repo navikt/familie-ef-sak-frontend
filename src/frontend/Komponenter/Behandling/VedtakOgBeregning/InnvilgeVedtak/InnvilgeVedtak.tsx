@@ -25,7 +25,10 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import Utregningstabell from './Utregningstabell';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
-import { validerInnvilgetVedtakForm, validerVedtaksperioder } from '../vedtaksvalidering';
+import {
+    validerInnvilgetVedtakForm,
+    validerVedtaksperioder,
+} from '../Overgangsstønad/vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
