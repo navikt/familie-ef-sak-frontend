@@ -10,13 +10,14 @@ import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const BoldTekst = styled(Label)`
     margin-left: 0.25rem;
 `;
 
-const Container = styled.div`
-    width: 280px;
+const Container = styled.div<{ stønadstype: Stønadstype }>`
+    width: ${(p) => (p.stønadstype === Stønadstype.OVERGANGSSTØNAD ? '280px' : '300px')};
 `;
 
 const Div = styled(FlexDiv)`
@@ -28,7 +29,10 @@ const IkonOgTekstWrapper = styled.div`
     justify-content: flex-start;
 `;
 
-export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+export const Søknadsdatoer: React.FC<{ behandlingId: string; stønadstype: Stønadstype }> = ({
+    behandlingId,
+    stønadstype,
+}) => {
     const søknadDataConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -44,7 +48,7 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string }> = ({ behandlingI
     return (
         <DataViewer response={{ søknadDataResponse }}>
             {({ søknadDataResponse }) => (
-                <Container>
+                <Container stønadstype={stønadstype}>
                     <Heading spacing size="small" level="5">
                         Søknadsinformasjon
                     </Heading>

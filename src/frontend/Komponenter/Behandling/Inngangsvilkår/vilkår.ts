@@ -88,3 +88,9 @@ export enum AktivitetsvilkårType {
 export enum TidligereVedtaksperioderType {
     TIDLIGERE_VEDTAKSPERIODER = 'TIDLIGERE_VEDTAKSPERIODER',
 }
+
+export enum BarnetilsynsvilkårType {
+    AKTIVITET = 'AKTIVITET',
+    INNTEKT = 'INNTEKT',
+    ALDER_PÅ_BARN = 'ALDER_PÅ_BARN',
+}
