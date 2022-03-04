@@ -35,11 +35,11 @@ const TidligereVedtakOppsummering: React.FC<Props> = ({ tidligereVedtaksvilkår 
             <Heading spacing size="small" level="5">
                 Tidligere vedtaksperioder
             </Heading>
-            {tidligereVedtaksvilkår.map((vurdering) => {
+            {tidligereVedtaksvilkår.map((vurdering, index) => {
                 return vurdering.delvilkårsvurderinger.map((delvilkår) => {
                     return delvilkår.vurderinger.map((vurdering) => {
                         return (
-                            <Container>
+                            <Container key={index}>
                                 <Label size="small">
                                     {delvilkårTypeTilTekst[vurdering.regelId]}
                                 </Label>

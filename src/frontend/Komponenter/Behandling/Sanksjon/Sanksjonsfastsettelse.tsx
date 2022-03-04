@@ -26,7 +26,7 @@ import {
 } from '../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
-import { validerSanksjonereVedtakForm } from '../VedtakOgBeregning/vedtaksvalidering';
+import { validerSanksjonereVedtakForm } from '../VedtakOgBeregning/Overgangsstønad/vedtaksvalidering';
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FamilieSelect } from '@navikt/familie-form-elements';

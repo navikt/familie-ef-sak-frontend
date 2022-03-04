@@ -3,17 +3,17 @@ import {
     EPeriodetype,
     IInntektsperiode,
     IVedtaksperiode,
-} from '../../../App/typer/vedtak';
+} from '../../../../App/typer/vedtak';
 import {
     erMånedÅrEtter,
     erMånedÅrEtterEllerLik,
     erMånedÅrLik,
     plusMåneder,
     tilÅrMåned,
-} from '../../../App/utils/dato';
-import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
-import { FormErrors } from '../../../App/hooks/felles/useFormState';
-import { SanksjonereVedtakForm } from '../Sanksjon/Sanksjonsfastsettelse';
+} from '../../../../App/utils/dato';
+import { InnvilgeVedtakForm } from '../InnvilgeVedtak/InnvilgeVedtak';
+import { FormErrors } from '../../../../App/hooks/felles/useFormState';
+import { SanksjonereVedtakForm } from '../../Sanksjon/Sanksjonsfastsettelse';
 
 export const validerInnvilgetVedtakForm = ({
     perioder,

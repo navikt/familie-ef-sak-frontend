@@ -4,10 +4,15 @@ import { Steg } from '../Høyremeny/Steg';
 import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { Vedtaksoppsummering } from '../Vilkårresultat/Vedtaksoppsummering';
-import VedtakOgBeregning from './VedtakOgBeregning';
+import { VedtaksoppsummeringOvergangsstønad } from './Overgangsstønad/VedtaksoppsummeringOvergangsstønad';
+import VedtakOgBeregningOvergangsstønad from './Overgangsstønad/VedtakOgBeregningOvergangsstønad';
+import VedtakOgBeregningBarnetilsyn from './Barnetilsyn/VedtakOgBeregningBarnetilsyn';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
+import { Behandling } from '../../../App/typer/fagsak';
+import { VedtaksoppsummeringBarnetilsyn } from './Barnetilsyn/VedtaksoppsummeringBarnetilsyn';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -32,21 +37,58 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
     useEffect(() => {
         hentVilkårCallback();
     }, [hentVilkårCallback]);
-
     return (
         <DataViewer response={{ behandling, vilkår }}>
             {({ behandling, vilkår }) => {
-                return (
-                    <>
-                        <Vedtaksoppsummering vilkår={vilkår} behandling={behandling} />
-                        {behandling.steg === Steg.VILKÅR ? (
-                            <AlertStripeIkkeFerdigBehandletVilkår />
-                        ) : (
-                            <VedtakOgBeregning behandling={behandling} vilkår={vilkår} />
-                        )}
-                    </>
-                );
+                switch (behandling.stønadstype) {
+                    case Stønadstype.OVERGANGSSTØNAD:
+                        return (
+                            <VedtakOgBeregningSideOvergangsstønad
+                                behandling={behandling}
+                                vilkår={vilkår}
+                            />
+                        );
+                    case Stønadstype.BARNETILSYN:
+                        return (
+                            <VedtakOgBeregningSideBarnetilsyn
+                                behandling={behandling}
+                                vilkår={vilkår}
+                            />
+                        );
+                }
             }}
         </DataViewer>
+    );
+};
+
+const VedtakOgBeregningSideOvergangsstønad: React.FC<{
+    behandling: Behandling;
+    vilkår: IVilkår;
+}> = ({ behandling, vilkår }) => {
+    return (
+        <>
+            <VedtaksoppsummeringOvergangsstønad vilkår={vilkår} behandling={behandling} />
+            {behandling.steg === Steg.VILKÅR ? (
+                <AlertStripeIkkeFerdigBehandletVilkår />
+            ) : (
+                <VedtakOgBeregningOvergangsstønad behandling={behandling} vilkår={vilkår} />
+            )}
+        </>
+    );
+};
+
+const VedtakOgBeregningSideBarnetilsyn: React.FC<{
+    behandling: Behandling;
+    vilkår: IVilkår;
+}> = ({ behandling, vilkår }) => {
+    return (
+        <>
+            <VedtaksoppsummeringBarnetilsyn vilkår={vilkår} behandling={behandling} />
+            {behandling.steg === Steg.VILKÅR ? (
+                <AlertStripeIkkeFerdigBehandletVilkår />
+            ) : (
+                <VedtakOgBeregningBarnetilsyn behandling={behandling} vilkår={vilkår} />
+            )}
+        </>
     );
 };
