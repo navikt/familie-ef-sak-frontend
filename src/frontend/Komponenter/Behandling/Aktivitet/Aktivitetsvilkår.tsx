@@ -6,6 +6,9 @@ import { Aktivitet } from './Aktivitet/Aktivitet';
 import { SagtOppEllerRedusert } from './SagtOppEllerRedusert/SagtOppEllerRedusert';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { AktivitetArbeid } from './AktivitetArbeid/AktivitetArbeid';
+import { Inntekt } from './Inntekt/Inntekt';
+import { AlderPåBarn } from './AlderPåBarn/AlderPåBarn';
 
 interface Props {
     behandlingId: string;
@@ -30,6 +33,7 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
         }
         // eslint-disable-next-line
     }, [behandlingId]);
+
     return (
         <DataViewer response={{ behandling, vilkår }}>
             {({ behandling, vilkår }) => {
@@ -46,6 +50,36 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
                             skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                         <SagtOppEllerRedusert
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
+
+                        <AktivitetArbeid
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
+
+                        <Inntekt
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
+
+                        <AlderPåBarn
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}

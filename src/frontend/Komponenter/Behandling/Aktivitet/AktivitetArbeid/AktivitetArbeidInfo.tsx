@@ -1,0 +1,163 @@
+import React, { FC } from 'react';
+import { IAktivitet } from '../../../../App/typer/overgangsstønad';
+import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
+// import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
+// import { Element, Normaltekst } from 'nav-frontend-typografi';
+// import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from '../Aktivitet/typer';
+// import SelvstendigNæringsdrivendeEllerFrilanser from '../Aktivitet/SelvstendigNæringsdrivendeEllerFrilanser';
+// import Arbeidssøker from '../Aktivitet/Arbeidssøker';
+// import { TidligereUtdanninger, UnderUtdanning } from '../Aktivitet/Utdanning';
+// import Aksjeselskap from '../Aktivitet/Aksjeselskap';
+// import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+// import Annet from '../Aktivitet/Annet';
+import { SeksjonWrapper } from '../../../../Felles/Visningskomponenter/SeksjonWrapper';
+import { ArbeidstakerLønnsmottakerSomFrilanser } from '../Aktivitet/ArbeidstakerLønnsmottakerSomFrilanser';
+
+interface Props {
+    aktivitet: IAktivitet;
+    skalViseSøknadsdata: boolean;
+}
+
+const AktivitetArbeidInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
+    const {
+        arbeidssituasjon,
+        arbeidsforhold,
+        selvstendig,
+        aksjeselskap,
+        virksomhet,
+        arbeidssøker,
+        datoOppstartJobb,
+        underUtdanning,
+        tidligereUtdanninger,
+        særligeTilsynsbehov,
+        gjelderDeg,
+    } = aktivitet;
+
+    console.log(
+        'TOUCH ',
+        arbeidssituasjon,
+        arbeidsforhold,
+        selvstendig,
+        aksjeselskap,
+        virksomhet,
+        arbeidssøker,
+        datoOppstartJobb,
+        underUtdanning,
+        tidligereUtdanninger
+    );
+
+    console.log('TOUCH ', særligeTilsynsbehov, gjelderDeg);
+
+    return (
+        <>
+            <SeksjonWrapper>
+                {/*{skalViseSøknadsdata &&*/}
+                {/*    arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (*/}
+                {/*        <GridTabell kolonner={3}>*/}
+                {/*            <Søknadsgrunnlag />*/}
+                {/*            <Element className={'undertittel'}>*/}
+                {/*                {*/}
+                {/*                    ArbeidssituasjonTilTekst[*/}
+                {/*                        EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr*/}
+                {/*                    ]*/}
+                {/*                }*/}
+                {/*            </Element>*/}
+                {/*        </GridTabell>*/}
+                {/*    )}*/}
+
+                {skalViseSøknadsdata &&
+                    arbeidsforhold &&
+                    arbeidsforhold.map((arbeidsgiver, index) => (
+                        <GridTabell kolonner={3} key={arbeidsgiver.arbeidsgivernavn + index}>
+                            <ArbeidstakerLønnsmottakerSomFrilanser
+                                key={arbeidsgiver.arbeidsgivernavn + index}
+                                arbeidsforhold={arbeidsgiver}
+                            />
+                        </GridTabell>
+                    ))}
+
+                {/*{skalViseSøknadsdata &&*/}
+                {/*    selvstendig &&*/}
+                {/*    selvstendig.map((firma, index) => (*/}
+                {/*        <GridTabell kolonner={3} key={firma.organisasjonsnummer + index}>*/}
+                {/*            <SelvstendigNæringsdrivendeEllerFrilanser*/}
+                {/*                key={firma.organisasjonsnummer + index}*/}
+                {/*                firma={firma}*/}
+                {/*            />*/}
+                {/*        </GridTabell>*/}
+                {/*    ))}*/}
+
+                {/*{skalViseSøknadsdata &&*/}
+                {/*    aksjeselskap &&*/}
+                {/*    aksjeselskap.map((selskap, index) => (*/}
+                {/*        <GridTabell kolonner={3} key={selskap.navn + index}>*/}
+                {/*            <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />*/}
+                {/*        </GridTabell>*/}
+                {/*    ))}*/}
+
+                {/*{skalViseSøknadsdata && datoOppstartJobb && (*/}
+                {/*    <GridTabell kolonner={3}>*/}
+                {/*        <Søknadsgrunnlag />*/}
+                {/*        <Element className={'undertittel'}>*/}
+                {/*            {ArbeidssituasjonTilTekst[EArbeidssituasjon.harFåttJobbTilbud]}*/}
+                {/*        </Element>*/}
+                {/*        <Normaltekst className={'førsteDataKolonne'}>Startdato ny jobb</Normaltekst>*/}
+                {/*        <Normaltekst> {formaterNullableIsoDato(datoOppstartJobb)}</Normaltekst>*/}
+                {/*    </GridTabell>*/}
+                {/*)}*/}
+
+                {/*{skalViseSøknadsdata && virksomhet && (*/}
+                {/*    <GridTabell kolonner={3}>*/}
+                {/*        <Søknadsgrunnlag />*/}
+                {/*        <Element className={'undertittel'}>*/}
+                {/*            {ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]}*/}
+                {/*        </Element>*/}
+                {/*        <Normaltekst className={'førsteDataKolonne'}>*/}
+                {/*            Beskrivelse av virksomheten*/}
+                {/*        </Normaltekst>*/}
+                {/*        <Normaltekst> {virksomhet?.virksomhetsbeskrivelse}</Normaltekst>*/}
+                {/*    </GridTabell>*/}
+                {/*)}*/}
+
+                {/*{skalViseSøknadsdata && arbeidssøker && (*/}
+                {/*    <GridTabell kolonner={3}>*/}
+                {/*        <Arbeidssøker arbeidssøker={arbeidssøker} />{' '}*/}
+                {/*    </GridTabell>*/}
+                {/*)}*/}
+
+                {/*{skalViseSøknadsdata && underUtdanning && (*/}
+                {/*    <GridTabell kolonner={3}>*/}
+                {/*        <UnderUtdanning underUtdanning={underUtdanning} />*/}
+                {/*        {underUtdanning.utdanningEtterGrunnskolen && (*/}
+                {/*            <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />*/}
+                {/*        )}*/}
+                {/*    </GridTabell>*/}
+                {/*)}*/}
+
+                {/*{skalViseSøknadsdata &&*/}
+                {/*    arbeidssituasjon.includes(*/}
+                {/*        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker*/}
+                {/*    ) && (*/}
+                {/*        <GridTabell kolonner={3}>*/}
+                {/*            <Søknadsgrunnlag />*/}
+                {/*            <Element className={'undertittel'}>*/}
+                {/*                {*/}
+                {/*                    ArbeidssituasjonTilTekst[*/}
+                {/*                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker*/}
+                {/*                    ]*/}
+                {/*                }*/}
+                {/*            </Element>*/}
+                {/*        </GridTabell>*/}
+                {/*    )}*/}
+            </SeksjonWrapper>
+
+            {/*{skalViseSøknadsdata && særligeTilsynsbehov && (*/}
+            {/*    <SeksjonWrapper>*/}
+            {/*        <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />*/}
+            {/*    </SeksjonWrapper>*/}
+            {/*)}*/}
+        </>
+    );
+};
+
+export default AktivitetArbeidInfo;

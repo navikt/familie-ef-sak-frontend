@@ -1,42 +1,42 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
+//import AktivitetInfo from './AktivitetInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
+//import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 
-export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
+export const Inntekt: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
-    ikkeVurderVilkår,
     nullstillVurdering,
+    ikkeVurderVilkår,
     feilmeldinger,
-    skalViseSøknadsdata,
 }) => {
-    const vurdering = vurderinger.find(
-        (v) => v.vilkårType === AktivitetsvilkårType.SAGT_OPP_ELLER_REDUSERT
-    );
+    const { behandling } = useBehandling();
+    console.log('INNTEKT (Aktivitetsvilkår) : ', grunnlag, behandling); // TODO trenger vi disse på dette vilkåret senere?
+    const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.INNTEKT);
+
     if (!vurdering) {
         return <></>;
-        //return <div>Mangler vurdering for sagt opp arbeidsforhold</div>;
+        //return <div>Mangler vurdering for inntekt</div>;
     }
+
     return (
         <ToKolonnerLayout>
             {{
                 venstre: (
                     <>
-                        <Vilkårstittel
-                            tittel="Sagt opp arbeidsforhold"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                        {grunnlag.sagtOppEllerRedusertStilling && (
-                            <SagtOppEllerRedusertInfo
-                                sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
+                        <>
+                            <Vilkårstittel
+                                tittel="Inntekt"
+                                vilkårsresultat={vurdering.resultat}
+                                paragrafTittel={'§15-10'}
                             />
-                        )}
+                        </>
                     </>
                 ),
                 høyre: (

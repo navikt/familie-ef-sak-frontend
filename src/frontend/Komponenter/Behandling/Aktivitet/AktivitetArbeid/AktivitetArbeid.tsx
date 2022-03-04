@@ -1,15 +1,18 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import AktivitetInfo from './AktivitetInfo';
+//import AktivitetInfo from './AktivitetInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+//import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 
-export const Aktivitet: React.FC<VilkårProps> = ({
+import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import AktivitetArbeidInfo from './AktivitetArbeidInfo';
+
+export const AktivitetArbeid: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
@@ -18,15 +21,32 @@ export const Aktivitet: React.FC<VilkårProps> = ({
     feilmeldinger,
 }) => {
     const { behandling } = useBehandling();
+    const vurdering = vurderinger.find(
+        (v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET_ARBEID
+    );
 
-    const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET);
+    console.log(
+        'VURDERINGER: ',
+        vurderinger,
+        behandling,
+        ikkeVurderVilkår,
+        feilmeldinger,
+        nullstillVurdering,
+        lagreVurdering
+    );
+
+    console.log('GRUNNLAG: ', grunnlag);
+
     if (!vurdering) {
         return <></>;
-        // return <div>Mangler vurdering for aktivitet</div>;
+        // return <div>Mangler vurdering for aktivitet - arbeid </div>;
     }
+
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => {
+                console.log(behandling);
+
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
                 return (
@@ -34,16 +54,19 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                         {{
                             venstre: (
                                 <>
-                                    <Vilkårstittel
-                                        tittel="Aktivitet"
-                                        vilkårsresultat={vurdering.resultat}
-                                    />
-                                    {grunnlag.aktivitet && (
-                                        <AktivitetInfo // TODO - ny AktivitetArbeid her
-                                            aktivitet={grunnlag.aktivitet}
-                                            skalViseSøknadsdata={skalViseSøknadsdata}
+                                    <>
+                                        <Vilkårstittel
+                                            tittel="Aktivitet arbeid"
+                                            vilkårsresultat={vurdering.resultat}
+                                            paragrafTittel={'§15-10'}
                                         />
-                                    )}
+                                        {grunnlag.aktivitet && (
+                                            <AktivitetArbeidInfo
+                                                aktivitet={grunnlag.aktivitet}
+                                                skalViseSøknadsdata={skalViseSøknadsdata}
+                                            />
+                                        )}
+                                    </>
                                 </>
                             ),
                             høyre: (
