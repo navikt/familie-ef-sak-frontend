@@ -23,6 +23,10 @@ const StyledAlertStripe = styled(AlertStripeInfo)`
     }
 `;
 
+const InfotrygdperioderoversiktContainer = styled.div`
+    padding: 0.25rem;
+`;
+
 const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResponse }> = ({
     perioder,
 }) => {
@@ -90,7 +94,7 @@ const Infotrygdperioderoversikt: React.FC<{
     return (
         <DataViewer response={{ infotrygdPerioder }}>
             {({ infotrygdPerioder }) => (
-                <>
+                <InfotrygdperioderoversiktContainer>
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
                     <InfotrygdSaker personIdent={personIdent} />
                     <MigrerFagsak
@@ -98,7 +102,7 @@ const Infotrygdperioderoversikt: React.FC<{
                         onMigrert={onMigrert}
                         fraOppgavebenken={fraOppgavebenken}
                     />
-                </>
+                </InfotrygdperioderoversiktContainer>
             )}
         </DataViewer>
     );

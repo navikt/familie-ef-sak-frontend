@@ -7,7 +7,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Infotrygdperioderoversikt from '../Personoversikt/Infotrygdperioderoversikt';
 import { useHentSøkPerson } from '../../App/hooks/useSøkPerson';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
-import Info from '../../Felles/Ikoner/Info';
 import { Migreringsstatus } from '../../App/typer/migrering';
 
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
@@ -94,27 +93,17 @@ const SøkEtterPerson: React.FC<OppgaveOgJournalpostId & { personIdent: string }
                 {({ fagsakPerson }) => {
                     if (!fagsakPerson.overgangsstønad?.erMigrert) {
                         return (
-                            <>
-                                <Infotrygdperioderoversikt
-                                    fagsakPerson={{
-                                        id: fagsakPerson.id,
-                                        overgangsstønad: fagsakPerson.overgangsstønad?.id,
-                                        barnetilsyn: fagsakPerson.barnetilsyn?.id,
-                                        skolepenger: fagsakPerson.skolepenger?.id,
-                                    }}
-                                    personIdent={personIdent}
-                                    onMigrert={onMigrert}
-                                    fraOppgavebenken={true}
-                                />
-                                <div>
-                                    <Info heigth={24} width={24} /> Etter migrering vil du bli sendt
-                                    videre til journalføring.
-                                </div>
-                                <div>
-                                    Hvis du ønsker å journalføre på en ny behandling må du refreshe
-                                    siden til at behandlingen får statusen "IVERKSATT"
-                                </div>
-                            </>
+                            <Infotrygdperioderoversikt
+                                fagsakPerson={{
+                                    id: fagsakPerson.id,
+                                    overgangsstønad: fagsakPerson.overgangsstønad?.id,
+                                    barnetilsyn: fagsakPerson.barnetilsyn?.id,
+                                    skolepenger: fagsakPerson.skolepenger?.id,
+                                }}
+                                personIdent={personIdent}
+                                onMigrert={onMigrert}
+                                fraOppgavebenken={true}
+                            />
                         );
                     } else {
                         return <div>Sender videre til journalføring</div>;

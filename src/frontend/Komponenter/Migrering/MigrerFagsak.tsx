@@ -8,7 +8,6 @@ import {
 } from '../../App/typer/ressurs';
 import { MigreringInfoResponse, Migreringsstatus } from '../../App/typer/migrering';
 import { AxiosRequestConfig } from 'axios';
-import { Knapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import {
     formaterNullableMånedÅr,
@@ -19,6 +18,13 @@ import Utregningstabell from '../Behandling/VedtakOgBeregning/InnvilgeVedtak/Utr
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
+import styled from 'styled-components';
+import Info from '../../Felles/Ikoner/Info';
+import { Button } from '@navikt/ds-react';
+
+const StyledKnapp = styled(Button)`
+    margin: 0.25rem;
+`;
 
 const visMigrertStatus = (migrertStatus: Ressurs<string>) => {
     return (
@@ -115,7 +121,9 @@ const MigrerFagsak: React.FC<{
     return (
         <div style={{ marginTop: '1rem' }}>
             <h1>Migrering - Overgangsstønad</h1>
-            <Knapp onClick={hentMigreringInfo}>Hent migreringinfo</Knapp>
+            <StyledKnapp variant={'secondary'} onClick={hentMigreringInfo}>
+                Hent migreringinfo
+            </StyledKnapp>
             <DataViewer response={{ migreringInfo }}>
                 {({ migreringInfo }) => {
                     return (
@@ -125,7 +133,7 @@ const MigrerFagsak: React.FC<{
 
                             {migreringInfo.kanMigreres && (
                                 <div>
-                                    <Knapp
+                                    <StyledKnapp
                                         onClick={migrerFagsak}
                                         disabled={
                                             migrertStatus.status === RessursStatus.HENTER ||
@@ -133,8 +141,20 @@ const MigrerFagsak: React.FC<{
                                         }
                                     >
                                         Migrer fagsak
-                                    </Knapp>
+                                    </StyledKnapp>
                                 </div>
+                            )}
+                            {migreringInfo.kanMigreres && fraOppgavebenken && (
+                                <>
+                                    <div>
+                                        <Info heigth={24} width={24} /> Etter migrering vil du bli
+                                        sendt videre til journalføring.
+                                    </div>
+                                    <div>
+                                        Hvis du ønsker å journalføre på en ny behandling må du
+                                        refreshe siden til at behandlingen får statusen "IVERKSATT"
+                                    </div>
+                                </>
                             )}
                             {fraOppgavebenken &&
                                 migreringInfo.kanGåVidereTilJournalføring &&
@@ -142,7 +162,8 @@ const MigrerFagsak: React.FC<{
                                     <>
                                         <div>Denne personen trenger ikke migrering</div>
                                         <div>
-                                            <Knapp
+                                            <StyledKnapp
+                                                variant={'secondary'}
                                                 onClick={() =>
                                                     onMigrert(
                                                         Migreringsstatus.KAN_GÅ_VIDERE_TIL_JOURNALFØRING
@@ -150,7 +171,7 @@ const MigrerFagsak: React.FC<{
                                                 }
                                             >
                                                 Gå videre til journalføring
-                                            </Knapp>
+                                            </StyledKnapp>
                                         </div>
                                     </>
                                 )}
