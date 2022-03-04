@@ -8,6 +8,8 @@ import { ResultatVisning } from '../../Vilkårresultat/ResultatVisning';
 import { sorterUtBarnetilsynsvilkår, sorterUtInngangsvilkår } from '../../Vilkårresultat/utils';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { Søknadsdatoer } from '../Overgangsstønad/Søknadsdatoer';
+import { barn } from './mockData';
+import { OppsummeringAvBarn } from './OppsummeringAvBarn';
 
 const OppsummeringContainer = styled.div`
     display: flex;
@@ -31,32 +33,43 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const barnetilsynsvilkår = sorterUtBarnetilsynsvilkår(vilkår);
+    const barnPåBehandling = barn;
+    const finnesBarnPåBehandling = barn.length > 1;
 
     return (
-        <OppsummeringContainer>
-            <Oppsummeringsboks>
-                <Heading spacing size="small" level="5">
-                    Vilkårsvurdering
-                </Heading>
-                <ResultatVisning
-                    vilkårsvurderinger={inngangsvilkår}
-                    tittel="Inngangsvilkår:"
-                    stønadstype={behandling.stønadstype}
-                />
-                <ResultatVisning
-                    vilkårsvurderinger={barnetilsynsvilkår}
-                    tittel="Barnetilsynsvilkår:"
-                    stønadstype={behandling.stønadstype}
-                />
-            </Oppsummeringsboks>
-            {skalViseSøknadsdata && (
+        <>
+            <OppsummeringContainer>
                 <Oppsummeringsboks>
-                    <Søknadsdatoer
-                        behandlingId={behandling.id}
+                    <Heading spacing size="small" level="5">
+                        Vilkårsvurdering
+                    </Heading>
+                    <ResultatVisning
+                        vilkårsvurderinger={inngangsvilkår}
+                        tittel="Inngangsvilkår:"
+                        stønadstype={behandling.stønadstype}
+                    />
+                    <ResultatVisning
+                        vilkårsvurderinger={barnetilsynsvilkår}
+                        tittel="Barnetilsynsvilkår:"
                         stønadstype={behandling.stønadstype}
                     />
                 </Oppsummeringsboks>
+                {skalViseSøknadsdata && (
+                    <Oppsummeringsboks>
+                        <Søknadsdatoer
+                            behandlingId={behandling.id}
+                            stønadstype={behandling.stønadstype}
+                        />
+                    </Oppsummeringsboks>
+                )}
+            </OppsummeringContainer>
+            {finnesBarnPåBehandling && (
+                <OppsummeringContainer>
+                    {barnPåBehandling.map((barn) => (
+                        <OppsummeringAvBarn barn={barn} />
+                    ))}
+                </OppsummeringContainer>
             )}
-        </OppsummeringContainer>
+        </>
     );
 };
