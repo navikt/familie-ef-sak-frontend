@@ -160,7 +160,10 @@ const MigrerFagsak: React.FC<{
                                 migreringInfo.kanGåVidereTilJournalføring &&
                                 onMigrert && (
                                     <>
-                                        <div>Denne personen trenger ikke migrering</div>
+                                        <div>
+                                            Gå til journalføring om du ønsker å opprette saken i EF
+                                            Sak
+                                        </div>
                                         <div>
                                             <StyledKnapp
                                                 variant={'secondary'}
