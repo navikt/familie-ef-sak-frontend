@@ -18,6 +18,10 @@ const BoldTekst = styled(Label)`
     margin-left: 0.25rem;
 `;
 
+const MarginTekst = styled(Normaltekst)`
+    margin-left: 0.25rem;
+`;
+
 const IkonOgTekstWrapper = styled.div`
     display: flex;
     justify-content: flex-start;
@@ -61,6 +65,9 @@ export const OppsummeringAvBarn: React.FC<{
 }> = ({ barn }) => {
     const barnepassPeriode = `${barn.barnepassordning.datoFra} - ${barn.barnepassordning.datoTil}`;
     const navnOgAlder = `${barn.navn} (${barn.alder})`;
+    const oppfyllerKriterieForAlder = parseInt(barn.alder) < 11; // TODO: Dersom barnet har bursdag før juli (07) så < 11. Dersom barnet har bursdag etter juli så < 10
+    const oppfyllerKritereForAleneomsorg = true; // TODO: Finn vurdering for aleneomsorg på dette barnet
+
     return (
         <Container>
             <Heading spacing size="small" level="5">
@@ -70,39 +77,39 @@ export const OppsummeringAvBarn: React.FC<{
                 <GridLinje>
                     <IkonOgTekstWrapper>
                         <Søknadsgrunnlag />
-                        <BoldTekst size="small">Barnepassordning:</BoldTekst>
+                        <BoldTekst size="small">Barnepassordning</BoldTekst>
                     </IkonOgTekstWrapper>
-                    <Normaltekst>{barn.barnepassordning.type}</Normaltekst>
+                    <Label size="small">{barn.barnepassordning.type}</Label>
                 </GridLinje>
                 <GridLinje>
                     <IkonOgTekstWrapper>
                         <Søknadsgrunnlag />
-                        <BoldTekst size="small">Navn passordning:</BoldTekst>
+                        <MarginTekst>Navn passordning</MarginTekst>
                     </IkonOgTekstWrapper>
                     <Normaltekst>{barn.barnepassordning.navn}</Normaltekst>
                 </GridLinje>
                 <GridLinje>
                     <IkonOgTekstWrapper>
                         <Søknadsgrunnlag />
-                        <BoldTekst size="small">Periode passordning:</BoldTekst>
+                        <MarginTekst>Periode passordning</MarginTekst>
                     </IkonOgTekstWrapper>
                     <Normaltekst>{barnepassPeriode}</Normaltekst>
                 </GridLinje>
                 <NedersteGridLinje>
                     <IkonOgTekstWrapper>
                         <Søknadsgrunnlag />
-                        <BoldTekst size="small">Utgifter:</BoldTekst>
+                        <MarginTekst>Utgifter</MarginTekst>
                     </IkonOgTekstWrapper>
                     <Normaltekst>{barn.barnepassordning.utgift},-</Normaltekst>
                 </NedersteGridLinje>
             </BorderWrapper>
             <FlexDiv>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch evaluering={true} />
+                    <ResultatSwitch evaluering={oppfyllerKritereForAleneomsorg} />
                     <Ikontekst>Aleneomsorg</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch evaluering={false} />
+                    <ResultatSwitch evaluering={oppfyllerKriterieForAlder} />
                     <Ikontekst>Alder på barn</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
             </FlexDiv>

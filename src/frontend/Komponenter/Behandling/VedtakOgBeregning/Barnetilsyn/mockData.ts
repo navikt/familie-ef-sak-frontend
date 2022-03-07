@@ -1,5 +1,6 @@
 export interface IBarnForBarnetilsyn {
     navn: string;
+    personIdent: string;
     alder: string;
     barnepassordning: IBarnepassOrdning;
     aleneomsorg: boolean;
@@ -31,6 +32,7 @@ const andedammenSkole: IBarnepassOrdning = {
 
 const ole: IBarnForBarnetilsyn = {
     navn: 'Ole Duck',
+    personIdent: '12345678910',
     alder: '1 år',
     barnepassordning: sfoHaugestua,
     aleneomsorg: true,
@@ -38,6 +40,7 @@ const ole: IBarnForBarnetilsyn = {
 
 const alfonso: IBarnForBarnetilsyn = {
     navn: 'Alfonso Schmidt Gerhardsen',
+    personIdent: '12345678911',
     alder: '5 år',
     barnepassordning: andedammenSkole,
     aleneomsorg: true,
@@ -45,6 +48,7 @@ const alfonso: IBarnForBarnetilsyn = {
 
 const pål: IBarnForBarnetilsyn = {
     navn: 'Ola Nordmann',
+    personIdent: '12345678912',
     alder: '11 år',
     barnepassordning: sfoHaugestua,
     aleneomsorg: false,

@@ -34,7 +34,7 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const barnetilsynsvilkår = sorterUtBarnetilsynsvilkår(vilkår);
     const barnPåBehandling = barn;
-    const finnesBarnPåBehandling = barn.length > 1;
+    const finnesBarnPåBehandling = barn.length > 0;
 
     return (
         <>
