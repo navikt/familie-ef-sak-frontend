@@ -42,7 +42,7 @@ const PersonSøk: React.FC = () => {
     };
 
     const søk = (personIdent: string): void => {
-        if (!personIdent) return;
+        if (!personIdent || resultat.status === RessursStatus.HENTER) return;
         settResultat(byggHenterRessurs());
         axiosRequest<ISøkPerson, IPersonIdent>({
             method: 'POST',

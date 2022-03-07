@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../../App/context/AppContext';
 import {
+    byggHenterRessurs,
     byggSuksessRessurs,
     byggTomRessurs,
     Ressurs,
@@ -110,13 +111,15 @@ const MigrerFagsak: React.FC<{
         );
     };
 
-    const migrerFagsak = () =>
+    const migrerFagsak = () => {
+        settMigrertStatus(byggHenterRessurs());
         axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
             settMigrertStatus(res);
             if (res.status === RessursStatus.SUKSESS && onMigrert) {
                 onMigrert(Migreringsstatus.ER_MIGRERT);
             }
         });
+    };
 
     return (
         <div style={{ marginTop: '1rem' }}>
