@@ -13,6 +13,7 @@ import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
+import { Migreringsstatus } from '../../App/typer/migrering';
 
 const StyledAlertStripe = styled(AlertStripeInfo)`
     margin: 1rem 0;
@@ -20,6 +21,10 @@ const StyledAlertStripe = styled(AlertStripeInfo)`
     .alertstripe__tekst {
         max-width: 51rem;
     }
+`;
+
+const InfotrygdperioderoversiktContainer = styled.div`
+    padding: 0.25rem;
 `;
 
 const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResponse }> = ({
@@ -70,8 +75,9 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 const Infotrygdperioderoversikt: React.FC<{
     fagsakPerson: IFagsakPerson;
     personIdent: string;
-    onMigrert?: (behandlingId: string) => void;
-}> = ({ fagsakPerson, personIdent, onMigrert }) => {
+    onMigrert?: (status: Migreringsstatus) => void;
+    fraOppgavebenken?: boolean;
+}> = ({ fagsakPerson, personIdent, onMigrert, fraOppgavebenken }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
@@ -88,11 +94,15 @@ const Infotrygdperioderoversikt: React.FC<{
     return (
         <DataViewer response={{ infotrygdPerioder }}>
             {({ infotrygdPerioder }) => (
-                <>
+                <InfotrygdperioderoversiktContainer>
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
                     <InfotrygdSaker personIdent={personIdent} />
-                    <MigrerFagsak fagsakPerson={fagsakPerson} onMigrert={onMigrert} />
-                </>
+                    <MigrerFagsak
+                        fagsakPerson={fagsakPerson}
+                        onMigrert={onMigrert}
+                        fraOppgavebenken={fraOppgavebenken}
+                    />
+                </InfotrygdperioderoversiktContainer>
             )}
         </DataViewer>
     );
