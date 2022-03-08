@@ -39,9 +39,10 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                                         vilkårsresultat={vurdering.resultat}
                                     />
                                     {grunnlag.aktivitet && (
-                                        <AktivitetInfo // TODO - ny AktivitetArbeid her
+                                        <AktivitetInfo
                                             aktivitet={grunnlag.aktivitet}
                                             skalViseSøknadsdata={skalViseSøknadsdata}
+                                            stønadstype={behandling.stønadstype}
                                         />
                                     )}
                                 </>

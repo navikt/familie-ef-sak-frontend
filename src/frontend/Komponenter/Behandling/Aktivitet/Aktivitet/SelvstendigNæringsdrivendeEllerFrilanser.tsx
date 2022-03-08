@@ -4,8 +4,12 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
-const SelvstendigNæringsdrivendeEllerFrilanser: FC<{ firma: ISelvstendig }> = ({ firma }) => {
+const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
+    firma: ISelvstendig;
+    stønadstype: Stønadstype;
+}> = ({ firma, stønadstype }) => {
     return (
         <>
             <Søknadsgrunnlag />
@@ -23,8 +27,12 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{ firma: ISelvstendig }> = (
             <Normaltekst className={'førsteDataKolonne'}>Etableringsdato</Normaltekst>
             <Normaltekst>{formaterNullableIsoDato(firma.etableringsdato)}</Normaltekst>
             <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
-            <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
-            <Normaltekst className={'førsteDataKolonne'}>Beskrivelse av arbeidsuke</Normaltekst>
+            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
+            )}
+            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                <Normaltekst className={'førsteDataKolonne'}>Beskrivelse av arbeidsuke</Normaltekst>
+            )}
             <Normaltekst>{firma.hvordanSerArbeidsukenUt}</Normaltekst>
         </>
     );

@@ -21,6 +21,7 @@ export interface IAktivitet {
     særligeTilsynsbehov: ISærligeTilsynsbehov[];
     tidligereUtdanninger: ITidligereUtdanning[];
     datoOppstartJobb?: string;
+    erIArbeid?: string;
 }
 
 export interface ISagtOppEllerRedusertStilling {

@@ -3,8 +3,12 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { IAksjeselskap } from '../../../../App/typer/overgangsstønad';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
-const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap }> = ({ aksjeselskap }) => {
+const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype }> = ({
+    aksjeselskap,
+    stønadstype,
+}) => {
     return (
         <>
             <Søknadsgrunnlag />
@@ -13,8 +17,12 @@ const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap }> = ({ aksjeselskap }) => 
             </Element>
             <Normaltekst className={'førsteDataKolonne'}>Aksjeselskap</Normaltekst>
             <Normaltekst> {aksjeselskap.navn}</Normaltekst>
-            <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
-            <Normaltekst> {aksjeselskap.arbeidsmengde + ' %'}</Normaltekst>
+            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
+            )}
+            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                <Normaltekst> {aksjeselskap.arbeidsmengde + ' %'}</Normaltekst>
+            )}
         </>
     );
 };

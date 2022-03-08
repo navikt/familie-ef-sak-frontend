@@ -3,7 +3,6 @@ import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { differenceInYears } from 'date-fns';
@@ -49,16 +48,6 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
                     </>
-                ) : skalViseSøknadsdata ? (
-                    søknadsgrunnlag.fødselTermindato && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Termindato</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                            </Normaltekst>
-                        </>
-                    )
                 ) : null}
             </GridTabell>
         </>
