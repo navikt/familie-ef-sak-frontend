@@ -1,7 +1,7 @@
 import {
     EAktivitet,
-    EPeriodeProperty,
     EPeriodetype,
+    EVedtaksperiodeProperty,
     IVedtaksperiode,
     periodeVariantTilProperty,
 } from '../../../../App/typer/vedtak';
@@ -20,6 +20,7 @@ import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { useApp } from '../../../../App/context/AppContext';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -66,15 +67,15 @@ const VedtaksperiodeValg: React.FC<Props> = ({
 
     const oppdaterVedtakslisteElement = (
         index: number,
-        property: EPeriodeProperty,
+        property: EVedtaksperiodeProperty,
         value: string | number | undefined
     ) => {
         vedtaksperiodeListe.update(
             {
                 ...vedtaksperiodeListe.value[index],
                 [property]: value,
-                ...(property === EPeriodeProperty.periodeType && {
-                    [EPeriodeProperty.aktivitet]:
+                ...(property === EVedtaksperiodeProperty.periodeType && {
+                    [EVedtaksperiodeProperty.aktivitet]:
                         value === EPeriodetype.PERIODE_FØR_FØDSEL ||
                         value === EPeriodetype.MIDLERTIDIG_OPPHØR
                             ? EAktivitet.IKKE_AKTIVITETSPLIKT
@@ -128,7 +129,10 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             onEndre={(verdi, periodeVariant) => {
                                 oppdaterVedtakslisteElement(
                                     index,
-                                    periodeVariantTilProperty(periodeVariant),
+                                    periodeVariantTilProperty(
+                                        periodeVariant,
+                                        Stønadstype.OVERGANGSSTØNAD
+                                    ) as EVedtaksperiodeProperty,
                                     verdi
                                 );
                             }}

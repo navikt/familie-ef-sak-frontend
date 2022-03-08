@@ -1,5 +1,6 @@
 import { PeriodeVariant } from '../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
+import { Stønadstype } from './behandlingstema';
 
 export type IAvslåVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.AVSLÅ;
@@ -115,11 +116,18 @@ export enum EPeriodetype {
     MIGRERING = 'MIGRERING',
 }
 
-export enum EPeriodeProperty {
+export enum EVedtaksperiodeProperty {
     periodeType = 'periodeType',
     aktivitet = 'aktivitet',
     årMånedFra = 'årMånedFra',
     årMånedTil = 'årMånedTil',
+}
+
+export enum EUtgiftsperiodeProperty {
+    årMånedFra = 'årMånedFra',
+    årMånedTil = 'årMånedTil',
+    barn = 'barn',
+    utgifter = 'utgifter',
 }
 
 export enum EAvslagÅrsak {
@@ -135,12 +143,23 @@ export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
 ];
 
-export const periodeVariantTilProperty = (periodeVariant: PeriodeVariant): EPeriodeProperty => {
+export const periodeVariantTilProperty = (
+    periodeVariant: PeriodeVariant,
+    stønadstype: Stønadstype
+): EVedtaksperiodeProperty | EUtgiftsperiodeProperty => {
+    if (stønadstype === Stønadstype.OVERGANGSSTØNAD) {
+        switch (periodeVariant) {
+            case PeriodeVariant.ÅR_MÅNED_FRA:
+                return EVedtaksperiodeProperty.årMånedFra;
+            case PeriodeVariant.ÅR_MÅNED_TIL:
+                return EVedtaksperiodeProperty.årMånedTil;
+        }
+    }
     switch (periodeVariant) {
         case PeriodeVariant.ÅR_MÅNED_FRA:
-            return EPeriodeProperty.årMånedFra;
+            return EUtgiftsperiodeProperty.årMånedFra;
         case PeriodeVariant.ÅR_MÅNED_TIL:
-            return EPeriodeProperty.årMånedTil;
+            return EUtgiftsperiodeProperty.årMånedTil;
     }
 };
 

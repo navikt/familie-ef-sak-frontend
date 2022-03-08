@@ -12,7 +12,8 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
+import UtgiftsperiodeValg, { tomUtgiftsperiodeRad } from './UtgiftsperiodeValg';
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForBarnetilsyn, 'resultatType'>;
 
@@ -38,7 +39,9 @@ export const Vedtaksform: React.FC<{
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
-            utgiftsperioder: lagretInnvilgetVedtak ? lagretInnvilgetVedtak.utgiftsperioder : [],
+            utgiftsperioder: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.utgiftsperioder
+                : [tomUtgiftsperiodeRad],
         },
         validerInnvilgetVedtakForm
     );
@@ -62,6 +65,14 @@ export const Vedtaksform: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
+            <Heading spacing size="small" level="5">
+                Utgifter til barnetilsyn
+            </Heading>
+            <UtgiftsperiodeValg
+                utgiftsperioder={utgiftsperiodeState}
+                valideringsfeil={formState.errors.utgiftsperioder}
+                settValideringsFeil={formState.setErrors}
+            />
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}

@@ -3,7 +3,7 @@ import {
     aktiviteterForPeriodetypeHoved,
     aktivitetTilTekst,
     EAktivitet,
-    EPeriodeProperty,
+    EVedtaksperiodeProperty,
     EPeriodetype,
 } from '../../../../App/typer/vedtak';
 import React from 'react';
@@ -16,7 +16,11 @@ interface Props {
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
     index: number;
-    oppdaterVedtakslisteElement: (index: number, property: EPeriodeProperty, value: string) => void;
+    oppdaterVedtakslisteElement: (
+        index: number,
+        property: EVedtaksperiodeProperty,
+        value: string
+    ) => void;
     erLesevisning: boolean;
     aktivitetfeil: OrNothing<string>;
 }
@@ -52,7 +56,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
-                            EPeriodeProperty.aktivitet,
+                            EVedtaksperiodeProperty.aktivitet,
                             e.target.value
                         );
                     }}
@@ -80,7 +84,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
-                            EPeriodeProperty.aktivitet,
+                            EVedtaksperiodeProperty.aktivitet,
                             e.target.value
                         );
                     }}
@@ -114,7 +118,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
-                            EPeriodeProperty.aktivitet,
+                            EVedtaksperiodeProperty.aktivitet,
                             e.target.value
                         );
                     }}
