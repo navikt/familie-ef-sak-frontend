@@ -3,7 +3,11 @@ import React, { FormEvent, useState } from 'react';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../../App/context/AppContext';
-import { EBehandlingResultat, IOpphørtVedtak, IVedtak } from '../../../../App/typer/vedtak';
+import {
+    EBehandlingResultat,
+    IOpphørtVedtakForOvergangsstønad,
+    IVedtakForOvergangsstønad,
+} from '../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -16,14 +20,14 @@ const StyledFormElement = styled.div`
     margin-bottom: 2rem;
 `;
 
-export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }> = ({
-    behandlingId,
-    lagretVedtak,
-}) => {
+export const Opphør: React.FC<{
+    behandlingId: string;
+    lagretVedtak?: IVedtakForOvergangsstønad;
+}> = ({ behandlingId, lagretVedtak }) => {
     const [laster, settLaster] = useState(false);
     const lagretOpphørtVedtak =
         lagretVedtak?.resultatType === EBehandlingResultat.OPPHØRT
-            ? (lagretVedtak as IOpphørtVedtak)
+            ? (lagretVedtak as IOpphørtVedtakForOvergangsstønad)
             : undefined;
     const [opphørtFra, settOpphørtFra] = useState<string>(lagretOpphørtVedtak?.opphørFom || '');
     const [opphørtBegrunnelse, settOpphørtBegrunnelse] = useState<string>(
@@ -39,14 +43,14 @@ export const Opphør: React.FC<{ behandlingId: string; lagretVedtak?: IVedtak }>
         e.preventDefault();
         if (opphørtBegrunnelse && opphørtFra) {
             settLaster(true);
-            axiosRequest<string, IOpphørtVedtak>({
+            axiosRequest<string, IOpphørtVedtakForOvergangsstønad>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
                 data: {
                     resultatType: EBehandlingResultat.OPPHØRT,
                     opphørFom: opphørtFra,
                     begrunnelse: opphørtBegrunnelse,
-                } as IOpphørtVedtak,
+                } as IOpphørtVedtakForOvergangsstønad,
             })
                 .then(håndterOpphørtVedtak)
                 .finally(() => {

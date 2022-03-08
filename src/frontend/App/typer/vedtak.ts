@@ -1,7 +1,7 @@
 import { PeriodeVariant } from '../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
 
-export type IAvslåVedtak = {
+export type IAvslåVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
@@ -22,7 +22,7 @@ export interface IBeregningsgrunnlag {
     fullOvergangsStønadPerMåned: number | null;
     grunnbeløp: number | null;
 }
-export type IInnvilgeVedtak = {
+export type IInnvilgeVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.INNVILGE;
     periodeBegrunnelse?: string;
     inntektBegrunnelse?: string;
@@ -31,7 +31,19 @@ export type IInnvilgeVedtak = {
     samordningsfradragType?: ESamordningsfradragtype | string | undefined;
 };
 
-export type ISanksjonereVedtak = {
+export type IInnvilgeVedtakForBarnetilsyn = {
+    resultatType: EBehandlingResultat.INNVILGE;
+    utgiftsperioder: IUtgiftsperiode[];
+};
+
+export type IUtgiftsperiode = {
+    årMånedFra: string;
+    årMånedTil: string;
+    barn: string[] | undefined; // TODO: oppdater til riktig type for barn
+    utgifter: number | undefined;
+};
+
+export type ISanksjonereVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.SANKSJONERE;
     sanksjonsårsak: Sanksjonsårsak;
     periode: IVedtaksperiode;
@@ -43,13 +55,19 @@ export type ISanksjonereVedtakDto = {
     internBegrunnelse: string;
 };
 
-export interface IOpphørtVedtak {
+export interface IOpphørtVedtakForOvergangsstønad {
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
     begrunnelse: string;
 }
 
-export type IVedtak = IAvslåVedtak | IInnvilgeVedtak | IOpphørtVedtak | ISanksjonereVedtak;
+export type IVedtakForOvergangsstønad =
+    | IAvslåVedtakForOvergangsstønad
+    | IInnvilgeVedtakForOvergangsstønad
+    | IOpphørtVedtakForOvergangsstønad
+    | ISanksjonereVedtakForOvergangsstønad;
+
+export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
 
 export interface IInntektsperiode {
     årMånedFra?: string;

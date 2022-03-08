@@ -7,6 +7,7 @@ import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { erAlleVilkårOppfylt } from '../../Vilkårresultat/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../SelectVedtaksresultat';
+import { Vedtaksform } from './Vedtaksform';
 
 interface Props {
     behandling: Behandling;
@@ -37,6 +38,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
 
     return (
         <Wrapper>
+            <Vedtaksform behandling={behandling} />
             <SelectVedtaksresultat
                 behandling={behandling}
                 resultatType={resultatType}
