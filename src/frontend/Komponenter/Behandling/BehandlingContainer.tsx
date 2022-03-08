@@ -49,7 +49,7 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
 
     overflow-x: scroll;
 
-    min-height: 90vh;
+    height: 90vh;
 
     max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 `;
