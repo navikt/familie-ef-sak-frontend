@@ -39,5 +39,4 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: build_n_deploy/naiserator/nais.yaml
-          VARS: build_n_deploy/naiserator/dev.yaml
+          RESOURCE: build_n_deploy/naiserator/dev.yaml
