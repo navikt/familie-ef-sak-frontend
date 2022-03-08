@@ -1,5 +1,6 @@
 import {
     AktivitetsvilkårType,
+    BarnetilsynsvilkårType,
     InngangsvilkårType,
     IVilkår,
     IVurdering,
@@ -57,8 +58,12 @@ export const sorterUtInngangsvilkår = (vilkår: IVilkår): IVurdering[] => {
     return vilkår.vurderinger.filter((v) => v.vilkårType in InngangsvilkårType);
 };
 
-export const sorterUtAktivitetsVilkår = (vilkår: IVilkår): IVurdering[] => {
+export const sorterUtAktivitetsvilkår = (vilkår: IVilkår): IVurdering[] => {
     return vilkår.vurderinger.filter((v) => v.vilkårType in AktivitetsvilkårType);
+};
+
+export const sorterUtBarnetilsynsvilkår = (vilkår: IVilkår): IVurdering[] => {
+    return vilkår.vurderinger.filter((v) => v.vilkårType in BarnetilsynsvilkårType);
 };
 
 export const sorterUtTidligereVedtaksvilkår = (vilkår: IVilkår): IVurdering[] => {

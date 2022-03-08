@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ResultatVisning } from '../../Vilkårresultat/ResultatVisning';
 import TidligereVedtakOppsummering from '../../Vilkårresultat/TidligereVedtakOppsummering';
 import {
-    sorterUtAktivitetsVilkår,
+    sorterUtAktivitetsvilkår,
     sorterUtInngangsvilkår,
     sorterUtTidligereVedtaksvilkår,
 } from '../../Vilkårresultat/utils';
@@ -38,7 +38,7 @@ export const VedtaksoppsummeringOvergangsstønad: React.FC<{
 }> = ({ vilkår, behandling }) => {
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
-    const aktivitetsvilkår = sorterUtAktivitetsVilkår(vilkår);
+    const aktivitetsvilkår = sorterUtAktivitetsvilkår(vilkår);
     const tidligereVedtaksvilkår = sorterUtTidligereVedtaksvilkår(vilkår);
     const { åpenHøyremeny } = useBehandling();
 
@@ -48,12 +48,23 @@ export const VedtaksoppsummeringOvergangsstønad: React.FC<{
                 <Heading spacing size="small" level="5">
                     Vilkårsvurdering
                 </Heading>
-                <ResultatVisning vilkårsvurderinger={inngangsvilkår} tittel="Inngangsvilkår:" />
-                <ResultatVisning vilkårsvurderinger={aktivitetsvilkår} tittel="Aktivitet:" />
+                <ResultatVisning
+                    vilkårsvurderinger={inngangsvilkår}
+                    tittel="Inngangsvilkår:"
+                    stønadstype={behandling.stønadstype}
+                />
+                <ResultatVisning
+                    vilkårsvurderinger={aktivitetsvilkår}
+                    tittel="Aktivitet:"
+                    stønadstype={behandling.stønadstype}
+                />
             </Oppsummeringsboks>
             {skalViseSøknadsdata && (
                 <Oppsummeringsboks>
-                    <Søknadsdatoer behandlingId={behandling.id} />
+                    <Søknadsdatoer
+                        behandlingId={behandling.id}
+                        stønadstype={behandling.stønadstype}
+                    />
                 </Oppsummeringsboks>
             )}
             <Oppsummeringsboks>
