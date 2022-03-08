@@ -37,7 +37,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                                 <>
                                     {idx === 0 && (
                                         <Vilkårstittel
-                                            //paragrafTittel="§15-4"
+                                            paragrafTittel="§15-10"
                                             tittel="Alder på barn"
                                             vilkårsresultat={utleddResultat}
                                         />

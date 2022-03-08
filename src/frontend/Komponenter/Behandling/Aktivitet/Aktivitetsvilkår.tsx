@@ -9,6 +9,7 @@ import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { AktivitetArbeid } from './AktivitetArbeid/AktivitetArbeid';
 import { Inntekt } from './Inntekt/Inntekt';
 import { AlderPåBarn } from './AlderPåBarn/AlderPåBarn';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 interface Props {
     behandlingId: string;
@@ -38,58 +39,67 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
         <DataViewer response={{ behandling, vilkår }}>
             {({ behandling, vilkår }) => {
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-                return (
-                    <>
-                        <Aktivitet
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-                        <SagtOppEllerRedusert
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
+                switch (behandling.stønadstype) {
+                    case Stønadstype.OVERGANGSSTØNAD:
+                        return (
+                            <>
+                                <Aktivitet
+                                    ikkeVurderVilkår={ikkeVurderVilkår}
+                                    nullstillVurdering={nullstillVurdering}
+                                    feilmeldinger={feilmeldinger}
+                                    grunnlag={vilkår.grunnlag}
+                                    lagreVurdering={lagreVurdering}
+                                    vurderinger={vilkår.vurderinger}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                />
+                                <SagtOppEllerRedusert
+                                    ikkeVurderVilkår={ikkeVurderVilkår}
+                                    nullstillVurdering={nullstillVurdering}
+                                    feilmeldinger={feilmeldinger}
+                                    grunnlag={vilkår.grunnlag}
+                                    lagreVurdering={lagreVurdering}
+                                    vurderinger={vilkår.vurderinger}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                />
+                            </>
+                        );
+                    case Stønadstype.BARNETILSYN:
+                        return (
+                            <>
+                                <AktivitetArbeid
+                                    ikkeVurderVilkår={ikkeVurderVilkår}
+                                    nullstillVurdering={nullstillVurdering}
+                                    feilmeldinger={feilmeldinger}
+                                    grunnlag={vilkår.grunnlag}
+                                    lagreVurdering={lagreVurdering}
+                                    vurderinger={vilkår.vurderinger}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                />
 
-                        <AktivitetArbeid
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
+                                <Inntekt
+                                    ikkeVurderVilkår={ikkeVurderVilkår}
+                                    nullstillVurdering={nullstillVurdering}
+                                    feilmeldinger={feilmeldinger}
+                                    grunnlag={vilkår.grunnlag}
+                                    lagreVurdering={lagreVurdering}
+                                    vurderinger={vilkår.vurderinger}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                />
 
-                        <Inntekt
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-
-                        <AlderPåBarn
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-                    </>
-                );
+                                <AlderPåBarn
+                                    ikkeVurderVilkår={ikkeVurderVilkår}
+                                    nullstillVurdering={nullstillVurdering}
+                                    feilmeldinger={feilmeldinger}
+                                    grunnlag={vilkår.grunnlag}
+                                    lagreVurdering={lagreVurdering}
+                                    vurderinger={vilkår.vurderinger}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                />
+                            </>
+                        );
+                    case Stønadstype.SKOLEPENGER:
+                        return null;
+                }
             }}
         </DataViewer>
     );

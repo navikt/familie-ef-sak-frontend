@@ -17,35 +17,7 @@ interface Props {
 }
 
 const AktivitetArbeidInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, stønadstype }) => {
-    const {
-        arbeidssituasjon,
-        arbeidsforhold,
-        selvstendig,
-        aksjeselskap,
-        virksomhet,
-        arbeidssøker,
-        datoOppstartJobb,
-        underUtdanning,
-        tidligereUtdanninger,
-        særligeTilsynsbehov,
-        gjelderDeg,
-        erIArbeid,
-    } = aktivitet;
-
-    console.log(
-        'TOUCH ',
-        arbeidssituasjon,
-        arbeidsforhold,
-        selvstendig,
-        aksjeselskap,
-        virksomhet,
-        arbeidssøker,
-        datoOppstartJobb,
-        underUtdanning,
-        tidligereUtdanninger
-    );
-
-    console.log('TOUCH ', særligeTilsynsbehov, gjelderDeg);
+    const { arbeidsforhold, selvstendig, aksjeselskap, virksomhet, erIArbeid } = aktivitet;
 
     return (
         <>

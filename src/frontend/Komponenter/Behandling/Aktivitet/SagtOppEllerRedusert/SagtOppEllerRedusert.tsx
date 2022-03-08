@@ -5,6 +5,7 @@ import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerL
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
@@ -19,8 +20,12 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
         (v) => v.vilkårType === AktivitetsvilkårType.SAGT_OPP_ELLER_REDUSERT
     );
     if (!vurdering) {
-        return <></>;
-        //return <div>Mangler vurdering for sagt opp arbeidsforhold</div>;
+        return (
+            <AlertStripeFeil>
+                OBS: Noe er galt - det finnes ingen vilkår for "sagt opp eller redusert stilling"
+                for denne behandlingen
+            </AlertStripeFeil>
+        );
     }
     return (
         <ToKolonnerLayout>

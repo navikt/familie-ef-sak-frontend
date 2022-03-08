@@ -4,13 +4,12 @@ import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-//import AktivitetInfo from './AktivitetInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
-//import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import AktivitetArbeidInfo from './AktivitetArbeidInfo';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 export const AktivitetArbeid: React.FC<VilkårProps> = ({
     vurderinger,
@@ -25,28 +24,17 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
         (v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET_ARBEID
     );
 
-    console.log(
-        'VURDERINGER: ',
-        vurderinger,
-        behandling,
-        ikkeVurderVilkår,
-        feilmeldinger,
-        nullstillVurdering,
-        lagreVurdering
-    );
-
-    console.log('GRUNNLAG: ', grunnlag);
-
     if (!vurdering) {
-        return <></>;
-        // return <div>Mangler vurdering for aktivitet - arbeid </div>;
+        return (
+            <AlertStripeFeil>
+                OBS: Noe er galt - det finnes ingen vilkår for aktivitet for denne behandlingen
+            </AlertStripeFeil>
+        );
     }
 
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => {
-                console.log(behandling);
-
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
                 return (

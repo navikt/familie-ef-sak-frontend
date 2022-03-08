@@ -6,12 +6,12 @@ import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { differenceInYears } from 'date-fns';
+import { ÅrsakBarnepassTilTekst } from './AlderPåBarnTyper';
 
 const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
     gjeldendeBarn,
-    skalViseSøknadsdata,
 }) => {
-    const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
+    const { registergrunnlag, barnepass } = gjeldendeBarn;
 
     const alder = differenceInYears(new Date(), new Date(registergrunnlag.fødselsdato));
 
@@ -29,16 +29,6 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                             )}
                         </Element>
                     </>
-                ) : skalViseSøknadsdata ? (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Element>Barnets navn</Element>
-                        <Element>
-                            {søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
-                                ? 'Ikke utfylt'
-                                : 'Ikke født'}
-                        </Element>
-                    </>
                 ) : null}
                 {registergrunnlag.fødselsnummer ? (
                     <>
@@ -47,6 +37,13 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                         <KopierbartNullableFødselsnummer
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
+                    </>
+                ) : null}
+                {barnepass && barnepass.årsakBarnepass ? (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Hvorfor trenger barnet pass?</Normaltekst>
+                        <Element>{ÅrsakBarnepassTilTekst[barnepass.årsakBarnepass]}</Element>
                     </>
                 ) : null}
             </GridTabell>
