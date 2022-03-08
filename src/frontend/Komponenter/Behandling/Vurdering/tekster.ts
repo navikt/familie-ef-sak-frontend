@@ -37,6 +37,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     INNTEKT_LAVERE_ENN_INNTEKTSGRENSE:
         'Har brukeren inntekt under 6 ganger grunnbeløpet (654 324 kr)?',
     HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
+    UNNTAK_ALDER: 'Oppfylles unntak etter å ha fullført 4. skoleår?',
 };
 
 export const svarTypeTilTekst: Record<string, string> = {
