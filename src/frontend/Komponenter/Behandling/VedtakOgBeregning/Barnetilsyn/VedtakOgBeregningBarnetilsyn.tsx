@@ -18,6 +18,10 @@ const Wrapper = styled.div`
     padding: 1rem 2rem;
 `;
 
+const WrapperMarginTop = styled.div`
+    margin-top: 1rem;
+`;
+
 const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
@@ -39,12 +43,14 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     return (
         <Wrapper>
             <Vedtaksform behandling={behandling} />
-            <SelectVedtaksresultat
-                behandling={behandling}
-                resultatType={resultatType}
-                settResultatType={settResultatType}
-                alleVilkårOppfylt={alleVilkårOppfylt}
-            />
+            <WrapperMarginTop>
+                <SelectVedtaksresultat
+                    behandling={behandling}
+                    resultatType={resultatType}
+                    settResultatType={settResultatType}
+                    alleVilkårOppfylt={alleVilkårOppfylt}
+                />
+            </WrapperMarginTop>
         </Wrapper>
     );
 };

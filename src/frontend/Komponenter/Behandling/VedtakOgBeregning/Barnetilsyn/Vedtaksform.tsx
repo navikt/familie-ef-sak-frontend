@@ -21,21 +21,17 @@ const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
 `;
 
-const WrapperMarginTop = styled.div`
-    margin-top: 1rem;
-`;
-
 export const Vedtaksform: React.FC<{
-    behandling: Behandling;
+    behandling?: Behandling;
     lagretVedtak?: IvedtakForBarnetilsyn;
-}> = ({ behandling, lagretVedtak }) => {
+}> = ({ lagretVedtak }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
     const { behandlingErRedigerbar } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
-    const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmelding] = useState<string>();
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -46,8 +42,6 @@ export const Vedtaksform: React.FC<{
         validerInnvilgetVedtakForm
     );
     const utgiftsperiodeState = formState.getProps('utgiftsperioder') as ListState<IUtgiftsperiode>;
-
-    const utgiftsperioder = utgiftsperiodeState.value;
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);

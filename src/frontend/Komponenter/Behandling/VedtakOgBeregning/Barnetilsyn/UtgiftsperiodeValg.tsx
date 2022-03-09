@@ -15,16 +15,17 @@ import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { useApp } from '../../../../App/context/AppContext';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { barnFormatertForBarnVelger, mapValgtBarnTilNavn } from './mockData';
 
 const UtgiftsperiodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter slettknapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 17rem 2rem 4rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 25rem 2rem 4rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
 `;
 
@@ -32,7 +33,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 17rem 2rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 25rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
@@ -62,10 +63,10 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
-    const oppdaterUtgift = (
+    const oppdaterUtgiftsPeriode = (
         index: number,
         property: EUtgiftsperiodeProperty,
-        value: string | number | undefined
+        value: string | string[] | number | undefined
     ) => {
         utgiftsperioder.update(
             {
@@ -87,7 +88,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <Element>Utgifter</Element>
             </KolonneHeaderWrapper>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { årMånedFra, årMånedTil, barn, utgifter } = utgiftsperiode;
+                const { årMånedFra, årMånedTil, utgifter } = utgiftsperiode;
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index === utgiftsperioder.value.length - 1 &&
@@ -100,7 +101,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             årMånedTilInitiell={årMånedTil}
                             index={index}
                             onEndre={(verdi, periodeVariant) => {
-                                oppdaterUtgift(
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                oppdaterUtgiftsPeriode(
                                     index,
                                     periodeVariantTilProperty(
                                         periodeVariant,
@@ -112,18 +114,34 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
                         />
-                        <FamilieReactSelect />
-                        <Element
-                            style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}
-                        >{`2`}</Element>
+                        {/* @ts-ignore:next-line */}
+                        <FamilieReactSelect
+                            placeholder={'Velg barn'}
+                            options={barnFormatertForBarnVelger}
+                            creatable={false}
+                            isMulti={true}
+                            onChange={(valgtBarn) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                oppdaterUtgiftsPeriode(
+                                    index,
+                                    EUtgiftsperiodeProperty.barn,
+                                    valgtBarn === null
+                                        ? []
+                                        : [...mapValgtBarnTilNavn(valgtBarn as ISelectOption[])]
+                                );
+                            }}
+                        />
+                        <Element style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>{`${
+                            utgiftsperioder.value[index].barn
+                                ? utgiftsperioder.value[index].barn?.length
+                                : 0
+                        }`}</Element>
                         <StyledInput
                             type="number"
-                            value={
-                                harTallverdi(utgiftsperiode.utgifter) ? utgiftsperiode.utgifter : ''
-                            }
+                            value={harTallverdi(utgifter) ? utgifter : ''}
                             onChange={(e) => {
                                 settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                oppdaterUtgift(
+                                oppdaterUtgiftsPeriode(
                                     index,
                                     EUtgiftsperiodeProperty.utgifter,
                                     tilTallverdi(e.target.value)
@@ -131,7 +149,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             }}
                             erLesevisning={!behandlingErRedigerbar}
                         />
-
                         {skalViseFjernKnapp && (
                             <FjernKnapp
                                 onClick={() => {
