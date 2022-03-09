@@ -22,9 +22,9 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const UtgiftsperiodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter';
+    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter slettknapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 17rem 11.5rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 17rem 2rem 4rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
 `;
 
@@ -32,7 +32,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 17rem 11.5rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 17rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
@@ -50,7 +50,7 @@ interface Props {
 export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
     årMånedFra: '',
     årMånedTil: '',
-    barn: undefined,
+    barn: [],
     utgifter: undefined,
 };
 
