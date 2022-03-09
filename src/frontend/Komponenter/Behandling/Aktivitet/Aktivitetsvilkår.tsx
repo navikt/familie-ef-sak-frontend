@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
@@ -10,23 +10,18 @@ import { AktivitetArbeid } from './AktivitetArbeid/AktivitetArbeid';
 import { Inntekt } from './Inntekt/Inntekt';
 import { AlderPåBarn } from './AlderPåBarn/AlderPåBarn';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
+import { Behandling } from '../../../App/typer/fagsak';
 
 interface Props {
     behandlingId: string;
 }
 
 const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
-    const {
-        vilkår,
-        hentVilkår,
-        lagreVurdering,
-        feilmeldinger,
-        nullstillVurdering,
-        ikkeVurderVilkår,
-    } = useHentVilkår();
+    const { vilkår, hentVilkår } = useHentVilkår();
     const { behandling } = useBehandling();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (behandlingId !== undefined) {
             if (vilkår.status !== RessursStatus.SUKSESS) {
                 hentVilkår(behandlingId);
@@ -38,65 +33,11 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
     return (
         <DataViewer response={{ behandling, vilkår }}>
             {({ behandling, vilkår }) => {
-                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
                 switch (behandling.stønadstype) {
                     case Stønadstype.OVERGANGSSTØNAD:
-                        return (
-                            <>
-                                <Aktivitet
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    nullstillVurdering={nullstillVurdering}
-                                    feilmeldinger={feilmeldinger}
-                                    grunnlag={vilkår.grunnlag}
-                                    lagreVurdering={lagreVurdering}
-                                    vurderinger={vilkår.vurderinger}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
-                                <SagtOppEllerRedusert
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    nullstillVurdering={nullstillVurdering}
-                                    feilmeldinger={feilmeldinger}
-                                    grunnlag={vilkår.grunnlag}
-                                    lagreVurdering={lagreVurdering}
-                                    vurderinger={vilkår.vurderinger}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
-                            </>
-                        );
+                        return <AktivitetOvergangsstønad vilkår={vilkår} behandling={behandling} />;
                     case Stønadstype.BARNETILSYN:
-                        return (
-                            <>
-                                <AktivitetArbeid
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    nullstillVurdering={nullstillVurdering}
-                                    feilmeldinger={feilmeldinger}
-                                    grunnlag={vilkår.grunnlag}
-                                    lagreVurdering={lagreVurdering}
-                                    vurderinger={vilkår.vurderinger}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
-
-                                <Inntekt
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    nullstillVurdering={nullstillVurdering}
-                                    feilmeldinger={feilmeldinger}
-                                    grunnlag={vilkår.grunnlag}
-                                    lagreVurdering={lagreVurdering}
-                                    vurderinger={vilkår.vurderinger}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
-
-                                <AlderPåBarn
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    nullstillVurdering={nullstillVurdering}
-                                    feilmeldinger={feilmeldinger}
-                                    grunnlag={vilkår.grunnlag}
-                                    lagreVurdering={lagreVurdering}
-                                    vurderinger={vilkår.vurderinger}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
-                            </>
-                        );
+                        return <AktivitetBarnetilsyn vilkår={vilkår} behandling={behandling} />;
                     case Stønadstype.SKOLEPENGER:
                         return null;
                 }
@@ -105,4 +46,74 @@ const AktivitetsVilkår: FC<Props> = ({ behandlingId }) => {
     );
 };
 
+const AktivitetOvergangsstønad: FC<{ vilkår: IVilkår; behandling: Behandling }> = ({
+    vilkår,
+    behandling,
+}) => {
+    const { lagreVurdering, feilmeldinger, nullstillVurdering, ikkeVurderVilkår } = useHentVilkår();
+    const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+    return (
+        <>
+            <Aktivitet
+                ikkeVurderVilkår={ikkeVurderVilkår}
+                nullstillVurdering={nullstillVurdering}
+                feilmeldinger={feilmeldinger}
+                grunnlag={vilkår.grunnlag}
+                lagreVurdering={lagreVurdering}
+                vurderinger={vilkår.vurderinger}
+                skalViseSøknadsdata={skalViseSøknadsdata}
+            />
+            <SagtOppEllerRedusert
+                ikkeVurderVilkår={ikkeVurderVilkår}
+                nullstillVurdering={nullstillVurdering}
+                feilmeldinger={feilmeldinger}
+                grunnlag={vilkår.grunnlag}
+                lagreVurdering={lagreVurdering}
+                vurderinger={vilkår.vurderinger}
+                skalViseSøknadsdata={skalViseSøknadsdata}
+            />
+        </>
+    );
+};
+
+const AktivitetBarnetilsyn: FC<{ vilkår: IVilkår; behandling: Behandling }> = ({
+    vilkår,
+    behandling,
+}) => {
+    const { lagreVurdering, feilmeldinger, nullstillVurdering, ikkeVurderVilkår } = useHentVilkår();
+    const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+    return (
+        <>
+            <AktivitetArbeid
+                ikkeVurderVilkår={ikkeVurderVilkår}
+                nullstillVurdering={nullstillVurdering}
+                feilmeldinger={feilmeldinger}
+                grunnlag={vilkår.grunnlag}
+                lagreVurdering={lagreVurdering}
+                vurderinger={vilkår.vurderinger}
+                skalViseSøknadsdata={skalViseSøknadsdata}
+            />
+
+            <Inntekt
+                ikkeVurderVilkår={ikkeVurderVilkår}
+                nullstillVurdering={nullstillVurdering}
+                feilmeldinger={feilmeldinger}
+                grunnlag={vilkår.grunnlag}
+                lagreVurdering={lagreVurdering}
+                vurderinger={vilkår.vurderinger}
+                skalViseSøknadsdata={skalViseSøknadsdata}
+            />
+
+            <AlderPåBarn
+                ikkeVurderVilkår={ikkeVurderVilkår}
+                nullstillVurdering={nullstillVurdering}
+                feilmeldinger={feilmeldinger}
+                grunnlag={vilkår.grunnlag}
+                lagreVurdering={lagreVurdering}
+                vurderinger={vilkår.vurderinger}
+                skalViseSøknadsdata={skalViseSøknadsdata}
+            />
+        </>
+    );
+};
 export default AktivitetsVilkår;
