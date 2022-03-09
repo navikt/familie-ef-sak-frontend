@@ -39,6 +39,8 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
 
     width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
     min-width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
+
+    transition: all 0.25s;
 `;
 
 const InnholdWrapper = styled.div<InnholdWrapperProps>`
