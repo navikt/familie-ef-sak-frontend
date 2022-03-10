@@ -39,6 +39,8 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
 
     width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
     min-width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
+
+    transition: all 0.25s;
 `;
 
 const InnholdWrapper = styled.div<InnholdWrapperProps>`
@@ -49,7 +51,7 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
 
     overflow-x: scroll;
 
-    min-height: 90vh;
+    height: 90vh;
 
     max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 `;
