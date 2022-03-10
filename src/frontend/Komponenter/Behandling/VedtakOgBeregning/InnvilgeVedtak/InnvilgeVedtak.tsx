@@ -9,8 +9,8 @@ import {
     IBeløpsperiode,
     IBeregningsrequest,
     IInntektsperiode,
-    IInnvilgeVedtak,
-    IVedtak,
+    IInnvilgeVedtakForOvergangsstønad,
+    IVedtakForOvergangsstønad,
     IVedtaksperiode,
 } from '../../../../App/typer/vedtak';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
@@ -25,7 +25,10 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import Utregningstabell from './Utregningstabell';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
-import { validerInnvilgetVedtakForm, validerVedtaksperioder } from '../vedtaksvalidering';
+import {
+    validerInnvilgetVedtakForm,
+    validerVedtaksperioder,
+} from '../Overgangsstønad/vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
@@ -34,7 +37,7 @@ import { Heading } from '@navikt/ds-react';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
-export type InnvilgeVedtakForm = Omit<IInnvilgeVedtak, 'resultatType'>;
+export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>;
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
@@ -46,11 +49,11 @@ const WrapperMarginTop = styled.div`
 
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
-    lagretVedtak?: IVedtak;
+    lagretVedtak?: IVedtakForOvergangsstønad;
 }> = ({ behandling, lagretVedtak }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
-            ? (lagretVedtak as IInnvilgeVedtak)
+            ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
@@ -162,9 +165,9 @@ export const InnvilgeVedtak: React.FC<{
         };
     };
 
-    const lagBlankett = (vedtaksRequest: IInnvilgeVedtak) => {
+    const lagBlankett = (vedtaksRequest: IInnvilgeVedtakForOvergangsstønad) => {
         settLaster(true);
-        axiosRequest<string, IInnvilgeVedtak>({
+        axiosRequest<string, IInnvilgeVedtakForOvergangsstønad>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-blankettvedtak`,
             data: vedtaksRequest,
@@ -175,9 +178,9 @@ export const InnvilgeVedtak: React.FC<{
             });
     };
 
-    const lagreVedtak = (vedtaksRequest: IInnvilgeVedtak) => {
+    const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForOvergangsstønad) => {
         settLaster(true);
-        axiosRequest<string, IInnvilgeVedtak>({
+        axiosRequest<string, IInnvilgeVedtakForOvergangsstønad>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
             data: vedtaksRequest,
@@ -189,7 +192,7 @@ export const InnvilgeVedtak: React.FC<{
     };
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
-        const vedtaksRequest: IInnvilgeVedtak = {
+        const vedtaksRequest: IInnvilgeVedtakForOvergangsstønad = {
             resultatType: EBehandlingResultat.INNVILGE,
             periodeBegrunnelse: form.periodeBegrunnelse,
             inntektBegrunnelse: form.inntektBegrunnelse,

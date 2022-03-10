@@ -8,7 +8,7 @@ import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { Dokumentinfo } from '../../App/typer/dokumentliste';
+import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
@@ -51,6 +51,16 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
         </Td>
     );
 
+    const LogiskeVedlegg: React.FC<{ logiskeVedlegg: ILogiskVedlegg[] }> = ({ logiskeVedlegg }) => (
+        <>
+            {logiskeVedlegg.map((logiskVedlegg, index) => (
+                <DivMedVenstreMargin key={`${logiskVedlegg.tittel}${index}`}>
+                    {logiskVedlegg.tittel}
+                </DivMedVenstreMargin>
+            ))}
+        </>
+    );
+
     const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({ dokument }) => (
         <tr>
             <Td></Td>
@@ -62,11 +72,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 >
                     {dokument.tittel}
                 </LenkeVenstreMargin>
-                {dokument.logiskeVedlegg.map((logiskVedlegg, index) => (
-                    <DivMedVenstreMargin key={`${logiskVedlegg.tittel}${index}`}>
-                        {logiskVedlegg.tittel}
-                    </DivMedVenstreMargin>
-                ))}
+                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
             <Td></Td>
         </tr>
@@ -86,6 +92,7 @@ const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
                 >
                     {dokument.tittel}
                 </a>
+                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
             <Td>
                 <Normaltekst>

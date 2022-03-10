@@ -5,6 +5,7 @@ import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
 import { Label } from '@navikt/ds-react';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const Ikontekst = styled(Normaltekst)`
     margin-left: 0.25rem;
@@ -14,8 +15,8 @@ const BoldTekst = styled(Label)`
     margin-right: 1rem;
 `;
 
-const Container = styled.div`
-    width: 280px;
+const Container = styled.div<{ stønadstype: Stønadstype }>`
+    width: ${(p) => (p.stønadstype === Stønadstype.OVERGANGSSTØNAD ? '280px' : '300px')};
 `;
 
 const ResultatIkonOgTekstWrapper = styled.div`
@@ -24,10 +25,11 @@ const ResultatIkonOgTekstWrapper = styled.div`
     margin-bottom: 0.5rem;
 `;
 
-const ResultatGrid = styled.div<{ lesevisning?: boolean }>`
+const ResultatGrid = styled.div<{ stønadstype: Stønadstype }>`
     display: grid;
     grid-template-area: vilkårstype vilkårsoppsummering;
-    grid-template-columns: 7rem 10.5rem;
+    grid-template-columns: ${(p) =>
+            p.stønadstype === Stønadstype.OVERGANGSSTØNAD ? '7rem' : '8.5rem'} 10.5rem;
     grid-gap: 1rem;
 `;
 
@@ -50,7 +52,8 @@ export const resultatTilTall: Record<Vilkårsresultat, number> = {
 export const ResultatVisning: React.FC<{
     vilkårsvurderinger: IVurdering[];
     tittel: string;
-}> = ({ vilkårsvurderinger, tittel }) => {
+    stønadstype: Stønadstype;
+}> = ({ vilkårsvurderinger, tittel, stønadstype }) => {
     const vilkårtypeTilResultat = mapVilkårtypeTilResultat(vilkårsvurderinger);
     const antallVilkårTotalt = Object.keys(vilkårtypeTilResultat).length;
     const oppsummeringAvVilkårsresultat = summerVilkårsresultat(vilkårtypeTilResultat);
@@ -60,13 +63,13 @@ export const ResultatVisning: React.FC<{
     };
 
     return (
-        <Container>
+        <Container stønadstype={stønadstype}>
             {Object.entries(oppsummeringAvVilkårsresultat)
                 .sort(sorterVilkårsresultat)
                 .map(([vilkårsresultat, antallVilkårsresultat], i) => (
-                    <ResultatGrid>
+                    <ResultatGrid stønadstype={stønadstype} key={i}>
                         <BoldTekst size="small">{i == 0 ? tittel : ''}</BoldTekst>
-                        <ResultatIkonOgTekstWrapper key={i}>
+                        <ResultatIkonOgTekstWrapper>
                             <VilkårsresultatIkon
                                 vilkårsresultat={vilkårsresultat as Vilkårsresultat}
                             />

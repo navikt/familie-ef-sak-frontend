@@ -1,15 +1,15 @@
 import React from 'react';
-import { EBehandlingResultat, IVedtak } from '../../../App/typer/vedtak';
-import { Behandling } from '../../../App/typer/fagsak';
-import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
-import { BehandleIGosys } from './BehandleIGosys/BehandleIGosys';
-import { AvslåVedtak } from './AvslåVedtak/AvslåVedtak';
-import { Opphør } from './Opphør/Opphør';
+import { EBehandlingResultat, IVedtakForOvergangsstønad } from '../../../../App/typer/vedtak';
+import { Behandling } from '../../../../App/typer/fagsak';
+import { InnvilgeVedtak } from '../InnvilgeVedtak/InnvilgeVedtak';
+import { BehandleIGosys } from '../BehandleIGosys/BehandleIGosys';
+import { AvslåVedtak } from '../AvslåVedtak/AvslåVedtak';
+import { Opphør } from '../Opphør/Opphør';
 
 interface Props {
     vedtaksresultatType?: EBehandlingResultat;
     behandling: Behandling;
-    lagretVedtak?: IVedtak;
+    lagretVedtak?: IVedtakForOvergangsstønad;
     alleVilkårOppfylt: boolean;
     ikkeOppfyltVilkårEksisterer: boolean;
 }
