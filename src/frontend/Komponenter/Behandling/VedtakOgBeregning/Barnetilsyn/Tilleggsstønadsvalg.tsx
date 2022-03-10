@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -22,7 +22,7 @@ const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 6rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 8rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.75rem;
 `;
@@ -31,7 +31,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem' : '12rem 12rem 6rem'};
+        props.lesevisning ? '8rem 10rem 7rem' : '12rem 12rem 8rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
@@ -61,6 +61,12 @@ const TilleggsstønadValg: React.FC<Props> = ({
     const { settIkkePersistertKomponent } = useApp();
     const [tilleggsstønad, settTilleggsstønad] = useState(false);
     const [reduserStønad, settReduserStønad] = useState(false);
+
+    useEffect(() => {
+        if (!tilleggsstønad) {
+            settReduserStønad(false);
+        }
+    }, [tilleggsstønad]);
 
     const oppdaterTilleggsstønadPeriode = (
         index: number,
@@ -106,7 +112,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 />
             </RadioGruppe>
             {tilleggsstønad && (
-                <RadioGruppe legend="Skal stønadem reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?">
+                <RadioGruppe legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?">
                     <Radio
                         name={'Redusere'}
                         label={'Ja'}
@@ -127,7 +133,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
                         <Element>Periode fra og med</Element>
                         <Element>Periode til og med</Element>
-                        <Element>Stønad skal reduseres med</Element>
+                        <Element>Stønadsreduksjon</Element>
                     </KolonneHeaderWrapper>
                     {tilleggsstønadPerioder.value.map((periode, index) => {
                         const { årMånedFra, årMånedTil, beløp } = periode;
