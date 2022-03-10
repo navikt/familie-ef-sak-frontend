@@ -105,21 +105,23 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     onChange={() => settTilleggsstønad(!tilleggsstønad)}
                 />
             </RadioGruppe>
-            <RadioGruppe legend="Skal stønadem reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?">
-                <Radio
-                    name={'Kontantstøtte'}
-                    label={'Ja'}
-                    value={'Ja'}
-                    onChange={() => settReduserStønad(!reduserStønad)}
-                />
-                <Radio
-                    name={'Kontantstøtte'}
-                    label={'Nei'}
-                    value={'Nei'}
-                    checked={!tilleggsstønad}
-                    onChange={() => settReduserStønad(!reduserStønad)}
-                />
-            </RadioGruppe>
+            {tilleggsstønad && (
+                <RadioGruppe legend="Skal stønadem reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?">
+                    <Radio
+                        name={'Redusere'}
+                        label={'Ja'}
+                        value={'Ja'}
+                        onChange={() => settReduserStønad(!reduserStønad)}
+                    />
+                    <Radio
+                        name={'Redusere'}
+                        label={'Nei'}
+                        value={'Nei'}
+                        checked={!reduserStønad}
+                        onChange={() => settReduserStønad(!reduserStønad)}
+                    />
+                </RadioGruppe>
+            )}
             {tilleggsstønad && reduserStønad && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>

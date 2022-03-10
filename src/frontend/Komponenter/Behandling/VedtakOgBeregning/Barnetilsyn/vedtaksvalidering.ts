@@ -1,15 +1,21 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import { IKontantstøttePeriode, IUtgiftsperiode } from '../../../../App/typer/vedtak';
+import {
+    IKontantstøttePeriode,
+    ITilleggsstønadPeriode,
+    IUtgiftsperiode,
+} from '../../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
     kontantstøtteperioder,
+    tilleggsstønadsperioder,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     return {
         ...validerUtgiftsperioder({ utgiftsperioder }),
         ...validerKontantstøttePerioder({ kontantstøtteperioder }),
+        ...validerTilleggsstønadPerioder({ tilleggsstønadsperioder }),
     };
 };
 
@@ -92,5 +98,47 @@ export const validerKontantstøttePerioder = ({
 
     return {
         kontantstøtteperioder: feilIKontantstøtteperioder,
+    };
+};
+
+export const validerTilleggsstønadPerioder = ({
+    tilleggsstønadsperioder,
+}: {
+    tilleggsstønadsperioder: ITilleggsstønadPeriode[];
+}): FormErrors<{ tilleggsstønadsperioder: ITilleggsstønadPeriode[] }> => {
+    const feilITilleggsstønadPerioder = tilleggsstønadsperioder.map((periode, index) => {
+        const { årMånedFra, årMånedTil } = periode;
+        const tilleggsstønadPeriodeFeil: FormErrors<ITilleggsstønadPeriode> = {
+            årMånedFra: undefined,
+            årMånedTil: undefined,
+            beløp: undefined,
+        };
+
+        if (!årMånedTil || !årMånedFra) {
+            return {
+                ...tilleggsstønadPeriodeFeil,
+                årMånedFra: 'Mangelfull utfylling av periode',
+            };
+        }
+        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+            return {
+                ...tilleggsstønadPeriodeFeil,
+                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+            };
+        }
+        const forrige = index > 0 && tilleggsstønadsperioder[index - 1];
+        if (forrige && forrige.årMånedTil) {
+            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+                return {
+                    ...tilleggsstønadPeriodeFeil,
+                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                };
+            }
+        }
+        return tilleggsstønadPeriodeFeil;
+    });
+
+    return {
+        tilleggsstønadsperioder: feilITilleggsstønadPerioder,
     };
 };
