@@ -1,12 +1,63 @@
-ingresses:
-  - "https://ensligmorellerfar.intern.nav.no"
-externals:
-  - "familie-ef-sak.prod-fss-pub.nais.io"
-envEnv: "production"
-claimGroups:
-  - "31778fd8-3b71-4867-8db6-a81235fbe001" # 0000-GA-Enslig-Forsorger-Veileder
-  - "6406aba2-b930-41d3-a85b-dd13731bc974" # 0000-GA-Enslig-Forsorger-Saksbehandler
-  - "5fcc0e1d-a4c2-49f0-93dc-27c9fea41e54" # 0000-GA-Enslig-Forsorger-Beslutter
-  - "73ff0e76-f2b1-4586-8387-b33f15617381" # 0000-GA-GOSYS_UTVIDET egen ansatt
-  - "ad7b87a6-9180-467c-affc-20a566b0fec0" # 0000-GA-Strengt_Fortrolig_Adresse
-  - "9ec6487d-f37a-4aad-a027-cd221c1ac32b" # 0000-GA-Fortrolig_Adresse
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: familie-ef-sak-frontend
+  namespace: teamfamilie
+  labels:
+    team: teamfamilie
+spec:
+  image: {{ image }}
+  team: teamfamilie
+  replicas:
+    min: 2
+    max: 2
+    cpuThresholdPercentage: 50
+  port: 8000
+  liveness:
+    path: /isAlive
+    initialDelay: 5
+  readiness:
+    path: /isReady
+    initialDelay: 5
+  prometheus:
+    enabled: true
+    path: /metrics
+  ingresses:
+    - https://ensligmorellerfar.intern.nav.no
+  azure:
+    application:
+      enabled: true
+      replyURLs:
+        - url: https://ensligmorellerfar.intern.nav.no/auth/openid/callback
+      claims:
+        groups:
+          - id: "31778fd8-3b71-4867-8db6-a81235fbe001" # 0000-GA-Enslig-Forsorger-Veileder
+          - id: "6406aba2-b930-41d3-a85b-dd13731bc974" # 0000-GA-Enslig-Forsorger-Saksbehandler
+          - id: "5fcc0e1d-a4c2-49f0-93dc-27c9fea41e54" # 0000-GA-Enslig-Forsorger-Beslutter
+          - id: "73ff0e76-f2b1-4586-8387-b33f15617381" # 0000-GA-GOSYS_UTVIDET egen ansatt
+          - id: "ad7b87a6-9180-467c-affc-20a566b0fec0" # 0000-GA-Strengt_Fortrolig_Adresse
+          - id: "9ec6487d-f37a-4aad-a027-cd221c1ac32b" # 0000-GA-Fortrolig_Adresse
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1024Mi
+    requests:
+      memory: 512Mi
+  accessPolicy:
+    outbound:
+      rules:
+        - application: familie-ef-sak
+        - application: familie-ef-sak-frontend-redis
+        - application: familie-brev
+        - application: familie-endringslogg
+      external:
+        - host: familie-ef-sak.prod-fss-pub.nais.io
+  envFrom:
+    - secret: familie                       # Henter ut EF_SAK_SCOPE
+    - secret: familie-ef-sak-frontend-redis # Henter ut REDIS_PASSWORD
+    - secret: familie-ef-sak-frontend       # Ulike secrets
+  env:
+    - name: APP_VERSION
+      value: "{{version}}"
+    - name: ENV
+      value: production
