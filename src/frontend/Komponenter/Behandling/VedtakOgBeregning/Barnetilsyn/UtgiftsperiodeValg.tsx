@@ -33,6 +33,11 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     margin-bottom: 0.5rem;
 `;
 
+const AntallBarn = styled(Element)<{ lesevisning: boolean }>`
+    margin-top: ${(props) => (props.lesevisning ? '0.65rem' : '0rem')};
+    text-align: center;
+`;
+
 const StyledInput = styled(InputMedTusenSkille)`
     text-align: left;
 `;
@@ -134,11 +139,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 );
                             }}
                         />
-                        <Element style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>{`${
+                        <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
                             utgiftsperioder.value[index].barn
                                 ? utgiftsperioder.value[index].barn?.length
                                 : 0
-                        }`}</Element>
+                        }`}</AntallBarn>
                         <StyledInput
                             type="number"
                             value={harTallverdi(utgifter) ? utgifter : ''}
