@@ -5,31 +5,25 @@ import {
     behandlingsårsakTilTekst,
 } from '../../App/typer/Behandlingsårsak';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
 import { BarnForRevurdering, RevurderingInnhold } from '../../App/typer/revurderingstype';
 import { StyledHovedknapp, StyledSelect } from './LagBehandlingModal';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
 import { useApp } from '../../App/context/AppContext';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { BodyShort, Label } from '@navikt/ds-react';
 
 const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
     margin-top: 2rem;
-    margin-bottom: 17.5rem;
 `;
 
-const StyledCheckboxGruppe = styled(CheckboxGruppe)`
+const NyeBarn = styled.div`
     margin-top: 2rem;
-`;
-
-const TekstForCheckboxGruppe = styled(Normaltekst)`
-    margin-bottom: 1rem;
 `;
 
 const FlexDiv = styled.div`
@@ -38,6 +32,7 @@ const FlexDiv = styled.div`
 `;
 
 const KnappeWrapper = styled.div`
+    margin: 0 auto;
     margin-top: 4rem;
 `;
 
@@ -66,7 +61,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     >(byggTomRessurs());
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
-    const [valgtBarn, settValgtBarn] = useState<BarnForRevurdering[]>([]);
 
     useEffect(() => {
         axiosRequest<BarnForRevurdering[], null>({
@@ -108,49 +102,26 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             )
                                         )}
                             </StyledSelect>
+                            <StyledFamilieDatovelgder
+                                id={'krav-mottatt'}
+                                label={'Krav mottatt'}
+                                onChange={(dato) => {
+                                    settValgtDato(dato as string);
+                                }}
+                                valgtDato={valgtDato}
+                            />
                             {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
-                                <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
-                                    <TekstForCheckboxGruppe>
-                                        Barna listet opp nedenfor har ikke vært en del av
-                                        behandlingen tidligere. Gjør en vurdering på hvorvidt disse
-                                        skal inkluderes i den nye revurderingen og velg de som er
-                                        relevante.
-                                    </TekstForCheckboxGruppe>
-                                    {nyeBarnSidenForrigeBehandling.map((nyttBarn) => {
-                                        return (
-                                            <Checkbox
-                                                key={nyttBarn.personIdent}
-                                                onClick={(e) => {
-                                                    if ((e.target as HTMLInputElement).checked) {
-                                                        settValgtBarn((prevState) => [
-                                                            ...prevState,
-                                                            nyttBarn,
-                                                        ]);
-                                                    } else {
-                                                        settValgtBarn((prevState) =>
-                                                            prevState.filter(
-                                                                (barn) =>
-                                                                    barn.personIdent !==
-                                                                    nyttBarn.personIdent
-                                                            )
-                                                        );
-                                                    }
-                                                }}
-                                                label={`${nyttBarn.navn} (${nyttBarn.personIdent})`}
-                                            />
-                                        );
-                                    })}
-                                </StyledCheckboxGruppe>
+                                <NyeBarn>
+                                    <Label>Barn som ikke tidligere er behandlet</Label>
+                                    <BodyShort>
+                                        Barna listet opp nedenfor har blitt lagt til i
+                                        Folkeregisteret etter at saken sist ble vurdert. De blir nå
+                                        tatt med inn i behandlingen og saksbehandler må vurdere om
+                                        vilkårene skal vurderes på nytt.
+                                    </BodyShort>
+                                </NyeBarn>
                             )}
                             <FlexDiv>
-                                <StyledFamilieDatovelgder
-                                    id={'krav-mottatt'}
-                                    label={'Krav mottatt'}
-                                    onChange={(dato) => {
-                                        settValgtDato(dato as string);
-                                    }}
-                                    valgtDato={valgtDato}
-                                />
                                 <KnappeWrapper>
                                     <StyledHovedknapp
                                         onClick={() => {
@@ -160,7 +131,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             if (kanStarteRevurdering) {
                                                 lagRevurdering({
                                                     fagsakId,
-                                                    barn: valgtBarn,
+                                                    barn: nyeBarnSidenForrigeBehandling,
                                                     behandlingsårsak: valgtBehandlingsårsak,
                                                     kravMottatt: valgtDato,
                                                 });
