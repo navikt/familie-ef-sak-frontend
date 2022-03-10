@@ -1,12 +1,12 @@
-import { behandlingResultatTilTekst, EBehandlingResultat } from '../../../../App/typer/vedtak';
+import { behandlingResultatTilTekst, EBehandlingResultat } from '../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { Behandling } from '../../../../App/typer/fagsak';
-import { Behandlingstype } from '../../../../App/typer/behandlingstype';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
-import { useApp } from '../../../../App/context/AppContext';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Behandling } from '../../../App/typer/fagsak';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import { VEDTAK_OG_BEREGNING } from './konstanter';
+import { useApp } from '../../../App/context/AppContext';
 import { Heading } from '@navikt/ds-react';
 
 interface Props {

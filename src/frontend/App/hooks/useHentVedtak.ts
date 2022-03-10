@@ -2,7 +2,7 @@ import { byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
-import { EBehandlingResultat, IVedtak } from '../typer/vedtak';
+import { EBehandlingResultat, IVedtakForOvergangsstønad } from '../typer/vedtak';
 
 export const harVedtaksresultatMedTilkjentYtelse = (
     vedtaksresultat: EBehandlingResultat | undefined
@@ -21,11 +21,13 @@ export const useHentVedtak = (
     behandlingId: string
 ): {
     hentVedtak: () => void;
-    vedtak: Ressurs<IVedtak | undefined>;
+    vedtak: Ressurs<IVedtakForOvergangsstønad | undefined>;
     vedtaksresultat: EBehandlingResultat | undefined;
 } => {
     const { axiosRequest } = useApp();
-    const [vedtak, settVedtak] = useState<Ressurs<IVedtak | undefined>>(byggTomRessurs());
+    const [vedtak, settVedtak] = useState<Ressurs<IVedtakForOvergangsstønad | undefined>>(
+        byggTomRessurs()
+    );
     const [vedtaksresultat, settVedtaksresultat] = useState<EBehandlingResultat>();
 
     const hentVedtak = useCallback(() => {
@@ -33,8 +35,8 @@ export const useHentVedtak = (
             method: 'GET',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
         };
-        axiosRequest<IVedtak | undefined, null>(behandlingConfig).then(
-            (res: Ressurs<IVedtak | undefined>) => {
+        axiosRequest<IVedtakForOvergangsstønad | undefined, null>(behandlingConfig).then(
+            (res: Ressurs<IVedtakForOvergangsstønad | undefined>) => {
                 settVedtak(res);
                 const resultatType =
                     res.status === RessursStatus.SUKSESS && res.data

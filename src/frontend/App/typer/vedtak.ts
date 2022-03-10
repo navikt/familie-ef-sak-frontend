@@ -1,7 +1,8 @@
 import { PeriodeVariant } from '../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
+import { Stønadstype } from './behandlingstema';
 
-export type IAvslåVedtak = {
+export type IAvslåVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
@@ -22,7 +23,7 @@ export interface IBeregningsgrunnlag {
     fullOvergangsStønadPerMåned: number | null;
     grunnbeløp: number | null;
 }
-export type IInnvilgeVedtak = {
+export type IInnvilgeVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.INNVILGE;
     periodeBegrunnelse?: string;
     inntektBegrunnelse?: string;
@@ -31,7 +32,19 @@ export type IInnvilgeVedtak = {
     samordningsfradragType?: ESamordningsfradragtype | string | undefined;
 };
 
-export type ISanksjonereVedtak = {
+export type IInnvilgeVedtakForBarnetilsyn = {
+    resultatType: EBehandlingResultat.INNVILGE;
+    utgiftsperioder: IUtgiftsperiode[];
+};
+
+export type IUtgiftsperiode = {
+    årMånedFra: string;
+    årMånedTil: string;
+    barn: string[] | undefined; // TODO: oppdater til riktig type for barn
+    utgifter: number | undefined;
+};
+
+export type ISanksjonereVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.SANKSJONERE;
     sanksjonsårsak: Sanksjonsårsak;
     periode: IVedtaksperiode;
@@ -43,13 +56,19 @@ export type ISanksjonereVedtakDto = {
     internBegrunnelse: string;
 };
 
-export interface IOpphørtVedtak {
+export interface IOpphørtVedtakForOvergangsstønad {
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
     begrunnelse: string;
 }
 
-export type IVedtak = IAvslåVedtak | IInnvilgeVedtak | IOpphørtVedtak | ISanksjonereVedtak;
+export type IVedtakForOvergangsstønad =
+    | IAvslåVedtakForOvergangsstønad
+    | IInnvilgeVedtakForOvergangsstønad
+    | IOpphørtVedtakForOvergangsstønad
+    | ISanksjonereVedtakForOvergangsstønad;
+
+export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
 
 export interface IInntektsperiode {
     årMånedFra?: string;
@@ -97,11 +116,18 @@ export enum EPeriodetype {
     MIGRERING = 'MIGRERING',
 }
 
-export enum EPeriodeProperty {
+export enum EVedtaksperiodeProperty {
     periodeType = 'periodeType',
     aktivitet = 'aktivitet',
     årMånedFra = 'årMånedFra',
     årMånedTil = 'årMånedTil',
+}
+
+export enum EUtgiftsperiodeProperty {
+    årMånedFra = 'årMånedFra',
+    årMånedTil = 'årMånedTil',
+    barn = 'barn',
+    utgifter = 'utgifter',
 }
 
 export enum EAvslagÅrsak {
@@ -117,12 +143,23 @@ export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
 ];
 
-export const periodeVariantTilProperty = (periodeVariant: PeriodeVariant): EPeriodeProperty => {
+export const periodeVariantTilProperty = (
+    periodeVariant: PeriodeVariant,
+    stønadstype: Stønadstype
+): EVedtaksperiodeProperty | EUtgiftsperiodeProperty => {
+    if (stønadstype === Stønadstype.OVERGANGSSTØNAD) {
+        switch (periodeVariant) {
+            case PeriodeVariant.ÅR_MÅNED_FRA:
+                return EVedtaksperiodeProperty.årMånedFra;
+            case PeriodeVariant.ÅR_MÅNED_TIL:
+                return EVedtaksperiodeProperty.årMånedTil;
+        }
+    }
     switch (periodeVariant) {
         case PeriodeVariant.ÅR_MÅNED_FRA:
-            return EPeriodeProperty.årMånedFra;
+            return EUtgiftsperiodeProperty.årMånedFra;
         case PeriodeVariant.ÅR_MÅNED_TIL:
-            return EPeriodeProperty.årMånedTil;
+            return EUtgiftsperiodeProperty.årMånedTil;
     }
 };
 

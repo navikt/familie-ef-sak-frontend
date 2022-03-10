@@ -6,8 +6,8 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import {
     EAvslagÅrsak,
     EBehandlingResultat,
-    IAvslåVedtak,
-    IVedtak,
+    IAvslåVedtakForOvergangsstønad,
+    IVedtakForOvergangsstønad,
 } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
@@ -15,13 +15,13 @@ import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
-    lagretVedtak?: IVedtak;
+    lagretVedtak?: IVedtakForOvergangsstønad;
     alleVilkårOppfylt: boolean;
     ikkeOppfyltVilkårEksisterer: boolean;
 }> = ({ behandling, lagretVedtak, alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer }) => {
     const lagretAvslåBehandling =
         lagretVedtak?.resultatType === EBehandlingResultat.AVSLÅ
-            ? (lagretVedtak as IAvslåVedtak)
+            ? (lagretVedtak as IAvslåVedtakForOvergangsstønad)
             : undefined;
     const [avslagBegrunnelse, settAvslagBegrunnelse] = useState<string>(
         lagretAvslåBehandling?.avslåBegrunnelse ?? ''
@@ -42,7 +42,7 @@ export const AvslåVedtak: React.FC<{
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
 
-    const vedtakRequest: IAvslåVedtak = {
+    const vedtakRequest: IAvslåVedtakForOvergangsstønad = {
         resultatType: EBehandlingResultat.AVSLÅ,
         avslåÅrsak: avslagÅrsak,
         avslåBegrunnelse: avslagBegrunnelse,
@@ -72,7 +72,7 @@ export const AvslåVedtak: React.FC<{
 
     const avslåBlankett = () => {
         settLaster(true);
-        axiosRequest<string, IAvslåVedtak>({
+        axiosRequest<string, IAvslåVedtakForOvergangsstønad>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-blankettvedtak`,
             data: vedtakRequest,
@@ -85,7 +85,7 @@ export const AvslåVedtak: React.FC<{
 
     const avslåBehandling = () => {
         settLaster(true);
-        axiosRequest<string, IAvslåVedtak>({
+        axiosRequest<string, IAvslåVedtakForOvergangsstønad>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
             data: vedtakRequest,
