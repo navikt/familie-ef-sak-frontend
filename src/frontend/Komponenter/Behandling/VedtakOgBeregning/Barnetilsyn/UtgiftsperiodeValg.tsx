@@ -1,9 +1,5 @@
-import {
-    EUtgiftsperiodeProperty,
-    IUtgiftsperiode,
-    periodeVariantTilUtgiftsperiodeProperty,
-} from '../../../../App/typer/vedtak';
-import MånedÅrPeriode from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
+import { EUtgiftsperiodeProperty, IUtgiftsperiode } from '../../../../App/typer/vedtak';
+import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -75,6 +71,17 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const periodeVariantTilUtgiftsperiodeProperty = (
+        periodeVariant: PeriodeVariant
+    ): EUtgiftsperiodeProperty => {
+        switch (periodeVariant) {
+            case PeriodeVariant.ÅR_MÅNED_FRA:
+                return EUtgiftsperiodeProperty.årMånedFra;
+            case PeriodeVariant.ÅR_MÅNED_TIL:
+                return EUtgiftsperiodeProperty.årMånedTil;
+        }
     };
 
     return (

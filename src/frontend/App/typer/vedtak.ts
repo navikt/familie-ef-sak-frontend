@@ -1,4 +1,3 @@
-import { PeriodeVariant } from '../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
 
 export type IAvslåVedtakForOvergangsstønad = {
@@ -154,39 +153,6 @@ export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
 ];
-
-export const periodeVariantTilVedtaksperiodeProperty = (
-    periodeVariant: PeriodeVariant
-): EVedtaksperiodeProperty => {
-    switch (periodeVariant) {
-        case PeriodeVariant.ÅR_MÅNED_FRA:
-            return EVedtaksperiodeProperty.årMånedFra;
-        case PeriodeVariant.ÅR_MÅNED_TIL:
-            return EVedtaksperiodeProperty.årMånedTil;
-    }
-};
-
-export const periodeVariantTilUtgiftsperiodeProperty = (
-    periodeVariant: PeriodeVariant
-): EUtgiftsperiodeProperty => {
-    switch (periodeVariant) {
-        case PeriodeVariant.ÅR_MÅNED_FRA:
-            return EUtgiftsperiodeProperty.årMånedFra;
-        case PeriodeVariant.ÅR_MÅNED_TIL:
-            return EUtgiftsperiodeProperty.årMånedTil;
-    }
-};
-
-export const periodeVariantTilKontantstøtteperiodeProperty = (
-    periodeVariant: PeriodeVariant
-): EKontantstøttePeriodeProperty => {
-    switch (periodeVariant) {
-        case PeriodeVariant.ÅR_MÅNED_FRA:
-            return EKontantstøttePeriodeProperty.årMånedFra;
-        case PeriodeVariant.ÅR_MÅNED_TIL:
-            return EKontantstøttePeriodeProperty.årMånedTil;
-    }
-};
 
 export enum EAktivitet {
     IKKE_AKTIVITETSPLIKT = 'IKKE_AKTIVITETSPLIKT',

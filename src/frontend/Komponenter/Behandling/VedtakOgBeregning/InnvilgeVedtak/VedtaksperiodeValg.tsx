@@ -3,10 +3,9 @@ import {
     EPeriodetype,
     EVedtaksperiodeProperty,
     IVedtaksperiode,
-    periodeVariantTilVedtaksperiodeProperty,
 } from '../../../../App/typer/vedtak';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
-import MånedÅrPeriode from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
+import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -84,6 +83,17 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const periodeVariantTilVedtaksperiodeProperty = (
+        periodeVariant: PeriodeVariant
+    ): EVedtaksperiodeProperty => {
+        switch (periodeVariant) {
+            case PeriodeVariant.ÅR_MÅNED_FRA:
+                return EVedtaksperiodeProperty.årMånedFra;
+            case PeriodeVariant.ÅR_MÅNED_TIL:
+                return EVedtaksperiodeProperty.årMånedTil;
+        }
     };
 
     return (

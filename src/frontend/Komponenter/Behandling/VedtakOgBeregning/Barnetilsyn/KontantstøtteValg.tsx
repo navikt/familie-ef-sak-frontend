@@ -4,12 +4,8 @@ import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
-import {
-    EKontantstøttePeriodeProperty,
-    IKontantstøttePeriode,
-    periodeVariantTilKontantstøtteperiodeProperty,
-} from '../../../../App/typer/vedtak';
-import MånedÅrPeriode from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
+import { EKontantstøttePeriodeProperty, IKontantstøttePeriode } from '../../../../App/typer/vedtak';
+import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../App/context/AppContext';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
@@ -75,6 +71,17 @@ const KontantstøtteValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const periodeVariantTilKontantstøtteperiodeProperty = (
+        periodeVariant: PeriodeVariant
+    ): EKontantstøttePeriodeProperty => {
+        switch (periodeVariant) {
+            case PeriodeVariant.ÅR_MÅNED_FRA:
+                return EKontantstøttePeriodeProperty.årMånedFra;
+            case PeriodeVariant.ÅR_MÅNED_TIL:
+                return EKontantstøttePeriodeProperty.årMånedTil;
+        }
     };
 
     return (
