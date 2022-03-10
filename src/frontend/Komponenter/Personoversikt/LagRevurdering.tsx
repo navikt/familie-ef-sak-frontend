@@ -17,6 +17,7 @@ import { useApp } from '../../App/context/AppContext';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BodyShort, Label } from '@navikt/ds-react';
+import { FødselsdatoTilAlder } from '../../App/utils/utils';
 
 const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -76,6 +77,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 {({ nyeBarnSidenForrigeBehandling }) => {
                     const harNyeBarnSidenForrigeBehandling =
                         nyeBarnSidenForrigeBehandling.length > 0;
+
+                    console.log('NYE', nyeBarnSidenForrigeBehandling);
                     return (
                         <>
                             <StyledSelect
@@ -119,6 +122,17 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                         tatt med inn i behandlingen og saksbehandler må vurdere om
                                         vilkårene skal vurderes på nytt.
                                     </BodyShort>
+                                    <ul>
+                                        {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
+                                            return (
+                                                <li>
+                                                    {nyttBarn.navn} (
+                                                    {FødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                                    {nyttBarn.personIdent})
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
                                 </NyeBarn>
                             )}
                             <FlexDiv>

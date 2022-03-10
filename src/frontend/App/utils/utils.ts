@@ -1,3 +1,4 @@
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequest';
@@ -114,3 +115,22 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
         previous[group].push(currentItem);
         return previous;
     }, {} as Record<K, T[]>);
+
+export const fødselsdatoTilAlder = (fødselsdato: string): number => {
+    const nå = new Date();
+
+    const årNå = nå.getFullYear();
+    const månedNå = nå.getMonth() + 1;
+    const dagNå = nå.getDate();
+
+    const [år, måned, dag] = fødselsdato.split('-').map((str: string): number => {
+        return parseInt(str, 10);
+    });
+
+    let alder = årNå - år;
+
+    if (månedNå < måned) alder--;
+    if (måned === månedNå && dagNå < dag) alder--;
+
+    return alder;
+};
