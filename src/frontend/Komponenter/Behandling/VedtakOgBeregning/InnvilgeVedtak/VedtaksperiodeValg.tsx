@@ -3,7 +3,7 @@ import {
     EPeriodetype,
     EVedtaksperiodeProperty,
     IVedtaksperiode,
-    periodeVariantTilProperty,
+    periodeVariantTilVedtaksperiodeProperty,
 } from '../../../../App/typer/vedtak';
 import AktivitetspliktVelger from './AktivitetspliktVelger';
 import MånedÅrPeriode from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
@@ -20,7 +20,6 @@ import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { useApp } from '../../../../App/context/AppContext';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -129,10 +128,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             onEndre={(verdi, periodeVariant) => {
                                 oppdaterVedtakslisteElement(
                                     index,
-                                    periodeVariantTilProperty(
-                                        periodeVariant,
-                                        Stønadstype.OVERGANGSSTØNAD
-                                    ) as EVedtaksperiodeProperty,
+                                    periodeVariantTilVedtaksperiodeProperty(periodeVariant),
                                     verdi
                                 );
                             }}

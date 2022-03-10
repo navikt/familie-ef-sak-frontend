@@ -1,7 +1,7 @@
 import {
     EUtgiftsperiodeProperty,
     IUtgiftsperiode,
-    periodeVariantTilProperty,
+    periodeVariantTilUtgiftsperiodeProperty,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import React, { Dispatch, SetStateAction } from 'react';
@@ -18,7 +18,6 @@ import { useApp } from '../../../../App/context/AppContext';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { barnFormatertForBarnVelger, mapValgtBarnTilNavn } from './mockData';
 
 const UtgiftsperiodeContainer = styled.div<{ lesevisning?: boolean }>`
@@ -104,10 +103,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterUtgiftsPeriode(
                                     index,
-                                    periodeVariantTilProperty(
-                                        periodeVariant,
-                                        Stønadstype.BARNETILSYN
-                                    ) as EUtgiftsperiodeProperty,
+                                    periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
                                     verdi
                                 );
                             }}

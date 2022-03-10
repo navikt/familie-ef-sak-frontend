@@ -1,6 +1,7 @@
 import {
     EBehandlingResultat,
     IInnvilgeVedtakForBarnetilsyn,
+    IKontantstøttePeriode,
     IUtgiftsperiode,
     IvedtakForBarnetilsyn,
 } from '../../../../App/typer/vedtak';
@@ -14,11 +15,16 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
 import UtgiftsperiodeValg, { tomUtgiftsperiodeRad } from './UtgiftsperiodeValg';
+import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForBarnetilsyn, 'resultatType'>;
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
+`;
+
+const WrapperMarginTop = styled.div`
+    margin-top: 1rem;
 `;
 
 export const Vedtaksform: React.FC<{
@@ -38,10 +44,16 @@ export const Vedtaksform: React.FC<{
             utgiftsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.utgiftsperioder
                 : [tomUtgiftsperiodeRad],
+            kontantstøtteperioder: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.kontantstøtteperioder
+                : [tomKontantstøtteRad],
         },
         validerInnvilgetVedtakForm
     );
     const utgiftsperiodeState = formState.getProps('utgiftsperioder') as ListState<IUtgiftsperiode>;
+    const kontantstøtteState = formState.getProps(
+        'kontantstøtteperioder'
+    ) as ListState<IKontantstøttePeriode>;
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
@@ -53,6 +65,7 @@ export const Vedtaksform: React.FC<{
         const vedtaksRequest: IInnvilgeVedtakForBarnetilsyn = {
             resultatType: EBehandlingResultat.INNVILGE,
             utgiftsperioder: form.utgiftsperioder,
+            kontantstøtteperioder: form.kontantstøtteperioder,
         };
         lagreVedtak(vedtaksRequest);
     };
@@ -67,6 +80,16 @@ export const Vedtaksform: React.FC<{
                 valideringsfeil={formState.errors.utgiftsperioder}
                 settValideringsFeil={formState.setErrors}
             />
+            <WrapperMarginTop>
+                <Heading spacing size="small" level="5">
+                    Kontantstøtte
+                </Heading>
+                <KontantstøtteValg
+                    kontantstøttePerioder={kontantstøtteState}
+                    valideringsfeil={formState.errors.kontantstøtteperioder}
+                    settValideringsFeil={formState.setErrors}
+                />
+            </WrapperMarginTop>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}
