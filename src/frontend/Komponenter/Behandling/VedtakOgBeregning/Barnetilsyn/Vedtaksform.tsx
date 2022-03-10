@@ -2,6 +2,7 @@ import {
     EBehandlingResultat,
     IInnvilgeVedtakForBarnetilsyn,
     IKontantstøttePeriode,
+    ITilleggsstønadPeriode,
     IUtgiftsperiode,
     IvedtakForBarnetilsyn,
 } from '../../../../App/typer/vedtak';
@@ -16,6 +17,7 @@ import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
 import UtgiftsperiodeValg, { tomUtgiftsperiodeRad } from './UtgiftsperiodeValg';
 import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
+import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForBarnetilsyn, 'resultatType'>;
 
@@ -47,6 +49,9 @@ export const Vedtaksform: React.FC<{
             kontantstøtteperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.kontantstøtteperioder
                 : [tomKontantstøtteRad],
+            tilleggsstønadsperioder: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.tilleggsstønadsperioder
+                : [tomTilleggsstønadRad],
         },
         validerInnvilgetVedtakForm
     );
@@ -54,6 +59,9 @@ export const Vedtaksform: React.FC<{
     const kontantstøtteState = formState.getProps(
         'kontantstøtteperioder'
     ) as ListState<IKontantstøttePeriode>;
+    const tilleggsstønadState = formState.getProps(
+        'tilleggsstønadsperioder'
+    ) as ListState<ITilleggsstønadPeriode>;
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
@@ -66,6 +74,7 @@ export const Vedtaksform: React.FC<{
             resultatType: EBehandlingResultat.INNVILGE,
             utgiftsperioder: form.utgiftsperioder,
             kontantstøtteperioder: form.kontantstøtteperioder,
+            tilleggsstønadsperioder: form.tilleggsstønadsperioder,
         };
         lagreVedtak(vedtaksRequest);
     };
@@ -87,6 +96,16 @@ export const Vedtaksform: React.FC<{
                 <KontantstøtteValg
                     kontantstøttePerioder={kontantstøtteState}
                     valideringsfeil={formState.errors.kontantstøtteperioder}
+                    settValideringsFeil={formState.setErrors}
+                />
+            </WrapperMarginTop>
+            <WrapperMarginTop>
+                <Heading spacing size="small" level="5">
+                    Tilleggsstønadsforskriften
+                </Heading>
+                <TilleggsstønadValg
+                    tilleggsstønadPerioder={tilleggsstønadState}
+                    valideringsfeil={formState.errors.tilleggsstønadsperioder}
                     settValideringsFeil={formState.setErrors}
                 />
             </WrapperMarginTop>
