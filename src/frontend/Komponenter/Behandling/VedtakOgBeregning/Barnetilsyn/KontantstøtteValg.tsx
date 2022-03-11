@@ -97,6 +97,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                     name={'Kontantstøtte'}
                     label={'Ja'}
                     value={EKontantstøtte.JA}
+                    checked={kontantstøtte.value === EKontantstøtte.JA}
                     onChange={(event) => kontantstøtte.onChange(event)}
                 />
                 <Radio

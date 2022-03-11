@@ -2,6 +2,8 @@ import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import {
     EKontantstøtte,
+    EStønadsreduksjon,
+    ETilleggsstønad,
     IKontantstøttePeriode,
     ITilleggsstønadPeriode,
     IUtgiftsperiode,
@@ -12,12 +14,21 @@ export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
     kontantstøtte,
     kontantstøtteperioder,
+    tilleggsstønad,
+    stønadsreduksjon,
     tilleggsstønadsperioder,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     return {
         ...validerUtgiftsperioder({ utgiftsperioder }),
+        kontantstøtte: undefined,
         ...validerKontantstøttePerioder({ kontantstøtteperioder }, kontantstøtte),
-        ...validerTilleggsstønadPerioder({ tilleggsstønadsperioder }),
+        tilleggsstønad: undefined,
+        stønadsreduksjon: undefined,
+        ...validerTilleggsstønadPerioder(
+            { tilleggsstønadsperioder },
+            tilleggsstønad,
+            stønadsreduksjon
+        ),
     };
 };
 
@@ -67,7 +78,7 @@ export const validerKontantstøttePerioder = (
     }: {
         kontantstøtteperioder: IKontantstøttePeriode[] | undefined;
     },
-    kontantstøtte: EKontantstøtte | string | undefined
+    kontantstøtte: EKontantstøtte
 ): FormErrors<{ kontantstøtteperioder: IKontantstøttePeriode[] }> | undefined => {
     if (!kontantstøtteperioder || kontantstøtte == EKontantstøtte.NEI) {
         const kontantstøtteperiodeFeil: FormErrors<IKontantstøttePeriode> = {
@@ -114,12 +125,20 @@ export const validerKontantstøttePerioder = (
     };
 };
 
-export const validerTilleggsstønadPerioder = ({
-    tilleggsstønadsperioder,
-}: {
-    tilleggsstønadsperioder: ITilleggsstønadPeriode[] | undefined;
-}): FormErrors<{ tilleggsstønadsperioder: ITilleggsstønadPeriode[] }> => {
-    if (!tilleggsstønadsperioder) {
+export const validerTilleggsstønadPerioder = (
+    {
+        tilleggsstønadsperioder,
+    }: {
+        tilleggsstønadsperioder: ITilleggsstønadPeriode[] | undefined;
+    },
+    tilleggsstønad: ETilleggsstønad,
+    stønadsreduksjon: EStønadsreduksjon
+): FormErrors<{ tilleggsstønadsperioder: ITilleggsstønadPeriode[] }> => {
+    if (
+        !tilleggsstønadsperioder ||
+        tilleggsstønad === ETilleggsstønad.NEI ||
+        stønadsreduksjon === EStønadsreduksjon.NEI
+    ) {
         const tilleggsstønadsperiodeFeil: FormErrors<ITilleggsstønadPeriode> = {
             årMånedFra: undefined,
             årMånedTil: undefined,

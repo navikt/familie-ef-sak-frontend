@@ -1,6 +1,8 @@
 import {
     EBehandlingResultat,
     EKontantstøtte,
+    EStønadsreduksjon,
+    ETilleggsstønad,
     IInnvilgeVedtakForBarnetilsyn,
     IKontantstøttePeriode,
     ITilleggsstønadPeriode,
@@ -54,6 +56,12 @@ export const Vedtaksform: React.FC<{
             kontantstøtteperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.kontantstøtteperioder
                 : [tomKontantstøtteRad],
+            tilleggsstønad: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.tilleggsstønad
+                : ETilleggsstønad.NEI,
+            stønadsreduksjon: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.stønadsreduksjon
+                : EStønadsreduksjon.NEI,
             tilleggsstønadsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.tilleggsstønadsperioder
                 : [tomTilleggsstønadRad],
@@ -65,7 +73,9 @@ export const Vedtaksform: React.FC<{
     const kontantstøttePeriodeState = formState.getProps(
         'kontantstøtteperioder'
     ) as ListState<IKontantstøttePeriode>;
-    const tilleggsstønadState = formState.getProps(
+    const tilleggsstønadState = formState.getProps('tilleggsstønad') as FieldState;
+    const stønadsreduksjonState = formState.getProps('stønadsreduksjon') as FieldState;
+    const tilleggsstønadsperiodeState = formState.getProps(
         'tilleggsstønadsperioder'
     ) as ListState<ITilleggsstønadPeriode>;
 
@@ -82,7 +92,13 @@ export const Vedtaksform: React.FC<{
             kontantstøtte: form.kontantstøtte,
             kontantstøtteperioder:
                 form.kontantstøtte.value === EKontantstøtte.JA ? form.kontantstøtteperioder : null,
-            tilleggsstønadsperioder: form.tilleggsstønadsperioder,
+            tilleggsstønad: form.tilleggsstønad,
+            stønadsreduksjon: form.stønadsreduksjon,
+            tilleggsstønadsperioder:
+                form.tilleggsstønad === ETilleggsstønad.JA &&
+                form.stønadsreduksjon === EStønadsreduksjon.JA
+                    ? form.tilleggsstønadsperioder
+                    : null,
         };
         lagreVedtak(vedtaksRequest);
     };
@@ -113,7 +129,9 @@ export const Vedtaksform: React.FC<{
                     Tilleggsstønadsforskriften
                 </Heading>
                 <TilleggsstønadValg
-                    tilleggsstønadPerioder={tilleggsstønadState}
+                    tilleggsstønad={tilleggsstønadState}
+                    stønadsreduksjon={stønadsreduksjonState}
+                    tilleggsstønadPerioder={tilleggsstønadsperiodeState}
                     valideringsfeil={formState.errors.tilleggsstønadsperioder}
                     settValideringsFeil={formState.setErrors}
                 />
