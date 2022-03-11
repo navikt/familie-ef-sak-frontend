@@ -4,14 +4,10 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/re
 import styled from 'styled-components';
 import Brukerinfo from './Brukerinfo';
 import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
-import {
-    behandlingstemaTilStønadstype,
-    Stønadstype,
-    stønadstypeTilTekst,
-} from '../../App/typer/behandlingstema';
+import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { AlertStripeAdvarsel, AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -24,7 +20,7 @@ import {
 } from '../Oppgavebenk/oppgavefilterStorage';
 import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/journalforing';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
-import { Select } from '@navikt/ds-react';
+import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 
 const Blokk = styled.div`
     margin-bottom: 1rem;
@@ -105,10 +101,12 @@ export const JournalforingAdmin: React.FC = () => {
         <>
             <DataViewer response={{ journalResponse }}>
                 {({ journalResponse }) => (
-                    <UtledEllerVelgFagsak
-                        journalResponse={journalResponse}
-                        hentFagsak={hentFagsak}
-                    />
+                    <SideLayout>
+                        <UtledEllerVelgFagsak
+                            journalResponse={journalResponse}
+                            hentFagsak={hentFagsak}
+                        />
+                    </SideLayout>
                 )}
             </DataViewer>
             <DataViewer response={{ journalResponse, fagsak }}>
@@ -165,47 +163,4 @@ export const JournalforingAdmin: React.FC = () => {
             </DataViewer>
         </>
     );
-};
-
-const UtledEllerVelgFagsak: React.FC<{
-    journalResponse: IJojurnalpostResponse;
-    hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
-}> = ({ journalResponse, hentFagsak }) => {
-    {
-        const stønadstypeFraJournalpost = behandlingstemaTilStønadstype(
-            journalResponse.journalpost.behandlingstema
-        );
-        const [stønadstype, settStønadstype] = useState(stønadstypeFraJournalpost);
-
-        useEffect(() => {
-            if (stønadstype) {
-                hentFagsak(journalResponse.personIdent, stønadstype);
-            }
-            // eslint-disable-next-line
-        }, [stønadstype]);
-
-        if (!stønadstypeFraJournalpost) {
-            return (
-                <SideLayout>
-                    <AlertStripeInfo>
-                        Journalposten har ikke behandlingstema. Velg stønadstype.
-                    </AlertStripeInfo>
-                    <Select
-                        label={'Velg stønadstype'}
-                        onChange={(e) => {
-                            settStønadstype(e.target.value as Stønadstype);
-                        }}
-                    >
-                        <option value="">Ikke valgt</option>
-                        {Object.values(Stønadstype).map((stønadstype) => (
-                            <option value={stønadstype} key={stønadstype}>
-                                {stønadstypeTilTekst[stønadstype]}
-                            </option>
-                        ))}
-                    </Select>
-                </SideLayout>
-            );
-        }
-        return null;
-    }
 };
