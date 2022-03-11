@@ -65,8 +65,8 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
             </OppsummeringContainer>
             {finnesBarnPåBehandling && (
                 <OppsummeringContainer>
-                    {barnPåBehandling.map((barn) => (
-                        <OppsummeringAvBarn barn={barn} />
+                    {barnPåBehandling.map((barn, index) => (
+                        <OppsummeringAvBarn barn={barn} key={barn.personIdent + `${index}`} />
                     ))}
                 </OppsummeringContainer>
             )}

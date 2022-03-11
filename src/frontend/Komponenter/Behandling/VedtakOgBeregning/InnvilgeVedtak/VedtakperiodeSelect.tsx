@@ -1,5 +1,9 @@
 import React, { FC } from 'react';
-import { EPeriodeProperty, EPeriodetype, periodetypeTilTekst } from '../../../../App/typer/vedtak';
+import {
+    EVedtaksperiodeProperty,
+    EPeriodetype,
+    periodetypeTilTekst,
+} from '../../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 
@@ -10,7 +14,7 @@ const StyledSelect = styled(FamilieSelect)`
 
 interface VedtakperiodeSelectProps {
     oppdaterVedtakslisteElement: (
-        property: EPeriodeProperty,
+        property: EVedtaksperiodeProperty,
         value: string | number | undefined
     ) => void;
     behandlingErRedigerbar: boolean;
@@ -31,7 +35,7 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
             value={periodeType}
             feil={feil}
             onChange={(e) => {
-                oppdaterVedtakslisteElement(EPeriodeProperty.periodeType, e.target.value);
+                oppdaterVedtakslisteElement(EVedtaksperiodeProperty.periodeType, e.target.value);
             }}
             erLesevisning={!behandlingErRedigerbar}
             lesevisningVerdi={periodeType && periodetypeTilTekst[periodeType]}

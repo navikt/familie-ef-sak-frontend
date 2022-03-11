@@ -1,5 +1,5 @@
 import React from 'react';
-import { EBehandlingResultat, IVedtak } from '../../../../App/typer/vedtak';
+import { EBehandlingResultat, IVedtakForOvergangsstønad } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { InnvilgeVedtak } from '../InnvilgeVedtak/InnvilgeVedtak';
 import { BehandleIGosys } from '../BehandleIGosys/BehandleIGosys';
@@ -9,7 +9,7 @@ import { Opphør } from '../Opphør/Opphør';
 interface Props {
     vedtaksresultatType?: EBehandlingResultat;
     behandling: Behandling;
-    lagretVedtak?: IVedtak;
+    lagretVedtak?: IVedtakForOvergangsstønad;
     alleVilkårOppfylt: boolean;
     ikkeOppfyltVilkårEksisterer: boolean;
 }

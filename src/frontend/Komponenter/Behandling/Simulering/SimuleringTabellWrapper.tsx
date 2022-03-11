@@ -6,7 +6,11 @@ import { gjelderÅr } from '../../../App/utils/dato';
 import styled from 'styled-components';
 import SimuleringOversikt from './SimuleringOversikt';
 import { Tilbakekreving } from './Tilbakekreving';
-import { EBehandlingResultat, ISanksjonereVedtak, IVedtak } from '../../../App/typer/vedtak';
+import {
+    EBehandlingResultat,
+    ISanksjonereVedtakForOvergangsstønad,
+    IVedtakForOvergangsstønad,
+} from '../../../App/typer/vedtak';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { nåværendeÅrOgMånedFormatert } from '../Sanksjon/utils';
 
@@ -44,7 +48,7 @@ const mapSimuleringstabellRader = (
 const SimuleringTabellWrapper: React.FC<{
     simuleringsresultat: ISimulering;
     behandlingId: string;
-    lagretVedtak?: IVedtak;
+    lagretVedtak?: IVedtakForOvergangsstønad;
 }> = ({ simuleringsresultat, behandlingId, lagretVedtak }) => {
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
@@ -56,7 +60,7 @@ const SimuleringTabellWrapper: React.FC<{
 
     const lagretSanksjonertVedtak =
         lagretVedtak?.resultatType === EBehandlingResultat.SANKSJONERE
-            ? (lagretVedtak as ISanksjonereVedtak)
+            ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
             : undefined;
 
     function harFeilutbetaling() {

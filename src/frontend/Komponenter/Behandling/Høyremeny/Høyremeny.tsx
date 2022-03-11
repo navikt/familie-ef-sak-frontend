@@ -14,10 +14,6 @@ interface IHøyremenyProps {
     åpenHøyremeny: boolean;
 }
 
-interface StyledButtonProps {
-    åpenHøyremeny: boolean;
-}
-
 const StyledBack = styled(Back)`
     border-radius: 0;
     margin-top: 3px;
@@ -32,12 +28,12 @@ const StyledNext = styled(Next)`
     color: white;
 `;
 
-const StyledButton = styled.button<StyledButtonProps>`
+const StyledButton = styled.button`
     position: absolute;
 
     background-color: ${navFarger.navBlaLighten20};
 
-    right: ${(p) => (p.åpenHøyremeny ? '19rem' : '12px')};
+    margin-left: -12px;
 
     top: 200px;
 
@@ -70,7 +66,6 @@ const Høyremeny: React.FC<IHøyremenyProps> = ({ behandlingId, åpenHøyremeny 
                     <Totrinnskontroll />
                     <StyledHøyremeny>
                         <StyledButton
-                            åpenHøyremeny
                             onClick={() => {
                                 settÅpenHøyremeny(!åpenHøyremeny);
                             }}

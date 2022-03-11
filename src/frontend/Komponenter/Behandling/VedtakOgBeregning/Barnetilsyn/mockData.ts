@@ -1,3 +1,5 @@
+import { ISelectOption } from '@navikt/familie-form-elements';
+
 export interface IBarnForBarnetilsyn {
     navn: string;
     personIdent: string;
@@ -55,3 +57,12 @@ const pål: IBarnForBarnetilsyn = {
 };
 
 export const barn = [ole, alfonso, pål];
+
+export const barnFormatertForBarnVelger = barn.map<ISelectOption>((barn) => ({
+    value: barn.personIdent,
+    label: `${barn.navn} (${barn.alder})`,
+}));
+
+export const mapValgtBarnTilNavn = (valgtBarn: ISelectOption[]): string[] => {
+    return valgtBarn.map((barn) => barn.label.split(' ')[0]);
+};
