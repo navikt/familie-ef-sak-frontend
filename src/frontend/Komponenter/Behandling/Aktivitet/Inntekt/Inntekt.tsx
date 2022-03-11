@@ -28,13 +28,11 @@ export const Inntekt: React.FC<VilkårProps> = ({
             {{
                 venstre: (
                     <>
-                        <>
-                            <Vilkårstittel
-                                tittel="Inntekt"
-                                vilkårsresultat={vurdering.resultat}
-                                paragrafTittel={'§15-10'}
-                            />
-                        </>
+                        <Vilkårstittel
+                            tittel="Inntekt"
+                            vilkårsresultat={vurdering.resultat}
+                            paragrafTittel={'§15-10'}
+                        />
                     </>
                 ),
                 høyre: (

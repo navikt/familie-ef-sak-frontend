@@ -107,7 +107,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, stønadstyp
                         <Normaltekst className={'førsteDataKolonne'}>
                             Beskrivelse av virksomheten
                         </Normaltekst>
-                        <Normaltekst> {virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
+                        <Normaltekst>{virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
                     </GridTabell>
                 )}
 

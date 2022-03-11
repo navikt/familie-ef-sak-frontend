@@ -42,20 +42,18 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
                         {{
                             venstre: (
                                 <>
-                                    <>
-                                        <Vilkårstittel
-                                            tittel="Aktivitet arbeid"
-                                            vilkårsresultat={vurdering.resultat}
-                                            paragrafTittel={'§15-10'}
+                                    <Vilkårstittel
+                                        tittel="Aktivitet arbeid"
+                                        vilkårsresultat={vurdering.resultat}
+                                        paragrafTittel={'§15-10'}
+                                    />
+                                    {grunnlag.aktivitet && (
+                                        <AktivitetArbeidInfo
+                                            aktivitet={grunnlag.aktivitet}
+                                            skalViseSøknadsdata={skalViseSøknadsdata}
+                                            stønadstype={behandling.stønadstype}
                                         />
-                                        {grunnlag.aktivitet && (
-                                            <AktivitetArbeidInfo
-                                                aktivitet={grunnlag.aktivitet}
-                                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                                stønadstype={behandling.stønadstype}
-                                            />
-                                        )}
-                                    </>
+                                    )}
                                 </>
                             ),
                             høyre: (
