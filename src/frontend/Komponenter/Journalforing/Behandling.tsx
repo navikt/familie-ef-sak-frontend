@@ -1,5 +1,5 @@
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Flatknapp } from 'nav-frontend-knapper';
@@ -10,7 +10,7 @@ import { Behandling, Fagsak } from '../../App/typer/fagsak';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
-import { Ressurs } from '../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
 
@@ -18,6 +18,7 @@ interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;
     behandling?: BehandlingRequest;
     fagsak: Ressurs<Fagsak>;
+    settFeilmelding: Dispatch<SetStateAction<string>>;
 }
 
 interface INyBehandling {
@@ -28,7 +29,12 @@ const StyledNyBehandlingRad = styled.tr`
     background-color: #cce1f3;
 `;
 
-const BehandlingInnold: React.FC<Props> = ({ behandling, settBehandling, fagsak }) => {
+const BehandlingInnold: React.FC<Props> = ({
+    behandling,
+    settBehandling,
+    fagsak,
+    settFeilmelding,
+}) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
     const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
 
@@ -53,22 +59,43 @@ const BehandlingInnold: React.FC<Props> = ({ behandling, settBehandling, fagsak 
         };
     };
 
+    const opprettBehandling = () => {
+        settFeilmelding('');
+        if (fagsak.status === RessursStatus.SUKSESS) {
+            const kanOppretteNyBehandling = fagsak.data.behandlinger.every(
+                (behandling: Behandling) => behandling.status !== 'UTREDES'
+            );
+
+            if (kanOppretteNyBehandling) {
+                settNyBehandling({
+                    behandlingstype: utledRiktigBehandlingstype(fagsak.data.behandlinger),
+                });
+            } else {
+                settFeilmelding(
+                    'Kan ikke opprette ny behandling på fagsak med eksisterende behandling med status UTREDES'
+                );
+            }
+        } else {
+            settFeilmelding('Velg stønadstype for å opprette ny behandling');
+        }
+    };
+
     return (
-        <DataViewer response={{ fagsak }}>
-            {({ fagsak }) => {
-                return (
-                    <>
-                        <Systemtittel>Behandling</Systemtittel>
-                        <table className="tabell">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Behandlingstype</th>
-                                    <th>Status</th>
-                                    <th>Sist endret</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+        <>
+            <Systemtittel>Behandling</Systemtittel>
+            <table className="tabell">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Behandlingstype</th>
+                        <th>Status</th>
+                        <th>Sist endret</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <DataViewer response={{ fagsak }}>
+                        {({ fagsak }) => (
+                            <>
                                 {fagsak.behandlinger.map((behandlingsEl: Behandling) => (
                                     <tr key={behandlingsEl.id}>
                                         <td>
@@ -104,29 +131,18 @@ const BehandlingInnold: React.FC<Props> = ({ behandling, settBehandling, fagsak 
                                         <td>–</td>
                                     </StyledNyBehandlingRad>
                                 )}
-                            </tbody>
-                        </table>
-                        {fagsak.behandlinger.every(
-                            (behandling: Behandling) => behandling.status !== 'UTREDES'
-                        ) &&
-                            !nyBehandling && (
-                                <Flatknapp
-                                    onClick={() => {
-                                        settNyBehandling({
-                                            behandlingstype: utledRiktigBehandlingstype(
-                                                fagsak.behandlinger
-                                            ),
-                                        });
-                                    }}
-                                >
-                                    <LeggtilMedSirkel />
-                                    <span>Opprett ny behandling</span>
-                                </Flatknapp>
-                            )}
-                    </>
-                );
-            }}
-        </DataViewer>
+                            </>
+                        )}
+                    </DataViewer>
+                </tbody>
+            </table>
+            {!nyBehandling && (
+                <Flatknapp onClick={opprettBehandling}>
+                    <LeggtilMedSirkel />
+                    <span>Opprett ny behandling</span>
+                </Flatknapp>
+            )}
+        </>
     );
 };
 
