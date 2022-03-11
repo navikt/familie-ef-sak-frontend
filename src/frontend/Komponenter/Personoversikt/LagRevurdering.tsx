@@ -17,7 +17,7 @@ import { useApp } from '../../App/context/AppContext';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BodyShort, Label } from '@navikt/ds-react';
-import { FødselsdatoTilAlder } from '../../App/utils/utils';
+import { fødselsdatoTilAlder } from '../../App/utils/utils';
 
 const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -127,7 +127,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             return (
                                                 <li>
                                                     {nyttBarn.navn} (
-                                                    {FødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                                    {fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
                                                     {nyttBarn.personIdent})
                                                 </li>
                                             );
