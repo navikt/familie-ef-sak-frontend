@@ -1,5 +1,6 @@
 import {
     EBehandlingResultat,
+    EKontantstøtte,
     IInnvilgeVedtakForBarnetilsyn,
     IKontantstøttePeriode,
     ITilleggsstønadPeriode,
@@ -18,6 +19,7 @@ import { Button, Heading } from '@navikt/ds-react';
 import UtgiftsperiodeValg, { tomUtgiftsperiodeRad } from './UtgiftsperiodeValg';
 import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
+import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForBarnetilsyn, 'resultatType'>;
 
@@ -46,6 +48,9 @@ export const Vedtaksform: React.FC<{
             utgiftsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.utgiftsperioder
                 : [tomUtgiftsperiodeRad],
+            kontantstøtte: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.kontantstøtte
+                : EKontantstøtte.NEI,
             kontantstøtteperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.kontantstøtteperioder
                 : [tomKontantstøtteRad],
@@ -56,7 +61,8 @@ export const Vedtaksform: React.FC<{
         validerInnvilgetVedtakForm
     );
     const utgiftsperiodeState = formState.getProps('utgiftsperioder') as ListState<IUtgiftsperiode>;
-    const kontantstøtteState = formState.getProps(
+    const kontantstøtteState = formState.getProps('kontantstøtte') as FieldState;
+    const kontantstøttePeriodeState = formState.getProps(
         'kontantstøtteperioder'
     ) as ListState<IKontantstøttePeriode>;
     const tilleggsstønadState = formState.getProps(
@@ -73,7 +79,9 @@ export const Vedtaksform: React.FC<{
         const vedtaksRequest: IInnvilgeVedtakForBarnetilsyn = {
             resultatType: EBehandlingResultat.INNVILGE,
             utgiftsperioder: form.utgiftsperioder,
-            kontantstøtteperioder: form.kontantstøtteperioder,
+            kontantstøtte: form.kontantstøtte,
+            kontantstøtteperioder:
+                form.kontantstøtte.value === EKontantstøtte.JA ? form.kontantstøtteperioder : null,
             tilleggsstønadsperioder: form.tilleggsstønadsperioder,
         };
         lagreVedtak(vedtaksRequest);
@@ -94,7 +102,8 @@ export const Vedtaksform: React.FC<{
                     Kontantstøtte
                 </Heading>
                 <KontantstøtteValg
-                    kontantstøttePerioder={kontantstøtteState}
+                    kontantstøtte={kontantstøtteState}
+                    kontantstøttePerioder={kontantstøttePeriodeState}
                     valideringsfeil={formState.errors.kontantstøtteperioder}
                     settValideringsFeil={formState.setErrors}
                 />

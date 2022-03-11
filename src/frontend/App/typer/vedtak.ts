@@ -33,8 +33,9 @@ export type IInnvilgeVedtakForOvergangsstønad = {
 export type IInnvilgeVedtakForBarnetilsyn = {
     resultatType: EBehandlingResultat.INNVILGE;
     utgiftsperioder: IUtgiftsperiode[];
-    kontantstøtteperioder: IKontantstøttePeriode[];
-    tilleggsstønadsperioder: ITilleggsstønadPeriode[];
+    kontantstøtte?: EKontantstøtte | string | undefined;
+    kontantstøtteperioder?: IKontantstøttePeriode[];
+    tilleggsstønadsperioder?: ITilleggsstønadPeriode[];
 };
 
 export type IUtgiftsperiode = {
@@ -152,6 +153,11 @@ export enum ETilleggsstønadPeriodeProperty {
     årMånedFra = 'årMånedFra',
     årMånedTil = 'årMånedTil',
     beløp = 'beløp',
+}
+
+export enum EKontantstøtte {
+    JA = 'JA',
+    NEI = 'NEI',
 }
 
 export enum EAvslagÅrsak {

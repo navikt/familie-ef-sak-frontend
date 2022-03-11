@@ -1,10 +1,14 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
-import { EKontantstøttePeriodeProperty, IKontantstøttePeriode } from '../../../../App/typer/vedtak';
+import {
+    EKontantstøtte,
+    EKontantstøttePeriodeProperty,
+    IKontantstøttePeriode,
+} from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../App/context/AppContext';
@@ -14,6 +18,7 @@ import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
+import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 
 const KontantstøttePeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -38,6 +43,7 @@ const StyledInput = styled(InputMedTusenSkille)`
 `;
 
 interface Props {
+    kontantstøtte: FieldState;
     kontantstøttePerioder: ListState<IKontantstøttePeriode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['kontantstøtteperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
@@ -50,13 +56,13 @@ export const tomKontantstøtteRad: IKontantstøttePeriode = {
 };
 
 const KontantstøtteValg: React.FC<Props> = ({
+    kontantstøtte,
     kontantstøttePerioder,
     valideringsfeil,
     settValideringsFeil,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const [kontantstøtte, settKontantstøtte] = useState(false);
 
     const oppdaterKontantstøttePeriode = (
         index: number,
@@ -90,18 +96,18 @@ const KontantstøtteValg: React.FC<Props> = ({
                 <Radio
                     name={'Kontantstøtte'}
                     label={'Ja'}
-                    value={'Ja'}
-                    onChange={() => settKontantstøtte(!kontantstøtte)}
+                    value={EKontantstøtte.JA}
+                    onChange={(event) => kontantstøtte.onChange(event)}
                 />
                 <Radio
                     name={'Kontantstøtte'}
                     label={'Nei'}
-                    value={'Nei'}
-                    checked={!kontantstøtte}
-                    onChange={() => settKontantstøtte(!kontantstøtte)}
+                    value={EKontantstøtte.NEI}
+                    checked={kontantstøtte.value === EKontantstøtte.NEI}
+                    onChange={(event) => kontantstøtte.onChange(event)}
                 />
             </RadioGruppe>
-            {kontantstøtte && (
+            {kontantstøtte.value === EKontantstøtte.JA && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
                         <Element>Periode fra og med</Element>

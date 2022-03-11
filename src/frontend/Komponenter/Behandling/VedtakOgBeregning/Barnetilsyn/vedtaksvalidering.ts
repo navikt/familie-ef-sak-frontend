@@ -1,6 +1,7 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import {
+    EKontantstøtte,
     IKontantstøttePeriode,
     ITilleggsstønadPeriode,
     IUtgiftsperiode,
@@ -9,12 +10,13 @@ import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/util
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
+    kontantstøtte,
     kontantstøtteperioder,
     tilleggsstønadsperioder,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     return {
         ...validerUtgiftsperioder({ utgiftsperioder }),
-        ...validerKontantstøttePerioder({ kontantstøtteperioder }),
+        ...validerKontantstøttePerioder({ kontantstøtteperioder }, kontantstøtte),
         ...validerTilleggsstønadPerioder({ tilleggsstønadsperioder }),
     };
 };
@@ -59,11 +61,22 @@ export const validerUtgiftsperioder = ({
     };
 };
 
-export const validerKontantstøttePerioder = ({
-    kontantstøtteperioder,
-}: {
-    kontantstøtteperioder: IKontantstøttePeriode[];
-}): FormErrors<{ kontantstøtteperioder: IKontantstøttePeriode[] }> => {
+export const validerKontantstøttePerioder = (
+    {
+        kontantstøtteperioder,
+    }: {
+        kontantstøtteperioder: IKontantstøttePeriode[] | undefined;
+    },
+    kontantstøtte: EKontantstøtte | string | undefined
+): FormErrors<{ kontantstøtteperioder: IKontantstøttePeriode[] }> | undefined => {
+    if (!kontantstøtteperioder || kontantstøtte == EKontantstøtte.NEI) {
+        const kontantstøtteperiodeFeil: FormErrors<IKontantstøttePeriode> = {
+            årMånedFra: undefined,
+            årMånedTil: undefined,
+            beløp: undefined,
+        };
+        return { kontantstøtteperioder: [kontantstøtteperiodeFeil] };
+    }
     const feilIKontantstøtteperioder = kontantstøtteperioder.map((periode, index) => {
         const { årMånedFra, årMånedTil } = periode;
         const kontantstøtteperiodeFeil: FormErrors<IKontantstøttePeriode> = {
@@ -104,8 +117,16 @@ export const validerKontantstøttePerioder = ({
 export const validerTilleggsstønadPerioder = ({
     tilleggsstønadsperioder,
 }: {
-    tilleggsstønadsperioder: ITilleggsstønadPeriode[];
+    tilleggsstønadsperioder: ITilleggsstønadPeriode[] | undefined;
 }): FormErrors<{ tilleggsstønadsperioder: ITilleggsstønadPeriode[] }> => {
+    if (!tilleggsstønadsperioder) {
+        const tilleggsstønadsperiodeFeil: FormErrors<ITilleggsstønadPeriode> = {
+            årMånedFra: undefined,
+            årMånedTil: undefined,
+            beløp: undefined,
+        };
+        return { tilleggsstønadsperioder: [tilleggsstønadsperiodeFeil] };
+    }
     const feilITilleggsstønadPerioder = tilleggsstønadsperioder.map((periode, index) => {
         const { årMånedFra, årMånedTil } = periode;
         const tilleggsstønadPeriodeFeil: FormErrors<ITilleggsstønadPeriode> = {
