@@ -6,6 +6,7 @@ import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import AlderPåBarnInfo from './AlderPåBarnInfo';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 export const AlderPåBarn: React.FC<VilkårProps> = ({
     vurderinger,
@@ -29,7 +30,15 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                         v.barnId === barn.barnId &&
                         v.vilkårType === AktivitetsvilkårType.ALDER_PÅ_BARN
                 );
-                if (!vurdering) return null;
+
+                if (!vurdering && barn.barnepass?.skalHaBarnepass) {
+                    return (
+                        <AlertStripeFeil>
+                            Noe er galt - det finnes ingen vilkår for dette barnets alder
+                        </AlertStripeFeil>
+                    );
+                } else if (!vurdering) return null;
+
                 return (
                     <ToKolonnerLayout key={barn.barnId}>
                         {{
