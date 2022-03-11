@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IAktivitet } from '../../../../App/typer/overgangsstønad';
+import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';

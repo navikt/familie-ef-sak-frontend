@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ISelvstendig } from '../../../../App/typer/overgangsstønad';
+import { ISelvstendig } from '../../../../App/typer/aktivitetstyper';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';

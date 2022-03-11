@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IAktivitet } from '../../../../App/typer/overgangsstønad';
+import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { SeksjonWrapper } from '../../../../Felles/Visningskomponenter/SeksjonWrapper';
 import { ArbeidstakerLønnsmottakerSomFrilanser } from '../Aktivitet/ArbeidstakerLønnsmottakerSomFrilanser';

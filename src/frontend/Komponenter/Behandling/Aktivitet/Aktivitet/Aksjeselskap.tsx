@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
-import { IAksjeselskap } from '../../../../App/typer/overgangsstønad';
+import { IAksjeselskap } from '../../../../App/typer/aktivitetstyper';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype }> = ({
