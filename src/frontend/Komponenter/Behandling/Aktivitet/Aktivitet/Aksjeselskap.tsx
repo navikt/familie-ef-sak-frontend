@@ -18,10 +18,10 @@ const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype
             <Normaltekst className={'førsteDataKolonne'}>Aksjeselskap</Normaltekst>
             <Normaltekst> {aksjeselskap.navn}</Normaltekst>
             {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
-                <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
-            )}
-            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
-                <Normaltekst> {aksjeselskap.arbeidsmengde + ' %'}</Normaltekst>
+                <>
+                    <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
+                    <Normaltekst> {aksjeselskap.arbeidsmengde + ' %'}</Normaltekst>
+                </>
             )}
         </>
     );
