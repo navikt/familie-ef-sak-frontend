@@ -28,7 +28,7 @@ spec:
     application:
       enabled: true
       replyURLs:
-        - url: https://ensligmorellerfar.intern.nav.no/auth/openid/callback
+        - https://ensligmorellerfar.intern.nav.no/auth/openid/callback
       claims:
         groups:
           - id: "31778fd8-3b71-4867-8db6-a81235fbe001" # 0000-GA-Enslig-Forsorger-Veileder
