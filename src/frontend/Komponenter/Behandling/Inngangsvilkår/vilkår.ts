@@ -2,11 +2,7 @@ import { IMedlemskap } from './Medlemskap/typer';
 import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon, ISivilstandsplaner } from './Samliv/typer';
 import { IBarnMedSamvær } from './Aleneomsorg/typer';
-import {
-    IAktivitet,
-    IAktivitetArbeid,
-    ISagtOppEllerRedusertStilling,
-} from '../../../App/typer/overgangsstønad';
+import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../../App/typer/overgangsstønad';
 import { Begrunnelse, SvarId } from '../Vurdering/typer';
 import { ITidligereVedtaksperioder } from '../TidligereVedtaksperioder/typer';
 
@@ -25,7 +21,6 @@ export interface IVilkårGrunnlag {
     sagtOppEllerRedusertStilling?: ISagtOppEllerRedusertStilling;
     aktivitet?: IAktivitet;
     registeropplysningerOpprettetTid: string;
-    aktivitetArbeid?: IAktivitetArbeid;
 }
 
 export interface IVurdering {
