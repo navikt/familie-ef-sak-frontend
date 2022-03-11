@@ -11,7 +11,7 @@ import {
     plusMåneder,
     tilÅrMåned,
 } from '../../../../App/utils/dato';
-import { InnvilgeVedtakForm } from '../InnvilgeVedtak/InnvilgeVedtak';
+import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { SanksjonereVedtakForm } from '../../Sanksjon/Sanksjonsfastsettelse';
 

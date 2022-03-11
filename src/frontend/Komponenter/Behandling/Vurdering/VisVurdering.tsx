@@ -10,7 +10,7 @@ import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { resultatTilTekst } from '../Vilkårresultat/ResultatVisning';
+import { resultatTilTekst } from '../VedtakOgBeregning/Felles/ResultatVisning';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 

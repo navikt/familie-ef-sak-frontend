@@ -3,7 +3,7 @@ import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
     EKontantstøtte,
     EKontantstøttePeriodeProperty,

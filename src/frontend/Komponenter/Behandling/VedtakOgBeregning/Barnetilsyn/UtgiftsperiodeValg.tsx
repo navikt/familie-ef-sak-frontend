@@ -9,7 +9,7 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';

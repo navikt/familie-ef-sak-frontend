@@ -1,17 +1,17 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import { useApp } from '../../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { useApp } from '../../../../../App/context/AppContext';
+import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import {
     EAvslagÅrsak,
     EBehandlingResultat,
     IAvslåVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
-} from '../../../../App/typer/vedtak';
-import { Behandling } from '../../../../App/typer/fagsak';
+} from '../../../../../App/typer/vedtak';
+import { Behandling } from '../../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
-import { Behandlingstype } from '../../../../App/typer/behandlingstype';
+import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
