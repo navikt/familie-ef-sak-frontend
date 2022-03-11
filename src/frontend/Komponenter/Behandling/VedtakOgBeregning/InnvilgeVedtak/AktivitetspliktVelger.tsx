@@ -76,6 +76,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                 </FamilieSelect>
             );
         case EPeriodetype.HOVEDPERIODE:
+        case EPeriodetype.NY_PERIODE_FOR_NYTT_BARN:
             return (
                 <FamilieSelect
                     aria-label={'Aktivitet'}

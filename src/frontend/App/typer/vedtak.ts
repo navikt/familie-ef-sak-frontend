@@ -114,6 +114,7 @@ export enum EPeriodetype {
     SANKSJON = 'SANKSJON',
     UTVIDELSE = 'UTVIDELSE',
     MIGRERING = 'MIGRERING',
+    NY_PERIODE_FOR_NYTT_BARN = 'NY_PERIODE_FOR_NYTT_BARN',
 }
 
 export enum EVedtaksperiodeProperty {
@@ -229,6 +230,7 @@ export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     SANKSJON: 'Sanksjon',
     UTVIDELSE: 'Utvidelse',
     MIGRERING: 'Migrering',
+    NY_PERIODE_FOR_NYTT_BARN: 'Ny periode for nytt barn',
     '': '',
 };
 
