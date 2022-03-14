@@ -33,6 +33,11 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD: 'Har søker tidligere mottatt overgangsstønad?',
     HAR_TIDLIGERE_ANDRE_STØNADER_SOM_HAR_BETYDNING:
         'Har søker tidligere mottatt andre stønader som har betydning for stønadstiden i §15-8 første og andre ledd?',
+    ER_I_ARBEID_ELLER_FORBIGÅENDE_SYKDOM: 'Er brukeren i arbeid eller har forbigående sykdom?',
+    INNTEKT_LAVERE_ENN_INNTEKTSGRENSE:
+        'Har brukeren inntekt under 6 ganger grunnbeløpet (654 324 kr)?',
+    HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
+    UNNTAK_ALDER: 'Oppfylles unntak etter å ha fullført 4. skoleår?',
 };
 
 export const svarTypeTilTekst: Record<string, string> = {
@@ -73,6 +78,13 @@ export const svarTypeTilTekst: Record<string, string> = {
         'Ja, Foreldrene bor i nærmeste bolig eller rekkehus i samme gate',
     TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE:
         'Ja, Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate',
+    ER_I_ARBEID: 'Ja, det er dokumentert at brukeren er i arbeid',
+    ETABLERER_EGEN_VIRKSOMHET: 'Ja, det er dokumentert at brukeren etablerer egen virksomhet',
+    HAR_FORBIGÅENDE_SYKDOM: 'Ja, det er dokumentert at brukeren har forbigående sykdom',
+    TRENGER_MER_TILSYN_ENN_JEVNALDRENDE:
+        'Ja, det yngste barnet har fullført fjerde skoleår og det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrene',
+    FORSØRGER_HAR_LANGVARIG_ELLER_UREGELMESSIG_ARBEIDSTID:
+        'Ja, det yngste barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
 };
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
@@ -86,4 +98,7 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     NYTT_BARN_SAMME_PARTNER: 'Vilkår om nytt barn med samme partner',
     SAGT_OPP_ELLER_REDUSERT: 'Vilkår om sagt opp arbeidsforhold ',
     TIDLIGERE_VEDTAKSPERIODER: 'Tidligere vedtaksperioder',
+    ALDER_PÅ_BARN: 'Alder på barn',
+    INNTEKT: 'Inntekt',
+    AKTIVITET_ARBEID: 'Aktivitet arbeid',
 };

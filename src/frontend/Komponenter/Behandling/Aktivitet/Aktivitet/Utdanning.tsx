@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ITidligereUtdanning, IUnderUtdanning } from '../../../../App/typer/overgangsstønad';
+import { ITidligereUtdanning, IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import {

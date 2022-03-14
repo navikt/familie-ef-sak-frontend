@@ -6,11 +6,12 @@ import Brukerinfo from './Brukerinfo';
 import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import {
     behandlingstemaTilStønadstype,
+    Stønadstype,
     stønadstypeTilTekst,
 } from '../../App/typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -23,6 +24,7 @@ import {
 } from '../Oppgavebenk/oppgavefilterStorage';
 import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/journalforing';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
+import { Select } from '@navikt/ds-react';
 
 const Blokk = styled.div`
     margin-bottom: 1rem;
@@ -46,29 +48,12 @@ export const JournalforingAdmin: React.FC = () => {
     const [nyBehandlingstype, settNyBehandlingstype] = useState<Behandlingstype | undefined>();
     const [senderInn, settSenderInn] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>('');
-    const [journalresponsFeilmelding, settJournalresponsFeilmelding] = useState<string>('');
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             settNyBehandlingstype(utledRiktigBehandlingstype(fagsak.data.behandlinger));
         }
     }, [fagsak]);
-
-    useEffect(() => {
-        if (journalResponse.status === RessursStatus.SUKSESS) {
-            const stønadstype = behandlingstemaTilStønadstype(
-                journalResponse.data.journalpost.behandlingstema
-            );
-            if (stønadstype) {
-                hentFagsak(journalResponse.data.personIdent, stønadstype);
-            } else {
-                settJournalresponsFeilmelding(
-                    `Kan ikke finne stønadstype for journalposten - Behandlingstema=${journalResponse.data.journalpost.behandlingstema}`
-                );
-            }
-        }
-        // eslint-disable-next-line
-    }, [journalResponse]);
 
     useEffect(() => {
         document.title = 'Journalpost';
@@ -116,60 +101,111 @@ export const JournalforingAdmin: React.FC = () => {
         }
     };
 
-    if (journalresponsFeilmelding) {
-        return <AlertStripeFeil>{journalresponsFeilmelding}</AlertStripeFeil>;
-    }
-
     return (
-        <DataViewer response={{ journalResponse, fagsak }}>
-            {({ journalResponse, fagsak }) => (
-                <SideLayout className={'container'}>
-                    <Sidetittel>Opprett ny behandling for journalpost</Sidetittel>
-                    <Blokk>
-                        <Normaltekst>
-                            Her kan du opprette en ny behandling med søknadsdata for en journalpost
-                            som er ferdigstilt
-                        </Normaltekst>
-                    </Blokk>
-                    <Blokk>
-                        <Brukerinfo personIdent={journalResponse.personIdent} />
-                    </Blokk>
-                    <Blokk>
-                        <Systemtittel>Journalpost</Systemtittel>
-                        <Normaltekst>{stønadstypeTilTekst[fagsak.stønadstype]}</Normaltekst>
-                        <Normaltekst>
-                            JournalpostID: {journalResponse.journalpost.journalpostId}
-                        </Normaltekst>
-                        <Normaltekst>
-                            Status:{' '}
-                            {journalstatusTilTekst[journalResponse.journalpost.journalstatus]}
-                        </Normaltekst>
-                        <Normaltekst>
-                            Dato mottatt:{' '}
-                            {formaterIsoDatoTid(journalResponse.journalpost.datoMottatt)}
-                        </Normaltekst>
-                    </Blokk>
-                    <Blokk>
-                        <Systemtittel>Behandlingstype</Systemtittel>
-                        {nyBehandlingstype && (
-                            <Normaltekst>{behandlingstypeTilTekst[nyBehandlingstype]}</Normaltekst>
-                        )}
-                    </Blokk>
+        <>
+            <DataViewer response={{ journalResponse }}>
+                {({ journalResponse }) => (
+                    <UtledEllerVelgFagsak
+                        journalResponse={journalResponse}
+                        hentFagsak={hentFagsak}
+                    />
+                )}
+            </DataViewer>
+            <DataViewer response={{ journalResponse, fagsak }}>
+                {({ journalResponse, fagsak }) => (
+                    <SideLayout className={'container'}>
+                        <Sidetittel>Opprett ny behandling for journalpost</Sidetittel>
+                        <Blokk>
+                            <Normaltekst>
+                                Her kan du opprette en ny behandling med søknadsdata for en
+                                journalpost som er ferdigstilt
+                            </Normaltekst>
+                        </Blokk>
+                        <Blokk>
+                            <Brukerinfo personIdent={journalResponse.personIdent} />
+                        </Blokk>
+                        <Blokk>
+                            <Systemtittel>Journalpost</Systemtittel>
+                            <Normaltekst>{stønadstypeTilTekst[fagsak.stønadstype]}</Normaltekst>
+                            <Normaltekst>
+                                JournalpostID: {journalResponse.journalpost.journalpostId}
+                            </Normaltekst>
+                            <Normaltekst>
+                                Status:{' '}
+                                {journalstatusTilTekst[journalResponse.journalpost.journalstatus]}
+                            </Normaltekst>
+                            <Normaltekst>
+                                Dato mottatt:{' '}
+                                {formaterIsoDatoTid(journalResponse.journalpost.datoMottatt)}
+                            </Normaltekst>
+                        </Blokk>
+                        <Blokk>
+                            <Systemtittel>Behandlingstype</Systemtittel>
+                            {nyBehandlingstype && (
+                                <Normaltekst>
+                                    {behandlingstypeTilTekst[nyBehandlingstype]}
+                                </Normaltekst>
+                            )}
+                        </Blokk>
 
-                    <Hovedknapp
-                        onClick={() => sendInn(journalResponse, fagsak.id)}
-                        spinner={senderInn}
-                    >
-                        Opprett behandling
-                    </Hovedknapp>
-                    {!journalResponse.harStrukturertSøknad && (
-                        <AlertStripeAdvarsel>
-                            Kan ikke finne en digital søknad på denne journalposten.
-                        </AlertStripeAdvarsel>
-                    )}
-                    {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
-                </SideLayout>
-            )}
-        </DataViewer>
+                        <Hovedknapp
+                            onClick={() => sendInn(journalResponse, fagsak.id)}
+                            spinner={senderInn}
+                        >
+                            Opprett behandling
+                        </Hovedknapp>
+                        {!journalResponse.harStrukturertSøknad && (
+                            <AlertStripeAdvarsel>
+                                Kan ikke finne en digital søknad på denne journalposten.
+                            </AlertStripeAdvarsel>
+                        )}
+                        {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+                    </SideLayout>
+                )}
+            </DataViewer>
+        </>
     );
+};
+
+const UtledEllerVelgFagsak: React.FC<{
+    journalResponse: IJojurnalpostResponse;
+    hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
+}> = ({ journalResponse, hentFagsak }) => {
+    {
+        const stønadstypeFraJournalpost = behandlingstemaTilStønadstype(
+            journalResponse.journalpost.behandlingstema
+        );
+        const [stønadstype, settStønadstype] = useState(stønadstypeFraJournalpost);
+
+        useEffect(() => {
+            if (stønadstype) {
+                hentFagsak(journalResponse.personIdent, stønadstype);
+            }
+            // eslint-disable-next-line
+        }, [stønadstype]);
+
+        if (!stønadstypeFraJournalpost) {
+            return (
+                <SideLayout>
+                    <AlertStripeInfo>
+                        Journalposten har ikke behandlingstema. Velg stønadstype.
+                    </AlertStripeInfo>
+                    <Select
+                        label={'Velg stønadstype'}
+                        onChange={(e) => {
+                            settStønadstype(e.target.value as Stønadstype);
+                        }}
+                    >
+                        <option value="">Ikke valgt</option>
+                        {Object.values(Stønadstype).map((stønadstype) => (
+                            <option value={stønadstype} key={stønadstype}>
+                                {stønadstypeTilTekst[stønadstype]}
+                            </option>
+                        ))}
+                    </Select>
+                </SideLayout>
+            );
+        }
+        return null;
+    }
 };
