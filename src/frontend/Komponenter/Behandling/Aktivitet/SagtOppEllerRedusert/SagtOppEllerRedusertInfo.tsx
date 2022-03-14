@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Normaltekst } from 'nav-frontend-typografi';
 
-import { ISagtOppEllerRedusertStilling } from '../../../../App/typer/overgangsstønad';
+import { ISagtOppEllerRedusertStilling } from '../../../../App/typer/aktivitetstyper';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import {
     ESagtOppEllerRedusert,

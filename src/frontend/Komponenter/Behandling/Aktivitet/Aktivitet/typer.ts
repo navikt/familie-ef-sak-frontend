@@ -22,6 +22,11 @@ export const ArbeidssituasjonTilTekst: Record<EArbeidssituasjon, string> = {
     erHverkenIArbeidUtdanningEllerArbeidssøker: 'Ikke i arbeid, utdanning eller arbeidssøker',
 };
 
+export enum EErIArbeid {
+    JA = 'JA',
+    NeiFordiJegErSyk = 'NeiFordiJegErSyk',
+}
+
 export enum EDinSituasjon {
     erSyk = 'erSyk',
     harSyktBarn = 'harSyktBarn',

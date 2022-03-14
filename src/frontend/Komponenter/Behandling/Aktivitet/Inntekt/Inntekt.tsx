@@ -3,45 +3,36 @@ import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
-export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
+export const Inntekt: React.FC<VilkårProps> = ({
     vurderinger,
-    grunnlag,
     lagreVurdering,
-    ikkeVurderVilkår,
     nullstillVurdering,
+    ikkeVurderVilkår,
     feilmeldinger,
-    skalViseSøknadsdata,
 }) => {
-    const vurdering = vurderinger.find(
-        (v) => v.vilkårType === AktivitetsvilkårType.SAGT_OPP_ELLER_REDUSERT
-    );
+    const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.INNTEKT);
+
     if (!vurdering) {
         return (
             <AlertStripeFeil>
-                OBS: Noe er galt - det finnes ingen vilkår for "sagt opp eller redusert stilling"
-                for denne behandlingen
+                OBS: Noe er galt - det finnes ingen vilkår for inntekt for denne behandlingen
             </AlertStripeFeil>
         );
     }
+
     return (
         <ToKolonnerLayout>
             {{
                 venstre: (
                     <>
                         <Vilkårstittel
-                            tittel="Sagt opp arbeidsforhold"
+                            tittel="Inntekt"
                             vilkårsresultat={vurdering.resultat}
+                            paragrafTittel={'§15-10'}
                         />
-                        {grunnlag.sagtOppEllerRedusertStilling && (
-                            <SagtOppEllerRedusertInfo
-                                sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                            />
-                        )}
                     </>
                 ),
                 høyre: (

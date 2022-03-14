@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IAktivitet } from '../../../../App/typer/overgangsstønad';
+import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
@@ -12,13 +12,15 @@ import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmottakerSomFrilanser';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 interface Props {
     aktivitet: IAktivitet;
     skalViseSøknadsdata: boolean;
+    stønadstype: Stønadstype;
 }
 
-const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
+const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, stønadstype }) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -68,6 +70,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
                             <SelvstendigNæringsdrivendeEllerFrilanser
                                 key={firma.organisasjonsnummer + index}
                                 firma={firma}
+                                stønadstype={stønadstype}
                             />
                         </GridTabell>
                     ))}
@@ -76,7 +79,11 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
                     aksjeselskap &&
                     aksjeselskap.map((selskap, index) => (
                         <GridTabell kolonner={3} key={selskap.navn + index}>
-                            <Aksjeselskap key={selskap.navn + index} aksjeselskap={selskap} />
+                            <Aksjeselskap
+                                key={selskap.navn + index}
+                                aksjeselskap={selskap}
+                                stønadstype={stønadstype}
+                            />
                         </GridTabell>
                     ))}
 
@@ -100,7 +107,7 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
                         <Normaltekst className={'førsteDataKolonne'}>
                             Beskrivelse av virksomheten
                         </Normaltekst>
-                        <Normaltekst> {virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
+                        <Normaltekst>{virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
                     </GridTabell>
                 )}
 

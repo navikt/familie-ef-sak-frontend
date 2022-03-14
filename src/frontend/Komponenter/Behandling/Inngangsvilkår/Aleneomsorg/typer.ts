@@ -1,7 +1,24 @@
+import { EÅrsakBarnepass } from '../../Aktivitet/AlderPåBarn/AlderPåBarnTyper';
+
 export interface IBarnMedSamvær {
     barnId: string;
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
     registergrunnlag: IBarnMedSamværRegistergrunnlag;
+    barnepass?: IBarnepass;
+}
+
+export interface IBarnepass {
+    skalHaBarnepass?: boolean;
+    barnepassordninger: BarnepassordningDto[];
+    årsakBarnepass?: EÅrsakBarnepass;
+}
+
+export interface BarnepassordningDto {
+    type: string;
+    navn: string;
+    fra: string;
+    til: string;
+    beløp: number;
 }
 
 export interface IBarnMedSamværSøknadsgrunnlag {
@@ -38,6 +55,7 @@ export interface IBarnMedSamværRegistergrunnlag {
     harSammeAdresse?: boolean;
     forelder?: IAnnenForelder;
     dødsdato?: string;
+    fødselsdato: string;
 }
 
 export enum EHarSamværMedBarn {

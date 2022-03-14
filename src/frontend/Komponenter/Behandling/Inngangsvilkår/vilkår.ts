@@ -2,7 +2,7 @@ import { IMedlemskap } from './Medlemskap/typer';
 import { ISivilstandInngangsvilkår } from './Sivilstand/typer';
 import { IBosituasjon, ISivilstandsplaner } from './Samliv/typer';
 import { IBarnMedSamvær } from './Aleneomsorg/typer';
-import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../../App/typer/overgangsstønad';
+import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../../App/typer/aktivitetstyper';
 import { Begrunnelse, SvarId } from '../Vurdering/typer';
 import { ITidligereVedtaksperioder } from '../TidligereVedtaksperioder/typer';
 
@@ -83,6 +83,9 @@ export enum InngangsvilkårType {
 export enum AktivitetsvilkårType {
     AKTIVITET = 'AKTIVITET',
     SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
+    ALDER_PÅ_BARN = 'ALDER_PÅ_BARN',
+    INNTEKT = 'INNTEKT',
+    AKTIVITET_ARBEID = 'AKTIVITET_ARBEID',
 }
 
 export enum TidligereVedtaksperioderType {
