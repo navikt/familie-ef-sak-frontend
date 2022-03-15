@@ -4,9 +4,9 @@ import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { EBehandlingResultat } from '../../../../App/typer/vedtak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
-import { erAlleVilkårOppfylt } from '../../Vilkårresultat/utils';
+import { erAlleVilkårOppfylt } from '../Felles/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
-import SelectVedtaksresultat from '../SelectVedtaksresultat';
+import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import { Vedtaksform } from './Vedtaksform';
 
 interface Props {

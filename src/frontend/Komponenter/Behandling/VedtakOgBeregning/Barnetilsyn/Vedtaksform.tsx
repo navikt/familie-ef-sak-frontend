@@ -1,6 +1,11 @@
 import {
     EBehandlingResultat,
+    EKontantstøtte,
+    EStønadsreduksjon,
+    ETilleggsstønad,
     IInnvilgeVedtakForBarnetilsyn,
+    IKontantstøttePeriode,
+    ITilleggsstønadPeriode,
     IUtgiftsperiode,
     IvedtakForBarnetilsyn,
 } from '../../../../App/typer/vedtak';
@@ -14,11 +19,18 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
 import UtgiftsperiodeValg, { tomUtgiftsperiodeRad } from './UtgiftsperiodeValg';
+import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
+import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
+import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 
 export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForBarnetilsyn, 'resultatType'>;
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
+`;
+
+const WrapperMarginTop = styled.div`
+    margin-top: 1rem;
 `;
 
 export const Vedtaksform: React.FC<{
@@ -38,10 +50,34 @@ export const Vedtaksform: React.FC<{
             utgiftsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.utgiftsperioder
                 : [tomUtgiftsperiodeRad],
+            kontantstøtte: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.kontantstøtte
+                : EKontantstøtte.NEI,
+            kontantstøtteperioder: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.kontantstøtteperioder
+                : [tomKontantstøtteRad],
+            tilleggsstønad: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.tilleggsstønad
+                : ETilleggsstønad.NEI,
+            stønadsreduksjon: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.stønadsreduksjon
+                : EStønadsreduksjon.NEI,
+            tilleggsstønadsperioder: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.tilleggsstønadsperioder
+                : [tomTilleggsstønadRad],
         },
         validerInnvilgetVedtakForm
     );
     const utgiftsperiodeState = formState.getProps('utgiftsperioder') as ListState<IUtgiftsperiode>;
+    const kontantstøtteState = formState.getProps('kontantstøtte') as FieldState;
+    const kontantstøttePeriodeState = formState.getProps(
+        'kontantstøtteperioder'
+    ) as ListState<IKontantstøttePeriode>;
+    const tilleggsstønadState = formState.getProps('tilleggsstønad') as FieldState;
+    const stønadsreduksjonState = formState.getProps('stønadsreduksjon') as FieldState;
+    const tilleggsstønadsperiodeState = formState.getProps(
+        'tilleggsstønadsperioder'
+    ) as ListState<ITilleggsstønadPeriode>;
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
@@ -53,6 +89,16 @@ export const Vedtaksform: React.FC<{
         const vedtaksRequest: IInnvilgeVedtakForBarnetilsyn = {
             resultatType: EBehandlingResultat.INNVILGE,
             utgiftsperioder: form.utgiftsperioder,
+            kontantstøtte: form.kontantstøtte,
+            kontantstøtteperioder:
+                form.kontantstøtte.value === EKontantstøtte.JA ? form.kontantstøtteperioder : null,
+            tilleggsstønad: form.tilleggsstønad,
+            stønadsreduksjon: form.stønadsreduksjon,
+            tilleggsstønadsperioder:
+                form.tilleggsstønad === ETilleggsstønad.JA &&
+                form.stønadsreduksjon === EStønadsreduksjon.JA
+                    ? form.tilleggsstønadsperioder
+                    : null,
         };
         lagreVedtak(vedtaksRequest);
     };
@@ -67,6 +113,29 @@ export const Vedtaksform: React.FC<{
                 valideringsfeil={formState.errors.utgiftsperioder}
                 settValideringsFeil={formState.setErrors}
             />
+            <WrapperMarginTop>
+                <Heading spacing size="small" level="5">
+                    Kontantstøtte
+                </Heading>
+                <KontantstøtteValg
+                    kontantstøtte={kontantstøtteState}
+                    kontantstøttePerioder={kontantstøttePeriodeState}
+                    valideringsfeil={formState.errors.kontantstøtteperioder}
+                    settValideringsFeil={formState.setErrors}
+                />
+            </WrapperMarginTop>
+            <WrapperMarginTop>
+                <Heading spacing size="small" level="5">
+                    Tilleggsstønadsforskriften
+                </Heading>
+                <TilleggsstønadValg
+                    tilleggsstønad={tilleggsstønadState}
+                    stønadsreduksjon={stønadsreduksjonState}
+                    tilleggsstønadPerioder={tilleggsstønadsperiodeState}
+                    valideringsfeil={formState.errors.tilleggsstønadsperioder}
+                    settValideringsFeil={formState.setErrors}
+                />
+            </WrapperMarginTop>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}

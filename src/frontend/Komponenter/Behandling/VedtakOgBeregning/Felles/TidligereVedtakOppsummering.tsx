@@ -1,11 +1,11 @@
 import React from 'react';
-import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { delvilkårTypeTilTekst, svarTypeTilTekst } from '../Vurdering/tekster';
-import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
+import { delvilkårTypeTilTekst, svarTypeTilTekst } from '../../Vurdering/tekster';
+import { BreakWordNormaltekst } from '../../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import styled from 'styled-components';
-import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
-import { FlexDiv } from '../../Oppgavebenk/OppgaveFiltrering';
+import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
+import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { BodyLong, Heading, Label } from '@navikt/ds-react';
 
 interface Props {

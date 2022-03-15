@@ -1,11 +1,11 @@
 import React from 'react';
-import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Ressurs } from '../../../../App/typer/ressurs';
+import DataViewer from '../../../../../Felles/DataViewer/DataViewer';
+import { Ressurs } from '../../../../../App/typer/ressurs';
 import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
-} from '../../../../App/utils/formatter';
-import { IBeløpsperiode } from '../../../../App/typer/vedtak';
+} from '../../../../../App/utils/formatter';
+import { IBeløpsperiode } from '../../../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Heading } from '@navikt/ds-react';

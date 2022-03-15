@@ -1,10 +1,14 @@
-import { avslagÅrsakTilTekst, EAvslagÅrsak, årsakerTilAvslag } from '../../../../App/typer/vedtak';
+import {
+    avslagÅrsakTilTekst,
+    EAvslagÅrsak,
+    årsakerTilAvslag,
+} from '../../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { VEDTAK_OG_BEREGNING } from '..//konstanter';
-import { useApp } from '../../../../App/context/AppContext';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
+import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
+import { useApp } from '../../../../../App/context/AppContext';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
