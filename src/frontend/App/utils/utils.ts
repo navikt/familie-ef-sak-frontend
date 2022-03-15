@@ -1,4 +1,3 @@
-import { createProxyMiddleware } from 'http-proxy-middleware';
 import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequest';
@@ -23,6 +22,7 @@ export const oppdaterFilter = (
     val?: string | number
 ): IOppgaveRequest => {
     if (!val || val === '') {
+        // eslint-disable-next-line
         const { [key]: dummy, ...remainder } = object;
         return remainder;
     }

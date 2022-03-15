@@ -16,8 +16,15 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { useApp } from '../../App/context/AppContext';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort, Label, RadioGroup, Radio } from '@navikt/ds-react';
 import { fødselsdatoTilAlder } from '../../App/utils/utils';
+import { Behandling } from '../../App/typer/fagsak';
+
+enum EVilkårsbehandleBarnValg {
+    VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
+    IKKE_VILKÅRSBEHANDLE = 'IKKE_VILKÅRSBEHANDLE',
+    IKKE_VALGT = 'IKKE_VALGT',
+}
 
 const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -32,6 +39,10 @@ const FlexDiv = styled.div`
     justify-content: space-between;
 `;
 
+const StyledRadioGroup = styled(RadioGroup)`
+    margin-top: 2rem;
+`;
+
 const KnappeWrapper = styled.div`
     margin: 0 auto;
     margin-top: 4rem;
@@ -42,6 +53,7 @@ interface IProps {
     valgtBehandlingstype: Behandlingstype;
     lagRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     settVisModal: (bool: boolean) => void;
+    behandlinger: Behandling[];
 }
 
 export const LagRevurdering: React.FunctionComponent<IProps> = ({
@@ -49,9 +61,14 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     valgtBehandlingstype,
     lagRevurdering,
     settVisModal,
+    behandlinger,
 }) => {
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
+
+    const harMigrering = behandlinger.some(
+        (behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD
+    );
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
@@ -62,6 +79,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     >(byggTomRessurs());
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
+    const [vilkårsbehandleVedMigrering, settVilkårsbehandleVedMigrering] =
+        useState<EVilkårsbehandleBarnValg>(EVilkårsbehandleBarnValg.IKKE_VALGT);
 
     useEffect(() => {
         axiosRequest<BarnForRevurdering[], null>({
@@ -78,7 +97,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                     const harNyeBarnSidenForrigeBehandling =
                         nyeBarnSidenForrigeBehandling.length > 0;
 
-                    console.log('NYE', nyeBarnSidenForrigeBehandling);
                     return (
                         <>
                             <StyledSelect
@@ -113,28 +131,84 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                 }}
                                 valgtDato={valgtDato}
                             />
-                            {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
-                                <NyeBarn>
-                                    <Label>Barn som ikke tidligere er behandlet</Label>
-                                    <BodyShort>
-                                        Barna listet opp nedenfor har blitt lagt til i
-                                        Folkeregisteret etter at saken sist ble vurdert. De blir nå
-                                        tatt med inn i behandlingen og saksbehandler må vurdere om
-                                        vilkårene skal vurderes på nytt.
-                                    </BodyShort>
-                                    <ul>
-                                        {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
-                                            return (
-                                                <li>
-                                                    {nyttBarn.navn} (
-                                                    {fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
-                                                    {nyttBarn.personIdent})
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                </NyeBarn>
-                            )}
+                            {kanLeggeTilNyeBarnPåRevurdering &&
+                                harNyeBarnSidenForrigeBehandling &&
+                                !harMigrering && (
+                                    <NyeBarn>
+                                        <Label>Barn som ikke tidligere er behandlet</Label>
+                                        <BodyShort>
+                                            Barna listet opp nedenfor har blitt lagt til i
+                                            Folkeregisteret etter at saken sist ble vurdert. De blir
+                                            nå tatt med inn i behandlingen og saksbehandler må
+                                            vurdere om vilkårene skal vurderes på nytt.
+                                        </BodyShort>
+                                        <ul>
+                                            {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
+                                                return (
+                                                    <li>
+                                                        {nyttBarn.navn} (
+                                                        {fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                                        {nyttBarn.personIdent})
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </NyeBarn>
+                                )}
+                            {kanLeggeTilNyeBarnPåRevurdering &&
+                                harNyeBarnSidenForrigeBehandling &&
+                                harMigrering && (
+                                    <NyeBarn>
+                                        <Label>Barn som ikke tidligere er behandlet</Label>
+                                        <BodyShort>
+                                            Da dette er en migrert sak er brukerens barn ikke
+                                            tidligere vilkårsbehandlet i EF Sak. Vurder om det er
+                                            behov for å vilkårsbehandle barna i EF Sak, eller om det
+                                            holder å vise til tidligere vurdering i Gosys. Merk at
+                                            om brukerens barn ikke skal vilkårsbehandles i EF Sak
+                                            vil de heller ikke vises i behandlingen.
+                                        </BodyShort>
+                                        <ul>
+                                            {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
+                                                return (
+                                                    <li>
+                                                        {nyttBarn.navn} (
+                                                        {fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                                        {nyttBarn.personIdent})
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                        <StyledRadioGroup legend="" size="medium">
+                                            <Radio
+                                                value={EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE}
+                                                checked={
+                                                    vilkårsbehandleVedMigrering ===
+                                                    EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
+                                                }
+                                                onChange={(e) => {
+                                                    settVilkårsbehandleVedMigrering(e.target.value);
+                                                }}
+                                            >
+                                                Vilkårsbehandle barn i EF Sak
+                                            </Radio>
+                                            <Radio
+                                                value={
+                                                    EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
+                                                }
+                                                checked={
+                                                    vilkårsbehandleVedMigrering ===
+                                                    EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
+                                                }
+                                                onChange={(e) => {
+                                                    settVilkårsbehandleVedMigrering(e.target.value);
+                                                }}
+                                            >
+                                                Ikke vilkårsbehandle barn i EF Sak
+                                            </Radio>
+                                        </StyledRadioGroup>
+                                    </NyeBarn>
+                                )}
                             <FlexDiv>
                                 <KnappeWrapper>
                                     <StyledHovedknapp
@@ -155,6 +229,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                 );
                                             }
                                         }}
+                                        disabled={
+                                            harMigrering &&
+                                            vilkårsbehandleVedMigrering ===
+                                                EVilkårsbehandleBarnValg.IKKE_VALGT
+                                        }
                                     >
                                         Opprett
                                     </StyledHovedknapp>

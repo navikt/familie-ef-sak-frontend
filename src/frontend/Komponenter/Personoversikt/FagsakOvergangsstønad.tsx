@@ -89,6 +89,7 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak, rehentFagsak }
                     {kanStarteRevurdering && (
                         <>
                             <LagBehandlingModal
+                                behandlinger={fagsak.behandlinger}
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsakId={fagsak.id}
