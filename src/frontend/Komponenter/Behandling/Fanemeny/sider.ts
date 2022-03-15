@@ -10,6 +10,7 @@ import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSid
 import { Simulering } from '../Simulering/Simulering';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 export interface ISide {
     href: string;
@@ -28,7 +29,7 @@ export enum SideNavn {
     VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
 }
 
-export const sider: ISide[] = [
+const alleSider: ISide[] = [
     {
         href: 'tidligere-vedtaksperioder',
         navn: SideNavn.TIDLIGEREVEDTAKSPERIODER,
@@ -71,6 +72,19 @@ export const sider: ISide[] = [
     },
 ];
 
+export const siderForStønad = (stønadstype: Stønadstype): ISide[] => {
+    switch (stønadstype) {
+        case Stønadstype.OVERGANGSSTØNAD:
+            return alleSider;
+        case Stønadstype.BARNETILSYN:
+            return alleSider.filter((side) => side.navn !== SideNavn.TIDLIGEREVEDTAKSPERIODER);
+        case Stønadstype.SKOLEPENGER:
+            return alleSider;
+        default:
+            return alleSider;
+    }
+};
+
 const filtrerVekkHvisBlankett = [SideNavn.BREV, SideNavn.SANKSJON];
 const filtrerVekkHvisSanksjon = [
     SideNavn.TIDLIGEREVEDTAKSPERIODER,
@@ -82,10 +96,8 @@ const filtrerVekkHvisSanksjon = [
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
 const filtrerVekkHvisStandard = [SideNavn.BLANKETT, SideNavn.SANKSJON];
 
-export const filtrerSiderEtterBehandlingstype = (
-    sider: ISide[],
-    behandling: Behandling
-): ISide[] => {
+export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
+    const sider = siderForStønad(behandling.stønadstype);
     if (behandling.type === Behandlingstype.BLANKETT) {
         return sider.filter((side) => !filtrerVekkHvisBlankett.includes(side.navn as SideNavn));
     }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import styled from 'styled-components';
-import { filtrerSiderEtterBehandlingstype, ISide, SideNavn, sider } from './sider';
+import { filtrerSiderEtterBehandlingstype, ISide, SideNavn } from './sider';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
@@ -40,17 +40,15 @@ const Fanemeny: FC<Props> = ({ behandlingId }) => {
                 <>
                     <StickyMedBoxShadow>
                         <StyledFanemeny>
-                            {filtrerSiderEtterBehandlingstype(sider, behandling).map(
-                                (side, index) => (
-                                    <Fane
-                                        side={side}
-                                        behandlingId={behandlingId}
-                                        index={index}
-                                        deaktivert={faneErLåst(side, behandling.steg)}
-                                        key={index}
-                                    />
-                                )
-                            )}
+                            {filtrerSiderEtterBehandlingstype(behandling).map((side, index) => (
+                                <Fane
+                                    side={side}
+                                    behandlingId={behandlingId}
+                                    index={index}
+                                    deaktivert={faneErLåst(side, behandling.steg)}
+                                    key={index}
+                                />
+                            ))}
                         </StyledFanemeny>
                     </StickyMedBoxShadow>
                 </>
