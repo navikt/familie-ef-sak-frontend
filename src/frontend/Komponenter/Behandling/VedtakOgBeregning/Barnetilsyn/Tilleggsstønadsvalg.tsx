@@ -20,6 +20,7 @@ import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMed
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
+import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -45,10 +46,12 @@ const StyledInput = styled(InputMedTusenSkille)`
 
 interface Props {
     tilleggsstønad: FieldState;
+    tilleggsstønadBegrunnelse: FieldState;
     stønadsreduksjon: FieldState;
     tilleggsstønadPerioder: ListState<ITilleggsstønadPeriode>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['tilleggsstønadsperioder'];
-    settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    periodeValideringsfeil?: FormErrors<InnvilgeVedtakForm>['tilleggsstønadsperioder'];
+    settPeriodeValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    begrunnelseValideringsfeil: FormErrors<InnvilgeVedtakForm>['tilleggsstønadBegrunnelse'];
 }
 
 export const tomTilleggsstønadRad: ITilleggsstønadPeriode = {
@@ -59,10 +62,12 @@ export const tomTilleggsstønadRad: ITilleggsstønadPeriode = {
 
 const TilleggsstønadValg: React.FC<Props> = ({
     tilleggsstønad,
+    tilleggsstønadBegrunnelse,
     stønadsreduksjon,
     tilleggsstønadPerioder,
-    valideringsfeil,
-    settValideringsFeil,
+    periodeValideringsfeil,
+    settPeriodeValideringsfeil,
+    begrunnelseValideringsfeil,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -167,8 +172,8 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                                 );
                                             }}
                                             feilmelding={
-                                                valideringsfeil &&
-                                                valideringsfeil[index]?.årMånedFra
+                                                periodeValideringsfeil &&
+                                                periodeValideringsfeil[index]?.årMånedFra
                                             }
                                             erLesevisning={!behandlingErRedigerbar}
                                         />
@@ -189,7 +194,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                             <FjernKnapp
                                                 onClick={() => {
                                                     tilleggsstønadPerioder.remove(index);
-                                                    settValideringsFeil(
+                                                    settPeriodeValideringsfeil(
                                                         (
                                                             prevState: FormErrors<InnvilgeVedtakForm>
                                                         ) => {
@@ -215,6 +220,19 @@ const TilleggsstønadValg: React.FC<Props> = ({
                         />
                     </>
                 )}
+            {tilleggsstønad.value === ETilleggsstønad.JA && (
+                <EnsligTextArea
+                    value={tilleggsstønadBegrunnelse.value}
+                    onChange={(event) => {
+                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                        tilleggsstønadBegrunnelse.onChange(event);
+                    }}
+                    label="Begrunnelse"
+                    maxLength={0}
+                    erLesevisning={!behandlingErRedigerbar}
+                    feilmelding={begrunnelseValideringsfeil}
+                />
+            )}
         </>
     );
 };

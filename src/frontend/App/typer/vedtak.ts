@@ -36,6 +36,7 @@ export type IInnvilgeVedtakForBarnetilsyn = {
     kontantstøtte: EKontantstøtte;
     kontantstøtteperioder?: IKontantstøttePeriode[];
     tilleggsstønad: ETilleggsstønad;
+    tilleggsstønadBegrunnelse?: string;
     stønadsreduksjon: EStønadsreduksjon;
     tilleggsstønadsperioder?: ITilleggsstønadPeriode[];
 };
