@@ -59,6 +59,7 @@ export const Vedtaksform: React.FC<{
             tilleggsstønad: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.tilleggsstønad
                 : ETilleggsstønad.NEI,
+            tilleggsstønadBegrunnelse: lagretInnvilgetVedtak?.tilleggsstønadBegrunnelse || '',
             stønadsreduksjon: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.stønadsreduksjon
                 : EStønadsreduksjon.NEI,
@@ -74,6 +75,9 @@ export const Vedtaksform: React.FC<{
         'kontantstøtteperioder'
     ) as ListState<IKontantstøttePeriode>;
     const tilleggsstønadState = formState.getProps('tilleggsstønad') as FieldState;
+    const tilleggsstønadBegrunnelseState = formState.getProps(
+        'tilleggsstønadBegrunnelse'
+    ) as FieldState;
     const stønadsreduksjonState = formState.getProps('stønadsreduksjon') as FieldState;
     const tilleggsstønadsperiodeState = formState.getProps(
         'tilleggsstønadsperioder'
@@ -93,6 +97,8 @@ export const Vedtaksform: React.FC<{
             kontantstøtteperioder:
                 form.kontantstøtte.value === EKontantstøtte.JA ? form.kontantstøtteperioder : null,
             tilleggsstønad: form.tilleggsstønad,
+            tilleggsstønadBegrunnelse:
+                form.tilleggsstønad === ETilleggsstønad.JA ? form.tilleggsstønadBegrunnelse : null,
             stønadsreduksjon: form.stønadsreduksjon,
             tilleggsstønadsperioder:
                 form.tilleggsstønad === ETilleggsstønad.JA &&
@@ -130,10 +136,12 @@ export const Vedtaksform: React.FC<{
                 </Heading>
                 <TilleggsstønadValg
                     tilleggsstønad={tilleggsstønadState}
+                    tilleggsstønadBegrunnelse={tilleggsstønadBegrunnelseState}
                     stønadsreduksjon={stønadsreduksjonState}
                     tilleggsstønadPerioder={tilleggsstønadsperiodeState}
-                    valideringsfeil={formState.errors.tilleggsstønadsperioder}
-                    settValideringsFeil={formState.setErrors}
+                    periodeValideringsfeil={formState.errors.tilleggsstønadsperioder}
+                    settPeriodeValideringsfeil={formState.setErrors}
+                    begrunnelseValideringsfeil={formState.errors.tilleggsstønadBegrunnelse}
                 />
             </WrapperMarginTop>
             {feilmelding && (

@@ -15,14 +15,23 @@ export const validerInnvilgetVedtakForm = ({
     kontantstøtte,
     kontantstøtteperioder,
     tilleggsstønad,
+    tilleggsstønadBegrunnelse,
     stønadsreduksjon,
     tilleggsstønadsperioder,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
+    const tilleggsstønadBegrunnelseFeil =
+        tilleggsstønad === ETilleggsstønad.NEI
+            ? undefined
+            : tilleggsstønadBegrunnelse === '' || tilleggsstønadBegrunnelse === undefined
+            ? 'Mangelfull utfylling av begrunnelse'
+            : undefined;
+
     return {
         ...validerUtgiftsperioder({ utgiftsperioder }),
         kontantstøtte: undefined,
         ...validerKontantstøttePerioder({ kontantstøtteperioder }, kontantstøtte),
         tilleggsstønad: undefined,
+        tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
         stønadsreduksjon: undefined,
         ...validerTilleggsstønadPerioder(
             { tilleggsstønadsperioder },
