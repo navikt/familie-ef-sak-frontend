@@ -59,7 +59,7 @@ const BehandlingInnold: React.FC<Props> = ({
         };
     };
 
-    const opprettBehandling = () => {
+    const lagNyBehandlingRad = () => {
         settFeilmelding('');
         if (fagsak.status === RessursStatus.SUKSESS) {
             const kanOppretteNyBehandling = fagsak.data.behandlinger.every(
@@ -137,7 +137,7 @@ const BehandlingInnold: React.FC<Props> = ({
                 </tbody>
             </table>
             {!nyBehandling && (
-                <Flatknapp onClick={opprettBehandling}>
+                <Flatknapp onClick={lagNyBehandlingRad}>
                     <LeggtilMedSirkel />
                     <span>Opprett ny behandling</span>
                 </Flatknapp>
