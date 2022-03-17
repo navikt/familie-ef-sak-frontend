@@ -3,7 +3,7 @@ import {
     EVedtaksperiodeProperty,
     EPeriodetype,
     periodetypeTilTekst,
-} from '../../../../App/typer/vedtak';
+} from '../../../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 

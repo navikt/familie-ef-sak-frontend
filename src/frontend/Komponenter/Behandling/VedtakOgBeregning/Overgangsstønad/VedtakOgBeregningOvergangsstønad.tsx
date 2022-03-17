@@ -4,11 +4,11 @@ import { RessursStatus } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { EBehandlingResultat } from '../../../../App/typer/vedtak';
 import VedtaksresultatSwitch from './VedtaksresultatSwitch';
-import SelectVedtaksresultat from '../SelectVedtaksresultat';
+import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
-import { erAlleVilkårOppfylt, eksistererIkkeOppfyltVilkår } from '../../Vilkårresultat/utils';
+import { erAlleVilkårOppfylt, eksistererIkkeOppfyltVilkår } from '../Felles/utils';
 
 interface Props {
     behandling: Behandling;

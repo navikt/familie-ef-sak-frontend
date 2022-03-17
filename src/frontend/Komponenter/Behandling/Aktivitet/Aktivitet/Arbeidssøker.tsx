@@ -3,7 +3,7 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
-import { IArbeidssøker } from '../../../../App/typer/overgangsstønad';
+import { IArbeidssøker } from '../../../../App/typer/aktivitetstyper';
 
 const Arbeidssøker: FC<{ arbeidssøker: IArbeidssøker }> = ({ arbeidssøker }) => {
     return (

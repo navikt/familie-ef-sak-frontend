@@ -1,13 +1,13 @@
 import React from 'react';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { ResultatVisning } from '../../Vilkårresultat/ResultatVisning';
-import TidligereVedtakOppsummering from '../../Vilkårresultat/TidligereVedtakOppsummering';
+import { ResultatVisning } from '../Felles/ResultatVisning';
+import TidligereVedtakOppsummering from '../Felles/TidligereVedtakOppsummering';
 import {
     sorterUtAktivitetsvilkår,
     sorterUtInngangsvilkår,
     sorterUtTidligereVedtaksvilkår,
-} from '../../Vilkårresultat/utils';
+} from '../Felles/utils';
 import { Søknadsdatoer } from './Søknadsdatoer';
 import { Heading } from '@navikt/ds-react';
 import navFarger from 'nav-frontend-core';

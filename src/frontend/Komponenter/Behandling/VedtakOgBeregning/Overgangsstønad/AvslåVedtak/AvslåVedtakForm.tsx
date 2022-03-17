@@ -1,12 +1,12 @@
 import React, { FormEvent, useEffect } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
-import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
-import { useApp } from '../../../../App/context/AppContext';
+import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
+import { useApp } from '../../../../../App/context/AppContext';
 import SelectAvslagÅrsak from './SelectAvslagÅrsak';
-import { EAvslagÅrsak } from '../../../../App/typer/vedtak';
+import { EAvslagÅrsak } from '../../../../../App/typer/vedtak';
 
 const StyledForm = styled.form`
     margin-top: 2rem;

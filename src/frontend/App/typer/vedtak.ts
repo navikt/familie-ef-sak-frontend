@@ -1,6 +1,4 @@
-import { PeriodeVariant } from '../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
-import { Stønadstype } from './behandlingstema';
 
 export type IAvslåVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.AVSLÅ;
@@ -35,6 +33,12 @@ export type IInnvilgeVedtakForOvergangsstønad = {
 export type IInnvilgeVedtakForBarnetilsyn = {
     resultatType: EBehandlingResultat.INNVILGE;
     utgiftsperioder: IUtgiftsperiode[];
+    kontantstøtte: EKontantstøtte;
+    kontantstøtteperioder?: IKontantstøttePeriode[];
+    tilleggsstønad: ETilleggsstønad;
+    tilleggsstønadBegrunnelse?: string;
+    stønadsreduksjon: EStønadsreduksjon;
+    tilleggsstønadsperioder?: ITilleggsstønadPeriode[];
 };
 
 export type IUtgiftsperiode = {
@@ -42,6 +46,18 @@ export type IUtgiftsperiode = {
     årMånedTil: string;
     barn: string[] | undefined; // TODO: oppdater til riktig type for barn
     utgifter: number | undefined;
+};
+
+export type IKontantstøttePeriode = {
+    årMånedFra: string;
+    årMånedTil: string;
+    beløp: number | undefined;
+};
+
+export type ITilleggsstønadPeriode = {
+    årMånedFra: string;
+    årMånedTil: string;
+    beløp: number | undefined;
 };
 
 export type ISanksjonereVedtakForOvergangsstønad = {
@@ -131,6 +147,33 @@ export enum EUtgiftsperiodeProperty {
     utgifter = 'utgifter',
 }
 
+export enum EKontantstøttePeriodeProperty {
+    årMånedFra = 'årMånedFra',
+    årMånedTil = 'årMånedTil',
+    beløp = 'beløp',
+}
+
+export enum ETilleggsstønadPeriodeProperty {
+    årMånedFra = 'årMånedFra',
+    årMånedTil = 'årMånedTil',
+    beløp = 'beløp',
+}
+
+export enum EKontantstøtte {
+    JA = 'JA',
+    NEI = 'NEI',
+}
+
+export enum ETilleggsstønad {
+    JA = 'JA',
+    NEI = 'NEI',
+}
+
+export enum EStønadsreduksjon {
+    JA = 'JA',
+    NEI = 'NEI',
+}
+
 export enum EAvslagÅrsak {
     VILKÅR_IKKE_OPPFYLT = 'VILKÅR_IKKE_OPPFYLT',
     BARN_OVER_ÅTTE_ÅR = 'BARN_OVER_ÅTTE_ÅR',
@@ -143,26 +186,6 @@ export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
 ];
-
-export const periodeVariantTilProperty = (
-    periodeVariant: PeriodeVariant,
-    stønadstype: Stønadstype
-): EVedtaksperiodeProperty | EUtgiftsperiodeProperty => {
-    if (stønadstype === Stønadstype.OVERGANGSSTØNAD) {
-        switch (periodeVariant) {
-            case PeriodeVariant.ÅR_MÅNED_FRA:
-                return EVedtaksperiodeProperty.årMånedFra;
-            case PeriodeVariant.ÅR_MÅNED_TIL:
-                return EVedtaksperiodeProperty.årMånedTil;
-        }
-    }
-    switch (periodeVariant) {
-        case PeriodeVariant.ÅR_MÅNED_FRA:
-            return EUtgiftsperiodeProperty.årMånedFra;
-        case PeriodeVariant.ÅR_MÅNED_TIL:
-            return EUtgiftsperiodeProperty.årMånedTil;
-    }
-};
 
 export enum EAktivitet {
     IKKE_AKTIVITETSPLIKT = 'IKKE_AKTIVITETSPLIKT',

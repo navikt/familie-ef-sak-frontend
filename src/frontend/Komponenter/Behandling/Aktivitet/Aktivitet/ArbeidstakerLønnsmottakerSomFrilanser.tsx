@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IArbeidsforhold } from '../../../../App/typer/overgangsstønad';
+import { IArbeidsforhold } from '../../../../App/typer/aktivitetstyper';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';

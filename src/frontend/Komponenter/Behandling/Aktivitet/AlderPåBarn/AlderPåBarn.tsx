@@ -2,12 +2,13 @@ import React from 'react';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import AleneomsorgInfo from './AleneomsorgInfo';
-import { VilkårProps } from '../vilkårprops';
-import { Vilkårstittel } from '../Vilkårstittel';
-import { InngangsvilkårType } from '../vilkår';
+import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
+import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
+import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
+import AlderPåBarnInfo from './AlderPåBarnInfo';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
-export const Aleneomsorg: React.FC<VilkårProps> = ({
+export const AlderPåBarn: React.FC<VilkårProps> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -16,18 +17,28 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
     ikkeVurderVilkår,
     skalViseSøknadsdata,
 }) => {
-    const vilkårsresultatAleneomsorg = vurderinger
-        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
+    const vilkårsresultatAlderPåBarn = vurderinger
+        .filter((vurdering) => vurdering.vilkårType === AktivitetsvilkårType.ALDER_PÅ_BARN)
         .map((v) => v.resultat);
-    const utleddResultat = vilkårStatusAleneomsorg(vilkårsresultatAleneomsorg);
+    const utleddResultat = vilkårStatusAleneomsorg(vilkårsresultatAlderPåBarn);
+
     return (
         <>
             {grunnlag.barnMedSamvær.map((barn, idx) => {
                 const vurdering = vurderinger.find(
                     (v) =>
-                        v.barnId === barn.barnId && v.vilkårType === InngangsvilkårType.ALENEOMSORG
+                        v.barnId === barn.barnId &&
+                        v.vilkårType === AktivitetsvilkårType.ALDER_PÅ_BARN
                 );
-                if (!vurdering) return null;
+
+                if (!vurdering && barn.barnepass?.skalHaBarnepass) {
+                    return (
+                        <AlertStripeFeil>
+                            Noe er galt - det finnes ingen vilkår for dette barnets alder
+                        </AlertStripeFeil>
+                    );
+                } else if (!vurdering) return null;
+
                 return (
                     <ToKolonnerLayout key={barn.barnId}>
                         {{
@@ -35,12 +46,12 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                 <>
                                     {idx === 0 && (
                                         <Vilkårstittel
-                                            paragrafTittel="§15-4"
-                                            tittel="Aleneomsorg"
+                                            paragrafTittel="§15-10"
+                                            tittel="Alder på barn"
                                             vilkårsresultat={utleddResultat}
                                         />
                                     )}
-                                    <AleneomsorgInfo
+                                    <AlderPåBarnInfo
                                         gjeldendeBarn={barn}
                                         skalViseSøknadsdata={skalViseSøknadsdata}
                                     />
