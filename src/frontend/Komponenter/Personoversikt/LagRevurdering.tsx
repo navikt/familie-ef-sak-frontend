@@ -67,7 +67,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const { axiosRequest } = useApp();
 
     const harMigrering = behandlinger?.some(
-        (behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD
+        (behandling) => behandling.behandlingsårsak === Behandlingsårsak.MIGRERING
     );
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
