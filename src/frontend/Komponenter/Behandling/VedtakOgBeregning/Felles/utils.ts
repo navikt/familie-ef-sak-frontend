@@ -7,8 +7,8 @@ import {
     TidligereVedtaksperioderType,
     Vilkårsresultat,
     VilkårType,
-} from '../Inngangsvilkår/vilkår';
-import { vilkårStatusAleneomsorg } from '../Vurdering/VurderingUtil';
+} from '../../Inngangsvilkår/vilkår';
+import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]

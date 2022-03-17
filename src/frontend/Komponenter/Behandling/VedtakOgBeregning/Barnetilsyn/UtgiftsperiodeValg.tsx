@@ -1,9 +1,5 @@
-import {
-    EUtgiftsperiodeProperty,
-    IUtgiftsperiode,
-    periodeVariantTilProperty,
-} from '../../../../App/typer/vedtak';
-import MånedÅrPeriode from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
+import { EUtgiftsperiodeProperty, IUtgiftsperiode } from '../../../../App/typer/vedtak';
+import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -13,12 +9,11 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { barnFormatertForBarnVelger, mapValgtBarnTilNavn } from './mockData';
 
 const UtgiftsperiodeContainer = styled.div<{ lesevisning?: boolean }>`
@@ -36,6 +31,11 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
         props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 25rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
+`;
+
+const AntallBarn = styled(Element)<{ lesevisning: boolean }>`
+    margin-top: ${(props) => (props.lesevisning ? '0.65rem' : '0rem')};
+    text-align: center;
 `;
 
 const StyledInput = styled(InputMedTusenSkille)`
@@ -78,6 +78,17 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
     };
 
+    const periodeVariantTilUtgiftsperiodeProperty = (
+        periodeVariant: PeriodeVariant
+    ): EUtgiftsperiodeProperty => {
+        switch (periodeVariant) {
+            case PeriodeVariant.ÅR_MÅNED_FRA:
+                return EUtgiftsperiodeProperty.årMånedFra;
+            case PeriodeVariant.ÅR_MÅNED_TIL:
+                return EUtgiftsperiodeProperty.årMånedTil;
+        }
+    };
+
     return (
         <>
             <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
@@ -104,10 +115,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterUtgiftsPeriode(
                                     index,
-                                    periodeVariantTilProperty(
-                                        periodeVariant,
-                                        Stønadstype.BARNETILSYN
-                                    ) as EUtgiftsperiodeProperty,
+                                    periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
                                     verdi
                                 );
                             }}
@@ -131,11 +139,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 );
                             }}
                         />
-                        <Element style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>{`${
+                        <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
                             utgiftsperioder.value[index].barn
                                 ? utgiftsperioder.value[index].barn?.length
                                 : 0
-                        }`}</Element>
+                        }`}</AntallBarn>
                         <StyledInput
                             type="number"
                             value={harTallverdi(utgifter) ? utgifter : ''}
