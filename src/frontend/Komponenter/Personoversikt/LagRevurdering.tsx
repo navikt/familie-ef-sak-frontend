@@ -66,7 +66,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
 
-    const harMigrering = behandlinger.some(
+    const harMigrering = behandlinger?.some(
         (behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD
     );
 
@@ -214,7 +214,13 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                     <StyledHovedknapp
                                         onClick={() => {
                                             const kanStarteRevurdering = !!(
-                                                valgtBehandlingsårsak && valgtDato
+                                                valgtBehandlingsårsak &&
+                                                valgtDato &&
+                                                !(
+                                                    harMigrering &&
+                                                    vilkårsbehandleVedMigrering ===
+                                                        EVilkårsbehandleBarnValg.IKKE_VALGT
+                                                )
                                             );
                                             if (kanStarteRevurdering) {
                                                 lagRevurdering({
@@ -229,11 +235,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                 );
                                             }
                                         }}
-                                        disabled={
-                                            harMigrering &&
-                                            vilkårsbehandleVedMigrering ===
-                                                EVilkårsbehandleBarnValg.IKKE_VALGT
-                                        }
                                     >
                                         Opprett
                                     </StyledHovedknapp>
