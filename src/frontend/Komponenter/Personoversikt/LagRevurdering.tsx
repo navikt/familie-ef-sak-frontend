@@ -90,6 +90,9 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         });
     }, [axiosRequest, fagsakId]);
 
+    const skalTaMedAlleBarn =
+        !harMigrering || vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
+
     return (
         <>
             <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
@@ -186,8 +189,10 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                     vilkårsbehandleVedMigrering ===
                                                     EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
                                                 }
-                                                onChange={(e) => {
-                                                    settVilkårsbehandleVedMigrering(e.target.value);
+                                                onChange={() => {
+                                                    settVilkårsbehandleVedMigrering(
+                                                        EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
+                                                    );
                                                 }}
                                             >
                                                 Vilkårsbehandle barn i EF Sak
@@ -200,8 +205,10 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                     vilkårsbehandleVedMigrering ===
                                                     EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
                                                 }
-                                                onChange={(e) => {
-                                                    settVilkårsbehandleVedMigrering(e.target.value);
+                                                onChange={() => {
+                                                    settVilkårsbehandleVedMigrering(
+                                                        EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
+                                                    );
                                                 }}
                                             >
                                                 Ikke vilkårsbehandle barn i EF Sak
@@ -225,7 +232,9 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             if (kanStarteRevurdering) {
                                                 lagRevurdering({
                                                     fagsakId,
-                                                    barn: nyeBarnSidenForrigeBehandling,
+                                                    barn: skalTaMedAlleBarn
+                                                        ? nyeBarnSidenForrigeBehandling
+                                                        : [],
                                                     behandlingsårsak: valgtBehandlingsårsak,
                                                     kravMottatt: valgtDato,
                                                 });
