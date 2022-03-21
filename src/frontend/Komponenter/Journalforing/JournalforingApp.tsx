@@ -30,6 +30,7 @@ import {
 import BehandlingInnold from './Behandling';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
+import { Button } from '@navikt/ds-react';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -236,7 +237,7 @@ export const JournalforingApp: React.FC = () => {
                     </Kolonner>
                     <UIModalWrapper
                         modal={{
-                            tittel: `Bekreft journalføring`,
+                            tittel: `Journalføring ikke mulig`,
                             lukkKnapp: true,
                             onClose: () => journalpostState.settVisBekreftelsesModal(false),
                             visModal: journalpostState.visBekreftelsesModal,
@@ -252,33 +253,22 @@ export const JournalforingApp: React.FC = () => {
                             )}
                             {!journalResponse.harStrukturertSøknad && (
                                 <Normaltekst>
-                                    Det finnes ingen digital søknad tilknyttet journalposten og den
-                                    bør derfor journalføres på en eksisterende behandling
+                                    Foreløpig er det dessverre ikke mulig å opprette en ny
+                                    behandling via journalføringsbildet når det ikke er tilknyttet
+                                    en digital søknad til journalposten. Gå inntil videre inn i
+                                    behandlingsoversikten til bruker og opprett ny behandling
+                                    derifra. Deretter kan du journalføre mot den nye behandlingen.
                                 </Normaltekst>
                             )}
                         </div>
                         <KnappWrapper>
-                            <Knapp
-                                type={'hoved'}
+                            <Button
+                                variant={'tertiary'}
                                 className={'flex-item'}
                                 onClick={() => {
                                     journalpostState.settVisBekreftelsesModal(false);
                                 }}
                                 children="Tilbake"
-                            />
-
-                            <Knapp
-                                type={'standard'}
-                                className={'flex-item'}
-                                onClick={() => {
-                                    journalpostState.settVisBekreftelsesModal(false);
-                                    journalpostState.fullførJournalføring(
-                                        journalpostIdParam,
-                                        innloggetSaksbehandler?.enhet || '9999',
-                                        innloggetSaksbehandler?.navIdent
-                                    );
-                                }}
-                                children="Journalfør allikevel"
                             />
                         </KnappWrapper>
                     </UIModalWrapper>
