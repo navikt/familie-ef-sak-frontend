@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
@@ -31,6 +31,7 @@ import BehandlingInnold from './Behandling';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { Button } from '@navikt/ds-react';
+import { ISaksbehandler } from '../../App/typer/saksbehandler';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -141,15 +142,8 @@ export const JournalforingApp: React.FC = () => {
         return <Navigate to="/oppgavebenk" />;
     }
 
-    const skalBeOmBekreftelse = (
-        behandling: BehandlingRequest | undefined,
-        harStrukturertSøknad: boolean
-    ) => {
-        if (harStrukturertSøknad) {
-            return behandling?.behandlingsId !== undefined;
-        } else {
-            return behandling?.behandlingsId === undefined;
-        }
+    const skalBeOmBekreftelse = (behandling: BehandlingRequest | undefined) => {
+        return behandling?.behandlingsId !== undefined;
     };
 
     return (
@@ -194,13 +188,10 @@ export const JournalforingApp: React.FC = () => {
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
                                     onClick={() => {
-                                        if (
-                                            skalBeOmBekreftelse(
-                                                journalpostState.behandling,
-                                                journalResponse.harStrukturertSøknad
-                                            )
-                                        ) {
+                                        if (skalBeOmBekreftelse(journalpostState.behandling)) {
                                             journalpostState.settVisBekreftelsesModal(true);
+                                        } else if (!journalResponse.harStrukturertSøknad) {
+                                            journalpostState.settJournalføringIkkeMuligModal(true);
                                         } else {
                                             journalpostState.fullførJournalføring(
                                                 journalpostIdParam,
@@ -235,45 +226,101 @@ export const JournalforingApp: React.FC = () => {
                             <PdfVisning pdfFilInnhold={valgtDokument} />
                         </Høyrekolonne>
                     </Kolonner>
-                    <UIModalWrapper
-                        modal={{
-                            tittel: `Journalføring ikke mulig`,
-                            lukkKnapp: true,
-                            onClose: () => journalpostState.settVisBekreftelsesModal(false),
-                            visModal: journalpostState.visBekreftelsesModal,
-                        }}
-                    >
-                        <div>
-                            {journalResponse.harStrukturertSøknad && (
-                                <Normaltekst>
-                                    Behandlingen du har valgt har allerede en digital søknad
-                                    tilknyttet seg. Om du skal gjennomføre en ny saksbehandling av
-                                    søknaden må du opprette en ny behandling.
-                                </Normaltekst>
-                            )}
-                            {!journalResponse.harStrukturertSøknad && (
-                                <Normaltekst>
-                                    Foreløpig er det dessverre ikke mulig å opprette en ny
-                                    behandling via journalføringsbildet når det ikke er tilknyttet
-                                    en digital søknad til journalposten. Gå inntil videre inn i
-                                    behandlingsoversikten til bruker og opprett ny behandling
-                                    derifra. Deretter kan du journalføre mot den nye behandlingen.
-                                </Normaltekst>
-                            )}
-                        </div>
-                        <KnappWrapper>
-                            <Button
-                                variant={'tertiary'}
-                                className={'flex-item'}
-                                onClick={() => {
-                                    journalpostState.settVisBekreftelsesModal(false);
-                                }}
-                                children="Tilbake"
-                            />
-                        </KnappWrapper>
-                    </UIModalWrapper>
+                    <BekreftJournalføringModal
+                        journalpostState={journalpostState}
+                        journalpostId={journalpostIdParam}
+                        innloggetSaksbehandler={innloggetSaksbehandler}
+                    />
+                    <JournalføringIkkeMuligModal
+                        visModal={journalpostState.visJournalføringIkkeMuligModal}
+                        settVisModal={journalpostState.settJournalføringIkkeMuligModal}
+                    />
                 </SideLayout>
             )}
         </DataViewer>
+    );
+};
+
+const JournalføringIkkeMuligModal: React.FC<{
+    visModal: boolean;
+    settVisModal: Dispatch<SetStateAction<boolean>>;
+}> = ({ visModal, settVisModal }) => {
+    return (
+        <UIModalWrapper
+            modal={{
+                tittel: `Journalføring ikke mulig`,
+                lukkKnapp: true,
+                onClose: () => settVisModal(false),
+                visModal: visModal,
+            }}
+        >
+            <div>
+                <Normaltekst>
+                    Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
+                    journalføringsbildet når det ikke er tilknyttet en digital søknad til
+                    journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
+                    opprett ny behandling derifra. Deretter kan du journalføre mot den nye
+                    behandlingen.
+                </Normaltekst>
+            </div>
+            <KnappWrapper>
+                <Button
+                    variant={'tertiary'}
+                    className={'flex-item'}
+                    onClick={() => {
+                        settVisModal(false);
+                    }}
+                    children="Tilbake"
+                />
+            </KnappWrapper>
+        </UIModalWrapper>
+    );
+};
+
+const BekreftJournalføringModal: React.FC<{
+    journalpostState: JournalføringStateRequest;
+    journalpostId: string;
+    innloggetSaksbehandler: ISaksbehandler;
+}> = ({ journalpostState, journalpostId, innloggetSaksbehandler }) => {
+    return (
+        <UIModalWrapper
+            modal={{
+                tittel: `Journalføring ikke mulig`,
+                lukkKnapp: true,
+                onClose: () => journalpostState.settVisBekreftelsesModal(false),
+                visModal: journalpostState.visBekreftelsesModal,
+            }}
+        >
+            <div>
+                <Normaltekst>
+                    Behandlingen du har valgt har allerede en digital søknad tilknyttet seg. Om du
+                    skal gjennomføre en ny saksbehandling av søknaden må du opprette en ny
+                    behandling.
+                </Normaltekst>
+            </div>
+            <KnappWrapper>
+                <Button
+                    variant={'tertiary'}
+                    className={'flex-item'}
+                    onClick={() => {
+                        journalpostState.settVisBekreftelsesModal(false);
+                    }}
+                    children="Tilbake"
+                />
+                <Button
+                    variant={'primary'}
+                    className={'flex-item'}
+                    onClick={() => {
+                        journalpostState.settVisBekreftelsesModal(false);
+                        journalpostState.fullførJournalføring(
+                            journalpostId,
+                            innloggetSaksbehandler?.enhet || '9999',
+                            innloggetSaksbehandler?.navIdent
+                        );
+                    }}
+                    children="Journalfør allikevel"
+                />
+            </KnappWrapper>
+        </UIModalWrapper>
     );
 };
