@@ -123,6 +123,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
+                            stønadstype={behandling.stønadstype}
                         />
                     </>
                 );

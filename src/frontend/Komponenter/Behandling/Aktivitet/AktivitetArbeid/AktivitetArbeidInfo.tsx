@@ -38,6 +38,7 @@ const AktivitetArbeidInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, støn
                             <ArbeidstakerLønnsmottakerSomFrilanser
                                 key={arbeidsgiver.arbeidsgivernavn + index}
                                 arbeidsforhold={arbeidsgiver}
+                                stønadstype={stønadstype}
                             />
                         </GridTabell>
                     ))}
