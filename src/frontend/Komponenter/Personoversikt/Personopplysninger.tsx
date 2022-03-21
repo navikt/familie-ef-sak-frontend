@@ -19,7 +19,7 @@ const Personopplysninger: React.FC<{
         [personIdent]
     );
 
-    const navKontor = useDataHenter<INavKontor, IPersonIdent>(navKontorConfig);
+    const navKontor = useDataHenter<INavKontor | undefined, IPersonIdent>(navKontorConfig);
 
     return (
         <PersonopplysningerMedNavKontor

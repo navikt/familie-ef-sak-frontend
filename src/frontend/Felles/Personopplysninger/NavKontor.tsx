@@ -29,14 +29,10 @@ const NavKontor: React.FC<{ navKontor?: INavKontor }> = ({ navKontor }) => {
     return (
         <StyledNavKontor>
             <StyledBygning />
-            {(navKontor && (
-                <>
-                    <StyledTittel>NAV-Kontor</StyledTittel>
-                    <StyledKontorNavn>
-                        {`${navKontor.enhetNr} - ${navKontor.navn}`}
-                    </StyledKontorNavn>
-                </>
-            )) || <IngenData />}
+            <StyledTittel>NAV-Kontor</StyledTittel>
+            <StyledKontorNavn>
+                {navKontor ? `${navKontor.enhetNr} - ${navKontor.navn}` : <IngenData />}
+            </StyledKontorNavn>
         </StyledNavKontor>
     );
 };
