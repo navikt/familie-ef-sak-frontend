@@ -30,6 +30,7 @@ import {
 import BehandlingInnold from './Behandling';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
+import { Button } from '@navikt/ds-react';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -261,8 +262,8 @@ export const JournalforingApp: React.FC = () => {
                             )}
                         </div>
                         <KnappWrapper>
-                            <Knapp
-                                type={'hoved'}
+                            <Button
+                                variant={'tertiary'}
                                 className={'flex-item'}
                                 onClick={() => {
                                     journalpostState.settVisBekreftelsesModal(false);
