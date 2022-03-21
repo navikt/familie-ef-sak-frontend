@@ -142,10 +142,16 @@ export const JournalforingApp: React.FC = () => {
         return <Navigate to="/oppgavebenk" />;
     }
 
-    const skalBeOmBekreftelse = (behandling: BehandlingRequest | undefined) => {
-        return behandling?.behandlingsId !== undefined;
+    const skalBeOmBekreftelse = (
+        behandling: BehandlingRequest | undefined,
+        harStrukturertSøknad: boolean
+    ) => {
+        if (harStrukturertSøknad) {
+            return behandling?.behandlingsId !== undefined;
+        } else {
+            return behandling?.behandlingsId === undefined;
+        }
     };
-
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => (
@@ -188,10 +194,19 @@ export const JournalforingApp: React.FC = () => {
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
                                     onClick={() => {
-                                        if (skalBeOmBekreftelse(journalpostState.behandling)) {
-                                            journalpostState.settVisBekreftelsesModal(true);
-                                        } else if (!journalResponse.harStrukturertSøknad) {
-                                            journalpostState.settJournalføringIkkeMuligModal(true);
+                                        if (
+                                            skalBeOmBekreftelse(
+                                                journalpostState.behandling,
+                                                journalResponse.harStrukturertSøknad
+                                            )
+                                        ) {
+                                            if (journalResponse.harStrukturertSøknad) {
+                                                journalpostState.settVisBekreftelsesModal(true);
+                                            } else if (!journalResponse.harStrukturertSøknad) {
+                                                journalpostState.settJournalføringIkkeMuligModal(
+                                                    true
+                                                );
+                                            }
                                         } else {
                                             journalpostState.fullførJournalføring(
                                                 journalpostIdParam,
