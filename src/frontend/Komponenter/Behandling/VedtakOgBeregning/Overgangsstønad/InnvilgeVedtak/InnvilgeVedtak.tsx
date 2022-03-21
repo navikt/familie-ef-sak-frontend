@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
-import { Behandlingstype } from '../../../../App/typer/behandlingstype';
+import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
     EPeriodetype,
@@ -12,26 +12,23 @@ import {
     IInnvilgeVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
     IVedtaksperiode,
-} from '../../../../App/typer/vedtak';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+} from '../../../../../App/typer/vedtak';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../../../../App/context/AppContext';
-import { Behandling } from '../../../../App/typer/fagsak';
+import { useApp } from '../../../../../App/context/AppContext';
+import { Behandling } from '../../../../../App/typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
-import hiddenIf from '../../../../Felles/HiddenIf/hiddenIf';
-import { FieldState } from '../../../../App/hooks/felles/useFieldState';
-import { ListState } from '../../../../App/hooks/felles/useListState';
+import hiddenIf from '../../../../../Felles/HiddenIf/hiddenIf';
+import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
+import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import Utregningstabell from './Utregningstabell';
-import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
-import {
-    validerInnvilgetVedtakForm,
-    validerVedtaksperioder,
-} from '../Overgangsstønad/vedtaksvalidering';
-import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
+import { validerInnvilgetVedtakForm, validerVedtaksperioder } from '../vedtaksvalidering';
+import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
 

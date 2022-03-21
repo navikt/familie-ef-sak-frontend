@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import * as React from 'react';
-import { filtrerSiderEtterBehandlingstype, sider } from './Fanemeny/sider';
+import { filtrerSiderEtterBehandlingstype } from './Fanemeny/sider';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { RessursSuksess } from '../../App/typer/ressurs';
 import { Behandling } from '../../App/typer/fagsak';
@@ -9,7 +9,7 @@ const BehandlingRoutes: React.FC = () => {
     const { behandling } = useBehandling();
     const behandlingSuksess = behandling as RessursSuksess<Behandling>;
 
-    const siderForBehandling = filtrerSiderEtterBehandlingstype(sider, behandlingSuksess.data);
+    const siderForBehandling = filtrerSiderEtterBehandlingstype(behandlingSuksess.data);
     return (
         <Routes>
             {siderForBehandling.map((side) => (

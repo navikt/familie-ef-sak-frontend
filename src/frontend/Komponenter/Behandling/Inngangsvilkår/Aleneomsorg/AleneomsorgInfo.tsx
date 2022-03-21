@@ -17,7 +17,7 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata
     gjeldendeBarn,
     skalViseSøknadsdata,
 }) => {
-    const { registergrunnlag, søknadsgrunnlag } = gjeldendeBarn;
+    const { registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
     return (
@@ -90,6 +90,13 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata
                                 ? ikkeOppgittAnnenForelderBegrunnelse
                                 : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
                         </Normaltekst>
+                    </>
+                )}
+                {barnepass && barnepass.skalHaBarnepass && (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
+                        <Normaltekst>Ja</Normaltekst>
                     </>
                 )}
             </GridTabell>

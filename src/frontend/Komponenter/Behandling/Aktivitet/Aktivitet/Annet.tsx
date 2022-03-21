@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ISærligeTilsynsbehov } from '../../../../App/typer/overgangsstønad';
+import { ISærligeTilsynsbehov } from '../../../../App/typer/aktivitetstyper';
 import { GridTabell, GridTabellRad } from '../../../../Felles/Visningskomponenter/GridTabell';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { PopoverOrientering } from 'nav-frontend-popover';

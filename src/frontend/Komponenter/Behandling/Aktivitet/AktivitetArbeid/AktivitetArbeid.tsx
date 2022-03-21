@@ -1,16 +1,17 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import AktivitetInfo from './AktivitetInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
+
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import AktivitetArbeidInfo from './AktivitetArbeidInfo';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
-export const Aktivitet: React.FC<VilkårProps> = ({
+export const AktivitetArbeid: React.FC<VilkårProps> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
@@ -19,8 +20,10 @@ export const Aktivitet: React.FC<VilkårProps> = ({
     feilmeldinger,
 }) => {
     const { behandling } = useBehandling();
+    const vurdering = vurderinger.find(
+        (v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET_ARBEID
+    );
 
-    const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET);
     if (!vurdering) {
         return (
             <AlertStripeFeil>
@@ -28,6 +31,7 @@ export const Aktivitet: React.FC<VilkårProps> = ({
             </AlertStripeFeil>
         );
     }
+
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => {
@@ -39,11 +43,12 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                             venstre: (
                                 <>
                                     <Vilkårstittel
-                                        tittel="Aktivitet"
+                                        tittel="Aktivitet arbeid"
                                         vilkårsresultat={vurdering.resultat}
+                                        paragrafTittel={'§15-10'}
                                     />
                                     {grunnlag.aktivitet && (
-                                        <AktivitetInfo
+                                        <AktivitetArbeidInfo
                                             aktivitet={grunnlag.aktivitet}
                                             skalViseSøknadsdata={skalViseSøknadsdata}
                                             stønadstype={behandling.stønadstype}
