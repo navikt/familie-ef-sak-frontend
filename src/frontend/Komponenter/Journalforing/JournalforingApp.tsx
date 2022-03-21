@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
@@ -6,10 +6,7 @@ import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import Brukerinfo from './Brukerinfo';
 import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
-import {
-    behandlingstemaTilStønadstype,
-    behandlingstemaTilTekst,
-} from '../../App/typer/behandlingstema';
+import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Link } from 'react-router-dom';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
@@ -32,6 +29,8 @@ import {
 } from '../Oppgavebenk/oppgavefilterStorage';
 import BehandlingInnold from './Behandling';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
+import { Button } from '@navikt/ds-react';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -85,6 +84,13 @@ export const JournalforingApp: React.FC = () => {
         hentForrigeDokument,
     } = useHentDokument(journalpostIdParam);
     const { hentFagsak, fagsak } = useHentFagsak();
+    const [feilmelding, settFeilMeldning] = useState('');
+
+    useEffect(() => {
+        if (journalpostState.forsøktJournalført && !journalpostState.behandling) {
+            settFeilMeldning('Du må velge en behandling for å journalføre');
+        }
+    }, [journalpostState]);
 
     useEffect(() => {
         if (oppgaveIdParam && journalpostIdParam) {
@@ -115,10 +121,6 @@ export const JournalforingApp: React.FC = () => {
 
     useEffect(() => {
         if (journalResponse.status === RessursStatus.SUKSESS) {
-            const stønadstype = behandlingstemaTilStønadstype(
-                journalResponse.data.journalpost.behandlingstema
-            );
-            stønadstype && hentFagsak(journalResponse.data.personIdent, stønadstype);
             hentFørsteDokument(journalResponse.data.journalpost);
         }
         // eslint-disable-next-line
@@ -154,13 +156,18 @@ export const JournalforingApp: React.FC = () => {
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => (
                 <SideLayout className={'container'}>
-                    <Sidetittel>{`Registrere journalpost: ${
+                    <Sidetittel>{`Registrere journalpost${
                         journalResponse.journalpost.behandlingstema
-                            ? behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
+                            ? ': ' +
+                              behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
                             : ''
                     }`}</Sidetittel>
                     <Kolonner>
                         <Venstrekolonne>
+                            <UtledEllerVelgFagsak
+                                journalResponse={journalResponse}
+                                hentFagsak={hentFagsak}
+                            />
                             <Brukerinfo personIdent={journalResponse.personIdent} />
                             <DokumentVisning
                                 journalPost={journalResponse.journalpost}
@@ -168,17 +175,12 @@ export const JournalforingApp: React.FC = () => {
                                 dokumentTitler={journalpostState.dokumentTitler}
                                 settDokumentTitler={journalpostState.settDokumentTitler}
                             />
-                            <SkjemaGruppe
-                                feil={
-                                    journalpostState.forsøktJournalført &&
-                                    !journalpostState.behandling &&
-                                    'Du må velge en behandling for å journalføre'
-                                }
-                            >
+                            <SkjemaGruppe feil={feilmelding}>
                                 <BehandlingInnold
                                     settBehandling={journalpostState.settBehandling}
                                     behandling={journalpostState.behandling}
                                     fagsak={fagsak}
+                                    settFeilmelding={settFeilMeldning}
                                 />
                             </SkjemaGruppe>
                             {(journalpostState.innsending.status === RessursStatus.FEILET ||
@@ -235,7 +237,7 @@ export const JournalforingApp: React.FC = () => {
                     </Kolonner>
                     <UIModalWrapper
                         modal={{
-                            tittel: `Bekreft journalføring`,
+                            tittel: `Journalføring ikke mulig`,
                             lukkKnapp: true,
                             onClose: () => journalpostState.settVisBekreftelsesModal(false),
                             visModal: journalpostState.visBekreftelsesModal,
@@ -251,33 +253,22 @@ export const JournalforingApp: React.FC = () => {
                             )}
                             {!journalResponse.harStrukturertSøknad && (
                                 <Normaltekst>
-                                    Det finnes ingen digital søknad tilknyttet journalposten og den
-                                    bør derfor journalføres på en eksisterende behandling
+                                    Foreløpig er det dessverre ikke mulig å opprette en ny
+                                    behandling via journalføringsbildet når det ikke er tilknyttet
+                                    en digital søknad til journalposten. Gå inntil videre inn i
+                                    behandlingsoversikten til bruker og opprett ny behandling
+                                    derifra. Deretter kan du journalføre mot den nye behandlingen.
                                 </Normaltekst>
                             )}
                         </div>
                         <KnappWrapper>
-                            <Knapp
-                                type={'hoved'}
+                            <Button
+                                variant={'tertiary'}
                                 className={'flex-item'}
                                 onClick={() => {
                                     journalpostState.settVisBekreftelsesModal(false);
                                 }}
                                 children="Tilbake"
-                            />
-
-                            <Knapp
-                                type={'standard'}
-                                className={'flex-item'}
-                                onClick={() => {
-                                    journalpostState.settVisBekreftelsesModal(false);
-                                    journalpostState.fullførJournalføring(
-                                        journalpostIdParam,
-                                        innloggetSaksbehandler?.enhet || '9999',
-                                        innloggetSaksbehandler?.navIdent
-                                    );
-                                }}
-                                children="Journalfør allikevel"
                             />
                         </KnappWrapper>
                     </UIModalWrapper>
