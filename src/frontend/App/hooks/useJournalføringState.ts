@@ -37,6 +37,8 @@ export interface JournalføringStateRequest {
     ) => void;
     visBekreftelsesModal: boolean;
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
+    visJournalføringIkkeMuligModal: boolean;
+    settJournalføringIkkeMuligModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
@@ -48,6 +50,8 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [forsøktJournalført, settForsøktJournalført] = useState<boolean>(false);
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
+    const [visJournalføringIkkeMuligModal, settJournalføringIkkeMuligModal] =
+        useState<boolean>(false);
 
     const fullførJournalføring = (
         journalpostId: string,
@@ -91,5 +95,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         fullførJournalføring,
         visBekreftelsesModal,
         settVisBekreftelsesModal,
+        visJournalføringIkkeMuligModal,
+        settJournalføringIkkeMuligModal,
     };
 };
