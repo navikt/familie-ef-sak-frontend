@@ -1,19 +1,19 @@
-import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger';
+import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import React, { FormEvent, useState } from 'react';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { useApp } from '../../../../App/context/AppContext';
+import { useApp } from '../../../../../App/context/AppContext';
 import {
     EBehandlingResultat,
     IOpphørtVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
-} from '../../../../App/typer/vedtak';
-import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+} from '../../../../../App/typer/vedtak';
+import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import styled from 'styled-components';
-import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 
 const StyledFormElement = styled.div`
     margin-top: 2rem;

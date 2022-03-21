@@ -1,11 +1,11 @@
 import React from 'react';
-import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
-import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
+import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { Label } from '@navikt/ds-react';
-import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const Ikontekst = styled(Normaltekst)`
     margin-left: 0.25rem;

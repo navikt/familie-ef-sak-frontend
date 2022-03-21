@@ -3,23 +3,23 @@ import {
     ESamordningsfradragtype,
     IInntektsperiode,
     samordningsfradagTilTekst,
-} from '../../../../App/typer/vedtak';
+} from '../../../../../App/typer/vedtak';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
-import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger';
-import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
-import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
-import { ListState } from '../../../../App/hooks/felles/useListState';
+import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
+import { harTallverdi, tilTallverdi } from '../../../../../App/utils/utils';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
+import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
+import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { Element } from 'nav-frontend-typografi';
-import { FormErrors } from '../../../../App/hooks/felles/useFormState';
+import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
-import { VEDTAK_OG_BEREGNING } from '../konstanter';
-import { useApp } from '../../../../App/context/AppContext';
+import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
+import { useApp } from '../../../../../App/context/AppContext';
 import { FamilieSelect } from '@navikt/familie-form-elements';
-import { FieldState } from '../../../../App/hooks/felles/useFieldState';
+import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`

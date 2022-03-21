@@ -5,12 +5,12 @@ import {
     EAktivitet,
     EVedtaksperiodeProperty,
     EPeriodetype,
-} from '../../../../App/typer/vedtak';
+} from '../../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { OrNothing } from '../../../../App/hooks/felles/useSorteringState';
+import { OrNothing } from '../../../../../App/hooks/felles/useSorteringState';
 
 interface Props {
     periodeType: EPeriodetype | '' | undefined;
@@ -76,6 +76,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                 </FamilieSelect>
             );
         case EPeriodetype.HOVEDPERIODE:
+        case EPeriodetype.NY_PERIODE_FOR_NYTT_BARN:
             return (
                 <FamilieSelect
                     aria-label={'Aktivitet'}
