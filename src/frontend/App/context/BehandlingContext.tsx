@@ -10,7 +10,6 @@ import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
 import { useHentRegler } from '../hooks/useHentRegler';
 import { RessursStatus } from '../typer/ressurs';
 import { erBehandlingRedigerbar } from '../typer/behandlingstatus';
-import { useHentNavKontor } from '../hooks/useHentNavKontor';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
@@ -18,7 +17,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
     const { hentPersonopplysninger, personopplysningerResponse } =
         useHentPersonopplysninger(behandlingId);
-    const { hentNavKontor, navKontorResponse } = useHentNavKontor(behandlingId);
     const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
     const { hentBehandlingshistorikkCallback, behandlingHistorikk } =
         useHentBehandlingHistorikk(behandlingId);
@@ -37,8 +35,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
     // eslint-disable-next-line
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
-    // eslint-disable-next-line
-    useEffect(() => hentNavKontor(behandlingId), [behandlingId]);
     useEffect(
         () =>
             settBehandlingErRedigerbar(
@@ -57,7 +53,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         behandlingErRedigerbar,
         totrinnskontroll,
         personopplysningerResponse,
-        navKontorResponse,
         behandlingHistorikk,
         hentBehandling,
         hentTotrinnskontroll,
