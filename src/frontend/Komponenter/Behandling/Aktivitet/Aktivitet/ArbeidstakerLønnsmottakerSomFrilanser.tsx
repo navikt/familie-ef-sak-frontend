@@ -4,10 +4,12 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon, EStilling, StillingTilTekst } from './typer';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
-export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{ arbeidsforhold: IArbeidsforhold }> = ({
-    arbeidsforhold,
-}) => {
+export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{
+    arbeidsforhold: IArbeidsforhold;
+    stønadstype: Stønadstype;
+}> = ({ arbeidsforhold, stønadstype }) => {
     return (
         <>
             <Søknadsgrunnlag />
@@ -21,8 +23,12 @@ export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{ arbeidsforhold: IArbei
 
             <Normaltekst className={'førsteDataKolonne'}> Arbeidssted</Normaltekst>
             <Normaltekst> {arbeidsforhold.arbeidsgivernavn}</Normaltekst>
-            <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
-            <Normaltekst>{arbeidsforhold.arbeidsmengde + ' %'}</Normaltekst>
+            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                <>
+                    <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
+                    <Normaltekst>{arbeidsforhold.arbeidsmengde + ' %'}</Normaltekst>
+                </>
+            )}
             <Normaltekst className={'førsteDataKolonne'}>Ansettelsesforhold</Normaltekst>
             <Normaltekst>
                 {arbeidsforhold.fastEllerMidlertidig

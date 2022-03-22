@@ -26,14 +26,20 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
             <Normaltekst>{firma.organisasjonsnummer}</Normaltekst>
             <Normaltekst className={'førsteDataKolonne'}>Etableringsdato</Normaltekst>
             <Normaltekst>{formaterNullableIsoDato(firma.etableringsdato)}</Normaltekst>
-            <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
             {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
-                <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
+                <>
+                    <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
+                    <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
+                </>
             )}
             {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
-                <Normaltekst className={'førsteDataKolonne'}>Beskrivelse av arbeidsuke</Normaltekst>
+                <>
+                    <Normaltekst className={'førsteDataKolonne'}>
+                        Beskrivelse av arbeidsuke
+                    </Normaltekst>
+                    <Normaltekst>{firma.hvordanSerArbeidsukenUt}</Normaltekst>
+                </>
             )}
-            <Normaltekst>{firma.hvordanSerArbeidsukenUt}</Normaltekst>
         </>
     );
 };

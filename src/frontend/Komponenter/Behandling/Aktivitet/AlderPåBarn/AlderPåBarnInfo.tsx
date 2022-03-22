@@ -22,8 +22,7 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                     <>
                         <Registergrunnlag />
                         <Element>
-                            {registergrunnlag.navn}
-                            (Alder: {alder}år)
+                            {registergrunnlag.navn} ({alder} år)
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}
