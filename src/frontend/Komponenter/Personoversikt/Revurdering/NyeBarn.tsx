@@ -1,0 +1,107 @@
+import { BodyShort, Label, RadioGroup, Radio } from '@navikt/ds-react';
+import React, { Dispatch, SetStateAction } from 'react';
+import styled from 'styled-components';
+import { BarnForRevurdering } from '../../../App/typer/revurderingstype';
+import { fødselsdatoTilAlder } from '../../../App/utils/utils';
+
+enum EVilkårsbehandleBarnValg {
+    VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
+    IKKE_VILKÅRSBEHANDLE = 'IKKE_VILKÅRSBEHANDLE',
+    IKKE_VALGT = 'IKKE_VALGT',
+}
+
+const StyledNyeBarn = styled.div`
+    margin-top: 2rem;
+`;
+
+const StyledRadioGroup = styled(RadioGroup)`
+    margin-top: 2rem;
+`;
+
+interface IProps {
+    nyeBarnSidenForrigeBehandling: BarnForRevurdering[];
+    harMigrering: boolean;
+    vilkårsbehandleVedMigrering: EVilkårsbehandleBarnValg;
+    settVilkårsbehandleVedMigrering: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
+}
+
+export const NyeBarn = ({
+    nyeBarnSidenForrigeBehandling,
+    harMigrering,
+    vilkårsbehandleVedMigrering,
+    settVilkårsbehandleVedMigrering,
+}: IProps) => {
+    if (harMigrering)
+        return (
+            <StyledNyeBarn>
+                <Label>Barn som ikke tidligere er behandlet</Label>
+                <BodyShort>
+                    Da dette er en migrert sak er brukerens barn ikke tidligere vilkårsbehandlet i
+                    EF Sak. Vurder om det er behov for å vilkårsbehandle barna i EF Sak, eller om
+                    det holder å vise til tidligere vurdering i Gosys. Merk at om brukerens barn
+                    ikke skal vilkårsbehandles i EF Sak vil de heller ikke vises i behandlingen.
+                </BodyShort>
+                <ul>
+                    {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
+                        return (
+                            <li>
+                                {nyttBarn.navn} ({fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                {nyttBarn.personIdent})
+                            </li>
+                        );
+                    })}
+                </ul>
+                <StyledRadioGroup legend="" size="medium">
+                    <Radio
+                        value={EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE}
+                        checked={
+                            vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
+                        }
+                        onChange={() => {
+                            settVilkårsbehandleVedMigrering(
+                                EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
+                            );
+                        }}
+                    >
+                        Vilkårsbehandle barn i EF Sak
+                    </Radio>
+                    <Radio
+                        value={EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE}
+                        checked={
+                            vilkårsbehandleVedMigrering ===
+                            EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
+                        }
+                        onChange={() => {
+                            settVilkårsbehandleVedMigrering(
+                                EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
+                            );
+                        }}
+                    >
+                        Ikke vilkårsbehandle barn i EF Sak
+                    </Radio>
+                </StyledRadioGroup>
+            </StyledNyeBarn>
+        );
+    else {
+        return (
+            <StyledNyeBarn>
+                <Label>Barn som ikke tidligere er behandlet</Label>
+                <BodyShort>
+                    Barna listet opp nedenfor har blitt lagt til i Folkeregisteret etter at saken
+                    sist ble vurdert. De blir nå tatt med inn i behandlingen og saksbehandler må
+                    vurdere om vilkårene skal vurderes på nytt.
+                </BodyShort>
+                <ul>
+                    {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
+                        return (
+                            <li>
+                                {nyttBarn.navn} ({fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                {nyttBarn.personIdent})
+                            </li>
+                        );
+                    })}
+                </ul>
+            </StyledNyeBarn>
+        );
+    }
+};
