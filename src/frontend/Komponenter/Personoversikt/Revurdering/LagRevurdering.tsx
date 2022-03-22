@@ -84,8 +84,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const skalTaMedAlleBarn =
         !harMigrering || vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
 
-    console.log('ivlk', vilkårsbehandleVedMigrering);
-
     return (
         <>
             <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
