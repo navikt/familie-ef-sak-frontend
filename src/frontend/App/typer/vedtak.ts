@@ -1,9 +1,18 @@
 import { Sanksjonsårsak } from './Sanksjonsårsak';
 
+// TODO: Her kan vi legge inn vedtakstyper for barnetilsyn
+export enum IVedtakType {
+    InnvilgeOvergangsstønad = 'InnvilgeOvergangsstønad',
+    AvslagOvergangsstønad = 'AvslagOvergangsstønad',
+    OpphørOvergangsstønad = 'OpphørOvergangsstønad',
+    SanksjonOvergangsstønad = 'SanksjonOvergangsstønad',
+}
+
 export type IAvslåVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
+    _type: IVedtakType;
 };
 
 export interface IBeløpsperiode {
@@ -28,6 +37,7 @@ export type IInnvilgeVedtakForOvergangsstønad = {
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
     samordningsfradragType?: ESamordningsfradragtype | string | undefined;
+    _type: IVedtakType;
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
@@ -65,6 +75,7 @@ export type ISanksjonereVedtakForOvergangsstønad = {
     sanksjonsårsak: Sanksjonsårsak;
     periode: IVedtaksperiode;
     internBegrunnelse: string;
+    _type: IVedtakType;
 };
 
 export type ISanksjonereVedtakDto = {
@@ -76,6 +87,7 @@ export interface IOpphørtVedtakForOvergangsstønad {
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
     begrunnelse: string;
+    _type: IVedtakType;
 }
 
 export type IVedtakForOvergangsstønad =

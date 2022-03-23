@@ -44,6 +44,7 @@ export const validerInnvilgetVedtakForm = ({
         inntektBegrunnelse: inntektBegrunnelseFeil,
         periodeBegrunnelse: periodeBegrunnelseFeil,
         samordningsfradragType: typeSamordningFeil,
+        _type: undefined,
     };
 };
 
