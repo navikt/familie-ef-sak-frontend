@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
     BrevStruktur,
     Delmal,
@@ -27,6 +27,7 @@ import { delmalTilHtml } from './Htmlfelter';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
 import { IBeløpsperiode } from '../../../App/typer/vedtak';
+import { Alert } from '@navikt/ds-react';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -50,6 +51,8 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     mellomlagretBrevVerdier?: string;
     brevMal: string;
     flettefeltStore: { [navn: string]: string };
+    brevmalFeil: string;
+    settBrevmalFeil: Dispatch<SetStateAction<string>>;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -62,6 +65,8 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     mellomlagretBrevVerdier,
     brevMal,
     flettefeltStore,
+    brevmalFeil,
+    settBrevmalFeil,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
@@ -76,10 +81,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
         );
-        settValgteFelt(initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur));
+        settValgteFelt(
+            initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur, settBrevmalFeil)
+        );
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
         }
+        // eslint-disable-next-line
     }, [brevStruktur, flettefeltStore, mellomlagretBrevVerdier]);
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
@@ -182,6 +190,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
         <BrevFelter>
+            {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
                     <Panel key={key}>

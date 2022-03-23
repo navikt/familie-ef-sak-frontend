@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { BrevStruktur, Brevtype, DokumentNavn, IMellomlagretBrevFritekst } from './BrevTyper';
 import {
     byggSuksessRessurs,
@@ -32,6 +32,8 @@ export interface BrevmenyProps {
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
+    brevmalFeil: string;
+    settBrevmalFeil: Dispatch<SetStateAction<string>>;
 }
 
 const StyledBrevMeny = styled.div`
