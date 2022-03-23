@@ -12,7 +12,7 @@ export type IAvslåVedtakForOvergangsstønad = {
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
-    _type: IVedtakType;
+    _type: IVedtakType.AvslagOvergangsstønad;
 };
 
 export interface IBeløpsperiode {
@@ -37,7 +37,7 @@ export type IInnvilgeVedtakForOvergangsstønad = {
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
     samordningsfradragType?: ESamordningsfradragtype | string | undefined;
-    _type: IVedtakType;
+    _type: IVedtakType.InnvilgeOvergangsstønad;
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
@@ -75,7 +75,7 @@ export type ISanksjonereVedtakForOvergangsstønad = {
     sanksjonsårsak: Sanksjonsårsak;
     periode: IVedtaksperiode;
     internBegrunnelse: string;
-    _type: IVedtakType;
+    _type: IVedtakType.SanksjonOvergangsstønad;
 };
 
 export type ISanksjonereVedtakDto = {
@@ -87,7 +87,7 @@ export interface IOpphørtVedtakForOvergangsstønad {
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
     begrunnelse: string;
-    _type: IVedtakType;
+    _type: IVedtakType.OpphørOvergangsstønad;
 }
 
 export type IVedtakForOvergangsstønad =
