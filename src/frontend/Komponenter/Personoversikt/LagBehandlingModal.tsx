@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { EToast } from '../../App/typer/toast';
-import { LagRevurdering } from './LagRevurdering';
+import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
 import { Behandling } from '../../App/typer/fagsak';
 
