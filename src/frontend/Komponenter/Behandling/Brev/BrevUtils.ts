@@ -108,30 +108,32 @@ export const harValgfeltFeil = (
     brevStruktur: BrevStruktur,
     settFeil: Dispatch<SetStateAction<string>>
 ): boolean => {
-    return Object.entries(valgteFelt).some(([valgfeltApiNavn, valgtMulighet]) =>
-        brevStruktur.dokument.delmalerSortert
-            .flatMap((delmal) => {
-                const valgfelt = delmal.delmalValgfelt.find(
-                    (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
+    const harFeil = Object.entries(valgteFelt).some(([valgfeltApiNavn, valgtMulighet]) =>
+        brevStruktur.dokument.delmalerSortert.some((delmal) => {
+            const valgfeltFraMal = delmal.delmalValgfelt.find(
+                (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
+            );
+
+            if (valgfeltFraMal) {
+                const mellomlagerHarGyldigValg = valgfeltFraMal.valgMuligheter.some(
+                    (mulighetFraMal) => mulighetFraMal.valgmulighet === valgtMulighet.valgmulighet
                 );
 
-                if (valgfelt) {
-                    const mellomlagerHarGyldigValg = valgfelt.valgMuligheter.some(
-                        (mulighetFraStruktur) =>
-                            mulighetFraStruktur.valgmulighet === valgtMulighet.valgmulighet
+                if (!mellomlagerHarGyldigValg) {
+                    settFeil(
+                        `En endring har skjedd i brevmalen siden forrige mellomlagring. Valget ${valgtMulighet.visningsnavnValgmulighet} under ${valgfeltFraMal.valgfeltVisningsnavn} er ikke lengre et gyldig valg. Vennligst ta stilling til det på nytt`
                     );
-
-                    if (!mellomlagerHarGyldigValg) {
-                        settFeil(
-                            `En endring har skjedd i brevmalen siden forrige mellomlagring. Valget ${valgtMulighet.visningsnavnValgmulighet} under ${valgfelt.valgfeltVisningsnavn} er ikke lengre et gyldig valg. Vennligst ta stilling til det på nytt`
-                        );
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
-            })
-            .some((b) => b)
+            }
+            return false;
+        })
     );
+
+    if (!harFeil) {
+        settFeil('');
+    }
+    return harFeil;
 };
 
 export const initielleAvsnittMellomlager = (

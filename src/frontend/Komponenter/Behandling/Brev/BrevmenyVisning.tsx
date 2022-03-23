@@ -158,11 +158,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
-        const harFeil = harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil);
-
-        if (!harFeil) {
-            settBrevmalFeil('');
-        } else {
+        if (harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil)) {
             return;
         }
 
