@@ -5,9 +5,11 @@ import {
     FlettefeltMedVerdi,
     IFritekstBrev,
     IFrittståendeBrev,
+    Valgmulighet,
     ValgtFelt,
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
+import { Dispatch, SetStateAction } from 'react';
 
 const lagTomtAvsnitt = (): AvsnittMedId => ({
     deloverskrift: '',
@@ -75,9 +77,12 @@ export const initFlettefelterMedVerdi = (
 
 export const initValgteFeltMedMellomlager = (
     valgteFeltFraMellomlager: ValgtFelt | undefined,
-    brevStruktur: BrevStruktur
+    brevStruktur: BrevStruktur,
+    settFeil: Dispatch<SetStateAction<string>>
 ): ValgtFelt =>
     Object.entries(valgteFeltFraMellomlager || {}).reduce((acc, [valgfeltApiNavn, mulighet]) => {
+        validerValgfelterFraMellomlager(valgfeltApiNavn, mulighet, brevStruktur, settFeil);
+
         const utledOppdaterteFlettefeltFraSanity = () =>
             brevStruktur.dokument.delmalerSortert.flatMap((delmal) => {
                 const valgfelt = delmal.delmalValgfelt.find(
@@ -101,6 +106,32 @@ export const initValgteFeltMedMellomlager = (
             },
         };
     }, {});
+
+const validerValgfelterFraMellomlager = (
+    valgfeltApiNavn: string,
+    valgtMulighet: Valgmulighet,
+    brevStruktur: BrevStruktur,
+    settFeil: Dispatch<SetStateAction<string>>
+) => {
+    brevStruktur.dokument.delmalerSortert.flatMap((delmal) => {
+        const valgfelt = delmal.delmalValgfelt.find(
+            (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
+        );
+
+        if (valgfelt) {
+            const mellomlagerHarGyldigValg = valgfelt.valgMuligheter.some(
+                (mulighetFraStruktur) =>
+                    mulighetFraStruktur.valgmulighet === valgtMulighet.valgmulighet
+            );
+
+            if (!mellomlagerHarGyldigValg) {
+                settFeil(
+                    `En endring har skjedde i brevmalen siden forrige mellomlagring. Valget ${valgtMulighet.visningsnavnValgmulighet} under ${valgfelt.valgfeltVisningsnavn} er ikke lengre et gyldig valg. Vennligst ta stilling til det på nytt`
+                );
+            }
+        }
+    });
+};
 
 export const initielleAvsnittMellomlager = (
     mellomlagretFritekstbrev: IFritekstBrev | IFrittståendeBrev | undefined
