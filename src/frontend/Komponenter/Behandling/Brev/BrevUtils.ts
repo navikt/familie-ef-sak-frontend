@@ -126,7 +126,7 @@ const validerValgfelterFraMellomlager = (
 
             if (!mellomlagerHarGyldigValg) {
                 settFeil(
-                    `En endring har skjedde i brevmalen siden forrige mellomlagring. Valget ${valgtMulighet.visningsnavnValgmulighet} under ${valgfelt.valgfeltVisningsnavn} er ikke lengre et gyldig valg. Vennligst ta stilling til det på nytt`
+                    `En endring har skjedd i brevmalen siden forrige mellomlagring. Valget ${valgtMulighet.visningsnavnValgmulighet} under ${valgfelt.valgfeltVisningsnavn} er ikke lengre et gyldig valg. Vennligst ta stilling til det på nytt`
                 );
             }
         }
