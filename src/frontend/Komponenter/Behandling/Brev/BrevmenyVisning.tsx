@@ -16,6 +16,7 @@ import {
     grupperDelmaler,
     initFlettefelterMedVerdi,
     initValgteFeltMedMellomlager,
+    harValgfeltFeil,
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
@@ -81,9 +82,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
         );
-        settValgteFelt(
-            initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur, settBrevmalFeil)
-        );
+        settValgteFelt(initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur));
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
         }
@@ -159,6 +158,14 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
+        const harFeil = harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil);
+
+        if (!harFeil) {
+            settBrevmalFeil('');
+        } else {
+            return;
+        }
+
         mellomlagreSanitybrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
         axiosRequest<string, unknown>({
             method: 'POST',

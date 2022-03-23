@@ -67,12 +67,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        if (brevRessurs.status === RessursStatus.SUKSESS) {
-            settBrevmalFeil('');
-        }
-    }, [brevRessurs]);
-
-    useEffect(() => {
         if (!behandlingErRedigerbar) {
             if (
                 totrinnskontroll.status === RessursStatus.SUKSESS &&
