@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     BrevStruktur,
     Delmal,
@@ -16,6 +16,7 @@ import {
     grupperDelmaler,
     initFlettefelterMedVerdi,
     initValgteFeltMedMellomlager,
+    harValgfeltFeil,
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
@@ -51,8 +52,6 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     mellomlagretBrevVerdier?: string;
     brevMal: string;
     flettefeltStore: { [navn: string]: string };
-    brevmalFeil: string;
-    settBrevmalFeil: Dispatch<SetStateAction<string>>;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -65,12 +64,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     mellomlagretBrevVerdier,
     brevMal,
     flettefeltStore,
-    brevmalFeil,
-    settBrevmalFeil,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
+    const [brevmalFeil, settBrevmalFeil] = useState('');
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -81,9 +79,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
         );
-        settValgteFelt(
-            initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur, settBrevmalFeil)
-        );
+        settValgteFelt(initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur));
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
         }
@@ -159,6 +155,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
+        if (harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil)) {
+            return;
+        }
+
         mellomlagreSanitybrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
         axiosRequest<string, unknown>({
             method: 'POST',
