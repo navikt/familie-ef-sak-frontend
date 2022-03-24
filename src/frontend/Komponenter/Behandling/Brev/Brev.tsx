@@ -39,7 +39,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [brevmottakereRessurs, settBrevMottakereRessurs] = useState(
         byggTomRessurs<IBrevmottakere | undefined>()
     );
-    const [brevmalFeil, settBrevmalFeil] = useState('');
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -111,8 +110,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 oppdaterBrevRessurs={oppdaterBrevRessurs}
                                 personopplysninger={personopplysningerResponse}
                                 settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                brevmalFeil={brevmalFeil}
-                                settBrevmalFeil={settBrevmalFeil}
                             />
                         )}
                     </DataViewer>

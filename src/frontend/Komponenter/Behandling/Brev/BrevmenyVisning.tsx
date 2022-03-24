@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     BrevStruktur,
     Delmal,
@@ -52,8 +52,6 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     mellomlagretBrevVerdier?: string;
     brevMal: string;
     flettefeltStore: { [navn: string]: string };
-    brevmalFeil: string;
-    settBrevmalFeil: Dispatch<SetStateAction<string>>;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -66,12 +64,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     mellomlagretBrevVerdier,
     brevMal,
     flettefeltStore,
-    brevmalFeil,
-    settBrevmalFeil,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
+    const [brevmalFeil, settBrevmalFeil] = useState('');
 
     useEffect(() => {
         const parsetMellomlagretBrev =
