@@ -5,9 +5,9 @@ import LiteBarn from '../Ikoner/LiteBarn';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import styled from 'styled-components';
-import { differenceInYears } from 'date-fns';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
+import { nullableDatoTilAlder } from '../../App/utils/dato';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -68,7 +68,7 @@ const FødselsnummerBarn: React.FC<{
     fødselsdato?: string;
     dødsdato?: string;
 }> = ({ fødselsnummer, fødselsdato, dødsdato }) => {
-    const alder = fødselsdato ? differenceInYears(new Date(), new Date(fødselsdato)) : NaN;
+    const alder = nullableDatoTilAlder(fødselsdato);
 
     return (
         <BredTd>
@@ -76,7 +76,7 @@ const FødselsnummerBarn: React.FC<{
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
                 {!dødsdato && (
                     <SpanMedVenstreMargin>
-                        {!isNaN(alder) ? (
+                        {alder ? (
                             alder < 18 ? (
                                 <EtikettSuksess>{alder} år</EtikettSuksess>
                             ) : (
