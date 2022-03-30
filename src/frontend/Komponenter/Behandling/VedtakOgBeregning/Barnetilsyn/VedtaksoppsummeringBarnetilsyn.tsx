@@ -53,11 +53,11 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     const barnPåBehandling = vilkår.grunnlag.barnMedSamvær;
     const finnesBarnPåBehandling = vilkår.grunnlag.barnMedSamvær.length > 0;
 
-    const aleneomsorgsresultatPerBarn = lagVilkåresresultatPerBarn(
+    const vilkårsresultatAleneomsorgPerBarn = lagVilkåresresultatPerBarn(
         vilkår,
         InngangsvilkårType.ALENEOMSORG
     );
-    const vilkårresultatAlderPåBarnPerBarn = lagVilkåresresultatPerBarn(
+    const vilkårsresultatAlderPåBarnPerBarn = lagVilkåresresultatPerBarn(
         vilkår,
         AktivitetsvilkårType.ALDER_PÅ_BARN
     );
@@ -93,9 +93,10 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
                 <OppsummeringContainer>
                     {barnPåBehandling.map((barn) => {
                         const oppfyllerKritereForAleneomsorg =
-                            aleneomsorgsresultatPerBarn[barn.barnId] === Vilkårsresultat.OPPFYLT;
+                            vilkårsresultatAleneomsorgPerBarn[barn.barnId] ===
+                            Vilkårsresultat.OPPFYLT;
                         const oppfyllerKriterieForAlderPåBarn =
-                            vilkårresultatAlderPåBarnPerBarn[barn.barnId] ===
+                            vilkårsresultatAlderPåBarnPerBarn[barn.barnId] ===
                             Vilkårsresultat.OPPFYLT;
                         return (
                             <OppsummeringAvBarn
