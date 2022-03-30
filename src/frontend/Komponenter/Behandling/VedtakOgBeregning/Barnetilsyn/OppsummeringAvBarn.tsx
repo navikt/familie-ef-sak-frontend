@@ -7,6 +7,7 @@ import navFarger from 'nav-frontend-core';
 import { ResultatSwitch } from '../../../../Felles/Ikoner/ResultatSwitch';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
+import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 
 const Container = styled.div`
     margin: 1rem;
@@ -63,9 +64,9 @@ const FlexDiv = styled.div`
 
 export const OppsummeringAvBarn: React.FC<{
     barn: IBarnMedSamvær;
-    oppfyllerKriterieForAleneomsorg: boolean;
-    oppfyllerKriterieForAlderPåBarn: boolean;
-}> = ({ barn, oppfyllerKriterieForAleneomsorg, oppfyllerKriterieForAlderPåBarn }) => {
+    vilkårsresultatAleneomsorg: Vilkårsresultat;
+    vilkårsresultatAlderPåBarn: Vilkårsresultat;
+}> = ({ barn, vilkårsresultatAleneomsorg, vilkårsresultatAlderPåBarn }) => {
     const fødselsdatostring = barn.registergrunnlag.fødselsdato;
     if (!fødselsdatostring) {
         return (
@@ -123,11 +124,15 @@ export const OppsummeringAvBarn: React.FC<{
             </BorderWrapper>
             <FlexDiv>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch evaluering={oppfyllerKriterieForAleneomsorg} />
+                    <ResultatSwitch
+                        evaluering={vilkårsresultatAleneomsorg === Vilkårsresultat.OPPFYLT}
+                    />
                     <Ikontekst>Aleneomsorg</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch evaluering={oppfyllerKriterieForAlderPåBarn} />
+                    <ResultatSwitch
+                        evaluering={vilkårsresultatAlderPåBarn === Vilkårsresultat.OPPFYLT}
+                    />
                     <Ikontekst>Alder på barn</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
             </FlexDiv>

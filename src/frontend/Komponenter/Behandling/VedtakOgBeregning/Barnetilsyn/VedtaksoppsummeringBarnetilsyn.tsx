@@ -92,18 +92,16 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
             {finnesBarnPåBehandling && (
                 <OppsummeringContainer>
                     {barnPåBehandling.map((barn) => {
-                        const oppfyllerKritereForAleneomsorg =
-                            vilkårsresultatAleneomsorgPerBarn[barn.barnId] ===
-                            Vilkårsresultat.OPPFYLT;
-                        const oppfyllerKriterieForAlderPåBarn =
-                            vilkårsresultatAlderPåBarnPerBarn[barn.barnId] ===
-                            Vilkårsresultat.OPPFYLT;
                         return (
                             <OppsummeringAvBarn
                                 key={barn.barnId}
                                 barn={barn}
-                                oppfyllerKriterieForAleneomsorg={oppfyllerKritereForAleneomsorg}
-                                oppfyllerKriterieForAlderPåBarn={oppfyllerKriterieForAlderPåBarn}
+                                vilkårsresultatAleneomsorg={
+                                    vilkårsresultatAleneomsorgPerBarn[barn.barnId]
+                                }
+                                vilkårsresultatAlderPåBarn={
+                                    vilkårsresultatAlderPåBarnPerBarn[barn.barnId]
+                                }
                             />
                         );
                     })}
