@@ -1,6 +1,7 @@
 import {
     addMonths,
     differenceInMonths,
+    differenceInYears,
     isAfter,
     isBefore,
     isEqual,
@@ -57,3 +58,11 @@ export const gjelderÅr = (dato: string, år: number): boolean => {
 };
 
 const tilDato = (dato: string | Date): Date => (typeof dato === 'string' ? parseISO(dato) : dato);
+
+export const nullableDatoTilAlder = (dato?: string): number | undefined => {
+    return dato ? datoTilAlder(dato) : undefined;
+};
+
+export const datoTilAlder = (dato: string): number => {
+    return differenceInYears(new Date(), parseISO(dato));
+};
