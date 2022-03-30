@@ -1,11 +1,12 @@
 import React from 'react';
-import { IBarnForBarnetilsyn } from './mockData';
 import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { ResultatSwitch } from '../../../../Felles/Ikoner/ResultatSwitch';
+import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
+import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 
 const Container = styled.div`
     margin: 1rem;
@@ -61,12 +62,21 @@ const FlexDiv = styled.div`
 `;
 
 export const OppsummeringAvBarn: React.FC<{
-    barn: IBarnForBarnetilsyn;
-}> = ({ barn }) => {
-    const barnepassPeriode = `${barn.barnepassordning.datoFra} - ${barn.barnepassordning.datoTil}`;
-    const navnOgAlder = `${barn.navn} (${barn.alder})`;
-    const oppfyllerKriterieForAlder = parseInt(barn.alder) < 11; // TODO: Dersom barnet har bursdag før juli (07) så < 11. Dersom barnet har bursdag etter juli så < 10
-    const oppfyllerKritereForAleneomsorg = true; // TODO: Finn vurdering for aleneomsorg på dette barnet
+    barn: IBarnMedSamvær;
+    oppfyllerKriterieForAleneomsorg: boolean;
+    oppfyllerKriterieForAlderPåBarn: boolean;
+}> = ({ barn, oppfyllerKriterieForAleneomsorg, oppfyllerKriterieForAlderPåBarn }) => {
+    const fødselsdatostring = barn.registergrunnlag.fødselsdato;
+    if (!fødselsdatostring) {
+        return (
+            <>
+                Barn med id={barn.barnId} mangler fødelsdato, her er noe galt - kontakt brukerstøtte
+            </>
+        );
+    }
+    const fødselsdato = tilDato(fødselsdatostring);
+    const alder = datoTilAlder(fødselsdato);
+    const navnOgAlder = `${barn.registergrunnlag.navn} (${alder})`;
 
     return (
         <Container>
@@ -74,42 +84,50 @@ export const OppsummeringAvBarn: React.FC<{
                 {navnOgAlder}
             </Heading>
             <BorderWrapper>
-                <GridLinje>
-                    <IkonOgTekstWrapper>
-                        <Søknadsgrunnlag />
-                        <BoldTekst size="small">Barnepassordning</BoldTekst>
-                    </IkonOgTekstWrapper>
-                    <Label size="small">{barn.barnepassordning.type}</Label>
-                </GridLinje>
-                <GridLinje>
-                    <IkonOgTekstWrapper>
-                        <Søknadsgrunnlag />
-                        <MarginTekst>Navn passordning</MarginTekst>
-                    </IkonOgTekstWrapper>
-                    <Normaltekst>{barn.barnepassordning.navn}</Normaltekst>
-                </GridLinje>
-                <GridLinje>
-                    <IkonOgTekstWrapper>
-                        <Søknadsgrunnlag />
-                        <MarginTekst>Periode passordning</MarginTekst>
-                    </IkonOgTekstWrapper>
-                    <Normaltekst>{barnepassPeriode}</Normaltekst>
-                </GridLinje>
-                <NedersteGridLinje>
-                    <IkonOgTekstWrapper>
-                        <Søknadsgrunnlag />
-                        <MarginTekst>Utgifter</MarginTekst>
-                    </IkonOgTekstWrapper>
-                    <Normaltekst>{barn.barnepassordning.utgift},-</Normaltekst>
-                </NedersteGridLinje>
+                {(barn.barnepass?.barnepassordninger || []).map((barnepassordning) => {
+                    return (
+                        <>
+                            <GridLinje>
+                                <IkonOgTekstWrapper>
+                                    <Søknadsgrunnlag />
+                                    <BoldTekst size="small">Barnepassordning</BoldTekst>
+                                </IkonOgTekstWrapper>
+                                <Label size="small">{barnepassordning.type}</Label>
+                            </GridLinje>
+                            <GridLinje>
+                                <IkonOgTekstWrapper>
+                                    <Søknadsgrunnlag />
+                                    <MarginTekst>Navn passordning</MarginTekst>
+                                </IkonOgTekstWrapper>
+                                <Normaltekst>{barnepassordning.navn}</Normaltekst>
+                            </GridLinje>
+                            <GridLinje>
+                                <IkonOgTekstWrapper>
+                                    <Søknadsgrunnlag />
+                                    <MarginTekst>Periode passordning</MarginTekst>
+                                </IkonOgTekstWrapper>
+                                <Normaltekst>
+                                    {barnepassordning.fra} - {barnepassordning.til}
+                                </Normaltekst>
+                            </GridLinje>
+                            <NedersteGridLinje>
+                                <IkonOgTekstWrapper>
+                                    <Søknadsgrunnlag />
+                                    <MarginTekst>Utgifter</MarginTekst>
+                                </IkonOgTekstWrapper>
+                                <Normaltekst>{barnepassordning.beløp},-</Normaltekst>
+                            </NedersteGridLinje>
+                        </>
+                    );
+                })}
             </BorderWrapper>
             <FlexDiv>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch evaluering={oppfyllerKritereForAleneomsorg} />
+                    <ResultatSwitch evaluering={oppfyllerKriterieForAleneomsorg} />
                     <Ikontekst>Aleneomsorg</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch evaluering={oppfyllerKriterieForAlder} />
+                    <ResultatSwitch evaluering={oppfyllerKriterieForAlderPåBarn} />
                     <Ikontekst>Alder på barn</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
             </FlexDiv>

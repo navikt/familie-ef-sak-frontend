@@ -57,12 +57,13 @@ export const gjelderÅr = (dato: string, år: number): boolean => {
     return parseISO(dato).getFullYear() === år;
 };
 
-const tilDato = (dato: string | Date): Date => (typeof dato === 'string' ? parseISO(dato) : dato);
+export const tilDato = (dato: string | Date): Date =>
+    typeof dato === 'string' ? parseISO(dato) : dato;
 
-export const nullableDatoTilAlder = (dato?: string): number | undefined => {
+export const nullableDatoTilAlder = (dato?: string | Date): number | undefined => {
     return dato ? datoTilAlder(dato) : undefined;
 };
 
-export const datoTilAlder = (dato: string): number => {
-    return differenceInYears(new Date(), parseISO(dato));
+export const datoTilAlder = (dato: string | Date): number => {
+    return differenceInYears(new Date(), tilDato(dato));
 };
