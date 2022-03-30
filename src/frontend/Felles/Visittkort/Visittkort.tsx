@@ -79,7 +79,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     } = data;
 
     const { axiosRequest, gåTilUrl } = useApp();
-    const [fagsakId, settFagsakId] = useState('');
+    const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
 
@@ -93,8 +93,8 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 data: { personIdent: personIdent },
             }).then((respons: RessursSuksess<ISøkPerson> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
-                    if (respons.data?.fagsaker?.length) {
-                        settFagsakId(respons.data.fagsaker[0].fagsakId);
+                    if (respons.data?.fagsakPersonId) {
+                        settFagsakPersonId(respons.data.fagsakPersonId);
                         settErMigrert(respons.data.fagsaker[0].erMigrert);
                     }
                 } else {
@@ -107,6 +107,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
 
         // eslint-disable-next-line
     }, []);
+
     return (
         <VisittkortWrapper>
             {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
@@ -117,10 +118,10 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 navn={
                     <ResponsivLenke
                         role={'link'}
-                        href={`/fagsak/${fagsakId}`}
+                        href={`/person/${fagsakPersonId}`}
                         onClick={(e) => {
                             e.preventDefault();
-                            gåTilUrl(`/fagsak/${fagsakId}`);
+                            gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
                         <Visningsnavn>{navn.visningsnavn}</Visningsnavn>
