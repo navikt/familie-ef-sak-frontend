@@ -124,7 +124,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
-                        <Visningsnavn>{navn.visningsnavn} test</Visningsnavn>
+                        <Visningsnavn>{navn.visningsnavn}</Visningsnavn>
                     </ResponsivLenke>
                 }
             >
