@@ -93,7 +93,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 data: { personIdent: personIdent },
             }).then((respons: RessursSuksess<ISøkPerson> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
-                    if (respons.data?.fagsakPersonId && respons.data?.fagsaker?.length) {
+                    if (respons.data?.fagsakPersonId) {
                         settFagsakPersonId(respons.data.fagsakPersonId);
                         settErMigrert(respons.data.fagsaker[0].erMigrert);
                     }
