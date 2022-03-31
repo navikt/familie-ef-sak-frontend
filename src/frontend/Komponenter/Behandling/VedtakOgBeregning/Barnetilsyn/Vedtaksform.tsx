@@ -20,6 +20,9 @@ import UtgiftsperiodeValg, { tomUtgiftsperiodeRad } from './UtgiftsperiodeValg';
 import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
+import { useApp } from '../../../../App/context/AppContext';
+import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { useNavigate } from 'react-router-dom';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -40,16 +43,18 @@ const WrapperMarginTop = styled.div`
 `;
 
 export const Vedtaksform: React.FC<{
-    behandling?: Behandling;
+    behandling: Behandling;
     lagretVedtak?: IvedtakForBarnetilsyn;
-}> = ({ lagretVedtak }) => {
+}> = ({ lagretVedtak, behandling }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
-    const [feilmelding] = useState<string>();
+    const [feilmelding, settFeilmelding] = useState('');
+    const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
+    const navigate = useNavigate();
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -94,8 +99,35 @@ export const Vedtaksform: React.FC<{
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
-        console.log(vedtaksRequest);
+
+        axiosRequest<string, IInnvilgeVedtakForBarnetilsyn>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
+            data: vedtaksRequest,
+        })
+            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
+            .finally(() => {
+                settLaster(false);
+            });
+
         settLaster(false);
+    };
+
+    const håndterVedtaksresultat = (nesteUrl: string) => {
+        return (res: Ressurs<string>) => {
+            switch (res.status) {
+                case RessursStatus.SUKSESS:
+                    navigate(nesteUrl);
+                    hentBehandling.rerun();
+                    nullstillIkkePersisterteKomponenter();
+                    break;
+                case RessursStatus.HENTER:
+                case RessursStatus.IKKE_HENTET:
+                    break;
+                default:
+                    settFeilmelding(res.frontendFeilmelding);
+            }
+        };
     };
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
@@ -113,6 +145,7 @@ export const Vedtaksform: React.FC<{
                 form.skalStønadReduseres === ERadioValg.JA
                     ? form.tilleggsstønadsperioder
                     : [],
+            _type: 'InnvilgetBarnetilsyn', // TODO: Bruk enum
         };
         lagreVedtak(vedtaksRequest);
     };
