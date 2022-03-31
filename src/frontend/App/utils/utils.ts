@@ -127,10 +127,13 @@ export const fødselsdatoTilAlder = (fødselsdato: string): number => {
         return parseInt(str, 10);
     });
 
-    let alder = årNå - år;
+    const alder = årNå - år;
 
-    if (månedNå < måned) alder--;
-    if (måned === månedNå && dagNå < dag) alder--;
-
-    return alder;
+    if (månedNå < måned) {
+        return alder - 1;
+    } else if (måned === månedNå && dagNå < dag) {
+        return alder - 1;
+    } else {
+        return alder;
+    }
 };
