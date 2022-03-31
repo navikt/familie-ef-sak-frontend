@@ -48,9 +48,8 @@ interface Props {
     tilleggsstønadBegrunnelse: FieldState;
     stønadsreduksjon: FieldState;
     tilleggsstønadPerioder: ListState<ITilleggsstønadPeriode>;
-    periodeValideringsfeil?: FormErrors<InnvilgeVedtakForm>['tilleggsstønadsperioder'];
-    settPeriodeValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
-    begrunnelseValideringsfeil: FormErrors<InnvilgeVedtakForm>['tilleggsstønadBegrunnelse'];
+    valideringsfeil: FormErrors<InnvilgeVedtakForm>;
+    settValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
 export const tomTilleggsstønadRad: ITilleggsstønadPeriode = {
@@ -64,9 +63,8 @@ const TilleggsstønadValg: React.FC<Props> = ({
     tilleggsstønadBegrunnelse,
     stønadsreduksjon,
     tilleggsstønadPerioder,
-    periodeValideringsfeil,
-    settPeriodeValideringsfeil,
-    begrunnelseValideringsfeil,
+    valideringsfeil,
+    settValideringsfeil,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -105,7 +103,10 @@ const TilleggsstønadValg: React.FC<Props> = ({
 
     return (
         <>
-            <RadioGruppe legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften?">
+            <RadioGruppe
+                legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften?"
+                feil={valideringsfeil.harTilleggsstønad}
+            >
                 <Radio
                     name={'Tilleggsstønad'}
                     label={'Ja'}
@@ -122,7 +123,10 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 />
             </RadioGruppe>
             {tilleggsstønad.value === ERadioValg.JA && (
-                <RadioGruppe legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?">
+                <RadioGruppe
+                    legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?"
+                    feil={valideringsfeil.skalStønadReduseres}
+                >
                     <Radio
                         name={'Redusere'}
                         label={'Ja'}
@@ -170,8 +174,9 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                             );
                                         }}
                                         feilmelding={
-                                            periodeValideringsfeil &&
-                                            periodeValideringsfeil[index]?.årMånedFra
+                                            valideringsfeil.tilleggsstønadsperioder &&
+                                            valideringsfeil.tilleggsstønadsperioder[index]
+                                                ?.årMånedFra
                                         }
                                         erLesevisning={!behandlingErRedigerbar}
                                     />
@@ -192,7 +197,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                         <FjernKnapp
                                             onClick={() => {
                                                 tilleggsstønadPerioder.remove(index);
-                                                settPeriodeValideringsfeil(
+                                                settValideringsfeil(
                                                     (prevState: FormErrors<InnvilgeVedtakForm>) => {
                                                         const perioder = (
                                                             prevState.tilleggsstønadsperioder ?? []
@@ -225,7 +230,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     label="Begrunnelse"
                     maxLength={0}
                     erLesevisning={!behandlingErRedigerbar}
-                    feilmelding={begrunnelseValideringsfeil}
+                    feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}
                 />
             )}
         </>

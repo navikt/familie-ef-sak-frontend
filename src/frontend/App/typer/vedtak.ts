@@ -13,6 +13,19 @@ export interface IBeløpsperiode {
     beløpFørSamordning: number;
 }
 
+export interface IBeregeningsresultatBarnetilsyn {
+    periode: { fradato: string; tildato: string };
+    beløp: number;
+    antallBarn: number;
+    beragningsgrunnlag: IBeregningsgrunnlagBarnetilsyn;
+}
+
+export interface IBeregningsgrunnlagBarnetilsyn {
+    utgifter: number;
+    kontantstøtte: number;
+    tilleggstønad: number;
+}
+
 export interface IBeregningsgrunnlag {
     inntekt: number;
     samordningsfradrag: number;
@@ -104,6 +117,12 @@ export type IBeregningsrequest = {
     vedtaksperioder: IVedtaksperiode[];
     inntekt: IInntektsperiode[];
 };
+
+export interface IBeregningsrequestBarnetilsyn {
+    utgiftsperioder: IUtgiftsperiode[];
+    kontantstøtteperioder: IKontantstøttePeriode[];
+    tilleggsstønadsperioder: ITilleggsstønadPeriode[];
+}
 
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',

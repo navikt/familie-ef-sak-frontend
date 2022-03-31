@@ -51,7 +51,7 @@ export const validerUtgiftsperioder = ({
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
-            barn: undefined,
+            barn: [],
             utgifter: undefined,
         };
 

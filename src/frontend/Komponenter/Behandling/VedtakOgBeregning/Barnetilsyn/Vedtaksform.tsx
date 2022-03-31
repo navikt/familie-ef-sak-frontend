@@ -1,6 +1,8 @@
 import {
     EBehandlingResultat,
     ERadioValg,
+    IBeregeningsresultatBarnetilsyn,
+    IBeregningsrequestBarnetilsyn,
     IInnvilgeVedtakForBarnetilsyn,
     IKontantstøttePeriode,
     ITilleggsstønadPeriode,
@@ -21,7 +23,7 @@ import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 
 export type InnvilgeVedtakForm = {
@@ -53,6 +55,9 @@ export const Vedtaksform: React.FC<{
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
+    const [beregningsresultat, settBeregningsresultat] = useState(
+        byggTomRessurs<IBeregeningsresultatBarnetilsyn>()
+    );
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
     const navigate = useNavigate();
 
@@ -150,6 +155,20 @@ export const Vedtaksform: React.FC<{
         lagreVedtak(vedtaksRequest);
     };
 
+    const beregnBarnetilsyn = () => {
+        if (formState.validateForm()) {
+            axiosRequest<IBeregeningsresultatBarnetilsyn, IBeregningsrequestBarnetilsyn>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/beregning/`,
+                data: {
+                    utgiftsperioder: utgiftsperiodeState.value,
+                    kontantstøtteperioder: kontantstøttePeriodeState.value,
+                    tilleggsstønadsperioder: tilleggsstønadsperiodeState.value,
+                },
+            }).then((res: Ressurs<IBeregeningsresultatBarnetilsyn>) => settBeregningsresultat(res));
+        }
+    };
+
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <Heading spacing size="small" level="5">
@@ -167,7 +186,7 @@ export const Vedtaksform: React.FC<{
                 <KontantstøtteValg
                     kontantstøtte={kontantstøtteState}
                     kontantstøttePerioder={kontantstøttePeriodeState}
-                    valideringsfeil={formState.errors.kontantstøtteperioder}
+                    valideringsfeil={formState.errors}
                     settValideringsFeil={formState.setErrors}
                 />
             </WrapperMarginTop>
@@ -180,15 +199,24 @@ export const Vedtaksform: React.FC<{
                     tilleggsstønadBegrunnelse={tilleggsstønadBegrunnelseState}
                     stønadsreduksjon={stønadsreduksjonState}
                     tilleggsstønadPerioder={tilleggsstønadsperiodeState}
-                    periodeValideringsfeil={formState.errors.tilleggsstønadsperioder}
-                    settPeriodeValideringsfeil={formState.setErrors}
-                    begrunnelseValideringsfeil={formState.errors.tilleggsstønadBegrunnelse}
+                    valideringsfeil={formState.errors}
+                    settValideringsfeil={formState.setErrors}
                 />
             </WrapperMarginTop>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}
                 </AlertStripeFeilPreWrap>
+            )}
+            {behandlingErRedigerbar && (
+                <WrapperDobbelMarginTop>
+                    <Button variant={'secondary'} onClick={beregnBarnetilsyn}>
+                        Beregn
+                    </Button>
+                    {beregningsresultat.status === RessursStatus.SUKSESS && (
+                        <div>Her kommer beregning</div>
+                    )}
+                </WrapperDobbelMarginTop>
             )}
             {behandlingErRedigerbar && (
                 <WrapperDobbelMarginTop>

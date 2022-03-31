@@ -45,7 +45,7 @@ const StyledInput = styled(InputMedTusenSkille)`
 interface Props {
     kontantstøtte: FieldState;
     kontantstøttePerioder: ListState<IKontantstøttePeriode>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['kontantstøtteperioder'];
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
@@ -92,7 +92,10 @@ const KontantstøtteValg: React.FC<Props> = ({
 
     return (
         <>
-            <RadioGruppe legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med?">
+            <RadioGruppe
+                legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med?"
+                feil={valideringsfeil?.harKontantstøtte}
+            >
                 <Radio
                     name={'Kontantstøtte'}
                     label={'Ja'}
@@ -139,7 +142,8 @@ const KontantstøtteValg: React.FC<Props> = ({
                                             );
                                         }}
                                         feilmelding={
-                                            valideringsfeil && valideringsfeil[index]?.årMånedFra
+                                            valideringsfeil?.kontantstøtteperioder &&
+                                            valideringsfeil.kontantstøtteperioder[index]?.årMånedFra
                                         }
                                         erLesevisning={!behandlingErRedigerbar}
                                     />
