@@ -21,7 +21,7 @@ export const AvslåVedtak: React.FC<{
     ikkeOppfyltVilkårEksisterer: boolean;
 }> = ({ behandling, lagretVedtak, alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer }) => {
     const lagretAvslåBehandling =
-        lagretVedtak?._type === IVedtakType.AvslagOvergangsstønad
+        lagretVedtak?._type === IVedtakType.Avslag
             ? (lagretVedtak as IAvslåVedtakForOvergangsstønad)
             : undefined;
     const [avslagBegrunnelse, settAvslagBegrunnelse] = useState<string>(
@@ -47,7 +47,7 @@ export const AvslåVedtak: React.FC<{
         resultatType: EBehandlingResultat.AVSLÅ,
         avslåÅrsak: avslagÅrsak,
         avslåBegrunnelse: avslagBegrunnelse,
-        _type: IVedtakType.AvslagOvergangsstønad,
+        _type: IVedtakType.Avslag,
     };
 
     useEffect(() => {

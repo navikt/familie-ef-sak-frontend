@@ -59,7 +59,7 @@ const SimuleringTabellWrapper: React.FC<{
     const simuleringTabellRader = mapSimuleringstabellRader(simuleringsresultat, år);
 
     const lagretSanksjonertVedtak =
-        lagretVedtak?._type === IVedtakType.SanksjonOvergangsstønad
+        lagretVedtak?._type === IVedtakType.Sanksjonering
             ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
             : undefined;
 

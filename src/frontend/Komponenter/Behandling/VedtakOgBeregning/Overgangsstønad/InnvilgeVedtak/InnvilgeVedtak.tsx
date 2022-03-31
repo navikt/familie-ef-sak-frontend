@@ -53,7 +53,7 @@ export const InnvilgeVedtak: React.FC<{
     lagretVedtak?: IVedtakForOvergangsstønad;
 }> = ({ behandling, lagretVedtak }) => {
     const lagretInnvilgetVedtak =
-        lagretVedtak?._type === IVedtakType.InnvilgeOvergangsstønad
+        lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
             ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
@@ -194,13 +194,13 @@ export const InnvilgeVedtak: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         const vedtaksRequest: IInnvilgeVedtakForOvergangsstønad = {
+            _type: IVedtakType.InnvilgelseOvergangsstønad,
             resultatType: EBehandlingResultat.INNVILGE,
             periodeBegrunnelse: form.periodeBegrunnelse,
             inntektBegrunnelse: form.inntektBegrunnelse,
             perioder: form.perioder,
             inntekter: form.inntekter,
             samordningsfradragType: skalVelgeSamordningstype ? form.samordningsfradragType : null,
-            _type: IVedtakType.InnvilgeOvergangsstønad,
         };
         switch (behandling.type) {
             case Behandlingstype.BLANKETT:

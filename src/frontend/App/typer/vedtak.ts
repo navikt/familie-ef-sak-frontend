@@ -2,17 +2,17 @@ import { Sanksjonsårsak } from './Sanksjonsårsak';
 
 // TODO: Her kan vi legge inn vedtakstyper for barnetilsyn
 export enum IVedtakType {
-    InnvilgeOvergangsstønad = 'InnvilgeOvergangsstønad',
-    AvslagOvergangsstønad = 'AvslagOvergangsstønad',
-    OpphørOvergangsstønad = 'OpphørOvergangsstønad',
-    SanksjonOvergangsstønad = 'SanksjonOvergangsstønad',
+    InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
+    Avslag = 'Avslag',
+    Opphør = 'Opphør',
+    Sanksjonering = 'Sanksjonering',
 }
 
 export type IAvslåVedtakForOvergangsstønad = {
+    _type: IVedtakType.Avslag;
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
-    _type: IVedtakType.AvslagOvergangsstønad;
 };
 
 export interface IBeløpsperiode {
@@ -31,13 +31,13 @@ export interface IBeregningsgrunnlag {
     grunnbeløp: number | null;
 }
 export type IInnvilgeVedtakForOvergangsstønad = {
+    _type: IVedtakType.InnvilgelseOvergangsstønad;
     resultatType: EBehandlingResultat.INNVILGE;
     periodeBegrunnelse?: string;
     inntektBegrunnelse?: string;
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
     samordningsfradragType?: ESamordningsfradragtype | string | undefined;
-    _type: IVedtakType.InnvilgeOvergangsstønad;
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
@@ -71,11 +71,11 @@ export type ITilleggsstønadPeriode = {
 };
 
 export type ISanksjonereVedtakForOvergangsstønad = {
+    _type: IVedtakType.Sanksjonering;
     resultatType: EBehandlingResultat.SANKSJONERE;
     sanksjonsårsak: Sanksjonsårsak;
     periode: IVedtaksperiode;
     internBegrunnelse: string;
-    _type: IVedtakType.SanksjonOvergangsstønad;
 };
 
 export type ISanksjonereVedtakDto = {
@@ -84,10 +84,10 @@ export type ISanksjonereVedtakDto = {
 };
 
 export interface IOpphørtVedtakForOvergangsstønad {
+    _type: IVedtakType.Opphør;
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
     begrunnelse: string;
-    _type: IVedtakType.OpphørOvergangsstønad;
 }
 
 export type IVedtakForOvergangsstønad =

@@ -104,7 +104,7 @@ const SanksjonsvedtakVisning: FC<{
     lagretVedtak?: IVedtakForOvergangsstønad;
 }> = ({ behandlingId, lagretVedtak }) => {
     const lagretSanksjonertVedtak =
-        lagretVedtak?._type === IVedtakType.SanksjonOvergangsstønad
+        lagretVedtak?._type === IVedtakType.Sanksjonering
             ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
             : undefined;
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -168,7 +168,7 @@ const SanksjonsvedtakVisning: FC<{
                 årMånedFra: årOgMåned,
                 årMånedTil: årOgMåned,
             },
-            _type: IVedtakType.SanksjonOvergangsstønad,
+            _type: IVedtakType.Sanksjonering,
         };
         lagreVedtak(vedtaksRequest);
     };

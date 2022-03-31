@@ -27,7 +27,7 @@ export const Opphør: React.FC<{
 }> = ({ behandlingId, lagretVedtak }) => {
     const [laster, settLaster] = useState(false);
     const lagretOpphørtVedtak =
-        lagretVedtak?._type === IVedtakType.OpphørOvergangsstønad
+        lagretVedtak?._type === IVedtakType.Opphør
             ? (lagretVedtak as IOpphørtVedtakForOvergangsstønad)
             : undefined;
     const [opphørtFra, settOpphørtFra] = useState<string>(lagretOpphørtVedtak?.opphørFom || '');
@@ -48,7 +48,7 @@ export const Opphør: React.FC<{
                 resultatType: EBehandlingResultat.OPPHØRT,
                 opphørFom: opphørtFra,
                 begrunnelse: opphørtBegrunnelse,
-                _type: IVedtakType.OpphørOvergangsstønad,
+                _type: IVedtakType.Opphør,
             };
             axiosRequest<string, IOpphørtVedtakForOvergangsstønad>({
                 method: 'POST',
