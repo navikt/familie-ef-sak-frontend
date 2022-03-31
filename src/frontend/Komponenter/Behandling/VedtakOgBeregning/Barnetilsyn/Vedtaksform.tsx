@@ -1,8 +1,6 @@
 import {
     EBehandlingResultat,
-    EKontantstøtte,
-    EStønadsreduksjon,
-    ETilleggsstønad,
+    ERadioValg,
     IInnvilgeVedtakForBarnetilsyn,
     IKontantstøttePeriode,
     ITilleggsstønadPeriode,
@@ -23,7 +21,15 @@ import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 
-export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForBarnetilsyn, 'resultatType'>;
+export type InnvilgeVedtakForm = {
+    utgiftsperioder: IUtgiftsperiode[];
+    kontantstøtteperioder?: IKontantstøttePeriode[];
+    harKontantstøtte: ERadioValg;
+    harTilleggsstønad: ERadioValg;
+    tilleggsstønadBegrunnelse?: string;
+    skalStønadReduseres: ERadioValg;
+    tilleggsstønadsperioder?: ITilleggsstønadPeriode[];
+};
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
@@ -50,19 +56,22 @@ export const Vedtaksform: React.FC<{
             utgiftsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.utgiftsperioder
                 : [tomUtgiftsperiodeRad],
-            kontantstøtte: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.kontantstøtte
-                : EKontantstøtte.NEI,
+            harKontantstøtte: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.kontantstøtteperioder &&
+                  lagretInnvilgetVedtak.kontantstøtteperioder.length > 0
+                    ? ERadioValg.JA
+                    : ERadioValg.NEI
+                : ERadioValg.IKKE_SATT,
             kontantstøtteperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.kontantstøtteperioder
                 : [tomKontantstøtteRad],
-            tilleggsstønad: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.tilleggsstønad
-                : ETilleggsstønad.NEI,
+            harTilleggsstønad: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.harTilleggsstønad
+                : ERadioValg.IKKE_SATT,
             tilleggsstønadBegrunnelse: lagretInnvilgetVedtak?.tilleggsstønadBegrunnelse || '',
-            stønadsreduksjon: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.stønadsreduksjon
-                : EStønadsreduksjon.NEI,
+            skalStønadReduseres: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.skalStønadReduseres
+                : ERadioValg.IKKE_SATT,
             tilleggsstønadsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.tilleggsstønadsperioder
                 : [tomTilleggsstønadRad],
@@ -70,15 +79,15 @@ export const Vedtaksform: React.FC<{
         validerInnvilgetVedtakForm
     );
     const utgiftsperiodeState = formState.getProps('utgiftsperioder') as ListState<IUtgiftsperiode>;
-    const kontantstøtteState = formState.getProps('kontantstøtte') as FieldState;
+    const kontantstøtteState = formState.getProps('harKontantstøtte') as FieldState;
     const kontantstøttePeriodeState = formState.getProps(
         'kontantstøtteperioder'
     ) as ListState<IKontantstøttePeriode>;
-    const tilleggsstønadState = formState.getProps('tilleggsstønad') as FieldState;
+    const tilleggsstønadState = formState.getProps('harTilleggsstønad') as FieldState;
     const tilleggsstønadBegrunnelseState = formState.getProps(
         'tilleggsstønadBegrunnelse'
     ) as FieldState;
-    const stønadsreduksjonState = formState.getProps('stønadsreduksjon') as FieldState;
+    const stønadsreduksjonState = formState.getProps('skalStønadReduseres') as FieldState;
     const tilleggsstønadsperiodeState = formState.getProps(
         'tilleggsstønadsperioder'
     ) as ListState<ITilleggsstønadPeriode>;
@@ -93,18 +102,17 @@ export const Vedtaksform: React.FC<{
         const vedtaksRequest: IInnvilgeVedtakForBarnetilsyn = {
             resultatType: EBehandlingResultat.INNVILGE,
             utgiftsperioder: form.utgiftsperioder,
-            kontantstøtte: form.kontantstøtte,
             kontantstøtteperioder:
-                form.kontantstøtte.value === EKontantstøtte.JA ? form.kontantstøtteperioder : null,
-            tilleggsstønad: form.tilleggsstønad,
+                form.harKontantstøtte.value === ERadioValg.JA ? form.kontantstøtteperioder : [],
+            harTilleggsstønad: form.harTilleggsstønad === ERadioValg.JA,
             tilleggsstønadBegrunnelse:
-                form.tilleggsstønad === ETilleggsstønad.JA ? form.tilleggsstønadBegrunnelse : null,
-            stønadsreduksjon: form.stønadsreduksjon,
+                form.harTilleggsstønad === ERadioValg.JA ? form.tilleggsstønadBegrunnelse : null,
+            skalStønadReduseres: form.skalStønadReduseres === ERadioValg.JA,
             tilleggsstønadsperioder:
-                form.tilleggsstønad === ETilleggsstønad.JA &&
-                form.stønadsreduksjon === EStønadsreduksjon.JA
+                form.harTilleggsstønad === ERadioValg.JA &&
+                form.skalStønadReduseres === ERadioValg.JA
                     ? form.tilleggsstønadsperioder
-                    : null,
+                    : [],
         };
         lagreVedtak(vedtaksRequest);
     };

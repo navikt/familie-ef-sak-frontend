@@ -1,9 +1,7 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import {
-    EKontantstøtte,
-    EStønadsreduksjon,
-    ETilleggsstønad,
+    ERadioValg,
     IKontantstøttePeriode,
     ITilleggsstønadPeriode,
     IUtgiftsperiode,
@@ -12,14 +10,14 @@ import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/util
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
-    kontantstøtte,
+    harKontantstøtte,
     kontantstøtteperioder,
-    tilleggsstønad,
+    harTilleggsstønad,
     tilleggsstønadBegrunnelse,
-    stønadsreduksjon,
+    skalStønadReduseres,
     tilleggsstønadsperioder,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
-    const skalHaBegrunnelseForTilleggsstønad = tilleggsstønad === ETilleggsstønad.JA;
+    const skalHaBegrunnelseForTilleggsstønad = harTilleggsstønad === ERadioValg.JA;
     const tilleggsstønadBegrunnelseFeil =
         skalHaBegrunnelseForTilleggsstønad && !harVerdi(tilleggsstønadBegrunnelse)
             ? 'Mangelfull utfylling av begrunnelse'
@@ -27,15 +25,18 @@ export const validerInnvilgetVedtakForm = ({
 
     return {
         ...validerUtgiftsperioder({ utgiftsperioder }),
-        kontantstøtte: undefined,
-        ...validerKontantstøttePerioder({ kontantstøtteperioder }, kontantstøtte),
-        tilleggsstønad: undefined,
+        harKontantstøtte: harKontantstøtte === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
+        ...validerKontantstøttePerioder({ kontantstøtteperioder }, harKontantstøtte),
+        harTilleggsstønad: harTilleggsstønad === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
         tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
-        stønadsreduksjon: undefined,
+        skalStønadReduseres:
+            harTilleggsstønad === ERadioValg.JA && skalStønadReduseres === ERadioValg.IKKE_SATT
+                ? 'Mangler verdi'
+                : undefined,
         ...validerTilleggsstønadPerioder(
             { tilleggsstønadsperioder },
-            tilleggsstønad,
-            stønadsreduksjon
+            harTilleggsstønad,
+            skalStønadReduseres
         ),
     };
 };
@@ -86,9 +87,9 @@ export const validerKontantstøttePerioder = (
     }: {
         kontantstøtteperioder: IKontantstøttePeriode[] | undefined;
     },
-    kontantstøtte: EKontantstøtte
+    kontantstøtte: ERadioValg
 ): FormErrors<{ kontantstøtteperioder: IKontantstøttePeriode[] }> | undefined => {
-    if (!kontantstøtteperioder || kontantstøtte == EKontantstøtte.NEI) {
+    if (!kontantstøtteperioder || kontantstøtte == ERadioValg.NEI) {
         const kontantstøtteperiodeFeil: FormErrors<IKontantstøttePeriode> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
@@ -139,13 +140,13 @@ export const validerTilleggsstønadPerioder = (
     }: {
         tilleggsstønadsperioder: ITilleggsstønadPeriode[] | undefined;
     },
-    tilleggsstønad: ETilleggsstønad,
-    stønadsreduksjon: EStønadsreduksjon
+    tilleggsstønad: ERadioValg,
+    stønadsreduksjon: ERadioValg
 ): FormErrors<{ tilleggsstønadsperioder: ITilleggsstønadPeriode[] }> => {
     if (
         !tilleggsstønadsperioder ||
-        tilleggsstønad === ETilleggsstønad.NEI ||
-        stønadsreduksjon === EStønadsreduksjon.NEI
+        tilleggsstønad === ERadioValg.NEI ||
+        stønadsreduksjon === ERadioValg.NEI
     ) {
         const tilleggsstønadsperiodeFeil: FormErrors<ITilleggsstønadPeriode> = {
             årMånedFra: undefined,

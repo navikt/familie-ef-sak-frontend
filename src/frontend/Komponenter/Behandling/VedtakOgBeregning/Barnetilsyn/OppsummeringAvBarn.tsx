@@ -85,9 +85,9 @@ export const OppsummeringAvBarn: React.FC<{
                 {navnOgAlder}
             </Heading>
             <BorderWrapper>
-                {(barn.barnepass?.barnepassordninger || []).map((barnepassordning) => {
+                {(barn.barnepass?.barnepassordninger || []).map((barnepassordning, index) => {
                     return (
-                        <>
+                        <React.Fragment key={index}>
                             <GridLinje>
                                 <IkonOgTekstWrapper>
                                     <Søknadsgrunnlag />
@@ -118,7 +118,7 @@ export const OppsummeringAvBarn: React.FC<{
                                 </IkonOgTekstWrapper>
                                 <Normaltekst>{barnepassordning.beløp},-</Normaltekst>
                             </NedersteGridLinje>
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </BorderWrapper>

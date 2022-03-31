@@ -5,8 +5,8 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
-    EKontantstøtte,
     EKontantstøttePeriodeProperty,
+    ERadioValg,
     IKontantstøttePeriode,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
@@ -96,19 +96,19 @@ const KontantstøtteValg: React.FC<Props> = ({
                 <Radio
                     name={'Kontantstøtte'}
                     label={'Ja'}
-                    value={EKontantstøtte.JA}
-                    checked={kontantstøtte.value === EKontantstøtte.JA}
+                    value={ERadioValg.JA}
+                    checked={kontantstøtte.value === ERadioValg.JA}
                     onChange={(event) => kontantstøtte.onChange(event)}
                 />
                 <Radio
                     name={'Kontantstøtte'}
                     label={'Nei'}
-                    value={EKontantstøtte.NEI}
-                    checked={kontantstøtte.value === EKontantstøtte.NEI}
+                    value={ERadioValg.NEI}
+                    checked={kontantstøtte.value === ERadioValg.NEI}
                     onChange={(event) => kontantstøtte.onChange(event)}
                 />
             </RadioGruppe>
-            {kontantstøtte.value === EKontantstøtte.JA && (
+            {kontantstøtte.value === ERadioValg.JA && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
                         <Element>Periode fra og med</Element>
@@ -122,7 +122,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                             index === kontantstøttePerioder.value.length - 1 &&
                             index !== 0;
                         return (
-                            <>
+                            <React.Fragment key={index}>
                                 <KontantstøttePeriodeContainer>
                                     <MånedÅrPeriode
                                         årMånedFraInitiell={årMånedFra}
@@ -173,7 +173,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                         />
                                     )}
                                 </KontantstøttePeriodeContainer>
-                            </>
+                            </React.Fragment>
                         );
                     })}
                     <LeggTilKnapp

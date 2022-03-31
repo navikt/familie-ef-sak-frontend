@@ -5,8 +5,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
-    EStønadsreduksjon,
-    ETilleggsstønad,
+    ERadioValg,
     ETilleggsstønadPeriodeProperty,
     ITilleggsstønadPeriode,
 } from '../../../../App/typer/vedtak';
@@ -73,8 +72,8 @@ const TilleggsstønadValg: React.FC<Props> = ({
     const { settIkkePersistertKomponent } = useApp();
 
     useEffect(() => {
-        if (tilleggsstønad.value === ETilleggsstønad.NEI) {
-            stønadsreduksjon.setValue(EStønadsreduksjon.NEI);
+        if (tilleggsstønad.value === ERadioValg.NEI) {
+            stønadsreduksjon.setValue(ERadioValg.NEI);
         }
     }, [stønadsreduksjon, tilleggsstønad]);
 
@@ -110,117 +109,113 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 <Radio
                     name={'Tilleggsstønad'}
                     label={'Ja'}
-                    value={ETilleggsstønad.JA}
-                    checked={tilleggsstønad.value === ETilleggsstønad.JA}
+                    value={ERadioValg.JA}
+                    checked={tilleggsstønad.value === ERadioValg.JA}
                     onChange={(event) => tilleggsstønad.onChange(event)}
                 />
                 <Radio
                     name={'Tilleggsstønad'}
                     label={'Nei'}
-                    value={ETilleggsstønad.NEI}
-                    checked={tilleggsstønad.value === ETilleggsstønad.NEI}
+                    value={ERadioValg.NEI}
+                    checked={tilleggsstønad.value === ERadioValg.NEI}
                     onChange={(event) => tilleggsstønad.onChange(event)}
                 />
             </RadioGruppe>
-            {tilleggsstønad.value === ETilleggsstønad.JA && (
+            {tilleggsstønad.value === ERadioValg.JA && (
                 <RadioGruppe legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?">
                     <Radio
                         name={'Redusere'}
                         label={'Ja'}
-                        value={EStønadsreduksjon.JA}
-                        checked={stønadsreduksjon.value === EStønadsreduksjon.JA}
+                        value={ERadioValg.JA}
+                        checked={stønadsreduksjon.value === ERadioValg.JA}
                         onChange={(event) => stønadsreduksjon.onChange(event)}
                     />
                     <Radio
                         name={'Redusere'}
                         label={'Nei'}
-                        value={EStønadsreduksjon.NEI}
-                        checked={stønadsreduksjon.value === EStønadsreduksjon.NEI}
+                        value={ERadioValg.NEI}
+                        checked={stønadsreduksjon.value === ERadioValg.NEI}
                         onChange={(event) => stønadsreduksjon.onChange(event)}
                     />
                 </RadioGruppe>
             )}
-            {tilleggsstønad.value === ETilleggsstønad.JA &&
-                stønadsreduksjon.value === EStønadsreduksjon.JA && (
-                    <>
-                        <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
-                            <Element>Periode fra og med</Element>
-                            <Element>Periode til og med</Element>
-                            <Element>Stønadsreduksjon</Element>
-                        </KolonneHeaderWrapper>
-                        {tilleggsstønadPerioder.value.map((periode, index) => {
-                            const { årMånedFra, årMånedTil, beløp } = periode;
-                            const skalViseFjernKnapp =
-                                behandlingErRedigerbar &&
-                                index === tilleggsstønadPerioder.value.length - 1 &&
-                                index !== 0;
-                            return (
-                                <>
-                                    <TilleggsstønadPeriodeContainer>
-                                        <MånedÅrPeriode
-                                            årMånedFraInitiell={årMånedFra}
-                                            årMånedTilInitiell={årMånedTil}
-                                            index={index}
-                                            onEndre={(verdi, periodeVariant) => {
-                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                                oppdaterTilleggsstønadPeriode(
-                                                    index,
-                                                    periodeVariantTilleggsstønadPeriodeProperty(
-                                                        periodeVariant
-                                                    ),
-                                                    verdi
+            {tilleggsstønad.value === ERadioValg.JA && stønadsreduksjon.value === ERadioValg.JA && (
+                <>
+                    <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
+                        <Element>Periode fra og med</Element>
+                        <Element>Periode til og med</Element>
+                        <Element>Stønadsreduksjon</Element>
+                    </KolonneHeaderWrapper>
+                    {tilleggsstønadPerioder.value.map((periode, index) => {
+                        const { årMånedFra, årMånedTil, beløp } = periode;
+                        const skalViseFjernKnapp =
+                            behandlingErRedigerbar &&
+                            index === tilleggsstønadPerioder.value.length - 1 &&
+                            index !== 0;
+                        return (
+                            <>
+                                <TilleggsstønadPeriodeContainer>
+                                    <MånedÅrPeriode
+                                        årMånedFraInitiell={årMånedFra}
+                                        årMånedTilInitiell={årMånedTil}
+                                        index={index}
+                                        onEndre={(verdi, periodeVariant) => {
+                                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                            oppdaterTilleggsstønadPeriode(
+                                                index,
+                                                periodeVariantTilleggsstønadPeriodeProperty(
+                                                    periodeVariant
+                                                ),
+                                                verdi
+                                            );
+                                        }}
+                                        feilmelding={
+                                            periodeValideringsfeil &&
+                                            periodeValideringsfeil[index]?.årMånedFra
+                                        }
+                                        erLesevisning={!behandlingErRedigerbar}
+                                    />
+                                    <StyledInput
+                                        type="number"
+                                        value={harTallverdi(beløp) ? beløp : ''}
+                                        onChange={(e) => {
+                                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                            oppdaterTilleggsstønadPeriode(
+                                                index,
+                                                ETilleggsstønadPeriodeProperty.beløp,
+                                                tilTallverdi(e.target.value)
+                                            );
+                                        }}
+                                        erLesevisning={!behandlingErRedigerbar}
+                                    />
+                                    {skalViseFjernKnapp && (
+                                        <FjernKnapp
+                                            onClick={() => {
+                                                tilleggsstønadPerioder.remove(index);
+                                                settPeriodeValideringsfeil(
+                                                    (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                        const perioder = (
+                                                            prevState.tilleggsstønadsperioder ?? []
+                                                        ).filter((_, i) => i !== index);
+                                                        return { ...prevState, perioder };
+                                                    }
                                                 );
                                             }}
-                                            feilmelding={
-                                                periodeValideringsfeil &&
-                                                periodeValideringsfeil[index]?.årMånedFra
-                                            }
-                                            erLesevisning={!behandlingErRedigerbar}
+                                            knappetekst="Fjern periode"
                                         />
-                                        <StyledInput
-                                            type="number"
-                                            value={harTallverdi(beløp) ? beløp : ''}
-                                            onChange={(e) => {
-                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                                oppdaterTilleggsstønadPeriode(
-                                                    index,
-                                                    ETilleggsstønadPeriodeProperty.beløp,
-                                                    tilTallverdi(e.target.value)
-                                                );
-                                            }}
-                                            erLesevisning={!behandlingErRedigerbar}
-                                        />
-                                        {skalViseFjernKnapp && (
-                                            <FjernKnapp
-                                                onClick={() => {
-                                                    tilleggsstønadPerioder.remove(index);
-                                                    settPeriodeValideringsfeil(
-                                                        (
-                                                            prevState: FormErrors<InnvilgeVedtakForm>
-                                                        ) => {
-                                                            const perioder = (
-                                                                prevState.tilleggsstønadsperioder ??
-                                                                []
-                                                            ).filter((_, i) => i !== index);
-                                                            return { ...prevState, perioder };
-                                                        }
-                                                    );
-                                                }}
-                                                knappetekst="Fjern periode"
-                                            />
-                                        )}
-                                    </TilleggsstønadPeriodeContainer>
-                                </>
-                            );
-                        })}
-                        <LeggTilKnapp
-                            onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad)}
-                            knappetekst="Legg til periode"
-                            hidden={!behandlingErRedigerbar}
-                        />
-                    </>
-                )}
-            {tilleggsstønad.value === ETilleggsstønad.JA && (
+                                    )}
+                                </TilleggsstønadPeriodeContainer>
+                            </>
+                        );
+                    })}
+                    <LeggTilKnapp
+                        onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad)}
+                        knappetekst="Legg til periode"
+                        hidden={!behandlingErRedigerbar}
+                    />
+                </>
+            )}
+            {tilleggsstønad.value === ERadioValg.JA && (
                 <EnsligTextArea
                     value={tilleggsstønadBegrunnelse.value}
                     onChange={(event) => {
