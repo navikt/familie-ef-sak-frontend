@@ -23,12 +23,7 @@ import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../App/context/AppContext';
-import {
-    byggSuksessRessurs,
-    byggTomRessurs,
-    Ressurs,
-    RessursStatus,
-} from '../../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { UtregningstabellBarnetilsyn } from './UtregnignstabellBarnetilsyn';
@@ -171,28 +166,6 @@ export const Vedtaksform: React.FC<{
         lagreVedtak(vedtaksRequest);
     };
 
-    const mocketBeregningsresultat = byggSuksessRessurs<IBeregeningsresultatBarnetilsyn[]>([
-        {
-            periode: { fradato: '2022-04-01', tildato: '2022-07-01' },
-            beløp: 6000,
-            beragningsgrunnlag: {
-                utgifter: 6000,
-                kontantstøtte: 0,
-                tilleggstønad: 150,
-            },
-            antallBarn: 2,
-        },
-        {
-            periode: { fradato: '2022-04-01', tildato: '2022-07-01' },
-            beløp: 6000,
-            beragningsgrunnlag: {
-                utgifter: 6000,
-                kontantstøtte: 0,
-                tilleggstønad: 150,
-            },
-            antallBarn: 2,
-        },
-    ]);
     const beregnBarnetilsyn = () => {
         if (formState.validateForm()) {
             axiosRequest<IBeregeningsresultatBarnetilsyn[], IBeregningsrequestBarnetilsyn>({
@@ -204,7 +177,7 @@ export const Vedtaksform: React.FC<{
                     tilleggsstønadsperioder: tilleggsstønadsperiodeState.value,
                 },
             }).then((res: Ressurs<IBeregeningsresultatBarnetilsyn[]>) =>
-                settBeregningsresultat(mocketBeregningsresultat)
+                settBeregningsresultat(res)
             );
         }
     };
