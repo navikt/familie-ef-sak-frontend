@@ -32,6 +32,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { UtregningstabellBarnetilsyn } from './UtregnignstabellBarnetilsyn';
+import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
+import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -41,6 +44,7 @@ export type InnvilgeVedtakForm = {
     tilleggsstønadBegrunnelse?: string;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: ITilleggsstønadPeriode[];
+    begrunnelse: string;
 };
 
 const WrapperDobbelMarginTop = styled.div`
@@ -66,7 +70,8 @@ export const Vedtaksform: React.FC<{
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregeningsresultatBarnetilsyn[]>()
     );
-    const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
     const navigate = useNavigate();
 
     const formState = useFormState<InnvilgeVedtakForm>(
@@ -93,6 +98,7 @@ export const Vedtaksform: React.FC<{
             tilleggsstønadsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.tilleggsstønadsperioder
                 : [tomTilleggsstønadRad],
+            begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerInnvilgetVedtakForm
     );
@@ -109,6 +115,7 @@ export const Vedtaksform: React.FC<{
     const tilleggsstønadsperiodeState = formState.getProps(
         'tilleggsstønadsperioder'
     ) as ListState<ITilleggsstønadPeriode>;
+    const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
@@ -251,6 +258,23 @@ export const Vedtaksform: React.FC<{
             )}
             <WrapperDobbelMarginTop>
                 <UtregningstabellBarnetilsyn beregningsresultat={beregningsresultat} />
+            </WrapperDobbelMarginTop>
+            <WrapperDobbelMarginTop>
+                {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
+                    <IngenBegrunnelseOppgitt />
+                ) : (
+                    <EnsligTextArea
+                        erLesevisning={!behandlingErRedigerbar}
+                        value={begrunnelseState.value}
+                        onChange={(event) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            begrunnelseState.onChange(event);
+                        }}
+                        label={'Begrunnelse'}
+                        maxLength={0}
+                        feilmelding={formState.errors.begrunnelse}
+                    />
+                )}
             </WrapperDobbelMarginTop>
             {behandlingErRedigerbar && (
                 <WrapperDobbelMarginTop>

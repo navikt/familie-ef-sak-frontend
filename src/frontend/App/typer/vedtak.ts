@@ -51,6 +51,7 @@ export type IInnvilgeVedtakForBarnetilsyn = {
     tilleggsstønadBegrunnelse?: string;
     skalStønadReduseres?: boolean;
     tilleggsstønadsperioder: ITilleggsstønadPeriode[];
+    begrunnelse: string;
     _type?: string;
 };
 

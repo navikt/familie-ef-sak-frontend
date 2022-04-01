@@ -227,7 +227,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                         tilleggsstønadBegrunnelse.onChange(event);
                     }}
-                    label="Begrunnelse"
+                    label="Begrunnelse stønadsreduksjon"
                     maxLength={0}
                     erLesevisning={!behandlingErRedigerbar}
                     feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}
