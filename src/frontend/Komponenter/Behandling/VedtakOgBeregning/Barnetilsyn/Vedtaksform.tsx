@@ -25,6 +25,7 @@ import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
+import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -47,7 +48,8 @@ const WrapperMarginTop = styled.div`
 export const Vedtaksform: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IvedtakForBarnetilsyn;
-}> = ({ lagretVedtak, behandling }) => {
+    barn: IBarnMedSamvær[];
+}> = ({ lagretVedtak, behandling, barn }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
@@ -178,6 +180,7 @@ export const Vedtaksform: React.FC<{
                 utgiftsperioder={utgiftsperiodeState}
                 valideringsfeil={formState.errors.utgiftsperioder}
                 settValideringsFeil={formState.setErrors}
+                barn={barn}
             />
             <WrapperMarginTop>
                 <Heading spacing size="small" level="5">

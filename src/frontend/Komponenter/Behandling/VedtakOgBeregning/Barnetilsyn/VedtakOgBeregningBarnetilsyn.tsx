@@ -60,6 +60,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                     lagretVedtak={
                                         vedtak as unknown as IInnvilgeVedtakForBarnetilsyn // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
                                     }
+                                    barn={vilkår.grunnlag.barnMedSamvær}
                                 />
                             );
                         }
