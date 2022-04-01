@@ -87,7 +87,7 @@ export const AvslåVedtak: React.FC<{
         settLaster(true);
         axiosRequest<string, IAvslåVedtakForOvergangsstønad>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vedtak/${behandling.id}/fullfor`,
+            url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtakRequest,
         })
             .then(håndterVedtaksresultat(`/behandling/${behandling.id}/brev`))
