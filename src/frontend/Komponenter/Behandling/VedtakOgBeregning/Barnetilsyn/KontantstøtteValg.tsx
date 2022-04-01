@@ -7,7 +7,7 @@ import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
     EKontantstøttePeriodeProperty,
     ERadioValg,
-    IKontantstøttePeriode,
+    IPeriodeMedBeløp,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -44,12 +44,12 @@ const StyledInput = styled(InputMedTusenSkille)`
 
 interface Props {
     kontantstøtte: FieldState;
-    kontantstøttePerioder: ListState<IKontantstøttePeriode>;
+    kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-export const tomKontantstøtteRad: IKontantstøttePeriode = {
+export const tomKontantstøtteRad: IPeriodeMedBeløp = {
     årMånedFra: '',
     årMånedTil: '',
     beløp: undefined,

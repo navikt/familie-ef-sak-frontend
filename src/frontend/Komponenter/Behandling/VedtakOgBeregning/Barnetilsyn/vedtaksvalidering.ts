@@ -1,11 +1,6 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import {
-    ERadioValg,
-    IKontantstøttePeriode,
-    ITilleggsstønadPeriode,
-    IUtgiftsperiode,
-} from '../../../../App/typer/vedtak';
+import { ERadioValg, IPeriodeMedBeløp, IUtgiftsperiode } from '../../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
 
 export const validerInnvilgetVedtakForm = ({
@@ -16,6 +11,7 @@ export const validerInnvilgetVedtakForm = ({
     tilleggsstønadBegrunnelse,
     skalStønadReduseres,
     tilleggsstønadsperioder,
+    begrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     const skalHaBegrunnelseForTilleggsstønad = harTilleggsstønad === ERadioValg.JA;
     const tilleggsstønadBegrunnelseFeil =
@@ -38,6 +34,7 @@ export const validerInnvilgetVedtakForm = ({
             harTilleggsstønad,
             skalStønadReduseres
         ),
+        begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };
 
@@ -85,12 +82,12 @@ export const validerKontantstøttePerioder = (
     {
         kontantstøtteperioder,
     }: {
-        kontantstøtteperioder: IKontantstøttePeriode[] | undefined;
+        kontantstøtteperioder: IPeriodeMedBeløp[] | undefined;
     },
     kontantstøtte: ERadioValg
-): FormErrors<{ kontantstøtteperioder: IKontantstøttePeriode[] }> | undefined => {
+): FormErrors<{ kontantstøtteperioder: IPeriodeMedBeløp[] }> | undefined => {
     if (!kontantstøtteperioder || kontantstøtte == ERadioValg.NEI) {
-        const kontantstøtteperiodeFeil: FormErrors<IKontantstøttePeriode> = {
+        const kontantstøtteperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
             beløp: undefined,
@@ -99,7 +96,7 @@ export const validerKontantstøttePerioder = (
     }
     const feilIKontantstøtteperioder = kontantstøtteperioder.map((periode, index) => {
         const { årMånedFra, årMånedTil } = periode;
-        const kontantstøtteperiodeFeil: FormErrors<IKontantstøttePeriode> = {
+        const kontantstøtteperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
             beløp: undefined,
@@ -138,17 +135,17 @@ export const validerTilleggsstønadPerioder = (
     {
         tilleggsstønadsperioder,
     }: {
-        tilleggsstønadsperioder: ITilleggsstønadPeriode[] | undefined;
+        tilleggsstønadsperioder: IPeriodeMedBeløp[] | undefined;
     },
     tilleggsstønad: ERadioValg,
     stønadsreduksjon: ERadioValg
-): FormErrors<{ tilleggsstønadsperioder: ITilleggsstønadPeriode[] }> => {
+): FormErrors<{ tilleggsstønadsperioder: IPeriodeMedBeløp[] }> => {
     if (
         !tilleggsstønadsperioder ||
         tilleggsstønad === ERadioValg.NEI ||
         stønadsreduksjon === ERadioValg.NEI
     ) {
-        const tilleggsstønadsperiodeFeil: FormErrors<ITilleggsstønadPeriode> = {
+        const tilleggsstønadsperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
             beløp: undefined,
@@ -157,7 +154,7 @@ export const validerTilleggsstønadPerioder = (
     }
     const feilITilleggsstønadPerioder = tilleggsstønadsperioder.map((periode, index) => {
         const { årMånedFra, årMånedTil } = periode;
-        const tilleggsstønadPeriodeFeil: FormErrors<ITilleggsstønadPeriode> = {
+        const tilleggsstønadPeriodeFeil: FormErrors<IPeriodeMedBeløp> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
             beløp: undefined,

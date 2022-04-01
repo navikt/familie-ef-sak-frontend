@@ -7,7 +7,7 @@ import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
     ERadioValg,
     ETilleggsstønadPeriodeProperty,
-    ITilleggsstønadPeriode,
+    IPeriodeMedBeløp,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -47,12 +47,12 @@ interface Props {
     tilleggsstønad: FieldState;
     tilleggsstønadBegrunnelse: FieldState;
     stønadsreduksjon: FieldState;
-    tilleggsstønadPerioder: ListState<ITilleggsstønadPeriode>;
+    tilleggsstønadPerioder: ListState<IPeriodeMedBeløp>;
     valideringsfeil: FormErrors<InnvilgeVedtakForm>;
     settValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-export const tomTilleggsstønadRad: ITilleggsstønadPeriode = {
+export const tomTilleggsstønadRad: IPeriodeMedBeløp = {
     årMånedFra: '',
     årMånedTil: '',
     beløp: undefined,
@@ -71,7 +71,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
 
     useEffect(() => {
         if (tilleggsstønad.value === ERadioValg.NEI) {
-            stønadsreduksjon.setValue(ERadioValg.NEI);
+            stønadsreduksjon.setValue(ERadioValg.IKKE_SATT);
         }
     }, [stønadsreduksjon, tilleggsstønad]);
 

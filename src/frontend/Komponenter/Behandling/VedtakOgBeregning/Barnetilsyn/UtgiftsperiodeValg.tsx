@@ -108,6 +108,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     index === utgiftsperioder.value.length - 1 &&
                     index !== 0;
 
+                const barnForPeriode = barnFormatertForBarnVelger(barn);
                 return (
                     <UtgiftsperiodeContainer key={index} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrPeriode
@@ -128,9 +129,12 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                         {/* @ts-ignore:next-line */}
                         <FamilieReactSelect
                             placeholder={'Velg barn'}
-                            options={barnFormatertForBarnVelger(barn)}
+                            options={barnForPeriode}
                             creatable={false}
                             isMulti={true}
+                            defaultValue={barnForPeriode.filter((barn) =>
+                                utgiftsperiode.barn.includes(barn.value)
+                            )}
                             onChange={(valgtBarn) => {
                                 settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterUtgiftsPeriode(
@@ -138,7 +142,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     EUtgiftsperiodeProperty.barn,
                                     valgtBarn === null
                                         ? []
-                                        : [...mapValgtBarnTilNavn(valgtBarn as ISelectOption[])]
+                                        : [...mapValgtBarn(valgtBarn as ISelectOption[])]
                                 );
                             }}
                         />
@@ -200,8 +204,8 @@ const barnFormatertForBarnVelger = (barn: IBarnMedSamvær[]) =>
         };
     });
 
-const mapValgtBarnTilNavn = (valgtBarn: ISelectOption[]): string[] => {
-    return valgtBarn.map((barn) => barn.label.split(' ')[0]);
+const mapValgtBarn = (valgtBarn: ISelectOption[]): string[] => {
+    return valgtBarn.map((barn) => barn.value);
 };
 
 export default UtgiftsperiodeValg;
