@@ -23,9 +23,15 @@ import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../App/context/AppContext';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import {
+    byggSuksessRessurs,
+    byggTomRessurs,
+    Ressurs,
+    RessursStatus,
+} from '../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
+import { UtregningstabellBarnetilsyn } from './UtregnignstabellBarnetilsyn';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -58,7 +64,7 @@ export const Vedtaksform: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [beregningsresultat, settBeregningsresultat] = useState(
-        byggTomRessurs<IBeregeningsresultatBarnetilsyn>()
+        byggTomRessurs<IBeregeningsresultatBarnetilsyn[]>()
     );
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
     const navigate = useNavigate();
@@ -152,14 +158,37 @@ export const Vedtaksform: React.FC<{
                 form.skalStønadReduseres === ERadioValg.JA
                     ? form.tilleggsstønadsperioder
                     : [],
+            begrunnelse: form.begrunnelse,
             _type: 'InnvilgetBarnetilsyn', // TODO: Bruk enum
         };
         lagreVedtak(vedtaksRequest);
     };
 
+    const mocketBeregningsresultat = byggSuksessRessurs<IBeregeningsresultatBarnetilsyn[]>([
+        {
+            periode: { fradato: '2022-04-01', tildato: '2022-07-01' },
+            beløp: 6000,
+            beragningsgrunnlag: {
+                utgifter: 6000,
+                kontantstøtte: 0,
+                tilleggstønad: 150,
+            },
+            antallBarn: 2,
+        },
+        {
+            periode: { fradato: '2022-04-01', tildato: '2022-07-01' },
+            beløp: 6000,
+            beragningsgrunnlag: {
+                utgifter: 6000,
+                kontantstøtte: 0,
+                tilleggstønad: 150,
+            },
+            antallBarn: 2,
+        },
+    ]);
     const beregnBarnetilsyn = () => {
         if (formState.validateForm()) {
-            axiosRequest<IBeregeningsresultatBarnetilsyn, IBeregningsrequestBarnetilsyn>({
+            axiosRequest<IBeregeningsresultatBarnetilsyn[], IBeregningsrequestBarnetilsyn>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/`,
                 data: {
@@ -167,7 +196,9 @@ export const Vedtaksform: React.FC<{
                     kontantstøtteperioder: kontantstøttePeriodeState.value,
                     tilleggsstønadsperioder: tilleggsstønadsperiodeState.value,
                 },
-            }).then((res: Ressurs<IBeregeningsresultatBarnetilsyn>) => settBeregningsresultat(res));
+            }).then((res: Ressurs<IBeregeningsresultatBarnetilsyn[]>) =>
+                settBeregningsresultat(mocketBeregningsresultat)
+            );
         }
     };
 
@@ -213,17 +244,17 @@ export const Vedtaksform: React.FC<{
             )}
             {behandlingErRedigerbar && (
                 <WrapperDobbelMarginTop>
-                    <Button variant={'secondary'} onClick={beregnBarnetilsyn}>
+                    <Button variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
                         Beregn
                     </Button>
-                    {beregningsresultat.status === RessursStatus.SUKSESS && (
-                        <div>Her kommer beregning</div>
-                    )}
                 </WrapperDobbelMarginTop>
             )}
+            <WrapperDobbelMarginTop>
+                <UtregningstabellBarnetilsyn beregningsresultat={beregningsresultat} />
+            </WrapperDobbelMarginTop>
             {behandlingErRedigerbar && (
                 <WrapperDobbelMarginTop>
-                    <Button variant="primary" disabled={laster}>
+                    <Button variant="primary" disabled={laster} type={'submit'}>
                         Lagre vedtak
                     </Button>
                 </WrapperDobbelMarginTop>
