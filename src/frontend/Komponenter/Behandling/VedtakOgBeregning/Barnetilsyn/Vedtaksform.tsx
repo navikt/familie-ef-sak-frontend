@@ -1,6 +1,6 @@
 import {
     ERadioValg,
-    IBeregeningsresultatBarnetilsyn,
+    IBeregningsperiodeBarnetilsyn,
     IBeregningsrequestBarnetilsyn,
     IInnvilgeVedtakForBarnetilsyn,
     IPeriodeMedBeløp,
@@ -62,7 +62,7 @@ export const Vedtaksform: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [beregningsresultat, settBeregningsresultat] = useState(
-        byggTomRessurs<IBeregeningsresultatBarnetilsyn[]>()
+        byggTomRessurs<IBeregningsperiodeBarnetilsyn[]>()
     );
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -174,7 +174,7 @@ export const Vedtaksform: React.FC<{
 
     const beregnBarnetilsyn = () => {
         if (formState.validateForm()) {
-            axiosRequest<IBeregeningsresultatBarnetilsyn[], IBeregningsrequestBarnetilsyn>({
+            axiosRequest<IBeregningsperiodeBarnetilsyn[], IBeregningsrequestBarnetilsyn>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/`,
                 data: {
@@ -189,9 +189,7 @@ export const Vedtaksform: React.FC<{
                             ? tilleggsstønadsperiodeState.value
                             : [],
                 },
-            }).then((res: Ressurs<IBeregeningsresultatBarnetilsyn[]>) =>
-                settBeregningsresultat(res)
-            );
+            }).then((res: Ressurs<IBeregningsperiodeBarnetilsyn[]>) => settBeregningsresultat(res));
         }
     };
 

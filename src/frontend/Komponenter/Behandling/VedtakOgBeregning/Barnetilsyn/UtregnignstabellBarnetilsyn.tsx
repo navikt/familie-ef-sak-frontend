@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBeregeningsresultatBarnetilsyn } from '../../../../App/typer/vedtak';
+import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Heading } from '@navikt/ds-react';
@@ -27,7 +27,7 @@ const HøyrejusterElement = styled(Element)`
 `;
 
 export const UtregningstabellBarnetilsyn: React.FC<{
-    beregningsresultat: Ressurs<IBeregeningsresultatBarnetilsyn[]>;
+    beregningsresultat: Ressurs<IBeregningsperiodeBarnetilsyn[]>;
 }> = ({ beregningsresultat }) => {
     return (
         <DataViewer response={{ beregningsresultat }}>

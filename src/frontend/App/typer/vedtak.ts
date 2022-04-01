@@ -23,11 +23,11 @@ export interface IBeløpsperiode {
     beløpFørSamordning: number;
 }
 
-export interface IBeregeningsresultatBarnetilsyn {
+export interface IBeregningsperiodeBarnetilsyn {
     periode: { fradato: string; tildato: string };
     beløp: number;
     antallBarn: number;
-    beragningsgrunnlag: IBeregningsgrunnlagBarnetilsyn;
+    beregningsgrunnlag: IBeregningsgrunnlagBarnetilsyn;
 }
 
 export interface IBeregningsgrunnlagBarnetilsyn {
