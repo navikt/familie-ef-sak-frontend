@@ -12,6 +12,7 @@ import {
     IInnvilgeVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
     IVedtaksperiode,
+    IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
@@ -34,7 +35,10 @@ import { Heading } from '@navikt/ds-react';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
-export type InnvilgeVedtakForm = Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>;
+export type InnvilgeVedtakForm = Omit<
+    Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
+    '_type'
+>;
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
@@ -49,7 +53,7 @@ export const InnvilgeVedtak: React.FC<{
     lagretVedtak?: IVedtakForOvergangsstønad;
 }> = ({ behandling, lagretVedtak }) => {
     const lagretInnvilgetVedtak =
-        lagretVedtak?.resultatType === EBehandlingResultat.INNVILGE
+        lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
             ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
@@ -190,6 +194,7 @@ export const InnvilgeVedtak: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         const vedtaksRequest: IInnvilgeVedtakForOvergangsstønad = {
+            _type: IVedtakType.InnvilgelseOvergangsstønad,
             resultatType: EBehandlingResultat.INNVILGE,
             periodeBegrunnelse: form.periodeBegrunnelse,
             inntektBegrunnelse: form.inntektBegrunnelse,

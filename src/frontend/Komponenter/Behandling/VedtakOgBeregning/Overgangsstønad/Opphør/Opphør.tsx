@@ -7,6 +7,7 @@ import {
     EBehandlingResultat,
     IOpphørtVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
+    IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +27,7 @@ export const Opphør: React.FC<{
 }> = ({ behandlingId, lagretVedtak }) => {
     const [laster, settLaster] = useState(false);
     const lagretOpphørtVedtak =
-        lagretVedtak?.resultatType === EBehandlingResultat.OPPHØRT
+        lagretVedtak?._type === IVedtakType.Opphør
             ? (lagretVedtak as IOpphørtVedtakForOvergangsstønad)
             : undefined;
     const [opphørtFra, settOpphørtFra] = useState<string>(lagretOpphørtVedtak?.opphørFom || '');
@@ -43,14 +44,16 @@ export const Opphør: React.FC<{
         e.preventDefault();
         if (opphørtBegrunnelse && opphørtFra) {
             settLaster(true);
+            const opphør: IOpphørtVedtakForOvergangsstønad = {
+                resultatType: EBehandlingResultat.OPPHØRT,
+                opphørFom: opphørtFra,
+                begrunnelse: opphørtBegrunnelse,
+                _type: IVedtakType.Opphør,
+            };
             axiosRequest<string, IOpphørtVedtakForOvergangsstønad>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/vedtak/${behandlingId}/lagre-vedtak`,
-                data: {
-                    resultatType: EBehandlingResultat.OPPHØRT,
-                    opphørFom: opphørtFra,
-                    begrunnelse: opphørtBegrunnelse,
-                } as IOpphørtVedtakForOvergangsstønad,
+                data: opphør,
             })
                 .then(håndterOpphørtVedtak)
                 .finally(() => {

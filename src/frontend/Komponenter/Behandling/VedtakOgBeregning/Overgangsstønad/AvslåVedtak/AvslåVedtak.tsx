@@ -8,6 +8,7 @@ import {
     EBehandlingResultat,
     IAvslåVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
+    IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
@@ -20,7 +21,7 @@ export const AvslåVedtak: React.FC<{
     ikkeOppfyltVilkårEksisterer: boolean;
 }> = ({ behandling, lagretVedtak, alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer }) => {
     const lagretAvslåBehandling =
-        lagretVedtak?.resultatType === EBehandlingResultat.AVSLÅ
+        lagretVedtak?._type === IVedtakType.Avslag
             ? (lagretVedtak as IAvslåVedtakForOvergangsstønad)
             : undefined;
     const [avslagBegrunnelse, settAvslagBegrunnelse] = useState<string>(
@@ -46,6 +47,7 @@ export const AvslåVedtak: React.FC<{
         resultatType: EBehandlingResultat.AVSLÅ,
         avslåÅrsak: avslagÅrsak,
         avslåBegrunnelse: avslagBegrunnelse,
+        _type: IVedtakType.Avslag,
     };
 
     useEffect(() => {
