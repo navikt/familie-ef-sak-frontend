@@ -10,6 +10,11 @@ Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 * Starte mock-server `yarn start:mock`
 * Åpne `http://localhost:8000` i nettleseren din
 
+For å kunne installere avhengigheter fra navikt registry må man være logget inn i github packages. Kjør kommando: 
+`npm login --scope=@navikt --registry=https://npm.pkg.github.com`
+username er det samme på github og passordet er utvikler-tokenet som er generert i github.
+Dersom tokenet allerede er generert, finnes det typisk i m2-settings/gradle.properties fil.
+
 ## Client id & client secret
 secret kan hentes fra cluster med 
 `kubectl -n teamfamilie get secret azuread-familie-ef-sak-frontend-lokal -o json | jq '.data | map_values(@base64d)'`
