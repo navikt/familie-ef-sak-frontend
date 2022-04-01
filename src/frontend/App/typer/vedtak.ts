@@ -1,6 +1,15 @@
 import { Sanksjonsårsak } from './Sanksjonsårsak';
 
+// TODO: Her kan vi legge inn vedtakstyper for barnetilsyn
+export enum IVedtakType {
+    InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
+    Avslag = 'Avslag',
+    Opphør = 'Opphør',
+    Sanksjonering = 'Sanksjonering',
+}
+
 export type IAvslåVedtakForOvergangsstønad = {
+    _type: IVedtakType.Avslag;
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
     avslåBegrunnelse: string;
@@ -35,6 +44,7 @@ export interface IBeregningsgrunnlag {
     grunnbeløp: number | null;
 }
 export type IInnvilgeVedtakForOvergangsstønad = {
+    _type: IVedtakType.InnvilgelseOvergangsstønad;
     resultatType: EBehandlingResultat.INNVILGE;
     periodeBegrunnelse?: string;
     inntektBegrunnelse?: string;
@@ -75,6 +85,7 @@ export type ITilleggsstønadPeriode = {
 };
 
 export type ISanksjonereVedtakForOvergangsstønad = {
+    _type: IVedtakType.Sanksjonering;
     resultatType: EBehandlingResultat.SANKSJONERE;
     sanksjonsårsak: Sanksjonsårsak;
     periode: IVedtaksperiode;
@@ -87,6 +98,7 @@ export type ISanksjonereVedtakDto = {
 };
 
 export interface IOpphørtVedtakForOvergangsstønad {
+    _type: IVedtakType.Opphør;
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
     begrunnelse: string;
