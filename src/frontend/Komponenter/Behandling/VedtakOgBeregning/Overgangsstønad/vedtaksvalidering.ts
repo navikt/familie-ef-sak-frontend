@@ -72,10 +72,7 @@ export const validerVedtaksperioder = ({
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, periodeType: 'Mangler periodetype' };
         }
 
-        if (
-            periodeType === EPeriodetype.HOVEDPERIODE &&
-            (aktivitet === undefined || aktivitet === '')
-        ) {
+        if (aktivitet === undefined || aktivitet === '') {
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };
         }
         if (

@@ -93,7 +93,7 @@ export enum TidligereVedtaksperioderType {
 }
 
 export enum BarnetilsynsvilkårType {
-    AKTIVITET = 'AKTIVITET',
+    AKTIVITET_ARBEID = 'AKTIVITET_ARBEID',
     INNTEKT = 'INNTEKT',
     ALDER_PÅ_BARN = 'ALDER_PÅ_BARN',
 }

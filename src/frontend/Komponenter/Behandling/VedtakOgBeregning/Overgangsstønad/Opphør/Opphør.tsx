@@ -52,7 +52,7 @@ export const Opphør: React.FC<{
             };
             axiosRequest<string, IOpphørtVedtakForOvergangsstønad>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
+                url: `/familie-ef-sak/api/vedtak/${behandlingId}/lagre-vedtak`,
                 data: opphør,
             })
                 .then(håndterOpphørtVedtak)

@@ -5,15 +5,15 @@ import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/Da
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { differenceInYears } from 'date-fns';
 import { ÅrsakBarnepassTilTekst } from './AlderPåBarnTyper';
+import { nullableDatoTilAlder } from '../../../../App/utils/dato';
 
 const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
     gjeldendeBarn,
 }) => {
     const { registergrunnlag, barnepass } = gjeldendeBarn;
 
-    const alder = differenceInYears(new Date(), new Date(registergrunnlag.fødselsdato));
+    const alder = nullableDatoTilAlder(registergrunnlag.fødselsdato);
 
     return (
         <>

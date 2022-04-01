@@ -1,5 +1,10 @@
 import React from 'react';
-import { IVilkår } from '../../Inngangsvilkår/vilkår';
+import {
+    AktivitetsvilkårType,
+    InngangsvilkårType,
+    IVilkår,
+    Vilkårsresultat,
+} from '../../Inngangsvilkår/vilkår';
 import { Behandling } from '../../../../App/typer/fagsak';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
@@ -8,7 +13,6 @@ import { ResultatVisning } from '../Felles/ResultatVisning';
 import { sorterUtBarnetilsynsvilkår, sorterUtInngangsvilkår } from '../Felles/utils';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { Søknadsdatoer } from '../Overgangsstønad/Søknadsdatoer';
-import { barn } from './mockData';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
 
 const OppsummeringContainer = styled.div`
@@ -26,6 +30,19 @@ const Oppsummeringsboks = styled.div`
     background-color: ${navFarger.navGraBakgrunn};
 `;
 
+const lagVilkåresresultatPerBarn = (
+    vilkår: IVilkår,
+    vilkårType: InngangsvilkårType.ALENEOMSORG | AktivitetsvilkårType.ALDER_PÅ_BARN
+): Record<string, Vilkårsresultat> =>
+    vilkår.vurderinger
+        .filter((vurdering) => vurdering.vilkårType === vilkårType)
+        .reduce((acc, vurdering) => {
+            if (vurdering.barnId) {
+                acc[vurdering.barnId] = vurdering.resultat;
+            }
+            return acc;
+        }, {} as Record<string, Vilkårsresultat>);
+
 export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     vilkår: IVilkår;
     behandling: Behandling;
@@ -33,8 +50,17 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const barnetilsynsvilkår = sorterUtBarnetilsynsvilkår(vilkår);
-    const barnPåBehandling = barn;
-    const finnesBarnPåBehandling = barn.length > 0;
+    const barnPåBehandling = vilkår.grunnlag.barnMedSamvær;
+    const finnesBarnPåBehandling = vilkår.grunnlag.barnMedSamvær.length > 0;
+
+    const vilkårsresultatAleneomsorgPerBarn = lagVilkåresresultatPerBarn(
+        vilkår,
+        InngangsvilkårType.ALENEOMSORG
+    );
+    const vilkårsresultatAlderPåBarnPerBarn = lagVilkåresresultatPerBarn(
+        vilkår,
+        AktivitetsvilkårType.ALDER_PÅ_BARN
+    );
 
     return (
         <>
@@ -65,9 +91,20 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
             </OppsummeringContainer>
             {finnesBarnPåBehandling && (
                 <OppsummeringContainer>
-                    {barnPåBehandling.map((barn, index) => (
-                        <OppsummeringAvBarn barn={barn} key={barn.personIdent + `${index}`} />
-                    ))}
+                    {barnPåBehandling.map((barn) => {
+                        return (
+                            <OppsummeringAvBarn
+                                key={barn.barnId}
+                                barn={barn}
+                                vilkårsresultatAleneomsorg={
+                                    vilkårsresultatAleneomsorgPerBarn[barn.barnId]
+                                }
+                                vilkårsresultatAlderPåBarn={
+                                    vilkårsresultatAlderPåBarnPerBarn[barn.barnId]
+                                }
+                            />
+                        );
+                    })}
                 </OppsummeringContainer>
             )}
         </>

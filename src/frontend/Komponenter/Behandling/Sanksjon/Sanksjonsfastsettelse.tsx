@@ -147,7 +147,7 @@ const SanksjonsvedtakVisning: FC<{
 
         axiosRequest<string, ISanksjonereVedtakForOvergangsstønad>({
             method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/lagre-vedtak`,
             data: vedtaksRequest,
         })
             .then(håndterVedtaksresultat(`/behandling/${behandlingId}/simulering`))

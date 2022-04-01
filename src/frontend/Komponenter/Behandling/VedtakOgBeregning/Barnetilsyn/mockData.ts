@@ -13,7 +13,7 @@ export interface IBarnepassOrdning {
     type: string;
     datoFra: string;
     datoTil: string;
-    utgift: string;
+    beløp: string;
 }
 
 const sfoHaugestua: IBarnepassOrdning = {
@@ -21,7 +21,7 @@ const sfoHaugestua: IBarnepassOrdning = {
     type: 'Barnehage, SFO eller liknende',
     datoFra: '02.08.2021',
     datoTil: '30.06.2022',
-    utgift: '3000',
+    beløp: '3000',
 };
 
 const andedammenSkole: IBarnepassOrdning = {
@@ -29,7 +29,7 @@ const andedammenSkole: IBarnepassOrdning = {
     type: 'Barnehage, SFO eller liknende',
     datoFra: '03.08.2021',
     datoTil: '25.07.2022',
-    utgift: '3654',
+    beløp: '3654',
 };
 
 const ole: IBarnForBarnetilsyn = {
