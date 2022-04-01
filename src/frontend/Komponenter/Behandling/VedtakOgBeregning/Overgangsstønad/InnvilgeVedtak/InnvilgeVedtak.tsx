@@ -179,7 +179,7 @@ export const InnvilgeVedtak: React.FC<{
         settLaster(true);
         axiosRequest<string, IInnvilgeVedtakForOvergangsstønad>({
             method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
+            url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
         })
             .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
