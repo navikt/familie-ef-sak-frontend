@@ -24,6 +24,7 @@ import {
 import BrevInnhold from './BrevInnhold';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -42,9 +43,11 @@ const FritekstBrev: React.FC<Props> = ({
     mellomlagretFritekstbrev,
 }) => {
     const { behandling } = useBehandling();
+
     const [brevType, settBrevType] = useState<FritekstBrevtype | undefined>(
         mellomlagretFritekstbrev?.brevType
     );
+    const [stønadstype, settStønadstype] = useState<Stønadstype | undefined>();
     const [overskrift, settOverskrift] = useState(
         (mellomlagretFritekstbrev && mellomlagretFritekstbrev?.brev?.overskrift) || ''
     );
@@ -53,9 +56,12 @@ const FritekstBrev: React.FC<Props> = ({
     );
     const [behandlingsårsak, settBehandlingsårsak] = useState<Behandlingsårsak>();
 
+    console.log('beh', behandling);
+
     useEffect(() => {
         if (behandling.status === RessursStatus.SUKSESS) {
             settBehandlingsårsak(behandling.data.behandlingsårsak);
+            settStønadstype(behandling.data.stønadstype);
         }
     }, [behandling]);
 
@@ -156,7 +162,7 @@ const FritekstBrev: React.FC<Props> = ({
 
     return (
         <StyledBrev>
-            <h1>Fritekstbrev for overgangsstønad</h1>
+            {stønadstype && <h1>Fritekstbrev for {stønadstypeTilTekst[stønadstype]}</h1>}
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}
@@ -173,6 +179,7 @@ const FritekstBrev: React.FC<Props> = ({
                 flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
                 context={FritekstBrevContext.BEHANDLING}
                 behandlingsårsak={behandlingsårsak}
+                stønadstype={stønadstype}
             />
         </StyledBrev>
     );

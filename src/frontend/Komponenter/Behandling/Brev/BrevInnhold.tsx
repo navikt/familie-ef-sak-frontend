@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Input, Select, Textarea } from 'nav-frontend-skjema';
 import Panel from 'nav-frontend-paneler';
@@ -7,12 +7,14 @@ import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import {
     AvsnittMedId,
+    Brevtype,
     BrevtyperTilAvsnitt,
     BrevtyperTilOverskrift,
     BrevtyperTilSelectNavn,
     FritekstBrevContext,
     FritekstBrevtype,
     FrittståendeBrevtype,
+    stønadstypeTilBrevtyper,
 } from './BrevTyper';
 import { skjulAvsnittIBrevbygger } from './BrevUtils';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -20,6 +22,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -76,6 +79,7 @@ type Props = {
     flyttAvsnittNed: (avsnittId: string) => void;
     context: FritekstBrevContext;
     behandlingsårsak?: Behandlingsårsak;
+    stønadstype?: Stønadstype;
 };
 
 const BrevInnhold: React.FC<Props> = ({
@@ -94,15 +98,25 @@ const BrevInnhold: React.FC<Props> = ({
     flyttAvsnittNed,
     context,
     behandlingsårsak,
+    stønadstype,
 }) => {
     const ikkeRedigerBareBrev: (FrittståendeBrevtype | FritekstBrevtype | undefined)[] = [
         FrittståendeBrevtype.VARSEL_OM_AKTIVITETSPLIKT,
     ];
+    const [brevTyper, settBrevtyper] = useState<FritekstBrevtype[]>([]);
     const finnesSynligeAvsnitt = avsnitt.some((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
     const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
     const { toggles } = useToggles();
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
     const avsnittSomSkalVises = avsnitt.filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
+
+    useEffect(() => {
+        if (!stønadstype) {
+            settBrevtyper(stønadstypeTilBrevtyper[Stønadstype.OVERGANGSSTØNAD]);
+        } else {
+            settBrevtyper(stønadstypeTilBrevtyper[stønadstype]);
+        }
+    }, [stønadstype]);
 
     return (
         <BrevKolonner>
