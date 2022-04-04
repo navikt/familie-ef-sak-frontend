@@ -8,7 +8,10 @@ import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
-import { erAlleVilkårOppfylt, eksistererIkkeOppfyltVilkår } from '../Felles/utils';
+import {
+    erAlleVilkårOppfyltForOvergangsstønad,
+    eksistererIkkeOppfyltVilkårForOvergangsstønad,
+} from '../Felles/utils';
 
 interface Props {
     behandling: Behandling;
@@ -24,8 +27,8 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
-    const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
-    const ikkeOppfyltVilkårEksisterer = eksistererIkkeOppfyltVilkår(vilkår);
+    const alleVilkårOppfylt = erAlleVilkårOppfyltForOvergangsstønad(vilkår);
+    const ikkeOppfyltVilkårEksisterer = eksistererIkkeOppfyltVilkårForOvergangsstønad(vilkår);
 
     useEffect(() => {
         hentVedtak();

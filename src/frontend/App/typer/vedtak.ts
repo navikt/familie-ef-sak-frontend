@@ -9,7 +9,7 @@ export enum IVedtakType {
     Sanksjonering = 'Sanksjonering',
 }
 
-export type IAvslåVedtakForOvergangsstønad = {
+export type IAvslagVedtak = {
     _type: IVedtakType.Avslag;
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
@@ -102,7 +102,7 @@ export interface IOpphørtVedtakForOvergangsstønad {
 }
 
 export type IVedtakForOvergangsstønad =
-    | IAvslåVedtakForOvergangsstønad
+    | IAvslagVedtak
     | IInnvilgeVedtakForOvergangsstønad
     | IOpphørtVedtakForOvergangsstønad
     | ISanksjonereVedtakForOvergangsstønad;
