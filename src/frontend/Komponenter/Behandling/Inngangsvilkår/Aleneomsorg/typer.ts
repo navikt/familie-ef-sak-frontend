@@ -14,12 +14,22 @@ export interface IBarnepass {
 }
 
 export interface BarnepassordningDto {
-    type: string;
+    type: ETypeBarnepassOrdning;
     navn: string;
     fra: string;
     til: string;
     beløp: number;
 }
+
+export enum ETypeBarnepassOrdning {
+    barnehageOgLiknende = 'barnehageOgLiknende',
+    privat = 'privat',
+}
+
+export const typeBarnepassordningTilTekst: Record<ETypeBarnepassOrdning, string> = {
+    barnehageOgLiknende: 'Barnehage, SFO eller liknende',
+    privat: 'Dagmamma eller annen privat ordning',
+};
 
 export interface IBarnMedSamværSøknadsgrunnlag {
     navn?: string;
