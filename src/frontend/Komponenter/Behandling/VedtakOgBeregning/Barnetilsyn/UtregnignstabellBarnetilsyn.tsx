@@ -51,15 +51,17 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                                     rad.periode.fradato
                                 )} - ${formaterNullableMånedÅr(rad.periode.tildato)}`}
                             </Normaltekst>
-                            <HøyrejustertNormaltekst>{rad.antallBarn}</HøyrejustertNormaltekst>
                             <HøyrejustertNormaltekst>
-                                {formaterTallMedTusenSkille(rad.beragningsgrunnlag.utgifter)}
+                                {rad.beregningsgrunnlag.antallBarn}
                             </HøyrejustertNormaltekst>
                             <HøyrejustertNormaltekst>
-                                {formaterTallMedTusenSkille(rad.beragningsgrunnlag.kontantstøtte)}
+                                {formaterTallMedTusenSkille(rad.beregningsgrunnlag.utgifter)}
                             </HøyrejustertNormaltekst>
                             <HøyrejustertNormaltekst>
-                                {formaterTallMedTusenSkille(rad.beragningsgrunnlag.tilleggstønad)}
+                                {formaterTallMedTusenSkille(rad.beregningsgrunnlag.kontantstøtte)}
+                            </HøyrejustertNormaltekst>
+                            <HøyrejustertNormaltekst>
+                                {formaterTallMedTusenSkille(rad.beregningsgrunnlag.tilleggstønad)}
                             </HøyrejustertNormaltekst>
                             <HøyrejustertNormaltekst>
                                 {formaterTallMedTusenSkille(rad.beløp)}
