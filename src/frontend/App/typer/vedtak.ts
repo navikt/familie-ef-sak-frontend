@@ -3,6 +3,7 @@ import { Sanksjonsårsak } from './Sanksjonsårsak';
 // TODO: Her kan vi legge inn vedtakstyper for barnetilsyn
 export enum IVedtakType {
     InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
+    InnvilgelseBarnetilsyn = 'InnvilgelseBarnetilsyn',
     Avslag = 'Avslag',
     Opphør = 'Opphør',
     Sanksjonering = 'Sanksjonering',
@@ -20,6 +21,19 @@ export interface IBeløpsperiode {
     beregningsgrunnlag: IBeregningsgrunnlag;
     beløp: number;
     beløpFørSamordning: number;
+}
+
+export interface IBeregningsperiodeBarnetilsyn {
+    periode: { fradato: string; tildato: string };
+    beløp: number;
+    beregningsgrunnlag: IBeregningsgrunnlagBarnetilsyn;
+}
+
+export interface IBeregningsgrunnlagBarnetilsyn {
+    utgifter: number;
+    kontantstøtte: number;
+    tilleggstønad: number;
+    antallBarn: number;
 }
 
 export interface IBeregningsgrunnlag {
@@ -41,30 +55,27 @@ export type IInnvilgeVedtakForOvergangsstønad = {
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
-    resultatType: EBehandlingResultat.INNVILGE;
-    utgiftsperioder: IUtgiftsperiode[];
-    kontantstøtte: EKontantstøtte;
-    kontantstøtteperioder?: IKontantstøttePeriode[];
-    tilleggsstønad: ETilleggsstønad;
-    tilleggsstønadBegrunnelse?: string;
-    stønadsreduksjon: EStønadsreduksjon;
-    tilleggsstønadsperioder?: ITilleggsstønadPeriode[];
+    begrunnelse?: string;
+    perioder: IUtgiftsperiode[];
+    perioderKontantstøtte: [];
+    tilleggsstønad: ITilleggsstønad;
+    _type?: IVedtakType.InnvilgelseBarnetilsyn;
+};
+
+export type ITilleggsstønad = {
+    harTilleggsstønad: boolean;
+    perioder: IPeriodeMedBeløp[];
+    begrunnelse?: string;
 };
 
 export type IUtgiftsperiode = {
     årMånedFra: string;
     årMånedTil: string;
-    barn: string[] | undefined; // TODO: oppdater til riktig type for barn
+    barn: string[];
     utgifter: number | undefined;
 };
 
-export type IKontantstøttePeriode = {
-    årMånedFra: string;
-    årMånedTil: string;
-    beløp: number | undefined;
-};
-
-export type ITilleggsstønadPeriode = {
+export type IPeriodeMedBeløp = {
     årMånedFra: string;
     årMånedTil: string;
     beløp: number | undefined;
@@ -116,6 +127,12 @@ export type IBeregningsrequest = {
     vedtaksperioder: IVedtaksperiode[];
     inntekt: IInntektsperiode[];
 };
+
+export interface IBeregningsrequestBarnetilsyn {
+    utgiftsperioder: IUtgiftsperiode[];
+    kontantstøtteperioder: IPeriodeMedBeløp[];
+    tilleggsstønadsperioder: IPeriodeMedBeløp[];
+}
 
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',
@@ -171,19 +188,10 @@ export enum ETilleggsstønadPeriodeProperty {
     beløp = 'beløp',
 }
 
-export enum EKontantstøtte {
+export enum ERadioValg {
     JA = 'JA',
     NEI = 'NEI',
-}
-
-export enum ETilleggsstønad {
-    JA = 'JA',
-    NEI = 'NEI',
-}
-
-export enum EStønadsreduksjon {
-    JA = 'JA',
-    NEI = 'NEI',
+    IKKE_SATT = 'IKKE_SATT',
 }
 
 export enum EAvslagÅrsak {

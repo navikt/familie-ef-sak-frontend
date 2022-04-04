@@ -43,7 +43,7 @@ export default function useFormState<T extends Record<string, unknown>>(
             } else if (Array.isArray(value)) {
                 return { key, value: useListState(value) }; // eslint-disable-line
             } else {
-                throw Error('Støtter ikke den typen');
+                throw Error(`Støtter ikke den typen: ${key}`);
             }
         })
         .reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {} as InternalFormState<T>);

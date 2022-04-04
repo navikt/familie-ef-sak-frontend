@@ -7,7 +7,9 @@ import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { erAlleVilkårOppfylt } from '../Felles/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
+import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Vedtaksform } from './Vedtaksform';
+import { IInnvilgeVedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
 
 interface Props {
     behandling: Behandling;
@@ -42,14 +44,29 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
 
     return (
         <Wrapper>
-            <Vedtaksform behandling={behandling} />
+            <SelectVedtaksresultat
+                behandling={behandling}
+                resultatType={resultatType}
+                settResultatType={settResultatType}
+                alleVilkårOppfylt={alleVilkårOppfylt}
+            />
             <WrapperMarginTop>
-                <SelectVedtaksresultat
-                    behandling={behandling}
-                    resultatType={resultatType}
-                    settResultatType={settResultatType}
-                    alleVilkårOppfylt={alleVilkårOppfylt}
-                />
+                <DataViewer response={{ vedtak }}>
+                    {({ vedtak }) => {
+                        if (resultatType && resultatType === EBehandlingResultat.INNVILGE) {
+                            return (
+                                <Vedtaksform
+                                    behandling={behandling}
+                                    lagretVedtak={
+                                        vedtak as unknown as IInnvilgeVedtakForBarnetilsyn // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
+                                    }
+                                    barn={vilkår.grunnlag.barnMedSamvær}
+                                />
+                            );
+                        }
+                        return null;
+                    }}
+                </DataViewer>
             </WrapperMarginTop>
         </Wrapper>
     );
