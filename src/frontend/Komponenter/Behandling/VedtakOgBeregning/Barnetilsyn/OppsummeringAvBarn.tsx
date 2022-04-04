@@ -5,7 +5,10 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { ResultatSwitch } from '../../../../Felles/Ikoner/ResultatSwitch';
-import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
+import {
+    IBarnMedSamvær,
+    typeBarnepassordningTilTekst,
+} from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 
@@ -93,7 +96,9 @@ export const OppsummeringAvBarn: React.FC<{
                                     <Søknadsgrunnlag />
                                     <BoldTekst size="small">Barnepassordning</BoldTekst>
                                 </IkonOgTekstWrapper>
-                                <Label size="small">{barnepassordning.type}</Label>
+                                <Label size="small">
+                                    {typeBarnepassordningTilTekst[barnepassordning.type]}
+                                </Label>
                             </GridLinje>
                             <GridLinje>
                                 <IkonOgTekstWrapper>
