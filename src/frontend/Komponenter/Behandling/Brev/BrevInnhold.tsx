@@ -134,9 +134,7 @@ const BrevInnhold: React.FC<Props> = ({
             >
                 <option value={''}>Ikke valgt</option>
                 {Object.values(
-                    context === FritekstBrevContext.FRITTSTÅENDE
-                        ? FrittståendeBrevtype
-                        : FritekstBrevtype
+                    context === FritekstBrevContext.FRITTSTÅENDE ? FrittståendeBrevtype : brevTyper
                 )
                     .filter(
                         (type: FrittståendeBrevtype | FritekstBrevtype) =>

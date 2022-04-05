@@ -56,8 +56,6 @@ const FritekstBrev: React.FC<Props> = ({
     );
     const [behandlingsårsak, settBehandlingsårsak] = useState<Behandlingsårsak>();
 
-    console.log('beh', behandling);
-
     useEffect(() => {
         if (behandling.status === RessursStatus.SUKSESS) {
             settBehandlingsårsak(behandling.data.behandlingsårsak);
