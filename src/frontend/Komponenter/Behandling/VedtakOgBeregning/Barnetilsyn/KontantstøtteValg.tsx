@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Radio, RadioGruppe } from 'nav-frontend-skjema';
+import { Radio } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
@@ -8,6 +8,7 @@ import {
     EKontantstøttePeriodeProperty,
     ERadioValg,
     IPeriodeMedBeløp,
+    radiovalgTilTekst,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -19,6 +20,7 @@ import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMed
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
+import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
 const KontantstøttePeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -92,9 +94,11 @@ const KontantstøtteValg: React.FC<Props> = ({
 
     return (
         <>
-            <RadioGruppe
+            <FamilieRadioGruppe
                 legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med?"
                 feil={valideringsfeil?.harKontantstøtte}
+                erLesevisning={!behandlingErRedigerbar}
+                verdi={radiovalgTilTekst[kontantstøtte.value as ERadioValg]}
             >
                 <Radio
                     name={'Kontantstøtte'}
@@ -110,7 +114,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                     checked={kontantstøtte.value === ERadioValg.NEI}
                     onChange={(event) => kontantstøtte.onChange(event)}
                 />
-            </RadioGruppe>
+            </FamilieRadioGruppe>
             {kontantstøtte.value === ERadioValg.JA && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
