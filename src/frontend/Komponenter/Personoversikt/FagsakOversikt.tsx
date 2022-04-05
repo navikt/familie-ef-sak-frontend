@@ -1,17 +1,9 @@
 import LagBehandlingModal from './LagBehandlingModal';
 import { ToggleName } from '../../App/context/toggles';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import React, { useEffect, useState } from 'react';
-import {
-    byggTomRessurs,
-    Ressurs,
-    RessursFeilet,
-    RessursStatus,
-    RessursSuksess,
-} from '../../App/typer/ressurs';
-import { BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
+import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
+import { Fagsak } from '../../App/typer/fagsak';
 import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
-import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { useApp } from '../../App/context/AppContext';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
@@ -19,7 +11,8 @@ import { useToggles } from '../../App/context/TogglesContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
-import { Behandlingstype } from '../../App/typer/behandlingstype';
+import { erAlleBehandlingerErFerdigstilt } from './utils';
+import { Stønadstype } from '../../App/typer/behandlingstema';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;
@@ -28,25 +21,11 @@ const KnappMedMargin = styled(Knapp)`
 
 interface Props {
     fagsak: Fagsak;
-    rehentFagsak: () => void;
 }
 
-export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak, rehentFagsak }) => {
+export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
-
-    const gjørTekniskOpphør = () => {
-        axiosRequest<void, null>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/tekniskopphor/${fagsak.id}`,
-        }).then((response: RessursSuksess<void> | RessursFeilet) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                rehentFagsak();
-            } else {
-                settTekniskOpphørFeilet(true);
-            }
-        });
-    };
 
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
@@ -56,26 +35,13 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak, rehentFagsak }
 
     const kanStarteRevurdering = erAlleBehandlingerErFerdigstilt(fagsak);
     const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
-    const [tekniskOpphørFeilet, settTekniskOpphørFeilet] = useState<boolean>(false);
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
         Ressurs<TilbakekrevingBehandling[]>
     >(byggTomRessurs());
 
-    function erAlleBehandlingerErFerdigstilt(fagsak: Fagsak) {
-        return (
-            fagsak.behandlinger.some(
-                (behandling) => behandling.resultat !== BehandlingResultat.HENLAGT
-            ) &&
-            fagsak.behandlinger.every(
-                (behandling) => behandling.status === BehandlingStatus.FERDIGSTILT
-            ) &&
-            fagsak.behandlinger.some(
-                (behandling) =>
-                    behandling.type === Behandlingstype.REVURDERING ||
-                    behandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING
-            )
-        );
-    }
+    const skalViseOpprettNyBehandlingKnapp =
+        fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
+        toggles[ToggleName.skalViseOpprettNyBehandlingBarnetilsyn];
 
     useEffect(() => {
         hentTilbakekrevingBehandlinger();
@@ -92,7 +58,7 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak, rehentFagsak }
                         eksternFagsakId={fagsak.eksternId}
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                     />
-                    {kanStarteRevurdering && (
+                    {kanStarteRevurdering && skalViseOpprettNyBehandlingKnapp && (
                         <>
                             <LagBehandlingModal
                                 visModal={visLagBehandlingModal}
@@ -105,16 +71,6 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak, rehentFagsak }
                                 Opprett ny behandling
                             </KnappMedMargin>
                         </>
-                    )}
-                    {toggles[ToggleName.TEKNISK_OPPHØR] && (
-                        <KnappMedMargin onClick={() => gjørTekniskOpphør()}>
-                            Teknisk opphør
-                        </KnappMedMargin>
-                    )}
-                    {tekniskOpphørFeilet && (
-                        <AlertStripeFeil style={{ maxWidth: '15rem' }}>
-                            Kan ikke iverksette teknisk opphør
-                        </AlertStripeFeil>
                     )}
                 </>
             )}
