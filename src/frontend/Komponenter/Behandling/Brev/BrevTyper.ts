@@ -2,7 +2,9 @@ import {
     initielleAvsnittTom,
     initielleAvsnittVarselOmAktivitetsplikt,
     initielleAvsnittVedtakAvslag,
+    initielleAvsnittVedtakAvslagBarnetilsyn,
     initielleAvsnittVedtakInvilgelse,
+    initielleAvsnittVedtakInvilgelseBarnetilsyn,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -150,8 +152,8 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         VARSEL_OM_SANKSJON: initielleAvsnittTom,
         VEDTAK_INVILGELSE: initielleAvsnittVedtakInvilgelse,
         VEDTAK_AVSLAG: initielleAvsnittVedtakAvslag,
-        VEDTAK_INNVILGELSE_BARNETILSYN: initielleAvsnittVedtakInvilgelse,
-        VEDTAK_AVSLAG_BARNETILSYN: initielleAvsnittVedtakAvslag,
+        VEDTAK_INNVILGELSE_BARNETILSYN: initielleAvsnittVedtakInvilgelseBarnetilsyn,
+        VEDTAK_AVSLAG_BARNETILSYN: initielleAvsnittVedtakAvslagBarnetilsyn,
     };
 
 export enum FritekstBrevContext {
