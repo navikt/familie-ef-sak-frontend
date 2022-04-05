@@ -109,8 +109,8 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VARSEL_OM_SANKSJON: 'Varsel om sanksjon',
     VEDTAK_INVILGELSE: 'Du får overgangsstønad',
     VEDTAK_AVSLAG: 'Vi har avslått søknaden din om overgangsstønad',
-    VEDTAK_INNVILGELSE_BARNETILSYN: 'Du får blabla',
-    VEDTAK_AVSLAG_BARNETILSYN: 'Vi har avslått blabla',
+    VEDTAK_INNVILGELSE_BARNETILSYN: 'Du får stønad til barnetilsyn',
+    VEDTAK_AVSLAG_BARNETILSYN: 'Vi har søknaden din om stønad til barnetilsyn',
 };
 
 export const BrevtyperTilSelectNavn: Record<
@@ -124,8 +124,8 @@ export const BrevtyperTilSelectNavn: Record<
     VARSEL_OM_SANKSJON: 'Varsel om sanksjon',
     VEDTAK_INVILGELSE: 'Vedtak innvilgelse',
     VEDTAK_AVSLAG: 'Vedtak avslag',
-    VEDTAK_INNVILGELSE_BARNETILSYN: 'Vedtak innvilgelse bt',
-    VEDTAK_AVSLAG_BARNETILSYN: 'Vedtak avslag bt',
+    VEDTAK_INNVILGELSE_BARNETILSYN: 'Vedtak innvilgelse',
+    VEDTAK_AVSLAG_BARNETILSYN: 'Vedtak avslag',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
