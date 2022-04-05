@@ -40,7 +40,7 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
     >(byggTomRessurs());
 
     const skalViseOpprettNyBehandlingKnapp =
-        fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD &&
+        fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
         toggles[ToggleName.skalViseOpprettNyBehandlingBarnetilsyn];
 
     useEffect(() => {
