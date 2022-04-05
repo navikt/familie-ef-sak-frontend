@@ -47,7 +47,7 @@ const FritekstBrev: React.FC<Props> = ({
     const [brevType, settBrevType] = useState<FritekstBrevtype | undefined>(
         mellomlagretFritekstbrev?.brevType
     );
-    const [stønadstype, settStønadstype] = useState<Stønadstype | undefined>();
+    const [stønadstype, settStønadstype] = useState<Stønadstype>();
     const [overskrift, settOverskrift] = useState(
         (mellomlagretFritekstbrev && mellomlagretFritekstbrev?.brev?.overskrift) || ''
     );
@@ -158,29 +158,33 @@ const FritekstBrev: React.FC<Props> = ({
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
 
-    return (
-        <StyledBrev>
-            {stønadstype && <h1>Fritekstbrev for {stønadstypeTilTekst[stønadstype]}</h1>}
-            <BrevInnhold
-                brevType={brevType}
-                endreBrevType={endreBrevType}
-                overskrift={overskrift}
-                endreOverskrift={endreOverskrift}
-                avsnitt={avsnitt}
-                endreAvsnitt={endreAvsnitt}
-                endreDeloverskriftAvsnitt={endreDeloverskriftAvsnitt}
-                endreInnholdAvsnitt={endreInnholdAvsnitt}
-                fjernRad={fjernRad}
-                leggTilAvsnittFørst={oppdaterLeggTilAvsnittFørst}
-                leggAvsnittBakSisteSynligeAvsnitt={oppdaterLeggAvsnittBakSisteSynligeAvsnitt}
-                flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
-                flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
-                context={FritekstBrevContext.BEHANDLING}
-                behandlingsårsak={behandlingsårsak}
-                stønadstype={stønadstype}
-            />
-        </StyledBrev>
-    );
+    if (stønadstype) {
+        return (
+            <StyledBrev>
+                <h1>Fritekstbrev for {stønadstypeTilTekst[stønadstype]}</h1>
+                <BrevInnhold
+                    brevType={brevType}
+                    endreBrevType={endreBrevType}
+                    overskrift={overskrift}
+                    endreOverskrift={endreOverskrift}
+                    avsnitt={avsnitt}
+                    endreAvsnitt={endreAvsnitt}
+                    endreDeloverskriftAvsnitt={endreDeloverskriftAvsnitt}
+                    endreInnholdAvsnitt={endreInnholdAvsnitt}
+                    fjernRad={fjernRad}
+                    leggTilAvsnittFørst={oppdaterLeggTilAvsnittFørst}
+                    leggAvsnittBakSisteSynligeAvsnitt={oppdaterLeggAvsnittBakSisteSynligeAvsnitt}
+                    flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
+                    flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
+                    context={FritekstBrevContext.BEHANDLING}
+                    behandlingsårsak={behandlingsårsak}
+                    stønadstype={stønadstype}
+                />
+            </StyledBrev>
+        );
+    } else {
+        return null;
+    }
 };
 
 export default FritekstBrev;

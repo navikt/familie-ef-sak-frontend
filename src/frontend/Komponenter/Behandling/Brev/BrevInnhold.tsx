@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useState, useEffect } from 'react';
+import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 import { Input, Select, Textarea } from 'nav-frontend-skjema';
 import Panel from 'nav-frontend-paneler';
@@ -7,7 +7,6 @@ import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import {
     AvsnittMedId,
-    Brevtype,
     BrevtyperTilAvsnitt,
     BrevtyperTilOverskrift,
     BrevtyperTilSelectNavn,
@@ -79,7 +78,7 @@ type Props = {
     flyttAvsnittNed: (avsnittId: string) => void;
     context: FritekstBrevContext;
     behandlingsårsak?: Behandlingsårsak;
-    stønadstype?: Stønadstype;
+    stønadstype: Stønadstype;
 };
 
 const BrevInnhold: React.FC<Props> = ({
@@ -103,20 +102,13 @@ const BrevInnhold: React.FC<Props> = ({
     const ikkeRedigerBareBrev: (FrittståendeBrevtype | FritekstBrevtype | undefined)[] = [
         FrittståendeBrevtype.VARSEL_OM_AKTIVITETSPLIKT,
     ];
-    const [brevTyper, settBrevtyper] = useState<FritekstBrevtype[]>([]);
     const finnesSynligeAvsnitt = avsnitt.some((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
     const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
     const { toggles } = useToggles();
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
     const avsnittSomSkalVises = avsnitt.filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
 
-    useEffect(() => {
-        if (!stønadstype) {
-            settBrevtyper(stønadstypeTilBrevtyper[Stønadstype.OVERGANGSSTØNAD]);
-        } else {
-            settBrevtyper(stønadstypeTilBrevtyper[stønadstype]);
-        }
-    }, [stønadstype]);
+    const brevtyper = stønadstypeTilBrevtyper[stønadstype];
 
     return (
         <BrevKolonner>
@@ -134,7 +126,7 @@ const BrevInnhold: React.FC<Props> = ({
             >
                 <option value={''}>Ikke valgt</option>
                 {Object.values(
-                    context === FritekstBrevContext.FRITTSTÅENDE ? FrittståendeBrevtype : brevTyper
+                    context === FritekstBrevContext.FRITTSTÅENDE ? FrittståendeBrevtype : brevtyper
                 )
                     .filter(
                         (type: FrittståendeBrevtype | FritekstBrevtype) =>

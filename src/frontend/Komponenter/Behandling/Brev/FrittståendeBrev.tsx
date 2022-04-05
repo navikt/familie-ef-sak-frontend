@@ -24,6 +24,7 @@ import {
     leggTilAvsnittFørst,
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -218,6 +219,7 @@ const FrittståendeBrev: React.FC<Props> = ({
                 flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
                 flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
                 context={FritekstBrevContext.FRITTSTÅENDE}
+                stønadstype={Stønadstype.OVERGANGSSTØNAD}
             />
             <StyledHovedKnapp disabled={!brevType} onClick={() => settVisModal(true)}>
                 Send brev
