@@ -94,7 +94,7 @@ export type ISanksjonereVedtakDto = {
     internBegrunnelse: string;
 };
 
-export interface IOpphørtVedtakForOvergangsstønad {
+export interface IOpphørtVedtak {
     _type: IVedtakType.Opphør;
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
@@ -104,7 +104,7 @@ export interface IOpphørtVedtakForOvergangsstønad {
 export type IVedtakForOvergangsstønad =
     | IAvslagVedtak
     | IInnvilgeVedtakForOvergangsstønad
-    | IOpphørtVedtakForOvergangsstønad
+    | IOpphørtVedtak
     | ISanksjonereVedtakForOvergangsstønad;
 
 export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
