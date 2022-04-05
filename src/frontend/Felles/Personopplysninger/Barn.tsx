@@ -76,7 +76,7 @@ const FødselsnummerBarn: React.FC<{
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
                 {!dødsdato && (
                     <SpanMedVenstreMargin>
-                        {alder ? (
+                        {alder !== undefined ? (
                             alder < 18 ? (
                                 <EtikettSuksess>{alder} år</EtikettSuksess>
                             ) : (
