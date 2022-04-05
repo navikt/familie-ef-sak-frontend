@@ -194,6 +194,12 @@ export enum ERadioValg {
     IKKE_SATT = 'IKKE_SATT',
 }
 
+export const radiovalgTilTekst: Record<ERadioValg, string> = {
+    JA: 'Ja',
+    NEI: 'Nei',
+    IKKE_SATT: 'Ikke valgt',
+};
+
 export enum EAvslagÅrsak {
     VILKÅR_IKKE_OPPFYLT = 'VILKÅR_IKKE_OPPFYLT',
     BARN_OVER_ÅTTE_ÅR = 'BARN_OVER_ÅTTE_ÅR',
