@@ -22,9 +22,9 @@ import {
     leggTilAvsnittFørst,
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
+import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -47,21 +47,12 @@ const FritekstBrev: React.FC<Props> = ({
     const [brevType, settBrevType] = useState<FritekstBrevtype | undefined>(
         mellomlagretFritekstbrev?.brevType
     );
-    const [stønadstype, settStønadstype] = useState<Stønadstype>();
     const [overskrift, settOverskrift] = useState(
         (mellomlagretFritekstbrev && mellomlagretFritekstbrev?.brev?.overskrift) || ''
     );
     const [avsnitt, settAvsnitt] = useState<AvsnittMedId[]>(
         initielleAvsnittMellomlager(mellomlagretFritekstbrev?.brev)
     );
-    const [behandlingsårsak, settBehandlingsårsak] = useState<Behandlingsårsak>();
-
-    useEffect(() => {
-        if (behandling.status === RessursStatus.SUKSESS) {
-            settBehandlingsårsak(behandling.data.behandlingsårsak);
-            settStønadstype(behandling.data.stønadstype);
-        }
-    }, [behandling]);
 
     const { axiosRequest } = useApp();
 
@@ -158,33 +149,35 @@ const FritekstBrev: React.FC<Props> = ({
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
 
-    if (stønadstype) {
-        return (
-            <StyledBrev>
-                <h1>Fritekstbrev for {stønadstypeTilTekst[stønadstype]}</h1>
-                <BrevInnhold
-                    brevType={brevType}
-                    endreBrevType={endreBrevType}
-                    overskrift={overskrift}
-                    endreOverskrift={endreOverskrift}
-                    avsnitt={avsnitt}
-                    endreAvsnitt={endreAvsnitt}
-                    endreDeloverskriftAvsnitt={endreDeloverskriftAvsnitt}
-                    endreInnholdAvsnitt={endreInnholdAvsnitt}
-                    fjernRad={fjernRad}
-                    leggTilAvsnittFørst={oppdaterLeggTilAvsnittFørst}
-                    leggAvsnittBakSisteSynligeAvsnitt={oppdaterLeggAvsnittBakSisteSynligeAvsnitt}
-                    flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
-                    flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
-                    context={FritekstBrevContext.BEHANDLING}
-                    behandlingsårsak={behandlingsårsak}
-                    stønadstype={stønadstype}
-                />
-            </StyledBrev>
-        );
-    } else {
-        return null;
-    }
+    return (
+        <DataViewer response={{ behandling }}>
+            {({ behandling }) => (
+                <StyledBrev>
+                    <h1>Fritekstbrev for {stønadstypeTilTekst[behandling.stønadstype]}</h1>
+                    <BrevInnhold
+                        brevType={brevType}
+                        endreBrevType={endreBrevType}
+                        overskrift={overskrift}
+                        endreOverskrift={endreOverskrift}
+                        avsnitt={avsnitt}
+                        endreAvsnitt={endreAvsnitt}
+                        endreDeloverskriftAvsnitt={endreDeloverskriftAvsnitt}
+                        endreInnholdAvsnitt={endreInnholdAvsnitt}
+                        fjernRad={fjernRad}
+                        leggTilAvsnittFørst={oppdaterLeggTilAvsnittFørst}
+                        leggAvsnittBakSisteSynligeAvsnitt={
+                            oppdaterLeggAvsnittBakSisteSynligeAvsnitt
+                        }
+                        flyttAvsnittOpp={oppdaterFlyttAvsnittOppover}
+                        flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
+                        context={FritekstBrevContext.BEHANDLING}
+                        behandlingsårsak={behandling.behandlingsårsak}
+                        stønadstype={behandling.stønadstype}
+                    />
+                </StyledBrev>
+            )}
+        </DataViewer>
+    );
 };
 
 export default FritekstBrev;
