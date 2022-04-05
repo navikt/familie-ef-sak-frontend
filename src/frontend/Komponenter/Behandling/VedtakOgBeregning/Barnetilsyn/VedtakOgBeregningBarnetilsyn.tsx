@@ -2,14 +2,15 @@ import React, { FC, useEffect, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { EBehandlingResultat } from '../../../../App/typer/vedtak';
+import { EBehandlingResultat, IInnvilgeVedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
-import { erAlleVilkårOppfylt } from '../Felles/utils';
+import { erAlleVilkårOppfyltForOvergangsstønad } from '../Felles/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Vedtaksform } from './Vedtaksform';
-import { IInnvilgeVedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
+import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
+import { Opphør } from '../Overgangsstønad/Opphør/Opphør';
 
 interface Props {
     behandling: Behandling;
@@ -29,7 +30,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
-    const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
+    const alleVilkårOppfylt = erAlleVilkårOppfyltForOvergangsstønad(vilkår);
     //const ikkeOppfyltVilkårEksisterer = eksistererIkkeOppfyltVilkår(vilkår);
 
     useEffect(() => {
@@ -53,18 +54,32 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
             <WrapperMarginTop>
                 <DataViewer response={{ vedtak }}>
                     {({ vedtak }) => {
-                        if (resultatType && resultatType === EBehandlingResultat.INNVILGE) {
-                            return (
-                                <Vedtaksform
-                                    behandling={behandling}
-                                    lagretVedtak={
-                                        vedtak as unknown as IInnvilgeVedtakForBarnetilsyn // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
-                                    }
-                                    barn={vilkår.grunnlag.barnMedSamvær}
-                                />
-                            );
+                        switch (resultatType) {
+                            case EBehandlingResultat.INNVILGE:
+                                return (
+                                    <Vedtaksform
+                                        behandling={behandling}
+                                        lagretVedtak={
+                                            vedtak as unknown as IInnvilgeVedtakForBarnetilsyn // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
+                                        }
+                                        barn={vilkår.grunnlag.barnMedSamvær}
+                                    />
+                                );
+                            case EBehandlingResultat.AVSLÅ:
+                                return (
+                                    <AvslåVedtak
+                                        behandling={behandling}
+                                        alleVilkårOppfylt={alleVilkårOppfylt}
+                                        ikkeOppfyltVilkårEksisterer={true}
+                                        lagretVedtak={vedtak}
+                                    />
+                                );
+                            case EBehandlingResultat.OPPHØRT:
+                                return <Opphør behandlingId={behandlingId} />;
+
+                            case undefined:
+                                return null;
                         }
-                        return null;
                     }}
                 </DataViewer>
             </WrapperMarginTop>

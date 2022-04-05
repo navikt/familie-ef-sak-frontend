@@ -25,9 +25,8 @@ interface Props {
     laster: boolean;
     feilmelding?: string;
     behandlingErRedigerbar: boolean;
-    alleVilkårOppfylt: boolean;
-    ikkeOppfyltVilkårEksisterer: boolean;
     feilmeldingÅrsak: string;
+    skalVelgeÅrsak: boolean;
 }
 
 const AvslåVedtakForm: React.FC<Props> = ({
@@ -39,20 +38,19 @@ const AvslåVedtakForm: React.FC<Props> = ({
     feilmelding,
     laster,
     behandlingErRedigerbar,
-    alleVilkårOppfylt,
-    ikkeOppfyltVilkårEksisterer,
     feilmeldingÅrsak,
+    skalVelgeÅrsak,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
 
     useEffect(() => {
-        ikkeOppfyltVilkårEksisterer && settAvslagÅrsak(EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
-    }, [ikkeOppfyltVilkårEksisterer, settAvslagÅrsak]);
+        !skalVelgeÅrsak && settAvslagÅrsak(EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
+    }, [skalVelgeÅrsak, settAvslagÅrsak]);
 
     return (
         <>
             <StyledForm onSubmit={lagreVedtak}>
-                {(alleVilkårOppfylt || !ikkeOppfyltVilkårEksisterer) && (
+                {skalVelgeÅrsak && (
                     <SelectAvslagÅrsak
                         avslagÅrsak={avslagÅrsak}
                         settAvslagÅrsak={settAvslagÅrsak}

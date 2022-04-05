@@ -8,7 +8,6 @@ import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { Heading } from '@navikt/ds-react';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 interface Props {
     behandling: Behandling;
@@ -51,12 +50,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     Innvilge
                 </option>
 
-                <option
-                    value={EBehandlingResultat.AVSLÅ}
-                    disabled={behandling.stønadstype === Stønadstype.BARNETILSYN}
-                >
-                    Avslå
-                </option>
+                <option value={EBehandlingResultat.AVSLÅ}>Avslå</option>
                 <option value={EBehandlingResultat.OPPHØRT} disabled={!opphørMulig}>
                     Opphørt
                 </option>
