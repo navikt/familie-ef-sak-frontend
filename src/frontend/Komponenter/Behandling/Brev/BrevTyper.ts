@@ -132,7 +132,7 @@ export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> 
     OVERGANGSSTØNAD: [
         FritekstBrevtype.SANKSJON,
         FritekstBrevtype.VEDTAK_INVILGELSE,
-        FritekstBrevtype.VEDTAK_INVILGELSE,
+        FritekstBrevtype.VEDTAK_AVSLAG,
     ],
     BARNETILSYN: [
         FritekstBrevtype.VEDTAK_INNVILGELSE_BARNETILSYN,
