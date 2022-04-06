@@ -78,9 +78,9 @@ export const OppsummeringAvBarn: React.FC<{
             </>
         );
     }
-    const fødselsdato = tilDato(fødselsdatostring);
-    const alder = datoTilAlder(fødselsdato);
+    const alder = datoTilAlder(tilDato(fødselsdatostring));
     const navnOgAlder = `${barn.registergrunnlag.navn} (${alder})`;
+    const barnepassordninger = barn.barnepass?.barnepassordninger || [];
 
     return (
         <Container>
@@ -88,7 +88,10 @@ export const OppsummeringAvBarn: React.FC<{
                 {navnOgAlder}
             </Heading>
             <BorderWrapper>
-                {(barn.barnepass?.barnepassordninger || []).map((barnepassordning, index) => {
+                {barnepassordninger.length === 0 && (
+                    <Normaltekst>Ingen søknadsinformasjon</Normaltekst>
+                )}
+                {barnepassordninger.map((barnepassordning, index) => {
                     return (
                         <React.Fragment key={index}>
                             <GridLinje>

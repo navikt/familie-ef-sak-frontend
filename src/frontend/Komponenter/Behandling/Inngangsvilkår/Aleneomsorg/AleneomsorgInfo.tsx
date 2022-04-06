@@ -12,11 +12,13 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
-const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
-    gjeldendeBarn,
-    skalViseSøknadsdata,
-}) => {
+const AleneomsorgInfo: FC<{
+    gjeldendeBarn: IBarnMedSamvær;
+    skalViseSøknadsdata?: boolean;
+    stønadstype: Stønadstype;
+}> = ({ gjeldendeBarn, skalViseSøknadsdata, stønadstype }) => {
     const { registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -92,11 +94,13 @@ const AleneomsorgInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata
                         </Normaltekst>
                     </>
                 )}
-                {barnepass && barnepass.skalHaBarnepass && (
+                {stønadstype === Stønadstype.BARNETILSYN && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
-                        <Normaltekst>Ja</Normaltekst>
+                        <Normaltekst>
+                            {barnepass && barnepass.skalHaBarnepass ? 'Ja' : 'Nei'}
+                        </Normaltekst>
                     </>
                 )}
             </GridTabell>
