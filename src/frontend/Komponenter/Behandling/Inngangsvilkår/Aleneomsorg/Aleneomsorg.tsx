@@ -6,8 +6,6 @@ import AleneomsorgInfo from './AleneomsorgInfo';
 import { VilkårPropsMedStønadstype } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 import { InngangsvilkårType } from '../vilkår';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
@@ -46,14 +44,8 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                     <AleneomsorgInfo
                                         gjeldendeBarn={barn}
                                         skalViseSøknadsdata={skalViseSøknadsdata}
+                                        stønadstype={stønadstype}
                                     />
-                                    {stønadstype === Stønadstype.BARNETILSYN &&
-                                        idx === grunnlag.barnMedSamvær.length - 1 && (
-                                            <AlertStripeInfo>
-                                                Merk at kun barn det er søkt barnetilsyn for vises
-                                                under aleneomsorg
-                                            </AlertStripeInfo>
-                                        )}
                                 </>
                             ),
                             høyre: (
