@@ -59,12 +59,12 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             </HøyrejustertNormaltekst>
                             <HøyrejustertNormaltekst>
                                 {formaterTallMedTusenSkille(
-                                    rad.beregningsgrunnlag.kontantstøtteBeløp
+                                    rad.beregningsgrunnlag.kontantstøttebeløp
                                 )}
                             </HøyrejustertNormaltekst>
                             <HøyrejustertNormaltekst>
                                 {formaterTallMedTusenSkille(
-                                    rad.beregningsgrunnlag.tilleggstønadBeløp
+                                    rad.beregningsgrunnlag.tilleggsstønadsbeløp
                                 )}
                             </HøyrejustertNormaltekst>
                             <HøyrejustertNormaltekst>

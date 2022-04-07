@@ -31,8 +31,8 @@ export interface IBeregningsperiodeBarnetilsyn {
 
 export interface IBeregningsgrunnlagBarnetilsyn {
     utgifter: number;
-    kontantstøtteBeløp: number;
-    tilleggstønadBeløp: number;
+    kontantstøttebeløp: number;
+    tilleggsstønadsbeløp: number;
     antallBarn: number;
 }
 
