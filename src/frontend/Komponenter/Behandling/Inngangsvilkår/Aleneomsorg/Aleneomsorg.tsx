@@ -3,11 +3,11 @@ import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
-import { VilkårProps } from '../vilkårprops';
+import { VilkårPropsMedStønadstype } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 import { InngangsvilkårType } from '../vilkår';
 
-export const Aleneomsorg: React.FC<VilkårProps> = ({
+export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -15,6 +15,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
     grunnlag,
     ikkeVurderVilkår,
     skalViseSøknadsdata,
+    stønadstype,
 }) => {
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
@@ -43,6 +44,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                     <AleneomsorgInfo
                                         gjeldendeBarn={barn}
                                         skalViseSøknadsdata={skalViseSøknadsdata}
+                                        stønadstype={stønadstype}
                                     />
                                 </>
                             ),

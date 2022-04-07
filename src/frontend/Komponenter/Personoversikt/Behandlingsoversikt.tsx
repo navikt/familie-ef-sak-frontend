@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { FagsakOvergangsstønad } from './FagsakOvergangsstønad';
-import { FagsakBarnetilsyn } from './FagsakBarnetilsyn';
+import { FagsakOversikt } from './FagsakOversikt';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 
@@ -21,13 +20,10 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
             {({ fagsakPerson }) => (
                 <>
                     {fagsakPerson.overgangsstønad && (
-                        <FagsakOvergangsstønad
-                            fagsak={fagsakPerson.overgangsstønad}
-                            rehentFagsak={() => hentFagsakPerson(fagsakPersonId)}
-                        />
+                        <FagsakOversikt fagsak={fagsakPerson.overgangsstønad} />
                     )}
                     {fagsakPerson.barnetilsyn && (
-                        <FagsakBarnetilsyn fagsak={fagsakPerson.barnetilsyn} />
+                        <FagsakOversikt fagsak={fagsakPerson.barnetilsyn} />
                     )}
                 </>
             )}

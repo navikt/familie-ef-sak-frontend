@@ -8,6 +8,7 @@ import {
     ValgtFelt,
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
+import { Dispatch, SetStateAction } from 'react';
 
 const lagTomtAvsnitt = (): AvsnittMedId => ({
     deloverskrift: '',
@@ -101,6 +102,39 @@ export const initValgteFeltMedMellomlager = (
             },
         };
     }, {});
+
+export const harValgfeltFeil = (
+    valgteFelt: ValgtFelt,
+    brevStruktur: BrevStruktur,
+    settFeil: Dispatch<SetStateAction<string>>
+): boolean => {
+    const harFeil = Object.entries(valgteFelt).some(([valgfeltApiNavn, valgtMulighet]) =>
+        brevStruktur.dokument.delmalerSortert.some((delmal) => {
+            const valgfeltFraMal = delmal.delmalValgfelt.find(
+                (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
+            );
+
+            if (valgfeltFraMal) {
+                const mellomlagerHarGyldigValg = valgfeltFraMal.valgMuligheter.some(
+                    (mulighetFraMal) => mulighetFraMal.valgmulighet === valgtMulighet.valgmulighet
+                );
+
+                if (!mellomlagerHarGyldigValg) {
+                    settFeil(
+                        `En endring har skjedd i brevmalen siden forrige mellomlagring. Valget ${valgtMulighet.visningsnavnValgmulighet} under ${valgfeltFraMal.valgfeltVisningsnavn} er ikke lengre et gyldig valg. Vennligst ta stilling til det på nytt`
+                    );
+                    return true;
+                }
+            }
+            return false;
+        })
+    );
+
+    if (!harFeil) {
+        settFeil('');
+    }
+    return harFeil;
+};
 
 export const initielleAvsnittMellomlager = (
     mellomlagretFritekstbrev: IFritekstBrev | IFrittståendeBrev | undefined

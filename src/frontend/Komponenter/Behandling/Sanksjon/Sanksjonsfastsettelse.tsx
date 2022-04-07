@@ -20,9 +20,10 @@ import {
     EAktivitet,
     EBehandlingResultat,
     EPeriodetype,
-    ISanksjonereVedtakForOvergangsstønad,
     ISanksjonereVedtakDto,
+    ISanksjonereVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
+    IVedtakType,
 } from '../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
@@ -33,10 +34,10 @@ import { FamilieSelect } from '@navikt/familie-form-elements';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import {
-    nåværendeÅrOgMånedFormatert,
-    nesteMånedOgNesteMånedsÅrFormatert,
-    SANKSJONERE_VEDTAK,
     antallDagerIgjenAvNåværendeMåned,
+    nesteMånedOgNesteMånedsÅrFormatert,
+    nåværendeÅrOgMånedFormatert,
+    SANKSJONERE_VEDTAK,
 } from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -103,7 +104,7 @@ const SanksjonsvedtakVisning: FC<{
     lagretVedtak?: IVedtakForOvergangsstønad;
 }> = ({ behandlingId, lagretVedtak }) => {
     const lagretSanksjonertVedtak =
-        lagretVedtak?.resultatType === EBehandlingResultat.SANKSJONERE
+        lagretVedtak?._type === IVedtakType.Sanksjonering
             ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
             : undefined;
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -146,7 +147,7 @@ const SanksjonsvedtakVisning: FC<{
 
         axiosRequest<string, ISanksjonereVedtakForOvergangsstønad>({
             method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/lagre-vedtak`,
             data: vedtaksRequest,
         })
             .then(håndterVedtaksresultat(`/behandling/${behandlingId}/simulering`))
@@ -167,6 +168,7 @@ const SanksjonsvedtakVisning: FC<{
                 årMånedFra: årOgMåned,
                 årMånedTil: årOgMåned,
             },
+            _type: IVedtakType.Sanksjonering,
         };
         lagreVedtak(vedtaksRequest);
     };

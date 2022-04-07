@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
@@ -6,12 +6,14 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import {
     EAvslagÅrsak,
     EBehandlingResultat,
-    IAvslåVedtakForOvergangsstønad,
+    IAvslagVedtak,
     IVedtakForOvergangsstønad,
+    IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
 import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
+import { Stønadstype } from '../../../../../App/typer/behandlingstema';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
@@ -20,9 +22,7 @@ export const AvslåVedtak: React.FC<{
     ikkeOppfyltVilkårEksisterer: boolean;
 }> = ({ behandling, lagretVedtak, alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer }) => {
     const lagretAvslåBehandling =
-        lagretVedtak?.resultatType === EBehandlingResultat.AVSLÅ
-            ? (lagretVedtak as IAvslåVedtakForOvergangsstønad)
-            : undefined;
+        lagretVedtak?._type === IVedtakType.Avslag ? (lagretVedtak as IAvslagVedtak) : undefined;
     const [avslagBegrunnelse, settAvslagBegrunnelse] = useState<string>(
         lagretAvslåBehandling?.avslåBegrunnelse ?? ''
     );
@@ -31,27 +31,26 @@ export const AvslåVedtak: React.FC<{
     );
     const [feilmelding, settFeilmelding] = useState<string>();
     const [feilmeldingÅrsak, settFeilmeldingÅrsak] = useState<string>('');
-    const [årsaksmenyVises, settÅrsaksmenyVises] = useState<boolean>(
-        alleVilkårOppfylt || !ikkeOppfyltVilkårEksisterer
-    );
-    const [ugyldigAvslagÅrsak, settUgyldigAvslagÅrsak] = useState<boolean>(
-        !avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT
-    );
+
+    const erUgyldigAvslagÅrsak = () =>
+        skalVelgeÅrsak && (!avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
+
     const [laster, settLaster] = useState<boolean>();
     const navigate = useNavigate();
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
 
-    const vedtakRequest: IAvslåVedtakForOvergangsstønad = {
+    const lagVedtakRequest = (): IAvslagVedtak => ({
         resultatType: EBehandlingResultat.AVSLÅ,
         avslåÅrsak: avslagÅrsak,
         avslåBegrunnelse: avslagBegrunnelse,
-    };
+        _type: IVedtakType.Avslag,
+    });
 
-    useEffect(() => {
-        settÅrsaksmenyVises(alleVilkårOppfylt || !ikkeOppfyltVilkårEksisterer);
-        settUgyldigAvslagÅrsak(!avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
-    }, [alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer, avslagÅrsak]);
+    const skalVelgeÅrsak =
+        behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD &&
+        alleVilkårOppfylt &&
+        !ikkeOppfyltVilkårEksisterer;
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
         return (res: Ressurs<string>) => {
@@ -72,10 +71,10 @@ export const AvslåVedtak: React.FC<{
 
     const avslåBlankett = () => {
         settLaster(true);
-        axiosRequest<string, IAvslåVedtakForOvergangsstønad>({
+        axiosRequest<string, IAvslagVedtak>({
             method: 'POST',
             url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-blankettvedtak`,
-            data: vedtakRequest,
+            data: lagVedtakRequest(),
         })
             .then(håndterVedtaksresultat(`/behandling/${behandling.id}/blankett`))
             .finally(() => {
@@ -85,10 +84,10 @@ export const AvslåVedtak: React.FC<{
 
     const avslåBehandling = () => {
         settLaster(true);
-        axiosRequest<string, IAvslåVedtakForOvergangsstønad>({
+        axiosRequest<string, IAvslagVedtak>({
             method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandling.id}/fullfor`,
-            data: vedtakRequest,
+            url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
+            data: lagVedtakRequest(),
         })
             .then(håndterVedtaksresultat(`/behandling/${behandling.id}/brev`))
             .finally(() => {
@@ -99,7 +98,7 @@ export const AvslåVedtak: React.FC<{
     const lagreVedtak = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         settFeilmeldingÅrsak('');
-        if (årsaksmenyVises && ugyldigAvslagÅrsak) {
+        if (erUgyldigAvslagÅrsak()) {
             settFeilmeldingÅrsak('Manglende årsak');
             return;
         }
@@ -125,9 +124,8 @@ export const AvslåVedtak: React.FC<{
             lagreVedtak={lagreVedtak}
             feilmelding={feilmelding}
             behandlingErRedigerbar={behandlingErRedigerbar}
-            alleVilkårOppfylt={alleVilkårOppfylt}
-            ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
             feilmeldingÅrsak={feilmeldingÅrsak}
+            skalVelgeÅrsak={skalVelgeÅrsak}
         />
     );
 };

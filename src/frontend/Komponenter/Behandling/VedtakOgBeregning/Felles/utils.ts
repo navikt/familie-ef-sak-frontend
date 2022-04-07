@@ -70,7 +70,7 @@ export const sorterUtTidligereVedtaksvilkår = (vilkår: IVilkår): IVurdering[]
     return vilkår.vurderinger.filter((v) => v.vilkårType in TidligereVedtaksperioderType);
 };
 
-export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
+export const erAlleVilkårOppfyltForOvergangsstønad = (vilkår: IVilkår): boolean => {
     const alleOppfyltBortsettFraAleneomsorg = vilkår.vurderinger.every((vurdering: IVurdering) => {
         if (vurdering.vilkårType !== InngangsvilkårType.ALENEOMSORG) {
             return vurdering.resultat === Vilkårsresultat.OPPFYLT;
@@ -86,7 +86,7 @@ export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
     return alleOppfyltBortsettFraAleneomsorg && aleneomsorgOppfylt;
 };
 
-export const eksistererIkkeOppfyltVilkår = (vilkår: IVilkår): boolean => {
+export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkår): boolean => {
     const vurderinger = mapFraVilkårTilVurderinger(vilkår);
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)

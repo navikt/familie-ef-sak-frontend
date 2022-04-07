@@ -5,8 +5,9 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../../../App/context/AppContext';
 import {
     EBehandlingResultat,
-    IOpphørtVedtakForOvergangsstønad,
+    IOpphørtVedtak,
     IVedtakForOvergangsstønad,
+    IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
@@ -26,9 +27,7 @@ export const Opphør: React.FC<{
 }> = ({ behandlingId, lagretVedtak }) => {
     const [laster, settLaster] = useState(false);
     const lagretOpphørtVedtak =
-        lagretVedtak?.resultatType === EBehandlingResultat.OPPHØRT
-            ? (lagretVedtak as IOpphørtVedtakForOvergangsstønad)
-            : undefined;
+        lagretVedtak?._type === IVedtakType.Opphør ? (lagretVedtak as IOpphørtVedtak) : undefined;
     const [opphørtFra, settOpphørtFra] = useState<string>(lagretOpphørtVedtak?.opphørFom || '');
     const [opphørtBegrunnelse, settOpphørtBegrunnelse] = useState<string>(
         lagretOpphørtVedtak?.begrunnelse || ''
@@ -43,14 +42,16 @@ export const Opphør: React.FC<{
         e.preventDefault();
         if (opphørtBegrunnelse && opphørtFra) {
             settLaster(true);
-            axiosRequest<string, IOpphørtVedtakForOvergangsstønad>({
+            const opphør: IOpphørtVedtak = {
+                resultatType: EBehandlingResultat.OPPHØRT,
+                opphørFom: opphørtFra,
+                begrunnelse: opphørtBegrunnelse,
+                _type: IVedtakType.Opphør,
+            };
+            axiosRequest<string, IOpphørtVedtak>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/beregning/${behandlingId}/fullfor`,
-                data: {
-                    resultatType: EBehandlingResultat.OPPHØRT,
-                    opphørFom: opphørtFra,
-                    begrunnelse: opphørtBegrunnelse,
-                } as IOpphørtVedtakForOvergangsstønad,
+                url: `/familie-ef-sak/api/vedtak/${behandlingId}/lagre-vedtak`,
+                data: opphør,
             })
                 .then(håndterOpphørtVedtak)
                 .finally(() => {

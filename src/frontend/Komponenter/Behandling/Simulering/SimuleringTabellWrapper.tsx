@@ -7,9 +7,9 @@ import styled from 'styled-components';
 import SimuleringOversikt from './SimuleringOversikt';
 import { Tilbakekreving } from './Tilbakekreving';
 import {
-    EBehandlingResultat,
     ISanksjonereVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
+    IVedtakType,
 } from '../../../App/typer/vedtak';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { nåværendeÅrOgMånedFormatert } from '../Sanksjon/utils';
@@ -59,7 +59,7 @@ const SimuleringTabellWrapper: React.FC<{
     const simuleringTabellRader = mapSimuleringstabellRader(simuleringsresultat, år);
 
     const lagretSanksjonertVedtak =
-        lagretVedtak?.resultatType === EBehandlingResultat.SANKSJONERE
+        lagretVedtak?._type === IVedtakType.Sanksjonering
             ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
             : undefined;
 

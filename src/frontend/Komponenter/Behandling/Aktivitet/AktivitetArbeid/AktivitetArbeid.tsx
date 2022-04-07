@@ -43,7 +43,7 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
                             venstre: (
                                 <>
                                     <Vilkårstittel
-                                        tittel="Aktivitet arbeid"
+                                        tittel="Aktivitet"
                                         vilkårsresultat={vurdering.resultat}
                                         paragrafTittel={'§15-10'}
                                     />
