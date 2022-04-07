@@ -22,6 +22,7 @@ export const oppdaterFilter = (
     val?: string | number
 ): IOppgaveRequest => {
     if (!val || val === '') {
+        // eslint-disable-next-line
         const { [key]: dummy, ...remainder } = object;
         return remainder;
     }

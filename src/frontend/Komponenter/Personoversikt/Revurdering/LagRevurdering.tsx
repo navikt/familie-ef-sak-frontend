@@ -3,33 +3,30 @@ import {
     Behandlingsårsak,
     behandlingsårsaker,
     behandlingsårsakTilTekst,
-} from '../../App/typer/Behandlingsårsak';
-import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
+} from '../../../App/typer/Behandlingsårsak';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
-import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
-import { BarnForRevurdering, RevurderingInnhold } from '../../App/typer/revurderingstype';
-import { StyledHovedknapp, StyledSelect } from './LagBehandlingModal';
-import { Normaltekst } from 'nav-frontend-typografi';
-import { ToggleName } from '../../App/context/toggles';
-import { useToggles } from '../../App/context/TogglesContext';
-import { useApp } from '../../App/context/AppContext';
+import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
+import { BarnForRevurdering, RevurderingInnhold } from '../../../App/typer/revurderingstype';
+import { StyledHovedknapp, StyledSelect } from '../LagBehandlingModal';
+import { ToggleName } from '../../../App/context/toggles';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { useApp } from '../../../App/context/AppContext';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { Behandling } from '../../../App/typer/fagsak';
+import { NyeBarn } from './NyeBarn';
+
+enum EVilkårsbehandleBarnValg {
+    VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
+    IKKE_VILKÅRSBEHANDLE = 'IKKE_VILKÅRSBEHANDLE',
+    IKKE_VALGT = 'IKKE_VALGT',
+}
 
 const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
     margin-top: 2rem;
-    margin-bottom: 17.5rem;
-`;
-
-const StyledCheckboxGruppe = styled(CheckboxGruppe)`
-    margin-top: 2rem;
-`;
-
-const TekstForCheckboxGruppe = styled(Normaltekst)`
-    margin-bottom: 1rem;
 `;
 
 const FlexDiv = styled.div`
@@ -38,6 +35,7 @@ const FlexDiv = styled.div`
 `;
 
 const KnappeWrapper = styled.div`
+    margin: 0 auto;
     margin-top: 4rem;
 `;
 
@@ -46,6 +44,7 @@ interface IProps {
     valgtBehandlingstype: Behandlingstype;
     lagRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     settVisModal: (bool: boolean) => void;
+    behandlinger: Behandling[];
 }
 
 export const LagRevurdering: React.FunctionComponent<IProps> = ({
@@ -53,9 +52,16 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     valgtBehandlingstype,
     lagRevurdering,
     settVisModal,
+    behandlinger,
 }) => {
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
+
+    const måTaStillingTilBarn =
+        behandlinger.some(
+            (behandling) => behandling.behandlingsårsak === Behandlingsårsak.MIGRERING
+        ) &&
+        !behandlinger.some((behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD);
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
@@ -66,7 +72,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     >(byggTomRessurs());
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
-    const [valgtBarn, settValgtBarn] = useState<BarnForRevurdering[]>([]);
+    const [vilkårsbehandleVedMigrering, settVilkårsbehandleVedMigrering] =
+        useState<EVilkårsbehandleBarnValg>(EVilkårsbehandleBarnValg.IKKE_VALGT);
 
     useEffect(() => {
         axiosRequest<BarnForRevurdering[], null>({
@@ -76,12 +83,17 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         });
     }, [axiosRequest, fagsakId]);
 
+    const skalTaMedAlleBarn =
+        !måTaStillingTilBarn ||
+        vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
+
     return (
         <>
             <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
                 {({ nyeBarnSidenForrigeBehandling }) => {
                     const harNyeBarnSidenForrigeBehandling =
                         nyeBarnSidenForrigeBehandling.length > 0;
+
                     return (
                         <>
                             <StyledSelect
@@ -108,59 +120,46 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             )
                                         )}
                             </StyledSelect>
-                            {kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling && (
-                                <StyledCheckboxGruppe legend={'Velg barn for revurderingen'}>
-                                    <TekstForCheckboxGruppe>
-                                        Barna listet opp nedenfor har ikke vært en del av
-                                        behandlingen tidligere. Gjør en vurdering på hvorvidt disse
-                                        skal inkluderes i den nye revurderingen og velg de som er
-                                        relevante.
-                                    </TekstForCheckboxGruppe>
-                                    {nyeBarnSidenForrigeBehandling.map((nyttBarn) => {
-                                        return (
-                                            <Checkbox
-                                                key={nyttBarn.personIdent}
-                                                onClick={(e) => {
-                                                    if ((e.target as HTMLInputElement).checked) {
-                                                        settValgtBarn((prevState) => [
-                                                            ...prevState,
-                                                            nyttBarn,
-                                                        ]);
-                                                    } else {
-                                                        settValgtBarn((prevState) =>
-                                                            prevState.filter(
-                                                                (barn) =>
-                                                                    barn.personIdent !==
-                                                                    nyttBarn.personIdent
-                                                            )
-                                                        );
-                                                    }
-                                                }}
-                                                label={`${nyttBarn.navn} (${nyttBarn.personIdent})`}
-                                            />
-                                        );
-                                    })}
-                                </StyledCheckboxGruppe>
-                            )}
+                            <StyledFamilieDatovelgder
+                                id={'krav-mottatt'}
+                                label={'Krav mottatt'}
+                                onChange={(dato) => {
+                                    settValgtDato(dato as string);
+                                }}
+                                valgtDato={valgtDato}
+                            />
+                            {kanLeggeTilNyeBarnPåRevurdering &&
+                                harNyeBarnSidenForrigeBehandling && (
+                                    <NyeBarn
+                                        nyeBarnSidenForrigeBehandling={
+                                            nyeBarnSidenForrigeBehandling
+                                        }
+                                        måTaStillingTilBarn={måTaStillingTilBarn}
+                                        vilkårsbehandleVedMigrering={vilkårsbehandleVedMigrering}
+                                        settVilkårsbehandleVedMigrering={
+                                            settVilkårsbehandleVedMigrering
+                                        }
+                                    />
+                                )}
                             <FlexDiv>
-                                <StyledFamilieDatovelgder
-                                    id={'krav-mottatt'}
-                                    label={'Krav mottatt'}
-                                    onChange={(dato) => {
-                                        settValgtDato(dato as string);
-                                    }}
-                                    valgtDato={valgtDato}
-                                />
                                 <KnappeWrapper>
                                     <StyledHovedknapp
                                         onClick={() => {
                                             const kanStarteRevurdering = !!(
-                                                valgtBehandlingsårsak && valgtDato
+                                                valgtBehandlingsårsak &&
+                                                valgtDato &&
+                                                !(
+                                                    måTaStillingTilBarn &&
+                                                    vilkårsbehandleVedMigrering ===
+                                                        EVilkårsbehandleBarnValg.IKKE_VALGT
+                                                )
                                             );
                                             if (kanStarteRevurdering) {
                                                 lagRevurdering({
                                                     fagsakId,
-                                                    barn: valgtBarn,
+                                                    barn: skalTaMedAlleBarn
+                                                        ? nyeBarnSidenForrigeBehandling
+                                                        : [],
                                                     behandlingsårsak: valgtBehandlingsårsak,
                                                     kravMottatt: valgtDato,
                                                 });
