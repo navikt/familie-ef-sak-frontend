@@ -115,25 +115,3 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
         previous[group].push(currentItem);
         return previous;
     }, {} as Record<K, T[]>);
-
-export const fødselsdatoTilAlder = (fødselsdato: string): number => {
-    const nå = new Date();
-
-    const årNå = nå.getFullYear();
-    const månedNå = nå.getMonth() + 1;
-    const dagNå = nå.getDate();
-
-    const [år, måned, dag] = fødselsdato.split('-').map((str: string): number => {
-        return parseInt(str, 10);
-    });
-
-    const alder = årNå - år;
-
-    if (månedNå < måned) {
-        return alder - 1;
-    } else if (måned === månedNå && dagNå < dag) {
-        return alder - 1;
-    } else {
-        return alder;
-    }
-};

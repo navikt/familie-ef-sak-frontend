@@ -2,7 +2,7 @@ import { BodyShort, Label, RadioGroup, Radio } from '@navikt/ds-react';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { BarnForRevurdering } from '../../../App/typer/revurderingstype';
-import { fødselsdatoTilAlder } from '../../../App/utils/utils';
+import { datoTilAlder } from '../../../App/utils/dato';
 
 enum EVilkårsbehandleBarnValg {
     VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
@@ -45,7 +45,7 @@ export const NyeBarn = ({
                     {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
                         return (
                             <li>
-                                {nyttBarn.navn} ({fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                {nyttBarn.navn} ({datoTilAlder(nyttBarn.fødselsdato)} år,{' '}
                                 {nyttBarn.personIdent})
                             </li>
                         );
@@ -95,7 +95,7 @@ export const NyeBarn = ({
                     {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
                         return (
                             <li>
-                                {nyttBarn.navn} ({fødselsdatoTilAlder(nyttBarn.fødselsdato)},{' '}
+                                {nyttBarn.navn} ({datoTilAlder(nyttBarn.fødselsdato)} år,{' '}
                                 {nyttBarn.personIdent})
                             </li>
                         );
