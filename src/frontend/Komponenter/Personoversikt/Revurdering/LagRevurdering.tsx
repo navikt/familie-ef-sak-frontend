@@ -134,7 +134,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                         nyeBarnSidenForrigeBehandling={
                                             nyeBarnSidenForrigeBehandling
                                         }
-                                        måTaStillingTilBarn={harMigrering}
+                                        måTaStillingTilBarn={måTaStillingTilBarn}
                                         vilkårsbehandleVedMigrering={vilkårsbehandleVedMigrering}
                                         settVilkårsbehandleVedMigrering={
                                             settVilkårsbehandleVedMigrering
@@ -149,7 +149,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                 valgtBehandlingsårsak &&
                                                 valgtDato &&
                                                 !(
-                                                    harMigrering &&
+                                                    måTaStillingTilBarn &&
                                                     vilkårsbehandleVedMigrering ===
                                                         EVilkårsbehandleBarnValg.IKKE_VALGT
                                                 )
