@@ -6,7 +6,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { ListState } from '../../../../App/hooks/felles/useListState';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
@@ -17,24 +17,16 @@ import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMed
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
 
-const UtgiftsperiodeContainer = styled.div<{ lesevisning?: boolean }>`
+const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter slettknapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 25rem 2rem 4rem 4rem'};
+        props.lesevisning ? '10rem 10rem 15rem 2rem 4rem' : '12rem 12rem 25rem 2rem 4rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
+    margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
 `;
 
-const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
-    display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 25rem 2rem 4rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: 0.5rem;
-`;
-
-const AntallBarn = styled(Element)<{ lesevisning: boolean }>`
+const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
     margin-top: ${(props) => (props.lesevisning ? '0.65rem' : '0rem')};
     text-align: center;
 `;
@@ -94,13 +86,13 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
 
     return (
         <>
-            <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
+            <UtgiftsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
                 <Element>Periode fra og med</Element>
                 <Element>Periode til og med</Element>
                 <Element>Velg barn</Element>
                 <Element>Ant.</Element>
                 <Element>Utgifter</Element>
-            </KolonneHeaderWrapper>
+            </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
                 const { årMånedFra, årMånedTil, utgifter } = utgiftsperiode;
                 const skalViseFjernKnapp =
@@ -110,7 +102,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
 
                 const barnForPeriode = barnFormatertForBarnVelger(barn);
                 return (
-                    <UtgiftsperiodeContainer key={index} lesevisning={!behandlingErRedigerbar}>
+                    <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrPeriode
                             årMånedFraInitiell={årMånedFra}
                             årMånedTilInitiell={årMånedTil}
@@ -145,6 +137,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                         : [...mapValgtBarn(valgtBarn as ISelectOption[])]
                                 );
                             }}
+                            erLesevisning={!behandlingErRedigerbar}
                         />
                         <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
                             utgiftsperioder.value[index].barn
@@ -180,7 +173,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 knappetekst="Fjern vedtaksperiode"
                             />
                         )}
-                    </UtgiftsperiodeContainer>
+                    </UtgiftsperiodeRad>
                 );
             })}
             <LeggTilKnapp

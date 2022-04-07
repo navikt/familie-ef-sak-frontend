@@ -5,7 +5,10 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { ResultatSwitch } from '../../../../Felles/Ikoner/ResultatSwitch';
-import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
+import {
+    IBarnMedSamvær,
+    typeBarnepassordningTilTekst,
+} from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 
@@ -75,9 +78,9 @@ export const OppsummeringAvBarn: React.FC<{
             </>
         );
     }
-    const fødselsdato = tilDato(fødselsdatostring);
-    const alder = datoTilAlder(fødselsdato);
+    const alder = datoTilAlder(tilDato(fødselsdatostring));
     const navnOgAlder = `${barn.registergrunnlag.navn} (${alder})`;
+    const barnepassordninger = barn.barnepass?.barnepassordninger || [];
 
     return (
         <Container>
@@ -85,7 +88,10 @@ export const OppsummeringAvBarn: React.FC<{
                 {navnOgAlder}
             </Heading>
             <BorderWrapper>
-                {(barn.barnepass?.barnepassordninger || []).map((barnepassordning, index) => {
+                {barnepassordninger.length === 0 && (
+                    <Normaltekst>Ingen søknadsinformasjon</Normaltekst>
+                )}
+                {barnepassordninger.map((barnepassordning, index) => {
                     return (
                         <React.Fragment key={index}>
                             <GridLinje>
@@ -93,7 +99,9 @@ export const OppsummeringAvBarn: React.FC<{
                                     <Søknadsgrunnlag />
                                     <BoldTekst size="small">Barnepassordning</BoldTekst>
                                 </IkonOgTekstWrapper>
-                                <Label size="small">{barnepassordning.type}</Label>
+                                <Label size="small">
+                                    {typeBarnepassordningTilTekst[barnepassordning.type]}
+                                </Label>
                             </GridLinje>
                             <GridLinje>
                                 <IkonOgTekstWrapper>

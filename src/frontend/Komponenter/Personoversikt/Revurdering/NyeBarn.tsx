@@ -20,18 +20,18 @@ const StyledRadioGroup = styled(RadioGroup)`
 
 interface IProps {
     nyeBarnSidenForrigeBehandling: BarnForRevurdering[];
-    harMigrering: boolean;
+    måTaStillingTilBarn: boolean;
     vilkårsbehandleVedMigrering: EVilkårsbehandleBarnValg;
     settVilkårsbehandleVedMigrering: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
 }
 
 export const NyeBarn = ({
     nyeBarnSidenForrigeBehandling,
-    harMigrering,
+    måTaStillingTilBarn,
     vilkårsbehandleVedMigrering,
     settVilkårsbehandleVedMigrering,
 }: IProps) => {
-    if (harMigrering)
+    if (måTaStillingTilBarn)
         return (
             <StyledNyeBarn>
                 <Label>Barn som ikke tidligere er behandlet</Label>

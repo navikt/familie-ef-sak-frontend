@@ -9,7 +9,7 @@ export enum IVedtakType {
     Sanksjonering = 'Sanksjonering',
 }
 
-export type IAvslåVedtakForOvergangsstønad = {
+export type IAvslagVedtak = {
     _type: IVedtakType.Avslag;
     resultatType: EBehandlingResultat.AVSLÅ;
     avslåÅrsak: EAvslagÅrsak;
@@ -94,7 +94,7 @@ export type ISanksjonereVedtakDto = {
     internBegrunnelse: string;
 };
 
-export interface IOpphørtVedtakForOvergangsstønad {
+export interface IOpphørtVedtak {
     _type: IVedtakType.Opphør;
     resultatType: EBehandlingResultat.OPPHØRT;
     opphørFom: string;
@@ -102,9 +102,9 @@ export interface IOpphørtVedtakForOvergangsstønad {
 }
 
 export type IVedtakForOvergangsstønad =
-    | IAvslåVedtakForOvergangsstønad
+    | IAvslagVedtak
     | IInnvilgeVedtakForOvergangsstønad
-    | IOpphørtVedtakForOvergangsstønad
+    | IOpphørtVedtak
     | ISanksjonereVedtakForOvergangsstønad;
 
 export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
@@ -193,6 +193,12 @@ export enum ERadioValg {
     NEI = 'NEI',
     IKKE_SATT = 'IKKE_SATT',
 }
+
+export const radiovalgTilTekst: Record<ERadioValg, string> = {
+    JA: 'Ja',
+    NEI: 'Nei',
+    IKKE_SATT: 'Ikke valgt',
+};
 
 export enum EAvslagÅrsak {
     VILKÅR_IKKE_OPPFYLT = 'VILKÅR_IKKE_OPPFYLT',

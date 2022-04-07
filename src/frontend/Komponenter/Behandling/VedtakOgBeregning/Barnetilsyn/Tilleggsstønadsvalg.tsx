@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { Radio, RadioGruppe } from 'nav-frontend-skjema';
+import { Radio } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
@@ -8,6 +8,7 @@ import {
     ERadioValg,
     ETilleggsstønadPeriodeProperty,
     IPeriodeMedBeløp,
+    radiovalgTilTekst,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -20,6 +21,7 @@ import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -103,9 +105,11 @@ const TilleggsstønadValg: React.FC<Props> = ({
 
     return (
         <>
-            <RadioGruppe
+            <FamilieRadioGruppe
                 legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften?"
                 feil={valideringsfeil.harTilleggsstønad}
+                erLesevisning={!behandlingErRedigerbar}
+                verdi={radiovalgTilTekst[tilleggsstønad.value as ERadioValg]}
             >
                 <Radio
                     name={'Tilleggsstønad'}
@@ -121,11 +125,13 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     checked={tilleggsstønad.value === ERadioValg.NEI}
                     onChange={(event) => tilleggsstønad.onChange(event)}
                 />
-            </RadioGruppe>
+            </FamilieRadioGruppe>
             {tilleggsstønad.value === ERadioValg.JA && (
-                <RadioGruppe
+                <FamilieRadioGruppe
                     legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?"
                     feil={valideringsfeil.skalStønadReduseres}
+                    erLesevisning={!behandlingErRedigerbar}
+                    verdi={radiovalgTilTekst[stønadsreduksjon.value as ERadioValg]}
                 >
                     <Radio
                         name={'Redusere'}
@@ -141,7 +147,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                         checked={stønadsreduksjon.value === ERadioValg.NEI}
                         onChange={(event) => stønadsreduksjon.onChange(event)}
                     />
-                </RadioGruppe>
+                </FamilieRadioGruppe>
             )}
             {tilleggsstønad.value === ERadioValg.JA && stønadsreduksjon.value === ERadioValg.JA && (
                 <>
