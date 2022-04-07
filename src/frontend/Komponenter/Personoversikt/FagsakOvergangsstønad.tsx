@@ -19,6 +19,7 @@ import { useToggles } from '../../App/context/TogglesContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
+import { Behandlingstype } from '../../App/typer/behandlingstype';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;
@@ -65,9 +66,14 @@ export const FagsakOvergangsstønad: React.FC<Props> = ({ fagsak, rehentFagsak }
             fagsak.behandlinger.some(
                 (behandling) => behandling.resultat !== BehandlingResultat.HENLAGT
             ) &&
-            fagsak.behandlinger.find(
-                (behandling) => behandling.status !== BehandlingStatus.FERDIGSTILT
-            ) === undefined
+            fagsak.behandlinger.every(
+                (behandling) => behandling.status === BehandlingStatus.FERDIGSTILT
+            ) &&
+            fagsak.behandlinger.some(
+                (behandling) =>
+                    behandling.type === Behandlingstype.REVURDERING ||
+                    behandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING
+            )
         );
     }
 

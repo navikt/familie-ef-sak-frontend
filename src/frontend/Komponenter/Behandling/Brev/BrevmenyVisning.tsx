@@ -16,6 +16,7 @@ import {
     grupperDelmaler,
     initFlettefelterMedVerdi,
     initValgteFeltMedMellomlager,
+    harValgfeltFeil,
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
@@ -27,6 +28,7 @@ import { delmalTilHtml } from './Htmlfelter';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
 import { IBeløpsperiode } from '../../../App/typer/vedtak';
+import { Alert } from '@navikt/ds-react';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -66,6 +68,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
+    const [brevmalFeil, settBrevmalFeil] = useState('');
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -80,6 +83,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
         }
+        // eslint-disable-next-line
     }, [brevStruktur, flettefeltStore, mellomlagretBrevVerdier]);
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
@@ -151,6 +155,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const genererBrev = () => {
+        if (harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil)) {
+            return;
+        }
+
         mellomlagreSanitybrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
         axiosRequest<string, unknown>({
             method: 'POST',
@@ -182,6 +190,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
     return (
         <BrevFelter>
+            {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
                     <Panel key={key}>

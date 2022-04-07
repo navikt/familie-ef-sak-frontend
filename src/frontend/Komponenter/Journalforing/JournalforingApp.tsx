@@ -300,7 +300,7 @@ const BekreftJournalføringModal: React.FC<{
     return (
         <UIModalWrapper
             modal={{
-                tittel: `Journalføring ikke mulig`,
+                tittel: ``,
                 lukkKnapp: true,
                 onClose: () => journalpostState.settVisBekreftelsesModal(false),
                 visModal: journalpostState.visBekreftelsesModal,

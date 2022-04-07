@@ -3,11 +3,13 @@ import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
-import { VilkårProps } from '../vilkårprops';
+import { VilkårPropsMedStønadstype } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 import { InngangsvilkårType } from '../vilkår';
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
-export const Aleneomsorg: React.FC<VilkårProps> = ({
+export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -15,6 +17,7 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
     grunnlag,
     ikkeVurderVilkår,
     skalViseSøknadsdata,
+    stønadstype,
 }) => {
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
@@ -44,6 +47,13 @@ export const Aleneomsorg: React.FC<VilkårProps> = ({
                                         gjeldendeBarn={barn}
                                         skalViseSøknadsdata={skalViseSøknadsdata}
                                     />
+                                    {stønadstype === Stønadstype.BARNETILSYN &&
+                                        idx === grunnlag.barnMedSamvær.length - 1 && (
+                                            <AlertStripeInfo>
+                                                Merk at kun barn det er søkt barnetilsyn for vises
+                                                under aleneomsorg
+                                            </AlertStripeInfo>
+                                        )}
                                 </>
                             ),
                             høyre: (

@@ -5,9 +5,9 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
-    EKontantstøtte,
     EKontantstøttePeriodeProperty,
-    IKontantstøttePeriode,
+    ERadioValg,
+    IPeriodeMedBeløp,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -44,12 +44,12 @@ const StyledInput = styled(InputMedTusenSkille)`
 
 interface Props {
     kontantstøtte: FieldState;
-    kontantstøttePerioder: ListState<IKontantstøttePeriode>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['kontantstøtteperioder'];
+    kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-export const tomKontantstøtteRad: IKontantstøttePeriode = {
+export const tomKontantstøtteRad: IPeriodeMedBeløp = {
     årMånedFra: '',
     årMånedTil: '',
     beløp: undefined,
@@ -92,23 +92,26 @@ const KontantstøtteValg: React.FC<Props> = ({
 
     return (
         <>
-            <RadioGruppe legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med?">
+            <RadioGruppe
+                legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med?"
+                feil={valideringsfeil?.harKontantstøtte}
+            >
                 <Radio
                     name={'Kontantstøtte'}
                     label={'Ja'}
-                    value={EKontantstøtte.JA}
-                    checked={kontantstøtte.value === EKontantstøtte.JA}
+                    value={ERadioValg.JA}
+                    checked={kontantstøtte.value === ERadioValg.JA}
                     onChange={(event) => kontantstøtte.onChange(event)}
                 />
                 <Radio
                     name={'Kontantstøtte'}
                     label={'Nei'}
-                    value={EKontantstøtte.NEI}
-                    checked={kontantstøtte.value === EKontantstøtte.NEI}
+                    value={ERadioValg.NEI}
+                    checked={kontantstøtte.value === ERadioValg.NEI}
                     onChange={(event) => kontantstøtte.onChange(event)}
                 />
             </RadioGruppe>
-            {kontantstøtte.value === EKontantstøtte.JA && (
+            {kontantstøtte.value === ERadioValg.JA && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
                         <Element>Periode fra og med</Element>
@@ -122,7 +125,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                             index === kontantstøttePerioder.value.length - 1 &&
                             index !== 0;
                         return (
-                            <>
+                            <React.Fragment key={index}>
                                 <KontantstøttePeriodeContainer>
                                     <MånedÅrPeriode
                                         årMånedFraInitiell={årMånedFra}
@@ -139,7 +142,8 @@ const KontantstøtteValg: React.FC<Props> = ({
                                             );
                                         }}
                                         feilmelding={
-                                            valideringsfeil && valideringsfeil[index]?.årMånedFra
+                                            valideringsfeil?.kontantstøtteperioder &&
+                                            valideringsfeil.kontantstøtteperioder[index]?.årMånedFra
                                         }
                                         erLesevisning={!behandlingErRedigerbar}
                                     />
@@ -173,7 +177,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                         />
                                     )}
                                 </KontantstøttePeriodeContainer>
-                            </>
+                            </React.Fragment>
                         );
                     })}
                     <LeggTilKnapp

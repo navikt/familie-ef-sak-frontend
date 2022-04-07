@@ -14,7 +14,8 @@ import { useApp } from '../../../../App/context/AppContext';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import { barnFormatertForBarnVelger, mapValgtBarnTilNavn } from './mockData';
+import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
+import { datoTilAlder } from '../../../../App/utils/dato';
 
 const UtgiftsperiodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -46,6 +47,7 @@ interface Props {
     utgiftsperioder: ListState<IUtgiftsperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    barn: IBarnMedSamvær[];
 }
 
 export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
@@ -59,6 +61,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     utgiftsperioder,
     valideringsfeil,
     settValideringsFeil,
+    barn,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -105,6 +108,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     index === utgiftsperioder.value.length - 1 &&
                     index !== 0;
 
+                const barnForPeriode = barnFormatertForBarnVelger(barn);
                 return (
                     <UtgiftsperiodeContainer key={index} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrPeriode
@@ -125,9 +129,12 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                         {/* @ts-ignore:next-line */}
                         <FamilieReactSelect
                             placeholder={'Velg barn'}
-                            options={barnFormatertForBarnVelger}
+                            options={barnForPeriode}
                             creatable={false}
                             isMulti={true}
+                            defaultValue={barnForPeriode.filter((barn) =>
+                                utgiftsperiode.barn.includes(barn.value)
+                            )}
                             onChange={(valgtBarn) => {
                                 settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterUtgiftsPeriode(
@@ -135,7 +142,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     EUtgiftsperiodeProperty.barn,
                                     valgtBarn === null
                                         ? []
-                                        : [...mapValgtBarnTilNavn(valgtBarn as ISelectOption[])]
+                                        : [...mapValgtBarn(valgtBarn as ISelectOption[])]
                                 );
                             }}
                         />
@@ -183,6 +190,22 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             />
         </>
     );
+};
+
+const barnFormatertForBarnVelger = (barn: IBarnMedSamvær[]) =>
+    barn.map<ISelectOption>((barn) => {
+        const alder = barn.registergrunnlag.fødselsdato
+            ? datoTilAlder(barn.registergrunnlag.fødselsdato)
+            : '';
+
+        return {
+            value: barn.barnId,
+            label: `${barn.registergrunnlag.navn} (${alder}år)`,
+        };
+    });
+
+const mapValgtBarn = (valgtBarn: ISelectOption[]): string[] => {
+    return valgtBarn.map((barn) => barn.value);
 };
 
 export default UtgiftsperiodeValg;

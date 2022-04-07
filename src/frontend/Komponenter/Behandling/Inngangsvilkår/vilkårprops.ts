@@ -6,6 +6,7 @@ import {
     Vurderingsfeilmelding,
 } from './vilkår';
 import { RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 export interface VilkårProps {
     vurderinger: IVurdering[];
@@ -21,4 +22,8 @@ export interface VilkårProps {
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     feilmeldinger: Vurderingsfeilmelding;
     skalViseSøknadsdata: boolean;
+}
+
+export interface VilkårPropsMedStønadstype extends VilkårProps {
+    stønadstype: Stønadstype;
 }
