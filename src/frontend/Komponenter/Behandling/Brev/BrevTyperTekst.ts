@@ -61,6 +61,52 @@ export const initielleAvsnittVedtakAvslag: AvsnittMedId[] = [
     },
 ];
 
+export const initielleAvsnittVedtakInvilgelseBarnetilsyn: AvsnittMedId[] = [
+    {
+        deloverskrift: 'Du må si ifra om endringer',
+        innhold:
+            'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/barnetilsyn-enslig#melde. Du sier ifra om endringer ved å skrive en beskjed til oss på nav.no/person/kontakt-oss/nb/skriv-til-oss.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Du har rett til å klage',
+        innhold:
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Du har rett til innsyn',
+        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
+
+export const initielleAvsnittVedtakAvslagBarnetilsyn: AvsnittMedId[] = [
+    {
+        deloverskrift: 'Du har rett til å klage',
+        innhold:
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Du har rett til innsyn',
+        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
+
 export const initielleAvsnittVarselOmAktivitetsplikt: AvsnittMedId[] = [
     {
         deloverskrift: '',
