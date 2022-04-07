@@ -57,9 +57,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
 
-    const harMigrering = behandlinger?.some(
-        (behandling) => behandling.behandlingsårsak === Behandlingsårsak.MIGRERING
-    );
+    const måTaStillingTilBarn =
+        behandlinger.some(
+            (behandling) => behandling.behandlingsårsak === Behandlingsårsak.MIGRERING
+        ) &&
+        !behandlinger.some((behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD);
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
@@ -82,7 +84,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     }, [axiosRequest, fagsakId]);
 
     const skalTaMedAlleBarn =
-        !harMigrering || vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
+        !måTaStillingTilBarn ||
+        vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
 
     return (
         <>
@@ -131,7 +134,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                         nyeBarnSidenForrigeBehandling={
                                             nyeBarnSidenForrigeBehandling
                                         }
-                                        harMigrering={harMigrering}
+                                        måTaStillingTilBarn={harMigrering}
                                         vilkårsbehandleVedMigrering={vilkårsbehandleVedMigrering}
                                         settVilkårsbehandleVedMigrering={
                                             settVilkårsbehandleVedMigrering
