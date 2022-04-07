@@ -176,7 +176,7 @@ export const Vedtaksform: React.FC<{
         if (formState.validateForm()) {
             axiosRequest<IBeregningsperiodeBarnetilsyn[], IBeregningsrequestBarnetilsyn>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/beregning/`,
+                url: `/familie-ef-sak/api/beregning/barnetilsyn/`,
                 data: {
                     utgiftsperioder: utgiftsperiodeState.value,
                     kontantstøtteperioder:

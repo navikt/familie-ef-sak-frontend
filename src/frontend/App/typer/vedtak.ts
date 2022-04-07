@@ -31,8 +31,8 @@ export interface IBeregningsperiodeBarnetilsyn {
 
 export interface IBeregningsgrunnlagBarnetilsyn {
     utgifter: number;
-    kontantstøtte: number;
-    tilleggstønad: number;
+    kontantstøtteBeløp: number;
+    tilleggstønadBeløp: number;
     antallBarn: number;
 }
 
@@ -57,7 +57,7 @@ export type IInnvilgeVedtakForOvergangsstønad = {
 export type IInnvilgeVedtakForBarnetilsyn = {
     begrunnelse?: string;
     perioder: IUtgiftsperiode[];
-    perioderKontantstøtte: [];
+    perioderKontantstøtte: IPeriodeMedBeløp[];
     tilleggsstønad: ITilleggsstønad;
     _type?: IVedtakType.InnvilgelseBarnetilsyn;
 };
