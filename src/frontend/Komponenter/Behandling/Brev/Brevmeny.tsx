@@ -26,6 +26,8 @@ import FritekstBrev from './FritekstBrev';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { EBehandlingResultat, IBeløpsperiode } from '../../../App/typer/vedtak';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -61,6 +63,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
     const { flettefeltStore } = useVerdierForBrev(tilkjentYtelse);
     const { toggles } = useToggles();
+    const { behandling } = useBehandling();
 
     useEffect(() => {
         if (brevMal && brevMal !== fritekstmal) {
@@ -87,7 +90,10 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (harVedtaksresultatMedTilkjentYtelse(vedtaksresultat)) {
+        const erOvergangsstønad =
+            behandling.status === RessursStatus.SUKSESS &&
+            behandling.data.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+        if (erOvergangsstønad && harVedtaksresultatMedTilkjentYtelse(vedtaksresultat)) {
             axiosRequest<TilkjentYtelse, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/tilkjentytelse/behandling/${props.behandlingId}`,
