@@ -197,7 +197,7 @@ export const Vedtaksform: React.FC<{
         if (!behandlingErRedigerbar) {
             axiosRequest<IBeregningsperiodeBarnetilsyn[], null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/beregning/barnetilsyn/`,
+                url: `/familie-ef-sak/api/beregning/barnetilsyn/${behandling.id}`,
             }).then((res: Ressurs<IBeregningsperiodeBarnetilsyn[]>) => settBeregningsresultat(res));
         }
         // eslint-disable-next-line
