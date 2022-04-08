@@ -149,6 +149,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                 valgtBehandlingsårsak &&
                                                 valgtDato &&
                                                 !(
+                                                    harNyeBarnSidenForrigeBehandling &&
+                                                    kanLeggeTilNyeBarnPåRevurdering &&
                                                     måTaStillingTilBarn &&
                                                     vilkårsbehandleVedMigrering ===
                                                         EVilkårsbehandleBarnValg.IKKE_VALGT
