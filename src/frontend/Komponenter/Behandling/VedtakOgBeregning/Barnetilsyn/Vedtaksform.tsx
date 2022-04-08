@@ -9,7 +9,7 @@ import {
     IVedtakType,
 } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
 import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -192,6 +192,16 @@ export const Vedtaksform: React.FC<{
             }).then((res: Ressurs<IBeregningsperiodeBarnetilsyn[]>) => settBeregningsresultat(res));
         }
     };
+
+    useEffect(() => {
+        if (!behandlingErRedigerbar) {
+            axiosRequest<IBeregningsperiodeBarnetilsyn[], null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/beregning/barnetilsyn/`,
+            }).then((res: Ressurs<IBeregningsperiodeBarnetilsyn[]>) => settBeregningsresultat(res));
+        }
+        // eslint-disable-next-line
+    }, [behandlingErRedigerbar]);
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
