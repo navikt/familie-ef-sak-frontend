@@ -16,11 +16,24 @@ export interface AndelTilkjentYtelse {
     samordningsfradrag: number;
 }
 
+export interface Andel {
+    stønadFra: string;
+    stønadTil: string;
+    inntekt: number;
+    beløp: number;
+    inntektsreduksjon: number;
+    samordningsfradrag: number;
+    utgifter: number;
+    antallBarn: number;
+    kontantstøtte: number;
+    tillegsstønad: number;
+}
+
 export interface AndelHistorikk {
     behandlingId: string;
     vedtakstidspunkt: string;
     saksbehandler: string;
-    andel: AndelTilkjentYtelse;
+    andel: Andel;
     endring?: AndelHistorikkEndring;
     aktivitet: EAktivitet;
     periodeType: EPeriodetype;
