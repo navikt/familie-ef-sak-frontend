@@ -1,4 +1,4 @@
-import { AndelHistorikk } from '../../../App/typer/tilkjentytelse';
+import { AktivitetArbeidTilTekst, AndelHistorikk } from '../../../App/typer/tilkjentytelse';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
 import {
@@ -6,7 +6,7 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../App/utils/formatter';
-import { aktivitetTilTekst, EPeriodetype } from '../../../App/typer/vedtak';
+import { EPeriodetype } from '../../../App/typer/vedtak';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
 import React from 'react';
 import { historikkEndring, HistorikkRad, HistorikkTabell } from './vedtakshistorikkUtil';
@@ -27,7 +27,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>
                 {erSanksjon
                     ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
-                    : aktivitetTilTekst[andel.aktivitet]}
+                    : andel.aktivitetArbeid && AktivitetArbeidTilTekst[andel.aktivitetArbeid]}
             </td>
             <td>{!erSanksjon && andel.andel.antallBarn}</td>
             <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.utgifter)}</td>
