@@ -2265,10 +2265,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-pdf@^5.0.9":
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/@types/react-pdf/-/react-pdf-5.0.9.tgz#db1db3af62103b29c01b796d9aefc42aabbf98d9"
-  integrity sha512-sDK48DwAnha8nf74cavp1g1a8oCLI3F4hBQZm+DHZmgGYOnBm0UuAKwVu84cL2By0MkiCrGv0KSJDVSv+tN6KA==
+"@types/react-pdf@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@types/react-pdf/-/react-pdf-5.7.0.tgz#ec4197eb417786fe2f10604a9cf61db3dc665314"
+  integrity sha512-8t42TAVW9DSmwClEOGiAA2pYpPG7e0M0rXB2wpUMaPNqI5pr04/QbfGDrnOgOeWlp/5WjOmQZrXto8DtkRYxkA==
   dependencies:
     "@types/react" "*"
     pdfjs-dist "^2.10.377"
