@@ -61,7 +61,7 @@
     "color-string": "^1.9.0",
     "constate": "^3.3.0",
     "date-fns": "^2.28.0",
-    "dayjs": "^1.10.6",
+    "dayjs": "^1.11.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
