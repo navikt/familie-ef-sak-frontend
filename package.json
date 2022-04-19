@@ -116,7 +116,7 @@
     "pdfjs-dist": "2.12.313",
     "prom-client": "^14.0.0",
     "prop-types": "^15.8.0",
-    "react": "^17.0.2",
+    "react": "^18.0.0",
     "react-collapse": "^5.1.0",
     "react-day-picker": "^7.4.10",
     "react-dom": "^17.0.2",
