@@ -128,8 +128,6 @@ export const Vedtaksform: React.FC<{
             .finally(() => {
                 settLaster(false);
             });
-
-        settLaster(false);
     };
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
