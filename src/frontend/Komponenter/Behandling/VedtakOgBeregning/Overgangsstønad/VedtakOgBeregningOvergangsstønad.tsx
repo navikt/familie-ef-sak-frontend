@@ -9,7 +9,7 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import {
-    erAlleVilkårOppfyltForOvergangsstønad,
+    erAlleVilkårOppfylt,
     eksistererIkkeOppfyltVilkårForOvergangsstønad,
 } from '../Felles/utils';
 
@@ -27,7 +27,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
-    const alleVilkårOppfylt = erAlleVilkårOppfyltForOvergangsstønad(vilkår);
+    const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
     const ikkeOppfyltVilkårEksisterer = eksistererIkkeOppfyltVilkårForOvergangsstønad(vilkår);
 
     useEffect(() => {

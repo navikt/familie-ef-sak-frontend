@@ -4,7 +4,7 @@ import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { EBehandlingResultat, IInnvilgeVedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
-import { erAlleVilkårOppfyltForOvergangsstønad } from '../Felles/utils';
+import { erAlleVilkårOppfylt } from '../Felles/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
@@ -30,8 +30,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
-    const alleVilkårOppfylt = erAlleVilkårOppfyltForOvergangsstønad(vilkår);
-    //const ikkeOppfyltVilkårEksisterer = eksistererIkkeOppfyltVilkår(vilkår);
+    const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
 
     useEffect(() => {
         hentVedtak();
