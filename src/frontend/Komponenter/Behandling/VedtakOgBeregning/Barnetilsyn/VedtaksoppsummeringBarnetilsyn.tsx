@@ -76,7 +76,7 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
                     />
                     <ResultatVisning
                         vilkårsvurderinger={barnetilsynsvilkår}
-                        tittel="Barnetilsynsvilkår:"
+                        tittel="Aktivitetsvilkår:"
                         stønadstype={behandling.stønadstype}
                     />
                 </Oppsummeringsboks>
