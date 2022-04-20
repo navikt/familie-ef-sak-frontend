@@ -11,7 +11,7 @@ import {
 import { Behandling } from '../../../../App/typer/fagsak';
 import React, { useEffect, useState } from 'react';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
-import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
+import { validerInnvilgetVedtakForm, validerPerioder } from './vedtaksvalidering';
 import { ListState } from '../../../../App/hooks/felles/useListState';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -38,7 +38,7 @@ export type InnvilgeVedtakForm = {
     tilleggsstønadBegrunnelse?: string;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];
-    begrunnelse: string;
+    begrunnelse?: string;
 };
 
 const WrapperDobbelMarginTop = styled.div`
@@ -171,7 +171,7 @@ export const Vedtaksform: React.FC<{
     };
 
     const beregnBarnetilsyn = () => {
-        if (formState.validateForm()) {
+        if (formState.customValidate(validerPerioder)) {
             axiosRequest<IBeregningsperiodeBarnetilsyn[], IBeregningsrequestBarnetilsyn>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/barnetilsyn/`,

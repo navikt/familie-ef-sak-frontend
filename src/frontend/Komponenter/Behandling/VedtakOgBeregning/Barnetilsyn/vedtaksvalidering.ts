@@ -38,6 +38,45 @@ export const validerInnvilgetVedtakForm = ({
     };
 };
 
+export const validerPerioder = ({
+    utgiftsperioder,
+    harKontantstøtte,
+    kontantstøtteperioder,
+    harTilleggsstønad,
+    skalStønadReduseres,
+    tilleggsstønadsperioder,
+}: {
+    utgiftsperioder: IUtgiftsperiode[];
+    harKontantstøtte: ERadioValg;
+    kontantstøtteperioder?: IPeriodeMedBeløp[];
+    harTilleggsstønad: ERadioValg;
+    skalStønadReduseres: ERadioValg;
+    tilleggsstønadsperioder?: IPeriodeMedBeløp[];
+}): FormErrors<{
+    utgiftsperioder: IUtgiftsperiode[];
+    kontantstøtteperioder?: IPeriodeMedBeløp[];
+    harKontantstøtte: ERadioValg;
+    harTilleggsstønad: ERadioValg;
+    skalStønadReduseres: ERadioValg;
+    tilleggsstønadsperioder?: IPeriodeMedBeløp[];
+}> => {
+    return {
+        ...validerUtgiftsperioder({ utgiftsperioder }),
+        harKontantstøtte: harKontantstøtte === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
+        ...validerKontantstøttePerioder({ kontantstøtteperioder }, harKontantstøtte),
+        harTilleggsstønad: harTilleggsstønad === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
+        skalStønadReduseres:
+            harTilleggsstønad === ERadioValg.JA && skalStønadReduseres === ERadioValg.IKKE_SATT
+                ? 'Mangler verdi'
+                : undefined,
+        ...validerTilleggsstønadPerioder(
+            { tilleggsstønadsperioder },
+            harTilleggsstønad,
+            skalStønadReduseres
+        ),
+    };
+};
+
 export const validerUtgiftsperioder = ({
     utgiftsperioder,
 }: {
