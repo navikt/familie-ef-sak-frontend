@@ -82,7 +82,6 @@ export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
     const listeAvBarnIder = vilkår.vurderinger
         .filter((vurdering) => vurdering.barnId)
         .map((vurdering) => vurdering.barnId);
-    const harVurderingerForBarn = listeAvBarnIder.length > 0;
 
     const minstEttBarnOppfylt = listeAvBarnIder.some((barnId) =>
         vilkår.vurderinger
@@ -90,7 +89,7 @@ export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
             .every((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT)
     );
 
-    return alleOppfyltBortsettFraBarn && minstEttBarnOppfylt && harVurderingerForBarn;
+    return alleOppfyltBortsettFraBarn && minstEttBarnOppfylt;
 };
 
 export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkår): boolean => {
