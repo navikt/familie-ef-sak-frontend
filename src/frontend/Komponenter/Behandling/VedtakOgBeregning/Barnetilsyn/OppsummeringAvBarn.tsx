@@ -132,15 +132,11 @@ export const OppsummeringAvBarn: React.FC<{
             </BorderWrapper>
             <FlexDiv>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch
-                        evaluering={vilkårsresultatAleneomsorg === Vilkårsresultat.OPPFYLT}
-                    />
+                    <ResultatSwitch vilkårsresultat={vilkårsresultatAleneomsorg} />
                     <Ikontekst>Aleneomsorg</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch
-                        evaluering={vilkårsresultatAlderPåBarn === Vilkårsresultat.OPPFYLT}
-                    />
+                    <ResultatSwitch vilkårsresultat={vilkårsresultatAlderPåBarn} />
                     <Ikontekst>Alder på barn</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
             </FlexDiv>
