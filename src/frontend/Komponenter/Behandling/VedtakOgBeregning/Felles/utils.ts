@@ -89,7 +89,7 @@ export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
             .every((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT)
     );
 
-    return alleOppfyltBortsettFraBarn && minstEttBarnOppfylt;
+    return alleOppfyltBortsettFraBarn && (minstEttBarnOppfylt || listeAvBarnIder.length === 0);
 };
 
 export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkår): boolean => {
