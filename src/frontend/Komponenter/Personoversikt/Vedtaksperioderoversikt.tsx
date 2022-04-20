@@ -2,23 +2,10 @@ import React, { useMemo, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import {
-    AndelEndringType,
-    AndelHistorikk,
-    AndelHistorikkEndring,
-    AndelHistorikkTypeTilTekst,
-} from '../../App/typer/tilkjentytelse';
-import {
-    formaterIsoDatoTid,
-    formaterNullableIsoDatoTid,
-    formaterNullableMånedÅr,
-    formaterTallMedTusenSkille,
-} from '../../App/utils/formatter';
+import { AndelEndringType, AndelHistorikk } from '../../App/typer/tilkjentytelse';
+import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import EtikettBase from 'nav-frontend-etiketter';
-import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../App/typer/vedtak';
 import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import {
     Behandling,
@@ -31,7 +18,8 @@ import { Checkbox, Select } from 'nav-frontend-skjema';
 import { compareDesc } from 'date-fns';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
-import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../App/typer/Sanksjonsårsak';
+import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/VedtaksperioderBarnetilsyn';
+import VedtaksperioderOvergangsstønad from './HistorikkVedtaksperioder/VedtaksperioderOvergangsstønad';
 
 const StyledInputs = styled.div`
     display: flex;
@@ -46,20 +34,12 @@ const StyledInputs = styled.div`
     }
 `;
 
-const StyledTabell = styled.table`
-    margin-top: 2rem;
-`;
-
 const StønadSelect = styled(Select)`
     width: 12rem;
 `;
 
 const BehandlingSelect = styled(Select)`
     width: 22rem;
-`;
-
-const Rad = styled.tr<{ type?: AndelEndringType }>`
-    opacity: ${(props) => (skalMarkeresSomFjernet(props.type) ? '50%' : '100%')};
 `;
 
 const erAktuell = (periode: AndelHistorikk) => !skalMarkeresSomFjernet(periode.endring?.type);
@@ -83,98 +63,12 @@ const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>
         compareDesc(new Date(a.opprettet), new Date(b.opprettet))
     );
 
-const endring = (endring?: AndelHistorikkEndring) =>
-    endring && (
-        <Link
-            className="lenke"
-            to={{
-                pathname: `/behandling/${endring.behandlingId}`,
-            }}
-        >
-            {AndelHistorikkTypeTilTekst[endring.type]} (
-            {formaterIsoDatoTid(endring.vedtakstidspunkt)})
-        </Link>
-    );
-
-const etikettType = (periodeType: EPeriodetype) => {
-    switch (periodeType) {
-        case EPeriodetype.HOVEDPERIODE:
-            return 'suksess';
-        case EPeriodetype.PERIODE_FØR_FØDSEL:
-            return 'info';
-        case EPeriodetype.UTVIDELSE:
-            return 'fokus';
-        case EPeriodetype.MIGRERING:
-        case EPeriodetype.FORLENGELSE:
-        case EPeriodetype.SANKSJON:
-            return 'advarsel';
-        default:
-            return 'info';
-    }
-};
-
-const historikkRad = (andel: AndelHistorikk) => {
-    const erMigrering = andel.periodeType === EPeriodetype.MIGRERING;
-    const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
-    return (
-        <Rad type={andel.endring?.type}>
-            <td>
-                {formaterNullableMånedÅr(andel.andel.stønadFra)}
-                {' - '}
-                {formaterNullableMånedÅr(andel.andel.stønadTil)}
-            </td>
-            <td>
-                <EtikettBase mini type={etikettType(andel.periodeType)}>
-                    {periodetypeTilTekst[andel.periodeType]}
-                </EtikettBase>
-            </td>
-            <td>
-                {erSanksjon
-                    ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
-                    : aktivitetTilTekst[andel.aktivitet]}
-            </td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.beløp)}</td>
-            <td>{formaterIsoDatoTid(andel.vedtakstidspunkt)}</td>
-            <td>{andel.saksbehandler}</td>
-            <td>
-                <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
-                    {erMigrering ? 'Migrering' : behandlingstypeTilTekst[andel.behandlingType]}
-                </Link>
-            </td>
-            <td>{endring(andel.endring)}</td>
-        </Rad>
-    );
-};
-
-const VedtaksperioderTabell: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
-    return (
-        <StyledTabell className="tabell">
-            <thead>
-                <tr>
-                    <th>Periode (fom-tom)</th>
-                    <th>Periodetype</th>
-                    <th>Aktivitet</th>
-                    <th>Inntektsgrunnlag</th>
-                    <th>Samordningsfradrag</th>
-                    <th>Stønadsbeløp</th>
-                    <th>Vedtakstidspunkt</th>
-                    <th>Saksbehandler</th>
-                    <th>Behandlingstype</th>
-                    <th>Endring</th>
-                </tr>
-            </thead>
-            <tbody>{andeler.map((periode) => historikkRad(periode))}</tbody>
-        </StyledTabell>
-    );
-};
-
 const Vedtaksperioder: React.FC<{
-    fagsakId: string;
+    fagsak: Fagsak;
     perioderTilOgMedBehandlingId?: string;
     visUaktuelle: boolean;
-}> = ({ fagsakId, perioderTilOgMedBehandlingId, visUaktuelle }) => {
+}> = ({ fagsak, perioderTilOgMedBehandlingId, visUaktuelle }) => {
+    const { id: fagsakId } = fagsak;
     const periodeHistorikkConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -190,7 +84,14 @@ const Vedtaksperioder: React.FC<{
         <DataViewer response={{ perioder }}>
             {({ perioder }) => {
                 const filtrertePerioder = visUaktuelle ? perioder : perioder.filter(erAktuell);
-                return <VedtaksperioderTabell andeler={filtrertePerioder} />;
+                switch (fagsak.stønadstype) {
+                    case Stønadstype.OVERGANGSSTØNAD:
+                        return <VedtaksperioderOvergangsstønad andeler={filtrertePerioder} />;
+                    case Stønadstype.BARNETILSYN:
+                        return <VedtaksperioderBarnetilsyn andeler={filtrertePerioder} />;
+                    default:
+                        return <div>Har ikke støtte for {fagsak.stønadstype}</div>;
+                }
             }}
         </DataViewer>
     );
@@ -278,7 +179,7 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
             </StyledInputs>
             {valgtFagsak && behandlinger.length > 0 && (
                 <Vedtaksperioder
-                    fagsakId={valgtFagsak.id}
+                    fagsak={valgtFagsak}
                     perioderTilOgMedBehandlingId={valgtBehandlingId}
                     visUaktuelle={visUaktuelle}
                 />

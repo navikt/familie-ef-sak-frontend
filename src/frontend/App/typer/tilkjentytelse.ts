@@ -16,14 +16,28 @@ export interface AndelTilkjentYtelse {
     samordningsfradrag: number;
 }
 
+export interface AndelMedGrunnlag {
+    stønadFra: string;
+    stønadTil: string;
+    inntekt: number;
+    beløp: number;
+    inntektsreduksjon: number;
+    samordningsfradrag: number;
+    utgifter: number;
+    antallBarn: number;
+    kontantstøtte: number;
+    tillegsstønad: number;
+}
+
 export interface AndelHistorikk {
     behandlingId: string;
     vedtakstidspunkt: string;
     saksbehandler: string;
-    andel: AndelTilkjentYtelse;
+    andel: AndelMedGrunnlag;
     endring?: AndelHistorikkEndring;
-    aktivitet: EAktivitet;
-    periodeType: EPeriodetype;
+    aktivitet?: EAktivitet;
+    aktivitetArbeid?: AktivitetArbeid;
+    periodeType?: EPeriodetype;
     behandlingType: Behandlingstype;
     sanksjonsårsak?: Sanksjonsårsak;
 }
@@ -33,6 +47,20 @@ export interface AndelHistorikkEndring {
     behandlingId: string;
     vedtakstidspunkt: string;
 }
+
+export enum AktivitetArbeid {
+    ER_I_ARBEID = 'ER_I_ARBEID',
+    ETABLERER_EGEN_VIRKSOMHET = 'ETABLERER_EGEN_VIRKSOMHET',
+    HAR_FORBIGÅENDE_SYKDOM = 'HAR_FORBIGÅENDE_SYKDOM',
+    NEI = 'NEI',
+}
+
+export const AktivitetArbeidTilTekst: Record<AktivitetArbeid, string> = {
+    ER_I_ARBEID: 'Er i arbeid',
+    ETABLERER_EGEN_VIRKSOMHET: 'Etablerer egen virksomhet',
+    HAR_FORBIGÅENDE_SYKDOM: 'Har forbigående sykdom',
+    NEI: 'Nei',
+};
 
 export enum AndelEndringType {
     FJERNET = 'FJERNET',
