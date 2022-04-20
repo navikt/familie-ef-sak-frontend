@@ -20,20 +20,15 @@ export const validerInnvilgetVedtakForm = ({
             : undefined;
 
     return {
-        ...validerUtgiftsperioder({ utgiftsperioder }),
-        harKontantstøtte: harKontantstøtte === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
-        ...validerKontantstøttePerioder({ kontantstøtteperioder }, harKontantstøtte),
-        harTilleggsstønad: harTilleggsstønad === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
-        tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
-        skalStønadReduseres:
-            harTilleggsstønad === ERadioValg.JA && skalStønadReduseres === ERadioValg.IKKE_SATT
-                ? 'Mangler verdi'
-                : undefined,
-        ...validerTilleggsstønadPerioder(
-            { tilleggsstønadsperioder },
+        ...validerPerioder({
+            utgiftsperioder,
+            harKontantstøtte,
+            kontantstøtteperioder,
             harTilleggsstønad,
-            skalStønadReduseres
-        ),
+            skalStønadReduseres,
+            tilleggsstønadsperioder,
+        }),
+        tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
         begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };
