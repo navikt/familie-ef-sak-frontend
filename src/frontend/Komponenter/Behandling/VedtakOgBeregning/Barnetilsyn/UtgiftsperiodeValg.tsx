@@ -12,7 +12,7 @@ import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
-import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
+import { harTallverdi, tilTallverdi, tilHeltall } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
@@ -145,6 +145,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 : 0
                         }`}</AntallBarn>
                         <StyledInput
+                            onKeyPress={tilHeltall}
                             type="number"
                             value={harTallverdi(utgifter) ? utgifter : ''}
                             onChange={(e) => {

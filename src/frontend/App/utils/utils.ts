@@ -1,3 +1,4 @@
+import { KeyboardEvent } from 'react';
 import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequest';
@@ -76,6 +77,12 @@ export const tilTallverdi = (verdi: number | string | undefined): number | strin
         return verdi;
     }
     return Number(verdi);
+};
+
+export const tilHeltall = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!/[0-9]/.test(event.key)) {
+        event.preventDefault();
+    }
 };
 
 export const range = (start: number, end: number): number[] =>
