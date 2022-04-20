@@ -49,7 +49,7 @@ const måBehandlesIEFSak = (oppgave: IOppgave) => {
         oppgavetype &&
         ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype) &&
         behandlingstema &&
-        ['ab0071', 'ab0177'].includes(behandlingstema)
+        ['ab0071', 'ab0028'].includes(behandlingstema)
     );
 };
 const kanStarteBlankettBehandling = (oppgave: IOppgave) => {
