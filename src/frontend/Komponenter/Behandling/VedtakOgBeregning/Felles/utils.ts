@@ -70,20 +70,26 @@ export const sorterUtTidligereVedtaksvilkår = (vilkår: IVilkår): IVurdering[]
     return vilkår.vurderinger.filter((v) => v.vilkårType in TidligereVedtaksperioderType);
 };
 
-export const erAlleVilkårOppfyltForOvergangsstønad = (vilkår: IVilkår): boolean => {
-    const alleOppfyltBortsettFraAleneomsorg = vilkår.vurderinger.every((vurdering: IVurdering) => {
-        if (vurdering.vilkårType !== InngangsvilkårType.ALENEOMSORG) {
+export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
+    const alleOppfyltBortsettFraBarn = vilkår.vurderinger.every((vurdering: IVurdering) => {
+        if (vurdering.barnId === undefined) {
             return vurdering.resultat === Vilkårsresultat.OPPFYLT;
         } else {
             return true;
         }
     });
 
-    const aleneomsorgOppfylt = vilkår.vurderinger
-        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
-        .some((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT);
+    const listeAvBarnIder = vilkår.vurderinger
+        .filter((vurdering) => vurdering.barnId)
+        .map((vurdering) => vurdering.barnId);
 
-    return alleOppfyltBortsettFraAleneomsorg && aleneomsorgOppfylt;
+    const minstEttBarnOppfylt = listeAvBarnIder.some((barnId) =>
+        vilkår.vurderinger
+            .filter((vurdering) => vurdering.barnId === barnId)
+            .every((vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT)
+    );
+
+    return alleOppfyltBortsettFraBarn && (minstEttBarnOppfylt || listeAvBarnIder.length === 0);
 };
 
 export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkår): boolean => {
