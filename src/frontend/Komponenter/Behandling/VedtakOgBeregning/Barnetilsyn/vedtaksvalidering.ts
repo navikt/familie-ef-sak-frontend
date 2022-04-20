@@ -20,11 +20,46 @@ export const validerInnvilgetVedtakForm = ({
             : undefined;
 
     return {
+        ...validerPerioder({
+            utgiftsperioder,
+            harKontantstøtte,
+            kontantstøtteperioder,
+            harTilleggsstønad,
+            skalStønadReduseres,
+            tilleggsstønadsperioder,
+        }),
+        tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
+        begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
+    };
+};
+
+export const validerPerioder = ({
+    utgiftsperioder,
+    harKontantstøtte,
+    kontantstøtteperioder,
+    harTilleggsstønad,
+    skalStønadReduseres,
+    tilleggsstønadsperioder,
+}: {
+    utgiftsperioder: IUtgiftsperiode[];
+    harKontantstøtte: ERadioValg;
+    kontantstøtteperioder?: IPeriodeMedBeløp[];
+    harTilleggsstønad: ERadioValg;
+    skalStønadReduseres: ERadioValg;
+    tilleggsstønadsperioder?: IPeriodeMedBeløp[];
+}): FormErrors<{
+    utgiftsperioder: IUtgiftsperiode[];
+    kontantstøtteperioder?: IPeriodeMedBeløp[];
+    harKontantstøtte: ERadioValg;
+    harTilleggsstønad: ERadioValg;
+    skalStønadReduseres: ERadioValg;
+    tilleggsstønadsperioder?: IPeriodeMedBeløp[];
+}> => {
+    return {
         ...validerUtgiftsperioder({ utgiftsperioder }),
         harKontantstøtte: harKontantstøtte === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
         ...validerKontantstøttePerioder({ kontantstøtteperioder }, harKontantstøtte),
         harTilleggsstønad: harTilleggsstønad === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
-        tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
         skalStønadReduseres:
             harTilleggsstønad === ERadioValg.JA && skalStønadReduseres === ERadioValg.IKKE_SATT
                 ? 'Mangler verdi'
@@ -34,7 +69,6 @@ export const validerInnvilgetVedtakForm = ({
             harTilleggsstønad,
             skalStønadReduseres
         ),
-        begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };
 
