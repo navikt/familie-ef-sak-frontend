@@ -16,7 +16,7 @@ export interface AndelTilkjentYtelse {
     samordningsfradrag: number;
 }
 
-export interface Andel {
+export interface AndelMedGrunnlag {
     stønadFra: string;
     stønadTil: string;
     inntekt: number;
@@ -33,7 +33,7 @@ export interface AndelHistorikk {
     behandlingId: string;
     vedtakstidspunkt: string;
     saksbehandler: string;
-    andel: Andel;
+    andel: AndelMedGrunnlag;
     endring?: AndelHistorikkEndring;
     aktivitet?: EAktivitet;
     aktivitetArbeid?: AktivitetArbeid;
