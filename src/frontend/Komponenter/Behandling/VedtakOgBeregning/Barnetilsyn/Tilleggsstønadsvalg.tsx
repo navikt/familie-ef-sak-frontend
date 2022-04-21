@@ -17,7 +17,7 @@ import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import { harTallverdi, tilTallverdi } from '../../../../App/utils/utils';
+import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
@@ -188,6 +188,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                     />
                                     <StyledInput
                                         type="number"
+                                        onKeyPress={tilHeltall}
                                         value={harTallverdi(beløp) ? beløp : ''}
                                         onChange={(e) => {
                                             settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
