@@ -99,8 +99,8 @@ export enum FritekstBrevtype {
     SANKSJON = 'SANKSJON',
     VEDTAK_INVILGELSE = 'VEDTAK_INVILGELSE',
     VEDTAK_AVSLAG = 'VEDTAK_AVSLAG',
-    OPPHØRT = 'OPPHØRT',
-    REVURDERT = 'REVURDERT',
+    VEDTAK_OPPHØR = 'VEDTAK_OPPHØR',
+    VEDTAK_REVURDERING = 'VEDTAK_REVURDERING',
     VEDTAK_INNVILGELSE_BARNETILSYN = 'VEDTAK_INNVILGELSE_BARNETILSYN',
     VEDTAK_AVSLAG_BARNETILSYN = 'VEDTAK_AVSLAG_BARNETILSYN',
 }
@@ -113,8 +113,8 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VARSEL_OM_SANKSJON: 'Varsel om sanksjon',
     VEDTAK_INVILGELSE: 'Du får overgangsstønad',
     VEDTAK_AVSLAG: 'Vi har avslått søknaden din om overgangsstønad',
-    OPPHØRT: 'Vi har stanset overgangsstønaden din',
-    REVURDERT: 'Vi har vurdert overgangsstønaden din på nytt',
+    VEDTAK_OPPHØR: 'Vi har stanset overgangsstønaden din',
+    VEDTAK_REVURDERING: 'Vi har vurdert overgangsstønaden din på nytt',
     VEDTAK_INNVILGELSE_BARNETILSYN: 'Du får stønad til barnetilsyn',
     VEDTAK_AVSLAG_BARNETILSYN: 'Vi har søknaden din om stønad til barnetilsyn',
 };
@@ -141,8 +141,8 @@ export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> 
         FritekstBrevtype.SANKSJON,
         FritekstBrevtype.VEDTAK_INVILGELSE,
         FritekstBrevtype.VEDTAK_AVSLAG,
-        FritekstBrevtype.OPPHØRT,
-        FritekstBrevtype.REVURDERT,
+        FritekstBrevtype.VEDTAK_OPPHØR,
+        FritekstBrevtype.VEDTAK_REVURDERING,
     ],
     BARNETILSYN: [
         FritekstBrevtype.VEDTAK_INNVILGELSE_BARNETILSYN,
@@ -160,8 +160,8 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         VARSEL_OM_SANKSJON: initielleAvsnittTom,
         VEDTAK_INVILGELSE: initielleAvsnittVedtakInvilgelse,
         VEDTAK_AVSLAG: initielleAvsnittVedtakAvslag,
-        OPPHØRT: initielleAvsnittVedtakAvslag,
-        REVURDERT: initielleAvsnittVedtakInvilgelse,
+        VEDTAK_OPPHØR: initielleAvsnittVedtakAvslag,
+        VEDTAK_REVURDERING: initielleAvsnittVedtakInvilgelse,
         VEDTAK_INNVILGELSE_BARNETILSYN: initielleAvsnittVedtakInvilgelseBarnetilsyn,
         VEDTAK_AVSLAG_BARNETILSYN: initielleAvsnittVedtakAvslagBarnetilsyn,
     };
