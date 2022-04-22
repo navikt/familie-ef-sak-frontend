@@ -33,7 +33,7 @@ export const historikkEndring = (endring?: AndelHistorikkEndring) =>
         </Link>
     );
 
-export const etikettType = (periodeType: EPeriodetype) => {
+export const etikettType = (periodeType?: EPeriodetype) => {
     switch (periodeType) {
         case EPeriodetype.HOVEDPERIODE:
             return 'suksess';

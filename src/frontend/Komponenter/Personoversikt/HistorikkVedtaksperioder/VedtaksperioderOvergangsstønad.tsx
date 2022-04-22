@@ -29,13 +29,13 @@ const historikkRad = (andel: AndelHistorikk) => {
             </td>
             <td>
                 <EtikettBase mini type={etikettType(andel.periodeType)}>
-                    {periodetypeTilTekst[andel.periodeType]}
+                    {periodetypeTilTekst[andel.periodeType || '']}
                 </EtikettBase>
             </td>
             <td>
                 {erSanksjon
                     ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
-                    : aktivitetTilTekst[andel.aktivitet]}
+                    : aktivitetTilTekst[andel.aktivitet || '']}
             </td>
             <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
             <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
