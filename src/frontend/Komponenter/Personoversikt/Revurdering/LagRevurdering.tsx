@@ -10,14 +10,14 @@ import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
 import { BarnForRevurdering, RevurderingInnhold } from '../../../App/typer/revurderingstype';
-import { StyledHovedknapp, StyledSelect } from '../LagBehandlingModal';
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { useApp } from '../../../App/context/AppContext';
-import { Flatknapp } from 'nav-frontend-knapper';
+import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Behandling } from '../../../App/typer/fagsak';
 import { NyeBarn } from './NyeBarn';
+import { Select } from 'nav-frontend-skjema';
 
 enum EVilkårsbehandleBarnValg {
     VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
@@ -25,13 +25,23 @@ enum EVilkårsbehandleBarnValg {
     IKKE_VALGT = 'IKKE_VALGT',
 }
 
-const StyledFamilieDatovelgder = styled(FamilieDatovelger)`
+const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
 `;
 
 const FlexDiv = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-bottom: 18rem;
+`;
+
+export const StyledHovedknapp = styled(Hovedknapp)`
+    margin-left: 2.3rem;
+    margin-right: 1rem;
+`;
+
+export const StyledSelect = styled(Select)`
+    margin-top: 2rem;
 `;
 
 const KnappeWrapper = styled.div`
@@ -120,28 +130,31 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             )
                                         )}
                             </StyledSelect>
-                            <StyledFamilieDatovelgder
-                                id={'krav-mottatt'}
-                                label={'Krav mottatt'}
-                                onChange={(dato) => {
-                                    settValgtDato(dato as string);
-                                }}
-                                valgtDato={valgtDato}
-                            />
-                            {kanLeggeTilNyeBarnPåRevurdering &&
-                                harNyeBarnSidenForrigeBehandling && (
-                                    <NyeBarn
-                                        nyeBarnSidenForrigeBehandling={
-                                            nyeBarnSidenForrigeBehandling
-                                        }
-                                        måTaStillingTilBarn={måTaStillingTilBarn}
-                                        vilkårsbehandleVedMigrering={vilkårsbehandleVedMigrering}
-                                        settVilkårsbehandleVedMigrering={
-                                            settVilkårsbehandleVedMigrering
-                                        }
-                                    />
-                                )}
                             <FlexDiv>
+                                <StyledFamilieDatovelger
+                                    id={'krav-mottatt'}
+                                    label={'Krav mottatt'}
+                                    onChange={(dato) => {
+                                        settValgtDato(dato as string);
+                                    }}
+                                    valgtDato={valgtDato}
+                                />
+                                {kanLeggeTilNyeBarnPåRevurdering &&
+                                    harNyeBarnSidenForrigeBehandling && (
+                                        <NyeBarn
+                                            nyeBarnSidenForrigeBehandling={
+                                                nyeBarnSidenForrigeBehandling
+                                            }
+                                            måTaStillingTilBarn={måTaStillingTilBarn}
+                                            vilkårsbehandleVedMigrering={
+                                                vilkårsbehandleVedMigrering
+                                            }
+                                            settVilkårsbehandleVedMigrering={
+                                                settVilkårsbehandleVedMigrering
+                                            }
+                                        />
+                                    )}
+
                                 <KnappeWrapper>
                                     <StyledHovedknapp
                                         onClick={() => {
