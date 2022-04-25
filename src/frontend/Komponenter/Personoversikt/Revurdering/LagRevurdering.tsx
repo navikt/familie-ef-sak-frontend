@@ -65,6 +65,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
+    const skalViseValgmulighetForKorrigering = toggles[ToggleName.visValgmulighetForKorrigering];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
 
     const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
@@ -87,6 +88,17 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         !måTaStillingTilBarn ||
         vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
 
+    const skalViseÅrsak = (behandlingsårsak: Behandlingsårsak) => {
+        switch (behandlingsårsak) {
+            case Behandlingsårsak.SANKSJON_1_MND:
+                return skalViseValgmulighetForSanksjon;
+            case Behandlingsårsak.KORRIGERING:
+                return skalViseValgmulighetForKorrigering;
+            default:
+                return true;
+        }
+    };
+
     return (
         <>
             <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
@@ -106,12 +118,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                 <option value="">Velg</option>
                                 {valgtBehandlingstype === Behandlingstype.REVURDERING &&
                                     behandlingsårsaker
-                                        .filter(
-                                            (behandlingsårsak) =>
-                                                behandlingsårsak !==
-                                                    Behandlingsårsak.SANKSJON_1_MND ||
-                                                skalViseValgmulighetForSanksjon
-                                        )
+                                        .filter(skalViseÅrsak)
                                         .map(
                                             (behandlingsårsak: Behandlingsårsak, index: number) => (
                                                 <option key={index} value={behandlingsårsak}>
