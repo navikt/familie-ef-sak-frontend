@@ -130,8 +130,8 @@ export const BrevtyperTilSelectNavn: Record<
     VARSEL_OM_SANKSJON: 'Varsel om sanksjon',
     VEDTAK_INVILGELSE: 'Vedtak innvilgelse',
     VEDTAK_AVSLAG: 'Vedtak avslag',
-    OPPHØRT: 'Opphør overgangsstønad',
-    REVURDERT: 'Revurdert overgangsstønad',
+    VEDTAK_OPPHØR: 'Opphør overgangsstønad',
+    VEDTAK_REVURDERING: 'Revurdert overgangsstønad',
     VEDTAK_INNVILGELSE_BARNETILSYN: 'Vedtak innvilgelse',
     VEDTAK_AVSLAG_BARNETILSYN: 'Vedtak avslag',
 };
