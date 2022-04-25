@@ -119,7 +119,7 @@ export const utledHjelpetekstForBeløpFørSatsjustering = (
 
     return `Beløpet er redusert fra ${
         beregningsresultat.beløpFørSatsjustering
-    } kr til ${satsForBarnetilsyn(beregningsresultat)} kr som er maksimalt beløp pr måned for ${
+    } kr til ${satsForBarnetilsyn(beregningsresultat)} kr, som er maksimalt beløp pr måned for ${
         beregningsresultat.beregningsgrunnlag.antallBarn
     } ${innskuttSetning} barn`;
 };
