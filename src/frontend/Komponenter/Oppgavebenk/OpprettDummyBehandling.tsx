@@ -78,6 +78,7 @@ export const OpprettDummyBehandling: React.FC = () => {
                 <option value="BLANKETT">Blankett</option>
                 <option value="MIGRERING">Migrering</option>
                 <option value="BARNETILSYN">Barnetilsyn</option>
+                <option value="SKOLEPENGER">Skolepenger</option>
             </Select>
 
             <Knapp mini disabled={!harSattPersonIdent} onClick={opprettBehandling}>

@@ -6,17 +6,19 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../App/utils/formatter';
-import { EPeriodetype } from '../../../App/typer/vedtak';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
 import React from 'react';
-import { historikkEndring, HistorikkRad, HistorikkTabell } from './vedtakshistorikkUtil';
+import {
+    etikettType,
+    historikkEndring,
+    HistorikkRad,
+    HistorikkTabell,
+} from './vedtakshistorikkUtil';
+import { EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
+import EtikettBase from 'nav-frontend-etiketter';
 
-/**
- * TODO håndtere sanksjon for barnetilsyn
- */
-const historikkRad = (andel: AndelHistorikk) => {
-    const erMigrering = andel.periodeType === EPeriodetype.MIGRERING;
-    const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
+const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean) => {
+    const erSanksjon = andel.erSanksjon;
     return (
         <HistorikkRad type={andel.endring?.type}>
             <td>
@@ -24,6 +26,15 @@ const historikkRad = (andel: AndelHistorikk) => {
                 {' - '}
                 {formaterNullableMånedÅr(andel.andel.stønadTil)}
             </td>
+            {sanksjonFinnes && (
+                <td>
+                    {erSanksjon && (
+                        <EtikettBase mini type={etikettType(EPeriodetype.SANKSJON)}>
+                            {periodetypeTilTekst[EPeriodetype.SANKSJON]}
+                        </EtikettBase>
+                    )}
+                </td>
+            )}
             <td>
                 {erSanksjon
                     ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
@@ -37,7 +48,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{andel.saksbehandler}</td>
             <td>
                 <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
-                    {erMigrering ? 'Migrering' : behandlingstypeTilTekst[andel.behandlingType]}
+                    {behandlingstypeTilTekst[andel.behandlingType]}
                 </Link>
             </td>
             <td>{historikkEndring(andel.endring)}</td>
@@ -46,11 +57,13 @@ const historikkRad = (andel: AndelHistorikk) => {
 };
 
 const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
+    const sanksjonFinnes = andeler.some((andel) => andel.erSanksjon);
     return (
         <HistorikkTabell className="tabell">
             <thead>
                 <tr>
                     <th>Periode (fom-tom)</th>
+                    {sanksjonFinnes && <th></th>}
                     <th>Aktivitet</th>
                     <th>Antall barn</th>
                     <th>Utgifter</th>
@@ -62,7 +75,7 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                     <th>Endring</th>
                 </tr>
             </thead>
-            <tbody>{andeler.map((periode) => historikkRad(periode))}</tbody>
+            <tbody>{andeler.map((periode) => historikkRad(periode, sanksjonFinnes))}</tbody>
         </HistorikkTabell>
     );
 };
