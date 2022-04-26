@@ -37,6 +37,7 @@ export interface AndelHistorikk {
     endring?: AndelHistorikkEndring;
     aktivitet?: EAktivitet;
     aktivitetArbeid?: AktivitetArbeid;
+    erSanksjon: boolean;
     periodeType?: EPeriodetype;
     behandlingType: Behandlingstype;
     sanksjonsårsak?: Sanksjonsårsak;
