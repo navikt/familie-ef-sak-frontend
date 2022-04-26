@@ -122,3 +122,6 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
         previous[group].push(currentItem);
         return previous;
     }, {} as Record<K, T[]>);
+
+const REGEXP_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+export const isUUID = (value: string): boolean => REGEXP_UUID.test(value);
