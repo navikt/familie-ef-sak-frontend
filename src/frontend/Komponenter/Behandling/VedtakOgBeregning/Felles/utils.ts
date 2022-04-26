@@ -10,8 +10,6 @@ import {
 } from '../../Inngangsvilkår/vilkår';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
 import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
-import { årTilSatsBeløpForBarnetislyn } from './konstanter';
-import { formaterIsoÅr } from '../../../../App/utils/formatter';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -116,21 +114,6 @@ export const utledHjelpetekstForBeløpFørSatsjustering = (
 ): string => {
     const innskuttSetning =
         beregningsresultat.beregningsgrunnlag.antallBarn >= 3 ? 'eller flere' : '';
-
-    return `Beløpet er redusert fra ${
-        beregningsresultat.beløpFørSatsjustering
-    } kr til ${satsForBarnetilsyn(beregningsresultat)} kr, som er maksimalt beløp pr måned for ${
-        beregningsresultat.beregningsgrunnlag.antallBarn
-    } ${innskuttSetning} barn`;
-};
-
-export const satsForBarnetilsyn = (beregningsresultat: IBeregningsperiodeBarnetilsyn): number => {
-    const år = formaterIsoÅr(beregningsresultat.periode.fradato);
-    const årTilSats = årTilSatsBeløpForBarnetislyn[år];
-    const antallBarnTilIndex =
-        beregningsresultat.beregningsgrunnlag.antallBarn > 3
-            ? 2
-            : beregningsresultat.beregningsgrunnlag.antallBarn - 1;
-
-    return årTilSats[antallBarnTilIndex];
+    return `Beløpet er redusert fra ${beregningsresultat.beløpFørSatsjustering} kr til ${beregningsresultat.sats} kr, 
+        som er maksimalt beløp pr måned for ${beregningsresultat.beregningsgrunnlag.antallBarn} ${innskuttSetning} barn`;
 };
