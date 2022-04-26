@@ -32,6 +32,7 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
+import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -47,6 +48,26 @@ const WrapperDobbelMarginTop = styled.div`
 const WrapperMarginTop = styled.div`
     margin-top: 1rem;
 `;
+
+const WrapperMarginBottom = styled.div`
+    margin-bottom: 2rem;
+`;
+
+const RevurderesFraOgMed = ({ settRevurderesFra }: any) => {
+    return (
+        <WrapperMarginBottom>
+            <MånedÅrVelger
+                label={'Revurderes fra og med'}
+                onEndret={(årMåned) => {
+                    settRevurderesFra(årMåned);
+                }}
+                antallÅrTilbake={5}
+                antallÅrFrem={3}
+                årMånedInitiell={'2020-10'}
+            />
+        </WrapperMarginBottom>
+    );
+};
 
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
@@ -64,8 +85,11 @@ export const InnvilgeVedtak: React.FC<{
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
     );
+    const [revurderesFra, settRevurderesFra] = useState<string>();
 
     const [feilmelding, settFeilmelding] = useState<string>();
+
+    console.log('rev', revurderesFra);
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -213,9 +237,12 @@ export const InnvilgeVedtak: React.FC<{
         }
     };
 
+    console.log('beh', behandling);
+
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
+                <RevurderesFraOgMed settRevurderesFra={settRevurderesFra} />
                 <Heading spacing size="small" level="5">
                     Vedtaksperiode
                 </Heading>

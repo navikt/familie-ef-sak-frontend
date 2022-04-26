@@ -43,6 +43,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
     return (
         <DataViewer response={{ vedtak }}>
             {({ vedtak }) => {
+                console.log('beh', behandling);
                 return (
                     <Wrapper>
                         <SelectVedtaksresultat
