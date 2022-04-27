@@ -2,6 +2,7 @@ import { KeyboardEvent } from 'react';
 import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequest';
+import { validate } from 'uuid';
 
 export const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothing<string> => {
     if (!valgtDatoFra || !valgtDatoTil) {
@@ -123,5 +124,4 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
         return previous;
     }, {} as Record<K, T[]>);
 
-const REGEXP_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-export const isUUID = (value: string): boolean => REGEXP_UUID.test(value);
+export const isUUID = (value: string): boolean => validate(value);
