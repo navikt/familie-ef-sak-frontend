@@ -21,7 +21,7 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter slettknapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 10rem 15rem 2rem 4rem' : '12rem 12rem 25rem 2rem 4rem 4rem'};
+        props.lesevisning ? '10rem 10rem 18rem 2rem 4rem' : '12rem 12rem 25rem 2rem 4rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
 `;
@@ -33,6 +33,10 @@ const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
 
 const StyledInput = styled(InputMedTusenSkille)`
     text-align: left;
+`;
+
+const NavnContainer = styled.div`
+    margin-bottom: 1rem;
 `;
 
 interface Props {
@@ -118,27 +122,37 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
                         />
-                        {/* @ts-ignore:next-line */}
-                        <FamilieReactSelect
-                            placeholder={'Velg barn'}
-                            options={barnForPeriode}
-                            creatable={false}
-                            isMulti={true}
-                            defaultValue={barnForPeriode.filter((barn) =>
-                                utgiftsperiode.barn.includes(barn.value)
-                            )}
-                            onChange={(valgtBarn) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                oppdaterUtgiftsPeriode(
-                                    index,
-                                    EUtgiftsperiodeProperty.barn,
-                                    valgtBarn === null
-                                        ? []
-                                        : [...mapValgtBarn(valgtBarn as ISelectOption[])]
-                                );
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                        />
+                        {behandlingErRedigerbar ? (
+                            /* @ts-ignore:next-line */
+                            <FamilieReactSelect
+                                placeholder={'Velg barn'}
+                                options={barnForPeriode}
+                                creatable={false}
+                                isMulti={true}
+                                defaultValue={barnForPeriode.filter((barn) =>
+                                    utgiftsperiode.barn.includes(barn.value)
+                                )}
+                                onChange={(valgtBarn) => {
+                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                    oppdaterUtgiftsPeriode(
+                                        index,
+                                        EUtgiftsperiodeProperty.barn,
+                                        valgtBarn === null
+                                            ? []
+                                            : [...mapValgtBarn(valgtBarn as ISelectOption[])]
+                                    );
+                                }}
+                                erLesevisning={!behandlingErRedigerbar}
+                            />
+                        ) : (
+                            <NavnContainer>
+                                {barnForPeriode
+                                    .filter((barn) => utgiftsperiode.barn.includes(barn.value))
+                                    .map((barn) => (
+                                        <Normaltekst>{barn.label}</Normaltekst>
+                                    ))}
+                            </NavnContainer>
+                        )}
                         <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
                             utgiftsperioder.value[index].barn
                                 ? utgiftsperioder.value[index].barn?.length
