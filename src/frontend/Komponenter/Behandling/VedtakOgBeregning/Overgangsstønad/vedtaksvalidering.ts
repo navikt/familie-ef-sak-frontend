@@ -57,7 +57,7 @@ export const validerVedtaksperioder = ({
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
 }> => {
-    const elveMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 11));
+    const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
@@ -99,10 +99,10 @@ export const validerVedtaksperioder = ({
                 };
             }
         }
-        if (erMånedÅrEtter(elveMånederFremITiden, årMånedFra)) {
+        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra)) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 11mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
             };
         }
         return vedtaksperiodeFeil;
@@ -133,9 +133,9 @@ export const validerVedtaksperioder = ({
                 };
             }
         }
-        if (erMånedÅrEtter(elveMånederFremITiden, årMånedFra)) {
+        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra)) {
             return {
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 11mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
             };
         }
         return { årMånedFra: undefined };
