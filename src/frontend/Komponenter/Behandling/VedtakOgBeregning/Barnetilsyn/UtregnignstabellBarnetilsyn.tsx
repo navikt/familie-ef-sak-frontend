@@ -46,7 +46,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                         <HøyrejusterElement>Ant. barn</HøyrejusterElement>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Kontantstøtte</HøyrejusterElement>
-                        <HøyrejusterElement>Reduksjonsbeløp</HøyrejusterElement>
+                        <HøyrejusterElement>Tilleggsstønad</HøyrejusterElement>
                         <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
                     </Rad>
                     {beregningsresultat.map((rad) => (
