@@ -32,11 +32,11 @@ const AleneomsorgInfo: FC<{
         const harLøpendeStønad = barnMedLøpendeStønad.includes(personIdent);
 
         if (harLøpendeStønad) {
-            if (skalHaBarnepass && skalHaBarnepass) {
+            if (skalHaBarnepass) {
                 return <EtikettInfo>ja, og har løpende stønad</EtikettInfo>;
             }
             return <EtikettInfo>nei, men har løpende stønad</EtikettInfo>;
-        } else if (skalHaBarnepass && skalHaBarnepass) {
+        } else if (skalHaBarnepass) {
             return <EtikettSuksess>ja</EtikettSuksess>;
         }
         return <EtikettAdvarsel>nei</EtikettAdvarsel>;
