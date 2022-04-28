@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
@@ -6,6 +6,10 @@ import AleneomsorgInfo from './AleneomsorgInfo';
 import { VilkårPropsMedStønadstype } from '../vilkårprops';
 import { Vilkårstittel } from '../Vilkårstittel';
 import { InngangsvilkårType } from '../vilkår';
+import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { useApp } from '../../../../App/context/AppContext';
+import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
@@ -16,7 +20,24 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     ikkeVurderVilkår,
     skalViseSøknadsdata,
     stønadstype,
+    behandlingId,
 }) => {
+    const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] = useState<Ressurs<string[]>>(
+        byggTomRessurs()
+    );
+    const { axiosRequest } = useApp();
+
+    useEffect(() => {
+        if (stønadstype === Stønadstype.BARNETILSYN) {
+            axiosRequest<string[], null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/tilkjentytelse/barn/${behandlingId}`,
+            }).then((respons: Ressurs<string[]>) => {
+                settBarnMedLøpendeStønad(respons);
+            });
+        }
+    }, [axiosRequest, behandlingId, stønadstype, settBarnMedLøpendeStønad]);
+
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
         .map((v) => v.resultat);
@@ -41,11 +62,18 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                             vilkårsresultat={utleddResultat}
                                         />
                                     )}
-                                    <AleneomsorgInfo
-                                        gjeldendeBarn={barn}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                        stønadstype={stønadstype}
-                                    />
+                                    <DataViewer response={{ barnMedLøpendeStønad }}>
+                                        {({ barnMedLøpendeStønad }) => {
+                                            return (
+                                                <AleneomsorgInfo
+                                                    gjeldendeBarn={barn}
+                                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                                    stønadstype={stønadstype}
+                                                    barnMedLøpendeStønad={barnMedLøpendeStønad}
+                                                />
+                                            );
+                                        }}
+                                    </DataViewer>
                                 </>
                             ),
                             høyre: (

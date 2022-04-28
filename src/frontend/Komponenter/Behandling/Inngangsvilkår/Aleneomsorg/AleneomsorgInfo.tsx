@@ -13,14 +13,34 @@ import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnum
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { EtikettAdvarsel, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
     skalViseSøknadsdata?: boolean;
     stønadstype: Stønadstype;
-}> = ({ gjeldendeBarn, skalViseSøknadsdata, stønadstype }) => {
-    const { registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
+    barnMedLøpendeStønad: string[];
+}> = ({ gjeldendeBarn, skalViseSøknadsdata, stønadstype, barnMedLøpendeStønad }) => {
+    const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
+
+    const utledEtikett = (
+        barnMedLøpendeStønad: string[],
+        personIdent: string,
+        skalHaBarnepass?: boolean
+    ) => {
+        const harLøpendeStønad = barnMedLøpendeStønad.includes(personIdent);
+
+        if (harLøpendeStønad) {
+            if (skalHaBarnepass) {
+                return <EtikettInfo>ja, og har løpende stønad</EtikettInfo>;
+            }
+            return <EtikettInfo>nei, men har løpende stønad</EtikettInfo>;
+        } else if (skalHaBarnepass) {
+            return <EtikettSuksess>ja</EtikettSuksess>;
+        }
+        return <EtikettAdvarsel>nei</EtikettAdvarsel>;
+    };
 
     return (
         <>
@@ -99,7 +119,7 @@ const AleneomsorgInfo: FC<{
                         <Søknadsgrunnlag />
                         <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
                         <Normaltekst>
-                            {barnepass && barnepass.skalHaBarnepass ? 'Ja' : 'Nei'}
+                            {utledEtikett(barnMedLøpendeStønad, barnId, barnepass?.skalHaBarnepass)}
                         </Normaltekst>
                     </>
                 )}
