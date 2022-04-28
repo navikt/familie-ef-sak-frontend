@@ -66,7 +66,6 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                         skalViseSøknadsdata={skalViseSøknadsdata}
                                         barnMedLøpendeStønad={barnMedLøpendeStønad}
                                     />
-                                    );
                                 </>
                             ),
                             høyre: (
