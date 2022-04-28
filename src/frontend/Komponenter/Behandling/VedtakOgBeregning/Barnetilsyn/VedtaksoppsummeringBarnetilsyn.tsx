@@ -7,7 +7,6 @@ import {
 } from '../../Inngangsvilkår/vilkår';
 import { Behandling } from '../../../../App/typer/fagsak';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { Heading } from '@navikt/ds-react';
 import { ResultatVisning } from '../Felles/ResultatVisning';
 import { sorterUtBarnetilsynsvilkår, sorterUtInngangsvilkår } from '../Felles/utils';
@@ -27,7 +26,6 @@ const Oppsummeringsboks = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     padding: 1rem;
-    background-color: ${navFarger.navGraBakgrunn};
 `;
 
 const lagVilkåresresultatPerBarn = (
