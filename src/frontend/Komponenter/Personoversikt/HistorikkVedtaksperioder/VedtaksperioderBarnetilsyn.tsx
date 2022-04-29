@@ -16,7 +16,7 @@ import {
 } from './vedtakshistorikkUtil';
 import { EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
 import EtikettBase from 'nav-frontend-etiketter';
-import { utledHjelpetekstForBeløpFørSatsjustering } from '../../Behandling/VedtakOgBeregning/Felles/utils';
+import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
 import { HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
 
@@ -26,6 +26,14 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean) => {
         grid-template-area: beløp hjelpetekst;
         grid-template-columns: 3rem 1.75rem;
     `;
+
+    const LinjeSplitter = styled.div`
+        margin-top: 0.25rem;
+    `;
+
+    const beløpErRedusertPgaSats = andel.andel.beløpFørFratrekkOgSatsJustering > andel.andel.sats;
+    const beløpErRedusertPgaTilleggsstønad = andel.andel.tillegsstønad > 0;
+    const stønadsbeløpetErRedusert = beløpErRedusertPgaSats || beløpErRedusertPgaTilleggsstønad;
 
     const erSanksjon = andel.erSanksjon;
     return (
@@ -55,13 +63,22 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean) => {
             <td>
                 <Rad>
                     {!erSanksjon && formaterTallMedTusenSkille(andel.andel.beløp)}
-                    {andel.andel.beløpFørSatsJustering > andel.andel.sats && (
+                    {stønadsbeløpetErRedusert && (
                         <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
-                            {utledHjelpetekstForBeløpFørSatsjustering(
+                            {utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside(
+                                beløpErRedusertPgaSats,
+                                beløpErRedusertPgaTilleggsstønad,
                                 andel.andel.antallBarn,
-                                andel.andel.beløpFørSatsJustering,
-                                andel.andel.sats
-                            )}
+                                andel.andel.beløpFørFratrekkOgSatsJustering,
+                                andel.andel.sats,
+                                andel.andel.tillegsstønad
+                            ).map((visningstekst, index) => {
+                                return index === 0 ? (
+                                    <div>{visningstekst}</div>
+                                ) : (
+                                    <LinjeSplitter>{visningstekst}</LinjeSplitter>
+                                );
+                            })}
                         </HelpText>
                     )}
                 </Rad>

@@ -9,7 +9,7 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../../App/utils/formatter';
-import { utledHjelpetekstForBeløpFørSatsjustering } from '../Felles/utils';
+import { utledHjelpetekstForBeløpFørFratrekkOgSatsjustering } from '../Felles/utils';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
@@ -75,14 +75,17 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             <HøyrejustertNormaltekst>
                                 {formaterTallMedTusenSkille(rad.beløp)}
                             </HøyrejustertNormaltekst>
-                            {rad.beløpFørSatsjustering > rad.beløp && (
+                            {rad.beløpFørFratrekkOgSatsjustering > rad.sats && (
                                 <VenstrejustertElement>
                                     <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
-                                        {utledHjelpetekstForBeløpFørSatsjustering(
-                                            rad.beregningsgrunnlag.antallBarn,
-                                            rad.beløpFørSatsjustering,
-                                            rad.sats
-                                        )}
+                                        <div>
+                                            {utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
+                                                rad.beregningsgrunnlag.antallBarn,
+                                                rad.beløpFørFratrekkOgSatsjustering,
+                                                rad.sats,
+                                                false
+                                            )}
+                                        </div>
                                     </HelpText>
                                 </VenstrejustertElement>
                             )}

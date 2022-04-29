@@ -28,7 +28,7 @@ export interface AndelMedGrunnlag {
     kontantstøtte: number;
     tillegsstønad: number;
     sats: number;
-    beløpFørSatsJustering: number;
+    beløpFørFratrekkOgSatsJustering: number;
 }
 
 export interface AndelHistorikk {
