@@ -78,7 +78,11 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             {rad.beløpFørSatsjustering > rad.beløp && (
                                 <VenstrejustertElement>
                                     <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
-                                        {utledHjelpetekstForBeløpFørSatsjustering(rad)}
+                                        {utledHjelpetekstForBeløpFørSatsjustering(
+                                            rad.beregningsgrunnlag.antallBarn,
+                                            rad.beløpFørSatsjustering,
+                                            rad.sats
+                                        )}
                                     </HelpText>
                                 </VenstrejustertElement>
                             )}

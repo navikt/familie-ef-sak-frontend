@@ -9,7 +9,6 @@ import {
     VilkårType,
 } from '../../Inngangsvilkår/vilkår';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
-import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -110,10 +109,11 @@ export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkå
 };
 
 export const utledHjelpetekstForBeløpFørSatsjustering = (
-    beregningsresultat: IBeregningsperiodeBarnetilsyn
+    antallBarn: number,
+    beløpFørSatsjustering: number,
+    sats: number
 ): string => {
-    const innskuttSetning =
-        beregningsresultat.beregningsgrunnlag.antallBarn >= 3 ? 'eller flere' : '';
-    return `Beløpet er redusert fra ${beregningsresultat.beløpFørSatsjustering} kr til ${beregningsresultat.sats} kr, 
-        som er maksimalt beløp pr måned for ${beregningsresultat.beregningsgrunnlag.antallBarn} ${innskuttSetning} barn`;
+    const innskuttSetning = antallBarn >= 3 ? 'eller flere' : '';
+    return `Beløpet er redusert fra ${beløpFørSatsjustering} kr til ${sats} kr, 
+        som er maksimalt beløp pr måned for ${antallBarn} ${innskuttSetning} barn`;
 };
