@@ -142,7 +142,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                             : [...mapValgtBarn(valgtBarn as ISelectOption[])]
                                     );
                                 }}
-                                erLesevisning={!behandlingErRedigerbar}
                             />
                         ) : (
                             <NavnContainer>
