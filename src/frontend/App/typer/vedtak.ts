@@ -26,7 +26,7 @@ export interface IBeløpsperiode {
 export interface IBeregningsperiodeBarnetilsyn {
     periode: { fradato: string; tildato: string };
     beløp: number;
-    beløpFørSatsjustering: number;
+    beløpFørFratrekkOgSatsjustering: number;
     sats: number;
     beregningsgrunnlag: IBeregningsgrunnlagBarnetilsyn;
 }
