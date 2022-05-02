@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
+import { IBarnMedLøpendeStønad, IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import Samvær from './Samvær';
@@ -12,34 +12,32 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { EtikettAdvarsel, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
+import { EtikettAdvarsel, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
     skalViseSøknadsdata?: boolean;
-    barnMedLøpendeStønad: Ressurs<string[]>;
+    barnMedLøpendeStønad: Ressurs<IBarnMedLøpendeStønad>;
 }> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad }) => {
     const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
-    const utledEtikett = (
-        barnMedLøpendeStønad: string[],
-        personIdent: string,
-        skalHaBarnepass?: boolean
+    const utledEtikettForLøpendeStønad = (
+        barnMedLøpendeStønad: IBarnMedLøpendeStønad,
+        personIdent: string
     ) => {
-        const harLøpendeStønad = barnMedLøpendeStønad.includes(personIdent);
-
-        if (harLøpendeStønad) {
-            if (skalHaBarnepass) {
-                return <EtikettInfo>ja, og har løpende stønad</EtikettInfo>;
-            }
-            return <EtikettInfo>nei, men har løpende stønad</EtikettInfo>;
-        } else if (skalHaBarnepass) {
-            return <EtikettSuksess>ja</EtikettSuksess>;
-        }
-        return <EtikettAdvarsel>nei</EtikettAdvarsel>;
+        const harLøpendeStønad = barnMedLøpendeStønad.barn.includes(personIdent);
+        return harLøpendeStønad ? (
+            <EtikettSuksess>{`ja - ${formaterNullableIsoDato(
+                barnMedLøpendeStønad.dato
+            )}`}</EtikettSuksess>
+        ) : (
+            <EtikettAdvarsel>{`nei - ${formaterNullableIsoDato(
+                barnMedLøpendeStønad.dato
+            )}`}</EtikettAdvarsel>
+        );
     };
 
     return (
@@ -115,18 +113,27 @@ const AleneomsorgInfo: FC<{
                     </>
                 )}
                 {
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
+                        <Normaltekst>
+                            {barnepass?.skalHaBarnepass ? (
+                                <EtikettSuksess>ja</EtikettSuksess>
+                            ) : (
+                                <EtikettAdvarsel>nei</EtikettAdvarsel>
+                            )}
+                        </Normaltekst>
+                    </>
+                }
+                {
                     <DataViewer response={{ barnMedLøpendeStønad }}>
                         {({ barnMedLøpendeStønad }) => {
                             return (
                                 <>
                                     <Søknadsgrunnlag />
-                                    <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
+                                    <Normaltekst>Har barnet løpende stønad</Normaltekst>
                                     <Normaltekst>
-                                        {utledEtikett(
-                                            barnMedLøpendeStønad,
-                                            barnId,
-                                            barnepass?.skalHaBarnepass
-                                        )}
+                                        {utledEtikettForLøpendeStønad(barnMedLøpendeStønad, barnId)}
                                     </Normaltekst>
                                 </>
                             );
