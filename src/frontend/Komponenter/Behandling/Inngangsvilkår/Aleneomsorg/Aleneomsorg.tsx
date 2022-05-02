@@ -9,7 +9,6 @@ import { InngangsvilkårType } from '../vilkår';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useApp } from '../../../../App/context/AppContext';
-import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
@@ -62,18 +61,11 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                             vilkårsresultat={utleddResultat}
                                         />
                                     )}
-                                    <DataViewer response={{ barnMedLøpendeStønad }}>
-                                        {({ barnMedLøpendeStønad }) => {
-                                            return (
-                                                <AleneomsorgInfo
-                                                    gjeldendeBarn={barn}
-                                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                                    stønadstype={stønadstype}
-                                                    barnMedLøpendeStønad={barnMedLøpendeStønad}
-                                                />
-                                            );
-                                        }}
-                                    </DataViewer>
+                                    <AleneomsorgInfo
+                                        gjeldendeBarn={barn}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                        barnMedLøpendeStønad={barnMedLøpendeStønad}
+                                    />
                                 </>
                             ),
                             høyre: (

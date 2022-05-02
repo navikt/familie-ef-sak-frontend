@@ -12,15 +12,15 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { EtikettAdvarsel, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
+import { Ressurs } from '../../../../App/typer/ressurs';
+import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
     skalViseSøknadsdata?: boolean;
-    stønadstype: Stønadstype;
-    barnMedLøpendeStønad: string[];
-}> = ({ gjeldendeBarn, skalViseSøknadsdata, stønadstype, barnMedLøpendeStønad }) => {
+    barnMedLøpendeStønad: Ressurs<string[]>;
+}> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad }) => {
     const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -114,15 +114,25 @@ const AleneomsorgInfo: FC<{
                         </Normaltekst>
                     </>
                 )}
-                {stønadstype === Stønadstype.BARNETILSYN && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
-                        <Normaltekst>
-                            {utledEtikett(barnMedLøpendeStønad, barnId, barnepass?.skalHaBarnepass)}
-                        </Normaltekst>
-                    </>
-                )}
+                {
+                    <DataViewer response={{ barnMedLøpendeStønad }}>
+                        {({ barnMedLøpendeStønad }) => {
+                            return (
+                                <>
+                                    <Søknadsgrunnlag />
+                                    <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
+                                    <Normaltekst>
+                                        {utledEtikett(
+                                            barnMedLøpendeStønad,
+                                            barnId,
+                                            barnepass?.skalHaBarnepass
+                                        )}
+                                    </Normaltekst>
+                                </>
+                            );
+                        }}
+                    </DataViewer>
+                }
             </GridTabell>
 
             {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
