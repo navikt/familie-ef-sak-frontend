@@ -32,7 +32,7 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean) => {
     `;
 
     const beløpErRedusertPgaSats = andel.andel.beløpFørFratrekkOgSatsJustering > andel.andel.sats;
-    const beløpErRedusertPgaTilleggsstønad = andel.andel.tillegsstønad > 0;
+    const beløpErRedusertPgaTilleggsstønad = andel.andel.tilleggsstønad > 0;
     const stønadsbeløpetErRedusert = beløpErRedusertPgaSats || beløpErRedusertPgaTilleggsstønad;
 
     const erSanksjon = andel.erSanksjon;
@@ -71,7 +71,7 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean) => {
                                 andel.andel.antallBarn,
                                 andel.andel.beløpFørFratrekkOgSatsJustering,
                                 andel.andel.sats,
-                                andel.andel.tillegsstønad
+                                andel.andel.tilleggsstønad
                             ).map((visningstekst, index) => {
                                 return index === 0 ? (
                                     <div>{visningstekst}</div>
