@@ -9,6 +9,7 @@ import { InngangsvilkårType } from '../vilkår';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useApp } from '../../../../App/context/AppContext';
+import { IBarnMedLøpendeStønad } from './typer';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
@@ -21,17 +22,17 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     stønadstype,
     behandlingId,
 }) => {
-    const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] = useState<Ressurs<string[]>>(
-        byggTomRessurs()
-    );
+    const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] = useState<
+        Ressurs<IBarnMedLøpendeStønad>
+    >(byggTomRessurs());
     const { axiosRequest } = useApp();
 
     useEffect(() => {
         if (stønadstype === Stønadstype.BARNETILSYN) {
-            axiosRequest<string[], null>({
+            axiosRequest<IBarnMedLøpendeStønad, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/tilkjentytelse/barn/${behandlingId}`,
-            }).then((respons: Ressurs<string[]>) => {
+            }).then((respons: Ressurs<IBarnMedLøpendeStønad>) => {
                 settBarnMedLøpendeStønad(respons);
             });
         }

@@ -58,9 +58,7 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Dokumentoversikt',
         path: 'dokumenter',
-        komponent: (_, personopplysninger) => (
-            <Dokumenter personopplysninger={personopplysninger} />
-        ),
+        komponent: (fagsakPerson) => <Dokumenter fagsakPerson={fagsakPerson} />,
     },
     {
         label: 'Brev',
