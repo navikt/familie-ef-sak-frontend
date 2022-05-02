@@ -9,7 +9,7 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../../App/utils/formatter';
-import { utledHjelpetekstForBeløpFørSatsjustering } from '../Felles/utils';
+import { utledHjelpetekstForBeløpFørFratrekkOgSatsjustering } from '../Felles/utils';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
@@ -46,7 +46,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                         <HøyrejusterElement>Ant. barn</HøyrejusterElement>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Kontantstøtte</HøyrejusterElement>
-                        <HøyrejusterElement>Reduksjonsbeløp</HøyrejusterElement>
+                        <HøyrejusterElement>Tilleggsstønad</HøyrejusterElement>
                         <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
                     </Rad>
                     {beregningsresultat.map((rad) => (
@@ -75,10 +75,17 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             <HøyrejustertNormaltekst>
                                 {formaterTallMedTusenSkille(rad.beløp)}
                             </HøyrejustertNormaltekst>
-                            {rad.beløpFørSatsjustering > rad.beløp && (
+                            {rad.beløpFørFratrekkOgSatsjustering > rad.sats && (
                                 <VenstrejustertElement>
                                     <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
-                                        {utledHjelpetekstForBeløpFørSatsjustering(rad)}
+                                        <div>
+                                            {utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
+                                                rad.beregningsgrunnlag.antallBarn,
+                                                rad.beløpFørFratrekkOgSatsjustering,
+                                                rad.sats,
+                                                false
+                                            )}
+                                        </div>
                                     </HelpText>
                                 </VenstrejustertElement>
                             )}

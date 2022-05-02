@@ -26,7 +26,9 @@ export interface AndelMedGrunnlag {
     utgifter: number;
     antallBarn: number;
     kontantstøtte: number;
-    tillegsstønad: number;
+    tilleggsstønad: number;
+    sats: number;
+    beløpFørFratrekkOgSatsJustering: number;
 }
 
 export interface AndelHistorikk {
