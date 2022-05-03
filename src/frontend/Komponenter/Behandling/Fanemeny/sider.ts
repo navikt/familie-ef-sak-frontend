@@ -94,14 +94,7 @@ const filtrerVekkHvisSanksjon = [
     SideNavn.BLANKETT,
 ];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
-const filtrerHvisGOmregning = [
-    SideNavn.TIDLIGEREVEDTAKSPERIODER,
-    SideNavn.INNGANGSVILKÅR,
-    SideNavn.AKTIVITET,
-    SideNavn.BREV,
-    SideNavn.SANKSJON,
-    SideNavn.BLANKETT,
-];
+const filtrerHvisGOmregning = [SideNavn.VEDTAK_OG_BEREGNING, SideNavn.SIMULERING];
 const filtrerVekkHvisStandard = [SideNavn.BLANKETT, SideNavn.SANKSJON];
 
 export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
