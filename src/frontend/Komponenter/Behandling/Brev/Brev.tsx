@@ -66,11 +66,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        if (!behandlingErRedigerbar) {
-            if (
-                totrinnskontroll.status === RessursStatus.SUKSESS &&
-                totrinnskontroll.data.status === TotrinnskontrollStatus.KAN_FATTE_VEDTAK
-            ) {
+        if (!behandlingErRedigerbar && totrinnskontroll.status === RessursStatus.SUKSESS) {
+            if (totrinnskontroll.data.status === TotrinnskontrollStatus.KAN_FATTE_VEDTAK) {
                 lagBeslutterBrev();
             } else {
                 hentBrev();
