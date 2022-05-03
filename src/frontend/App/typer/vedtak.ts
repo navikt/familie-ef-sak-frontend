@@ -146,6 +146,7 @@ export enum EInntektsperiodeProperty {
 
 export enum EBehandlingResultat {
     INNVILGE = 'INNVILGE',
+    INNVILGE_UTEN_UTBETALING = 'INNVILGE_UTEN_UTBETALING',
     SANKSJONERE = 'SANKSJONERE',
     AVSLÅ = 'AVSLÅ',
     HENLEGGE = 'HENLEGGE',
@@ -287,6 +288,7 @@ export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
 
 export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
     INNVILGE: 'Innvilge',
+    INNVILGE_UTEN_UTBETALING: 'Avslag/opphør pga kontantstøtte',
     AVSLÅ: 'Avslå',
     HENLEGGE: 'Henlegge',
     BEHANDLE_I_GOSYS: 'Behandle i Gosys',

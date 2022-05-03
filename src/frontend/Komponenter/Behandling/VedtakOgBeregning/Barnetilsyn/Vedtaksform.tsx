@@ -1,4 +1,5 @@
 import {
+    EBehandlingResultat,
     ERadioValg,
     IBeregningsperiodeBarnetilsyn,
     IBeregningsrequestBarnetilsyn,
@@ -53,7 +54,8 @@ export const Vedtaksform: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IvedtakForBarnetilsyn;
     barn: IBarnMedSamvær[];
-}> = ({ lagretVedtak, behandling, barn }) => {
+    settResultatType: (val: EBehandlingResultat | undefined) => void;
+}> = ({ lagretVedtak, behandling, barn, settResultatType }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
@@ -200,6 +202,19 @@ export const Vedtaksform: React.FC<{
         }
         // eslint-disable-next-line
     }, [behandlingErRedigerbar]);
+
+    useEffect(() => {
+        if (
+            beregningsresultat.status === RessursStatus.SUKSESS &&
+            beregningsresultat.data.every(
+                (periode) =>
+                    periode.beregningsgrunnlag.kontantstøttebeløp >
+                    periode.beregningsgrunnlag.utgifter
+            )
+        ) {
+            settResultatType(EBehandlingResultat.INNVILGE_UTEN_UTBETALING);
+        }
+    }, [beregningsresultat, settResultatType]);
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Heading, HelpText } from '@navikt/ds-react';
+import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
@@ -31,9 +31,21 @@ const VenstrejustertElement = styled(Element)`
     text-align: left;
 `;
 
+const AdvarselContainter = styled.div`
+    margin-top: 1rem;
+    width: 21rem;
+`;
+
 export const UtregningstabellBarnetilsyn: React.FC<{
     beregningsresultat: Ressurs<IBeregningsperiodeBarnetilsyn[]>;
 }> = ({ beregningsresultat }) => {
+    const nullUtbetalingPgaKontantstøtte = (resultat: IBeregningsperiodeBarnetilsyn[]) => {
+        return resultat.every(
+            (periode) =>
+                periode.beregningsgrunnlag.utgifter <= periode.beregningsgrunnlag.kontantstøttebeløp
+        );
+    };
+
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
@@ -91,6 +103,13 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             )}
                         </Rad>
                     ))}
+                    {nullUtbetalingPgaKontantstøtte(beregningsresultat) && (
+                        <AdvarselContainter>
+                            <Alert variant={'warning'} size={'small'}>
+                                Avslag, kontantstøtte overstiger utgifter
+                            </Alert>
+                        </AdvarselContainter>
+                    )}
                 </>
             )}
         </DataViewer>
