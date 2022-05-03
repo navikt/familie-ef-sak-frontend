@@ -111,12 +111,10 @@ export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkå
 export const utledHjelpetekstForBeløpFørFratrekkOgSatsjustering = (
     antallBarn: number,
     beløpFørFratrekkOgSatsjustering: number,
-    sats: number,
-    skalViseredusertPgaTilleggsstønad: boolean
+    sats: number
 ): string => {
-    const prefix = skalViseredusertPgaTilleggsstønad ? 'Deretter har beløpet blitt' : 'Beløpet er';
     const innskuttSetning = antallBarn >= 3 ? 'eller flere' : '';
-    return `${prefix} redusert fra ${beløpFørFratrekkOgSatsjustering} kr til ${sats} kr, 
+    return `Beløpet er redusert fra ${beløpFørFratrekkOgSatsjustering} kr til ${sats} kr, 
         som er maksimalt beløp pr måned for ${antallBarn} ${innskuttSetning} barn`;
 };
 
@@ -128,25 +126,27 @@ export const utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside 
     sats: number,
     tilleggsstønad: number
 ): string[] => {
-    const visningstekstTilleggsstønad = `Stønadsbeløpet er redusert med ${tilleggsstønad} kr, som allerede er utbetalt etter tilleggsstønadsforskriften.`;
+    const prefix =
+        redusertPgaSats && redusertPgaTilleggsstønad
+            ? 'Deretter har beløpet blitt'
+            : 'Stønadsbeløpet er';
+    const visningstekstTilleggsstønad = `${prefix} redusert med ${tilleggsstønad} kr, som allerede er utbetalt etter tilleggsstønadsforskriften.`;
 
     if (redusertPgaSats && redusertPgaTilleggsstønad) {
         return [
-            visningstekstTilleggsstønad,
             utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
                 antallBarn,
                 beløpFørFratrekkOgSatsjustering,
-                sats,
-                true
+                sats
             ),
+            visningstekstTilleggsstønad,
         ];
     } else if (redusertPgaSats) {
         return [
             utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
                 antallBarn,
                 beløpFørFratrekkOgSatsjustering,
-                sats,
-                false
+                sats
             ),
         ];
     }
