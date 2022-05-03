@@ -15,12 +15,14 @@ import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { EtikettAdvarsel, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
     skalViseSøknadsdata?: boolean;
     barnMedLøpendeStønad: Ressurs<IBarnMedLøpendeStønad>;
-}> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad }) => {
+    stønadstype: Stønadstype;
+}> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad, stønadstype }) => {
     const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -112,7 +114,7 @@ const AleneomsorgInfo: FC<{
                         </Normaltekst>
                     </>
                 )}
-                {
+                {stønadstype === Stønadstype.BARNETILSYN && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
@@ -124,7 +126,7 @@ const AleneomsorgInfo: FC<{
                             )}
                         </Normaltekst>
                     </>
-                }
+                )}
                 {
                     <DataViewer response={{ barnMedLøpendeStønad }}>
                         {({ barnMedLøpendeStønad }) => {
