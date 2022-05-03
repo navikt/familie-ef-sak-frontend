@@ -4,6 +4,7 @@ import { Sanksjonsårsak } from './Sanksjonsårsak';
 export enum IVedtakType {
     InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
     InnvilgelseBarnetilsyn = 'InnvilgelseBarnetilsyn',
+    InnvilgelseBarnetilsynUtenUtbetaling = 'InnvilgelseBarnetilsynUtenUtbetaling',
     Avslag = 'Avslag',
     Opphør = 'Opphør',
     Sanksjonering = 'Sanksjonering',
@@ -61,7 +62,7 @@ export type IInnvilgeVedtakForBarnetilsyn = {
     perioder: IUtgiftsperiode[];
     perioderKontantstøtte: IPeriodeMedBeløp[];
     tilleggsstønad: ITilleggsstønad;
-    _type?: IVedtakType.InnvilgelseBarnetilsyn;
+    _type?: IVedtakType.InnvilgelseBarnetilsyn | IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling;
 };
 
 export type ITilleggsstønad = {

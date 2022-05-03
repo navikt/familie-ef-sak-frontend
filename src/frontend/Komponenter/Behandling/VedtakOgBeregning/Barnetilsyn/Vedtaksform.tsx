@@ -57,12 +57,16 @@ export const Vedtaksform: React.FC<{
     settResultatType: (val: EBehandlingResultat | undefined) => void;
 }> = ({ lagretVedtak, behandling, barn, settResultatType }) => {
     const lagretInnvilgetVedtak =
-        lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn
+        lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
+        lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
+    const [nullUtbetalingPgaKontantStøtte, settNullUtbetalingPgaKontantStøtte] = useState(
+        lagretInnvilgetVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
+    );
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregningsperiodeBarnetilsyn[]>()
     );
@@ -167,7 +171,9 @@ export const Vedtaksform: React.FC<{
                         : null,
             },
             begrunnelse: form.begrunnelse,
-            _type: IVedtakType.InnvilgelseBarnetilsyn,
+            _type: nullUtbetalingPgaKontantStøtte
+                ? IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
+                : IVedtakType.InnvilgelseBarnetilsyn,
         };
         lagreVedtak(vedtaksRequest);
     };
@@ -204,15 +210,21 @@ export const Vedtaksform: React.FC<{
     }, [behandlingErRedigerbar]);
 
     useEffect(() => {
-        if (
-            beregningsresultat.status === RessursStatus.SUKSESS &&
-            beregningsresultat.data.every(
-                (periode) =>
-                    periode.beregningsgrunnlag.kontantstøttebeløp >
-                    periode.beregningsgrunnlag.utgifter
-            )
-        ) {
-            settResultatType(EBehandlingResultat.INNVILGE_UTEN_UTBETALING);
+        if (beregningsresultat.status === RessursStatus.SUKSESS) {
+            const kontantstøttebeløpOverstigerUtgiftsbeløpForAllePeriode =
+                beregningsresultat.data.every(
+                    (periode) =>
+                        periode.beregningsgrunnlag.kontantstøttebeløp >
+                        periode.beregningsgrunnlag.utgifter
+                );
+            settNullUtbetalingPgaKontantStøtte(
+                kontantstøttebeløpOverstigerUtgiftsbeløpForAllePeriode
+            );
+            if (kontantstøttebeløpOverstigerUtgiftsbeløpForAllePeriode) {
+                settResultatType(EBehandlingResultat.INNVILGE_UTEN_UTBETALING);
+            } else {
+                settResultatType(EBehandlingResultat.INNVILGE);
+            }
         }
     }, [beregningsresultat, settResultatType]);
 
