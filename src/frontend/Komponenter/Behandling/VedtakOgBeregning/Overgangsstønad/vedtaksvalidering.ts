@@ -58,6 +58,8 @@ export const validerVedtaksperioder = ({
     inntekter: IInntektsperiode[];
 }> => {
     const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
+    const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
+    let harPeriodeFør7mndFremITiden = false;
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
@@ -84,6 +86,7 @@ export const validerVedtaksperioder = ({
         if (!årMånedTil || !årMånedFra) {
             return { ...vedtaksperiodeFeil, årMånedFra: 'Mangelfull utfylling av vedtaksperiode' };
         }
+
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...vedtaksperiodeFeil,
@@ -99,10 +102,21 @@ export const validerVedtaksperioder = ({
                 };
             }
         }
-        if (erMånedÅrEtter(syvMånederFremITiden, årMånedFra)) {
+
+        // Det er gyldig med periode etter 7mnd frem i tiden, hvis det finnes en periode før 7mnd frem i tiden
+        if (!erMånedÅrEtter(syvMånederFremITiden, årMånedFra)) {
+            harPeriodeFør7mndFremITiden = true;
+        }
+        if (erMånedÅrEtter(syvMånederFremITiden, årMånedFra) && !harPeriodeFør7mndFremITiden) {
             return {
                 ...vedtaksperiodeFeil,
                 årMånedFra: `Startdato (${årMånedFra}) mer enn 7mnd frem i tid`,
+            };
+        }
+        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
+            return {
+                ...vedtaksperiodeFeil,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
             };
         }
         return vedtaksperiodeFeil;
@@ -133,9 +147,9 @@ export const validerVedtaksperioder = ({
                 };
             }
         }
-        if (erMånedÅrEtter(syvMånederFremITiden, årMånedFra)) {
+        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra)) {
             return {
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 7mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
             };
         }
         return { årMånedFra: undefined };

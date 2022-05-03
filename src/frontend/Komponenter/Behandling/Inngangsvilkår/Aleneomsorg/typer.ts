@@ -21,6 +21,11 @@ export interface BarnepassordningDto {
     beløp: number;
 }
 
+export interface IBarnMedLøpendeStønad {
+    barn: string[];
+    dato: string;
+}
+
 export enum ETypeBarnepassOrdning {
     barnehageOgLiknende = 'barnehageOgLiknende',
     privat = 'privat',

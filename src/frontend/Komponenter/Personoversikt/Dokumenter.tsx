@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
-import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper';
@@ -13,6 +12,7 @@ import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
 import { journalstatusTilTekst } from '../../App/typer/journalforing';
+import { IFagsakPerson } from '../../App/typer/fagsak';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -32,15 +32,13 @@ const DivMedVenstreMargin = styled.div`
     margin-left: 2rem;
 `;
 
-const Dokumenter: React.FC<{ personopplysninger: IPersonopplysninger }> = ({
-    personopplysninger,
-}) => {
+const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
     const dokumentConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/vedlegg/person/${personopplysninger.personIdent}`,
+            url: `/familie-ef-sak/api/vedlegg/fagsak-person/${fagsakPerson.id}`,
         }),
-        [personopplysninger.personIdent]
+        [fagsakPerson]
     );
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);

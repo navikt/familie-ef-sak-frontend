@@ -9,9 +9,6 @@ import {
     VilkårType,
 } from '../../Inngangsvilkår/vilkår';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
-import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
-import { årTilSatsBeløpForBarnetislyn } from './konstanter';
-import { formaterIsoÅr } from '../../../../App/utils/formatter';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -111,26 +108,47 @@ export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkå
     );
 };
 
-export const utledHjelpetekstForBeløpFørSatsjustering = (
-    beregningsresultat: IBeregningsperiodeBarnetilsyn
+export const utledHjelpetekstForBeløpFørFratrekkOgSatsjustering = (
+    antallBarn: number,
+    beløpFørFratrekkOgSatsjustering: number,
+    sats: number,
+    skalViseredusertPgaTilleggsstønad: boolean
 ): string => {
-    const innskuttSetning =
-        beregningsresultat.beregningsgrunnlag.antallBarn >= 3 ? 'eller flere' : '';
-
-    return `Beløpet er redusert fra ${
-        beregningsresultat.beløpFørSatsjustering
-    } kr til ${satsForBarnetilsyn(beregningsresultat)} kr, som er maksimalt beløp pr måned for ${
-        beregningsresultat.beregningsgrunnlag.antallBarn
-    } ${innskuttSetning} barn`;
+    const prefix = skalViseredusertPgaTilleggsstønad ? 'Deretter har beløpet blitt' : 'Beløpet er';
+    const innskuttSetning = antallBarn >= 3 ? 'eller flere' : '';
+    return `${prefix} redusert fra ${beløpFørFratrekkOgSatsjustering} kr til ${sats} kr, 
+        som er maksimalt beløp pr måned for ${antallBarn} ${innskuttSetning} barn`;
 };
 
-export const satsForBarnetilsyn = (beregningsresultat: IBeregningsperiodeBarnetilsyn): number => {
-    const år = formaterIsoÅr(beregningsresultat.periode.fradato);
-    const årTilSats = årTilSatsBeløpForBarnetislyn[år];
-    const antallBarnTilIndex =
-        beregningsresultat.beregningsgrunnlag.antallBarn > 3
-            ? 2
-            : beregningsresultat.beregningsgrunnlag.antallBarn - 1;
+export const utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside = (
+    redusertPgaSats: boolean,
+    redusertPgaTilleggsstønad: boolean,
+    antallBarn: number,
+    beløpFørFratrekkOgSatsjustering: number,
+    sats: number,
+    tilleggsstønad: number
+): string[] => {
+    const visningstekstTilleggsstønad = `Stønadsbeløpet er redusert med ${tilleggsstønad} kr, som allerede er utbetalt etter tilleggsstønadsforskriften.`;
 
-    return årTilSats[antallBarnTilIndex];
+    if (redusertPgaSats && redusertPgaTilleggsstønad) {
+        return [
+            visningstekstTilleggsstønad,
+            utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
+                antallBarn,
+                beløpFørFratrekkOgSatsjustering,
+                sats,
+                true
+            ),
+        ];
+    } else if (redusertPgaSats) {
+        return [
+            utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
+                antallBarn,
+                beløpFørFratrekkOgSatsjustering,
+                sats,
+                false
+            ),
+        ];
+    }
+    return [visningstekstTilleggsstønad];
 };
