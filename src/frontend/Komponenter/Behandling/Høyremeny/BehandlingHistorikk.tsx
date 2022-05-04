@@ -15,11 +15,11 @@ const HistorikkListe = styled.ul`
 `;
 
 const BehandlingHistorikk: React.FC<IBehandlingHistorikkProps> = ({ behandlingId }) => {
-    const { behandlingHistorikk } = useBehandling();
+    const { behandlingHistorikk, behandling } = useBehandling();
 
     return (
-        <DataViewer response={{ behandlingHistorikkResponse: behandlingHistorikk }}>
-            {({ behandlingHistorikkResponse }) => {
+        <DataViewer response={{ behandlingHistorikkResponse: behandlingHistorikk, behandling }}>
+            {({ behandlingHistorikkResponse, behandling }) => {
                 return (
                     <HistorikkListe>
                         {behandlingHistorikkResponse.map((behandlingshistorikk, idx) => {
@@ -33,6 +33,7 @@ const BehandlingHistorikk: React.FC<IBehandlingHistorikkProps> = ({ behandlingId
                                     behandlingshistorikk={behandlingshistorikk}
                                     key={idx}
                                     behandlingId={behandlingId}
+                                    behandling={behandling}
                                 />
                             );
                         })}
