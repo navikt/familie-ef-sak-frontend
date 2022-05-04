@@ -23,11 +23,16 @@ import { BehandlingApplikasjon } from './Behandlingsoversikt';
 import { PartialRecord } from '../../App/typer/common';
 import styled from 'styled-components';
 import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const StyledTable = styled.table`
-    width: 50%;
+    width: 60%;
     padding: 2rem;
     margin-left: 1rem;
+`;
+
+const SentrertTekst = styled(Normaltekst)`
+    text-align: center;
 `;
 
 const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
@@ -64,6 +69,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 status: behandling.status,
                 resultat: behandling.resultat,
                 opprettet: behandling.opprettet,
+                vedtaksdato: behandling.vedtaksdato,
                 applikasjon: BehandlingApplikasjon.EF_SAK,
             };
         }
@@ -101,6 +107,18 @@ export const BehandlingsoversiktTabell: React.FC<{
             ? behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak]
             : '-';
 
+    const utledKolonneForVedtaksdato = (
+        behandlingsresultat?: BehandlingResultat | TilbakekrevingBehandlingsresultatstype,
+        vedtaksdato?: string
+    ) => {
+        if (behandlingsresultat === BehandlingResultat.HENLAGT) {
+            return <SentrertTekst>--------</SentrertTekst>;
+        } else if (vedtaksdato) {
+            return formaterIsoDatoTid(vedtaksdato);
+        }
+        return '';
+    };
+
     return (
         <StyledTable className="tabell">
             <thead>
@@ -130,8 +148,10 @@ export const BehandlingsoversiktTabell: React.FC<{
                             <td>{finnÅrsak(behandling)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
-                                {behandling.vedtaksdato &&
-                                    formaterIsoDatoTid(behandling.vedtaksdato)}
+                                {utledKolonneForVedtaksdato(
+                                    behandling.resultat,
+                                    behandling.vedtaksdato
+                                )}
                             </td>
                             <td>
                                 {behandling.type === Behandlingstype.TEKNISK_OPPHØR &&
