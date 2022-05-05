@@ -89,6 +89,8 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
+    const [preutfylteVedtaksperioder, settPreutfylteVedtaksperioder] = useState<any>();
+
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
@@ -103,6 +105,7 @@ export const InnvilgeVedtak: React.FC<{
         },
         validerInnvilgetVedtakForm
     );
+
     const inntektsperiodeState = formState.getProps('inntekter') as ListState<IInntektsperiode>;
     const vedtaksperiodeState = formState.getProps('perioder') as ListState<IVedtaksperiode>;
     const periodeBegrunnelse = formState.getProps('periodeBegrunnelse') as FieldState;
@@ -111,6 +114,14 @@ export const InnvilgeVedtak: React.FC<{
 
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
+
+    useEffect(() => {
+        if (!preutfylteVedtaksperioder?.data?.perioder?.length) return;
+
+        preutfylteVedtaksperioder.data.perioder.forEach((periode: any, index: number) => {
+            vedtaksperiodeState.update(periode, index);
+        });
+    }, [preutfylteVedtaksperioder]);
 
     useEffect(() => {
         const førsteInnvilgedeVedtaksperiode =
@@ -173,6 +184,23 @@ export const InnvilgeVedtak: React.FC<{
             }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
         }
     };
+
+    const hentPreutfylteVedtaksperioder = (revurderesFra: string) => {
+        axiosRequest<any, any>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
+        }).then((res: Ressurs<any>) => {
+            settPreutfylteVedtaksperioder(res);
+        });
+    };
+
+    console.log('pre', preutfylteVedtaksperioder);
+
+    useEffect(() => {
+        if (!revurderesFra) return;
+
+        hentPreutfylteVedtaksperioder(revurderesFra);
+    }, [revurderesFra]);
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
         return (res: Ressurs<string>) => {
