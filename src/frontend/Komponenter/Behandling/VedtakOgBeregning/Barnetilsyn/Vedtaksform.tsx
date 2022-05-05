@@ -1,4 +1,5 @@
 import {
+    EBehandlingResultat,
     ERadioValg,
     IBeregningsperiodeBarnetilsyn,
     IBeregningsrequestBarnetilsyn,
@@ -29,6 +30,7 @@ import { UtregningstabellBarnetilsyn } from './UtregnignstabellBarnetilsyn';
 import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
+import { blirNullUtbetalingPgaOverstigendeKontantstøtte } from '../Felles/utils';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -53,14 +55,19 @@ export const Vedtaksform: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IvedtakForBarnetilsyn;
     barn: IBarnMedSamvær[];
-}> = ({ lagretVedtak, behandling, barn }) => {
+    settResultatType: (val: EBehandlingResultat | undefined) => void;
+}> = ({ lagretVedtak, behandling, barn, settResultatType }) => {
     const lagretInnvilgetVedtak =
-        lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn
+        lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
+        lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
+    const [nullUtbetalingPgaKontantStøtte, settNullUtbetalingPgaKontantStøtte] = useState(
+        lagretInnvilgetVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
+    );
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregningsperiodeBarnetilsyn[]>()
     );
@@ -165,7 +172,9 @@ export const Vedtaksform: React.FC<{
                         : null,
             },
             begrunnelse: form.begrunnelse,
-            _type: IVedtakType.InnvilgelseBarnetilsyn,
+            _type: nullUtbetalingPgaKontantStøtte
+                ? IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
+                : IVedtakType.InnvilgelseBarnetilsyn,
         };
         lagreVedtak(vedtaksRequest);
     };
@@ -200,6 +209,21 @@ export const Vedtaksform: React.FC<{
         }
         // eslint-disable-next-line
     }, [behandlingErRedigerbar]);
+
+    useEffect(() => {
+        if (beregningsresultat.status === RessursStatus.SUKSESS) {
+            const kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder =
+                blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat.data);
+            settNullUtbetalingPgaKontantStøtte(
+                kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder
+            );
+            if (kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder) {
+                settResultatType(EBehandlingResultat.INNVILGE_UTEN_UTBETALING);
+            } else {
+                settResultatType(EBehandlingResultat.INNVILGE);
+            }
+        }
+    }, [beregningsresultat, settResultatType]);
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
