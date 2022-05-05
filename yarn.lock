@@ -2006,10 +2006,10 @@
     nav-frontend-typografi-style "^1.1.1"
     prop-types "^15.7.2"
 
-"@navikt/familie-endringslogg@^2.0.1":
-  version "2.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/2.0.1/1b52c3a082558ba19b9c7dfd92186f5c099c24958ae6e8967b64ac1b25ee7902#4d0652be683bdba6b93e96556db2538b5360d824"
-  integrity sha512-GttMHlsAjwH+1/eVWGLINRTijjLiscIMEEZta3lWtMQDR6gb91Eu1/kZZknYjfAGSBBgNtZPm88rYZZCsgp5Jg==
+"@navikt/familie-endringslogg@^2.0.2":
+  version "2.0.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/2.0.2/8feffd7b9fd4e73b49f0f40004ff7f2009925fb34fada239c7658d8af5a5f03b#0839eb0c099c23bc779312a3c8bfb5251a83f746"
+  integrity sha512-yizTupLRXQaS75/XQp7CfTvbpXlJAZTRfmxm6b+JTZuSj1VORkuecR818mlY5NH9l+2S2ILgeJ+YmWKKxhk2Zw==
   dependencies:
     "@navikt/ds-css" "^0.16.3"
     "@navikt/ds-icons" "^0.8.4"
