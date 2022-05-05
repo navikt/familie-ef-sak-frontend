@@ -107,3 +107,48 @@ export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkå
         vilkårStatusAleneomsorg(vilkårsresultatAleneomsorg) === Vilkårsresultat.IKKE_OPPFYLT
     );
 };
+
+export const utledHjelpetekstForBeløpFørFratrekkOgSatsjustering = (
+    antallBarn: number,
+    beløpFørFratrekkOgSatsjustering: number,
+    sats: number,
+    skalViseredusertPgaTilleggsstønad: boolean
+): string => {
+    const prefix = skalViseredusertPgaTilleggsstønad ? 'Deretter har beløpet blitt' : 'Beløpet er';
+    const innskuttSetning = antallBarn >= 3 ? 'eller flere' : '';
+    return `${prefix} redusert fra ${beløpFørFratrekkOgSatsjustering} kr til ${sats} kr, 
+        som er maksimalt beløp pr måned for ${antallBarn} ${innskuttSetning} barn`;
+};
+
+export const utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside = (
+    redusertPgaSats: boolean,
+    redusertPgaTilleggsstønad: boolean,
+    antallBarn: number,
+    beløpFørFratrekkOgSatsjustering: number,
+    sats: number,
+    tilleggsstønad: number
+): string[] => {
+    const visningstekstTilleggsstønad = `Stønadsbeløpet er redusert med ${tilleggsstønad} kr, som allerede er utbetalt etter tilleggsstønadsforskriften.`;
+
+    if (redusertPgaSats && redusertPgaTilleggsstønad) {
+        return [
+            visningstekstTilleggsstønad,
+            utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
+                antallBarn,
+                beløpFørFratrekkOgSatsjustering,
+                sats,
+                true
+            ),
+        ];
+    } else if (redusertPgaSats) {
+        return [
+            utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
+                antallBarn,
+                beløpFørFratrekkOgSatsjustering,
+                sats,
+                false
+            ),
+        ];
+    }
+    return [visningstekstTilleggsstønad];
+};

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
+import { IBarnMedLøpendeStønad, IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import Samvær from './Samvær';
@@ -12,15 +12,35 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
+import { EtikettAdvarsel, EtikettSuksess } from 'nav-frontend-etiketter';
+import { Ressurs } from '../../../../App/typer/ressurs';
+import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
     skalViseSøknadsdata?: boolean;
+    barnMedLøpendeStønad: Ressurs<IBarnMedLøpendeStønad>;
     stønadstype: Stønadstype;
-}> = ({ gjeldendeBarn, skalViseSøknadsdata, stønadstype }) => {
-    const { registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
+}> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad, stønadstype }) => {
+    const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
+
+    const utledEtikettForLøpendeStønad = (
+        barnMedLøpendeStønad: IBarnMedLøpendeStønad,
+        personIdent: string
+    ) => {
+        const harLøpendeStønad = barnMedLøpendeStønad.barn.includes(personIdent);
+        return harLøpendeStønad ? (
+            <EtikettSuksess>{`ja - ${formaterNullableIsoDato(
+                barnMedLøpendeStønad.dato
+            )}`}</EtikettSuksess>
+        ) : (
+            <EtikettAdvarsel>{`nei - ${formaterNullableIsoDato(
+                barnMedLøpendeStønad.dato
+            )}`}</EtikettAdvarsel>
+        );
+    };
 
     return (
         <>
@@ -99,10 +119,29 @@ const AleneomsorgInfo: FC<{
                         <Søknadsgrunnlag />
                         <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
                         <Normaltekst>
-                            {barnepass && barnepass.skalHaBarnepass ? 'Ja' : 'Nei'}
+                            {barnepass?.skalHaBarnepass ? (
+                                <EtikettSuksess>ja</EtikettSuksess>
+                            ) : (
+                                <EtikettAdvarsel>nei</EtikettAdvarsel>
+                            )}
                         </Normaltekst>
                     </>
                 )}
+                {
+                    <DataViewer response={{ barnMedLøpendeStønad }}>
+                        {({ barnMedLøpendeStønad }) => {
+                            return (
+                                <>
+                                    <Søknadsgrunnlag />
+                                    <Normaltekst>Har barnet løpende stønad</Normaltekst>
+                                    <Normaltekst>
+                                        {utledEtikettForLøpendeStønad(barnMedLøpendeStønad, barnId)}
+                                    </Normaltekst>
+                                </>
+                            );
+                        }}
+                    </DataViewer>
+                }
             </GridTabell>
 
             {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (

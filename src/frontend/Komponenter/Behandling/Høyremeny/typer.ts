@@ -1,5 +1,6 @@
 import { Steg, StegUtfall } from './Steg';
 import { Hendelse } from './Historikk';
+import { Behandling } from '../../../App/typer/fagsak';
 
 export interface Behandlingshistorikk {
     behandlingId: string;
@@ -23,6 +24,7 @@ export interface HistorikkElementProps {
     siste: boolean;
     behandlingshistorikk: Behandlingshistorikk;
     behandlingId: string;
+    behandling: Behandling;
 }
 
 export interface StyledHistorikkElementProps {

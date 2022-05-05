@@ -2,6 +2,7 @@ import { KeyboardEvent } from 'react';
 import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequest';
+import { validate } from 'uuid';
 
 export const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothing<string> => {
     if (!valgtDatoFra || !valgtDatoTil) {
@@ -122,3 +123,5 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
         previous[group].push(currentItem);
         return previous;
     }, {} as Record<K, T[]>);
+
+export const isUUID = (value: string): boolean => validate(value);

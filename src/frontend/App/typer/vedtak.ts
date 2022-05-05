@@ -26,6 +26,8 @@ export interface IBeløpsperiode {
 export interface IBeregningsperiodeBarnetilsyn {
     periode: { fradato: string; tildato: string };
     beløp: number;
+    beløpFørFratrekkOgSatsjustering: number;
+    sats: number;
     beregningsgrunnlag: IBeregningsgrunnlagBarnetilsyn;
 }
 
@@ -292,7 +294,7 @@ export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
     SANKSJONERE: 'Sanksjonere',
 };
 
-export const aktivitetTilTekst: Record<EAktivitet, string> = {
+export const aktivitetTilTekst: Record<EAktivitet | '', string> = {
     IKKE_AKTIVITETSPLIKT: '',
     BARN_UNDER_ETT_ÅR: 'Barn er under 1 år',
     FORSØRGER_I_ARBEID: 'Forsørger er i arbeid (§15-6 første ledd)',
@@ -316,6 +318,7 @@ export const aktivitetTilTekst: Record<EAktivitet, string> = {
         'Stønad i påvente av oppstart kvalifiseringsprogram',
     FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING:
         'Stønad i påvente av tilsynsordning (§15-8 femte ledd)',
+    '': '',
 };
 
 export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
