@@ -68,7 +68,7 @@ const alleSider: ISide[] = [
         komponent: Brev,
     },
     {
-        href: 'korrigering-uten-brev',
+        href: 'brev',
         navn: SideNavn.KORRIGERING_UTEN_BREV,
         komponent: KorrigeringUtenBrev,
     },
