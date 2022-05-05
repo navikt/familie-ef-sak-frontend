@@ -115,11 +115,13 @@ export const InnvilgeVedtak: React.FC<{
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
+    console.log('PERIODER', vedtaksperioder);
+
     useEffect(() => {
         if (!preutfylteVedtaksperioder?.data?.perioder?.length) return;
 
         preutfylteVedtaksperioder.data.perioder.forEach((periode: any, index: number) => {
-            vedtaksperiodeState.update(periode, index);
+            vedtaksperiodeState.update({ ...periode, endretKey: uuidv4() }, index);
         });
     }, [preutfylteVedtaksperioder]);
 
