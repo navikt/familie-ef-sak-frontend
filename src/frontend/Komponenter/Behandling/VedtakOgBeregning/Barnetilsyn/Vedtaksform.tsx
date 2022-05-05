@@ -30,6 +30,7 @@ import { UtregningstabellBarnetilsyn } from './UtregnignstabellBarnetilsyn';
 import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
+import { blirNullUtbetalingPgaOverstigendeKontantstøtte } from '../Felles/utils';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -211,16 +212,12 @@ export const Vedtaksform: React.FC<{
 
     useEffect(() => {
         if (beregningsresultat.status === RessursStatus.SUKSESS) {
-            const kontantstøttebeløpOverstigerUtgiftsbeløpForAllePeriode =
-                beregningsresultat.data.every(
-                    (periode) =>
-                        periode.beregningsgrunnlag.kontantstøttebeløp >
-                        periode.beregningsgrunnlag.utgifter
-                );
+            const kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder =
+                blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat.data);
             settNullUtbetalingPgaKontantStøtte(
-                kontantstøttebeløpOverstigerUtgiftsbeløpForAllePeriode
+                kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder
             );
-            if (kontantstøttebeløpOverstigerUtgiftsbeløpForAllePeriode) {
+            if (kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder) {
                 settResultatType(EBehandlingResultat.INNVILGE_UTEN_UTBETALING);
             } else {
                 settResultatType(EBehandlingResultat.INNVILGE);

@@ -9,7 +9,10 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../../App/utils/formatter';
-import { utledHjelpetekstForBeløpFørFratrekkOgSatsjustering } from '../Felles/utils';
+import {
+    blirNullUtbetalingPgaOverstigendeKontantstøtte,
+    utledHjelpetekstForBeløpFørFratrekkOgSatsjustering,
+} from '../Felles/utils';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
@@ -39,13 +42,6 @@ const AdvarselContainter = styled.div`
 export const UtregningstabellBarnetilsyn: React.FC<{
     beregningsresultat: Ressurs<IBeregningsperiodeBarnetilsyn[]>;
 }> = ({ beregningsresultat }) => {
-    const nullUtbetalingPgaKontantstøtte = (resultat: IBeregningsperiodeBarnetilsyn[]) => {
-        return resultat.every(
-            (periode) =>
-                periode.beregningsgrunnlag.utgifter <= periode.beregningsgrunnlag.kontantstøttebeløp
-        );
-    };
-
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
@@ -94,8 +90,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                                             {utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
                                                 rad.beregningsgrunnlag.antallBarn,
                                                 rad.beløpFørFratrekkOgSatsjustering,
-                                                rad.sats,
-                                                false
+                                                rad.sats
                                             )}
                                         </div>
                                     </HelpText>
@@ -103,7 +98,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             )}
                         </Rad>
                     ))}
-                    {nullUtbetalingPgaKontantstøtte(beregningsresultat) && (
+                    {blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat) && (
                         <AdvarselContainter>
                             <Alert variant={'warning'} size={'small'}>
                                 Avslag, kontantstøtte overstiger utgifter

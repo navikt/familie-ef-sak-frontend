@@ -9,6 +9,7 @@ import {
     VilkårType,
 } from '../../Inngangsvilkår/vilkår';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
+import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -151,4 +152,13 @@ export const utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside 
         ];
     }
     return [visningstekstTilleggsstønad];
+};
+
+export const blirNullUtbetalingPgaOverstigendeKontantstøtte = (
+    perioder: IBeregningsperiodeBarnetilsyn[]
+): boolean => {
+    return perioder.every(
+        (periode) =>
+            periode.beregningsgrunnlag.kontantstøttebeløp >= periode.beregningsgrunnlag.utgifter
+    );
 };
