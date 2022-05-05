@@ -10,8 +10,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { InfostripeBrevmottakere } from './InfostripeBrevmottakere';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
-import AlertStripeInfo from 'nav-frontend-alertstriper/lib/info-alertstripe';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -35,10 +33,9 @@ interface Props {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest, toast } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const { behandling, behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll } =
+    const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll } =
         useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const [erKorrigeringUtenBrev, settErKorrigeringUtenBrev] = useState<boolean>();
     const [brevmottakereRessurs, settBrevMottakereRessurs] = useState(
         byggTomRessurs<IBrevmottakere | undefined>()
     );
@@ -69,9 +66,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        if (erKorrigeringUtenBrev !== false) {
-            return;
-        }
         if (!behandlingErRedigerbar && totrinnskontroll.status === RessursStatus.SUKSESS) {
             if (totrinnskontroll.data.status === TotrinnskontrollStatus.KAN_FATTE_VEDTAK) {
                 lagBeslutterBrev();
@@ -80,7 +74,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             }
         }
         // eslint-disable-next-line
-    }, [erKorrigeringUtenBrev, behandlingErRedigerbar, totrinnskontroll]);
+    }, [behandlingErRedigerbar, totrinnskontroll]);
 
     useEffect(() => {
         const hentBrevmottakere = () => {
@@ -95,51 +89,34 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         hentBrevmottakere();
     }, [axiosRequest, behandlingId, settBrevMottakereRessurs, toast]);
 
-    useEffect(() => {
-        if (behandling.status === RessursStatus.SUKSESS) {
-            settErKorrigeringUtenBrev(
-                behandling.data.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV
-            );
-        }
-    }, [behandling]);
-
     return (
         <>
-            {erKorrigeringUtenBrev === false && (
-                <>
-                    <DataViewer response={{ brevmottakereRessurs }}>
-                        {({ brevmottakereRessurs }) =>
-                            brevmottakereRessurs && (
-                                <InfostripeBrevmottakere brevmottakere={brevmottakereRessurs} />
-                            )
-                        }
-                    </DataViewer>
-                    <StyledBrev>
-                        {behandlingErRedigerbar && (
-                            <DataViewer response={{ personopplysningerResponse }}>
-                                {({ personopplysningerResponse }) => (
-                                    <Brevmeny
-                                        behandlingId={behandlingId}
-                                        oppdaterBrevRessurs={oppdaterBrevRessurs}
-                                        personopplysninger={personopplysningerResponse}
-                                        settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                    />
-                                )}
-                            </DataViewer>
+            <DataViewer response={{ brevmottakereRessurs }}>
+                {({ brevmottakereRessurs }) =>
+                    brevmottakereRessurs && (
+                        <InfostripeBrevmottakere brevmottakere={brevmottakereRessurs} />
+                    )
+                }
+            </DataViewer>
+            <StyledBrev>
+                {behandlingErRedigerbar && (
+                    <DataViewer response={{ personopplysningerResponse }}>
+                        {({ personopplysningerResponse }) => (
+                            <Brevmeny
+                                behandlingId={behandlingId}
+                                oppdaterBrevRessurs={oppdaterBrevRessurs}
+                                personopplysninger={personopplysningerResponse}
+                                settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                            />
                         )}
-                        <PdfVisning pdfFilInnhold={brevRessurs} />
-                    </StyledBrev>
-                </>
-            )}
-            {erKorrigeringUtenBrev && (
-                <>
-                    <AlertStripeInfo>Korrigering av vedtak uten brevutsendelse</AlertStripeInfo>
-                </>
-            )}
+                    </DataViewer>
+                )}
+                <PdfVisning pdfFilInnhold={brevRessurs} />
+            </StyledBrev>
             {behandlingErRedigerbar && (
                 <SendTilBeslutterFooter
                     behandlingId={behandlingId}
-                    kanSendesTilBeslutter={kanSendesTilBeslutter || erKorrigeringUtenBrev}
+                    kanSendesTilBeslutter={kanSendesTilBeslutter}
                 />
             )}
         </>
