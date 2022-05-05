@@ -69,7 +69,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     };
 
     useEffect(() => {
-        if (erKorrigeringUtenBrev) {
+        if (erKorrigeringUtenBrev !== false) {
             return;
         }
         if (!behandlingErRedigerbar && totrinnskontroll.status === RessursStatus.SUKSESS) {
