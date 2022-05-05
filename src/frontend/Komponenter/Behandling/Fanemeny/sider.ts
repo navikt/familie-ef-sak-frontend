@@ -95,7 +95,6 @@ const filtrerVekkHvisSanksjon = [
 ];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
 const filtrerVekkHvisStandard = [SideNavn.BLANKETT, SideNavn.SANKSJON];
-const filtrerVekkHvisKorrigering = [...filtrerVekkHvisStandard, SideNavn.BREV];
 
 export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
     const sider = siderForStønad(behandling.stønadstype);
@@ -110,9 +109,6 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
         return sider.filter((side) => filtrerHvisMigrering.includes(side.navn as SideNavn));
-    }
-    if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING) {
-        return sider.filter((side) => !filtrerVekkHvisKorrigering.includes(side.navn as SideNavn));
     }
     return sider.filter((side) => !filtrerVekkHvisStandard.includes(side.navn as SideNavn));
 };

@@ -103,7 +103,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         switch (behandlingsårsak) {
             case Behandlingsårsak.SANKSJON_1_MND:
                 return skalViseValgmulighetForSanksjon;
-            case Behandlingsårsak.KORRIGERING:
+            case Behandlingsårsak.KORRIGERING_UTEN_BREV:
                 return skalViseValgmulighetForKorrigering;
             default:
                 return true;
