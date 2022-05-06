@@ -28,7 +28,7 @@ interface Props {
 const Fanemeny: FC<Props> = ({ behandlingId }) => {
     const { behandling } = useBehandling();
     const låsendeSteg = [Steg.VILKÅR, Steg.BEREGNE_YTELSE];
-    const fanerSomKanLåses = [SideNavn.SIMULERING, SideNavn.BREV];
+    const fanerSomKanLåses = [SideNavn.SIMULERING, SideNavn.BREV, SideNavn.KORRIGERING_UTEN_BREV];
 
     const faneErLåst = (side: ISide, steg: Steg): boolean => {
         return fanerSomKanLåses.includes(side.navn as SideNavn) && låsendeSteg.includes(steg);
