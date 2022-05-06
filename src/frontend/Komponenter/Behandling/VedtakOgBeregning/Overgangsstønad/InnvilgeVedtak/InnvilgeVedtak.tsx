@@ -115,14 +115,24 @@ export const InnvilgeVedtak: React.FC<{
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
-    console.log('PERIODER', vedtaksperioder);
-
     useEffect(() => {
         if (!preutfylteVedtaksperioder?.data?.perioder?.length) return;
 
-        preutfylteVedtaksperioder.data.perioder.forEach((periode: any, index: number) => {
-            vedtaksperiodeState.update({ ...periode, endretKey: uuidv4() }, index);
-        });
+        preutfylteVedtaksperioder.data.perioder.forEach(
+            (periode: IVedtaksperiode, index: number) => {
+                vedtaksperiodeState.update({ ...periode, endretKey: uuidv4() }, index);
+            }
+        );
+    }, [preutfylteVedtaksperioder]);
+
+    useEffect(() => {
+        if (!preutfylteVedtaksperioder?.data?.inntekter?.length) return;
+
+        preutfylteVedtaksperioder.data.inntekter.forEach(
+            (inntekt: IInntektsperiode, index: number) => {
+                inntektsperiodeState.update({ ...inntekt, endretKey: uuidv4() }, index);
+            }
+        );
     }, [preutfylteVedtaksperioder]);
 
     useEffect(() => {
@@ -196,8 +206,6 @@ export const InnvilgeVedtak: React.FC<{
         });
     };
 
-    console.log('pre', preutfylteVedtaksperioder);
-
     useEffect(() => {
         if (!revurderesFra) return;
 
@@ -267,8 +275,6 @@ export const InnvilgeVedtak: React.FC<{
                 break;
         }
     };
-
-    console.log('beh', behandling);
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>

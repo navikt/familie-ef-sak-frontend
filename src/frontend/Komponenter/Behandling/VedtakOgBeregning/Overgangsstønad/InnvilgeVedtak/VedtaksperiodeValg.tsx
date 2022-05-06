@@ -112,10 +112,6 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     index === vedtaksperiodeListe.value.length - 1 &&
                     index !== 0;
 
-                console.log('PERIODEMAP', vedtaksperiode);
-                console.log('årMånedFra', årMånedFra);
-                console.log('årMånedTil', årMånedTil);
-
                 return (
                     <VedtakPeriodeContainer key={index} lesevisning={!behandlingErRedigerbar}>
                         <VedtakperiodeSelect

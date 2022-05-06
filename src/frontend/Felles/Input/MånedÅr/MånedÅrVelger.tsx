@@ -37,7 +37,6 @@ const MånedÅrVelger: React.FC<Props> = ({
     lesevisning = false,
     disabled = false,
 }) => {
-    console.log('initiell', årMånedInitiell);
     const [år, settÅr] = useState(
         årMånedInitiell ? parseInt(årMånedInitiell.split('-')[0], 10) : undefined
     );
