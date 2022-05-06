@@ -9351,10 +9351,10 @@ slice-ansi@^5.0.0:
     ansi-styles "^6.0.0"
     is-fullwidth-code-point "^4.0.0"
 
-snyk@^1.473.0, snyk@^1.916.0:
-  version "1.916.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.916.0.tgz#c526e4105df24afa89b6a8a4fc7ac99532b0df67"
-  integrity sha512-+dPDl4Abc6r9WV/Lmm6EWllZsyXXKUYqSNSVn0sIrTdlrUzsO+kwXzrocnBVEQWMKGwLNWyYV8Nzq6zuMnSpvw==
+snyk@^1.473.0, snyk@^1.921.0:
+  version "1.921.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.921.0.tgz#568b3b00015a64b32f0f0083b3485455b9718959"
+  integrity sha512-RjDrh8WYiJwMzn9p2F4N0riwXQ3oxoMrM/sApp8NQ8kg8ArbMjIxEgBFrW3/aV6WSb6ROsT7LeADFZbzeEYWbw==
 
 source-map-js@^1.0.2:
   version "1.0.2"
