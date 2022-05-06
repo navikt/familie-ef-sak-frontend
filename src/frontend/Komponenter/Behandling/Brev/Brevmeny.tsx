@@ -10,7 +10,6 @@ import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
-import { TilkjentYtelse } from '../../../App/typer/tilkjentytelse';
 import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import {
@@ -53,15 +52,13 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
     );
-    const [tilkjentYtelse, settTilkjentYtelse] = useState<Ressurs<TilkjentYtelse | undefined>>(
-        byggTomRessurs()
-    );
+
     const [beløpsperioder, settBeløpsperioder] = useState<Ressurs<IBeløpsperiode[] | undefined>>(
         byggTomRessurs()
     );
 
     const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
-    const { flettefeltStore } = useVerdierForBrev(tilkjentYtelse);
+    const { flettefeltStore } = useVerdierForBrev(beløpsperioder);
     const { toggles } = useToggles();
     const { behandling } = useBehandling();
 
@@ -93,23 +90,18 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         const erOvergangsstønad =
             behandling.status === RessursStatus.SUKSESS &&
             behandling.data.stønadstype === Stønadstype.OVERGANGSSTØNAD;
-        if (erOvergangsstønad && harVedtaksresultatMedTilkjentYtelse(vedtaksresultat)) {
-            axiosRequest<TilkjentYtelse, null>({
+        if (
+            erOvergangsstønad &&
+            harVedtaksresultatMedTilkjentYtelse(vedtaksresultat) &&
+            vedtaksresultat != EBehandlingResultat.OPPHØRT
+        ) {
+            axiosRequest<IBeløpsperiode[], null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/tilkjentytelse/behandling/${props.behandlingId}`,
-            }).then((respons: Ressurs<TilkjentYtelse>) => {
-                settTilkjentYtelse(respons);
+                url: `/familie-ef-sak/api/beregning/${props.behandlingId}`,
+            }).then((respons: Ressurs<IBeløpsperiode[]>) => {
+                settBeløpsperioder(respons);
             });
-            if (vedtaksresultat !== EBehandlingResultat.OPPHØRT) {
-                axiosRequest<IBeløpsperiode[], null>({
-                    method: 'GET',
-                    url: `/familie-ef-sak/api/beregning/${props.behandlingId}`,
-                }).then((respons: Ressurs<IBeløpsperiode[]>) => {
-                    settBeløpsperioder(respons);
-                });
-            }
         } else {
-            settTilkjentYtelse(byggSuksessRessurs<TilkjentYtelse | undefined>(undefined));
             settBeløpsperioder(byggSuksessRessurs<IBeløpsperiode[] | undefined>(undefined));
         }
         // eslint-disable-next-line
