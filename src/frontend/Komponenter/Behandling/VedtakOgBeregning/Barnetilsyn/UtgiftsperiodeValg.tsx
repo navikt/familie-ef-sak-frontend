@@ -11,17 +11,19 @@ import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useApp } from '../../../../App/context/AppContext';
-import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
-import { harTallverdi, tilTallverdi, tilHeltall } from '../../../../App/utils/utils';
+import { FamilieCheckbox, FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
+import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter slettknapp';
+    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter checkbox slettknapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 10rem 18rem 2rem 4rem' : '12rem 12rem 25rem 2rem 4rem 4rem'};
+        props.lesevisning
+            ? '10rem 10rem 18rem 2rem 2rem 4rem'
+            : '12rem 12rem 25rem 2rem 4rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
 `;
@@ -39,6 +41,15 @@ const NavnContainer = styled.div`
     margin-bottom: 1rem;
 `;
 
+const TekstEnLinje = styled(Element)`
+    white-space: nowrap;
+`;
+
+const CheckboxContainer = styled.div`
+    position: relative;
+    bottom: 0.5rem;
+`;
+
 interface Props {
     utgiftsperioder: ListState<IUtgiftsperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
@@ -51,6 +62,7 @@ export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
     årMånedTil: '',
     barn: [],
     utgifter: undefined,
+    nullbeløp: false,
 };
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
@@ -65,7 +77,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     const oppdaterUtgiftsPeriode = (
         index: number,
         property: EUtgiftsperiodeProperty,
-        value: string | string[] | number | undefined
+        value: string | string[] | number | boolean | undefined
     ) => {
         utgiftsperioder.update(
             {
@@ -96,6 +108,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <Element>Velg barn</Element>
                 <Element>Ant.</Element>
                 <Element>Utgifter</Element>
+                <TekstEnLinje>Ingen stønad/opphør</TekstEnLinje>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
                 const { årMånedFra, årMånedTil, utgifter } = utgiftsperiode;
@@ -112,7 +125,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             årMånedTilInitiell={årMånedTil}
                             index={index}
                             onEndre={(verdi, periodeVariant) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterUtgiftsPeriode(
                                     index,
                                     periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
@@ -133,7 +145,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     utgiftsperiode.barn.includes(barn.value)
                                 )}
                                 onChange={(valgtBarn) => {
-                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                     oppdaterUtgiftsPeriode(
                                         index,
                                         EUtgiftsperiodeProperty.barn,
@@ -162,7 +173,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             type="number"
                             value={harTallverdi(utgifter) ? utgifter : ''}
                             onChange={(e) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                 oppdaterUtgiftsPeriode(
                                     index,
                                     EUtgiftsperiodeProperty.utgifter,
@@ -171,6 +181,20 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             }}
                             erLesevisning={!behandlingErRedigerbar}
                         />
+                        <CheckboxContainer>
+                            <FamilieCheckbox
+                                erLesevisning={!behandlingErRedigerbar}
+                                label={''}
+                                checked={utgiftsperiode.nullbeløp}
+                                onChange={() => {
+                                    oppdaterUtgiftsPeriode(
+                                        index,
+                                        EUtgiftsperiodeProperty.nullbeløp,
+                                        !utgiftsperiode.nullbeløp
+                                    );
+                                }}
+                            />
+                        </CheckboxContainer>
                         {skalViseFjernKnapp && (
                             <FjernKnapp
                                 onClick={() => {

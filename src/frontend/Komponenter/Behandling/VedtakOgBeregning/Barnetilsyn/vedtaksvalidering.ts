@@ -84,6 +84,7 @@ export const validerUtgiftsperioder = ({
             årMånedTil: undefined,
             barn: [],
             utgifter: undefined,
+            nullbeløp: undefined,
         };
 
         if (!årMånedTil || !årMånedFra) {
