@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, Dispatch, SetStateAction } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
@@ -33,7 +33,7 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
-import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
+import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -49,30 +49,6 @@ const WrapperDobbelMarginTop = styled.div`
 const WrapperMarginTop = styled.div`
     margin-top: 1rem;
 `;
-
-const WrapperMarginBottom = styled.div`
-    margin-bottom: 2rem;
-`;
-
-const RevurderesFraOgMed: React.FC<{
-    settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
-}> = ({ settRevurderesFra }) => {
-    return (
-        <WrapperMarginBottom>
-            <MånedÅrVelger
-                label={'Revurderes fra og med'}
-                onEndret={(årMåned) => {
-                    if (!årMåned) return;
-
-                    settRevurderesFra(årMåned);
-                }}
-                antallÅrTilbake={5}
-                antallÅrFrem={3}
-                årMånedInitiell={'2020-10'}
-            />
-        </WrapperMarginBottom>
-    );
-};
 
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
