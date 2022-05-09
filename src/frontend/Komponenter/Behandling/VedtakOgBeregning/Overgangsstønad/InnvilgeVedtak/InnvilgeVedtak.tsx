@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
@@ -13,6 +13,7 @@ import {
     IVedtakForOvergangsstønad,
     IVedtaksperiode,
     IVedtakType,
+    IVedtakshistorikk,
 } from '../../../../../App/typer/vedtak';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
@@ -53,12 +54,16 @@ const WrapperMarginBottom = styled.div`
     margin-bottom: 2rem;
 `;
 
-const RevurderesFraOgMed = ({ settRevurderesFra }: any) => {
+const RevurderesFraOgMed: React.FC<{
+    settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
+}> = ({ settRevurderesFra }) => {
     return (
         <WrapperMarginBottom>
             <MånedÅrVelger
                 label={'Revurderes fra og med'}
                 onEndret={(årMåned) => {
+                    if (!årMåned) return;
+
                     settRevurderesFra(årMåned);
                 }}
                 antallÅrTilbake={5}
@@ -85,11 +90,10 @@ export const InnvilgeVedtak: React.FC<{
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
     );
-    const [revurderesFra, settRevurderesFra] = useState<string>();
+    const [vedtakshistorikk, settVedtakshistorikk] = useState<IVedtakshistorikk>();
+    const [revurderesFra, settRevurderesFra] = useState<string | undefined>();
 
     const [feilmelding, settFeilmelding] = useState<string>();
-
-    const [preutfylteVedtaksperioder, settPreutfylteVedtaksperioder] = useState<any>();
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -116,24 +120,20 @@ export const InnvilgeVedtak: React.FC<{
     const vedtaksperioder = vedtaksperiodeState.value;
 
     useEffect(() => {
-        if (!preutfylteVedtaksperioder?.data?.perioder?.length) return;
+        if (!vedtakshistorikk?.perioder?.length) return;
 
-        preutfylteVedtaksperioder.data.perioder.forEach(
-            (periode: IVedtaksperiode, index: number) => {
-                vedtaksperiodeState.update({ ...periode, endretKey: uuidv4() }, index);
-            }
-        );
-    }, [preutfylteVedtaksperioder]);
+        vedtakshistorikk.perioder.forEach((periode: IVedtaksperiode, index: number) => {
+            vedtaksperiodeState.update({ ...periode, endretKey: uuidv4() }, index);
+        });
+    }, [vedtakshistorikk, vedtaksperiodeState]);
 
     useEffect(() => {
-        if (!preutfylteVedtaksperioder?.data?.inntekter?.length) return;
+        if (!vedtakshistorikk?.inntekter?.length) return;
 
-        preutfylteVedtaksperioder.data.inntekter.forEach(
-            (inntekt: IInntektsperiode, index: number) => {
-                inntektsperiodeState.update({ ...inntekt, endretKey: uuidv4() }, index);
-            }
-        );
-    }, [preutfylteVedtaksperioder]);
+        vedtakshistorikk.inntekter.forEach((inntekt: IInntektsperiode, index: number) => {
+            inntektsperiodeState.update({ ...inntekt, endretKey: uuidv4() }, index);
+        });
+    }, [vedtakshistorikk, inntektsperiodeState]);
 
     useEffect(() => {
         const førsteInnvilgedeVedtaksperiode =
@@ -197,20 +197,25 @@ export const InnvilgeVedtak: React.FC<{
         }
     };
 
-    const hentPreutfylteVedtaksperioder = (revurderesFra: string) => {
-        axiosRequest<any, any>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
-        }).then((res: Ressurs<any>) => {
-            settPreutfylteVedtaksperioder(res);
-        });
-    };
+    const hentVedtakshistorikk = useCallback(
+        (revurderesFra: string) => {
+            axiosRequest<IVedtakshistorikk, void>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
+            }).then((res: Ressurs<IVedtakshistorikk>) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    settVedtakshistorikk(res.data);
+                }
+            });
+        },
+        [axiosRequest, behandling]
+    );
 
     useEffect(() => {
         if (!revurderesFra) return;
 
-        hentPreutfylteVedtaksperioder(revurderesFra);
-    }, [revurderesFra]);
+        hentVedtakshistorikk(revurderesFra);
+    }, [revurderesFra, hentVedtakshistorikk]);
 
     const håndterVedtaksresultat = (nesteUrl: string) => {
         return (res: Ressurs<string>) => {

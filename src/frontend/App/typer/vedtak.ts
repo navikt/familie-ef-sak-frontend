@@ -46,6 +46,17 @@ export interface IBeregningsgrunnlag {
     fullOvergangsStønadPerMåned: number | null;
     grunnbeløp: number | null;
 }
+
+export interface IVedtakshistorikk {
+    inntektsbegrunnelse: string;
+    inntekter: IInntektsperiode[];
+    periodebegrunnelse: string;
+    perioder: IVedtaksperiode[];
+    resultatTyoe: string;
+    samordningsfradrag: string;
+    _type: IVedtakType;
+}
+
 export type IInnvilgeVedtakForOvergangsstønad = {
     _type: IVedtakType.InnvilgelseOvergangsstønad;
     resultatType: EBehandlingResultat.INNVILGE;
@@ -119,6 +130,7 @@ export interface IInntektsperiode {
 }
 
 export interface IVedtaksperiode {
+    endretKey: Key | null | undefined;
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;
