@@ -16,6 +16,7 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     BehandlingRequest,
     JournalføringStateRequest,
+    Terminbarn,
     useJournalføringState,
 } from '../../App/hooks/useJournalføringState';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
@@ -32,6 +33,9 @@ import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
+import LeggTilTerminbarn from './LeggTilTerminbarn';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -71,6 +75,7 @@ const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
+    const { toggles } = useToggles();
     const query: URLSearchParams = useQueryParams();
     const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
@@ -152,6 +157,24 @@ export const JournalforingApp: React.FC = () => {
             return behandling?.behandlingsId === undefined;
         }
     };
+
+    const oppdaterTerminbarn = (terminbarn: Terminbarn[]) => {
+        journalpostState.settTerminbarn(terminbarn);
+    };
+
+    const kanLeggeTilTerminbarn = () => {
+        const erNyBehandling =
+            journalpostState.behandling && !journalpostState.behandling.behandlingsId;
+        const harIkkeStrukturertSøknad =
+            journalResponse.status === RessursStatus.SUKSESS &&
+            !journalResponse.data.harStrukturertSøknad;
+        return (
+            toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] &&
+            erNyBehandling &&
+            harIkkeStrukturertSøknad
+        );
+    };
+
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => (
@@ -189,6 +212,9 @@ export const JournalforingApp: React.FC = () => {
                                 <AlertStripeFeil>
                                     {journalpostState.innsending.frontendFeilmelding}
                                 </AlertStripeFeil>
+                            )}
+                            {kanLeggeTilTerminbarn() && (
+                                <LeggTilTerminbarn oppdaterTerminbarn={oppdaterTerminbarn} />
                             )}
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
