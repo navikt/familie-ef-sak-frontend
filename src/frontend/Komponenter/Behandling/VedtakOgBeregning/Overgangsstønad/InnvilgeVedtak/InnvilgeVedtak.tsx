@@ -294,46 +294,44 @@ export const InnvilgeVedtak: React.FC<{
                 )}
             </WrapperDobbelMarginTop>
             {skalViseVedtaksperiodeOgInntekt && (
-                <WrapperMarginTop>
-                    <Heading spacing size="small" level="5">
-                        Inntekt
-                    </Heading>
-                    {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
-                        <IngenBegrunnelseOppgitt />
-                    ) : (
-                        <EnsligTextArea
-                            value={inntektBegrunnelse.value}
-                            onChange={(event) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                inntektBegrunnelse.onChange(event);
-                            }}
-                            label="Begrunnelse for inntektsfastsettelse"
-                            maxLength={0}
-                            erLesevisning={!behandlingErRedigerbar}
-                            feilmelding={formState.errors.inntektBegrunnelse}
-                        />
-                    )}
-                    <WrapperMarginTop>
-                        <InntektsperiodeValg
-                            inntektsperiodeListe={inntektsperiodeState}
-                            valideringsfeil={formState.errors.inntekter}
-                            setValideringsFeil={formState.setErrors}
-                            samordningsfradragstype={typeSamordningsfradag}
-                            skalVelgeSamordningstype={skalVelgeSamordningstype}
-                            samordningValideringsfeil={formState.errors.samordningsfradragType}
-                        />
-                    </WrapperMarginTop>
-                    {behandlingErRedigerbar && (
-                        <WrapperMarginTop>
-                            <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
-                                Beregn
-                            </Knapp>
-                        </WrapperMarginTop>
-                    )}
-                </WrapperMarginTop>
-            )}
-            {skalViseVedtaksperiodeOgInntekt && (
                 <>
+                    <WrapperMarginTop>
+                        <Heading spacing size="small" level="5">
+                            Inntekt
+                        </Heading>
+                        {!behandlingErRedigerbar && inntektBegrunnelse.value === '' ? (
+                            <IngenBegrunnelseOppgitt />
+                        ) : (
+                            <EnsligTextArea
+                                value={inntektBegrunnelse.value}
+                                onChange={(event) => {
+                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                    inntektBegrunnelse.onChange(event);
+                                }}
+                                label="Begrunnelse for inntektsfastsettelse"
+                                maxLength={0}
+                                erLesevisning={!behandlingErRedigerbar}
+                                feilmelding={formState.errors.inntektBegrunnelse}
+                            />
+                        )}
+                        <WrapperMarginTop>
+                            <InntektsperiodeValg
+                                inntektsperiodeListe={inntektsperiodeState}
+                                valideringsfeil={formState.errors.inntekter}
+                                setValideringsFeil={formState.setErrors}
+                                samordningsfradragstype={typeSamordningsfradag}
+                                skalVelgeSamordningstype={skalVelgeSamordningstype}
+                                samordningValideringsfeil={formState.errors.samordningsfradragType}
+                            />
+                        </WrapperMarginTop>
+                        {behandlingErRedigerbar && (
+                            <WrapperMarginTop>
+                                <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
+                                    Beregn
+                                </Knapp>
+                            </WrapperMarginTop>
+                        )}
+                    </WrapperMarginTop>
                     <WrapperDobbelMarginTop>
                         <Utregningstabell beregnetStønad={beregnetStønad} />
                     </WrapperDobbelMarginTop>
