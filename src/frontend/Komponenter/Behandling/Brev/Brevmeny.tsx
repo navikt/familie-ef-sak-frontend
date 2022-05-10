@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrevStruktur, Brevtype, DokumentNavn, IMellomlagretBrevFritekst } from './BrevTyper';
-import {
-    byggSuksessRessurs,
-    byggTomRessurs,
-    Ressurs,
-    RessursStatus,
-} from '../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -17,16 +12,12 @@ import {
     useMellomlagringBrev,
 } from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
-import {
-    harVedtaksresultatMedTilkjentYtelse,
-    useHentVedtak,
-} from '../../../App/hooks/useHentVedtak';
+import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import FritekstBrev from './FritekstBrev';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import { EBehandlingResultat, IBeløpsperiode } from '../../../App/typer/vedtak';
-import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Behandling } from '../../../App/typer/fagsak';
+import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -49,16 +40,15 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const behandling = props.behandling;
     const { axiosRequest } = useApp();
     const { hentVedtak, vedtaksresultat } = useHentVedtak(props.behandlingId);
+    const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
+        behandling.id,
+        behandling.stønadstype
+    );
     const [brevMal, settBrevmal] = useState<string>();
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
     );
-
-    const [beløpsperioder, settBeløpsperioder] = useState<Ressurs<IBeløpsperiode[] | undefined>>(
-        byggTomRessurs()
-    );
-
     const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
     const { flettefeltStore } = useVerdierForBrev(beløpsperioder);
     const { toggles } = useToggles();
@@ -88,23 +78,8 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
-        if (
-            erOvergangsstønad &&
-            harVedtaksresultatMedTilkjentYtelse(vedtaksresultat) &&
-            vedtaksresultat != EBehandlingResultat.OPPHØRT
-        ) {
-            axiosRequest<IBeløpsperiode[], null>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/beregning/${props.behandlingId}`,
-            }).then((respons: Ressurs<IBeløpsperiode[]>) => {
-                settBeløpsperioder(respons);
-            });
-        } else {
-            settBeløpsperioder(byggSuksessRessurs<IBeløpsperiode[] | undefined>(undefined));
-        }
-        // eslint-disable-next-line
-    }, [harVedtaksresultatMedTilkjentYtelse, vedtaksresultat]);
+        hentBeløpsperioder(vedtaksresultat);
+    }, [vedtaksresultat, hentBeløpsperioder]);
 
     useEffect(() => {
         hentVedtak();
