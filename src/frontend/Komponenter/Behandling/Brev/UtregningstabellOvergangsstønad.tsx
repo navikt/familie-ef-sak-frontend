@@ -5,7 +5,7 @@ import {
     samordningsfradagTilTekst,
 } from '../../../App/typer/vedtak';
 
-export const delmalTilHtml = (beløpsperioder?: IBeløpsperiode[]) => {
+export const delmalTilUtregningstabellOS = (beløpsperioder?: IBeløpsperiode[]) => {
     return { inntektsperioderHtml: lagInntektsperioder(beløpsperioder) };
 };
 
