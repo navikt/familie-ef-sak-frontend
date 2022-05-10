@@ -52,7 +52,7 @@ export interface IVedtakshistorikk {
     inntekter: IInntektsperiode[];
     periodebegrunnelse: string;
     perioder: IVedtaksperiode[];
-    resultatTyoe: string;
+    resultatType: string;
     samordningsfradrag: string;
     _type: IVedtakType;
 }
