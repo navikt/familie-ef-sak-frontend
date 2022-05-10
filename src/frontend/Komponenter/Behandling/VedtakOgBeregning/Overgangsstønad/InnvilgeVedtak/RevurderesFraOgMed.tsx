@@ -20,7 +20,6 @@ export const RevurderesFraOgMed: React.FC<{
                 }}
                 antallÅrTilbake={5}
                 antallÅrFrem={3}
-                årMånedInitiell={'2020-10'}
             />
         </WrapperMarginBottom>
     );
