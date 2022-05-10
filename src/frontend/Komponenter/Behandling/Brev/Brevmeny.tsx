@@ -25,14 +25,15 @@ import FritekstBrev from './FritekstBrev';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { EBehandlingResultat, IBeløpsperiode } from '../../../App/typer/vedtak';
-import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Behandling } from '../../../App/typer/fagsak';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
+    behandling: Behandling;
 }
 
 const StyledBrevMeny = styled.div`
@@ -45,6 +46,7 @@ const datasett = 'ef-brev';
 const fritekstmal = 'Fritekstbrev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
+    const behandling = props.behandling;
     const { axiosRequest } = useApp();
     const { hentVedtak, vedtaksresultat } = useHentVedtak(props.behandlingId);
     const [brevMal, settBrevmal] = useState<string>();
@@ -60,7 +62,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
     const { flettefeltStore } = useVerdierForBrev(beløpsperioder);
     const { toggles } = useToggles();
-    const { behandling } = useBehandling();
 
     useEffect(() => {
         if (brevMal && brevMal !== fritekstmal) {
@@ -87,9 +88,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        const erOvergangsstønad =
-            behandling.status === RessursStatus.SUKSESS &&
-            behandling.data.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+        const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
         if (
             erOvergangsstønad &&
             harVedtaksresultatMedTilkjentYtelse(vedtaksresultat) &&
@@ -174,6 +173,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
                                 }
                                 flettefeltStore={flettefeltStore}
+                                stønadstype={behandling.stønadstype}
                             />
                         )
                     }

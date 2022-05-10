@@ -33,7 +33,7 @@ interface Props {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest, toast } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll } =
+    const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll, behandling } =
         useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const [brevmottakereRessurs, settBrevMottakereRessurs] = useState(
@@ -100,13 +100,14 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             </DataViewer>
             <StyledBrev>
                 {behandlingErRedigerbar && (
-                    <DataViewer response={{ personopplysningerResponse }}>
-                        {({ personopplysningerResponse }) => (
+                    <DataViewer response={{ personopplysningerResponse, behandling }}>
+                        {({ personopplysningerResponse, behandling }) => (
                             <Brevmeny
                                 behandlingId={behandlingId}
                                 oppdaterBrevRessurs={oppdaterBrevRessurs}
                                 personopplysninger={personopplysningerResponse}
                                 settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                behandling={behandling}
                             />
                         )}
                     </DataViewer>

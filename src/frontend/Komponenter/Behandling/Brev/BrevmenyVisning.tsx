@@ -14,9 +14,9 @@ import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
     finnFletteFeltApinavnFraRef,
     grupperDelmaler,
+    harValgfeltFeil,
     initFlettefelterMedVerdi,
     initValgteFeltMedMellomlager,
-    harValgfeltFeil,
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
@@ -24,11 +24,13 @@ import styled from 'styled-components';
 import Panel from 'nav-frontend-paneler';
 import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
-import { delmalTilHtml } from './Htmlfelter';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
 import { IBeløpsperiode } from '../../../App/typer/vedtak';
 import { Alert } from '@navikt/ds-react';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { delmalTilUtregningstabellOSS } from './UtregningstabellOvergangsstønad';
+import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -52,6 +54,7 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     mellomlagretBrevVerdier?: string;
     brevMal: string;
     flettefeltStore: { [navn: string]: string };
+    stønadstype: Stønadstype;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -64,6 +67,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     mellomlagretBrevVerdier,
     brevMal,
     flettefeltStore,
+    stønadstype,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
@@ -146,7 +150,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                           {
                               flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
                               valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                              htmlfelter: delmalTilHtml(beløpsperioder),
+                              htmlfelter:
+                                  stønadstype === Stønadstype.OVERGANGSSTØNAD
+                                      ? delmalTilUtregningstabellOSS(beløpsperioder)
+                                      : delmalTilUtregningstabellBT(beløpsperioder),
                           },
                       ],
                   }
