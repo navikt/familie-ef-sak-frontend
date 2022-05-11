@@ -74,7 +74,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
-    const oppdaterUtgiftsPeriode = (
+    const oppdaterUtgiftsperiode = (
         index: number,
         property: EUtgiftsperiodeProperty,
         value: string | string[] | number | boolean | undefined
@@ -87,6 +87,23 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const oppdaterUtgiftsperiodeDersomNullbeløp = (index: number, erNullbeløp: boolean) => {
+        if (erNullbeløp) {
+            utgiftsperioder.update(
+                {
+                    ...utgiftsperioder.value[index],
+                    [EUtgiftsperiodeProperty.nullbeløp]: erNullbeløp,
+                    [EUtgiftsperiodeProperty.barn]: [],
+                    [EUtgiftsperiodeProperty.utgifter]: 0,
+                },
+                index
+            );
+        } else {
+            oppdaterUtgiftsperiode(index, EUtgiftsperiodeProperty.nullbeløp, erNullbeløp);
+            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+        }
     };
 
     const periodeVariantTilUtgiftsperiodeProperty = (
@@ -111,13 +128,16 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <TekstEnLinje>Ingen stønad/opphør</TekstEnLinje>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { årMånedFra, årMånedTil, utgifter } = utgiftsperiode;
+                const { årMånedFra, årMånedTil, utgifter, nullbeløp } = utgiftsperiode;
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index === utgiftsperioder.value.length - 1 &&
                     index !== 0;
 
                 const barnForPeriode = barnFormatertForBarnVelger(barn);
+                const ikkeValgteBarn = barnForPeriode.filter((barn) =>
+                    utgiftsperiode.barn.includes(barn.value)
+                );
                 return (
                     <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrPeriode
@@ -125,7 +145,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             årMånedTilInitiell={årMånedTil}
                             index={index}
                             onEndre={(verdi, periodeVariant) => {
-                                oppdaterUtgiftsPeriode(
+                                oppdaterUtgiftsperiode(
                                     index,
                                     periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
                                     verdi
@@ -141,11 +161,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 options={barnForPeriode}
                                 creatable={false}
                                 isMulti={true}
-                                defaultValue={barnForPeriode.filter((barn) =>
-                                    utgiftsperiode.barn.includes(barn.value)
-                                )}
+                                isDisabled={nullbeløp}
+                                defaultValue={ikkeValgteBarn}
+                                value={nullbeløp ? [] : ikkeValgteBarn}
                                 onChange={(valgtBarn) => {
-                                    oppdaterUtgiftsPeriode(
+                                    oppdaterUtgiftsperiode(
                                         index,
                                         EUtgiftsperiodeProperty.barn,
                                         valgtBarn === null
@@ -172,8 +192,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             onKeyPress={tilHeltall}
                             type="number"
                             value={harTallverdi(utgifter) ? utgifter : ''}
+                            disabled={nullbeløp}
                             onChange={(e) => {
-                                oppdaterUtgiftsPeriode(
+                                oppdaterUtgiftsperiode(
                                     index,
                                     EUtgiftsperiodeProperty.utgifter,
                                     tilTallverdi(e.target.value)
@@ -185,13 +206,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             <FamilieCheckbox
                                 erLesevisning={!behandlingErRedigerbar}
                                 label={''}
-                                checked={utgiftsperiode.nullbeløp}
+                                checked={nullbeløp}
                                 onChange={() => {
-                                    oppdaterUtgiftsPeriode(
-                                        index,
-                                        EUtgiftsperiodeProperty.nullbeløp,
-                                        !utgiftsperiode.nullbeløp
-                                    );
+                                    oppdaterUtgiftsperiodeDersomNullbeløp(index, !nullbeløp);
                                 }}
                             />
                         </CheckboxContainer>
