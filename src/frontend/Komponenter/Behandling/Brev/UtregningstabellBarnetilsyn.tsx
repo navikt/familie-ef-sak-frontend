@@ -5,7 +5,8 @@ export const delmalTilUtregningstabellBT = (beløpsperioder?: IBeregningsperiode
     return { inntektsperioderHtml: lagInntektsperioder(beløpsperioder) };
 };
 
-const borderStyling = 'border: 1px solid black; padding: 3px 5px 3px 5px;';
+const borderStylingCompact = 'border: 1px solid black; padding: 3px 2px 3px 5px;';
+const borderStyling = 'border: 1px solid black; padding: 3px 10px 3px 5px;';
 const lagInntektsperioder = (beløpsperioder?: IBeregningsperiodeBarnetilsyn[]): string => {
     if (!beløpsperioder) {
         return '';
@@ -17,25 +18,25 @@ const lagInntektsperioder = (beløpsperioder?: IBeregningsperiodeBarnetilsyn[]):
         (beløpsperiode) => beløpsperiode.beregningsgrunnlag.tilleggsstønadsbeløp > 0
     );
 
-    return `<table style="margin-left: 2px; border-collapse: collapse; ${borderStyling}">
+    return `<table style="margin-left: 2px; margin-right: 2px; border-collapse: collapse; ${borderStylingCompact}">
                 <thead>
                     <tr>
-                        <th style="width: 100px; ${borderStyling}">Periode</th>
-                        <th style="width: 45px; ${borderStyling}">Ant. barn</th>
-                        <th style="width: 35px; word-wrap: break-word; ${borderStyling}">Utgifter</th>
+                        <th style="width: 100px; ${borderStylingCompact}">Periode</th>
+                        <th style="width: 40px; ${borderStylingCompact}">Ant. barn</th>
+                        <th style="width: 45px; word-wrap: break-word; ${borderStylingCompact}">Utgifter</th>
                         ${
                             harKontantStøtte
-                                ? `<th style="width: 65px; word-wrap: break-word; ${borderStyling}">
+                                ? `<th style="width: 60px; word-wrap: break-word; ${borderStylingCompact}">
                                     Kontantstøtte
                                 </th>`
                                 : ''
                         }
                         ${
                             harTilleggsstønad
-                                ? `<th style="width: 65px; word-wrap: break-word; ${borderStyling}">Tilleggsstønad</th>`
+                                ? `<th style="width: 60px; word-wrap: break-word; ${borderStylingCompact}">Tilleggsstønad</th>`
                                 : ''
                         }
-                        <th style="width: 70px; word-wrap: break-word; ${borderStyling}">Dette får du utbetalt pr. måned</th>
+                        <th style="width: 65px; word-wrap: break-word; ${borderStylingCompact}">Dette får du utbetalt pr. måned</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,8 +64,8 @@ const lagRaderForVedtak = (
             );
             const utbetaltBeløp = formaterTallMedTusenSkille(beløpsperiode.beløp);
 
-            return `<tr>
-                        <td style="${borderStyling}">${andelsperiode}</td>
+            return `<tr style="text-align: right;">
+                        <td style="text-align: left; ${borderStylingCompact}">${andelsperiode}</td>
                         <td style="${borderStyling}">${
                 beløpsperiode.beregningsgrunnlag.antallBarn
             }</td>
