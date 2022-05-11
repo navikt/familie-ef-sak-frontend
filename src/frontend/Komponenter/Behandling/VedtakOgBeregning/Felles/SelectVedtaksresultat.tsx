@@ -101,18 +101,16 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </option>
                     )}
                 </StyledSelect>
-                {nullUtbetalingPgaKontantstøtte && (
-                    <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
-                        <div>
-                            Siden kontantstøttebeløpet overstiger utgiftsbeløpet vil dette medføre
-                            et avslag eller et opphør.
-                        </div>
-                        <TekstLinje>
-                            Dersom bruker tidligere har fått utbetaling for noen av periodene vil
-                            dette resultere i opphør.
-                        </TekstLinje>
-                    </HjelpeTekst>
-                )}
+                <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
+                    <div>
+                        Hvis kontantstøtten overstiger tilsynsutgiftene skal saksbehandler likevel
+                        velge "Innvilge" som vedtaksresultat.
+                    </div>
+                    <TekstLinje>
+                        Utgifter og kontantsstøtte fylles inn som normalt og systemet vil beregne at
+                        det blir et avslag.
+                    </TekstLinje>
+                </HjelpeTekst>
             </FlexDiv>
         </section>
     );

@@ -36,7 +36,7 @@ const VenstrejustertElement = styled(Element)`
 
 const AdvarselContainter = styled.div`
     margin-top: 1rem;
-    width: 21rem;
+    max-width: 43.5rem;
 `;
 
 export const UtregningstabellBarnetilsyn: React.FC<{
@@ -100,8 +100,15 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                     ))}
                     {blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat) && (
                         <AdvarselContainter>
-                            <Alert variant={'warning'} size={'small'}>
-                                Avslag, kontantstøtte overstiger utgifter
+                            <Alert variant={'warning'} size={'medium'}>
+                                <Heading spacing size="xsmall" level="5">
+                                    Avslag/Opphør - kontantstøtte overstiger tilsynsutgifter.
+                                </Heading>
+                                <Normaltekst>
+                                    Siden kontantstøttebeløpet overstiger utgiftsbeløpet er
+                                    vedtaksresultatet automatisk endret til "Avslag/opphør pga
+                                    kontantstøtte"
+                                </Normaltekst>
                             </Alert>
                         </AdvarselContainter>
                     )}
