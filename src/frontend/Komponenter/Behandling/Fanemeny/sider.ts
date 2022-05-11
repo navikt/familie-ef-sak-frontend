@@ -22,7 +22,7 @@ export interface ISide {
 export enum SideNavn {
     AKTIVITET = 'Aktivitet',
     BLANKETT = 'Blankett',
-    BREV = 'Brev',
+    BREV = 'Vedtaksbrev',
     KORRIGERING_UTEN_BREV = 'Korrigering uten brev',
     INNGANGSVILKÅR = 'Inngangsvilkår',
     SIMULERING = 'Simulering',
