@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
+import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     BehandlingRequest,
     JournalføringStateRequest,
@@ -62,6 +62,21 @@ export const KnappWrapper = styled.div`
     }
 `;
 
+const VelgUstrukturertDokumentasjonType = styled(Select)`
+    width: 10rem;
+    margin: 1rem 0;
+`;
+
+enum UstrukturertDokumentasjonType {
+    SØKNAD = 'SØKNAD',
+    ETTERSENDING = 'ETTERSENDNING',
+}
+
+const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = {
+    SØKNAD: 'Søknad',
+    ETTERSENDNING: 'Ettersendning',
+};
+
 const Venstrekolonne = styled.div``;
 const Høyrekolonne = styled.div``;
 const FlexKnapper = styled.div`
@@ -91,6 +106,8 @@ export const JournalforingApp: React.FC = () => {
     } = useHentDokument(journalpostIdParam);
     const { hentFagsak, fagsak } = useHentFagsak();
     const [feilmelding, settFeilMeldning] = useState('');
+    const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
+        useState<UstrukturertDokumentasjonType>();
 
     useEffect(() => {
         if (journalpostState.forsøktJournalført && !journalpostState.behandling) {
@@ -149,12 +166,16 @@ export const JournalforingApp: React.FC = () => {
 
     const skalBeOmBekreftelse = (
         behandling: BehandlingRequest | undefined,
-        harStrukturertSøknad: boolean
+        harStrukturertSøknad: boolean,
+        ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
     ) => {
+        const erIkkeNySøknad = behandling?.behandlingsId !== undefined;
         if (harStrukturertSøknad) {
-            return behandling?.behandlingsId !== undefined;
+            return erIkkeNySøknad;
         } else {
-            return behandling?.behandlingsId === undefined;
+            const dokumentasjonErIkkeSøknad =
+                ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.SØKNAD;
+            return erIkkeNySøknad && dokumentasjonErIkkeSøknad;
         }
     };
 
@@ -191,6 +212,31 @@ export const JournalforingApp: React.FC = () => {
                                 journalResponse={journalResponse}
                                 hentFagsak={hentFagsak}
                             />
+                            {!journalResponse.harStrukturertSøknad && (
+                                <VelgUstrukturertDokumentasjonType
+                                    label="Type dokumentasjon"
+                                    onChange={(e) => {
+                                        if (e.target.value.trim() !== '') {
+                                            settUstrukturertDokumentasjonType(
+                                                e.target.value as UstrukturertDokumentasjonType
+                                            );
+                                        } else {
+                                            settUstrukturertDokumentasjonType(undefined);
+                                        }
+                                    }}
+                                    value={ustrukturertDokumentasjonType}
+                                >
+                                    <option value={''}>Ikke valgt</option>
+                                    {[
+                                        UstrukturertDokumentasjonType.SØKNAD,
+                                        UstrukturertDokumentasjonType.ETTERSENDING,
+                                    ].map((type) => (
+                                        <option key={type} value={type}>
+                                            {ustrukturertTypeTilTekst[type]}
+                                        </option>
+                                    ))}
+                                </VelgUstrukturertDokumentasjonType>
+                            )}
                             <Brukerinfo personIdent={journalResponse.personIdent} />
                             <DokumentVisning
                                 journalPost={journalResponse.journalpost}
@@ -205,6 +251,12 @@ export const JournalforingApp: React.FC = () => {
                                     fagsak={fagsak}
                                     settFeilmelding={settFeilMeldning}
                                 />
+                                {kanLeggeTilTerminbarn() && (
+                                    <LeggTilTerminbarn
+                                        terminbarn={journalpostState.terminbarn}
+                                        oppdaterTerminbarn={oppdaterTerminbarn}
+                                    />
+                                )}
                             </SkjemaGruppe>
                             {(journalpostState.innsending.status === RessursStatus.FEILET ||
                                 journalpostState.innsending.status ===
@@ -213,17 +265,30 @@ export const JournalforingApp: React.FC = () => {
                                     {journalpostState.innsending.frontendFeilmelding}
                                 </AlertStripeFeil>
                             )}
-                            {kanLeggeTilTerminbarn() && (
-                                <LeggTilTerminbarn oppdaterTerminbarn={oppdaterTerminbarn} />
-                            )}
                             <FlexKnapper>
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
                                     onClick={() => {
                                         if (
+                                            !journalResponse.harStrukturertSøknad &&
+                                            !ustrukturertDokumentasjonType
+                                        ) {
+                                            settFeilMeldning('Mangler type dokumentasjon');
+                                        } else if (
+                                            journalpostState.terminbarn.some(
+                                                (t) =>
+                                                    !t.fødselTerminDato ||
+                                                    t.fødselTerminDato.trim() === ''
+                                            )
+                                        ) {
+                                            settFeilMeldning(
+                                                'Et eller flere terminbarn mangler gyldig dato'
+                                            );
+                                        } else if (
                                             skalBeOmBekreftelse(
                                                 journalpostState.behandling,
-                                                journalResponse.harStrukturertSøknad
+                                                journalResponse.harStrukturertSøknad,
+                                                ustrukturertDokumentasjonType
                                             )
                                         ) {
                                             if (journalResponse.harStrukturertSøknad) {
@@ -297,11 +362,9 @@ const JournalføringIkkeMuligModal: React.FC<{
         >
             <div>
                 <Normaltekst>
-                    Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
-                    journalføringsbildet når det ikke er tilknyttet en digital søknad til
-                    journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
-                    opprett ny behandling derifra. Deretter kan du journalføre mot den nye
-                    behandlingen.
+                    Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
+                    behandling via journalføringsbildet når det ikke er tilknyttet en digital søknad
+                    til journalposten.
                 </Normaltekst>
             </div>
             <KnappWrapper>

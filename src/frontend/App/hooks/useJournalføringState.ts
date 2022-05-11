@@ -19,7 +19,7 @@ interface JournalføringRequest {
 }
 
 export interface Terminbarn {
-    fødselTerminDato: string;
+    fødselTerminDato?: string;
 }
 
 export interface JournalføringStateRequest {
