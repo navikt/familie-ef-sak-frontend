@@ -64,7 +64,7 @@ export const håndterRessurs = <T>(
             );
             typetRessurs = {
                 melding: ressurs.melding,
-                frontendFeilmelding: errorMessage(ressurs.frontendFeilmelding, headers),
+                frontendFeilmelding: ressurs.frontendFeilmelding,
                 frontendFeilmeldingUtenFeilkode: ressurs.frontendFeilmelding,
                 status: RessursStatus.IKKE_TILGANG,
             };

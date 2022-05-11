@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { TilkjentYtelse } from '../typer/tilkjentytelse';
 import { formaterIsoDato } from '../utils/formatter';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
+import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
 
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -9,28 +9,28 @@ enum EBehandlingFlettefelt {
 }
 
 export const useVerdierForBrev = (
-    tilkjentYtelse: Ressurs<TilkjentYtelse | undefined>
+    beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
 ): { flettefeltStore: { [navn: string]: string } } => {
     const [flettefeltStore, settFlettefeltStore] = useState<{ [navn: string]: string }>({});
 
     useEffect(() => {
         if (
-            tilkjentYtelse.status === RessursStatus.SUKSESS &&
-            tilkjentYtelse.data &&
-            tilkjentYtelse.data.andeler.length > 0
+            beløpsperioder.status === RessursStatus.SUKSESS &&
+            beløpsperioder.data &&
+            beløpsperioder.data.length > 0
         ) {
-            const { andeler } = tilkjentYtelse.data;
+            const perioder = beløpsperioder.data;
             settFlettefeltStore((prevState) => ({
                 ...prevState,
                 [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
-                    andeler[andeler.length - 1].stønadTil
+                    perioder[perioder.length - 1].periode.tildato
                 ),
                 [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
-                    andeler[0].stønadFra
+                    perioder[0].periode.fradato
                 ),
             }));
         }
-    }, [tilkjentYtelse]);
+    }, [beløpsperioder]);
 
     return { flettefeltStore };
 };
