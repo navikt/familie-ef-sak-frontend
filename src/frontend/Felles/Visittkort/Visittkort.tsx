@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
-import { EtikettFokus } from 'nav-frontend-etiketter';
+import { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
 import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
@@ -26,6 +26,7 @@ import {
     AlleStatuser,
     GråTekst,
 } from './Status/StatusElementer';
+import { Stønadstype } from '../../App/typer/behandlingstema';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -62,6 +63,17 @@ const StyledHamburgermeny = styled(Hamburgermeny)`
 const ElementWrapper = styled.div`
     margin-left: 1rem;
 `;
+
+const stønadstypeTilTag = (stønadstype: Stønadstype) => {
+    switch (stønadstype) {
+        case Stønadstype.OVERGANGSSTØNAD:
+            return 'OS';
+        case Stønadstype.BARNETILSYN:
+            return 'BT';
+        case Stønadstype.SKOLEPENGER:
+            return 'SP';
+    }
+};
 
 const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
     data,
@@ -151,6 +163,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
                     <ElementWrapper>
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
+                    </ElementWrapper>
+                )}
+                {behandling && (
+                    <ElementWrapper>
+                        <EtikettInfo mini>{stønadstypeTilTag(behandling.stønadstype)}</EtikettInfo>
                     </ElementWrapper>
                 )}
                 {vergemål.length > 0 && (
