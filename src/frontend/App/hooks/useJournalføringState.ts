@@ -15,10 +15,10 @@ interface JournalføringRequest {
     behandling?: BehandlingRequest;
     journalførendeEnhet: string;
     navIdent?: string;
-    terminbarn: Terminbarn[];
+    barnSomSkalFødes: BarnSomSkalFødes[];
 }
 
-export interface Terminbarn {
+export interface BarnSomSkalFødes {
     fødselTerminDato?: string;
 }
 
@@ -44,8 +44,8 @@ export interface JournalføringStateRequest {
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
     visJournalføringIkkeMuligModal: boolean;
     settJournalføringIkkeMuligModal: Dispatch<SetStateAction<boolean>>;
-    terminbarn: Terminbarn[];
-    settTerminbarn: Dispatch<SetStateAction<Terminbarn[]>>;
+    barnSomSkalFødes: BarnSomSkalFødes[];
+    settBarnSomSkalFødes: Dispatch<SetStateAction<BarnSomSkalFødes[]>>;
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
@@ -59,7 +59,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [visJournalføringIkkeMuligModal, settJournalføringIkkeMuligModal] =
         useState<boolean>(false);
-    const [terminbarn, settTerminbarn] = useState<Terminbarn[]>([]);
+    const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
 
     const fullførJournalføring = (
         journalpostId: string,
@@ -78,7 +78,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             dokumentTitler,
             journalførendeEnhet,
             navIdent,
-            terminbarn,
+            barnSomSkalFødes,
         };
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
@@ -88,7 +88,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         }).then((resp) => settInnsending(resp));
     };
 
-    useEffect(() => settTerminbarn([]), [behandling]);
+    useEffect(() => settBarnSomSkalFødes([]), [behandling]);
 
     return {
         oppgaveId,
@@ -108,7 +108,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         settVisBekreftelsesModal,
         visJournalføringIkkeMuligModal,
         settJournalføringIkkeMuligModal,
-        terminbarn,
-        settTerminbarn,
+        barnSomSkalFødes,
+        settBarnSomSkalFødes,
     };
 };

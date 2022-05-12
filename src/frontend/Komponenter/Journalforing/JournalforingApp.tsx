@@ -16,7 +16,7 @@ import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     BehandlingRequest,
     JournalføringStateRequest,
-    Terminbarn,
+    BarnSomSkalFødes,
     useJournalføringState,
 } from '../../App/hooks/useJournalføringState';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
@@ -33,7 +33,7 @@ import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
-import LeggTilTerminbarn from './LeggTilTerminbarn';
+import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
 
@@ -179,11 +179,11 @@ export const JournalforingApp: React.FC = () => {
         }
     };
 
-    const oppdaterTerminbarn = (terminbarn: Terminbarn[]) => {
-        journalpostState.settTerminbarn(terminbarn);
+    const oppdaterBarnSomSkalFødes = (barnSomSkalFødes: BarnSomSkalFødes[]) => {
+        journalpostState.settBarnSomSkalFødes(barnSomSkalFødes);
     };
 
-    const kanLeggeTilTerminbarn = () => {
+    const kanLeggeTilBarnSomSkalFødes = () => {
         const erNyBehandling =
             journalpostState.behandling && !journalpostState.behandling.behandlingsId;
         const harIkkeStrukturertSøknad =
@@ -251,10 +251,10 @@ export const JournalforingApp: React.FC = () => {
                                     fagsak={fagsak}
                                     settFeilmelding={settFeilMeldning}
                                 />
-                                {kanLeggeTilTerminbarn() && (
-                                    <LeggTilTerminbarn
-                                        terminbarn={journalpostState.terminbarn}
-                                        oppdaterTerminbarn={oppdaterTerminbarn}
+                                {kanLeggeTilBarnSomSkalFødes() && (
+                                    <LeggTilBarnSomSkalFødes
+                                        barnSomSkalFødes={journalpostState.barnSomSkalFødes}
+                                        oppdaterBarnSomSkalFødes={oppdaterBarnSomSkalFødes}
                                     />
                                 )}
                             </SkjemaGruppe>
@@ -275,14 +275,14 @@ export const JournalforingApp: React.FC = () => {
                                         ) {
                                             settFeilMeldning('Mangler type dokumentasjon');
                                         } else if (
-                                            journalpostState.terminbarn.some(
-                                                (t) =>
-                                                    !t.fødselTerminDato ||
-                                                    t.fødselTerminDato.trim() === ''
+                                            journalpostState.barnSomSkalFødes.some(
+                                                (barn) =>
+                                                    !barn.fødselTerminDato ||
+                                                    barn.fødselTerminDato.trim() === ''
                                             )
                                         ) {
                                             settFeilMeldning(
-                                                'Et eller flere terminbarn mangler gyldig dato'
+                                                'Et eller flere barn mangler gyldig dato'
                                             );
                                         } else if (
                                             skalBeOmBekreftelse(

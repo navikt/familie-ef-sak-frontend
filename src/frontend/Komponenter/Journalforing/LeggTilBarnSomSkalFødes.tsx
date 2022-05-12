@@ -2,7 +2,7 @@ import React from 'react';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import SlettSøppelkasse from '../../Felles/Ikoner/SlettSøppelkasse';
-import { Terminbarn } from '../../App/hooks/useJournalføringState';
+import { BarnSomSkalFødes } from '../../App/hooks/useJournalføringState';
 import { Button, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
@@ -11,7 +11,7 @@ const Tittel = styled(Heading)`
     color: ${navFarger.navBlaLighten40};
 `;
 
-const LeggTilTerminbarnContent = styled.div`
+const LeggTilBarnContent = styled.div`
     margin: 0.5rem 0;
 `;
 
@@ -32,67 +32,65 @@ const TerminbarnMedDatovelger = styled.div`
     }
 `;
 
-const FjernTerminbarnKnapp = styled(Button)`
+const FjernBanrKnapp = styled(Button)`
     width: 4rem;
 `;
-const LeggTilTerminbarnKnapp = styled(Button)`
+const LeggTilBarnKnapp = styled(Button)`
     margin-top: 1rem;
 `;
 
-const LeggTilTerminbarn: React.FC<{
-    terminbarn: Terminbarn[];
-    oppdaterTerminbarn: (terminbarn: Terminbarn[]) => void;
-}> = ({ terminbarn: terminbarnliste, oppdaterTerminbarn }) => {
-    const leggTilTerminbarn = () => oppdaterTerminbarn([...terminbarnliste, {}]);
+const LeggTilBarnSomSkalFødes: React.FC<{
+    barnSomSkalFødes: BarnSomSkalFødes[];
+    oppdaterBarnSomSkalFødes: (terminbarn: BarnSomSkalFødes[]) => void;
+}> = ({ barnSomSkalFødes, oppdaterBarnSomSkalFødes }) => {
+    const leggTilBarn = () => oppdaterBarnSomSkalFødes([...barnSomSkalFødes, {}]);
 
-    const fjernTerminbarn = (terminbarnSomSkalSlettes: Terminbarn) =>
-        oppdaterTerminbarn(terminbarnliste.filter((t) => t !== terminbarnSomSkalSlettes));
+    const fjernBarn = (terminbarnSomSkalSlettes: BarnSomSkalFødes) =>
+        oppdaterBarnSomSkalFødes(
+            barnSomSkalFødes.filter((barn) => barn !== terminbarnSomSkalSlettes)
+        );
 
-    const oppdaterTermindato = (terminbarnSomSkalOppdateres: Terminbarn, dato: string) =>
-        oppdaterTerminbarn(
-            terminbarnliste.map((t) =>
-                t === terminbarnSomSkalOppdateres ? { fødselTerminDato: dato as string } : t
+    const oppdaterTermindato = (terminbarnSomSkalOppdateres: BarnSomSkalFødes, dato: string) =>
+        oppdaterBarnSomSkalFødes(
+            barnSomSkalFødes.map((barn) =>
+                barn === terminbarnSomSkalOppdateres ? { fødselTerminDato: dato as string } : barn
             )
         );
 
     return (
-        <LeggTilTerminbarnContent>
+        <LeggTilBarnContent>
             <Tittel spacing size="xsmall" level="6">
                 Journalføre papirsøknad?
             </Tittel>
             <InlineContent>
                 Noe tekst
-                {terminbarnliste.map((terminbarn, index) => (
+                {barnSomSkalFødes.map((barn, index) => (
                     <TerminbarnMedDatovelger key={index}>
                         <div>Terminbarn {index + 9}</div>
                         <FamilieDatovelger
                             id={'Termindato'}
                             label={'Termindato'}
-                            onChange={(dato) => oppdaterTermindato(terminbarn, dato as string)}
-                            valgtDato={terminbarn.fødselTerminDato}
+                            onChange={(dato) => oppdaterTermindato(barn, dato as string)}
+                            valgtDato={barn.fødselTerminDato}
                         />
-                        <FjernTerminbarnKnapp
+                        <FjernBanrKnapp
                             variant="tertiary"
                             size="small"
-                            onClick={() => fjernTerminbarn(terminbarn)}
+                            onClick={() => fjernBarn(barn)}
                         >
                             <SlettSøppelkasse withDefaultStroke={false} />
-                        </FjernTerminbarnKnapp>
+                        </FjernBanrKnapp>
                     </TerminbarnMedDatovelger>
                 ))}
                 <div>
-                    <LeggTilTerminbarnKnapp
-                        variant="tertiary"
-                        size="small"
-                        onClick={leggTilTerminbarn}
-                    >
+                    <LeggTilBarnKnapp variant="tertiary" size="small" onClick={leggTilBarn}>
                         <LeggtilMedSirkel width={24} heigth={24} />
                         <span>Legg til termindato</span>
-                    </LeggTilTerminbarnKnapp>
+                    </LeggTilBarnKnapp>
                 </div>
             </InlineContent>
-        </LeggTilTerminbarnContent>
+        </LeggTilBarnContent>
     );
 };
 
-export default LeggTilTerminbarn;
+export default LeggTilBarnSomSkalFødes;
