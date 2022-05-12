@@ -76,7 +76,7 @@ export type IUtgiftsperiode = {
     årMånedTil: string;
     barn: string[];
     utgifter: number | undefined;
-    nullbeløp: boolean | undefined;
+    erMidlertidigOpphør: boolean | undefined;
 };
 
 export type IPeriodeMedBeløp = {
@@ -179,7 +179,7 @@ export enum EUtgiftsperiodeProperty {
     årMånedTil = 'årMånedTil',
     barn = 'barn',
     utgifter = 'utgifter',
-    nullbeløp = 'nullbeløp',
+    erMidlertidigOpphør = 'erMidlertidigOpphør',
 }
 
 export enum EKontantstøttePeriodeProperty {

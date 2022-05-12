@@ -62,7 +62,7 @@ export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
     årMånedTil: '',
     barn: [],
     utgifter: undefined,
-    nullbeløp: false,
+    erMidlertidigOpphør: false,
 };
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
@@ -89,19 +89,26 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
     };
 
-    const oppdaterUtgiftsperiodeDersomNullbeløp = (index: number, erNullbeløp: boolean) => {
-        if (erNullbeløp) {
+    const oppdaterUtgiftsperiodeDersomMidlertidigOpphør = (
+        index: number,
+        erMidlertidigOpphør: boolean
+    ) => {
+        if (erMidlertidigOpphør) {
             utgiftsperioder.update(
                 {
                     ...utgiftsperioder.value[index],
-                    [EUtgiftsperiodeProperty.nullbeløp]: erNullbeløp,
+                    [EUtgiftsperiodeProperty.erMidlertidigOpphør]: erMidlertidigOpphør,
                     [EUtgiftsperiodeProperty.barn]: [],
                     [EUtgiftsperiodeProperty.utgifter]: 0,
                 },
                 index
             );
         } else {
-            oppdaterUtgiftsperiode(index, EUtgiftsperiodeProperty.nullbeløp, erNullbeløp);
+            oppdaterUtgiftsperiode(
+                index,
+                EUtgiftsperiodeProperty.erMidlertidigOpphør,
+                erMidlertidigOpphør
+            );
             settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
         }
     };
@@ -128,7 +135,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <TekstEnLinje>Ingen stønad/opphør</TekstEnLinje>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { årMånedFra, årMånedTil, utgifter, nullbeløp } = utgiftsperiode;
+                const { årMånedFra, årMånedTil, utgifter, erMidlertidigOpphør } = utgiftsperiode;
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index === utgiftsperioder.value.length - 1 &&
@@ -161,9 +168,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 options={barnForPeriode}
                                 creatable={false}
                                 isMulti={true}
-                                isDisabled={nullbeløp}
+                                isDisabled={erMidlertidigOpphør}
                                 defaultValue={ikkeValgteBarn}
-                                value={nullbeløp ? [] : ikkeValgteBarn}
+                                value={erMidlertidigOpphør ? [] : ikkeValgteBarn}
                                 onChange={(valgtBarn) => {
                                     oppdaterUtgiftsperiode(
                                         index,
@@ -192,7 +199,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             onKeyPress={tilHeltall}
                             type="number"
                             value={harTallverdi(utgifter) ? utgifter : ''}
-                            disabled={nullbeløp}
+                            disabled={erMidlertidigOpphør}
                             onChange={(e) => {
                                 oppdaterUtgiftsperiode(
                                     index,
@@ -206,9 +213,12 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             <FamilieCheckbox
                                 erLesevisning={!behandlingErRedigerbar}
                                 label={''}
-                                checked={nullbeløp}
+                                checked={erMidlertidigOpphør}
                                 onChange={() => {
-                                    oppdaterUtgiftsperiodeDersomNullbeløp(index, !nullbeløp);
+                                    oppdaterUtgiftsperiodeDersomMidlertidigOpphør(
+                                        index,
+                                        !erMidlertidigOpphør
+                                    );
                                 }}
                             />
                         </CheckboxContainer>
