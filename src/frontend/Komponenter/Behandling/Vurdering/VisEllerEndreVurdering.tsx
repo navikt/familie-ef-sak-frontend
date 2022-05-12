@@ -12,6 +12,7 @@ import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { KnappWrapper } from '../../Oppgavebenk/OppgaveFiltrering';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { useApp } from '../../../App/context/AppContext';
 
 export enum Redigeringsmodus {
     REDIGERING = 'REDIGERING',
@@ -66,8 +67,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
         utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
     );
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
+    const { nullstillIkkePersistertKomponent } = useApp();
 
     const ikkeVurder = () => {
+        nullstillIkkePersistertKomponent(vurdering.id);
         ikkeVurderVilkår({
             id: vurdering.id,
             behandlingId: vurdering.behandlingId,
