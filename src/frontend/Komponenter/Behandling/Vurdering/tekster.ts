@@ -85,6 +85,7 @@ export const svarTypeTilTekst: Record<string, string> = {
         'Ja, det yngste barnet har fullført fjerde skoleår og det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrene',
     FORSØRGER_HAR_LANGVARIG_ELLER_UREGELMESSIG_ARBEIDSTID:
         'Ja, det yngste barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
+    NOEN_MÅNEDER_OVERSTIGER_6G: 'Ja, men noen måneder overstiger 6G',
 };
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
