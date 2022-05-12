@@ -35,7 +35,7 @@ import { Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import LeggTilTerminbarn from './LeggTilTerminbarn';
 import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
+import { ToggleName, Toggles } from '../../App/context/toggles';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -340,6 +340,7 @@ export const JournalforingApp: React.FC = () => {
                     <JournalføringIkkeMuligModal
                         visModal={journalpostState.visJournalføringIkkeMuligModal}
                         settVisModal={journalpostState.settJournalføringIkkeMuligModal}
+                        toggles={toggles}
                     />
                 </SideLayout>
             )}
@@ -350,7 +351,8 @@ export const JournalforingApp: React.FC = () => {
 const JournalføringIkkeMuligModal: React.FC<{
     visModal: boolean;
     settVisModal: Dispatch<SetStateAction<boolean>>;
-}> = ({ visModal, settVisModal }) => {
+    toggles: Toggles;
+}> = ({ visModal, settVisModal, toggles }) => {
     return (
         <UIModalWrapper
             modal={{
@@ -361,11 +363,21 @@ const JournalføringIkkeMuligModal: React.FC<{
             }}
         >
             <div>
-                <Normaltekst>
-                    Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
-                    behandling via journalføringsbildet når det ikke er tilknyttet en digital søknad
-                    til journalposten.
-                </Normaltekst>
+                {toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] ? (
+                    <Normaltekst>
+                        Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
+                        behandling via journalføringsbildet når det ikke er tilknyttet en digital
+                        søknad til journalposten.
+                    </Normaltekst>
+                ) : (
+                    <Normaltekst>
+                        Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
+                        journalføringsbildet når det ikke er tilknyttet en digital søknad til
+                        journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
+                        opprett ny behandling derifra. Deretter kan du journalføre mot den nye
+                        behandlingen.
+                    </Normaltekst>
+                )}
             </div>
             <KnappWrapper>
                 <Button
