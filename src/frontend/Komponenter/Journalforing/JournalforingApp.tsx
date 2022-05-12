@@ -36,6 +36,7 @@ import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
+import { IJojurnalpostResponse } from '../../App/typer/journalforing';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -86,6 +87,16 @@ const FlexKnapper = styled.div`
 
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
+
+const erIkkeStrukturertSøknadOgManglerDokumentasjonsType = (
+    journalResponse: IJojurnalpostResponse,
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
+) => !journalResponse.harStrukturertSøknad && !ustrukturertDokumentasjonType;
+
+const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateRequest) =>
+    journalpostState.barnSomSkalFødes.some(
+        (barn) => !barn.fødselTerminDato || barn.fødselTerminDato.trim() === ''
+    );
 
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
@@ -270,17 +281,13 @@ export const JournalforingApp: React.FC = () => {
                                 <Hovedknapp
                                     onClick={() => {
                                         if (
-                                            !journalResponse.harStrukturertSøknad &&
-                                            !ustrukturertDokumentasjonType
-                                        ) {
-                                            settFeilMeldning('Mangler type dokumentasjon');
-                                        } else if (
-                                            journalpostState.barnSomSkalFødes.some(
-                                                (barn) =>
-                                                    !barn.fødselTerminDato ||
-                                                    barn.fødselTerminDato.trim() === ''
+                                            erIkkeStrukturertSøknadOgManglerDokumentasjonsType(
+                                                journalResponse,
+                                                ustrukturertDokumentasjonType
                                             )
                                         ) {
+                                            settFeilMeldning('Mangler type dokumentasjon');
+                                        } else if (inneholderBarnSomErUgyldige(journalpostState)) {
                                             settFeilMeldning(
                                                 'Et eller flere barn mangler gyldig dato'
                                             );
