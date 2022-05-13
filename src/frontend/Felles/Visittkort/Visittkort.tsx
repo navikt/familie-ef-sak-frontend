@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
-import { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
+import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
@@ -18,7 +18,7 @@ import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Hamburgermeny } from './Hamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
-import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
+import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import {
     StatuserLitenSkjerm,
     StatusMeny,
@@ -72,6 +72,19 @@ const stønadstypeTilTag = (stønadstype: Stønadstype) => {
             return 'BT';
         case Stønadstype.SKOLEPENGER:
             return 'SP';
+        default:
+            return '';
+    }
+};
+
+const behandlingstypeTilTag = (behandlingstype: Behandlingstype) => {
+    switch (behandlingstype) {
+        case Behandlingstype.FØRSTEGANGSBEHANDLING:
+            return 'F';
+        case Behandlingstype.REVURDERING:
+            return 'R';
+        default:
+            return '';
     }
 };
 
@@ -120,6 +133,9 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         // eslint-disable-next-line
     }, []);
 
+    const behandlingstypeTag = behandling && behandlingstypeTilTag(behandling.type);
+    const stønadstypeTag = behandling && stønadstypeTilTag(behandling.stønadstype);
+
     return (
         <VisittkortWrapper>
             {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
@@ -165,9 +181,14 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
                     </ElementWrapper>
                 )}
-                {behandling && (
+                {behandlingstypeTag && (
                     <ElementWrapper>
-                        <EtikettInfo mini>{stønadstypeTilTag(behandling.stønadstype)}</EtikettInfo>
+                        <EtikettSuksess mini>{stønadstypeTag}</EtikettSuksess>
+                    </ElementWrapper>
+                )}
+                {behandlingstypeTag && (
+                    <ElementWrapper>
+                        <EtikettSuksess mini>{behandlingstypeTag}</EtikettSuksess>
                     </ElementWrapper>
                 )}
                 {vergemål.length > 0 && (
