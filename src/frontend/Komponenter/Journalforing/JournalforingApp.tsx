@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
@@ -8,7 +8,6 @@ import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Link } from 'react-router-dom';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -32,6 +31,7 @@ import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
+import { IJojurnalpostResponse } from '../../App/typer/journalforing';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -68,6 +68,16 @@ const FlexKnapper = styled.div`
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
+const manglerTittelPåDokument = (
+    journalResponse: IJojurnalpostResponse,
+    journalpostState: JournalføringStateRequest
+) =>
+    journalResponse.journalpost.dokumenter.some(
+        (d) =>
+            !d.tittel &&
+            (!journalpostState.dokumentTitler || !journalpostState.dokumentTitler[d.dokumentInfoId])
+    );
+
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
@@ -91,6 +101,7 @@ export const JournalforingApp: React.FC = () => {
         if (journalpostState.forsøktJournalført && !journalpostState.behandling) {
             settFeilMeldning('Du må velge en behandling for å journalføre');
         }
+        //if(journalpostState)
     }, [journalpostState]);
 
     useEffect(() => {
@@ -195,6 +206,15 @@ export const JournalforingApp: React.FC = () => {
                                 <Hovedknapp
                                     onClick={() => {
                                         if (
+                                            manglerTittelPåDokument(
+                                                journalResponse,
+                                                journalpostState
+                                            )
+                                        ) {
+                                            settFeilMeldning(
+                                                'Mangler tittel på et eller flere dokumenter'
+                                            );
+                                        } else if (
                                             skalBeOmBekreftelse(
                                                 journalpostState.behandling,
                                                 journalResponse.harStrukturertSøknad
