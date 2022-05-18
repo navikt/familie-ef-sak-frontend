@@ -2,10 +2,10 @@ import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import Visittkort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
-import { EtikettFokus } from 'nav-frontend-etiketter';
+import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
@@ -18,14 +18,12 @@ import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Hamburgermeny } from './Hamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
-import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import {
-    StatuserLitenSkjerm,
-    StatusMeny,
-    Status,
-    AlleStatuser,
-    GråTekst,
-} from './Status/StatusElementer';
+    behandlingstypeTilTekst,
+    behandlingstypeTilTekstKort,
+} from '../../App/typer/behandlingstype';
+import { StatuserLitenSkjerm, StatusMeny, AlleStatuser } from './Status/StatusElementer';
+import { stønadstypeTilTekst, stønadstypeTilTekstKort } from '../../App/typer/behandlingstema';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -37,6 +35,22 @@ const ResponsivLenke = styled(Lenke)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+`;
+
+const TagsLitenSkjerm = styled.div`
+    @media screen and (min-width: 946px) {
+        display: none;
+    }
+
+    @media screen and (max-width: 760px) {
+        display: none;
+    }
+`;
+
+const TagsStorSkjerm = styled.div`
+    @media screen and (max-width: 946px) {
+        display: none;
+    }
 `;
 
 export const VisittkortWrapper = styled(Sticky)`
@@ -153,6 +167,36 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
                     </ElementWrapper>
                 )}
+                {behandling && (
+                    <ElementWrapper>
+                        <>
+                            <TagsLitenSkjerm>
+                                <EtikettSuksess mini>
+                                    {stønadstypeTilTekstKort[behandling.stønadstype]}
+                                </EtikettSuksess>
+                            </TagsLitenSkjerm>
+                            <TagsStorSkjerm>
+                                <EtikettSuksess mini>
+                                    {stønadstypeTilTekst[behandling.stønadstype]}
+                                </EtikettSuksess>
+                            </TagsStorSkjerm>
+                        </>
+                    </ElementWrapper>
+                )}
+                {behandling && (
+                    <ElementWrapper>
+                        <TagsLitenSkjerm>
+                            <EtikettInfo mini>
+                                {behandlingstypeTilTekstKort[behandling.type]}
+                            </EtikettInfo>
+                        </TagsLitenSkjerm>
+                        <TagsStorSkjerm>
+                            <EtikettInfo mini>
+                                {behandlingstypeTilTekst[behandling.type]}
+                            </EtikettInfo>
+                        </TagsStorSkjerm>
+                    </ElementWrapper>
+                )}
                 {vergemål.length > 0 && (
                     <ElementWrapper>
                         <EtikettFokus mini>Verge</EtikettFokus>
@@ -169,10 +213,6 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 <>
                     <AlleStatuser behandling={behandling} />
                     <StatuserLitenSkjerm>
-                        <Status kunEttElement={true}>
-                            <GråTekst>Behandlingstype</GråTekst>
-                            <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
-                        </Status>
                         <StatusMeny behandling={behandling} />
                     </StatuserLitenSkjerm>
                 </>
