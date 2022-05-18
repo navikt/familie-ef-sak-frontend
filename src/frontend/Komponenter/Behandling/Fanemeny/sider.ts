@@ -101,7 +101,11 @@ const filtrerVekkHvisSanksjon = [
     SideNavn.BLANKETT,
 ];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
-const filtrerHvisGOmregning = [SideNavn.VEDTAK_OG_BEREGNING, SideNavn.SIMULERING];
+const filtrerHvisGOmregning = [
+    SideNavn.VEDTAK_OG_BEREGNING,
+    SideNavn.SIMULERING,
+    SideNavn.KORRIGERING_UTEN_BREV,
+];
 const filtrerVekkHvisStandard = [
     SideNavn.BLANKETT,
     SideNavn.SANKSJON,
