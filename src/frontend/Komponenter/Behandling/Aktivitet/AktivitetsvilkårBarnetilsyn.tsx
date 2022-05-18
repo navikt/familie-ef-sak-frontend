@@ -7,6 +7,7 @@ import { AktivitetArbeid } from './AktivitetArbeid/AktivitetArbeid';
 import { Inntekt } from './Inntekt/Inntekt';
 import { AlderPåBarn } from './AlderPåBarn/AlderPåBarn';
 import { Behandling } from '../../../App/typer/fagsak';
+import { DokumentasjonsTilsynsutgifter } from './DokumentasjonTilsynsutgifter/DokumentasjonsTilsynsutgifter';
 
 const AktivitetsVilkårBarnetilsyn: FC<{
     behandling: Behandling;
@@ -58,6 +59,16 @@ const AktivitetsVilkårBarnetilsyn: FC<{
                         />
 
                         <AlderPåBarn
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
+
+                        <DokumentasjonsTilsynsutgifter
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}

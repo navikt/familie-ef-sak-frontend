@@ -86,6 +86,7 @@ export enum AktivitetsvilkårType {
     ALDER_PÅ_BARN = 'ALDER_PÅ_BARN',
     INNTEKT = 'INNTEKT',
     AKTIVITET_ARBEID = 'AKTIVITET_ARBEID',
+    DOKUMENTASJON_TILSYNSUTGIFTER = 'DOKUMENTASJON_TILSYNSUTGIFTER',
 }
 
 export enum TidligereVedtaksperioderType {
