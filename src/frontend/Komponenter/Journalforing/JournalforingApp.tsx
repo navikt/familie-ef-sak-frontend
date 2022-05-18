@@ -68,14 +68,14 @@ const FlexKnapper = styled.div`
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 
-const manglerTittelPåDokument = (
+const harTittelForAlleDokumenter = (
     journalResponse: IJojurnalpostResponse,
     journalpostState: JournalføringStateRequest
 ) =>
-    journalResponse.journalpost.dokumenter.some(
+    journalResponse.journalpost.dokumenter.every(
         (d) =>
-            !d.tittel &&
-            (!journalpostState.dokumentTitler || !journalpostState.dokumentTitler[d.dokumentInfoId])
+            d.tittel ||
+            (journalpostState.dokumentTitler && journalpostState.dokumentTitler[d.dokumentInfoId])
     );
 
 export const JournalforingApp: React.FC = () => {
@@ -101,7 +101,6 @@ export const JournalforingApp: React.FC = () => {
         if (journalpostState.forsøktJournalført && !journalpostState.behandling) {
             settFeilMeldning('Du må velge en behandling for å journalføre');
         }
-        //if(journalpostState)
     }, [journalpostState]);
 
     useEffect(() => {
@@ -206,7 +205,7 @@ export const JournalforingApp: React.FC = () => {
                                 <Hovedknapp
                                     onClick={() => {
                                         if (
-                                            manglerTittelPåDokument(
+                                            !harTittelForAlleDokumenter(
                                                 journalResponse,
                                                 journalpostState
                                             )
