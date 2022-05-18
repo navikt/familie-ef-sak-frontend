@@ -116,7 +116,7 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_OPPHØR: 'Vi har stanset overgangsstønaden din',
     VEDTAK_REVURDERING: 'Vi har vurdert overgangsstønaden din på nytt',
     VEDTAK_INNVILGELSE_BARNETILSYN: 'Du får stønad til barnetilsyn',
-    VEDTAK_AVSLAG_BARNETILSYN: 'Vi har søknaden din om stønad til barnetilsyn',
+    VEDTAK_AVSLAG_BARNETILSYN: 'Vi har avslått søknaden din om stønad til barnetilsyn',
 };
 
 export const BrevtyperTilSelectNavn: Record<

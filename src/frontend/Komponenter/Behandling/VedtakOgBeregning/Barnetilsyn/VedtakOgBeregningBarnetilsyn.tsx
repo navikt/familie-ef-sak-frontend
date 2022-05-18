@@ -27,7 +27,7 @@ const WrapperMarginTop = styled.div`
 
 const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
-    const [resultatType, settResultatType] = useState<EBehandlingResultat>();
+    const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
@@ -55,6 +55,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                     {({ vedtak }) => {
                         switch (resultatType) {
                             case EBehandlingResultat.INNVILGE:
+                            case EBehandlingResultat.INNVILGE_UTEN_UTBETALING:
                                 return (
                                     <Vedtaksform
                                         behandling={behandling}
@@ -62,6 +63,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                             vedtak as unknown as IInnvilgeVedtakForBarnetilsyn // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
                                         }
                                         barn={vilkår.grunnlag.barnMedSamvær}
+                                        settResultatType={settResultatType}
                                     />
                                 );
                             case EBehandlingResultat.AVSLÅ:
@@ -75,7 +77,6 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                 );
                             case EBehandlingResultat.OPPHØRT:
                                 return <Opphør behandlingId={behandlingId} />;
-
                             case undefined:
                                 return null;
                         }

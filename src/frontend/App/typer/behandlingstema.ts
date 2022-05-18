@@ -19,6 +19,12 @@ export const stønadstypeTilTekst: Record<Stønadstype, string> = {
     BARNETILSYN: 'Barnetilsyn',
 };
 
+export const stønadstypeTilTekstKort: Record<Stønadstype, string> = {
+    OVERGANGSSTØNAD: 'OS',
+    SKOLEPENGER: 'SP',
+    BARNETILSYN: 'BT',
+};
+
 export const behandlingstemaTilStønadstype = (
     behandlingstema: Behandlingstema | undefined
 ): Stønadstype | undefined => {

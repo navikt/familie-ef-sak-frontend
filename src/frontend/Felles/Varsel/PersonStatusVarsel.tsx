@@ -8,7 +8,7 @@ interface IProps {
 
 const PersonStatusVarsel: React.FC<IProps> = ({ folkeregisterpersonstatus }) => {
     switch (folkeregisterpersonstatus) {
-        case Folkeregisterpersonstatus.DOED:
+        case Folkeregisterpersonstatus.DØD:
             return <EtikettAdvarsel mini>Død</EtikettAdvarsel>;
         case Folkeregisterpersonstatus.FORSVUNNET:
             return <EtikettAdvarsel mini>Forsvunnet</EtikettAdvarsel>;

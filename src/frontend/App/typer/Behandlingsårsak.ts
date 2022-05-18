@@ -7,6 +7,7 @@ export enum Behandlingsårsak {
     SØKNAD = 'SØKNAD',
     MIGRERING = 'MIGRERING',
     G_OMREGNING = 'G_OMREGNING',
+    KORRIGERING_UTEN_BREV = 'KORRIGERING_UTEN_BREV',
 }
 
 export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
@@ -16,6 +17,7 @@ export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
     SØKNAD: 'Søknad',
     MIGRERING: 'Migrering',
     G_OMREGNING: 'G-omregning',
+    KORRIGERING_UTEN_BREV: 'Korrigering uten brev',
 };
 
 export const behandlingsårsaker: Behandlingsårsak[] = [
@@ -23,6 +25,8 @@ export const behandlingsårsaker: Behandlingsårsak[] = [
     Behandlingsårsak.NYE_OPPLYSNINGER,
     Behandlingsårsak.SANKSJON_1_MND,
     Behandlingsårsak.SØKNAD,
+    Behandlingsårsak.G_OMREGNING,
+    Behandlingsårsak.KORRIGERING_UTEN_BREV,
 ];
 
 export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
@@ -35,6 +39,7 @@ export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
     SØKNAD: 'Søknad',
     MIGRERING: 'Migrering',
     G_OMREGNING: 'G-omregning',
+    KORRIGERING_UTEN_BREV: 'Korrigering uten brev',
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
     REVURDERING_KLAGE_KA: 'Klage omgjort av KA',

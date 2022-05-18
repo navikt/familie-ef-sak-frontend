@@ -11,6 +11,7 @@ import { Simulering } from '../Simulering/Simulering';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import KorrigeringUtenBrev from './KorrigeringUtenBrev';
 
 export interface ISide {
     href: string;
@@ -21,7 +22,8 @@ export interface ISide {
 export enum SideNavn {
     AKTIVITET = 'Aktivitet',
     BLANKETT = 'Blankett',
-    BREV = 'Brev',
+    BREV = 'Vedtaksbrev',
+    KORRIGERING_UTEN_BREV = 'Korrigering uten brev',
     INNGANGSVILKÅR = 'Inngangsvilkår',
     SIMULERING = 'Simulering',
     SANKSJON = 'Sanksjonsfastsettelse',
@@ -66,6 +68,11 @@ const alleSider: ISide[] = [
         komponent: Brev,
     },
     {
+        href: 'brev',
+        navn: SideNavn.KORRIGERING_UTEN_BREV,
+        komponent: KorrigeringUtenBrev,
+    },
+    {
         href: 'blankett',
         navn: SideNavn.BLANKETT,
         komponent: Blankett,
@@ -95,7 +102,12 @@ const filtrerVekkHvisSanksjon = [
 ];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
 const filtrerHvisGOmregning = [SideNavn.VEDTAK_OG_BEREGNING, SideNavn.SIMULERING];
-const filtrerVekkHvisStandard = [SideNavn.BLANKETT, SideNavn.SANKSJON];
+const filtrerVekkHvisStandard = [
+    SideNavn.BLANKETT,
+    SideNavn.SANKSJON,
+    SideNavn.KORRIGERING_UTEN_BREV,
+];
+const filtrerVekkHvisKorrigeringUtenBrev = [SideNavn.BLANKETT, SideNavn.SANKSJON, SideNavn.BREV];
 
 export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
     const sider = siderForStønad(behandling.stønadstype);
@@ -113,6 +125,11 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
     }
     if (behandling.behandlingsårsak == Behandlingsårsak.G_OMREGNING) {
         return sider.filter((side) => filtrerHvisGOmregning.includes(side.navn as SideNavn));
+    }
+    if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
+        return sider.filter(
+            (side) => !filtrerVekkHvisKorrigeringUtenBrev.includes(side.navn as SideNavn)
+        );
     }
     return sider.filter((side) => !filtrerVekkHvisStandard.includes(side.navn as SideNavn));
 };

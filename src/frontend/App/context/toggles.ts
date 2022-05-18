@@ -8,6 +8,7 @@ export enum ToggleName {
     visOppdateringAvRegisteropplysninger = 'familie.ef.sak.frontend-vis-oppdatering-av-registeropplysninger',
     visSettBrevmottakereKnapp = 'familie.ef.sak.brevmottakere-verge-og-fullmakt',
     MIGRERING = 'familie.ef.sak.migrering',
+    visValgmulighetForKorrigering = 'familie.ef.sak.behandling-korrigering',
     visValgmulighetForSanksjon = 'familie.ef.sak.frontend-vis-sanksjon-en-maned',
     kanLeggeTilNyeBarnPaaRevurdering = 'familie.ef.sak.kan-legge-til-nye-barn-paa-revurdering',
     visOpprettTilbakekreving = 'familie.ef.sak.frontend-vis-tilbakekreving',

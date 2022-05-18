@@ -4,6 +4,7 @@ import { Sanksjonsårsak } from './Sanksjonsårsak';
 export enum IVedtakType {
     InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
     InnvilgelseBarnetilsyn = 'InnvilgelseBarnetilsyn',
+    InnvilgelseBarnetilsynUtenUtbetaling = 'InnvilgelseBarnetilsynUtenUtbetaling',
     Avslag = 'Avslag',
     Opphør = 'Opphør',
     Sanksjonering = 'Sanksjonering',
@@ -61,7 +62,7 @@ export type IInnvilgeVedtakForBarnetilsyn = {
     perioder: IUtgiftsperiode[];
     perioderKontantstøtte: IPeriodeMedBeløp[];
     tilleggsstønad: ITilleggsstønad;
-    _type?: IVedtakType.InnvilgelseBarnetilsyn;
+    _type?: IVedtakType.InnvilgelseBarnetilsyn | IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling;
 };
 
 export type ITilleggsstønad = {
@@ -146,6 +147,7 @@ export enum EInntektsperiodeProperty {
 
 export enum EBehandlingResultat {
     INNVILGE = 'INNVILGE',
+    INNVILGE_UTEN_UTBETALING = 'INNVILGE_UTEN_UTBETALING',
     SANKSJONERE = 'SANKSJONERE',
     AVSLÅ = 'AVSLÅ',
     HENLEGGE = 'HENLEGGE',
@@ -228,13 +230,13 @@ export enum EAktivitet {
     BARNET_ER_SYKT = 'BARNET_ER_SYKT',
     UTVIDELSE_FORSØRGER_I_UTDANNING = 'UTVIDELSE_FORSØRGER_I_UTDANNING',
     UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE = 'UTVIDELSE_BARNET_SÆRLIG_TILSYNSKREVENDE',
-    FORLENGELSE_MIDLERTIDIG_SYKDOM = 'FORLENGELSE_STØNAD_UT_SKOLEÅRET',
+    FORLENGELSE_MIDLERTIDIG_SYKDOM = 'FORLENGELSE_MIDLERTIDIG_SYKDOM',
     FORLENGELSE_STØNAD_PÅVENTE_ARBEID = 'FORLENGELSE_STØNAD_PÅVENTE_ARBEID',
     FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER = 'FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER',
     FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM = 'FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM',
     FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING = 'FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING',
     FORLENGELSE_STØNAD_PÅVENTE_UTDANNING = 'FORLENGELSE_STØNAD_PÅVENTE_UTDANNING',
-    FORLENGELSE_STØNAD_UT_SKOLEÅRET = 'FORLENGELSE_MIDLERTIDIG_SYKDOM',
+    FORLENGELSE_STØNAD_UT_SKOLEÅRET = 'FORLENGELSE_STØNAD_UT_SKOLEÅRET',
 }
 
 export enum ESamordningsfradragtype {
@@ -287,6 +289,7 @@ export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
 
 export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
     INNVILGE: 'Innvilge',
+    INNVILGE_UTEN_UTBETALING: 'Avslag/opphør pga kontantstøtte',
     AVSLÅ: 'Avslå',
     HENLEGGE: 'Henlegge',
     BEHANDLE_I_GOSYS: 'Behandle i Gosys',

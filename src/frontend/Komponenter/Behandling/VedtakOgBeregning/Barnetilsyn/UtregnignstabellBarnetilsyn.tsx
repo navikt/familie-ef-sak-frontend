@@ -2,14 +2,17 @@ import React from 'react';
 import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Heading, HelpText } from '@navikt/ds-react';
+import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../../App/utils/formatter';
-import { utledHjelpetekstForBeløpFørFratrekkOgSatsjustering } from '../Felles/utils';
+import {
+    blirNullUtbetalingPgaOverstigendeKontantstøtte,
+    utledHjelpetekstForBeløpFørFratrekkOgSatsjustering,
+} from '../Felles/utils';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
@@ -29,6 +32,11 @@ const HøyrejusterElement = styled(Element)`
 
 const VenstrejustertElement = styled(Element)`
     text-align: left;
+`;
+
+const AdvarselContainter = styled.div`
+    margin-top: 1rem;
+    max-width: 43.5rem;
 `;
 
 export const UtregningstabellBarnetilsyn: React.FC<{
@@ -82,8 +90,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                                             {utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
                                                 rad.beregningsgrunnlag.antallBarn,
                                                 rad.beløpFørFratrekkOgSatsjustering,
-                                                rad.sats,
-                                                false
+                                                rad.sats
                                             )}
                                         </div>
                                     </HelpText>
@@ -91,6 +98,20 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             )}
                         </Rad>
                     ))}
+                    {blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat) && (
+                        <AdvarselContainter>
+                            <Alert variant={'warning'} size={'medium'}>
+                                <Heading spacing size="xsmall" level="5">
+                                    Avslag/Opphør - kontantstøtte overstiger tilsynsutgifter.
+                                </Heading>
+                                <Normaltekst>
+                                    Siden kontantstøttebeløpet overstiger utgiftsbeløpet er
+                                    vedtaksresultatet automatisk endret til "Avslag/opphør pga
+                                    kontantstøtte"
+                                </Normaltekst>
+                            </Alert>
+                        </AdvarselContainter>
+                    )}
                 </>
             )}
         </DataViewer>
