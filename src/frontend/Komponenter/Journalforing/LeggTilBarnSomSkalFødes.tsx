@@ -66,7 +66,7 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                 Noe tekst
                 {barnSomSkalFødes.map((barn, index) => (
                     <TerminbarnMedDatovelger key={index}>
-                        <div>Terminbarn {index + 9}</div>
+                        <div>Terminbarn {index + 1}</div>
                         <FamilieDatovelger
                             id={'Termindato'}
                             label={'Termindato'}
