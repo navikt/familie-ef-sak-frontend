@@ -22,7 +22,7 @@ export interface ISide {
 export enum SideNavn {
     AKTIVITET = 'Aktivitet',
     BLANKETT = 'Blankett',
-    BREV = 'Brev',
+    BREV = 'Vedtaksbrev',
     KORRIGERING_UTEN_BREV = 'Korrigering uten brev',
     INNGANGSVILKÅR = 'Inngangsvilkår',
     SIMULERING = 'Simulering',
@@ -99,9 +99,13 @@ const filtrerVekkHvisSanksjon = [
     SideNavn.AKTIVITET,
     SideNavn.VEDTAK_OG_BEREGNING,
     SideNavn.BLANKETT,
-    SideNavn.KORRIGERING_UTEN_BREV,
 ];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
+const filtrerHvisGOmregning = [
+    SideNavn.VEDTAK_OG_BEREGNING,
+    SideNavn.SIMULERING,
+    SideNavn.KORRIGERING_UTEN_BREV,
+];
 const filtrerVekkHvisStandard = [
     SideNavn.BLANKETT,
     SideNavn.SANKSJON,
@@ -122,6 +126,9 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
         return sider.filter((side) => filtrerHvisMigrering.includes(side.navn as SideNavn));
+    }
+    if (behandling.behandlingsårsak == Behandlingsårsak.G_OMREGNING) {
+        return sider.filter((side) => filtrerHvisGOmregning.includes(side.navn as SideNavn));
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
         return sider.filter(

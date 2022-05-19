@@ -9,6 +9,7 @@ import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
+import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 
 interface StatusMenyInnholdProps {
     åpen: boolean;
@@ -54,6 +55,12 @@ const StatusMenyInnhold = styled.div`
 
 const VisStatuserKnapp = styled(Button)`
     color: ${navFarger.navGra60};
+`;
+
+const VisStønadOgBehandlingstypePåLitenSkjerm = styled.div`
+    @media screen and (min-width: 760px) {
+        display: none;
+    }
 `;
 
 export const Statuser = styled.div`
@@ -107,6 +114,24 @@ export const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
             </VisStatuserKnapp>
             <StatusMenyInnhold åpen={åpenStatusMeny}>
                 <ul>
+                    <VisStønadOgBehandlingstypePåLitenSkjerm>
+                        <li>
+                            <Status>
+                                <GråTekst>Stønadstype</GråTekst>
+                                <Normaltekst>
+                                    {stønadstypeTilTekst[behandling.stønadstype]}
+                                </Normaltekst>
+                            </Status>
+                        </li>
+                        <li>
+                            <Status>
+                                <GråTekst>Behandlingstype</GråTekst>
+                                <Normaltekst>
+                                    {behandlingstypeTilTekst[behandling.type]}
+                                </Normaltekst>
+                            </Status>
+                        </li>
+                    </VisStønadOgBehandlingstypePåLitenSkjerm>
                     <li>
                         <Status>
                             <GråTekst>Behandlingsstatus</GråTekst>
@@ -142,10 +167,6 @@ export const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
 export const AlleStatuser: FC<{ behandling: Behandling }> = ({ behandling }) => {
     return (
         <Statuser>
-            <Status>
-                <GråTekst>Behandlingstype</GråTekst>
-                <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
-            </Status>
             <Status>
                 <GråTekst>Behandlingsstatus</GråTekst>
                 <Normaltekst>{behandlingStatusTilTekst[behandling.status]}</Normaltekst>

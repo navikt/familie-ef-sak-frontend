@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
@@ -8,7 +8,6 @@ import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Link } from 'react-router-dom';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -87,6 +86,16 @@ const FlexKnapper = styled.div`
 
 const JOURNALPOST_QUERY_STRING = 'journalpostId';
 const OPPGAVEID_QUERY_STRING = 'oppgaveId';
+
+const harTittelForAlleDokumenter = (
+    journalResponse: IJojurnalpostResponse,
+    journalpostState: JournalføringStateRequest
+) =>
+    journalResponse.journalpost.dokumenter.every(
+        (d) =>
+            d.tittel ||
+            (journalpostState.dokumentTitler && journalpostState.dokumentTitler[d.dokumentInfoId])
+    );
 
 const erIkkeStrukturertSøknadOgManglerDokumentasjonsType = (
     journalResponse: IJojurnalpostResponse,
@@ -290,6 +299,15 @@ export const JournalforingApp: React.FC = () => {
                                         } else if (inneholderBarnSomErUgyldige(journalpostState)) {
                                             settFeilMeldning(
                                                 'Et eller flere barn mangler gyldig dato'
+                                            );
+                                        } else if (
+                                            !harTittelForAlleDokumenter(
+                                                journalResponse,
+                                                journalpostState
+                                            )
+                                        ) {
+                                            settFeilMeldning(
+                                                'Mangler tittel på et eller flere dokumenter'
                                             );
                                         } else if (
                                             skalBeOmBekreftelse(

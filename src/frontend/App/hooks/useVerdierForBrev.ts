@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { formaterIsoDato } from '../utils/formatter';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
-import { IBeløpsperiode } from '../typer/vedtak';
+import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
 
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -9,7 +9,7 @@ enum EBehandlingFlettefelt {
 }
 
 export const useVerdierForBrev = (
-    beløpsperioder: Ressurs<IBeløpsperiode[] | undefined>
+    beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
 ): { flettefeltStore: { [navn: string]: string } } => {
     const [flettefeltStore, settFlettefeltStore] = useState<{ [navn: string]: string }>({});
 
