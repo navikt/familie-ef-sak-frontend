@@ -28,22 +28,24 @@ const TilsynsutgifterBarnInfo: FC<{
             ? 'Barnepassordninger'
             : 'Barnepassordning';
 
-    return (
-        <GridTabell kolonner={1}>
-            {registergrunnlag.navn ? (
-                <>
-                    <Registergrunnlag />
-                    <Element>
-                        {registergrunnlag.navn} ({alder} år)
-                        {registergrunnlag.dødsdato && (
-                            <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                        )}
-                    </Element>
-                </>
-            ) : null}
-            <TekstMedVenstrePadding>Ingen søknadsopplysninger</TekstMedVenstrePadding>
-        </GridTabell>
-    );
+    if (!gjeldendeBarn.barnepass?.skalHaBarnepass) {
+        return (
+            <GridTabell kolonner={1}>
+                {registergrunnlag.navn ? (
+                    <>
+                        <Registergrunnlag />
+                        <Element>
+                            {registergrunnlag.navn} ({alder} år)
+                            {registergrunnlag.dødsdato && (
+                                <EtikettDød dødsdato={registergrunnlag.dødsdato} />
+                            )}
+                        </Element>
+                    </>
+                ) : null}
+                <TekstMedVenstrePadding>Ingen søknadsopplysninger</TekstMedVenstrePadding>
+            </GridTabell>
+        );
+    }
 
     return (
         <GridTabell kolonner={3}>
