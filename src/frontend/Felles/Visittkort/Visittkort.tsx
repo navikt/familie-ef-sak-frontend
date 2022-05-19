@@ -38,6 +38,12 @@ const ResponsivLenke = styled(Lenke)`
     white-space: nowrap;
 `;
 
+const TagsWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+`;
+
 const TagsLitenSkjerm = styled.div`
     @media screen and (min-width: 946px) {
         display: none;
@@ -169,51 +175,54 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
                     </ElementWrapper>
                 )}
-                {behandling && (
-                    <ElementWrapper>
-                        <TagsLitenSkjerm>
-                            <EtikettSuksess mini>
-                                {stønadstypeTilTekstKort[behandling.stønadstype]}
-                            </EtikettSuksess>
-                        </TagsLitenSkjerm>
-                        <TagsStorSkjerm>
-                            <EtikettSuksess mini>
-                                {stønadstypeTilTekst[behandling.stønadstype]}
-                            </EtikettSuksess>
-                        </TagsStorSkjerm>
-                    </ElementWrapper>
-                )}
-                {behandling && (
-                    <ElementWrapper>
-                        <TagsLitenSkjerm>
-                            <EtikettInfo mini>
-                                {behandlingstypeTilTekstKort[behandling.type]}
-                            </EtikettInfo>
-                        </TagsLitenSkjerm>
-                        <TagsStorSkjerm>
-                            <EtikettInfo mini>
-                                {behandlingstypeTilTekst[behandling.type]}
-                            </EtikettInfo>
-                        </TagsStorSkjerm>
-                    </ElementWrapper>
-                )}
-                {behandling && behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
-                    <ElementWrapper>
-                        <EtikettFokus mini>
-                            {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
-                        </EtikettFokus>
-                    </ElementWrapper>
-                )}
-                {vergemål.length > 0 && (
-                    <ElementWrapper>
-                        <EtikettFokus mini>Verge</EtikettFokus>
-                    </ElementWrapper>
-                )}
-                {erMigrert && (
-                    <ElementWrapper>
-                        <EtikettFokus mini>Migrert</EtikettFokus>
-                    </ElementWrapper>
-                )}
+                <TagsWrapper>
+                    {behandling && (
+                        <ElementWrapper>
+                            <TagsLitenSkjerm>
+                                <EtikettSuksess mini>
+                                    {stønadstypeTilTekstKort[behandling.stønadstype]}
+                                </EtikettSuksess>
+                            </TagsLitenSkjerm>
+                            <TagsStorSkjerm>
+                                <EtikettSuksess mini>
+                                    {stønadstypeTilTekst[behandling.stønadstype]}
+                                </EtikettSuksess>
+                            </TagsStorSkjerm>
+                        </ElementWrapper>
+                    )}
+                    {behandling && (
+                        <ElementWrapper>
+                            <TagsLitenSkjerm>
+                                <EtikettInfo mini>
+                                    {behandlingstypeTilTekstKort[behandling.type]}
+                                </EtikettInfo>
+                            </TagsLitenSkjerm>
+                            <TagsStorSkjerm>
+                                <EtikettInfo mini>
+                                    {behandlingstypeTilTekst[behandling.type]}
+                                </EtikettInfo>
+                            </TagsStorSkjerm>
+                        </ElementWrapper>
+                    )}
+                    {behandling && behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
+                        <ElementWrapper>
+                            <EtikettFokus mini>
+                                {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
+                            </EtikettFokus>
+                        </ElementWrapper>
+                    )}
+                    {vergemål.length > 0 && (
+                        <ElementWrapper>
+                            <EtikettFokus mini>Verge</EtikettFokus>
+                        </ElementWrapper>
+                    )}
+
+                    {erMigrert && (
+                        <ElementWrapper>
+                            <EtikettFokus mini>Migrert</EtikettFokus>
+                        </ElementWrapper>
+                    )}
+                </TagsWrapper>
             </Visittkort>
 
             {behandling && (

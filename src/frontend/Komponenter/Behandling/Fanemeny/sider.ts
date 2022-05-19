@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import Aktivitet from '../Aktivitet/Aktivitetsvilkår';
 import Brev from '../Brev/Brev';
 import Blankett from '../Blankett/Blankett';
-import { Behandling } from '../../../App/typer/fagsak';
+import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
 import { Simulering } from '../Simulering/Simulering';
@@ -113,8 +113,13 @@ const filtrerVekkHvisStandard = [
 ];
 const filtrerVekkHvisKorrigeringUtenBrev = [SideNavn.BLANKETT, SideNavn.SANKSJON, SideNavn.BREV];
 
+const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>
+    behandling.resultat !== BehandlingResultat.HENLAGT || side.navn !== SideNavn.BREV;
+
 export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
-    const sider = siderForStønad(behandling.stønadstype);
+    const sider = siderForStønad(behandling.stønadstype).filter((side) =>
+        ikkeVisBrevHvisHenlagt(behandling, side)
+    );
     if (behandling.type === Behandlingstype.BLANKETT) {
         return sider.filter((side) => !filtrerVekkHvisBlankett.includes(side.navn as SideNavn));
     }
