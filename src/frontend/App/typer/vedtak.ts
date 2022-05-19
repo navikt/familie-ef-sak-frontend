@@ -1,9 +1,9 @@
 import { Sanksjonsårsak } from './Sanksjonsårsak';
 
-// TODO: Her kan vi legge inn vedtakstyper for barnetilsyn
 export enum IVedtakType {
     InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
     InnvilgelseBarnetilsyn = 'InnvilgelseBarnetilsyn',
+    InnvilgelseSkolepenger = 'InnvilgelseSkolepenger',
     InnvilgelseBarnetilsynUtenUtbetaling = 'InnvilgelseBarnetilsynUtenUtbetaling',
     Avslag = 'Avslag',
     Opphør = 'Opphør',
@@ -47,6 +47,19 @@ export interface IBeregningsgrunnlag {
     fullOvergangsStønadPerMåned: number | null;
     grunnbeløp: number | null;
 }
+
+export interface IBeregningsperiodeSkolepenger {
+    periode: { fradato: string; tildato: string };
+    beløp: number;
+    beregningsgrunnlag: IBeregningsgrunnlagSkolepenger;
+}
+
+export interface IBeregningsgrunnlagSkolepenger {
+    studietype: ESkolepengerStudietype;
+    studiebelastning: number;
+    utgifter: number;
+}
+
 export type IInnvilgeVedtakForOvergangsstønad = {
     _type: IVedtakType.InnvilgelseOvergangsstønad;
     resultatType: EBehandlingResultat.INNVILGE;
@@ -84,6 +97,20 @@ export type IPeriodeMedBeløp = {
     beløp: number | undefined;
 };
 
+export type IInnvilgeVedtakForSkolepenger = {
+    begrunnelse?: string;
+    perioder: IUtgiftsperiodeSkolepenger[];
+    _type?: IVedtakType.InnvilgelseSkolepenger;
+};
+
+export interface IUtgiftsperiodeSkolepenger {
+    studietype: ESkolepengerStudietype | undefined;
+    årMånedFra: string;
+    årMånedTil: string;
+    studiebelastning: number | undefined;
+    utgifter: number | undefined;
+}
+
 export type ISanksjonereVedtakForOvergangsstønad = {
     _type: IVedtakType.Sanksjonering;
     resultatType: EBehandlingResultat.SANKSJONERE;
@@ -112,6 +139,8 @@ export type IVedtakForOvergangsstønad =
 
 export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
 
+export type IvedtakForSkolepenger = IInnvilgeVedtakForSkolepenger;
+
 export interface IInntektsperiode {
     årMånedFra?: string;
     forventetInntekt?: number;
@@ -135,6 +164,10 @@ export interface IBeregningsrequestBarnetilsyn {
     utgiftsperioder: IUtgiftsperiode[];
     kontantstøtteperioder: IPeriodeMedBeløp[];
     tilleggsstønadsperioder: IPeriodeMedBeløp[];
+}
+
+export interface IBeregningsrequestSkolepenger {
+    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
 }
 
 export enum EInntektsperiodeProperty {
@@ -180,6 +213,8 @@ export enum EUtgiftsperiodeProperty {
     utgifter = 'utgifter',
 }
 
+export type EUtgiftsperiodeSkolepengerProperty = keyof IUtgiftsperiodeSkolepenger;
+
 export enum EKontantstøttePeriodeProperty {
     årMånedFra = 'årMånedFra',
     årMånedTil = 'årMånedTil',
@@ -216,6 +251,14 @@ export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
 ];
+
+export enum ESkolepengerStudietype {
+    HØGSKOLE_UNIVERSITET = 'HØGSKOLE_UNIVERSITET',
+}
+
+export const skolepengerStudietypeTilTekst: Record<ESkolepengerStudietype, string> = {
+    HØGSKOLE_UNIVERSITET: 'Høgskole / Universitet',
+};
 
 export enum EAktivitet {
     IKKE_AKTIVITETSPLIKT = 'IKKE_AKTIVITETSPLIKT',
