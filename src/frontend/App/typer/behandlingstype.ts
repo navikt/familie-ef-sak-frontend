@@ -13,3 +13,11 @@ export const behandlingstypeTilTekst: Record<Behandlingstype, string> = {
     TEKNISK_OPPHØR: 'Teknisk opphør',
     TILBAKEKREVING: 'Tilbakekreving',
 };
+
+export const behandlingstypeTilTekstKort: Record<Behandlingstype, string> = {
+    FØRSTEGANGSBEHANDLING: 'F',
+    REVURDERING: 'R',
+    BLANKETT: 'B',
+    TEKNISK_OPPHØR: 'TO',
+    TILBAKEKREVING: 'T',
+};
