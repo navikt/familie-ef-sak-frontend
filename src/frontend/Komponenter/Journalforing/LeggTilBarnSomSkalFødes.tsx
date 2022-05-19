@@ -6,6 +6,7 @@ import { BarnSomSkalFødes } from '../../App/hooks/useJournalføringState';
 import { Button, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
+import { v4 as uuidv4 } from 'uuid';
 
 const Tittel = styled(Heading)`
     color: ${navFarger.navBlaLighten40};
@@ -43,17 +44,22 @@ const LeggTilBarnSomSkalFødes: React.FC<{
     barnSomSkalFødes: BarnSomSkalFødes[];
     oppdaterBarnSomSkalFødes: (terminbarn: BarnSomSkalFødes[]) => void;
 }> = ({ barnSomSkalFødes, oppdaterBarnSomSkalFødes }) => {
-    const leggTilBarn = () => oppdaterBarnSomSkalFødes([...barnSomSkalFødes, {}]);
+    const leggTilBarn = () => oppdaterBarnSomSkalFødes([...barnSomSkalFødes, { _id: uuidv4() }]);
 
     const fjernBarn = (terminbarnSomSkalSlettes: BarnSomSkalFødes) =>
         oppdaterBarnSomSkalFødes(
             barnSomSkalFødes.filter((barn) => barn !== terminbarnSomSkalSlettes)
         );
 
-    const oppdaterTermindato = (terminbarnSomSkalOppdateres: BarnSomSkalFødes, dato: string) =>
+    const oppdaterTermindato = (id: string, dato: string) =>
         oppdaterBarnSomSkalFødes(
             barnSomSkalFødes.map((barn) =>
-                barn === terminbarnSomSkalOppdateres ? { fødselTerminDato: dato as string } : barn
+                barn._id === id
+                    ? {
+                          ...barn,
+                          fødselTerminDato: dato as string,
+                      }
+                    : barn
             )
         );
 
@@ -65,12 +71,12 @@ const LeggTilBarnSomSkalFødes: React.FC<{
             <InlineContent>
                 Dersom søkeren har terminbarn i søknaden må disse legges til her.
                 {barnSomSkalFødes.map((barn, index) => (
-                    <TerminbarnMedDatovelger key={index}>
+                    <TerminbarnMedDatovelger key={barn._id}>
                         <div>Terminbarn {index + 1}</div>
                         <FamilieDatovelger
                             id={'Termindato'}
                             label={'Termindato'}
-                            onChange={(dato) => oppdaterTermindato(barn, dato as string)}
+                            onChange={(dato) => oppdaterTermindato(barn._id, dato as string)}
                             valgtDato={barn.fødselTerminDato}
                         />
                         <FjernBanrKnapp

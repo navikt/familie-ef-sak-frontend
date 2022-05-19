@@ -19,6 +19,7 @@ interface JournalføringRequest {
 }
 
 export interface BarnSomSkalFødes {
+    _id: string; // brukes kun i frontend for å oppdatere å rendere barn
     fødselTerminDato?: string;
 }
 
