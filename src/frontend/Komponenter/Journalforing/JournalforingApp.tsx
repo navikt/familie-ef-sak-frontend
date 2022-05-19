@@ -13,9 +13,9 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
+    BarnSomSkalFødes,
     BehandlingRequest,
     JournalføringStateRequest,
-    BarnSomSkalFødes,
     useJournalføringState,
 } from '../../App/hooks/useJournalføringState';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
@@ -114,8 +114,6 @@ export const JournalforingApp: React.FC = () => {
     } = useHentDokument(journalpostIdParam);
     const { hentFagsak, fagsak } = useHentFagsak();
     const [feilmelding, settFeilMeldning] = useState('');
-    const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
-        useState<UstrukturertDokumentasjonType>();
 
     useEffect(() => {
         if (journalpostState.forsøktJournalført && !journalpostState.behandling) {
@@ -196,7 +194,9 @@ export const JournalforingApp: React.FC = () => {
 
     const kanLeggeTilBarnSomSkalFødes = () => {
         const erNyBehandling =
-            journalpostState.behandling && !journalpostState.behandling.behandlingsId;
+            journalpostState.behandling &&
+            journalpostState.behandling.behandlingstype &&
+            !journalpostState.behandling.behandlingsId;
         const harIkkeStrukturertSøknad =
             journalResponse.status === RessursStatus.SUKSESS &&
             !journalResponse.data.harStrukturertSøknad;
@@ -204,7 +204,8 @@ export const JournalforingApp: React.FC = () => {
             toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] &&
             erNyBehandling &&
             harIkkeStrukturertSøknad &&
-            ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD
+            journalpostState.ustrukturertDokumentasjonType ===
+                UstrukturertDokumentasjonType.PAPIRSØKNAD
         );
     };
 
@@ -226,9 +227,11 @@ export const JournalforingApp: React.FC = () => {
                             />
                             {!journalResponse.harStrukturertSøknad && (
                                 <VelgUstrukturertDokumentasjonType
-                                    ustrukturertDokumentasjonType={ustrukturertDokumentasjonType}
+                                    ustrukturertDokumentasjonType={
+                                        journalpostState.ustrukturertDokumentasjonType
+                                    }
                                     settUstrukturertDokumentasjonType={
-                                        settUstrukturertDokumentasjonType
+                                        journalpostState.settUstrukturertDokumentasjonType
                                     }
                                 />
                             )}
@@ -267,7 +270,7 @@ export const JournalforingApp: React.FC = () => {
                                         if (
                                             erUstrukturertSøknadOgManglerDokumentasjonsType(
                                                 journalResponse,
-                                                ustrukturertDokumentasjonType
+                                                journalpostState.ustrukturertDokumentasjonType
                                             )
                                         ) {
                                             settFeilMeldning('Mangler type dokumentasjon');
@@ -288,7 +291,7 @@ export const JournalforingApp: React.FC = () => {
                                             skalBeOmBekreftelse(
                                                 journalpostState.behandling,
                                                 journalResponse.harStrukturertSøknad,
-                                                ustrukturertDokumentasjonType
+                                                journalpostState.ustrukturertDokumentasjonType
                                             )
                                         ) {
                                             if (journalResponse.harStrukturertSøknad) {

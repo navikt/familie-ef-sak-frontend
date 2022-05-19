@@ -2,10 +2,13 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
+import { Behandlingsårsak } from '../typer/Behandlingsårsak';
+import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
     behandlingstype?: Behandlingstype;
+    årsak?: Behandlingsårsak;
 }
 
 interface JournalføringRequest {
@@ -47,6 +50,10 @@ export interface JournalføringStateRequest {
     settJournalføringIkkeMuligModal: Dispatch<SetStateAction<boolean>>;
     barnSomSkalFødes: BarnSomSkalFødes[];
     settBarnSomSkalFødes: Dispatch<SetStateAction<BarnSomSkalFødes[]>>;
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
+    settUstrukturertDokumentasjonType: Dispatch<
+        SetStateAction<UstrukturertDokumentasjonType | undefined>
+    >;
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
@@ -61,6 +68,8 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [visJournalføringIkkeMuligModal, settJournalføringIkkeMuligModal] =
         useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
+    const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
+        useState<UstrukturertDokumentasjonType>();
 
     const fullførJournalføring = (
         journalpostId: string,
@@ -72,10 +81,19 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             return;
         }
 
+        const behandlingsårsak =
+            ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD
+                ? Behandlingsårsak.PAPIRSØKNAD
+                : undefined;
+        const nyBehandling: BehandlingRequest = {
+            ...behandling,
+            årsak: behandlingsårsak,
+        };
+
         const data: JournalføringRequest = {
             oppgaveId,
             fagsakId,
-            behandling,
+            behandling: nyBehandling,
             dokumentTitler,
             journalførendeEnhet,
             navIdent,
@@ -111,5 +129,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         settJournalføringIkkeMuligModal,
         barnSomSkalFødes,
         settBarnSomSkalFødes,
+        ustrukturertDokumentasjonType,
+        settUstrukturertDokumentasjonType,
     };
 };
