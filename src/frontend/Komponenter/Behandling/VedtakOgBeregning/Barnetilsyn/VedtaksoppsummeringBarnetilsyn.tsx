@@ -13,6 +13,7 @@ import { sorterUtBarnetilsynsvilkår, sorterUtInngangsvilkår } from '../Felles/
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { Søknadsdatoer } from '../Overgangsstønad/Søknadsdatoer';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
+import { BreakWordNormaltekst } from '../../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 
 const OppsummeringContainer = styled.div`
     display: flex;
@@ -25,6 +26,11 @@ const OppsummeringContainer = styled.div`
 const Oppsummeringsboks = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
+    padding: 1rem;
+`;
+
+const BegrunnelseTilsynsutgifter = styled.div`
+    margin: 1rem;
     padding: 1rem;
 `;
 
@@ -59,6 +65,9 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
         vilkår,
         AktivitetsvilkårType.ALDER_PÅ_BARN
     );
+    const begrunnelseForTilsynsutgiftVilkår = vilkår.vurderinger.find(
+        (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_TILSYNSUTGIFTER
+    )?.delvilkårsvurderinger[0].vurderinger[0].begrunnelse;
 
     return (
         <>
@@ -104,6 +113,14 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
                         );
                     })}
                 </OppsummeringContainer>
+            )}
+            {begrunnelseForTilsynsutgiftVilkår && (
+                <BegrunnelseTilsynsutgifter>
+                    <Heading spacing size="small" level="5">
+                        Vurdering tilsynsutgifter
+                    </Heading>
+                    <BreakWordNormaltekst>{begrunnelseForTilsynsutgiftVilkår}</BreakWordNormaltekst>
+                </BegrunnelseTilsynsutgifter>
             )}
         </>
     );
