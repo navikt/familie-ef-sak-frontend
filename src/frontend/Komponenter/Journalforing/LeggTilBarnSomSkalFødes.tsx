@@ -63,7 +63,7 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                 Journalføre papirsøknad?
             </Tittel>
             <InlineContent>
-                Noe tekst
+                Dersom søkeren har terminbarn i søknaden må disse legges til her.
                 {barnSomSkalFødes.map((barn, index) => (
                     <TerminbarnMedDatovelger key={index}>
                         <div>Terminbarn {index + 1}</div>
