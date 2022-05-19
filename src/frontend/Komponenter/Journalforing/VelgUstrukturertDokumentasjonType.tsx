@@ -38,7 +38,7 @@ const VelgUstrukturertDokumentasjonType: React.FC<{
                 }}
                 value={ustrukturertDokumentasjonType}
             >
-                <option value={''}> Ikke valgt</option>
+                <option value={''}>Ikke valgt</option>
                 {[
                     UstrukturertDokumentasjonType.PAPIRSØKNAD,
                     UstrukturertDokumentasjonType.ETTERSENDING,
