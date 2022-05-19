@@ -180,10 +180,13 @@ export const JournalforingApp: React.FC = () => {
         const erIkkeNyBehandling = behandling?.behandlingsId !== undefined;
         if (harStrukturertSøknad) {
             return erIkkeNyBehandling;
-        } else {
+        } else if (toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring]) {
+            // kan fjerne else når toggle fjernes
             const dokumentasjonErIkkeSøknad =
                 ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.SØKNAD;
             return erIkkeNyBehandling && dokumentasjonErIkkeSøknad;
+        } else {
+            return !erIkkeNyBehandling;
         }
     };
 
