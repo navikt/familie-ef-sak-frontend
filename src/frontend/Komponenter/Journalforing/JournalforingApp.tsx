@@ -11,7 +11,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Select, SkjemaGruppe } from 'nav-frontend-skjema';
+import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     BehandlingRequest,
     JournalføringStateRequest,
@@ -36,6 +36,9 @@ import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
 import { IJojurnalpostResponse } from '../../App/typer/journalforing';
+import VelgUstrukturertDokumentasjonType, {
+    UstrukturertDokumentasjonType,
+} from './VelgUstrukturertDokumentasjonType';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -61,21 +64,6 @@ export const KnappWrapper = styled.div`
         margin-right: 1.5rem;
     }
 `;
-
-const VelgUstrukturertDokumentasjonType = styled(Select)`
-    width: 10rem;
-    margin: 1rem 0;
-`;
-
-enum UstrukturertDokumentasjonType {
-    SØKNAD = 'SØKNAD',
-    ETTERSENDING = 'ETTERSENDNING',
-}
-
-const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = {
-    SØKNAD: 'Søknad',
-    ETTERSENDNING: 'Ettersendning',
-};
 
 const Venstrekolonne = styled.div``;
 const Høyrekolonne = styled.div``;
@@ -234,28 +222,11 @@ export const JournalforingApp: React.FC = () => {
                             />
                             {!journalResponse.harStrukturertSøknad && (
                                 <VelgUstrukturertDokumentasjonType
-                                    label="Type dokumentasjon"
-                                    onChange={(e) => {
-                                        if (e.target.value.trim() !== '') {
-                                            settUstrukturertDokumentasjonType(
-                                                e.target.value as UstrukturertDokumentasjonType
-                                            );
-                                        } else {
-                                            settUstrukturertDokumentasjonType(undefined);
-                                        }
-                                    }}
-                                    value={ustrukturertDokumentasjonType}
-                                >
-                                    <option value={''}>Ikke valgt</option>
-                                    {[
-                                        UstrukturertDokumentasjonType.SØKNAD,
-                                        UstrukturertDokumentasjonType.ETTERSENDING,
-                                    ].map((type) => (
-                                        <option key={type} value={type}>
-                                            {ustrukturertTypeTilTekst[type]}
-                                        </option>
-                                    ))}
-                                </VelgUstrukturertDokumentasjonType>
+                                    ustrukturertDokumentasjonType={ustrukturertDokumentasjonType}
+                                    settUstrukturertDokumentasjonType={
+                                        settUstrukturertDokumentasjonType
+                                    }
+                                />
                             )}
                             <Brukerinfo personIdent={journalResponse.personIdent} />
                             <DokumentVisning
