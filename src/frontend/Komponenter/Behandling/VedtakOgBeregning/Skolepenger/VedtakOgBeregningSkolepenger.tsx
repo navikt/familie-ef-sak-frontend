@@ -10,7 +10,6 @@ import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { VedtaksformSkolepenger } from './VedtaksformSkolepenger';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
-import { Opphør } from '../Overgangsstønad/Opphør/Opphør';
 
 interface Props {
     behandling: Behandling;
@@ -72,8 +71,6 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                         lagretVedtak={vedtak}
                                     />
                                 );
-                            case EBehandlingResultat.OPPHØRT:
-                                return <Opphør behandlingId={behandlingId} />;
                             case undefined:
                                 return null;
                         }
