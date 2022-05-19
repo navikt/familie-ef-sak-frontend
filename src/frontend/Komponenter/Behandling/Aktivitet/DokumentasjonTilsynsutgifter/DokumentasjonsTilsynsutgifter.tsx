@@ -4,7 +4,7 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import TilsynsutgifterBarnInfo from './TilsynsutgifterBarnInfo';
-import { AktivitetsvilkårType, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
+import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
@@ -35,7 +35,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                     <>
                         <Vilkårstittel
                             tittel="Dokumentasjon av tilsynsutgifter"
-                            vilkårsresultat={Vilkårsresultat.OPPFYLT}
+                            vilkårsresultat={vurdering.resultat}
                         />
                         {grunnlag.barnMedSamvær.map((barn, index) => {
                             return (

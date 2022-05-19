@@ -38,6 +38,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
         'Har brukeren inntekt under 6 ganger grunnbeløpet (638 394 kr / 53 200 kr)?',
     HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
     UNNTAK_ALDER: 'Oppfylles unntak etter å ha fullført 4. skoleår?',
+    HAR_DOKUMENTERTE_TILSYNSUTGIFTER: 'Har brukeren dokumenterte tilsynsutgifter?',
 };
 
 export const svarTypeTilTekst: Record<string, string> = {
@@ -102,4 +103,5 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     ALDER_PÅ_BARN: 'Alder på barn',
     INNTEKT: 'Inntekt',
     AKTIVITET_ARBEID: 'Aktivitet arbeid',
+    DOKUMENTASJON_TILSYNSUTGIFTER: 'Vilkår om dokumentasjon av tilsynsutgifter',
 };
