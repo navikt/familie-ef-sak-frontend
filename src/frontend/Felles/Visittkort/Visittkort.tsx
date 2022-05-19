@@ -10,7 +10,7 @@ import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato } from '../../App/utils/dato';
-import { RessursStatus, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
 import Lenke from 'nav-frontend-lenker';
@@ -22,8 +22,9 @@ import {
     behandlingstypeTilTekst,
     behandlingstypeTilTekstKort,
 } from '../../App/typer/behandlingstype';
-import { StatuserLitenSkjerm, StatusMeny, AlleStatuser } from './Status/StatusElementer';
+import { AlleStatuser, StatuserLitenSkjerm, StatusMeny } from './Status/StatusElementer';
 import { stønadstypeTilTekst, stønadstypeTilTekstKort } from '../../App/typer/behandlingstema';
+import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -59,6 +60,7 @@ export const VisittkortWrapper = styled(Sticky)`
     border-bottom: 1px solid ${navFarger.navGra80};
     z-index: 22;
     top: 47px;
+
     .visittkort {
         padding: 0 1.5rem;
         border-bottom: none;
@@ -169,18 +171,16 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 )}
                 {behandling && (
                     <ElementWrapper>
-                        <>
-                            <TagsLitenSkjerm>
-                                <EtikettSuksess mini>
-                                    {stønadstypeTilTekstKort[behandling.stønadstype]}
-                                </EtikettSuksess>
-                            </TagsLitenSkjerm>
-                            <TagsStorSkjerm>
-                                <EtikettSuksess mini>
-                                    {stønadstypeTilTekst[behandling.stønadstype]}
-                                </EtikettSuksess>
-                            </TagsStorSkjerm>
-                        </>
+                        <TagsLitenSkjerm>
+                            <EtikettSuksess mini>
+                                {stønadstypeTilTekstKort[behandling.stønadstype]}
+                            </EtikettSuksess>
+                        </TagsLitenSkjerm>
+                        <TagsStorSkjerm>
+                            <EtikettSuksess mini>
+                                {stønadstypeTilTekst[behandling.stønadstype]}
+                            </EtikettSuksess>
+                        </TagsStorSkjerm>
                     </ElementWrapper>
                 )}
                 {behandling && (
@@ -195,6 +195,13 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                                 {behandlingstypeTilTekst[behandling.type]}
                             </EtikettInfo>
                         </TagsStorSkjerm>
+                    </ElementWrapper>
+                )}
+                {behandling && behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
+                    <ElementWrapper>
+                        <EtikettFokus mini>
+                            {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
+                        </EtikettFokus>
                     </ElementWrapper>
                 )}
                 {vergemål.length > 0 && (
