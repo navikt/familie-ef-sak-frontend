@@ -189,13 +189,13 @@ export const JournalforingApp: React.FC = () => {
         harStrukturertSøknad: boolean,
         ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
     ) => {
-        const erIkkeNySøknad = behandling?.behandlingsId !== undefined;
+        const erIkkeNyBehandling = behandling?.behandlingsId !== undefined;
         if (harStrukturertSøknad) {
-            return erIkkeNySøknad;
+            return erIkkeNyBehandling;
         } else {
             const dokumentasjonErIkkeSøknad =
                 ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.SØKNAD;
-            return erIkkeNySøknad && dokumentasjonErIkkeSøknad;
+            return erIkkeNyBehandling && dokumentasjonErIkkeSøknad;
         }
     };
 
