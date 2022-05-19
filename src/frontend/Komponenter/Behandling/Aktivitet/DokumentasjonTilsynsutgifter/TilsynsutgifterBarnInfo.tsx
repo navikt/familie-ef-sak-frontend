@@ -9,6 +9,12 @@ import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/Da
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../../../App/utils/dato';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import styled from 'styled-components';
+
+const TekstMedVenstrePadding = styled(Normaltekst)`
+    padding-left: 0.5rem;
+    font-style: italic;
+`;
 
 const TilsynsutgifterBarnInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -21,6 +27,23 @@ const TilsynsutgifterBarnInfo: FC<{
         harPassordning && barnepass?.barnepassordninger.length > 1
             ? 'Barnepassordninger'
             : 'Barnepassordning';
+
+    return (
+        <GridTabell kolonner={1}>
+            {registergrunnlag.navn ? (
+                <>
+                    <Registergrunnlag />
+                    <Element>
+                        {registergrunnlag.navn} ({alder} år)
+                        {registergrunnlag.dødsdato && (
+                            <EtikettDød dødsdato={registergrunnlag.dødsdato} />
+                        )}
+                    </Element>
+                </>
+            ) : null}
+            <TekstMedVenstrePadding>Ingen søknadsopplysninger</TekstMedVenstrePadding>
+        </GridTabell>
+    );
 
     return (
         <GridTabell kolonner={3}>
