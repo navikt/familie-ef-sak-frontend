@@ -182,9 +182,9 @@ export const JournalforingApp: React.FC = () => {
             return erIkkeNyBehandling;
         } else if (toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring]) {
             // kan fjerne else når toggle fjernes
-            const dokumentasjonErIkkeSøknad =
-                ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.SØKNAD;
-            return erIkkeNyBehandling && dokumentasjonErIkkeSøknad;
+            const dokumentasjonErIkkePapirsøknad =
+                ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.PAPIRSØKNAD;
+            return erIkkeNyBehandling && dokumentasjonErIkkePapirsøknad;
         } else {
             return !erIkkeNyBehandling;
         }
@@ -203,7 +203,8 @@ export const JournalforingApp: React.FC = () => {
         return (
             toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] &&
             erNyBehandling &&
-            harIkkeStrukturertSøknad
+            harIkkeStrukturertSøknad &&
+            ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD
         );
     };
 

@@ -8,12 +8,12 @@ const VelgUstrukturertDokumentasjonTypeSelect = styled(Select)`
 `;
 
 export enum UstrukturertDokumentasjonType {
-    SØKNAD = 'SØKNAD',
+    PAPIRSØKNAD = 'PAPIRSØKNAD',
     ETTERSENDING = 'ETTERSENDNING',
 }
 
 const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = {
-    SØKNAD: 'Søknad',
+    PAPIRSØKNAD: 'Papirsøknad',
     ETTERSENDNING: 'Ettersendning',
 };
 
@@ -24,28 +24,34 @@ const VelgUstrukturertDokumentasjonType: React.FC<{
     >;
 }> = ({ ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType }) => {
     return (
-        <VelgUstrukturertDokumentasjonTypeSelect
-            label="Type dokumentasjon"
-            onChange={(e) => {
-                if (e.target.value.trim() !== '') {
-                    settUstrukturertDokumentasjonType(
-                        e.target.value as UstrukturertDokumentasjonType
-                    );
-                } else {
-                    settUstrukturertDokumentasjonType(undefined);
-                }
-            }}
-            value={ustrukturertDokumentasjonType}
-        >
-            <option value={''}> Ikke valgt</option>
-            {[UstrukturertDokumentasjonType.SØKNAD, UstrukturertDokumentasjonType.ETTERSENDING].map(
-                (type) => (
+        <>
+            <VelgUstrukturertDokumentasjonTypeSelect
+                label="Type dokumentasjon"
+                onChange={(e) => {
+                    if (e.target.value.trim() !== '') {
+                        settUstrukturertDokumentasjonType(
+                            e.target.value as UstrukturertDokumentasjonType
+                        );
+                    } else {
+                        settUstrukturertDokumentasjonType(undefined);
+                    }
+                }}
+                value={ustrukturertDokumentasjonType}
+            >
+                <option value={''}> Ikke valgt</option>
+                {[
+                    UstrukturertDokumentasjonType.PAPIRSØKNAD,
+                    UstrukturertDokumentasjonType.ETTERSENDING,
+                ].map((type) => (
                     <option key={type} value={type}>
                         {ustrukturertTypeTilTekst[type]}
                     </option>
-                )
+                ))}
+            </VelgUstrukturertDokumentasjonTypeSelect>
+            {ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD && (
+                <div>Årsak til behandling kommer settes til papirsøknad</div>
             )}
-        </VelgUstrukturertDokumentasjonTypeSelect>
+        </>
     );
 };
 
