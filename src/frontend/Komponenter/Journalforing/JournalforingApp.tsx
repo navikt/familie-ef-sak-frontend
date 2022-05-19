@@ -85,7 +85,7 @@ const harTittelForAlleDokumenter = (
             (journalpostState.dokumentTitler && journalpostState.dokumentTitler[d.dokumentInfoId])
     );
 
-const erIkkeStrukturertSøknadOgManglerDokumentasjonsType = (
+const erUstrukturertSøknadOgManglerDokumentasjonsType = (
     journalResponse: IJojurnalpostResponse,
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
 ) => !journalResponse.harStrukturertSøknad && !ustrukturertDokumentasjonType;
@@ -261,7 +261,7 @@ export const JournalforingApp: React.FC = () => {
                                 <Hovedknapp
                                     onClick={() => {
                                         if (
-                                            erIkkeStrukturertSøknadOgManglerDokumentasjonsType(
+                                            erUstrukturertSøknadOgManglerDokumentasjonsType(
                                                 journalResponse,
                                                 ustrukturertDokumentasjonType
                                             )
