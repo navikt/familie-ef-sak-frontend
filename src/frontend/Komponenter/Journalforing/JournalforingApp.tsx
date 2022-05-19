@@ -95,6 +95,26 @@ const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateReques
         (barn) => !barn.fødselTerminDato || barn.fødselTerminDato.trim() === ''
     );
 
+const validerJournalføringState = (
+    journalResponse: IJojurnalpostResponse,
+    journalpostState: JournalføringStateRequest
+): string | undefined => {
+    if (
+        erUstrukturertSøknadOgManglerDokumentasjonsType(
+            journalResponse,
+            journalpostState.ustrukturertDokumentasjonType
+        )
+    ) {
+        return 'Mangler type dokumentasjon';
+    } else if (inneholderBarnSomErUgyldige(journalpostState)) {
+        return 'Et eller flere barn mangler gyldig dato';
+    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState)) {
+        return 'Mangler tittel på et eller flere dokumenter';
+    } else {
+        return undefined;
+    }
+};
+
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
@@ -267,26 +287,12 @@ export const JournalforingApp: React.FC = () => {
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
                                     onClick={() => {
-                                        if (
-                                            erUstrukturertSøknadOgManglerDokumentasjonsType(
-                                                journalResponse,
-                                                journalpostState.ustrukturertDokumentasjonType
-                                            )
-                                        ) {
-                                            settFeilMeldning('Mangler type dokumentasjon');
-                                        } else if (inneholderBarnSomErUgyldige(journalpostState)) {
-                                            settFeilMeldning(
-                                                'Et eller flere barn mangler gyldig dato'
-                                            );
-                                        } else if (
-                                            !harTittelForAlleDokumenter(
-                                                journalResponse,
-                                                journalpostState
-                                            )
-                                        ) {
-                                            settFeilMeldning(
-                                                'Mangler tittel på et eller flere dokumenter'
-                                            );
+                                        const feilmeldingFraValidering = validerJournalføringState(
+                                            journalResponse,
+                                            journalpostState
+                                        );
+                                        if (feilmeldingFraValidering) {
+                                            settFeilMeldning(feilmeldingFraValidering);
                                         } else if (
                                             skalBeOmBekreftelse(
                                                 journalpostState.behandling,
