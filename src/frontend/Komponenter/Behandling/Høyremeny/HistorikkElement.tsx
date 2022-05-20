@@ -129,7 +129,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 {behandlingshistorikk.metadata?.årsak && (
                     <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
                 )}
-                {harVedtaksbrev && (
+                {vedtakIverksatt && harVedtaksbrev && (
                     <LenkeKnappWrapper>
                         <LenkeKnapp onClick={hentOgÅpneVedtaksbrev}>
                             <span>Vedtaksbrev</span>
