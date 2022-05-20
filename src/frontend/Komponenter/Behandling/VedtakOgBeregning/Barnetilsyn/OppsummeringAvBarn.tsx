@@ -122,7 +122,7 @@ export const OppsummeringAvBarn: React.FC<{
                             <NedersteGridLinje>
                                 <IkonOgTekstWrapper>
                                     <Søknadsgrunnlag />
-                                    <MarginTekst>Utgifter</MarginTekst>
+                                    <MarginTekst>Utgifter per måned</MarginTekst>
                                 </IkonOgTekstWrapper>
                                 <Normaltekst>{barnepassordning.beløp},-</Normaltekst>
                             </NedersteGridLinje>
