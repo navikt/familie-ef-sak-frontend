@@ -1,0 +1,58 @@
+import React from 'react';
+import styled from 'styled-components';
+import { Select } from 'nav-frontend-skjema';
+
+const VelgUstrukturertDokumentasjonTypeSelect = styled(Select)`
+    width: 10rem;
+    margin: 1rem 0;
+`;
+
+export enum UstrukturertDokumentasjonType {
+    PAPIRSØKNAD = 'PAPIRSØKNAD',
+    ETTERSENDING = 'ETTERSENDNING',
+}
+
+const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = {
+    PAPIRSØKNAD: 'Papirsøknad',
+    ETTERSENDNING: 'Ettersendning',
+};
+
+const VelgUstrukturertDokumentasjonType: React.FC<{
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
+    settUstrukturertDokumentasjonType: React.Dispatch<
+        React.SetStateAction<UstrukturertDokumentasjonType | undefined>
+    >;
+}> = ({ ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType }) => {
+    return (
+        <>
+            <VelgUstrukturertDokumentasjonTypeSelect
+                label="Type dokumentasjon"
+                onChange={(e) => {
+                    if (e.target.value.trim() !== '') {
+                        settUstrukturertDokumentasjonType(
+                            e.target.value as UstrukturertDokumentasjonType
+                        );
+                    } else {
+                        settUstrukturertDokumentasjonType(undefined);
+                    }
+                }}
+                value={ustrukturertDokumentasjonType}
+            >
+                <option value={''}>Ikke valgt</option>
+                {[
+                    UstrukturertDokumentasjonType.PAPIRSØKNAD,
+                    UstrukturertDokumentasjonType.ETTERSENDING,
+                ].map((type) => (
+                    <option key={type} value={type}>
+                        {ustrukturertTypeTilTekst[type]}
+                    </option>
+                ))}
+            </VelgUstrukturertDokumentasjonTypeSelect>
+            {ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD && (
+                <div>Årsak til behandling kommer settes til papirsøknad</div>
+            )}
+        </>
+    );
+};
+
+export default VelgUstrukturertDokumentasjonType;
