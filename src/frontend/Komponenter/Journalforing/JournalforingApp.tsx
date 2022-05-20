@@ -13,6 +13,7 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
+    BarnSomSkalFødes,
     BehandlingRequest,
     JournalføringStateRequest,
     useJournalføringState,
@@ -31,7 +32,13 @@ import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
+import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName, Toggles } from '../../App/context/toggles';
 import { IJojurnalpostResponse } from '../../App/typer/journalforing';
+import VelgUstrukturertDokumentasjonType, {
+    UstrukturertDokumentasjonType,
+} from './VelgUstrukturertDokumentasjonType';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -78,9 +85,40 @@ const harTittelForAlleDokumenter = (
             (journalpostState.dokumentTitler && journalpostState.dokumentTitler[d.dokumentInfoId])
     );
 
+const erUstrukturertSøknadOgManglerDokumentasjonsType = (
+    journalResponse: IJojurnalpostResponse,
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
+) => !journalResponse.harStrukturertSøknad && !ustrukturertDokumentasjonType;
+
+const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateRequest) =>
+    journalpostState.barnSomSkalFødes.some(
+        (barn) => !barn.fødselTerminDato || barn.fødselTerminDato.trim() === ''
+    );
+
+const validerJournalføringState = (
+    journalResponse: IJojurnalpostResponse,
+    journalpostState: JournalføringStateRequest
+): string | undefined => {
+    if (
+        erUstrukturertSøknadOgManglerDokumentasjonsType(
+            journalResponse,
+            journalpostState.ustrukturertDokumentasjonType
+        )
+    ) {
+        return 'Mangler type dokumentasjon';
+    } else if (inneholderBarnSomErUgyldige(journalpostState)) {
+        return 'Et eller flere barn mangler gyldig dato';
+    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState)) {
+        return 'Mangler tittel på et eller flere dokumenter';
+    } else {
+        return undefined;
+    }
+};
+
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
+    const { toggles } = useToggles();
     const query: URLSearchParams = useQueryParams();
     const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
@@ -154,14 +192,43 @@ export const JournalforingApp: React.FC = () => {
 
     const skalBeOmBekreftelse = (
         behandling: BehandlingRequest | undefined,
-        harStrukturertSøknad: boolean
+        harStrukturertSøknad: boolean,
+        ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
     ) => {
+        const erIkkeNyBehandling = behandling?.behandlingsId !== undefined;
         if (harStrukturertSøknad) {
-            return behandling?.behandlingsId !== undefined;
+            return erIkkeNyBehandling;
+        } else if (toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring]) {
+            // kan fjerne else når toggle fjernes
+            const dokumentasjonErIkkePapirsøknad =
+                ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.PAPIRSØKNAD;
+            return erIkkeNyBehandling && dokumentasjonErIkkePapirsøknad;
         } else {
-            return behandling?.behandlingsId === undefined;
+            return !erIkkeNyBehandling;
         }
     };
+
+    const oppdaterBarnSomSkalFødes = (barnSomSkalFødes: BarnSomSkalFødes[]) => {
+        journalpostState.settBarnSomSkalFødes(barnSomSkalFødes);
+    };
+
+    const kanLeggeTilBarnSomSkalFødes = () => {
+        const erNyBehandling =
+            journalpostState.behandling &&
+            journalpostState.behandling.behandlingstype &&
+            !journalpostState.behandling.behandlingsId;
+        const harIkkeStrukturertSøknad =
+            journalResponse.status === RessursStatus.SUKSESS &&
+            !journalResponse.data.harStrukturertSøknad;
+        return (
+            toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] &&
+            erNyBehandling &&
+            harIkkeStrukturertSøknad &&
+            journalpostState.ustrukturertDokumentasjonType ===
+                UstrukturertDokumentasjonType.PAPIRSØKNAD
+        );
+    };
+
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => (
@@ -178,6 +245,16 @@ export const JournalforingApp: React.FC = () => {
                                 journalResponse={journalResponse}
                                 hentFagsak={hentFagsak}
                             />
+                            {!journalResponse.harStrukturertSøknad && (
+                                <VelgUstrukturertDokumentasjonType
+                                    ustrukturertDokumentasjonType={
+                                        journalpostState.ustrukturertDokumentasjonType
+                                    }
+                                    settUstrukturertDokumentasjonType={
+                                        journalpostState.settUstrukturertDokumentasjonType
+                                    }
+                                />
+                            )}
                             <Brukerinfo personIdent={journalResponse.personIdent} />
                             <DokumentVisning
                                 journalPost={journalResponse.journalpost}
@@ -192,6 +269,12 @@ export const JournalforingApp: React.FC = () => {
                                     fagsak={fagsak}
                                     settFeilmelding={settFeilMeldning}
                                 />
+                                {kanLeggeTilBarnSomSkalFødes() && (
+                                    <LeggTilBarnSomSkalFødes
+                                        barnSomSkalFødes={journalpostState.barnSomSkalFødes}
+                                        oppdaterBarnSomSkalFødes={oppdaterBarnSomSkalFødes}
+                                    />
+                                )}
                             </SkjemaGruppe>
                             {(journalpostState.innsending.status === RessursStatus.FEILET ||
                                 journalpostState.innsending.status ===
@@ -204,19 +287,17 @@ export const JournalforingApp: React.FC = () => {
                                 <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
                                 <Hovedknapp
                                     onClick={() => {
-                                        if (
-                                            !harTittelForAlleDokumenter(
-                                                journalResponse,
-                                                journalpostState
-                                            )
-                                        ) {
-                                            settFeilMeldning(
-                                                'Mangler tittel på et eller flere dokumenter'
-                                            );
+                                        const feilmeldingFraValidering = validerJournalføringState(
+                                            journalResponse,
+                                            journalpostState
+                                        );
+                                        if (feilmeldingFraValidering) {
+                                            settFeilMeldning(feilmeldingFraValidering);
                                         } else if (
                                             skalBeOmBekreftelse(
                                                 journalpostState.behandling,
-                                                journalResponse.harStrukturertSøknad
+                                                journalResponse.harStrukturertSøknad,
+                                                journalpostState.ustrukturertDokumentasjonType
                                             )
                                         ) {
                                             if (journalResponse.harStrukturertSøknad) {
@@ -268,6 +349,7 @@ export const JournalforingApp: React.FC = () => {
                     <JournalføringIkkeMuligModal
                         visModal={journalpostState.visJournalføringIkkeMuligModal}
                         settVisModal={journalpostState.settJournalføringIkkeMuligModal}
+                        toggles={toggles}
                     />
                 </SideLayout>
             )}
@@ -278,7 +360,8 @@ export const JournalforingApp: React.FC = () => {
 const JournalføringIkkeMuligModal: React.FC<{
     visModal: boolean;
     settVisModal: Dispatch<SetStateAction<boolean>>;
-}> = ({ visModal, settVisModal }) => {
+    toggles: Toggles;
+}> = ({ visModal, settVisModal, toggles }) => {
     return (
         <UIModalWrapper
             modal={{
@@ -289,13 +372,21 @@ const JournalføringIkkeMuligModal: React.FC<{
             }}
         >
             <div>
-                <Normaltekst>
-                    Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
-                    journalføringsbildet når det ikke er tilknyttet en digital søknad til
-                    journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
-                    opprett ny behandling derifra. Deretter kan du journalføre mot den nye
-                    behandlingen.
-                </Normaltekst>
+                {toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] ? (
+                    <Normaltekst>
+                        Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
+                        behandling via journalføringsbildet når det ikke er tilknyttet en digital
+                        søknad til journalposten.
+                    </Normaltekst>
+                ) : (
+                    <Normaltekst>
+                        Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
+                        journalføringsbildet når det ikke er tilknyttet en digital søknad til
+                        journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
+                        opprett ny behandling derifra. Deretter kan du journalføre mot den nye
+                        behandlingen.
+                    </Normaltekst>
+                )}
             </div>
             <KnappWrapper>
                 <Button
