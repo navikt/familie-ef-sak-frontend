@@ -111,7 +111,7 @@
     "nav-frontend-typografi-style": "^2.0.1",
     "node-fetch": "^2.6.1",
     "paginering": "^1.1.1",
-    "passport": "^0.5.0",
+    "passport": "^0.6.0",
     "passport-azure-ad": "^4.3.2",
     "pdfjs-dist": "2.12.313",
     "prom-client": "^14.0.0",
