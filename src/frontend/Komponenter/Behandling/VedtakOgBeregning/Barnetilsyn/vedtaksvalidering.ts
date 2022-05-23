@@ -78,7 +78,7 @@ export const validerUtgiftsperioder = ({
     utgiftsperioder: IUtgiftsperiode[];
 }): FormErrors<{ utgiftsperioder: IUtgiftsperiode[] }> => {
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
-        const { årMånedFra, årMånedTil } = utgiftsperiode;
+        const { årMånedFra, årMånedTil, barn } = utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
@@ -89,13 +89,16 @@ export const validerUtgiftsperioder = ({
         if (!årMånedTil || !årMånedFra) {
             return { ...utgiftsperiodeFeil, årMånedFra: 'Mangelfull utfylling av utgiftsperiode' };
         }
+
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...utgiftsperiodeFeil,
                 årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
             };
         }
+
         const forrige = index > 0 && utgiftsperioder[index - 1];
+
         if (forrige && forrige.årMånedTil) {
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
@@ -104,6 +107,14 @@ export const validerUtgiftsperioder = ({
                 };
             }
         }
+
+        if (barn.length < 1) {
+            return {
+                ...utgiftsperiodeFeil,
+                barn: ['Mangelfull utfylling - minst et barn må velges'],
+            };
+        }
+
         return utgiftsperiodeFeil;
     });
 

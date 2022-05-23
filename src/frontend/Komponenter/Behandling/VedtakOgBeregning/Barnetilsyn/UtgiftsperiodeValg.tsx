@@ -129,6 +129,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 options={barnForPeriode}
                                 creatable={false}
                                 isMulti={true}
+                                feil={valideringsfeil && valideringsfeil[index]?.barn[0]}
                                 defaultValue={barnForPeriode.filter((barn) =>
                                     utgiftsperiode.barn.includes(barn.value)
                                 )}
