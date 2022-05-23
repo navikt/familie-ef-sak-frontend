@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import { ISide } from './sider';
+import { ISide, SideNavn } from './sider';
 import { useApp } from '../../../App/context/AppContext';
 
 const StyledNavLink = styled(NavLink)`
@@ -71,12 +71,12 @@ interface Props {
 
 const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
     const { gåTilUrl } = useApp();
-
+    const fanenavn = side.navn === SideNavn.KORRIGERING_UTEN_BREV ? SideNavn.BREV : side.navn;
     return (
         <>
             {deaktivert && (
                 <StyledTekst>
-                    {index + 1}. {side.navn}
+                    {index + 1}. {fanenavn}
                 </StyledTekst>
             )}
             {!deaktivert && (
@@ -89,7 +89,7 @@ const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
                     }}
                 >
                     <StyledLenketekst>
-                        {index + 1}. {side.navn}
+                        {index + 1}. {fanenavn}
                     </StyledLenketekst>
                 </StyledNavLink>
             )}

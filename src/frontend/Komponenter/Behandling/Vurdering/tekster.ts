@@ -38,6 +38,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
         'Har brukeren inntekt under 6 ganger grunnbeløpet (638 394 kr / 53 200 kr)?',
     HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
     UNNTAK_ALDER: 'Oppfylles unntak etter å ha fullført 4. skoleår?',
+    HAR_DOKUMENTERTE_TILSYNSUTGIFTER: 'Har brukeren dokumenterte tilsynsutgifter?',
 };
 
 export const svarTypeTilTekst: Record<string, string> = {
@@ -82,9 +83,10 @@ export const svarTypeTilTekst: Record<string, string> = {
     ETABLERER_EGEN_VIRKSOMHET: 'Ja, det er dokumentert at brukeren etablerer egen virksomhet',
     HAR_FORBIGÅENDE_SYKDOM: 'Ja, det er dokumentert at brukeren har forbigående sykdom',
     TRENGER_MER_TILSYN_ENN_JEVNALDRENDE:
-        'Ja, det yngste barnet har fullført fjerde skoleår og det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrene',
+        'Ja, barnet har fullført fjerde skoleår og det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrene',
     FORSØRGER_HAR_LANGVARIG_ELLER_UREGELMESSIG_ARBEIDSTID:
-        'Ja, det yngste barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
+        'Ja, barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
+    NOEN_MÅNEDER_OVERSTIGER_6G: 'Ja, men noen måneder overstiger 6G',
 };
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
@@ -101,4 +103,5 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     ALDER_PÅ_BARN: 'Alder på barn',
     INNTEKT: 'Inntekt',
     AKTIVITET_ARBEID: 'Aktivitet arbeid',
+    DOKUMENTASJON_TILSYNSUTGIFTER: 'Vilkår om dokumentasjon av tilsynsutgifter',
 };

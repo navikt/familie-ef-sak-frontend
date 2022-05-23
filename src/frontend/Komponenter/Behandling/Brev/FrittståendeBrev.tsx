@@ -203,7 +203,7 @@ const FrittståendeBrev: React.FC<Props> = ({
 
     return (
         <StyledBrev>
-            <h1>Fritekstbrev for overgangsstønad</h1>
+            <h1>Fritekstbrev</h1>
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}

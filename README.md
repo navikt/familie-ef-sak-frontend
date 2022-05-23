@@ -67,7 +67,7 @@ Spørsmål knyttet til koden eller prosjektet kan rettes til:
 
 * Mattis Janitz, `mattis.janitz@nav.no`
 
-Prosjektet er laget med utgangspunkt i familie-ba-sak-frotend 
+Prosjektet er laget med utgangspunkt i familie-ba-sak-frontend 
 
 ## For NAV-ansatte
 

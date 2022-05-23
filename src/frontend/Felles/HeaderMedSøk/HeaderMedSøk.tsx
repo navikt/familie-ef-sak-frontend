@@ -84,7 +84,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
             eksterneLenker={eksterneLenker}
         >
             {innloggetSaksbehandler && <PersonSøk />}
-            {innloggetSaksbehandler && (
+            {innloggetSaksbehandler?.navIdent && (
                 <Endringslogg
                     userId={innloggetSaksbehandler.navIdent}
                     dataFetchingIntervalSeconds={60 * 15}

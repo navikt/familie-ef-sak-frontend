@@ -29,15 +29,16 @@ const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
 `;
 
-const FlexDiv = styled.div`
+const FlexDiv = styled.div<{ horisontal: boolean }>`
     display: flex;
     justify-content: space-between;
-    margin-bottom: 18rem;
+    margin-bottom: ${(props) => (props.horisontal ? '18rem' : '1rem')};
+    flex-direction: ${(props) => (props.horisontal ? 'row' : 'column')};
 `;
 
 export const StyledHovedknapp = styled(Hovedknapp)`
-    margin-left: 2.3rem;
-    margin-right: 1rem;
+    margin-left: 2rem;
+    margin-right: 0.5rem;
 `;
 
 export const StyledSelect = styled(Select)`
@@ -75,6 +76,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
+    const skalViseValgmulighetForKorrigering = toggles[ToggleName.visValgmulighetForKorrigering];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
 
     const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
@@ -97,12 +99,25 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         !måTaStillingTilBarn ||
         vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
 
+    const skalViseÅrsak = (behandlingsårsak: Behandlingsårsak) => {
+        switch (behandlingsårsak) {
+            case Behandlingsårsak.SANKSJON_1_MND:
+                return skalViseValgmulighetForSanksjon;
+            case Behandlingsårsak.KORRIGERING_UTEN_BREV:
+                return skalViseValgmulighetForKorrigering;
+            default:
+                return true;
+        }
+    };
+
     return (
         <>
             <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
                 {({ nyeBarnSidenForrigeBehandling }) => {
                     const harNyeBarnSidenForrigeBehandling =
                         nyeBarnSidenForrigeBehandling.length > 0;
+                    const skalViseNyeBarnValg =
+                        kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling;
 
                     return (
                         <>
@@ -116,12 +131,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                 <option value="">Velg</option>
                                 {valgtBehandlingstype === Behandlingstype.REVURDERING &&
                                     behandlingsårsaker
-                                        .filter(
-                                            (behandlingsårsak) =>
-                                                behandlingsårsak !==
-                                                    Behandlingsårsak.SANKSJON_1_MND ||
-                                                skalViseValgmulighetForSanksjon
-                                        )
+                                        .filter(skalViseÅrsak)
                                         .map(
                                             (behandlingsårsak: Behandlingsårsak, index: number) => (
                                                 <option key={index} value={behandlingsårsak}>
@@ -130,7 +140,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             )
                                         )}
                             </StyledSelect>
-                            <FlexDiv>
+                            <FlexDiv horisontal={!skalViseNyeBarnValg}>
                                 <StyledFamilieDatovelger
                                     id={'krav-mottatt'}
                                     label={'Krav mottatt'}
@@ -139,21 +149,18 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                     }}
                                     valgtDato={valgtDato}
                                 />
-                                {kanLeggeTilNyeBarnPåRevurdering &&
-                                    harNyeBarnSidenForrigeBehandling && (
-                                        <NyeBarn
-                                            nyeBarnSidenForrigeBehandling={
-                                                nyeBarnSidenForrigeBehandling
-                                            }
-                                            måTaStillingTilBarn={måTaStillingTilBarn}
-                                            vilkårsbehandleVedMigrering={
-                                                vilkårsbehandleVedMigrering
-                                            }
-                                            settVilkårsbehandleVedMigrering={
-                                                settVilkårsbehandleVedMigrering
-                                            }
-                                        />
-                                    )}
+                                {skalViseNyeBarnValg && (
+                                    <NyeBarn
+                                        nyeBarnSidenForrigeBehandling={
+                                            nyeBarnSidenForrigeBehandling
+                                        }
+                                        måTaStillingTilBarn={måTaStillingTilBarn}
+                                        vilkårsbehandleVedMigrering={vilkårsbehandleVedMigrering}
+                                        settVilkårsbehandleVedMigrering={
+                                            settVilkårsbehandleVedMigrering
+                                        }
+                                    />
+                                )}
 
                                 <KnappeWrapper>
                                     <StyledHovedknapp

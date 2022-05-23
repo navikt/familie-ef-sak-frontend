@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
-import { hendelseTilHistorikkTekst, HendelseIkon, Hendelse } from './Historikk';
+import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
 import {
-    LinjeProps,
-    HistorikkElementProps,
     Behandlingshistorikk,
+    HistorikkElementProps,
+    LinjeProps,
     StyledHistorikkElementProps,
 } from './typer';
 import { useApp } from '../../../App/context/AppContext';
@@ -15,6 +15,9 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import { ExternalLink } from '@navikt/ds-icons';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import { BehandlingResultat } from '../../../App/typer/fagsak';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -62,6 +65,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
     første,
     siste,
     behandlingId,
+    behandling,
 }) => {
     const { axiosRequest } = useApp();
 
@@ -83,6 +87,22 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
     };
 
     const vedtakIverksatt = behandlingshistorikk.hendelse === Hendelse.VEDTAK_IVERKSATT;
+
+    const harVedtaksbrev =
+        [Behandlingstype.FØRSTEGANGSBEHANDLING, Behandlingstype.REVURDERING].includes(
+            behandling.type
+        ) &&
+        [
+            BehandlingResultat.OPPHØRT,
+            BehandlingResultat.INNVILGET,
+            BehandlingResultat.AVSLÅTT,
+        ].includes(behandling.resultat) &&
+        [
+            Behandlingsårsak.SØKNAD,
+            Behandlingsårsak.NYE_OPPLYSNINGER,
+            Behandlingsårsak.KLAGE,
+            Behandlingsårsak.SANKSJON_1_MND,
+        ].includes(behandling.behandlingsårsak);
 
     const harMetadata =
         behandlingshistorikk.metadata?.årsak ||
@@ -109,7 +129,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 {behandlingshistorikk.metadata?.årsak && (
                     <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
                 )}
-                {vedtakIverksatt && (
+                {vedtakIverksatt && harVedtaksbrev && (
                     <LenkeKnappWrapper>
                         <LenkeKnapp onClick={hentOgÅpneVedtaksbrev}>
                             <span>Vedtaksbrev</span>

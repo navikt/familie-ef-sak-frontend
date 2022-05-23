@@ -8,6 +8,7 @@ export enum ToggleName {
     visOppdateringAvRegisteropplysninger = 'familie.ef.sak.frontend-vis-oppdatering-av-registeropplysninger',
     visSettBrevmottakereKnapp = 'familie.ef.sak.brevmottakere-verge-og-fullmakt',
     MIGRERING = 'familie.ef.sak.migrering',
+    visValgmulighetForKorrigering = 'familie.ef.sak.behandling-korrigering',
     visValgmulighetForSanksjon = 'familie.ef.sak.frontend-vis-sanksjon-en-maned',
     kanLeggeTilNyeBarnPaaRevurdering = 'familie.ef.sak.kan-legge-til-nye-barn-paa-revurdering',
     visOpprettTilbakekreving = 'familie.ef.sak.frontend-vis-tilbakekreving',
@@ -15,4 +16,5 @@ export enum ToggleName {
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     kanJournalFøreBarnetilsyn = 'familie.ef.sak.frontend-behandle-barnetilsyn-i-ny-losning',
     skalViseOpprettNyBehandlingBarnetilsyn = 'familie.ef.sak.frontend-skal-vise-opprett-ny-behandling-knapp-barnetilsyn',
+    kanLeggeTilTerminbarnVidJournalføring = 'familie.ef.sak.frontend-journalforing-kan-legge-til-terminbarn',
 }

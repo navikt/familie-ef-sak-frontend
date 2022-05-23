@@ -9,6 +9,7 @@ import {
     VilkårType,
 } from '../../Inngangsvilkår/vilkår';
 import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
+import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -72,7 +73,7 @@ export const sorterUtTidligereVedtaksvilkår = (vilkår: IVilkår): IVurdering[]
 
 export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
     const alleOppfyltBortsettFraBarn = vilkår.vurderinger.every((vurdering: IVurdering) => {
-        if (vurdering.barnId === undefined) {
+        if (vurdering.barnId === undefined || vurdering.barnId === null) {
             return vurdering.resultat === Vilkårsresultat.OPPFYLT;
         } else {
             return true;
@@ -111,12 +112,10 @@ export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkå
 export const utledHjelpetekstForBeløpFørFratrekkOgSatsjustering = (
     antallBarn: number,
     beløpFørFratrekkOgSatsjustering: number,
-    sats: number,
-    skalViseredusertPgaTilleggsstønad: boolean
+    sats: number
 ): string => {
-    const prefix = skalViseredusertPgaTilleggsstønad ? 'Deretter har beløpet blitt' : 'Beløpet er';
     const innskuttSetning = antallBarn >= 3 ? 'eller flere' : '';
-    return `${prefix} redusert fra ${beløpFørFratrekkOgSatsjustering} kr til ${sats} kr, 
+    return `Beløpet er redusert fra ${beløpFørFratrekkOgSatsjustering} kr til ${sats} kr, 
         som er maksimalt beløp pr måned for ${antallBarn} ${innskuttSetning} barn`;
 };
 
@@ -128,27 +127,38 @@ export const utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside 
     sats: number,
     tilleggsstønad: number
 ): string[] => {
-    const visningstekstTilleggsstønad = `Stønadsbeløpet er redusert med ${tilleggsstønad} kr, som allerede er utbetalt etter tilleggsstønadsforskriften.`;
+    const prefix =
+        redusertPgaSats && redusertPgaTilleggsstønad
+            ? 'Deretter har beløpet blitt'
+            : 'Stønadsbeløpet er';
+    const visningstekstTilleggsstønad = `${prefix} redusert med ${tilleggsstønad} kr, som allerede er utbetalt etter tilleggsstønadsforskriften.`;
 
     if (redusertPgaSats && redusertPgaTilleggsstønad) {
         return [
-            visningstekstTilleggsstønad,
             utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
                 antallBarn,
                 beløpFørFratrekkOgSatsjustering,
-                sats,
-                true
+                sats
             ),
+            visningstekstTilleggsstønad,
         ];
     } else if (redusertPgaSats) {
         return [
             utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
                 antallBarn,
                 beløpFørFratrekkOgSatsjustering,
-                sats,
-                false
+                sats
             ),
         ];
     }
     return [visningstekstTilleggsstønad];
+};
+
+export const blirNullUtbetalingPgaOverstigendeKontantstøtte = (
+    perioder: IBeregningsperiodeBarnetilsyn[]
+): boolean => {
+    return perioder.every(
+        (periode) =>
+            periode.beregningsgrunnlag.kontantstøttebeløp >= periode.beregningsgrunnlag.utgifter
+    );
 };
