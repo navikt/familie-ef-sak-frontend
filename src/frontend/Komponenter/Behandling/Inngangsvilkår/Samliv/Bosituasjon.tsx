@@ -1,49 +1,78 @@
-import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
+import React, { FC, useState, useCallback, useEffect, useMemo } from 'react';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { IPersonDetaljer } from '../Sivilstand/typer';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
+import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
+import { IPersonopplysninger, ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
+import { AxiosRequestConfig } from 'axios';
+import { useApp } from '../../../../App/context/AppContext';
+import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../../App/typer/ressurs';
 
 interface Props {
     bosituasjon: IBosituasjon;
     sivilstandsplaner?: ISivilstandsplaner;
+    behandlingId: string;
 }
 
-export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner }) => (
-    <>
-        {bosituasjon.delerDuBolig === ESøkerDelerBolig.harEkteskapsliknendeForhold && (
-            <SamboerInfoOgDatoSammenflytting
-                samboer={bosituasjon?.samboer}
-                sammenflyttingsdato={bosituasjon?.sammenflyttingsdato}
-            />
-        )}
+export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandlingId }) => {
+    const { axiosRequest } = useApp();
+    const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
 
-        {bosituasjon.delerDuBolig ===
-            ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
-            <>
-                <Søknadsgrunnlag />
-                <Normaltekst>Tidligere samboer</Normaltekst>
-                <Normaltekst>{hentPersonInfo(bosituasjon.samboer)}</Normaltekst>
+    const søkPerson = useCallback(
+        (behandlingId: string) => {
+            axiosRequest<any, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/sok/${behandlingId}/samme-adresse`,
+            }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
+                settSøkResultat(respons);
+            });
+        },
+        [axiosRequest]
+    );
 
-                <Søknadsgrunnlag />
-                <Normaltekst>Flyttet fra hverandre</Normaltekst>
-                <Normaltekst>
-                    {formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
-                </Normaltekst>
-            </>
-        )}
+    useEffect(() => {
+        søkPerson(behandlingId);
+    }, [behandlingId, søkPerson]);
 
-        {[
-            ESøkerDelerBolig.borAleneMedBarnEllerGravid,
-            ESøkerDelerBolig.delerBoligMedAndreVoksne,
-            ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
-        ].includes(bosituasjon.delerDuBolig) &&
-            sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
-    </>
-);
+    console.log('res', søkResultat);
+
+    return (
+        <>
+            {bosituasjon.delerDuBolig === ESøkerDelerBolig.harEkteskapsliknendeForhold && (
+                <SamboerInfoOgDatoSammenflytting
+                    samboer={bosituasjon?.samboer}
+                    sammenflyttingsdato={bosituasjon?.sammenflyttingsdato}
+                />
+            )}
+
+            {bosituasjon.delerDuBolig ===
+                ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
+                <>
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Tidligere samboer</Normaltekst>
+                    <Normaltekst>{hentPersonInfo(bosituasjon.samboer)}</Normaltekst>
+
+                    <Søknadsgrunnlag />
+                    <Normaltekst>Flyttet fra hverandre</Normaltekst>
+                    <Normaltekst>
+                        {formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
+                    </Normaltekst>
+                </>
+            )}
+
+            {[
+                ESøkerDelerBolig.borAleneMedBarnEllerGravid,
+                ESøkerDelerBolig.delerBoligMedAndreVoksne,
+                ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
+            ].includes(bosituasjon.delerDuBolig) &&
+                sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
+        </>
+    );
+};
 
 const SamboerInfoOgDatoSammenflytting: FC<{
     samboer?: IPersonDetaljer;
