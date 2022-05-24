@@ -101,7 +101,8 @@ export const InnvilgeVedtak: React.FC<{
         vedtakshistorikk.perioder.forEach((periode: IVedtaksperiode, index: number) => {
             vedtaksperiodeState.update({ ...periode, endretKey: uuidv4() }, index);
         });
-    }, [vedtakshistorikk, vedtaksperiodeState]);
+        // eslint-disable-next-line
+    }, [vedtakshistorikk]);
 
     useEffect(() => {
         if (!vedtakshistorikk?.inntekter?.length) return;
@@ -109,7 +110,8 @@ export const InnvilgeVedtak: React.FC<{
         vedtakshistorikk.inntekter.forEach((inntekt: IInntektsperiode, index: number) => {
             inntektsperiodeState.update({ ...inntekt, endretKey: uuidv4() }, index);
         });
-    }, [vedtakshistorikk, inntektsperiodeState]);
+        // eslint-disable-next-line
+    }, [vedtakshistorikk]);
 
     useEffect(() => {
         const førsteInnvilgedeVedtaksperiode =
@@ -130,7 +132,8 @@ export const InnvilgeVedtak: React.FC<{
                 0
             );
         }
-    }, [vedtaksperioder, inntektsperiodeState, inntektsperioder]);
+        // eslint-disable-next-line
+    }, [vedtaksperioder, inntektsperioder]);
 
     const skalVelgeSamordningstype = inntektsperiodeState.value.some(
         (rad) => rad.samordningsfradrag
