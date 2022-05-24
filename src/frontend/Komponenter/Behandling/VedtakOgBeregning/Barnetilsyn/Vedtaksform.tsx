@@ -236,7 +236,24 @@ export const Vedtaksform: React.FC<{
                 settValideringsFeil={formState.setErrors}
                 barn={barn}
             />
-            <WrapperMarginTop>
+            <div>
+                {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
+                    <IngenBegrunnelseOppgitt />
+                ) : (
+                    <EnsligTextArea
+                        erLesevisning={!behandlingErRedigerbar}
+                        value={begrunnelseState.value}
+                        onChange={(event) => {
+                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                            begrunnelseState.onChange(event);
+                        }}
+                        label={'Begrunnelse for vedtaksperiode'}
+                        maxLength={0}
+                        feilmelding={formState.errors.begrunnelse}
+                    />
+                )}
+            </div>
+            <WrapperDobbelMarginTop>
                 <Heading spacing size="small" level="5">
                     Kontantstøtte
                 </Heading>
@@ -246,7 +263,7 @@ export const Vedtaksform: React.FC<{
                     valideringsfeil={formState.errors}
                     settValideringsFeil={formState.setErrors}
                 />
-            </WrapperMarginTop>
+            </WrapperDobbelMarginTop>
             <WrapperMarginTop>
                 <Heading spacing size="small" level="5">
                     Tilleggsstønadsforskriften
@@ -275,23 +292,7 @@ export const Vedtaksform: React.FC<{
             <WrapperDobbelMarginTop>
                 <UtregningstabellBarnetilsyn beregningsresultat={beregningsresultat} />
             </WrapperDobbelMarginTop>
-            <WrapperDobbelMarginTop>
-                {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
-                    <IngenBegrunnelseOppgitt />
-                ) : (
-                    <EnsligTextArea
-                        erLesevisning={!behandlingErRedigerbar}
-                        value={begrunnelseState.value}
-                        onChange={(event) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            begrunnelseState.onChange(event);
-                        }}
-                        label={'Begrunnelse'}
-                        maxLength={0}
-                        feilmelding={formState.errors.begrunnelse}
-                    />
-                )}
-            </WrapperDobbelMarginTop>
+
             {behandlingErRedigerbar && (
                 <WrapperDobbelMarginTop>
                     <Button variant="primary" disabled={laster} type={'submit'}>
