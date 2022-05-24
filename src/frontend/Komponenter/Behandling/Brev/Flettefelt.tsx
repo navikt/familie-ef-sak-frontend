@@ -4,6 +4,7 @@ import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 import styled from 'styled-components';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledInput = styled(({ fetLabel, ...props }) => <Input {...props} />)`
     padding-top: 0.5rem;
     .skjemaelement__label {
