@@ -20,17 +20,8 @@ const FlexDiv = styled.div`
 const titler = ['Navn', 'Fødselsnummer', 'Annen forelder', 'Bor med bruker'];
 
 const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
-    const alderBarnA = nullableDatoTilAlder(a.fødselsdato);
-    const alderBarnB = nullableDatoTilAlder(b.fødselsdato);
-    if (!alderBarnA && !alderBarnB) {
-        return 0;
-    }
-    if (!alderBarnA) {
-        return 1;
-    }
-    if (!alderBarnB) {
-        return -1;
-    }
+    const alderBarnA = a.fødselsdato ? (nullableDatoTilAlder(a.fødselsdato) as number) : 1000;
+    const alderBarnB = b.fødselsdato ? (nullableDatoTilAlder(b.fødselsdato) as number) : 1000;
     return alderBarnA - alderBarnB;
 };
 
