@@ -11,8 +11,18 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import navFarger from 'nav-frontend-core';
 
 const VarselValg = styled.div`
+    margin-bottom: 1rem;
+`;
+
+const ErrorTekst = styled.div`
+    font-family: 'Source Sans Pro', Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: 600;
+    color: ${navFarger.redError};
     margin-bottom: 1rem;
 `;
 
@@ -26,6 +36,7 @@ interface Props {
     lagreTilbakekrevingsValg: () => void;
     låsKnapp: boolean;
     behandlingId: string;
+    valideringsfeil: string;
 }
 
 export const TilbakekrevingSkjema: React.FC<Props> = ({
@@ -38,6 +49,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     lagreTilbakekrevingsValg,
     låsKnapp,
     behandlingId,
+    valideringsfeil,
 }) => {
     const { settIkkePersistertKomponent, axiosRequest } = useApp();
 
@@ -90,6 +102,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         settIkkePersistertKomponent('tilbakekreving');
                         endreTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_MED_VARSEL);
                     }}
+                    feil={!!valideringsfeil}
                 />
                 {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
                     <VarselValg>
@@ -125,6 +138,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         settIkkePersistertKomponent('tilbakekreving');
                         endreTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL);
                     }}
+                    feil={!!valideringsfeil}
                 />
                 <Radio
                     checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.AVVENT}
@@ -134,8 +148,10 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         settIkkePersistertKomponent('tilbakekreving');
                         endreTilbakekrevingsvalg(ITilbakekrevingsvalg.AVVENT);
                     }}
+                    feil={!!valideringsfeil}
                 />
             </FamilieRadioGruppe>
+            {valideringsfeil && <ErrorTekst>{valideringsfeil}</ErrorTekst>}
             <Hovedknapp htmlType={'submit'} onClick={lagreTilbakekrevingsValg} disabled={låsKnapp}>
                 Lagre tilbakekrevingsvalg
             </Hovedknapp>
