@@ -48,6 +48,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
     const [feilmelding, settFeilmelding] = useState<string>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [kanForhåndsvise, settKanForhåndsvise] = useState<boolean>(false);
+    const [valideringsfeil, settValideringsfeil] = useState<string>('');
 
     const [åpenTilbakekrevingStatus, settÅpenTilbakekrevingStatus] =
         useState<ÅpenTilbakekrevingStatus>(ÅpenTilbakekrevingStatus.LASTER);
@@ -107,7 +108,12 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
     };
 
     const lagreTilbakekrevingsvalg = () => {
+        settValideringsfeil('');
         if (låsKnapp) {
+            return;
+        }
+        if (!tilbakekrevingsvalg) {
+            settValideringsfeil('Mangelfull utfylling av tilbakekrevingsvalg');
             return;
         }
         settFeilmelding('');
@@ -175,6 +181,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
                             lagreTilbakekrevingsValg={lagreTilbakekrevingsvalg}
                             låsKnapp={låsKnapp}
                             behandlingId={behandlingId}
+                            valideringsfeil={valideringsfeil}
                         />
                     )}
                     {!behandlingErRedigerbar && (
