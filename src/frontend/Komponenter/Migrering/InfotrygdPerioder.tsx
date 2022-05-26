@@ -5,17 +5,23 @@ import {
     formaterTallMedTusenSkille,
 } from '../../App/utils/formatter';
 import {
+    aktivitetstypeTilKode,
     aktivitetstypeTilTekst,
     InfotrygdPeriode,
+    infotrygdperioder,
     Kode,
+    kodeTilForkortetTekst,
     kodeTilTekst,
+    overgangsstønadKodeTilForkortetTekst,
     overgangsstønadKodeTilTekst,
+    sakstypeTilKode,
     sakstypeTilTekst,
 } from '../../App/typer/infotrygd';
 import React from 'react';
 import { slåSammenOgSorterPerioder } from '../Infotrygd/grupperInfotrygdperiode';
 import styled from 'styled-components';
 import { Stønadstype } from '../../App/typer/behandlingstema';
+import { Table } from '@navikt/ds-react';
 
 /**
  * Tabellene har alle 10 kolonner for å få samme kolonner på samme sted i tabellene
@@ -51,6 +57,11 @@ const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string =>
     }
 };
 
+const SpaceMaker = styled.div`
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+`;
+
 const InfotrygdPerioderOvergangsstønad: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
 }> = ({ perioder }) => {
@@ -58,7 +69,10 @@ const InfotrygdPerioderOvergangsstønad: React.FC<{
         <StyledTabell className="tabell">
             <thead>
                 <tr>
-                    <th>Periode (fom-tom)</th>
+                    <th>
+                        Periode <br />
+                        (fom-tom)
+                    </th>
                     <th>Månedsbeløp</th>
                     <th>Inntektsgrunnlag</th>
                     <th>Samordningsfradrag</th>
@@ -100,6 +114,71 @@ const InfotrygdPerioderOvergangsstønad: React.FC<{
                 ))}
             </tbody>
         </StyledTabell>
+    );
+};
+
+const InfotrygdPerioderOvergangsstønadKompakt: React.FC<{
+    perioder: InfotrygdPeriodeMedFlereEndringer[];
+}> = ({ perioder }) => {
+    return (
+        <Table zebraStripes={true} size={'small'}>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell scope="col">
+                        Periode <br /> (fom-tom)
+                    </Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Månedsbeløp</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Inntektsgrunnlag</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Samordningsfradrag</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Vedtakstidspunkt</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Aktivitet</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Periodetype</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {perioder.map((periode) => (
+                    <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
+                        <Table.DataCell>
+                            {formaterNullableMånedÅr(periode.stønadFom)}
+                            {' - '}
+                            {formatStønadTom(periode)}
+                        </Table.DataCell>
+                        <Table.DataCell>
+                            {formaterTallMedTusenSkille(periode.månedsbeløp)}
+                        </Table.DataCell>
+                        <Table.DataCell>
+                            {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
+                        </Table.DataCell>
+                        <Table.DataCell>
+                            {formaterTallMedTusenSkille(periode.samordningsfradrag)}
+                        </Table.DataCell>
+                        <Table.DataCell>
+                            {formaterNullableIsoDato(periode.vedtakstidspunkt)}
+                        </Table.DataCell>
+                        <Table.DataCell>
+                            {kodeTilForkortetTekst[periode.kode]}{' '}
+                            {periode.initiellKode &&
+                                `(${kodeTilForkortetTekst[periode.initiellKode]})`}
+                        </Table.DataCell>
+                        <Table.DataCell>{sakstypeTilKode[periode.sakstype]}</Table.DataCell>
+                        <Table.DataCell>
+                            {' '}
+                            {periode.aktivitetstype &&
+                                aktivitetstypeTilKode[periode.aktivitetstype]}
+                        </Table.DataCell>
+                        <Table.DataCell>
+                            {' '}
+                            {periode.kodeOvergangsstønad &&
+                                overgangsstønadKodeTilForkortetTekst[periode.kodeOvergangsstønad]}
+                        </Table.DataCell>
+                        <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                    </Table.Row>
+                ))}
+            </Table.Body>
+        </Table>
     );
 };
 
@@ -205,9 +284,15 @@ const InfotrygdPerioder: React.FC<{ stønadstype: Stønadstype; perioder: Infotr
     const sammenslåttePerioder = slåSammenOgSorterPerioder(perioder);
     switch (stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
-            return <InfotrygdPerioderOvergangsstønad perioder={sammenslåttePerioder} />;
+            return (
+                <>
+                    <InfotrygdPerioderOvergangsstønad perioder={infotrygdperioder} />
+                    <SpaceMaker />
+                    <InfotrygdPerioderOvergangsstønadKompakt perioder={infotrygdperioder} />
+                </>
+            );
         case Stønadstype.BARNETILSYN:
-            return <InfotrygdPerioderBarnetilsyn perioder={sammenslåttePerioder} />;
+            return <InfotrygdPerioderBarnetilsyn perioder={infotrygdperioder} />;
         case Stønadstype.SKOLEPENGER:
             return <InfotrygdPerioderSkolepenger perioder={sammenslåttePerioder} />;
     }
