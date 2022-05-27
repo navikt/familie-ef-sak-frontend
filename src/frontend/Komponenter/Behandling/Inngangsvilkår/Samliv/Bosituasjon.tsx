@@ -7,10 +7,16 @@ import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilT
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
 import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
-import { IPersonopplysninger, ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
+import {
+    AdresseType,
+    IPersonopplysninger,
+    ISøkeresultatPerson,
+} from '../../../../App/typer/personopplysninger';
 import { AxiosRequestConfig } from 'axios';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../../App/typer/ressurs';
+import { useHentPersonopplysninger } from '../../../../App/hooks/useHentPersonopplysninger';
+import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -21,6 +27,13 @@ interface Props {
 export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandlingId }) => {
     const { axiosRequest } = useApp();
     const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
+
+    const { hentPersonopplysninger, personopplysningerResponse } =
+        useHentPersonopplysninger(behandlingId);
+
+    useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
+
+    console.log('person', personopplysningerResponse);
 
     const søkPerson = useCallback(
         (behandlingId: string) => {
@@ -39,6 +52,8 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
     }, [behandlingId, søkPerson]);
 
     console.log('res', søkResultat);
+
+    console.log('bo', bosituasjon);
 
     return (
         <>
@@ -70,6 +85,22 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
                 ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse,
             ].includes(bosituasjon.delerDuBolig) &&
                 sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
+
+            <DataViewer response={{ personopplysningerResponse }}>
+                {({ personopplysningerResponse }) => {
+                    const bostedsadresse = personopplysningerResponse.adresse.find(
+                        (adresse) => adresse.type === AdresseType.BOSTEDADRESSE
+                    );
+
+                    return (
+                        <>
+                            <Registergrunnlag />
+                            <Normaltekst>Brukers bostedsadresse</Normaltekst>
+                            <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
+                        </>
+                    );
+                }}
+            </DataViewer>
         </>
     );
 };
