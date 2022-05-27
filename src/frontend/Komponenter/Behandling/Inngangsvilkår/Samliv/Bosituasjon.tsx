@@ -17,6 +17,7 @@ import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../../App/typer/ressurs';
 import { useHentPersonopplysninger } from '../../../../App/hooks/useHentPersonopplysninger';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
+import styled from 'styled-components';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -33,7 +34,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
 
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
 
-    console.log('person', personopplysningerResponse);
+    console.log('søk', søkResultat);
 
     const søkPerson = useCallback(
         (behandlingId: string) => {
@@ -86,17 +87,35 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
             ].includes(bosituasjon.delerDuBolig) &&
                 sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
 
-            <DataViewer response={{ personopplysningerResponse }}>
-                {({ personopplysningerResponse }) => {
+            <DataViewer response={{ personopplysningerResponse, søkResultat }}>
+                {({ personopplysningerResponse, søkResultat }) => {
                     const bostedsadresse = personopplysningerResponse.adresse.find(
                         (adresse) => adresse.type === AdresseType.BOSTEDADRESSE
                     );
 
                     return (
                         <>
-                            <Registergrunnlag />
-                            <Normaltekst>Brukers bostedsadresse</Normaltekst>
-                            <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
+                            <>
+                                <Registergrunnlag />
+                                <Normaltekst>Brukers bostedsadresse</Normaltekst>
+                                <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
+                                <table>
+                                    <tr>
+                                        <th>Navn</th>
+                                        <th>Fødselsnummer</th>
+                                        <th>Adresse</th>
+                                    </tr>
+                                    {søkResultat.hits.map((person) => {
+                                        return (
+                                            <tr>
+                                                <td>{person.visningsnavn}</td>
+                                                <td>{person.personIdent}</td>
+                                                <td>{person.visningsadresse}</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </table>
+                            </>
                         </>
                     );
                 }}
