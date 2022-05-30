@@ -63,8 +63,6 @@ export const validerUtgiftsperioder = ({
             return { ...utgiftsperiodeFeil, utgifter: 'Mangelfull utfylling av utgifter' };
         }
 
-        // TODO valider at fom er lik eller etter forrige fom?
-
         return utgiftsperiodeFeil;
     });
 
