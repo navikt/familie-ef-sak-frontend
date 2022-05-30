@@ -10,11 +10,11 @@ import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
 import { AdresseType, ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
-import { useHentPersonopplysninger } from '../../../../App/hooks/useHentPersonopplysninger';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
 import { Collapse, Expand } from '@navikt/ds-icons';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -47,12 +47,7 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
     const [beboere, settBeboere] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
     const [visBeboere, settVisBeboere] = useState<boolean>(false);
 
-    const { hentPersonopplysninger, personopplysningerResponse } =
-        useHentPersonopplysninger(behandlingId);
-
-    useEffect(() => {
-        hentPersonopplysninger(behandlingId);
-    }, [behandlingId, hentPersonopplysninger]);
+    const { personopplysningerResponse } = useBehandling();
 
     const hentBeboerePåSammeAdresse = useCallback(
         (behandlingId: string) => {
