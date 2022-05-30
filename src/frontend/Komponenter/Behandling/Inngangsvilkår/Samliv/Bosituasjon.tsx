@@ -6,6 +6,8 @@ import { IPersonDetaljer } from '../Sivilstand/typer';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
+import { IngenData, TabellWrapper, Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
+
 import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
 import {
     AdresseType,
@@ -24,6 +26,14 @@ interface Props {
     sivilstandsplaner?: ISivilstandsplaner;
     behandlingId: string;
 }
+
+const StyledTabell = styled.table`
+    grid-column: 1 / span 3;
+
+    background-color: #f9f9f9;
+
+    margin-top: 2rem;
+`;
 
 export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandlingId }) => {
     const { axiosRequest } = useApp();
@@ -51,10 +61,6 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
     useEffect(() => {
         søkPerson(behandlingId);
     }, [behandlingId, søkPerson]);
-
-    console.log('res', søkResultat);
-
-    console.log('bo', bosituasjon);
 
     return (
         <>
@@ -95,27 +101,28 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
 
                     return (
                         <>
-                            <>
-                                <Registergrunnlag />
-                                <Normaltekst>Brukers bostedsadresse</Normaltekst>
-                                <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
-                                <table>
-                                    <tr>
-                                        <th>Navn</th>
-                                        <th>Fødselsnummer</th>
-                                        <th>Adresse</th>
-                                    </tr>
+                            <Registergrunnlag />
+                            <Normaltekst>Brukers bostedsadresse</Normaltekst>
+                            <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
+
+                            <StyledTabell className="tabell">
+                                <thead>
+                                    <Td>Navn</Td>
+                                    <Td>Fødselsnummer</Td>
+                                    <Td>Adresse</Td>
+                                </thead>
+                                <tbody>
                                     {søkResultat.hits.map((person) => {
                                         return (
                                             <tr>
-                                                <td>{person.visningsnavn}</td>
-                                                <td>{person.personIdent}</td>
-                                                <td>{person.visningsadresse}</td>
+                                                <Td>{person.visningsnavn}</Td>
+                                                <Td>{person.personIdent}</Td>
+                                                <Td>{person.visningsadresse}</Td>
                                             </tr>
                                         );
                                     })}
-                                </table>
-                            </>
+                                </tbody>
+                            </StyledTabell>
                         </>
                     );
                 }}
