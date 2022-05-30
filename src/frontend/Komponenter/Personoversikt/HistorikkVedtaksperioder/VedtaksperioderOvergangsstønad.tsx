@@ -16,9 +16,20 @@ import {
     HistorikkRad,
     HistorikkTabell,
 } from './vedtakshistorikkUtil';
+import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
+
+const lenketekst = (andel: AndelHistorikk) => {
+    if (
+        andel.behandlingÅrsak === Behandlingsårsak.G_OMREGNING ||
+        andel.behandlingÅrsak === Behandlingsårsak.MIGRERING
+    ) {
+        return behandlingsårsakTilTekst[andel.behandlingÅrsak];
+    } else {
+        return behandlingstypeTilTekst[andel.behandlingType];
+    }
+};
 
 const historikkRad = (andel: AndelHistorikk) => {
-    const erMigrering = andel.periodeType === EPeriodetype.MIGRERING;
     const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
     return (
         <HistorikkRad type={andel.endring?.type}>
@@ -44,7 +55,7 @@ const historikkRad = (andel: AndelHistorikk) => {
             <td>{andel.saksbehandler}</td>
             <td>
                 <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
-                    {erMigrering ? 'Migrering' : behandlingstypeTilTekst[andel.behandlingType]}
+                    {lenketekst(andel)}
                 </Link>
             </td>
             <td>{historikkEndring(andel.endring)}</td>

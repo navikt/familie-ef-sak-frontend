@@ -1,6 +1,7 @@
 import { Behandlingstype } from './behandlingstype';
 import { EAktivitet, EPeriodetype, ESamordningsfradragtype } from './vedtak';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
+import { Behandlingsårsak } from './Behandlingsårsak';
 
 export interface TilkjentYtelse {
     andeler: AndelTilkjentYtelse[];
@@ -42,6 +43,7 @@ export interface AndelHistorikk {
     erSanksjon: boolean;
     periodeType?: EPeriodetype;
     behandlingType: Behandlingstype;
+    behandlingÅrsak: Behandlingsårsak;
     sanksjonsårsak?: Sanksjonsårsak;
 }
 
