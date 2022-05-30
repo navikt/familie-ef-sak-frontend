@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useState, useCallback, useEffect } from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
@@ -6,20 +6,15 @@ import { IPersonDetaljer } from '../Sivilstand/typer';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
-import { IngenData, TabellWrapper, Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
-
-import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
-import {
-    AdresseType,
-    IPersonopplysninger,
-    ISøkeresultatPerson,
-} from '../../../../App/typer/personopplysninger';
-import { AxiosRequestConfig } from 'axios';
+import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
+import { AdresseType, ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
 import { useApp } from '../../../../App/context/AppContext';
-import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { useHentPersonopplysninger } from '../../../../App/hooks/useHentPersonopplysninger';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
+import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
+import { Collapse, Expand } from '@navikt/ds-icons';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -27,40 +22,53 @@ interface Props {
     behandlingId: string;
 }
 
-const StyledTabell = styled.table`
+interface BeboereTabellProps {
+    vis: boolean;
+}
+
+const BeboereTabell = styled.table<BeboereTabellProps>`
     grid-column: 1 / span 3;
-
     background-color: #f9f9f9;
-
     margin-top: 2rem;
+
+    display: ${(props) => (props.vis ? 'block' : 'none')};
+`;
+
+const LenkeIkon = styled.div`
+    margin-left: 0.5rem;
+    top: 2px;
+
+    display: inline-block;
+    position: relative;
 `;
 
 export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandlingId }) => {
     const { axiosRequest } = useApp();
-    const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
+    const [beboere, settBeboere] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
+    const [visBeboere, settVisBeboere] = useState<boolean>(false);
 
     const { hentPersonopplysninger, personopplysningerResponse } =
         useHentPersonopplysninger(behandlingId);
 
-    useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
+    useEffect(() => {
+        hentPersonopplysninger(behandlingId);
+    }, [behandlingId, hentPersonopplysninger]);
 
-    console.log('søk', søkResultat);
-
-    const søkPerson = useCallback(
+    const hentBeboerePåSammeAdresse = useCallback(
         (behandlingId: string) => {
-            axiosRequest<any, null>({
+            axiosRequest<ISøkeresultatPerson, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/sok/${behandlingId}/samme-adresse`,
-            }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
-                settSøkResultat(respons);
+            }).then((respons: Ressurs<ISøkeresultatPerson>) => {
+                settBeboere(respons);
             });
         },
         [axiosRequest]
     );
 
     useEffect(() => {
-        søkPerson(behandlingId);
-    }, [behandlingId, søkPerson]);
+        hentBeboerePåSammeAdresse(behandlingId);
+    }, [behandlingId, hentBeboerePåSammeAdresse]);
 
     return (
         <>
@@ -93,8 +101,8 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
             ].includes(bosituasjon.delerDuBolig) &&
                 sivilstandsplaner && <Sivilstandsplaner sivilstandsplaner={sivilstandsplaner} />}
 
-            <DataViewer response={{ personopplysningerResponse, søkResultat }}>
-                {({ personopplysningerResponse, søkResultat }) => {
+            <DataViewer response={{ personopplysningerResponse, beboere }}>
+                {({ personopplysningerResponse, beboere }) => {
                     const bostedsadresse = personopplysningerResponse.adresse.find(
                         (adresse) => adresse.type === AdresseType.BOSTEDADRESSE
                     );
@@ -103,26 +111,36 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner, behandl
                         <>
                             <Registergrunnlag />
                             <Normaltekst>Brukers bostedsadresse</Normaltekst>
-                            <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
+                            <div>
+                                <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
+                                <LenkeKnapp
+                                    onClick={() => {
+                                        settVisBeboere(!visBeboere);
+                                    }}
+                                >
+                                    Se beboere
+                                    <LenkeIkon>{visBeboere ? <Collapse /> : <Expand />}</LenkeIkon>
+                                </LenkeKnapp>
+                            </div>
 
-                            <StyledTabell className="tabell">
+                            <BeboereTabell vis={visBeboere} className="tabell">
                                 <thead>
                                     <Td>Navn</Td>
                                     <Td>Fødselsnummer</Td>
                                     <Td>Adresse</Td>
                                 </thead>
                                 <tbody>
-                                    {søkResultat.hits.map((person) => {
+                                    {beboere.hits.map((beboer) => {
                                         return (
                                             <tr>
-                                                <Td>{person.visningsnavn}</Td>
-                                                <Td>{person.personIdent}</Td>
-                                                <Td>{person.visningsadresse}</Td>
+                                                <Td>{beboer.visningsnavn}</Td>
+                                                <Td>{beboer.personIdent}</Td>
+                                                <Td>{beboer.visningsadresse}</Td>
                                             </tr>
                                         );
                                     })}
                                 </tbody>
-                            </StyledTabell>
+                            </BeboereTabell>
                         </>
                     );
                 }}
