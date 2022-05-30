@@ -35,9 +35,12 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
         'Har søker tidligere mottatt andre stønader som har betydning for stønadstiden i §15-8 første og andre ledd?',
     ER_I_ARBEID_ELLER_FORBIGÅENDE_SYKDOM: 'Er brukeren i arbeid eller har forbigående sykdom?',
     INNTEKT_LAVERE_ENN_INNTEKTSGRENSE:
-        'Har brukeren inntekt under 6 ganger grunnbeløpet (638 394 kr / 53 200 kr)?',
+        'Har brukeren inntekt under 6 ganger grunnbeløpet (668 862 kr / 55 738 kr)?',
+    INNTEKT_SAMSVARER_MED_OS:
+        'Er inntekten i samsvar med den inntekten som er lagt til grunn ved beregning av overgangsstønad?',
     HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
     UNNTAK_ALDER: 'Oppfylles unntak etter å ha fullført 4. skoleår?',
+    HAR_DOKUMENTERTE_TILSYNSUTGIFTER: 'Har brukeren dokumenterte tilsynsutgifter?',
 };
 
 export const svarTypeTilTekst: Record<string, string> = {
@@ -86,6 +89,7 @@ export const svarTypeTilTekst: Record<string, string> = {
     FORSØRGER_HAR_LANGVARIG_ELLER_UREGELMESSIG_ARBEIDSTID:
         'Ja, barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
     NOEN_MÅNEDER_OVERSTIGER_6G: 'Ja, men noen måneder overstiger 6G',
+    BRUKER_MOTTAR_IKKE_OVERGANGSSTØNAD: 'Bruker mottar ikke overgangsstønad',
 };
 
 export const vilkårTypeTilTekst: Record<VilkårType, string> = {
@@ -102,4 +106,5 @@ export const vilkårTypeTilTekst: Record<VilkårType, string> = {
     ALDER_PÅ_BARN: 'Alder på barn',
     INNTEKT: 'Inntekt',
     AKTIVITET_ARBEID: 'Aktivitet arbeid',
+    DOKUMENTASJON_TILSYNSUTGIFTER: 'Vilkår om dokumentasjon av tilsynsutgifter',
 };

@@ -15,6 +15,7 @@ export const lagAInntektLink = async (
         .then((response: Ressurs<string>) => {
             return response.status === RessursStatus.SUKSESS ? response.data : appEnv.aInntekt;
         })
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .catch((_: AxiosError<string>) => {
             return appEnv.aInntekt;
         });

@@ -38,7 +38,7 @@ const ResponsivLenke = styled(Lenke)`
     white-space: nowrap;
 `;
 
-const TagsWrapper = styled.div`
+const TagsKnyttetTilBehandling = styled.div`
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
@@ -175,7 +175,20 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
                     </ElementWrapper>
                 )}
-                <TagsWrapper>
+
+                {vergemål.length > 0 && (
+                    <ElementWrapper>
+                        <EtikettFokus mini>Verge</EtikettFokus>
+                    </ElementWrapper>
+                )}
+
+                {erMigrert && (
+                    <ElementWrapper>
+                        <EtikettFokus mini>Migrert</EtikettFokus>
+                    </ElementWrapper>
+                )}
+
+                <TagsKnyttetTilBehandling>
                     {behandling && (
                         <ElementWrapper>
                             <TagsLitenSkjerm>
@@ -211,18 +224,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                             </EtikettFokus>
                         </ElementWrapper>
                     )}
-                    {vergemål.length > 0 && (
-                        <ElementWrapper>
-                            <EtikettFokus mini>Verge</EtikettFokus>
-                        </ElementWrapper>
-                    )}
-
-                    {erMigrert && (
-                        <ElementWrapper>
-                            <EtikettFokus mini>Migrert</EtikettFokus>
-                        </ElementWrapper>
-                    )}
-                </TagsWrapper>
+                </TagsKnyttetTilBehandling>
             </Visittkort>
 
             {behandling && (
