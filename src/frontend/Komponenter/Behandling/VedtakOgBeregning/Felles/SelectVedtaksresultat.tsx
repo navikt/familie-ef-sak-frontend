@@ -8,6 +8,7 @@ import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { Heading, HelpText } from '@navikt/ds-react';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 interface Props {
     behandling: Behandling;
@@ -45,6 +46,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
+    const erSkolepenger = behandling.stønadstype === Stønadstype.SKOLEPENGER;
 
     return (
         <section>
@@ -88,7 +90,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     </option>
                     <option
                         value={EBehandlingResultat.OPPHØRT}
-                        disabled={!opphørMulig || nullUtbetalingPgaKontantstøtte}
+                        disabled={!opphørMulig || nullUtbetalingPgaKontantstøtte || erSkolepenger}
                     >
                         Opphørt
                     </option>

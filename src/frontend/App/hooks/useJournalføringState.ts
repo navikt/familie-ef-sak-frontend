@@ -1,11 +1,14 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
+import { Behandlingsårsak } from '../typer/Behandlingsårsak';
+import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
     behandlingstype?: Behandlingstype;
+    årsak?: Behandlingsårsak;
 }
 
 interface JournalføringRequest {
@@ -15,6 +18,12 @@ interface JournalføringRequest {
     behandling?: BehandlingRequest;
     journalførendeEnhet: string;
     navIdent?: string;
+    barnSomSkalFødes: BarnSomSkalFødes[];
+}
+
+export interface BarnSomSkalFødes {
+    _id: string; // brukes kun i frontend for å oppdatere å rendere barn
+    fødselTerminDato?: string;
 }
 
 export interface JournalføringStateRequest {
@@ -39,6 +48,12 @@ export interface JournalføringStateRequest {
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
     visJournalføringIkkeMuligModal: boolean;
     settJournalføringIkkeMuligModal: Dispatch<SetStateAction<boolean>>;
+    barnSomSkalFødes: BarnSomSkalFødes[];
+    settBarnSomSkalFødes: Dispatch<SetStateAction<BarnSomSkalFødes[]>>;
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
+    settUstrukturertDokumentasjonType: Dispatch<
+        SetStateAction<UstrukturertDokumentasjonType | undefined>
+    >;
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
@@ -52,6 +67,9 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [visJournalføringIkkeMuligModal, settJournalføringIkkeMuligModal] =
         useState<boolean>(false);
+    const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
+    const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
+        useState<UstrukturertDokumentasjonType>();
 
     const fullførJournalføring = (
         journalpostId: string,
@@ -63,13 +81,23 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             return;
         }
 
+        const behandlingsårsak =
+            ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD
+                ? Behandlingsårsak.PAPIRSØKNAD
+                : undefined;
+        const nyBehandling: BehandlingRequest = {
+            ...behandling,
+            årsak: behandlingsårsak,
+        };
+
         const data: JournalføringRequest = {
             oppgaveId,
             fagsakId,
-            behandling,
+            behandling: nyBehandling,
             dokumentTitler,
             journalførendeEnhet,
             navIdent,
+            barnSomSkalFødes,
         };
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
@@ -78,6 +106,8 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             data,
         }).then((resp) => settInnsending(resp));
     };
+
+    useEffect(() => settBarnSomSkalFødes([]), [behandling]);
 
     return {
         oppgaveId,
@@ -97,5 +127,9 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         settVisBekreftelsesModal,
         visJournalføringIkkeMuligModal,
         settJournalføringIkkeMuligModal,
+        barnSomSkalFødes,
+        settBarnSomSkalFødes,
+        ustrukturertDokumentasjonType,
+        settUstrukturertDokumentasjonType,
     };
 };

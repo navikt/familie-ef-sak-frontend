@@ -17,7 +17,9 @@ export type FormHook<T extends Record<string, any>> = {
 };
 
 export type FormErrors<T extends Record<string, any | undefined>> = {
-    [P in keyof T]: T[P] extends string | undefined ? string | undefined : FormErrors<T[P]>;
+    [P in keyof T]: T[P] extends string | number | undefined
+        ? string | undefined
+        : FormErrors<T[P]>;
 };
 
 type Valideringsfunksjon<T> = (state: FormState<T>) => FormErrors<T>;

@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import Aktivitet from '../Aktivitet/Aktivitetsvilkår';
 import Brev from '../Brev/Brev';
 import Blankett from '../Blankett/Blankett';
-import { Behandling } from '../../../App/typer/fagsak';
+import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
 import { Simulering } from '../Simulering/Simulering';
@@ -22,7 +22,7 @@ export interface ISide {
 export enum SideNavn {
     AKTIVITET = 'Aktivitet',
     BLANKETT = 'Blankett',
-    BREV = 'Brev',
+    BREV = 'Vedtaksbrev',
     KORRIGERING_UTEN_BREV = 'Korrigering uten brev',
     INNGANGSVILKÅR = 'Inngangsvilkår',
     SIMULERING = 'Simulering',
@@ -99,9 +99,13 @@ const filtrerVekkHvisSanksjon = [
     SideNavn.AKTIVITET,
     SideNavn.VEDTAK_OG_BEREGNING,
     SideNavn.BLANKETT,
-    SideNavn.KORRIGERING_UTEN_BREV,
 ];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
+const filtrerHvisGOmregning = [
+    SideNavn.VEDTAK_OG_BEREGNING,
+    SideNavn.SIMULERING,
+    SideNavn.KORRIGERING_UTEN_BREV,
+];
 const filtrerVekkHvisStandard = [
     SideNavn.BLANKETT,
     SideNavn.SANKSJON,
@@ -109,8 +113,13 @@ const filtrerVekkHvisStandard = [
 ];
 const filtrerVekkHvisKorrigeringUtenBrev = [SideNavn.BLANKETT, SideNavn.SANKSJON, SideNavn.BREV];
 
+const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>
+    behandling.resultat !== BehandlingResultat.HENLAGT || side.navn !== SideNavn.BREV;
+
 export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
-    const sider = siderForStønad(behandling.stønadstype);
+    const sider = siderForStønad(behandling.stønadstype).filter((side) =>
+        ikkeVisBrevHvisHenlagt(behandling, side)
+    );
     if (behandling.type === Behandlingstype.BLANKETT) {
         return sider.filter((side) => !filtrerVekkHvisBlankett.includes(side.navn as SideNavn));
     }
@@ -122,6 +131,9 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
         return sider.filter((side) => filtrerHvisMigrering.includes(side.navn as SideNavn));
+    }
+    if (behandling.behandlingsårsak == Behandlingsårsak.G_OMREGNING) {
+        return sider.filter((side) => filtrerHvisGOmregning.includes(side.navn as SideNavn));
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
         return sider.filter(

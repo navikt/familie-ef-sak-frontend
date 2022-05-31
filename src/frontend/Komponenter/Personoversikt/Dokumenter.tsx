@@ -26,6 +26,16 @@ const TrHoveddokument = styled.tr`
 
 const LenkeVenstreMargin = styled.a`
     margin-left: 2rem;
+
+    &:visited {
+        color: purple;
+    }
+`;
+
+const HovedLenke = styled.a`
+    &:visited {
+        color: purple;
+    }
 `;
 
 const DivMedVenstreMargin = styled.div`
@@ -82,14 +92,14 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
         <TrHoveddokument>
             <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
             <Td>
-                <a
+                <HovedLenke
                     key={dokument.journalpostId}
                     href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
                     target={'_blank'}
                     rel={'noreferrer'}
                 >
                     {dokument.tittel}
-                </a>
+                </HovedLenke>
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
             <Td>

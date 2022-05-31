@@ -73,7 +73,7 @@ export const sorterUtTidligereVedtaksvilkår = (vilkår: IVilkår): IVurdering[]
 
 export const erAlleVilkårOppfylt = (vilkår: IVilkår): boolean => {
     const alleOppfyltBortsettFraBarn = vilkår.vurderinger.every((vurdering: IVurdering) => {
-        if (vurdering.barnId === undefined) {
+        if (vurdering.barnId === undefined || vurdering.barnId === null) {
             return vurdering.resultat === Vilkårsresultat.OPPFYLT;
         } else {
             return true;

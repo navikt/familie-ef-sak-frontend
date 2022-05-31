@@ -171,6 +171,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 isDisabled={erMidlertidigOpphør}
                                 defaultValue={ikkeValgteBarn}
                                 value={erMidlertidigOpphør ? [] : ikkeValgteBarn}
+                                feil={valideringsfeil && valideringsfeil[index]?.barn[0]}
                                 onChange={(valgtBarn) => {
                                     oppdaterUtgiftsperiode(
                                         index,

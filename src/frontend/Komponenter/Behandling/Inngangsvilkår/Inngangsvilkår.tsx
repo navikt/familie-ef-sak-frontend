@@ -46,7 +46,9 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     return (
         <DataViewer response={{ vilkår, behandling }}>
             {({ vilkår, behandling }) => {
-                const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+                const årsak = behandling.behandlingsårsak;
+                const skalViseSøknadsdata =
+                    årsak === Behandlingsårsak.SØKNAD || årsak === Behandlingsårsak.PAPIRSØKNAD;
                 const grunnlagsdataInnhentetDato = formaterIsoDatoTidMedSekunder(
                     vilkår.grunnlag.registeropplysningerOpprettetTid
                 );

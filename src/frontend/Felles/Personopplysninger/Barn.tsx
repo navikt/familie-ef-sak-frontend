@@ -19,6 +19,12 @@ const FlexDiv = styled.div`
 
 const titler = ['Navn', 'Fødselsnummer', 'Annen forelder', 'Bor med bruker'];
 
+const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
+    const alderBarnA = a.fødselsdato ? (nullableDatoTilAlder(a.fødselsdato) as number) : 1000;
+    const alderBarnB = b.fødselsdato ? (nullableDatoTilAlder(b.fødselsdato) as number) : 1000;
+    return alderBarnA - alderBarnB;
+};
+
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
         <TabellWrapper>
@@ -26,7 +32,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
             <table className="tabell">
                 <KolonneTitler titler={titler} />
                 <tbody>
-                    {barn.map((barn) => {
+                    {barn.sort(sorterBarnPåAlderInc).map((barn) => {
                         return (
                             <tr key={barn.personIdent}>
                                 <BredTd>

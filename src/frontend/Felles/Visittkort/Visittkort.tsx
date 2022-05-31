@@ -2,15 +2,15 @@ import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import Visittkort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
-import { EtikettFokus } from 'nav-frontend-etiketter';
+import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato } from '../../App/utils/dato';
-import { RessursStatus, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
 import Lenke from 'nav-frontend-lenker';
@@ -18,14 +18,13 @@ import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Hamburgermeny } from './Hamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
-import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import {
-    StatuserLitenSkjerm,
-    StatusMeny,
-    Status,
-    AlleStatuser,
-    GråTekst,
-} from './Status/StatusElementer';
+    behandlingstypeTilTekst,
+    behandlingstypeTilTekstKort,
+} from '../../App/typer/behandlingstype';
+import { AlleStatuser, StatuserLitenSkjerm, StatusMeny } from './Status/StatusElementer';
+import { stønadstypeTilTekst, stønadstypeTilTekstKort } from '../../App/typer/behandlingstema';
+import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -39,12 +38,35 @@ const ResponsivLenke = styled(Lenke)`
     white-space: nowrap;
 `;
 
+const TagsKnyttetTilBehandling = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+`;
+
+const TagsLitenSkjerm = styled.div`
+    @media screen and (min-width: 946px) {
+        display: none;
+    }
+
+    @media screen and (max-width: 760px) {
+        display: none;
+    }
+`;
+
+const TagsStorSkjerm = styled.div`
+    @media screen and (max-width: 946px) {
+        display: none;
+    }
+`;
+
 export const VisittkortWrapper = styled(Sticky)`
     display: flex;
 
     border-bottom: 1px solid ${navFarger.navGra80};
     z-index: 22;
     top: 47px;
+
     .visittkort {
         padding: 0 1.5rem;
         border-bottom: none;
@@ -153,26 +175,62 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
                     </ElementWrapper>
                 )}
+
                 {vergemål.length > 0 && (
                     <ElementWrapper>
                         <EtikettFokus mini>Verge</EtikettFokus>
                     </ElementWrapper>
                 )}
+
                 {erMigrert && (
                     <ElementWrapper>
                         <EtikettFokus mini>Migrert</EtikettFokus>
                     </ElementWrapper>
                 )}
+
+                <TagsKnyttetTilBehandling>
+                    {behandling && (
+                        <ElementWrapper>
+                            <TagsLitenSkjerm>
+                                <EtikettSuksess mini>
+                                    {stønadstypeTilTekstKort[behandling.stønadstype]}
+                                </EtikettSuksess>
+                            </TagsLitenSkjerm>
+                            <TagsStorSkjerm>
+                                <EtikettSuksess mini>
+                                    {stønadstypeTilTekst[behandling.stønadstype]}
+                                </EtikettSuksess>
+                            </TagsStorSkjerm>
+                        </ElementWrapper>
+                    )}
+                    {behandling && (
+                        <ElementWrapper>
+                            <TagsLitenSkjerm>
+                                <EtikettInfo mini>
+                                    {behandlingstypeTilTekstKort[behandling.type]}
+                                </EtikettInfo>
+                            </TagsLitenSkjerm>
+                            <TagsStorSkjerm>
+                                <EtikettInfo mini>
+                                    {behandlingstypeTilTekst[behandling.type]}
+                                </EtikettInfo>
+                            </TagsStorSkjerm>
+                        </ElementWrapper>
+                    )}
+                    {behandling && behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
+                        <ElementWrapper>
+                            <EtikettFokus mini>
+                                {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
+                            </EtikettFokus>
+                        </ElementWrapper>
+                    )}
+                </TagsKnyttetTilBehandling>
             </Visittkort>
 
             {behandling && (
                 <>
                     <AlleStatuser behandling={behandling} />
                     <StatuserLitenSkjerm>
-                        <Status kunEttElement={true}>
-                            <GråTekst>Behandlingstype</GråTekst>
-                            <Normaltekst>{behandlingstypeTilTekst[behandling.type]}</Normaltekst>
-                        </Status>
                         <StatusMeny behandling={behandling} />
                     </StatuserLitenSkjerm>
                 </>
