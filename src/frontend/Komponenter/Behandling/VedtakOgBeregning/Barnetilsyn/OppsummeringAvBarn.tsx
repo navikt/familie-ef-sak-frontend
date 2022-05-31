@@ -11,6 +11,7 @@ import {
 } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
+import { formaterIsoDato } from '../../../../App/utils/formatter';
 
 const Container = styled.div`
     margin: 1rem;
@@ -116,7 +117,8 @@ export const OppsummeringAvBarn: React.FC<{
                                     <MarginTekst>Periode passordning</MarginTekst>
                                 </IkonOgTekstWrapper>
                                 <Normaltekst>
-                                    {barnepassordning.fra} - {barnepassordning.til}
+                                    {formaterIsoDato(barnepassordning.fra)} -{' '}
+                                    {formaterIsoDato(barnepassordning.til)}
                                 </Normaltekst>
                             </GridLinje>
                             <NedersteGridLinje>
