@@ -263,7 +263,7 @@ export const InnvilgeVedtak: React.FC<{
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
-                {behandling.type === Behandlingstype.REVURDERING && (
+                {behandling.type === Behandlingstype.REVURDERING && behandlingErRedigerbar && (
                     <RevurderesFraOgMed settRevurderesFra={settRevurderesFra} />
                 )}
                 {skalViseVedtaksperiodeOgInntekt && (
