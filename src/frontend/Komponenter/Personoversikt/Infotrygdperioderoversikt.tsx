@@ -27,16 +27,32 @@ const InfotrygdperioderoversiktContainer = styled.div`
     padding: 0.25rem;
 `;
 
+const CheckboxContainer = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+`;
+
 const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResponse }> = ({
     perioder,
 }) => {
     const [visSummert, settVisSummert] = useState<boolean>(false);
+    const [visKompakt, settVisKompakt] = useState<boolean>(false);
 
-    const visPerioder = (stønadstype: Stønadstype, visSummert: boolean, perioder: Perioder) => {
+    const visPerioder = (
+        stønadstype: Stønadstype,
+        visSummert: boolean,
+        visKompakt: boolean,
+        perioder: Perioder
+    ) => {
         return visSummert ? (
             <SummertePerioder stønadstype={stønadstype} perioder={perioder.summert} />
         ) : (
-            <InfotrygdPerioder stønadstype={stønadstype} perioder={perioder.perioder} />
+            <InfotrygdPerioder
+                stønadstype={stønadstype}
+                visKompakt={visKompakt}
+                perioder={perioder.perioder}
+            />
         );
     };
 
@@ -51,23 +67,37 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
                 Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP må
                 sjekkes manuelt i Infotrygd)
             </StyledAlertStripe>
-            {skalViseCheckbox && (
+            <CheckboxContainer>
+                {skalViseCheckbox && (
+                    <Checkbox
+                        label={'Vis summerte perioder'}
+                        onChange={() => {
+                            settVisSummert((prevState) => !prevState);
+                        }}
+                        checked={visSummert}
+                    />
+                )}
                 <Checkbox
-                    label={'Vis summerte perioder'}
+                    label={'Kompakt visning'}
                     onChange={() => {
-                        settVisSummert((prevState) => !prevState);
+                        settVisKompakt((prevState) => !prevState);
                     }}
-                    checked={visSummert}
+                    checked={visKompakt}
                 />
-            )}
+            </CheckboxContainer>
             <h2>Overgangsstønad</h2>
-            {visPerioder(Stønadstype.OVERGANGSSTØNAD, visSummert, perioder.overgangsstønad)}
+            {visPerioder(
+                Stønadstype.OVERGANGSSTØNAD,
+                visSummert,
+                visKompakt,
+                perioder.overgangsstønad
+            )}
 
             <h2>Barnetilsyn</h2>
-            {visPerioder(Stønadstype.BARNETILSYN, visSummert, perioder.barnetilsyn)}
+            {visPerioder(Stønadstype.BARNETILSYN, visSummert, visKompakt, perioder.barnetilsyn)}
 
             <h2>Skolepenger</h2>
-            {visPerioder(Stønadstype.SKOLEPENGER, visSummert, perioder.skolepenger)}
+            {visPerioder(Stønadstype.SKOLEPENGER, visSummert, visKompakt, perioder.skolepenger)}
         </>
     );
 };
