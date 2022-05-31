@@ -160,11 +160,6 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         <AdressebeskyttelseVarsel adressebeskyttelse={adressebeskyttelse} />
                     </ElementWrapper>
                 )}
-                {adressebeskyttelse && (
-                    <ElementWrapper>
-                        <AdressebeskyttelseVarsel adressebeskyttelse={adressebeskyttelse} />
-                    </ElementWrapper>
-                )}
                 {egenAnsatt && (
                     <ElementWrapper>
                         <EtikettFokus mini>Egen ansatt</EtikettFokus>
