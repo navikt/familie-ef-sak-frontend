@@ -1,6 +1,7 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { IUtgiftsperiodeSkolepenger } from '../../../../App/typer/vedtak';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
+import { erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -31,7 +32,7 @@ export const validerUtgiftsperioder = ({
 }: {
     utgiftsperioder: IUtgiftsperiodeSkolepenger[];
 }): FormErrors<{ utgiftsperioder: IUtgiftsperiodeSkolepenger[] }> => {
-    const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode) => {
+    const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index, utgiftsperioder) => {
         const { studietype, årMånedFra, årMånedTil, studiebelastning, utgifter } = utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiodeSkolepenger> = {
             studietype: undefined,
@@ -46,6 +47,21 @@ export const validerUtgiftsperioder = ({
         }
         if (!årMånedFra || !årMånedTil) {
             return { ...utgiftsperiodeFeil, årMånedFra: 'Mangelfull utfylling av utgiftsperiode' };
+        }
+        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+            return {
+                ...utgiftsperiodeFeil,
+                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+            };
+        }
+        if (index > 0) {
+            const forrigeårMånedFra = utgiftsperioder[index - 1].årMånedFra;
+            if (!erMånedÅrEtterEllerLik(forrigeårMånedFra, årMånedFra)) {
+                return {
+                    ...utgiftsperiodeFeil,
+                    årMånedFra: `Ugyldig periode - fra-dato for forrige utgiftsperiode (${forrigeårMånedFra}) må være før fra-dato for neste utgiftsperiode (${årMånedFra})`,
+                };
+            }
         }
         if (!studiebelastning) {
             return {

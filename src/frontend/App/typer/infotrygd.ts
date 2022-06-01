@@ -56,6 +56,18 @@ export enum Kode {
     OVERTFØRT_NY_LØSNING = 'OVERTFØRT_NY_LØSNING',
 }
 
+export const kodeTilForkortetTekst: Record<Kode, string> = {
+    ANNULERT: 'Annullert',
+    ENDRING_BEREGNINGSGRUNNLAG: 'Endring i b...',
+    FØRSTEGANGSVEDTAK: 'Førstegang...',
+    G_REGULERING: 'G-regulering',
+    NY: 'Ny',
+    OPPHØRT: 'Opphørt',
+    SATSENDRING: 'Satsendring',
+    UAKTUELL: 'Uaktuell',
+    OVERTFØRT_NY_LØSNING: 'Overf. ny lø...',
+};
+
 export const kodeTilTekst: Record<Kode, string> = {
     ANNULERT: 'Annullert',
     ENDRING_BEREGNINGSGRUNNLAG: 'Endring i beregningsgrunnlag',
@@ -65,7 +77,7 @@ export const kodeTilTekst: Record<Kode, string> = {
     OPPHØRT: 'Opphørt',
     SATSENDRING: 'Satsendring',
     UAKTUELL: 'Uaktuell',
-    OVERTFØRT_NY_LØSNING: 'Overf ny løsning',
+    OVERTFØRT_NY_LØSNING: 'Overf. ny løsning',
 };
 
 enum Sakstype {
@@ -79,6 +91,18 @@ enum Sakstype {
     SØKNAD = 'SØKNAD',
     SØKNAD_ØKNING_ENDRING = 'SØKNAD_ØKNING_ENDRING',
 }
+
+export const sakstypeTilKode: Record<Sakstype, string> = {
+    KLAGE: 'K',
+    MASKINELL_G_OMREGNING: 'MG',
+    REVURDERING: 'R',
+    GRUNNBELØP_OMREGNING: 'GO',
+    KONVERTERING: 'KO',
+    MASKINELL_SATSOMREGNING: 'MS',
+    ANKE: 'A',
+    SØKNAD: 'S',
+    SØKNAD_ØKNING_ENDRING: 'SØ',
+};
 
 export const sakstypeTilTekst: Record<Sakstype, string> = {
     KLAGE: 'Klage (K)',
@@ -105,6 +129,19 @@ enum InfotrygdOvergangsstønadKode {
     FORTSATT_INNVILGET_TROSS_VARSEL_OM_OPPHØR_PGA_SAMBOER = 'FORTSATT_INNVILGET_TROSS_VARSEL_OM_OPPHØR_PGA_SAMBOER',
 }
 
+export const overgangsstønadKodeTilForkortetTekst: Record<InfotrygdOvergangsstønadKode, string> = {
+    BARN_UNDER_1_3_ÅR: 'Barn under 1...',
+    YRKESRETTET_AKTIVITET_BARN_FYLT_1_3_ÅR: 'Er i yrkesrett...',
+    UNNTAK_FRA_KRAV_TIL_YRKESRETTET_AKTIVITET: 'Unntak fra k...',
+    UTVIDELSE_NØDVENDIG_UTDANNING: 'Utvidelse på...',
+    PÅVENTE_SKOLESTART_ARBEID_TILSYNSPLASS: 'I påvente av...',
+    YRKESRETTET_AKTIVITET: 'Er i yrkesrett...',
+    FORBIGÅENDE_SYKDOM: 'Forbig. sykdo...',
+    SÆRLIG_TILSSYNSKREVENDE_BARN: 'Har særlig tils...',
+    ETABLERER_EGEN_VIRKSOMHET: 'Etablerer ege...',
+    FORTSATT_INNVILGET_TROSS_VARSEL_OM_OPPHØR_PGA_SAMBOER: 'Fortsatt innv...',
+};
+
 export const overgangsstønadKodeTilTekst: Record<InfotrygdOvergangsstønadKode, string> = {
     BARN_UNDER_1_3_ÅR: 'Barn under 1 år / 3 år (gamle tilfeller)',
     YRKESRETTET_AKTIVITET_BARN_FYLT_1_3_ÅR:
@@ -129,6 +166,15 @@ enum InfotrygdAktivitetstype {
     BRUKERKONTAKT = 'BRUKERKONTAKT',
     IKKE_I_AKTIVITET = 'IKKE_I_AKTIVITET',
 }
+
+export const aktivitetstypeTilKode: Record<InfotrygdAktivitetstype, string> = {
+    I_ARBEID: 'A',
+    I_UTDANNING: 'U',
+    TILMELDT_SOM_REELL_ARBEIDSSØKER: 'S',
+    KURS: 'K',
+    BRUKERKONTAKT: 'B',
+    IKKE_I_AKTIVITET: 'N',
+};
 
 export const aktivitetstypeTilTekst: Record<InfotrygdAktivitetstype, string> = {
     I_ARBEID: 'I arbeid (A)',
