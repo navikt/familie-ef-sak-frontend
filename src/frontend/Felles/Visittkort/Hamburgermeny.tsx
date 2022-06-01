@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Hamburger } from '@navikt/ds-icons';
 import styled from 'styled-components';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { Normaltekst } from 'nav-frontend-typografi';
 
@@ -60,9 +58,7 @@ const Knapp = styled.button`
 `;
 
 export const Hamburgermeny = () => {
-    const { toggles } = useToggles();
     const ref = useRef(null);
-    const skalViseSettBrevmottakereKnapp = toggles[ToggleName.visSettBrevmottakereKnapp] || false;
     const { settVisBrevmottakereModal, settVisHenleggModal } = useBehandling();
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
@@ -92,17 +88,15 @@ export const Hamburgermeny = () => {
             />
             <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
                 <ul>
-                    {skalViseSettBrevmottakereKnapp && (
-                        <li>
-                            <Knapp
-                                onClick={() => {
-                                    settVisBrevmottakereModal(true);
-                                }}
-                            >
-                                <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
-                            </Knapp>
-                        </li>
-                    )}
+                    <li>
+                        <Knapp
+                            onClick={() => {
+                                settVisBrevmottakereModal(true);
+                            }}
+                        >
+                            <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
+                        </Knapp>
+                    </li>
                     <li>
                         <Knapp
                             onClick={() => {
