@@ -190,7 +190,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode: Avsnitt
         innhold:
             'Du får utvidet tid med overgangsstønad fordi du er i utdanning' +
             '\n\t\nVi følger opp saken din, og ber deg om å sende oss:' +
-            '\t•\tKarakterutskrift for skoleåret 2021/2022\n' +
+            '\n\n•\tKarakterutskrift for skoleåret 2021/2022\n' +
             '\nDu må sende oss dokumentasjonen innen 21.07.22.\n' +
             '\t\nDokumentere at du har gjennomført skoleåret\nDu må sende inn karakterutskrift for skoleåret 2021/2022, både høst- og vårsemesteret. Det må gå frem av dokumentasjonen at du har gjennomført skoleåret, og at du har studert minst 50 prosent.\n' +
             '\n\nHvis du ikke kan sende inn karakterutskrift, må du sende inn annen dokumentasjon som viser at du har gjennomført skoleåret, og at du har studert minst 50 prosent. Dette kan for eksempel være en bekreftelse fra skolen. På dokumentasjonen må det stå tydelig at det gjelder deg.' +
