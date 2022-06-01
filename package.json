@@ -113,7 +113,7 @@
     "paginering": "^1.1.1",
     "passport": "^0.6.0",
     "passport-azure-ad": "^4.3.2",
-    "pdfjs-dist": "2.12.313",
+    "pdfjs-dist": "2.14.305",
     "prom-client": "^14.0.0",
     "prop-types": "^15.8.0",
     "react": "^17.0.2",
