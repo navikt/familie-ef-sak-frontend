@@ -78,7 +78,7 @@ export const validerUtgiftsperioder = ({
     utgiftsperioder: IUtgiftsperiode[];
 }): FormErrors<{ utgiftsperioder: IUtgiftsperiode[] }> => {
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
-        const { årMånedFra, årMånedTil, barn } = utgiftsperiode;
+        const { årMånedFra, årMånedTil, barn, erMidlertidigOpphør } = utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
@@ -109,7 +109,7 @@ export const validerUtgiftsperioder = ({
             }
         }
 
-        if (barn.length < 1) {
+        if (barn.length < 1 && !erMidlertidigOpphør) {
             return {
                 ...utgiftsperiodeFeil,
                 barn: ['Mangelfull utfylling - minst et barn må velges'],
