@@ -4,7 +4,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import AktivitetsVilkårOvergangsstønad from './AktivitetsvilkårOvergangsstønad';
 import AktivitetsVilkårBarnetilsyn from './AktivitetsvilkårBarnetilsyn';
-import SkolepengerVilkR from './SkolepengerVilkår';
+import AktivitetsVilkårSkolepenger from './AktivitetsvilkårSkolepenger';
 
 const AktivitetsVilkår: FC = () => {
     const { behandling } = useBehandling();
@@ -18,7 +18,7 @@ const AktivitetsVilkår: FC = () => {
                     case Stønadstype.BARNETILSYN:
                         return <AktivitetsVilkårBarnetilsyn behandling={behandling} />;
                     case Stønadstype.SKOLEPENGER:
-                        return <SkolepengerVilkR behandling={behandling} />;
+                        return <AktivitetsVilkårSkolepenger behandling={behandling} />;
                 }
             }}
         </DataViewer>

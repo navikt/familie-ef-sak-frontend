@@ -1,5 +1,3 @@
-import { VilkårType } from '../Inngangsvilkår/vilkår';
-
 export const delvilkårTypeTilTekst: Record<string, string> = {
     SØKER_MEDLEM_I_FOLKETRYGDEN: 'Har bruker vært medlem i folketrygden i de siste 5 årene?',
     BOR_OG_OPPHOLDER_SEG_I_NORGE: 'Bor og oppholder bruker og barna seg i Norge?',
@@ -41,6 +39,10 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
     UNNTAK_ALDER: 'Oppfylles unntak etter å ha fullført 4. skoleår?',
     HAR_DOKUMENTERTE_TILSYNSUTGIFTER: 'Har brukeren dokumenterte tilsynsutgifter?',
+    RETT_TIL_OVERGANGSSTØNAD: 'Er vilkårene for rett til overgangsstønad oppfylt?',
+    DOKUMENTASJON_AV_UTDANNING: 'Er det dokumentert at bruker er under utdanning?',
+    NAVKONTOR_VURDERING: 'Har NAV kontoret vurdert at utdanning er nødvendig og hensiktsmessig?',
+    SAKSBEHANDLER_VURDERING: 'Er utdanningen nødvendig og hensiktsmessig?',
 };
 
 export const svarTypeTilTekst: Record<string, string> = {
@@ -90,21 +92,4 @@ export const svarTypeTilTekst: Record<string, string> = {
         'Ja, barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
     NOEN_MÅNEDER_OVERSTIGER_6G: 'Ja, men noen måneder overstiger 6G',
     BRUKER_MOTTAR_IKKE_OVERGANGSSTØNAD: 'Bruker mottar ikke overgangsstønad',
-};
-
-export const vilkårTypeTilTekst: Record<VilkårType, string> = {
-    AKTIVITET: 'Vilkår om aktivitet? Kanske',
-    FORUTGÅENDE_MEDLEMSKAP: 'Vilkår om forutgående medlemskap',
-    LOVLIG_OPPHOLD: 'Vilkår om opphold i Norge',
-    MOR_ELLER_FAR: 'Vilkår om mor eller far',
-    SIVILSTAND: 'Vilkår om sivilstand',
-    SAMLIV: 'Vilkår om samliv',
-    ALENEOMSORG: 'Vilkår om aleneomsorg',
-    NYTT_BARN_SAMME_PARTNER: 'Vilkår om nytt barn med samme partner',
-    SAGT_OPP_ELLER_REDUSERT: 'Vilkår om sagt opp arbeidsforhold ',
-    TIDLIGERE_VEDTAKSPERIODER: 'Tidligere vedtaksperioder',
-    ALDER_PÅ_BARN: 'Alder på barn',
-    INNTEKT: 'Inntekt',
-    AKTIVITET_ARBEID: 'Aktivitet arbeid',
-    DOKUMENTASJON_TILSYNSUTGIFTER: 'Vilkår om dokumentasjon av tilsynsutgifter',
 };
