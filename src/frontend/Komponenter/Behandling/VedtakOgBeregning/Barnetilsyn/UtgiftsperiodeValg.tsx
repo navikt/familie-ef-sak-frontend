@@ -22,7 +22,7 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter checkbox slettknapp';
     grid-template-columns: ${(props) =>
         props.lesevisning
-            ? '10rem 10rem 18rem 2rem 2rem 4rem'
+            ? '10rem 10rem 18rem 2rem 4rem 4rem'
             : '12rem 12rem 25rem 2rem 4rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
@@ -48,6 +48,10 @@ const TekstEnLinje = styled(Element)`
 const CheckboxContainer = styled.div`
     position: relative;
     bottom: 0.5rem;
+`;
+
+const TekstIngenStønad = styled(Normaltekst)`
+    margin-top: 0.5rem;
 `;
 
 interface Props {
@@ -211,17 +215,21 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             erLesevisning={!behandlingErRedigerbar}
                         />
                         <CheckboxContainer>
-                            <FamilieCheckbox
-                                erLesevisning={!behandlingErRedigerbar}
-                                label={''}
-                                checked={erMidlertidigOpphør}
-                                onChange={() => {
-                                    oppdaterUtgiftsperiodeDersomMidlertidigOpphør(
-                                        index,
-                                        !erMidlertidigOpphør
-                                    );
-                                }}
-                            />
+                            {!behandlingErRedigerbar && erMidlertidigOpphør ? (
+                                <TekstIngenStønad>Ja</TekstIngenStønad>
+                            ) : (
+                                <FamilieCheckbox
+                                    erLesevisning={!behandlingErRedigerbar}
+                                    label={''}
+                                    checked={erMidlertidigOpphør}
+                                    onChange={() => {
+                                        oppdaterUtgiftsperiodeDersomMidlertidigOpphør(
+                                            index,
+                                            !erMidlertidigOpphør
+                                        );
+                                    }}
+                                />
+                            )}
                         </CheckboxContainer>
                         {skalViseFjernKnapp && (
                             <FjernKnapp
