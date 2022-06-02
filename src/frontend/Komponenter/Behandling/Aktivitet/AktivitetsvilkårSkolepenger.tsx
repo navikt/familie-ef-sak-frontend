@@ -5,6 +5,8 @@ import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Behandling } from '../../../App/typer/fagsak';
 import { RettTilOvergangsstønad } from './Skolepenger/RettTilOvergangsstønad';
+import { DokumentasjonUtdanning } from './Skolepenger/DokumentasjonUtdanning';
+import { UtdanningHensiktsmessig } from './Skolepenger/UtdanningHensiktsmessig';
 
 const AktivitetsVilkårSkolepenger: FC<{
     behandling: Behandling;
@@ -36,6 +38,24 @@ const AktivitetsVilkårSkolepenger: FC<{
                 return (
                     <>
                         <RettTilOvergangsstønad
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={false}
+                        />
+                        <DokumentasjonUtdanning
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            nullstillVurdering={nullstillVurdering}
+                            feilmeldinger={feilmeldinger}
+                            grunnlag={vilkår.grunnlag}
+                            lagreVurdering={lagreVurdering}
+                            vurderinger={vilkår.vurderinger}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
+                        <UtdanningHensiktsmessig
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
