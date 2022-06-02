@@ -48,16 +48,29 @@ export interface IBeregningsgrunnlag {
     grunnbeløp: number | null;
 }
 
+export interface IBeregningsperioderSkolepenger {
+    skoleår: number;
+    perioder: IBeregningsperiodeSkolepenger[];
+}
+
 export interface IBeregningsperiodeSkolepenger {
-    periode: { fradato: string; tildato: string };
-    beløp: number;
-    beregningsgrunnlag: IBeregningsgrunnlagSkolepenger;
+    maksbeløp: number;
+    maksbeløpFordeltAntallMåneder: number;
+    tidligereForbrukt: number;
+    nyForbrukt: number;
+    grunnlag: IBeregningsgrunnlagSkolepenger;
+    nyeUtbetalinger: DetaljertBeløpSkolepenger[];
 }
 
 export interface IBeregningsgrunnlagSkolepenger {
     studietype: ESkolepengerStudietype;
     studiebelastning: number;
-    utgifter: number;
+    periode: { fradato: string; tildato: string };
+}
+
+export interface DetaljertBeløpSkolepenger {
+    stønad: number;
+    grunnlag: SkolepengerUtgift;
 }
 
 export type IInnvilgeVedtakForOvergangsstønad = {
@@ -108,6 +121,11 @@ export interface IUtgiftsperiodeSkolepenger {
     årMånedFra: string;
     årMånedTil: string;
     studiebelastning: number | undefined;
+    utgifter: SkolepengerUtgift[];
+}
+
+export interface SkolepengerUtgift {
+    årMånedFra: string;
     utgifter: number | undefined;
 }
 

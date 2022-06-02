@@ -1,8 +1,8 @@
 import {
     ESkolepengerStudietype,
-    EUtgiftsperiodeProperty,
     IUtgiftsperiodeSkolepenger,
     skolepengerStudietypeTilTekst,
+    SkolepengerUtgift,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import React, { Dispatch, SetStateAction } from 'react';
@@ -20,12 +20,21 @@ import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMed
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import InputUtenSpinner from '../../../../Felles/Visningskomponenter/InputUtenSpinner';
+import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
-    grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger studiebelastning utgifter';
+    grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger studiebelastning';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 10rem 10rem 7rem 5rem' : '12rem 12rem 12rem 8rem 6rem 4rem'};
+        props.lesevisning ? '10rem 10rem 10rem 7rem' : '12rem 12rem 12rem 8rem 4rem'};
+    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
+    margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
+`;
+
+const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
+    display: grid;
+    grid-template-areas: 'fraOgMedVelger utgifter';
+    grid-template-columns: ${(props) => (props.lesevisning ? '10rem 10rem' : '12rem 12rem 4rem')};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
 `;
@@ -54,6 +63,11 @@ export const tomUtgiftsperiodeRad: IUtgiftsperiodeSkolepenger = {
     årMånedFra: '',
     årMånedTil: '',
     studiebelastning: undefined,
+    utgifter: [],
+};
+
+export const tomUtgift: SkolepengerUtgift = {
+    årMånedFra: '',
     utgifter: undefined,
 };
 
@@ -65,10 +79,26 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
+    const oppdaterUtgift = (
+        index: number,
+        utgiftsindex: number,
+        property: keyof SkolepengerUtgift,
+        value: string | number | undefined
+    ) => {
+        const perioder = utgiftsperioder.value[index].utgifter.map((utgift, index) => {
+            if (index === utgiftsindex) {
+                return { ...utgift, [property]: value };
+            } else {
+                return utgift;
+            }
+        });
+        oppdaterUtgiftsPeriode(index, 'utgifter', perioder);
+    };
+
     const oppdaterUtgiftsPeriode = (
         index: number,
         property: keyof IUtgiftsperiodeSkolepenger,
-        value: string | string[] | number | undefined
+        value: string | SkolepengerUtgift[] | number | undefined
     ) => {
         utgiftsperioder.update(
             {
@@ -98,7 +128,6 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
                 <Element>Periode fra og med</Element>
                 <Element>Periode til og med</Element>
                 <Element>Studiebelastning</Element>
-                <Element>Utgifter</Element>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
                 const { studietype, årMånedFra, årMånedTil, studiebelastning, utgifter } =
@@ -109,89 +138,177 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
                     index !== 0;
 
                 return (
-                    <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
-                        <StyledSelect
-                            aria-label="Periodetype"
-                            value={studietype}
-                            feil={valideringsfeil && valideringsfeil[index]?.studietype}
-                            onChange={(e) => {
-                                oppdaterUtgiftsPeriode(index, 'studietype', e.target.value);
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                            lesevisningVerdi={
-                                studietype && skolepengerStudietypeTilTekst[studietype]
-                            }
-                        >
-                            <option value="">Velg</option>
-                            {[ESkolepengerStudietype.HØGSKOLE_UNIVERSITET].map((type) => (
-                                <option value={type} key={type}>
-                                    {skolepengerStudietypeTilTekst[type]}
-                                </option>
-                            ))}
-                        </StyledSelect>
-                        <MånedÅrPeriode
-                            årMånedFraInitiell={årMånedFra}
-                            årMånedTilInitiell={årMånedTil}
-                            index={index}
-                            onEndre={(verdi, periodeVariant) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                oppdaterUtgiftsPeriode(
-                                    index,
-                                    periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
-                                    verdi
-                                );
-                            }}
-                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                            erLesevisning={!behandlingErRedigerbar}
-                        />
-                        <StyledInput
-                            onKeyPress={tilHeltall}
-                            type="number"
-                            feil={valideringsfeil && valideringsfeil[index]?.studiebelastning}
-                            value={harTallverdi(studiebelastning) ? studiebelastning : ''}
-                            formatValue={(k) => k + ' %'}
-                            onChange={(e) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                oppdaterUtgiftsPeriode(
-                                    index,
-                                    'studiebelastning',
-                                    tilTallverdi(e.target.value)
-                                );
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                        />
-                        <StyledInputMedTusenSkille
-                            onKeyPress={tilHeltall}
-                            type="number"
-                            value={harTallverdi(utgifter) ? utgifter : ''}
-                            feil={valideringsfeil && valideringsfeil[index]?.utgifter}
-                            onChange={(e) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                oppdaterUtgiftsPeriode(
-                                    index,
-                                    EUtgiftsperiodeProperty.utgifter,
-                                    tilTallverdi(e.target.value)
-                                );
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                        />
-                        {skalViseFjernKnapp && (
-                            <FjernKnapp
-                                onClick={() => {
-                                    utgiftsperioder.remove(index);
-                                    settValideringsFeil(
-                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const perioder = (
-                                                prevState.utgiftsperioder ?? []
-                                            ).filter((_, i) => i !== index);
-                                            return { ...prevState, perioder };
-                                        }
+                    <>
+                        <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
+                            <StyledSelect
+                                aria-label="Periodetype"
+                                value={studietype}
+                                feil={valideringsfeil && valideringsfeil[index]?.studietype}
+                                onChange={(e) => {
+                                    oppdaterUtgiftsPeriode(index, 'studietype', e.target.value);
+                                }}
+                                erLesevisning={!behandlingErRedigerbar}
+                                lesevisningVerdi={
+                                    studietype && skolepengerStudietypeTilTekst[studietype]
+                                }
+                            >
+                                <option value="">Velg</option>
+                                {[ESkolepengerStudietype.HØGSKOLE_UNIVERSITET].map((type) => (
+                                    <option value={type} key={type}>
+                                        {skolepengerStudietypeTilTekst[type]}
+                                    </option>
+                                ))}
+                            </StyledSelect>
+                            <MånedÅrPeriode
+                                årMånedFraInitiell={årMånedFra}
+                                årMånedTilInitiell={årMånedTil}
+                                index={index}
+                                onEndre={(verdi, periodeVariant) => {
+                                    oppdaterUtgiftsPeriode(
+                                        index,
+                                        periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
+                                        verdi
                                     );
                                 }}
-                                knappetekst="Fjern vedtaksperiode"
+                                feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                                erLesevisning={!behandlingErRedigerbar}
                             />
-                        )}
-                    </UtgiftsperiodeRad>
+                            <StyledInput
+                                onKeyPress={tilHeltall}
+                                type="number"
+                                feil={valideringsfeil && valideringsfeil[index]?.studiebelastning}
+                                value={harTallverdi(studiebelastning) ? studiebelastning : ''}
+                                formatValue={(k) => k + ' %'}
+                                onChange={(e) => {
+                                    oppdaterUtgiftsPeriode(
+                                        index,
+                                        'studiebelastning',
+                                        tilTallverdi(e.target.value)
+                                    );
+                                }}
+                                erLesevisning={!behandlingErRedigerbar}
+                            />
+                            {skalViseFjernKnapp && (
+                                <FjernKnapp
+                                    onClick={() => {
+                                        utgiftsperioder.remove(index);
+                                        settValideringsFeil(
+                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                const perioder = (
+                                                    prevState.utgiftsperioder ?? []
+                                                ).filter((_, i) => i !== index);
+                                                return { ...prevState, perioder };
+                                            }
+                                        );
+                                    }}
+                                    knappetekst="Fjern vedtaksperiode"
+                                />
+                            )}
+                        </UtgiftsperiodeRad>
+                        <div style={{ marginLeft: '1rem' }}>
+                            <Utgiftsrad>
+                                <Element>Periode fra og med</Element>
+                                <Element>Utgifter</Element>
+                            </Utgiftsrad>
+                            {utgifter.map((utgift, utgiftsindex) => {
+                                const skalViseFjernKnappUtgift =
+                                    behandlingErRedigerbar &&
+                                    utgiftsindex === utgifter.length - 1 &&
+                                    utgiftsindex !== 0;
+
+                                return (
+                                    <Utgiftsrad>
+                                        <MånedÅrVelger
+                                            årMånedInitiell={utgift.årMånedFra}
+                                            //label={datoFraTekst}
+                                            onEndret={(verdi) => {
+                                                oppdaterUtgift(
+                                                    index,
+                                                    utgiftsindex,
+                                                    'årMånedFra',
+                                                    verdi
+                                                );
+                                            }}
+                                            antallÅrTilbake={10}
+                                            antallÅrFrem={4}
+                                            lesevisning={!behandlingErRedigerbar}
+                                            feilmelding={
+                                                valideringsfeil &&
+                                                valideringsfeil[index]?.årMånedFra
+                                            } // TODO
+                                        />
+                                        <StyledInputMedTusenSkille
+                                            onKeyPress={tilHeltall}
+                                            type="number"
+                                            value={
+                                                harTallverdi(utgift.utgifter) ? utgift.utgifter : ''
+                                            }
+                                            /*feil={
+                                            valideringsfeil &&
+                                            valideringsfeil[index]?.utgifter[utgiftsindex]
+                                        }*/
+                                            onChange={(e) => {
+                                                oppdaterUtgift(
+                                                    index,
+                                                    utgiftsindex,
+                                                    'utgifter',
+                                                    tilTallverdi(e.target.value)
+                                                );
+                                            }}
+                                            erLesevisning={!behandlingErRedigerbar}
+                                        />
+                                        {skalViseFjernKnappUtgift && (
+                                            <FjernKnapp
+                                                onClick={() => {
+                                                    const prev = utgiftsperioder.value[index];
+                                                    utgiftsperioder.update(
+                                                        {
+                                                            ...prev,
+                                                            utgifter: [
+                                                                ...prev.utgifter.slice(
+                                                                    0,
+                                                                    utgiftsindex
+                                                                ),
+                                                                ...prev.utgifter.slice(
+                                                                    utgiftsindex + 1
+                                                                ),
+                                                            ],
+                                                        },
+                                                        index
+                                                    );
+                                                    /*settValideringsFeil(
+                                                    (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                        const perioder = (
+                                                            prevState.utgiftsperioder ?? []
+                                                        ).filter((_, i) => i !== index);
+                                                        return { ...prevState, perioder };
+                                                    }
+                                                );*/
+                                                }}
+                                                knappetekst="Fjern vedtaksperiode"
+                                            />
+                                        )}
+                                    </Utgiftsrad>
+                                );
+                            })}
+                        </div>
+                        <LeggTilKnapp
+                            onClick={() =>
+                                utgiftsperioder.update(
+                                    {
+                                        ...utgiftsperioder.value[index],
+                                        utgifter: [
+                                            ...utgiftsperioder.value[index].utgifter,
+                                            tomUtgift,
+                                        ],
+                                    },
+                                    index
+                                )
+                            }
+                            knappetekst="Legg til periode"
+                            hidden={!behandlingErRedigerbar}
+                        />
+                    </>
                 );
             })}
             <LeggTilKnapp
