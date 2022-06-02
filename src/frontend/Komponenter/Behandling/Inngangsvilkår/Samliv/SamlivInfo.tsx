@@ -12,9 +12,10 @@ import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 interface Props {
     grunnlag: IVilkårGrunnlag;
     skalViseSøknadsdata: boolean;
+    behandlingId: string;
 }
 
-const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata }) => {
+const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata, behandlingId }) => {
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
 
     return (
@@ -44,7 +45,11 @@ const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata }) => {
                         </>
                     )}
 
-                    <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
+                    <Bosituasjon
+                        behandlingId={behandlingId}
+                        bosituasjon={bosituasjon}
+                        sivilstandsplaner={sivilstandsplaner}
+                    />
                 </GridTabell>
             )}
         </>
