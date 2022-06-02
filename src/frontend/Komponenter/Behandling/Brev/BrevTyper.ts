@@ -121,8 +121,8 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_REVURDERING: 'Vi har vurdert overgangsstønaden din på nytt',
     VEDTAK_INNVILGELSE_BARNETILSYN: 'Du får stønad til barnetilsyn',
     VEDTAK_AVSLAG_BARNETILSYN: 'Vi har avslått søknaden din om stønad til barnetilsyn',
-    INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE: 'Nav trenger opplysninger fra deg',
-    INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE: 'Nav trenger opplysninger fra deg',
+    INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE: 'Vi trenger opplysninger fra deg',
+    INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE: 'Vi trenger opplysninger fra deg',
 };
 
 export const BrevtyperTilSelectNavn: Record<
