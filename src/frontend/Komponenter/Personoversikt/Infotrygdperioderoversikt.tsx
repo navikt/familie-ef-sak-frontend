@@ -37,12 +37,12 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
     perioder,
 }) => {
     const [visSummert, settVisSummert] = useState<boolean>(false);
-    const [visKompakt, settVisKompakt] = useState<boolean>(false);
+    const [visStørreTabell, settVisStørreTabell] = useState<boolean>(false);
 
     const visPerioder = (
         stønadstype: Stønadstype,
         visSummert: boolean,
-        visKompakt: boolean,
+        visStørreTabell: boolean,
         perioder: Perioder
     ) => {
         return visSummert ? (
@@ -50,7 +50,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
         ) : (
             <InfotrygdPerioder
                 stønadstype={stønadstype}
-                visKompakt={visKompakt}
+                visStørreTabell={visStørreTabell}
                 perioder={perioder.perioder}
             />
         );
@@ -78,26 +78,36 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
                     />
                 )}
                 <Checkbox
-                    label={'Kompakt visning'}
+                    label={'Større tabeller'}
                     onChange={() => {
-                        settVisKompakt((prevState) => !prevState);
+                        settVisStørreTabell((prevState) => !prevState);
                     }}
-                    checked={visKompakt}
+                    checked={visStørreTabell}
                 />
             </CheckboxContainer>
             <h2>Overgangsstønad</h2>
             {visPerioder(
                 Stønadstype.OVERGANGSSTØNAD,
                 visSummert,
-                visKompakt,
+                visStørreTabell,
                 perioder.overgangsstønad
             )}
 
             <h2>Barnetilsyn</h2>
-            {visPerioder(Stønadstype.BARNETILSYN, visSummert, visKompakt, perioder.barnetilsyn)}
+            {visPerioder(
+                Stønadstype.BARNETILSYN,
+                visSummert,
+                visStørreTabell,
+                perioder.barnetilsyn
+            )}
 
             <h2>Skolepenger</h2>
-            {visPerioder(Stønadstype.SKOLEPENGER, visSummert, visKompakt, perioder.skolepenger)}
+            {visPerioder(
+                Stønadstype.SKOLEPENGER,
+                visSummert,
+                visStørreTabell,
+                perioder.skolepenger
+            )}
         </>
     );
 };
