@@ -1,5 +1,5 @@
 import {
-    IBeregningsperiodeSkolepenger,
+    IBeregningSkolepengerResponse,
     IBeregningsrequestSkolepenger,
     IInnvilgeVedtakForSkolepenger,
     IUtgiftsperiodeSkolepenger,
@@ -43,7 +43,7 @@ export const VedtaksformSkolepenger: React.FC<{
     const [feilmelding, settFeilmelding] = useState('');
 
     const [beregningsresultat, settBeregningsresultat] = useState(
-        byggTomRessurs<IBeregningsperiodeSkolepenger[]>()
+        byggTomRessurs<IBeregningSkolepengerResponse>()
     );
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -105,22 +105,22 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const beregnSkolepenger = () => {
         if (formState.customValidate(validerPerioder)) {
-            axiosRequest<IBeregningsperiodeSkolepenger[], IBeregningsrequestSkolepenger>({
+            axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger/`,
                 data: {
                     utgiftsperioder: utgiftsperiodeState.value,
                 },
-            }).then((res: Ressurs<IBeregningsperiodeSkolepenger[]>) => settBeregningsresultat(res));
+            }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
         }
     };
 
     useEffect(() => {
         if (!behandlingErRedigerbar) {
-            axiosRequest<IBeregningsperiodeSkolepenger[], null>({
+            axiosRequest<IBeregningSkolepengerResponse, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/beregning/skolepenger/${behandling.id}`,
-            }).then((res: Ressurs<IBeregningsperiodeSkolepenger[]>) => settBeregningsresultat(res));
+            }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
         }
     }, [axiosRequest, behandling, behandlingErRedigerbar]);
 

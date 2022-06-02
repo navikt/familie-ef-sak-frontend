@@ -48,18 +48,18 @@ export interface IBeregningsgrunnlag {
     grunnbeløp: number | null;
 }
 
-export interface IBeregningsperioderSkolepenger {
-    skoleår: number;
+export interface IBeregningSkolepengerResponse {
     perioder: IBeregningsperiodeSkolepenger[];
 }
 
 export interface IBeregningsperiodeSkolepenger {
+    skoleår: number;
     maksbeløp: number;
     maksbeløpFordeltAntallMåneder: number;
-    tidligereForbrukt: number;
+    alleredeUtbetalt: number;
     nyForbrukt: number;
     grunnlag: IBeregningsgrunnlagSkolepenger;
-    nyeUtbetalinger: DetaljertBeløpSkolepenger[];
+    utbetalinger: BeregnetUtbetalingSkolepenger[];
 }
 
 export interface IBeregningsgrunnlagSkolepenger {
@@ -68,8 +68,8 @@ export interface IBeregningsgrunnlagSkolepenger {
     periode: { fradato: string; tildato: string };
 }
 
-export interface DetaljertBeløpSkolepenger {
-    stønad: number;
+export interface BeregnetUtbetalingSkolepenger {
+    beløp: number;
     grunnlag: SkolepengerUtgift;
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    IBeregningsperioderSkolepenger,
+    IBeregningSkolepengerResponse,
     skolepengerStudietypeTilTekst,
 } from '../../../../App/typer/vedtak';
 import { Ressurs } from '../../../../App/typer/ressurs';
@@ -30,7 +30,7 @@ const HøyrejusterElement = styled(Element)`
 `;
 
 export const UtregningstabellSkolepenger: React.FC<{
-    beregningsresultat: Ressurs<IBeregningsperioderSkolepenger[]>;
+    beregningsresultat: Ressurs<IBeregningSkolepengerResponse>;
 }> = ({ beregningsresultat }) => {
     return (
         <DataViewer response={{ beregningsresultat }}>
@@ -47,37 +47,32 @@ export const UtregningstabellSkolepenger: React.FC<{
                         <HøyrejusterElement>Utbetales</HøyrejusterElement>
                         <HøyrejusterElement>Beløp</HøyrejusterElement>
                     </Rad>
-                    {beregningsresultat
-                        .flatMap((i) => i.perioder)
-                        .map((rad) => {
-                            return rad.nyeUtbetalinger.map((utbetaling) => (
-                                <Rad>
-                                    <Normaltekst>
-                                        {skolepengerStudietypeTilTekst[rad.grunnlag.studietype]}
-                                    </Normaltekst>
-                                    <HøyrejustertNormaltekst>
-                                        {`${formaterNullableMånedÅr(
-                                            rad.grunnlag.periode.fradato
-                                        )} - ${formaterNullableMånedÅr(
-                                            rad.grunnlag.periode.tildato
-                                        )}`}
-                                    </HøyrejustertNormaltekst>
-                                    <HøyrejustertNormaltekst>
-                                        {`${rad.grunnlag.studiebelastning} %`}
-                                    </HøyrejustertNormaltekst>
-                                    <HøyrejustertNormaltekst>
-                                        {formaterTallMedTusenSkille(utbetaling.grunnlag.utgifter)}{' '}
-                                        kr
-                                    </HøyrejustertNormaltekst>
-                                    <HøyrejustertNormaltekst>
-                                        {formaterNullableMånedÅr(utbetaling.grunnlag.årMånedFra)}
-                                    </HøyrejustertNormaltekst>
-                                    <HøyrejustertNormaltekst>
-                                        {formaterTallMedTusenSkille(utbetaling.stønad)} kr
-                                    </HøyrejustertNormaltekst>
-                                </Rad>
-                            ));
-                        })}
+                    {beregningsresultat.perioder.map((rad) => {
+                        return rad.utbetalinger.map((utbetaling) => (
+                            <Rad>
+                                <Normaltekst>
+                                    {skolepengerStudietypeTilTekst[rad.grunnlag.studietype]}
+                                </Normaltekst>
+                                <HøyrejustertNormaltekst>
+                                    {`${formaterNullableMånedÅr(
+                                        rad.grunnlag.periode.fradato
+                                    )} - ${formaterNullableMånedÅr(rad.grunnlag.periode.tildato)}`}
+                                </HøyrejustertNormaltekst>
+                                <HøyrejustertNormaltekst>
+                                    {`${rad.grunnlag.studiebelastning} %`}
+                                </HøyrejustertNormaltekst>
+                                <HøyrejustertNormaltekst>
+                                    {formaterTallMedTusenSkille(utbetaling.grunnlag.utgifter)} kr
+                                </HøyrejustertNormaltekst>
+                                <HøyrejustertNormaltekst>
+                                    {formaterNullableMånedÅr(utbetaling.grunnlag.årMånedFra)}
+                                </HøyrejustertNormaltekst>
+                                <HøyrejustertNormaltekst>
+                                    {formaterTallMedTusenSkille(utbetaling.beløp)} kr
+                                </HøyrejustertNormaltekst>
+                            </Rad>
+                        ));
+                    })}
                 </>
             )}
         </DataViewer>

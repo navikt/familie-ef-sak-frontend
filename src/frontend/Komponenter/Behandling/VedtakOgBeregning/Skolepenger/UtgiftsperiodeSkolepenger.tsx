@@ -80,19 +80,20 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
     const { settIkkePersistertKomponent } = useApp();
 
     const oppdaterUtgift = (
-        index: number,
-        utgiftsindex: number,
+        indexSomSKalOppdateres: number,
+        utgiftsindexSomSkalOppdateres: number,
         property: keyof SkolepengerUtgift,
         value: string | number | undefined
     ) => {
-        const perioder = utgiftsperioder.value[index].utgifter.map((utgift, index) => {
-            if (index === utgiftsindex) {
+        const gruppering = utgiftsperioder.value[indexSomSKalOppdateres];
+        const perioder = gruppering.utgifter.map((utgift, utgiftsindex) => {
+            if (utgiftsindex === utgiftsindexSomSkalOppdateres) {
                 return { ...utgift, [property]: value };
             } else {
                 return utgift;
             }
         });
-        oppdaterUtgiftsPeriode(index, 'utgifter', perioder);
+        oppdaterUtgiftsPeriode(indexSomSKalOppdateres, 'utgifter', perioder);
     };
 
     const oppdaterUtgiftsPeriode = (
@@ -215,9 +216,8 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
                                     behandlingErRedigerbar &&
                                     utgiftsindex === utgifter.length - 1 &&
                                     utgiftsindex !== 0;
-
                                 return (
-                                    <Utgiftsrad>
+                                    <Utgiftsrad key={utgiftsindex}>
                                         <MånedÅrVelger
                                             årMånedInitiell={utgift.årMånedFra}
                                             //label={datoFraTekst}
