@@ -5,6 +5,8 @@ import {
     initielleAvsnittVedtakAvslagBarnetilsyn,
     initielleAvsnittVedtakInvilgelse,
     initielleAvsnittVedtakInvilgelseBarnetilsyn,
+    initielleAvsnittInnhentingAvKarakterutskriftHovedperiode,
+    initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -93,6 +95,8 @@ export enum FrittståendeBrevtype {
     INNHENTING_AV_OPPLYSNINGER = 'INNHENTING_AV_OPPLYSNINGER',
     VARSEL_OM_AKTIVITETSPLIKT = 'VARSEL_OM_AKTIVITETSPLIKT',
     VARSEL_OM_SANKSJON = 'VARSEL_OM_SANKSJON',
+    INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE = 'INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE',
+    INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE = 'INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE',
 }
 
 export enum FritekstBrevtype {
@@ -117,6 +121,8 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_REVURDERING: 'Vi har vurdert overgangsstønaden din på nytt',
     VEDTAK_INNVILGELSE_BARNETILSYN: 'Du får stønad til barnetilsyn',
     VEDTAK_AVSLAG_BARNETILSYN: 'Vi har avslått søknaden din om stønad til barnetilsyn',
+    INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE: 'Vi trenger opplysninger om deg',
+    INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE: 'Vi trenger opplysninger om deg',
 };
 
 export const BrevtyperTilSelectNavn: Record<
@@ -134,6 +140,9 @@ export const BrevtyperTilSelectNavn: Record<
     VEDTAK_REVURDERING: 'Vedtak revurdering',
     VEDTAK_INNVILGELSE_BARNETILSYN: 'Vedtak innvilgelse',
     VEDTAK_AVSLAG_BARNETILSYN: 'Vedtak avslag',
+    INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE: 'Innhenting av karakterutskrift (hovedperiode)',
+    INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE:
+        'Innhenting av karakterutskrift (utvidet periode)',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
@@ -164,6 +173,10 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         VEDTAK_REVURDERING: initielleAvsnittVedtakInvilgelse,
         VEDTAK_INNVILGELSE_BARNETILSYN: initielleAvsnittVedtakInvilgelseBarnetilsyn,
         VEDTAK_AVSLAG_BARNETILSYN: initielleAvsnittVedtakAvslagBarnetilsyn,
+        INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE:
+            initielleAvsnittInnhentingAvKarakterutskriftHovedperiode,
+        INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE:
+            initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode,
     };
 
 export enum FritekstBrevContext {
