@@ -32,11 +32,11 @@ const AleneomsorgInfo: FC<{
     ) => {
         const harLøpendeStønad = barnMedLøpendeStønad.barn.includes(personIdent);
         return harLøpendeStønad ? (
-            <EtikettSuksess>{`ja - ${formaterNullableIsoDato(
+            <EtikettSuksess>{`ja - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
             )}`}</EtikettSuksess>
         ) : (
-            <EtikettAdvarsel>{`nei - ${formaterNullableIsoDato(
+            <EtikettAdvarsel>{`nei - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
             )}`}</EtikettAdvarsel>
         );
@@ -133,7 +133,9 @@ const AleneomsorgInfo: FC<{
                             return (
                                 <>
                                     <Søknadsgrunnlag />
-                                    <Normaltekst>Har barnet løpende stønad</Normaltekst>
+                                    <Normaltekst>
+                                        Har brukeren løpende stønad for barnet? (i EF Sak)
+                                    </Normaltekst>
                                     <Normaltekst>
                                         {utledEtikettForLøpendeStønad(barnMedLøpendeStønad, barnId)}
                                     </Normaltekst>
