@@ -71,6 +71,85 @@ export const tomUtgift: SkolepengerUtgift = {
     utgifter: undefined,
 };
 
+const UtgiftsperioderForSkoleår: React.FC<{
+    utgifter: SkolepengerUtgift[];
+    oppdaterUtgiftsperioder: (utgifter: SkolepengerUtgift[]) => void;
+    valideringsfeil?: FormErrors<SkolepengerUtgift[]>;
+    behandlingErRedigerbar: boolean;
+}> = ({ utgifter, oppdaterUtgiftsperioder, valideringsfeil, behandlingErRedigerbar }) => {
+    const oppdaterUtgift = (
+        utgiftsindexSomSkalOppdateres: number,
+        property: keyof SkolepengerUtgift,
+        value: string | number | undefined
+    ) => {
+        const perioder = utgifter.map((utgift, utgiftsindex) => {
+            if (utgiftsindex === utgiftsindexSomSkalOppdateres) {
+                return { ...utgift, [property]: value };
+            } else {
+                return utgift;
+            }
+        });
+        oppdaterUtgiftsperioder(perioder);
+    };
+
+    return (
+        <div style={{ marginLeft: '1rem' }}>
+            <Utgiftsrad>
+                <Element>Periode fra og med</Element>
+                <Element>Utgifter</Element>
+            </Utgiftsrad>
+            {utgifter.map((utgift, index) => {
+                const skalViseFjernKnappUtgift =
+                    behandlingErRedigerbar && index === utgifter.length - 1 && index !== 0;
+                return (
+                    <Utgiftsrad key={index}>
+                        <MånedÅrVelger
+                            årMånedInitiell={utgift.årMånedFra}
+                            //label={datoFraTekst}
+                            onEndret={(verdi) => {
+                                oppdaterUtgift(index, 'årMånedFra', verdi);
+                            }}
+                            antallÅrTilbake={10}
+                            antallÅrFrem={4}
+                            lesevisning={!behandlingErRedigerbar}
+                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                        />
+                        <StyledInputMedTusenSkille
+                            onKeyPress={tilHeltall}
+                            type="number"
+                            value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
+                            feil={valideringsfeil && valideringsfeil[index]?.utgifter}
+                            onChange={(e) => {
+                                oppdaterUtgift(index, 'utgifter', tilTallverdi(e.target.value));
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
+                        {skalViseFjernKnappUtgift && (
+                            <FjernKnapp
+                                onClick={() => {
+                                    oppdaterUtgiftsperioder([
+                                        ...utgifter.slice(0, index),
+                                        ...utgifter.slice(index + 1),
+                                    ]);
+                                    /*settValideringsFeil(
+                                (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                    const perioder = (
+                                        prevState.utgiftsperioder ?? []
+                                    ).filter((_, i) => i !== index);
+                                    return { ...prevState, perioder };
+                                }
+                            );*/
+                                }}
+                                knappetekst="Fjern vedtaksperiode"
+                            />
+                        )}
+                    </Utgiftsrad>
+                );
+            })}
+        </div>
+    );
+};
+
 const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
     utgiftsperioder,
     valideringsfeil,
@@ -78,23 +157,6 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-
-    const oppdaterUtgift = (
-        indexSomSKalOppdateres: number,
-        utgiftsindexSomSkalOppdateres: number,
-        property: keyof SkolepengerUtgift,
-        value: string | number | undefined
-    ) => {
-        const gruppering = utgiftsperioder.value[indexSomSKalOppdateres];
-        const perioder = gruppering.utgifter.map((utgift, utgiftsindex) => {
-            if (utgiftsindex === utgiftsindexSomSkalOppdateres) {
-                return { ...utgift, [property]: value };
-            } else {
-                return utgift;
-            }
-        });
-        oppdaterUtgiftsPeriode(indexSomSKalOppdateres, 'utgifter', perioder);
-    };
 
     const oppdaterUtgiftsPeriode = (
         index: number,
@@ -131,8 +193,7 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
                 <Element>Studiebelastning</Element>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { studietype, årMånedFra, årMånedTil, studiebelastning, utgifter } =
-                    utgiftsperiode;
+                const { studietype, årMånedFra, årMånedTil, studiebelastning } = utgiftsperiode;
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index === utgiftsperioder.value.length - 1 &&
@@ -206,92 +267,14 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
                                 />
                             )}
                         </UtgiftsperiodeRad>
-                        <div style={{ marginLeft: '1rem' }}>
-                            <Utgiftsrad>
-                                <Element>Periode fra og med</Element>
-                                <Element>Utgifter</Element>
-                            </Utgiftsrad>
-                            {utgifter.map((utgift, utgiftsindex) => {
-                                const skalViseFjernKnappUtgift =
-                                    behandlingErRedigerbar &&
-                                    utgiftsindex === utgifter.length - 1 &&
-                                    utgiftsindex !== 0;
-                                return (
-                                    <Utgiftsrad key={utgiftsindex}>
-                                        <MånedÅrVelger
-                                            årMånedInitiell={utgift.årMånedFra}
-                                            //label={datoFraTekst}
-                                            onEndret={(verdi) => {
-                                                oppdaterUtgift(
-                                                    index,
-                                                    utgiftsindex,
-                                                    'årMånedFra',
-                                                    verdi
-                                                );
-                                            }}
-                                            antallÅrTilbake={10}
-                                            antallÅrFrem={4}
-                                            lesevisning={!behandlingErRedigerbar}
-                                            feilmelding={
-                                                valideringsfeil &&
-                                                valideringsfeil[index]?.årMånedFra
-                                            } // TODO
-                                        />
-                                        <StyledInputMedTusenSkille
-                                            onKeyPress={tilHeltall}
-                                            type="number"
-                                            value={
-                                                harTallverdi(utgift.utgifter) ? utgift.utgifter : ''
-                                            }
-                                            /*feil={
-                                            valideringsfeil &&
-                                            valideringsfeil[index]?.utgifter[utgiftsindex]
-                                        }*/
-                                            onChange={(e) => {
-                                                oppdaterUtgift(
-                                                    index,
-                                                    utgiftsindex,
-                                                    'utgifter',
-                                                    tilTallverdi(e.target.value)
-                                                );
-                                            }}
-                                            erLesevisning={!behandlingErRedigerbar}
-                                        />
-                                        {skalViseFjernKnappUtgift && (
-                                            <FjernKnapp
-                                                onClick={() => {
-                                                    const prev = utgiftsperioder.value[index];
-                                                    utgiftsperioder.update(
-                                                        {
-                                                            ...prev,
-                                                            utgifter: [
-                                                                ...prev.utgifter.slice(
-                                                                    0,
-                                                                    utgiftsindex
-                                                                ),
-                                                                ...prev.utgifter.slice(
-                                                                    utgiftsindex + 1
-                                                                ),
-                                                            ],
-                                                        },
-                                                        index
-                                                    );
-                                                    /*settValideringsFeil(
-                                                    (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                        const perioder = (
-                                                            prevState.utgiftsperioder ?? []
-                                                        ).filter((_, i) => i !== index);
-                                                        return { ...prevState, perioder };
-                                                    }
-                                                );*/
-                                                }}
-                                                knappetekst="Fjern vedtaksperiode"
-                                            />
-                                        )}
-                                    </Utgiftsrad>
-                                );
-                            })}
-                        </div>
+                        <UtgiftsperioderForSkoleår
+                            utgifter={utgiftsperioder.value[index].utgifter}
+                            oppdaterUtgiftsperioder={(utgifter) =>
+                                oppdaterUtgiftsPeriode(index, 'utgifter', utgifter)
+                            }
+                            valideringsfeil={valideringsfeil && valideringsfeil[index].utgifter}
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                        />
                         <LeggTilKnapp
                             onClick={() =>
                                 utgiftsperioder.update(

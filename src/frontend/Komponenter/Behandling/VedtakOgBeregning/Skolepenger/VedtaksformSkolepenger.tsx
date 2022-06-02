@@ -109,6 +109,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger/`,
                 data: {
+                    behandlingId: behandling.id,
                     utgiftsperioder: utgiftsperiodeState.value,
                 },
             }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));

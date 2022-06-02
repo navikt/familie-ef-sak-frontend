@@ -185,6 +185,7 @@ export interface IBeregningsrequestBarnetilsyn {
 }
 
 export interface IBeregningsrequestSkolepenger {
+    behandlingId: string;
     utgiftsperioder: IUtgiftsperiodeSkolepenger[];
 }
 
