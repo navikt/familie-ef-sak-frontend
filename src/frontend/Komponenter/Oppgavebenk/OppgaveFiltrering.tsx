@@ -193,11 +193,13 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                         const val = event.target.value;
                         if (val === '') {
                             settOppgaveRequest((prevState: IOppgaveRequest) => {
+                                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return rest;
                             });
                         } else if (val === 'Fordelte' || val === 'Ufordelte') {
                             settOppgaveRequest((prevState: IOppgaveRequest) => {
+                                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return {
                                     ...rest,
@@ -206,6 +208,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                             });
                         } else {
                             settOppgaveRequest((prevState: IOppgaveRequest) => {
+                                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                 const { tildeltRessurs, tilordnetRessurs, ...rest } = prevState;
                                 return {
                                     ...rest,

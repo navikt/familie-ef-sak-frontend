@@ -13,6 +13,8 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { Behandling } from '../../../App/typer/fagsak';
 import { VedtaksoppsummeringBarnetilsyn } from './Barnetilsyn/VedtaksoppsummeringBarnetilsyn';
+import VedtakOgBeregningSkolepenger from './Skolepenger/VedtakOgBeregningSkolepenger';
+import { VedtaksoppsummeringSkolepenger } from './Skolepenger/VedtaksoppsummeringSkolepenger';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -55,6 +57,13 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
                                 vilkår={vilkår}
                             />
                         );
+                    case Stønadstype.SKOLEPENGER:
+                        return (
+                            <VedtakOgBeregningSideSkolepenger
+                                behandling={behandling}
+                                vilkår={vilkår}
+                            />
+                        );
                 }
             }}
         </DataViewer>
@@ -88,6 +97,22 @@ const VedtakOgBeregningSideBarnetilsyn: React.FC<{
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (
                 <VedtakOgBeregningBarnetilsyn behandling={behandling} vilkår={vilkår} />
+            )}
+        </>
+    );
+};
+
+const VedtakOgBeregningSideSkolepenger: React.FC<{
+    behandling: Behandling;
+    vilkår: IVilkår;
+}> = ({ behandling, vilkår }) => {
+    return (
+        <>
+            <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
+            {behandling.steg === Steg.VILKÅR ? (
+                <AlertStripeIkkeFerdigBehandletVilkår />
+            ) : (
+                <VedtakOgBeregningSkolepenger behandling={behandling} vilkår={vilkår} />
             )}
         </>
     );

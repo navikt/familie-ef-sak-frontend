@@ -101,6 +101,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
             )}
             {Object.entries(valgteFelt)
                 .filter(([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn)
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 .map(([_, valg]) => {
                     const refs: string[] = [];
 

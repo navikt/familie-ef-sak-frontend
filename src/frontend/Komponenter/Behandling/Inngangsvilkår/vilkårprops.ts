@@ -28,3 +28,7 @@ export interface VilkårPropsMedStønadstype extends VilkårProps {
     stønadstype: Stønadstype;
     behandlingId: string;
 }
+
+export interface VilkårPropsMedBehandlingId extends VilkårProps {
+    behandlingId: string;
+}
