@@ -9,14 +9,21 @@ import { Bosituasjon } from './Bosituasjon';
 import { SøkerDelerBoligTilTekst } from './typer';
 import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 import { Bostedsadresse } from './Bostedsadresse';
+import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
     skalViseSøknadsdata: boolean;
     behandlingId: string;
+    behandlingsstatus: BehandlingStatus;
 }
 
-const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata, behandlingId }) => {
+const SamlivInfo: FC<Props> = ({
+    grunnlag,
+    skalViseSøknadsdata,
+    behandlingId,
+    behandlingsstatus,
+}) => {
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
 
     return (
@@ -55,7 +62,10 @@ const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata, behandlingId })
                             />
                         </>
                     )}
-                    <Bostedsadresse behandlingId={behandlingId} />
+
+                    {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
+                        <Bostedsadresse behandlingId={behandlingId} />
+                    )}
                 </GridTabell>
             )}
         </>
