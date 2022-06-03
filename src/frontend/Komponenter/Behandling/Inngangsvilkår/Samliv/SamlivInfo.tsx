@@ -8,6 +8,7 @@ import ÅrsakEnslig from './ÅrsakEnslig';
 import { Bosituasjon } from './Bosituasjon';
 import { SøkerDelerBoligTilTekst } from './typer';
 import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
+import { Bostedsadresse } from './Bostedsadresse';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -20,36 +21,41 @@ const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata, behandlingId })
 
     return (
         <>
-            {skalViseSøknadsdata && sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
+            {sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
                 <GridTabell>
-                    {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
+                    {skalViseSøknadsdata && (
                         <>
+                            {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
+                                <>
+                                    <Søknadsgrunnlag />
+                                    <Normaltekst>Alene med barn fordi</Normaltekst>
+                                    <Normaltekst>
+                                        {(sivilstand.søknadsgrunnlag.årsakEnslig &&
+                                            ÅrsakEnsligTilTekst[
+                                                sivilstand.søknadsgrunnlag?.årsakEnslig
+                                            ]) ||
+                                            ''}
+                                    </Normaltekst>
+                                    <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
+                                </>
+                            )}
+
                             <Søknadsgrunnlag />
-                            <Normaltekst>Alene med barn fordi</Normaltekst>
-                            <Normaltekst>
-                                {(sivilstand.søknadsgrunnlag.årsakEnslig &&
-                                    ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
-                                    ''}
-                            </Normaltekst>
-                            <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
+                            {bosituasjon && (
+                                <>
+                                    <Normaltekst>Bosituasjon</Normaltekst>
+                                    <Normaltekst>
+                                        {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
+                                    </Normaltekst>
+                                </>
+                            )}
+                            <Bosituasjon
+                                bosituasjon={bosituasjon}
+                                sivilstandsplaner={sivilstandsplaner}
+                            />
                         </>
                     )}
-
-                    <Søknadsgrunnlag />
-                    {bosituasjon && (
-                        <>
-                            <Normaltekst>Bosituasjon</Normaltekst>
-                            <Normaltekst>
-                                {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
-                            </Normaltekst>
-                        </>
-                    )}
-
-                    <Bosituasjon
-                        behandlingId={behandlingId}
-                        bosituasjon={bosituasjon}
-                        sivilstandsplaner={sivilstandsplaner}
-                    />
+                    <Bostedsadresse behandlingId={behandlingId} />
                 </GridTabell>
             )}
         </>
