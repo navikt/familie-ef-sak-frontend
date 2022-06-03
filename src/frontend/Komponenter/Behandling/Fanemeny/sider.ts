@@ -84,9 +84,8 @@ export const siderForStønad = (stønadstype: Stønadstype): ISide[] => {
         case Stønadstype.OVERGANGSSTØNAD:
             return alleSider;
         case Stønadstype.BARNETILSYN:
-            return alleSider.filter((side) => side.navn !== SideNavn.TIDLIGEREVEDTAKSPERIODER);
         case Stønadstype.SKOLEPENGER:
-            return alleSider;
+            return alleSider.filter((side) => side.navn !== SideNavn.TIDLIGEREVEDTAKSPERIODER);
         default:
             return alleSider;
     }
