@@ -127,6 +127,7 @@ export interface IUtgiftsperiodeSkolepenger {
 export interface SkolepengerUtgift {
     årMånedFra: string;
     utgifter: number | undefined;
+    stønad: number | undefined;
 }
 
 export type ISanksjonereVedtakForOvergangsstønad = {

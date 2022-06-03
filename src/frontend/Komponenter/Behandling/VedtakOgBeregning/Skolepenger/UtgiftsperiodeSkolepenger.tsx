@@ -33,8 +33,9 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
 
 const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger utgifter';
-    grid-template-columns: ${(props) => (props.lesevisning ? '10rem 10rem' : '12rem 12rem 4rem')};
+    grid-template-areas: 'fraOgMedVelger utgifter stønad';
+    grid-template-columns: ${(props) =>
+        props.lesevisning ? '10rem 10rem 5rem' : '12rem 12rem 5rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
 `;
@@ -69,6 +70,7 @@ export const tomUtgiftsperiodeRad: IUtgiftsperiodeSkolepenger = {
 export const tomUtgift: SkolepengerUtgift = {
     årMånedFra: '',
     utgifter: undefined,
+    stønad: undefined,
 };
 
 const UtgiftsperioderForSkoleår: React.FC<{
@@ -95,8 +97,9 @@ const UtgiftsperioderForSkoleår: React.FC<{
     return (
         <div style={{ marginLeft: '1rem' }}>
             <Utgiftsrad>
-                <Element>Periode fra og med</Element>
+                <Element>Utbetalingsmåned</Element>
                 <Element>Utgifter</Element>
+                <Element>Stønad</Element>
             </Utgiftsrad>
             {utgifter.map((utgift, index) => {
                 const skalViseFjernKnappUtgift =
@@ -121,6 +124,16 @@ const UtgiftsperioderForSkoleår: React.FC<{
                             feil={valideringsfeil && valideringsfeil[index]?.utgifter}
                             onChange={(e) => {
                                 oppdaterUtgift(index, 'utgifter', tilTallverdi(e.target.value));
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
+                        <StyledInputMedTusenSkille
+                            onKeyPress={tilHeltall}
+                            type="number"
+                            value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
+                            feil={valideringsfeil && valideringsfeil[index]?.stønad}
+                            onChange={(e) => {
+                                oppdaterUtgift(index, 'stønad', tilTallverdi(e.target.value));
                             }}
                             erLesevisning={!behandlingErRedigerbar}
                         />
@@ -272,7 +285,7 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
                             oppdaterUtgiftsperioder={(utgifter) =>
                                 oppdaterUtgiftsPeriode(index, 'utgifter', utgifter)
                             }
-                            valideringsfeil={valideringsfeil && valideringsfeil[index].utgifter}
+                            valideringsfeil={valideringsfeil && valideringsfeil[index]?.utgifter}
                             behandlingErRedigerbar={behandlingErRedigerbar}
                         />
                         <LeggTilKnapp
@@ -294,11 +307,13 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
                     </>
                 );
             })}
-            <LeggTilKnapp
-                onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
-                knappetekst="Legg til vedtaksperiode"
-                hidden={!behandlingErRedigerbar}
-            />
+            <div>
+                <LeggTilKnapp
+                    onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
+                    knappetekst="Legg til skoleår"
+                    hidden={!behandlingErRedigerbar}
+                />
+            </div>
         </>
     );
 };
