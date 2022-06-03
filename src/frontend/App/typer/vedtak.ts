@@ -112,16 +112,20 @@ export type IPeriodeMedBeløp = {
 
 export type IInnvilgeVedtakForSkolepenger = {
     begrunnelse?: string;
-    perioder: IUtgiftsperiodeSkolepenger[];
+    perioder: ISkoleårsperiodeSkolepenger[];
     _type?: IVedtakType.InnvilgelseSkolepenger;
 };
 
-export interface IUtgiftsperiodeSkolepenger {
+export interface ISkoleårsperiodeSkolepenger {
+    perioder: IPeriodeSkolepenger[]
+    utgifter: SkolepengerUtgift[];
+}
+
+export interface IPeriodeSkolepenger {
     studietype: ESkolepengerStudietype | undefined;
     årMånedFra: string;
     årMånedTil: string;
     studiebelastning: number | undefined;
-    utgifter: SkolepengerUtgift[];
 }
 
 export interface SkolepengerUtgift {
@@ -187,7 +191,7 @@ export interface IBeregningsrequestBarnetilsyn {
 
 export interface IBeregningsrequestSkolepenger {
     behandlingId: string;
-    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
 }
 
 export enum EInntektsperiodeProperty {
@@ -233,7 +237,7 @@ export enum EUtgiftsperiodeProperty {
     utgifter = 'utgifter',
 }
 
-export type EUtgiftsperiodeSkolepengerProperty = keyof IUtgiftsperiodeSkolepenger;
+export type EUtgiftsperiodeSkolepengerProperty = keyof IPeriodeSkolepenger;
 
 export enum EKontantstøttePeriodeProperty {
     årMånedFra = 'årMånedFra',

@@ -1,24 +1,25 @@
 import {
     ESkolepengerStudietype,
-    IUtgiftsperiodeSkolepenger,
+    ISkoleårsperiodeSkolepenger,
+    IPeriodeSkolepenger,
     skolepengerStudietypeTilTekst,
     SkolepengerUtgift,
 } from '../../../../App/typer/vedtak';
-import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
-import React, { Dispatch, SetStateAction } from 'react';
+import MånedÅrPeriode, {PeriodeVariant} from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
+import React, {Dispatch, SetStateAction} from 'react';
 import styled from 'styled-components';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+import {useBehandling} from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
-import { ListState } from '../../../../App/hooks/felles/useListState';
-import { Element } from 'nav-frontend-typografi';
-import { FormErrors } from '../../../../App/hooks/felles/useFormState';
-import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
-import { useApp } from '../../../../App/context/AppContext';
-import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
+import {ListState} from '../../../../App/hooks/felles/useListState';
+import {Element} from 'nav-frontend-typografi';
+import {FormErrors} from '../../../../App/hooks/felles/useFormState';
+import {VEDTAK_OG_BEREGNING} from '../Felles/konstanter';
+import {useApp} from '../../../../App/context/AppContext';
+import {harTallverdi, tilHeltall, tilTallverdi} from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import {InnvilgeVedtakForm} from './VedtaksformSkolepenger';
+import {FamilieSelect} from '@navikt/familie-form-elements';
 import InputUtenSpinner from '../../../../Felles/Visningskomponenter/InputUtenSpinner';
 import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 
@@ -40,6 +41,9 @@ const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
 `;
 
+const Skoleårsperiode = styled.div``;
+
+
 const StyledInputMedTusenSkille = styled(InputMedTusenSkille)`
     text-align: left;
 `;
@@ -53,18 +57,16 @@ const StyledSelect = styled(FamilieSelect)`
     max-width: 200px;
 `;
 
-interface Props {
-    utgiftsperioder: ListState<IUtgiftsperiodeSkolepenger>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
+interface ValideringsProps {
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>[];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-export const tomUtgiftsperiodeRad: IUtgiftsperiodeSkolepenger = {
+export const tomUtgiftsperiodeRad: IPeriodeSkolepenger = {
     studietype: undefined,
     årMånedFra: '',
     årMånedTil: '',
     studiebelastning: undefined,
-    utgifter: [],
 };
 
 export const tomUtgift: SkolepengerUtgift = {
@@ -72,6 +74,11 @@ export const tomUtgift: SkolepengerUtgift = {
     utgifter: undefined,
     stønad: undefined,
 };
+
+export const tomSkoleårsperiodeSkolepenger: ISkoleårsperiodeSkolepenger = {
+    perioder: [tomUtgiftsperiodeRad],
+    utgifter: [tomUtgift]
+}
 
 const UtgiftsperioderForSkoleår: React.FC<{
     utgifter: SkolepengerUtgift[];
@@ -163,8 +170,38 @@ const UtgiftsperioderForSkoleår: React.FC<{
     );
 };
 
-const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
-    utgiftsperioder,
+
+
+const Skoleårsperioder: React.FC<{skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>} & ValideringsProps> = ({
+                                               skoleårsperioder,
+                                               valideringsfeil,
+                                               settValideringsFeil,
+                                           }) => {
+//export const byggTomRessurs = <T>(): Ressurs<T> => {
+    /*
+    property: keyof ISkoleårsperiodeSkolepenger,
+        value: IUtgiftsperiodeSkolepenger | undefined
+     */
+/*
+    const oppdaterSkoleår = (
+        index: number
+) => {
+        index
+    }
+ */
+
+
+
+    return <>
+        {skoleårsperioder.value.map((skoleårsperiode, index) => <Skoleårsperiode key={index} >
+            <UtgiftsperiodeSkolepenger perioder={skoleårsperiode.perioder} valideringsfeil={valideringsfeil} settValideringsFeil={settValideringsFeil}/>
+            <UtgiftsperiodeSkolepenger perioder={skoleårsperiode.utgifter} valideringsfeil={valideringsfeil} settValideringsFeil={settValideringsFeil}/>
+        </Skoleårsperiode>)}
+    </>
+}
+
+const UtgiftsperiodeSkolepenger: React.FC<{perioder: IPeriodeSkolepenger[]} & ValideringsProps> = ({
+                                                                                                              perioder,
     valideringsfeil,
     settValideringsFeil,
 }) => {
@@ -173,12 +210,12 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
 
     const oppdaterUtgiftsPeriode = (
         index: number,
-        property: keyof IUtgiftsperiodeSkolepenger,
+        property: keyof IPeriodeSkolepenger,
         value: string | SkolepengerUtgift[] | number | undefined
     ) => {
-        utgiftsperioder.update(
+        skoleårsperioder.update(
             {
-                ...utgiftsperioder.value[index],
+                ...skoleårsperioder.value[index],
                 [property]: value,
             },
             index
@@ -188,7 +225,7 @@ const UtgiftsperiodeSkolepenger: React.FC<Props> = ({
 
     const periodeVariantTilUtgiftsperiodeProperty = (
         periodeVariant: PeriodeVariant
-    ): keyof IUtgiftsperiodeSkolepenger => {
+    ): keyof IPeriodeSkolepenger => {
         switch (periodeVariant) {
             case PeriodeVariant.ÅR_MÅNED_FRA:
                 return 'årMånedFra';

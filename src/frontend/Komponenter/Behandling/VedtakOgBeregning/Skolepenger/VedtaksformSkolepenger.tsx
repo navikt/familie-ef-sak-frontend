@@ -2,31 +2,31 @@ import {
     IBeregningSkolepengerResponse,
     IBeregningsrequestSkolepenger,
     IInnvilgeVedtakForSkolepenger,
-    IUtgiftsperiodeSkolepenger,
+    ISkoleårsperiodeSkolepenger,
     IvedtakForSkolepenger,
     IVedtakType,
 } from '../../../../App/typer/vedtak';
-import { Behandling } from '../../../../App/typer/fagsak';
-import React, { useEffect, useState } from 'react';
-import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
-import { ListState } from '../../../../App/hooks/felles/useListState';
+import {Behandling} from '../../../../App/typer/fagsak';
+import React, {useEffect, useState} from 'react';
+import useFormState, {FormState} from '../../../../App/hooks/felles/useFormState';
+import {ListState} from '../../../../App/hooks/felles/useListState';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+import {useBehandling} from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button, Heading } from '@navikt/ds-react';
-import { FieldState } from '../../../../App/hooks/felles/useFieldState';
-import { useApp } from '../../../../App/context/AppContext';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
-import { useNavigate } from 'react-router-dom';
-import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
-import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
-import { UtregningstabellSkolepenger } from './UtregnignstabellSkolepenger';
-import UtgiftsperiodeSkolepenger, { tomUtgiftsperiodeRad } from './UtgiftsperiodeSkolepenger';
-import { validerInnvilgetVedtakForm, validerPerioder } from './vedtaksvalidering';
+import {Button, Heading} from '@navikt/ds-react';
+import {FieldState} from '../../../../App/hooks/felles/useFieldState';
+import {useApp} from '../../../../App/context/AppContext';
+import {byggTomRessurs, Ressurs, RessursStatus} from '../../../../App/typer/ressurs';
+import {useNavigate} from 'react-router-dom';
+import {IngenBegrunnelseOppgitt} from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
+import {EnsligTextArea} from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import {VEDTAK_OG_BEREGNING} from '../Felles/konstanter';
+import {UtregningstabellSkolepenger} from './UtregnignstabellSkolepenger';
+import UtgiftsperiodeSkolepenger, {tomSkoleårsperiodeSkolepenger} from './UtgiftsperiodeSkolepenger';
+import {validerInnvilgetVedtakForm, validerPerioder} from './vedtaksvalidering';
 
 export type InnvilgeVedtakForm = {
-    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
+    perioder: ISkoleårsperiodeSkolepenger[];
     begrunnelse?: string;
 };
 
@@ -51,16 +51,16 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
-            utgiftsperioder: lagretInnvilgetVedtak
+            perioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.perioder
-                : [tomUtgiftsperiodeRad],
+                : [tomSkoleårsperiodeSkolepenger],
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerInnvilgetVedtakForm
     );
-    const utgiftsperiodeState = formState.getProps(
-        'utgiftsperioder'
-    ) as ListState<IUtgiftsperiodeSkolepenger>;
+    const skoleårsPerioderState = formState.getProps(
+        'perioder'
+    ) as ListState<ISkoleårsperiodeSkolepenger>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForSkolepenger) => {
@@ -96,7 +96,7 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         const vedtaksRequest: IInnvilgeVedtakForSkolepenger = {
-            perioder: form.utgiftsperioder,
+            perioder: form.perioder,
             begrunnelse: form.begrunnelse,
             _type: IVedtakType.InnvilgelseSkolepenger,
         };
@@ -110,7 +110,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 url: `/familie-ef-sak/api/beregning/skolepenger/`,
                 data: {
                     behandlingId: behandling.id,
-                    utgiftsperioder: utgiftsperiodeState.value,
+                    skoleårsperioder: skoleårsPerioderState.value,
                 },
             }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
         }
@@ -131,8 +131,8 @@ export const VedtaksformSkolepenger: React.FC<{
                 Utgifter til skolepenger
             </Heading>
             <UtgiftsperiodeSkolepenger
-                utgiftsperioder={utgiftsperiodeState}
-                valideringsfeil={formState.errors.utgiftsperioder}
+                skoleårsperioder={skoleårsPerioderState}
+                valideringsfeil={formState.errors.perioder}
                 settValideringsFeil={formState.setErrors}
             />
             {feilmelding && (

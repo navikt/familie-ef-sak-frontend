@@ -1,47 +1,44 @@
-import { FormErrors } from '../../../../App/hooks/felles/useFormState';
-import { IUtgiftsperiodeSkolepenger } from '../../../../App/typer/vedtak';
-import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
+import {FormErrors} from '../../../../App/hooks/felles/useFormState';
+import {ISkoleårsperiodeSkolepenger} from '../../../../App/typer/vedtak';
+import {InnvilgeVedtakForm} from './VedtaksformSkolepenger';
 
 export const validerInnvilgetVedtakForm = ({
-    utgiftsperioder,
+    perioder,
     begrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     return {
         ...validerPerioder({
-            utgiftsperioder,
+            perioder,
         }),
         begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };
 
 export const validerPerioder = ({
-    utgiftsperioder,
+    perioder,
 }: {
-    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
+    perioder: ISkoleårsperiodeSkolepenger[];
 }): FormErrors<{
-    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
+    perioder: ISkoleårsperiodeSkolepenger[];
 }> => {
     return {
-        ...validerUtgiftsperioder({ utgiftsperioder }),
+        ...validerUtgiftsperioder({ perioder }),
     };
 };
 
 export const validerUtgiftsperioder = ({
-    utgiftsperioder,
+    perioder,
 }: {
-    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
-}): FormErrors<{ utgiftsperioder: IUtgiftsperiodeSkolepenger[] }> => {
-    const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index, utgiftsperioder) => {
-        const { studietype, årMånedFra, årMånedTil, studiebelastning, utgifter } = utgiftsperiode;
-        const utgiftsperiodeFeil: FormErrors<IUtgiftsperiodeSkolepenger> = {
-            studietype: undefined,
-            årMånedFra: undefined,
-            årMånedTil: undefined,
-            studiebelastning: undefined,
-            utgifter: undefined,
+    perioder: ISkoleårsperiodeSkolepenger[];
+}): FormErrors<{ perioder: ISkoleårsperiodeSkolepenger[] }> => {
+    //const feilIUtgiftsperioder = perioder.map((utgiftsperiode, index, utgiftsperioder) => {
+    const feilIUtgiftsperioder = perioder.map(() => {
+        //const { studietype, årMånedFra, årMånedTil, studiebelastning, utgifter } = utgiftsperiode;
+        const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
+            perioder: [],
+            utgifter: []
         };
-
+/*
         if (!studietype) {
             return { ...utgiftsperiodeFeil, studietype: 'Mangelfull utfylling av studietype' };
         }
@@ -77,13 +74,13 @@ export const validerUtgiftsperioder = ({
         }
         if (!utgifter) {
             return { ...utgiftsperiodeFeil, utgifter: 'Mangelfull utfylling av utgifter' };
-        }
+        }*/
 
         return utgiftsperiodeFeil;
     });
 
     return {
-        utgiftsperioder: feilIUtgiftsperioder,
+        perioder: feilIUtgiftsperioder,
     };
 };
 
