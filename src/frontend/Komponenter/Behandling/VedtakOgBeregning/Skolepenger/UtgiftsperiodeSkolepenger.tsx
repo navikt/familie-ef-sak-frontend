@@ -106,19 +106,14 @@ const Skoleårsperioder: React.FC<Props> = ({
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
     };
 
-    const oppdaterValideringsfeil = <T extends ISkoleårsperiodeSkolepenger>(
+    const oppdaterValideringsfeil = <T extends ISkoleårsperiodeSkolepenger, T2 extends T[keyof T]>(
         index: number,
         property: keyof T,
-        formErrors: FormErrors<T[keyof T]>
+        formErrors: FormErrors<T2 extends Array<infer U> ? U[] : T2>
     ) => {
         settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
             const perioder = (prevState.perioder ?? []).map((p, i) =>
-                i !== index
-                    ? p
-                    : {
-                          ...p,
-                          [property]: formErrors,
-                      }
+                i !== index ? p : { ...p, [property]: formErrors }
             );
             return { ...prevState, perioder };
         });
@@ -127,7 +122,6 @@ const Skoleårsperioder: React.FC<Props> = ({
     return (
         <>
             {skoleårsperioder.value.map((skoleårsperiode, index) => {
-                if (!valideringsfeil) return;
                 return (
                     <Skoleårsperiode key={index}>
                         <PerioderForSkoleår
@@ -149,17 +143,7 @@ const Skoleårsperioder: React.FC<Props> = ({
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             valideringsfeil={valideringsfeil && valideringsfeil[index]?.utgifter}
                             settValideringsFeil={(oppdaterteUtgifter) =>
-                                settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                    const perioder = (prevState.perioder ?? []).map((p, i) =>
-                                        i !== index
-                                            ? p
-                                            : {
-                                                  ...p,
-                                                  utgifter: oppdaterteUtgifter,
-                                              }
-                                    );
-                                    return { ...prevState, perioder };
-                                })
+                                oppdaterValideringsfeil(index, 'utgifter', oppdaterteUtgifter)
                             }
                         />
                         <LeggTilKnapp
