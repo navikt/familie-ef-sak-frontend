@@ -170,7 +170,14 @@ const PerioderForSkoleår: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkole
         property: keyof IPeriodeSkolepenger,
         value: string | number | undefined
     ) => {
-        oppdater(data.map((d, i) => (index === i ? { ...d, [property]: value } : d)));
+        oppdater(
+            data.map((periode, i) => (index === i ? { ...periode, [property]: value } : periode))
+        );
+    };
+
+    const oppdaterStudietype = (studietype: ESkolepengerStudietype) => {
+        console.log(data.length);
+        oppdater(data.map((periode) => ({ ...periode, studietype })));
     };
 
     const periodeVariantTilUtgiftsperiodeProperty = (
@@ -205,11 +212,13 @@ const PerioderForSkoleår: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkole
                                 value={studietype}
                                 feil={valideringsfeil && valideringsfeil[index]?.studietype}
                                 onChange={(e) => {
-                                    oppdaterUtgiftsPeriode(index, 'studietype', e.target.value);
+                                    oppdaterStudietype(e.target.value as ESkolepengerStudietype);
                                 }}
-                                erLesevisning={!behandlingErRedigerbar}
+                                erLesevisning={!behandlingErRedigerbar || index !== 0}
                                 lesevisningVerdi={
-                                    studietype && skolepengerStudietypeTilTekst[studietype]
+                                    index === 0
+                                        ? studietype && skolepengerStudietypeTilTekst[studietype]
+                                        : ' '
                                 }
                             >
                                 <option value="">Velg</option>
@@ -263,15 +272,14 @@ const PerioderForSkoleår: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkole
                                 />
                             )}
                         </SkoleårsperiodeRad>
-                        {/* TODO denne skal bli hamburgermeny? */}
-                        <LeggTilKnapp
-                            onClick={() => oppdater([...data, tomSkoleårsperiode])}
-                            knappetekst="Legg til periode"
-                            hidden={!behandlingErRedigerbar}
-                        />
                     </>
                 );
             })}
+            <LeggTilKnapp
+                onClick={() => oppdater([...data, tomSkoleårsperiode])}
+                knappetekst="Legg til periode"
+                hidden={!behandlingErRedigerbar}
+            />
         </>
     );
 };
@@ -288,7 +296,9 @@ const UtgiftsperioderForSkoleår: React.FC<ValideringsPropsMedOppdatering<Skolep
         property: keyof SkolepengerUtgift,
         value: string | number | undefined
     ) => {
-        oppdater(data.map((d, i) => (index === i ? { ...d, [property]: value } : d)));
+        oppdater(
+            data.map((periode, i) => (index === i ? { ...periode, [property]: value } : periode))
+        );
     };
 
     return (
@@ -348,6 +358,11 @@ const UtgiftsperioderForSkoleår: React.FC<ValideringsPropsMedOppdatering<Skolep
                     </Utgiftsrad>
                 );
             })}
+            <LeggTilKnapp
+                onClick={() => oppdater([...data, tomUtgift])}
+                knappetekst="Legg til utgift"
+                hidden={!behandlingErRedigerbar}
+            />
         </div>
     );
 };
