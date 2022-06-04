@@ -1,29 +1,29 @@
 import {
     ESkolepengerStudietype,
-    ISkoleårsperiodeSkolepenger,
     IPeriodeSkolepenger,
+    ISkoleårsperiodeSkolepenger,
     skolepengerStudietypeTilTekst,
     SkolepengerUtgift,
 } from '../../../../App/typer/vedtak';
-import MånedÅrPeriode, {PeriodeVariant} from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
-import React, {Dispatch, SetStateAction} from 'react';
+import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import {useBehandling} from '../../../../App/context/BehandlingContext';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
-import {ListState} from '../../../../App/hooks/felles/useListState';
-import {Element} from 'nav-frontend-typografi';
-import {FormErrors} from '../../../../App/hooks/felles/useFormState';
-import {VEDTAK_OG_BEREGNING} from '../Felles/konstanter';
-import {useApp} from '../../../../App/context/AppContext';
-import {harTallverdi, tilHeltall, tilTallverdi} from '../../../../App/utils/utils';
+import { ListState } from '../../../../App/hooks/felles/useListState';
+import { Element } from 'nav-frontend-typografi';
+import { FormErrors } from '../../../../App/hooks/felles/useFormState';
+import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import {InnvilgeVedtakForm} from './VedtaksformSkolepenger';
-import {FamilieSelect} from '@navikt/familie-form-elements';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 import InputUtenSpinner from '../../../../Felles/Visningskomponenter/InputUtenSpinner';
 import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger';
+import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
+import { useApp } from '../../../../App/context/AppContext';
+import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 
-const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
+const SkoleårsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
     grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger studiebelastning';
     grid-template-columns: ${(props) =>
@@ -43,7 +43,6 @@ const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
 
 const Skoleårsperiode = styled.div``;
 
-
 const StyledInputMedTusenSkille = styled(InputMedTusenSkille)`
     text-align: left;
 `;
@@ -57,12 +56,21 @@ const StyledSelect = styled(FamilieSelect)`
     max-width: 200px;
 `;
 
-interface ValideringsProps {
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>[];
+interface Props {
+    skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-export const tomUtgiftsperiodeRad: IPeriodeSkolepenger = {
+interface ValideringsPropsMedOppdatering<T> {
+    data: T[];
+    oppdater: (data: T[]) => void;
+    behandlingErRedigerbar: boolean;
+    valideringsfeil?: FormErrors<T>[];
+    settValideringsFeil: (errors: FormErrors<T>[]) => void;
+}
+
+export const tomSkoleårsperiode: IPeriodeSkolepenger = {
     studietype: undefined,
     årMånedFra: '',
     årMånedTil: '',
@@ -76,151 +84,109 @@ export const tomUtgift: SkolepengerUtgift = {
 };
 
 export const tomSkoleårsperiodeSkolepenger: ISkoleårsperiodeSkolepenger = {
-    perioder: [tomUtgiftsperiodeRad],
-    utgifter: [tomUtgift]
-}
-
-const UtgiftsperioderForSkoleår: React.FC<{
-    utgifter: SkolepengerUtgift[];
-    oppdaterUtgiftsperioder: (utgifter: SkolepengerUtgift[]) => void;
-    valideringsfeil?: FormErrors<SkolepengerUtgift[]>;
-    behandlingErRedigerbar: boolean;
-}> = ({ utgifter, oppdaterUtgiftsperioder, valideringsfeil, behandlingErRedigerbar }) => {
-    const oppdaterUtgift = (
-        utgiftsindexSomSkalOppdateres: number,
-        property: keyof SkolepengerUtgift,
-        value: string | number | undefined
-    ) => {
-        const perioder = utgifter.map((utgift, utgiftsindex) => {
-            if (utgiftsindex === utgiftsindexSomSkalOppdateres) {
-                return { ...utgift, [property]: value };
-            } else {
-                return utgift;
-            }
-        });
-        oppdaterUtgiftsperioder(perioder);
-    };
-
-    return (
-        <div style={{ marginLeft: '1rem' }}>
-            <Utgiftsrad>
-                <Element>Utbetalingsmåned</Element>
-                <Element>Utgifter</Element>
-                <Element>Stønad</Element>
-            </Utgiftsrad>
-            {utgifter.map((utgift, index) => {
-                const skalViseFjernKnappUtgift =
-                    behandlingErRedigerbar && index === utgifter.length - 1 && index !== 0;
-                return (
-                    <Utgiftsrad key={index}>
-                        <MånedÅrVelger
-                            årMånedInitiell={utgift.årMånedFra}
-                            //label={datoFraTekst}
-                            onEndret={(verdi) => {
-                                oppdaterUtgift(index, 'årMånedFra', verdi);
-                            }}
-                            antallÅrTilbake={10}
-                            antallÅrFrem={4}
-                            lesevisning={!behandlingErRedigerbar}
-                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                        />
-                        <StyledInputMedTusenSkille
-                            onKeyPress={tilHeltall}
-                            type="number"
-                            value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
-                            feil={valideringsfeil && valideringsfeil[index]?.utgifter}
-                            onChange={(e) => {
-                                oppdaterUtgift(index, 'utgifter', tilTallverdi(e.target.value));
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                        />
-                        <StyledInputMedTusenSkille
-                            onKeyPress={tilHeltall}
-                            type="number"
-                            value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
-                            feil={valideringsfeil && valideringsfeil[index]?.stønad}
-                            onChange={(e) => {
-                                oppdaterUtgift(index, 'stønad', tilTallverdi(e.target.value));
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                        />
-                        {skalViseFjernKnappUtgift && (
-                            <FjernKnapp
-                                onClick={() => {
-                                    oppdaterUtgiftsperioder([
-                                        ...utgifter.slice(0, index),
-                                        ...utgifter.slice(index + 1),
-                                    ]);
-                                    /*settValideringsFeil(
-                                (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                    const perioder = (
-                                        prevState.utgiftsperioder ?? []
-                                    ).filter((_, i) => i !== index);
-                                    return { ...prevState, perioder };
-                                }
-                            );*/
-                                }}
-                                knappetekst="Fjern vedtaksperiode"
-                            />
-                        )}
-                    </Utgiftsrad>
-                );
-            })}
-        </div>
-    );
+    perioder: [tomSkoleårsperiode],
+    utgifter: [tomUtgift],
 };
 
-
-
-const Skoleårsperioder: React.FC<{skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>} & ValideringsProps> = ({
-                                               skoleårsperioder,
-                                               valideringsfeil,
-                                               settValideringsFeil,
-                                           }) => {
-//export const byggTomRessurs = <T>(): Ressurs<T> => {
-    /*
-    property: keyof ISkoleårsperiodeSkolepenger,
-        value: IUtgiftsperiodeSkolepenger | undefined
-     */
-/*
-    const oppdaterSkoleår = (
-        index: number
-) => {
-        index
-    }
- */
-
-
-
-    return <>
-        {skoleårsperioder.value.map((skoleårsperiode, index) => <Skoleårsperiode key={index} >
-            <UtgiftsperiodeSkolepenger perioder={skoleårsperiode.perioder} valideringsfeil={valideringsfeil} settValideringsFeil={settValideringsFeil}/>
-            <UtgiftsperiodeSkolepenger perioder={skoleårsperiode.utgifter} valideringsfeil={valideringsfeil} settValideringsFeil={settValideringsFeil}/>
-        </Skoleårsperiode>)}
-    </>
-}
-
-const UtgiftsperiodeSkolepenger: React.FC<{perioder: IPeriodeSkolepenger[]} & ValideringsProps> = ({
-                                                                                                              perioder,
+const Skoleårsperioder: React.FC<Props> = ({
+    skoleårsperioder,
     valideringsfeil,
     settValideringsFeil,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
+    const oppdaterSkoleårsperioder = <T extends ISkoleårsperiodeSkolepenger>(
+        index: number,
+        property: keyof T,
+        value: T[keyof T]
+    ) => {
+        const skoleårsperiode = skoleårsperioder.value[index];
+        skoleårsperioder.update({ ...skoleårsperiode, [property]: value }, index);
+        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const oppdaterValideringsfeil = <T extends ISkoleårsperiodeSkolepenger>(
+        index: number,
+        property: keyof T,
+        formErrors: FormErrors<T[keyof T]>
+    ) => {
+        settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
+            const perioder = (prevState.perioder ?? []).map((p, i) =>
+                i !== index
+                    ? p
+                    : {
+                          ...p,
+                          [property]: formErrors,
+                      }
+            );
+            return { ...prevState, perioder };
+        });
+    };
+
+    return (
+        <>
+            {skoleårsperioder.value.map((skoleårsperiode, index) => {
+                if (!valideringsfeil) return;
+                return (
+                    <Skoleårsperiode key={index}>
+                        <PerioderForSkoleår
+                            data={skoleårsperiode.perioder}
+                            oppdater={(perioder) =>
+                                oppdaterSkoleårsperioder(index, 'perioder', perioder)
+                            }
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            valideringsfeil={valideringsfeil && valideringsfeil[index]?.perioder}
+                            settValideringsFeil={(oppdatertePerioder) =>
+                                oppdaterValideringsfeil(index, 'perioder', oppdatertePerioder)
+                            }
+                        />
+                        <UtgiftsperioderForSkoleår
+                            data={skoleårsperiode.utgifter}
+                            oppdater={(utgifter) =>
+                                oppdaterSkoleårsperioder(index, 'utgifter', utgifter)
+                            }
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            valideringsfeil={valideringsfeil && valideringsfeil[index]?.utgifter}
+                            settValideringsFeil={(oppdaterteUtgifter) =>
+                                settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                    const perioder = (prevState.perioder ?? []).map((p, i) =>
+                                        i !== index
+                                            ? p
+                                            : {
+                                                  ...p,
+                                                  utgifter: oppdaterteUtgifter,
+                                              }
+                                    );
+                                    return { ...prevState, perioder };
+                                })
+                            }
+                        />
+                        <LeggTilKnapp
+                            onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger)}
+                            knappetekst="Legg til skoleår"
+                            hidden={!behandlingErRedigerbar}
+                        />
+                    </Skoleårsperiode>
+                );
+            })}
+        </>
+    );
+};
+
+const PerioderForSkoleår: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
+    data,
+    oppdater,
+    behandlingErRedigerbar,
+    valideringsfeil,
+    settValideringsFeil,
+}) => {
     const oppdaterUtgiftsPeriode = (
         index: number,
         property: keyof IPeriodeSkolepenger,
-        value: string | SkolepengerUtgift[] | number | undefined
+        value: string | number | undefined
     ) => {
-        skoleårsperioder.update(
-            {
-                ...skoleårsperioder.value[index],
-                [property]: value,
-            },
-            index
-        );
-        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+        oppdater(data.map((d, i) => (index === i ? { ...d, [property]: value } : d)));
     };
 
     const periodeVariantTilUtgiftsperiodeProperty = (
@@ -236,22 +202,20 @@ const UtgiftsperiodeSkolepenger: React.FC<{perioder: IPeriodeSkolepenger[]} & Va
 
     return (
         <>
-            <UtgiftsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
+            <SkoleårsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
                 <Element>Studietype</Element>
                 <Element>Periode fra og med</Element>
                 <Element>Periode til og med</Element>
                 <Element>Studiebelastning</Element>
-            </UtgiftsperiodeRad>
-            {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { studietype, årMånedFra, årMånedTil, studiebelastning } = utgiftsperiode;
+            </SkoleårsperiodeRad>
+            {data.map((periode, index) => {
+                const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
                 const skalViseFjernKnapp =
-                    behandlingErRedigerbar &&
-                    index === utgiftsperioder.value.length - 1 &&
-                    index !== 0;
+                    behandlingErRedigerbar && index === data.length - 1 && index !== 0;
 
                 return (
                     <>
-                        <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
+                        <SkoleårsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
                             <StyledSelect
                                 aria-label="Periodetype"
                                 value={studietype}
@@ -288,7 +252,7 @@ const UtgiftsperiodeSkolepenger: React.FC<{perioder: IPeriodeSkolepenger[]} & Va
                             <StyledInput
                                 onKeyPress={tilHeltall}
                                 type="number"
-                                feil={valideringsfeil && valideringsfeil[index]?.studiebelastning}
+                                //feil={valideringsfeil && valideringsfeil[index]?.studiebelastning}
                                 value={harTallverdi(studiebelastning) ? studiebelastning : ''}
                                 formatValue={(k) => k + ' %'}
                                 onChange={(e) => {
@@ -303,56 +267,105 @@ const UtgiftsperiodeSkolepenger: React.FC<{perioder: IPeriodeSkolepenger[]} & Va
                             {skalViseFjernKnapp && (
                                 <FjernKnapp
                                     onClick={() => {
-                                        utgiftsperioder.remove(index);
+                                        oppdater([
+                                            ...data.slice(0, index),
+                                            ...data.slice(index + 1),
+                                        ]);
                                         settValideringsFeil(
-                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                const perioder = (
-                                                    prevState.utgiftsperioder ?? []
-                                                ).filter((_, i) => i !== index);
-                                                return { ...prevState, perioder };
-                                            }
+                                            (valideringsfeil || []).filter((_, i) => i !== index)
                                         );
                                     }}
                                     knappetekst="Fjern vedtaksperiode"
                                 />
                             )}
-                        </UtgiftsperiodeRad>
-                        <UtgiftsperioderForSkoleår
-                            utgifter={utgiftsperioder.value[index].utgifter}
-                            oppdaterUtgiftsperioder={(utgifter) =>
-                                oppdaterUtgiftsPeriode(index, 'utgifter', utgifter)
-                            }
-                            valideringsfeil={valideringsfeil && valideringsfeil[index]?.utgifter}
-                            behandlingErRedigerbar={behandlingErRedigerbar}
-                        />
+                        </SkoleårsperiodeRad>
+                        {/* TODO denne skal bli hamburgermeny? */}
                         <LeggTilKnapp
-                            onClick={() =>
-                                utgiftsperioder.update(
-                                    {
-                                        ...utgiftsperioder.value[index],
-                                        utgifter: [
-                                            ...utgiftsperioder.value[index].utgifter,
-                                            tomUtgift,
-                                        ],
-                                    },
-                                    index
-                                )
-                            }
+                            onClick={() => oppdater([...data, tomSkoleårsperiode])}
                             knappetekst="Legg til periode"
                             hidden={!behandlingErRedigerbar}
                         />
                     </>
                 );
             })}
-            <div>
-                <LeggTilKnapp
-                    onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
-                    knappetekst="Legg til skoleår"
-                    hidden={!behandlingErRedigerbar}
-                />
-            </div>
         </>
     );
 };
 
-export default UtgiftsperiodeSkolepenger;
+const UtgiftsperioderForSkoleår: React.FC<ValideringsPropsMedOppdatering<SkolepengerUtgift>> = ({
+    data,
+    oppdater,
+    behandlingErRedigerbar,
+    valideringsfeil,
+    settValideringsFeil,
+}) => {
+    const oppdaterUtgift = (
+        index: number,
+        property: keyof SkolepengerUtgift,
+        value: string | number | undefined
+    ) => {
+        oppdater(data.map((d, i) => (index === i ? { ...d, [property]: value } : d)));
+    };
+
+    return (
+        <div style={{ marginLeft: '1rem' }}>
+            <Utgiftsrad>
+                <Element>Utbetalingsmåned</Element>
+                <Element>Utgifter</Element>
+                <Element>Stønad</Element>
+            </Utgiftsrad>
+            {data.map((utgift, index) => {
+                const skalViseFjernKnapp =
+                    behandlingErRedigerbar && index === data.length - 1 && index !== 0;
+                return (
+                    <Utgiftsrad key={index}>
+                        <MånedÅrVelger
+                            årMånedInitiell={utgift.årMånedFra}
+                            //label={datoFraTekst}
+                            onEndret={(verdi) => {
+                                oppdaterUtgift(index, 'årMånedFra', verdi);
+                            }}
+                            antallÅrTilbake={10}
+                            antallÅrFrem={4}
+                            lesevisning={!behandlingErRedigerbar}
+                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                        />
+                        <StyledInputMedTusenSkille
+                            onKeyPress={tilHeltall}
+                            type="number"
+                            value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
+                            feil={valideringsfeil && valideringsfeil[index]?.utgifter}
+                            onChange={(e) => {
+                                oppdaterUtgift(index, 'utgifter', tilTallverdi(e.target.value));
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
+                        <StyledInputMedTusenSkille
+                            onKeyPress={tilHeltall}
+                            type="number"
+                            value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
+                            feil={valideringsfeil && valideringsfeil[index]?.stønad}
+                            onChange={(e) => {
+                                oppdaterUtgift(index, 'stønad', tilTallverdi(e.target.value));
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
+                        {skalViseFjernKnapp && (
+                            <FjernKnapp
+                                onClick={() => {
+                                    oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
+                                    settValideringsFeil(
+                                        (valideringsfeil || []).filter((_, i) => i !== index)
+                                    );
+                                }}
+                                knappetekst="Fjern vedtaksperiode"
+                            />
+                        )}
+                    </Utgiftsrad>
+                );
+            })}
+        </div>
+    );
+};
+
+export default Skoleårsperioder;

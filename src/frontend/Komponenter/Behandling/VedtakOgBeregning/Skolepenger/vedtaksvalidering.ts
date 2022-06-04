@@ -1,6 +1,6 @@
-import {FormErrors} from '../../../../App/hooks/felles/useFormState';
-import {ISkoleårsperiodeSkolepenger} from '../../../../App/typer/vedtak';
-import {InnvilgeVedtakForm} from './VedtaksformSkolepenger';
+import { FormErrors } from '../../../../App/hooks/felles/useFormState';
+import { ISkoleårsperiodeSkolepenger } from '../../../../App/typer/vedtak';
+import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 
 export const validerInnvilgetVedtakForm = ({
     perioder,
@@ -26,7 +26,7 @@ export const validerPerioder = ({
     };
 };
 
-export const validerUtgiftsperioder = ({
+const validerUtgiftsperioder = ({
     perioder,
 }: {
     perioder: ISkoleårsperiodeSkolepenger[];
@@ -36,9 +36,9 @@ export const validerUtgiftsperioder = ({
         //const { studietype, årMånedFra, årMånedTil, studiebelastning, utgifter } = utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
             perioder: [],
-            utgifter: []
+            utgifter: [],
         };
-/*
+        /*
         if (!studietype) {
             return { ...utgiftsperiodeFeil, studietype: 'Mangelfull utfylling av studietype' };
         }

@@ -6,24 +6,24 @@ import {
     IvedtakForSkolepenger,
     IVedtakType,
 } from '../../../../App/typer/vedtak';
-import {Behandling} from '../../../../App/typer/fagsak';
-import React, {useEffect, useState} from 'react';
-import useFormState, {FormState} from '../../../../App/hooks/felles/useFormState';
-import {ListState} from '../../../../App/hooks/felles/useListState';
+import { Behandling } from '../../../../App/typer/fagsak';
+import React, { useEffect, useState } from 'react';
+import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
+import { ListState } from '../../../../App/hooks/felles/useListState';
 import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import {useBehandling} from '../../../../App/context/BehandlingContext';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import {Button, Heading} from '@navikt/ds-react';
-import {FieldState} from '../../../../App/hooks/felles/useFieldState';
-import {useApp} from '../../../../App/context/AppContext';
-import {byggTomRessurs, Ressurs, RessursStatus} from '../../../../App/typer/ressurs';
-import {useNavigate} from 'react-router-dom';
-import {IngenBegrunnelseOppgitt} from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
-import {EnsligTextArea} from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import {VEDTAK_OG_BEREGNING} from '../Felles/konstanter';
-import {UtregningstabellSkolepenger} from './UtregnignstabellSkolepenger';
-import UtgiftsperiodeSkolepenger, {tomSkoleårsperiodeSkolepenger} from './UtgiftsperiodeSkolepenger';
-import {validerInnvilgetVedtakForm, validerPerioder} from './vedtaksvalidering';
+import { Button, Heading } from '@navikt/ds-react';
+import { FieldState } from '../../../../App/hooks/felles/useFieldState';
+import { useApp } from '../../../../App/context/AppContext';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { useNavigate } from 'react-router-dom';
+import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
+import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
+import { UtregningstabellSkolepenger } from './UtregnignstabellSkolepenger';
+import Skoleårsperioder, { tomSkoleårsperiodeSkolepenger } from './UtgiftsperiodeSkolepenger';
+import { validerInnvilgetVedtakForm, validerPerioder } from './vedtaksvalidering';
 
 export type InnvilgeVedtakForm = {
     perioder: ISkoleårsperiodeSkolepenger[];
@@ -124,13 +124,12 @@ export const VedtaksformSkolepenger: React.FC<{
             }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
         }
     }, [axiosRequest, behandling, behandlingErRedigerbar]);
-
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <Heading spacing size="small" level="5">
                 Utgifter til skolepenger
             </Heading>
-            <UtgiftsperiodeSkolepenger
+            <Skoleårsperioder
                 skoleårsperioder={skoleårsPerioderState}
                 valideringsfeil={formState.errors.perioder}
                 settValideringsFeil={formState.setErrors}
