@@ -25,30 +25,14 @@ export const validerInnvilgetVedtakForm = ({
     begrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     return {
-        ...validerPerioder({
-            perioder,
-        }),
+        perioder: validerSkoleårsperioderSkolepenger(perioder),
         begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };
 
-export const validerPerioder = ({
-    perioder,
-}: {
-    perioder: ISkoleårsperiodeSkolepenger[];
-}): FormErrors<{
-    perioder: ISkoleårsperiodeSkolepenger[];
-}> => {
-    return {
-        ...validerSkoleårsperioderSkolepenger({ perioder }),
-    };
-};
-
-const validerSkoleårsperioderSkolepenger = ({
-    perioder,
-}: {
-    perioder: ISkoleårsperiodeSkolepenger[];
-}): FormErrors<{ perioder: ISkoleårsperiodeSkolepenger[] }> => {
+const validerSkoleårsperioderSkolepenger = (
+    perioder: ISkoleårsperiodeSkolepenger[]
+): FormErrors<ISkoleårsperiodeSkolepenger[]> => {
     const feilIUtgiftsperioder = perioder.map((periode) => {
         const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
             perioder: validerDelperiodeSkoleår(periode.perioder),
@@ -57,9 +41,7 @@ const validerSkoleårsperioderSkolepenger = ({
         return utgiftsperiodeFeil;
     });
 
-    return {
-        perioder: feilIUtgiftsperioder,
-    };
+    return feilIUtgiftsperioder;
 };
 
 const validerDelperiodeSkoleår = (

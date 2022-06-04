@@ -23,7 +23,7 @@ import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextAr
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { UtregningstabellSkolepenger } from './UtregnignstabellSkolepenger';
 import Skoleårsperioder, { tomSkoleårsperiodeSkolepenger } from './UtgiftsperiodeSkolepenger';
-import { validerInnvilgetVedtakForm, validerPerioder } from './vedtaksvalidering';
+import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 
 export type InnvilgeVedtakForm = {
     perioder: ISkoleårsperiodeSkolepenger[];
@@ -104,7 +104,7 @@ export const VedtaksformSkolepenger: React.FC<{
     };
 
     const beregnSkolepenger = () => {
-        if (formState.customValidate(validerPerioder)) {
+        if (formState.customValidate(validerInnvilgetVedtakForm)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger/`,
