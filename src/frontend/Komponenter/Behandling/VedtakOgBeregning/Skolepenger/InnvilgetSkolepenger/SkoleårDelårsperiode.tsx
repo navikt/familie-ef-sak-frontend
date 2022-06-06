@@ -86,16 +86,12 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 onChange={(e) => {
                                     oppdaterStudietype(e.target.value as ESkolepengerStudietype);
                                 }}
-                                erLesevisning={!behandlingErRedigerbar}
-                                lesevisningVerdi={
-                                    studietype && skolepengerStudietypeTilTekst[studietype]
-                                }
-                                /*erLesevisning={!behandlingErRedigerbar || index !== 0}
+                                erLesevisning={!behandlingErRedigerbar || index !== 0}
                                 lesevisningVerdi={
                                     index === 0
                                         ? studietype && skolepengerStudietypeTilTekst[studietype]
                                         : ' '
-                                }*/
+                                }
                             >
                                 <option value="">Velg</option>
                                 {[ESkolepengerStudietype.HØGSKOLE_UNIVERSITET].map((type) => (
