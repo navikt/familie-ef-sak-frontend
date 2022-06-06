@@ -2,6 +2,8 @@ import {
     addMonths,
     differenceInMonths,
     differenceInYears,
+    getMonth,
+    getYear,
     isAfter,
     isBefore,
     isEqual,
@@ -66,4 +68,10 @@ export const nullableDatoTilAlder = (dato?: string | Date): number | undefined =
 
 export const datoTilAlder = (dato: string | Date): number => {
     return differenceInYears(new Date(), tilDato(dato));
+};
+
+export const tilSkoleår = (årMåned: string): number => {
+    const dato = månedÅrTilDate(årMåned);
+    const år = getYear(dato);
+    return getMonth(dato) > 6 ? år : år - 1;
 };
