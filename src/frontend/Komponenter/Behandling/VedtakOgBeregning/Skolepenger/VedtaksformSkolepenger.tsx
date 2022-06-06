@@ -22,8 +22,9 @@ import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/Inge
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { UtregningstabellSkolepenger } from './UtregnignstabellSkolepenger';
-import Skoleårsperioder, { tomSkoleårsperiodeSkolepenger } from './UtgiftsperiodeSkolepenger';
 import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
+import { tomSkoleårsperiodeSkolepenger } from './typer';
+import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 
 export type InnvilgeVedtakForm = {
     perioder: ISkoleårsperiodeSkolepenger[];
@@ -129,7 +130,7 @@ export const VedtaksformSkolepenger: React.FC<{
             <Heading spacing size="small" level="5">
                 Utgifter til skolepenger
             </Heading>
-            <Skoleårsperioder
+            <SkoleårsperioderSkolepenger
                 skoleårsperioder={skoleårsPerioderState}
                 valideringsfeil={formState.errors.perioder}
                 settValideringsFeil={formState.setErrors}
