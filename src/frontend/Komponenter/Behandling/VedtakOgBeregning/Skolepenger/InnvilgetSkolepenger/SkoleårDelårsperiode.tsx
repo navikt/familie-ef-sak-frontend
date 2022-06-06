@@ -49,6 +49,11 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
         );
     };
 
+    const fjernDelårsperiode = (index: number) => {
+        oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
+        settValideringsFeil((valideringsfeil || []).filter((_, i) => i !== index));
+    };
+
     const oppdaterStudietype = (studietype: ESkolepengerStudietype) => {
         oppdater(data.map((periode) => ({ ...periode, studietype })));
     };
@@ -104,13 +109,13 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 årMånedFraInitiell={årMånedFra}
                                 årMånedTilInitiell={årMånedTil}
                                 index={index}
-                                onEndre={(verdi, periodeVariant) => {
+                                onEndre={(verdi, periodeVariant) =>
                                     oppdaterUtgiftsPeriode(
                                         index,
                                         periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
                                         verdi
-                                    );
-                                }}
+                                    )
+                                }
                                 feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                                 erLesevisning={!behandlingErRedigerbar}
                             />
@@ -120,26 +125,18 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 feil={valideringsfeil && valideringsfeil[index]?.studiebelastning}
                                 value={harTallverdi(studiebelastning) ? studiebelastning : ''}
                                 formatValue={(k) => k + ' %'}
-                                onChange={(e) => {
+                                onChange={(e) =>
                                     oppdaterUtgiftsPeriode(
                                         index,
                                         'studiebelastning',
                                         tilTallverdi(e.target.value)
-                                    );
-                                }}
+                                    )
+                                }
                                 erLesevisning={!behandlingErRedigerbar}
                             />
                             {skalViseFjernKnapp && (
                                 <FjernKnapp
-                                    onClick={() => {
-                                        oppdater([
-                                            ...data.slice(0, index),
-                                            ...data.slice(index + 1),
-                                        ]);
-                                        settValideringsFeil(
-                                            (valideringsfeil || []).filter((_, i) => i !== index)
-                                        );
-                                    }}
+                                    onClick={() => fjernDelårsperiode(index)}
                                     knappetekst="Fjern vedtaksperiode"
                                 />
                             )}

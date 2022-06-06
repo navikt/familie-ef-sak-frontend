@@ -39,6 +39,11 @@ const UtgiftsperiodeSkolepenger: React.FC<ValideringsPropsMedOppdatering<Skolepe
         );
     };
 
+    const fjernUtgift = (index: number) => {
+        oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
+        settValideringsFeil((valideringsfeil || []).filter((_, i) => i !== index));
+    };
+
     return (
         <div style={{ marginLeft: '1rem' }}>
             <Utgiftsrad>
@@ -84,12 +89,7 @@ const UtgiftsperiodeSkolepenger: React.FC<ValideringsPropsMedOppdatering<Skolepe
                         />
                         {skalViseFjernKnapp && (
                             <FjernKnapp
-                                onClick={() => {
-                                    oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
-                                    settValideringsFeil(
-                                        (valideringsfeil || []).filter((_, i) => i !== index)
-                                    );
-                                }}
+                                onClick={() => fjernUtgift(index)}
                                 knappetekst="Fjern vedtaksperiode"
                             />
                         )}
