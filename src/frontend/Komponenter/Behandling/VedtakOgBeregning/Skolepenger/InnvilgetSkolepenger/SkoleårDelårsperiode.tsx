@@ -3,15 +3,15 @@ import {
     ESkolepengerStudietype,
     IPeriodeSkolepenger,
     skolepengerStudietypeTilTekst,
-} from '../../../../App/typer/vedtak';
-import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
+} from '../../../../../App/typer/vedtak';
+import MånedÅrPeriode, { PeriodeVariant } from '../../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Element } from 'nav-frontend-typografi';
-import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
-import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
-import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
+import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import styled from 'styled-components';
-import { tomSkoleårsperiode, ValideringsPropsMedOppdatering } from './typer';
-import InputUtenSpinner from '../../../../Felles/Visningskomponenter/InputUtenSpinner';
+import { tomSkoleårsperiode, ValideringsPropsMedOppdatering } from '../typer';
+import InputUtenSpinner from '../../../../../Felles/Visningskomponenter/InputUtenSpinner';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 
 const SkoleårsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
@@ -76,7 +76,6 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                 const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar && index === data.length - 1 && index !== 0;
-                console.log(valideringsfeil ? valideringsfeil[index] : '');
                 return (
                     <>
                         <SkoleårsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>

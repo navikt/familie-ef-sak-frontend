@@ -1,11 +1,11 @@
-import { FormErrors } from '../../../../App/hooks/felles/useFormState';
+import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import {
     IPeriodeSkolepenger,
     ISkoleårsperiodeSkolepenger,
     SkolepengerUtgift,
-} from '../../../../App/typer/vedtak';
+} from '../../../../../App/typer/vedtak';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
+import { erMånedÅrEtterEllerLik } from '../../../../../App/utils/dato';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,

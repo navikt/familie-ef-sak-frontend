@@ -1,16 +1,17 @@
-import { ISkoleårsperiodeSkolepenger } from '../../../../App/typer/vedtak';
+import { ISkoleårsperiodeSkolepenger } from '../../../../../App/typer/vedtak';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
-import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
-import { ListState } from '../../../../App/hooks/felles/useListState';
-import { FormErrors } from '../../../../App/hooks/felles/useFormState';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
+import { ListState } from '../../../../../App/hooks/felles/useListState';
+import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { useApp } from '../../../../App/context/AppContext';
-import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
+import { useApp } from '../../../../../App/context/AppContext';
+import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import SkoleårDelårsperiode from './SkoleårDelårsperiode';
 import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
-import { tomSkoleårsperiodeSkolepenger } from './typer';
+import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 
 const Skoleårsperiode = styled.div``;
 
@@ -27,6 +28,15 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
+
+    const fjernSkoleårsperiode = (index: number) => {
+        skoleårsperioder.remove(index);
+        settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => ({
+            ...prevState,
+            perioder: (prevState.perioder || []).filter((_, i) => index !== i),
+        }));
+        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
 
     const oppdaterSkoleårsperioder = <T extends ISkoleårsperiodeSkolepenger>(
         index: number,
@@ -53,6 +63,10 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
     return (
         <>
             {skoleårsperioder.value.map((skoleårsperiode, index) => {
+                const skalViseFjernKnapp =
+                    behandlingErRedigerbar &&
+                    index === skoleårsperioder.value.length - 1 &&
+                    index !== 0;
                 return (
                     <Skoleårsperiode key={index}>
                         <SkoleårDelårsperiode
@@ -77,6 +91,12 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                 oppdaterValideringsfeil(index, 'utgifter', oppdaterteUtgifter)
                             }
                         />
+                        {skalViseFjernKnapp && (
+                            <FjernKnapp
+                                onClick={() => fjernSkoleårsperiode(index)}
+                                knappetekst="Fjern skoleår"
+                            />
+                        )}
                         <LeggTilKnapp
                             onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger)}
                             knappetekst="Legg til skoleår"
