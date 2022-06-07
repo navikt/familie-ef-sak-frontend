@@ -48,16 +48,14 @@ export interface IBeregningsgrunnlag {
     grunnbeløp: number | null;
 }
 
-export interface IBeregningsperiodeSkolepenger {
-    periode: { fradato: string; tildato: string };
-    beløp: number;
-    beregningsgrunnlag: IBeregningsgrunnlagSkolepenger;
+export interface IBeregningSkolepengerResponse {
+    perioder: IBeregningsperiodeSkolepenger[];
 }
 
-export interface IBeregningsgrunnlagSkolepenger {
-    studietype: ESkolepengerStudietype;
-    studiebelastning: number;
+export interface IBeregningsperiodeSkolepenger {
+    årMånedFra: string;
     utgifter: number;
+    beløp: number;
 }
 
 export type IInnvilgeVedtakForOvergangsstønad = {
@@ -100,16 +98,26 @@ export type IPeriodeMedBeløp = {
 
 export type IInnvilgeVedtakForSkolepenger = {
     begrunnelse?: string;
-    perioder: IUtgiftsperiodeSkolepenger[];
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
     _type?: IVedtakType.InnvilgelseSkolepenger;
 };
 
-export interface IUtgiftsperiodeSkolepenger {
+export interface ISkoleårsperiodeSkolepenger {
+    perioder: IPeriodeSkolepenger[];
+    utgifter: SkolepengerUtgift[];
+}
+
+export interface IPeriodeSkolepenger {
     studietype: ESkolepengerStudietype | undefined;
     årMånedFra: string;
     årMånedTil: string;
     studiebelastning: number | undefined;
+}
+
+export interface SkolepengerUtgift {
+    årMånedFra: string;
     utgifter: number | undefined;
+    stønad: number | undefined;
 }
 
 export type ISanksjonereVedtakForOvergangsstønad = {
@@ -168,7 +176,8 @@ export interface IBeregningsrequestBarnetilsyn {
 }
 
 export interface IBeregningsrequestSkolepenger {
-    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
+    behandlingId: string;
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
 }
 
 export enum EInntektsperiodeProperty {
@@ -215,7 +224,7 @@ export enum EUtgiftsperiodeProperty {
     erMidlertidigOpphør = 'erMidlertidigOpphør',
 }
 
-export type EUtgiftsperiodeSkolepengerProperty = keyof IUtgiftsperiodeSkolepenger;
+export type EUtgiftsperiodeSkolepengerProperty = keyof IPeriodeSkolepenger;
 
 export enum EKontantstøttePeriodeProperty {
     årMånedFra = 'årMånedFra',
