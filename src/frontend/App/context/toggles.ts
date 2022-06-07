@@ -16,4 +16,5 @@ export enum ToggleName {
     kanJournalFøreBarnetilsyn = 'familie.ef.sak.frontend-behandle-barnetilsyn-i-ny-losning',
     skalViseOpprettNyBehandlingBarnetilsyn = 'familie.ef.sak.frontend-skal-vise-opprett-ny-behandling-knapp-barnetilsyn',
     kanLeggeTilTerminbarnVidJournalføring = 'familie.ef.sak.frontend-journalforing-kan-legge-til-terminbarn',
+    kanJournalFøreSkolepenger = 'familie.ef.sak.skolepenger',
 }
