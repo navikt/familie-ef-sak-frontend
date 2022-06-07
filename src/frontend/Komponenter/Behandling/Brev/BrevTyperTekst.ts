@@ -173,8 +173,23 @@ export const initielleAvsnittInnhentingAvKarakterutskriftHovedperiode: AvsnittMe
             '\t\n' +
             'Du må sende oss sykemelding eller uttalelse fra lege hvis du avbrøt utdanningen av helsemessige årsaker. Hvis du ikke fikk godkjent eksamen eller fullført skoleåret av andre grunner, kan du forklare dette i en melding til oss på nav.no/beskjedtilnav. Dette gjelder også hvis koronapandemien har vært grunnen til at du avsluttet eller ikke fikk fullført utdanningen.\n' +
             '\n' +
-            'Hvis du ikke sender oss karakterutskrift eller annen dokumentasjon innen fristen, kan vi kreve tilbake penger du har fått utbetalt dette skoleåret.\n\n' +
-            'Vi minner om at du har plikt til å gi de opplysningene og levere de dokumentene som er nødvendige for at vi skal kunne vurdere om du har rett til stønaden. Hvis vi ikke får opplysningene innen fristen, vil vi behandle saken din ut fra de opplysningene vi har. Dette går frem av folketrygdloven § 21-3.',
+            'Hvis du ikke sender oss karakterutskrift eller annen dokumentasjon innen fristen, kan vi kreve tilbake penger du har fått utbetalt dette skoleåret.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Videre aktivitet',
+        innhold:
+            'Hvis du fortsetter i utdanning skoleåret 2022/2023, må du dokumentere dette. Fortsetter du i samme utdanning, må du dokumentere at du fortsatt skal studere minst 50 prosent. Starter du i ny utdanning, må du sende oss dokumentasjon som viser hvilken utdanning du skal ta. Da kan vi vurdere om utdanningen er nødvendig og hensiktsmessig for å få eller beholde arbeid. Dokumentasjonen må inneholde navnet ditt, hvilken periode du skal studere og hvor mye du skal studere.' +
+            '\n\nHvis du ikke fortsetter i utdanning, må du dokumentere hvordan du fyller aktivitetsplikten fra 01.07.2022. Du må enten jobbe minst 50 prosent eller være registrert som arbeidssøker hos oss til minst 50 prosent stilling for fortsatt å ha rett til overgangsstønad.' +
+            '\n\nAktivitetsplikten gjelder ikke for deg hvis' +
+            '\n\n\t•\tdu har barn med behov for særlig tilsyn, og dette hindrer deg i å jobbe, søke arbeid eller' +
+            '\n\t\t studere fulltid. Du må dokumentere dette med legeerklæring.' +
+            '\n\t•\t du eller barnet ditt har en sykdom som hindrer deg i å jobbe, søke arbeid eller studere mer enn' +
+            '\n\t\t  50 prosent. Du må dokumentere dette med legeerklæring.' +
+            '\n\t•\tdu har gjort det du kan for å skaffe deg barnepass. Dette må du dokumentere med avslag på' +
+            '\n\t\t  barnehageplass/SFO-plass, eventuelt dokumentasjon som viser at du står på venteliste.' +
+            '\n\nDu kan lese mer om aktivitetsplikten på nav.no/overgangsstonad-enslig#aktivitet.' +
+            '\n\nVi minner om at du har plikt til å gi de opplysningene og levere de dokumentene som er nødvendige for at vi skal kunne vurdere om du har rett til stønaden. Hvis vi ikke får opplysningene innen fristen, vil vi behandle saken din ut fra de opplysningene vi har. Dette går frem av folketrygdloven § 21-3.',
         id: uuidv4(),
     },
     {
