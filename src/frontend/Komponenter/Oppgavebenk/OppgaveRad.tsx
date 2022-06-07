@@ -57,13 +57,11 @@ const kanJournalføres = (
 };
 
 const måBehandlesIEFSak = (oppgave: IOppgave) => {
-    const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
+    const { behandlesAvApplikasjon, oppgavetype } = oppgave;
     return (
         behandlesAvApplikasjon === 'familie-ef-sak' &&
         oppgavetype &&
-        ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype) &&
-        behandlingstema &&
-        ['ab0071', 'ab0028'].includes(behandlingstema)
+        ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype)
     );
 };
 const kanStarteBlankettBehandling = (oppgave: IOppgave) => {
