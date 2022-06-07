@@ -10,9 +10,9 @@ import {
 
 const InfotrygdPerioder: React.FC<{
     stønadstype: Stønadstype;
-    visKompakt: boolean;
+    visStørreTabell: boolean;
     perioder: InfotrygdPeriode[];
-}> = ({ stønadstype, visKompakt, perioder }) => {
+}> = ({ stønadstype, visStørreTabell, perioder }) => {
     if (perioder.length === 0) {
         return <>Ingen vedtaksperioder i Infotrygd</>;
     }
@@ -20,13 +20,13 @@ const InfotrygdPerioder: React.FC<{
     switch (stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
         case Stønadstype.BARNETILSYN:
-            return visKompakt ? (
-                <TabellInfotrygdPerioderKompakt
+            return visStørreTabell ? (
+                <TabellInfotrygdPerioder
                     perioder={sammenslåttePerioder}
                     stønadstype={stønadstype}
                 />
             ) : (
-                <TabellInfotrygdPerioder
+                <TabellInfotrygdPerioderKompakt
                     perioder={sammenslåttePerioder}
                     stønadstype={stønadstype}
                 />
