@@ -11,17 +11,19 @@ import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useApp } from '../../../../App/context/AppContext';
-import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
-import { harTallverdi, tilTallverdi, tilHeltall } from '../../../../App/utils/utils';
+import { FamilieCheckbox, FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
+import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter slettknapp';
+    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter checkbox slettknapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 10rem 18rem 2rem 4rem' : '12rem 12rem 25rem 2rem 4rem 4rem'};
+        props.lesevisning
+            ? '10rem 10rem 18rem 2rem 4rem 4rem'
+            : '12rem 12rem 25rem 2rem 4rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
 `;
@@ -39,6 +41,19 @@ const NavnContainer = styled.div`
     margin-bottom: 1rem;
 `;
 
+const TekstEnLinje = styled(Element)`
+    white-space: nowrap;
+`;
+
+const CheckboxContainer = styled.div`
+    position: relative;
+    bottom: 0.5rem;
+`;
+
+const TekstIngenStønad = styled(Normaltekst)`
+    margin-top: 0.5rem;
+`;
+
 interface Props {
     utgiftsperioder: ListState<IUtgiftsperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
@@ -51,6 +66,7 @@ export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
     årMånedTil: '',
     barn: [],
     utgifter: undefined,
+    erMidlertidigOpphør: false,
 };
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
@@ -62,10 +78,10 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
-    const oppdaterUtgiftsPeriode = (
+    const oppdaterUtgiftsperiode = (
         index: number,
         property: EUtgiftsperiodeProperty,
-        value: string | string[] | number | undefined
+        value: string | string[] | number | boolean | undefined
     ) => {
         utgiftsperioder.update(
             {
@@ -75,6 +91,30 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const oppdaterUtgiftsperiodeDersomMidlertidigOpphør = (
+        index: number,
+        erMidlertidigOpphør: boolean
+    ) => {
+        if (erMidlertidigOpphør) {
+            utgiftsperioder.update(
+                {
+                    ...utgiftsperioder.value[index],
+                    [EUtgiftsperiodeProperty.erMidlertidigOpphør]: erMidlertidigOpphør,
+                    [EUtgiftsperiodeProperty.barn]: [],
+                    [EUtgiftsperiodeProperty.utgifter]: 0,
+                },
+                index
+            );
+        } else {
+            oppdaterUtgiftsperiode(
+                index,
+                EUtgiftsperiodeProperty.erMidlertidigOpphør,
+                erMidlertidigOpphør
+            );
+            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+        }
     };
 
     const periodeVariantTilUtgiftsperiodeProperty = (
@@ -96,15 +136,19 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <Element>Velg barn</Element>
                 <Element>Ant.</Element>
                 <Element>Utgifter</Element>
+                <TekstEnLinje>Ingen stønad/opphør</TekstEnLinje>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { årMånedFra, årMånedTil, utgifter } = utgiftsperiode;
+                const { årMånedFra, årMånedTil, utgifter, erMidlertidigOpphør } = utgiftsperiode;
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index === utgiftsperioder.value.length - 1 &&
                     index !== 0;
 
                 const barnForPeriode = barnFormatertForBarnVelger(barn);
+                const ikkeValgteBarn = barnForPeriode.filter((barn) =>
+                    utgiftsperiode.barn.includes(barn.value)
+                );
                 return (
                     <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrPeriode
@@ -112,8 +156,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             årMånedTilInitiell={årMånedTil}
                             index={index}
                             onEndre={(verdi, periodeVariant) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                oppdaterUtgiftsPeriode(
+                                oppdaterUtgiftsperiode(
                                     index,
                                     periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
                                     verdi
@@ -129,13 +172,12 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 options={barnForPeriode}
                                 creatable={false}
                                 isMulti={true}
+                                isDisabled={erMidlertidigOpphør}
+                                defaultValue={ikkeValgteBarn}
+                                value={erMidlertidigOpphør ? [] : ikkeValgteBarn}
                                 feil={valideringsfeil && valideringsfeil[index]?.barn[0]}
-                                defaultValue={barnForPeriode.filter((barn) =>
-                                    utgiftsperiode.barn.includes(barn.value)
-                                )}
                                 onChange={(valgtBarn) => {
-                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                    oppdaterUtgiftsPeriode(
+                                    oppdaterUtgiftsperiode(
                                         index,
                                         EUtgiftsperiodeProperty.barn,
                                         valgtBarn === null
@@ -162,9 +204,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             onKeyPress={tilHeltall}
                             type="number"
                             value={harTallverdi(utgifter) ? utgifter : ''}
+                            disabled={erMidlertidigOpphør}
                             onChange={(e) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                oppdaterUtgiftsPeriode(
+                                oppdaterUtgiftsperiode(
                                     index,
                                     EUtgiftsperiodeProperty.utgifter,
                                     tilTallverdi(e.target.value)
@@ -172,6 +214,23 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             }}
                             erLesevisning={!behandlingErRedigerbar}
                         />
+                        <CheckboxContainer>
+                            {!behandlingErRedigerbar && erMidlertidigOpphør ? (
+                                <TekstIngenStønad>Ja</TekstIngenStønad>
+                            ) : (
+                                <FamilieCheckbox
+                                    erLesevisning={!behandlingErRedigerbar}
+                                    label={''}
+                                    checked={erMidlertidigOpphør}
+                                    onChange={() => {
+                                        oppdaterUtgiftsperiodeDersomMidlertidigOpphør(
+                                            index,
+                                            !erMidlertidigOpphør
+                                        );
+                                    }}
+                                />
+                            )}
+                        </CheckboxContainer>
                         {skalViseFjernKnapp && (
                             <FjernKnapp
                                 onClick={() => {
