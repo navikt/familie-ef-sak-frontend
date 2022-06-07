@@ -117,7 +117,7 @@ export type IInnvilgeVedtakForSkolepenger = {
 };
 
 export interface ISkoleårsperiodeSkolepenger {
-    perioder: IPeriodeSkolepenger[]
+    perioder: IPeriodeSkolepenger[];
     utgifter: SkolepengerUtgift[];
 }
 
