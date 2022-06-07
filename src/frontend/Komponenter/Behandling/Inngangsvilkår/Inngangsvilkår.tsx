@@ -117,6 +117,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                             behandlingId={behandlingId}
+                            behandlingsstatus={behandling.status}
                         />
                         <Aleneomsorg
                             nullstillVurdering={nullstillVurdering}
