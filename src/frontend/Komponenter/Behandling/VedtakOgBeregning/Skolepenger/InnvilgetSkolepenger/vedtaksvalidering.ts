@@ -5,7 +5,13 @@ import {
     SkolepengerUtgift,
 } from '../../../../../App/typer/vedtak';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { erMånedÅrEtterEllerLik, tilSkoleår } from '../../../../../App/utils/dato';
+import {
+    erMånedÅrEtterEllerLik,
+    Intervall,
+    månedÅrTilDate,
+    overlapper,
+    tilSkoleår,
+} from '../../../../../App/utils/dato';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
@@ -46,6 +52,7 @@ const validerDelperiodeSkoleår = (
     perioder: IPeriodeSkolepenger[]
 ): FormErrors<IPeriodeSkolepenger[]> => {
     let skoleår: number | undefined = undefined;
+    const tidligerePerioder: Intervall[] = [];
     return perioder.map((periode) => {
         const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
         if (!studietype) {
@@ -63,11 +70,22 @@ const validerDelperiodeSkoleår = (
                 årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
             };
         }
+        const intervall: Intervall = {
+            fra: månedÅrTilDate(årMånedFra),
+            til: månedÅrTilDate(årMånedTil),
+        };
+        if (tidligerePerioder.some((periode) => overlapper(periode, intervall))) {
+            return {
+                ...periodeSkolepengerFeil,
+                årMånedFra: `Ugyldig periode - overlapper med tidligere periode`,
+            };
+        }
+        tidligerePerioder.push(intervall);
         const skoleårFra = tilSkoleår(årMånedFra);
         if (skoleårFra !== tilSkoleår(årMånedTil)) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedTil: `Fra og til er ikke i det samme skoleåret`,
+                årMånedFra: `Fra og til er ikke i det samme skoleåret`,
             };
         }
         if (skoleår === undefined) {

@@ -145,7 +145,9 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                 );
             })}
             <LeggTilKnapp
-                onClick={() => oppdater([...data, tomSkoleårsperiode])}
+                onClick={() =>
+                    oppdater([...data, { ...tomSkoleårsperiode, studietype: data[0].studietype }])
+                }
                 knappetekst="Legg til periode"
                 hidden={!behandlingErRedigerbar}
             />
