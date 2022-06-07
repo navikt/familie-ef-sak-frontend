@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    IBeregningsperiodeSkolepenger,
-    skolepengerStudietypeTilTekst,
-} from '../../../../App/typer/vedtak';
+import { IBeregningSkolepengerResponse } from '../../../../App/typer/vedtak';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Heading } from '@navikt/ds-react';
@@ -15,8 +12,8 @@ import {
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
-    grid-template-areas: 'studietype periode studiebelastning utgifter beløp';
-    grid-template-columns: 10rem 8rem 8rem 6rem 4rem;
+    grid-template-areas: 'dato utgifter beløp';
+    grid-template-columns: 6rem 4rem 4rem;
     grid-gap: 1rem;
     margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
 `;
@@ -30,7 +27,7 @@ const HøyrejusterElement = styled(Element)`
 `;
 
 export const UtregningstabellSkolepenger: React.FC<{
-    beregningsresultat: Ressurs<IBeregningsperiodeSkolepenger[]>;
+    beregningsresultat: Ressurs<IBeregningSkolepengerResponse>;
 }> = ({ beregningsresultat }) => {
     return (
         <DataViewer response={{ beregningsresultat }}>
@@ -40,33 +37,25 @@ export const UtregningstabellSkolepenger: React.FC<{
                         Utregning
                     </Heading>
                     <Rad erTittelRad>
-                        <Element>Studietype</Element>
-                        <HøyrejusterElement>Periode</HøyrejusterElement>
-                        <HøyrejusterElement>Studiebelastning</HøyrejusterElement>
+                        <Element>Fra</Element>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
-                        <HøyrejusterElement>Utbetales</HøyrejusterElement>
+                        <HøyrejusterElement>Beløp</HøyrejusterElement>
                     </Rad>
-                    {beregningsresultat.map((rad) => (
-                        <Rad>
-                            <Normaltekst>
-                                {skolepengerStudietypeTilTekst[rad.beregningsgrunnlag.studietype]}
-                            </Normaltekst>
-                            <HøyrejustertNormaltekst>
-                                {`${formaterNullableMånedÅr(
-                                    rad.periode.fradato
-                                )} - ${formaterNullableMånedÅr(rad.periode.tildato)}`}
-                            </HøyrejustertNormaltekst>
-                            <HøyrejustertNormaltekst>
-                                {`${rad.beregningsgrunnlag.studiebelastning} %`}
-                            </HøyrejustertNormaltekst>
-                            <HøyrejustertNormaltekst>
-                                {formaterTallMedTusenSkille(rad.beregningsgrunnlag.utgifter)} kr
-                            </HøyrejustertNormaltekst>
-                            <HøyrejustertNormaltekst>
-                                {formaterTallMedTusenSkille(rad.beløp)} kr
-                            </HøyrejustertNormaltekst>
-                        </Rad>
-                    ))}
+                    {beregningsresultat.perioder.map((periode) => {
+                        return (
+                            <Rad>
+                                <Normaltekst>
+                                    {formaterNullableMånedÅr(periode.årMånedFra)}
+                                </Normaltekst>
+                                <HøyrejustertNormaltekst>
+                                    {formaterTallMedTusenSkille(periode.utgifter)} kr
+                                </HøyrejustertNormaltekst>
+                                <HøyrejustertNormaltekst>
+                                    {formaterTallMedTusenSkille(periode.beløp)} kr
+                                </HøyrejustertNormaltekst>
+                            </Rad>
+                        );
+                    })}
                 </>
             )}
         </DataViewer>

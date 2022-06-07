@@ -1,32 +1,33 @@
 import {
-    IBeregningsperiodeSkolepenger,
+    IBeregningSkolepengerResponse,
     IBeregningsrequestSkolepenger,
     IInnvilgeVedtakForSkolepenger,
-    IUtgiftsperiodeSkolepenger,
+    ISkoleårsperiodeSkolepenger,
     IvedtakForSkolepenger,
     IVedtakType,
-} from '../../../../App/typer/vedtak';
-import { Behandling } from '../../../../App/typer/fagsak';
+} from '../../../../../App/typer/vedtak';
+import { Behandling } from '../../../../../App/typer/fagsak';
 import React, { useEffect, useState } from 'react';
-import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
-import { ListState } from '../../../../App/hooks/felles/useListState';
-import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
+import { ListState } from '../../../../../App/hooks/felles/useListState';
+import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
-import { FieldState } from '../../../../App/hooks/felles/useFieldState';
-import { useApp } from '../../../../App/context/AppContext';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
+import { useApp } from '../../../../../App/context/AppContext';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
-import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
-import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
-import { UtregningstabellSkolepenger } from './UtregnignstabellSkolepenger';
-import UtgiftsperiodeSkolepenger, { tomUtgiftsperiodeRad } from './UtgiftsperiodeSkolepenger';
-import { validerInnvilgetVedtakForm, validerPerioder } from './vedtaksvalidering';
+import { IngenBegrunnelseOppgitt } from '../../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
+import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
+import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
+import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 
 export type InnvilgeVedtakForm = {
-    utgiftsperioder: IUtgiftsperiodeSkolepenger[];
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
     begrunnelse?: string;
 };
 
@@ -43,7 +44,7 @@ export const VedtaksformSkolepenger: React.FC<{
     const [feilmelding, settFeilmelding] = useState('');
 
     const [beregningsresultat, settBeregningsresultat] = useState(
-        byggTomRessurs<IBeregningsperiodeSkolepenger[]>()
+        byggTomRessurs<IBeregningSkolepengerResponse>()
     );
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -51,16 +52,16 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
-            utgiftsperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.perioder
-                : [tomUtgiftsperiodeRad],
+            skoleårsperioder: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.skoleårsperioder
+                : [tomSkoleårsperiodeSkolepenger],
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerInnvilgetVedtakForm
     );
-    const utgiftsperiodeState = formState.getProps(
-        'utgiftsperioder'
-    ) as ListState<IUtgiftsperiodeSkolepenger>;
+    const skoleårsPerioderState = formState.getProps(
+        'skoleårsperioder'
+    ) as ListState<ISkoleårsperiodeSkolepenger>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForSkolepenger) => {
@@ -96,7 +97,7 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         const vedtaksRequest: IInnvilgeVedtakForSkolepenger = {
-            perioder: form.utgiftsperioder,
+            skoleårsperioder: form.skoleårsperioder,
             begrunnelse: form.begrunnelse,
             _type: IVedtakType.InnvilgelseSkolepenger,
         };
@@ -104,34 +105,34 @@ export const VedtaksformSkolepenger: React.FC<{
     };
 
     const beregnSkolepenger = () => {
-        if (formState.customValidate(validerPerioder)) {
-            axiosRequest<IBeregningsperiodeSkolepenger[], IBeregningsrequestSkolepenger>({
+        if (formState.customValidate(validerInnvilgetVedtakForm)) {
+            axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger/`,
                 data: {
-                    utgiftsperioder: utgiftsperiodeState.value,
+                    behandlingId: behandling.id,
+                    skoleårsperioder: skoleårsPerioderState.value,
                 },
-            }).then((res: Ressurs<IBeregningsperiodeSkolepenger[]>) => settBeregningsresultat(res));
+            }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
         }
     };
 
     useEffect(() => {
         if (!behandlingErRedigerbar) {
-            axiosRequest<IBeregningsperiodeSkolepenger[], null>({
+            axiosRequest<IBeregningSkolepengerResponse, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/beregning/skolepenger/${behandling.id}`,
-            }).then((res: Ressurs<IBeregningsperiodeSkolepenger[]>) => settBeregningsresultat(res));
+            }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
         }
     }, [axiosRequest, behandling, behandlingErRedigerbar]);
-
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <Heading spacing size="small" level="5">
                 Utgifter til skolepenger
             </Heading>
-            <UtgiftsperiodeSkolepenger
-                utgiftsperioder={utgiftsperiodeState}
-                valideringsfeil={formState.errors.utgiftsperioder}
+            <SkoleårsperioderSkolepenger
+                skoleårsperioder={skoleårsPerioderState}
+                valideringsfeil={formState.errors.skoleårsperioder}
                 settValideringsFeil={formState.setErrors}
             />
             {feilmelding && (

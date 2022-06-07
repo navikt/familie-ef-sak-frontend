@@ -8,48 +8,64 @@ import ÅrsakEnslig from './ÅrsakEnslig';
 import { Bosituasjon } from './Bosituasjon';
 import { SøkerDelerBoligTilTekst } from './typer';
 import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
+import { Bostedsadresse } from './Bostedsadresse';
+import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
     skalViseSøknadsdata: boolean;
     behandlingId: string;
+    behandlingsstatus: BehandlingStatus;
 }
 
-const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata, behandlingId }) => {
+const SamlivInfo: FC<Props> = ({
+    grunnlag,
+    skalViseSøknadsdata,
+    behandlingId,
+    behandlingsstatus,
+}) => {
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
 
     return (
         <>
-            {skalViseSøknadsdata && sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
+            {sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
                 <GridTabell>
-                    {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
+                    {skalViseSøknadsdata && (
                         <>
+                            {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
+                                <>
+                                    <Søknadsgrunnlag />
+                                    <Normaltekst>Alene med barn fordi</Normaltekst>
+                                    <Normaltekst>
+                                        {(sivilstand.søknadsgrunnlag.årsakEnslig &&
+                                            ÅrsakEnsligTilTekst[
+                                                sivilstand.søknadsgrunnlag?.årsakEnslig
+                                            ]) ||
+                                            ''}
+                                    </Normaltekst>
+                                    <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
+                                </>
+                            )}
+
                             <Søknadsgrunnlag />
-                            <Normaltekst>Alene med barn fordi</Normaltekst>
-                            <Normaltekst>
-                                {(sivilstand.søknadsgrunnlag.årsakEnslig &&
-                                    ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
-                                    ''}
-                            </Normaltekst>
-                            <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
+                            {bosituasjon && (
+                                <>
+                                    <Normaltekst>Bosituasjon</Normaltekst>
+                                    <Normaltekst>
+                                        {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
+                                    </Normaltekst>
+                                </>
+                            )}
+                            <Bosituasjon
+                                bosituasjon={bosituasjon}
+                                sivilstandsplaner={sivilstandsplaner}
+                            />
                         </>
                     )}
 
-                    <Søknadsgrunnlag />
-                    {bosituasjon && (
-                        <>
-                            <Normaltekst>Bosituasjon</Normaltekst>
-                            <Normaltekst>
-                                {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
-                            </Normaltekst>
-                        </>
+                    {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
+                        <Bostedsadresse behandlingId={behandlingId} />
                     )}
-
-                    <Bosituasjon
-                        behandlingId={behandlingId}
-                        bosituasjon={bosituasjon}
-                        sivilstandsplaner={sivilstandsplaner}
-                    />
                 </GridTabell>
             )}
         </>
