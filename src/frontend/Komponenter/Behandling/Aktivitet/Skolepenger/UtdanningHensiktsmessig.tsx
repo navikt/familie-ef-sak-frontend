@@ -5,6 +5,7 @@ import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerL
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import UtdanningHensiktsmessigInfo from './UtdanningHensiktsmessigInfo';
 
 export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
     vurderinger,
@@ -12,6 +13,8 @@ export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    grunnlag,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === AktivitetsvilkårType.ER_UTDANNING_HENSIKTSMESSIG
@@ -33,6 +36,10 @@ export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
                         <Vilkårstittel
                             tittel="Utdanningens nødvendighet og hensiktsmessighet"
                             vilkårsresultat={vurdering.resultat}
+                        />
+                        <UtdanningHensiktsmessigInfo
+                            grunnlag={grunnlag}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>
                 ),
