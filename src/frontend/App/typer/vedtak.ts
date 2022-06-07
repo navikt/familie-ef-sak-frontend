@@ -53,24 +53,9 @@ export interface IBeregningSkolepengerResponse {
 }
 
 export interface IBeregningsperiodeSkolepenger {
-    skoleår: number;
-    maksbeløp: number;
-    maksbeløpFordeltAntallMåneder: number;
-    alleredeUtbetalt: number;
-    nyForbrukt: number;
-    grunnlag: IBeregningsgrunnlagSkolepenger;
-    utbetalinger: BeregnetUtbetalingSkolepenger[];
-}
-
-export interface IBeregningsgrunnlagSkolepenger {
-    studietype: ESkolepengerStudietype;
-    studiebelastning: number;
-    periode: { fradato: string; tildato: string };
-}
-
-export interface BeregnetUtbetalingSkolepenger {
+    årMånedFra: string;
+    utgifter: number;
     beløp: number;
-    grunnlag: SkolepengerUtgift;
 }
 
 export type IInnvilgeVedtakForOvergangsstønad = {
@@ -112,7 +97,7 @@ export type IPeriodeMedBeløp = {
 
 export type IInnvilgeVedtakForSkolepenger = {
     begrunnelse?: string;
-    perioder: ISkoleårsperiodeSkolepenger[];
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
     _type?: IVedtakType.InnvilgelseSkolepenger;
 };
 

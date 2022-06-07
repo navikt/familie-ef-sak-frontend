@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    IBeregningSkolepengerResponse,
-    skolepengerStudietypeTilTekst,
-} from '../../../../App/typer/vedtak';
+import { IBeregningSkolepengerResponse } from '../../../../App/typer/vedtak';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Heading } from '@navikt/ds-react';
@@ -15,8 +12,8 @@ import {
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
-    grid-template-areas: 'studietype periode studiebelastning utgifter utbetales beløp';
-    grid-template-columns: 10rem 8rem 8rem 6rem 6rem 4rem;
+    grid-template-areas: 'dato utgifter beløp';
+    grid-template-columns: 6rem 4rem 4rem;
     grid-gap: 1rem;
     margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
 `;
@@ -40,38 +37,24 @@ export const UtregningstabellSkolepenger: React.FC<{
                         Utregning
                     </Heading>
                     <Rad erTittelRad>
-                        <Element>Studietype</Element>
-                        <HøyrejusterElement>Periode</HøyrejusterElement>
-                        <HøyrejusterElement>Studiebelastning</HøyrejusterElement>
+                        <Element>Fra</Element>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
-                        <HøyrejusterElement>Utbetales</HøyrejusterElement>
                         <HøyrejusterElement>Beløp</HøyrejusterElement>
                     </Rad>
-                    {beregningsresultat.perioder.map((rad) => {
-                        return rad.utbetalinger.map((utbetaling) => (
+                    {beregningsresultat.perioder.map((periode) => {
+                        return (
                             <Rad>
                                 <Normaltekst>
-                                    {skolepengerStudietypeTilTekst[rad.grunnlag.studietype]}
+                                    {formaterNullableMånedÅr(periode.årMånedFra)}
                                 </Normaltekst>
                                 <HøyrejustertNormaltekst>
-                                    {`${formaterNullableMånedÅr(
-                                        rad.grunnlag.periode.fradato
-                                    )} - ${formaterNullableMånedÅr(rad.grunnlag.periode.tildato)}`}
+                                    {formaterTallMedTusenSkille(periode.utgifter)} kr
                                 </HøyrejustertNormaltekst>
                                 <HøyrejustertNormaltekst>
-                                    {`${rad.grunnlag.studiebelastning} %`}
-                                </HøyrejustertNormaltekst>
-                                <HøyrejustertNormaltekst>
-                                    {formaterTallMedTusenSkille(utbetaling.grunnlag.utgifter)} kr
-                                </HøyrejustertNormaltekst>
-                                <HøyrejustertNormaltekst>
-                                    {formaterNullableMånedÅr(utbetaling.grunnlag.årMånedFra)}
-                                </HøyrejustertNormaltekst>
-                                <HøyrejustertNormaltekst>
-                                    {formaterTallMedTusenSkille(utbetaling.beløp)} kr
+                                    {formaterTallMedTusenSkille(periode.beløp)} kr
                                 </HøyrejustertNormaltekst>
                             </Rad>
-                        ));
+                        );
                     })}
                 </>
             )}

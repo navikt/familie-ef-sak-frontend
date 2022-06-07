@@ -17,7 +17,7 @@ const Skoleårsperiode = styled.div``;
 
 interface Props {
     skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
@@ -33,7 +33,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
         skoleårsperioder.remove(index);
         settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => ({
             ...prevState,
-            perioder: (prevState.perioder || []).filter((_, i) => index !== i),
+            skoleårsperioder: (prevState.skoleårsperioder || []).filter((_, i) => index !== i),
         }));
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
     };
@@ -54,10 +54,10 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
         formErrors: FormErrors<T2 extends Array<infer U> ? U[] : T2>
     ) => {
         settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
-            const perioder = (prevState.perioder ?? []).map((p, i) =>
+            const skoleårsperioder = (prevState.skoleårsperioder ?? []).map((p, i) =>
                 i !== index ? p : { ...p, [property]: formErrors }
             );
-            return { ...prevState, perioder };
+            return { ...prevState, skoleårsperioder };
         });
     };
     return (

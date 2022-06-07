@@ -21,11 +21,11 @@ const periodeUtgiftFeil: FormErrors<SkolepengerUtgift> = {
 };
 
 export const validerInnvilgetVedtakForm = ({
-    perioder,
+    skoleårsperioder,
     begrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     return {
-        perioder: validerSkoleårsperioderSkolepenger(perioder),
+        skoleårsperioder: validerSkoleårsperioderSkolepenger(skoleårsperioder),
         begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };

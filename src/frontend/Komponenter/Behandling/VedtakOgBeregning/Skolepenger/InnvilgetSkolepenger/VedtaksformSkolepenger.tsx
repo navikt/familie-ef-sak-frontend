@@ -27,7 +27,7 @@ import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 
 export type InnvilgeVedtakForm = {
-    perioder: ISkoleårsperiodeSkolepenger[];
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
     begrunnelse?: string;
 };
 
@@ -52,15 +52,15 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
-            perioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.perioder
+            skoleårsperioder: lagretInnvilgetVedtak
+                ? lagretInnvilgetVedtak.skoleårsperioder
                 : [tomSkoleårsperiodeSkolepenger],
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerInnvilgetVedtakForm
     );
     const skoleårsPerioderState = formState.getProps(
-        'perioder'
+        'skoleårsperioder'
     ) as ListState<ISkoleårsperiodeSkolepenger>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
@@ -97,7 +97,7 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         const vedtaksRequest: IInnvilgeVedtakForSkolepenger = {
-            perioder: form.perioder,
+            skoleårsperioder: form.skoleårsperioder,
             begrunnelse: form.begrunnelse,
             _type: IVedtakType.InnvilgelseSkolepenger,
         };
@@ -132,7 +132,7 @@ export const VedtaksformSkolepenger: React.FC<{
             </Heading>
             <SkoleårsperioderSkolepenger
                 skoleårsperioder={skoleårsPerioderState}
-                valideringsfeil={formState.errors.perioder}
+                valideringsfeil={formState.errors.skoleårsperioder}
                 settValideringsFeil={formState.setErrors}
             />
             {feilmelding && (
