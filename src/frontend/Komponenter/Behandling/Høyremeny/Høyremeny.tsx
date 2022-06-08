@@ -9,7 +9,7 @@ import { Back, Next } from '@navikt/ds-icons';
 import navFarger from 'nav-frontend-core';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
-import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
+import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
 
 interface IHøyremenyProps {
     behandlingId: string;
@@ -64,9 +64,7 @@ const Høyremeny: React.FC<IHøyremenyProps> = ({ behandlingId, åpenHøyremeny 
     useEffect(() => {
         if (
             behandling.status === RessursStatus.SUKSESS &&
-            [BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(
-                behandling.data.status
-            )
+            erBehandlingUnderArbeid(behandling.data)
         ) {
             settAktivtvalg(Høyremenyvalg.Mappe);
         }
