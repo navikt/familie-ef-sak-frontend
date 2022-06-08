@@ -20,6 +20,7 @@ const AktivitetsVilkårSkolepenger: FC<{
         ikkeVurderVilkår,
     } = useHentVilkår();
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+    console.log(skalViseSøknadsdata);
 
     const behandlingId = behandling.id;
 

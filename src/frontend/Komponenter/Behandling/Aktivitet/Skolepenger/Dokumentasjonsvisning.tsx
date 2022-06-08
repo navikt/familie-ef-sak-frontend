@@ -3,6 +3,7 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
+import { StudieandelTilTekst, UtdanningsformTilTekst } from '../Aktivitet/typer';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -11,6 +12,9 @@ interface Props {
 
 const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {
     const { underUtdanning } = aktivitet;
+    const heltidEllerDeltid = underUtdanning?.heltidEllerDeltid
+        ? StudieandelTilTekst[underUtdanning?.heltidEllerDeltid]
+        : 'Ikke oppgitt av bruker';
     return (
         <>
             <>
@@ -26,7 +30,11 @@ const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {
             <>
                 <Søknadsgrunnlag />
                 <Normaltekst>Utdanningstype</Normaltekst>
-                <Normaltekst>{underUtdanning?.offentligEllerPrivat}</Normaltekst>
+                {underUtdanning?.offentligEllerPrivat && (
+                    <Normaltekst>
+                        {UtdanningsformTilTekst[underUtdanning?.offentligEllerPrivat]}
+                    </Normaltekst>
+                )}
             </>
             <>
                 <Søknadsgrunnlag />
@@ -38,7 +46,7 @@ const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {
             <>
                 <Søknadsgrunnlag />
                 <Normaltekst>Studiebelastning</Normaltekst>
-                <Normaltekst>{`${underUtdanning?.heltidEllerDeltid} - ${underUtdanning?.hvorMyeSkalDuStudere}%`}</Normaltekst>
+                <Normaltekst>{`${heltidEllerDeltid} - ${underUtdanning?.hvorMyeSkalDuStudere}%`}</Normaltekst>
             </>
         </>
     );
