@@ -29,7 +29,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
     const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
     const { vedtak: vedtakForrigeBehandling, hentVedtak: hentVedtakForrigeBehandling } =
-        useHentVedtak(behandlingId);
+        useHentVedtak(forrigeBehandlingId);
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
 
@@ -39,7 +39,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
 
     useEffect(() => {
         hentVedtakForrigeBehandling();
-    }, [forrigeBehandlingId, hentVedtakForrigeBehandling]);
+    }, [hentVedtakForrigeBehandling]);
 
     useEffect(() => {
         if (vedtak.status === RessursStatus.SUKSESS && vedtak.data) {

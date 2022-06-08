@@ -21,14 +21,14 @@ export const tomSkoleårsperiode: IPeriodeSkolepenger = {
     studiebelastning: undefined,
 };
 
-export const tomUtgift: SkolepengerUtgift = {
+export const tomUtgift = (): SkolepengerUtgift => ({
     id: uuidv4(),
     årMånedFra: '',
     utgifter: undefined,
     stønad: undefined,
-};
+});
 
-export const tomSkoleårsperiodeSkolepenger: ISkoleårsperiodeSkolepenger = {
+export const tomSkoleårsperiodeSkolepenger = (): ISkoleårsperiodeSkolepenger => ({
     perioder: [tomSkoleårsperiode],
-    utgiftsperioder: [tomUtgift],
-};
+    utgiftsperioder: [tomUtgift()],
+});

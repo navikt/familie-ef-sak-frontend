@@ -32,6 +32,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
     settValideringsFeil,
     låsteUtgiftIder,
 }) => {
+    const erLesevisning = !behandlingErRedigerbar;
     const oppdaterUtgift = (
         index: number,
         property: keyof SkolepengerUtgift,
@@ -61,7 +62,6 @@ const UtgiftsperiodeSkolepenger: React.FC<
                     index === data.length - 1 &&
                     index !== 0 &&
                     !erLåstFraForrigeBehandling;
-                const erLesevisning = !behandlingErRedigerbar || erLåstFraForrigeBehandling;
                 return (
                     <Utgiftsrad key={index}>
                         <MånedÅrVelger
@@ -74,6 +74,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                             antallÅrFrem={4}
                             lesevisning={erLesevisning}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                            disabled={erLåstFraForrigeBehandling}
                         />
                         <StyledInputMedTusenSkille
                             onKeyPress={tilHeltall}
@@ -83,6 +84,8 @@ const UtgiftsperiodeSkolepenger: React.FC<
                             onChange={(e) => {
                                 oppdaterUtgift(index, 'utgifter', tilTallverdi(e.target.value));
                             }}
+                            erLesevisning={erLesevisning}
+                            disabled={erLåstFraForrigeBehandling}
                         />
                         <StyledInputMedTusenSkille
                             onKeyPress={tilHeltall}
@@ -93,6 +96,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                 oppdaterUtgift(index, 'stønad', tilTallverdi(e.target.value));
                             }}
                             erLesevisning={erLesevisning}
+                            disabled={erLåstFraForrigeBehandling}
                         />
                         {skalViseFjernKnapp && (
                             <FjernKnapp
@@ -104,7 +108,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                 );
             })}
             <LeggTilKnapp
-                onClick={() => oppdater([...data, tomUtgift])}
+                onClick={() => oppdater([...data, tomUtgift()])}
                 knappetekst="Legg til utgift"
                 hidden={!behandlingErRedigerbar}
             />

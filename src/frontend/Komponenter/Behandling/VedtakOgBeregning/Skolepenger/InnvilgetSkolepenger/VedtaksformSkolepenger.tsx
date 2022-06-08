@@ -35,12 +35,14 @@ const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
 `;
 
-export const defaultSkoleårsperioder = (forrigeVedtak?: IvedtakForSkolepenger) => {
+export const defaultSkoleårsperioder = (
+    forrigeVedtak?: IvedtakForSkolepenger
+): ISkoleårsperiodeSkolepenger[] => {
     const forrigeSkoleårsperioder = forrigeVedtak?.skoleårsperioder;
     if (forrigeSkoleårsperioder && forrigeSkoleårsperioder.length > 0) {
         return forrigeSkoleårsperioder;
     } else {
-        return tomSkoleårsperiodeSkolepenger;
+        return [tomSkoleårsperiodeSkolepenger()];
     }
 };
 
@@ -64,7 +66,7 @@ export const VedtaksformSkolepenger: React.FC<{
         {
             skoleårsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.skoleårsperioder
-                : [defaultSkoleårsperioder(forrigeVedtak)],
+                : defaultSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerInnvilgetVedtakForm

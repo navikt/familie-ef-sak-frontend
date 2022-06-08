@@ -108,7 +108,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             />
                         )}
                         <LeggTilKnapp
-                            onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger)}
+                            onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
                             knappetekst="Legg til skoleår"
                             hidden={!behandlingErRedigerbar}
                         />
