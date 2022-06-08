@@ -37,10 +37,12 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
                             tittel="Dokumentasjon av utdanning"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <DokumentasjonUtdanningInfo
-                            grunnlag={grunnlag}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
+                        {grunnlag.aktivitet && (
+                            <DokumentasjonUtdanningInfo
+                                aktivitet={grunnlag.aktivitet}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                            />
+                        )}
                     </>
                 ),
                 høyre: (

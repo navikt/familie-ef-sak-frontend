@@ -37,10 +37,12 @@ export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
                             tittel="Utdanningens nødvendighet og hensiktsmessighet"
                             vilkårsresultat={vurdering.resultat}
                         />
-                        <UtdanningHensiktsmessigInfo
-                            grunnlag={grunnlag}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
+                        {grunnlag.aktivitet && (
+                            <UtdanningHensiktsmessigInfo
+                                aktivitet={grunnlag.aktivitet}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                            />
+                        )}
                     </>
                 ),
                 høyre: (
