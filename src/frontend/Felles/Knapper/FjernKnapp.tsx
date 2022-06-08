@@ -10,13 +10,12 @@ const StyledKnapp = styled(Flatknapp)`
     height: 2rem;
 `;
 
-const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string; disabled?: boolean }> = ({
+const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     onClick,
     knappetekst,
-    disabled,
 }) => {
     return (
-        <StyledKnapp onClick={onClick} htmlType="button" disabled={disabled}>
+        <StyledKnapp onClick={onClick} htmlType="button">
             <Delete />
             <span className="sr-only">{knappetekst}</span>
         </StyledKnapp>
