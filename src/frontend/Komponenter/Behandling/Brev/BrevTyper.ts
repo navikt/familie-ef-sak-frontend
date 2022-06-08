@@ -7,6 +7,8 @@ import {
     initielleAvsnittVedtakInvilgelseBarnetilsyn,
     initielleAvsnittInnhentingAvKarakterutskriftHovedperiode,
     initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode,
+    initielleAvsnittVedtakInvilgelseSkolepenger,
+    initielleAvsnittVedtakAvslagSkolepenger,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -107,6 +109,8 @@ export enum FritekstBrevtype {
     VEDTAK_REVURDERING = 'VEDTAK_REVURDERING',
     VEDTAK_INNVILGELSE_BARNETILSYN = 'VEDTAK_INNVILGELSE_BARNETILSYN',
     VEDTAK_AVSLAG_BARNETILSYN = 'VEDTAK_AVSLAG_BARNETILSYN',
+    VEDTAK_INNVILGELSE_SKOLEPENGER = 'VEDTAK_INNVILGELSE_SKOLEPENGER',
+    VEDTAK_AVSLAG_SKOLEPENGER = 'VEDTAK_AVSLAG_SKOLEPENGER',
 }
 
 export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrevtype, string> = {
@@ -123,6 +127,8 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_AVSLAG_BARNETILSYN: 'Vi har avslått søknaden din om stønad til barnetilsyn',
     INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE: 'Vi trenger opplysninger fra deg',
     INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE: 'Vi trenger opplysninger fra deg',
+    VEDTAK_INNVILGELSE_SKOLEPENGER: 'Du får stønad til skolepenger',
+    VEDTAK_AVSLAG_SKOLEPENGER: 'Vi har avslått søknaden din om stønad til skolepenger',
 };
 
 export const BrevtyperTilSelectNavn: Record<
@@ -143,6 +149,8 @@ export const BrevtyperTilSelectNavn: Record<
     INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE: 'Innhenting av karakterutskrift (hovedperiode)',
     INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE:
         'Innhenting av karakterutskrift (utvidet periode)',
+    VEDTAK_INNVILGELSE_SKOLEPENGER: 'Vedtak innvilgelse',
+    VEDTAK_AVSLAG_SKOLEPENGER: 'Vedtak avslag',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
@@ -157,7 +165,10 @@ export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> 
         FritekstBrevtype.VEDTAK_INNVILGELSE_BARNETILSYN,
         FritekstBrevtype.VEDTAK_AVSLAG_BARNETILSYN,
     ],
-    SKOLEPENGER: [],
+    SKOLEPENGER: [
+        FritekstBrevtype.VEDTAK_INNVILGELSE_SKOLEPENGER,
+        FritekstBrevtype.VEDTAK_AVSLAG_SKOLEPENGER,
+    ],
 };
 
 export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtype, AvsnittMedId[]> =
@@ -177,6 +188,8 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
             initielleAvsnittInnhentingAvKarakterutskriftHovedperiode,
         INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE:
             initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode,
+        VEDTAK_INNVILGELSE_SKOLEPENGER: initielleAvsnittVedtakInvilgelseSkolepenger,
+        VEDTAK_AVSLAG_SKOLEPENGER: initielleAvsnittVedtakAvslagSkolepenger,
     };
 
 export enum FritekstBrevContext {
