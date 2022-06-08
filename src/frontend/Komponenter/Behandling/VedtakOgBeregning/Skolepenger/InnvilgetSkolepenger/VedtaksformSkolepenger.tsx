@@ -38,7 +38,8 @@ const WrapperDobbelMarginTop = styled.div`
 export const VedtaksformSkolepenger: React.FC<{
     behandling: Behandling;
     lagretInnvilgetVedtak?: IvedtakForSkolepenger;
-}> = ({ lagretInnvilgetVedtak, behandling }) => {
+    forrigeVedtak?: IvedtakForSkolepenger;
+}> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
@@ -63,6 +64,10 @@ export const VedtaksformSkolepenger: React.FC<{
         'skoleårsperioder'
     ) as ListState<ISkoleårsperiodeSkolepenger>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
+
+    const utgiftsIderForrigeBehandling = forrigeVedtak
+        ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
+        : [];
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForSkolepenger) => {
         settLaster(true);
@@ -132,6 +137,7 @@ export const VedtaksformSkolepenger: React.FC<{
             </Heading>
             <SkoleårsperioderSkolepenger
                 skoleårsperioder={skoleårsPerioderState}
+                låsteUtgiftIder={utgiftsIderForrigeBehandling}
                 valideringsfeil={formState.errors.skoleårsperioder}
                 settValideringsFeil={formState.setErrors}
             />

@@ -32,6 +32,7 @@ export interface Fagsak {
 
 export interface Behandling {
     id: string;
+    forrigeBehandlingId?: string;
     fagsakId: string;
     type: Behandlingstype;
     steg: Steg;

@@ -1,4 +1,4 @@
-import { byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
+import { byggSuksessRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
@@ -19,7 +19,7 @@ export const harVedtaksresultatMedTilkjentYtelse = (
 };
 
 export const useHentVedtak = (
-    behandlingId: string
+    behandlingId: string | undefined
 ): {
     hentVedtak: () => void;
     vedtak: Ressurs<IVedtakForOvergangsstønad | undefined>;
@@ -32,6 +32,9 @@ export const useHentVedtak = (
     const [vedtaksresultat, settVedtaksresultat] = useState<EBehandlingResultat>();
 
     const hentVedtak = useCallback(() => {
+        if (!behandlingId) {
+            settVedtak(byggSuksessRessurs(undefined));
+        }
         const behandlingConfig: AxiosRequestConfig = {
             method: 'GET',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}`,

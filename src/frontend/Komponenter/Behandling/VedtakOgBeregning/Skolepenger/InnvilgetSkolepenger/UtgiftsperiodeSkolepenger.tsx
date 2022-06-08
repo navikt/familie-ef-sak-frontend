@@ -22,12 +22,15 @@ const StyledInputMedTusenSkille = styled(InputMedTusenSkille)`
     text-align: left;
 `;
 
-const UtgiftsperiodeSkolepenger: React.FC<ValideringsPropsMedOppdatering<SkolepengerUtgift>> = ({
+const UtgiftsperiodeSkolepenger: React.FC<
+    ValideringsPropsMedOppdatering<SkolepengerUtgift> & { låsteUtgiftIder: string[] }
+> = ({
     data,
     oppdater,
     behandlingErRedigerbar,
     valideringsfeil,
     settValideringsFeil,
+    låsteUtgiftIder,
 }) => {
     const oppdaterUtgift = (
         index: number,
@@ -52,8 +55,13 @@ const UtgiftsperiodeSkolepenger: React.FC<ValideringsPropsMedOppdatering<Skolepe
                 <Element>Stønad</Element>
             </Utgiftsrad>
             {data.map((utgift, index) => {
+                const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;
                 const skalViseFjernKnapp =
-                    behandlingErRedigerbar && index === data.length - 1 && index !== 0;
+                    behandlingErRedigerbar &&
+                    index === data.length - 1 &&
+                    index !== 0 &&
+                    !erLåstFraForrigeBehandling;
+                const erLesevisning = !behandlingErRedigerbar || erLåstFraForrigeBehandling;
                 return (
                     <Utgiftsrad key={index}>
                         <MånedÅrVelger
@@ -64,7 +72,7 @@ const UtgiftsperiodeSkolepenger: React.FC<ValideringsPropsMedOppdatering<Skolepe
                             }}
                             antallÅrTilbake={10}
                             antallÅrFrem={4}
-                            lesevisning={!behandlingErRedigerbar}
+                            lesevisning={erLesevisning}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                         />
                         <StyledInputMedTusenSkille
@@ -75,7 +83,6 @@ const UtgiftsperiodeSkolepenger: React.FC<ValideringsPropsMedOppdatering<Skolepe
                             onChange={(e) => {
                                 oppdaterUtgift(index, 'utgifter', tilTallverdi(e.target.value));
                             }}
-                            erLesevisning={!behandlingErRedigerbar}
                         />
                         <StyledInputMedTusenSkille
                             onKeyPress={tilHeltall}
@@ -85,7 +92,7 @@ const UtgiftsperiodeSkolepenger: React.FC<ValideringsPropsMedOppdatering<Skolepe
                             onChange={(e) => {
                                 oppdaterUtgift(index, 'stønad', tilTallverdi(e.target.value));
                             }}
-                            erLesevisning={!behandlingErRedigerbar}
+                            erLesevisning={erLesevisning}
                         />
                         {skalViseFjernKnapp && (
                             <FjernKnapp
