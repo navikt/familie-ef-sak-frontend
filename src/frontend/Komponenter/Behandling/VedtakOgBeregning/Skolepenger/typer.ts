@@ -28,5 +28,5 @@ export const tomUtgift: SkolepengerUtgift = {
 
 export const tomSkoleårsperiodeSkolepenger: ISkoleårsperiodeSkolepenger = {
     perioder: [tomSkoleårsperiode],
-    utgifter: [tomUtgift],
+    utgiftsperioder: [tomUtgift],
 };
