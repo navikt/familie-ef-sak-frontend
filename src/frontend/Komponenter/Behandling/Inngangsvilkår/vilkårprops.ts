@@ -7,6 +7,7 @@ import {
 } from './vilkår';
 import { RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 
 export interface VilkårProps {
     vurderinger: IVurdering[];
@@ -30,5 +31,10 @@ export interface VilkårPropsMedStønadstype extends VilkårProps {
 }
 
 export interface VilkårPropsMedBehandlingId extends VilkårProps {
+    behandlingId: string;
+}
+
+export interface VilkårPropsMedBehandlingsstatus extends VilkårProps {
+    behandlingsstatus: BehandlingStatus;
     behandlingId: string;
 }

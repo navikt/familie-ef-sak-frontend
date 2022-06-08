@@ -3,9 +3,11 @@ import { IOppgave } from './typer/oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
 import {
     Behandlingstema,
+    behandlingstemaTilStønadstype,
     behandlingstemaTilTekst,
     OppgaveBehandlingstype,
     oppgaveBehandlingstypeTilTekst,
+    Stønadstype,
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Flatknapp as Knapp } from 'nav-frontend-knapper';
@@ -30,26 +32,36 @@ const StyledPopoverinnhold = styled.p`
 
 const Flatknapp = hiddenIf(Knapp);
 
-const kanJournalføres = (oppgave: IOppgave, skalJournalføreBarnetisyn: boolean) => {
+const kanJournalføres = (
+    oppgave: IOppgave,
+    skalJournalføreBarnetisyn: boolean,
+    skalJournalføreSkolepenger: boolean
+) => {
     const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
-    const behandlingstemaer = skalJournalføreBarnetisyn ? ['ab0071', 'ab0028'] : ['ab0071'];
+    const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
+
+    if (!skalJournalføreBarnetisyn && stønadstype === Stønadstype.BARNETILSYN) {
+        return false;
+    }
+
+    if (!skalJournalføreSkolepenger && stønadstype === Stønadstype.SKOLEPENGER) {
+        return false;
+    }
+
     return (
         (behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' ||
             behandlesAvApplikasjon === 'familie-ef-sak') &&
         oppgavetype === 'JFR' &&
-        behandlingstema &&
-        behandlingstemaer.includes(behandlingstema)
+        stønadstype
     );
 };
 
 const måBehandlesIEFSak = (oppgave: IOppgave) => {
-    const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
+    const { behandlesAvApplikasjon, oppgavetype } = oppgave;
     return (
         behandlesAvApplikasjon === 'familie-ef-sak' &&
         oppgavetype &&
-        ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype) &&
-        behandlingstema &&
-        ['ab0071', 'ab0028'].includes(behandlingstema)
+        ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype)
     );
 };
 const kanStarteBlankettBehandling = (oppgave: IOppgave) => {
@@ -79,7 +91,13 @@ const kanMigreres = (oppgave: IOppgave) => {
 const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
-    } else if (kanJournalføres(oppgave, toggles[ToggleName.kanJournalFøreBarnetilsyn])) {
+    } else if (
+        kanJournalføres(
+            oppgave,
+            toggles[ToggleName.kanJournalFøreBarnetilsyn],
+            toggles[ToggleName.kanJournalFøreSkolepenger]
+        )
+    ) {
         return Handling.JOURNALFØR;
     } else if (kanStarteBlankettBehandling(oppgave)) {
         return Handling.BLANKETT;

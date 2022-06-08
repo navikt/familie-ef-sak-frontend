@@ -8,7 +8,7 @@ import { erAlleVilkårOppfylt } from '../Felles/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { VedtaksformSkolepenger } from './VedtaksformSkolepenger';
+import { VedtaksformSkolepenger } from './InnvilgetSkolepenger/VedtaksformSkolepenger';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
 
 interface Props {
