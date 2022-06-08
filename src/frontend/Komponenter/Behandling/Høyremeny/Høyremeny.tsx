@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Dokumentoversikt from './Dokumentoversikt';
 import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
@@ -8,6 +8,8 @@ import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 import { Back, Next } from '@navikt/ds-icons';
 import navFarger from 'nav-frontend-core';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { RessursStatus } from '../../../App/typer/ressurs';
+import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 
 interface IHøyremenyProps {
     behandlingId: string;
@@ -57,7 +59,18 @@ export enum Høyremenyvalg {
 
 const Høyremeny: React.FC<IHøyremenyProps> = ({ behandlingId, åpenHøyremeny }) => {
     const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Logg);
-    const { settÅpenHøyremeny } = useBehandling();
+    const { settÅpenHøyremeny, behandling } = useBehandling();
+
+    useEffect(() => {
+        if (
+            behandling.status === RessursStatus.SUKSESS &&
+            [BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(
+                behandling.data.status
+            )
+        ) {
+            settAktivtvalg(Høyremenyvalg.Mappe);
+        }
+    }, [behandling]);
 
     return (
         <>
