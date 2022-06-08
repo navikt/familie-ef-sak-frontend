@@ -76,19 +76,21 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             }
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             valideringsfeil={valideringsfeil && valideringsfeil[index]?.perioder}
-                            settValideringsFeil={(oppdatertePerioder) =>
-                                oppdaterValideringsfeil(index, 'perioder', oppdatertePerioder)
+                            settValideringsFeil={(oppdaterteFeil) =>
+                                oppdaterValideringsfeil(index, 'perioder', oppdaterteFeil)
                             }
                         />
                         <UtgiftsperiodeSkolepenger
-                            data={skoleårsperiode.utgifter}
-                            oppdater={(utgifter) =>
-                                oppdaterSkoleårsperioder(index, 'utgifter', utgifter)
+                            data={skoleårsperiode.utgiftsperioder}
+                            oppdater={(utgiftsperioder) =>
+                                oppdaterSkoleårsperioder(index, 'utgiftsperioder', utgiftsperioder)
                             }
                             behandlingErRedigerbar={behandlingErRedigerbar}
-                            valideringsfeil={valideringsfeil && valideringsfeil[index]?.utgifter}
-                            settValideringsFeil={(oppdaterteUtgifter) =>
-                                oppdaterValideringsfeil(index, 'utgifter', oppdaterteUtgifter)
+                            valideringsfeil={
+                                valideringsfeil && valideringsfeil[index]?.utgiftsperioder
+                            }
+                            settValideringsFeil={(oppdaterteFeil) =>
+                                oppdaterValideringsfeil(index, 'utgiftsperioder', oppdaterteFeil)
                             }
                         />
                         {skalViseFjernKnapp && (
