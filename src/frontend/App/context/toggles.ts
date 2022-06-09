@@ -13,8 +13,6 @@ export enum ToggleName {
     visOpprettTilbakekreving = 'familie.ef.sak.frontend-vis-tilbakekreving',
     oppgavebenkMigrerFagsak = 'familie.ef.sak.frontend-oppgavebenk-migrer-fagsak',
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
-    kanJournalFøreBarnetilsyn = 'familie.ef.sak.frontend-behandle-barnetilsyn-i-ny-losning',
-    skalViseOpprettNyBehandlingBarnetilsyn = 'familie.ef.sak.frontend-skal-vise-opprett-ny-behandling-knapp-barnetilsyn',
     kanLeggeTilTerminbarnVidJournalføring = 'familie.ef.sak.frontend-journalforing-kan-legge-til-terminbarn',
     kanJournalFøreSkolepenger = 'familie.ef.sak.skolepenger',
 }

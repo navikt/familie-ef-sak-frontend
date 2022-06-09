@@ -1,5 +1,4 @@
 import LagBehandlingModal from './LagBehandlingModal';
-import { ToggleName } from '../../App/context/toggles';
 import React, { useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
 import { Fagsak } from '../../App/typer/fagsak';
@@ -7,7 +6,6 @@ import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
 import { useApp } from '../../App/context/AppContext';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
-import { useToggles } from '../../App/context/TogglesContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
@@ -25,7 +23,6 @@ interface Props {
 
 export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
     const { axiosRequest } = useApp();
-    const { toggles } = useToggles();
 
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
@@ -41,7 +38,7 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
 
     const skalViseOpprettNyBehandlingKnapp =
         fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
-        toggles[ToggleName.skalViseOpprettNyBehandlingBarnetilsyn];
+        fagsak.stønadstype === Stønadstype.BARNETILSYN;
 
     useEffect(() => {
         hentTilbakekrevingBehandlinger();
