@@ -34,21 +34,22 @@ export const useHentVedtak = (
     const hentVedtak = useCallback(() => {
         if (!behandlingId) {
             settVedtak(byggSuksessRessurs(undefined));
+        } else {
+            const behandlingConfig: AxiosRequestConfig = {
+                method: 'GET',
+                url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
+            };
+            axiosRequest<IVedtakForOvergangsstønad | undefined, null>(behandlingConfig).then(
+                (res: Ressurs<IVedtakForOvergangsstønad | undefined>) => {
+                    settVedtak(res);
+                    const resultatType =
+                        res.status === RessursStatus.SUKSESS && res.data
+                            ? res.data.resultatType
+                            : undefined;
+                    settVedtaksresultat(resultatType);
+                }
+            );
         }
-        const behandlingConfig: AxiosRequestConfig = {
-            method: 'GET',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
-        };
-        axiosRequest<IVedtakForOvergangsstønad | undefined, null>(behandlingConfig).then(
-            (res: Ressurs<IVedtakForOvergangsstønad | undefined>) => {
-                settVedtak(res);
-                const resultatType =
-                    res.status === RessursStatus.SUKSESS && res.data
-                        ? res.data.resultatType
-                        : undefined;
-                settVedtaksresultat(resultatType);
-            }
-        );
         // eslint-disable-next-line
     }, [behandlingId]);
 
