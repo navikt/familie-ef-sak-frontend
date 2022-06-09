@@ -140,13 +140,14 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                                     ? -1
                                                     : 1;
                                             })
+                                            .filter(
+                                                (journalPostId: string) =>
+                                                    !dokumentGruppeSkalIkkeVises(
+                                                        grupperteDokumenter[journalPostId]
+                                                    )
+                                            )
                                             .map((journalpostId: string) => {
-                                                const dokumenter =
-                                                    grupperteDokumenter[journalpostId];
-                                                if (dokumentGruppeSkalIkkeVises(dokumenter)) {
-                                                    return null;
-                                                }
-                                                return dokumenter.map(
+                                                return grupperteDokumenter[journalpostId].map(
                                                     (dokument: Dokumentinfo, indeks: number) => {
                                                         if (indeks === 0) {
                                                             return (
