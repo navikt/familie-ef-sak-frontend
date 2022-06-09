@@ -98,18 +98,24 @@ export const InnvilgeVedtak: React.FC<{
     useEffect(() => {
         if (!vedtakshistorikk?.perioder?.length) return;
 
-        vedtakshistorikk.perioder.forEach((periode: IVedtaksperiode, index: number) => {
-            vedtaksperiodeState.update({ ...periode, endretKey: uuidv4() }, index);
+        const perioderMedEndretKey = vedtakshistorikk.perioder.map((periode) => {
+            return { ...periode, endretKey: uuidv4() };
         });
+
+        vedtaksperiodeState.setValue(perioderMedEndretKey);
+
         // eslint-disable-next-line
     }, [vedtakshistorikk]);
 
     useEffect(() => {
         if (!vedtakshistorikk?.inntekter?.length) return;
 
-        vedtakshistorikk.inntekter.forEach((inntekt: IInntektsperiode, index: number) => {
-            inntektsperiodeState.update({ ...inntekt, endretKey: uuidv4() }, index);
+        const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
+            return { ...inntekt, endretKey: uuidv4() };
         });
+
+        inntektsperiodeState.setValue(inntekterMedEndretKey);
+
         // eslint-disable-next-line
     }, [vedtakshistorikk]);
 
