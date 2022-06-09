@@ -1,4 +1,4 @@
-import { byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
+import { byggSuksessRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
@@ -19,7 +19,7 @@ export const harVedtaksresultatMedTilkjentYtelse = (
 };
 
 export const useHentVedtak = (
-    behandlingId: string
+    behandlingId: string | undefined
 ): {
     hentVedtak: () => void;
     vedtak: Ressurs<IVedtakForOvergangsstønad | undefined>;
@@ -32,20 +32,24 @@ export const useHentVedtak = (
     const [vedtaksresultat, settVedtaksresultat] = useState<EBehandlingResultat>();
 
     const hentVedtak = useCallback(() => {
-        const behandlingConfig: AxiosRequestConfig = {
-            method: 'GET',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
-        };
-        axiosRequest<IVedtakForOvergangsstønad | undefined, null>(behandlingConfig).then(
-            (res: Ressurs<IVedtakForOvergangsstønad | undefined>) => {
-                settVedtak(res);
-                const resultatType =
-                    res.status === RessursStatus.SUKSESS && res.data
-                        ? res.data.resultatType
-                        : undefined;
-                settVedtaksresultat(resultatType);
-            }
-        );
+        if (!behandlingId) {
+            settVedtak(byggSuksessRessurs(undefined));
+        } else {
+            const behandlingConfig: AxiosRequestConfig = {
+                method: 'GET',
+                url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
+            };
+            axiosRequest<IVedtakForOvergangsstønad | undefined, null>(behandlingConfig).then(
+                (res: Ressurs<IVedtakForOvergangsstønad | undefined>) => {
+                    settVedtak(res);
+                    const resultatType =
+                        res.status === RessursStatus.SUKSESS && res.data
+                            ? res.data.resultatType
+                            : undefined;
+                    settVedtaksresultat(resultatType);
+                }
+            );
+        }
         // eslint-disable-next-line
     }, [behandlingId]);
 

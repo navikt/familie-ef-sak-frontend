@@ -25,15 +25,21 @@ const WrapperMarginTop = styled.div`
 `;
 
 const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
-    const behandlingId = behandling.id;
+    const { id: behandlingId, forrigeBehandlingId } = behandling;
     const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
+    const { vedtak: vedtakForrigeBehandling, hentVedtak: hentVedtakForrigeBehandling } =
+        useHentVedtak(forrigeBehandlingId);
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
 
     useEffect(() => {
         hentVedtak();
     }, [hentVedtak]);
+
+    useEffect(() => {
+        hentVedtakForrigeBehandling();
+    }, [hentVedtakForrigeBehandling]);
 
     useEffect(() => {
         if (vedtak.status === RessursStatus.SUKSESS && vedtak.data) {
@@ -50,8 +56,8 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                 alleVilkårOppfylt={alleVilkårOppfylt}
             />
             <WrapperMarginTop>
-                <DataViewer response={{ vedtak }}>
-                    {({ vedtak }) => {
+                <DataViewer response={{ vedtak, vedtakForrigeBehandling }}>
+                    {({ vedtak, vedtakForrigeBehandling }) => {
                         switch (resultatType) {
                             case EBehandlingResultat.INNVILGE:
                                 return (
@@ -59,6 +65,10 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                         behandling={behandling}
                                         lagretInnvilgetVedtak={
                                             vedtak as unknown as IInnvilgeVedtakForSkolepenger
+                                        }
+                                        forrigeVedtak={
+                                            vedtakForrigeBehandling &&
+                                            (vedtakForrigeBehandling as unknown as IInnvilgeVedtakForSkolepenger)
                                         }
                                     />
                                 );
