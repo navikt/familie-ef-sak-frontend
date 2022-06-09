@@ -32,17 +32,9 @@ const StyledPopoverinnhold = styled.p`
 
 const Flatknapp = hiddenIf(Knapp);
 
-const kanJournalføres = (
-    oppgave: IOppgave,
-    skalJournalføreBarnetisyn: boolean,
-    skalJournalføreSkolepenger: boolean
-) => {
+const kanJournalføres = (oppgave: IOppgave, skalJournalføreSkolepenger: boolean) => {
     const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
     const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
-
-    if (!skalJournalføreBarnetisyn && stønadstype === Stønadstype.BARNETILSYN) {
-        return false;
-    }
 
     if (!skalJournalføreSkolepenger && stønadstype === Stønadstype.SKOLEPENGER) {
         return false;
@@ -91,13 +83,7 @@ const kanMigreres = (oppgave: IOppgave) => {
 const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
-    } else if (
-        kanJournalføres(
-            oppgave,
-            toggles[ToggleName.kanJournalFøreBarnetilsyn],
-            toggles[ToggleName.kanJournalFøreSkolepenger]
-        )
-    ) {
+    } else if (kanJournalføres(oppgave, toggles[ToggleName.kanJournalFøreSkolepenger])) {
         return Handling.JOURNALFØR;
     } else if (kanStarteBlankettBehandling(oppgave)) {
         return Handling.BLANKETT;

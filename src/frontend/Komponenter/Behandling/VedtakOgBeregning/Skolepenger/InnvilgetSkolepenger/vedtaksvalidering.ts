@@ -21,6 +21,7 @@ const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
 };
 
 const periodeUtgiftFeil: FormErrors<SkolepengerUtgift> = {
+    id: undefined,
     årMånedFra: undefined,
     utgifter: undefined,
     stønad: undefined,
@@ -42,7 +43,7 @@ const validerSkoleårsperioderSkolepenger = (
     return perioder.map((periode) => {
         const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
             perioder: validerDelperiodeSkoleår(periode.perioder),
-            utgifter: validerUtgifter(periode.utgifter),
+            utgiftsperioder: validerUtgifter(periode.utgiftsperioder),
         };
         return utgiftsperiodeFeil;
     });

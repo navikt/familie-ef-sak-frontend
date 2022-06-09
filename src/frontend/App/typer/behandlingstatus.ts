@@ -18,3 +18,6 @@ export const behandlingStatusTilTekst: Record<BehandlingStatus, string> = {
 
 export const erBehandlingRedigerbar = (behandling: Behandling): boolean =>
     [BehandlingStatus.OPPRETTET, BehandlingStatus.UTREDES].includes(behandling.status);
+
+export const erBehandlingUnderArbeid = (behandling: Behandling): boolean =>
+    [BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(behandling.status);

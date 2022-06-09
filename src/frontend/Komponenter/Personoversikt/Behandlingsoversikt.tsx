@@ -25,6 +25,9 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
                     {fagsakPerson.barnetilsyn && (
                         <FagsakOversikt fagsak={fagsakPerson.barnetilsyn} />
                     )}
+                    {fagsakPerson.skolepenger && (
+                        <FagsakOversikt fagsak={fagsakPerson.skolepenger} />
+                    )}
                 </>
             )}
         </DataViewer>

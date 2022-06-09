@@ -4,6 +4,7 @@ import {
     ISkoleårsperiodeSkolepenger,
     SkolepengerUtgift,
 } from '../../../../App/typer/vedtak';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface ValideringsPropsMedOppdatering<T> {
     data: T[];
@@ -20,13 +21,14 @@ export const tomSkoleårsperiode: IPeriodeSkolepenger = {
     studiebelastning: undefined,
 };
 
-export const tomUtgift: SkolepengerUtgift = {
+export const tomUtgift = (): SkolepengerUtgift => ({
+    id: uuidv4(),
     årMånedFra: '',
     utgifter: undefined,
     stønad: undefined,
-};
+});
 
-export const tomSkoleårsperiodeSkolepenger: ISkoleårsperiodeSkolepenger = {
+export const tomSkoleårsperiodeSkolepenger = (): ISkoleårsperiodeSkolepenger => ({
     perioder: [tomSkoleårsperiode],
-    utgifter: [tomUtgift],
-};
+    utgiftsperioder: [tomUtgift()],
+});

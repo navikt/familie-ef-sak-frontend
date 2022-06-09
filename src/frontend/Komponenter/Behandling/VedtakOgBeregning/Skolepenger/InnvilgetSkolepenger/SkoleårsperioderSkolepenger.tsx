@@ -17,12 +17,14 @@ const Skoleårsperiode = styled.div``;
 
 interface Props {
     skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
+    låsteUtgiftIder: string[];
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
 const SkoleårsperioderSkolepenger: React.FC<Props> = ({
     skoleårsperioder,
+    låsteUtgiftIder,
     valideringsfeil,
     settValideringsFeil,
 }) => {
@@ -63,10 +65,14 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
     return (
         <>
             {skoleårsperioder.value.map((skoleårsperiode, index) => {
+                const inneholderLåsteUtgifter = skoleårsperiode.utgiftsperioder.some(
+                    (utgift) => låsteUtgiftIder.indexOf(utgift.id) > -1
+                );
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index === skoleårsperioder.value.length - 1 &&
-                    index !== 0;
+                    index !== 0 &&
+                    !inneholderLåsteUtgifter;
                 return (
                     <Skoleårsperiode key={index}>
                         <SkoleårDelårsperiode
@@ -76,20 +82,23 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             }
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             valideringsfeil={valideringsfeil && valideringsfeil[index]?.perioder}
-                            settValideringsFeil={(oppdatertePerioder) =>
-                                oppdaterValideringsfeil(index, 'perioder', oppdatertePerioder)
+                            settValideringsFeil={(oppdaterteFeil) =>
+                                oppdaterValideringsfeil(index, 'perioder', oppdaterteFeil)
                             }
                         />
                         <UtgiftsperiodeSkolepenger
-                            data={skoleårsperiode.utgifter}
-                            oppdater={(utgifter) =>
-                                oppdaterSkoleårsperioder(index, 'utgifter', utgifter)
+                            data={skoleårsperiode.utgiftsperioder}
+                            oppdater={(utgiftsperioder) =>
+                                oppdaterSkoleårsperioder(index, 'utgiftsperioder', utgiftsperioder)
                             }
                             behandlingErRedigerbar={behandlingErRedigerbar}
-                            valideringsfeil={valideringsfeil && valideringsfeil[index]?.utgifter}
-                            settValideringsFeil={(oppdaterteUtgifter) =>
-                                oppdaterValideringsfeil(index, 'utgifter', oppdaterteUtgifter)
+                            valideringsfeil={
+                                valideringsfeil && valideringsfeil[index]?.utgiftsperioder
                             }
+                            settValideringsFeil={(oppdaterteFeil) =>
+                                oppdaterValideringsfeil(index, 'utgiftsperioder', oppdaterteFeil)
+                            }
+                            låsteUtgiftIder={låsteUtgiftIder}
                         />
                         {skalViseFjernKnapp && (
                             <FjernKnapp
@@ -98,7 +107,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             />
                         )}
                         <LeggTilKnapp
-                            onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger)}
+                            onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
                             knappetekst="Legg til skoleår"
                             hidden={!behandlingErRedigerbar}
                         />
