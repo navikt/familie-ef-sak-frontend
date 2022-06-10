@@ -10,7 +10,7 @@ const StyledKnapp = styled(Flatknapp)`
     height: 2rem;
 `;
 
-const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
+const FjernKnappMedTekst: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     onClick,
     knappetekst,
 }) => {
@@ -22,4 +22,4 @@ const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     );
 };
 
-export default hiddenIf(FjernKnapp);
+export default hiddenIf(FjernKnappMedTekst);

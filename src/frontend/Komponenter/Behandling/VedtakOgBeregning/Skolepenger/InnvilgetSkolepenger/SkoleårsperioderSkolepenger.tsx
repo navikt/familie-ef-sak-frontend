@@ -80,8 +80,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                     index === skoleårsperioder.value.length - 1 &&
                     index !== 0 &&
                     !inneholderLåsteUtgifter;
-                const erSisteSkoleår = index + 1 === skoleårsperioder.value.length;
-                const skalViseLeggTilSkoleår = behandlingErRedigerbar && erSisteSkoleår;
                 return (
                     <>
                         <Skoleårsperiode key={index}>
@@ -127,14 +125,14 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                 />
                             )}
                         </Skoleårsperiode>
-                        <LeggTilKnapp
-                            onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
-                            knappetekst="Legg til skoleår"
-                            hidden={!skalViseLeggTilSkoleår}
-                        />
                     </>
                 );
             })}
+            <LeggTilKnapp
+                onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                knappetekst="Legg til skoleår"
+                hidden={!behandlingErRedigerbar}
+            />
         </>
     );
 };
