@@ -146,7 +146,7 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     const skalViseVedtaksperiodeOgInntekt =
-        behandling.type !== Behandlingstype.REVURDERING || revurderesFra;
+        behandling.type !== Behandlingstype.REVURDERING || revurderesFra || !behandlingErRedigerbar;
 
     const hentLagretBeløpForYtelse = useCallback(() => {
         axiosRequest<IBeløpsperiode[], void>({
