@@ -11,6 +11,8 @@ import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
 import { erAlleBehandlingerErFerdigstilt } from './utils';
 import { Stønadstype } from '../../App/typer/behandlingstema';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;
@@ -23,6 +25,7 @@ interface Props {
 
 export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
     const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
 
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
@@ -38,7 +41,8 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
 
     const skalViseOpprettNyBehandlingKnapp =
         fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
-        fagsak.stønadstype === Stønadstype.BARNETILSYN;
+        fagsak.stønadstype === Stønadstype.BARNETILSYN ||
+        toggles[ToggleName.skalViseOpprettNyBehandlingSkolepenger];
 
     useEffect(() => {
         hentTilbakekrevingBehandlinger();
