@@ -8,6 +8,7 @@ import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
+import navFarger from 'nav-frontend-core';
 
 const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -15,11 +16,27 @@ const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     grid-template-columns: ${(props) =>
         props.lesevisning ? '10rem 10rem 5rem' : '12rem 12rem 5rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
+    margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
 `;
 
 const StyledInputMedTusenSkille = styled(InputMedTusenSkille)`
     text-align: left;
+`;
+
+const FlexRow = styled.div`
+    display: flex;
+`;
+
+const FlexColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const BlåStrek = styled.span`
+    border-left: 3px solid ${navFarger.navBlaLighten40};
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0.75rem;
 `;
 
 const UtgiftsperiodeSkolepenger: React.FC<
@@ -49,70 +66,85 @@ const UtgiftsperiodeSkolepenger: React.FC<
     };
 
     return (
-        <div style={{ marginLeft: '1rem' }}>
-            <Utgiftsrad>
-                <Element>Utbetalingsmåned</Element>
-                <Element>Utgifter</Element>
-                <Element>Stønad</Element>
-            </Utgiftsrad>
-            {data.map((utgift, index) => {
-                const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;
-                const skalViseFjernKnapp =
-                    behandlingErRedigerbar &&
-                    index === data.length - 1 &&
-                    index !== 0 &&
-                    !erLåstFraForrigeBehandling;
-                return (
-                    <Utgiftsrad key={index}>
-                        <MånedÅrVelger
-                            årMånedInitiell={utgift.årMånedFra}
-                            //label={datoFraTekst}
-                            onEndret={(verdi) => {
-                                oppdaterUtgift(index, 'årMånedFra', verdi);
-                            }}
-                            antallÅrTilbake={10}
-                            antallÅrFrem={4}
-                            lesevisning={erLesevisning}
-                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                            disabled={erLåstFraForrigeBehandling}
-                        />
-                        <StyledInputMedTusenSkille
-                            onKeyPress={tilHeltall}
-                            type="number"
-                            value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
-                            feil={valideringsfeil && valideringsfeil[index]?.utgifter}
-                            onChange={(e) => {
-                                oppdaterUtgift(index, 'utgifter', tilTallverdi(e.target.value));
-                            }}
-                            erLesevisning={erLesevisning}
-                            disabled={erLåstFraForrigeBehandling}
-                        />
-                        <StyledInputMedTusenSkille
-                            onKeyPress={tilHeltall}
-                            type="number"
-                            value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
-                            feil={valideringsfeil && valideringsfeil[index]?.stønad}
-                            onChange={(e) => {
-                                oppdaterUtgift(index, 'stønad', tilTallverdi(e.target.value));
-                            }}
-                            erLesevisning={erLesevisning}
-                            disabled={erLåstFraForrigeBehandling}
-                        />
-                        {skalViseFjernKnapp && (
-                            <FjernKnapp
-                                onClick={() => fjernUtgift(index)}
-                                knappetekst="Fjern vedtaksperiode"
-                            />
-                        )}
+        <FlexRow>
+            <BlåStrek />
+            <div style={{ marginLeft: '1rem' }}>
+                <FlexColumn>
+                    <Utgiftsrad erHeader={true}>
+                        <Element>Utbetalingsmåned</Element>
+                        <Element>Utgifter</Element>
+                        <Element>Stønad</Element>
                     </Utgiftsrad>
-                );
-            })}
-            <LeggTilKnapp
-                onClick={() => oppdater([...data, tomUtgift()])}
-                knappetekst="Legg til utgift"
-                hidden={!behandlingErRedigerbar}
-            />
-        </div>
+                    {data.map((utgift, index) => {
+                        const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;
+                        const skalViseFjernKnapp =
+                            behandlingErRedigerbar &&
+                            index === data.length - 1 &&
+                            index !== 0 &&
+                            !erLåstFraForrigeBehandling;
+                        return (
+                            <Utgiftsrad erHeader={false} key={index}>
+                                <MånedÅrVelger
+                                    årMånedInitiell={utgift.årMånedFra}
+                                    //label={datoFraTekst}
+                                    onEndret={(verdi) => {
+                                        oppdaterUtgift(index, 'årMånedFra', verdi);
+                                    }}
+                                    antallÅrTilbake={10}
+                                    antallÅrFrem={4}
+                                    lesevisning={erLesevisning}
+                                    feilmelding={
+                                        valideringsfeil && valideringsfeil[index]?.årMånedFra
+                                    }
+                                    disabled={erLåstFraForrigeBehandling}
+                                />
+                                <StyledInputMedTusenSkille
+                                    onKeyPress={tilHeltall}
+                                    type="number"
+                                    value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
+                                    feil={valideringsfeil && valideringsfeil[index]?.utgifter}
+                                    onChange={(e) => {
+                                        oppdaterUtgift(
+                                            index,
+                                            'utgifter',
+                                            tilTallverdi(e.target.value)
+                                        );
+                                    }}
+                                    erLesevisning={erLesevisning}
+                                    disabled={erLåstFraForrigeBehandling}
+                                />
+                                <StyledInputMedTusenSkille
+                                    onKeyPress={tilHeltall}
+                                    type="number"
+                                    value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
+                                    feil={valideringsfeil && valideringsfeil[index]?.stønad}
+                                    onChange={(e) => {
+                                        oppdaterUtgift(
+                                            index,
+                                            'stønad',
+                                            tilTallverdi(e.target.value)
+                                        );
+                                    }}
+                                    erLesevisning={erLesevisning}
+                                    disabled={erLåstFraForrigeBehandling}
+                                />
+                                {skalViseFjernKnapp && (
+                                    <FjernKnapp
+                                        onClick={() => fjernUtgift(index)}
+                                        knappetekst="Fjern vedtaksperiode"
+                                    />
+                                )}
+                            </Utgiftsrad>
+                        );
+                    })}
+                </FlexColumn>
+                <LeggTilKnapp
+                    onClick={() => oppdater([...data, tomUtgift()])}
+                    knappetekst="Legg til utgift"
+                    hidden={!behandlingErRedigerbar}
+                />
+            </div>
+        </FlexRow>
     );
 };
 
