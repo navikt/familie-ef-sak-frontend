@@ -13,6 +13,7 @@ import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
 import { journalstatusTilTekst } from '../../App/typer/journalforing';
 import { IFagsakPerson } from '../../App/typer/fagsak';
+import { Journalstatus } from '@navikt/familie-typer';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -52,6 +53,11 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     );
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
+
+    const dokumentGruppeSkalIkkeVises = (dokumenter: Dokumentinfo[]): boolean => {
+        const journalStatuser = [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT];
+        return dokumenter.some((dokument) => journalStatuser.includes(dokument.journalstatus));
+    };
 
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
         <Td width={`${width}%`}>
@@ -134,6 +140,12 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                                     ? -1
                                                     : 1;
                                             })
+                                            .filter(
+                                                (journalPostId: string) =>
+                                                    !dokumentGruppeSkalIkkeVises(
+                                                        grupperteDokumenter[journalPostId]
+                                                    )
+                                            )
                                             .map((journalpostId: string) => {
                                                 return grupperteDokumenter[journalpostId].map(
                                                     (dokument: Dokumentinfo, indeks: number) => {

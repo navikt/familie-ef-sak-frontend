@@ -5,6 +5,7 @@ import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerL
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import DokumentasjonUtdanningInfo from './DokumentasjonUtdanningInfo';
 
 export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
     vurderinger,
@@ -12,6 +13,8 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    grunnlag,
+    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
@@ -34,6 +37,12 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
                             tittel="Dokumentasjon av utdanning"
                             vilkårsresultat={vurdering.resultat}
                         />
+                        {grunnlag.aktivitet && (
+                            <DokumentasjonUtdanningInfo
+                                aktivitet={grunnlag.aktivitet}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                            />
+                        )}
                     </>
                 ),
                 høyre: (
