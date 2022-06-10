@@ -23,8 +23,9 @@ const StyledInputMedTusenSkille = styled(InputMedTusenSkille)`
     text-align: left;
 `;
 
-const FlexRow = styled.div`
+const FlexRow = styled.div<{ lesevisning?: boolean }>`
     display: flex;
+    margin-top: ${(props) => (props.lesevisning ? '0.75rem' : '0rem')};
 `;
 
 const FlexColumn = styled.div`
@@ -32,8 +33,9 @@ const FlexColumn = styled.div`
     flex-direction: column;
 `;
 
-const BlåStrek = styled.span`
-    border-left: 3px solid ${navFarger.navBlaLighten40};
+const FargetStrek = styled.span<{ lesevisning?: boolean }>`
+    border-left: 3px solid
+        ${(props) => (props.lesevisning ? navFarger.navGra80 : navFarger.navBlaLighten40)};
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     margin-bottom: 0.75rem;
@@ -66,8 +68,8 @@ const UtgiftsperiodeSkolepenger: React.FC<
     };
 
     return (
-        <FlexRow>
-            <BlåStrek />
+        <FlexRow lesevisning={erLesevisning}>
+            <FargetStrek lesevisning={erLesevisning} />
             <div style={{ marginLeft: '1rem' }}>
                 <FlexColumn>
                     <Utgiftsrad erHeader={true}>
