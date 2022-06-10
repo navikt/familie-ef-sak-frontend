@@ -13,12 +13,12 @@ import VedtakperiodeSelect from './VedtakperiodeSelect';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
-import { månederMellom, månedÅrTilDate } from '../../../../../App/utils/dato';
 import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
+import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -46,13 +46,6 @@ interface Props {
 export const tomVedtaksperiodeRad: IVedtaksperiode = {
     periodeType: '' as EPeriodetype,
     aktivitet: '' as EAktivitet,
-};
-
-const kalkulerAntallMåneder = (årMånedFra?: string, årMånedTil?: string): number | undefined => {
-    if (årMånedFra && årMånedTil) {
-        return månederMellom(månedÅrTilDate(årMånedFra), månedÅrTilDate(årMånedTil));
-    }
-    return undefined;
 };
 
 const VedtaksperiodeValg: React.FC<Props> = ({
