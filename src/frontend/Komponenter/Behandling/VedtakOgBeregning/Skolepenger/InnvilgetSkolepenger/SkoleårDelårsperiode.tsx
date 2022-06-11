@@ -3,6 +3,7 @@ import {
     ESkolepengerStudietype,
     IPeriodeSkolepenger,
     skolepengerStudietypeTilTekst,
+    studietyper,
 } from '../../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
@@ -107,7 +108,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 }
                             >
                                 <option value="">Velg</option>
-                                {[ESkolepengerStudietype.HØGSKOLE_UNIVERSITET].map((type) => (
+                                {studietyper.map((type) => (
                                     <option value={type} key={type}>
                                         {skolepengerStudietypeTilTekst[type]}
                                     </option>

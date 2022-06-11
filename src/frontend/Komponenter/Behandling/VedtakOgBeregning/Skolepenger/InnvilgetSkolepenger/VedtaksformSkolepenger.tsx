@@ -61,7 +61,6 @@ export const VedtaksformSkolepenger: React.FC<{
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const navigate = useNavigate();
-
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             skoleårsperioder: lagretInnvilgetVedtak
