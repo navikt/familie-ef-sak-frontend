@@ -38,6 +38,15 @@ export const validerInnvilgetVedtakForm = ({
     };
 };
 
+export const validerInnvilgetVedtakFormBeregning = ({
+    skoleårsperioder,
+}: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
+    return {
+        skoleårsperioder: validerSkoleårsperioderSkolepenger(skoleårsperioder),
+        begrunnelse: undefined,
+    };
+};
+
 const validerSkoleårsperioderSkolepenger = (
     perioder: ISkoleårsperiodeSkolepenger[]
 ): FormErrors<ISkoleårsperiodeSkolepenger[]> => {
