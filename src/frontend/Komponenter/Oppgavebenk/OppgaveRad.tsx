@@ -89,7 +89,7 @@ const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
         return Handling.BLANKETT;
     } else if (oppgaveErTilbakekreving(oppgave)) {
         return Handling.TILBAKE;
-    } else if (kanMigreres(oppgave) && toggles[ToggleName.oppgavebenkMigrerFagsak]) {
+    } else if (kanMigreres(oppgave) && toggles[ToggleName.kanMigrereFagsak]) {
         return Handling.JOURNALFØR_MIGRERING;
     }
     return Handling.INGEN;
