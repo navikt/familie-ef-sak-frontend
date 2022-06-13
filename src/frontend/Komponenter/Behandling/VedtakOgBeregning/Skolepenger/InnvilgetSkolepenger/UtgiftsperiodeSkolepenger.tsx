@@ -17,11 +17,19 @@ import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/Input
 import navFarger from 'nav-frontend-core';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 
-const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
+const Utgiftsrad = styled.div<{
+    lesevisning?: boolean;
+    erHeader?: boolean;
+    valgtAlleUtgiftstyper: boolean;
+}>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger utgiftstyper utgifter stønad';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '9rem 14rem 4rem 4rem' : '12rem 23rem 5rem 5rem 4rem'};
+    grid-template-columns: ${(props) => {
+        if (props.lesevisning) {
+            return props.valgtAlleUtgiftstyper ? '9rem 19rem 4rem 4rem' : '9rem 14rem 4rem 4rem';
+        }
+        return '12rem 23rem 5rem 5rem 4rem';
+    }};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
 `;
@@ -58,7 +66,10 @@ const UtgiftstypeTekst = styled(Normaltekst)`
 `;
 
 const UtgiftsperiodeSkolepenger: React.FC<
-    ValideringsPropsMedOppdatering<SkolepengerUtgift> & { låsteUtgiftIder: string[] }
+    ValideringsPropsMedOppdatering<SkolepengerUtgift> & {
+        låsteUtgiftIder: string[];
+        harValgtAlleUtgiftstyper: boolean;
+    }
 > = ({
     data,
     oppdater,
@@ -66,6 +77,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
     valideringsfeil,
     settValideringsFeil,
     låsteUtgiftIder,
+    harValgtAlleUtgiftstyper,
 }) => {
     const erLesevisning = !behandlingErRedigerbar;
     const oppdaterUtgift = (
@@ -88,7 +100,11 @@ const UtgiftsperiodeSkolepenger: React.FC<
             <FargetStrek lesevisning={erLesevisning} />
             <div style={{ marginLeft: '1rem' }}>
                 <FlexColumn>
-                    <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
+                    <Utgiftsrad
+                        erHeader={true}
+                        lesevisning={erLesevisning}
+                        valgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
+                    >
                         <Element>Utbetalingsmåned</Element>
                         <Element>Utgiftstyper</Element>
                         <Element>Utgifter</Element>
@@ -106,7 +122,12 @@ const UtgiftsperiodeSkolepenger: React.FC<
                             utgift.utgiftstyper.includes(type.value as EUtgiftstype)
                         );
                         return (
-                            <Utgiftsrad erHeader={false} lesevisning={erLesevisning} key={index}>
+                            <Utgiftsrad
+                                erHeader={false}
+                                lesevisning={erLesevisning}
+                                key={index}
+                                valgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
+                            >
                                 <MånedÅrVelger
                                     årMånedInitiell={utgift.årMånedFra}
                                     //label={datoFraTekst}

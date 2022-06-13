@@ -297,7 +297,7 @@ export enum EUtgiftstype {
 export const utgiftstypeTilTekst: Record<EUtgiftstype, string> = {
     SEMESTERAVGIFT: 'Semesteravgift',
     STUDIEAVGIFT: 'Studieavgift',
-    EKSAMENSAVGIFT: 'Eksamensavgift',
+    EKSAMENSAVGIFT: 'Eksamensgebyr',
 };
 
 export const utgiftstyper = [
