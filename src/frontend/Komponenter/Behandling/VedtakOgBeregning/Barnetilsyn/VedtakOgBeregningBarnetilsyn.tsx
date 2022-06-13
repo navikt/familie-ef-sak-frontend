@@ -76,7 +76,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                     />
                                 );
                             case EBehandlingResultat.OPPHØRT:
-                                return <Opphør behandlingId={behandlingId} />;
+                                return <Opphør behandlingId={behandlingId} lagretVedtak={vedtak} />;
                             case undefined:
                                 return null;
                         }
