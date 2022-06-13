@@ -3,9 +3,10 @@ import {
     ESkolepengerStudietype,
     IPeriodeSkolepenger,
     skolepengerStudietypeTilTekst,
+    studietyper,
 } from '../../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
@@ -13,14 +14,21 @@ import styled from 'styled-components';
 import { tomSkoleårsperiode, ValideringsPropsMedOppdatering } from '../typer';
 import InputUtenSpinner from '../../../../../Felles/Visningskomponenter/InputUtenSpinner';
 import { FamilieSelect } from '@navikt/familie-form-elements';
+import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 
 const SkoleårsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
-    grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger studiebelastning';
+    grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger antallMnd studiebelastning';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 10rem 10rem 7rem' : '12rem 12rem 12rem 8rem 4rem'};
+        props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 12rem 11.5rem 4rem 8rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
+`;
+
+const AntallMåneder = styled(Normaltekst)<{ erLesevisning: boolean }>`
+    margin-top: ${(props) => (props.erLesevisning ? '0rem' : '0.65rem')};
+    margin-right: ${(props) => (props.erLesevisning ? '1.2rem' : '0rem')};
+    text-align: center;
 `;
 
 const StyledInput = styled(InputUtenSpinner)`
@@ -75,6 +83,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                 <Element>Studietype</Element>
                 <Element>Periode fra og med</Element>
                 <Element>Periode til og med</Element>
+                <Element>Ant. mnd</Element>
                 <Element>Studiebelastning</Element>
             </SkoleårsperiodeRad>
             {data.map((periode, index) => {
@@ -99,7 +108,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 }
                             >
                                 <option value="">Velg</option>
-                                {[ESkolepengerStudietype.HØGSKOLE_UNIVERSITET].map((type) => (
+                                {studietyper.map((type) => (
                                     <option value={type} key={type}>
                                         {skolepengerStudietypeTilTekst[type]}
                                     </option>
@@ -119,6 +128,9 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                                 erLesevisning={!behandlingErRedigerbar}
                             />
+                            <AntallMåneder erLesevisning={!behandlingErRedigerbar}>
+                                {kalkulerAntallMåneder(årMånedFra, årMånedTil)}
+                            </AntallMåneder>
                             <StyledInput
                                 onKeyPress={tilHeltall}
                                 type="number"

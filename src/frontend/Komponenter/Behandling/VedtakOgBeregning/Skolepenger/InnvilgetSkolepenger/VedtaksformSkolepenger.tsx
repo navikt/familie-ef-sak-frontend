@@ -18,11 +18,13 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
-import { IngenBegrunnelseOppgitt } from '../../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
-import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
+import {
+    validerInnvilgetVedtakForm,
+    validerInnvilgetVedtakFormBeregning,
+} from './vedtaksvalidering';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 
@@ -61,7 +63,6 @@ export const VedtaksformSkolepenger: React.FC<{
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const navigate = useNavigate();
-
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             skoleårsperioder: lagretInnvilgetVedtak
@@ -121,7 +122,7 @@ export const VedtaksformSkolepenger: React.FC<{
     };
 
     const beregnSkolepenger = () => {
-        if (formState.customValidate(validerInnvilgetVedtakForm)) {
+        if (formState.customValidate(validerInnvilgetVedtakFormBeregning)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger/`,
@@ -152,6 +153,17 @@ export const VedtaksformSkolepenger: React.FC<{
                 valideringsfeil={formState.errors.skoleårsperioder}
                 settValideringsFeil={formState.setErrors}
             />
+            <EnsligTextArea
+                erLesevisning={!behandlingErRedigerbar}
+                value={begrunnelseState.value}
+                onChange={(event) => {
+                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                    begrunnelseState.onChange(event);
+                }}
+                label={'Begrunnelse'}
+                maxLength={0}
+                feilmelding={formState.errors.begrunnelse}
+            />
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}
@@ -166,23 +178,6 @@ export const VedtaksformSkolepenger: React.FC<{
             )}
             <WrapperDobbelMarginTop>
                 <UtregningstabellSkolepenger beregningsresultat={beregningsresultat} />
-            </WrapperDobbelMarginTop>
-            <WrapperDobbelMarginTop>
-                {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
-                    <IngenBegrunnelseOppgitt />
-                ) : (
-                    <EnsligTextArea
-                        erLesevisning={!behandlingErRedigerbar}
-                        value={begrunnelseState.value}
-                        onChange={(event) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            begrunnelseState.onChange(event);
-                        }}
-                        label={'Begrunnelse'}
-                        maxLength={0}
-                        feilmelding={formState.errors.begrunnelse}
-                    />
-                )}
             </WrapperDobbelMarginTop>
             {behandlingErRedigerbar && (
                 <WrapperDobbelMarginTop>
