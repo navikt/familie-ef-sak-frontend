@@ -10,8 +10,8 @@ import {
     Intervall,
     månedÅrTilDate,
     overlapper,
-    tilSkoleår,
 } from '../../../../../App/utils/dato';
+import { beregnSkoleår } from '../skoleår';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
@@ -92,20 +92,21 @@ const validerDelperiodeSkoleår = (
             };
         }
         tidligerePerioder.push(intervall);
-        const skoleårFra = tilSkoleår(årMånedFra);
-        if (skoleårFra !== tilSkoleår(årMånedTil)) {
+        const skoleårForPeriode = beregnSkoleår(årMånedFra, årMånedTil);
+        if (!skoleårForPeriode.gyldig) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: `Fra og til er ikke i det samme skoleåret`,
+                årMånedFra: skoleårForPeriode.årsak,
             };
-        }
-        if (skoleår === undefined) {
-            skoleår = skoleårFra;
-        } else if (skoleår !== skoleårFra) {
-            return {
-                ...periodeSkolepengerFeil,
-                årMånedFra: `Skoleåret er ikke det samme som tidligere skoleår`,
-            };
+        } else {
+            if (skoleår === undefined) {
+                skoleår = skoleårForPeriode.skoleår;
+            } else if (skoleår !== skoleårForPeriode.skoleår) {
+                return {
+                    ...periodeSkolepengerFeil,
+                    årMånedFra: `Skoleåret er ikke det samme som tidligere skoleår`,
+                };
+            }
         }
         if (!studiebelastning) {
             return {
