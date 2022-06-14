@@ -8,8 +8,6 @@ import { Select } from 'nav-frontend-skjema';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import { EToast } from '../../App/typer/toast';
 import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
@@ -43,9 +41,6 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     hentTilbakekrevinger,
     behandlinger,
 }) => {
-    const { toggles } = useToggles();
-
-    const visOpprettTilbakekreving = toggles[ToggleName.visOpprettTilbakekreving];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
 
@@ -117,9 +112,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             >
                 <option value="">Velg</option>
                 <option value={Behandlingstype.REVURDERING}>Revurdering</option>
-                <option disabled={!visOpprettTilbakekreving} value={Behandlingstype.TILBAKEKREVING}>
-                    Tilbakekreving
-                </option>
+                <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
             </StyledSelect>
 
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (

@@ -10,7 +10,6 @@ export enum ToggleName {
     kanMigrereFagsak = 'familie.ef.sak.migrering',
     visValgmulighetForSanksjon = 'familie.ef.sak.frontend-vis-sanksjon-en-maned',
     kanLeggeTilNyeBarnPaaRevurdering = 'familie.ef.sak.kan-legge-til-nye-barn-paa-revurdering',
-    visOpprettTilbakekreving = 'familie.ef.sak.frontend-vis-tilbakekreving',
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     kanLeggeTilTerminbarnVidJournalføring = 'familie.ef.sak.frontend-journalforing-kan-legge-til-terminbarn',
     kanJournalFøreSkolepenger = 'familie.ef.sak.skolepenger',
