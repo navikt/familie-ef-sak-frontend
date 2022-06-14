@@ -20,4 +20,6 @@ export const erBehandlingRedigerbar = (behandling: Behandling): boolean =>
     [BehandlingStatus.OPPRETTET, BehandlingStatus.UTREDES].includes(behandling.status);
 
 export const erBehandlingUnderArbeid = (behandling: Behandling): boolean =>
-    [BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(behandling.status);
+    [BehandlingStatus.OPPRETTET, BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(
+        behandling.status
+    );
