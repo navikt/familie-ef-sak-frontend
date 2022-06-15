@@ -27,6 +27,8 @@ import {
 } from './vedtaksvalidering';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
+import { Normaltekst } from 'nav-frontend-typografi';
+import navFarger from 'nav-frontend-core';
 
 export type InnvilgeVedtakForm = {
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
@@ -35,6 +37,10 @@ export type InnvilgeVedtakForm = {
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
+`;
+
+export const AdvarselTekst = styled(Normaltekst)`
+    color: ${navFarger.redError};
 `;
 
 export const defaultSkoleårsperioder = (
@@ -56,6 +62,8 @@ export const VedtaksformSkolepenger: React.FC<{
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
+    const [harUtførtBeregning, settHarUtførtBeregning] = useState<boolean>(false);
+    const [visFeilmelding, settVisFeilmelding] = useState<boolean>(false);
 
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregningSkolepengerResponse>()
@@ -113,15 +121,22 @@ export const VedtaksformSkolepenger: React.FC<{
     };
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
-        const vedtaksRequest: IInnvilgeVedtakForSkolepenger = {
-            skoleårsperioder: form.skoleårsperioder,
-            begrunnelse: form.begrunnelse,
-            _type: IVedtakType.InnvilgelseSkolepenger,
-        };
-        lagreVedtak(vedtaksRequest);
+        settVisFeilmelding(false);
+        if (harUtførtBeregning) {
+            const vedtaksRequest: IInnvilgeVedtakForSkolepenger = {
+                skoleårsperioder: form.skoleårsperioder,
+                begrunnelse: form.begrunnelse,
+                _type: IVedtakType.InnvilgelseSkolepenger,
+            };
+            lagreVedtak(vedtaksRequest);
+        } else {
+            settVisFeilmelding(true);
+        }
     };
 
     const beregnSkolepenger = () => {
+        settHarUtførtBeregning(false);
+        settVisFeilmelding(false);
         if (formState.customValidate(validerInnvilgetVedtakFormBeregning)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
@@ -130,7 +145,10 @@ export const VedtaksformSkolepenger: React.FC<{
                     behandlingId: behandling.id,
                     skoleårsperioder: skoleårsPerioderState.value,
                 },
-            }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
+            }).then((res: Ressurs<IBeregningSkolepengerResponse>) => {
+                settBeregningsresultat(res);
+                settHarUtførtBeregning(true);
+            });
         }
     };
 
@@ -142,6 +160,7 @@ export const VedtaksformSkolepenger: React.FC<{
             }).then((res: Ressurs<IBeregningSkolepengerResponse>) => settBeregningsresultat(res));
         }
     }, [axiosRequest, behandling, behandlingErRedigerbar]);
+
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <Heading spacing size="small" level="5">
@@ -174,6 +193,11 @@ export const VedtaksformSkolepenger: React.FC<{
                     <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
                     </Button>
+                    {visFeilmelding && (
+                        <AdvarselTekst>
+                            Kan ikke lagre vedtaket før beregning er utført
+                        </AdvarselTekst>
+                    )}
                 </WrapperDobbelMarginTop>
             )}
             <WrapperDobbelMarginTop>
