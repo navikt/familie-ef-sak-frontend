@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import React from 'react';
-import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
-import { Element } from 'nav-frontend-typografi';
+import {
+    EUtgiftstype,
+    SkolepengerUtgift,
+    SkolepengerUtgiftProperty,
+    utgiftstyper,
+    utgiftstypeTilTekst,
+} from '../../../../../App/typer/vedtak';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
@@ -9,12 +15,21 @@ import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import navFarger from 'nav-frontend-core';
+import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 
-const Utgiftsrad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
+const Utgiftsrad = styled.div<{
+    lesevisning?: boolean;
+    erHeader?: boolean;
+    valgtAlleUtgiftstyper: boolean;
+}>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger utgifter stønad';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 10rem 5rem' : '12rem 12rem 5rem 4rem'};
+    grid-template-areas: 'fraOgMedVelger utgiftstyper utgifter stønad';
+    grid-template-columns: ${(props) => {
+        if (props.lesevisning) {
+            return props.valgtAlleUtgiftstyper ? '9rem 19rem 4rem 4rem' : '9rem 14rem 4rem 4rem';
+        }
+        return '12rem 23rem 5rem 5rem 4rem';
+    }};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
 `;
@@ -41,8 +56,20 @@ const FargetStrek = styled.span<{ lesevisning?: boolean }>`
     margin-bottom: 0.75rem;
 `;
 
+const UtgiftstypeContainer = styled.div`
+    margin-bottom: 1rem;
+    display: flex;
+`;
+
+const UtgiftstypeTekst = styled(Normaltekst)`
+    margin-right: 0.3rem;
+`;
+
 const UtgiftsperiodeSkolepenger: React.FC<
-    ValideringsPropsMedOppdatering<SkolepengerUtgift> & { låsteUtgiftIder: string[] }
+    ValideringsPropsMedOppdatering<SkolepengerUtgift> & {
+        låsteUtgiftIder: string[];
+        harValgtAlleUtgiftstyper: boolean;
+    }
 > = ({
     data,
     oppdater,
@@ -50,12 +77,13 @@ const UtgiftsperiodeSkolepenger: React.FC<
     valideringsfeil,
     settValideringsFeil,
     låsteUtgiftIder,
+    harValgtAlleUtgiftstyper,
 }) => {
     const erLesevisning = !behandlingErRedigerbar;
     const oppdaterUtgift = (
         index: number,
         property: keyof SkolepengerUtgift,
-        value: string | number | undefined
+        value: string | number | EUtgiftstype[] | undefined
     ) => {
         oppdater(
             data.map((periode, i) => (index === i ? { ...periode, [property]: value } : periode))
@@ -72,8 +100,13 @@ const UtgiftsperiodeSkolepenger: React.FC<
             <FargetStrek lesevisning={erLesevisning} />
             <div style={{ marginLeft: '1rem' }}>
                 <FlexColumn>
-                    <Utgiftsrad erHeader={true}>
+                    <Utgiftsrad
+                        erHeader={true}
+                        lesevisning={erLesevisning}
+                        valgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
+                    >
                         <Element>Utbetalingsmåned</Element>
+                        <Element>Utgiftstyper</Element>
                         <Element>Utgifter</Element>
                         <Element>Stønad</Element>
                     </Utgiftsrad>
@@ -84,8 +117,17 @@ const UtgiftsperiodeSkolepenger: React.FC<
                             index === data.length - 1 &&
                             index !== 0 &&
                             !erLåstFraForrigeBehandling;
+                        const formaterteUtgiftstyper = utgiftstyperFormatert(utgiftstyper);
+                        const ikkeValgteUtgiftstyper = formaterteUtgiftstyper.filter((type) =>
+                            utgift.utgiftstyper.includes(type.value as EUtgiftstype)
+                        );
                         return (
-                            <Utgiftsrad erHeader={false} key={index}>
+                            <Utgiftsrad
+                                erHeader={false}
+                                lesevisning={erLesevisning}
+                                key={index}
+                                valgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
+                            >
                                 <MånedÅrVelger
                                     årMånedInitiell={utgift.årMånedFra}
                                     //label={datoFraTekst}
@@ -100,6 +142,46 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     }
                                     disabled={erLåstFraForrigeBehandling}
                                 />
+                                {behandlingErRedigerbar ? (
+                                    /* @ts-ignore:next-line */
+                                    <FamilieReactSelect
+                                        placeholder={'Velg utgiftstyper'}
+                                        options={formaterteUtgiftstyper}
+                                        creatable={false}
+                                        isMulti={true}
+                                        defaultValue={ikkeValgteUtgiftstyper}
+                                        value={ikkeValgteUtgiftstyper}
+                                        feil={
+                                            valideringsfeil &&
+                                            valideringsfeil[index]?.utgiftstyper[0]
+                                        }
+                                        onChange={(valgtUtgiftstype) => {
+                                            oppdaterUtgift(
+                                                index,
+                                                SkolepengerUtgiftProperty.utgiftstyper,
+                                                valgtUtgiftstype === null
+                                                    ? []
+                                                    : [
+                                                          ...mapValgtUtgiftstype(
+                                                              valgtUtgiftstype as ISelectOption[]
+                                                          ),
+                                                      ]
+                                            );
+                                        }}
+                                    />
+                                ) : (
+                                    <UtgiftstypeContainer>
+                                        {formaterteUtgiftstyper
+                                            .filter((periode) =>
+                                                utgift.utgiftstyper.includes(
+                                                    periode.value as EUtgiftstype
+                                                )
+                                            )
+                                            .map((periode) => (
+                                                <UtgiftstypeTekst>{periode.label}</UtgiftstypeTekst>
+                                            ))}
+                                    </UtgiftstypeContainer>
+                                )}
                                 <StyledInputMedTusenSkille
                                     onKeyPress={tilHeltall}
                                     type="number"
@@ -148,6 +230,18 @@ const UtgiftsperiodeSkolepenger: React.FC<
             </div>
         </FlexRow>
     );
+};
+
+const utgiftstyperFormatert = (utgiftstyper: EUtgiftstype[]) =>
+    utgiftstyper.map<ISelectOption>((typeEnum) => {
+        return {
+            value: typeEnum,
+            label: utgiftstypeTilTekst[typeEnum],
+        };
+    });
+
+const mapValgtUtgiftstype = (valgtUtgiftstype: ISelectOption[]): EUtgiftstype[] => {
+    return valgtUtgiftstype.map((type) => type.value as EUtgiftstype);
 };
 
 export default UtgiftsperiodeSkolepenger;

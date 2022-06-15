@@ -103,16 +103,18 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </option>
                     )}
                 </StyledSelect>
-                <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
-                    <div>
-                        Hvis kontantstøtten overstiger tilsynsutgiftene skal saksbehandler likevel
-                        velge "Innvilge" som vedtaksresultat.
-                    </div>
-                    <TekstLinje>
-                        Utgifter og kontantsstøtte fylles inn som normalt og systemet vil beregne at
-                        det blir et avslag.
-                    </TekstLinje>
-                </HjelpeTekst>
+                {behandling.stønadstype === Stønadstype.BARNETILSYN && (
+                    <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
+                        <div>
+                            Hvis kontantstøtten overstiger tilsynsutgiftene skal saksbehandler
+                            likevel velge "Innvilge" som vedtaksresultat.
+                        </div>
+                        <TekstLinje>
+                            Utgifter og kontantsstøtte fylles inn som normalt og systemet vil
+                            beregne at det blir et avslag.
+                        </TekstLinje>
+                    </HjelpeTekst>
+                )}
             </FlexDiv>
         </section>
     );

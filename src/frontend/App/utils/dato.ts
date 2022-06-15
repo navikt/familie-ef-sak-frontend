@@ -84,3 +84,13 @@ export const overlapper = (periode1: Intervall, periode2: Intervall) =>
         { start: periode2.fra, end: periode2.til },
         { inclusive: true }
     );
+
+export const kalkulerAntallMåneder = (
+    årMånedFra?: string,
+    årMånedTil?: string
+): number | undefined => {
+    if (årMånedFra && årMånedTil) {
+        return månederMellom(månedÅrTilDate(årMånedFra), månedÅrTilDate(årMånedTil));
+    }
+    return undefined;
+};

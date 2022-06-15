@@ -100,7 +100,7 @@ const MigrerFagsak: React.FC<{
         [fagsakPersonId]
     );
 
-    if (!toggles[ToggleName.MIGRERING]) {
+    if (!toggles[ToggleName.kanMigrereFagsak]) {
         return null;
     }
 
