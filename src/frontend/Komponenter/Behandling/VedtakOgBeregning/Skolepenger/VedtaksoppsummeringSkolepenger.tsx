@@ -2,18 +2,14 @@ import React from 'react';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { ResultatVisning } from '../Felles/ResultatVisning';
-import TidligereVedtakOppsummering from '../Felles/TidligereVedtakOppsummering';
-import {
-    sorterUtAktivitetsvilkår,
-    sorterUtInngangsvilkår,
-    sorterUtTidligereVedtaksvilkår,
-} from '../Felles/utils';
+import { sorterUtAktivitetsvilkår, sorterUtInngangsvilkår } from '../Felles/utils';
 import { Heading } from '@navikt/ds-react';
 import navFarger from 'nav-frontend-core';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Søknadsdatoer } from '../Overgangsstønad/Søknadsdatoer';
+import { Søknadsutgifter } from './Søknadsutgifter';
 
 const OppsummeringContainer = styled.div<{ åpenHøyremeny: boolean }>`
     display: flex;
@@ -39,7 +35,6 @@ export const VedtaksoppsummeringSkolepenger: React.FC<{
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const aktivitetsvilkår = sorterUtAktivitetsvilkår(vilkår);
-    const tidligereVedtaksvilkår = sorterUtTidligereVedtaksvilkår(vilkår);
     const { åpenHøyremeny } = useBehandling();
 
     return (
@@ -68,7 +63,7 @@ export const VedtaksoppsummeringSkolepenger: React.FC<{
                 </Oppsummeringsboks>
             )}
             <Oppsummeringsboks>
-                <TidligereVedtakOppsummering tidligereVedtaksvilkår={tidligereVedtaksvilkår} />
+                <Søknadsutgifter behandlingId={behandling.id} />
             </Oppsummeringsboks>
         </OppsummeringContainer>
     );
