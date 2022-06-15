@@ -2,15 +2,12 @@ import { IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
 import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 
 export const delmalTilUtregningstabellBT = (beløpsperioder?: IBeregningsperiodeBarnetilsyn[]) => {
-    return { inntektsperioderHtml: lagInntektsperioder(beløpsperioder) };
+    return { inntektsperioderHtml: lagInntektsperioder(beløpsperioder ?? []) };
 };
 
 const borderStylingCompact = 'border: 1px solid black; padding: 3px 2px 3px 5px;';
 const borderStyling = 'border: 1px solid black; padding: 3px 10px 3px 5px;';
-const lagInntektsperioder = (beløpsperioder?: IBeregningsperiodeBarnetilsyn[]): string => {
-    if (!beløpsperioder) {
-        return '';
-    }
+const lagInntektsperioder = (beløpsperioder: IBeregningsperiodeBarnetilsyn[]): string => {
     const harKontantStøtte = beløpsperioder.some(
         (beløpsperiode) => beløpsperiode.beregningsgrunnlag.kontantstøttebeløp > 0
     );
