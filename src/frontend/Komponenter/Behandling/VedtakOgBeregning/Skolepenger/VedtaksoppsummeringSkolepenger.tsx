@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { ResultatVisning } from '../Felles/ResultatVisning';
 import { sorterUtAktivitetsvilkår, sorterUtInngangsvilkår } from '../Felles/utils';
 import { Heading } from '@navikt/ds-react';
-import navFarger from 'nav-frontend-core';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -25,7 +24,6 @@ const Oppsummeringsboks = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     padding: 1rem;
-    background-color: ${navFarger.navGraBakgrunn};
 `;
 
 export const VedtaksoppsummeringSkolepenger: React.FC<{
