@@ -37,9 +37,9 @@ const sorterDokumentlisten = (dokumentResponse: AlleDokument) => {
         ...dokumentResponse.andreDokumenter,
     ]
         .sort((a, b) => {
-            if (a.dato === undefined) {
+            if (!a.dato) {
                 return 1;
-            } else if (b.dato === undefined) {
+            } else if (!b.dato) {
                 return -1;
             }
             return compareDesc(new Date(a.dato), new Date(b.dato));
