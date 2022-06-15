@@ -37,6 +37,12 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     margin-bottom: 0.5rem;
 `;
 
+const FjernKnappWrapper = styled.div`
+    button {
+        width: 3rem;
+    }
+`;
+
 interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
@@ -145,20 +151,22 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             >{`${antallMåneder} mnd`}</Element>
                         )}
                         {skalViseFjernKnapp && (
-                            <FjernKnapp
-                                onClick={() => {
-                                    vedtaksperiodeListe.remove(index);
-                                    setValideringsFeil(
-                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const perioder = (prevState.perioder ?? []).filter(
-                                                (_, i) => i !== index
-                                            );
-                                            return { ...prevState, perioder };
-                                        }
-                                    );
-                                }}
-                                knappetekst="Fjern vedtaksperiode"
-                            />
+                            <FjernKnappWrapper>
+                                <FjernKnapp
+                                    onClick={() => {
+                                        vedtaksperiodeListe.remove(index);
+                                        setValideringsFeil(
+                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                const perioder = (prevState.perioder ?? []).filter(
+                                                    (_, i) => i !== index
+                                                );
+                                                return { ...prevState, perioder };
+                                            }
+                                        );
+                                    }}
+                                    knappetekst="Fjern vedtaksperiode"
+                                />
+                            </FjernKnappWrapper>
                         )}
                     </VedtakPeriodeContainer>
                 );
