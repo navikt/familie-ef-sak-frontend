@@ -96,7 +96,7 @@ const validerDelperiodeSkoleår = (
         if (skoleårFra !== tilSkoleår(årMånedTil)) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: `Fra og til er ikke i det samme skoleåret`,
+                årMånedFra: `Fra og til dato er ikke i det samme skoleåret`,
             };
         }
         if (skoleår === undefined) {
@@ -113,10 +113,10 @@ const validerDelperiodeSkoleår = (
                 studiebelastning: 'Mangelfull utfylling av studiebelastning',
             };
         }
-        if (studiebelastning < 1 || studiebelastning > 100) {
+        if (studiebelastning < 50 || studiebelastning > 100) {
             return {
                 ...periodeSkolepengerFeil,
-                studiebelastning: 'Studiebelastning må være mellom 1-100%',
+                studiebelastning: 'Studiebelastning må være mellom 50-100%',
             };
         }
         return periodeSkolepengerFeil;
