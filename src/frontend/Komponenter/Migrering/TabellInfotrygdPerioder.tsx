@@ -66,18 +66,33 @@ const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string =>
 
 const utledTabellHeader = (width: number, stønadstype: Stønadstype) => {
     const erOS = stønadstype === Stønadstype.OVERGANGSSTØNAD;
+    const erBT = stønadstype === Stønadstype.BARNETILSYN;
     return width >= 1370 ? (
         <Table.Row>
             <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
             <Table.HeaderCell scope="col">
                 <HøyrestiltTekst>Månedsbeløp</HøyrestiltTekst>
             </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Inntektsgrunnlag</HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Samordningsfradrag</HøyrestiltTekst>
-            </Table.HeaderCell>
+            {erBT && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>Antall barn</HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
+            {erOS && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>Inntektsgrunnlag</HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
+            {erOS && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>Samordningsfradrag</HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
+            {erBT && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>Utgifter</HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
             <Table.HeaderCell scope="col">Vedtakstidspunkt</Table.HeaderCell>
             <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
             <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
@@ -95,16 +110,32 @@ const utledTabellHeader = (width: number, stønadstype: Stønadstype) => {
                     Måned- <br /> beløp
                 </HøyrestiltTekst>
             </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Inntekt- <br /> grunnlag
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Samordning- <br /> fradrag
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
+            {erBT && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>
+                        Antall- <br /> barn
+                    </HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
+            {erOS && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>
+                        Inntekt- <br /> grunnlag
+                    </HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
+            {erOS && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>
+                        Samordning- <br /> fradrag
+                    </HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
+            {erBT && (
+                <Table.HeaderCell scope="col">
+                    <HøyrestiltTekst>Utgifter</HøyrestiltTekst>
+                </Table.HeaderCell>
+            )}
             <Table.HeaderCell scope="col">
                 Vedtak- <br /> tidspunkt
             </Table.HeaderCell>
@@ -122,6 +153,8 @@ export const TabellInfotrygdPerioder: React.FC<{
     stønadstype: Stønadstype;
 }> = ({ perioder, stønadstype }) => {
     const erOS = stønadstype === Stønadstype.OVERGANGSSTØNAD;
+    const erBT = stønadstype === Stønadstype.BARNETILSYN;
+
     return (
         <StyledTabell className="tabell">
             <thead>
@@ -131,8 +164,10 @@ export const TabellInfotrygdPerioder: React.FC<{
                         (fom-tom)
                     </th>
                     <th>Månedsbeløp</th>
-                    <th>Inntektsgrunnlag</th>
-                    <th>Samordningsfradrag</th>
+                    {erBT && <th>Antall barn</th>}
+                    {erOS && <th>Inntektsgrunnlag</th>}
+                    {erOS && <th>Samordningsfradrag</th>}
+                    {erBT && <th>Utgifter</th>}
                     <th>Vedtakstidspunkt</th>
                     <th>Kode</th>
                     <th>Sakstype</th>
@@ -150,8 +185,10 @@ export const TabellInfotrygdPerioder: React.FC<{
                             {formatStønadTom(periode)}
                         </td>
                         <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.samordningsfradrag)}</td>
+                        {erBT && <td>{periode.barnIdenter.length}</td>}
+                        {erOS && <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>}
+                        {erOS && <td>{formaterTallMedTusenSkille(periode.samordningsfradrag)}</td>}
+                        {erBT && <td>{formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}</td>}
                         <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
                         <td>
                             {kodeTilTekst[periode.kode]}{' '}
@@ -184,6 +221,7 @@ export const TabellInfotrygdPerioderKompakt: React.FC<{
 }> = ({ perioder, stønadstype }) => {
     const { width } = useWindowSize();
     const erOS = stønadstype === Stønadstype.OVERGANGSSTØNAD;
+    const erBT = stønadstype === Stønadstype.BARNETILSYN;
     return (
         <Table zebraStripes={true} size={'small'}>
             <Table.Header>{utledTabellHeader(width, stønadstype)}</Table.Header>
@@ -200,16 +238,32 @@ export const TabellInfotrygdPerioderKompakt: React.FC<{
                                 {formaterTallMedTusenSkille(periode.månedsbeløp)}
                             </HøyrestiltTekst>
                         </Table.DataCell>
-                        <Table.DataCell>
-                            <HøyrestiltTekst>
-                                {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
-                            </HøyrestiltTekst>
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <HøyrestiltTekst>
-                                {formaterTallMedTusenSkille(periode.samordningsfradrag)}
-                            </HøyrestiltTekst>
-                        </Table.DataCell>
+                        {erBT && (
+                            <Table.DataCell>
+                                <HøyrestiltTekst>{periode.barnIdenter.length}</HøyrestiltTekst>
+                            </Table.DataCell>
+                        )}
+                        {erOS && (
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                        )}
+                        {erOS && (
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.samordningsfradrag)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                        )}
+                        {erBT && (
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                        )}
                         <Table.DataCell>
                             {formaterNullableIsoDato(periode.vedtakstidspunkt)}
                         </Table.DataCell>
