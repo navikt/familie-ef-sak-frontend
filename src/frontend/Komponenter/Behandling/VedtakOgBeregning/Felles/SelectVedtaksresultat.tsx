@@ -103,7 +103,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </option>
                     )}
                 </StyledSelect>
-                {behandling.stønadstype === Stønadstype.SKOLEPENGER && (
+                {behandling.stønadstype === Stønadstype.BARNETILSYN && (
                     <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
                         <div>
                             Hvis kontantstøtten overstiger tilsynsutgiftene skal saksbehandler
