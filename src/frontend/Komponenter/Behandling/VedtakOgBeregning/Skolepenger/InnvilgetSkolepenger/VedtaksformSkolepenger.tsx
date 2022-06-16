@@ -89,6 +89,10 @@ export const VedtaksformSkolepenger: React.FC<{
         ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
         : [];
 
+    const oppdaterHarUtførtBeregning = (harUtførtBeregning: boolean) => {
+        settHarUtførtBeregning(harUtførtBeregning);
+    };
+
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForSkolepenger) => {
         settLaster(true);
 
@@ -171,6 +175,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 låsteUtgiftIder={utgiftsIderForrigeBehandling}
                 valideringsfeil={formState.errors.skoleårsperioder}
                 settValideringsFeil={formState.setErrors}
+                oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
             />
             <EnsligTextArea
                 erLesevisning={!behandlingErRedigerbar}
@@ -201,7 +206,10 @@ export const VedtaksformSkolepenger: React.FC<{
                 </WrapperDobbelMarginTop>
             )}
             <WrapperDobbelMarginTop>
-                <UtregningstabellSkolepenger beregningsresultat={beregningsresultat} />
+                <UtregningstabellSkolepenger
+                    beregningsresultat={beregningsresultat}
+                    skjulVisning={!harUtførtBeregning}
+                />
             </WrapperDobbelMarginTop>
             {behandlingErRedigerbar && (
                 <WrapperDobbelMarginTop>
