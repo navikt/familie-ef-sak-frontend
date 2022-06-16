@@ -1,15 +1,13 @@
 import {
     addMonths,
+    areIntervalsOverlapping,
     differenceInMonths,
     differenceInYears,
-    getMonth,
-    getYear,
     isAfter,
     isBefore,
     isEqual,
     parse,
     parseISO,
-    areIntervalsOverlapping,
 } from 'date-fns';
 
 export const plusMåneder = (date: Date, antall: number): Date => addMonths(date, antall);
@@ -69,12 +67,6 @@ export const nullableDatoTilAlder = (dato?: string | Date): number | undefined =
 
 export const datoTilAlder = (dato: string | Date): number => {
     return differenceInYears(new Date(), tilDato(dato));
-};
-
-export const tilSkoleår = (årMåned: string): number => {
-    const dato = månedÅrTilDate(årMåned);
-    const år = getYear(dato);
-    return getMonth(dato) > 6 ? år : år - 1;
 };
 
 export type Intervall = { fra: Date; til: Date };
