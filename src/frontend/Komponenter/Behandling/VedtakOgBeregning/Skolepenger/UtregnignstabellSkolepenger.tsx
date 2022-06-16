@@ -28,7 +28,11 @@ const HøyrejusterElement = styled(Element)`
 
 export const UtregningstabellSkolepenger: React.FC<{
     beregningsresultat: Ressurs<IBeregningSkolepengerResponse>;
-}> = ({ beregningsresultat }) => {
+    skjulVisning: boolean;
+}> = ({ beregningsresultat, skjulVisning }) => {
+    if (skjulVisning) {
+        return null;
+    }
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (

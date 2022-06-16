@@ -20,9 +20,9 @@ const SkoleårsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boole
     display: grid;
     grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger antallMnd studiebelastning';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 12rem 11.5rem 4rem 8rem'};
+        props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 12rem 11.5rem 4rem 8rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
+    margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
 `;
 
 const AntallMåneder = styled(Normaltekst)<{ erLesevisning: boolean }>`
