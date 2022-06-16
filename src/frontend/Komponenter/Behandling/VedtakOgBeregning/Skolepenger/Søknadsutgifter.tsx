@@ -1,14 +1,12 @@
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Ressurs } from '../../../../App/typer/ressurs';
-import { ISøknadsutgifterSkolepenger } from '../../../../App/typer/beregningssøknadsdata';
-import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
-import { AxiosRequestConfig } from 'axios';
+import { RessursStatus } from '../../../../App/typer/ressurs';
 import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
 import { utledUtgiftsbeløp } from '../../../../App/utils/formatter';
+import { useHentVilkår } from '../../../../App/hooks/useHentVilkår';
 
 const BoldTekst = styled(Label)`
     margin-left: 0.25rem;
@@ -37,55 +35,56 @@ const Grid = styled.div`
 `;
 
 export const Søknadsutgifter: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const søknadDataConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/soknad/${behandlingId}/utgifter-skolepenger`,
-        }),
-        [behandlingId]
-    );
+    const { vilkår, hentVilkår } = useHentVilkår();
 
-    const søknadDataResponse: Ressurs<ISøknadsutgifterSkolepenger> = useDataHenter<
-        ISøknadsutgifterSkolepenger,
-        null
-    >(søknadDataConfig);
+    useEffect(() => {
+        if (behandlingId !== undefined) {
+            if (vilkår.status !== RessursStatus.SUKSESS) {
+                hentVilkår(behandlingId);
+            }
+        }
+        // eslint-disable-next-line
+    }, [behandlingId]);
 
     return (
-        <DataViewer response={{ søknadDataResponse }}>
-            {({ søknadDataResponse }) => (
-                <Container>
-                    <Heading spacing size="small" level="5">
-                        Utgifter fylt inn i søknad
-                    </Heading>
-                    <Grid>
-                        <IkonOgTekstWrapper>
-                            <Søknadsgrunnlag />
-                            <BoldTekst size="small">Semesteravgift:</BoldTekst>
-                        </IkonOgTekstWrapper>
-                        <HøyrestiltTekst>
-                            {utledUtgiftsbeløp(søknadDataResponse.semesteravgift)}
-                        </HøyrestiltTekst>
-                    </Grid>
-                    <Grid>
-                        <IkonOgTekstWrapper>
-                            <Søknadsgrunnlag />
-                            <BoldTekst size="small">Studieavgift:</BoldTekst>
-                        </IkonOgTekstWrapper>
-                        <HøyrestiltTekst>
-                            {utledUtgiftsbeløp(søknadDataResponse.studieavgift)}
-                        </HøyrestiltTekst>
-                    </Grid>
-                    <Grid>
-                        <IkonOgTekstWrapper>
-                            <Søknadsgrunnlag />
-                            <BoldTekst size="small">Eksamensgebyr:</BoldTekst>
-                        </IkonOgTekstWrapper>
-                        <HøyrestiltTekst>
-                            {utledUtgiftsbeløp(søknadDataResponse.eksamensgebyr)}
-                        </HøyrestiltTekst>
-                    </Grid>
-                </Container>
-            )}
+        <DataViewer response={{ vilkår }}>
+            {({ vilkår }) => {
+                const underUtdanning = vilkår?.grunnlag?.aktivitet?.underUtdanning;
+                return (
+                    <Container>
+                        <Heading spacing size="small" level="5">
+                            Utgifter fylt inn i søknad
+                        </Heading>
+                        <Grid>
+                            <IkonOgTekstWrapper>
+                                <Søknadsgrunnlag />
+                                <BoldTekst size="small">Semesteravgift:</BoldTekst>
+                            </IkonOgTekstWrapper>
+                            <HøyrestiltTekst>
+                                {utledUtgiftsbeløp(underUtdanning?.semesteravgift)}
+                            </HøyrestiltTekst>
+                        </Grid>
+                        <Grid>
+                            <IkonOgTekstWrapper>
+                                <Søknadsgrunnlag />
+                                <BoldTekst size="small">Studieavgift:</BoldTekst>
+                            </IkonOgTekstWrapper>
+                            <HøyrestiltTekst>
+                                {utledUtgiftsbeløp(underUtdanning?.studieavgift)}
+                            </HøyrestiltTekst>
+                        </Grid>
+                        <Grid>
+                            <IkonOgTekstWrapper>
+                                <Søknadsgrunnlag />
+                                <BoldTekst size="small">Eksamensgebyr:</BoldTekst>
+                            </IkonOgTekstWrapper>
+                            <HøyrestiltTekst>
+                                {utledUtgiftsbeløp(underUtdanning?.eksamensgebyr)}
+                            </HøyrestiltTekst>
+                        </Grid>
+                    </Container>
+                );
+            }}
         </DataViewer>
     );
 };
