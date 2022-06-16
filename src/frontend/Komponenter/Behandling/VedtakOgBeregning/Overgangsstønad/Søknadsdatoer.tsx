@@ -4,7 +4,7 @@ import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../../
 import React, { useMemo } from 'react';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Ressurs } from '../../../../App/typer/ressurs';
-import { ISøknadData } from '../../../../App/typer/beregningssøknadsdata';
+import { ISøknadsdato } from '../../../../App/typer/beregningssøknadsdata';
 import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
@@ -41,7 +41,7 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string; stønadstype: Stø
         [behandlingId]
     );
 
-    const søknadDataResponse: Ressurs<ISøknadData> = useDataHenter<ISøknadData, null>(
+    const søknadDataResponse: Ressurs<ISøknadsdato> = useDataHenter<ISøknadsdato, null>(
         søknadDataConfig
     );
 
