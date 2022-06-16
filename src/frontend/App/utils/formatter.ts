@@ -89,3 +89,7 @@ export const nullableBooleanTilTekst = (bool?: boolean): string => {
     else if (bool === false) return 'Nei';
     else return '';
 };
+
+export const utledUtgiftsbeløp = (utgift?: number) => {
+    return utgift ? `${formaterTallMedTusenSkilleEllerStrek(utgift)} ,-` : '-';
+};

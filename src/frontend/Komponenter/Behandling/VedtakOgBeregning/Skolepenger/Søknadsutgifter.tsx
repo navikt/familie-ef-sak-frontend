@@ -8,7 +8,7 @@ import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
-import { formaterTallMedTusenSkilleEllerStrek } from '../../../../App/utils/formatter';
+import { utledUtgiftsbeløp } from '../../../../App/utils/formatter';
 
 const BoldTekst = styled(Label)`
     margin-left: 0.25rem;
@@ -49,10 +49,6 @@ export const Søknadsutgifter: React.FC<{ behandlingId: string }> = ({ behandlin
         ISøknadsutgifterSkolepenger,
         null
     >(søknadDataConfig);
-
-    const utledUtgiftsbeløp = (utgift?: number) => {
-        return utgift ? `${formaterTallMedTusenSkilleEllerStrek(utgift)} ,-` : '-';
-    };
 
     return (
         <DataViewer response={{ søknadDataResponse }}>
