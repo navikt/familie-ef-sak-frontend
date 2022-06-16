@@ -226,109 +226,117 @@ export const TabellInfotrygdPerioderKompakt: React.FC<{
         <Table zebraStripes={true} size={'small'}>
             <Table.Header>{utledTabellHeader(width, stønadstype)}</Table.Header>
             <Table.Body>
-                {perioder.map((periode) => (
-                    <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
-                        <Table.DataCell>
-                            {formaterNullableMånedÅr(periode.stønadFom)}
-                            {' - '}
-                            {formatStønadTom(periode)}
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <HøyrestiltTekst>
-                                {formaterTallMedTusenSkille(periode.månedsbeløp)}
-                            </HøyrestiltTekst>
-                        </Table.DataCell>
-                        {erBT && (
-                            <Table.DataCell>
-                                <HøyrestiltTekst>{periode.barnIdenter.length}</HøyrestiltTekst>
-                            </Table.DataCell>
-                        )}
-                        {erOS && (
-                            <Table.DataCell>
-                                <HøyrestiltTekst>
-                                    {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
-                                </HøyrestiltTekst>
-                            </Table.DataCell>
-                        )}
-                        {erOS && (
-                            <Table.DataCell>
-                                <HøyrestiltTekst>
-                                    {formaterTallMedTusenSkille(periode.samordningsfradrag)}
-                                </HøyrestiltTekst>
-                            </Table.DataCell>
-                        )}
-                        {erBT && (
-                            <Table.DataCell>
-                                <HøyrestiltTekst>
-                                    {formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}
-                                </HøyrestiltTekst>
-                            </Table.DataCell>
-                        )}
-                        <Table.DataCell>
-                            {formaterNullableIsoDato(periode.vedtakstidspunkt)}
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <Tooltip
-                                content={kodeTilTekst[periode.kode]}
-                                placement="right"
-                                maxChar={200}
-                            >
-                                <TabellTekst>
-                                    {kodeTilForkortetTekst[periode.kode]}{' '}
-                                    {periode.initiellKode &&
-                                        `(${kodeTilForkortetTekst[periode.initiellKode]})`}
-                                </TabellTekst>
+                {perioder.map((periode) => {
+                    const stønadOgVedtaksIdString =
+                        'stønadId: ' + periode.stønadId + ' vedtakId: ' + periode.vedtakId;
+                    return (
+                        <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
+                            <Tooltip content={stønadOgVedtaksIdString}>
+                                <Table.DataCell>
+                                    {formaterNullableMånedÅr(periode.stønadFom)}
+                                    {' - '}
+                                    {formatStønadTom(periode)}
+                                </Table.DataCell>
                             </Tooltip>
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <Tooltip
-                                content={sakstypeTilTekst[periode.sakstype]}
-                                placement="right"
-                                maxChar={200}
-                            >
-                                <TabellTekst>{sakstypeTilKode[periode.sakstype]}</TabellTekst>
-                            </Tooltip>
-                        </Table.DataCell>
-                        {erOS && (
                             <Table.DataCell>
-                                {periode.aktivitetstype && (
-                                    <Tooltip
-                                        content={aktivitetstypeTilTekst[periode.aktivitetstype]}
-                                        placement="right"
-                                        maxChar={200}
-                                    >
-                                        <TabellTekst>
-                                            {periode.aktivitetstype &&
-                                                aktivitetstypeTilKode[periode.aktivitetstype]}
-                                        </TabellTekst>
-                                    </Tooltip>
-                                )}
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.månedsbeløp)}
+                                </HøyrestiltTekst>
                             </Table.DataCell>
-                        )}
-                        {erOS && (
+                            {erBT && (
+                                <Table.DataCell>
+                                    <HøyrestiltTekst>{periode.barnIdenter.length}</HøyrestiltTekst>
+                                </Table.DataCell>
+                            )}
+                            {erOS && (
+                                <Table.DataCell>
+                                    <HøyrestiltTekst>
+                                        {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
+                                    </HøyrestiltTekst>
+                                </Table.DataCell>
+                            )}
+                            {erOS && (
+                                <Table.DataCell>
+                                    <HøyrestiltTekst>
+                                        {formaterTallMedTusenSkille(periode.samordningsfradrag)}
+                                    </HøyrestiltTekst>
+                                </Table.DataCell>
+                            )}
+                            {erBT && (
+                                <Table.DataCell>
+                                    <HøyrestiltTekst>
+                                        {formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}
+                                    </HøyrestiltTekst>
+                                </Table.DataCell>
+                            )}
                             <Table.DataCell>
-                                {periode.kodeOvergangsstønad && (
-                                    <Tooltip
-                                        content={
-                                            overgangsstønadKodeTilTekst[periode.kodeOvergangsstønad]
-                                        }
-                                        placement="right"
-                                        maxChar={200}
-                                    >
-                                        <TabellTekst>
-                                            {
-                                                overgangsstønadKodeTilForkortetTekst[
+                                {formaterNullableIsoDato(periode.vedtakstidspunkt)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <Tooltip
+                                    content={kodeTilTekst[periode.kode]}
+                                    placement="right"
+                                    maxChar={200}
+                                >
+                                    <TabellTekst>
+                                        {kodeTilForkortetTekst[periode.kode]}{' '}
+                                        {periode.initiellKode &&
+                                            `(${kodeTilForkortetTekst[periode.initiellKode]})`}
+                                    </TabellTekst>
+                                </Tooltip>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <Tooltip
+                                    content={sakstypeTilTekst[periode.sakstype]}
+                                    placement="right"
+                                    maxChar={200}
+                                >
+                                    <TabellTekst>{sakstypeTilKode[periode.sakstype]}</TabellTekst>
+                                </Tooltip>
+                            </Table.DataCell>
+                            {erOS && (
+                                <Table.DataCell>
+                                    {periode.aktivitetstype && (
+                                        <Tooltip
+                                            content={aktivitetstypeTilTekst[periode.aktivitetstype]}
+                                            placement="right"
+                                            maxChar={200}
+                                        >
+                                            <TabellTekst>
+                                                {periode.aktivitetstype &&
+                                                    aktivitetstypeTilKode[periode.aktivitetstype]}
+                                            </TabellTekst>
+                                        </Tooltip>
+                                    )}
+                                </Table.DataCell>
+                            )}
+                            {erOS && (
+                                <Table.DataCell>
+                                    {periode.kodeOvergangsstønad && (
+                                        <Tooltip
+                                            content={
+                                                overgangsstønadKodeTilTekst[
                                                     periode.kodeOvergangsstønad
                                                 ]
                                             }
-                                        </TabellTekst>
-                                    </Tooltip>
-                                )}
-                            </Table.DataCell>
-                        )}
-                        <Table.DataCell>{periode.brukerId}</Table.DataCell>
-                    </Table.Row>
-                ))}
+                                            placement="right"
+                                            maxChar={200}
+                                        >
+                                            <TabellTekst>
+                                                {
+                                                    overgangsstønadKodeTilForkortetTekst[
+                                                        periode.kodeOvergangsstønad
+                                                    ]
+                                                }
+                                            </TabellTekst>
+                                        </Tooltip>
+                                    )}
+                                </Table.DataCell>
+                            )}
+                            <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                        </Table.Row>
+                    );
+                })}
             </Table.Body>
         </Table>
     );
