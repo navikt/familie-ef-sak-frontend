@@ -39,7 +39,7 @@ export const UtregningstabellSkolepenger: React.FC<{
                     <Rad erTittelRad>
                         <Element>Fra</Element>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
-                        <HøyrejusterElement>Beløp</HøyrejusterElement>
+                        <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
                     </Rad>
                     {beregningsresultat.perioder.map((periode) => {
                         return (

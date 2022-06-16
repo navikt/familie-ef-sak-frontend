@@ -108,7 +108,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                         <Element>Utbetalingsmåned</Element>
                         <Element>Utgiftstyper</Element>
                         <Element>Utgifter</Element>
-                        <Element>Stønad</Element>
+                        <Element>Stønadsbeløp</Element>
                     </Utgiftsrad>
                     {data.map((utgift, index) => {
                         const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;
@@ -151,6 +151,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                         isMulti={true}
                                         defaultValue={ikkeValgteUtgiftstyper}
                                         value={ikkeValgteUtgiftstyper}
+                                        erLesevisning={erLesevisning}
                                         feil={
                                             valideringsfeil &&
                                             valideringsfeil[index]?.utgiftstyper[0]

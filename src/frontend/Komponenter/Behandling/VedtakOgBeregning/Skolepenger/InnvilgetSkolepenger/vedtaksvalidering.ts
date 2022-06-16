@@ -114,10 +114,10 @@ const validerDelperiodeSkoleår = (
                 studiebelastning: 'Mangelfull utfylling av studiebelastning',
             };
         }
-        if (studiebelastning < 1 || studiebelastning > 100) {
+        if (studiebelastning < 50 || studiebelastning > 100) {
             return {
                 ...periodeSkolepengerFeil,
-                studiebelastning: 'Studiebelastning må være mellom 1-100%',
+                studiebelastning: 'Studiebelastning må være mellom 50-100%',
             };
         }
         return periodeSkolepengerFeil;
