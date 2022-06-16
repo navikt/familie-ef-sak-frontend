@@ -5,7 +5,7 @@ export interface Dokumentinfo {
     filnavn?: string;
     tittel: string;
     journalpostId: string;
-    dato: string;
+    dato?: string;
     journalposttype: Journalposttype;
     journalstatus: Journalstatus;
     logiskeVedlegg: ILogiskVedlegg[];

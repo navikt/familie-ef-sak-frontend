@@ -23,7 +23,11 @@ import {
     behandlingstypeTilTekstKort,
 } from '../../App/typer/behandlingstype';
 import { AlleStatuser, StatuserLitenSkjerm, StatusMeny } from './Status/StatusElementer';
-import { stønadstypeTilTekst, stønadstypeTilTekstKort } from '../../App/typer/behandlingstema';
+import {
+    Stønadstype,
+    stønadstypeTilTekst,
+    stønadstypeTilTekstKort,
+} from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 
 const Visningsnavn = styled(Element)`
@@ -105,6 +109,18 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
 
+    const utledOmFagsakErMigrert = (fagsak: {
+        fagsakId: string;
+        stønadstype: Stønadstype;
+        erLøpende: boolean;
+        erMigrert: boolean;
+    }) => {
+        if (behandling) {
+            return behandling.fagsakId === fagsak.fagsakId && fagsak.erMigrert;
+        }
+        return fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD && fagsak.erMigrert;
+    };
+
     useEffect(() => {
         const hentFagsak = (personIdent: string): void => {
             if (!personIdent) return;
@@ -117,7 +133,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                 if (respons.status === RessursStatus.SUKSESS) {
                     if (respons.data?.fagsakPersonId) {
                         settFagsakPersonId(respons.data.fagsakPersonId);
-                        settErMigrert(respons.data.fagsaker[0].erMigrert);
+                        settErMigrert(respons.data.fagsaker.some(utledOmFagsakErMigrert));
                     }
                 } else {
                     settFeilFagsakHenting(respons.frontendFeilmelding);

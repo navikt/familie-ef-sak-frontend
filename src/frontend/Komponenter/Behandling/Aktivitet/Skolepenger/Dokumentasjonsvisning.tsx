@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
-import { StudieandelTilTekst, UtdanningsformTilTekst } from '../Aktivitet/typer';
+import { IAktivitet, IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
+import { EStudieandel, StudieandelTilTekst, UtdanningsformTilTekst } from '../Aktivitet/typer';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -12,9 +12,16 @@ interface Props {
 
 const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {
     const { underUtdanning } = aktivitet;
-    const heltidEllerDeltid = underUtdanning?.heltidEllerDeltid
-        ? StudieandelTilTekst[underUtdanning?.heltidEllerDeltid]
-        : 'Ikke oppgitt av bruker';
+
+    const utledVisningForStudiebelastning = (utdanning?: IUnderUtdanning): string => {
+        if (utdanning) {
+            return utdanning.heltidEllerDeltid === EStudieandel.heltid
+                ? StudieandelTilTekst[utdanning.heltidEllerDeltid]
+                : `${utdanning.heltidEllerDeltid} - ${utdanning.hvorMyeSkalDuStudere}%`;
+        }
+        return 'Ikke oppgitt av bruker';
+    };
+
     return (
         <>
             <>
@@ -46,7 +53,7 @@ const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {
             <>
                 <Søknadsgrunnlag />
                 <Normaltekst>Studiebelastning</Normaltekst>
-                <Normaltekst>{`${heltidEllerDeltid} - ${underUtdanning?.hvorMyeSkalDuStudere}%`}</Normaltekst>
+                <Normaltekst>{utledVisningForStudiebelastning(underUtdanning)}</Normaltekst>
             </>
         </>
     );
