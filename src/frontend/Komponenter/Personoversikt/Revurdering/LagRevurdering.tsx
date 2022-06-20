@@ -75,7 +75,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         !behandlinger.some((behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD);
 
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
-    const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
     const skalViseValgmulighetForKorrigering = toggles[ToggleName.visValgmulighetForKorrigering];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
 
@@ -101,8 +100,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
 
     const skalViseÅrsak = (behandlingsårsak: Behandlingsårsak) => {
         switch (behandlingsårsak) {
-            case Behandlingsårsak.SANKSJON_1_MND:
-                return skalViseValgmulighetForSanksjon;
             case Behandlingsårsak.KORRIGERING_UTEN_BREV:
                 return skalViseValgmulighetForKorrigering;
             default:
