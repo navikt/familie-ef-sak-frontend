@@ -26,7 +26,7 @@ const StyledSelect = styled(FamilieSelect)`
 `;
 
 const TekstLinje = styled.div`
-    margin-top: 0.5 rem;
+    margin-top: 0.5rem;
 `;
 
 const FlexDiv = styled.div`
@@ -47,7 +47,6 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
-    const erSkolepenger = behandling.stønadstype === Stønadstype.SKOLEPENGER;
 
     return (
         <section>
@@ -91,7 +90,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     </option>
                     <option
                         value={EBehandlingResultat.OPPHØRT}
-                        disabled={!opphørMulig || nullUtbetalingPgaKontantstøtte || erSkolepenger}
+                        disabled={!opphørMulig || nullUtbetalingPgaKontantstøtte}
                     >
                         Opphørt
                     </option>

@@ -5,7 +5,6 @@ import {
     SkolepengerUtgift,
     SkolepengerUtgiftProperty,
     utgiftstyper,
-    utgiftstypeTilTekst,
 } from '../../../../../App/typer/vedtak';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
@@ -16,6 +15,7 @@ import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import navFarger from 'nav-frontend-core';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
+import { utgiftstyperFormatert } from '../utils';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -64,6 +64,10 @@ const UtgiftstypeContainer = styled.div`
 const UtgiftstypeTekst = styled(Normaltekst)`
     margin-right: 0.3rem;
 `;
+
+const mapValgtUtgiftstype = (valgtUtgiftstype: ISelectOption[]): EUtgiftstype[] => {
+    return valgtUtgiftstype.map((type) => type.value as EUtgiftstype);
+};
 
 const UtgiftsperiodeSkolepenger: React.FC<
     ValideringsPropsMedOppdatering<SkolepengerUtgift> & {
@@ -231,18 +235,6 @@ const UtgiftsperiodeSkolepenger: React.FC<
             </div>
         </FlexRow>
     );
-};
-
-const utgiftstyperFormatert = (utgiftstyper: EUtgiftstype[]) =>
-    utgiftstyper.map<ISelectOption>((typeEnum) => {
-        return {
-            value: typeEnum,
-            label: utgiftstypeTilTekst[typeEnum],
-        };
-    });
-
-const mapValgtUtgiftstype = (valgtUtgiftstype: ISelectOption[]): EUtgiftstype[] => {
-    return valgtUtgiftstype.map((type) => type.value as EUtgiftstype);
 };
 
 export default UtgiftsperiodeSkolepenger;

@@ -149,7 +149,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                             {skalViseFjernKnapp && (
                                 <FjernKnapp
                                     onClick={() => fjernDelårsperiode(index)}
-                                    knappetekst="Fjern vedtaksperiode"
+                                    knappetekst="Fjern delårsperiode"
                                 />
                             )}
                         </SkoleårsperiodeRad>

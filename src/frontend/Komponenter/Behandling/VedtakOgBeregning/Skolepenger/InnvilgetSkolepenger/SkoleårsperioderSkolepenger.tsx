@@ -13,6 +13,7 @@ import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import navFarger from 'nav-frontend-core';
 import FjernKnappMedTekst from '../../../../../Felles/Knapper/FjernKnappMedTekst';
+import { sjekkHarValgtAlleUtgiftstyper } from '../utils';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -74,11 +75,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
         });
     };
 
-    const harValgtAlleUtgiftstyper = skoleårsperioder.value.some((skoleårsperiode) =>
-        skoleårsperiode.utgiftsperioder.some(
-            (utgiftsperiode) => utgiftsperiode.utgiftstyper.length === 3
-        )
-    );
+    const harValgtAlleUtgiftstyper = sjekkHarValgtAlleUtgiftstyper(skoleårsperioder.value);
 
     return (
         <>
