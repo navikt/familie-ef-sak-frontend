@@ -43,7 +43,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { settIkkePersistertKomponent } = useApp();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig =
-        behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId !== null;
+        behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId;
     const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
