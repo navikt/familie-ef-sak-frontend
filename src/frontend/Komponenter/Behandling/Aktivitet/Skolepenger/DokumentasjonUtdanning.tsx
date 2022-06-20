@@ -34,7 +34,7 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
                 venstre: (
                     <>
                         <Vilkårstittel
-                            tittel="Dokumentasjon av utdanning"
+                            tittel="Dokumentasjon av utdanning og utgifter"
                             vilkårsresultat={vurdering.resultat}
                         />
                         {grunnlag.aktivitet && (
