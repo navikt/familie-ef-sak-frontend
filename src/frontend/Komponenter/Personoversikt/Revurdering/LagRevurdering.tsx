@@ -68,12 +68,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
 
-    const måTaStillingTilBarn =
-        behandlinger.some(
-            (behandling) => behandling.behandlingsårsak === Behandlingsårsak.MIGRERING
-        ) &&
-        !behandlinger.some((behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD);
-
     const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForKorrigering = toggles[ToggleName.visValgmulighetForKorrigering];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
@@ -94,9 +88,24 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         });
     }, [axiosRequest, fagsakId]);
 
+    useEffect(() => {
+        settVilkårsbehandleVedMigrering(EVilkårsbehandleBarnValg.IKKE_VALGT);
+    }, [valgtBehandlingsårsak]);
+
+    const erGOmregning = valgtBehandlingsårsak === Behandlingsårsak.G_OMREGNING;
+    const måTaStillingTilBarn =
+        behandlinger.some(
+            (behandling) => behandling.behandlingsårsak === Behandlingsårsak.MIGRERING
+        ) &&
+        !behandlinger.some(
+            (behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD
+        ) &&
+        !erGOmregning;
+
     const skalTaMedAlleBarn =
-        !måTaStillingTilBarn ||
-        vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE;
+        (!måTaStillingTilBarn ||
+            vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE) &&
+        !erGOmregning;
 
     const skalViseÅrsak = (behandlingsårsak: Behandlingsårsak) => {
         switch (behandlingsårsak) {
@@ -114,7 +123,10 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                     const harNyeBarnSidenForrigeBehandling =
                         nyeBarnSidenForrigeBehandling.length > 0;
                     const skalViseNyeBarnValg =
-                        kanLeggeTilNyeBarnPåRevurdering && harNyeBarnSidenForrigeBehandling;
+                        valgtBehandlingsårsak &&
+                        kanLeggeTilNyeBarnPåRevurdering &&
+                        harNyeBarnSidenForrigeBehandling &&
+                        !erGOmregning;
 
                     return (
                         <>

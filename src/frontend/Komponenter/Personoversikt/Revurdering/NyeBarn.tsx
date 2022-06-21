@@ -44,39 +44,23 @@ export const NyeBarn = ({
                 <ul>
                     {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
                         return (
-                            <li>
+                            <li key={nyttBarn.personIdent}>
                                 {nyttBarn.navn} ({datoTilAlder(nyttBarn.fødselsdato)} år,{' '}
                                 {nyttBarn.personIdent})
                             </li>
                         );
                     })}
                 </ul>
-                <StyledRadioGroup legend="" size="medium">
-                    <Radio
-                        value={EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE}
-                        checked={
-                            vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
-                        }
-                        onChange={() => {
-                            settVilkårsbehandleVedMigrering(
-                                EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
-                            );
-                        }}
-                    >
+                <StyledRadioGroup
+                    legend=""
+                    size="medium"
+                    value={vilkårsbehandleVedMigrering}
+                    onChange={(val) => settVilkårsbehandleVedMigrering(val)}
+                >
+                    <Radio value={EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE}>
                         Vilkårsbehandle barn i EF Sak
                     </Radio>
-                    <Radio
-                        value={EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE}
-                        checked={
-                            vilkårsbehandleVedMigrering ===
-                            EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
-                        }
-                        onChange={() => {
-                            settVilkårsbehandleVedMigrering(
-                                EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE
-                            );
-                        }}
-                    >
+                    <Radio value={EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE}>
                         Ikke vilkårsbehandle barn i EF Sak
                     </Radio>
                 </StyledRadioGroup>
