@@ -20,7 +20,7 @@ const Utgiftsrad = styled.div<{
         if (props.lesevisning) {
             return '9rem 4rem 4rem';
         }
-        return '12rem 5rem 5rem 4rem';
+        return '12rem 5rem 4rem';
     }};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
