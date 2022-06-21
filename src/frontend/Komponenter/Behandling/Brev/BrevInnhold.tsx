@@ -16,8 +16,6 @@ import {
     stønadstypeTilBrevtyper,
 } from './BrevTyper';
 import { skjulAvsnittIBrevbygger } from './BrevUtils';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
@@ -104,8 +102,6 @@ const BrevInnhold: React.FC<Props> = ({
     ];
     const finnesSynligeAvsnitt = avsnitt.some((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
     const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
-    const { toggles } = useToggles();
-    const skalViseValgmulighetForSanksjon = toggles[ToggleName.visValgmulighetForSanksjon];
     const avsnittSomSkalVises = avsnitt.filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
 
     const brevtyper = stønadstypeTilBrevtyper[stønadstype];
@@ -128,10 +124,6 @@ const BrevInnhold: React.FC<Props> = ({
                 {Object.values(
                     context === FritekstBrevContext.FRITTSTÅENDE ? FrittståendeBrevtype : brevtyper
                 )
-                    .filter(
-                        (type: FrittståendeBrevtype | FritekstBrevtype) =>
-                            type !== FritekstBrevtype.SANKSJON || skalViseValgmulighetForSanksjon
-                    )
                     .filter(
                         (type: FrittståendeBrevtype | FritekstBrevtype) =>
                             type !== FritekstBrevtype.SANKSJON ||

@@ -170,13 +170,6 @@ export const VedtaksformSkolepenger: React.FC<{
             <Heading spacing size="small" level="5">
                 Utgifter til skolepenger
             </Heading>
-            <SkoleårsperioderSkolepenger
-                skoleårsperioder={skoleårsPerioderState}
-                låsteUtgiftIder={utgiftsIderForrigeBehandling}
-                valideringsfeil={formState.errors.skoleårsperioder}
-                settValideringsFeil={formState.setErrors}
-                oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
-            />
             <EnsligTextArea
                 erLesevisning={!behandlingErRedigerbar}
                 value={begrunnelseState.value}
@@ -187,6 +180,13 @@ export const VedtaksformSkolepenger: React.FC<{
                 label={'Begrunnelse'}
                 maxLength={0}
                 feilmelding={formState.errors.begrunnelse}
+            />
+            <SkoleårsperioderSkolepenger
+                skoleårsperioder={skoleårsPerioderState}
+                låsteUtgiftIder={utgiftsIderForrigeBehandling}
+                valideringsfeil={formState.errors.skoleårsperioder}
+                settValideringsFeil={formState.setErrors}
+                oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
             />
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
