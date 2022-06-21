@@ -5,7 +5,7 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
-import { ValideringsPropsMedOppdatering } from '../typer';
+import { SkolepengerOpphørProps } from '../typer';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { formaterIsoMånedÅrFull } from '../../../../../App/utils/formatter';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
@@ -26,36 +26,28 @@ const SkoleårsperiodeRad = styled.div<{
     text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
 `;
 
-const OpphørSkoleårDelårsperiode: React.FC<
-    ValideringsPropsMedOppdatering<IPeriodeSkolepenger> & {
-        forrigePerioder: IPeriodeSkolepenger[];
-        skoleårErFjernet: boolean;
-    }
-> = ({
+const OpphørSkoleårDelårsperiode: React.FC<SkolepengerOpphørProps<IPeriodeSkolepenger>> = ({
     data,
-    forrigePerioder,
+    forrigeData,
     skoleårErFjernet,
     oppdater,
     behandlingErRedigerbar,
-    valideringsfeil,
-    settValideringsFeil,
 }) => {
     const fjernDelårsperiode = (periode: IPeriodeSkolepenger) => {
         const index = data.findIndex((d) => d.årMånedFra === periode.årMånedFra);
         oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
-        settValideringsFeil((valideringsfeil || []).filter((_, i) => i !== index));
     };
 
     const tilbakestillDelårsperiode = (forrigeIndex: number) => {
         const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
             forrigeIndex,
             data,
-            forrigePerioder,
+            forrigeData,
             (t1, t2) => t1.årMånedFra === t2.årMånedFra
         );
         oppdater([
             ...data.slice(0, indexForElementFørId),
-            forrigePerioder[forrigeIndex],
+            forrigeData[forrigeIndex],
             ...data.slice(indexForElementFørId, data.length),
         ]);
     };
@@ -74,7 +66,7 @@ const OpphørSkoleårDelårsperiode: React.FC<
                 <Element>Ant. mnd</Element>
                 <Element>Studiebelastning</Element>
             </SkoleårsperiodeRad>
-            {forrigePerioder.map((periode, index) => {
+            {forrigeData.map((periode, index) => {
                 const erFjernet = !nyePerioder[periode.årMånedFra];
                 const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
                 const skalViseFjernKnapp = behandlingErRedigerbar && data.length > 1;

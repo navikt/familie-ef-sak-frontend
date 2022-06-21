@@ -67,6 +67,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                             case EBehandlingResultat.INNVILGE:
                                 return (
                                     <VedtaksformSkolepenger
+                                        key={'innvilgelse'}
                                         behandling={behandling}
                                         erOpphør={false}
                                         lagretInnvilgetVedtak={
@@ -84,6 +85,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                             case EBehandlingResultat.OPPHØRT:
                                 return (
                                     <VedtaksformSkolepenger
+                                        key={'opphør'}
                                         behandling={behandling}
                                         erOpphør={true}
                                         lagretInnvilgetVedtak={

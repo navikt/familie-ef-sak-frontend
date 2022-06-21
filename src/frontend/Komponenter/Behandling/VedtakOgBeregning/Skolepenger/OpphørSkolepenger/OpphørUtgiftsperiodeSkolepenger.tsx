@@ -3,7 +3,7 @@ import React from 'react';
 import { EUtgiftstype, SkolepengerUtgift, utgiftstyper } from '../../../../../App/typer/vedtak';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { ValideringsPropsMedOppdatering } from '../typer';
+import { SkolepengerOpphørProps } from '../typer';
 import navFarger from 'nav-frontend-core';
 import {
     formaterIsoMånedÅrFull,
@@ -58,19 +58,15 @@ const UtgiftstypeTekst = styled(Normaltekst)`
 `;
 
 const OpphørUtgiftsperiodeSkolepenger: React.FC<
-    ValideringsPropsMedOppdatering<SkolepengerUtgift> & {
-        forrigeUtgifter: SkolepengerUtgift[];
-        skoleårErFjernet: boolean;
+    SkolepengerOpphørProps<SkolepengerUtgift> & {
         harValgtAlleUtgiftstyper: boolean;
     }
 > = ({
     data,
-    forrigeUtgifter,
+    forrigeData,
     skoleårErFjernet,
     oppdater,
     behandlingErRedigerbar,
-    valideringsfeil,
-    settValideringsFeil,
     harValgtAlleUtgiftstyper,
 }) => {
     const erLesevisning = !behandlingErRedigerbar;
@@ -78,19 +74,18 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<
     const fjernUtgift = (id: string) => {
         const index = data.findIndex((d) => d.id === id);
         oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
-        settValideringsFeil((valideringsfeil || []).filter((_, i) => i !== index));
     };
 
     const tilbakestillUtgift = (forrigeIndex: number) => {
         const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
             forrigeIndex,
             data,
-            forrigeUtgifter,
+            forrigeData,
             (t1, t2) => t1.id === t2.id
         );
         oppdater([
             ...data.slice(0, indexForElementFørId),
-            forrigeUtgifter[forrigeIndex],
+            forrigeData[forrigeIndex],
             ...data.slice(indexForElementFørId, data.length),
         ]);
     };
@@ -115,7 +110,7 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<
                         <Element>Utgifter</Element>
                         <Element>Stønadsbeløp</Element>
                     </Utgiftsrad>
-                    {forrigeUtgifter.map((utgift, index) => {
+                    {forrigeData.map((utgift, index) => {
                         const erFjernet = !nyePerioder[utgift.id];
                         const formaterteUtgiftstyper = utgiftstyperFormatert(utgiftstyper);
 
