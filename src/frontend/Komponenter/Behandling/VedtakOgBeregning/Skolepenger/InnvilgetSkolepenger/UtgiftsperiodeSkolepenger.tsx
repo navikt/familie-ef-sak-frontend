@@ -57,7 +57,7 @@ const FargetStrek = styled.span<{ lesevisning?: boolean }>`
 `;
 
 const UtgiftstypeContainer = styled.div`
-    margin-bottom: 1rem;
+    padding-top: 0.6rem;
     display: flex;
 `;
 
@@ -142,7 +142,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     }
                                     disabled={erLåstFraForrigeBehandling}
                                 />
-                                {behandlingErRedigerbar ? (
+                                {!erLåstFraForrigeBehandling ? (
                                     /* @ts-ignore:next-line */
                                     <FamilieReactSelect
                                         placeholder={'Velg utgiftstyper'}
