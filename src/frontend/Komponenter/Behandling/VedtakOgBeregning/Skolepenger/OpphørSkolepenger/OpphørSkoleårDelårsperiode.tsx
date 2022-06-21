@@ -9,7 +9,7 @@ import { ValideringsPropsMedOppdatering } from '../typer';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { formaterIsoMånedÅrFull } from '../../../../../App/utils/formatter';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { findIndexForElementBefore } from '../utils';
+import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
 import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
 
 const SkoleårsperiodeRad = styled.div<{
@@ -47,7 +47,7 @@ const OpphørSkoleårDelårsperiode: React.FC<
     };
 
     const tilbakestillDelårsperiode = (forrigeIndex: number) => {
-        const indexForElementFørId = findIndexForElementBefore(
+        const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
             forrigeIndex,
             data,
             forrigePerioder,

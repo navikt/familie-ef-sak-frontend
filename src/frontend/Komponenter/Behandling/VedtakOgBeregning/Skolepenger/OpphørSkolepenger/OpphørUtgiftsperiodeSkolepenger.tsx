@@ -10,7 +10,7 @@ import {
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../../../App/utils/formatter';
 import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
-import { findIndexForElementBefore, utgiftstyperFormatert } from '../utils';
+import { locateIndexToRestorePreviousItemInCurrentItems, utgiftstyperFormatert } from '../utils';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -82,7 +82,7 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<
     };
 
     const tilbakestillUtgift = (forrigeIndex: number) => {
-        const indexForElementFørId = findIndexForElementBefore(
+        const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
             forrigeIndex,
             data,
             forrigeUtgifter,

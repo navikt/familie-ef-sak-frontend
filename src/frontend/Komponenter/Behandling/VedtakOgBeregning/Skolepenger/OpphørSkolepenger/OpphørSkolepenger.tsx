@@ -13,7 +13,10 @@ import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger
 import { beregnSkoleår, GyldigSkoleår } from '../skoleår';
 import { InnvilgeVedtakForm } from '../InnvilgetSkolepenger/VedtaksformSkolepenger';
 import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
-import { findIndexForElementBefore, sjekkHarValgtAlleUtgiftstyper } from '../utils';
+import {
+    locateIndexToRestorePreviousItemInCurrentItems,
+    sjekkHarValgtAlleUtgiftstyper,
+} from '../utils';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -62,7 +65,7 @@ const OpphørSkolepenger: React.FC<Props> = ({
     };
 
     const tilbakestillSkoleårsperiode = (forrigeIndex: number) => {
-        const indexForElementFørId = findIndexForElementBefore(
+        const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
             forrigeIndex,
             skoleårsperioder.value,
             forrigeSkoleårsperioder,
