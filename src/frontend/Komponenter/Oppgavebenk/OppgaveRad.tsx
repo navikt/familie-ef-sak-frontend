@@ -33,19 +33,14 @@ const StyledPopoverinnhold = styled.p`
 const Flatknapp = hiddenIf(Knapp);
 
 const kanJournalføres = (oppgave: IOppgave, skalJournalføreSkolepenger: boolean) => {
-    const { behandlesAvApplikasjon, behandlingstema, oppgavetype } = oppgave;
+    const { behandlingstema, oppgavetype } = oppgave;
     const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
 
     if (!skalJournalføreSkolepenger && stønadstype === Stønadstype.SKOLEPENGER) {
         return false;
     }
 
-    return (
-        (behandlesAvApplikasjon === 'familie-ef-sak-førstegangsbehandling' ||
-            behandlesAvApplikasjon === 'familie-ef-sak') &&
-        oppgavetype === 'JFR' &&
-        stønadstype
-    );
+    return oppgavetype === 'JFR' && stønadstype;
 };
 
 const måBehandlesIEFSak = (oppgave: IOppgave) => {
