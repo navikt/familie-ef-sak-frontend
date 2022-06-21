@@ -15,6 +15,7 @@ import { findIndexForElementBefore, utgiftstyperFormatert } from '../utils';
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
     erHeader?: boolean;
+    erFjernet?: boolean;
     valgtAlleUtgiftstyper: boolean;
 }>`
     display: grid;
@@ -27,6 +28,7 @@ const Utgiftsrad = styled.div<{
     }};
     grid-gap: 0.5rem;
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
+    text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
 `;
 
 const FlexRow = styled.div`
@@ -123,6 +125,7 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<
                                 lesevisning={erLesevisning}
                                 key={index}
                                 valgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
+                                erFjernet={erFjernet}
                             >
                                 <Element>{formaterIsoMånedÅrFull(utgift.årMånedFra)}</Element>
                                 <UtgiftstypeContainer>

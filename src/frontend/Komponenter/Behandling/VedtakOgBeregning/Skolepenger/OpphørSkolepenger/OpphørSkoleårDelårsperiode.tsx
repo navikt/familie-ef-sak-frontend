@@ -14,7 +14,7 @@ import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
 
 const SkoleårsperiodeRad = styled.div<{
     lesevisning?: boolean;
-    erOpphør?: boolean;
+    erFjernet?: boolean;
     erHeader?: boolean;
 }>`
     display: grid;
@@ -23,6 +23,7 @@ const SkoleårsperiodeRad = styled.div<{
         props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 12rem 11.5rem 4rem 8rem 4rem'};
     grid-gap: 0.5rem;
     margin-bottom: 0rem;
+    text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
 `;
 
 const OpphørSkoleårDelårsperiode: React.FC<
@@ -78,7 +79,11 @@ const OpphørSkoleårDelårsperiode: React.FC<
                 const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
                 const skalViseFjernKnapp = behandlingErRedigerbar && data.length > 1;
                 return (
-                    <SkoleårsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
+                    <SkoleårsperiodeRad
+                        key={index}
+                        lesevisning={!behandlingErRedigerbar}
+                        erFjernet={erFjernet}
+                    >
                         <Element>{studietype && skolepengerStudietypeTilTekst[studietype]}</Element>
                         <Element>{formaterIsoMånedÅrFull(årMånedFra)}</Element>
                         <Element>{formaterIsoMånedÅrFull(årMånedTil)}</Element>
