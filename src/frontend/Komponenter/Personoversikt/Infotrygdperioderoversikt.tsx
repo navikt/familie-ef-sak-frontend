@@ -80,7 +80,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
     );
 };
 
-const Infotrygdperioderoversikt: React.FC<{
+export const Infotrygdperioderoversikt: React.FC<{
     fagsakPerson: IFagsakPerson;
     personIdent: string;
     onMigrert?: (status: Migreringsstatus) => void;
@@ -115,5 +115,3 @@ const Infotrygdperioderoversikt: React.FC<{
         </DataViewer>
     );
 };
-
-export default Infotrygdperioderoversikt;

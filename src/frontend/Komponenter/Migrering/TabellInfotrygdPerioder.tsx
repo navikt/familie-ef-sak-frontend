@@ -18,7 +18,6 @@ import {
     sakstypeTilTekst,
 } from '../../App/typer/infotrygd';
 import styled from 'styled-components';
-import { useWindowSize } from '../../App/hooks/felles/useWindowSize';
 import { Table, Tooltip } from '@navikt/ds-react';
 
 /**
@@ -64,15 +63,12 @@ const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string =>
     }
 };
 
-const utledTabellHeaderBarnetilsyn = (width: number, stønadstype: Stønadstype) => {
-    if (stønadstype !== Stønadstype.BARNETILSYN) {
-        throw Error(`Programeringsfeil - støtter ikke perioder av type: ${stønadstype}`);
-    }
-    return width >= 1370 ? (
+const utledTabellHeaderBarnetilsyn = () => {
+    return (
         <Table.Row>
             <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
             <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Månedsbeløp</HøyrestiltTekst>
+                <HøyrestiltTekst>Måneds&shy;beløp</HøyrestiltTekst>
             </Table.HeaderCell>
             <Table.HeaderCell scope="col">
                 <HøyrestiltTekst>Antall barn</HøyrestiltTekst>
@@ -80,76 +76,33 @@ const utledTabellHeaderBarnetilsyn = (width: number, stønadstype: Stønadstype)
             <Table.HeaderCell scope="col">
                 <HøyrestiltTekst>Utgifter</HøyrestiltTekst>
             </Table.HeaderCell>
-            <Table.HeaderCell scope="col">Vedtakstidspunkt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Vedtaks&shy;tidspunkt</Table.HeaderCell>
             <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
             <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
-        </Table.Row>
-    ) : (
-        <Table.Row>
-            <Table.HeaderCell scope="col">
-                Periode <br /> (fom-tom)
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Måned- <br /> beløp
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Antall- <br /> barn
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Utgifter</HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                Vedtak- <br /> tidspunkt
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Saks&shy;behandler</Table.HeaderCell>
         </Table.Row>
     );
 };
 
-const utledTabellHeaderOvergangsstønad = (width: number, stønadstype: Stønadstype) => {
-    if (stønadstype !== Stønadstype.OVERGANGSSTØNAD) {
-        throw Error(`Programeringsfeil - støtter ikke perioder av type: ${stønadstype}`);
-    }
-    return width >= 1370 ? (
+const utledTabellHeaderOvergangsstønad = () => {
+    return (
         <Table.Row>
             <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
             <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Månedsbeløp</HøyrestiltTekst>
+                <HøyrestiltTekst>Måneds&shy;beløp</HøyrestiltTekst>
             </Table.HeaderCell>
             <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Inntektsgrunnlag</HøyrestiltTekst>
+                <HøyrestiltTekst>Inntekts&shy;grunnlag</HøyrestiltTekst>
             </Table.HeaderCell>
             <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Samordningsfradrag</HøyrestiltTekst>
+                <HøyrestiltTekst>Samordnings&shy;fradrag</HøyrestiltTekst>
             </Table.HeaderCell>
-            <Table.HeaderCell scope="col">Vedtakstidspunkt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Vedtaks&shy;tidspunkt</Table.HeaderCell>
             <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
             <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
-        </Table.Row>
-    ) : (
-        <Table.Row>
-            <Table.HeaderCell scope="col">
-                Periode <br /> (fom-tom)
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Måned- <br /> beløp
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                Vedtak- <br /> tidspunkt
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Aktivitet</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Periode&shy;type</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Saks&shy;behandler</Table.HeaderCell>
         </Table.Row>
     );
 };
@@ -158,13 +111,12 @@ export const TabellInfotrygdOvergangsstønadperioderKompakt: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
     stønadstype: Stønadstype;
 }> = ({ perioder, stønadstype }) => {
-    const { width } = useWindowSize();
     if (stønadstype !== Stønadstype.OVERGANGSSTØNAD) {
         throw Error(`Programeringsfeil - støtter ikke perioder av type: ${stønadstype}`);
     }
     return (
         <Table zebraStripes={true} size={'small'}>
-            <Table.Header>{utledTabellHeaderOvergangsstønad(width, stønadstype)}</Table.Header>
+            <Table.Header>{utledTabellHeaderOvergangsstønad()}</Table.Header>
             <Table.Body>
                 {perioder.map((periode) => {
                     const stønadOgVedtaksIdString =
@@ -264,13 +216,12 @@ export const TabellInfotrygdBarnetilsynperioderKompakt: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
     stønadstype: Stønadstype;
 }> = ({ perioder, stønadstype }) => {
-    const { width } = useWindowSize();
     if (stønadstype !== Stønadstype.BARNETILSYN) {
         throw Error(`Programeringsfeil - støtter ikke perioder av type: ${stønadstype}`);
     }
     return (
         <Table zebraStripes={true} size={'small'}>
-            <Table.Header>{utledTabellHeaderBarnetilsyn(width, stønadstype)}</Table.Header>
+            <Table.Header>{utledTabellHeaderBarnetilsyn()}</Table.Header>
             <Table.Body>
                 {perioder.map((periode) => {
                     const stønadOgVedtaksIdString =
