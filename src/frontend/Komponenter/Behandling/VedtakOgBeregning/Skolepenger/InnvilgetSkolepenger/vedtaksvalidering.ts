@@ -23,7 +23,6 @@ const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
 const periodeUtgiftFeil: FormErrors<SkolepengerUtgift> = {
     id: undefined,
     årMånedFra: undefined,
-    utgiftstyper: [],
     utgifter: undefined,
     stønad: undefined,
 };
@@ -126,19 +125,12 @@ const validerDelperiodeSkoleår = (
 
 const validerUtgifter = (perioder: SkolepengerUtgift[]): FormErrors<SkolepengerUtgift[]> => {
     return perioder.map((periode) => {
-        const { årMånedFra, utgiftstyper, utgifter, stønad } = periode;
+        const { årMånedFra, utgifter, stønad } = periode;
 
         if (!årMånedFra) {
             return {
                 ...periodeUtgiftFeil,
                 årMånedFra: 'Mangelfull utfylling av fradato',
-            };
-        }
-
-        if (utgiftstyper.length < 1) {
-            return {
-                ...periodeUtgiftFeil,
-                utgiftstyper: ['Mangelfull utfylling - minst en utgiftstype må velges'],
             };
         }
 
