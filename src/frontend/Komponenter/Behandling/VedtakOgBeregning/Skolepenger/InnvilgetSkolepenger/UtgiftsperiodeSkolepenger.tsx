@@ -97,17 +97,11 @@ const UtgiftsperiodeSkolepenger: React.FC<
                             <Utgiftsrad erHeader={false} lesevisning={erLesevisning} key={index}>
                                 <MånedÅrVelger
                                     årMånedInitiell={utgift.årMånedFra}
-                                    //label={datoFraTekst}
-                                    onEndret={(verdi) => {
-                                        oppdaterUtgift(index, 'årMånedFra', verdi);
-                                    }}
-                                    antallÅrTilbake={10}
-                                    antallÅrFrem={4}
-                                    lesevisning={erLesevisning}
-                                    feilmelding={
-                                        valideringsfeil && valideringsfeil[index]?.årMånedFra
-                                    }
-                                    disabled={erLåstFraForrigeBehandling}
+                                    antallÅrTilbake={0}
+                                    antallÅrFrem={0}
+                                    lesevisning={true}
+                                    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+                                    onEndret={() => {}}
                                 />
                                 <StyledInputMedTusenSkille
                                     onKeyPress={tilHeltall}
