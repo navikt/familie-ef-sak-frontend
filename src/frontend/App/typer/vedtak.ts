@@ -118,7 +118,6 @@ export interface IPeriodeSkolepenger {
 export interface SkolepengerUtgift {
     id: string;
     årMånedFra: string;
-    utgiftstyper: EUtgiftstype[];
     utgifter: number | undefined;
     stønad: number | undefined;
 }
@@ -233,7 +232,6 @@ export type EUtgiftsperiodeSkolepengerProperty = keyof IPeriodeSkolepenger;
 export enum SkolepengerUtgiftProperty {
     id = 'id',
     årMånedFra = 'årMånedFra',
-    utgiftstyper = 'utgiftstyper',
     utgifter = 'utgifter',
     stønad = 'stønad',
 }
@@ -288,24 +286,6 @@ export const skolepengerStudietypeTilTekst: Record<ESkolepengerStudietype, strin
 export const studietyper = [
     ESkolepengerStudietype.HØGSKOLE_UNIVERSITET,
     ESkolepengerStudietype.VIDEREGÅENDE,
-];
-
-export enum EUtgiftstype {
-    SEMESTERAVGIFT = 'SEMESTERAVGIFT',
-    STUDIEAVGIFT = 'STUDIEAVGIFT',
-    EKSAMENSAVGIFT = 'EKSAMENSAVGIFT',
-}
-
-export const utgiftstypeTilTekst: Record<EUtgiftstype, string> = {
-    SEMESTERAVGIFT: 'Semesteravgift',
-    STUDIEAVGIFT: 'Studieavgift',
-    EKSAMENSAVGIFT: 'Eksamensgebyr',
-};
-
-export const utgiftstyper = [
-    EUtgiftstype.SEMESTERAVGIFT,
-    EUtgiftstype.STUDIEAVGIFT,
-    EUtgiftstype.EKSAMENSAVGIFT,
 ];
 
 export enum EAktivitet {

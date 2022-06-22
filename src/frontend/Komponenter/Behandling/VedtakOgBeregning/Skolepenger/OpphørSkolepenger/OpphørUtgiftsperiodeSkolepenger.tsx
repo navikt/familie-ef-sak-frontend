@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
-import { EUtgiftstype, SkolepengerUtgift, utgiftstyper } from '../../../../../App/typer/vedtak';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
+import { Element } from 'nav-frontend-typografi';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SkolepengerOpphørProps } from '../typer';
 import navFarger from 'nav-frontend-core';
@@ -10,22 +10,17 @@ import {
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../../../App/utils/formatter';
 import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
-import { locateIndexToRestorePreviousItemInCurrentItems, utgiftstyperFormatert } from '../utils';
+import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
     erHeader?: boolean;
     erFjernet?: boolean;
-    valgtAlleUtgiftstyper: boolean;
 }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger utgiftstyper utgifter stønad';
-    grid-template-columns: ${(props) => {
-        if (props.lesevisning) {
-            return props.valgtAlleUtgiftstyper ? '9rem 19rem 4rem 4rem' : '9rem 14rem 4rem 4rem';
-        }
-        return '12rem 23rem 5rem 5rem 4rem';
-    }};
+    grid-template-areas: 'fraOgMedVelger utgifter stønad';
+    grid-template-columns: ${(props) =>
+        props.lesevisning ? '9rem 4rem 4rem' : '12rem 5rem 5rem 4rem'};
     grid-gap: 0.5rem;
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
     text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
@@ -48,26 +43,12 @@ const FargetStrek = styled.span`
     margin-bottom: 0.75rem;
 `;
 
-const UtgiftstypeContainer = styled.div`
-    margin-bottom: 1rem;
-    display: flex;
-`;
-
-const UtgiftstypeTekst = styled(Normaltekst)`
-    margin-right: 0.3rem;
-`;
-
-const OpphørUtgiftsperiodeSkolepenger: React.FC<
-    SkolepengerOpphørProps<SkolepengerUtgift> & {
-        harValgtAlleUtgiftstyper: boolean;
-    }
-> = ({
+const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<SkolepengerUtgift>> = ({
     data,
     forrigeData,
     skoleårErFjernet,
     oppdater,
     behandlingErRedigerbar,
-    harValgtAlleUtgiftstyper,
 }) => {
     const erLesevisning = !behandlingErRedigerbar;
 
@@ -100,40 +81,22 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<
             <FargetStrek />
             <div style={{ marginLeft: '1rem' }}>
                 <FlexColumn>
-                    <Utgiftsrad
-                        erHeader={true}
-                        lesevisning={erLesevisning}
-                        valgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
-                    >
+                    <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
                         <Element>Utbetalingsmåned</Element>
-                        <Element>Utgiftstyper</Element>
                         <Element>Utgifter</Element>
                         <Element>Stønadsbeløp</Element>
                     </Utgiftsrad>
                     {forrigeData.map((utgift, index) => {
                         const erFjernet = !nyePerioder[utgift.id];
-                        const formaterteUtgiftstyper = utgiftstyperFormatert(utgiftstyper);
 
                         return (
                             <Utgiftsrad
                                 erHeader={false}
                                 lesevisning={erLesevisning}
                                 key={index}
-                                valgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
                                 erFjernet={erFjernet}
                             >
                                 <Element>{formaterIsoMånedÅrFull(utgift.årMånedFra)}</Element>
-                                <UtgiftstypeContainer>
-                                    {formaterteUtgiftstyper
-                                        .filter((periode) =>
-                                            utgift.utgiftstyper.includes(
-                                                periode.value as EUtgiftstype
-                                            )
-                                        )
-                                        .map((periode) => (
-                                            <UtgiftstypeTekst>{periode.label}</UtgiftstypeTekst>
-                                        ))}
-                                </UtgiftstypeContainer>
                                 <Element>
                                     {formaterTallMedTusenSkilleEllerStrek(utgift.utgifter)}
                                 </Element>

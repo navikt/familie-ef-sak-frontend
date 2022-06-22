@@ -13,7 +13,6 @@ import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import navFarger from 'nav-frontend-core';
 import FjernKnappMedTekst from '../../../../../Felles/Knapper/FjernKnappMedTekst';
-import { sjekkHarValgtAlleUtgiftstyper } from '../utils';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -75,8 +74,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
         });
     };
 
-    const harValgtAlleUtgiftstyper = sjekkHarValgtAlleUtgiftstyper(skoleårsperioder.value);
-
     return (
         <>
             {skoleårsperioder.value.map((skoleårsperiode, index) => {
@@ -125,7 +122,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                     )
                                 }
                                 låsteUtgiftIder={låsteUtgiftIder}
-                                harValgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
                             />
                             {skalViseFjernKnapp && (
                                 <FjernKnappMedTekst

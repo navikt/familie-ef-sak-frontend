@@ -11,10 +11,7 @@ import OpphørSkoleårDelårsperiode from './OpphørSkoleårDelårsperiode';
 import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger';
 import { beregnSkoleår, GyldigSkoleår } from '../skoleår';
 import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
-import {
-    locateIndexToRestorePreviousItemInCurrentItems,
-    sjekkHarValgtAlleUtgiftstyper,
-} from '../utils';
+import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -88,8 +85,6 @@ const OpphørSkolepenger: React.FC<Props> = ({
         oppdaterHarUtførtBeregning(false);
     };
 
-    const harValgtAlleUtgiftstyper = sjekkHarValgtAlleUtgiftstyper(forrigeSkoleårsperioder);
-
     const skoleårsperioderPerSkoleår = useMemo(
         () =>
             skoleårsperioder.value.reduce((acc, curr) => {
@@ -135,7 +130,6 @@ const OpphørSkolepenger: React.FC<Props> = ({
                                 )
                             }
                             behandlingErRedigerbar={behandlingErRedigerbar}
-                            harValgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
                         />
                         {skalViseFjernKnapp && !erFjernet && (
                             <FjernKnappMedTekst
