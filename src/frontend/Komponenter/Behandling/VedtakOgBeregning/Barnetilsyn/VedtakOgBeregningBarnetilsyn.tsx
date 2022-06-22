@@ -11,6 +11,9 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Vedtaksform } from './Vedtaksform';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
 import { Opphør } from '../Overgangsstønad/Opphør/Opphør';
+import { barnSomOppfyllerAlleVilkår } from './utils';
+import { useToggles } from '../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../App/context/toggles';
 
 interface Props {
     behandling: Behandling;
@@ -29,8 +32,13 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
     const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>();
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
+    const { toggles } = useToggles();
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
+
+    const barn = toggles[ToggleName.skalFiltrereBarnBarnetilsyn]
+        ? barnSomOppfyllerAlleVilkår(vilkår)
+        : vilkår.grunnlag.barnMedSamvær;
 
     useEffect(() => {
         hentVedtak();
@@ -62,7 +70,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                         lagretVedtak={
                                             vedtak as unknown as IInnvilgeVedtakForBarnetilsyn // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
                                         }
-                                        barn={vilkår.grunnlag.barnMedSamvær}
+                                        barn={barn}
                                         settResultatType={settResultatType}
                                     />
                                 );
