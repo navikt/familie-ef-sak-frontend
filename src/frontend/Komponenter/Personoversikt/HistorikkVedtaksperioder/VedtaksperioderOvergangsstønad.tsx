@@ -73,7 +73,7 @@ const VedtaksperioderOvergangsstNad: React.FC<{ andeler: AndelHistorikk[] }> = (
                     <th>Aktivitet</th>
                     <th>Inntektsgrunnlag</th>
                     <th>Samordningsfradrag</th>
-                    <th>Stønadsbeløp</th>
+                    <th>Stønadsbeløp pr. mnd</th>
                     <th>Vedtakstidspunkt</th>
                     <th>Saksbehandler</th>
                     <th>Behandlingstype</th>

@@ -107,7 +107,7 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                     <th>Antall barn</th>
                     <th>Utgifter</th>
                     <th>Kontantstøtte</th>
-                    <th>Stønadsbeløp</th>
+                    <th>Stønadsbeløp pr. mnd</th>
                     <th>Vedtakstidspunkt</th>
                     <th>Saksbehandler</th>
                     <th>Behandlingstype</th>

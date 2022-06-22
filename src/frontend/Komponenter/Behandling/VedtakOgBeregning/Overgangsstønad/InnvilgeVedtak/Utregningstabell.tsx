@@ -43,7 +43,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                             <Element>Inntekt (år)</Element>
                             <Element>Beløp før samordning</Element>
                             <Element>Samordningsfradrag (mnd)</Element>
-                            <Element>Stønadsbeløp</Element>
+                            <Element>Stønadsbeløp pr. mnd</Element>
                         </TittelContainer>
                         {beregnetStønad.map((beløpsPeriode) => {
                             return (
