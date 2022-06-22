@@ -1,6 +1,5 @@
 import React from 'react';
 import { InfotrygdPeriodeMedFlereEndringer } from '../Infotrygd/typer';
-import { Stønadstype } from '../../App/typer/behandlingstema';
 import {
     formaterNullableIsoDato,
     formaterNullableMånedÅr,
@@ -109,11 +108,7 @@ const utledTabellHeaderOvergangsstønad = () => {
 
 export const TabellInfotrygdOvergangsstønadperioderKompakt: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
-    stønadstype: Stønadstype;
-}> = ({ perioder, stønadstype }) => {
-    if (stønadstype !== Stønadstype.OVERGANGSSTØNAD) {
-        throw Error(`Programeringsfeil - støtter ikke perioder av type: ${stønadstype}`);
-    }
+}> = ({ perioder }) => {
     return (
         <Table zebraStripes={true} size={'small'}>
             <Table.Header>{utledTabellHeaderOvergangsstønad()}</Table.Header>
@@ -214,11 +209,7 @@ export const TabellInfotrygdOvergangsstønadperioderKompakt: React.FC<{
 
 export const TabellInfotrygdBarnetilsynperioderKompakt: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
-    stønadstype: Stønadstype;
-}> = ({ perioder, stønadstype }) => {
-    if (stønadstype !== Stønadstype.BARNETILSYN) {
-        throw Error(`Programeringsfeil - støtter ikke perioder av type: ${stønadstype}`);
-    }
+}> = ({ perioder }) => {
     return (
         <Table zebraStripes={true} size={'small'}>
             <Table.Header>{utledTabellHeaderBarnetilsyn()}</Table.Header>

@@ -19,18 +19,10 @@ const InfotrygdPerioder: React.FC<{
     switch (stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
             return (
-                <TabellInfotrygdOvergangsstønadperioderKompakt
-                    perioder={sammenslåttePerioder}
-                    stønadstype={stønadstype}
-                />
+                <TabellInfotrygdOvergangsstønadperioderKompakt perioder={sammenslåttePerioder} />
             );
         case Stønadstype.BARNETILSYN:
-            return (
-                <TabellInfotrygdBarnetilsynperioderKompakt
-                    perioder={sammenslåttePerioder}
-                    stønadstype={stønadstype}
-                />
-            );
+            return <TabellInfotrygdBarnetilsynperioderKompakt perioder={sammenslåttePerioder} />;
         case Stønadstype.SKOLEPENGER:
             return <InfotrygdPerioderSkolepenger perioder={sammenslåttePerioder} />;
     }
