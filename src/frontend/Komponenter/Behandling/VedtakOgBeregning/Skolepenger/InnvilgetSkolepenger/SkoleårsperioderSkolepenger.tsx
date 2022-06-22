@@ -74,12 +74,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
         });
     };
 
-    const harValgtAlleUtgiftstyper = skoleårsperioder.value.some((skoleårsperiode) =>
-        skoleårsperiode.utgiftsperioder.some(
-            (utgiftsperiode) => utgiftsperiode.utgiftstyper.length === 3
-        )
-    );
-
     return (
         <>
             {skoleårsperioder.value.map((skoleårsperiode, index) => {
@@ -128,7 +122,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                     )
                                 }
                                 låsteUtgiftIder={låsteUtgiftIder}
-                                harValgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
                             />
                             {skalViseFjernKnapp && (
                                 <FjernKnappMedTekst
