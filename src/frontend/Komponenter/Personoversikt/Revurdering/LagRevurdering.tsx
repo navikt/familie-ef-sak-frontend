@@ -68,7 +68,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
 
-    const kanLeggeTilNyeBarnPåRevurdering = toggles[ToggleName.kanLeggeTilNyeBarnPaaRevurdering];
     const skalViseValgmulighetForKorrigering = toggles[ToggleName.visValgmulighetForKorrigering];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
 
@@ -123,10 +122,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                     const harNyeBarnSidenForrigeBehandling =
                         nyeBarnSidenForrigeBehandling.length > 0;
                     const skalViseNyeBarnValg =
-                        valgtBehandlingsårsak &&
-                        kanLeggeTilNyeBarnPåRevurdering &&
-                        harNyeBarnSidenForrigeBehandling &&
-                        !erGOmregning;
+                        valgtBehandlingsårsak && harNyeBarnSidenForrigeBehandling && !erGOmregning;
 
                     return (
                         <>
@@ -179,7 +175,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                 valgtDato &&
                                                 !(
                                                     harNyeBarnSidenForrigeBehandling &&
-                                                    kanLeggeTilNyeBarnPåRevurdering &&
                                                     måTaStillingTilBarn &&
                                                     vilkårsbehandleVedMigrering ===
                                                         EVilkårsbehandleBarnValg.IKKE_VALGT
