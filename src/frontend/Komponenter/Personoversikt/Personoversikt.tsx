@@ -12,7 +12,7 @@ import { AxiosRequestConfig } from 'axios';
 import Vedtaksperioderoversikt from './Vedtaksperioderoversikt';
 import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import Dokumenter from './Dokumenter';
-import Infotrygdperioderoversikt from './Infotrygdperioderoversikt';
+import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import GamleBehandlinger from '../Behandling/GamleBehandlinger/GamleBehandlinger';
 
