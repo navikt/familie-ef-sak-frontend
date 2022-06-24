@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const NoWrapSpan = styled.span`
     white-space: nowrap;
+    font-size: 16px;
 `;
 
 export const KopierbartNullableFødselsnummer: React.FC<{ fødselsnummer: string }> = ({

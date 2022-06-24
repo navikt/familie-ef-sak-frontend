@@ -1,6 +1,5 @@
 import React from 'react';
 import { InfotrygdPeriodeMedFlereEndringer } from '../Infotrygd/typer';
-import { Stønadstype } from '../../App/typer/behandlingstema';
 import {
     formaterNullableIsoDato,
     formaterNullableMånedÅr,
@@ -18,7 +17,6 @@ import {
     sakstypeTilTekst,
 } from '../../App/typer/infotrygd';
 import styled from 'styled-components';
-import { useWindowSize } from '../../App/hooks/felles/useWindowSize';
 import { Table, Tooltip } from '@navikt/ds-react';
 
 /**
@@ -64,178 +62,109 @@ const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string =>
     }
 };
 
-const utledTabellHeader = (width: number, stønadstype: Stønadstype) => {
-    const erOS = stønadstype === Stønadstype.OVERGANGSSTØNAD;
-    return width >= 1370 ? (
+const utledTabellHeaderBarnetilsyn = () => {
+    return (
         <Table.Row>
             <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
             <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Månedsbeløp</HøyrestiltTekst>
+                <HøyrestiltTekst>Måneds&shy;beløp</HøyrestiltTekst>
             </Table.HeaderCell>
             <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Inntektsgrunnlag</HøyrestiltTekst>
+                <HøyrestiltTekst>Antall barn</HøyrestiltTekst>
             </Table.HeaderCell>
             <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Samordningsfradrag</HøyrestiltTekst>
+                <HøyrestiltTekst>Utgifter</HøyrestiltTekst>
             </Table.HeaderCell>
-            <Table.HeaderCell scope="col">Vedtakstidspunkt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Vedtaks&shy;tidspunkt</Table.HeaderCell>
             <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
             <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-            {erOS && <Table.HeaderCell scope="col">Aktivitet</Table.HeaderCell>}
-            {erOS && <Table.HeaderCell scope="col">Periodetype</Table.HeaderCell>}
-            <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
-        </Table.Row>
-    ) : (
-        <Table.Row>
-            <Table.HeaderCell scope="col">
-                Periode <br /> (fom-tom)
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Måned- <br /> beløp
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Inntekt- <br /> grunnlag
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>
-                    Samordning- <br /> fradrag
-                </HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                Vedtak- <br /> tidspunkt
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-            {erOS && <Table.HeaderCell scope="col">Aktivitet</Table.HeaderCell>}
-            {erOS && <Table.HeaderCell scope="col">Periodetype</Table.HeaderCell>}
-            <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Saks&shy;behandler</Table.HeaderCell>
         </Table.Row>
     );
 };
 
-export const TabellInfotrygdPerioder: React.FC<{
-    perioder: InfotrygdPeriodeMedFlereEndringer[];
-    stønadstype: Stønadstype;
-}> = ({ perioder, stønadstype }) => {
-    const erOS = stønadstype === Stønadstype.OVERGANGSSTØNAD;
+const utledTabellHeaderOvergangsstønad = () => {
     return (
-        <StyledTabell className="tabell">
-            <thead>
-                <tr>
-                    <th>
-                        Periode <br />
-                        (fom-tom)
-                    </th>
-                    <th>Månedsbeløp</th>
-                    <th>Inntektsgrunnlag</th>
-                    <th>Samordningsfradrag</th>
-                    <th>Vedtakstidspunkt</th>
-                    <th>Kode</th>
-                    <th>Sakstype</th>
-                    {erOS && <th>Aktivitet</th>}
-                    {erOS && <th>Periodetype</th>}
-                    <th>Saksbehandler</th>
-                </tr>
-            </thead>
-            <tbody>
-                {perioder.map((periode) => (
-                    <Rad key={`${periode.stønadId}-${periode.vedtakId}`}>
-                        <td>
-                            {formaterNullableMånedÅr(periode.stønadFom)}
-                            {' - '}
-                            {formatStønadTom(periode)}
-                        </td>
-                        <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.samordningsfradrag)}</td>
-                        <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
-                        <td>
-                            {kodeTilTekst[periode.kode]}{' '}
-                            {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
-                        </td>
-                        <td>{sakstypeTilTekst[periode.sakstype]}</td>
-                        {erOS && (
-                            <td>
-                                {periode.aktivitetstype &&
-                                    aktivitetstypeTilTekst[periode.aktivitetstype]}
-                            </td>
-                        )}
-                        {erOS && (
-                            <td>
-                                {periode.kodeOvergangsstønad &&
-                                    overgangsstønadKodeTilTekst[periode.kodeOvergangsstønad]}
-                            </td>
-                        )}
-                        <td>{periode.brukerId}</td>
-                    </Rad>
-                ))}
-            </tbody>
-        </StyledTabell>
+        <Table.Row>
+            <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Måneds&shy;beløp</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Inntekts&shy;grunnlag</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Samordnings&shy;fradrag</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">Vedtaks&shy;tidspunkt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Aktivitet</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Periode&shy;type</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Saks&shy;behandler</Table.HeaderCell>
+        </Table.Row>
     );
 };
 
-export const TabellInfotrygdPerioderKompakt: React.FC<{
+export const TabellInfotrygdOvergangsstønadperioderKompakt: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
-    stønadstype: Stønadstype;
-}> = ({ perioder, stønadstype }) => {
-    const { width } = useWindowSize();
-    const erOS = stønadstype === Stønadstype.OVERGANGSSTØNAD;
+}> = ({ perioder }) => {
     return (
         <Table zebraStripes={true} size={'small'}>
-            <Table.Header>{utledTabellHeader(width, stønadstype)}</Table.Header>
+            <Table.Header>{utledTabellHeaderOvergangsstønad()}</Table.Header>
             <Table.Body>
-                {perioder.map((periode) => (
-                    <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
-                        <Table.DataCell>
-                            {formaterNullableMånedÅr(periode.stønadFom)}
-                            {' - '}
-                            {formatStønadTom(periode)}
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <HøyrestiltTekst>
-                                {formaterTallMedTusenSkille(periode.månedsbeløp)}
-                            </HøyrestiltTekst>
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <HøyrestiltTekst>
-                                {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
-                            </HøyrestiltTekst>
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <HøyrestiltTekst>
-                                {formaterTallMedTusenSkille(periode.samordningsfradrag)}
-                            </HøyrestiltTekst>
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            {formaterNullableIsoDato(periode.vedtakstidspunkt)}
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <Tooltip
-                                content={kodeTilTekst[periode.kode]}
-                                placement="right"
-                                maxChar={200}
-                            >
-                                <TabellTekst>
-                                    {kodeTilForkortetTekst[periode.kode]}{' '}
-                                    {periode.initiellKode &&
-                                        `(${kodeTilForkortetTekst[periode.initiellKode]})`}
-                                </TabellTekst>
+                {perioder.map((periode) => {
+                    const stønadOgVedtaksIdString =
+                        'stønadId: ' + periode.stønadId + ' vedtakId: ' + periode.vedtakId;
+                    return (
+                        <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
+                            <Tooltip content={stønadOgVedtaksIdString}>
+                                <Table.DataCell>
+                                    {formaterNullableMånedÅr(periode.stønadFom)}
+                                    {' - '}
+                                    {formatStønadTom(periode)}
+                                </Table.DataCell>
                             </Tooltip>
-                        </Table.DataCell>
-                        <Table.DataCell>
-                            <Tooltip
-                                content={sakstypeTilTekst[periode.sakstype]}
-                                placement="right"
-                                maxChar={200}
-                            >
-                                <TabellTekst>{sakstypeTilKode[periode.sakstype]}</TabellTekst>
-                            </Tooltip>
-                        </Table.DataCell>
-                        {erOS && (
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.månedsbeløp)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.samordningsfradrag)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(periode.vedtakstidspunkt)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <Tooltip
+                                    content={kodeTilTekst[periode.kode]}
+                                    placement="right"
+                                    maxChar={200}
+                                >
+                                    <TabellTekst>
+                                        {kodeTilForkortetTekst[periode.kode]}{' '}
+                                        {periode.initiellKode &&
+                                            `(${kodeTilForkortetTekst[periode.initiellKode]})`}
+                                    </TabellTekst>
+                                </Tooltip>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <Tooltip
+                                    content={sakstypeTilTekst[periode.sakstype]}
+                                    placement="right"
+                                    maxChar={200}
+                                >
+                                    <TabellTekst>{sakstypeTilKode[periode.sakstype]}</TabellTekst>
+                                </Tooltip>
+                            </Table.DataCell>
                             <Table.DataCell>
                                 {periode.aktivitetstype && (
                                     <Tooltip
@@ -250,8 +179,6 @@ export const TabellInfotrygdPerioderKompakt: React.FC<{
                                     </Tooltip>
                                 )}
                             </Table.DataCell>
-                        )}
-                        {erOS && (
                             <Table.DataCell>
                                 {periode.kodeOvergangsstønad && (
                                     <Tooltip
@@ -271,10 +198,76 @@ export const TabellInfotrygdPerioderKompakt: React.FC<{
                                     </Tooltip>
                                 )}
                             </Table.DataCell>
-                        )}
-                        <Table.DataCell>{periode.brukerId}</Table.DataCell>
-                    </Table.Row>
-                ))}
+                            <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                        </Table.Row>
+                    );
+                })}
+            </Table.Body>
+        </Table>
+    );
+};
+
+export const TabellInfotrygdBarnetilsynperioderKompakt: React.FC<{
+    perioder: InfotrygdPeriodeMedFlereEndringer[];
+}> = ({ perioder }) => {
+    return (
+        <Table zebraStripes={true} size={'small'}>
+            <Table.Header>{utledTabellHeaderBarnetilsyn()}</Table.Header>
+            <Table.Body>
+                {perioder.map((periode) => {
+                    const stønadOgVedtaksIdString =
+                        'stønadId: ' + periode.stønadId + ' vedtakId: ' + periode.vedtakId;
+                    return (
+                        <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
+                            <Tooltip content={stønadOgVedtaksIdString}>
+                                <Table.DataCell>
+                                    {formaterNullableMånedÅr(periode.stønadFom)}
+                                    {' - '}
+                                    {formatStønadTom(periode)}
+                                </Table.DataCell>
+                            </Tooltip>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.månedsbeløp)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>{periode.barnIdenter.length}</HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(periode.vedtakstidspunkt)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <Tooltip
+                                    content={kodeTilTekst[periode.kode]}
+                                    placement="right"
+                                    maxChar={200}
+                                >
+                                    <TabellTekst>
+                                        {kodeTilForkortetTekst[periode.kode]}{' '}
+                                        {periode.initiellKode &&
+                                            `(${kodeTilForkortetTekst[periode.initiellKode]})`}
+                                    </TabellTekst>
+                                </Tooltip>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <Tooltip
+                                    content={sakstypeTilTekst[periode.sakstype]}
+                                    placement="right"
+                                    maxChar={200}
+                                >
+                                    <TabellTekst>{sakstypeTilKode[periode.sakstype]}</TabellTekst>
+                                </Tooltip>
+                            </Table.DataCell>
+                            <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                        </Table.Row>
+                    );
+                })}
             </Table.Body>
         </Table>
     );

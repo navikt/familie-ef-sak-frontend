@@ -41,7 +41,9 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     HAR_DOKUMENTERTE_TILSYNSUTGIFTER: 'Har brukeren dokumenterte tilsynsutgifter?',
     RETT_TIL_OVERGANGSSTØNAD: 'Er vilkårene for rett til overgangsstønad oppfylt?',
     DOKUMENTASJON_AV_UTDANNING: 'Er det dokumentert at bruker er under utdanning?',
-    NAVKONTOR_VURDERING: 'Har NAV kontoret vurdert at utdanning er nødvendig og hensiktsmessig?',
+    DOKUMENTASJON_AV_UTGIFTER_UTDANNING:
+        'Er det dokumentert at brukeren har utgifter til utdanningen?',
+    NAVKONTOR_VURDERING: 'Har NAV-kontoret vurdert utdanningen?',
     SAKSBEHANDLER_VURDERING: 'Er utdanningen nødvendig og hensiktsmessig?',
 };
 

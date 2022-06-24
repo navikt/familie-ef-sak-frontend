@@ -28,7 +28,11 @@ const HøyrejusterElement = styled(Element)`
 
 export const UtregningstabellSkolepenger: React.FC<{
     beregningsresultat: Ressurs<IBeregningSkolepengerResponse>;
-}> = ({ beregningsresultat }) => {
+    skjulVisning: boolean;
+}> = ({ beregningsresultat, skjulVisning }) => {
+    if (skjulVisning) {
+        return null;
+    }
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
@@ -39,7 +43,7 @@ export const UtregningstabellSkolepenger: React.FC<{
                     <Rad erTittelRad>
                         <Element>Fra</Element>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
-                        <HøyrejusterElement>Beløp</HøyrejusterElement>
+                        <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
                     </Rad>
                     {beregningsresultat.perioder.map((periode) => {
                         return (

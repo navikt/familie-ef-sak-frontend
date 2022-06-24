@@ -75,6 +75,9 @@ export interface IUnderUtdanning {
     hvorMyeSkalDuStudere?: number;
     hvaErMåletMedUtdanningen?: string;
     utdanningEtterGrunnskolen: boolean;
+    semesteravgift?: number;
+    studieavgift?: number;
+    eksamensgebyr?: number;
 }
 
 export interface ITidligereUtdanning {

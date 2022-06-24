@@ -27,6 +27,7 @@ interface Props {
     låsteUtgiftIder: string[];
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    oppdaterHarUtførtBeregning: (beregningUtført: boolean) => void;
 }
 
 const SkoleårsperioderSkolepenger: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
     låsteUtgiftIder,
     valideringsfeil,
     settValideringsFeil,
+    oppdaterHarUtførtBeregning,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -45,6 +47,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
             skoleårsperioder: (prevState.skoleårsperioder || []).filter((_, i) => index !== i),
         }));
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+        oppdaterHarUtførtBeregning(false);
     };
 
     const oppdaterSkoleårsperioder = <T extends ISkoleårsperiodeSkolepenger>(
@@ -55,6 +58,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
         const skoleårsperiode = skoleårsperioder.value[index];
         skoleårsperioder.update({ ...skoleårsperiode, [property]: value }, index);
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+        oppdaterHarUtførtBeregning(false);
     };
 
     const oppdaterValideringsfeil = <T extends ISkoleårsperiodeSkolepenger, T2 extends T[keyof T]>(
@@ -69,12 +73,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
             return { ...prevState, skoleårsperioder };
         });
     };
-
-    const harValgtAlleUtgiftstyper = skoleårsperioder.value.some((skoleårsperiode) =>
-        skoleårsperiode.utgiftsperioder.some(
-            (utgiftsperiode) => utgiftsperiode.utgiftstyper.length === 3
-        )
-    );
 
     return (
         <>
@@ -124,7 +122,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                     )
                                 }
                                 låsteUtgiftIder={låsteUtgiftIder}
-                                harValgtAlleUtgiftstyper={harValgtAlleUtgiftstyper}
                             />
                             {skalViseFjernKnapp && (
                                 <FjernKnappMedTekst

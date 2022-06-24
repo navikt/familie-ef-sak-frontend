@@ -4,7 +4,7 @@ import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { RessursStatus } from '../../App/typer/ressurs';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Navigate, useNavigate } from 'react-router-dom';
-import Infotrygdperioderoversikt from '../Personoversikt/Infotrygdperioderoversikt';
+import { Infotrygdperioderoversikt } from '../Personoversikt/Infotrygdperioderoversikt';
 import { useHentSøkPerson } from '../../App/hooks/useSøkPerson';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import { Migreringsstatus } from '../../App/typer/migrering';

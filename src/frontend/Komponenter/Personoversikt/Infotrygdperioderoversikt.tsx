@@ -37,22 +37,12 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
     perioder,
 }) => {
     const [visSummert, settVisSummert] = useState<boolean>(false);
-    const [visStørreTabell, settVisStørreTabell] = useState<boolean>(false);
 
-    const visPerioder = (
-        stønadstype: Stønadstype,
-        visSummert: boolean,
-        visStørreTabell: boolean,
-        perioder: Perioder
-    ) => {
+    const visPerioder = (stønadstype: Stønadstype, visSummert: boolean, perioder: Perioder) => {
         return visSummert ? (
             <SummertePerioder stønadstype={stønadstype} perioder={perioder.summert} />
         ) : (
-            <InfotrygdPerioder
-                stønadstype={stønadstype}
-                visStørreTabell={visStørreTabell}
-                perioder={perioder.perioder}
-            />
+            <InfotrygdPerioder stønadstype={stønadstype} perioder={perioder.perioder} />
         );
     };
 
@@ -77,42 +67,20 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
                         checked={visSummert}
                     />
                 )}
-                <Checkbox
-                    label={'Større tabeller'}
-                    onChange={() => {
-                        settVisStørreTabell((prevState) => !prevState);
-                    }}
-                    checked={visStørreTabell}
-                />
             </CheckboxContainer>
             <h2>Overgangsstønad</h2>
-            {visPerioder(
-                Stønadstype.OVERGANGSSTØNAD,
-                visSummert,
-                visStørreTabell,
-                perioder.overgangsstønad
-            )}
+            {visPerioder(Stønadstype.OVERGANGSSTØNAD, visSummert, perioder.overgangsstønad)}
 
             <h2>Barnetilsyn</h2>
-            {visPerioder(
-                Stønadstype.BARNETILSYN,
-                visSummert,
-                visStørreTabell,
-                perioder.barnetilsyn
-            )}
+            {visPerioder(Stønadstype.BARNETILSYN, visSummert, perioder.barnetilsyn)}
 
             <h2>Skolepenger</h2>
-            {visPerioder(
-                Stønadstype.SKOLEPENGER,
-                visSummert,
-                visStørreTabell,
-                perioder.skolepenger
-            )}
+            {visPerioder(Stønadstype.SKOLEPENGER, visSummert, perioder.skolepenger)}
         </>
     );
 };
 
-const Infotrygdperioderoversikt: React.FC<{
+export const Infotrygdperioderoversikt: React.FC<{
     fagsakPerson: IFagsakPerson;
     personIdent: string;
     onMigrert?: (status: Migreringsstatus) => void;
@@ -147,5 +115,3 @@ const Infotrygdperioderoversikt: React.FC<{
         </DataViewer>
     );
 };
-
-export default Infotrygdperioderoversikt;

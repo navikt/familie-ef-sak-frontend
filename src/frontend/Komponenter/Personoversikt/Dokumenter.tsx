@@ -135,10 +135,14 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                     <tbody>
                                         {Object.keys(grupperteDokumenter)
                                             .sort(function (a, b) {
-                                                return grupperteDokumenter[a][0].dato >
-                                                    grupperteDokumenter[b][0].dato
-                                                    ? -1
-                                                    : 1;
+                                                const datoA = grupperteDokumenter[a][0].dato;
+                                                const datoB = grupperteDokumenter[b][0].dato;
+                                                if (!datoA) {
+                                                    return -1;
+                                                } else if (!datoB) {
+                                                    return 1;
+                                                }
+                                                return datoA > datoB ? -1 : 1;
                                             })
                                             .filter(
                                                 (journalPostId: string) =>

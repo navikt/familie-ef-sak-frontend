@@ -10,8 +10,8 @@ import {
     Intervall,
     månedÅrTilDate,
     overlapper,
-    tilSkoleår,
 } from '../../../../../App/utils/dato';
+import { beregnSkoleår } from '../skoleår';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
@@ -23,7 +23,6 @@ const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
 const periodeUtgiftFeil: FormErrors<SkolepengerUtgift> = {
     id: undefined,
     årMånedFra: undefined,
-    utgiftstyper: [],
     utgifter: undefined,
     stønad: undefined,
 };
@@ -92,20 +91,21 @@ const validerDelperiodeSkoleår = (
             };
         }
         tidligerePerioder.push(intervall);
-        const skoleårFra = tilSkoleår(årMånedFra);
-        if (skoleårFra !== tilSkoleår(årMånedTil)) {
+        const skoleårForPeriode = beregnSkoleår(årMånedFra, årMånedTil);
+        if (!skoleårForPeriode.gyldig) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: `Fra og til er ikke i det samme skoleåret`,
+                årMånedFra: skoleårForPeriode.årsak,
             };
-        }
-        if (skoleår === undefined) {
-            skoleår = skoleårFra;
-        } else if (skoleår !== skoleårFra) {
-            return {
-                ...periodeSkolepengerFeil,
-                årMånedFra: `Skoleåret er ikke det samme som tidligere skoleår`,
-            };
+        } else {
+            if (skoleår === undefined) {
+                skoleår = skoleårForPeriode.skoleår;
+            } else if (skoleår !== skoleårForPeriode.skoleår) {
+                return {
+                    ...periodeSkolepengerFeil,
+                    årMånedFra: `Skoleåret er ikke det samme som tidligere skoleår`,
+                };
+            }
         }
         if (!studiebelastning) {
             return {
@@ -113,10 +113,10 @@ const validerDelperiodeSkoleår = (
                 studiebelastning: 'Mangelfull utfylling av studiebelastning',
             };
         }
-        if (studiebelastning < 1 || studiebelastning > 100) {
+        if (studiebelastning < 50 || studiebelastning > 100) {
             return {
                 ...periodeSkolepengerFeil,
-                studiebelastning: 'Studiebelastning må være mellom 1-100%',
+                studiebelastning: 'Studiebelastning må være mellom 50-100%',
             };
         }
         return periodeSkolepengerFeil;
@@ -125,19 +125,12 @@ const validerDelperiodeSkoleår = (
 
 const validerUtgifter = (perioder: SkolepengerUtgift[]): FormErrors<SkolepengerUtgift[]> => {
     return perioder.map((periode) => {
-        const { årMånedFra, utgiftstyper, utgifter, stønad } = periode;
+        const { årMånedFra, utgifter, stønad } = periode;
 
         if (!årMånedFra) {
             return {
                 ...periodeUtgiftFeil,
                 årMånedFra: 'Mangelfull utfylling av fradato',
-            };
-        }
-
-        if (utgiftstyper.length < 1) {
-            return {
-                ...periodeUtgiftFeil,
-                utgiftstyper: ['Mangelfull utfylling - minst en utgiftstype må velges'],
             };
         }
 

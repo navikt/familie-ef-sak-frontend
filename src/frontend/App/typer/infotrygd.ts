@@ -42,6 +42,7 @@ export interface InfotrygdPeriode {
     kodeOvergangsstønad?: InfotrygdOvergangsstønadKode;
     aktivitetstype?: InfotrygdAktivitetstype;
     brukerId: string;
+    barnIdenter: string[];
 }
 
 export enum Kode {
