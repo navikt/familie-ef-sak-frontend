@@ -34,6 +34,8 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
+import { useToggles } from '../../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../../App/context/toggles';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -69,6 +71,8 @@ export const InnvilgeVedtak: React.FC<{
     const [vedtakshistorikk, settVedtakshistorikk] = useState<IVedtakshistorikk>();
     const [revurderesFra, settRevurderesFra] = useState<string | undefined>();
 
+    const { toggles } = useToggles();
+
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const formState = useFormState<InnvilgeVedtakForm>(
@@ -96,7 +100,8 @@ export const InnvilgeVedtak: React.FC<{
     const vedtaksperioder = vedtaksperiodeState.value;
 
     useEffect(() => {
-        if (!vedtakshistorikk?.perioder?.length) return;
+        if (!vedtakshistorikk?.perioder?.length || !toggles[ToggleName.skalPrefylleVedtaksperider])
+            return;
 
         const perioderMedEndretKey = vedtakshistorikk.perioder.map((periode) => {
             return { ...periode, endretKey: uuidv4() };
@@ -108,7 +113,8 @@ export const InnvilgeVedtak: React.FC<{
     }, [vedtakshistorikk]);
 
     useEffect(() => {
-        if (!vedtakshistorikk?.inntekter?.length) return;
+        if (!vedtakshistorikk?.inntekter?.length || !toggles[ToggleName.skalPrefylleVedtaksperider])
+            return;
 
         const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
             return { ...inntekt, endretKey: uuidv4() };
