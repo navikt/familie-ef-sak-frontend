@@ -1,7 +1,7 @@
 import {
     IBeregningSkolepengerResponse,
     IBeregningsrequestSkolepenger,
-    IInnvilgeVedtakForSkolepenger,
+    IVedtakForSkolepenger,
     ISkoleårsperiodeSkolepenger,
     IvedtakForSkolepenger,
     IVedtakType,
@@ -93,10 +93,10 @@ export const VedtaksformSkolepenger: React.FC<{
         settHarUtførtBeregning(harUtførtBeregning);
     };
 
-    const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForSkolepenger) => {
+    const lagreVedtak = (vedtaksRequest: IVedtakForSkolepenger) => {
         settLaster(true);
 
-        axiosRequest<string, IInnvilgeVedtakForSkolepenger>({
+        axiosRequest<string, IVedtakForSkolepenger>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
@@ -127,7 +127,7 @@ export const VedtaksformSkolepenger: React.FC<{
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         settVisFeilmelding(false);
         if (harUtførtBeregning) {
-            const vedtaksRequest: IInnvilgeVedtakForSkolepenger = {
+            const vedtaksRequest: IVedtakForSkolepenger = {
                 skoleårsperioder: form.skoleårsperioder,
                 begrunnelse: form.begrunnelse,
                 _type: IVedtakType.InnvilgelseSkolepenger,

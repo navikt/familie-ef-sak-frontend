@@ -8,6 +8,10 @@ const AUGUST = 7;
 
 const ugyldigSkoleår = (årsak: string): Skoleår => ({ gyldig: false, årsak });
 
+export const formatterSkoleår = (skoleår: GyldigSkoleår) =>
+    `${last2Digits(skoleår.skoleår)}/${last2Digits(skoleår.skoleår + 1)}`;
+const last2Digits = (n: number) => String(n).slice(-2);
+
 /**
  *  Samme validering som i backend:
  *  https://github.com/navikt/familie-ef-sak/blob/master/src/main/kotlin/no/nav/familie/ef/sak/beregning/skolepenger/BeregningSkolepengerService.kt

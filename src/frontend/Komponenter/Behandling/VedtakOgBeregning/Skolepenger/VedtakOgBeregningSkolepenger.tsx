@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { EBehandlingResultat, IInnvilgeVedtakForSkolepenger } from '../../../../App/typer/vedtak';
+import { EBehandlingResultat, IVedtakForSkolepenger } from '../../../../App/typer/vedtak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { erAlleVilkårOppfylt } from '../Felles/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
@@ -64,11 +64,11 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                     <VedtaksformSkolepenger
                                         behandling={behandling}
                                         lagretInnvilgetVedtak={
-                                            vedtak as unknown as IInnvilgeVedtakForSkolepenger
+                                            vedtak as unknown as IVedtakForSkolepenger
                                         }
                                         forrigeVedtak={
                                             vedtakForrigeBehandling &&
-                                            (vedtakForrigeBehandling as unknown as IInnvilgeVedtakForSkolepenger)
+                                            (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
                                         }
                                     />
                                 );
