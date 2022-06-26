@@ -10,6 +10,8 @@ export interface SkolepengerProps<T> {
     data: T[];
     oppdater: (data: T[]) => void;
     behandlingErRedigerbar: boolean;
+    erOpphør?: boolean;
+    skoleårErFjernet?: boolean;
 }
 
 export interface ValideringsPropsMedOppdatering<T> extends SkolepengerProps<T> {
@@ -19,7 +21,6 @@ export interface ValideringsPropsMedOppdatering<T> extends SkolepengerProps<T> {
 
 export interface SkolepengerOpphørProps<T> extends SkolepengerProps<T> {
     forrigeData: T[];
-    skoleårErFjernet: boolean;
 }
 
 export const tomSkoleårsperiode: IPeriodeSkolepenger = {

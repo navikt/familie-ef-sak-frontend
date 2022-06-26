@@ -13,6 +13,7 @@ import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import navFarger from 'nav-frontend-core';
 import FjernKnappMedTekst from '../../../../../Felles/Knapper/FjernKnappMedTekst';
+import { oppdaterValideringsfeil } from '../utils';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -61,19 +62,6 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
         oppdaterHarUtførtBeregning(false);
     };
 
-    const oppdaterValideringsfeil = <T extends ISkoleårsperiodeSkolepenger, T2 extends T[keyof T]>(
-        index: number,
-        property: keyof T,
-        formErrors: FormErrors<T2 extends Array<infer U> ? U[] : T2>
-    ) => {
-        settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
-            const skoleårsperioder = (prevState.skoleårsperioder ?? []).map((p, i) =>
-                i !== index ? p : { ...p, [property]: formErrors }
-            );
-            return { ...prevState, skoleårsperioder };
-        });
-    };
-
     return (
         <>
             {skoleårsperioder.value.map((skoleårsperiode, index) => {
@@ -98,7 +86,12 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                     valideringsfeil && valideringsfeil[index]?.perioder
                                 }
                                 settValideringsFeil={(oppdaterteFeil) =>
-                                    oppdaterValideringsfeil(index, 'perioder', oppdaterteFeil)
+                                    oppdaterValideringsfeil(
+                                        settValideringsFeil,
+                                        index,
+                                        'perioder',
+                                        oppdaterteFeil
+                                    )
                                 }
                             />
                             <UtgiftsperiodeSkolepenger
@@ -116,6 +109,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                 }
                                 settValideringsFeil={(oppdaterteFeil) =>
                                     oppdaterValideringsfeil(
+                                        settValideringsFeil,
                                         index,
                                         'utgiftsperioder',
                                         oppdaterteFeil

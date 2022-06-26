@@ -1,5 +1,5 @@
 import { ISkoleårsperiodeSkolepenger } from '../../../../../App/typer/vedtak';
-import React, { useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useMemo } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
@@ -7,11 +7,13 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import navFarger from 'nav-frontend-core';
 import FjernKnappMedTekst from '../../../../../Felles/Knapper/FjernKnappMedTekst';
-import OpphørSkoleårDelårsperiode from './OpphørSkoleårDelårsperiode';
 import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger';
 import { beregnSkoleår, GyldigSkoleår } from '../skoleår';
 import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
-import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
+import { locateIndexToRestorePreviousItemInCurrentItems, oppdaterValideringsfeil } from '../utils';
+import SkoleårDelårsperiode from '../InnvilgetSkolepenger/SkoleårDelårsperiode';
+import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
+import { InnvilgeVedtakForm } from '../InnvilgetSkolepenger/VedtaksformSkolepenger';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -25,6 +27,8 @@ interface Props {
     skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
     forrigeSkoleårsperioder: ISkoleårsperiodeSkolepenger[];
     oppdaterHarUtførtBeregning: (beregningUtført: boolean) => void;
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
+    settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
 const beregnSkoleårForSkoleårsperiode = (periode: ISkoleårsperiodeSkolepenger) => {
@@ -40,6 +44,8 @@ const OpphørSkolepenger: React.FC<Props> = ({
     skoleårsperioder,
     forrigeSkoleårsperioder,
     oppdaterHarUtførtBeregning,
+    valideringsfeil,
+    settValideringsFeil,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -85,62 +91,89 @@ const OpphørSkolepenger: React.FC<Props> = ({
         oppdaterHarUtførtBeregning(false);
     };
 
+    /**
+     * For å sette valideringsfeil på riktig indeks returneres periode og index til skoleårsperioden for nye perioder
+     */
     const skoleårsperioderPerSkoleår = useMemo(
         () =>
-            skoleårsperioder.value.reduce((acc, curr) => {
-                if (curr.perioder.length > 0) {
+            skoleårsperioder.value.reduce((acc, periode, index) => {
+                if (periode.perioder.length > 0) {
                     return {
                         ...acc,
-                        [beregnSkoleårForSkoleårsperiode(curr)]: curr,
+                        [beregnSkoleårForSkoleårsperiode(periode)]: { periode, index },
                     };
                 } else {
                     return acc;
                 }
-            }, {} as Record<number, ISkoleårsperiodeSkolepenger>),
+            }, {} as Record<number, { periode: ISkoleårsperiodeSkolepenger; index: number } | undefined>),
         [skoleårsperioder]
     );
 
     return (
         <>
             {forrigeSkoleårsperioder.map((forrigeSkoleårsperiode, index) => {
-                const skalViseFjernKnapp = behandlingErRedigerbar;
                 const skoleår = beregnSkoleårForSkoleårsperiode(forrigeSkoleårsperiode);
                 const skoleårsperiode = skoleårsperioderPerSkoleår[skoleår];
                 const erFjernet = !skoleårsperiode;
                 return (
                     <Skoleårsperiode key={index}>
-                        <OpphørSkoleårDelårsperiode
-                            data={skoleårsperiode?.perioder || []}
-                            forrigeData={forrigeSkoleårsperiode.perioder}
-                            skoleårErFjernet={erFjernet}
-                            oppdater={(perioder) =>
-                                oppdaterSkoleårsperioder(skoleårsperiode, 'perioder', perioder)
+                        <SkoleårDelårsperiode
+                            data={
+                                erFjernet
+                                    ? forrigeSkoleårsperiode.perioder
+                                    : skoleårsperiode.periode.perioder
                             }
-                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            oppdater={(perioder) =>
+                                skoleårsperiode &&
+                                oppdaterSkoleårsperioder(
+                                    skoleårsperiode.periode,
+                                    'perioder',
+                                    perioder
+                                )
+                            }
+                            behandlingErRedigerbar={behandlingErRedigerbar && !erFjernet}
+                            valideringsfeil={
+                                valideringsfeil &&
+                                skoleårsperiode &&
+                                valideringsfeil[skoleårsperiode.index]?.perioder
+                            }
+                            settValideringsFeil={(oppdaterteFeil) =>
+                                skoleårsperiode &&
+                                oppdaterValideringsfeil(
+                                    settValideringsFeil,
+                                    skoleårsperiode.index,
+                                    'perioder',
+                                    oppdaterteFeil
+                                )
+                            }
+                            skoleårErFjernet={erFjernet}
+                            erOpphør={true}
                         />
                         <OpphørUtgiftsperiodeSkolepenger
-                            data={skoleårsperiode?.utgiftsperioder || []}
+                            data={skoleårsperiode?.periode?.utgiftsperioder || []}
                             forrigeData={forrigeSkoleårsperiode.utgiftsperioder}
                             skoleårErFjernet={erFjernet}
                             oppdater={(utgiftsperioder) =>
+                                skoleårsperiode &&
                                 oppdaterSkoleårsperioder(
-                                    skoleårsperiode,
+                                    skoleårsperiode.periode,
                                     'utgiftsperioder',
                                     utgiftsperioder
                                 )
                             }
                             behandlingErRedigerbar={behandlingErRedigerbar}
                         />
-                        {skalViseFjernKnapp && !erFjernet && (
+                        {behandlingErRedigerbar && !erFjernet && (
                             <FjernKnappMedTekst
-                                onClick={() => fjernSkoleårsperiode(skoleårsperiode)}
-                                knappetekst="Fjern skoleår"
+                                onClick={() => fjernSkoleårsperiode(skoleårsperiode.periode)}
+                                knappetekst="Opphør skoleår"
                             />
                         )}
-                        {skalViseFjernKnapp && erFjernet && (
+                        {behandlingErRedigerbar && erFjernet && (
                             <KansellerKnapp
                                 onClick={() => tilbakestillSkoleårsperiode(index)}
                                 knappetekst="Tilbakestill skoleår"
+                                visKnapptekst={true}
                             />
                         )}
                     </Skoleårsperiode>

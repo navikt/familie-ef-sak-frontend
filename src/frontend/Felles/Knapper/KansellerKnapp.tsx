@@ -10,14 +10,15 @@ const StyledKnapp = styled(Flatknapp)`
     height: 2rem;
 `;
 
-const KansellerKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
-    onClick,
-    knappetekst,
-}) => {
+const KansellerKnapp: React.FC<{
+    onClick: () => void;
+    knappetekst: string;
+    visKnapptekst?: boolean;
+}> = ({ onClick, knappetekst, visKnapptekst }) => {
     return (
         <StyledKnapp onClick={onClick} htmlType="button">
             <Cancel />
-            <span className="sr-only">{knappetekst}</span>
+            <span className={visKnapptekst ? '' : 'sr-only'}>{knappetekst}</span>
         </StyledKnapp>
     );
 };
