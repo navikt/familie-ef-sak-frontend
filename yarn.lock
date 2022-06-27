@@ -2188,10 +2188,10 @@
   resolved "https://npm.pkg.github.com/download/@navikt/ds-css/0.16.21/d8f34cfa67882eddd09a7f05170f3d1d173fe45fa11c143f857319b6a57f00f2#b793f900f3148a048180423052480c04be239e68"
   integrity sha512-kV9fLtnZoOIectWGZFg/aLzgp4gRi2sBjgq5VzoprNQlzSOnSxwR0QVLClpmjJe+oKZYUc5RndqDc0QAMawqkA==
 
-"@navikt/ds-css@^0.17.2":
-  version "0.17.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/0.17.2/fccadcb6847ad456e81328780e5d5cc84890d89028ad0d099520ba1516ac2450#04874e600a350ed101969af217f01e2516acda01"
-  integrity sha512-+qZIm6rUeogt6OD2m8GPzgLiKV8lM3SYSYv7jUlVHoyJj1RB9iGK3hEceEhJh4aaVKiKZsYHiKc8MiRuMD64HA==
+"@navikt/ds-css@^0.18.16":
+  version "0.18.16"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/0.18.16/e8179ea6fa2a1ec425f4786ff2daa7716ec49e0eb4f160f983fdbc537d7c8603#f28ae0cc6916d2a22ccbc42f2ed7936fc6b4a7e1"
+  integrity sha512-6BEnsGn5OnVRarIR9TrIUg/oEvK2MKW1vdVvcoMoGvtkDug1MSgmdxefmFLrJMR6FceTo6pUtsVkWvf51cenRQ==
 
 "@navikt/ds-icons@^0.2.1":
   version "0.2.2"
