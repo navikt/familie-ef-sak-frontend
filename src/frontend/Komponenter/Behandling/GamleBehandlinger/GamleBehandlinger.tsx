@@ -35,7 +35,7 @@ const GamleBehandlinger = () => {
                 <StyledGamleBehandlinger>
                     <h1>Gamle behandlinger</h1>
                     <>
-                        <Table size="medium">
+                        <Table size="medium" zebraStripes={true}>
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell scope="col">
