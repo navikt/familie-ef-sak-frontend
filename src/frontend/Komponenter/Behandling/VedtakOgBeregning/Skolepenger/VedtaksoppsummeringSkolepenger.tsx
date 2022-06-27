@@ -53,16 +53,18 @@ export const VedtaksoppsummeringSkolepenger: React.FC<{
                 />
             </Oppsummeringsboks>
             {skalViseSøknadsdata && (
-                <Oppsummeringsboks>
-                    <Søknadsdatoer
-                        behandlingId={behandling.id}
-                        stønadstype={behandling.stønadstype}
-                    />
-                </Oppsummeringsboks>
+                <>
+                    <Oppsummeringsboks>
+                        <Søknadsdatoer
+                            behandlingId={behandling.id}
+                            stønadstype={behandling.stønadstype}
+                        />
+                    </Oppsummeringsboks>
+                    <Oppsummeringsboks>
+                        <Søknadsutgifter behandlingId={behandling.id} />
+                    </Oppsummeringsboks>
+                </>
             )}
-            <Oppsummeringsboks>
-                <Søknadsutgifter behandlingId={behandling.id} />
-            </Oppsummeringsboks>
         </OppsummeringContainer>
     );
 };
