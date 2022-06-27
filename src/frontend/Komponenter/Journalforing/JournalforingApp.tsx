@@ -250,6 +250,7 @@ export const JournalforingApp: React.FC = () => {
                                 />
                                 {!journalResponse.harStrukturertSøknad && (
                                     <VelgUstrukturertDokumentasjonType
+                                        oppgaveId={oppgaveIdParam}
                                         ustrukturertDokumentasjonType={
                                             journalpostState.ustrukturertDokumentasjonType
                                         }
