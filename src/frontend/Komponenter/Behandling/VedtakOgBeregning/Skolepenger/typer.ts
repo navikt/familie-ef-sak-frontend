@@ -5,6 +5,7 @@ import {
     SkolepengerUtgift,
 } from '../../../../App/typer/vedtak';
 import { v4 as uuidv4 } from 'uuid';
+import { tilÅrMåned } from '../../../../App/utils/dato';
 
 export interface SkolepengerProps<T> {
     data: T[];
@@ -32,7 +33,7 @@ export const tomSkoleårsperiode: IPeriodeSkolepenger = {
 
 export const tomUtgift = (): SkolepengerUtgift => ({
     id: uuidv4(),
-    årMånedFra: '',
+    årMånedFra: tilÅrMåned(new Date()),
     utgifter: undefined,
     stønad: undefined,
 });

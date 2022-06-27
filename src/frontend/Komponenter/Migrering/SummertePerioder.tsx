@@ -51,7 +51,6 @@ const SummertePerioderBarnetilsyn: React.FC<{ perioder: SummertPeriode[] }> = ({
             <thead>
                 <tr>
                     <th>Periode (fom-tom)</th>
-                    <th>Inntektsgrunnlag</th>
                     <th>Utgifter barnetilsyn</th>
                     <th>Månedsbeløp</th>
                 </tr>
@@ -60,7 +59,6 @@ const SummertePerioderBarnetilsyn: React.FC<{ perioder: SummertPeriode[] }> = ({
                 {perioder.map((periode) => (
                     <Rad key={periode.stønadFom}>
                         <td>{formatFomTom(periode)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.inntektsgrunnlag)}</td>
                         <td>{formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}</td>
                         <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
                     </Rad>
