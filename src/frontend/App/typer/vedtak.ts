@@ -96,7 +96,7 @@ export type IPeriodeMedBeløp = {
     beløp: number | undefined;
 };
 
-export type IInnvilgeVedtakForSkolepenger = {
+export type IVedtakForSkolepenger = {
     begrunnelse?: string;
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
     _type?: IVedtakType.InnvilgelseSkolepenger;
@@ -149,7 +149,7 @@ export type IVedtakForOvergangsstønad =
 
 export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
 
-export type IvedtakForSkolepenger = IInnvilgeVedtakForSkolepenger;
+export type IvedtakForSkolepenger = IVedtakForSkolepenger;
 
 export interface IInntektsperiode {
     årMånedFra?: string;
