@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
-import { Behandling } from '../../../App/typer/fagsak';
+import { GammelBehandling } from '../../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Table } from '@navikt/ds-react';
@@ -15,16 +15,16 @@ const StyledGamleBehandlinger = styled.div`
 
 const GamleBehandlinger = () => {
     const { axiosRequest } = useApp();
-    const [gamleBehandlinger, settGamleBehandlinger] = useState<Ressurs<Behandling[]>>(
+    const [gamleBehandlinger, settGamleBehandlinger] = useState<Ressurs<GammelBehandling[]>>(
         byggTomRessurs()
     );
 
     useEffect(() => {
-        axiosRequest<Behandling[], null>({
+        axiosRequest<GammelBehandling[], null>({
             method: 'GET',
             url: `/familie-ef-sak/api/behandling/gamlebehandlinger`,
-        }).then((res: any) => settGamleBehandlinger(res));
-    }, []);
+        }).then((res: Ressurs<GammelBehandling[]>) => settGamleBehandlinger(res));
+    }, [axiosRequest]);
 
     return (
         <DataViewer response={{ gamleBehandlinger }}>
@@ -38,6 +38,9 @@ const GamleBehandlinger = () => {
                                     <Table.HeaderCell scope="col">
                                         Behandling opprettetdato
                                     </Table.HeaderCell>
+                                    <Table.HeaderCell scope="col">Stønadstype</Table.HeaderCell>
+                                    <Table.HeaderCell scope="col">Type</Table.HeaderCell>
+                                    <Table.HeaderCell scope="col">Årsak</Table.HeaderCell>
                                     <Table.HeaderCell scope="col">Resultat</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
@@ -45,9 +48,18 @@ const GamleBehandlinger = () => {
                                 {gamleBehandlinger.map((behandling, i) => {
                                     return (
                                         <Table.Row key={i}>
-                                            <Table.HeaderCell scope="row">
+                                            <Table.DataCell scope="row">
                                                 {formaterIsoDatoTid(behandling.opprettet)}
-                                            </Table.HeaderCell>
+                                            </Table.DataCell>
+                                            <Table.DataCell scope="row">
+                                                {behandling.stønadstype}
+                                            </Table.DataCell>
+                                            <Table.DataCell scope="row">
+                                                {behandling.årsak}
+                                            </Table.DataCell>
+                                            <Table.DataCell scope="row">
+                                                {behandling.type}
+                                            </Table.DataCell>
                                             <Table.DataCell>
                                                 <Link
                                                     className="lenke"

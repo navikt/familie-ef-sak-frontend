@@ -14,7 +14,6 @@ import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMed
 import Dokumenter from './Dokumenter';
 import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
-import GamleBehandlinger from '../Behandling/GamleBehandlinger/GamleBehandlinger';
 
 type TabWithRouter = {
     label: string;
@@ -71,13 +70,6 @@ const tabs: TabWithRouter[] = [
                 fagsakPerson.skolepenger;
 
             return fagsakId && <FrittståendeBrevMedVisning fagsakId={fagsakId} />;
-        },
-    },
-    {
-        label: 'Gamle behandlinger',
-        path: 'gamle-behandlinger',
-        komponent: () => {
-            return <GamleBehandlinger />;
         },
     },
 ];
