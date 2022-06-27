@@ -106,7 +106,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
     return (
         <>
             <FamilieRadioGruppe
-                legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften?"
+                legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften i perioden(e) det er søkt om?"
                 feil={valideringsfeil.harTilleggsstønad}
                 erLesevisning={!behandlingErRedigerbar}
                 verdi={radiovalgTilTekst[tilleggsstønad.value as ERadioValg]}
