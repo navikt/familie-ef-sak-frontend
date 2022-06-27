@@ -6,7 +6,7 @@ import { GammelBehandling } from '../../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Table } from '@navikt/ds-react';
-import { formaterIsoDatoTid } from '../../../App/utils/formatter';
+import { formaterIsoDato } from '../../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../../App/utils/utils';
 
 const StyledGamleBehandlinger = styled.div`
@@ -49,7 +49,7 @@ const GamleBehandlinger = () => {
                                     return (
                                         <Table.Row key={i}>
                                             <Table.DataCell scope="row">
-                                                {formaterIsoDatoTid(behandling.opprettet)}
+                                                {formaterIsoDato(behandling.opprettet)}
                                             </Table.DataCell>
                                             <Table.DataCell scope="row">
                                                 {behandling.stønadstype}
