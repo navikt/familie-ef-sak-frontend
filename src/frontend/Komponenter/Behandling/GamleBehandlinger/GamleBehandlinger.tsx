@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import { Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../../App/utils/utils';
+import { behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
+import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
+import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 
 const StyledGamleBehandlinger = styled.div`
     width: inherit;
@@ -52,13 +55,13 @@ const GamleBehandlinger = () => {
                                                 {formaterIsoDato(behandling.opprettet)}
                                             </Table.DataCell>
                                             <Table.DataCell scope="row">
-                                                {behandling.stønadstype}
+                                                {stønadstypeTilTekst[behandling.stønadstype]}
                                             </Table.DataCell>
                                             <Table.DataCell scope="row">
-                                                {behandling.årsak}
+                                                {behandlingsårsakTilTekst[behandling.årsak]}
                                             </Table.DataCell>
                                             <Table.DataCell scope="row">
-                                                {behandling.type}
+                                                {behandlingstypeTilTekst[behandling.type]}
                                             </Table.DataCell>
                                             <Table.DataCell>
                                                 <Link
