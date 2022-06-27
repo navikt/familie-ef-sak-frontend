@@ -35,7 +35,7 @@
     "@navikt/familie-header": "^4.0.4",
     "@navikt/familie-ikoner": "^4.0.1",
     "@navikt/familie-logging": "^2.0.0",
-    "@navikt/familie-typer": "^4.0.0",
+    "@navikt/familie-typer": "^5.0.0",
     "@navikt/familie-visittkort": "^3.0.2",
     "@navikt/fnrvalidator": "^1.1.4",
     "@sentry/browser": "^7.3.0",
