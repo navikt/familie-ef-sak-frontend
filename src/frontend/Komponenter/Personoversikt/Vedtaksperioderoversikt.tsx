@@ -55,7 +55,6 @@ const innvilgetEllerOpphørt = (b: Behandling) =>
 const filtrerBehandlinger = (fagsak: Fagsak): Behandling[] =>
     fagsak.behandlinger.filter(
         (b) =>
-            b.type !== Behandlingstype.BLANKETT &&
             innvilgetEllerOpphørt(b) &&
             b.status === BehandlingStatus.FERDIGSTILT
     );

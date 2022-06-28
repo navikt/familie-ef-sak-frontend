@@ -125,8 +125,7 @@ export const InnvilgeVedtak: React.FC<{
     useEffect(() => {
         if (
             !behandlingErRedigerbar &&
-            lagretInnvilgetVedtak &&
-            behandling.type !== Behandlingstype.BLANKETT
+            lagretInnvilgetVedtak
         ) {
             hentLagretBeløpForYtelse();
         }
@@ -166,19 +165,6 @@ export const InnvilgeVedtak: React.FC<{
         };
     };
 
-    const lagBlankett = (vedtaksRequest: IInnvilgeVedtakForOvergangsstønad) => {
-        settLaster(true);
-        axiosRequest<string, IInnvilgeVedtakForOvergangsstønad>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-blankettvedtak`,
-            data: vedtaksRequest,
-        })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/blankett`))
-            .finally(() => {
-                settLaster(false);
-            });
-    };
-
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForOvergangsstønad) => {
         settLaster(true);
         axiosRequest<string, IInnvilgeVedtakForOvergangsstønad>({
@@ -203,9 +189,6 @@ export const InnvilgeVedtak: React.FC<{
             samordningsfradragType: skalVelgeSamordningstype ? form.samordningsfradragType : null,
         };
         switch (behandling.type) {
-            case Behandlingstype.BLANKETT:
-                lagBlankett(vedtaksRequest);
-                break;
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
             case Behandlingstype.REVURDERING:
                 lagreVedtak(vedtaksRequest);
