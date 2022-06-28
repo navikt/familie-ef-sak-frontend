@@ -34,7 +34,7 @@ const VelgUstrukturertDokumentasjonType: React.FC<{
     useEffect(() => {
         axiosRequest<IOppgave, undefined>({
             method: 'GET',
-            url: `/familie-ef-sak/api/oppgave/gosys/${oppgaveId}`,
+            url: `/familie-ef-sak/api/oppgave/oppslag/${oppgaveId}`,
         }).then((res: Ressurs<IOppgave>) => settOppgave(res));
     }, [axiosRequest, oppgaveId]);
 
