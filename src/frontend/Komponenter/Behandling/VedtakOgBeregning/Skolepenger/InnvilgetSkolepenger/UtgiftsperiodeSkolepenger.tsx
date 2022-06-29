@@ -89,10 +89,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                     {data.map((utgift, index) => {
                         const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;
                         const skalViseFjernKnapp =
-                            behandlingErRedigerbar &&
-                            index === data.length - 1 &&
-                            index !== 0 &&
-                            !erLåstFraForrigeBehandling;
+                            behandlingErRedigerbar && index !== 0 && !erLåstFraForrigeBehandling;
                         return (
                             <Utgiftsrad erHeader={false} lesevisning={erLesevisning} key={index}>
                                 <MånedÅrVelger

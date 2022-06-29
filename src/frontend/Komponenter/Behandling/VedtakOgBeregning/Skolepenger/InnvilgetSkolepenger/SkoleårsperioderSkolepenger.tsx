@@ -69,10 +69,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                     (utgift) => låsteUtgiftIder.indexOf(utgift.id) > -1
                 );
                 const skalViseFjernKnapp =
-                    behandlingErRedigerbar &&
-                    index === skoleårsperioder.value.length - 1 &&
-                    index !== 0 &&
-                    !inneholderLåsteUtgifter;
+                    behandlingErRedigerbar && index !== 0 && !inneholderLåsteUtgifter;
                 return (
                     <>
                         <Skoleårsperiode key={index}>
