@@ -1,7 +1,8 @@
 import { månedÅrTilDate } from '../../../../App/utils/dato';
 import { getMonth, getYear } from 'date-fns';
 
-type Skoleår = { gyldig: false; årsak: string } | { gyldig: true; skoleår: number };
+export type GyldigSkoleår = { gyldig: true; skoleår: number };
+type Skoleår = { gyldig: false; årsak: string } | GyldigSkoleår;
 
 const JUNI = 5;
 const AUGUST = 7;

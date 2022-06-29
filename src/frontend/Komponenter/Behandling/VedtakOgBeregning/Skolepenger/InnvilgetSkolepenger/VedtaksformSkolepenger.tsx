@@ -1,8 +1,8 @@
 import {
     IBeregningSkolepengerResponse,
     IBeregningsrequestSkolepenger,
-    IVedtakForSkolepenger,
     ISkoleårsperiodeSkolepenger,
+    IVedtakForSkolepenger,
     IvedtakForSkolepenger,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
@@ -29,6 +29,7 @@ import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
+import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 
 export type InnvilgeVedtakForm = {
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
@@ -56,9 +57,10 @@ export const defaultSkoleårsperioder = (
 
 export const VedtaksformSkolepenger: React.FC<{
     behandling: Behandling;
+    erOpphør: boolean;
     lagretInnvilgetVedtak?: IvedtakForSkolepenger;
     forrigeVedtak?: IvedtakForSkolepenger;
-}> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
+}> = ({ behandling, erOpphør, lagretInnvilgetVedtak, forrigeVedtak }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
@@ -130,7 +132,9 @@ export const VedtaksformSkolepenger: React.FC<{
             const vedtaksRequest: IVedtakForSkolepenger = {
                 skoleårsperioder: form.skoleårsperioder,
                 begrunnelse: form.begrunnelse,
-                _type: IVedtakType.InnvilgelseSkolepenger,
+                _type: erOpphør
+                    ? IVedtakType.OpphørSkolepenger
+                    : IVedtakType.InnvilgelseSkolepenger,
             };
             lagreVedtak(vedtaksRequest);
         } else {
@@ -148,6 +152,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 data: {
                     behandlingId: behandling.id,
                     skoleårsperioder: skoleårsPerioderState.value,
+                    erOpphør: erOpphør,
                 },
             }).then((res: Ressurs<IBeregningSkolepengerResponse>) => {
                 settBeregningsresultat(res);
@@ -181,13 +186,23 @@ export const VedtaksformSkolepenger: React.FC<{
                 maxLength={0}
                 feilmelding={formState.errors.begrunnelse}
             />
-            <SkoleårsperioderSkolepenger
-                skoleårsperioder={skoleårsPerioderState}
-                låsteUtgiftIder={utgiftsIderForrigeBehandling}
-                valideringsfeil={formState.errors.skoleårsperioder}
-                settValideringsFeil={formState.setErrors}
-                oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
-            />
+            {!erOpphør ? (
+                <SkoleårsperioderSkolepenger
+                    skoleårsperioder={skoleårsPerioderState}
+                    låsteUtgiftIder={utgiftsIderForrigeBehandling}
+                    valideringsfeil={formState.errors.skoleårsperioder}
+                    settValideringsFeil={formState.setErrors}
+                    oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
+                />
+            ) : (
+                <OpphørSkolepenger
+                    skoleårsperioder={skoleårsPerioderState}
+                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
+                    valideringsfeil={formState.errors.skoleårsperioder}
+                    settValideringsFeil={formState.setErrors}
+                    oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
+                />
+            )}
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}
