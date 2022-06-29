@@ -84,7 +84,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
         }
     };
 
-    const erLesevisning: boolean = !behandlingErRedigerbar || !!skoleårErFjernet;
+    const erLesevisning: boolean = !behandlingErRedigerbar || skoleårErFjernet === true;
 
     return (
         <>

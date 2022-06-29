@@ -10,7 +10,7 @@ const StyledKnapp = styled(Flatknapp)`
     height: 2rem;
 `;
 
-const KansellerKnapp: React.FC<{
+const TilbakestillKnapp: React.FC<{
     onClick: () => void;
     knappetekst: string;
     visKnapptekst?: boolean;
@@ -23,4 +23,4 @@ const KansellerKnapp: React.FC<{
     );
 };
 
-export default hiddenIf(KansellerKnapp);
+export default hiddenIf(TilbakestillKnapp);

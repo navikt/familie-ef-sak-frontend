@@ -9,7 +9,7 @@ import {
     formaterIsoMånedÅrFull,
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../../../App/utils/formatter';
-import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
+import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
 
 const Utgiftsrad = styled.div<{
@@ -53,8 +53,7 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
     const erLesevisning = !behandlingErRedigerbar;
 
     const fjernUtgift = (id: string) => {
-        const index = data.findIndex((d) => d.id === id);
-        oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
+        oppdater(data.filter((utgift) => utgift.id !== id));
     };
 
     const tilbakestillUtgift = (forrigeIndex: number) => {
@@ -110,7 +109,7 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                                     />
                                 )}
                                 {behandlingErRedigerbar && !skoleårErFjernet && erFjernet && (
-                                    <KansellerKnapp
+                                    <TilbakestillKnapp
                                         onClick={() => tilbakestillUtgift(index)}
                                         knappetekst="Tilbakestill utgift"
                                     />

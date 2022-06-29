@@ -71,9 +71,9 @@ const UtgiftsperiodeSkolepenger: React.FC<
         );
     };
 
-    const fjernUtgift = (index: number) => {
-        oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
-        settValideringsFeil((valideringsfeil || []).filter((_, i) => i !== index));
+    const fjernUtgift = (id: string) => {
+        oppdater(data.filter((utgift) => utgift.id !== id));
+        settValideringsFeil((valideringsfeil || []).filter((formErrors) => formErrors.id !== id));
     };
 
     return (
@@ -135,7 +135,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                 />
                                 {skalViseFjernKnapp && (
                                     <FjernKnapp
-                                        onClick={() => fjernUtgift(index)}
+                                        onClick={() => fjernUtgift(utgift.id)}
                                         knappetekst="Fjern vedtaksperiode"
                                     />
                                 )}

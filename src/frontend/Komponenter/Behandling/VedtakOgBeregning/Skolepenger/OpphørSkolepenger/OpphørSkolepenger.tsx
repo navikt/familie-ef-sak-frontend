@@ -9,7 +9,7 @@ import navFarger from 'nav-frontend-core';
 import FjernKnappMedTekst from '../../../../../Felles/Knapper/FjernKnappMedTekst';
 import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger';
 import { beregnSkoleår, GyldigSkoleår } from '../skoleår';
-import KansellerKnapp from '../../../../../Felles/Knapper/KansellerKnapp';
+import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { locateIndexToRestorePreviousItemInCurrentItems, oppdaterValideringsfeil } from '../utils';
 import SkoleårDelårsperiode from '../InnvilgetSkolepenger/SkoleårDelårsperiode';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
@@ -170,7 +170,7 @@ const OpphørSkolepenger: React.FC<Props> = ({
                             />
                         )}
                         {behandlingErRedigerbar && erFjernet && (
-                            <KansellerKnapp
+                            <TilbakestillKnapp
                                 onClick={() => tilbakestillSkoleårsperiode(index)}
                                 knappetekst="Tilbakestill skoleår"
                                 visKnapptekst={true}
