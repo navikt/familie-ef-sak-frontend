@@ -9,6 +9,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { Tooltip } from '@navikt/ds-react';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
 import TabellVisning from '../../Tabell/TabellVisning';
+import { nonNull } from '../../../../App/utils/utils';
 
 interface AnnenForelderMedTidligereVedtaksperioder {
     fødselsnummer: string;
@@ -16,12 +17,20 @@ interface AnnenForelderMedTidligereVedtaksperioder {
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }
 
+const unikeForeldre = (foreldre: AnnenForelderMedTidligereVedtaksperioder[]) => {
+    const unikeForeldre = foreldre.reduce((acc, forelder) => ({
+        ...acc,
+        [forelder.fødselsnummer]: forelder,
+    }));
+    return Object.values(unikeForeldre);
+};
+
 const mapAndreForeldrerMedTidligereVedaksperioder = (
     registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[]
 ): AnnenForelderMedTidligereVedtaksperioder[] => {
-    const foreldre = registergrunnlagNyttBarn
-        .map((barn) => {
-            const forelder = barn.annenForelderRegister;
+    const foreldre: (AnnenForelderMedTidligereVedtaksperioder | null)[] = registergrunnlagNyttBarn
+        .map((barn) => barn.annenForelderRegister)
+        .map((forelder) => {
             return forelder?.fødselsnummer && forelder.tidligereVedtaksperioder
                 ? {
                       fødselsnummer: forelder.fødselsnummer,
@@ -30,14 +39,9 @@ const mapAndreForeldrerMedTidligereVedaksperioder = (
                       tidligereVedtaksperioder: forelder.tidligereVedtaksperioder,
                   }
                 : null;
-        })
-        .filter((forelder) => forelder) as AnnenForelderMedTidligereVedtaksperioder[];
+        });
 
-    const unikeForeldre = foreldre.reduce((acc, forelder) => ({
-        ...acc,
-        [forelder.fødselsnummer]: forelder,
-    }));
-    return Object.values(unikeForeldre);
+    return unikeForeldre(nonNull(foreldre));
 };
 
 const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined) => {
