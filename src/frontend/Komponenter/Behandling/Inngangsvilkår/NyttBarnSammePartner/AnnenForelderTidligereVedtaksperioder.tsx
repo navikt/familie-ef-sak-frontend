@@ -18,10 +18,13 @@ interface AnnenForelderMedTidligereVedtaksperioder {
 }
 
 const unikeForeldre = (foreldre: AnnenForelderMedTidligereVedtaksperioder[]) => {
-    const unikeForeldre = foreldre.reduce((acc, forelder) => ({
-        ...acc,
-        [forelder.fødselsnummer]: forelder,
-    }));
+    const unikeForeldre = foreldre.reduce(
+        (acc, forelder) => ({
+            ...acc,
+            [forelder.fødselsnummer]: forelder,
+        }),
+        {} as Record<string, AnnenForelderMedTidligereVedtaksperioder>
+    );
     return Object.values(unikeForeldre);
 };
 
