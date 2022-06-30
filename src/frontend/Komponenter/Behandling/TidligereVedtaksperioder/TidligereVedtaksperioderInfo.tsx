@@ -51,64 +51,67 @@ const TabellTidligereVedtaksperioderUtenEFSak: React.FC<{
 const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
     infotrygd,
     sak,
-}) => (
-    <GridTabell kolonner={3}>
-        <>
-            <TabellVisning<{
-                stønad: Stønadstype;
-                verdi: { sak?: boolean; infotrygd?: boolean };
-            }>
-                ikon={TabellIkon.REGISTER}
-                tittel="Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd"
-                undertittel="(inkluderer kun EF VP, ikke PE PP)"
-                verdier={[
-                    {
-                        stønad: Stønadstype.OVERGANGSSTØNAD,
-                        verdi: {
-                            sak: sak?.harTidligereOvergangsstønad,
-                            infotrygd: infotrygd?.harTidligereOvergangsstønad,
+}) => {
+    if (!infotrygd && !sak) {
+        return null;
+    }
+    return (
+        <GridTabell kolonner={3}>
+            <>
+                <TabellVisning<{
+                    stønad: Stønadstype;
+                    verdi: { sak?: boolean; infotrygd?: boolean };
+                }>
+                    ikon={TabellIkon.REGISTER}
+                    tittel="Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd"
+                    undertittel="(inkluderer kun EF VP, ikke PE PP)"
+                    verdier={[
+                        {
+                            stønad: Stønadstype.OVERGANGSSTØNAD,
+                            verdi: {
+                                sak: sak?.harTidligereOvergangsstønad,
+                                infotrygd: infotrygd?.harTidligereOvergangsstønad,
+                            },
                         },
-                    },
-                    {
-                        stønad: Stønadstype.SKOLEPENGER,
-                        verdi: {
-                            sak: sak?.harTidligereBarnetilsyn,
-                            infotrygd: infotrygd?.harTidligereBarnetilsyn,
+                        {
+                            stønad: Stønadstype.SKOLEPENGER,
+                            verdi: {
+                                sak: sak?.harTidligereBarnetilsyn,
+                                infotrygd: infotrygd?.harTidligereBarnetilsyn,
+                            },
                         },
-                    },
-                    {
-                        stønad: Stønadstype.SKOLEPENGER,
-                        verdi: {
-                            sak: sak?.harTidligereSkolepenger,
-                            infotrygd: infotrygd?.harTidligereSkolepenger,
+                        {
+                            stønad: Stønadstype.SKOLEPENGER,
+                            verdi: {
+                                sak: sak?.harTidligereSkolepenger,
+                                infotrygd: infotrygd?.harTidligereSkolepenger,
+                            },
                         },
-                    },
-                ]}
-                kolonner={[
-                    {
-                        overskrift: 'Stønad',
-                        tekstVerdi: (d) => stønadstypeTilTekst[d.stønad],
-                    },
-                    {
-                        overskrift: 'Historikk i Infotrygd',
-                        tekstVerdi: (d) => mapTrueFalse(!!d.verdi.infotrygd),
-                    },
-                    {
-                        overskrift: 'Historikk i EF Sak',
-                        tekstVerdi: (d) => mapTrueFalse(!!d.verdi.sak),
-                    },
-                ]}
-            />
-        </>
-    </GridTabell>
-);
+                    ]}
+                    kolonner={[
+                        {
+                            overskrift: 'Stønad',
+                            tekstVerdi: (d) => stønadstypeTilTekst[d.stønad],
+                        },
+                        {
+                            overskrift: 'Historikk i Infotrygd',
+                            tekstVerdi: (d) => mapTrueFalse(!!d.verdi.infotrygd),
+                        },
+                        {
+                            overskrift: 'Historikk i EF Sak',
+                            tekstVerdi: (d) => mapTrueFalse(!!d.verdi.sak),
+                        },
+                    ]}
+                />
+            </>
+        </GridTabell>
+    );
+};
 
 const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVedtaksperioder }> = ({
     tidligereVedtaksperioder,
 }) => {
-    if (!tidligereVedtaksperioder.infotrygd) {
-        return null;
-    } else if (!tidligereVedtaksperioder.sak) {
+    if (tidligereVedtaksperioder.infotrygd && !tidligereVedtaksperioder.sak) {
         return (
             <TabellTidligereVedtaksperioderUtenEFSak
                 infotrygd={tidligereVedtaksperioder.infotrygd}
