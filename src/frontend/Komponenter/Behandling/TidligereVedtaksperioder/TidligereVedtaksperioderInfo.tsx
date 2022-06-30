@@ -3,10 +3,7 @@ import { ITidligereInnvilgetVedtak, ITidligereVedtaksperioder } from './typer';
 import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import TabellVisning, { TabellIkon } from '../Tabell/TabellVisning';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
-
-function mapTrueFalse(bool: boolean): string {
-    return bool ? 'Ja' : 'Nei';
-}
+import { mapTrueFalse } from '../../../App/utils/formatter';
 
 const TabellTidligereVedtaksperioderUtenEFSak: React.FC<{
     infotrygd: ITidligereInnvilgetVedtak;
