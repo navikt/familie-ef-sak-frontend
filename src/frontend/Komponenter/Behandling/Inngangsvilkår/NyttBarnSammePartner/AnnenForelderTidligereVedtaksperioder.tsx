@@ -11,6 +11,7 @@ import { mapTrueFalse } from '../../../../App/utils/formatter';
 import TabellVisning from '../../Tabell/TabellVisning';
 
 interface AnnenForelderMedTidligereVedtaksperioder {
+    fødselsnummer: string;
     navn: string;
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }
@@ -18,26 +19,25 @@ interface AnnenForelderMedTidligereVedtaksperioder {
 const mapAndreForeldrerMedTidligereVedaksperioder = (
     registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[]
 ): AnnenForelderMedTidligereVedtaksperioder[] => {
-    const andreForeldrer = registergrunnlagNyttBarn.reduce((acc, barn) => {
-        const fødselsnummer = barn.annenForelderRegister?.fødselsnummer;
-        const tidligereVedtaksperioder = barn.annenForelderRegister?.tidligereVedtaksperioder;
-        if (fødselsnummer && tidligereVedtaksperioder) {
-            return {
-                ...acc,
-                [fødselsnummer]: {
-                    // En person med fødselsnummer burde ha navn
-                    navn: barn.annenForelderRegister?.navn ?? '',
-                    tidligereVedtaksperioder: tidligereVedtaksperioder,
-                },
-            };
-        } else {
-            return acc;
-        }
-    }, {} as Record<string, AnnenForelderMedTidligereVedtaksperioder>);
-    return Object.values(andreForeldrer).filter(
-        (forelder) =>
-            forelder.tidligereVedtaksperioder?.sak || forelder.tidligereVedtaksperioder?.infotrygd
-    );
+    const foreldre = registergrunnlagNyttBarn
+        .map((barn) => {
+            const forelder = barn.annenForelderRegister;
+            return forelder?.fødselsnummer && forelder.tidligereVedtaksperioder
+                ? {
+                      fødselsnummer: forelder.fødselsnummer,
+                      // En person med fødselsnummer burde ha navn
+                      navn: forelder.navn ?? '',
+                      tidligereVedtaksperioder: forelder.tidligereVedtaksperioder,
+                  }
+                : null;
+        })
+        .filter((forelder) => forelder) as AnnenForelderMedTidligereVedtaksperioder[];
+
+    const unikeForeldre = foreldre.reduce((acc, forelder) => ({
+        ...acc,
+        [forelder.fødselsnummer]: forelder,
+    }));
+    return Object.values(unikeForeldre);
 };
 
 const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined) => {
