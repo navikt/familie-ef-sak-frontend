@@ -17,14 +17,14 @@ interface Props {
 const InnholdContainer = styled.div`
     display: grid;
     grid-template-area: periode inntekt beløpFørSamordning samordningsfradrag stønadsbeløp;
-    grid-template-columns: 8rem 5.5rem 10rem 12rem 8rem;
+    grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
     grid-gap: 1rem;
 `;
 
 const TittelContainer = styled.div`
     display: grid;
     grid-template-area: periode inntekt beløpFørSamordning samordningsfradrag stønadsbeløp;
-    grid-template-columns: 8rem 5.5rem 10rem 12rem 8rem;
+    grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
