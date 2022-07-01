@@ -163,6 +163,7 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                     defaultValue={valgtFagsak?.stønadstype}
                     onChange={(event) => {
                         const valgtStønad = event.target.value as Stønadstype;
+                        settValgtBehandlingId(undefined);
                         switch (valgtStønad) {
                             case Stønadstype.OVERGANGSSTØNAD:
                                 settValgtFagsak(fagsakPerson.overgangsstønad);
@@ -174,7 +175,6 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                                 settValgtFagsak(fagsakPerson.skolepenger);
                                 return;
                         }
-                        settValgtBehandlingId(undefined);
                     }}
                 >
                     {!valgtFagsak && <option value={undefined}>Har ingen stønader</option>}

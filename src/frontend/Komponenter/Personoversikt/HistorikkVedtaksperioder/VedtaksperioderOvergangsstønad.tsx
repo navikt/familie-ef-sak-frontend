@@ -29,10 +29,10 @@ const lenketekst = (andel: AndelHistorikk) => {
     }
 };
 
-const historikkRad = (andel: AndelHistorikk) => {
+const historikkRad = (andel: AndelHistorikk, index: number) => {
     const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
     return (
-        <HistorikkRad type={andel.endring?.type}>
+        <HistorikkRad type={andel.endring?.type} key={index}>
             <td>
                 {formaterNullableMånedÅr(andel.andel.stønadFra)}
                 {' - '}
@@ -80,7 +80,7 @@ const VedtaksperioderOvergangsstNad: React.FC<{ andeler: AndelHistorikk[] }> = (
                     <th>Endring</th>
                 </tr>
             </thead>
-            <tbody>{andeler.map((periode) => historikkRad(periode))}</tbody>
+            <tbody>{andeler.map((periode, index) => historikkRad(periode, index))}</tbody>
         </HistorikkTabell>
     );
 };

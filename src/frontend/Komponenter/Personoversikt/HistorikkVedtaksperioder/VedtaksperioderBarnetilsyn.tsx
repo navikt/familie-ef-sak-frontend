@@ -20,7 +20,7 @@ import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } fr
 import { HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
 
-const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean) => {
+const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean, index: number) => {
     const Rad = styled.div`
         display: grid;
         grid-template-area: beløp hjelpetekst;
@@ -37,7 +37,7 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean) => {
 
     const erSanksjon = andel.erSanksjon;
     return (
-        <HistorikkRad type={andel.endring?.type}>
+        <HistorikkRad type={andel.endring?.type} key={index}>
             <td>
                 {formaterNullableMånedÅr(andel.andel.stønadFra)}
                 {' - '}
@@ -114,7 +114,9 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                     <th>Endring</th>
                 </tr>
             </thead>
-            <tbody>{andeler.map((periode) => historikkRad(periode, sanksjonFinnes))}</tbody>
+            <tbody>
+                {andeler.map((periode, index) => historikkRad(periode, sanksjonFinnes, index))}
+            </tbody>
         </HistorikkTabell>
     );
 };
