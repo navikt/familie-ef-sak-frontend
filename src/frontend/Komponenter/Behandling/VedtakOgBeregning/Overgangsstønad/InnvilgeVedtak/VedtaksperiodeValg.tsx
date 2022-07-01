@@ -47,6 +47,7 @@ interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
     setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    revurderesFra?: boolean;
 }
 
 export const tomVedtaksperiodeRad: IVedtaksperiode = {
@@ -58,6 +59,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     vedtaksperiodeListe,
     valideringsfeil,
     setValideringsFeil,
+    revurderesFra,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -144,6 +146,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             }}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
+                            disabledFra={index === 0 && revurderesFra}
                         />
                         {antallMåneder && (
                             <Element

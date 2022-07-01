@@ -308,6 +308,7 @@ export const InnvilgeVedtak: React.FC<{
                                 vedtaksperiodeListe={vedtaksperiodeState}
                                 valideringsfeil={formState.errors.perioder}
                                 setValideringsFeil={formState.setErrors}
+                                revurderesFra={revurderesFra}
                             />
                         </WrapperMarginTop>
                     </>
