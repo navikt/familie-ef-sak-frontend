@@ -11,6 +11,6 @@ export enum ToggleName {
     kanLeggeTilTerminbarnVidJournalføring = 'familie.ef.sak.frontend-journalforing-kan-legge-til-terminbarn',
     kanJournalFøreSkolepenger = 'familie.ef.sak.skolepenger',
     skalViseOpprettNyBehandlingSkolepenger = 'familie.ef.sak.frontend-skal-vise-opprett-ny-behandling-knapp-skolepenger',
-
     skalPrefylleVedtaksperider = 'familie.ef.sak.frontend-prefyll-vedtaksperioder',
+    skolepengerOpphør = 'familie.ef.sak.skolepenger-opphor',
 }

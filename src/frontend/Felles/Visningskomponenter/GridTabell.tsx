@@ -36,7 +36,7 @@ export const GridTabell = styled.div<{
     }
 
     .tittel {
-        padding-bottom: 1rem;
+        padding-bottom: 0.25rem;
         grid-column: 2 / ${(props) => (props.kolonner || 3) + 1};
 
         display: flex;

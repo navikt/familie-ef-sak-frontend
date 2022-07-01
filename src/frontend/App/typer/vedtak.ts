@@ -4,6 +4,7 @@ export enum IVedtakType {
     InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
     InnvilgelseBarnetilsyn = 'InnvilgelseBarnetilsyn',
     InnvilgelseSkolepenger = 'InnvilgelseSkolepenger',
+    OpphørSkolepenger = 'OpphørSkolepenger',
     InnvilgelseBarnetilsynUtenUtbetaling = 'InnvilgelseBarnetilsynUtenUtbetaling',
     Avslag = 'Avslag',
     Opphør = 'Opphør',
@@ -112,10 +113,10 @@ export type IPeriodeMedBeløp = {
     beløp: number | undefined;
 };
 
-export type IInnvilgeVedtakForSkolepenger = {
+export type IVedtakForSkolepenger = {
     begrunnelse?: string;
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
-    _type?: IVedtakType.InnvilgelseSkolepenger;
+    _type?: IVedtakType.InnvilgelseSkolepenger | IVedtakType.OpphørSkolepenger;
 };
 
 export interface ISkoleårsperiodeSkolepenger {
@@ -165,7 +166,7 @@ export type IVedtakForOvergangsstønad =
 
 export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
 
-export type IvedtakForSkolepenger = IInnvilgeVedtakForSkolepenger;
+export type IvedtakForSkolepenger = IVedtakForSkolepenger;
 
 export interface IInntektsperiode {
     årMånedFra?: string;
@@ -196,6 +197,7 @@ export interface IBeregningsrequestBarnetilsyn {
 export interface IBeregningsrequestSkolepenger {
     behandlingId: string;
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
+    erOpphør: boolean;
 }
 
 export enum EInntektsperiodeProperty {

@@ -56,7 +56,10 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
         return <SystemetLaster />;
     } else if (status === RessursStatus.IKKE_TILGANG) {
         return <AlertStripeFeil children="Ikke tilgang!" />;
-    } else if (oppgaveRessurs.status === RessursStatus.FEILET) {
+    } else if (
+        oppgaveRessurs.status === RessursStatus.FEILET ||
+        oppgaveRessurs.status === RessursStatus.FUNKSJONELL_FEIL
+    ) {
         return (
             <AlertStripeFeilPreWrap
                 children={`Noe gikk galt - ${oppgaveRessurs.frontendFeilmelding}`}

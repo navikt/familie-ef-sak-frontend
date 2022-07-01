@@ -17,14 +17,14 @@ interface Props {
 const InnholdContainer = styled.div`
     display: grid;
     grid-template-area: periode inntekt beløpFørSamordning samordningsfradrag stønadsbeløp;
-    grid-template-columns: 8rem 5.5rem 10rem 12rem 8rem;
+    grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
     grid-gap: 1rem;
 `;
 
 const TittelContainer = styled.div`
     display: grid;
     grid-template-area: periode inntekt beløpFørSamordning samordningsfradrag stønadsbeløp;
-    grid-template-columns: 8rem 5.5rem 10rem 12rem 8rem;
+    grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
@@ -43,7 +43,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                             <Element>Inntekt (år)</Element>
                             <Element>Beløp før samordning</Element>
                             <Element>Samordningsfradrag (mnd)</Element>
-                            <Element>Stønadsbeløp</Element>
+                            <Element>Stønadsbeløp pr. mnd</Element>
                         </TittelContainer>
                         {beregnetStønad.map((beløpsPeriode) => {
                             return (

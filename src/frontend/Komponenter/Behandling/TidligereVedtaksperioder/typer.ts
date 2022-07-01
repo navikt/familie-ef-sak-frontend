@@ -1,5 +1,6 @@
 export interface ITidligereVedtaksperioder {
     infotrygd?: ITidligereInnvilgetVedtak;
+    sak?: ITidligereInnvilgetVedtak;
 }
 
 export interface ITidligereInnvilgetVedtak {

@@ -17,7 +17,7 @@ import {
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
     grid-template-area: periode antallBarn utgifter kontantstøtte tilleggsstønad beløp notifikasjon;
-    grid-template-columns: 8rem 5.5rem 4rem 6rem 7rem 8rem 2rem;
+    grid-template-columns: 8rem 5.5rem 4rem 6rem 7rem 10rem 2rem;
     grid-gap: 1rem;
     margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
 `;
@@ -55,7 +55,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Kontantstøtte</HøyrejusterElement>
                         <HøyrejusterElement>Tilleggsstønad</HøyrejusterElement>
-                        <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
+                        <HøyrejusterElement>Stønadsbeløp pr. mnd</HøyrejusterElement>
                     </Rad>
                     {beregningsresultat.map((rad) => (
                         <Rad>
