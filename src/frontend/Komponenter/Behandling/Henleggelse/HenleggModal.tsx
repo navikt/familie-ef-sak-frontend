@@ -79,15 +79,13 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             contentLabel={'Velg årsak til henleggelse'}
         >
             <ModalInnhold>
-                {
-                    <Henlegging
-                        lagreHenleggelse={lagreHenleggelse}
-                        henlagtårsak={henlagtårsak}
-                        settHenlagtårsak={settHenlagtårsak}
-                        låsKnapp={låsKnapp}
-                        settVisHenleggModal={settVisHenleggModal}
-                    />
-                }
+                <Henlegging
+                    lagreHenleggelse={lagreHenleggelse}
+                    henlagtårsak={henlagtårsak}
+                    settHenlagtårsak={settHenlagtårsak}
+                    låsKnapp={låsKnapp}
+                    settVisHenleggModal={settVisHenleggModal}
+                />
                 {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             </ModalInnhold>
         </Modal>
