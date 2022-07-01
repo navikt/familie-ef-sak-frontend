@@ -36,7 +36,6 @@ import { Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
-import useSessionStorage from '../../../../../App/hooks/felles/useSessionStorage';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
@@ -71,7 +70,11 @@ export const InnvilgeVedtak: React.FC<{
         byggTomRessurs()
     );
     const [vedtakshistorikk, settVedtakshistorikk] = useState<IVedtakshistorikk>();
-    const [revurderesFra, settRevurderesFra] = useSessionStorage('revurderesFra', undefined);
+    const [revurderesFra, settRevurderesFra] = useState(
+        lagretInnvilgetVedtak?.perioder.length
+            ? lagretInnvilgetVedtak.perioder[0].årMånedFra
+            : undefined
+    );
 
     const { toggles } = useToggles();
 
