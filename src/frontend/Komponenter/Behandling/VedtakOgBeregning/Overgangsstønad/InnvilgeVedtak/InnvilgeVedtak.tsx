@@ -104,6 +104,8 @@ export const InnvilgeVedtak: React.FC<{
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
+    const låsVedtaksperiodeRad = revurderesFra && lagretInnvilgetVedtak?.perioder.length;
+
     useEffect(() => {
         if (!vedtakshistorikk?.perioder?.length || !toggles[ToggleName.skalPrefylleVedtaksperider])
             return;
@@ -311,7 +313,7 @@ export const InnvilgeVedtak: React.FC<{
                                 vedtaksperiodeListe={vedtaksperiodeState}
                                 valideringsfeil={formState.errors.perioder}
                                 setValideringsFeil={formState.setErrors}
-                                revurderesFra={revurderesFra}
+                                låsVedtaksperiodeRad={låsVedtaksperiodeRad}
                             />
                         </WrapperMarginTop>
                     </>
