@@ -8,30 +8,33 @@ import {
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Tooltip } from '@navikt/ds-react';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
-import TabellVisning from '../../Tabell/TabellVisning';
+import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 import { nonNull } from '../../../../App/utils/utils';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
+import DataViewer from '../../../../Felles/DataViewer/DataViewer';
+import { IPersonopplysninger } from '../../../../App/typer/personopplysninger';
 
-interface AnnenForelderMedTidligereVedtaksperioder {
+interface AnnenForelderTidligereVedtaksperioder {
     fødselsnummer: string;
     navn: string;
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }
 
-const unikeForeldre = (foreldre: AnnenForelderMedTidligereVedtaksperioder[]) => {
+const unikeForeldre = (foreldre: AnnenForelderTidligereVedtaksperioder[]) => {
     const unikeForeldre = foreldre.reduce(
         (acc, forelder) => ({
             ...acc,
             [forelder.fødselsnummer]: forelder,
         }),
-        {} as Record<string, AnnenForelderMedTidligereVedtaksperioder>
+        {} as Record<string, AnnenForelderTidligereVedtaksperioder>
     );
     return Object.values(unikeForeldre);
 };
 
 const mapAndreForeldrerMedTidligereVedaksperioder = (
     registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[]
-): AnnenForelderMedTidligereVedtaksperioder[] => {
-    const foreldre: (AnnenForelderMedTidligereVedtaksperioder | null)[] = registergrunnlagNyttBarn
+): AnnenForelderTidligereVedtaksperioder[] => {
+    const foreldre: (AnnenForelderTidligereVedtaksperioder | null)[] = registergrunnlagNyttBarn
         .map((barn) => barn.annenForelderRegister)
         .map((forelder) => {
             return forelder?.fødselsnummer && forelder.tidligereVedtaksperioder
@@ -55,44 +58,78 @@ const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined)
         harTidligereOvergangsstønad || harTidligereBarnetilsyn || harTidligereSkolepenger;
     return (
         <Tooltip
-            content={`OS: ${tidligereVedtak.harTidligereOvergangsstønad} BT: ${tidligereVedtak.harTidligereBarnetilsyn} SP: ${tidligereVedtak.harTidligereSkolepenger}`}
+            content={`OS: ${harTidligereOvergangsstønad} BT: ${harTidligereBarnetilsyn} SP: ${harTidligereSkolepenger}`}
         >
             <Normaltekst>{mapTrueFalse(harTidligereVedtak)}</Normaltekst>
         </Tooltip>
     );
 };
 
-const AnnenForelderTidligereVedtaksperioder: FC<{
-    registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[];
-}> = ({ registergrunnlagNyttBarn }) => {
-    const andreForeldrer = mapAndreForeldrerMedTidligereVedaksperioder(registergrunnlagNyttBarn);
-
-    if (andreForeldrer.length === 0) {
-        return null;
+const mapSøker = (
+    personopplysninger: IPersonopplysninger,
+    tidligereVedtaksperioder: ITidligereVedtaksperioder
+): AnnenForelderTidligereVedtaksperioder | undefined => {
+    const tidligereVedtakFinnesIkke =
+        !tidligereVedtaksperioder.sak && !tidligereVedtaksperioder.infotrygd;
+    if (tidligereVedtakFinnesIkke) {
+        return undefined;
     }
+    return {
+        navn: `${personopplysninger.navn.visningsnavn} (bruker)`,
+        fødselsnummer: personopplysninger.personIdent,
+        tidligereVedtaksperioder: tidligereVedtaksperioder,
+    };
+};
+
+const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
+    tidligereVedtaksperioder: ITidligereVedtaksperioder;
+    registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[];
+}> = ({ tidligereVedtaksperioder, registergrunnlagNyttBarn }) => {
+    const { personopplysningerResponse } = useBehandling();
 
     return (
-        <FlexDiv>
-            <TabellVisning
-                tittel={'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'}
-                verdier={andreForeldrer}
-                kolonner={[
-                    {
-                        overskrift: 'Stønad',
-                        tekstVerdi: (d) => d.navn,
-                    },
-                    {
-                        overskrift: 'EF Sak',
-                        tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
-                    },
-                    {
-                        overskrift: 'Infotrygd',
-                        tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
-                    },
-                ]}
-            />
-        </FlexDiv>
+        <DataViewer response={{ personopplysningerResponse }}>
+            {({ personopplysningerResponse: personopplysninger }) => {
+                const søker = mapSøker(personopplysninger, tidligereVedtaksperioder);
+                const andreForeldrer =
+                    mapAndreForeldrerMedTidligereVedaksperioder(registergrunnlagNyttBarn);
+                const verdier: AnnenForelderTidligereVedtaksperioder[] = søker
+                    ? [søker, ...andreForeldrer]
+                    : andreForeldrer;
+                if (verdier.length === 0) {
+                    return null;
+                }
+                return (
+                    <FlexDiv>
+                        <TabellVisning
+                            ikon={TabellIkon.REGISTER}
+                            tittel={
+                                'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
+                            }
+                            verdier={verdier}
+                            kolonner={[
+                                {
+                                    overskrift: 'Stønad',
+                                    tekstVerdi: (d) => d.navn,
+                                },
+                                {
+                                    overskrift: 'EF Sak',
+                                    tekstVerdi: (d) =>
+                                        jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
+                                },
+                                {
+                                    overskrift: 'Infotrygd',
+                                    underskrift: '(inkluderer kun EF VP, ikke PE PP)',
+                                    tekstVerdi: (d) =>
+                                        jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
+                                },
+                            ]}
+                        />
+                    </FlexDiv>
+                );
+            }}
+        </DataViewer>
     );
 };
 
-export default AnnenForelderTidligereVedtaksperioder;
+export default TidligereVedtaksperioderSøkerOgAndreForeldre;
