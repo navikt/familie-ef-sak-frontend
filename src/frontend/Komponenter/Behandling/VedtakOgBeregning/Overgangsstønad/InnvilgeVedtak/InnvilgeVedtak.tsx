@@ -36,6 +36,8 @@ import { Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
+import useSessionStorage from '../../../../../App/hooks/felles/useSessionStorage';
+import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -69,7 +71,7 @@ export const InnvilgeVedtak: React.FC<{
         byggTomRessurs()
     );
     const [vedtakshistorikk, settVedtakshistorikk] = useState<IVedtakshistorikk>();
-    const [revurderesFra, settRevurderesFra] = useState<string | undefined>();
+    const [revurderesFra, settRevurderesFra] = useSessionStorage('revurderesFra', undefined);
 
     const { toggles } = useToggles();
 
@@ -202,7 +204,7 @@ export const InnvilgeVedtak: React.FC<{
         [axiosRequest, behandling]
     );
 
-    useEffect(() => {
+    useEffectNotInitialRender(() => {
         if (!revurderesFra) return;
 
         hentVedtakshistorikk(revurderesFra);
@@ -276,7 +278,10 @@ export const InnvilgeVedtak: React.FC<{
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
                 {behandling.type === Behandlingstype.REVURDERING && behandlingErRedigerbar && (
-                    <RevurderesFraOgMed settRevurderesFra={settRevurderesFra} />
+                    <RevurderesFraOgMed
+                        settRevurderesFra={settRevurderesFra}
+                        revurderesFra={revurderesFra}
+                    />
                 )}
                 {skalViseVedtaksperiodeOgInntekt && (
                     <>

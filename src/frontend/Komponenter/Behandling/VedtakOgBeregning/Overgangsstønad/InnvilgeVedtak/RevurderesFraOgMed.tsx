@@ -8,7 +8,8 @@ const WrapperMarginBottom = styled.div`
 
 export const RevurderesFraOgMed: React.FC<{
     settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
-}> = ({ settRevurderesFra }) => {
+    revurderesFra: string;
+}> = ({ settRevurderesFra, revurderesFra }) => {
     return (
         <WrapperMarginBottom>
             <MånedÅrVelger
@@ -20,6 +21,7 @@ export const RevurderesFraOgMed: React.FC<{
                 }}
                 antallÅrTilbake={5}
                 antallÅrFrem={3}
+                årMånedInitiell={revurderesFra}
             />
         </WrapperMarginBottom>
     );
