@@ -125,6 +125,9 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = (props) => {
     switch (props.fagsak.stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
         case Stønadstype.BARNETILSYN:
+            if (!props.valgtBehandling) {
+                return <>Har ikke valgt behandling</>;
+            }
             return <VedtaksperioderOSBT {...props} />;
         case Stønadstype.SKOLEPENGER:
             if (!props.valgtBehandling) {
