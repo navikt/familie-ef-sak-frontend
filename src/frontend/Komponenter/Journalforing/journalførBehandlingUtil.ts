@@ -5,8 +5,7 @@ export const utledRiktigBehandlingstype = (
     tidligereBehandlinger: Behandling[]
 ): Behandlingstype => {
     const harIverksattTidligereBehandlinger = tidligereBehandlinger.some(
-        (tidligereBehandling) =>
-            tidligereBehandling.resultat !== BehandlingResultat.HENLAGT
+        (tidligereBehandling) => tidligereBehandling.resultat !== BehandlingResultat.HENLAGT
     );
 
     return harIverksattTidligereBehandlinger

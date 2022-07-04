@@ -6,7 +6,7 @@ import { AndelEndringType, AndelHistorikk } from '../../App/typer/tilkjentytelse
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
+import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import {
     Behandling,
     BehandlingResultat,
@@ -54,9 +54,7 @@ const innvilgetEllerOpphørt = (b: Behandling) =>
 
 const filtrerBehandlinger = (fagsak: Fagsak): Behandling[] =>
     fagsak.behandlinger.filter(
-        (b) =>
-            innvilgetEllerOpphørt(b) &&
-            b.status === BehandlingStatus.FERDIGSTILT
+        (b) => innvilgetEllerOpphørt(b) && b.status === BehandlingStatus.FERDIGSTILT
     );
 
 const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>

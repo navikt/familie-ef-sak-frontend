@@ -96,10 +96,7 @@ const filtrerHvisGOmregning = [
     SideNavn.SIMULERING,
     SideNavn.KORRIGERING_UTEN_BREV,
 ];
-const filtrerVekkHvisStandard = [
-    SideNavn.SANKSJON,
-    SideNavn.KORRIGERING_UTEN_BREV,
-];
+const filtrerVekkHvisStandard = [SideNavn.SANKSJON, SideNavn.KORRIGERING_UTEN_BREV];
 const filtrerVekkHvisKorrigeringUtenBrev = [SideNavn.SANKSJON, SideNavn.BREV];
 
 const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>

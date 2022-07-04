@@ -123,10 +123,7 @@ export const InnvilgeVedtak: React.FC<{
     }, [axiosRequest, behandling]);
 
     useEffect(() => {
-        if (
-            !behandlingErRedigerbar &&
-            lagretInnvilgetVedtak
-        ) {
+        if (!behandlingErRedigerbar && lagretInnvilgetVedtak) {
             hentLagretBeløpForYtelse();
         }
     }, [behandlingErRedigerbar, lagretInnvilgetVedtak, hentLagretBeløpForYtelse, behandling]);
