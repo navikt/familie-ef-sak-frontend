@@ -14,27 +14,27 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../../App/typer/personopplysninger';
 
-interface AnnenForelderTidligereVedtaksperioder {
+interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;
     navn: string;
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }
 
-const unikeForeldre = (foreldre: AnnenForelderTidligereVedtaksperioder[]) => {
+const unikeForeldre = (foreldre: TidligereVedtaksperioderPåPartISak[]) => {
     const unikeForeldre = foreldre.reduce(
         (acc, forelder) => ({
             ...acc,
             [forelder.fødselsnummer]: forelder,
         }),
-        {} as Record<string, AnnenForelderTidligereVedtaksperioder>
+        {} as Record<string, TidligereVedtaksperioderPåPartISak>
     );
     return Object.values(unikeForeldre);
 };
 
 const mapAndreForeldrerMedTidligereVedaksperioder = (
     registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[]
-): AnnenForelderTidligereVedtaksperioder[] => {
-    const foreldre: (AnnenForelderTidligereVedtaksperioder | null)[] = registergrunnlagNyttBarn
+): TidligereVedtaksperioderPåPartISak[] => {
+    const foreldre: (TidligereVedtaksperioderPåPartISak | null)[] = registergrunnlagNyttBarn
         .map((barn) => barn.annenForelderRegister)
         .map((forelder) => {
             return forelder?.fødselsnummer && forelder.tidligereVedtaksperioder
@@ -68,7 +68,7 @@ const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined)
 const mapSøker = (
     personopplysninger: IPersonopplysninger,
     tidligereVedtaksperioder: ITidligereVedtaksperioder
-): AnnenForelderTidligereVedtaksperioder | undefined => {
+): TidligereVedtaksperioderPåPartISak | undefined => {
     const tidligereVedtakFinnesIkke =
         !tidligereVedtaksperioder.sak && !tidligereVedtaksperioder.infotrygd;
     if (tidligereVedtakFinnesIkke) {
@@ -93,7 +93,7 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                 const søker = mapSøker(personopplysninger, tidligereVedtaksperioder);
                 const andreForeldrer =
                     mapAndreForeldrerMedTidligereVedaksperioder(registergrunnlagNyttBarn);
-                const verdier: AnnenForelderTidligereVedtaksperioder[] = søker
+                const verdier: TidligereVedtaksperioderPåPartISak[] = søker
                     ? [søker, ...andreForeldrer]
                     : andreForeldrer;
                 if (verdier.length === 0) {

@@ -5,7 +5,7 @@ import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn, Overskr
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
 import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
-import TidligereVedtaksperioderSøkerOgAndreForeldre from './AnnenForelderTidligereVedtaksperioder';
+import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 
 interface Props {
