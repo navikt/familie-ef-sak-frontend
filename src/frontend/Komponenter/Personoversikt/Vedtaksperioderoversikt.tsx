@@ -125,6 +125,9 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = (props) => {
     switch (props.fagsak.stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
         case Stønadstype.BARNETILSYN:
+            if (!props.valgtBehandling) {
+                return <>Har ikke valgt behandling</>;
+            }
             return <VedtaksperioderOSBT {...props} />;
         case Stønadstype.SKOLEPENGER:
             if (!props.valgtBehandling) {
@@ -163,6 +166,7 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                     defaultValue={valgtFagsak?.stønadstype}
                     onChange={(event) => {
                         const valgtStønad = event.target.value as Stønadstype;
+                        settValgtBehandlingId(undefined);
                         switch (valgtStønad) {
                             case Stønadstype.OVERGANGSSTØNAD:
                                 settValgtFagsak(fagsakPerson.overgangsstønad);
@@ -174,7 +178,6 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                                 settValgtFagsak(fagsakPerson.skolepenger);
                                 return;
                         }
-                        settValgtBehandlingId(undefined);
                     }}
                 >
                     {!valgtFagsak && <option value={undefined}>Har ingen stønader</option>}
