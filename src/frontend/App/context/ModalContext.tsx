@@ -5,7 +5,6 @@ import { OrNothing } from '../hooks/felles/useSorteringState';
 export enum ModalType {
     SENDT_TIL_BESLUTTER = 'SENDT_TIL_BESLUTTER',
     VEDTAK_GODKJENT = 'VEDTAK_GODKJENT',
-    BEHANDLES_I_GOSYS = 'BEHANDLES_I_GOSYS',
 }
 
 export enum ModalAction {

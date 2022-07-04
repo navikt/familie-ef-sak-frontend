@@ -15,7 +15,6 @@ import { EToast } from '../../../App/typer/toast';
 export enum EHenlagtårsak {
     TRUKKET_TILBAKE = 'TRUKKET_TILBAKE',
     FEILREGISTRERT = 'FEILREGISTRERT',
-    BEHANDLES_I_GOSYS = 'BEHANDLES_I_GOSYS',
 }
 
 interface IHenlegg {
