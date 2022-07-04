@@ -1,4 +1,5 @@
 import { EÅrsakBarnepass } from '../../Aktivitet/AlderPåBarn/AlderPåBarnTyper';
+import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 
 export interface IBarnMedSamvær {
     barnId: string;
@@ -62,6 +63,7 @@ export interface IAnnenForelder {
     bosattINorge?: boolean;
     land?: string;
     dødsfall?: string;
+    tidligereVedtaksperioder?: ITidligereVedtaksperioder;
 }
 
 export interface IBarnMedSamværRegistergrunnlag {

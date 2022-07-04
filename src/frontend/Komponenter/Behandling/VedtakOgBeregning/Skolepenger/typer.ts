@@ -5,13 +5,23 @@ import {
     SkolepengerUtgift,
 } from '../../../../App/typer/vedtak';
 import { v4 as uuidv4 } from 'uuid';
+import { tilÅrMåned } from '../../../../App/utils/dato';
 
-export interface ValideringsPropsMedOppdatering<T> {
+export interface SkolepengerProps<T> {
     data: T[];
     oppdater: (data: T[]) => void;
     behandlingErRedigerbar: boolean;
+    erOpphør?: boolean;
+    skoleårErFjernet?: boolean;
+}
+
+export interface ValideringsPropsMedOppdatering<T> extends SkolepengerProps<T> {
     valideringsfeil?: FormErrors<T>[];
     settValideringsFeil: (errors: FormErrors<T>[]) => void;
+}
+
+export interface SkolepengerOpphørProps<T> extends SkolepengerProps<T> {
+    forrigeData: T[];
 }
 
 export const tomSkoleårsperiode: IPeriodeSkolepenger = {
@@ -23,7 +33,7 @@ export const tomSkoleårsperiode: IPeriodeSkolepenger = {
 
 export const tomUtgift = (): SkolepengerUtgift => ({
     id: uuidv4(),
-    årMånedFra: '',
+    årMånedFra: tilÅrMåned(new Date()),
     utgifter: undefined,
     stønad: undefined,
 });

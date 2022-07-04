@@ -51,12 +51,6 @@ const måBehandlesIEFSak = (oppgave: IOppgave) => {
         ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype)
     );
 };
-const kanStarteBlankettBehandling = (oppgave: IOppgave) => {
-    return (
-        oppgave.behandlesAvApplikasjon === 'familie-ef-sak-blankett' &&
-        oppgave.behandlingstema === 'ab0071'
-    );
-};
 
 const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
     return (
@@ -80,8 +74,6 @@ const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
         return Handling.SAKSBEHANDLE;
     } else if (kanJournalføres(oppgave, toggles[ToggleName.kanJournalFøreSkolepenger])) {
         return Handling.JOURNALFØR;
-    } else if (kanStarteBlankettBehandling(oppgave)) {
-        return Handling.BLANKETT;
     } else if (oppgaveErTilbakekreving(oppgave)) {
         return Handling.TILBAKE;
     } else if (kanMigreres(oppgave) && toggles[ToggleName.kanMigrereFagsak]) {
@@ -96,7 +88,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         gåTilBehandleSakOppgave,
         gåTilVurderMigrering,
         gåTilJournalføring,
-        startBlankettBehandling,
         laster,
         gåTilFagsak,
         feilmelding,
@@ -138,12 +129,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
 
     const utledKnappPåHandling = () => {
         switch (utledHandling(oppgave, toggles)) {
-            case Handling.BLANKETT:
-                return (
-                    <Flatknapp onClick={startBlankettBehandling} disabled={laster}>
-                        Lag blankett
-                    </Flatknapp>
-                );
             case Handling.JOURNALFØR:
                 return (
                     <Flatknapp onClick={gåTilJournalføring} disabled={laster}>

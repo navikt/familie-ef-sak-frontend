@@ -11,6 +11,7 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Vedtaksform } from './Vedtaksform';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
 import { Opphør } from '../Overgangsstønad/Opphør/Opphør';
+import { barnSomOppfyllerAlleVilkår } from './utils';
 
 interface Props {
     behandling: Behandling;
@@ -62,7 +63,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                         lagretVedtak={
                                             vedtak as unknown as IInnvilgeVedtakForBarnetilsyn // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
                                         }
-                                        barn={vilkår.grunnlag.barnMedSamvær}
+                                        barn={barnSomOppfyllerAlleVilkår(vilkår)}
                                         settResultatType={settResultatType}
                                     />
                                 );

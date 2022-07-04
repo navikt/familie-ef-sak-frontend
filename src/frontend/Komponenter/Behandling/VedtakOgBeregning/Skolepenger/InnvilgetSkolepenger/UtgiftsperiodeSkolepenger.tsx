@@ -71,9 +71,9 @@ const UtgiftsperiodeSkolepenger: React.FC<
         );
     };
 
-    const fjernUtgift = (index: number) => {
-        oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
-        settValideringsFeil((valideringsfeil || []).filter((_, i) => i !== index));
+    const fjernUtgift = (id: string) => {
+        oppdater(data.filter((utgift) => utgift.id !== id));
+        settValideringsFeil((valideringsfeil || []).filter((formErrors) => formErrors.id !== id));
     };
 
     return (
@@ -89,25 +89,16 @@ const UtgiftsperiodeSkolepenger: React.FC<
                     {data.map((utgift, index) => {
                         const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;
                         const skalViseFjernKnapp =
-                            behandlingErRedigerbar &&
-                            index === data.length - 1 &&
-                            index !== 0 &&
-                            !erLåstFraForrigeBehandling;
+                            behandlingErRedigerbar && index !== 0 && !erLåstFraForrigeBehandling;
                         return (
                             <Utgiftsrad erHeader={false} lesevisning={erLesevisning} key={index}>
                                 <MånedÅrVelger
                                     årMånedInitiell={utgift.årMånedFra}
-                                    //label={datoFraTekst}
-                                    onEndret={(verdi) => {
-                                        oppdaterUtgift(index, 'årMånedFra', verdi);
-                                    }}
-                                    antallÅrTilbake={10}
-                                    antallÅrFrem={4}
-                                    lesevisning={erLesevisning}
-                                    feilmelding={
-                                        valideringsfeil && valideringsfeil[index]?.årMånedFra
-                                    }
-                                    disabled={erLåstFraForrigeBehandling}
+                                    antallÅrTilbake={0}
+                                    antallÅrFrem={0}
+                                    lesevisning={true}
+                                    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+                                    onEndret={() => {}}
                                 />
                                 <StyledInputMedTusenSkille
                                     onKeyPress={tilHeltall}
@@ -141,7 +132,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                 />
                                 {skalViseFjernKnapp && (
                                     <FjernKnapp
-                                        onClick={() => fjernUtgift(index)}
+                                        onClick={() => fjernUtgift(utgift.id)}
                                         knappetekst="Fjern vedtaksperiode"
                                     />
                                 )}

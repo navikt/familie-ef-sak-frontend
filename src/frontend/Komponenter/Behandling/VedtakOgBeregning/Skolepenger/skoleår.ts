@@ -1,12 +1,17 @@
 import { månedÅrTilDate } from '../../../../App/utils/dato';
 import { getMonth, getYear } from 'date-fns';
 
-type Skoleår = { gyldig: false; årsak: string } | { gyldig: true; skoleår: number };
+export type GyldigSkoleår = { gyldig: true; skoleår: number };
+type Skoleår = { gyldig: false; årsak: string } | GyldigSkoleår;
 
 const JUNI = 5;
 const AUGUST = 7;
 
 const ugyldigSkoleår = (årsak: string): Skoleår => ({ gyldig: false, årsak });
+
+export const formatterSkoleår = (skoleår: GyldigSkoleår) =>
+    `${last2Digits(skoleår.skoleår)}/${last2Digits(skoleår.skoleår + 1)}`;
+const last2Digits = (n: number) => String(n).slice(-2);
 
 /**
  *  Samme validering som i backend:

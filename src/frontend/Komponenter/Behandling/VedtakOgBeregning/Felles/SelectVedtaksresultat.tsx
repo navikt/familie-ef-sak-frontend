@@ -9,6 +9,8 @@ import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { useToggles } from '../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../App/context/toggles';
 
 interface Props {
     behandling: Behandling;
@@ -26,7 +28,7 @@ const StyledSelect = styled(FamilieSelect)`
 `;
 
 const TekstLinje = styled.div`
-    margin-top: 0.5 rem;
+    margin-top: 0.5rem;
 `;
 
 const FlexDiv = styled.div`
@@ -41,13 +43,14 @@ const HjelpeTekst = styled(HelpText)`
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
+    const { toggles } = useToggles();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig =
         behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId;
-    const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
-    const erSkolepenger = behandling.stønadstype === Stønadstype.SKOLEPENGER;
+    const tillaterOpphørForSkolepenger =
+        behandling.stønadstype !== Stønadstype.SKOLEPENGER || toggles[ToggleName.skolepengerOpphør];
 
     return (
         <section>
@@ -91,18 +94,14 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     </option>
                     <option
                         value={EBehandlingResultat.OPPHØRT}
-                        disabled={!opphørMulig || nullUtbetalingPgaKontantstøtte || erSkolepenger}
+                        disabled={
+                            !opphørMulig ||
+                            nullUtbetalingPgaKontantstøtte ||
+                            !tillaterOpphørForSkolepenger
+                        }
                     >
                         Opphørt
                     </option>
-                    {erBlankettBehandling && (
-                        <option
-                            value={EBehandlingResultat.BEHANDLE_I_GOSYS}
-                            disabled={nullUtbetalingPgaKontantstøtte}
-                        >
-                            Behandle i Gosys
-                        </option>
-                    )}
                 </StyledSelect>
                 {behandling.stønadstype === Stønadstype.BARNETILSYN && (
                     <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>

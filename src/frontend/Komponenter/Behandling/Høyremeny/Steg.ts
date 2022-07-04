@@ -1,10 +1,8 @@
 export enum Steg {
     VILKÅR = 'VILKÅR',
     BEREGNE_YTELSE = 'BEREGNE_YTELSE',
-    VEDTA_BLANKETT = 'VEDTA_BLANKETT',
     SEND_TIL_BESLUTTER = 'SEND_TIL_BESLUTTER',
     BESLUTTE_VEDTAK = 'BESLUTTE_VEDTAK',
-    JOURNALFØR_BLANKETT = 'JOURNALFØR_BLANKETT',
     IVERKSETT_MOT_OPPDRAG = 'IVERKSETT_MOT_OPPDRAG',
     VENTE_PÅ_STATUS_FRA_IVERKSETT = 'VENTE_PÅ_STATUS_FRA_IVERKSETT',
     JOURNALFØR_VEDTAKSBREV = 'JOURNALFØR_VEDTAKSBREV',
@@ -18,8 +16,6 @@ export enum Steg {
 
 export const stegTypeTilStegtekst: Record<Steg, string> = {
     VILKÅR: 'Vilkårsvurdering',
-    JOURNALFØR_BLANKETT: 'Journalfør blankett',
-    VEDTA_BLANKETT: 'Vedta blankett',
     BEHANDLING_FERDIGSTILT: 'Behandling ferdigstilt',
     BEREGNE_YTELSE: 'Vedtak og beregning',
     BESLUTTE_VEDTAK: 'Beslutte vedtak',
@@ -36,8 +32,6 @@ export const stegTypeTilStegtekst: Record<Steg, string> = {
 
 export const stegTypeTilHistorikkTekst: Record<Steg, string> = {
     VILKÅR: 'Utført vilkårsvurdering',
-    JOURNALFØR_BLANKETT: 'Blankett journalført',
-    VEDTA_BLANKETT: 'Vedtatt blankett',
     BEHANDLING_FERDIGSTILT: 'Behandling ferdigstilt',
     BEREGNE_YTELSE: 'Utført vedtak og beregning',
     BESLUTTE_VEDTAK: 'Besluttet vedtak',

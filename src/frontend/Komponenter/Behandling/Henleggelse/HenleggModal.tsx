@@ -9,7 +9,6 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EToast } from '../../../App/typer/toast';
 
@@ -31,7 +30,6 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     const { visHenleggModal, settVisHenleggModal } = useBehandling();
 
     const { axiosRequest, settToast } = useApp();
-    const erBlankett = behandling.type === Behandlingstype.BLANKETT;
     const navigate = useNavigate();
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
@@ -81,22 +79,13 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             contentLabel={'Velg årsak til henleggelse'}
         >
             <ModalInnhold>
-                {erBlankett ? (
-                    <BlankettHenlegging
-                        lagreHenleggelse={lagreHenleggelse}
-                        settHenlagtårsak={settHenlagtårsak}
-                        låsKnapp={låsKnapp}
-                        settVisHenleggModal={settVisHenleggModal}
-                    />
-                ) : (
-                    <Henlegging
-                        lagreHenleggelse={lagreHenleggelse}
-                        henlagtårsak={henlagtårsak}
-                        settHenlagtårsak={settHenlagtårsak}
-                        låsKnapp={låsKnapp}
-                        settVisHenleggModal={settVisHenleggModal}
-                    />
-                )}
+                <Henlegging
+                    lagreHenleggelse={lagreHenleggelse}
+                    henlagtårsak={henlagtårsak}
+                    settHenlagtårsak={settHenlagtårsak}
+                    låsKnapp={låsKnapp}
+                    settVisHenleggModal={settVisHenleggModal}
+                />
                 {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             </ModalInnhold>
         </Modal>
@@ -134,26 +123,5 @@ const Henlegging: React.FC<IHenlegg> = ({
             </Hovedknapp>
             <Knapp onClick={() => settVisHenleggModal(false)}>Avbryt</Knapp>
         </FamilieRadioGruppe>
-    </>
-);
-
-const BlankettHenlegging: React.FC<IHenlegg> = ({
-    settHenlagtårsak,
-    lagreHenleggelse,
-    låsKnapp,
-    settVisHenleggModal,
-}) => (
-    <>
-        <Hovedknapp
-            htmlType={'submit'}
-            onClick={() => {
-                settHenlagtårsak(EHenlagtårsak.BEHANDLES_I_GOSYS);
-                lagreHenleggelse();
-            }}
-            disabled={låsKnapp}
-        >
-            Henlegg
-        </Hovedknapp>
-        <Knapp onClick={() => settVisHenleggModal(false)}>Avbryt</Knapp>
     </>
 );

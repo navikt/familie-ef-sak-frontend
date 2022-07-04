@@ -16,13 +16,18 @@ import InputUtenSpinner from '../../../../../Felles/Visningskomponenter/InputUte
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 
-const SkoleårsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
+const SkoleårsperiodeRad = styled.div<{
+    lesevisning?: boolean;
+    erHeader?: boolean;
+    skoleårErFjernet?: boolean;
+}>`
     display: grid;
     grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger antallMnd studiebelastning';
     grid-template-columns: ${(props) =>
         props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 12rem 11.5rem 4rem 8rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
+    text-decoration: ${(props) => (props.skoleårErFjernet ? 'line-through' : 'inherit')};
 `;
 
 const AntallMåneder = styled(Normaltekst)<{ erLesevisning: boolean }>`
@@ -43,6 +48,8 @@ const StyledSelect = styled(FamilieSelect)`
 const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
     data,
     oppdater,
+    erOpphør,
+    skoleårErFjernet,
     behandlingErRedigerbar,
     valideringsfeil,
     settValideringsFeil,
@@ -77,6 +84,8 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
         }
     };
 
+    const erLesevisning: boolean = !behandlingErRedigerbar || skoleårErFjernet === true;
+
     return (
         <>
             <SkoleårsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
@@ -89,10 +98,17 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
             {data.map((periode, index) => {
                 const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
                 const skalViseFjernKnapp =
-                    behandlingErRedigerbar && index === data.length - 1 && index !== 0;
+                    behandlingErRedigerbar &&
+                    index === data.length - 1 &&
+                    index !== 0 &&
+                    !skoleårErFjernet;
                 return (
                     <>
-                        <SkoleårsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
+                        <SkoleårsperiodeRad
+                            key={index}
+                            lesevisning={erLesevisning}
+                            skoleårErFjernet={skoleårErFjernet}
+                        >
                             <StyledSelect
                                 aria-label="Periodetype"
                                 value={studietype}
@@ -100,7 +116,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 onChange={(e) => {
                                     oppdaterStudietype(e.target.value as ESkolepengerStudietype);
                                 }}
-                                erLesevisning={!behandlingErRedigerbar || index !== 0}
+                                erLesevisning={erLesevisning || erOpphør || index !== 0}
                                 lesevisningVerdi={
                                     index === 0
                                         ? studietype && skolepengerStudietypeTilTekst[studietype]
@@ -126,9 +142,9 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                     )
                                 }
                                 feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                                erLesevisning={!behandlingErRedigerbar}
+                                erLesevisning={erLesevisning}
                             />
-                            <AntallMåneder erLesevisning={!behandlingErRedigerbar}>
+                            <AntallMåneder erLesevisning={erLesevisning}>
                                 {kalkulerAntallMåneder(årMånedFra, årMånedTil)}
                             </AntallMåneder>
                             <StyledInput
@@ -144,12 +160,12 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                         tilTallverdi(e.target.value)
                                     )
                                 }
-                                erLesevisning={!behandlingErRedigerbar}
+                                erLesevisning={erLesevisning}
                             />
                             {skalViseFjernKnapp && (
                                 <FjernKnapp
                                     onClick={() => fjernDelårsperiode(index)}
-                                    knappetekst="Fjern vedtaksperiode"
+                                    knappetekst="Fjern delårsperiode"
                                 />
                             )}
                         </SkoleårsperiodeRad>
@@ -161,7 +177,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                     oppdater([...data, { ...tomSkoleårsperiode, studietype: data[0].studietype }])
                 }
                 knappetekst="Legg til periode"
-                hidden={!behandlingErRedigerbar}
+                hidden={erLesevisning || erOpphør}
             />
         </>
     );

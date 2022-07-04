@@ -95,7 +95,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     return (
         <>
             <FamilieRadioGruppe
-                legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med?"
+                legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?"
                 feil={valideringsfeil?.harKontantstøtte}
                 erLesevisning={!behandlingErRedigerbar}
                 verdi={radiovalgTilTekst[kontantstøtte.value as ERadioValg]}

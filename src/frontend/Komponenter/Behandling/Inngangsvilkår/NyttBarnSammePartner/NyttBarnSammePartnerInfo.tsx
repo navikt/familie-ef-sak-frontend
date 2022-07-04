@@ -1,28 +1,34 @@
 import React, { FC } from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
-import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn } from './utils';
+import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn, Overskrift } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import styled from 'styled-components';
 import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
 import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
+import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
+import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
+    tidligereVedtaksperioder: ITidligereVedtaksperioder;
     skalViseSøknadsdata: boolean;
 }
 
-const Overskrift = styled(Element)`
-    margin-left: 0.5rem;
-    margin-bottom: 1rem;
-`;
-
-const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata }) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({
+    barnMedSamvær,
+    tidligereVedtaksperioder,
+    skalViseSøknadsdata,
+}) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
-
     return (
         <>
+            <div>
+                <TidligereVedtaksperioderSøkerOgAndreForeldre
+                    tidligereVedtaksperioder={tidligereVedtaksperioder}
+                    registergrunnlagNyttBarn={registergrunnlagNyttBarn}
+                />
+            </div>
             <div>
                 <FlexDiv>
                     <Overskrift className="tittel" tag="h3">

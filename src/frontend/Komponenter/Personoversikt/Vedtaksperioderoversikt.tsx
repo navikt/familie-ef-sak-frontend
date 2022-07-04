@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
@@ -6,7 +6,7 @@ import { AndelEndringType, AndelHistorikk } from '../../App/typer/tilkjentytelse
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
+import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import {
     Behandling,
     BehandlingResultat,
@@ -20,6 +20,8 @@ import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/VedtaksperioderBarnetilsyn';
 import VedtaksperioderOvergangsstønad from './HistorikkVedtaksperioder/VedtaksperioderOvergangsstønad';
+import { IVedtakForSkolepenger } from '../../App/typer/vedtak';
+import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/VedtaksperioderSkolepeger';
 
 const StyledInputs = styled.div`
     display: flex;
@@ -52,10 +54,7 @@ const innvilgetEllerOpphørt = (b: Behandling) =>
 
 const filtrerBehandlinger = (fagsak: Fagsak): Behandling[] =>
     fagsak.behandlinger.filter(
-        (b) =>
-            b.type !== Behandlingstype.BLANKETT &&
-            innvilgetEllerOpphørt(b) &&
-            b.status === BehandlingStatus.FERDIGSTILT
+        (b) => innvilgetEllerOpphørt(b) && b.status === BehandlingStatus.FERDIGSTILT
     );
 
 const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>
@@ -63,21 +62,27 @@ const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>
         compareDesc(new Date(a.opprettet), new Date(b.opprettet))
     );
 
-const Vedtaksperioder: React.FC<{
+interface VedtaksperioderProps {
     fagsak: Fagsak;
-    perioderTilOgMedBehandlingId?: string;
+    valgtBehandling?: string;
     visUaktuelle: boolean;
-}> = ({ fagsak, perioderTilOgMedBehandlingId, visUaktuelle }) => {
+}
+
+const VedtaksperioderOSBT: React.FC<VedtaksperioderProps> = ({
+    fagsak,
+    valgtBehandling,
+    visUaktuelle,
+}) => {
     const { id: fagsakId } = fagsak;
     const periodeHistorikkConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
             url: `/familie-ef-sak/api/perioder/fagsak/${fagsakId}/historikk`,
-            params: perioderTilOgMedBehandlingId && {
-                tilOgMedBehandlingId: perioderTilOgMedBehandlingId,
+            params: valgtBehandling && {
+                tilOgMedBehandlingId: valgtBehandling,
             },
         }),
-        [fagsakId, perioderTilOgMedBehandlingId]
+        [fagsakId, valgtBehandling]
     );
     const perioder = useDataHenter<AndelHistorikk[], null>(periodeHistorikkConfig);
     return (
@@ -97,16 +102,57 @@ const Vedtaksperioder: React.FC<{
     );
 };
 
+const VedtaksperioderSP: React.FC<{ valgtBehandling: string }> = ({ valgtBehandling }) => {
+    const requestConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/vedtak/${valgtBehandling}`,
+        }),
+        [valgtBehandling]
+    );
+    const vedtak = useDataHenter<IVedtakForSkolepenger, null>(requestConfig);
+    return (
+        <DataViewer response={{ vedtak }}>
+            {({ vedtak }) => <VedtaksperioderSkolepenger vedtak={vedtak} />}
+        </DataViewer>
+    );
+};
+
+const Vedtaksperioder: React.FC<VedtaksperioderProps> = (props) => {
+    switch (props.fagsak.stønadstype) {
+        case Stønadstype.OVERGANGSSTØNAD:
+        case Stønadstype.BARNETILSYN:
+            if (!props.valgtBehandling) {
+                return <>Har ikke valgt behandling</>;
+            }
+            return <VedtaksperioderOSBT {...props} />;
+        case Stønadstype.SKOLEPENGER:
+            if (!props.valgtBehandling) {
+                return <>Har ikke valgt behandling</>;
+            }
+            return <VedtaksperioderSP valgtBehandling={props.valgtBehandling} />;
+        default:
+            return <>Har ikke støtte for {props.fagsak.stønadstype}</>;
+    }
+};
+
 const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedBehandlinger }> = ({
     fagsakPerson,
 }) => {
     const [valgtFagsak, settValgtFagsak] = useState<Fagsak | undefined>(
-        fagsakPerson.overgangsstønad || fagsakPerson.barnetilsyn || fagsakPerson.barnetilsyn
+        fagsakPerson.overgangsstønad || fagsakPerson.barnetilsyn || fagsakPerson.skolepenger
     );
     const [valgtBehandlingId, settValgtBehandlingId] = useState<string>();
     const [visUaktuelle, settVisUaktuelle] = useState<boolean>(true);
 
-    const behandlinger = valgtFagsak ? filtrerOgSorterBehandlinger(valgtFagsak) : [];
+    const behandlinger = useMemo(
+        () => (valgtFagsak ? filtrerOgSorterBehandlinger(valgtFagsak) : []),
+        [valgtFagsak]
+    );
+
+    useEffect(() => {
+        settValgtBehandlingId(behandlinger && behandlinger.length ? behandlinger[0].id : undefined);
+    }, [behandlinger, valgtFagsak]);
 
     return (
         <>
@@ -117,6 +163,7 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                     defaultValue={valgtFagsak?.stønadstype}
                     onChange={(event) => {
                         const valgtStønad = event.target.value as Stønadstype;
+                        settValgtBehandlingId(undefined);
                         switch (valgtStønad) {
                             case Stønadstype.OVERGANGSSTØNAD:
                                 settValgtFagsak(fagsakPerson.overgangsstønad);
@@ -128,7 +175,6 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                                 settValgtFagsak(fagsakPerson.skolepenger);
                                 return;
                         }
-                        settValgtBehandlingId(undefined);
                     }}
                 >
                     {!valgtFagsak && <option value={undefined}>Har ingen stønader</option>}
@@ -155,10 +201,7 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                     label="Behandling"
                     className="flex-item"
                     onChange={(event) => {
-                        const nyesteBehandling = behandlinger[0].id;
-                        const nyBehandlingId = event.target.value;
-                        const skalNullstille = nyBehandlingId === nyesteBehandling;
-                        settValgtBehandlingId(skalNullstille ? undefined : nyBehandlingId);
+                        settValgtBehandlingId(event.target.value);
                     }}
                     disabled={!behandlinger.length}
                 >
@@ -169,18 +212,22 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                         </option>
                     ))}
                 </BehandlingSelect>
-                <Checkbox
-                    label={'Vis uaktuelle perioder'}
-                    onClick={() => {
-                        settVisUaktuelle((prevState) => !prevState);
-                    }}
-                    checked={visUaktuelle}
-                />
+                {valgtFagsak && valgtFagsak.stønadstype !== Stønadstype.SKOLEPENGER ? (
+                    <Checkbox
+                        label={'Vis uaktuelle perioder'}
+                        onChange={() => {
+                            settVisUaktuelle((prevState) => !prevState);
+                        }}
+                        checked={visUaktuelle}
+                    />
+                ) : (
+                    <div />
+                )}
             </StyledInputs>
             {valgtFagsak && behandlinger.length > 0 && (
                 <Vedtaksperioder
                     fagsak={valgtFagsak}
-                    perioderTilOgMedBehandlingId={valgtBehandlingId}
+                    valgtBehandling={valgtBehandlingId}
                     visUaktuelle={visUaktuelle}
                 />
             )}

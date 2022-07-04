@@ -125,3 +125,5 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
     }, {} as Record<K, T[]>);
 
 export const isUUID = (value: string): boolean => validate(value);
+
+export const nonNull = <T>(list: (T | undefined | null)[]) => list.filter((t) => t) as T[];
