@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
-import { GammelBehandling } from '../../../App/typer/fagsak';
+import { behandlingResultatTilTekst, GammelBehandling } from '../../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
-import { formatterEnumVerdi } from '../../../App/utils/utils';
 import { behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
@@ -25,7 +24,7 @@ const GamleBehandlinger = () => {
     useEffect(() => {
         axiosRequest<GammelBehandling[], null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/behandling/gamlebehandlinger`,
+            url: `/familie-ef-sak/api/behandling/gamle-behandlinger`,
         }).then((res: Ressurs<GammelBehandling[]>) => settGamleBehandlinger(res));
     }, [axiosRequest]);
 
@@ -70,7 +69,11 @@ const GamleBehandlinger = () => {
                                                         pathname: `/behandling/${behandling.id}`,
                                                     }}
                                                 >
-                                                    {formatterEnumVerdi(behandling.resultat)}
+                                                    {
+                                                        behandlingResultatTilTekst[
+                                                            behandling.resultat
+                                                        ]
+                                                    }
                                                 </Link>
                                             </Table.DataCell>
                                         </Table.Row>
