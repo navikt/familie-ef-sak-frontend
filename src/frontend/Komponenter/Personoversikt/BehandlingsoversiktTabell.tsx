@@ -135,10 +135,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                                     formaterIsoDatoTid(behandling.vedtaksdato)}
                             </td>
                             <td>
-                                {behandling.type === Behandlingstype.TEKNISK_OPPHØR &&
-                                behandling.resultat ? (
-                                    <span>{formatterEnumVerdi(behandling.resultat)}</span>
-                                ) : behandling.applikasjon === BehandlingApplikasjon.EF_SAK ? (
+                                {behandling.applikasjon === BehandlingApplikasjon.EF_SAK ? (
                                     <Link
                                         className="lenke"
                                         to={{ pathname: `/behandling/${behandling.id}` }}
