@@ -75,6 +75,9 @@ export const InnvilgeVedtak: React.FC<{
             ? lagretInnvilgetVedtak.perioder[0].årMånedFra
             : undefined
     );
+    const [revurderesFraOgMedFeilmelding, settRevurderesFraOgMedFeilmelding] = useState<
+        string | null
+    >(null);
 
     const { toggles } = useToggles();
 
@@ -107,8 +110,18 @@ export const InnvilgeVedtak: React.FC<{
     const låsVedtaksperiodeRad = revurderesFra && lagretInnvilgetVedtak?.perioder.length;
 
     useEffect(() => {
+        settRevurderesFraOgMedFeilmelding(null);
+
         if (!vedtakshistorikk?.perioder?.length || !toggles[ToggleName.skalPrefylleVedtaksperider])
             return;
+
+        const fraOgMedDato = vedtakshistorikk?.perioder[0]?.årMånedFra;
+
+        if (revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato) {
+            settRevurderesFraOgMedFeilmelding(
+                'Revurderes fra og med-dato kan ikke være før første periode.'
+            );
+        }
 
         const perioderMedEndretKey = vedtakshistorikk.perioder.map((periode) => {
             return { ...periode, endretKey: uuidv4() };
@@ -286,6 +299,7 @@ export const InnvilgeVedtak: React.FC<{
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
+                        feilmelding={revurderesFraOgMedFeilmelding}
                     />
                 )}
                 {skalViseVedtaksperiodeOgInntekt && (
@@ -370,7 +384,7 @@ export const InnvilgeVedtak: React.FC<{
                         <Hovedknapp
                             hidden={!behandlingErRedigerbar}
                             htmlType="submit"
-                            disabled={laster}
+                            disabled={laster || !!revurderesFraOgMedFeilmelding}
                         >
                             Lagre vedtak
                         </Hovedknapp>
