@@ -64,34 +64,6 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
-    const startBlankettBehandling = () => {
-        settLaster(true);
-        axiosRequest<string, { oppgaveId: string }>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/blankett/oppgave/${oppgave.id}`,
-        })
-            .then((res: RessursSuksess<string> | RessursFeilet) => {
-                return new Promise((resolve, reject) => {
-                    if (res.status === RessursStatus.SUKSESS) {
-                        return resolve(res.data);
-                    }
-                    return reject(new Error(res.frontendFeilmelding));
-                });
-            })
-            .then((behandlingId) => {
-                settOppgaveTilSaksbehandler()
-                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
-                    .catch((error: Error) => {
-                        settFeilmelding(error.message);
-                    })
-                    .finally(() => settLaster(false));
-            })
-            .catch((error: Error) => {
-                settFeilmelding(error.message);
-            })
-            .finally(() => settLaster(false));
-    };
-
     const gåTilJournalføring = () => {
         settLaster(true);
         settOppgaveTilSaksbehandler()
@@ -136,7 +108,6 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilBehandleSakOppgave,
         gåTilVurderMigrering,
         gåTilJournalføring,
-        startBlankettBehandling,
         laster,
         gåTilFagsak,
     };

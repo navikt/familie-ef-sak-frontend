@@ -107,18 +107,6 @@ app.get('/familie-ef-sak/api/oppgave/:id', (req, res) => {
     }
 });
 
-app.post('/familie-ef-sak/api/blankett/oppgave/:id', (req, res) => {
-    setTimeout(() => res.send(lesMockFil(`start-blankett-oppgave.json`)), delayMs);
-});
-
-app.post('/familie-ef-sak/api/blankett/:id', (req, res) => {
-    setTimeout(() => res.send(lesMockFil(`journalforing-dokument.json`)), delayMs);
-});
-
-app.get('/familie-ef-sak/api/blankett/:id', (req, res) => {
-    setTimeout(() => res.send(lesMockFil(`journalforing-dokument.json`)), delayMs);
-});
-
 app.post('/familie-ef-sak/api/fagsak', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`behandlinger.json`)), delayMs);
 });
@@ -177,10 +165,6 @@ app.get('/familie-ef-sak/api/vurdering/regler', (req, res) => {
 
 app.get('/familie-ef-sak/api/soknad/:behandlingId/datoer', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`vedtak-søknad-data.json`)), delayMs);
-});
-
-app.post('/familie-ef-sak/api/beregning/:behandlingId/lagre-blankettvedtak', (req, res) => {
-    setTimeout(() => res.send(lesMockFil(`lagre-vedtak.json`)), delayMs);
 });
 
 app.post('/familie-ef-sak/api/behandling/:behandlingId/henlegg', (req, res) => {

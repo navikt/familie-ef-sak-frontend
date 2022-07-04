@@ -6,7 +6,7 @@ import { AndelEndringType, AndelHistorikk } from '../../App/typer/tilkjentytelse
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { Behandlingstype, behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
+import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import {
     Behandling,
     BehandlingResultat,
@@ -54,10 +54,7 @@ const innvilgetEllerOpphørt = (b: Behandling) =>
 
 const filtrerBehandlinger = (fagsak: Fagsak): Behandling[] =>
     fagsak.behandlinger.filter(
-        (b) =>
-            b.type !== Behandlingstype.BLANKETT &&
-            innvilgetEllerOpphørt(b) &&
-            b.status === BehandlingStatus.FERDIGSTILT
+        (b) => innvilgetEllerOpphørt(b) && b.status === BehandlingStatus.FERDIGSTILT
     );
 
 const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>
@@ -125,6 +122,9 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = (props) => {
     switch (props.fagsak.stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
         case Stønadstype.BARNETILSYN:
+            if (!props.valgtBehandling) {
+                return <>Har ikke valgt behandling</>;
+            }
             return <VedtaksperioderOSBT {...props} />;
         case Stønadstype.SKOLEPENGER:
             if (!props.valgtBehandling) {
@@ -163,6 +163,7 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                     defaultValue={valgtFagsak?.stønadstype}
                     onChange={(event) => {
                         const valgtStønad = event.target.value as Stønadstype;
+                        settValgtBehandlingId(undefined);
                         switch (valgtStønad) {
                             case Stønadstype.OVERGANGSSTØNAD:
                                 settValgtFagsak(fagsakPerson.overgangsstønad);
@@ -174,7 +175,6 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                                 settValgtFagsak(fagsakPerson.skolepenger);
                                 return;
                         }
-                        settValgtBehandlingId(undefined);
                     }}
                 >
                     {!valgtFagsak && <option value={undefined}>Har ingen stønader</option>}

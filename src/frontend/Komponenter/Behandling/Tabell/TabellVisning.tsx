@@ -29,6 +29,7 @@ export interface Kolonndata<T> {
 
 export interface Kolonner<T> {
     overskrift: string;
+    underskrift?: string;
     tekstVerdi: (data: T) => React.ReactNode;
 }
 
@@ -64,9 +65,10 @@ function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T
 
             <>
                 {kolonner.map((kolonne, index) => (
-                    <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
-                        {kolonne.overskrift}
-                    </Element>
+                    <div key={index} className={index === 0 ? 'førsteDataKolonne' : ''}>
+                        <Element>{kolonne.overskrift}</Element>
+                        {kolonne.underskrift && <Normaltekst> {kolonne.underskrift}</Normaltekst>}
+                    </div>
                 ))}
                 {verdier.map((item) =>
                     kolonner.map((kolonne, index) => (
