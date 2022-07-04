@@ -5,20 +5,27 @@ import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn, Overskr
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
 import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
-import AnnenForelderTidligereVedtaksperioder from './AnnenForelderTidligereVedtaksperioder';
+import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
+import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
+    tidligereVedtaksperioder: ITidligereVedtaksperioder;
     skalViseSøknadsdata: boolean;
 }
 
-const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata }) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({
+    barnMedSamvær,
+    tidligereVedtaksperioder,
+    skalViseSøknadsdata,
+}) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
         <>
             <div>
-                <AnnenForelderTidligereVedtaksperioder
+                <TidligereVedtaksperioderSøkerOgAndreForeldre
+                    tidligereVedtaksperioder={tidligereVedtaksperioder}
                     registergrunnlagNyttBarn={registergrunnlagNyttBarn}
                 />
             </div>
