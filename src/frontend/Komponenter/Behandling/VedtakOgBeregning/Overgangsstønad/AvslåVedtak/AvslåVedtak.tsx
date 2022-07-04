@@ -69,19 +69,6 @@ export const AvslåVedtak: React.FC<{
         };
     };
 
-    const avslåBlankett = () => {
-        settLaster(true);
-        axiosRequest<string, IAvslagVedtak>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/beregning/${behandling.id}/lagre-blankettvedtak`,
-            data: lagVedtakRequest(),
-        })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/blankett`))
-            .finally(() => {
-                settLaster(false);
-            });
-    };
-
     const avslåBehandling = () => {
         settLaster(true);
         axiosRequest<string, IAvslagVedtak>({
@@ -104,9 +91,6 @@ export const AvslåVedtak: React.FC<{
         }
 
         switch (behandling.type) {
-            case Behandlingstype.BLANKETT:
-                avslåBlankett();
-                break;
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
             case Behandlingstype.REVURDERING:
                 avslåBehandling();

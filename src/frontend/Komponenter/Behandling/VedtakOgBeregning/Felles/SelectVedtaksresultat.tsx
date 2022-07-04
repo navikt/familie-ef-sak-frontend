@@ -47,7 +47,6 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig =
         behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId;
-    const erBlankettBehandling = behandling.type === Behandlingstype.BLANKETT;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
     const tillaterOpphørForSkolepenger =
@@ -103,14 +102,6 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     >
                         Opphørt
                     </option>
-                    {erBlankettBehandling && (
-                        <option
-                            value={EBehandlingResultat.BEHANDLE_I_GOSYS}
-                            disabled={nullUtbetalingPgaKontantstøtte}
-                        >
-                            Behandle i Gosys
-                        </option>
-                    )}
                 </StyledSelect>
                 {behandling.stønadstype === Stønadstype.BARNETILSYN && (
                     <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
