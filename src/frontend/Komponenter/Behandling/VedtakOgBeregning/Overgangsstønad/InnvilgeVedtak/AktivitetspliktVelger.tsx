@@ -51,7 +51,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
             return (
                 <FamilieSelect
                     aria-label={'Aktivitet'}
-                    value={aktivitet}
+                    value={aktivitet || ''}
                     feil={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
@@ -80,7 +80,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
             return (
                 <FamilieSelect
                     aria-label={'Aktivitet'}
-                    value={aktivitet}
+                    value={aktivitet || ''}
                     feil={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
@@ -114,7 +114,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
             return (
                 <FamilieSelect
                     aria-label={'Aktivitet'}
-                    value={aktivitet}
+                    value={aktivitet || ''}
                     feil={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
