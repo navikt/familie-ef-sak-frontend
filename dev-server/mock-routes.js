@@ -168,7 +168,7 @@ app.get('/familie-ef-sak/api/soknad/:behandlingId/datoer', (req, res) => {
 });
 
 app.post('/familie-ef-sak/api/behandling/:behandlingId/henlegg', (req, res) => {
-    setTimeout(() => res.send(lesMockFil(`behandle-i-gosys.json`)), delayMs);
+    setTimeout(() => res.send(lesMockFil(`behandling-henlegg.json`)), delayMs);
 });
 
 app.get('/familie-ef-sak/api/vedtak/:behandlingId', (req, res) => {
