@@ -9,7 +9,6 @@ export enum Steg {
     DISTRIBUER_VEDTAKSBREV = 'DISTRIBUER_VEDTAKSBREV',
     FERDIGSTILLE_BEHANDLING = 'FERDIGSTILLE_BEHANDLING',
     BEHANDLING_FERDIGSTILT = 'BEHANDLING_FERDIGSTILT',
-    VENTE_PÅ_TEKNISK_OPPHØR_STATUS = 'VENTE_PÅ_TEKNISK_OPPHØR_STATUS',
     LAG_SAKSBEHANDLINGSBLANKETT = 'LAG_SAKSBEHANDLINGSBLANKETT',
     PUBLISER_VEDTAKSHENDELSE = 'PUBLISER_VEDTAKSHENDELSE',
 }
@@ -25,7 +24,6 @@ export const stegTypeTilStegtekst: Record<Steg, string> = {
     JOURNALFØR_VEDTAKSBREV: 'Journalføre vedtaksbrev',
     SEND_TIL_BESLUTTER: 'Kan sendes til beslutter',
     VENTE_PÅ_STATUS_FRA_IVERKSETT: 'Venter på status fra økonomi',
-    VENTE_PÅ_TEKNISK_OPPHØR_STATUS: 'Venter på status fra teknisk opphør',
     LAG_SAKSBEHANDLINGSBLANKETT: 'Opprett saksbehandlingsblankett',
     PUBLISER_VEDTAKSHENDELSE: 'Publisere vedtakshendelse',
 };
@@ -41,7 +39,6 @@ export const stegTypeTilHistorikkTekst: Record<Steg, string> = {
     JOURNALFØR_VEDTAKSBREV: 'Journalført vedtaksbrev',
     SEND_TIL_BESLUTTER: 'Vedtak sendt til godkjenning',
     VENTE_PÅ_STATUS_FRA_IVERKSETT: 'Hentet status fra økonomi',
-    VENTE_PÅ_TEKNISK_OPPHØR_STATUS: 'Hentet status fra teknisk opphør',
     LAG_SAKSBEHANDLINGSBLANKETT: 'Opprettet saksbehandlingsblankett',
     PUBLISER_VEDTAKSHENDELSE: 'Publisert vedtakshendelse',
 };
