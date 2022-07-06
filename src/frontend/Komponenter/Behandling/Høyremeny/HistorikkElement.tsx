@@ -56,7 +56,7 @@ const StyledHistorikkElement = styled.li`
     }
 `;
 
-const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
+const utledTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
     return hendelseTilHistorikkTekst[behandlingshistorikk.hendelse];
 };
 
@@ -66,6 +66,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
     siste,
     behandlingId,
     behandling,
+    skalViseBegrunnelse,
 }) => {
     const { axiosRequest } = useApp();
 
@@ -116,12 +117,12 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 <Linje siste={siste} størreMellomrom={harMetadata} />
             </IkonMedStipletLinje>
             <Innhold>
-                <Element>{renderTittel(behandlingshistorikk)}</Element>
+                <Element>{utledTittel(behandlingshistorikk)}</Element>
                 <Undertekst>
                     {formaterIsoDatoTidKort(behandlingshistorikk.endretTid)} |{' '}
                     {behandlingshistorikk.endretAvNavn}
                 </Undertekst>
-                {behandlingshistorikk.metadata?.begrunnelse && (
+                {behandlingshistorikk.metadata?.begrunnelse && skalViseBegrunnelse && (
                     <Undertekst>
                         Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
                     </Undertekst>

@@ -25,6 +25,7 @@ export interface HistorikkElementProps {
     behandlingshistorikk: Behandlingshistorikk;
     behandlingId: string;
     behandling: Behandling;
+    skalViseBegrunnelse: boolean;
 }
 
 export interface StyledHistorikkElementProps {
