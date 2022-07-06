@@ -62,6 +62,24 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
+const oppgaveRequestMedDefaultEnhet = (
+    oppgaveRequest: IOppgaveRequest,
+    harSaksbehandlerStrengtFortroligRolle: boolean
+): IOppgaveRequest => {
+    if (harSaksbehandlerStrengtFortroligRolle) {
+        return {
+            ...oppgaveRequest,
+            enhet: FortroligEnhet.VIKAFOSSEN,
+        };
+    } else {
+        const enhet = oppgaveRequest.enhet;
+        return {
+            ...oppgaveRequest,
+            enhet: enhet && enhet !== FortroligEnhet.VIKAFOSSEN ? enhet : undefined,
+        };
+    }
+};
+
 const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
     hentOppgaver,
     mapper,
@@ -98,25 +116,17 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
 
     useEffect(() => {
-        const fraLocalStorage = hentFraLocalStorage(
+        const fraLocalStorage = hentFraLocalStorage<IOppgaveRequest>(
             oppgaveRequestKey(innloggetSaksbehandler.navIdent),
             {}
         );
-        if (fraLocalStorage) {
-            if (harSaksbehandlerStrengtFortroligRolle) {
-                settOppgaveRequest({
-                    ...fraLocalStorage,
-                    enhet: FortroligEnhet.VIKAFOSSEN,
-                });
-            } else {
-                settOppgaveRequest(fraLocalStorage);
-            }
-            hentOppgaver(fraLocalStorage);
-        } else {
-            if (harSaksbehandlerStrengtFortroligRolle) {
-                settOppgaveRequest({ enhet: FortroligEnhet.VIKAFOSSEN });
-            }
-        }
+
+        const oppgaveRequestMedEnhet = oppgaveRequestMedDefaultEnhet(
+            fraLocalStorage,
+            harSaksbehandlerStrengtFortroligRolle
+        );
+        settOppgaveRequest(oppgaveRequestMedEnhet);
+        hentOppgaver(oppgaveRequestMedEnhet);
     }, [hentOppgaver, harSaksbehandlerStrengtFortroligRolle, innloggetSaksbehandler.navIdent]);
 
     const saksbehandlerTekst =
