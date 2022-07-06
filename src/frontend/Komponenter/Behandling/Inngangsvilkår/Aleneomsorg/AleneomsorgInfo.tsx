@@ -117,7 +117,7 @@ const AleneomsorgInfo: FC<{
                 {stønadstype === Stønadstype.BARNETILSYN && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Søkes det om barnetilsyn for barnet</Normaltekst>
+                        <Normaltekst>Søkes det om stønad til barnetilsyn for barnet</Normaltekst>
                         <Normaltekst>
                             {barnepass?.skalHaBarnepass ? (
                                 <EtikettSuksess>ja</EtikettSuksess>
