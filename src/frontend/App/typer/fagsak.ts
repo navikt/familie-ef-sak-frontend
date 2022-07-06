@@ -46,17 +46,6 @@ export interface Behandling {
     vedtaksdato?: string;
 }
 
-export interface GammelBehandling {
-    id: string;
-    fagsakId: string;
-    type: Behandlingstype;
-    opprettet: string;
-    status: BehandlingStatus;
-    stønadstype: Stønadstype;
-    resultat: BehandlingResultat;
-    årsak: Behandlingsårsak;
-}
-
 export interface IEndringerRegistergrunnlag {
     [key: string]: string[];
 }

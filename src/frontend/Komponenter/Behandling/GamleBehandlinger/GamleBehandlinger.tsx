@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
-import { behandlingResultatTilTekst, GammelBehandling } from '../../../App/typer/fagsak';
+import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Table } from '@navikt/ds-react';
@@ -17,15 +17,15 @@ const StyledGamleBehandlinger = styled.div`
 
 const GamleBehandlinger = () => {
     const { axiosRequest } = useApp();
-    const [gamleBehandlinger, settGamleBehandlinger] = useState<Ressurs<GammelBehandling[]>>(
+    const [gamleBehandlinger, settGamleBehandlinger] = useState<Ressurs<Behandling[]>>(
         byggTomRessurs()
     );
 
     useEffect(() => {
-        axiosRequest<GammelBehandling[], null>({
+        axiosRequest<Behandling[], null>({
             method: 'GET',
             url: `/familie-ef-sak/api/behandling/gamle-behandlinger`,
-        }).then((res: Ressurs<GammelBehandling[]>) => settGamleBehandlinger(res));
+        }).then((res: Ressurs<Behandling[]>) => settGamleBehandlinger(res));
     }, [axiosRequest]);
 
     return (
@@ -57,7 +57,11 @@ const GamleBehandlinger = () => {
                                                 {stønadstypeTilTekst[behandling.stønadstype]}
                                             </Table.DataCell>
                                             <Table.DataCell scope="row">
-                                                {behandlingsårsakTilTekst[behandling.årsak]}
+                                                {
+                                                    behandlingsårsakTilTekst[
+                                                        behandling.behandlingsårsak
+                                                    ]
+                                                }
                                             </Table.DataCell>
                                             <Table.DataCell scope="row">
                                                 {behandlingstypeTilTekst[behandling.type]}
