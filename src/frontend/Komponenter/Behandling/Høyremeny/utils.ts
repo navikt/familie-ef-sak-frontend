@@ -4,17 +4,15 @@ import { Behandlingshistorikk } from './typer';
 export const behandlingHarBlittUnderkjentDeretterGodkjent = (
     historikk: Behandlingshistorikk[]
 ): boolean => {
-    return behandlingHarBlittUnderkjent(historikk) && behandlingHarBlittGodkjent(historikk);
-};
-
-const behandlingHarBlittUnderkjent = (historikk: Behandlingshistorikk[]): boolean => {
-    return historikk.some(
-        (historikkInnslag) => historikkInnslag.hendelse === Hendelse.VEDTAK_UNDERKJENT
+    return (
+        hendelseEksistererForBehandlingshistorikk(historikk, Hendelse.VEDTAK_UNDERKJENT) &&
+        hendelseEksistererForBehandlingshistorikk(historikk, Hendelse.VEDTAK_GODKJENT)
     );
 };
 
-const behandlingHarBlittGodkjent = (historikk: Behandlingshistorikk[]): boolean => {
-    return historikk.some(
-        (historikkInnslag) => historikkInnslag.hendelse === Hendelse.VEDTAK_GODKJENT
-    );
+const hendelseEksistererForBehandlingshistorikk = (
+    historikk: Behandlingshistorikk[],
+    hendelse: Hendelse
+): boolean => {
+    return historikk.some((historikkInnslag) => historikkInnslag.hendelse === hendelse);
 };
