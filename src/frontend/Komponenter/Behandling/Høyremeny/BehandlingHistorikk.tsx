@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import HistorikkElement from './HistorikkElement';
+import { behandlingHarBlittGodkjent } from './utils';
 
 interface IBehandlingHistorikkProps {
     behandlingId: string;
@@ -20,6 +21,9 @@ const BehandlingHistorikk: React.FC<IBehandlingHistorikkProps> = ({ behandlingId
     return (
         <DataViewer response={{ behandlingHistorikkResponse: behandlingHistorikk, behandling }}>
             {({ behandlingHistorikkResponse, behandling }) => {
+                const skalViseBegrunnelse = !behandlingHarBlittGodkjent(
+                    behandlingHistorikkResponse
+                );
                 return (
                     <HistorikkListe>
                         {behandlingHistorikkResponse.map((behandlingshistorikk, idx) => {
@@ -34,6 +38,7 @@ const BehandlingHistorikk: React.FC<IBehandlingHistorikkProps> = ({ behandlingId
                                     key={idx}
                                     behandlingId={behandlingId}
                                     behandling={behandling}
+                                    skalViseBegrunnelse={skalViseBegrunnelse}
                                 />
                             );
                         })}
