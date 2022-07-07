@@ -19,31 +19,6 @@ import {
 import styled from 'styled-components';
 import { Table, Tooltip } from '@navikt/ds-react';
 
-/**
- * Tabellene har alle 10 kolonner for å få samme kolonner på samme sted i tabellene
- * 6*8 + 10 + 10 + 2*16 = 100
- */
-const StyledTabell = styled.table`
-    th {
-        width: 8%;
-    }
-    // datoer trenger litt ekstra då de iblant viser opphørsdato
-    th:nth-child(1) {
-        width: 9%;
-    }
-    // sakstype
-    th:nth-child(7) {
-        width: 10%;
-    }
-    // aktivitet / Periodetype
-    th:nth-child(8),
-    th:nth-child(9) {
-        width: 16%;
-    }
-`;
-
-const Rad = styled.tr``;
-
 const TabellTekst = styled.p`
     margin: 0rem;
 `;
@@ -60,27 +35,6 @@ const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string =>
     } else {
         return stønadTom;
     }
-};
-
-const utledTabellHeaderBarnetilsyn = () => {
-    return (
-        <Table.Row>
-            <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Måneds&shy;beløp</HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Antall barn</HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">
-                <HøyrestiltTekst>Utgifter</HøyrestiltTekst>
-            </Table.HeaderCell>
-            <Table.HeaderCell scope="col">Vedtaks&shy;tidspunkt</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Saks&shy;behandler</Table.HeaderCell>
-        </Table.Row>
-    );
 };
 
 const utledTabellHeaderOvergangsstønad = () => {
@@ -106,7 +60,48 @@ const utledTabellHeaderOvergangsstønad = () => {
     );
 };
 
-export const TabellInfotrygdOvergangsstønadperioderKompakt: React.FC<{
+const utledTabellHeaderBarnetilsyn = () => {
+    return (
+        <Table.Row>
+            <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Måneds&shy;beløp</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Antall barn</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Utgifter</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">Vedtaks&shy;tidspunkt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Saks&shy;behandler</Table.HeaderCell>
+        </Table.Row>
+    );
+};
+
+const utledTabellHeaderSkolepenger = () => {
+    return (
+        <Table.Row>
+            <Table.HeaderCell scope="col">Periode (fom-tom)</Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Månedsbeløp</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Engangsbeløp</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+                <HøyrestiltTekst>Vedtakstidspunkt</HøyrestiltTekst>
+            </Table.HeaderCell>
+            <Table.HeaderCell scope="col">Kode</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
+        </Table.Row>
+    );
+};
+
+export const TabellInfotrygdOvergangsstønadperioder: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
 }> = ({ perioder }) => {
     return (
@@ -207,7 +202,7 @@ export const TabellInfotrygdOvergangsstønadperioderKompakt: React.FC<{
     );
 };
 
-export const TabellInfotrygdBarnetilsynperioderKompakt: React.FC<{
+export const TabellInfotrygdBarnetilsynperioder: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
 }> = ({ perioder }) => {
     return (
@@ -277,44 +272,42 @@ export const InfotrygdPerioderSkolepenger: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
 }> = ({ perioder }) => {
     return (
-        <StyledTabell className="tabell">
-            <thead>
-                <tr>
-                    <th>Periode (fom-tom)</th>
-                    <th>Månedsbeløp</th>
-                    <th>Engangsbeløp</th>
-                    <th></th>
-                    <th>Vedtakstidspunkt</th>
-                    <th>Kode</th>
-                    <th>Sakstype</th>
-                    <th></th>
-                    <th></th>
-                    <th>Saksbehandler</th>
-                </tr>
-            </thead>
-            <tbody>
-                {perioder.map((periode) => (
-                    <Rad key={`${periode.stønadId}-${periode.vedtakId}`}>
-                        <td>
-                            {formaterNullableMånedÅr(periode.stønadFom)}
-                            {' - '}
-                            {formatStønadTom(periode)}
-                        </td>
-                        <td>{formaterTallMedTusenSkille(periode.månedsbeløp)}</td>
-                        <td>{formaterTallMedTusenSkille(periode.engangsbeløp)}</td>
-                        <td></td>
-                        <td>{formaterNullableIsoDato(periode.vedtakstidspunkt)}</td>
-                        <td>
-                            {kodeTilTekst[periode.kode]}{' '}
-                            {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
-                        </td>
-                        <td>{sakstypeTilTekst[periode.sakstype]}</td>
-                        <td></td>
-                        <td></td>
-                        <td>{periode.brukerId}</td>
-                    </Rad>
-                ))}
-            </tbody>
-        </StyledTabell>
+        <Table zebraStripes={true} size={'small'}>
+            <Table.Header>{utledTabellHeaderSkolepenger()}</Table.Header>
+            <Table.Body>
+                {perioder.map((periode) => {
+                    return (
+                        <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
+                            <Table.DataCell>
+                                {formaterNullableMånedÅr(periode.stønadFom)}
+                                {' - '}
+                                {formatStønadTom(periode)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.månedsbeløp)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterTallMedTusenSkille(periode.engangsbeløp)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <HøyrestiltTekst>
+                                    {formaterNullableIsoDato(periode.vedtakstidspunkt)}
+                                </HøyrestiltTekst>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {kodeTilTekst[periode.kode]}{' '}
+                                {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
+                            </Table.DataCell>
+                            <Table.DataCell>{sakstypeTilTekst[periode.sakstype]}</Table.DataCell>
+                            <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                        </Table.Row>
+                    );
+                })}
+            </Table.Body>
+        </Table>
     );
 };
