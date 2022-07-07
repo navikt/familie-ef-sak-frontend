@@ -54,63 +54,61 @@ export const GamleBehandlingerTabell: React.FC<{
     );
 
     return (
-        <>
-            <StyledTable className="tabell" size="medium" zebraStripes={true}>
-                <Table.Header>
-                    <Table.Row>
-                        {Object.entries(TabellData).map(([felt, tekst], index) => (
-                            <SorteringsHeader
-                                rekkefolge={
-                                    sortConfig?.sorteringsfelt === felt
-                                        ? sortConfig?.rekkefolge
-                                        : undefined
+        <StyledTable className="tabell" size="medium" zebraStripes={true}>
+            <Table.Header>
+                <Table.Row>
+                    {Object.entries(TabellData).map(([felt, tekst], index) => (
+                        <SorteringsHeader
+                            rekkefolge={
+                                sortConfig?.sorteringsfelt === felt
+                                    ? sortConfig?.rekkefolge
+                                    : undefined
+                            }
+                            tekst={tekst}
+                            onClick={() => settSortering(felt as keyof GamleBehandlingerTabell)}
+                            key={`${index}${felt}`}
+                        />
+                    ))}{' '}
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {sortertListe.map((behandling) => {
+                    return (
+                        <Table.Row key={behandling.id}>
+                            <Table.DataCell scope="row">
+                                {formaterIsoDato(behandling.opprettet)}
+                            </Table.DataCell>
+                            <Table.DataCell scope="row">
+                                {
+                                    behandlingsårsakTilTekst[
+                                        behandling.behandlingsårsak as Behandlingsårsak
+                                    ]
                                 }
-                                tekst={tekst}
-                                onClick={() => settSortering(felt as keyof GamleBehandlingerTabell)}
-                                key={`${index}${felt}`}
-                            />
-                        ))}{' '}
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {sortertListe.map((behandling) => {
-                        return (
-                            <Table.Row key={behandling.id}>
-                                <Table.DataCell scope="row">
-                                    {formaterIsoDato(behandling.opprettet)}
-                                </Table.DataCell>
-                                <Table.DataCell scope="row">
+                            </Table.DataCell>
+                            <Table.DataCell scope="row">
+                                {behandlingstypeTilTekst[behandling.type as Behandlingstype]}
+                            </Table.DataCell>
+                            <Table.DataCell scope="row">
+                                {stønadstypeTilTekst[behandling.stønadstype as Stønadstype]}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                <Link
+                                    className="lenke"
+                                    to={{
+                                        pathname: `/behandling/${behandling.id}`,
+                                    }}
+                                >
                                     {
-                                        behandlingsårsakTilTekst[
-                                            behandling.behandlingsårsak as Behandlingsårsak
+                                        behandlingResultatTilTekst[
+                                            behandling.resultat as BehandlingResultat
                                         ]
                                     }
-                                </Table.DataCell>
-                                <Table.DataCell scope="row">
-                                    {behandlingstypeTilTekst[behandling.type as Behandlingstype]}
-                                </Table.DataCell>
-                                <Table.DataCell scope="row">
-                                    {stønadstypeTilTekst[behandling.stønadstype as Stønadstype]}
-                                </Table.DataCell>
-                                <Table.DataCell>
-                                    <Link
-                                        className="lenke"
-                                        to={{
-                                            pathname: `/behandling/${behandling.id}`,
-                                        }}
-                                    >
-                                        {
-                                            behandlingResultatTilTekst[
-                                                behandling.resultat as BehandlingResultat
-                                            ]
-                                        }
-                                    </Link>
-                                </Table.DataCell>
-                            </Table.Row>
-                        );
-                    })}
-                </Table.Body>
-            </StyledTable>
-        </>
+                                </Link>
+                            </Table.DataCell>
+                        </Table.Row>
+                    );
+                })}
+            </Table.Body>
+        </StyledTable>
     );
 };

@@ -30,16 +30,14 @@ const GamleBehandlinger = () => {
 
     return (
         <StyledGamleBehandlinger>
-            <>
-                <StyledHeading spacing size="large" level="3">
-                    Gamle behandlinger
-                </StyledHeading>
-                <DataViewer response={{ gamleBehandlinger }}>
-                    {({ gamleBehandlinger }) => (
-                        <GamleBehandlingerTabell gamleBehandlinger={gamleBehandlinger} />
-                    )}
-                </DataViewer>
-            </>
+            <StyledHeading spacing size="large" level="3">
+                Gamle behandlinger
+            </StyledHeading>
+            <DataViewer response={{ gamleBehandlinger }}>
+                {({ gamleBehandlinger }) => (
+                    <GamleBehandlingerTabell gamleBehandlinger={gamleBehandlinger} />
+                )}
+            </DataViewer>
         </StyledGamleBehandlinger>
     );
 };
