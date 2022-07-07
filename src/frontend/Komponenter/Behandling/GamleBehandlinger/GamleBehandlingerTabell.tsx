@@ -34,7 +34,7 @@ interface GamleBehandlingerTabell {
     resultat?: BehandlingResultat | TilbakekrevingBehandlingsresultatstype;
 }
 
-const TabellData: PartialRecord<keyof GamleBehandlingerTabell | 'vedtaksdato', string> = {
+const TabellData: PartialRecord<keyof GamleBehandlingerTabell, string> = {
     opprettet: 'Behandling opprettetdato',
     type: 'Type',
     stønadstype: 'Stønadstype',
