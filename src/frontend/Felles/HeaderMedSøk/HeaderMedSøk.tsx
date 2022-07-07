@@ -56,6 +56,12 @@ const lagEksterneLenker = (
             href: '/admin/ny-behandling-for-ferdigstilt-journalpost/',
         });
     }
+    if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
+        eksterneLenker.push({
+            name: '[Admin] Vis gamle behandlinger',
+            href: '/admin/gamle-behandlinger',
+        });
+    }
     return eksterneLenker;
 };
 
