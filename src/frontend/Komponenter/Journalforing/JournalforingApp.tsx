@@ -79,11 +79,14 @@ const harTittelForAlleDokumenter = (
     journalResponse: IJojurnalpostResponse,
     journalpostState: JournalføringStateRequest
 ) =>
-    journalResponse.journalpost.dokumenter.every(
-        (d) =>
-            d.tittel ||
-            (journalpostState.dokumentTitler && journalpostState.dokumentTitler[d.dokumentInfoId])
-    );
+    journalResponse.journalpost.dokumenter
+        .map(
+            (d) =>
+                d.tittel ||
+                (journalpostState.dokumentTitler &&
+                    journalpostState.dokumentTitler[d.dokumentInfoId])
+        )
+        .every((tittel) => tittel && tittel.trim());
 
 const erUstrukturertSøknadOgManglerDokumentasjonsType = (
     journalResponse: IJojurnalpostResponse,
