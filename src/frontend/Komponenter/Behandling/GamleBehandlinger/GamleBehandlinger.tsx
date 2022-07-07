@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
-import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
+import { Behandling } from '../../../App/typer/fagsak';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Table } from '@navikt/ds-react';
-import { formaterIsoDato } from '../../../App/utils/formatter';
-import { behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
-import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
-import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
+import { Heading } from '@navikt/ds-react';
+import { GamleBehandlingerTabell } from './GamleBehandlingerTabell';
 
 const StyledGamleBehandlinger = styled.div`
     width: inherit;
+`;
+
+const StyledHeading = styled(Heading)`
+    padding: 1rem;
 `;
 
 const GamleBehandlinger = () => {
@@ -29,66 +29,18 @@ const GamleBehandlinger = () => {
     }, [axiosRequest]);
 
     return (
-        <DataViewer response={{ gamleBehandlinger }}>
-            {({ gamleBehandlinger }) => (
-                <StyledGamleBehandlinger>
-                    <h1>Gamle behandlinger</h1>
-                    <>
-                        <Table size="medium" zebraStripes={true}>
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell scope="col">
-                                        Behandling opprettetdato
-                                    </Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">Stønadstype</Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">Type</Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">Årsak</Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">Resultat</Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                                {gamleBehandlinger.map((behandling, i) => {
-                                    return (
-                                        <Table.Row key={i}>
-                                            <Table.DataCell scope="row">
-                                                {formaterIsoDato(behandling.opprettet)}
-                                            </Table.DataCell>
-                                            <Table.DataCell scope="row">
-                                                {stønadstypeTilTekst[behandling.stønadstype]}
-                                            </Table.DataCell>
-                                            <Table.DataCell scope="row">
-                                                {
-                                                    behandlingsårsakTilTekst[
-                                                        behandling.behandlingsårsak
-                                                    ]
-                                                }
-                                            </Table.DataCell>
-                                            <Table.DataCell scope="row">
-                                                {behandlingstypeTilTekst[behandling.type]}
-                                            </Table.DataCell>
-                                            <Table.DataCell>
-                                                <Link
-                                                    className="lenke"
-                                                    to={{
-                                                        pathname: `/behandling/${behandling.id}`,
-                                                    }}
-                                                >
-                                                    {
-                                                        behandlingResultatTilTekst[
-                                                            behandling.resultat
-                                                        ]
-                                                    }
-                                                </Link>
-                                            </Table.DataCell>
-                                        </Table.Row>
-                                    );
-                                })}
-                            </Table.Body>
-                        </Table>
-                    </>
-                </StyledGamleBehandlinger>
-            )}
-        </DataViewer>
+        <StyledGamleBehandlinger>
+            <>
+                <StyledHeading spacing size="large" level="3">
+                    Gamle behandlinger
+                </StyledHeading>
+                <DataViewer response={{ gamleBehandlinger }}>
+                    {({ gamleBehandlinger }) => (
+                        <GamleBehandlingerTabell gamleBehandlinger={gamleBehandlinger} />
+                    )}
+                </DataViewer>
+            </>
+        </StyledGamleBehandlinger>
     );
 };
 
