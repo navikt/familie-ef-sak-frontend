@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
@@ -11,59 +11,14 @@ import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
-import { OppdaterOpplysninger } from './Medlemskap/OppdaterOpplysninger';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
-import { Alert } from '@navikt/ds-react';
-import styled from 'styled-components';
-import { Expand, Collapse } from '@navikt/ds-icons';
-import { Normaltekst } from 'nav-frontend-typografi';
-import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
-import navFarger from 'nav-frontend-core';
+import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 
 interface Props {
     behandlingId: string;
 }
 
-const Alertstripe = styled(Alert)`
-    margin-top: 1rem;
-    margin-right: 2rem;
-    margin-bottom: 1rem;
-    width: 40rem;
-`;
-
-const Container = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const InfoHeader = styled.div`
-    display: grid;
-    grid-template-columns: 26rem 2rem;
-`;
-
-const LenkeIkon = styled.div`
-    top: 2px;
-    display: inline-block;
-    position: relative;
-`;
-
-const ForrigeBehandlingTabell = styled.table`
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1rem;
-
-    td,
-    th {
-        border-bottom: 1px solid ${navFarger.navGra40};
-        padding: 0rem 2rem 0rem 0rem;
-        text-align: left;
-    }
-`;
-
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
-    const [visForrigeBehandling, settVisForrigeBehandling] = useState<boolean>(false);
     const {
         vilkår,
         hentVilkår,
@@ -97,67 +52,12 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
                 return (
                     <>
-                        <Container>
-                            <OppdaterOpplysninger
-                                oppdatertDato={grunnlagsdataInnhentetDato}
-                                behandlingErRedigerbar={behandlingErRedigerbar}
-                                oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
-                                behandlingId={behandlingId}
-                            />
-                            <Alertstripe variant={'info'} fullWidth={false}>
-                                <InfoHeader>
-                                    <LenkeKnapp
-                                        onClick={() => {
-                                            settVisForrigeBehandling((prevState) => !prevState);
-                                        }}
-                                        minWidth={'16px'}
-                                    >
-                                        <Normaltekst>
-                                            Gjenbruk vurdering av inngangsvilkår fra forrige
-                                            behandling?
-                                        </Normaltekst>
-                                    </LenkeKnapp>
-                                    <LenkeKnapp
-                                        onClick={() => {
-                                            settVisForrigeBehandling((prevState) => !prevState);
-                                        }}
-                                        minWidth={'16px'}
-                                    >
-                                        <LenkeIkon>
-                                            {visForrigeBehandling ? <Collapse /> : <Expand />}
-                                        </LenkeIkon>
-                                    </LenkeKnapp>
-                                </InfoHeader>
-                                {visForrigeBehandling && (
-                                    <ForrigeBehandlingTabell>
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <b>Stønadstype</b>
-                                                </th>
-                                                <th>
-                                                    <b>Behandlingstype</b>
-                                                </th>
-                                                <th>
-                                                    <b>Vedtaksdato</b>
-                                                </th>
-                                                <th>
-                                                    <b>Vedtaksresultat</b>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Barnetilsyn</td>
-                                                <td>Førstegangsbehandling</td>
-                                                <td>01.04.2022</td>
-                                                <td>Innvilget</td>
-                                            </tr>
-                                        </tbody>
-                                    </ForrigeBehandlingTabell>
-                                )}
-                            </Alertstripe>
-                        </Container>
+                        <InngangsvilkårHeader
+                            oppdatertDato={grunnlagsdataInnhentetDato}
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
+                            behandlingId={behandlingId}
+                        />
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
