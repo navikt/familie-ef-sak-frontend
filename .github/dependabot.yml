@@ -19,8 +19,8 @@ updates:
      update-types: ["version-update:semver-patch"]
 
 - package-ecosystem: github-actions
-   directory: "/"
-   schedule:
-     interval: weekly
-     day: "sunday"
-     time: "04:00"
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: "sunday"
+    time: "04:00"
