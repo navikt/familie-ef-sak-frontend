@@ -17,9 +17,8 @@ export const enhetTilTekstFortrolig: Record<FortroligEnhet, string> = {
 };
 
 export const enhetTilTekstPåString: Record<string, string> = {
-    '4489': '4489 NAY',
-    '4483': '4483 Egne ansatte',
-    '2103': '2103 NAV Vikafossen',
+    ...enhetTilTekstIkkeFortrolig,
+    ...enhetTilTekstFortrolig,
 };
 
 export const enhetTilTekst = (
