@@ -75,7 +75,7 @@ const oppgaveRequestMedDefaultEnhet = (
         const enhet = oppgaveRequest.enhet;
         return {
             ...oppgaveRequest,
-            enhet: enhet && enhet !== FortroligEnhet.VIKAFOSSEN ? enhet : undefined,
+            enhet: enhet,
         };
     }
 };
