@@ -2,10 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { OppdaterOpplysninger } from './OppdaterOpplysninger';
 import { ForrigeBehandlingBoks } from './ForrigeBehandlingBoks';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 
-const Container = styled.div`
+const Container = styled.div<{ åpenHøyremeny: boolean }>`
     display: flex;
     justify-content: space-between;
+    @media only screen and (max-width: ${(p) => (p.åpenHøyremeny ? '1600px' : '1300px')}) {
+        flex-direction: column;
+    }
 `;
 
 interface Props {
@@ -21,8 +25,9 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     oppdaterGrunnlagsdata,
     behandlingId,
 }) => {
+    const { åpenHøyremeny } = useBehandling();
     return (
-        <Container>
+        <Container åpenHøyremeny={åpenHøyremeny}>
             <OppdaterOpplysninger
                 oppdatertDato={oppdatertDato}
                 behandlingErRedigerbar={behandlingErRedigerbar}

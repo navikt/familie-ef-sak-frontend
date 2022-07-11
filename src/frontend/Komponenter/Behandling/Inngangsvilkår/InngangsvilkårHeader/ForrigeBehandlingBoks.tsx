@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { Collapse, Expand } from '@navikt/ds-icons';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Button } from '@navikt/ds-react';
 import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
 
 const Alertstripe = styled(Alert)`
     margin-top: 1rem;
     margin-right: 2rem;
+    margin-left: 2rem;
     margin-bottom: 1rem;
     width: 40rem;
 `;
@@ -39,6 +40,12 @@ const ForrigeBehandlingTabell = styled.table`
     }
 `;
 
+const Gjenbruksknapp = styled(Button)`
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+`;
+
 export const ForrigeBehandlingBoks: React.FC = () => {
     const [visForrigeBehandling, settVisForrigeBehandling] = useState<boolean>(false);
 
@@ -65,32 +72,37 @@ export const ForrigeBehandlingBoks: React.FC = () => {
                 </LenkeKnapp>
             </InfoHeader>
             {visForrigeBehandling && (
-                <ForrigeBehandlingTabell>
-                    <thead>
-                        <tr>
-                            <th>
-                                <b>Stønadstype</b>
-                            </th>
-                            <th>
-                                <b>Behandlingstype</b>
-                            </th>
-                            <th>
-                                <b>Vedtaksdato</b>
-                            </th>
-                            <th>
-                                <b>Vedtaksresultat</b>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Barnetilsyn</td>
-                            <td>Førstegangsbehandling</td>
-                            <td>01.04.2022</td>
-                            <td>Innvilget</td>
-                        </tr>
-                    </tbody>
-                </ForrigeBehandlingTabell>
+                <>
+                    <ForrigeBehandlingTabell>
+                        <thead>
+                            <tr>
+                                <th>
+                                    <b>Stønadstype</b>
+                                </th>
+                                <th>
+                                    <b>Behandlingstype</b>
+                                </th>
+                                <th>
+                                    <b>Vedtaksdato</b>
+                                </th>
+                                <th>
+                                    <b>Vedtaksresultat</b>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Barnetilsyn</td>
+                                <td>Førstegangsbehandling</td>
+                                <td>01.04.2022</td>
+                                <td>Innvilget</td>
+                            </tr>
+                        </tbody>
+                    </ForrigeBehandlingTabell>
+                    <Gjenbruksknapp variant="primary" size="small">
+                        Gjenbruk vilkårsvurdering
+                    </Gjenbruksknapp>
+                </>
             )}
         </Alertstripe>
     );
