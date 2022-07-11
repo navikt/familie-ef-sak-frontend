@@ -81,7 +81,7 @@ export const kodeTilTekst: Record<Kode, string> = {
     OVERTFØRT_NY_LØSNING: 'Overf. ny løsning',
 };
 
-enum Sakstype {
+export enum Sakstype {
     KLAGE = 'KLAGE',
     MASKINELL_G_OMREGNING = 'MASKINELL_G_OMREGNING',
     REVURDERING = 'REVURDERING',
@@ -117,7 +117,7 @@ export const sakstypeTilTekst: Record<Sakstype, string> = {
     SØKNAD_ØKNING_ENDRING: 'Søknad om økning/endring (SØ)',
 };
 
-enum InfotrygdOvergangsstønadKode {
+export enum InfotrygdOvergangsstønadKode {
     BARN_UNDER_1_3_ÅR = 'BARN_UNDER_1_3_ÅR',
     YRKESRETTET_AKTIVITET_BARN_FYLT_1_3_ÅR = 'YRKESRETTET_AKTIVITET_BARN_FYLT_1_3_ÅR',
     UNNTAK_FRA_KRAV_TIL_YRKESRETTET_AKTIVITET = 'UNNTAK_FRA_KRAV_TIL_YRKESRETTET_AKTIVITET',
@@ -159,7 +159,7 @@ export const overgangsstønadKodeTilTekst: Record<InfotrygdOvergangsstønadKode,
     FORTSATT_INNVILGET_TROSS_VARSEL_OM_OPPHØR_PGA_SAMBOER: 'Fortsatt innvilget tro',
 };
 
-enum InfotrygdAktivitetstype {
+export enum InfotrygdAktivitetstype {
     I_ARBEID = 'I_ARBEID',
     I_UTDANNING = 'I_UTDANNING',
     TILMELDT_SOM_REELL_ARBEIDSSØKER = 'TILMELDT_SOM_REELL_ARBEIDSSØKER',

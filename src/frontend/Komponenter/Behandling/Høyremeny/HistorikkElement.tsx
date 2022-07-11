@@ -4,12 +4,7 @@ import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
-import {
-    Behandlingshistorikk,
-    HistorikkElementProps,
-    LinjeProps,
-    StyledHistorikkElementProps,
-} from './typer';
+import { HistorikkElementProps, LinjeProps, StyledHistorikkElementProps } from './typer';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
@@ -56,16 +51,13 @@ const StyledHistorikkElement = styled.li`
     }
 `;
 
-const renderTittel = (behandlingshistorikk: Behandlingshistorikk): string => {
-    return hendelseTilHistorikkTekst[behandlingshistorikk.hendelse];
-};
-
 const HistorikkElement: React.FC<HistorikkElementProps> = ({
     behandlingshistorikk,
     første,
     siste,
     behandlingId,
     behandling,
+    skalViseBegrunnelse,
 }) => {
     const { axiosRequest } = useApp();
 
@@ -116,12 +108,12 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 <Linje siste={siste} størreMellomrom={harMetadata} />
             </IkonMedStipletLinje>
             <Innhold>
-                <Element>{renderTittel(behandlingshistorikk)}</Element>
+                <Element>{hendelseTilHistorikkTekst[behandlingshistorikk.hendelse]}</Element>
                 <Undertekst>
                     {formaterIsoDatoTidKort(behandlingshistorikk.endretTid)} |{' '}
                     {behandlingshistorikk.endretAvNavn}
                 </Undertekst>
-                {behandlingshistorikk.metadata?.begrunnelse && (
+                {behandlingshistorikk.metadata?.begrunnelse && skalViseBegrunnelse && (
                     <Undertekst>
                         Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
                     </Undertekst>

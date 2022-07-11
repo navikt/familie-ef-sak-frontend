@@ -8,7 +8,6 @@ import { useApp } from '../../App/context/AppContext';
 const modalTittelToTekst: Record<ModalType, string> = {
     SENDT_TIL_BESLUTTER: 'Vedtaket er sendt til beslutter',
     VEDTAK_GODKJENT: 'Vedtaket er godkjent',
-    BEHANDLES_I_GOSYS: 'Saken er avsluttet og må behandles i Gosys',
 };
 
 const ModalController: React.FC = () => {
@@ -39,25 +38,6 @@ const ModalController: React.FC = () => {
                                 }}
                                 children="Lukk"
                             />,
-                            <Knapp
-                                key={'oppgavebenk'}
-                                type={'hoved'}
-                                mini={true}
-                                onClick={() => gåTilUrl('/oppgavebenk')}
-                                children="Til oppgavebenk"
-                            />,
-                        ],
-                    }}
-                />
-            );
-        case ModalType.BEHANDLES_I_GOSYS:
-            return (
-                <UIModalWrapper
-                    modal={{
-                        tittel: `${modalTittelToTekst[ModalType.BEHANDLES_I_GOSYS]}`,
-                        lukkKnapp: false,
-                        visModal: modalState.modalType === ModalType.BEHANDLES_I_GOSYS,
-                        actions: [
                             <Knapp
                                 key={'oppgavebenk'}
                                 type={'hoved'}

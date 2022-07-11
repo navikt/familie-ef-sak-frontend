@@ -4,8 +4,8 @@ import { slåSammenOgSorterPerioder } from '../Infotrygd/grupperInfotrygdperiode
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import {
     InfotrygdPerioderSkolepenger,
-    TabellInfotrygdBarnetilsynperioderKompakt,
-    TabellInfotrygdOvergangsstønadperioderKompakt,
+    TabellInfotrygdBarnetilsynperioder,
+    TabellInfotrygdOvergangsstønadperioder,
 } from './TabellInfotrygdPerioder';
 
 const InfotrygdPerioder: React.FC<{
@@ -18,11 +18,9 @@ const InfotrygdPerioder: React.FC<{
     const sammenslåttePerioder = slåSammenOgSorterPerioder(perioder);
     switch (stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
-            return (
-                <TabellInfotrygdOvergangsstønadperioderKompakt perioder={sammenslåttePerioder} />
-            );
+            return <TabellInfotrygdOvergangsstønadperioder perioder={sammenslåttePerioder} />;
         case Stønadstype.BARNETILSYN:
-            return <TabellInfotrygdBarnetilsynperioderKompakt perioder={sammenslåttePerioder} />;
+            return <TabellInfotrygdBarnetilsynperioder perioder={sammenslåttePerioder} />;
         case Stønadstype.SKOLEPENGER:
             return <InfotrygdPerioderSkolepenger perioder={sammenslåttePerioder} />;
     }

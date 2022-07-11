@@ -5,6 +5,7 @@ import axe from '@axe-core/react';
 import App from './App';
 import './index.less';
 import '@navikt/ds-css';
+import { createRoot } from 'react-dom/client';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');
@@ -36,8 +37,6 @@ if (process.env.NODE_ENV !== 'production') {
 })();
 
 const rootElement = document.getElementById('app');
-const renderApp = (Component: React.ComponentType): void => {
-    ReactDOM.render(<Component />, rootElement);
-};
-
-renderApp(App);
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(rootElement!);
+root.render(<App />);

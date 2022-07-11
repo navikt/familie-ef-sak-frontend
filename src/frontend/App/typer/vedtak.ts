@@ -214,7 +214,6 @@ export enum EBehandlingResultat {
     SANKSJONERE = 'SANKSJONERE',
     AVSLÅ = 'AVSLÅ',
     HENLEGGE = 'HENLEGGE',
-    BEHANDLE_I_GOSYS = 'BEHANDLE_I_GOSYS',
     OPPHØRT = 'OPPHØRT',
 }
 
@@ -380,7 +379,6 @@ export const behandlingResultatTilTekst: Record<EBehandlingResultat, string> = {
     INNVILGE_UTEN_UTBETALING: 'Avslag/opphør pga kontantstøtte',
     AVSLÅ: 'Avslå',
     HENLEGGE: 'Henlegge',
-    BEHANDLE_I_GOSYS: 'Behandle i Gosys',
     OPPHØRT: 'Opphørt',
     SANKSJONERE: 'Sanksjonere',
 };
