@@ -91,6 +91,9 @@ const VisVurdering: FC<Props> = ({
             delvilkårsvurdering.resultat === Vilkårsresultat.OPPFYLT ||
             delvilkårsvurdering.resultat === Vilkårsresultat.IKKE_OPPFYLT
     );
+    const erAutomatiskVurdert = vurdering.delvilkårsvurderinger.every(
+        (delvilkårsvurdering) => delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT
+    );
     return (
         <StyledVurdering key={vurdering.id}>
             <BrukerMedBlyantIkon />
@@ -101,6 +104,7 @@ const VisVurdering: FC<Props> = ({
                         {tittelTekst
                             ? tittelTekst
                             : `Vilkår ${resultatTilTekst[vurdering.resultat]}`}
+                        {erAutomatiskVurdert ? ` (automatisk)` : ``}
                     </Undertittel>
                 </StyledIkonOgTittel>
                 {behandlingErRedigerbar && (
@@ -137,6 +141,7 @@ const VisVurdering: FC<Props> = ({
             <VilkårOgSistOppdatertWrapper>
                 {sistOppdatert &&
                     (vilkårsresultat === Vilkårsresultat.OPPFYLT ||
+                        vilkårsresultat === Vilkårsresultat.AUTOMATISK_OPPFYLT ||
                         vilkårsresultat === Vilkårsresultat.IKKE_OPPFYLT) && (
                         <SistOppdatertTekst>Sist endret dato - {sistOppdatert}</SistOppdatertTekst>
                     )}
