@@ -11,11 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EToast } from '../../../App/typer/toast';
-
-export enum EHenlagtårsak {
-    TRUKKET_TILBAKE = 'TRUKKET_TILBAKE',
-    FEILREGISTRERT = 'FEILREGISTRERT',
-}
+import { EHenlagtårsak } from '../../../App/typer/Behandlingsårsak';
 
 interface IHenlegg {
     settHenlagtårsak: (årsak: EHenlagtårsak) => void;

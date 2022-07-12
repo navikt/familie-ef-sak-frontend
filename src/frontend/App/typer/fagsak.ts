@@ -2,7 +2,7 @@ import { Stønadstype } from './behandlingstema';
 import { Behandlingstype } from './behandlingstype';
 import { BehandlingStatus } from './behandlingstatus';
 import { Steg } from '../../Komponenter/Behandling/Høyremeny/Steg';
-import { Behandlingsårsak } from '../typer/Behandlingsårsak';
+import { Behandlingsårsak, EHenlagtårsak } from '../typer/Behandlingsårsak';
 import { TilbakekrevingBehandlingsresultatstype } from './tilbakekreving';
 
 export interface IFagsakPerson {
@@ -42,6 +42,7 @@ export interface Behandling {
     opprettet: string;
     resultat: BehandlingResultat;
     behandlingsårsak: Behandlingsårsak;
+    henlagtÅrsak?: EHenlagtårsak;
     stønadstype: Stønadstype;
     vedtaksdato?: string;
 }
