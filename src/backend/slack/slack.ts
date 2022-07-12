@@ -2,14 +2,14 @@ import { Request, Response as ExpressResponse } from 'express';
 import fetch, { Response } from 'node-fetch';
 import { namespace } from '../config';
 import { logRequest } from '@navikt/familie-backend';
-import { HttpsProxyAgent } from 'https-proxy-agent';
 import { Agent } from 'node:http';
+import * as ProxyAgent from 'https-proxy-agent';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
 const token = process.env.SLACK_TOKEN;
 const agent =
     process.env.ENV !== 'local' && process.env.ENV !== 'e2e'
-        ? (new HttpsProxyAgent({
+        ? (new ProxyAgent.HttpsProxyAgent({
               host: 'webproxy.nais',
               secureProxy: true,
               port: 8088,
@@ -38,7 +38,7 @@ export const slackNotify = (req: Request, res: ExpressResponse, kanal: string): 
         },
         method: 'POST',
     })
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .then((_: Response) => {
             res.status(200).send('OK');
         })
