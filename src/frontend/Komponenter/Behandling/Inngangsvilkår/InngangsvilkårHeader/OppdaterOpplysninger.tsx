@@ -6,7 +6,7 @@ import { Refresh } from '@navikt/ds-icons';
 import { FamilieKnapp } from '@navikt/familie-form-elements';
 import { HelpText } from '@navikt/ds-react';
 
-const Baseline = styled.div`
+const FlexWrapper = styled.div`
     display: flex;
     align-items: baseline;
 `;
@@ -49,7 +49,7 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
     }, [oppdatertDato]);
 
     return (
-        <Baseline>
+        <FlexWrapper>
             <Container>
                 <Oppdateringstekst children={grunnlagsdataSistOppdatert} />
                 <FamilieKnapp
@@ -74,6 +74,6 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
                     dette bli tatt med i oppdateringen.
                 </HelpText>
             </Container>
-        </Baseline>
+        </FlexWrapper>
     );
 };
