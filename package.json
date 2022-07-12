@@ -7,8 +7,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "NODE_ENV=production node node_dist/backend/server.js",
-    "start:mock": "NODE_ENV=development node dev-server/mock-server.js",
+    "start": "NODE_ENV=production node node_dist/backend/server.js --es-module-specifier-resolution=node",
+    "start:mock": "NODE_ENV=development node dev-server/mock-server.js --es-module-specifier-resolution=node",
     "start:dev": "tsc && NODE_ENV=development node --es-module-specifier-resolution=node --trace-deprecation node_dist/backend/server.js",
     "build": "yarn build:prod",
     "build:dev": "tsc & NODE_ENV=development webpack --config ./build_n_deploy/webpack/webpack.dev.js",
