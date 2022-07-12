@@ -5,6 +5,10 @@ import navFarger from 'nav-frontend-core';
 import { Collapse, Expand } from '@navikt/ds-icons';
 import { Alert, Button } from '@navikt/ds-react';
 import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
+import { Behandling } from '../../../../App/typer/fagsak';
+import { behandlingstypeTilTekst } from '../../../../App/typer/behandlingstype';
+import { formaterIsoDato } from '../../../../App/utils/formatter';
+import { stønadstypeTilTekst } from '../../../../App/typer/behandlingstema';
 
 const Alertstripe = styled(Alert)`
     margin-top: 1rem;
@@ -46,15 +50,20 @@ const Gjenbruksknapp = styled(Button)`
     margin-right: auto;
 `;
 
-export const KopierInngangsvilkår: React.FC = () => {
-    const [visForrigeBehandling, settVisForrigeBehandling] = useState<boolean>(false);
+interface Props {
+    behandlinger: Behandling[];
+}
+
+export const KopierInngangsvilkår: React.FC<Props> = ({ behandlinger }) => {
+    const [visForrigeBehandlinger, settVisForrigeBehandlinger] = useState<boolean>(false);
+    const forrigeBehandling = behandlinger.slice(0, 1); // Dersom vi ønsker at bruker skal kunne velge mellom flere tidligere behandlinger kan denne linjen fjernes
 
     return (
         <Alertstripe variant={'info'} fullWidth={false}>
             <InfoHeader>
                 <LenkeKnapp
                     onClick={() => {
-                        settVisForrigeBehandling((prevState) => !prevState);
+                        settVisForrigeBehandlinger((prevState) => !prevState);
                     }}
                     minWidth={'16px'}
                 >
@@ -64,14 +73,14 @@ export const KopierInngangsvilkår: React.FC = () => {
                 </LenkeKnapp>
                 <LenkeKnapp
                     onClick={() => {
-                        settVisForrigeBehandling((prevState) => !prevState);
+                        settVisForrigeBehandlinger((prevState) => !prevState);
                     }}
                     minWidth={'16px'}
                 >
-                    <LenkeIkon>{visForrigeBehandling ? <Collapse /> : <Expand />}</LenkeIkon>
+                    <LenkeIkon>{visForrigeBehandlinger ? <Collapse /> : <Expand />}</LenkeIkon>
                 </LenkeKnapp>
             </InfoHeader>
-            {visForrigeBehandling && (
+            {visForrigeBehandlinger && (
                 <>
                     <ForrigeBehandlingTabell>
                         <thead>
@@ -91,12 +100,19 @@ export const KopierInngangsvilkår: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Barnetilsyn</td>
-                                <td>Førstegangsbehandling</td>
-                                <td>01.04.2022</td>
-                                <td>Innvilget</td>
-                            </tr>
+                            {forrigeBehandling.map((behandling) => {
+                                return (
+                                    <tr>
+                                        <td>{stønadstypeTilTekst[behandling.stønadstype]}</td>
+                                        <td>{behandlingstypeTilTekst[behandling.type]}</td>
+                                        <td>
+                                            {behandling.vedtaksdato &&
+                                                formaterIsoDato(behandling.vedtaksdato)}
+                                        </td>
+                                        <td>{behandling.resultat}</td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </ForrigeBehandlingTabell>
                     <Gjenbruksknapp variant="primary" size="small">

@@ -57,6 +57,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
                             behandlingId={behandlingId}
+                            behandling={behandling}
                         />
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
