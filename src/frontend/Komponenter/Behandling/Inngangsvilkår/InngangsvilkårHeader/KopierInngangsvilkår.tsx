@@ -46,7 +46,7 @@ const Gjenbruksknapp = styled(Button)`
     margin-right: auto;
 `;
 
-export const ForrigeBehandlingBoks: React.FC = () => {
+export const KopierInngangsvilkår: React.FC = () => {
     const [visForrigeBehandling, settVisForrigeBehandling] = useState<boolean>(false);
 
     return (

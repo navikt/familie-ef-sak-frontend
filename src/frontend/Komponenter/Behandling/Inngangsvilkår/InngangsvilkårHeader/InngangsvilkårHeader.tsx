@@ -1,17 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { OppdaterOpplysninger } from './OppdaterOpplysninger';
-import { ForrigeBehandlingBoks } from './ForrigeBehandlingBoks';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { KopierInngangsvilkår } from './KopierInngangsvilkår';
 import { ToggleName } from '../../../../App/context/toggles';
 import { useToggles } from '../../../../App/context/TogglesContext';
 
-const Container = styled.div<{ åpenHøyremeny: boolean }>`
+const Container = styled.div`
     display: flex;
     justify-content: space-between;
-    @media only screen and (max-width: ${(p) => (p.åpenHøyremeny ? '1600px' : '1300px')}) {
-        flex-direction: column;
-    }
 `;
 
 interface Props {
@@ -27,10 +23,9 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     oppdaterGrunnlagsdata,
     behandlingId,
 }) => {
-    const { åpenHøyremeny } = useBehandling();
     const { toggles } = useToggles();
     return (
-        <Container åpenHøyremeny={åpenHøyremeny}>
+        <Container>
             <OppdaterOpplysninger
                 oppdatertDato={oppdatertDato}
                 behandlingErRedigerbar={behandlingErRedigerbar}
@@ -38,7 +33,7 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                 behandlingId={behandlingId}
             />
             {/*// TODO: Sjekke på forrige behandling for å avgjøre om man skal vise infoboks eller ikke*/}
-            {toggles[ToggleName.visGjenbrukAvVilkår] && <ForrigeBehandlingBoks />}
+            {toggles[ToggleName.visGjenbrukAvVilkår] && <KopierInngangsvilkår />}
         </Container>
     );
 };
