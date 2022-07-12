@@ -1,9 +1,9 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TypeScriptTypeChecker = require('fork-ts-checker-webpack-plugin');
-const ESLintPlugin = require('eslint-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TypeScriptTypeChecker from 'fork-ts-checker-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
-module.exports = {
+const common = {
     entry: {
         'familie-ef-sak': ['./src/frontend/index.tsx'],
     },
@@ -14,6 +14,18 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.m?js$/,
+                resolve: {
+                    fullySpecified: false, // Fikser at man ikke kan gjøre import uten filextension fra moduler med type: module i package.json
+                },
+            },
+            {
+                test: /\.c?js$/,
+                resolve: {
+                    fullySpecified: false, // Fikser at man ikke kan gjøre import uten filextension fra moduler med type: module i package.json
+                },
+            },
             {
                 test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
                 use: [`file-loader`],
@@ -63,3 +75,4 @@ module.exports = {
         }),
     ],
 };
+export default common;
