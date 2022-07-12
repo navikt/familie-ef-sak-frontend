@@ -2,7 +2,7 @@ import { Request, Response as ExpressResponse } from 'express';
 import fetch, { Response } from 'node-fetch';
 import { namespace } from '../config';
 import { logRequest } from '@navikt/familie-backend';
-import HttpsProxyAgent from 'https-proxy-agent/dist/agent';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 import { Agent } from 'node:http';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
@@ -38,6 +38,7 @@ export const slackNotify = (req: Request, res: ExpressResponse, kanal: string): 
         },
         method: 'POST',
     })
+        // eslint-disable-next-line
         .then((_: Response) => {
             res.status(200).send('OK');
         })
