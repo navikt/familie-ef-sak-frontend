@@ -6,7 +6,7 @@ import { oppgaveTypeTilTekst } from './typer/oppgavetema';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
 import CustomSelect from './CustomSelect';
-import { enhetTilTekst, FortroligEnhet } from './typer/enhet';
+import { enhetTilTekst, FortroligEnhet, IkkeFortroligEnhet } from './typer/enhet';
 import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../App/utils/utils';
 import { IOppgaveRequest } from './typer/oppgaverequest';
@@ -62,6 +62,24 @@ interface Feil {
 
 const initFeilObjekt = {} as Feil;
 
+const oppgaveRequestMedDefaultEnhet = (
+    oppgaveRequest: IOppgaveRequest,
+    harSaksbehandlerStrengtFortroligRolle: boolean
+): IOppgaveRequest => {
+    if (harSaksbehandlerStrengtFortroligRolle) {
+        return {
+            ...oppgaveRequest,
+            enhet: FortroligEnhet.VIKAFOSSEN,
+        };
+    } else {
+        const enhet = oppgaveRequest.enhet;
+        return {
+            ...oppgaveRequest,
+            enhet: enhet || IkkeFortroligEnhet.NAY,
+        };
+    }
+};
+
 const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
     hentOppgaver,
     mapper,
@@ -75,7 +93,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
     );
     const tomOppgaveRequest = harSaksbehandlerStrengtFortroligRolle
         ? { enhet: FortroligEnhet.VIKAFOSSEN }
-        : {};
+        : { enhet: IkkeFortroligEnhet.NAY };
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
 
@@ -98,25 +116,17 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
     }, [oppgaveRequest.opprettetFom, oppgaveRequest.opprettetTom]);
 
     useEffect(() => {
-        const fraLocalStorage = hentFraLocalStorage(
+        const fraLocalStorage = hentFraLocalStorage<IOppgaveRequest>(
             oppgaveRequestKey(innloggetSaksbehandler.navIdent),
             {}
         );
-        if (fraLocalStorage) {
-            if (harSaksbehandlerStrengtFortroligRolle) {
-                settOppgaveRequest({
-                    ...fraLocalStorage,
-                    enhet: FortroligEnhet.VIKAFOSSEN,
-                });
-            } else {
-                settOppgaveRequest(fraLocalStorage);
-            }
-            hentOppgaver(fraLocalStorage);
-        } else {
-            if (harSaksbehandlerStrengtFortroligRolle) {
-                settOppgaveRequest({ enhet: FortroligEnhet.VIKAFOSSEN });
-            }
-        }
+
+        const oppgaveRequestMedEnhet = oppgaveRequestMedDefaultEnhet(
+            fraLocalStorage,
+            harSaksbehandlerStrengtFortroligRolle
+        );
+        settOppgaveRequest(oppgaveRequestMedEnhet);
+        hentOppgaver(oppgaveRequestMedEnhet);
     }, [hentOppgaver, harSaksbehandlerStrengtFortroligRolle, innloggetSaksbehandler.navIdent]);
 
     const saksbehandlerTekst =
@@ -175,7 +185,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     options={enhetTilTekst(harSaksbehandlerStrengtFortroligRolle)}
                     value={oppgaveRequest.enhet}
                     sortDesc={true}
-                    skalSkjuleValgetAlle={harSaksbehandlerStrengtFortroligRolle}
+                    skalSkjuleValgetAlle={true}
                 />
                 <MappeVelger
                     onChange={(val) => settOppgave('mappeId')(parseInt(val))}
