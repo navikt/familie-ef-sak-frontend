@@ -3,7 +3,6 @@ import { Request, Response, Router } from 'express';
 import path from 'path';
 import { buildPath, roller, urlAInntekt } from './config';
 import { prometheusTellere } from './metrikker';
-import { slackNotify } from './slack/slack';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
 export default (authClient: Client, router: Router): Router => {
@@ -17,11 +16,6 @@ export default (authClient: Client, router: Router): Router => {
     router.get('/error', (_req: Request, res: Response) => {
         prometheusTellere.errorRoute.inc();
         res.sendFile('error.html', { root: path.join(`assets/`) });
-    });
-
-    // SLACK
-    router.post('/slack/notify/:kanal', (req: Request, res: Response) => {
-        slackNotify(req, res, req.params.kanal);
     });
 
     router.post('/logg-feil', (req: Request, res: Response) => {
