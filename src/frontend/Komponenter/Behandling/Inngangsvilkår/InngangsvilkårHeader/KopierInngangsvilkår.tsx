@@ -9,6 +9,7 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import { behandlingstypeTilTekst } from '../../../../App/typer/behandlingstype';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { stønadstypeTilTekst } from '../../../../App/typer/behandlingstema';
+import KopierInngangsvilkårModal from './KopierInngangsvilkårModal';
 
 const Alertstripe = styled(Alert)`
     margin-top: 1rem;
@@ -56,6 +57,7 @@ interface Props {
 
 export const KopierInngangsvilkår: React.FC<Props> = ({ behandlinger }) => {
     const [visForrigeBehandlinger, settVisForrigeBehandlinger] = useState<boolean>(false);
+    const [visModal, settVisModal] = useState<boolean>(false);
     const forrigeBehandling = behandlinger.slice(0, 1); // Dersom vi ønsker at bruker skal kunne velge mellom flere tidligere behandlinger kan denne linjen fjernes
 
     return (
@@ -115,9 +117,18 @@ export const KopierInngangsvilkår: React.FC<Props> = ({ behandlinger }) => {
                             })}
                         </tbody>
                     </ForrigeBehandlingTabell>
-                    <Gjenbruksknapp variant="primary" size="small">
+                    <Gjenbruksknapp
+                        variant="primary"
+                        size="small"
+                        onClick={() => settVisModal(true)}
+                    >
                         Gjenbruk vilkårsvurdering
                     </Gjenbruksknapp>
+                    <KopierInngangsvilkårModal
+                        visModal={visModal}
+                        settVisModal={settVisModal}
+                        behandlingId={forrigeBehandling[0].id}
+                    />
                 </>
             )}
         </Alertstripe>
