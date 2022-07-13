@@ -12,4 +12,5 @@ export enum ToggleName {
     kanJournalFøreSkolepenger = 'familie.ef.sak.skolepenger',
     skalViseOpprettNyBehandlingSkolepenger = 'familie.ef.sak.frontend-skal-vise-opprett-ny-behandling-knapp-skolepenger',
     skolepengerOpphør = 'familie.ef.sak.skolepenger-opphor',
+    visGjenbrukAvVilkår = 'familie.ef.sak.frontend-skal-vise-alertboks-gjenbruk-vilkar',
 }
