@@ -107,7 +107,10 @@ export const InnvilgeVedtak: React.FC<{
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
-    const låsVedtaksperiodeRad = revurderesFra && lagretInnvilgetVedtak?.perioder.length;
+    const låsVedtaksperiodeRad =
+        revurderesFra &&
+        lagretInnvilgetVedtak?.perioder.length &&
+        toggles[ToggleName.skalPrefylleVedtaksperider];
 
     useEffect(() => {
         settRevurderesFraOgMedFeilmelding(null);
