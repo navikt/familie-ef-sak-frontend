@@ -32,16 +32,16 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
 
 const PersonSøk: React.FC = () => {
     const { gåTilUrl, axiosRequest } = useApp();
-    const [resultat, settResultat] = React.useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
+    const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
     const [uuidSøk, settUuidSøk] = useState(uuidv4());
 
     const nullstillResultat = (): void => {
-        settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
         settResultat(byggTomRessurs());
     };
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
         gåTilUrl(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+        settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
         nullstillResultat();
     };
 
