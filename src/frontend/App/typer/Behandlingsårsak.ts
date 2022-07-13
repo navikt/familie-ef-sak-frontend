@@ -51,3 +51,13 @@ export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
     REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
         'Feilutbetalt beløp helt eller delvis bortfalt',
 };
+
+export enum EHenlagtårsak {
+    TRUKKET_TILBAKE = 'TRUKKET_TILBAKE',
+    FEILREGISTRERT = 'FEILREGISTRERT',
+}
+
+export const henlagtÅrsakTilTekst: Record<EHenlagtårsak, string> = {
+    TRUKKET_TILBAKE: 'Trukket tilbake',
+    FEILREGISTRERT: 'Feilregistrert',
+};
