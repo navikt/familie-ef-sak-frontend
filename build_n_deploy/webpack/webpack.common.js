@@ -1,9 +1,9 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TypeScriptTypeChecker = require('fork-ts-checker-webpack-plugin');
-const ESLintPlugin = require('eslint-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TypeScriptTypeChecker from 'fork-ts-checker-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
-module.exports = {
+const common = {
     entry: {
         'familie-ef-sak': ['./src/frontend/index.tsx'],
     },
@@ -63,3 +63,4 @@ module.exports = {
         }),
     ],
 };
+export default common;

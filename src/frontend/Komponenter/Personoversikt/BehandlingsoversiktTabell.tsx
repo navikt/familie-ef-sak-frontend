@@ -16,6 +16,8 @@ import { formatterEnumVerdi } from '../../App/utils/utils';
 import {
     behandlingOgTilbakekrevingsårsakTilTekst,
     Behandlingsårsak,
+    EHenlagtårsak,
+    henlagtÅrsakTilTekst,
 } from '../../App/typer/Behandlingsårsak';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
@@ -43,6 +45,7 @@ interface BehandlingsoversiktTabellBehandling {
     id: string;
     type: Behandlingstype | TilbakekrevingBehandlingstype;
     årsak?: Behandlingsårsak;
+    henlagtÅrsak?: EHenlagtårsak;
     status: string;
     vedtaksdato?: string;
     resultat?: BehandlingResultat | TilbakekrevingBehandlingsresultatstype;
@@ -61,6 +64,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 id: behandling.id,
                 type: behandling.type,
                 årsak: behandling.behandlingsårsak,
+                henlagtÅrsak: behandling.henlagtÅrsak,
                 status: behandling.status,
                 resultat: behandling.resultat,
                 opprettet: behandling.opprettet,
@@ -101,6 +105,9 @@ export const BehandlingsoversiktTabell: React.FC<{
             : behandling.årsak
             ? behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak]
             : '-';
+
+    const finnHenlagtÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
+        behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';
 
     return (
         <StyledTable className="tabell">
@@ -144,6 +151,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                                             behandlingResultatInkludertTilbakekrevingTilTekst[
                                                 behandling.resultat
                                             ]}
+                                        {finnHenlagtÅrsak(behandling)}
                                     </Link>
                                 ) : (
                                     <a
