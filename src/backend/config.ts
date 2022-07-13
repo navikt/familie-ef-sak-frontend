@@ -41,7 +41,7 @@ const Environment = (): IEnvironment => {
             buildPath: 'frontend_development',
             namespace: 'local',
             sakProxyUrl: 'http://localhost:8093',
-            brevProxyUrl: 'http://localhost:8001',
+            brevProxyUrl: 'http://127.0.0.1:8001',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
