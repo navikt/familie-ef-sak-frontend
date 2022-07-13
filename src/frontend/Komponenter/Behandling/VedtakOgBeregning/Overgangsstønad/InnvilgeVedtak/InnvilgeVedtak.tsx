@@ -175,7 +175,10 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     const skalViseVedtaksperiodeOgInntekt =
-        behandling.type !== Behandlingstype.REVURDERING || revurderesFra || !behandlingErRedigerbar;
+        behandling.type !== Behandlingstype.REVURDERING ||
+        revurderesFra ||
+        !behandlingErRedigerbar ||
+        !toggles[ToggleName.skalPrefylleVedtaksperider];
 
     const hentLagretBeløpForYtelse = useCallback(() => {
         axiosRequest<IBeløpsperiode[], void>({
@@ -278,13 +281,14 @@ export const InnvilgeVedtak: React.FC<{
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
-                {behandling.type === Behandlingstype.REVURDERING && behandlingErRedigerbar && (
+                {!toggles[ToggleName.skalPrefylleVedtaksperider] ||
+                (behandling.type === Behandlingstype.REVURDERING && behandlingErRedigerbar) ? (
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
                         feilmelding={revurderesFraOgMedFeilmelding}
                     />
-                )}
+                ) : null}
                 {skalViseVedtaksperiodeOgInntekt && (
                     <>
                         <Heading spacing size="small" level="5">
@@ -367,7 +371,11 @@ export const InnvilgeVedtak: React.FC<{
                         <Hovedknapp
                             hidden={!behandlingErRedigerbar}
                             htmlType="submit"
-                            disabled={laster || !!revurderesFraOgMedFeilmelding}
+                            disabled={
+                                laster ||
+                                (!!revurderesFraOgMedFeilmelding &&
+                                    toggles[ToggleName.skalPrefylleVedtaksperider])
+                            }
                         >
                             Lagre vedtak
                         </Hovedknapp>
