@@ -281,8 +281,9 @@ export const InnvilgeVedtak: React.FC<{
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
-                {toggles[ToggleName.skalPrefylleVedtaksperider] ||
-                (behandling.type === Behandlingstype.REVURDERING && behandlingErRedigerbar) ? (
+                {toggles[ToggleName.skalPrefylleVedtaksperider] &&
+                behandling.type === Behandlingstype.REVURDERING &&
+                behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
