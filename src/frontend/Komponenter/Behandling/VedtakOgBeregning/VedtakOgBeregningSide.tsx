@@ -15,7 +15,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { VedtaksoppsummeringBarnetilsyn } from './Barnetilsyn/VedtaksoppsummeringBarnetilsyn';
 import VedtakOgBeregningSkolepenger from './Skolepenger/VedtakOgBeregningSkolepenger';
 import { VedtaksoppsummeringSkolepenger } from './Skolepenger/VedtaksoppsummeringSkolepenger';
-import { SøknadsinformasjonSkolepenger } from './Skolepenger/SøknadsinformasjonSkolepenger';
+import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -110,7 +110,7 @@ const VedtakOgBeregningSideSkolepenger: React.FC<{
     return (
         <>
             <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
-            <SøknadsinformasjonSkolepenger vilkår={vilkår} />
+            <SaksinformasjonSkolepenger vilkår={vilkår} />
 
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />

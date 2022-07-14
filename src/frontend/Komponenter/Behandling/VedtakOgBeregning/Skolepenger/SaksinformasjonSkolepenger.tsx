@@ -9,21 +9,32 @@ import {
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../../App/utils/formatter';
 import { IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
+import { Behandling } from '../../../../App/typer/fagsak';
+import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 
 type Props = {
     vilkår: IVilkår;
+    behandling: Behandling;
 };
-export const SøknadsinformasjonSkolepenger: React.FC<Props> = ({ vilkår }) => {
+export const SaksinformasjonSkolepenger: React.FC<Props> = ({ vilkår, behandling }) => {
     const utdanning = vilkår.grunnlag.aktivitet?.underUtdanning;
+    const skalViseSøknadsinfo =
+        !!utdanning && behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
     return (
         <FlexBoks>
             <GråBoks>
-                <SøknadsinformajsonUtdanning utdanning={utdanning} />
+                <SøknadsinformajsonUtdanning
+                    utdanning={utdanning}
+                    skalViseSøknadsinfo={skalViseSøknadsinfo}
+                />
                 <SaksbehanldingsinformasjonUtdanning vilkår={vilkår} />
             </GråBoks>
             <GråBoks>
-                <SøknadsinformajsonUtgifter utdanning={utdanning} />
+                <SøknadsinformajsonUtgifter
+                    utdanning={utdanning}
+                    skalViseSøknadsinfo={skalViseSøknadsinfo}
+                />
                 <SaksbehanldingsinformasjonUtdanning vilkår={vilkår} />
             </GråBoks>
         </FlexBoks>
@@ -66,8 +77,15 @@ const BreakWordBody = styled(BodyLong)`
     word-wrap: break-word;
 `;
 
-const SøknadsinformajsonUtdanning: React.FC<{ utdanning?: IUnderUtdanning }> = ({ utdanning }) => {
-    return utdanning ? (
+type SøknadsinfoProps = {
+    utdanning?: IUnderUtdanning;
+    skalViseSøknadsinfo: boolean;
+};
+const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
+    utdanning,
+    skalViseSøknadsinfo,
+}) => {
+    return utdanning && skalViseSøknadsinfo ? (
         <div style={{ order: -1 }}>
             <Heading spacing size="small">
                 Søknadsinformasjon - Utdanning
@@ -113,8 +131,11 @@ const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ 
     );
 };
 
-const SøknadsinformajsonUtgifter: React.FC<{ utdanning?: IUnderUtdanning }> = ({ utdanning }) => {
-    return utdanning ? (
+const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
+    utdanning,
+    skalViseSøknadsinfo,
+}) => {
+    return utdanning && skalViseSøknadsinfo ? (
         <div style={{ order: -1, paddingBottom: '2rem' }}>
             <Heading spacing size="small">
                 Søknadsinformasjon - Utdanning
