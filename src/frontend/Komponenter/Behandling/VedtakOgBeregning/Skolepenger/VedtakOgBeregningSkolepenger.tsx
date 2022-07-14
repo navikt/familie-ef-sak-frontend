@@ -110,6 +110,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                     />
                                 );
                             case undefined:
+                            default:
                                 return null;
                         }
                     }}

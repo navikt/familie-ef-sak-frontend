@@ -1,5 +1,5 @@
 import { ISøkeresultat, Søk } from '@navikt/familie-header';
-import React from 'react';
+import React, { useState } from 'react';
 import {
     byggHenterRessurs,
     byggSuksessRessurs,
@@ -14,6 +14,7 @@ import { useApp } from '../../App/context/AppContext';
 import { kjønnType } from '@navikt/familie-typer';
 import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
 import { IPersonIdent } from '../../App/typer/felles';
+import { v4 as uuidv4 } from 'uuid';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
     return resultat.fagsakPersonId
@@ -31,7 +32,8 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
 
 const PersonSøk: React.FC = () => {
     const { gåTilUrl, axiosRequest } = useApp();
-    const [resultat, settResultat] = React.useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
+    const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
+    const [uuidSøk, settUuidSøk] = useState(uuidv4());
 
     const nullstillResultat = (): void => {
         settResultat(byggTomRessurs());
@@ -39,6 +41,8 @@ const PersonSøk: React.FC = () => {
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
         gåTilUrl(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+        settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
+        nullstillResultat();
     };
 
     const søk = (personIdent: string): void => {
@@ -60,6 +64,7 @@ const PersonSøk: React.FC = () => {
 
     return (
         <Søk
+            key={uuidSøk}
             søk={søk}
             label="Søk etter fagsak for en person"
             søkeresultater={resultat}

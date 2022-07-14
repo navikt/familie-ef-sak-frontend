@@ -11,8 +11,8 @@ import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
-import { OppdaterOpplysninger } from './Medlemskap/OppdaterOpplysninger';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
+import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 
 interface Props {
     behandlingId: string;
@@ -52,11 +52,12 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
                 return (
                     <>
-                        <OppdaterOpplysninger
+                        <InngangsvilkårHeader
                             oppdatertDato={grunnlagsdataInnhentetDato}
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
                             behandlingId={behandlingId}
+                            behandling={behandling}
                         />
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}

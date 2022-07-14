@@ -40,7 +40,7 @@ const RadioMedPadding = styled(Radio)`
 
 interface TotrinnskontrollForm {
     godkjent: boolean;
-    beskrivelse?: string;
+    begrunnelse?: string;
 }
 
 const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {

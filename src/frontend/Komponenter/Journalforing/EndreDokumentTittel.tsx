@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 import { dokumentTitler } from './konstanter/dokumenttitler';
 import navFarger from 'nav-frontend-core';
+import { CSSObjectWithLabel, StylesConfig } from 'react-select';
 
 const StyledKnapper = styled.div`
     display: flex;
@@ -21,17 +22,19 @@ const StyledWrapper = styled.div`
     flex-direction: column;
 `;
 
-const StyledCreatableSelect = styled(CreatableSelect)``;
-
-const customStyles = {
-    container: (defaultStyles: Record<string, string>, state: Record<string, string>) => ({
+interface OptionType {
+    label: string;
+    value: string;
+}
+const customStyles: StylesConfig = {
+    container: (defaultStyles: CSSObjectWithLabel, state) => ({
         ...defaultStyles,
         backgroundColor: '#fff',
         borderRadius: 4,
         boxShadow: state.isFocused ? `0 0 0 3px ${navFarger.fokusFarge}` : '',
         border: `1px solid ${navFarger.navGra60}`,
     }),
-    control: (defaultStyles: Record<string, string>) => ({
+    control: (defaultStyles: CSSObjectWithLabel) => ({
         ...defaultStyles,
         borderColor: navFarger.navGra40,
         outline: 'none',
@@ -51,14 +54,14 @@ const EndreDokumentTittel: React.FC<{
 
     return (
         <StyledWrapper>
-            <StyledCreatableSelect
+            <CreatableSelect
                 styles={customStyles}
                 placeholder="Velg tittel"
                 options={dokumentTitler}
                 formatCreateLabel={(val: string) => `Opprett "${val}"`}
-                onChange={(option: { label: string; value: string }) =>
-                    settNyttDokumentNavn(option.value)
-                }
+                onChange={(value: unknown) => {
+                    settNyttDokumentNavn((value as OptionType).value);
+                }}
             />
             <StyledKnapper>
                 <StyledHovedKnapp
