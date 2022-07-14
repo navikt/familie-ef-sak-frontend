@@ -31,7 +31,7 @@
     "@navikt/familie-backend": "7.0.1",
     "@navikt/familie-dokumentliste": "^2.1.1",
     "@navikt/familie-endringslogg": "^2.0.2",
-    "@navikt/familie-form-elements": "^4.0.2",
+    "@navikt/familie-form-elements": "^4.0.3",
     "@navikt/familie-header": "^4.0.4",
     "@navikt/familie-ikoner": "^4.0.1",
     "@navikt/familie-logging": "^3.0.0",
@@ -184,7 +184,8 @@
     "webpack-merge": "^5.8.0"
   },
   "resolutions": {
-    "@types/react": "^18.x"
+    "@types/react": "^18.x",
+    "@types/react-select": "^5.x"
   },
   "snyk": true
 }
