@@ -7,6 +7,7 @@ import { ISaksbehandler } from '../../App/typer/saksbehandler';
 
 interface IProps {
     innloggetSaksbehandler: ISaksbehandler;
+    children: React.ReactNode;
 }
 
 class ErrorBoundary extends React.Component<IProps> {

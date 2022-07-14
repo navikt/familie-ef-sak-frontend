@@ -128,7 +128,7 @@ export const useHentVilkår = (): {
         });
     };
     const hentVilkår = useCallback(
-        (behandlingId) => {
+        (behandlingId: string) => {
             axiosRequest<IVilkår, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
@@ -139,7 +139,7 @@ export const useHentVilkår = (): {
         [axiosRequest]
     );
     const oppdaterGrunnlagsdataOgHentVilkår = useCallback(
-        (behandlingId) => {
+        (behandlingId: string) => {
             axiosRequest<IVilkår, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/oppdater`,

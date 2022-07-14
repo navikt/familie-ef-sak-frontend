@@ -37,7 +37,7 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
                 <thead>
                     <tr>
                         {kolonner.map((kolonne) => (
-                            <th key={kolonne.overskrift}>{kolonne.overskrift}</th>
+                            <th key={kolonne.overskrift?.toString()}>{kolonne.overskrift}</th>
                         ))}
                     </tr>
                 </thead>
