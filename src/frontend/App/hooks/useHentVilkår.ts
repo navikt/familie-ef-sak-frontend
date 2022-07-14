@@ -15,6 +15,7 @@ import {
     SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
+import { EToast } from '../typer/toast';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
@@ -45,7 +46,7 @@ export const useHentVilkår = (): {
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 } => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settToast } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
 
@@ -160,9 +161,12 @@ export const useHentVilkår = (): {
                 data: { behandlingId: behandlingId, kopierBehandlingId: kopierBehandlingId },
             }).then((respons: RessursSuksess<IVilkår> | RessursFeilet) => {
                 settVilkår(respons);
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settToast(EToast.INNGANGSVILKÅR_GJENBRUKT);
+                }
             });
         },
-        [axiosRequest]
+        [axiosRequest, settToast]
     );
 
     return {

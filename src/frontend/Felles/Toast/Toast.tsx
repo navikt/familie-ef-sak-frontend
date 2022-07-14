@@ -4,13 +4,22 @@ import styled from 'styled-components';
 
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { useApp } from '../../App/context/AppContext';
-import { toastTilTekst } from '../../App/typer/toast';
+import { EToast, toastTilTekst } from '../../App/typer/toast';
 
-const Container = styled.div`
+const ContainerTopRight = styled.div`
     z-index: 9999;
     position: fixed;
     right: 2rem;
     top: 4rem;
+`;
+
+const ContainerTopMiddle = styled.div`
+    z-index: 9999;
+    margin: auto;
+    position: fixed;
+    width: 16%;
+    top: 10%;
+    left: 42%;
 `;
 
 export const Toast: React.FC = () => {
@@ -23,9 +32,23 @@ export const Toast: React.FC = () => {
         return () => clearTimeout(timer);
     });
 
-    return toast ? (
-        <Container>
-            <AlertStripeSuksess>{toastTilTekst[toast]}</AlertStripeSuksess>
-        </Container>
-    ) : null;
+    switch (toast) {
+        case EToast.INNGANGSVILKÅR_GJENBRUKT:
+            return (
+                <ContainerTopMiddle>
+                    <AlertStripeSuksess>{toastTilTekst[toast]}</AlertStripeSuksess>
+                </ContainerTopMiddle>
+            );
+        case EToast.BEHANDLING_HENLAGT:
+        case EToast.BREVMOTTAKERE_SATT:
+        case EToast.TILBAKEKREVING_OPPRETTET:
+        case EToast.VEDTAK_UNDERKJENT:
+            return (
+                <ContainerTopRight>
+                    <AlertStripeSuksess>{toastTilTekst[toast]}</AlertStripeSuksess>
+                </ContainerTopRight>
+            );
+        default:
+            return null;
+    }
 };

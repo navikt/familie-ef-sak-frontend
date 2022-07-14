@@ -3,8 +3,6 @@ import UIModalWrapper from '../../../../Felles/Modal/UIModalWrapper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
-import { useApp } from '../../../../App/context/AppContext';
-import { EToast } from '../../../../App/typer/toast';
 
 export const KnappeWrapper = styled.div`
     display: flex;
@@ -32,11 +30,8 @@ const KopierInngangsvilkårModal: React.FunctionComponent<IProps> = ({
     kopierBehandlingId,
     gjenbrukInngangsvilkår,
 }) => {
-    const { settToast } = useApp();
-
     const kopierInngangsvilkår = (behandlingId: string, kopierBehandlingId: string) => {
         settVisModal(false);
-        settToast(EToast.INNGANGSVILKÅR_GJENBRUKT);
         gjenbrukInngangsvilkår(behandlingId, kopierBehandlingId);
     };
 
