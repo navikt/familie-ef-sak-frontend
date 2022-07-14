@@ -20,7 +20,7 @@ import AlertStripeFeilPreWrap from '../Visningskomponenter/AlertStripeFeilPreWra
  */
 interface DataViewerProps<T extends Record<string, unknown>> {
     response: { [P in keyof T]: Ressurs<T[P]> };
-    children: ((data: T) => React.ReactElement) | ReactNode;
+    children: ((data: T) => React.ReactElement | null) | ReactNode;
 }
 
 const StyledLenke = styled(Link)`

@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 interface IProps {
     modal: IModal;
+    children?: React.ReactNode;
 }
 
 const UIModalWrapper: React.FunctionComponent<IProps> = ({ modal, children }) => {

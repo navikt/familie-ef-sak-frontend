@@ -7,7 +7,6 @@ import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
 
 interface Props {
-    valgtePersonMottakere: IBrevmottaker[];
     settValgtePersonMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
     valgteOrganisasjonMottakere: IOrganisasjonMottaker[];
     settValgteOrganisasjonMottakere: Dispatch<SetStateAction<IOrganisasjonMottaker[]>>;
@@ -28,7 +27,6 @@ const SøkTypeSelect = styled(Select)`
 `;
 
 export const SøkWrapper: FC<Props> = ({
-    valgtePersonMottakere,
     settValgtePersonMottakere,
     valgteOrganisasjonMottakere,
     settValgteOrganisasjonMottakere,
@@ -53,10 +51,7 @@ export const SøkWrapper: FC<Props> = ({
                 />
             )}
             {søktype === ESøktype.PERSON && (
-                <SøkPerson
-                    valgteMottakere={valgtePersonMottakere}
-                    settValgteMottakere={settValgtePersonMottakere}
-                />
+                <SøkPerson settValgteMottakere={settValgtePersonMottakere} />
             )}
         </>
     );
