@@ -36,8 +36,8 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
             <StyledTable>
                 <thead>
                     <tr>
-                        {kolonner.map((kolonne) => (
-                            <th key={kolonne.overskrift?.toString()}>{kolonne.overskrift}</th>
+                        {kolonner.map((kolonne, index) => (
+                            <th key={index}>{kolonne.overskrift}</th>
                         ))}
                     </tr>
                 </thead>
