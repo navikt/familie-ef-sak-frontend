@@ -13,6 +13,7 @@ import { ExternalLink } from '@navikt/ds-icons';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -22,8 +23,9 @@ const Linje = styled.div`
     margin-right: 13px;
     border-right: 1px dashed #a0a0a0;
 
-    height: ${(props: LinjeProps) =>
+    min-height: ${(props: LinjeProps) =>
         props.siste ? '30px' : props.størreMellomrom ? '75px' : '60px'};
+    height: ${(props: LinjeProps) => (props.siste ? '30px' : '100%')};
 `;
 
 const LenkeKnappWrapper = styled.div`
@@ -114,9 +116,9 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                     {behandlingshistorikk.endretAvNavn}
                 </Undertekst>
                 {behandlingshistorikk.metadata?.begrunnelse && skalViseBegrunnelse && (
-                    <Undertekst>
+                    <BreakWordUndertekst>
                         Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
-                    </Undertekst>
+                    </BreakWordUndertekst>
                 )}
                 {behandlingshistorikk.metadata?.årsak && (
                     <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
