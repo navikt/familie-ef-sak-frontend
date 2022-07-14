@@ -1,4 +1,5 @@
 import {
+    byggHenterRessurs,
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
@@ -42,6 +43,7 @@ export const useHentVilkår = (): {
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
+    gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 } => {
     const { axiosRequest } = useApp();
 
@@ -149,6 +151,19 @@ export const useHentVilkår = (): {
         },
         [axiosRequest]
     );
+    const gjenbrukInngangsvilkår = useCallback(
+        (behandlingId: string, kopierBehandlingId: string) => {
+            settVilkår(byggHenterRessurs());
+            axiosRequest<IVilkår, { behandlingId: string; kopierBehandlingId: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/vurdering/gjenbruk`,
+                data: { behandlingId: behandlingId, kopierBehandlingId: kopierBehandlingId },
+            }).then((respons: RessursSuksess<IVilkår> | RessursFeilet) => {
+                settVilkår(respons);
+            });
+        },
+        [axiosRequest]
+    );
 
     return {
         vilkår,
@@ -158,5 +173,6 @@ export const useHentVilkår = (): {
         nullstillVurdering,
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
+        gjenbrukInngangsvilkår,
     };
 };

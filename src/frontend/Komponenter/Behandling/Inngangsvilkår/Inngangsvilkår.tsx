@@ -27,6 +27,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         nullstillVurdering,
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
+        gjenbrukInngangsvilkår,
     } = useHentVilkår();
 
     const { behandling, behandlingErRedigerbar } = useBehandling();
@@ -39,7 +40,6 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         }
         // eslint-disable-next-line
     }, [behandlingId]);
-
     return (
         <DataViewer response={{ vilkår, behandling }}>
             {({ vilkår, behandling }) => {
@@ -58,6 +58,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
                             behandlingId={behandlingId}
                             behandling={behandling}
+                            gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
                         />
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}

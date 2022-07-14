@@ -3,6 +3,8 @@ import UIModalWrapper from '../../../../Felles/Modal/UIModalWrapper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
+import { useApp } from '../../../../App/context/AppContext';
+import { EToast } from '../../../../App/typer/toast';
 
 export const KnappeWrapper = styled.div`
     display: flex;
@@ -19,9 +21,25 @@ interface IProps {
     visModal: boolean;
     settVisModal: (bool: boolean) => void;
     behandlingId: string;
+    kopierBehandlingId: string;
+    gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 }
 
-const KopierInngangsvilkårModal: React.FunctionComponent<IProps> = ({ visModal, settVisModal }) => {
+const KopierInngangsvilkårModal: React.FunctionComponent<IProps> = ({
+    visModal,
+    settVisModal,
+    behandlingId,
+    kopierBehandlingId,
+    gjenbrukInngangsvilkår,
+}) => {
+    const { settToast } = useApp();
+
+    const kopierInngangsvilkår = (behandlingId: string, kopierBehandlingId: string) => {
+        settVisModal(false);
+        settToast(EToast.INNGANGSVILKÅR_GJENBRUKT);
+        gjenbrukInngangsvilkår(behandlingId, kopierBehandlingId);
+    };
+
     return (
         <UIModalWrapper
             modal={{
@@ -36,7 +54,11 @@ const KopierInngangsvilkårModal: React.FunctionComponent<IProps> = ({ visModal,
                 Inngangsvilkår du allerede har vurdert i inneværende behandling vil bli overskrevet.
             </Normaltekst>
             <KnappeWrapper>
-                <StyledHovedknapp variant="primary" size="small">
+                <StyledHovedknapp
+                    variant="primary"
+                    size="small"
+                    onClick={() => kopierInngangsvilkår(behandlingId, kopierBehandlingId)}
+                >
                     Gjenbruk vilkårsvurdering
                 </StyledHovedknapp>
                 <Button variant="tertiary" size="small" onClick={() => settVisModal(false)}>

@@ -20,6 +20,7 @@ interface Props {
     oppdaterGrunnlagsdata: (behandlingId: string) => void;
     behandlingId: string;
     behandling: Behandling;
+    gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 }
 
 export const InngangsvilkårHeader: React.FC<Props> = ({
@@ -28,8 +29,9 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     oppdaterGrunnlagsdata,
     behandlingId,
     behandling,
+    gjenbrukInngangsvilkår,
 }) => {
-    const [behandlingForVilkårsgjenbruk, settbehandlingForVilkårsgjenbruk] = useState<
+    const [behandlingerForVilkårsgjenbruk, settbehandlingerForVilkårsgjenbruk] = useState<
         Ressurs<Behandling[]>
     >(byggTomRessurs());
     const { toggles } = useToggles();
@@ -41,7 +43,7 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                 method: 'GET',
                 url: `/familie-ef-sak/api/behandling/gjenbruk/${behandlingId}`,
             }).then((respons: Ressurs<Behandling[]>) => {
-                settbehandlingForVilkårsgjenbruk(respons);
+                settbehandlingerForVilkårsgjenbruk(respons);
             });
         },
         [axiosRequest]
@@ -60,10 +62,14 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                 behandlingId={behandlingId}
             />
             {toggles[ToggleName.visGjenbrukAvVilkår] && behandlingErRedigerbar && (
-                <DataViewer response={{ behandlingForVilkårsgjenbruk }}>
-                    {({ behandlingForVilkårsgjenbruk }) =>
-                        behandlingForVilkårsgjenbruk.length > 0 ? (
-                            <KopierInngangsvilkår behandlinger={behandlingForVilkårsgjenbruk} />
+                <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
+                    {({ behandlingerForVilkårsgjenbruk }) =>
+                        behandlingerForVilkårsgjenbruk.length > 0 ? (
+                            <KopierInngangsvilkår
+                                behandlinger={behandlingerForVilkårsgjenbruk}
+                                behandlingId={behandlingId}
+                                gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
+                            />
                         ) : (
                             <></>
                         )
