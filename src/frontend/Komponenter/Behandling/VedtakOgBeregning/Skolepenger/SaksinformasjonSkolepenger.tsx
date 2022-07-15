@@ -115,7 +115,7 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
 const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
     const begrunnelseDokumentasjonUtdanning = vilkår.vurderinger.find(
         (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
-    )?.delvilkårsvurderinger[0].vurderinger[0].begrunnelse;
+    )?.delvilkårsvurderinger[0]?.vurderinger[1]?.begrunnelse;
 
     return (
         <div style={{ order: 1 }}>
