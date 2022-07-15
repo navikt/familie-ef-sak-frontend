@@ -138,7 +138,7 @@ const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
     return utdanning && skalViseSøknadsinfo ? (
         <div style={{ order: -1, paddingBottom: '2rem' }}>
             <Heading spacing size="small">
-                Søknadsinformasjon - Utdanning
+                Søknadsinformasjon - Utgifter
             </Heading>
             <TokolonnersGrid>
                 <Søknad height={24} />
