@@ -37,10 +37,17 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     margin-bottom: 0.5rem;
 `;
 
+const FjernKnappWrapper = styled.div`
+    button {
+        width: 3rem;
+    }
+`;
+
 interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
     setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    låsVedtaksperiodeRad?: boolean;
 }
 
 export const tomVedtaksperiodeRad: IVedtaksperiode = {
@@ -52,6 +59,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     vedtaksperiodeListe,
     valideringsfeil,
     setValideringsFeil,
+    låsVedtaksperiodeRad,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -125,6 +133,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             aktivitetfeil={valideringsfeil && valideringsfeil[index]?.aktivitet}
                         />
                         <MånedÅrPeriode
+                            key={vedtaksperiode.endretKey || null}
                             årMånedFraInitiell={årMånedFra}
                             årMånedTilInitiell={årMånedTil}
                             index={index}
@@ -137,6 +146,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             }}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
+                            disabledFra={index === 0 && låsVedtaksperiodeRad}
                         />
                         {antallMåneder && (
                             <Element
@@ -144,20 +154,22 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             >{`${antallMåneder} mnd`}</Element>
                         )}
                         {skalViseFjernKnapp && (
-                            <FjernKnapp
-                                onClick={() => {
-                                    vedtaksperiodeListe.remove(index);
-                                    setValideringsFeil(
-                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const perioder = (prevState.perioder ?? []).filter(
-                                                (_, i) => i !== index
-                                            );
-                                            return { ...prevState, perioder };
-                                        }
-                                    );
-                                }}
-                                knappetekst="Fjern vedtaksperiode"
-                            />
+                            <FjernKnappWrapper>
+                                <FjernKnapp
+                                    onClick={() => {
+                                        vedtaksperiodeListe.remove(index);
+                                        setValideringsFeil(
+                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                const perioder = (prevState.perioder ?? []).filter(
+                                                    (_, i) => i !== index
+                                                );
+                                                return { ...prevState, perioder };
+                                            }
+                                        );
+                                    }}
+                                    knappetekst="Fjern vedtaksperiode"
+                                />
+                            </FjernKnappWrapper>
                         )}
                     </VedtakPeriodeContainer>
                 );
