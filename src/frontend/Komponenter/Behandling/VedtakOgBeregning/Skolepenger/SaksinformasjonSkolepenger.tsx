@@ -35,7 +35,7 @@ export const SaksinformasjonSkolepenger: React.FC<Props> = ({ vilkår, behandlin
                     utdanning={utdanning}
                     skalViseSøknadsinfo={skalViseSøknadsinfo}
                 />
-                <SaksbehanldingsinformasjonUtdanning vilkår={vilkår} />
+                <SaksbehanldingsinformasjonUtgifter vilkår={vilkår} />
             </GråBoks>
         </FlexBoks>
     );
@@ -115,7 +115,26 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
 const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
     const begrunnelseDokumentasjonUtdanning = vilkår.vurderinger.find(
         (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
-    )?.delvilkårsvurderinger[0]?.vurderinger[1]?.begrunnelse;
+    )?.delvilkårsvurderinger[0]?.vurderinger[0]?.begrunnelse;
+
+    return (
+        <div style={{ order: 1 }}>
+            <Heading spacing size="small">
+                Saksbehandlers vurdering - Utdanning
+            </Heading>
+            {begrunnelseDokumentasjonUtdanning ? (
+                <BreakWordBody>{begrunnelseDokumentasjonUtdanning}</BreakWordBody>
+            ) : (
+                <Detail>Ingen begrunnelse</Detail>
+            )}
+        </div>
+    );
+};
+
+const SaksbehanldingsinformasjonUtgifter: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
+    const begrunnelseDokumentasjonUtdanning = vilkår.vurderinger.find(
+        (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
+    )?.delvilkårsvurderinger[1]?.vurderinger[0]?.begrunnelse;
 
     return (
         <div style={{ order: 1 }}>
