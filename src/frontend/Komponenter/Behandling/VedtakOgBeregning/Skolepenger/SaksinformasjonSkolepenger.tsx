@@ -120,7 +120,7 @@ const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ 
     return (
         <div style={{ order: 1 }}>
             <Heading spacing size="small">
-                Saksbehandlers vurdering - Utdanning
+                Saksbehandlers vurdering - Utgifter
             </Heading>
             {begrunnelseDokumentasjonUtdanning ? (
                 <BreakWordBody>{begrunnelseDokumentasjonUtdanning}</BreakWordBody>
