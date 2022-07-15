@@ -110,7 +110,7 @@ const VedtakOgBeregningSideSkolepenger: React.FC<{
     return (
         <>
             <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
-            <SaksinformasjonSkolepenger vilkår={vilkår} />
+            <SaksinformasjonSkolepenger vilkår={vilkår} behandling={behandling} />
 
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
