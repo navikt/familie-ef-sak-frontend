@@ -108,7 +108,7 @@
     "nav-frontend-tabs-style": "^2.0.1",
     "nav-frontend-typografi": "^4.0.1",
     "nav-frontend-typografi-style": "^2.0.1",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.2.8",
     "paginering": "^1.1.1",
     "passport": "^0.6.0",
     "passport-azure-ad": "^4.3.2",
