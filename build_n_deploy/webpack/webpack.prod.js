@@ -1,11 +1,11 @@
-const common = require('./webpack.common');
-const { mergeWithCustomize } = require('webpack-merge');
-const path = require('path');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
+import { mergeWithCustomize } from 'webpack-merge';
+import path from 'path';
+import webpack from 'webpack';
+import common from './webpack.common.js';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -36,7 +36,14 @@ const config = mergeWithCustomize({
                             importLoaders: 2,
                         },
                     },
-                    { loader: 'postcss-loader' },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [['autoprefixer']],
+                            },
+                        },
+                    },
                     {
                         loader: 'less-loader',
                     },
@@ -69,4 +76,4 @@ const config = mergeWithCustomize({
     },
 });
 
-module.exports = config;
+export default config;

@@ -6,7 +6,7 @@ interface IOppfylt {
     width?: number;
 }
 
-const Oppfylt: React.StatelessComponent<IOppfylt> = ({ className, heigth, width }) => {
+const Oppfylt: React.FC<IOppfylt> = ({ className, heigth, width }) => {
     return (
         <svg
             aria-labelledby={'oppfylt'}

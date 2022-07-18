@@ -29,7 +29,7 @@ export const håndterFeil = <T>(
         loggFeil(
             error,
             innloggetSaksbehandler,
-            `Savner body/status i response - Url: ${window.location.href}`,
+            `Savner body/status i response - Url: ${window.location.href} - Prøvde å kalle ${error.config.url} (${error.config.method})`,
             headers
         );
         return lagUkjentFeilRessurs(headers);

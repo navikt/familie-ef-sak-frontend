@@ -8,6 +8,7 @@ import constate from 'constate';
 import { EToast } from '../typer/toast';
 import { AppEnv } from '../api/env';
 import { AxiosRequestCallback } from '../typer/axiosRequest';
+import { harTilgangTilRolle } from '../utils/roller';
 
 interface IProps {
     autentisertSaksbehandler: ISaksbehandler;
@@ -16,6 +17,9 @@ interface IProps {
 
 const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IProps) => {
     const [autentisert, settAutentisert] = React.useState(true);
+    const [erSaksbehandler, settErSaksbehandler] = React.useState(
+        harTilgangTilRolle(appEnv, autentisertSaksbehandler, 'saksbehandler')
+    );
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] =
         React.useState(autentisertSaksbehandler);
     const [ikkePersisterteKomponenter, settIkkePersisterteKomponenter] = useState<Set<string>>(
@@ -36,6 +40,10 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     useEffect(() => {
         settInnloggetSaksbehandler(autentisertSaksbehandler);
     }, [autentisertSaksbehandler]);
+
+    useEffect(() => {
+        settErSaksbehandler(harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler'));
+    }, [innloggetSaksbehandler, appEnv]);
 
     const settIkkePersistertKomponent = (komponentId: string) => {
         if (ikkePersisterteKomponenter.has(komponentId)) return;
@@ -101,6 +109,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         appEnv,
         valgtFagsakId,
         settValgtFagsakId,
+        erSaksbehandler,
     };
 });
 

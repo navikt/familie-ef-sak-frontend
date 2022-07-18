@@ -1,9 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
-const { mergeWithCustomize } = require('webpack-merge');
-const common = require('./webpack.common');
-const CopyPlugin = require('copy-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+import path from 'path';
+import webpack from 'webpack';
+import { mergeWithCustomize } from 'webpack-merge';
+import common from './webpack.common';
+import CopyPlugin from 'copy-webpack-plugin';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -69,4 +69,4 @@ const config = mergeWithCustomize({
     ],
 });
 
-module.exports = config;
+export default config;

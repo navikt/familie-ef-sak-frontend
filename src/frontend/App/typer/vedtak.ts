@@ -59,6 +59,22 @@ export interface IBeregningsperiodeSkolepenger {
     beløp: number;
 }
 
+export interface IBeregningsperiodeSkolepenger {
+    årMånedFra: string;
+    utgifter: number;
+    beløp: number;
+}
+
+export interface IVedtakshistorikk {
+    inntektsbegrunnelse: string;
+    inntekter: IInntektsperiode[];
+    periodebegrunnelse: string;
+    perioder: IVedtaksperiode[];
+    resultatType: string;
+    samordningsfradrag: string;
+    _type: IVedtakType;
+}
+
 export type IInnvilgeVedtakForOvergangsstønad = {
     _type: IVedtakType.InnvilgelseOvergangsstønad;
     resultatType: EBehandlingResultat.INNVILGE;
@@ -160,6 +176,7 @@ export interface IInntektsperiode {
 }
 
 export interface IVedtaksperiode {
+    endretKey: Key | null | undefined;
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;

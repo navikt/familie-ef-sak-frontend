@@ -114,7 +114,7 @@ const AleneomsorgInfo: FC<{
                         </Normaltekst>
                     </>
                 )}
-                {stønadstype === Stønadstype.BARNETILSYN && (
+                {skalViseSøknadsdata && stønadstype === Stønadstype.BARNETILSYN && (
                     <>
                         <Søknadsgrunnlag />
                         <Normaltekst>Søkes det om stønad til barnetilsyn for barnet</Normaltekst>
@@ -132,7 +132,7 @@ const AleneomsorgInfo: FC<{
                         {({ barnMedLøpendeStønad }) => {
                             return (
                                 <>
-                                    <Søknadsgrunnlag />
+                                    <Registergrunnlag />
                                     <Normaltekst>
                                         Har brukeren løpende stønad for barnet? (i EF Sak)
                                     </Normaltekst>

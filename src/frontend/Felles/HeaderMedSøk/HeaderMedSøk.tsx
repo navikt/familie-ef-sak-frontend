@@ -49,14 +49,12 @@ const lagEksterneLenker = (
             name: 'Uttrekk arbeidssøkere (P43)',
             href: '/uttrekk/arbeidssoker',
         });
-    }
-    if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
-        eksterneLenker.push({
-            name: '[Admin] Lag behandling fra journalpost',
-            href: '/admin/ny-behandling-for-ferdigstilt-journalpost/',
-        });
-    }
-    if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
+        if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
+            eksterneLenker.push({
+                name: '[Admin] Lag behandling fra journalpost',
+                href: '/admin/ny-behandling-for-ferdigstilt-journalpost/',
+            });
+        }
         eksterneLenker.push({
             name: '[Admin] Vis gamle behandlinger',
             href: '/admin/gamle-behandlinger',
