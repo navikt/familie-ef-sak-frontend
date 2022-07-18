@@ -8,6 +8,7 @@ import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
 import navFarger from 'nav-frontend-core';
 import { Steg } from '../Høyremeny/Steg';
 import Fane from './Fane';
+import { useApp } from '../../../App/context/AppContext';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -26,11 +27,20 @@ interface Props {
 }
 
 const Fanemeny: FC<Props> = ({ behandlingId }) => {
-    const { behandling } = useBehandling();
+    const { behandling, behandlingErRedigerbar } = useBehandling();
+    const { erSaksbehandler } = useApp();
     const låsendeSteg = [Steg.VILKÅR, Steg.BEREGNE_YTELSE];
     const fanerSomKanLåses = [SideNavn.SIMULERING, SideNavn.BREV, SideNavn.KORRIGERING_UTEN_BREV];
-
+    const fanerSomErLåstForVeilederUnderArbeid = [
+        SideNavn.VEDTAK_OG_BEREGNING,
+        SideNavn.SIMULERING,
+        SideNavn.BREV,
+        SideNavn.KORRIGERING_UTEN_BREV,
+    ];
     const faneErLåst = (side: ISide, steg: Steg): boolean => {
+        if (behandlingErRedigerbar && !erSaksbehandler) {
+            return fanerSomErLåstForVeilederUnderArbeid.includes(side.navn as SideNavn);
+        }
         return fanerSomKanLåses.includes(side.navn as SideNavn) && låsendeSteg.includes(steg);
     };
 

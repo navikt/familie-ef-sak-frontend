@@ -104,7 +104,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         vergemål,
     } = data;
 
-    const { axiosRequest, gåTilUrl } = useApp();
+    const { axiosRequest, gåTilUrl, erSaksbehandler } = useApp();
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
@@ -246,7 +246,9 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     </StatuserLitenSkjerm>
                 </>
             )}
-            {behandling && erBehandlingRedigerbar(behandling) && <StyledHamburgermeny />}
+            {erSaksbehandler && behandling && erBehandlingRedigerbar(behandling) && (
+                <StyledHamburgermeny />
+            )}
         </VisittkortWrapper>
     );
 };

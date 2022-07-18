@@ -67,7 +67,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
     );
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
-    const { nullstillIkkePersistertKomponent } = useApp();
+    const { nullstillIkkePersistertKomponent, erSaksbehandler } = useApp();
 
     const ikkeVurder = () => {
         nullstillIkkePersistertKomponent(vurdering.id);
@@ -136,7 +136,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     settRedigeringsmodus={settRedigeringsmodus}
                     resetVurdering={resetVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
-                    behandlingErRedigerbar={behandlingErRedigerbar}
+                    behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
                 />
             );

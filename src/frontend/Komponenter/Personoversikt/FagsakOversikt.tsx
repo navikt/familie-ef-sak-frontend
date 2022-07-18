@@ -24,7 +24,7 @@ interface Props {
 }
 
 export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, erSaksbehandler } = useApp();
     const { toggles } = useToggles();
 
     const hentTilbakekrevingBehandlinger = () =>
@@ -59,7 +59,7 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
                         eksternFagsakId={fagsak.eksternId}
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                     />
-                    {kanStarteRevurdering && skalViseOpprettNyBehandlingKnapp && (
+                    {erSaksbehandler && kanStarteRevurdering && skalViseOpprettNyBehandlingKnapp && (
                         <>
                             <LagBehandlingModal
                                 behandlinger={fagsak.behandlinger}
