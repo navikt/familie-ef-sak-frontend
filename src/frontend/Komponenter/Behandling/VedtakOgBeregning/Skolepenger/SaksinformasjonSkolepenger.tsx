@@ -1,5 +1,9 @@
 import React from 'react';
-import { AktivitetsvilkårType, IVilkår } from '../../Inngangsvilkår/vilkår';
+import {
+    AktivitetsvilkårType,
+    IVilkår,
+    RegelIdDDokumentasjonUtdanning,
+} from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { BodyLong, BodyShort, Detail, Heading } from '@navikt/ds-react';
 import Søknad from '../../../../Felles/Ikoner/Søknad';
@@ -113,9 +117,15 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
 };
 
 const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
-    const begrunnelseDokumentasjonUtdanning = vilkår.vurderinger.find(
-        (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
-    )?.delvilkårsvurderinger[0]?.vurderinger[0]?.begrunnelse;
+    const begrunnelseDokumentasjonUtdanning = vilkår.vurderinger
+        .find(
+            (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
+        )
+        ?.delvilkårsvurderinger.flatMap((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
+        ?.find(
+            (vurdering) =>
+                vurdering.regelId === RegelIdDDokumentasjonUtdanning.DOKUMENTASJON_AV_UTDANNING
+        )?.begrunnelse;
 
     return (
         <div style={{ order: 1 }}>
@@ -132,17 +142,24 @@ const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ 
 };
 
 const SaksbehanldingsinformasjonUtgifter: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
-    const begrunnelseDokumentasjonUtdanning = vilkår.vurderinger.find(
-        (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
-    )?.delvilkårsvurderinger[1]?.vurderinger[0]?.begrunnelse;
+    const begrunnelseDokumentasjonUtgifterUtdanning = vilkår.vurderinger
+        .find(
+            (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
+        )
+        ?.delvilkårsvurderinger.flatMap((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
+        ?.find(
+            (vurdering) =>
+                vurdering.regelId ===
+                RegelIdDDokumentasjonUtdanning.DOKUMENTASJON_AV_UTGIFTER_UTDANNING
+        )?.begrunnelse;
 
     return (
         <div style={{ order: 1 }}>
             <Heading spacing size="small">
                 Saksbehandlers vurdering - Utgifter
             </Heading>
-            {begrunnelseDokumentasjonUtdanning ? (
-                <BreakWordBody>{begrunnelseDokumentasjonUtdanning}</BreakWordBody>
+            {begrunnelseDokumentasjonUtgifterUtdanning ? (
+                <BreakWordBody>{begrunnelseDokumentasjonUtgifterUtdanning}</BreakWordBody>
             ) : (
                 <Detail>Ingen begrunnelse</Detail>
             )}
