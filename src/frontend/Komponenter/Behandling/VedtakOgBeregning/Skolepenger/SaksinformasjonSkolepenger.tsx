@@ -15,6 +15,7 @@ import {
 import { IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import { utledVisningForStudiebelastning } from '../../Inngangsvilkår/utils';
 
 type Props = {
     vilkår: IVilkår;
@@ -81,6 +82,10 @@ const BreakWordBody = styled(BodyLong)`
     word-wrap: break-word;
 `;
 
+const HøyrestiltBodyShort = styled(BodyShort)`
+    text-align: right;
+`;
+
 type SøknadsinfoProps = {
     utdanning?: IUnderUtdanning;
     skalViseSøknadsinfo: boolean;
@@ -109,6 +114,9 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
                 <BodyShort>{`${formaterNullableIsoDato(utdanning.fra)} - ${formaterNullableIsoDato(
                     utdanning.til
                 )}`}</BodyShort>
+                <Søknad height={24} />
+                <BodyShort>Studiebelastning</BodyShort>
+                <BodyShort>{utledVisningForStudiebelastning(utdanning)}</BodyShort>
             </TokolonnersGrid>
         </div>
     ) : (
@@ -179,19 +187,19 @@ const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
             <TokolonnersGrid>
                 <Søknad height={24} />
                 <BodyShort>Semesteravgift</BodyShort>
-                <BodyShort>
+                <HøyrestiltBodyShort>
                     {formaterTallMedTusenSkilleEllerStrek(utdanning.semesteravgift)}
-                </BodyShort>
+                </HøyrestiltBodyShort>
                 <Søknad height={24} />
                 <BodyShort>Studieavgift</BodyShort>
-                <BodyShort>
+                <HøyrestiltBodyShort>
                     {formaterTallMedTusenSkilleEllerStrek(utdanning.studieavgift)}
-                </BodyShort>
+                </HøyrestiltBodyShort>
                 <Søknad height={24} />
                 <BodyShort>Eksamemensgebyr</BodyShort>
-                <BodyShort>
+                <HøyrestiltBodyShort>
                     {formaterTallMedTusenSkilleEllerStrek(utdanning.eksamensgebyr)}
-                </BodyShort>
+                </HøyrestiltBodyShort>
             </TokolonnersGrid>
         </div>
     ) : (
