@@ -71,7 +71,7 @@ const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
                             },
                         },
                         {
-                            stønad: Stønadstype.SKOLEPENGER,
+                            stønad: Stønadstype.BARNETILSYN,
                             verdi: {
                                 sak: sak?.harTidligereBarnetilsyn,
                                 infotrygd: infotrygd?.harTidligereBarnetilsyn,
