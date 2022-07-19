@@ -84,6 +84,8 @@ const BreakWordBody = styled(BodyLong)`
 
 const HøyrestiltBodyShort = styled(BodyShort)`
     text-align: right;
+    max-width: max-content;
+    padding-left: 1.5rem;
 `;
 
 type SøknadsinfoProps = {
@@ -180,7 +182,7 @@ const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
     skalViseSøknadsinfo,
 }) => {
     return utdanning && skalViseSøknadsinfo ? (
-        <div style={{ order: -1, paddingBottom: '2rem' }}>
+        <div style={{ order: -1, paddingBottom: '4rem' }}>
             <Heading spacing size="small">
                 Søknadsinformasjon - Utgifter
             </Heading>
