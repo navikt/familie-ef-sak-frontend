@@ -15,7 +15,10 @@ import {
 import { IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
-import { utledVisningForStudiebelastning } from '../../Inngangsvilkår/utils';
+import {
+    utledBegrunnelseFraVilkårOgRegel,
+    utledVisningForStudiebelastning,
+} from '../../Inngangsvilkår/utils';
 
 type Props = {
     vilkår: IVilkår;
@@ -125,15 +128,11 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
 };
 
 const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
-    const begrunnelseDokumentasjonUtdanning = vilkår.vurderinger
-        .find(
-            (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
-        )
-        ?.delvilkårsvurderinger.flatMap((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
-        ?.find(
-            (vurdering) =>
-                vurdering.regelId === RegelIdDDokumentasjonUtdanning.DOKUMENTASJON_AV_UTDANNING
-        )?.begrunnelse;
+    const begrunnelseDokumentasjonUtdanning = utledBegrunnelseFraVilkårOgRegel(
+        vilkår.vurderinger,
+        AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING,
+        RegelIdDDokumentasjonUtdanning.DOKUMENTASJON_AV_UTDANNING
+    );
 
     return (
         <div style={{ order: 1 }}>
@@ -150,16 +149,11 @@ const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ 
 };
 
 const SaksbehanldingsinformasjonUtgifter: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
-    const begrunnelseDokumentasjonUtgifterUtdanning = vilkår.vurderinger
-        .find(
-            (vurdering) => vurdering.vilkårType === AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING
-        )
-        ?.delvilkårsvurderinger.flatMap((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
-        ?.find(
-            (vurdering) =>
-                vurdering.regelId ===
-                RegelIdDDokumentasjonUtdanning.DOKUMENTASJON_AV_UTGIFTER_UTDANNING
-        )?.begrunnelse;
+    const begrunnelseDokumentasjonUtgifterUtdanning = utledBegrunnelseFraVilkårOgRegel(
+        vilkår.vurderinger,
+        AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING,
+        RegelIdDDokumentasjonUtdanning.DOKUMENTASJON_AV_UTGIFTER_UTDANNING
+    );
 
     return (
         <div style={{ order: 1 }}>
