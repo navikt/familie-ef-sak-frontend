@@ -8,7 +8,6 @@ import { Side } from '../../Felles/Visningskomponenter/Side';
 import { IMappe, tomMappeListe } from './typer/mappe';
 import OppgaveFiltrering from './OppgaveFiltrering';
 import { erProd } from '../../App/utils/miljø';
-import { harTilgangTilRolle } from '../../App/utils/roller';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import styled from 'styled-components';
 
@@ -22,7 +21,7 @@ const InfoVisning = styled(AlertStripeInfo)`
 `;
 
 export const OppgavebenkApp: React.FC = () => {
-    const { axiosRequest, appEnv, innloggetSaksbehandler } = useApp();
+    const { axiosRequest, erSaksbehandler } = useApp();
     const [oppgaveRessurs, settOppgaveRessurs] = useState<OppgaveRessurs>(byggTomRessurs());
     const [mapper, settMapper] = useState<IMappe[]>(tomMappeListe);
     const [feilmelding, settFeilmelding] = useState<string>('');
@@ -50,13 +49,8 @@ export const OppgavebenkApp: React.FC = () => {
     useEffect(() => {
         document.title = 'Oppgavebenk';
     }, []);
-    const harTilgangTilOppgavebenk = harTilgangTilRolle(
-        appEnv,
-        innloggetSaksbehandler,
-        'saksbehandler'
-    );
 
-    if (!harTilgangTilOppgavebenk) {
+    if (!erSaksbehandler) {
         return (
             <Side className={'container'}>
                 <InfoVisning>
