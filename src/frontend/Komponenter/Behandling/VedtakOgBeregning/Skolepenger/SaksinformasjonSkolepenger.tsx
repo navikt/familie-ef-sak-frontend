@@ -84,8 +84,6 @@ const BreakWordBody = styled(BodyLong)`
 
 const HøyrestiltBodyShort = styled(BodyShort)`
     text-align: right;
-    max-width: max-content;
-    padding-left: 1.5rem;
 `;
 
 type SøknadsinfoProps = {
