@@ -8,10 +8,7 @@ import styled from 'styled-components';
 import { BodyLong, BodyShort, Detail, Heading } from '@navikt/ds-react';
 import Søknad from '../../../../Felles/Ikoner/Søknad';
 import { UtdanningsformTilTekst } from '../../Aktivitet/Aktivitet/typer';
-import {
-    formaterNullableIsoDato,
-    formaterTallMedTusenSkilleEllerStrek,
-} from '../../../../App/utils/formatter';
+import { formaterNullableIsoDato, utledUtgiftsbeløp } from '../../../../App/utils/formatter';
 import { IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
@@ -182,17 +179,17 @@ const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
                 <Søknad height={24} />
                 <BodyShort>Semesteravgift</BodyShort>
                 <HøyrestiltBodyShort>
-                    {formaterTallMedTusenSkilleEllerStrek(utdanning.semesteravgift)}
+                    {utledUtgiftsbeløp(utdanning.semesteravgift)}
                 </HøyrestiltBodyShort>
                 <Søknad height={24} />
                 <BodyShort>Studieavgift</BodyShort>
                 <HøyrestiltBodyShort>
-                    {formaterTallMedTusenSkilleEllerStrek(utdanning.studieavgift)}
+                    {utledUtgiftsbeløp(utdanning.studieavgift)}
                 </HøyrestiltBodyShort>
                 <Søknad height={24} />
                 <BodyShort>Eksamemensgebyr</BodyShort>
                 <HøyrestiltBodyShort>
-                    {formaterTallMedTusenSkilleEllerStrek(utdanning.eksamensgebyr)}
+                    {utledUtgiftsbeløp(utdanning.eksamensgebyr)}
                 </HøyrestiltBodyShort>
             </TokolonnersGrid>
         </div>
