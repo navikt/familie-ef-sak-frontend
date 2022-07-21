@@ -71,10 +71,11 @@ const GråBoks = styled.div`
     }
 `;
 
-const TokolonnersGrid = styled.div`
+const TokolonnersGrid = styled.div<{ paddingBottom?: number }>`
     display: grid;
     grid-template-columns: 1.5rem 3fr 5fr;
     gap: 0.5rem;
+    padding-bottom: ${(props) => props.paddingBottom}rem;
 `;
 
 const BreakWordBody = styled(BodyLong)`
@@ -174,12 +175,12 @@ const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
     skalViseSøknadsinfo,
 }) => {
     return (
-        <div style={{ order: -1, paddingBottom: '4rem' }}>
+        <div style={{ order: -1 }}>
             <Heading spacing size="small">
                 Søknadsinformasjon - Utgifter
             </Heading>
             {utdanning && skalViseSøknadsinfo ? (
-                <TokolonnersGrid>
+                <TokolonnersGrid paddingBottom={4}>
                     <Søknad height={24} />
                     <BodyShort>Semesteravgift</BodyShort>
                     <HøyrestiltBodyShort>
