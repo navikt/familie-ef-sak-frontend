@@ -9,7 +9,7 @@ import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etikette
 import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
-import { erEtterDagensDato } from '../../App/utils/dato';
+import { erEtterDagensDato, nullableDatoTilAlder } from '../../App/utils/dato';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
@@ -102,12 +102,18 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         egenAnsatt,
         fullmakt,
         vergemål,
+        fødselsdato,
     } = data;
 
     const { axiosRequest, gåTilUrl, erSaksbehandler } = useApp();
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
+
+    const utledVisningsnavn = (): string => {
+        const alder = nullableDatoTilAlder(fødselsdato);
+        return alder ? navn.visningsnavn + ` (${alder})` : navn.visningsnavn;
+    };
 
     const utledOmFagsakErMigrert = (fagsak: {
         fagsakId: string;
@@ -162,7 +168,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
-                        <Visningsnavn>{navn.visningsnavn}</Visningsnavn>
+                        <Visningsnavn>{`${utledVisningsnavn()}`}</Visningsnavn>
                     </ResponsivLenke>
                 }
             >
