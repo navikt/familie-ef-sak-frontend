@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
+import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
@@ -41,7 +41,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
         .map((v) => v.resultat);
-    const utleddResultat = vilkårStatusAleneomsorg(vilkårsresultatAleneomsorg);
+    const utleddResultat = vilkårStatusForBarn(vilkårsresultatAleneomsorg);
     return (
         <>
             {grunnlag.barnMedSamvær.map((barn, idx) => {

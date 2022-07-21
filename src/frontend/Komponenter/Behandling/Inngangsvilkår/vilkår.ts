@@ -58,6 +58,7 @@ export interface Vurdering {
 
 export enum Vilkårsresultat {
     OPPFYLT = 'OPPFYLT',
+    AUTOMATISK_OPPFYLT = 'AUTOMATISK_OPPFYLT',
     IKKE_OPPFYLT = 'IKKE_OPPFYLT',
     IKKE_AKTUELL = 'IKKE_AKTUELL',
     IKKE_TATT_STILLING_TIL = 'IKKE_TATT_STILLING_TIL',
