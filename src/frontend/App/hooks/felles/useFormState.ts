@@ -22,11 +22,12 @@ export type FormErrors<T extends Record<string, any | undefined>> = {
         : FormErrors<T[P]>;
 };
 
-type Valideringsfunksjon<T> = (state: FormState<T>) => FormErrors<T>;
+type Valideringsfunksjon<T> = (state: FormState<T>, condition?: boolean) => FormErrors<T>;
 
 export default function useFormState<T extends Record<string, unknown>>(
     initialState: FormState<T>,
-    valideringsfunksjon: Valideringsfunksjon<T>
+    valideringsfunksjon: Valideringsfunksjon<T>,
+    valideringsbetingelse?: boolean
 ): FormHook<T> {
     const [errors, setErrors] = useState<FormErrors<T>>(
         Object.keys(initialState).reduce(
@@ -59,7 +60,7 @@ export default function useFormState<T extends Record<string, unknown>>(
     return {
         getProps: (key: keyof T) => formState[key],
         validateForm: () => {
-            const errors = valideringsfunksjon(tilFormstate);
+            const errors = valideringsfunksjon(tilFormstate, valideringsbetingelse);
             setErrors(errors);
             return isValid(errors);
         },
@@ -68,13 +69,13 @@ export default function useFormState<T extends Record<string, unknown>>(
         onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement> {
             return (event) => {
                 event.preventDefault();
-                const errors = valideringsfunksjon(tilFormstate);
+                const errors = valideringsfunksjon(tilFormstate, valideringsbetingelse);
                 setErrors(errors);
                 if (isValid(errors)) fn(tilFormstate);
             };
         },
         customValidate(validate) {
-            const errors = validate(tilFormstate);
+            const errors = validate(tilFormstate, valideringsbetingelse);
             setErrors(errors);
             return isValid(errors);
         },

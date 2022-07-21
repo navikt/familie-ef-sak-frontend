@@ -83,6 +83,8 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
+    const erFørstegangsInnvilgelse = behandling.forrigeBehandlingId === null;
+
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
@@ -95,7 +97,8 @@ export const InnvilgeVedtak: React.FC<{
                 : [tomInntektsperiodeRad],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
         },
-        validerInnvilgetVedtakForm
+        validerInnvilgetVedtakForm,
+        erFørstegangsInnvilgelse
     );
 
     const inntektsperiodeState = formState.getProps('inntekter') as ListState<IInntektsperiode>;
