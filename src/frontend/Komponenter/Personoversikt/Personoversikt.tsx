@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import PersonHeaderComponent from '../../Felles/PersonHeader/Visittkort';
+import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Side } from '../../Felles/Visningskomponenter/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import PersonHeader from '@navikt/familie-visittkort';
+import VisittKort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
 import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
@@ -112,7 +112,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
 
     const utledVisningsnavn = (): string => {
         const alder = nullableDatoTilAlder(fødselsdato);
-        return alder ? navn.visningsnavn + ` (${alder})` : navn.visningsnavn;
+        return alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
     };
 
     const utledOmFagsakErMigrert = (fagsak: {
@@ -155,7 +155,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
     return (
         <PersonHeaderWrapper>
             {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
-            <PersonHeader
+            <VisittKort
                 alder={20}
                 ident={personIdent}
                 kjønn={kjønn}
@@ -168,7 +168,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
-                        <Visningsnavn>{`${utledVisningsnavn()}`}</Visningsnavn>
+                        <Visningsnavn>{utledVisningsnavn()}</Visningsnavn>
                     </ResponsivLenke>
                 }
             >
@@ -242,7 +242,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                         </ElementWrapper>
                     )}
                 </TagsKnyttetTilBehandling>
-            </PersonHeader>
+            </VisittKort>
 
             {behandling && (
                 <>

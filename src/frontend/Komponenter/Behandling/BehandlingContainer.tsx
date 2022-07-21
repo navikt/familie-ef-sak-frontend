@@ -9,7 +9,7 @@ import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingC
 import { ModalProvider } from '../../App/context/ModalContext';
 import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import PersonHeaderComponent from '../../Felles/PersonHeader/Visittkort';
+import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
 import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
 import { Behandling } from '../../App/typer/fagsak';
