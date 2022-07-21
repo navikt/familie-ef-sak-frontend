@@ -86,9 +86,10 @@ const VisVurdering: FC<Props> = ({
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(vurdering.endretTid);
-    const vurderingerBesvaradeAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
+    const vurderingerBesvartAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
         (delvilkårsvurdering) =>
             delvilkårsvurdering.resultat === Vilkårsresultat.OPPFYLT ||
+            delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT ||
             delvilkårsvurdering.resultat === Vilkårsresultat.IKKE_OPPFYLT
     );
     const erAutomatiskVurdert = vurdering.delvilkårsvurderinger.every(
@@ -146,7 +147,7 @@ const VisVurdering: FC<Props> = ({
                         <SistOppdatertTekst>Sist endret dato - {sistOppdatert}</SistOppdatertTekst>
                     )}
                 <StyledVilkår>
-                    {vurderingerBesvaradeAvSaksbehandler.map((delvilkårsvurdering) =>
+                    {vurderingerBesvartAvSaksbehandler.map((delvilkårsvurdering) =>
                         delvilkårsvurdering.vurderinger.map((vurdering) => (
                             <React.Fragment key={vurdering.regelId}>
                                 <div>
