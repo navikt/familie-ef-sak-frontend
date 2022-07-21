@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Steg } from '../Høyremeny/Steg';
 import { Element } from 'nav-frontend-typografi';
@@ -15,6 +15,8 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { VedtaksoppsummeringBarnetilsyn } from './Barnetilsyn/VedtaksoppsummeringBarnetilsyn';
 import VedtakOgBeregningSkolepenger from './Skolepenger/VedtakOgBeregningSkolepenger';
 import { VedtaksoppsummeringSkolepenger } from './Skolepenger/VedtaksoppsummeringSkolepenger';
+import { NullstillVedtakModal } from './Felles/NullstillVedtakModal';
+import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -30,6 +32,7 @@ const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
 export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { behandling } = useBehandling();
 
+    const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
     const { vilkår, hentVilkår } = useHentVilkår();
 
     const hentVilkårCallback = useCallback(() => {
@@ -40,33 +43,42 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
         hentVilkårCallback();
     }, [hentVilkårCallback]);
     return (
-        <DataViewer response={{ behandling, vilkår }}>
-            {({ behandling, vilkår }) => {
-                switch (behandling.stønadstype) {
-                    case Stønadstype.OVERGANGSSTØNAD:
-                        return (
-                            <VedtakOgBeregningSideOvergangsstønad
-                                behandling={behandling}
-                                vilkår={vilkår}
-                            />
-                        );
-                    case Stønadstype.BARNETILSYN:
-                        return (
-                            <VedtakOgBeregningSideBarnetilsyn
-                                behandling={behandling}
-                                vilkår={vilkår}
-                            />
-                        );
-                    case Stønadstype.SKOLEPENGER:
-                        return (
-                            <VedtakOgBeregningSideSkolepenger
-                                behandling={behandling}
-                                vilkår={vilkår}
-                            />
-                        );
-                }
-            }}
-        </DataViewer>
+        <NullstillVedtakModalContext.Provider
+            value={{ visNullstillVedtakModal, settVisNullstillVedtakModal }}
+        >
+            <DataViewer response={{ behandling, vilkår }}>
+                {({ behandling, vilkår }) => {
+                    switch (behandling.stønadstype) {
+                        case Stønadstype.OVERGANGSSTØNAD:
+                            return (
+                                <VedtakOgBeregningSideOvergangsstønad
+                                    behandling={behandling}
+                                    vilkår={vilkår}
+                                />
+                            );
+                        case Stønadstype.BARNETILSYN:
+                            return (
+                                <VedtakOgBeregningSideBarnetilsyn
+                                    behandling={behandling}
+                                    vilkår={vilkår}
+                                />
+                            );
+                        case Stønadstype.SKOLEPENGER:
+                            return (
+                                <VedtakOgBeregningSideSkolepenger
+                                    behandling={behandling}
+                                    vilkår={vilkår}
+                                />
+                            );
+                    }
+                }}
+            </DataViewer>
+            <NullstillVedtakModal
+                visModal={visNullstillVedtakModal}
+                settVisModal={settVisNullstillVedtakModal}
+                behandlingId={behandlingId}
+            />
+        </NullstillVedtakModalContext.Provider>
     );
 };
 

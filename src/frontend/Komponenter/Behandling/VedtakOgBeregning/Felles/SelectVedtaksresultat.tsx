@@ -1,5 +1,5 @@
 import { behandlingResultatTilTekst, EBehandlingResultat } from '../../../../App/typer/vedtak';
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -7,10 +7,11 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../../App/typer/behandlingstype';
 import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../../App/context/AppContext';
-import { Heading, HelpText } from '@navikt/ds-react';
+import { Button, Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useToggles } from '../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../App/context/toggles';
+import { NullstillVedtakModalContext } from '../NullstillVedtakModalContext';
 
 interface Props {
     behandling: Behandling;
@@ -51,6 +52,8 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
     const tillaterOpphørForSkolepenger =
         behandling.stønadstype !== Stønadstype.SKOLEPENGER || toggles[ToggleName.skolepengerOpphør];
+
+    const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 
     return (
         <section>
@@ -115,6 +118,13 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </TekstLinje>
                     </HjelpeTekst>
                 )}
+                <Button
+                    variant="tertiary"
+                    size={'small'}
+                    onClick={() => settVisNullstillVedtakModal(true)}
+                >
+                    Nullstill vedtaksside
+                </Button>
             </FlexDiv>
         </section>
     );
