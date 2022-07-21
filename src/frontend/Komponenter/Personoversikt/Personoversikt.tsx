@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
+import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Side } from '../../Felles/Visningskomponenter/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';
@@ -89,7 +89,7 @@ const PersonoversiktContent: React.FC<{
     const path = paths.length ? paths[paths.length - 1] : '';
     return (
         <>
-            <VisittkortComponent data={personopplysninger} />
+            <PersonHeaderComponent data={personopplysninger} />
             <Side className={'container'}>
                 <TabsPure
                     tabs={tabs.map((tab) => ({ label: tab.label, aktiv: tab.path === path }))}
