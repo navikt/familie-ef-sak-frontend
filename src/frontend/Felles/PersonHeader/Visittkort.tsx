@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import Visittkort from '@navikt/familie-visittkort';
+import PersonHeader from '@navikt/familie-visittkort';
 import styled from 'styled-components';
 import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
@@ -64,7 +64,7 @@ const TagsStorSkjerm = styled.div`
     }
 `;
 
-export const VisittkortWrapper = styled(Sticky)`
+export const PersonHeaderWrapper = styled(Sticky)`
     display: flex;
 
     border-bottom: 1px solid ${navFarger.navGra80};
@@ -89,7 +89,7 @@ const ElementWrapper = styled.div`
     margin-left: 1rem;
 `;
 
-const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
+const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
     data,
     behandling,
 }) => {
@@ -153,9 +153,9 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     }, []);
 
     return (
-        <VisittkortWrapper>
+        <PersonHeaderWrapper>
             {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
-            <Visittkort
+            <PersonHeader
                 alder={20}
                 ident={personIdent}
                 kjønn={kjønn}
@@ -242,7 +242,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         </ElementWrapper>
                     )}
                 </TagsKnyttetTilBehandling>
-            </Visittkort>
+            </PersonHeader>
 
             {behandling && (
                 <>
@@ -255,8 +255,8 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
             {erSaksbehandler && behandling && erBehandlingRedigerbar(behandling) && (
                 <StyledHamburgermeny />
             )}
-        </VisittkortWrapper>
+        </PersonHeaderWrapper>
     );
 };
 
-export default VisittkortComponent;
+export default PersonHeaderComponent;
