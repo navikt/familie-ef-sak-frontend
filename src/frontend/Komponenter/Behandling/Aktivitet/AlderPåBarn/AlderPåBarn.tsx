@@ -1,5 +1,5 @@
 import React from 'react';
-import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
+import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
@@ -20,7 +20,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
     const vilkårsresultatAlderPåBarn = vurderinger
         .filter((vurdering) => vurdering.vilkårType === AktivitetsvilkårType.ALDER_PÅ_BARN)
         .map((v) => v.resultat);
-    const utleddResultat = vilkårStatusAleneomsorg(vilkårsresultatAlderPåBarn);
+    const utleddResultat = vilkårStatusForBarn(vilkårsresultatAlderPåBarn);
 
     return (
         <>

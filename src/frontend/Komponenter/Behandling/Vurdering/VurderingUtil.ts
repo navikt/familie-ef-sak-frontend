@@ -22,14 +22,14 @@ export const vilkårsresultat = (
         return Vilkårsresultat.IKKE_OPPFYLT;
     }
 };
-export const vilkårStatusAleneomsorg = (vilkårsresultater: Vilkårsresultat[]): Vilkårsresultat => {
-    if (vilkårsresultater.some((vurdering) => vurdering === Vilkårsresultat.OPPFYLT)) {
-        return Vilkårsresultat.OPPFYLT;
-    }
+export const vilkårStatusForBarn = (vilkårsresultater: Vilkårsresultat[]): Vilkårsresultat => {
     if (
         vilkårsresultater.some((vurdering) => vurdering === Vilkårsresultat.IKKE_TATT_STILLING_TIL)
     ) {
         return Vilkårsresultat.IKKE_TATT_STILLING_TIL;
+    }
+    if (vilkårsresultater.some((vurdering) => vurdering === Vilkårsresultat.OPPFYLT)) {
+        return Vilkårsresultat.OPPFYLT;
     }
     if (vilkårsresultater.every((vurdering) => vurdering === Vilkårsresultat.SKAL_IKKE_VURDERES)) {
         return Vilkårsresultat.SKAL_IKKE_VURDERES;
