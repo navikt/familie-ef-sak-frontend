@@ -15,13 +15,16 @@ import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { SanksjonereVedtakForm } from '../../Sanksjon/Sanksjonsfastsettelse';
 
-export const validerInnvilgetVedtakForm = ({
-    perioder,
-    inntekter,
-    periodeBegrunnelse,
-    inntektBegrunnelse,
-    samordningsfradragType,
-}: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
+export const validerInnvilgetVedtakForm = (
+    {
+        perioder,
+        inntekter,
+        periodeBegrunnelse,
+        inntektBegrunnelse,
+        samordningsfradragType,
+    }: InnvilgeVedtakForm,
+    erFørstegangsInnvilgelse?: boolean
+): FormErrors<InnvilgeVedtakForm> => {
     const periodeBegrunnelseFeil =
         periodeBegrunnelse === '' || periodeBegrunnelse === undefined
             ? 'Mangelfull utfylling av periodebegrunnelse'
@@ -38,25 +41,28 @@ export const validerInnvilgetVedtakForm = ({
         samordningsfradagEksisterer && !samordningsfradragType
             ? 'Mangelfull utfylling av type samordningsfradag'
             : undefined;
-
     return {
-        ...validerVedtaksperioder({ perioder, inntekter }),
+        ...validerVedtaksperioder({ perioder, inntekter }, erFørstegangsInnvilgelse),
         inntektBegrunnelse: inntektBegrunnelseFeil,
         periodeBegrunnelse: periodeBegrunnelseFeil,
         samordningsfradragType: typeSamordningFeil,
     };
 };
 
-export const validerVedtaksperioder = ({
-    perioder,
-    inntekter,
-}: {
-    perioder: IVedtaksperiode[];
-    inntekter: IInntektsperiode[];
-}): FormErrors<{
+export const validerVedtaksperioder = (
+    {
+        perioder,
+        inntekter,
+    }: {
+        perioder: IVedtaksperiode[];
+        inntekter: IInntektsperiode[];
+    },
+    erFørstegangsinnvilgelse?: boolean
+): FormErrors<{
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
 }> => {
+    const toMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 2));
     const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
     const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
     let harPeriodeFør7mndFremITiden = false;
@@ -101,6 +107,18 @@ export const validerVedtaksperioder = ({
                     årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
                 };
             }
+        }
+
+        // Den første fom-perioden kan ikke være mer enn to måneder frem i tid for førstegangsinnvilgelser
+        if (
+            index === 0 &&
+            erFørstegangsinnvilgelse &&
+            erMånedÅrEtter(toMånederFremITiden, årMånedFra)
+        ) {
+            return {
+                ...vedtaksperiodeFeil,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 2mnd frem i tid`,
+            };
         }
 
         // Det er gyldig med periode etter 7mnd frem i tiden, hvis det finnes en periode før 7mnd frem i tiden
