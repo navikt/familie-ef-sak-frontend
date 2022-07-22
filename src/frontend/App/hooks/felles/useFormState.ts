@@ -7,13 +7,13 @@ export type FormState<T> = {
     [P in keyof T]: any;
 };
 export type InternalFormState<T> = { [P in keyof T]: FieldState | ListState<unknown> };
-export type FormHook<T extends Record<string, any>> = {
+export type FormHook<T extends Record<string, any>, U> = {
     getProps(key: keyof T): FieldState | ListState<unknown>;
     errors: FormErrors<T>;
     setErrors: Dispatch<SetStateAction<FormErrors<T>>>;
     validateForm: () => boolean;
     onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement>;
-    customValidate: (fn: Valideringsfunksjon<T>) => boolean;
+    customValidate: (fn: Valideringsfunksjon<T, U>) => boolean;
 };
 
 export type FormErrors<T extends Record<string, any | undefined>> = {
@@ -22,13 +22,13 @@ export type FormErrors<T extends Record<string, any | undefined>> = {
         : FormErrors<T[P]>;
 };
 
-type Valideringsfunksjon<T> = (state: FormState<T>, condition?: boolean) => FormErrors<T>;
+type Valideringsfunksjon<T, U> = (state: FormState<T>, valideringsbetingelse?: U) => FormErrors<T>;
 
-export default function useFormState<T extends Record<string, unknown>>(
+export default function useFormState<T extends Record<string, unknown>, U = void>(
     initialState: FormState<T>,
-    valideringsfunksjon: Valideringsfunksjon<T>,
-    valideringsbetingelse?: boolean
-): FormHook<T> {
+    valideringsfunksjon: Valideringsfunksjon<T, U>,
+    valideringsbetingelse?: U
+): FormHook<T, U> {
     const [errors, setErrors] = useState<FormErrors<T>>(
         Object.keys(initialState).reduce(
             (acc, key) => ({

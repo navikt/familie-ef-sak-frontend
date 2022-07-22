@@ -85,7 +85,7 @@ export const InnvilgeVedtak: React.FC<{
 
     const erFørstegangsInnvilgelse = behandling.forrigeBehandlingId === null;
 
-    const formState = useFormState<InnvilgeVedtakForm>(
+    const formState = useFormState<InnvilgeVedtakForm, boolean>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
             inntektBegrunnelse: lagretInnvilgetVedtak?.inntektBegrunnelse || '',

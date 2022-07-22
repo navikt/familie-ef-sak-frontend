@@ -41,7 +41,6 @@ export const validerInnvilgetVedtakForm = (
         samordningsfradagEksisterer && !samordningsfradragType
             ? 'Mangelfull utfylling av type samordningsfradag'
             : undefined;
-    console.log('erførstegangs 1', erFørstegangsInnvilgelse);
     return {
         ...validerVedtaksperioder({ perioder, inntekter }, erFørstegangsInnvilgelse),
         inntektBegrunnelse: inntektBegrunnelseFeil,
