@@ -9,7 +9,9 @@ import SystemetLaster from '../SystemetLaster/SystemetLaster';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import AlertStripeFeilPreWrap from '../Visningskomponenter/AlertStripeFeilPreWrap';
+import AlertStripeFeilPreWrap, {
+    AlertStripeVariant,
+} from '../Visningskomponenter/AlertStripeFeilPreWrap';
 
 /**
  * Input: { behandling: Ressurss<Behandling>, personopslyninger: Ressurss<IPersonopplysninger> }
@@ -21,6 +23,7 @@ import AlertStripeFeilPreWrap from '../Visningskomponenter/AlertStripeFeilPreWra
 interface DataViewerProps<T extends Record<string, unknown>> {
     response: { [P in keyof T]: Ressurs<T[P]> };
     children: ((data: T) => React.ReactElement | null) | ReactNode;
+    alertStripeVariant?: AlertStripeVariant;
 }
 
 const StyledLenke = styled(Link)`
@@ -28,7 +31,7 @@ const StyledLenke = styled(Link)`
 `;
 
 // eslint-disable-next-line
-const renderFeil = (responses: Ressurs<any>[]) => (
+const renderFeil = (responses: Ressurs<any>[], alertOption: AlertStripeVariant) => (
     <>
         {responses.map((feilet, index) => {
             if (
@@ -36,7 +39,7 @@ const renderFeil = (responses: Ressurs<any>[]) => (
                 feilet.status === RessursStatus.FEILET
             ) {
                 return (
-                    <AlertStripeFeilPreWrap key={index}>
+                    <AlertStripeFeilPreWrap key={index} alertVariant={alertOption}>
                         {feilet.frontendFeilmelding}
                     </AlertStripeFeilPreWrap>
                 );
@@ -44,9 +47,11 @@ const renderFeil = (responses: Ressurs<any>[]) => (
                 return null;
             }
         })}
-        <StyledLenke className="lenke" to={{ pathname: '/oppgavebenk' }}>
-            Gå til oppgavebenk
-        </StyledLenke>
+        {alertOption === AlertStripeVariant.IKKE_VALGT && (
+            <StyledLenke className="lenke" to={{ pathname: '/oppgavebenk' }}>
+                Gå til oppgavebenk
+            </StyledLenke>
+        )}
     </>
 );
 
@@ -66,10 +71,13 @@ const renderChildren = (children: any, response: any): ReactElement => {
 function DataViewer<T extends Record<string, unknown>>(
     props: DataViewerProps<T>
 ): JSX.Element | null {
-    const { response, children } = props;
+    const { response, children, alertStripeVariant } = props;
     const responses = Object.values(response);
     if (harNoenRessursMedStatus(responses, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.FEILET)) {
-        return renderFeil(responses);
+        return renderFeil(
+            responses,
+            alertStripeVariant ? alertStripeVariant : AlertStripeVariant.IKKE_VALGT
+        );
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
         return <AlertStripeFeil children="Ikke tilgang!" />;
     } else if (harNoenRessursMedStatus(responses, RessursStatus.HENTER)) {

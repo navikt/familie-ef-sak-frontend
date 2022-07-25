@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
 import { Collapse, Expand } from '@navikt/ds-icons';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -53,7 +54,6 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
         },
         [axiosRequest]
     );
-
     useEffect(() => {
         if (visBeboere && beboere.status !== RessursStatus.SUKSESS) {
             hentBeboerePåSammeAdresse(behandlingId);
@@ -87,32 +87,37 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
                     );
                 }}
             </DataViewer>
-            <DataViewer response={{ beboere }}>
-                {({ beboere }) => {
-                    return (
-                        <>
-                            <BeboereTabell vis={visBeboere} className="tabell">
-                                <thead>
-                                    <Td>Navn</Td>
-                                    <Td>Fødselsnummer</Td>
-                                    <Td>Adresse</Td>
-                                </thead>
-                                <tbody>
-                                    {beboere.hits.map((beboer) => {
-                                        return (
-                                            <tr>
-                                                <Td>{beboer.visningsnavn}</Td>
-                                                <Td>{beboer.personIdent}</Td>
-                                                <Td>{beboer.visningsadresse}</Td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </BeboereTabell>
-                        </>
-                    );
-                }}
-            </DataViewer>
+            {visBeboere && (
+                <DataViewer
+                    response={{ beboere }}
+                    alertStripeVariant={AlertStripeVariant.SAMLIV_VILKÅR}
+                >
+                    {({ beboere }) => {
+                        return (
+                            <>
+                                <BeboereTabell vis={visBeboere} className="tabell">
+                                    <thead>
+                                        <Td>Navn</Td>
+                                        <Td>Fødselsnummer</Td>
+                                        <Td>Adresse</Td>
+                                    </thead>
+                                    <tbody>
+                                        {beboere.hits.map((beboer) => {
+                                            return (
+                                                <tr>
+                                                    <Td>{beboer.visningsnavn}</Td>
+                                                    <Td>{beboer.personIdent}</Td>
+                                                    <Td>{beboer.visningsadresse}</Td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </BeboereTabell>
+                            </>
+                        );
+                    }}
+                </DataViewer>
+            )}
         </>
     );
 };
