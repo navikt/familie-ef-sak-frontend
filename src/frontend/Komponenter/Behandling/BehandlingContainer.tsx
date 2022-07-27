@@ -76,7 +76,11 @@ const BehandlingContent: FC<{
 
     return (
         <>
-            <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
+            <PersonHeaderComponent
+                data={personopplysninger}
+                behandling={behandling}
+                åpenHøyreMeny={åpenHøyremeny}
+            />
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />

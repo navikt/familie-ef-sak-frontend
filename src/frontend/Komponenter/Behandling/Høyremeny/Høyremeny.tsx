@@ -35,6 +35,8 @@ const StyledButton = styled.button`
 
     background-color: ${navFarger.navBlaLighten20};
 
+    z-index: 99;
+
     margin-left: -12px;
 
     top: 200px;
