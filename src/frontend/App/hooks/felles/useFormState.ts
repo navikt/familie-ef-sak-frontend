@@ -7,13 +7,13 @@ export type FormState<T> = {
     [P in keyof T]: any;
 };
 export type InternalFormState<T> = { [P in keyof T]: FieldState | ListState<unknown> };
-export type FormHook<T extends Record<string, any>> = {
+export type FormHook<T extends Record<string, any>, U> = {
     getProps(key: keyof T): FieldState | ListState<unknown>;
     errors: FormErrors<T>;
     setErrors: Dispatch<SetStateAction<FormErrors<T>>>;
     validateForm: () => boolean;
     onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement>;
-    customValidate: (fn: Valideringsfunksjon<T>) => boolean;
+    customValidate: (fn: Valideringsfunksjon<T, U>) => boolean;
 };
 
 export type FormErrors<T extends Record<string, any | undefined>> = {
@@ -22,12 +22,13 @@ export type FormErrors<T extends Record<string, any | undefined>> = {
         : FormErrors<T[P]>;
 };
 
-type Valideringsfunksjon<T> = (state: FormState<T>) => FormErrors<T>;
+type Valideringsfunksjon<T, U> = (state: FormState<T>, valideringsbetingelse?: U) => FormErrors<T>;
 
-export default function useFormState<T extends Record<string, unknown>>(
+export default function useFormState<T extends Record<string, unknown>, U = void>(
     initialState: FormState<T>,
-    valideringsfunksjon: Valideringsfunksjon<T>
-): FormHook<T> {
+    valideringsfunksjon: Valideringsfunksjon<T, U>,
+    valideringsbetingelse?: U
+): FormHook<T, U> {
     const [errors, setErrors] = useState<FormErrors<T>>(
         Object.keys(initialState).reduce(
             (acc, key) => ({
@@ -59,7 +60,7 @@ export default function useFormState<T extends Record<string, unknown>>(
     return {
         getProps: (key: keyof T) => formState[key],
         validateForm: () => {
-            const errors = valideringsfunksjon(tilFormstate);
+            const errors = valideringsfunksjon(tilFormstate, valideringsbetingelse);
             setErrors(errors);
             return isValid(errors);
         },
@@ -68,13 +69,13 @@ export default function useFormState<T extends Record<string, unknown>>(
         onSubmit(fn: (state: FormState<T>) => void): FormEventHandler<HTMLFormElement> {
             return (event) => {
                 event.preventDefault();
-                const errors = valideringsfunksjon(tilFormstate);
+                const errors = valideringsfunksjon(tilFormstate, valideringsbetingelse);
                 setErrors(errors);
                 if (isValid(errors)) fn(tilFormstate);
             };
         },
         customValidate(validate) {
-            const errors = validate(tilFormstate);
+            const errors = validate(tilFormstate, valideringsbetingelse);
             setErrors(errors);
             return isValid(errors);
         },

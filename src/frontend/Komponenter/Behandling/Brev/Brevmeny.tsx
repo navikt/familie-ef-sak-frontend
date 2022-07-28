@@ -138,7 +138,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     }}
                 >
                     {({ brevStruktur, mellomlagretBrev, beløpsperioder }) =>
-                        brevMal && (
+                        brevMal ? (
                             <BrevmenyVisning
                                 {...props}
                                 brevStruktur={brevStruktur}
@@ -150,7 +150,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                 flettefeltStore={flettefeltStore}
                                 stønadstype={behandling.stønadstype}
                             />
-                        )
+                        ) : null
                     }
                 </DataViewer>
             )}

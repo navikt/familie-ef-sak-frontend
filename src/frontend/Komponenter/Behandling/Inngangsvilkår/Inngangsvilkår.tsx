@@ -13,6 +13,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
+import { useApp } from '../../../App/context/AppContext';
 
 interface Props {
     behandlingId: string;
@@ -31,6 +32,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     } = useHentVilkår();
 
     const { behandling, behandlingErRedigerbar } = useBehandling();
+    const { erSaksbehandler } = useApp();
 
     React.useEffect(() => {
         if (behandlingId !== undefined) {
@@ -52,14 +54,16 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
                 return (
                     <>
-                        <InngangsvilkårHeader
-                            oppdatertDato={grunnlagsdataInnhentetDato}
-                            behandlingErRedigerbar={behandlingErRedigerbar}
-                            oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
-                            behandlingId={behandlingId}
-                            behandling={behandling}
-                            gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
-                        />
+                        {erSaksbehandler && (
+                            <InngangsvilkårHeader
+                                oppdatertDato={grunnlagsdataInnhentetDato}
+                                behandlingErRedigerbar={behandlingErRedigerbar}
+                                oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
+                                behandlingId={behandlingId}
+                                behandling={behandling}
+                                gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
+                            />
+                        )}
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}

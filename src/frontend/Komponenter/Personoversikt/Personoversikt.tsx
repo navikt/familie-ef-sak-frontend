@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
+import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Side } from '../../Felles/Visningskomponenter/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';
@@ -14,13 +14,15 @@ import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMed
 import Dokumenter from './Dokumenter';
 import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
+import { useApp } from '../../App/context/AppContext';
 
 type TabWithRouter = {
     label: string;
     path: string;
     komponent: (
         fagsakPerson: IFagsakPerson,
-        personopplysninger: IPersonopplysninger
+        personopplysninger: IPersonopplysninger,
+        erSaksbehandler: boolean
     ) => React.ReactNode | undefined;
 };
 
@@ -63,13 +65,15 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Brev',
         path: 'frittstaaende-brev',
-        komponent: (fagsakPerson) => {
+        komponent: (fagsakPerson, _, erSaksbehandler) => {
             const fagsakId =
                 fagsakPerson.overgangsstønad ||
                 fagsakPerson.barnetilsyn ||
                 fagsakPerson.skolepenger;
 
-            return fagsakId && <FrittståendeBrevMedVisning fagsakId={fagsakId} />;
+            return (
+                erSaksbehandler && fagsakId && <FrittståendeBrevMedVisning fagsakId={fagsakId} />
+            );
         },
     },
 ];
@@ -79,12 +83,13 @@ const PersonoversiktContent: React.FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ fagsakPerson, personopplysninger }) => {
     const navigate = useNavigate();
+    const { erSaksbehandler } = useApp();
 
     const paths = useLocation().pathname.split('/').slice(-1);
     const path = paths.length ? paths[paths.length - 1] : '';
     return (
         <>
-            <VisittkortComponent data={personopplysninger} />
+            <PersonHeaderComponent data={personopplysninger} />
             <Side className={'container'}>
                 <TabsPure
                     tabs={tabs.map((tab) => ({ label: tab.label, aktiv: tab.path === path }))}
@@ -98,7 +103,11 @@ const PersonoversiktContent: React.FC<{
                         <Route
                             key={tab.path}
                             path={`/${tab.path}`}
-                            element={tab.komponent(fagsakPerson, personopplysninger)}
+                            element={tab.komponent(
+                                fagsakPerson,
+                                personopplysninger,
+                                erSaksbehandler
+                            )}
                         />
                     ))}
                     <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />

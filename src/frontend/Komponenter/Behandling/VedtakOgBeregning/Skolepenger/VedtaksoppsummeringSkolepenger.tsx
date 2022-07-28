@@ -8,7 +8,6 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Søknadsdatoer } from '../Overgangsstønad/Søknadsdatoer';
-import { Søknadsutgifter } from './Søknadsutgifter';
 
 const OppsummeringContainer = styled.div<{ åpenHøyremeny: boolean }>`
     display: flex;
@@ -59,9 +58,6 @@ export const VedtaksoppsummeringSkolepenger: React.FC<{
                             behandlingId={behandling.id}
                             stønadstype={behandling.stønadstype}
                         />
-                    </Oppsummeringsboks>
-                    <Oppsummeringsboks>
-                        <Søknadsutgifter behandlingId={behandling.id} />
                     </Oppsummeringsboks>
                 </>
             )}

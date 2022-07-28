@@ -9,6 +9,7 @@ const StyledKnapp = styled.button<{ minWidth?: string }>`
 interface IProps {
     onClick: () => void;
     minWidth?: string;
+    children: React.ReactNode;
 }
 
 const LenkeKnapp: React.FC<IProps> = ({ onClick, children, minWidth }) => {

@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato, utledUtgiftsbeløp } from '../../../../App/utils/formatter';
-import { IAktivitet, IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
-import { EStudieandel, StudieandelTilTekst, UtdanningsformTilTekst } from '../Aktivitet/typer';
+import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
+import { UtdanningsformTilTekst } from '../Aktivitet/typer';
 import styled from 'styled-components';
+import { utledVisningForStudiebelastning } from '../../Inngangsvilkår/utils';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -47,15 +48,6 @@ const søknadsutgifterTilListe = (
 
 const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {
     const { underUtdanning } = aktivitet;
-
-    const utledVisningForStudiebelastning = (utdanning?: IUnderUtdanning): string => {
-        if (utdanning) {
-            return utdanning.heltidEllerDeltid === EStudieandel.heltid
-                ? StudieandelTilTekst[utdanning.heltidEllerDeltid]
-                : `${utdanning.heltidEllerDeltid} - ${utdanning.hvorMyeSkalDuStudere}%`;
-        }
-        return 'Ikke oppgitt av bruker';
-    };
 
     const søknadsutgifter = søknadsutgifterTilListe(
         underUtdanning?.semesteravgift,

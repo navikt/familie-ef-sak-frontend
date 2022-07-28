@@ -25,6 +25,7 @@ export const useEffectDebugger = (
         if (dependency !== previousDeps[index]) {
             const keyName = dependencyNames[index] || index;
             return {
+                // @ts-ignore
                 ...accum,
                 [keyName]: {
                     before: previousDeps[index],
@@ -36,6 +37,7 @@ export const useEffectDebugger = (
         return accum;
     }, {});
 
+    // @ts-ignore
     if (Object.keys(changedDeps).length) {
         console.log('[use-effect-debugger] ', changedDeps);
     }

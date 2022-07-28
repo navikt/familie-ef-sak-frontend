@@ -16,7 +16,7 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>(byggTomRessurs());
     const [valgtDokumentInfoId, settDokumentInfoId] = useState<string | undefined>();
     const hentDokument = useCallback(
-        (dokumentInfoId) => {
+        (dokumentInfoId: string) => {
             settDokumentInfoId(dokumentInfoId);
             settValgtDokument(byggHenterRessurs());
             axiosRequest<string, null>({

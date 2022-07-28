@@ -93,9 +93,9 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         <>
             <DataViewer response={{ brevmottakereRessurs }}>
                 {({ brevmottakereRessurs }) =>
-                    brevmottakereRessurs && (
+                    brevmottakereRessurs ? (
                         <InfostripeBrevmottakere brevmottakere={brevmottakereRessurs} />
-                    )
+                    ) : null
                 }
             </DataViewer>
             <StyledBrev>

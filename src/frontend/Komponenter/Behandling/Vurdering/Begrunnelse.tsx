@@ -5,6 +5,7 @@ import { BegrunnelseRegel, Regel } from './typer';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 
+// @ts-ignore klager på typefeil fra nav-frontend-skjema som vi ikke får fikset
 const Textarea = hiddenIf(TextareaNav);
 
 interface Props {

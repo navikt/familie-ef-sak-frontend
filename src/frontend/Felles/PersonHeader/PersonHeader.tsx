@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import Visittkort from '@navikt/familie-visittkort';
+import VisittKort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
 import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
@@ -9,7 +9,7 @@ import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etikette
 import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
-import { erEtterDagensDato } from '../../App/utils/dato';
+import { erEtterDagensDato, nullableDatoTilAlder } from '../../App/utils/dato';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
@@ -64,7 +64,7 @@ const TagsStorSkjerm = styled.div`
     }
 `;
 
-export const VisittkortWrapper = styled(Sticky)`
+export const PersonHeaderWrapper = styled(Sticky)`
     display: flex;
 
     border-bottom: 1px solid ${navFarger.navGra80};
@@ -89,7 +89,7 @@ const ElementWrapper = styled.div`
     margin-left: 1rem;
 `;
 
-const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
+const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
     data,
     behandling,
 }) => {
@@ -102,12 +102,18 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
         egenAnsatt,
         fullmakt,
         vergemål,
+        fødselsdato,
     } = data;
 
-    const { axiosRequest, gåTilUrl } = useApp();
+    const { axiosRequest, gåTilUrl, erSaksbehandler } = useApp();
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
+
+    const utledVisningsnavn = (): string => {
+        const alder = nullableDatoTilAlder(fødselsdato);
+        return alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
+    };
 
     const utledOmFagsakErMigrert = (fagsak: {
         fagsakId: string;
@@ -147,9 +153,9 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
     }, []);
 
     return (
-        <VisittkortWrapper>
+        <PersonHeaderWrapper>
             {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
-            <Visittkort
+            <VisittKort
                 alder={20}
                 ident={personIdent}
                 kjønn={kjønn}
@@ -162,7 +168,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
-                        <Visningsnavn>{navn.visningsnavn}</Visningsnavn>
+                        <Visningsnavn>{utledVisningsnavn()}</Visningsnavn>
                     </ResponsivLenke>
                 }
             >
@@ -236,7 +242,7 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                         </ElementWrapper>
                     )}
                 </TagsKnyttetTilBehandling>
-            </Visittkort>
+            </VisittKort>
 
             {behandling && (
                 <>
@@ -246,9 +252,11 @@ const VisittkortComponent: FC<{ data: IPersonopplysninger; behandling?: Behandli
                     </StatuserLitenSkjerm>
                 </>
             )}
-            {behandling && erBehandlingRedigerbar(behandling) && <StyledHamburgermeny />}
-        </VisittkortWrapper>
+            {erSaksbehandler && behandling && erBehandlingRedigerbar(behandling) && (
+                <StyledHamburgermeny />
+            )}
+        </PersonHeaderWrapper>
     );
 };
 
-export default VisittkortComponent;
+export default PersonHeaderComponent;

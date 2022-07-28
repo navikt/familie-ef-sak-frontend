@@ -43,7 +43,7 @@ const StyledSystemtittel = styled(Systemtittel)`
 `;
 
 const HorisontalLinje = styled.div`
-    height: 0px;
+    height: 0;
 
     border: 2px solid #f3f3f3;
 
@@ -147,7 +147,6 @@ export const BrevmottakereModal: FC<{
                     />
                     <HorisontalLinje />
                     <SøkWrapper
-                        valgtePersonMottakere={valgtePersonMottakere}
                         settValgtePersonMottakere={settValgtePersonMottakere}
                         valgteOrganisasjonMottakere={valgteOrganisasjonMottakere}
                         settValgteOrganisasjonMottakere={settValgteOrganisasjonMottakere}
