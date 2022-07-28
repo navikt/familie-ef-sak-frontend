@@ -72,7 +72,7 @@ const BehandlingContent: FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
-    const { åpenHøyremeny } = useBehandling();
+    const { åpenHøyremeny, behandlingErRedigerbar } = useBehandling();
 
     return (
         <>
@@ -80,6 +80,7 @@ const BehandlingContent: FC<{
                 data={personopplysninger}
                 behandling={behandling}
                 åpenHøyreMeny={åpenHøyremeny}
+                behandlingErRedigerbar={behandlingErRedigerbar}
             />
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>

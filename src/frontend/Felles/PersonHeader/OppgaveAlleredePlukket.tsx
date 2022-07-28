@@ -30,8 +30,8 @@ const LukkKnapp = styled(Button)`
 
 const InnholdGrid = styled.div`
     display: grid;
-    grid-template-columns: 1.5rem auto 3rem;
-    grid-template-rows: 3rem 2rem 2rem 2rem;
+    grid-template-columns: 3rem auto 3rem;
+    grid-template-rows: 3rem 2rem 2rem 3rem;
 `;
 
 const SaksbehandlerNavn = styled.div`

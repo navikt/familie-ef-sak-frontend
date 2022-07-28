@@ -94,7 +94,8 @@ const PersonHeaderComponent: FC<{
     data: IPersonopplysninger;
     behandling?: Behandling;
     åpenHøyreMeny?: boolean;
-}> = ({ data, behandling, åpenHøyreMeny }) => {
+    behandlingErRedigerbar?: boolean;
+}> = ({ data, behandling, åpenHøyreMeny, behandlingErRedigerbar }) => {
     const {
         personIdent,
         kjønn,
@@ -111,7 +112,7 @@ const PersonHeaderComponent: FC<{
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
-    const [visOppgavePlukket, settVisOppgavePlukket] = useState<boolean>(true);
+    const [oppgaveTidligerePlukket, settOppgaveTidligerePlukket] = useState<boolean>(true);
 
     const utledVisningsnavn = (): string => {
         const alder = nullableDatoTilAlder(fødselsdato);
@@ -154,6 +155,8 @@ const PersonHeaderComponent: FC<{
 
         // eslint-disable-next-line
     }, []);
+
+    const visOppgavePlukket: boolean = behandlingErRedigerbar ? oppgaveTidligerePlukket : false;
 
     return (
         <>
@@ -267,7 +270,7 @@ const PersonHeaderComponent: FC<{
             </PersonHeaderWrapper>
             <OppgaveAlleredePlukket
                 visible={visOppgavePlukket}
-                settVisible={settVisOppgavePlukket}
+                settVisible={settOppgaveTidligerePlukket}
                 åpenHøyreMeny={åpenHøyreMeny}
             />
         </>
