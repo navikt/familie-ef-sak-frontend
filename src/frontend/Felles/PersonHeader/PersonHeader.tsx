@@ -29,6 +29,7 @@ import {
     stønadstypeTilTekstKort,
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
+import { erFullmaktOmraadeAktuelt } from '../../Komponenter/Personoversikt/utils';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -187,7 +188,10 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                         <EtikettFokus mini>Egen ansatt</EtikettFokus>
                     </ElementWrapper>
                 )}
-                {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
+                {fullmakt.some(
+                    (f) =>
+                        erEtterDagensDato(f.gyldigTilOgMed) && erFullmaktOmraadeAktuelt(f.omraader)
+                ) && (
                     <ElementWrapper>
                         <EtikettFokus mini>Fullmakt</EtikettFokus>
                     </ElementWrapper>
