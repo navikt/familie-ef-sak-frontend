@@ -19,7 +19,7 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
                             return (
                                 <tr key={indeks}>
                                     <BredTd>{fullmakt.navn}</BredTd>
-                                    <BredTd>{fullmakt.omraader.join()}</BredTd>
+                                    <BredTd>{fullmakt.områder.join()}</BredTd>
                                     <BredTd>{fullmakt.motpartsPersonident}</BredTd>
                                     <BredTd>
                                         {formaterNullableIsoDato(fullmakt.gyldigFraOgMed)}
