@@ -8,7 +8,7 @@ import {
     Vilkårsresultat,
     VilkårType,
 } from '../../Inngangsvilkår/vilkår';
-import { vilkårStatusAleneomsorg } from '../../Vurdering/VurderingUtil';
+import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
 
 export const mapVilkårtypeTilResultat = (
@@ -27,8 +27,11 @@ export const summerVilkårsresultat = (
 ): Record<Vilkårsresultat, number> => {
     return Object.entries(vilkårstypeTilResultat).reduce((acc, [type, resultatListe]) => {
         let resultat;
-        if (type === InngangsvilkårType.ALENEOMSORG) {
-            resultat = vilkårStatusAleneomsorg(resultatListe);
+        if (
+            type === InngangsvilkårType.ALENEOMSORG ||
+            type === AktivitetsvilkårType.ALDER_PÅ_BARN
+        ) {
+            resultat = vilkårStatusForBarn(resultatListe);
         } else {
             // alle andre vilkår har kun ett resultat
             resultat = resultatListe[0];
@@ -105,7 +108,7 @@ export const eksistererIkkeOppfyltVilkårForOvergangsstønad = (vilkår: IVilkå
 
     return (
         eksistererVilkårsResultat(resultater, Vilkårsresultat.IKKE_OPPFYLT) ||
-        vilkårStatusAleneomsorg(vilkårsresultatAleneomsorg) === Vilkårsresultat.IKKE_OPPFYLT
+        vilkårStatusForBarn(vilkårsresultatAleneomsorg) === Vilkårsresultat.IKKE_OPPFYLT
     );
 };
 

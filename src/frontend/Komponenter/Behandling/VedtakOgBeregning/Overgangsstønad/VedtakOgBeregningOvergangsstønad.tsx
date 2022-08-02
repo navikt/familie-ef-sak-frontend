@@ -23,9 +23,8 @@ const Wrapper = styled.div`
 `;
 
 const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) => {
-    const behandlingId = behandling.id;
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
-    const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
+    const { vedtak, hentVedtak } = useHentVedtak(behandling.id);
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
     const ikkeOppfyltVilkårEksisterer = eksistererIkkeOppfyltVilkårForOvergangsstønad(vilkår);

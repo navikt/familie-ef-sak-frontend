@@ -9,7 +9,7 @@ import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingC
 import { ModalProvider } from '../../App/context/ModalContext';
 import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import VisittkortComponent from '../../Felles/Visittkort/Visittkort';
+import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
 import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
 import { Behandling } from '../../App/typer/fagsak';
@@ -76,7 +76,7 @@ const BehandlingContent: FC<{
 
     return (
         <>
-            <VisittkortComponent data={personopplysninger} behandling={behandling} />
+            <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />

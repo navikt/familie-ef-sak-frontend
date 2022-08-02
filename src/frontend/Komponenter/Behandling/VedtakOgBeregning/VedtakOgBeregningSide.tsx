@@ -17,6 +17,7 @@ import VedtakOgBeregningSkolepenger from './Skolepenger/VedtakOgBeregningSkolepe
 import { VedtaksoppsummeringSkolepenger } from './Skolepenger/VedtaksoppsummeringSkolepenger';
 import { NullstillVedtakModal } from './Felles/NullstillVedtakModal';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
+import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 
 const AlertStripeLeft = styled(AlertStripe)`
     margin-left: 2rem;
@@ -121,6 +122,8 @@ const VedtakOgBeregningSideSkolepenger: React.FC<{
     return (
         <>
             <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
+            <SaksinformasjonSkolepenger vilkår={vilkår} behandling={behandling} />
+
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (
