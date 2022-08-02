@@ -32,11 +32,11 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
 
     useEffect(() => {
         hentVedtak();
-    }, [hentVedtak]);
+    }, [hentVedtak, behandling]);
 
     useEffect(() => {
-        if (vedtak.status === RessursStatus.SUKSESS && vedtak.data) {
-            settResultatType(vedtak.data.resultatType);
+        if (vedtak.status === RessursStatus.SUKSESS) {
+            settResultatType(vedtak.data?.resultatType);
         }
     }, [vedtak]);
 

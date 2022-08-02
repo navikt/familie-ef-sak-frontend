@@ -62,7 +62,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
             </Heading>
             <FlexDiv>
                 <StyledSelect
-                    value={resultatType}
+                    value={resultatType || ''}
                     erLesevisning={!behandlingErRedigerbar}
                     onChange={(e) => {
                         const vedtaksresultat =
