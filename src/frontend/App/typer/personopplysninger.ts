@@ -66,7 +66,6 @@ export interface IFullmakt {
     gyldigTilOgMed: string;
     motpartsPersonident: string;
     navn?: string;
-    områder: string[];
 }
 
 export interface IVergemål {

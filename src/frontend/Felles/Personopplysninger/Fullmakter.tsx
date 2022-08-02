@@ -11,15 +11,12 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
             <TabellOverskrift Ikon={SkrivendeBlyant} tittel={'Fullmakter'} />
             {(fullmakter.length !== 0 && (
                 <table className="tabell">
-                    <KolonneTitler
-                        titler={['Fullmektig', 'Områder', 'Fødselsnummer', 'Fra', 'Til']}
-                    />
+                    <KolonneTitler titler={['Fullmektig', 'Fødselsnummer', 'Fra', 'Til']} />
                     <tbody>
                         {fullmakter.map((fullmakt, indeks) => {
                             return (
                                 <tr key={indeks}>
                                     <BredTd>{fullmakt.navn}</BredTd>
-                                    <BredTd>{fullmakt.områder.join()}</BredTd>
                                     <BredTd>{fullmakt.motpartsPersonident}</BredTd>
                                     <BredTd>
                                         {formaterNullableIsoDato(fullmakt.gyldigFraOgMed)}
