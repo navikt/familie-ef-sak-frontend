@@ -1,4 +1,4 @@
-import { IBeløpsperiode } from './vedtak';
+import {IBeløpsperiode} from './vedtak';
 
 export enum Migreringsstatus {
     ER_MIGRERT = 'ER_MIGRERT',
@@ -10,11 +10,11 @@ export interface MigreringInfoKanIkkeMigreres {
     kanGåVidereTilJournalføring: boolean;
     årsak: string;
 }
+
 export interface MigreringInfoKanMigreres {
     kanMigreres: true;
     kanGåVidereTilJournalføring: false;
-    stønadFom: string;
-    stønadTom: string;
+    stønadsperiode: { fomMåned: String, tomMåned: String }
     inntektsgrunnlag: number;
     samordningsfradrag: number;
     beløpsperioder: IBeløpsperiode[];

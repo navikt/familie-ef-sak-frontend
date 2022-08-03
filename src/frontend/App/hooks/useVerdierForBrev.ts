@@ -23,10 +23,10 @@ export const useVerdierForBrev = (
             settFlettefeltStore((prevState) => ({
                 ...prevState,
                 [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
-                    perioder[perioder.length - 1].periode.tildato
+                    perioder[perioder.length - 1].fellesperiode.tomDato
                 ),
                 [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
-                    perioder[0].periode.fradato
+                    perioder[0].fellesperiode.fomDato
                 ),
             }));
         }

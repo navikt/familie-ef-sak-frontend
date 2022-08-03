@@ -19,14 +19,14 @@ export type IAvslagVedtak = {
 };
 
 export interface IBeløpsperiode {
-    periode: { fradato: string; tildato: string };
+    fellesperiode: { fomDato: string; tomDato: string };
     beregningsgrunnlag: IBeregningsgrunnlag;
     beløp: number;
     beløpFørSamordning: number;
 }
 
 export interface IBeregningsperiodeBarnetilsyn {
-    periode: { fradato: string; tildato: string };
+    fellesperiode: { fomDato: string; tomDato: string };
     beløp: number;
     beløpFørFratrekkOgSatsjustering: number;
     sats: number;
@@ -100,16 +100,14 @@ export type ITilleggsstønad = {
 };
 
 export type IUtgiftsperiode = {
-    årMånedFra: string;
-    årMånedTil: string;
+    periode: { fomMåned: string; tomMåned: string };
     barn: string[];
     utgifter: number | undefined;
     erMidlertidigOpphør: boolean | undefined;
 };
 
 export type IPeriodeMedBeløp = {
-    årMånedFra: string;
-    årMånedTil: string;
+    periode: { fomMåned: string; tomMåned: string };
     beløp: number | undefined;
 };
 
@@ -126,8 +124,7 @@ export interface ISkoleårsperiodeSkolepenger {
 
 export interface IPeriodeSkolepenger {
     studietype: ESkolepengerStudietype | undefined;
-    årMånedFra: string;
-    årMånedTil: string;
+    periode: {fomMåned: string; tomMåned: string}
     studiebelastning: number | undefined;
 }
 
@@ -179,8 +176,7 @@ export interface IVedtaksperiode {
     endretKey: Key | null | undefined;
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
-    årMånedFra?: string;
-    årMånedTil?: string;
+    periode: { fomMåned: string; tomMåned: string };
 }
 
 export type IBeregningsrequest = {

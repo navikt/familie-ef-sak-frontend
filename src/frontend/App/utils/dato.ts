@@ -27,10 +27,28 @@ export const erMånedÅrLik = (årMånedFra: string, årMånedTil: string): bool
 };
 
 export const erMånedÅrEtterEllerLik = (årMånedFra: string, årMånedTil: string): boolean => {
-    const fra = månedÅrTilDate(årMånedFra);
-    const til = månedÅrTilDate(årMånedTil);
+     const fra = månedÅrTilDate(årMånedFra);
+     const til = månedÅrTilDate(årMånedTil);
+     return !isBefore(til, fra);
+};
+
+export const erMangelfullPeriode = (periode: {fomMåned: string, tomMåned: string}): boolean => {
+    return !periode.fomMåned || !periode.tomMåned
+};
+
+export const erFomMånedEtterEllerLikTomMåned = (periode: {fomMåned: string, tomMåned: string}): boolean => {
+    const fra = månedÅrTilDate(periode.fomMåned);
+    const til = månedÅrTilDate(periode.tomMåned);
     return !isBefore(til, fra);
 };
+
+export const erPeriodeEtter = (forrigePeriode: {fomMåned: string, tomMåned: string},
+                               periode: {fomMåned: string, tomMåned: string}): boolean => {
+    const tilForrigePeriode = månedÅrTilDate(forrigePeriode.tomMåned);
+    const fraDennePeriope = månedÅrTilDate(periode.fomMåned);
+    return isAfter(fraDennePeriope, tilForrigePeriode);
+};
+
 
 export const erMånedÅrEtter = (årMånedFra: string, årMånedTil: string): boolean => {
     const fra = månedÅrTilDate(årMånedFra);

@@ -1,7 +1,7 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { ERadioValg, IPeriodeMedBeløp, IUtgiftsperiode } from '../../../../App/typer/vedtak';
-import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
+import {erFomMånedEtterEllerLikTomMåned, erMangelfullPeriode, erPeriodeEtter} from '../../../../App/utils/dato';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -78,33 +78,32 @@ export const validerUtgiftsperioder = ({
     utgiftsperioder: IUtgiftsperiode[];
 }): FormErrors<{ utgiftsperioder: IUtgiftsperiode[] }> => {
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
-        const { årMånedFra, årMånedTil, barn, erMidlertidigOpphør } = utgiftsperiode;
+        const { periode, barn, erMidlertidigOpphør } = utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
-            årMånedFra: undefined,
-            årMånedTil: undefined,
+            periode: { fomMåned: undefined, tomMåned: undefined },
             barn: [],
             utgifter: undefined,
             erMidlertidigOpphør: undefined,
         };
 
-        if (!årMånedTil || !årMånedFra) {
-            return { ...utgiftsperiodeFeil, årMånedFra: 'Mangelfull utfylling av utgiftsperiode' };
+        if (erMangelfullPeriode(periode)) {
+            return { ...utgiftsperiodeFeil, fomMåned: 'Mangelfull utfylling av utgiftsperiode' };
         }
 
-        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+        if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...utgiftsperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
             };
         }
 
         const forrige = index > 0 && utgiftsperioder[index - 1];
 
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+        if (forrige && forrige.periode) {
+            if (!erPeriodeEtter(forrige.periode, periode)) {
                 return {
                     ...utgiftsperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    fomMåned: `Ugyldig etterfølgende periode - fra (${periode.fomMåned}) må være etter til (${forrige.periode.tomMåned})`,
                 };
             }
         }
@@ -134,38 +133,36 @@ export const validerKontantstøttePerioder = (
 ): FormErrors<{ kontantstøtteperioder: IPeriodeMedBeløp[] }> | undefined => {
     if (!kontantstøtteperioder || kontantstøtte == ERadioValg.NEI) {
         const kontantstøtteperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            årMånedFra: undefined,
-            årMånedTil: undefined,
+            periode: { fomMåned: undefined, tomMåned: undefined },
             beløp: undefined,
         };
         return { kontantstøtteperioder: [kontantstøtteperiodeFeil] };
     }
-    const feilIKontantstøtteperioder = kontantstøtteperioder.map((periode, index) => {
-        const { årMånedFra, årMånedTil } = periode;
+    const feilIKontantstøtteperioder = kontantstøtteperioder.map((periodeMedBeløp, index) => {
+        const { periode } = periodeMedBeløp;
         const kontantstøtteperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            årMånedFra: undefined,
-            årMånedTil: undefined,
+            periode: { fomMåned: undefined, tomMåned: undefined },
             beløp: undefined,
         };
 
-        if (!årMånedTil || !årMånedFra) {
+        if (erMangelfullPeriode(periode)) {
             return {
                 ...kontantstøtteperiodeFeil,
-                årMånedFra: 'Mangelfull utfylling av periode',
+                fomMåned: 'Mangelfull utfylling av periode',
             };
         }
-        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+        if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...kontantstøtteperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
             };
         }
         const forrige = index > 0 && kontantstøtteperioder[index - 1];
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+        if (forrige && forrige.periode) {
+            if (!erPeriodeEtter(forrige.periode, periode)) {
                 return {
                     ...kontantstøtteperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    fomMåned: `Ugyldig etterfølgende periode - fra (${periode.fomMåned}) må være etter til (${forrige.periode.tomMåned})`,
                 };
             }
         }
@@ -192,38 +189,36 @@ export const validerTilleggsstønadPerioder = (
         stønadsreduksjon === ERadioValg.NEI
     ) {
         const tilleggsstønadsperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            årMånedFra: undefined,
-            årMånedTil: undefined,
+            periode: { fomMåned: undefined, tomMåned: undefined },
             beløp: undefined,
         };
         return { tilleggsstønadsperioder: [tilleggsstønadsperiodeFeil] };
     }
-    const feilITilleggsstønadPerioder = tilleggsstønadsperioder.map((periode, index) => {
-        const { årMånedFra, årMånedTil } = periode;
+    const feilITilleggsstønadPerioder = tilleggsstønadsperioder.map((periodeMedBeløp, index) => {
+        const { periode } = periodeMedBeløp;
         const tilleggsstønadPeriodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            årMånedFra: undefined,
-            årMånedTil: undefined,
+            periode: {fomMåned: undefined, tomMåned: undefined},
             beløp: undefined,
         };
 
-        if (!årMånedTil || !årMånedFra) {
+        if (erMangelfullPeriode(periode)) {
             return {
                 ...tilleggsstønadPeriodeFeil,
-                årMånedFra: 'Mangelfull utfylling av periode',
+                fomMåned: 'Mangelfull utfylling av periode',
             };
         }
-        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+        if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...tilleggsstønadPeriodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
             };
         }
         const forrige = index > 0 && tilleggsstønadsperioder[index - 1];
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+        if (forrige && forrige.periode) {
+            if (!erPeriodeEtter(forrige.periode, periode)) {
                 return {
                     ...tilleggsstønadPeriodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    fomMåned: `Ugyldig etterfølgende periode - fra (${periode.fomMåned}) må være etter til (${forrige.periode.tomMåned})`,
                 };
             }
         }

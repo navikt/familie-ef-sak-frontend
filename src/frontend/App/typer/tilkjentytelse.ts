@@ -9,8 +9,7 @@ export interface TilkjentYtelse {
 }
 
 export interface AndelTilkjentYtelse {
-    stønadFra: string;
-    stønadTil: string;
+    periode: { fomDato: string, tomdato: String }
     inntekt: number;
     beløp: number;
     inntektsreduksjon: number;
@@ -18,8 +17,7 @@ export interface AndelTilkjentYtelse {
 }
 
 export interface AndelMedGrunnlag {
-    stønadFra: string;
-    stønadTil: string;
+    periode: { fomDato: string, tomdato: String }
     inntekt: number;
     beløp: number;
     inntektsreduksjon: number;

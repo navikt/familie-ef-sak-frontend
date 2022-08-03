@@ -6,6 +6,8 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 import {
+    erFomMånedEtterEllerLikTomMåned,
+    erMangelfullPeriode,
     erMånedÅrEtterEllerLik,
     Intervall,
     månedÅrTilDate,
@@ -15,8 +17,7 @@ import { beregnSkoleår } from '../skoleår';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
-    årMånedFra: undefined,
-    årMånedTil: undefined,
+    periode: {fomMåned: undefined, tomMåned: undefined},
     studiebelastning: undefined,
 };
 
@@ -64,38 +65,38 @@ const validerDelperiodeSkoleår = (
     let skoleår: number | undefined = undefined;
     const tidligerePerioder: Intervall[] = [];
     return perioder.map((periode) => {
-        const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
+        const { studietype, periode, studiebelastning } = periode;
         if (!studietype) {
             return { ...periodeSkolepengerFeil, studietype: 'Mangelfull utfylling av studietype' };
         }
-        if (!årMånedFra || !årMånedTil) {
+        if (erMangelfullPeriode(periode)) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: 'Mangelfull utfylling av utgiftsperiode',
+                fomMåned: 'Mangelfull utfylling av utgiftsperiode',
             };
         }
-        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+        if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
             };
         }
         const intervall: Intervall = {
-            fra: månedÅrTilDate(årMånedFra),
-            til: månedÅrTilDate(årMånedTil),
+            fra: månedÅrTilDate(periode.fomMåned),
+            til: månedÅrTilDate(periode.tomMåned),
         };
         if (tidligerePerioder.some((periode) => overlapper(periode, intervall))) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: `Ugyldig periode - overlapper med tidligere periode`,
+                fomMåned: `Ugyldig periode - overlapper med tidligere periode`,
             };
         }
         tidligerePerioder.push(intervall);
-        const skoleårForPeriode = beregnSkoleår(årMånedFra, årMånedTil);
+        const skoleårForPeriode = beregnSkoleår(periode.fomMåned, periode.tomMåned);
         if (!skoleårForPeriode.gyldig) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: skoleårForPeriode.årsak,
+                fomMåned: skoleårForPeriode.årsak,
             };
         } else {
             if (skoleår === undefined) {
@@ -103,7 +104,7 @@ const validerDelperiodeSkoleår = (
             } else if (skoleår !== skoleårForPeriode.skoleår) {
                 return {
                     ...periodeSkolepengerFeil,
-                    årMånedFra: `Skoleåret er ikke det samme som tidligere skoleår`,
+                    fomMåned: `Skoleåret er ikke det samme som tidligere skoleår`,
                 };
             }
         }

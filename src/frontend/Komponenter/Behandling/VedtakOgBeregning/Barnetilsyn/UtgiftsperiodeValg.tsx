@@ -62,8 +62,7 @@ interface Props {
 }
 
 export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
-    årMånedFra: '',
-    årMånedTil: '',
+    periode: { fomMåned: '', tomMåned: '' },
     barn: [],
     utgifter: undefined,
     erMidlertidigOpphør: false,
@@ -139,7 +138,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <TekstEnLinje>Ingen stønad/opphør</TekstEnLinje>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { årMånedFra, årMånedTil, utgifter, erMidlertidigOpphør } = utgiftsperiode;
+                const { periode, utgifter, erMidlertidigOpphør } = utgiftsperiode;
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index === utgiftsperioder.value.length - 1 &&
@@ -152,8 +151,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 return (
                     <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrPeriode
-                            årMånedFraInitiell={årMånedFra}
-                            årMånedTilInitiell={årMånedTil}
+                            årMånedFraInitiell={periode.fomMåned}
+                            årMånedTilInitiell={periode.tomMåned}
                             index={index}
                             onEndre={(verdi, periodeVariant) => {
                                 oppdaterUtgiftsperiode(
@@ -162,7 +161,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     verdi
                                 );
                             }}
-                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                            feilmelding={valideringsfeil && valideringsfeil[index]?.periode.fomMåned}
                             erLesevisning={!behandlingErRedigerbar}
                         />
                         {behandlingErRedigerbar ? (

@@ -50,8 +50,8 @@ const lagRaderForVedtak = (
     return beløpsperioder
         .map((beløpsperiode) => {
             const andelsperiode = `${formaterNullableIsoDato(
-                beløpsperiode.periode.fradato
-            )} - ${formaterNullableIsoDato(beløpsperiode.periode.tildato)}`;
+                beløpsperiode.fellesperiode.fomDato
+            )} - ${formaterNullableIsoDato(beløpsperiode.fellesperiode.tomDato)}`;
             const utgifter = formaterTallMedTusenSkille(beløpsperiode.beregningsgrunnlag.utgifter);
             const kontantstøtte = formaterTallMedTusenSkille(
                 beløpsperiode.beregningsgrunnlag.kontantstøttebeløp

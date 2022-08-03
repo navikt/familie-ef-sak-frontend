@@ -61,8 +61,8 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                         <Rad>
                             <Normaltekst>
                                 {`${formaterNullableMånedÅr(
-                                    rad.periode.fradato
-                                )} - ${formaterNullableMånedÅr(rad.periode.tildato)}`}
+                                    rad.fellesperiode.fomDato
+                                )} - ${formaterNullableMånedÅr(rad.fellesperiode.tomDato)}`}
                             </Normaltekst>
                             <HøyrejustertNormaltekst>
                                 {rad.beregningsgrunnlag.antallBarn}

@@ -6,9 +6,9 @@ import { Table } from '@navikt/ds-react';
 
 const formatFomTom = (periode: SummertPeriode) => (
     <>
-        {formaterNullableMånedÅr(periode.stønadFom)}
+        {formaterNullableMånedÅr(periode.stønadsperiode.fomDato)}
         {' - '}
-        {formaterNullableMånedÅr(periode.stønadTom)}
+        {formaterNullableMånedÅr(periode.stønadsperiode.tomDato)}
     </>
 );
 
@@ -52,7 +52,7 @@ const SummertePerioderOvergangsstønad: React.FC<{ perioder: SummertPeriode[] }>
             <Table.Header>{utledTabellHeaderOvergangsstønad()}</Table.Header>
             <Table.Body>
                 {perioder.map((periode) => (
-                    <Table.Row key={periode.stønadFom}>
+                    <Table.Row key={periode.stønadsperiode.fomDato}>
                         <Table.DataCell>{formatFomTom(periode)}</Table.DataCell>
                         <Table.DataCell>
                             {formaterTallMedTusenSkille(periode.inntektsgrunnlag)}
@@ -79,7 +79,7 @@ const SummertePerioderBarnetilsyn: React.FC<{ perioder: SummertPeriode[] }> = ({
             <Table.Header>{utledTabellHeaderBarnetilsyn()}</Table.Header>
             <Table.Body>
                 {perioder.map((periode) => (
-                    <Table.Row key={periode.stønadFom}>
+                    <Table.Row key={periode.stønadsperiode.fomDato}>
                         <Table.DataCell>{formatFomTom(periode)}</Table.DataCell>
                         <Table.DataCell>
                             {formaterTallMedTusenSkille(periode.utgifterBarnetilsyn)}
@@ -100,7 +100,7 @@ const SummertePerioderSkolepenger: React.FC<{ perioder: SummertPeriode[] }> = ({
             <Table.Header>{utledTabellHeaderSkolepenger()}</Table.Header>
             <Table.Body>
                 {perioder.map((periode) => (
-                    <Table.Row key={periode.stønadFom}>
+                    <Table.Row key={periode.stønadsperiode.fomDato}>
                         <Table.DataCell>{formatFomTom(periode)}</Table.DataCell>
                         <Table.DataCell>
                             {formaterTallMedTusenSkille(periode.månedsbeløp)}

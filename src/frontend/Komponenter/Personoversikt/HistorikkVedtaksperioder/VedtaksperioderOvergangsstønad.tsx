@@ -34,9 +34,9 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
     return (
         <HistorikkRad type={andel.endring?.type} key={index}>
             <td>
-                {formaterNullableMånedÅr(andel.andel.stønadFra)}
+                {formaterNullableMånedÅr(andel.andel.periode.fomDato)}
                 {' - '}
-                {formaterNullableMånedÅr(andel.andel.stønadTil)}
+                {formaterNullableMånedÅr(andel.andel.periode.tomdato)}
             </td>
             <td>
                 <EtikettBase mini type={etikettType(andel.periodeType)}>

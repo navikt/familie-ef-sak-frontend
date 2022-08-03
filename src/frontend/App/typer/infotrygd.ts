@@ -12,8 +12,7 @@ export interface Perioder {
 }
 
 export interface SummertPeriode {
-    stønadFom: string;
-    stønadTom: string;
+    stønadsperiode: { fomDato: String, tomDato: String }
     månedsbeløp: number;
     engangsbeløp: number;
     inntektsgrunnlag: number;

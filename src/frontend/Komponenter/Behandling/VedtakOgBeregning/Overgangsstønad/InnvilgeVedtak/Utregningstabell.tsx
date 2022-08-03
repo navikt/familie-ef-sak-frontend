@@ -50,9 +50,9 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                                 <InnholdContainer>
                                     <Normaltekst>
                                         {`${formaterNullableMånedÅr(
-                                            beløpsPeriode.periode.fradato
+                                            beløpsPeriode.fellesperiode.fomDato
                                         )} - ${formaterNullableMånedÅr(
-                                            beløpsPeriode.periode.tildato
+                                            beløpsPeriode.fellesperiode.tomDato
                                         )}`}
                                     </Normaltekst>
                                     <Normaltekst>

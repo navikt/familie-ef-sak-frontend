@@ -5,9 +5,10 @@ import {
     IVedtaksperiode,
 } from '../../../../App/typer/vedtak';
 import {
+    erFomMånedEtterEllerLikTomMåned, erMangelfullPeriode,
     erMånedÅrEtter,
     erMånedÅrEtterEllerLik,
-    erMånedÅrLik,
+    erMånedÅrLik, erPeriodeEtter,
     plusMåneder,
     tilÅrMåned,
 } from '../../../../App/utils/dato';
@@ -67,12 +68,12 @@ export const validerVedtaksperioder = (
     const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
     let harPeriodeFør7mndFremITiden = false;
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
-        const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
+        const { periode, aktivitet, periodeType } = vedtaksperiode;
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
+            endretKey:undefined,
             aktivitet: undefined,
             periodeType: undefined,
-            årMånedFra: undefined,
-            årMånedTil: undefined,
+            periode: {fomMåned: undefined, tomMåned: undefined}
         };
 
         if (periodeType === '' || periodeType === undefined) {
@@ -89,22 +90,22 @@ export const validerVedtaksperioder = (
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };
         }
 
-        if (!årMånedTil || !årMånedFra) {
-            return { ...vedtaksperiodeFeil, årMånedFra: 'Mangelfull utfylling av vedtaksperiode' };
+        if (erMangelfullPeriode(periode)) {
+            return { ...vedtaksperiodeFeil, periode: 'Mangelfull utfylling av vedtaksperiode' };
         }
 
-        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+        if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
             };
         }
         const forrige = index > 0 && perioder[index - 1];
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+        if (forrige && forrige.periode) {
+            if (!erPeriodeEtter(forrige.periode, periode)) {
                 return {
                     ...vedtaksperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    fomMåned: `Ugyldig etterfølgende periode - fra (${periode.fomMåned}) må være etter til (${forrige.periode.tomMåned})`,
                 };
             }
         }
@@ -113,28 +114,28 @@ export const validerVedtaksperioder = (
         if (
             index === 0 &&
             erFørstegangsinnvilgelse &&
-            erMånedÅrEtter(toMånederFremITiden, årMånedFra)
+            erMånedÅrEtter(toMånederFremITiden, periode.fomMåned)
         ) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 2mnd frem i tid`,
+                fomMåned: `Startdato (${periode.fomMåned}) mer enn 2mnd frem i tid`,
             };
         }
 
         // Det er gyldig med periode etter 7mnd frem i tiden, hvis det finnes en periode før 7mnd frem i tiden
-        if (!erMånedÅrEtter(syvMånederFremITiden, årMånedFra)) {
+        if (!erMånedÅrEtter(syvMånederFremITiden, periode.fomMåned)) {
             harPeriodeFør7mndFremITiden = true;
         }
-        if (erMånedÅrEtter(syvMånederFremITiden, årMånedFra) && !harPeriodeFør7mndFremITiden) {
+        if (erMånedÅrEtter(syvMånederFremITiden, periode.fomMåned) && !harPeriodeFør7mndFremITiden) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 7mnd frem i tid`,
+                fomMåned: `Startdato (${periode.fomMåned}) mer enn 7mnd frem i tid`,
             };
         }
-        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
+        if (erMånedÅrEtter(tolvMånederFremITiden, periode.fomMåned) && harPeriodeFør7mndFremITiden) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
+                fomMåned: `Startdato (${periode.fomMåned}) mer enn 12mnd frem i tid`,
             };
         }
         return vedtaksperiodeFeil;
@@ -152,8 +153,8 @@ export const validerVedtaksperioder = (
         if (
             index === 0 &&
             førsteInnvilgedeVedtaksperiode &&
-            førsteInnvilgedeVedtaksperiode.årMånedFra &&
-            !erMånedÅrLik(årMånedFra, førsteInnvilgedeVedtaksperiode.årMånedFra)
+            førsteInnvilgedeVedtaksperiode.periode.fomMåned &&
+            !erMånedÅrLik(årMånedFra, førsteInnvilgedeVedtaksperiode.periode.fomMåned)
         ) {
             return { årMånedFra: 'Første inntektsperiode må være lik vedtaksperiode' };
         }

@@ -49,8 +49,8 @@ const visMigreringInfo = (migreringInfo: MigreringInfoResponse) => {
         <>
             {migreringInfo.kanMigreres && (
                 <>
-                    <div>Stønad fom: {formaterNullableMånedÅr(migreringInfo.stønadFom)}</div>
-                    <div>Stønad tom: {formaterNullableMånedÅr(migreringInfo.stønadTom)}</div>
+                    <div>Stønad fom: {formaterNullableMånedÅr(migreringInfo.stønadsperiode.fomMåned)}</div>
+                    <div>Stønad tom: {formaterNullableMånedÅr(migreringInfo.stønadsperiode.tomMåned)}</div>
                     <div>
                         Inntektsgrunnlag:{' '}
                         {formaterTallMedTusenSkille(migreringInfo.inntektsgrunnlag)}

@@ -52,8 +52,8 @@ const lagRaderForVedtak = (
             );
             const beløp = formaterTallMedTusenSkille(beløpsperiode.beløp);
             const andelsperiode = `${formaterNullableIsoDato(
-                beløpsperiode.periode.fradato
-            )} - ${formaterNullableIsoDato(beløpsperiode.periode.tildato)}`;
+                beløpsperiode.fellesperiode.fomDato
+            )} - ${formaterNullableIsoDato(beløpsperiode.fellesperiode.tomDato)}`;
 
             return `<tr style="text-align: right;">
                         <td style="text-align: left; ${borderStylingCompact}">${andelsperiode}</td>
