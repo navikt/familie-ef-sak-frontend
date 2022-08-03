@@ -55,6 +55,8 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 
+    const skalViseNullstillKnapp = toggles[ToggleName.visNullstillVedtakKnapp];
+
     return (
         <section>
             <Heading spacing size="small" level="5">
@@ -118,13 +120,15 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </TekstLinje>
                     </HjelpeTekst>
                 )}
-                <Button
-                    variant="tertiary"
-                    size={'small'}
-                    onClick={() => settVisNullstillVedtakModal(true)}
-                >
-                    Nullstill vedtaksside
-                </Button>
+                {skalViseNullstillKnapp && (
+                    <Button
+                        variant="tertiary"
+                        size={'small'}
+                        onClick={() => settVisNullstillVedtakModal(true)}
+                    >
+                        Nullstill vedtaksside
+                    </Button>
+                )}
             </FlexDiv>
         </section>
     );
