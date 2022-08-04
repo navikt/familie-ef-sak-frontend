@@ -18,6 +18,7 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -95,6 +96,21 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         }
     }, [mellomlagretBrev]);
 
+    function visBrevmal(mal: DokumentNavn): boolean {
+        if (mal.overgangsstonad == null && mal.barnetilsyn == null && mal.skolepenger == null) {
+            return true; // bakoverkompatibilitet ( valg er kanskje ikke utført på eksisterende maler, vises intil videre)
+        }
+
+        switch (behandling.stønadstype) {
+            case Stønadstype.OVERGANGSSTØNAD:
+                return !!mal.overgangsstonad;
+            case Stønadstype.BARNETILSYN:
+                return !!mal.barnetilsyn;
+            case Stønadstype.SKOLEPENGER:
+                return !!mal.skolepenger;
+        }
+    }
+
     return (
         <StyledBrevMeny>
             <DataViewer response={{ dokumentnavn }}>
@@ -107,11 +123,14 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                         value={brevMal}
                     >
                         <option value="">Ikke valgt</option>
-                        {dokumentnavn?.map((navn: DokumentNavn) => (
-                            <option value={navn.apiNavn} key={navn.apiNavn}>
-                                {navn.visningsnavn}
-                            </option>
-                        ))}
+
+                        {dokumentnavn
+                            ?.filter((mal) => visBrevmal(mal))
+                            .map((navn: DokumentNavn) => (
+                                <option value={navn.apiNavn} key={navn.apiNavn}>
+                                    {navn.visningsnavn}
+                                </option>
+                            ))}
                         <option value={fritekstmal} key={fritekstmal}>
                             {' '}
                             Fritekstbrev
