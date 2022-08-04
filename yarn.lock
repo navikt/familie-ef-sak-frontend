@@ -3007,10 +3007,10 @@
     jest "^28.1.2"
     ts-jest "^28.0.5"
 
-"@navikt/familie-visittkort@^4.0.0":
-  version "4.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/4.0.0/502853f7b47f286070c158c8d377f3f82b99e111065079428d8abc0949657d86#f5c04e71801a15c15ea16d9027c0dd1da1a3220f"
-  integrity sha512-5dxiD5wQQ5DkVk+qKYJmEn1pLz9zFLwqoiBdu7ISwXI7wcpxFdIN1lQZ2Z6PSKQopqLplLEKRUWP7vsg+rJizQ==
+"@navikt/familie-visittkort@^4.0.1":
+  version "4.0.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/4.0.1/c8089307f4f513faf5f73ccdb37814f0e7ed8eeab70846be560bde154bcbf86d#7219f97e6d84116564d8a17fdd90a3543646e42d"
+  integrity sha512-wGY7uUATknEjCT+B1WFXPzKxdoC+2FBobEjQ9bP0xbQ1PXKhiPv40JG7/l+72Jt2EqFjqkW8SIFmIbrRiySmeQ==
   dependencies:
     "@navikt/ds-css" "^0.18.x"
     "@navikt/ds-react" "^0.19.x"
