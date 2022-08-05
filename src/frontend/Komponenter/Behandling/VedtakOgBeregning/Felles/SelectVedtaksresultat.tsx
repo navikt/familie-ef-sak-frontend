@@ -12,6 +12,7 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useToggles } from '../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../App/context/toggles';
 import { NullstillVedtakModalContext } from '../NullstillVedtakModalContext';
+import { Steg } from '../../Høyremeny/Steg';
 
 interface Props {
     behandling: Behandling;
@@ -55,7 +56,8 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 
-    const skalViseNullstillKnapp = toggles[ToggleName.visNullstillVedtakKnapp];
+    const skalViseNullstillKnapp =
+        behandling.steg === Steg.SEND_TIL_BESLUTTER && toggles[ToggleName.visNullstillVedtakKnapp];
 
     return (
         <section>
