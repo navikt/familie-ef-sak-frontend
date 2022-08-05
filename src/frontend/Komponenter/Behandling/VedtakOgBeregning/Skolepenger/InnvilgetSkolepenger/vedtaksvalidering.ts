@@ -17,7 +17,7 @@ import { beregnSkoleår } from '../skoleår';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
-    periode: {fomMåned: undefined, tomMåned: undefined},
+    periode: {fom: undefined, tom: undefined},
     studiebelastning: undefined,
 };
 
@@ -72,31 +72,31 @@ const validerDelperiodeSkoleår = (
         if (erMangelfullPeriode(periode)) {
             return {
                 ...periodeSkolepengerFeil,
-                fomMåned: 'Mangelfull utfylling av utgiftsperiode',
+                fom: 'Mangelfull utfylling av utgiftsperiode',
             };
         }
         if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...periodeSkolepengerFeil,
-                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
+                fom: `Ugyldig periode - fra (${periode.fom}) må være før til (${periode.tom})`,
             };
         }
         const intervall: Intervall = {
-            fra: månedÅrTilDate(periode.fomMåned),
-            til: månedÅrTilDate(periode.tomMåned),
+            fra: månedÅrTilDate(periode.fom),
+            til: månedÅrTilDate(periode.tom),
         };
         if (tidligerePerioder.some((periode) => overlapper(periode, intervall))) {
             return {
                 ...periodeSkolepengerFeil,
-                fomMåned: `Ugyldig periode - overlapper med tidligere periode`,
+                fom: `Ugyldig periode - overlapper med tidligere periode`,
             };
         }
         tidligerePerioder.push(intervall);
-        const skoleårForPeriode = beregnSkoleår(periode.fomMåned, periode.tomMåned);
+        const skoleårForPeriode = beregnSkoleår(periode.fom, periode.tom);
         if (!skoleårForPeriode.gyldig) {
             return {
                 ...periodeSkolepengerFeil,
-                fomMåned: skoleårForPeriode.årsak,
+                fom: skoleårForPeriode.årsak,
             };
         } else {
             if (skoleår === undefined) {
@@ -104,7 +104,7 @@ const validerDelperiodeSkoleår = (
             } else if (skoleår !== skoleårForPeriode.skoleår) {
                 return {
                     ...periodeSkolepengerFeil,
-                    fomMåned: `Skoleåret er ikke det samme som tidligere skoleår`,
+                    fom: `Skoleåret er ikke det samme som tidligere skoleår`,
                 };
             }
         }

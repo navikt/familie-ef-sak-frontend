@@ -80,20 +80,20 @@ export const validerUtgiftsperioder = ({
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
         const { periode, barn, erMidlertidigOpphør } = utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
-            periode: { fomMåned: undefined, tomMåned: undefined },
+            periode: { fom: undefined, tom: undefined },
             barn: [],
             utgifter: undefined,
             erMidlertidigOpphør: undefined,
         };
 
         if (erMangelfullPeriode(periode)) {
-            return { ...utgiftsperiodeFeil, fomMåned: 'Mangelfull utfylling av utgiftsperiode' };
+            return { ...utgiftsperiodeFeil, fom: 'Mangelfull utfylling av utgiftsperiode' };
         }
 
         if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...utgiftsperiodeFeil,
-                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
+                fom: `Ugyldig periode - fra (${periode.fom}) må være før til (${periode.tom})`,
             };
         }
 
@@ -103,7 +103,7 @@ export const validerUtgiftsperioder = ({
             if (!erPeriodeEtter(forrige.periode, periode)) {
                 return {
                     ...utgiftsperiodeFeil,
-                    fomMåned: `Ugyldig etterfølgende periode - fra (${periode.fomMåned}) må være etter til (${forrige.periode.tomMåned})`,
+                    fom: `Ugyldig etterfølgende periode - fra (${periode.fom}) må være etter til (${forrige.periode.tom})`,
                 };
             }
         }
@@ -133,7 +133,7 @@ export const validerKontantstøttePerioder = (
 ): FormErrors<{ kontantstøtteperioder: IPeriodeMedBeløp[] }> | undefined => {
     if (!kontantstøtteperioder || kontantstøtte == ERadioValg.NEI) {
         const kontantstøtteperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            periode: { fomMåned: undefined, tomMåned: undefined },
+            periode: { fom: undefined, tom: undefined },
             beløp: undefined,
         };
         return { kontantstøtteperioder: [kontantstøtteperiodeFeil] };
@@ -141,20 +141,20 @@ export const validerKontantstøttePerioder = (
     const feilIKontantstøtteperioder = kontantstøtteperioder.map((periodeMedBeløp, index) => {
         const { periode } = periodeMedBeløp;
         const kontantstøtteperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            periode: { fomMåned: undefined, tomMåned: undefined },
+            periode: { fom: undefined, tom: undefined },
             beløp: undefined,
         };
 
         if (erMangelfullPeriode(periode)) {
             return {
                 ...kontantstøtteperiodeFeil,
-                fomMåned: 'Mangelfull utfylling av periode',
+                fom: 'Mangelfull utfylling av periode',
             };
         }
         if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...kontantstøtteperiodeFeil,
-                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
+                fom: `Ugyldig periode - fra (${periode.fom}) må være før til (${periode.tom})`,
             };
         }
         const forrige = index > 0 && kontantstøtteperioder[index - 1];
@@ -162,7 +162,7 @@ export const validerKontantstøttePerioder = (
             if (!erPeriodeEtter(forrige.periode, periode)) {
                 return {
                     ...kontantstøtteperiodeFeil,
-                    fomMåned: `Ugyldig etterfølgende periode - fra (${periode.fomMåned}) må være etter til (${forrige.periode.tomMåned})`,
+                    fom: `Ugyldig etterfølgende periode - fra (${periode.fom}) må være etter til (${forrige.periode.tom})`,
                 };
             }
         }
@@ -189,7 +189,7 @@ export const validerTilleggsstønadPerioder = (
         stønadsreduksjon === ERadioValg.NEI
     ) {
         const tilleggsstønadsperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            periode: { fomMåned: undefined, tomMåned: undefined },
+            periode: { fom: undefined, tom: undefined },
             beløp: undefined,
         };
         return { tilleggsstønadsperioder: [tilleggsstønadsperiodeFeil] };
@@ -197,20 +197,20 @@ export const validerTilleggsstønadPerioder = (
     const feilITilleggsstønadPerioder = tilleggsstønadsperioder.map((periodeMedBeløp, index) => {
         const { periode } = periodeMedBeløp;
         const tilleggsstønadPeriodeFeil: FormErrors<IPeriodeMedBeløp> = {
-            periode: {fomMåned: undefined, tomMåned: undefined},
+            periode: {fom: undefined, tom: undefined},
             beløp: undefined,
         };
 
         if (erMangelfullPeriode(periode)) {
             return {
                 ...tilleggsstønadPeriodeFeil,
-                fomMåned: 'Mangelfull utfylling av periode',
+                fom: 'Mangelfull utfylling av periode',
             };
         }
         if (!erFomMånedEtterEllerLikTomMåned(periode)) {
             return {
                 ...tilleggsstønadPeriodeFeil,
-                fomMåned: `Ugyldig periode - fra (${periode.fomMåned}) må være før til (${periode.tomMåned})`,
+                fom: `Ugyldig periode - fra (${periode.fom}) må være før til (${periode.tom})`,
             };
         }
         const forrige = index > 0 && tilleggsstønadsperioder[index - 1];
@@ -218,7 +218,7 @@ export const validerTilleggsstønadPerioder = (
             if (!erPeriodeEtter(forrige.periode, periode)) {
                 return {
                     ...tilleggsstønadPeriodeFeil,
-                    fomMåned: `Ugyldig etterfølgende periode - fra (${periode.fomMåned}) må være etter til (${forrige.periode.tomMåned})`,
+                    fom: `Ugyldig etterfølgende periode - fra (${periode.fom}) må være etter til (${forrige.periode.tom})`,
                 };
             }
         }

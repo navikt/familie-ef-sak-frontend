@@ -100,14 +100,14 @@ export type ITilleggsstønad = {
 };
 
 export type IUtgiftsperiode = {
-    periode: { fomMåned: string; tomMåned: string };
+    periode: { fom: string; tom: string };
     barn: string[];
     utgifter: number | undefined;
     erMidlertidigOpphør: boolean | undefined;
 };
 
 export type IPeriodeMedBeløp = {
-    periode: { fomMåned: string; tomMåned: string };
+    periode: { fom: string; tom: string };
     beløp: number | undefined;
 };
 
@@ -124,7 +124,7 @@ export interface ISkoleårsperiodeSkolepenger {
 
 export interface IPeriodeSkolepenger {
     studietype: ESkolepengerStudietype | undefined;
-    periode: {fomMåned: string; tomMåned: string}
+    periode: {fom: string; tom: string}
     studiebelastning: number | undefined;
 }
 
@@ -176,7 +176,7 @@ export interface IVedtaksperiode {
     endretKey: Key | null | undefined;
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
-    periode: { fomMåned: string; tomMåned: string };
+    periode: { fom: string; tom: string };
 }
 
 export type IBeregningsrequest = {

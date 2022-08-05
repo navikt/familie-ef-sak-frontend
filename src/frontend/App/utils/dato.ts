@@ -32,20 +32,20 @@ export const erMånedÅrEtterEllerLik = (årMånedFra: string, årMånedTil: str
      return !isBefore(til, fra);
 };
 
-export const erMangelfullPeriode = (periode: {fomMåned: string, tomMåned: string}): boolean => {
-    return !periode.fomMåned || !periode.tomMåned
+export const erMangelfullPeriode = (periode: {fom: string, tom: string}): boolean => {
+    return !periode.fom || !periode.tom
 };
 
-export const erFomMånedEtterEllerLikTomMåned = (periode: {fomMåned: string, tomMåned: string}): boolean => {
-    const fra = månedÅrTilDate(periode.fomMåned);
-    const til = månedÅrTilDate(periode.tomMåned);
+export const erFomMånedEtterEllerLikTomMåned = (periode: {fom: string, tom: string}): boolean => {
+    const fra = månedÅrTilDate(periode.fom);
+    const til = månedÅrTilDate(periode.tom);
     return !isBefore(til, fra);
 };
 
-export const erPeriodeEtter = (forrigePeriode: {fomMåned: string, tomMåned: string},
-                               periode: {fomMåned: string, tomMåned: string}): boolean => {
-    const tilForrigePeriode = månedÅrTilDate(forrigePeriode.tomMåned);
-    const fraDennePeriope = månedÅrTilDate(periode.fomMåned);
+export const erPeriodeEtter = (forrigePeriode: {fom: string, tom: string},
+                               periode: {fom: string, tom: string}): boolean => {
+    const tilForrigePeriode = månedÅrTilDate(forrigePeriode.tom);
+    const fraDennePeriope = månedÅrTilDate(periode.fom);
     return isAfter(fraDennePeriope, tilForrigePeriode);
 };
 

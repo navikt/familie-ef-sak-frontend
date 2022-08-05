@@ -62,7 +62,7 @@ interface Props {
 }
 
 export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
-    periode: { fomMåned: '', tomMåned: '' },
+    periode: { fom: '', tom: '' },
     barn: [],
     utgifter: undefined,
     erMidlertidigOpphør: false,
@@ -151,8 +151,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 return (
                     <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrPeriode
-                            årMånedFraInitiell={periode.fomMåned}
-                            årMånedTilInitiell={periode.tomMåned}
+                            årMånedFraInitiell={periode.fom}
+                            årMånedTilInitiell={periode.tom}
                             index={index}
                             onEndre={(verdi, periodeVariant) => {
                                 oppdaterUtgiftsperiode(
@@ -161,7 +161,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     verdi
                                 );
                             }}
-                            feilmelding={valideringsfeil && valideringsfeil[index]?.periode.fomMåned}
+                            feilmelding={valideringsfeil && valideringsfeil[index]?.periode.fom}
                             erLesevisning={!behandlingErRedigerbar}
                         />
                         {behandlingErRedigerbar ? (

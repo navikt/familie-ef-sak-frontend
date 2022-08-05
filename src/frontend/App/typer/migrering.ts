@@ -14,7 +14,7 @@ export interface MigreringInfoKanIkkeMigreres {
 export interface MigreringInfoKanMigreres {
     kanMigreres: true;
     kanGåVidereTilJournalføring: false;
-    stønadsperiode: { fomMåned: String, tomMåned: String }
+    stønadsperiode: { fom: String, tom: String }
     inntektsgrunnlag: number;
     samordningsfradrag: number;
     beløpsperioder: IBeløpsperiode[];
