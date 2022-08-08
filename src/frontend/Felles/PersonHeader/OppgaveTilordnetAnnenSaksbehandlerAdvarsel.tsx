@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import { BodyShort, Button, HelpText, Label } from '@navikt/ds-react';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import { Close } from '@navikt/ds-icons';
+import { Behandling } from '../../App/typer/fagsak';
+import { ISaksbehandler } from '../../App/typer/saksbehandler';
+import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
+import { useState } from 'react';
 
 const AdvarselEtikett = styled(EtikettInfo)<{ åpenHøyreMeny?: boolean }>`
     position: absolute;
@@ -46,13 +50,28 @@ const FetTekst = styled(Label)`
     grid-row: 2;
 `;
 
-export const OppgaveAlleredePlukket: React.FC<{
-    visible: boolean;
-    settVisible: (oppgaveAlleredePlukket: boolean) => void;
+export const OppgaveTilordnetAnnenSaksbehandlerAdvarsel: React.FC<{
+    behandling: Behandling;
     åpenHøyreMeny?: boolean;
-}> = ({ visible, settVisible, åpenHøyreMeny }) => {
-    if (!visible) {
-        return null;
+    tilordnetRessurs: string | null;
+    innloggetaksbehandler: ISaksbehandler;
+}> = ({ behandling, åpenHøyreMeny, tilordnetRessurs, innloggetaksbehandler }) => {
+    const [advarselAlleredeLukket, settAdvarselAlleredeLukket] = useState<boolean>(false);
+
+    const skalViseAdvarsel = () => {
+        const behandlingErRedigerbar = erBehandlingRedigerbar(behandling);
+        const innloggetSaksbehandlerErIkkeTilordnetDenneOppgaven =
+            tilordnetRessurs !== null && tilordnetRessurs !== innloggetaksbehandler.navIdent;
+
+        return (
+            behandlingErRedigerbar &&
+            innloggetSaksbehandlerErIkkeTilordnetDenneOppgaven &&
+            !advarselAlleredeLukket
+        );
+    };
+
+    if (!skalViseAdvarsel()) {
+        return <></>;
     }
 
     return (
@@ -61,21 +80,23 @@ export const OppgaveAlleredePlukket: React.FC<{
                 <LukkKnapp
                     variant={'tertiary'}
                     size={'small'}
-                    onClick={() => settVisible(!visible)}
+                    onClick={() => settAdvarselAlleredeLukket(true)}
                 >
                     <Close width={32} height={32} />
                 </LukkKnapp>
-                <FetTekst>Allerede plukket av:</FetTekst>
+                <FetTekst>Advarsel</FetTekst>
                 <SaksbehandlerNavn>
-                    <NavnTekst>Viktor Grøndalen Solberg</NavnTekst>
+                    <NavnTekst>
+                        Oppgaven er tilordnet saksbehandler med ident: {tilordnetRessurs}
+                    </NavnTekst>
                     <Hjelpetekst placement={'bottom'}>
                         <BodyShort>
-                            Dersom en annen saksbehandler har plukket en oppgave fra oppgavebenken
-                            før deg
+                            Saksbehandler med ident {tilordnetRessurs} har plukket denne oppgaven
+                            fra oppgavebenken før deg.
                         </BodyShort>
                         <BodyShort>
-                            og du i senere tid har plukket den samme oppgaven, så kan det hende at
-                            dere skriver
+                            Dersom du foretar endringer i behandlingen, så kan det hende at dere
+                            skriver
                         </BodyShort>
                         <BodyShort>over hverandres vurderinger.</BodyShort>
                     </Hjelpetekst>

@@ -10,7 +10,13 @@ import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato, nullableDatoTilAlder } from '../../App/utils/dato';
-import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
 import Lenke from 'nav-frontend-lenker';
@@ -29,7 +35,8 @@ import {
     stønadstypeTilTekstKort,
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
-import { OppgaveAlleredePlukket } from './OppgaveAlleredePlukket';
+import { OppgaveTilordnetAnnenSaksbehandlerAdvarsel } from './OppgaveTilordnetAnnenSaksbehandlerAdvarsel';
+import DataViewer from '../DataViewer/DataViewer';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -95,7 +102,7 @@ const PersonHeaderComponent: FC<{
     behandling?: Behandling;
     åpenHøyreMeny?: boolean;
     behandlingErRedigerbar?: boolean;
-}> = ({ data, behandling, åpenHøyreMeny, behandlingErRedigerbar }) => {
+}> = ({ data, behandling, åpenHøyreMeny }) => {
     const {
         personIdent,
         kjønn,
@@ -108,11 +115,12 @@ const PersonHeaderComponent: FC<{
         fødselsdato,
     } = data;
 
-    const { axiosRequest, gåTilUrl, erSaksbehandler } = useApp();
+    const { axiosRequest, gåTilUrl, erSaksbehandler, innloggetSaksbehandler } = useApp();
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
-    const [oppgaveTidligerePlukket, settOppgaveTidligerePlukket] = useState<boolean>(true);
+    const [tilordnetRessurs, settTilordnetRessurs] =
+        useState<Ressurs<string | null>>(byggTomRessurs);
 
     const utledVisningsnavn = (): string => {
         const alder = nullableDatoTilAlder(fødselsdato);
@@ -156,7 +164,16 @@ const PersonHeaderComponent: FC<{
         // eslint-disable-next-line
     }, []);
 
-    const visOppgavePlukket: boolean = behandlingErRedigerbar ? oppgaveTidligerePlukket : false;
+    useEffect(() => {
+        if (behandling) {
+            axiosRequest<string | null, string>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/oppgave/${behandling.id}/hentTilordnetRessurs`,
+            }).then((tilordnetRessurs: RessursSuksess<string | null> | RessursFeilet) => {
+                settTilordnetRessurs(tilordnetRessurs);
+            });
+        }
+    }, [axiosRequest, behandling]);
 
     return (
         <>
@@ -268,11 +285,18 @@ const PersonHeaderComponent: FC<{
                     <StyledHamburgermeny />
                 )}
             </PersonHeaderWrapper>
-            <OppgaveAlleredePlukket
-                visible={visOppgavePlukket}
-                settVisible={settOppgaveTidligerePlukket}
-                åpenHøyreMeny={åpenHøyreMeny}
-            />
+            {behandling && (
+                <DataViewer response={{ tilordnetRessurs }}>
+                    {({ tilordnetRessurs }) => (
+                        <OppgaveTilordnetAnnenSaksbehandlerAdvarsel
+                            behandling={behandling}
+                            åpenHøyreMeny={åpenHøyreMeny}
+                            tilordnetRessurs={tilordnetRessurs}
+                            innloggetaksbehandler={innloggetSaksbehandler}
+                        />
+                    )}
+                </DataViewer>
+            )}
         </>
     );
 };
