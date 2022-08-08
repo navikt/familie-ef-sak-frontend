@@ -1,4 +1,10 @@
-import { byggSuksessRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
+import {
+    byggSuksessRessurs,
+    byggTomRessurs,
+    Ressurs,
+    RessursStatus,
+    RessursSuksess,
+} from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
@@ -39,14 +45,15 @@ export const useHentVedtak = (
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
             };
-            axiosRequest<IVedtakForOvergangsstønad | undefined, null>(behandlingConfig).then(
-                (res: Ressurs<IVedtakForOvergangsstønad | undefined>) => {
-                    settVedtak(res);
-                    const resultatType =
-                        res.status === RessursStatus.SUKSESS && res.data
-                            ? res.data.resultatType
-                            : undefined;
-                    settVedtaksresultat(resultatType);
+            axiosRequest<IVedtakForOvergangsstønad | null, null>(behandlingConfig).then(
+                (res: Ressurs<IVedtakForOvergangsstønad | null>) => {
+                    if (res.status === RessursStatus.SUKSESS && res.data) {
+                        settVedtak(res as RessursSuksess<IVedtakForOvergangsstønad>);
+                        settVedtaksresultat(res.data.resultatType);
+                    } else {
+                        settVedtak(byggSuksessRessurs(undefined));
+                        settVedtaksresultat(undefined);
+                    }
                 }
             );
         }
