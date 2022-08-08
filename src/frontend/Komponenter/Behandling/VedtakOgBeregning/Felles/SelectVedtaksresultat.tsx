@@ -12,13 +12,13 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useToggles } from '../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../App/context/toggles';
 import { NullstillVedtakModalContext } from '../NullstillVedtakModalContext';
-import { Steg } from '../../Høyremeny/Steg';
 
 interface Props {
     behandling: Behandling;
     resultatType?: EBehandlingResultat;
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     alleVilkårOppfylt: boolean;
+    skalViseNullstillVedtakKnapp: boolean;
 }
 
 const StyledSelect = styled(FamilieSelect)`
@@ -55,9 +55,6 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
         behandling.stønadstype !== Stønadstype.SKOLEPENGER || toggles[ToggleName.skolepengerOpphør];
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
-
-    const skalViseNullstillKnapp =
-        behandling.steg === Steg.SEND_TIL_BESLUTTER && toggles[ToggleName.visNullstillVedtakKnapp];
 
     return (
         <section>
@@ -122,7 +119,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </TekstLinje>
                     </HjelpeTekst>
                 )}
-                {skalViseNullstillKnapp && (
+                {props.skalViseNullstillVedtakKnapp && toggles[ToggleName.visNullstillVedtakKnapp] && (
                     <Button
                         variant="tertiary"
                         size={'small'}

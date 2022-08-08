@@ -9,8 +9,8 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import {
-    erAlleVilkårOppfylt,
     eksistererIkkeOppfyltVilkårForOvergangsstønad,
+    erAlleVilkårOppfylt,
 } from '../Felles/utils';
 
 interface Props {
@@ -49,6 +49,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
                             resultatType={resultatType}
                             settResultatType={settResultatType}
                             alleVilkårOppfylt={alleVilkårOppfylt}
+                            skalViseNullstillVedtakKnapp={!!vedtak}
                         />
                         <VedtaksresultatSwitch
                             vedtaksresultatType={resultatType}
