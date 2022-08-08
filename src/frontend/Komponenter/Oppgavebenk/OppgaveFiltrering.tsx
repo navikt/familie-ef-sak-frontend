@@ -15,12 +15,13 @@ import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
-} from './oppgavefilterStorage';
+} from '../../App/utils/localStorage';
 import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
 import { harStrengtFortroligRolle } from '../../App/utils/roller';
 import Alertstripe from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import { LocalStorageKey } from '../../App/utils/localStorage';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -117,7 +118,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
 
     useEffect(() => {
         const fraLocalStorage = hentFraLocalStorage<IOppgaveRequest>(
-            oppgaveRequestKey(innloggetSaksbehandler.navIdent),
+            oppgaveRequestKey(innloggetSaksbehandler.navIdent, LocalStorageKey.OPPGAVE_FILTRERING),
             {}
         );
 
@@ -142,7 +143,10 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         if (Object.values(periodeFeil).some((val?: string) => val)) {
             return;
         }
-        lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), oppgaveRequest);
+        lagreTilLocalStorage(
+            oppgaveRequestKey(innloggetSaksbehandler.navIdent, LocalStorageKey.OPPGAVE_FILTRERING),
+            oppgaveRequest
+        );
         hentOppgaver(oppgaveRequest);
     };
 
@@ -261,7 +265,10 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     className="flex-item"
                     onClick={() => {
                         lagreTilLocalStorage(
-                            oppgaveRequestKey(innloggetSaksbehandler.navIdent),
+                            oppgaveRequestKey(
+                                innloggetSaksbehandler.navIdent,
+                                LocalStorageKey.OPPGAVE_FILTRERING
+                            ),
                             tomOppgaveRequest
                         );
                         settOppgaveRequest(tomOppgaveRequest);

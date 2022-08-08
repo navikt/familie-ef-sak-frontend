@@ -16,8 +16,9 @@ import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
+    LocalStorageKey,
     oppgaveRequestKey,
-} from '../Oppgavebenk/oppgavefilterStorage';
+} from '../../App/utils/localStorage';
 import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/journalforing';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
@@ -62,14 +63,17 @@ export const JournalforingAdmin: React.FC = () => {
 
     const gåTilOppgavebenkMedPersonSøk = (personIdent: string) => {
         const lagredeOppgaveFiltreringer = hentFraLocalStorage(
-            oppgaveRequestKey(innloggetSaksbehandler.navIdent),
+            oppgaveRequestKey(innloggetSaksbehandler.navIdent, LocalStorageKey.OPPGAVE_FILTRERING),
             {}
         );
 
-        lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), {
-            ...lagredeOppgaveFiltreringer,
-            ident: personIdent,
-        });
+        lagreTilLocalStorage(
+            oppgaveRequestKey(innloggetSaksbehandler.navIdent, LocalStorageKey.OPPGAVE_FILTRERING),
+            {
+                ...lagredeOppgaveFiltreringer,
+                ident: personIdent,
+            }
+        );
         navigate('/oppgavebenk');
     };
 

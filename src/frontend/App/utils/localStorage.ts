@@ -1,7 +1,15 @@
-export const oppgaveRequestKeyPrefix = 'oppgaveFiltreringRequest';
+export enum LocalStorageKey {
+    OPPGAVE_FILTRERING = 'OPPGAVE_FILTRERING',
+    OPPGAVE_TILORDNET = 'OPPGAVE_TILORDNET',
+}
 
-export const oppgaveRequestKey = (innloggetIdent: string): string => {
-    return oppgaveRequestKeyPrefix + innloggetIdent;
+const keyTiltekst: Record<LocalStorageKey, string> = {
+    OPPGAVE_FILTRERING: 'oppgaveFiltreringRequest',
+    OPPGAVE_TILORDNET: 'oppgaveTilordnetRequest',
+};
+
+export const oppgaveRequestKey = (innloggetIdent: string, key: LocalStorageKey): string => {
+    return keyTiltekst[key] + innloggetIdent;
 };
 
 export const lagreTilLocalStorage = <T>(key: string, request: T): void => {

@@ -25,8 +25,9 @@ import { useApp } from '../../App/context/AppContext';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
+    LocalStorageKey,
     oppgaveRequestKey,
-} from '../Oppgavebenk/oppgavefilterStorage';
+} from '../../App/utils/localStorage';
 import BehandlingInnold from './Behandling';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
@@ -155,17 +156,26 @@ export const JournalforingApp: React.FC = () => {
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
             const lagredeOppgaveFiltreringer = hentFraLocalStorage(
-                oppgaveRequestKey(innloggetSaksbehandler.navIdent),
+                oppgaveRequestKey(
+                    innloggetSaksbehandler.navIdent,
+                    LocalStorageKey.OPPGAVE_FILTRERING
+                ),
                 {}
             );
 
-            lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), {
-                ...lagredeOppgaveFiltreringer,
-                ident:
-                    journalResponse.status === RessursStatus.SUKSESS
-                        ? journalResponse.data.personIdent
-                        : undefined,
-            });
+            lagreTilLocalStorage(
+                oppgaveRequestKey(
+                    innloggetSaksbehandler.navIdent,
+                    LocalStorageKey.OPPGAVE_FILTRERING
+                ),
+                {
+                    ...lagredeOppgaveFiltreringer,
+                    ident:
+                        journalResponse.status === RessursStatus.SUKSESS
+                            ? journalResponse.data.personIdent
+                            : undefined,
+                }
+            );
             navigate('/oppgavebenk');
         }
         // eslint-disable-next-line

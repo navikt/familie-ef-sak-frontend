@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { BodyShort, Button, HelpText, Label } from '@navikt/ds-react';
 import { EtikettInfo } from 'nav-frontend-etiketter';
@@ -6,7 +7,12 @@ import { Close } from '@navikt/ds-icons';
 import { Behandling } from '../../App/typer/fagsak';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
-import { useState } from 'react';
+import {
+    hentFraLocalStorage,
+    lagreTilLocalStorage,
+    LocalStorageKey,
+    oppgaveRequestKey,
+} from '../../App/utils/localStorage';
 
 const AdvarselEtikett = styled(EtikettInfo)<{ åpenHøyreMeny?: boolean }>`
     position: absolute;
@@ -56,7 +62,12 @@ export const OppgaveTilordnetAnnenSaksbehandlerAdvarsel: React.FC<{
     tilordnetRessurs: string | null;
     innloggetaksbehandler: ISaksbehandler;
 }> = ({ behandling, åpenHøyreMeny, tilordnetRessurs, innloggetaksbehandler }) => {
-    const [advarselAlleredeLukket, settAdvarselAlleredeLukket] = useState<boolean>(false);
+    const [advarselAlleredeLukket, settAdvarselAlleredeLukket] = useState<boolean>(
+        hentFraLocalStorage(
+            oppgaveRequestKey(innloggetaksbehandler.navIdent, LocalStorageKey.OPPGAVE_TILORDNET),
+            false
+        )
+    );
 
     const skalViseAdvarsel = () => {
         const behandlingErRedigerbar = erBehandlingRedigerbar(behandling);
@@ -80,7 +91,16 @@ export const OppgaveTilordnetAnnenSaksbehandlerAdvarsel: React.FC<{
                 <LukkKnapp
                     variant={'tertiary'}
                     size={'small'}
-                    onClick={() => settAdvarselAlleredeLukket(true)}
+                    onClick={() => {
+                        settAdvarselAlleredeLukket(true);
+                        lagreTilLocalStorage(
+                            oppgaveRequestKey(
+                                innloggetaksbehandler.navIdent,
+                                LocalStorageKey.OPPGAVE_TILORDNET
+                            ),
+                            true
+                        );
+                    }}
                 >
                     <Close width={32} height={32} />
                 </LukkKnapp>
