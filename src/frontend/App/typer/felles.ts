@@ -2,6 +2,11 @@ export interface IPersonIdent {
     personIdent: string;
 }
 
+export interface IFagsakPersonIdent {
+    fagsakId: string;
+    personIdent: string;
+}
+
 export interface IDokumentasjon {
     harSendtInn: boolean;
     vedlegg: IVedlegg[];

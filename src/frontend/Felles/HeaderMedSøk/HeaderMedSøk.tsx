@@ -6,12 +6,13 @@ import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
 import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
-import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
+import { lagAInntektLink, lagGosysLink } from '../Lenker/Lenker';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
+import { IFagsakPersonIdent } from '../../App/typer/felles';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler: ISaksbehandler;
@@ -20,9 +21,9 @@ export interface IHeaderMedSøkProps {
 const lagAInntekt = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
-    fagsakId?: string
+    valgtFagsakPersonIdent?: IFagsakPersonIdent
 ): PopoverItem => {
-    if (!fagsakId) {
+    if (!valgtFagsakPersonIdent) {
         return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
     }
 
@@ -31,7 +32,24 @@ const lagAInntekt = (
         href: '#/a-inntekt',
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
-            window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId));
+            window.open(
+                await lagAInntektLink(axiosRequest, appEnv, valgtFagsakPersonIdent.fagsakId)
+            );
+        },
+    };
+};
+
+const lagGosys = (appEnv: AppEnv, valgtFagsakPersonIdent?: IFagsakPersonIdent): PopoverItem => {
+    if (!valgtFagsakPersonIdent) {
+        return { name: 'Gosys', href: appEnv.gosys, isExternal: true };
+    }
+
+    return {
+        name: 'Gosys',
+        href: '#/gosys',
+        onClick: async (e: React.SyntheticEvent) => {
+            e.preventDefault();
+            window.open(lagGosysLink(valgtFagsakPersonIdent.personIdent));
         },
     };
 };
@@ -41,9 +59,12 @@ const lagEksterneLenker = (
     appEnv: AppEnv,
     innloggetSaksbehandler: ISaksbehandler,
     toggles: Toggles,
-    fagsakId?: string
+    fagsakPersonIdent?: IFagsakPersonIdent
 ): PopoverItem[] => {
-    const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    const eksterneLenker = [
+        lagAInntekt(axiosRequest, appEnv, fagsakPersonIdent),
+        lagGosys(appEnv, fagsakPersonIdent),
+    ];
     if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
         eksterneLenker.push({
             name: 'Uttrekk arbeidssøkere (P43)',
@@ -66,12 +87,18 @@ const lagEksterneLenker = (
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
+    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakPersonIdent } = useApp();
     const { toggles } = useToggles();
     const eksterneLenker = useMemo(
         () =>
-            lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, toggles, valgtFagsakId),
-        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId, toggles]
+            lagEksterneLenker(
+                axiosRequest,
+                appEnv,
+                innloggetSaksbehandler,
+                toggles,
+                valgtFagsakPersonIdent
+            ),
+        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakPersonIdent, toggles]
     );
 
     return (

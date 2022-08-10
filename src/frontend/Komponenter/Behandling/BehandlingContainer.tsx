@@ -14,7 +14,7 @@ import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
 import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
+import { useSetValgtFagsakPersonIdent } from '../../App/hooks/useSetValgtFagsakPersonIdent';
 import { HenleggModal } from './Henleggelse/HenleggModal';
 
 const Container = styled.div`
@@ -71,7 +71,10 @@ const BehandlingContent: FC<{
     behandling: Behandling;
     personopplysninger: IPersonopplysninger;
 }> = ({ behandling, personopplysninger }) => {
-    useSetValgtFagsakId(behandling.fagsakId);
+    useSetValgtFagsakPersonIdent({
+        fagsakId: behandling.fagsakId,
+        personIdent: personopplysninger.personIdent,
+    });
     const { åpenHøyremeny } = useBehandling();
 
     return (

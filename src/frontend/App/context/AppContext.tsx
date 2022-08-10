@@ -9,6 +9,7 @@ import { EToast } from '../typer/toast';
 import { AppEnv } from '../api/env';
 import { AxiosRequestCallback } from '../typer/axiosRequest';
 import { harTilgangTilRolle } from '../utils/roller';
+import { IFagsakPersonIdent } from '../typer/felles';
 
 interface IProps {
     autentisertSaksbehandler: ISaksbehandler;
@@ -30,7 +31,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     const [visUlagretDataModal, settVisUlagretDataModal] = useState(false);
     const [byttUrl, settByttUrl] = useState(false);
     const [toast, settToast] = useState<EToast | undefined>();
-    const [valgtFagsakId, settValgtFagsakId] = useState<string>();
+    const [valgtFagsakPersonIdent, settValgtFagsakPersonIdent] = useState<IFagsakPersonIdent>();
 
     useEffect(
         () => settUlagretData(ikkePersisterteKomponenter.size > 0),
@@ -107,8 +108,8 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         toast,
         settToast,
         appEnv,
-        valgtFagsakId,
-        settValgtFagsakId,
+        valgtFagsakPersonIdent,
+        settValgtFagsakPersonIdent,
         erSaksbehandler,
     };
 });

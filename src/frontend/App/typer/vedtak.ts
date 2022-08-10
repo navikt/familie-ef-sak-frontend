@@ -243,15 +243,6 @@ export enum EUtgiftsperiodeProperty {
     erMidlertidigOpphør = 'erMidlertidigOpphør',
 }
 
-export type EUtgiftsperiodeSkolepengerProperty = keyof IPeriodeSkolepenger;
-
-export enum SkolepengerUtgiftProperty {
-    id = 'id',
-    årMånedFra = 'årMånedFra',
-    utgifter = 'utgifter',
-    stønad = 'stønad',
-}
-
 export enum EKontantstøttePeriodeProperty {
     årMånedFra = 'årMånedFra',
     årMånedTil = 'årMånedTil',
