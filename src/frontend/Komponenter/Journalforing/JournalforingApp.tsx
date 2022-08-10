@@ -6,7 +6,11 @@ import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import Brukerinfo from './Brukerinfo';
 import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
-import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
+import {
+    behandlingstemaTilStønadstype,
+    behandlingstemaTilTekst,
+    Stønadstype,
+} from '../../App/typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -117,6 +121,27 @@ const validerJournalføringState = (
         return undefined;
     }
 };
+
+function VelgFagsakForIkkeSøknad(props: {
+    journalResponse: IJojurnalpostResponse;
+    hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
+}) {
+    const { journalResponse, hentFagsak } = props;
+
+    const stønadstypeFraJournalpost = behandlingstemaTilStønadstype(
+        journalResponse.journalpost.behandlingstema
+    );
+    const [stønadstype, settStønadstype] = useState(stønadstypeFraJournalpost);
+
+    useEffect(() => {
+        if (stønadstype) {
+            hentFagsak(journalResponse.personIdent, stønadstype);
+        }
+        // eslint-disable-next-line
+    }, [stønadstype]);
+
+    return null;
+}
 
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
@@ -247,19 +272,26 @@ export const JournalforingApp: React.FC = () => {
                         }`}</Sidetittel>
                         <Kolonner>
                             <Venstrekolonne>
-                                <UtledEllerVelgFagsak
-                                    journalResponse={journalResponse}
-                                    hentFagsak={hentFagsak}
-                                />
-                                {!journalResponse.harStrukturertSøknad && (
-                                    <VelgUstrukturertDokumentasjonType
-                                        oppgaveId={oppgaveIdParam}
-                                        ustrukturertDokumentasjonType={
-                                            journalpostState.ustrukturertDokumentasjonType
-                                        }
-                                        settUstrukturertDokumentasjonType={
-                                            journalpostState.settUstrukturertDokumentasjonType
-                                        }
+                                {!journalResponse.harStrukturertSøknad ? (
+                                    <>
+                                        <VelgUstrukturertDokumentasjonType
+                                            oppgaveId={oppgaveIdParam}
+                                            ustrukturertDokumentasjonType={
+                                                journalpostState.ustrukturertDokumentasjonType
+                                            }
+                                            settUstrukturertDokumentasjonType={
+                                                journalpostState.settUstrukturertDokumentasjonType
+                                            }
+                                        />
+                                        <VelgFagsakForIkkeSøknad
+                                            journalResponse={journalResponse}
+                                            hentFagsak={hentFagsak}
+                                        />
+                                    </>
+                                ) : (
+                                    <UtledEllerVelgFagsak
+                                        journalResponse={journalResponse}
+                                        hentFagsak={hentFagsak}
                                     />
                                 )}
                                 <Brukerinfo personIdent={journalResponse.personIdent} />
