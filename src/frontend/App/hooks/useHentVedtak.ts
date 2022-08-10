@@ -47,11 +47,15 @@ export const useHentVedtak = (
             };
             axiosRequest<IVedtakForOvergangsstønad | null, null>(behandlingConfig).then(
                 (res: Ressurs<IVedtakForOvergangsstønad | null>) => {
-                    if (res.status === RessursStatus.SUKSESS && res.data) {
-                        settVedtak(res as RessursSuksess<IVedtakForOvergangsstønad>);
-                        settVedtaksresultat(res.data.resultatType);
+                    if (res.status === RessursStatus.SUKSESS) {
+                        if (res.data) {
+                            settVedtak(res as RessursSuksess<IVedtakForOvergangsstønad>);
+                            settVedtaksresultat(res.data.resultatType);
+                        } else {
+                            settVedtak(byggSuksessRessurs(undefined));
+                        }
                     } else {
-                        settVedtak(byggSuksessRessurs(undefined));
+                        settVedtak(res);
                         settVedtaksresultat(undefined);
                     }
                 }
