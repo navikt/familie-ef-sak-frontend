@@ -9,7 +9,11 @@ import {
     VilkårType,
 } from '../../Inngangsvilkår/vilkår';
 import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
-import { IBeregningsperiodeBarnetilsyn } from '../../../../App/typer/vedtak';
+import {
+    IBeregningsperiodeBarnetilsyn,
+    IVedtakForOvergangsstønad,
+} from '../../../../App/typer/vedtak';
+import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -165,3 +169,7 @@ export const blirNullUtbetalingPgaOverstigendeKontantstøtte = (
             periode.beregningsgrunnlag.kontantstøttebeløp >= periode.beregningsgrunnlag.utgifter
     );
 };
+
+export const skalViseNullstillVedtakKnapp = (
+    vedtak: Ressurs<IVedtakForOvergangsstønad | undefined>
+): boolean => vedtak.status === RessursStatus.SUKSESS && vedtak.data !== undefined;
