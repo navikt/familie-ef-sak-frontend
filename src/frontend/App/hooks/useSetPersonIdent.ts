@@ -2,13 +2,12 @@ import { useApp } from '../context/AppContext';
 import { useEffect } from 'react';
 
 export const useSetPersonIdent = (personIdent: string) => {
-    const { settValgtFagsakId } = useApp();
-    console.log('setter personIdent');
-    console.log(personIdent);
+    const { settPersonIdent } = useApp();
+
     useEffect(() => {
-        settValgtFagsakId(personIdent);
-        return () => settValgtFagsakId(undefined);
-    }, [settValgtFagsakId, personIdent]);
+        settPersonIdent(personIdent);
+        return () => settPersonIdent(undefined);
+    }, [settPersonIdent, personIdent]);
 
     return {};
 };

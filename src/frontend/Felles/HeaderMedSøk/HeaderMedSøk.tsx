@@ -22,8 +22,6 @@ const lagAInntekt = (
     appEnv: AppEnv,
     valgtFagsakId: string | undefined
 ): PopoverItem => {
-    console.log('sjekker valgtFagsakId');
-    console.log(valgtFagsakId);
     if (!valgtFagsakId) {
         return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
     }
@@ -39,8 +37,6 @@ const lagAInntekt = (
 };
 
 const lagGosys = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem => {
-    console.log('sjekker personident');
-    console.log(personIdent);
     if (!personIdent) {
         return { name: 'Gosys', href: appEnv.gosys, isExternal: true };
     }
