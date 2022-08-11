@@ -15,6 +15,7 @@ interface IEnvironment {
     brevProxyUrl: string;
     endringsloggProxyUrl: string;
     aInntekt: string;
+    gosys: string;
     redisUrl?: string;
     roller: Roller;
 }
@@ -43,6 +44,7 @@ const Environment = (): IEnvironment => {
             sakProxyUrl: 'http://localhost:8093',
             brevProxyUrl: 'http://127.0.0.1:8001',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
+            gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
         };
@@ -53,6 +55,7 @@ const Environment = (): IEnvironment => {
             sakProxyUrl: 'http://familie-ef-sak:8093',
             brevProxyUrl: '', // TODO
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
+            gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
             //Har ikke satt opp redis
@@ -64,6 +67,7 @@ const Environment = (): IEnvironment => {
             sakProxyUrl: 'http://familie-ef-sak',
             brevProxyUrl: 'http://familie-brev',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
+            gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             redisUrl: 'familie-ef-sak-frontend-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
@@ -76,6 +80,7 @@ const Environment = (): IEnvironment => {
         sakProxyUrl: 'http://familie-ef-sak',
         brevProxyUrl: 'http://familie-brev',
         aInntekt: 'https://arbeid-og-inntekt.nais.adeo.no',
+        gosys: 'https://gosys.intern.nav.no/gosys',
         redisUrl: 'familie-ef-sak-frontend-redis',
         endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
         roller: rollerProd,
@@ -88,7 +93,7 @@ export const sessionConfig: ISessionKonfigurasjon = {
     navn: 'familie-ef-sak-v1',
     redisPassord: process.env.REDIS_PASSWORD,
     redisUrl: env.redisUrl,
-    secureCookie: process.env.ENV === 'local' || process.env.ENV === 'e2e' ? false : true,
+    secureCookie: !(process.env.ENV === 'local' || process.env.ENV === 'e2e'),
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
@@ -107,4 +112,5 @@ export const brevProxyUrl = env.brevProxyUrl;
 export const endringsloggProxyUrl = env.endringsloggProxyUrl;
 export const namespace = env.namespace;
 export const urlAInntekt = env.aInntekt;
+export const urlGosys = env.gosys;
 export const roller = env.roller;

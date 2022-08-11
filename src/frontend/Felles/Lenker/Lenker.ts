@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
-import { AppEnv } from '../../../App/api/env';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { AxiosRequestCallback } from '../../../App/typer/axiosRequest';
+import { AppEnv } from '../../App/api/env';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 
 export const lagAInntektLink = async (
     axiosRequest: AxiosRequestCallback,
@@ -19,4 +19,8 @@ export const lagAInntektLink = async (
         .catch((_: AxiosError<string>) => {
             return appEnv.aInntekt;
         });
+};
+
+export const lagGosysLink = (appEnv: AppEnv, personIdent: string): string => {
+    return `${appEnv.gosys}/personoversikt/fnr=${personIdent}`;
 };
