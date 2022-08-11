@@ -10,8 +10,10 @@ import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
 import { useHentRegler } from '../hooks/useHentRegler';
 import { RessursStatus } from '../typer/ressurs';
 import { erBehandlingRedigerbar } from '../typer/behandlingstatus';
+import { useApp } from './AppContext';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
     const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
 
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
@@ -43,6 +45,15 @@ const [BehandlingProvider, useBehandling] = constate(() => {
             ),
         [behandling]
     );
+    useEffect(() => {
+        if (behandlingErRedigerbar) {
+            axiosRequest<string | null, string>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/oppgave/${behandlingId}/tilordnet-ressurs?saksbehandlerIdent=${innloggetSaksbehandler.navIdent}`,
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const [visBrevmottakereModal, settVisBrevmottakereModal] = useState(false);
     const [visHenleggModal, settVisHenleggModal] = useState(false);
