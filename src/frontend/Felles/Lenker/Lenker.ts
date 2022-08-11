@@ -22,5 +22,5 @@ export const lagAInntektLink = async (
 };
 
 export const lagGosysLink = (personIdent: string): string => {
-    return `https://gosys-q1.dev.intern.nav.no/gosys/personoversikt/fnr=${personIdent}`;
+    return `https://gosys.intern.nav.no/gosys/personoversikt/fnr=${personIdent}`;
 };

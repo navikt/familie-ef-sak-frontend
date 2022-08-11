@@ -12,7 +12,6 @@ import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
-import { IFagsakPersonIdent } from '../../App/typer/felles';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler: ISaksbehandler;
@@ -21,9 +20,11 @@ export interface IHeaderMedSøkProps {
 const lagAInntekt = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
-    valgtFagsakPersonIdent?: IFagsakPersonIdent
+    valgtFagsakId: string | undefined
 ): PopoverItem => {
-    if (!valgtFagsakPersonIdent) {
+    console.log('sjekker valgtFagsakId');
+    console.log(valgtFagsakId);
+    if (!valgtFagsakId) {
         return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
     }
 
@@ -32,15 +33,15 @@ const lagAInntekt = (
         href: '#/a-inntekt',
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
-            window.open(
-                await lagAInntektLink(axiosRequest, appEnv, valgtFagsakPersonIdent.fagsakId)
-            );
+            window.open(await lagAInntektLink(axiosRequest, appEnv, valgtFagsakId));
         },
     };
 };
 
-const lagGosys = (appEnv: AppEnv, valgtFagsakPersonIdent?: IFagsakPersonIdent): PopoverItem => {
-    if (!valgtFagsakPersonIdent) {
+const lagGosys = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem => {
+    console.log('sjekker personident');
+    console.log(personIdent);
+    if (!personIdent) {
         return { name: 'Gosys', href: appEnv.gosys, isExternal: true };
     }
 
@@ -49,7 +50,7 @@ const lagGosys = (appEnv: AppEnv, valgtFagsakPersonIdent?: IFagsakPersonIdent): 
         href: '#/gosys',
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
-            window.open(lagGosysLink(valgtFagsakPersonIdent.personIdent));
+            window.open(lagGosysLink(personIdent));
         },
     };
 };
@@ -59,11 +60,12 @@ const lagEksterneLenker = (
     appEnv: AppEnv,
     innloggetSaksbehandler: ISaksbehandler,
     toggles: Toggles,
-    fagsakPersonIdent?: IFagsakPersonIdent
+    valgtFagsakId: string | undefined,
+    personIdent: string | undefined
 ): PopoverItem[] => {
     const eksterneLenker = [
-        lagAInntekt(axiosRequest, appEnv, fagsakPersonIdent),
-        lagGosys(appEnv, fagsakPersonIdent),
+        lagAInntekt(axiosRequest, appEnv, valgtFagsakId),
+        lagGosys(appEnv, personIdent),
     ];
     if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
         eksterneLenker.push({
@@ -87,7 +89,7 @@ const lagEksterneLenker = (
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakPersonIdent } = useApp();
+    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId, personIdent } = useApp();
     const { toggles } = useToggles();
     const eksterneLenker = useMemo(
         () =>
@@ -96,9 +98,10 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
                 appEnv,
                 innloggetSaksbehandler,
                 toggles,
-                valgtFagsakPersonIdent
+                valgtFagsakId,
+                personIdent
             ),
-        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakPersonIdent, toggles]
+        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId, personIdent, toggles]
     );
 
     return (
