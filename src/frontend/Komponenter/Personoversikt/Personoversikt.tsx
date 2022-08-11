@@ -15,6 +15,7 @@ import Dokumenter from './Dokumenter';
 import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
+import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 
 type TabWithRouter = {
@@ -121,6 +122,7 @@ const PersonoversiktContent: React.FC<{
 
 const Personoversikt: React.FC = () => {
     const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
+    useSetValgtFagsakPersonId(fagsakPersonId);
 
     const personopplysningerConfig: AxiosRequestConfig = useMemo(
         () => ({

@@ -6,11 +6,15 @@ import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 export const lagAInntektLink = async (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
-    fagsakId: string
+    fagsakId: string | undefined,
+    fagsakPersonId: string | undefined
 ): Promise<string> => {
+    const url = fagsakPersonId
+        ? `/familie-ef-sak/api/inntekt/fagsak-person/${fagsakPersonId}/generer-url`
+        : `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url`;
     return await axiosRequest<string, null>({
         method: 'GET',
-        url: `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url`,
+        url: url,
     })
         .then((response: Ressurs<string>) => {
             return response.status === RessursStatus.SUKSESS ? response.data : appEnv.aInntekt;
