@@ -6,7 +6,7 @@ import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
 import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
-import { lagAInntektLink } from '../Linker/AInntekt/AInntektLink';
+import { lagAInntektLink, lagGosysLink } from '../Lenker/Lenker';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
@@ -37,15 +37,34 @@ const lagAInntekt = (
     };
 };
 
+const lagGosys = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem => {
+    if (!personIdent) {
+        return { name: 'Gosys', href: appEnv.gosys, isExternal: true };
+    }
+
+    return {
+        name: 'Gosys',
+        href: '#/gosys',
+        onClick: async (e: React.SyntheticEvent) => {
+            e.preventDefault();
+            window.open(lagGosysLink(appEnv, personIdent));
+        },
+    };
+};
+
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
     innloggetSaksbehandler: ISaksbehandler,
     toggles: Toggles,
     fagsakId: string | undefined,
-    fagsakPersonId: string | undefined
+    fagsakPersonId: string | undefined,
+    personIdent: string | undefined
 ): PopoverItem[] => {
-    const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId, fagsakPersonId)];
+    const eksterneLenker = [
+        lagAInntekt(axiosRequest, appEnv, fagsakId, fagsakPersonId),
+        lagGosys(appEnv, personIdent),
+    ];
     if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
         eksterneLenker.push({
             name: 'Uttrekk arbeidssøkere (P43)',
@@ -68,7 +87,8 @@ const lagEksterneLenker = (
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId, valgtFagsakPersonId } = useApp();
+    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId, valgtFagsakPersonId, personIdent } =
+        useApp();
     const { toggles } = useToggles();
     const eksterneLenker = useMemo(
         () =>
@@ -78,9 +98,18 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
                 innloggetSaksbehandler,
                 toggles,
                 valgtFagsakId,
-                valgtFagsakPersonId
+                valgtFagsakPersonId,
+                personIdent
             ),
-        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId, valgtFagsakPersonId, toggles]
+        [
+            axiosRequest,
+            appEnv,
+            innloggetSaksbehandler,
+            valgtFagsakId,
+            valgtFagsakPersonId,
+            personIdent,
+            toggles,
+        ]
     );
 
     return (

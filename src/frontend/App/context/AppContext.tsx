@@ -32,6 +32,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     const [toast, settToast] = useState<EToast | undefined>();
     const [valgtFagsakId, settValgtFagsakId] = useState<string>();
     const [valgtFagsakPersonId, settValgtFagsakPersonId] = useState<string>();
+    const [personIdent, settPersonIdent] = useState<string>();
 
     useEffect(
         () => settUlagretData(ikkePersisterteKomponenter.size > 0),
@@ -112,6 +113,8 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         settValgtFagsakId,
         valgtFagsakPersonId,
         settValgtFagsakPersonId,
+        personIdent,
+        settPersonIdent,
         erSaksbehandler,
     };
 });
