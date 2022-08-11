@@ -46,7 +46,7 @@ const lagGosys = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem 
         href: '#/gosys',
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
-            window.open(lagGosysLink(personIdent));
+            window.open(lagGosysLink(appEnv, personIdent));
         },
     };
 };
