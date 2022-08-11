@@ -20,9 +20,10 @@ export interface IHeaderMedSøkProps {
 const lagAInntekt = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
-    fagsakId?: string
+    fagsakId: string | undefined,
+    fagsakPersonId: string | undefined
 ): PopoverItem => {
-    if (!fagsakId) {
+    if (!fagsakPersonId && !fagsakId) {
         return { name: 'A-inntekt', href: appEnv.aInntekt, isExternal: true };
     }
 
@@ -31,7 +32,7 @@ const lagAInntekt = (
         href: '#/a-inntekt',
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
-            window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId));
+            window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId, fagsakPersonId));
         },
     };
 };
@@ -41,9 +42,10 @@ const lagEksterneLenker = (
     appEnv: AppEnv,
     innloggetSaksbehandler: ISaksbehandler,
     toggles: Toggles,
-    fagsakId?: string
+    fagsakId: string | undefined,
+    fagsakPersonId: string | undefined
 ): PopoverItem[] => {
-    const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId)];
+    const eksterneLenker = [lagAInntekt(axiosRequest, appEnv, fagsakId, fagsakPersonId)];
     if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
         eksterneLenker.push({
             name: 'Uttrekk arbeidssøkere (P43)',
@@ -66,12 +68,19 @@ const lagEksterneLenker = (
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId } = useApp();
+    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId, valgtFagsakPersonId } = useApp();
     const { toggles } = useToggles();
     const eksterneLenker = useMemo(
         () =>
-            lagEksterneLenker(axiosRequest, appEnv, innloggetSaksbehandler, toggles, valgtFagsakId),
-        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId, toggles]
+            lagEksterneLenker(
+                axiosRequest,
+                appEnv,
+                innloggetSaksbehandler,
+                toggles,
+                valgtFagsakId,
+                valgtFagsakPersonId
+            ),
+        [axiosRequest, appEnv, innloggetSaksbehandler, valgtFagsakId, valgtFagsakPersonId, toggles]
     );
 
     return (
