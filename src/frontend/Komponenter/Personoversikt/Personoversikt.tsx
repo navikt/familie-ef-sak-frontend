@@ -15,6 +15,7 @@ import Dokumenter from './Dokumenter';
 import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
+import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 
 type TabWithRouter = {
     label: string;
@@ -84,6 +85,10 @@ const PersonoversiktContent: React.FC<{
 }> = ({ fagsakPerson, personopplysninger }) => {
     const navigate = useNavigate();
     const { erSaksbehandler } = useApp();
+
+    useSetValgtFagsakId(
+        fagsakPerson.overgangsstønad || fagsakPerson.barnetilsyn || fagsakPerson.skolepenger
+    );
 
     const paths = useLocation().pathname.split('/').slice(-1);
     const path = paths.length ? paths[paths.length - 1] : '';
