@@ -119,7 +119,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </TekstLinje>
                     </HjelpeTekst>
                 )}
-                {props.skalViseNullstillVedtakKnapp && toggles[ToggleName.visNullstillVedtakKnapp] && (
+                {props.skalViseNullstillVedtakKnapp && (
                     <Button
                         variant="tertiary"
                         size={'small'}
