@@ -6,11 +6,7 @@ import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import Brukerinfo from './Brukerinfo';
 import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
-import {
-    behandlingstemaTilStønadstype,
-    behandlingstemaTilTekst,
-    Stønadstype,
-} from '../../App/typer/behandlingstema';
+import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -43,6 +39,7 @@ import { IJojurnalpostResponse } from '../../App/typer/journalforing';
 import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
+import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -121,27 +118,6 @@ const validerJournalføringState = (
         return undefined;
     }
 };
-
-function VelgFagsakForIkkeSøknad(props: {
-    journalResponse: IJojurnalpostResponse;
-    hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
-}) {
-    const { journalResponse, hentFagsak } = props;
-
-    const stønadstypeFraJournalpost = behandlingstemaTilStønadstype(
-        journalResponse.journalpost.behandlingstema
-    );
-    const [stønadstype, settStønadstype] = useState(stønadstypeFraJournalpost);
-
-    useEffect(() => {
-        if (stønadstype) {
-            hentFagsak(journalResponse.personIdent, stønadstype);
-        }
-        // eslint-disable-next-line
-    }, [stønadstype]);
-
-    return null;
-}
 
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
@@ -274,6 +250,10 @@ export const JournalforingApp: React.FC = () => {
                             <Venstrekolonne>
                                 {!journalResponse.harStrukturertSøknad ? (
                                     <>
+                                        <VelgFagsakForIkkeSøknad
+                                            journalResponse={journalResponse}
+                                            hentFagsak={hentFagsak}
+                                        />
                                         <VelgUstrukturertDokumentasjonType
                                             oppgaveId={oppgaveIdParam}
                                             ustrukturertDokumentasjonType={
@@ -282,10 +262,6 @@ export const JournalforingApp: React.FC = () => {
                                             settUstrukturertDokumentasjonType={
                                                 journalpostState.settUstrukturertDokumentasjonType
                                             }
-                                        />
-                                        <VelgFagsakForIkkeSøknad
-                                            journalResponse={journalResponse}
-                                            hentFagsak={hentFagsak}
                                         />
                                     </>
                                 ) : (
