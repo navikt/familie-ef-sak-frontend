@@ -13,7 +13,7 @@ import { erBehandlingRedigerbar } from '../typer/behandlingstatus';
 import { useApp } from './AppContext';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
     const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
 
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
@@ -49,7 +49,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         if (behandlingErRedigerbar) {
             axiosRequest<string | null, string>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/oppgave/${behandlingId}/tilordnet-ressurs?saksbehandlerIdent=${innloggetSaksbehandler.navIdent}`,
+                url: `/familie-ef-sak/api/oppgave/${behandlingId}/tilordnet-ressurs`,
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
