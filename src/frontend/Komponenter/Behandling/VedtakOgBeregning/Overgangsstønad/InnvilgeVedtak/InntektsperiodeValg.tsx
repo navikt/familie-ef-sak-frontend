@@ -21,12 +21,16 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
+import { useToggles } from '../../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../../App/context/toggles';
+import { Tooltip } from '@navikt/ds-react';
+import { v4 as uuidv4 } from 'uuid';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
-    grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype fjernRadKnapp;
+    grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype fjernRadKnapp leggTilKnapp;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 12rem 4rem'};
+        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 12rem 3rem 3rem'};
     grid-gap: 1rem;
 `;
 
@@ -43,9 +47,10 @@ const StyledInput = styled(InputMedTusenSkille)`
     text-align: left;
 `;
 
-export const tomInntektsperiodeRad: IInntektsperiode = {
+export const tomInntektsperiodeRad = (): IInntektsperiode => ({
     årMånedFra: '',
-};
+    endretKey: uuidv4(),
+});
 
 interface Props {
     inntektsperiodeListe: ListState<IInntektsperiode>;
@@ -66,6 +71,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
+    const { toggles } = useToggles();
+    const skalViseLeggTilKnapp =
+        toggles[ToggleName.visVedtakPeriodeLeggTilRad] && behandlingErRedigerbar;
 
     const oppdaterInntektslisteElement = (
         index: number,
@@ -78,6 +86,14 @@ const InntektsperiodeValg: React.FC<Props> = ({
         );
     };
 
+    const leggTilTomRadOver = (index: number) => {
+        inntektsperiodeListe.setValue((prevState) => [
+            ...prevState.slice(0, index),
+            tomInntektsperiodeRad(),
+            ...prevState.slice(index, prevState.length),
+        ]);
+    };
+
     return (
         <>
             <TittelContainer lesevisning={!behandlingErRedigerbar}>
@@ -88,14 +104,13 @@ const InntektsperiodeValg: React.FC<Props> = ({
             </TittelContainer>
             {inntektsperiodeListe.value.map((rad, index) => {
                 const skalViseFjernKnapp =
-                    index === inntektsperiodeListe.value.length - 1 &&
-                    index !== 0 &&
-                    behandlingErRedigerbar;
+                    behandlingErRedigerbar &&
+                    (skalViseLeggTilKnapp ||
+                        (index === inntektsperiodeListe.value.length - 1 && index !== 0));
                 return (
-                    <InntektContainer key={index} lesevisning={!behandlingErRedigerbar}>
+                    <InntektContainer key={rad.endretKey} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrVelger
                             disabled={index === 0}
-                            key={rad.endretKey || null}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             aria-label={'Inntekt fra'}
                             onEndret={(e) => {
@@ -188,12 +203,21 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 knappetekst="Fjern inntektsperiode"
                             />
                         )}
+                        {skalViseLeggTilKnapp && (
+                            <Tooltip content="Legg til rad over" placement="right">
+                                <LeggTilKnapp
+                                    onClick={() => {
+                                        leggTilTomRadOver(index);
+                                    }}
+                                />
+                            </Tooltip>
+                        )}
                     </InntektContainer>
                 );
             })}
             {behandlingErRedigerbar && (
                 <LeggTilKnapp
-                    onClick={() => inntektsperiodeListe.push(tomInntektsperiodeRad)}
+                    onClick={() => inntektsperiodeListe.push(tomInntektsperiodeRad())}
                     knappetekst=" Legg til inntektsperiode"
                 />
             )}

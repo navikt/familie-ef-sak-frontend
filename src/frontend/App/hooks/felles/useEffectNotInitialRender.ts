@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { DependencyList, useEffect, useRef } from 'react';
 
-export const useEffectNotInitialRender = (func: () => void, deps: never[]): void => {
+export const useEffectNotInitialRender = (func: () => void, deps: DependencyList): void => {
     const hasRendered = useRef(false);
 
     useEffect(() => {
