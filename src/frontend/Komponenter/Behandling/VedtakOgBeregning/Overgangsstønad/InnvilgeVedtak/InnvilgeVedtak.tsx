@@ -116,31 +116,34 @@ export const InnvilgeVedtak: React.FC<{
         toggles[ToggleName.skalPrefylleVedtaksperider];
 
     useEffect(() => {
-        settRevurderesFraOgMedFeilmelding(null);
-
-        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) return;
+        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) {
+            return;
+        }
 
         const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
 
-        if (revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato) {
-            settRevurderesFraOgMedFeilmelding(
-                'Revurderes fra og med-dato kan ikke være før første periode.'
-            );
-        }
+        const periodeHvisRevurderesFraErFørFraOgMed =
+            revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato
+                ? [tomVedtaksperiodeRad()]
+                : [];
 
         const perioderMedEndretKey = vedtakshistorikk.perioder.map((periode) => {
             return { ...periode, endretKey: uuidv4() };
         });
 
         vedtaksperiodeState.setValue(
-            perioderMedEndretKey.length > 0 ? perioderMedEndretKey : [tomVedtaksperiodeRad()]
+            perioderMedEndretKey.length > 0
+                ? [...periodeHvisRevurderesFraErFørFraOgMed, ...perioderMedEndretKey]
+                : [tomVedtaksperiodeRad()]
         );
 
         // eslint-disable-next-line
     }, [vedtakshistorikk]);
 
     useEffect(() => {
-        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) return;
+        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) {
+            return;
+        }
 
         const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
             return { ...inntekt, endretKey: uuidv4() };
@@ -224,6 +227,13 @@ export const InnvilgeVedtak: React.FC<{
             }).then((res: Ressurs<IVedtakshistorikk>) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     settVedtakshistorikk(res.data);
+                } else if (
+                    res.status === RessursStatus.FEILET ||
+                    res.status === RessursStatus.FUNKSJONELL_FEIL
+                ) {
+                    settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
+                } else {
+                    settRevurderesFraOgMedFeilmelding('Noe feilet med henting av vedtaksperioder');
                 }
             });
         },
