@@ -146,8 +146,6 @@ export const InnvilgeVedtak: React.FC<{
             return { ...inntekt, endretKey: uuidv4() };
         });
 
-        console.log(inntekterMedEndretKey);
-
         inntektsperiodeState.setValue(inntekterMedEndretKey);
 
         // eslint-disable-next-line
