@@ -182,7 +182,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                 knappetekst="Fjern vedtaksperiode"
                             />
                         )}
-                        {behandlingErRedigerbar && (
+                        {skalViseLeggTilKnapp && (
                             <Tooltip content="Legg til rad over" placement="right">
                                 <LeggTilKnapp
                                     onClick={() => {
