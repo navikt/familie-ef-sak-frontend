@@ -91,10 +91,10 @@ export const InnvilgeVedtak: React.FC<{
             inntektBegrunnelse: lagretInnvilgetVedtak?.inntektBegrunnelse || '',
             perioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.perioder
-                : [tomVedtaksperiodeRad],
+                : [tomVedtaksperiodeRad()],
             inntekter: lagretInnvilgetVedtak?.inntekter
                 ? lagretInnvilgetVedtak?.inntekter
-                : [tomInntektsperiodeRad],
+                : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
         },
         validerInnvilgetVedtakForm,
@@ -139,12 +139,13 @@ export const InnvilgeVedtak: React.FC<{
     }, [vedtakshistorikk]);
 
     useEffect(() => {
-        if (!vedtakshistorikk?.inntekter?.length || !toggles[ToggleName.skalPrefylleVedtaksperider])
-            return;
+        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) return;
 
         const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
             return { ...inntekt, endretKey: uuidv4() };
         });
+
+        console.log(inntekterMedEndretKey);
 
         inntektsperiodeState.setValue(inntekterMedEndretKey);
 
