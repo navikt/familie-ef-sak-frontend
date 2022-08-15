@@ -139,7 +139,7 @@ export const InnvilgeVedtak: React.FC<{
     }, [vedtakshistorikk]);
 
     useEffect(() => {
-        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) return;
+        if (!vedtakshistorikk?.inntekter?.length || !toggles[ToggleName.skalPrefylleVedtaksperider]) return;
 
         const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
             return { ...inntekt, endretKey: uuidv4() };
