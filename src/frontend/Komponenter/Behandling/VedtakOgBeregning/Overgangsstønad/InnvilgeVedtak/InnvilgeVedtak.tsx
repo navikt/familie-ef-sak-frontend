@@ -91,10 +91,10 @@ export const InnvilgeVedtak: React.FC<{
             inntektBegrunnelse: lagretInnvilgetVedtak?.inntektBegrunnelse || '',
             perioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.perioder
-                : [tomVedtaksperiodeRad],
+                : [tomVedtaksperiodeRad()],
             inntekter: lagretInnvilgetVedtak?.inntekter
                 ? lagretInnvilgetVedtak?.inntekter
-                : [tomInntektsperiodeRad],
+                : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
         },
         validerInnvilgetVedtakForm,
