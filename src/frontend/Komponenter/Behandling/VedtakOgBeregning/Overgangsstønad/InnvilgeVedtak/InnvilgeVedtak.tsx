@@ -127,7 +127,8 @@ export const InnvilgeVedtak: React.FC<{
         const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
         const erFørFørstePeriode = revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato;
         const manglerPerioder = perioderMedEndretKey.length === 0;
-        const initPerioder = erFørFørstePeriode || manglerPerioder ? [tomVedtaksperiodeRad()] : [];
+        const initPerioder =
+            erFørFørstePeriode || manglerPerioder ? [tomVedtaksperiodeRad(revurderesFra)] : [];
 
         vedtaksperiodeState.setValue([...initPerioder, ...perioderMedEndretKey]);
 
