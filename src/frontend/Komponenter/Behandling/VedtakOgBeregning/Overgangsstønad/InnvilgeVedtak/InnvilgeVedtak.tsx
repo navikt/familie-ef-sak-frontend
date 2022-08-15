@@ -221,6 +221,7 @@ export const InnvilgeVedtak: React.FC<{
                 url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
             }).then((res: Ressurs<IVedtakshistorikk>) => {
                 if (res.status === RessursStatus.SUKSESS) {
+                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     settVedtakshistorikk(res.data);
                 } else if (
                     res.status === RessursStatus.FEILET ||
@@ -232,7 +233,7 @@ export const InnvilgeVedtak: React.FC<{
                 }
             });
         },
-        [axiosRequest, behandling]
+        [axiosRequest, behandling, settIkkePersistertKomponent]
     );
 
     useEffectNotInitialRender(() => {
