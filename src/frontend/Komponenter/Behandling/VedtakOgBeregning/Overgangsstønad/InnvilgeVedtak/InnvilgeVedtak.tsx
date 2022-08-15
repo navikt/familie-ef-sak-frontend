@@ -120,22 +120,16 @@ export const InnvilgeVedtak: React.FC<{
             return;
         }
 
-        const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
-
-        const periodeHvisRevurderesFraErFørFraOgMed =
-            revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato
-                ? [tomVedtaksperiodeRad()]
-                : [];
-
         const perioderMedEndretKey = vedtakshistorikk.perioder.map((periode) => {
             return { ...periode, endretKey: uuidv4() };
         });
 
-        vedtaksperiodeState.setValue(
-            perioderMedEndretKey.length > 0
-                ? [...periodeHvisRevurderesFraErFørFraOgMed, ...perioderMedEndretKey]
-                : [tomVedtaksperiodeRad()]
-        );
+        const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
+        const erFørFørstePeriode = revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato;
+        const manglerPerioder = perioderMedEndretKey.length === 0;
+        const initPerioder = erFørFørstePeriode || manglerPerioder ? [tomVedtaksperiodeRad()] : [];
+
+        vedtaksperiodeState.setValue([...initPerioder, ...perioderMedEndretKey]);
 
         // eslint-disable-next-line
     }, [vedtakshistorikk]);
