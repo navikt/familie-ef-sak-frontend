@@ -204,7 +204,7 @@ export const JournalforingApp: React.FC = () => {
         } else if (erPapirSøknad) {
             return !erNyBehandling;
         } else {
-            return erNyBehandling;
+            return false;
         }
     };
 
@@ -310,7 +310,7 @@ export const JournalforingApp: React.FC = () => {
                                             ) {
                                                 if (journalResponse.harStrukturertSøknad) {
                                                     journalpostState.settVisBekreftelsesModal(true);
-                                                } else if (!journalResponse.harStrukturertSøknad) {
+                                                } else {
                                                     journalpostState.settJournalføringIkkeMuligModal(
                                                         true
                                                     );
@@ -362,7 +362,6 @@ export const JournalforingApp: React.FC = () => {
                         <JournalføringIkkeMuligModal
                             visModal={journalpostState.visJournalføringIkkeMuligModal}
                             settVisModal={journalpostState.settJournalføringIkkeMuligModal}
-                            erPapirSøknad={erPapirSøknad}
                         />
                     </SideLayout>
                 );
@@ -374,8 +373,7 @@ export const JournalforingApp: React.FC = () => {
 const JournalføringIkkeMuligModal: React.FC<{
     visModal: boolean;
     settVisModal: Dispatch<SetStateAction<boolean>>;
-    erPapirSøknad: boolean;
-}> = ({ visModal, settVisModal, erPapirSøknad }) => {
+}> = ({ visModal, settVisModal }) => {
     return (
         <UIModalWrapper
             modal={{
@@ -386,21 +384,11 @@ const JournalføringIkkeMuligModal: React.FC<{
             }}
         >
             <div>
-                {erPapirSøknad ? (
-                    <Normaltekst>
-                        Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
-                        behandling via journalføringsbildet når det ikke er tilknyttet en digital
-                        søknad til journalposten.
-                    </Normaltekst>
-                ) : (
-                    <Normaltekst>
-                        Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
-                        journalføringsbildet når det ikke er tilknyttet en digital søknad til
-                        journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
-                        opprett ny behandling derifra. Deretter kan du journalføre mot den nye
-                        behandlingen.
-                    </Normaltekst>
-                )}
+                <Normaltekst>
+                    Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
+                    behandling via journalføringsbildet når det ikke er tilknyttet en digital søknad
+                    til journalposten.
+                </Normaltekst>
             </div>
             <KnappWrapper>
                 <Button
