@@ -3,7 +3,10 @@ import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../ty
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
 import { Behandlingsårsak } from '../typer/Behandlingsårsak';
-import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
+import {
+    behandlingsårsakFraDokumentasjonType,
+    UstrukturertDokumentasjonType,
+} from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -82,9 +85,8 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         }
 
         const behandlingsårsak =
-            ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD
-                ? Behandlingsårsak.PAPIRSØKNAD
-                : undefined;
+            ustrukturertDokumentasjonType &&
+            behandlingsårsakFraDokumentasjonType[ustrukturertDokumentasjonType];
         const nyBehandling: BehandlingRequest = {
             ...behandling,
             årsak: behandlingsårsak,

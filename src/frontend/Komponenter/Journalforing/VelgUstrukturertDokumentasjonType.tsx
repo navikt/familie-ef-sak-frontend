@@ -5,6 +5,7 @@ import { IOppgave } from '../Oppgavebenk/typer/oppgave';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 
 const VelgUstrukturertDokumentasjonTypeSelect = styled(Select)`
     width: 10rem;
@@ -19,6 +20,14 @@ export enum UstrukturertDokumentasjonType {
 const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = {
     PAPIRSØKNAD: 'Papirsøknad',
     ETTERSENDNING: 'Ettersendning',
+};
+
+export const behandlingsårsakFraDokumentasjonType: Record<
+    UstrukturertDokumentasjonType,
+    Behandlingsårsak
+> = {
+    PAPIRSØKNAD: Behandlingsårsak.PAPIRSØKNAD,
+    ETTERSENDNING: Behandlingsårsak.NYE_OPPLYSNINGER,
 };
 
 const VelgUstrukturertDokumentasjonType: React.FC<{
