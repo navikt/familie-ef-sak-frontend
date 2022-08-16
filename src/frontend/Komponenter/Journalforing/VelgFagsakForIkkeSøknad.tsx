@@ -6,6 +6,7 @@ import {
 } from '../../App/typer/behandlingstema';
 import React, { useEffect, useState } from 'react';
 import { BodyShort, Label, Select } from '@navikt/ds-react';
+import styled from 'styled-components';
 
 export function VelgFagsakForIkkeSøknad(props: {
     journalResponse: IJojurnalpostResponse;
@@ -28,7 +29,7 @@ export function VelgFagsakForIkkeSøknad(props: {
         <>
             <Label>Journalposttittel</Label>
             <BodyShort>{journalResponse.journalpost.tittel}</BodyShort>
-            <Select
+            <StyledSelect
                 value={stønadstype || ''}
                 label={'Velg stønadstype'}
                 onChange={(e) => settStønadstype(e.target.value as Stønadstype)}
@@ -39,7 +40,11 @@ export function VelgFagsakForIkkeSøknad(props: {
                         {stønadstypeTilTekst[stønadstype]}
                     </option>
                 ))}
-            </Select>
+            </StyledSelect>
         </>
     );
 }
+
+const StyledSelect = styled(Select)`
+    margin: 1rem 0;
+`;
