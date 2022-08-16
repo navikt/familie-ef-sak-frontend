@@ -52,6 +52,12 @@ export const tomInntektsperiodeRad = (): IInntektsperiode => ({
     endretKey: uuidv4(),
 });
 
+const KnappWrapper = styled.div`
+    button {
+        width: 3rem;
+    }
+`;
+
 interface Props {
     inntektsperiodeListe: ListState<IInntektsperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['inntekter'];
@@ -86,11 +92,11 @@ const InntektsperiodeValg: React.FC<Props> = ({
         );
     };
 
-    const leggTilTomRadOver = (index: number) => {
+    const leggTilTomRadUnder = (index: number) => {
         inntektsperiodeListe.setValue((prevState) => [
-            ...prevState.slice(0, index),
+            ...prevState.slice(0, index + 1),
             tomInntektsperiodeRad(),
-            ...prevState.slice(index, prevState.length),
+            ...prevState.slice(index + 1, prevState.length),
         ]);
     };
 
@@ -204,12 +210,14 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             />
                         )}
                         {skalViseLeggTilKnapp && (
-                            <Tooltip content="Legg til rad over" placement="right">
-                                <LeggTilKnapp
-                                    onClick={() => {
-                                        leggTilTomRadOver(index);
-                                    }}
-                                />
+                            <Tooltip content="Legg til rad under" placement="right">
+                                <KnappWrapper>
+                                    <LeggTilKnapp
+                                        onClick={() => {
+                                            leggTilTomRadUnder(index);
+                                        }}
+                                    />
+                                </KnappWrapper>
                             </Tooltip>
                         )}
                     </InntektContainer>

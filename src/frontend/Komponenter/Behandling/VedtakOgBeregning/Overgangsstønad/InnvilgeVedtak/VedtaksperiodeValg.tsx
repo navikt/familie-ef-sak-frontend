@@ -43,6 +43,12 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     margin-bottom: 0.5rem;
 `;
 
+const KnappWrapper = styled.div`
+    button {
+        width: 3rem;
+    }
+`;
+
 interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
@@ -90,11 +96,11 @@ const VedtaksperiodeValg: React.FC<Props> = ({
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
     };
 
-    const leggTilTomRadOver = (index: number) => {
+    const leggTilTomRadUnder = (index: number) => {
         vedtaksperiodeListe.setValue((prevState) => [
-            ...prevState.slice(0, index),
+            ...prevState.slice(0, index + 1),
             tomVedtaksperiodeRad(),
-            ...prevState.slice(index, prevState.length),
+            ...prevState.slice(index + 1, prevState.length),
         ]);
     };
 
@@ -183,12 +189,14 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             />
                         )}
                         {skalViseLeggTilKnapp && (
-                            <Tooltip content="Legg til rad over" placement="right">
-                                <LeggTilKnapp
-                                    onClick={() => {
-                                        leggTilTomRadOver(index);
-                                    }}
-                                />
+                            <Tooltip content="Legg til rad under" placement="right">
+                                <KnappWrapper>
+                                    <LeggTilKnapp
+                                        onClick={() => {
+                                            leggTilTomRadUnder(index);
+                                        }}
+                                    />
+                                </KnappWrapper>
                             </Tooltip>
                         )}
                     </VedtakPeriodeContainer>
