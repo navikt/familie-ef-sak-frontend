@@ -18,6 +18,7 @@ interface Props {
     resultatType?: EBehandlingResultat;
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     alleVilkårOppfylt: boolean;
+    skalViseNullstillVedtakKnapp: boolean;
 }
 
 const StyledSelect = styled(FamilieSelect)`
@@ -54,8 +55,6 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
         behandling.stønadstype !== Stønadstype.SKOLEPENGER || toggles[ToggleName.skolepengerOpphør];
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
-
-    const skalViseNullstillKnapp = toggles[ToggleName.visNullstillVedtakKnapp];
 
     return (
         <section>
@@ -120,7 +119,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         </TekstLinje>
                     </HjelpeTekst>
                 )}
-                {skalViseNullstillKnapp && (
+                {props.skalViseNullstillVedtakKnapp && (
                     <Button
                         variant="tertiary"
                         size={'small'}

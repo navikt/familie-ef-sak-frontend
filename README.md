@@ -48,9 +48,9 @@ For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokal
 
 # Mens du koder
 
-I Team Familie har vi et intern (felles frontend bibliotek)[https://github.com/navikt/familie-felles-frontend] for komponenter som kan brukes på tvers av appene våre. Lager man noe som kan senere gjenbrukes, er det fint om disse trekkes ut hit.
+I Team Familie har vi et internt [felles frontend-bibliotek](https://github.com/navikt/familie-felles-frontend) for komponenter som kan brukes på tvers av appene våre. Lager man noe som kan senere gjenbrukes, er det fint om disse trekkes ut hit.
 
-Ta gjerne en titt på Team Familie sin (readme)[https://github.com/navikt/familie] med best practices når det kommer til frontendutvikling, uu og bruken av styled-components! 
+Ta gjerne en titt på Team Familie sin [readme](https://github.com/navikt/familie) med best practices når det kommer til frontendutvikling, uu og bruken av styled-components! 
 
 
 
