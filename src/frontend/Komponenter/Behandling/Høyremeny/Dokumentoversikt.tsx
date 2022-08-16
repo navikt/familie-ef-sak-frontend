@@ -15,8 +15,8 @@ import { compareDesc } from 'date-fns';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
 
 const StyledDokumentliste = styled(Dokumentliste)`
-    .typo-element,
-    .typo-undertekst {
+    .navds-detail,
+    .navds-label {
         text-align: left;
     }
 `;
