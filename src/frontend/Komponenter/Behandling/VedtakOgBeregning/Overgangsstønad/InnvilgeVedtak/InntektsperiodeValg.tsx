@@ -111,8 +111,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
             {inntektsperiodeListe.value.map((rad, index) => {
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
-                    (skalViseLeggTilKnapp ||
-                        (index === inntektsperiodeListe.value.length - 1 && index !== 0));
+                    index !== 0 &&
+                    (skalViseLeggTilKnapp || index === inntektsperiodeListe.value.length - 1);
                 return (
                     <InntektContainer key={rad.endretKey} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrVelger
@@ -193,7 +193,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 {samordningValideringsfeil}
                             </SkjemaelementFeilmelding>
                         </div>
-                        {skalViseFjernKnapp && (
+                        {skalViseFjernKnapp ? (
                             <FjernKnapp
                                 onClick={() => {
                                     inntektsperiodeListe.remove(index);
@@ -208,6 +208,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 }}
                                 knappetekst="Fjern inntektsperiode"
                             />
+                        ) : (
+                            <div />
                         )}
                         {skalViseLeggTilKnapp && (
                             <Tooltip content="Legg til rad under" placement="right">

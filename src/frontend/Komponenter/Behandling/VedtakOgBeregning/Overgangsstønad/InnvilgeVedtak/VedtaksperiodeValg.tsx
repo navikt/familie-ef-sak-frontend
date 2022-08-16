@@ -129,8 +129,8 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 // når featuretoggle for skalViseLeggTilKnapp fjernes, så kan skalViseFjernKnapp inlineas då den alltid skal vises
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
-                    (skalViseLeggTilKnapp ||
-                        (index === vedtaksperiodeListe.value.length - 1 && index !== 0));
+                    index !== 0 &&
+                    (skalViseLeggTilKnapp || index === vedtaksperiodeListe.value.length - 1);
 
                 return (
                     <VedtakPeriodeContainer
@@ -172,7 +172,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                         <Element style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
                             {antallMåneder && `${antallMåneder} mnd`}
                         </Element>
-                        {skalViseFjernKnapp && (
+                        {skalViseFjernKnapp ? (
                             <FjernKnapp
                                 onClick={() => {
                                     vedtaksperiodeListe.remove(index);
@@ -187,6 +187,8 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                 }}
                                 knappetekst="Fjern vedtaksperiode"
                             />
+                        ) : (
+                            <div />
                         )}
                         {skalViseLeggTilKnapp && (
                             <Tooltip content="Legg til rad under" placement="right">
