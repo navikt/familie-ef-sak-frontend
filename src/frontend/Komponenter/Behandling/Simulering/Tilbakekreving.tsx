@@ -107,6 +107,10 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
         settBegrunnelse(nyBegrunnelse);
     };
 
+    const inkluderVarseltekst = (tilbakekrevingsvalg: ITilbakekrevingsvalg) => {
+        return tilbakekrevingsvalg == ITilbakekrevingsvalg.OPPRETT_MED_VARSEL;
+    };
+
     const lagreTilbakekrevingsvalg = () => {
         settValideringsfeil('');
         if (låsKnapp) {
@@ -123,7 +127,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
             url: `/familie-ef-sak/api/tilbakekreving/${behandlingId}`,
             data: {
                 valg: tilbakekrevingsvalg,
-                varseltekst: varseltekst,
+                varseltekst: inkluderVarseltekst(tilbakekrevingsvalg) ? varseltekst : '',
                 begrunnelse: begrunnelse,
             },
         })
