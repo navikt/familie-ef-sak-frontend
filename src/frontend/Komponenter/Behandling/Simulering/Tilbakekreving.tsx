@@ -108,7 +108,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
     };
 
     const inkluderVarseltekst = (tilbakekrevingsvalg: ITilbakekrevingsvalg) => {
-        return tilbakekrevingsvalg == ITilbakekrevingsvalg.OPPRETT_MED_VARSEL;
+        return tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL;
     };
 
     const lagreTilbakekrevingsvalg = () => {
