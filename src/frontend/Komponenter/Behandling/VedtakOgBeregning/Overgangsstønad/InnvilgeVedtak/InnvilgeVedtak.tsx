@@ -37,7 +37,7 @@ import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
-import { revurderFraInitPeriode } from './revurderFraUtils';
+import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -121,9 +121,11 @@ export const InnvilgeVedtak: React.FC<{
             return;
         }
 
-        const perioderMedEndretKey = vedtakshistorikk.perioder.map((periode) => {
-            return { ...periode, endretKey: uuidv4() };
-        });
+        const perioderMedEndretKey = vedtakshistorikk.perioder
+            .map((periode) => {
+                return { ...periode, endretKey: uuidv4() };
+            })
+            .reduce(fyllHullMedOpphør, [] as IVedtaksperiode[]);
 
         vedtaksperiodeState.setValue([
             ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra),
