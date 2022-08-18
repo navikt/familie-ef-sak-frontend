@@ -56,9 +56,10 @@ interface Props {
     låsVedtaksperiodeRad?: boolean;
 }
 
-export const tomVedtaksperiodeRad = (): IVedtaksperiode => ({
+export const tomVedtaksperiodeRad = (årMånedFra?: string): IVedtaksperiode => ({
     periodeType: '' as EPeriodetype,
     aktivitet: '' as EAktivitet,
+    årMånedFra: årMånedFra,
     endretKey: uuidv4(),
 });
 
