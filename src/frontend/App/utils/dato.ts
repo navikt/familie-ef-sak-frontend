@@ -3,6 +3,7 @@ import {
     areIntervalsOverlapping,
     differenceInMonths,
     differenceInYears,
+    formatISO,
     isAfter,
     isBefore,
     isEqual,
@@ -13,7 +14,7 @@ import {
 export const plusMåneder = (date: Date, antall: number): Date => addMonths(date, antall);
 
 export const tilÅrMåned = (date: Date): string => {
-    return date.toISOString().substr(0, 7);
+    return formatISO(date, { representation: 'date' });
 };
 
 export const månedÅrTilDate = (årMåned: string): Date => {
