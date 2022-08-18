@@ -109,7 +109,7 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                             verdier={verdier}
                             kolonner={[
                                 {
-                                    overskrift: 'Stønad',
+                                    overskrift: 'Navn',
                                     tekstVerdi: (d) => d.navn,
                                 },
                                 {

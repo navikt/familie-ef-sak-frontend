@@ -12,6 +12,7 @@ import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
+import { Sticky } from '../Visningskomponenter/Sticky';
 
 export interface IHeaderMedSøkProps {
     innloggetSaksbehandler: ISaksbehandler;
@@ -113,32 +114,34 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     );
 
     return (
-        <Header
-            tittelOnClick={() => {
-                gåTilUrl('/');
-            }}
-            tittelHref={'#'}
-            tittel="NAV Enslig mor eller far"
-            brukerinfo={{
-                navn: innloggetSaksbehandler?.displayName || 'Ukjent',
-            }}
-            brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
-            eksterneLenker={eksterneLenker}
-        >
-            {innloggetSaksbehandler && <PersonSøk />}
-            {innloggetSaksbehandler?.navIdent && (
-                <Endringslogg
-                    userId={innloggetSaksbehandler.navIdent}
-                    dataFetchingIntervalSeconds={60 * 15}
-                    appId={'EF'}
-                    backendUrl={'/endringslogg'}
-                    dataset={'production'}
-                    maxEntries={50}
-                    appName={'Enslig forsørger'}
-                    alignLeft={true}
-                    stil={'lys'}
-                />
-            )}
-        </Header>
+        <Sticky>
+            <Header
+                tittelOnClick={() => {
+                    gåTilUrl('/');
+                }}
+                tittelHref={'#'}
+                tittel="NAV Enslig mor eller far"
+                brukerinfo={{
+                    navn: innloggetSaksbehandler?.displayName || 'Ukjent',
+                }}
+                brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
+                eksterneLenker={eksterneLenker}
+            >
+                {innloggetSaksbehandler && <PersonSøk />}
+                {innloggetSaksbehandler?.navIdent && (
+                    <Endringslogg
+                        userId={innloggetSaksbehandler.navIdent}
+                        dataFetchingIntervalSeconds={60 * 15}
+                        appId={'EF'}
+                        backendUrl={'/endringslogg'}
+                        dataset={'production'}
+                        maxEntries={50}
+                        appName={'Enslig forsørger'}
+                        alignLeft={true}
+                        stil={'lys'}
+                    />
+                )}
+            </Header>
+        </Sticky>
     );
 };
