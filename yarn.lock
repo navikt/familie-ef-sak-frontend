@@ -2904,10 +2904,10 @@
     framer-motion "^6.3.16"
     react-tooltip "^4.2.21"
 
-"@navikt/familie-dokumentliste@^3.0.0":
-  version "3.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/3.0.0/f5a719a2783cb99a3bbf49da9f46fb61c8e75782a9cdf4cf9ec509f192a0e2d4#4bfcd981afe75b4ebc476acb1aac099ff2d97e8d"
-  integrity sha512-+hFm8Iq2RsF+89dd+lH8IvZrDXZ/xaG19xKf8Cy9FlYg+wx75kCTzv/JGcsrWVv+8iOqI61eKZS/ONmywZn+GQ==
+"@navikt/familie-dokumentliste@^3.0.1":
+  version "3.0.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/3.0.1/be8f5ac18ce6ee8723ec81955d41ee2262d0430acff07cf115ba9de57a937d8f#a4670ad5c7e435e801c7f59b57546483b489eb60"
+  integrity sha512-A2lgremQO+z2ERl4N9cnIFaLR5TnjLUk2jSB8R4h3KluBwptB/tRTnNPyXKlMwSmgnKD8HJ8zpWUeqseZhkSnw==
   dependencies:
     "@navikt/ds-css" "^0.18.x"
     "@navikt/ds-icons" "^0.8.x"

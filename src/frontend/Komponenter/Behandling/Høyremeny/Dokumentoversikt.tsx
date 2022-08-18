@@ -14,13 +14,6 @@ import navFarger from 'nav-frontend-core';
 import { compareDesc } from 'date-fns';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
 
-const StyledDokumentliste = styled(Dokumentliste)`
-    .navds-detail,
-    .navds-label {
-        text-align: left;
-    }
-`;
-
 const StyledUndertittel = styled(Undertittel)`
     padding: 0.5rem 1rem;
     color: ${navFarger.navGra80};
@@ -77,7 +70,7 @@ const Dokumentoversikt: React.FC = () => {
                     return (
                         <>
                             <StyledUndertittel>Dokumentoversikt</StyledUndertittel>
-                            <StyledDokumentliste
+                            <Dokumentliste
                                 dokumenter={sortertDokumentliste}
                                 onClick={lastNedDokument}
                             />
