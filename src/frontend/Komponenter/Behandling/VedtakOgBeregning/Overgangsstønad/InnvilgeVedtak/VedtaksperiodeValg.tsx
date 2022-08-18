@@ -43,6 +43,12 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     margin-bottom: 0.5rem;
 `;
 
+const KnappWrapper = styled.div`
+    button {
+        width: 3rem;
+    }
+`;
+
 interface Props {
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
@@ -90,11 +96,11 @@ const VedtaksperiodeValg: React.FC<Props> = ({
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
     };
 
-    const leggTilTomRadOver = (index: number) => {
+    const leggTilTomRadUnder = (index: number) => {
         vedtaksperiodeListe.setValue((prevState) => [
-            ...prevState.slice(0, index),
+            ...prevState.slice(0, index + 1),
             tomVedtaksperiodeRad(),
-            ...prevState.slice(index, prevState.length),
+            ...prevState.slice(index + 1, prevState.length),
         ]);
     };
 
@@ -123,8 +129,8 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 // når featuretoggle for skalViseLeggTilKnapp fjernes, så kan skalViseFjernKnapp inlineas då den alltid skal vises
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
-                    (skalViseLeggTilKnapp ||
-                        (index === vedtaksperiodeListe.value.length - 1 && index !== 0));
+                    index !== 0 &&
+                    (skalViseLeggTilKnapp || index === vedtaksperiodeListe.value.length - 1);
 
                 return (
                     <VedtakPeriodeContainer
@@ -166,7 +172,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                         <Element style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
                             {antallMåneder && `${antallMåneder} mnd`}
                         </Element>
-                        {skalViseFjernKnapp && (
+                        {skalViseFjernKnapp ? (
                             <FjernKnapp
                                 onClick={() => {
                                     vedtaksperiodeListe.remove(index);
@@ -181,14 +187,18 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                 }}
                                 knappetekst="Fjern vedtaksperiode"
                             />
+                        ) : (
+                            <div />
                         )}
                         {skalViseLeggTilKnapp && (
-                            <Tooltip content="Legg til rad over" placement="right">
-                                <LeggTilKnapp
-                                    onClick={() => {
-                                        leggTilTomRadOver(index);
-                                    }}
-                                />
+                            <Tooltip content="Legg til rad under" placement="right">
+                                <KnappWrapper>
+                                    <LeggTilKnapp
+                                        onClick={() => {
+                                            leggTilTomRadUnder(index);
+                                        }}
+                                    />
+                                </KnappWrapper>
                             </Tooltip>
                         )}
                     </VedtakPeriodeContainer>
