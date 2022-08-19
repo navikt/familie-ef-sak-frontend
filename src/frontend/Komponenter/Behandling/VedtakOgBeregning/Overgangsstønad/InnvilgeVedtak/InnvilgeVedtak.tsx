@@ -11,9 +11,9 @@ import {
     IInntektsperiode,
     IInnvilgeVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
+    IVedtakshistorikk,
     IVedtaksperiode,
     IVedtakType,
-    IVedtakshistorikk,
 } from '../../../../../App/typer/vedtak';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
@@ -37,6 +37,7 @@ import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
+import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 
 const Hovedknapp = hiddenIf(HovedknappNAV);
 
@@ -116,37 +117,36 @@ export const InnvilgeVedtak: React.FC<{
         toggles[ToggleName.skalPrefylleVedtaksperider];
 
     useEffect(() => {
-        settRevurderesFraOgMedFeilmelding(null);
-
-        if (!vedtakshistorikk?.perioder?.length || !toggles[ToggleName.skalPrefylleVedtaksperider])
+        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) {
             return;
-
-        const fraOgMedDato = vedtakshistorikk?.perioder[0]?.årMånedFra;
-
-        if (revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato) {
-            settRevurderesFraOgMedFeilmelding(
-                'Revurderes fra og med-dato kan ikke være før første periode.'
-            );
         }
 
-        const perioderMedEndretKey = vedtakshistorikk.perioder.map((periode) => {
-            return { ...periode, endretKey: uuidv4() };
-        });
+        const perioderMedEndretKey = vedtakshistorikk.perioder
+            .map((periode) => {
+                return { ...periode, endretKey: uuidv4() };
+            })
+            .reduce(fyllHullMedOpphør, [] as IVedtaksperiode[]);
 
-        vedtaksperiodeState.setValue(perioderMedEndretKey);
+        vedtaksperiodeState.setValue([
+            ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra),
+            ...perioderMedEndretKey,
+        ]);
 
         // eslint-disable-next-line
     }, [vedtakshistorikk]);
 
     useEffect(() => {
-        if (!vedtakshistorikk?.inntekter?.length || !toggles[ToggleName.skalPrefylleVedtaksperider])
+        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) {
             return;
+        }
 
         const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
             return { ...inntekt, endretKey: uuidv4() };
         });
 
-        inntektsperiodeState.setValue(inntekterMedEndretKey);
+        inntektsperiodeState.setValue(
+            inntekterMedEndretKey.length > 0 ? inntekterMedEndretKey : [tomInntektsperiodeRad()]
+        );
 
         // eslint-disable-next-line
     }, [vedtakshistorikk]);
@@ -159,6 +159,7 @@ export const InnvilgeVedtak: React.FC<{
         const førsteInntektsperiode = inntektsperioder.length > 0 && inntektsperioder[0];
         if (
             førsteInntektsperiode &&
+            førsteInnvilgedeVedtaksperiode &&
             førsteInnvilgedeVedtaksperiode.årMånedFra !== førsteInntektsperiode.årMånedFra
         ) {
             inntektsperiodeState.update(
@@ -220,11 +221,19 @@ export const InnvilgeVedtak: React.FC<{
                 url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
             }).then((res: Ressurs<IVedtakshistorikk>) => {
                 if (res.status === RessursStatus.SUKSESS) {
+                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     settVedtakshistorikk(res.data);
+                } else if (
+                    res.status === RessursStatus.FEILET ||
+                    res.status === RessursStatus.FUNKSJONELL_FEIL
+                ) {
+                    settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
+                } else {
+                    settRevurderesFraOgMedFeilmelding('Noe feilet med henting av vedtaksperioder');
                 }
             });
         },
-        [axiosRequest, behandling]
+        [axiosRequest, behandling, settIkkePersistertKomponent]
     );
 
     useEffectNotInitialRender(() => {

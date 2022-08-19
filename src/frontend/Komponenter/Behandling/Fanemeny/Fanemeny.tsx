@@ -12,6 +12,7 @@ import { useApp } from '../../../App/context/AppContext';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    top: 6.5rem;
 `;
 
 const StyledFanemeny = styled.div`

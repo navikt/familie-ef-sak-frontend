@@ -69,7 +69,7 @@ export const PersonHeaderWrapper = styled(Sticky)`
 
     border-bottom: 1px solid ${navFarger.navGra80};
     z-index: 22;
-    top: 47px;
+    top: 55px;
 
     .visittkort {
         padding: 0 1.5rem;
