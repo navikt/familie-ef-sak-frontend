@@ -14,7 +14,7 @@ import {
 export const plusMåneder = (date: Date, antall: number): Date => addMonths(date, antall);
 
 export const tilÅrMåned = (date: Date): string => {
-    return formatISO(date, { representation: 'date' });
+    return formatISO(date).substring(0, 7);
 };
 
 export const månedÅrTilDate = (årMåned: string): Date => {
