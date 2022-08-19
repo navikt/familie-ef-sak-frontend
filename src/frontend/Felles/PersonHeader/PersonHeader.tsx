@@ -68,7 +68,7 @@ export const PersonHeaderWrapper = styled(Sticky)`
     display: flex;
 
     border-bottom: 1px solid ${navFarger.navGra80};
-    z-index: 22;
+    z-index: 23;
     top: 55px;
 
     .visittkort {
