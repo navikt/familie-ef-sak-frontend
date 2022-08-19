@@ -72,7 +72,7 @@ export const InnvilgeVedtak: React.FC<{
     );
     const [vedtakshistorikk, settVedtakshistorikk] = useState<IVedtakshistorikk>();
     const [revurderesFra, settRevurderesFra] = useState(
-        lagretInnvilgetVedtak?.perioder.length
+        behandling.forrigeBehandlingId && lagretInnvilgetVedtak?.perioder.length
             ? lagretInnvilgetVedtak.perioder[0].årMånedFra
             : undefined
     );
@@ -111,10 +111,7 @@ export const InnvilgeVedtak: React.FC<{
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
-    const låsVedtaksperiodeRad =
-        revurderesFra &&
-        lagretInnvilgetVedtak?.perioder.length &&
-        toggles[ToggleName.skalPrefylleVedtaksperider];
+    const låsVedtaksperiodeRad = revurderesFra && toggles[ToggleName.skalPrefylleVedtaksperider];
 
     useEffect(() => {
         if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) {
