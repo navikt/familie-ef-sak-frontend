@@ -39,6 +39,7 @@ import { IJojurnalpostResponse } from '../../App/typer/journalforing';
 import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
+import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -247,19 +248,26 @@ export const JournalforingApp: React.FC = () => {
                         }`}</Sidetittel>
                         <Kolonner>
                             <Venstrekolonne>
-                                <UtledEllerVelgFagsak
-                                    journalResponse={journalResponse}
-                                    hentFagsak={hentFagsak}
-                                />
-                                {!journalResponse.harStrukturertSøknad && (
-                                    <VelgUstrukturertDokumentasjonType
-                                        oppgaveId={oppgaveIdParam}
-                                        ustrukturertDokumentasjonType={
-                                            journalpostState.ustrukturertDokumentasjonType
-                                        }
-                                        settUstrukturertDokumentasjonType={
-                                            journalpostState.settUstrukturertDokumentasjonType
-                                        }
+                                {!journalResponse.harStrukturertSøknad ? (
+                                    <>
+                                        <VelgFagsakForIkkeSøknad
+                                            journalResponse={journalResponse}
+                                            hentFagsak={hentFagsak}
+                                        />
+                                        <VelgUstrukturertDokumentasjonType
+                                            oppgaveId={oppgaveIdParam}
+                                            ustrukturertDokumentasjonType={
+                                                journalpostState.ustrukturertDokumentasjonType
+                                            }
+                                            settUstrukturertDokumentasjonType={
+                                                journalpostState.settUstrukturertDokumentasjonType
+                                            }
+                                        />
+                                    </>
+                                ) : (
+                                    <UtledEllerVelgFagsak
+                                        journalResponse={journalResponse}
+                                        hentFagsak={hentFagsak}
                                     />
                                 )}
                                 <Brukerinfo personIdent={journalResponse.personIdent} />
