@@ -233,7 +233,8 @@ export const InnvilgeVedtak: React.FC<{
                 }
             });
         },
-        [axiosRequest, behandling, settIkkePersistertKomponent]
+        // eslint-disable-next-line
+        [axiosRequest, behandling]
     );
 
     useEffectNotInitialRender(() => {
