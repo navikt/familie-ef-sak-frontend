@@ -35,6 +35,8 @@ interface HøyreMenyWrapperProps {
 const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     border-left: 2px solid ${navFarger.navGra40};
 
+    background-color: white;
+
     flex-shrink: 1;
     flex-grow: 0;
 

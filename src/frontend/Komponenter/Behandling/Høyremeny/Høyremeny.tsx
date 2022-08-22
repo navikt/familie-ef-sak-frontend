@@ -37,6 +37,8 @@ const StyledButton = styled.button`
 
     margin-left: -12px;
 
+    z-index: 22;
+
     top: 200px;
 
     width: 24px;
