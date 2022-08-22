@@ -129,14 +129,6 @@ export const InnvilgeVedtak: React.FC<{
             ...perioderMedEndretKey,
         ]);
 
-        // eslint-disable-next-line
-    }, [vedtakshistorikk]);
-
-    useEffect(() => {
-        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) {
-            return;
-        }
-
         const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
             return { ...inntekt, endretKey: uuidv4() };
         });
@@ -144,6 +136,8 @@ export const InnvilgeVedtak: React.FC<{
         inntektsperiodeState.setValue(
             inntekterMedEndretKey.length > 0 ? inntekterMedEndretKey : [tomInntektsperiodeRad()]
         );
+
+        formState.setErrors((prevState) => ({ ...prevState, perioder: [], inntekter: [] }));
 
         // eslint-disable-next-line
     }, [vedtakshistorikk]);
