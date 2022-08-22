@@ -297,6 +297,7 @@ export const InnvilgeVedtak: React.FC<{
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
                         feilmelding={revurderesFraOgMedFeilmelding}
+                        vedtakshistorikk={vedtakshistorikk}
                     />
                 ) : null}
                 {skalViseVedtaksperiodeOgInntekt && (

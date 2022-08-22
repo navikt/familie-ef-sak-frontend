@@ -43,8 +43,17 @@ export const revurderFraInitPeriode = <T>(
     periode: (revurderesFra: string) => T
 ): T[] => {
     const manglerPerioder = vedtakshistorikk.perioder.length === 0;
-    const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
-    const erFørFørstePeriode = fraOgMedDato && revurderesFra < fraOgMedDato;
-
+    const erFørFørstePeriode = revurdererFørFørstePeriode(vedtakshistorikk, revurderesFra);
     return erFørFørstePeriode || manglerPerioder ? [periode(revurderesFra)] : [];
+};
+
+export const revurdererFørFørstePeriode = (
+    vedtakshistorikk: IVedtakshistorikk | undefined,
+    revurderesFra: string
+): boolean => {
+    if (!vedtakshistorikk) {
+        return false;
+    }
+    const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
+    return !!fraOgMedDato && revurderesFra < fraOgMedDato;
 };
