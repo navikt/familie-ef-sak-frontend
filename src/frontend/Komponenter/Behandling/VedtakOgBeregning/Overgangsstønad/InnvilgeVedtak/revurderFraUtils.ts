@@ -51,9 +51,6 @@ export const revurdererFørFørstePeriode = (
     vedtakshistorikk: IVedtakshistorikk | undefined,
     revurderesFra: string
 ): boolean => {
-    if (!vedtakshistorikk) {
-        return false;
-    }
-    const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
+    const fraOgMedDato = vedtakshistorikk?.perioder[0]?.årMånedFra;
     return !!fraOgMedDato && revurderesFra < fraOgMedDato;
 };
