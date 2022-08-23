@@ -114,7 +114,11 @@ export const InnvilgeVedtak: React.FC<{
     const låsVedtaksperiodeRad = revurderesFra && toggles[ToggleName.skalPrefylleVedtaksperider];
 
     useEffect(() => {
-        if (!vedtakshistorikk || !toggles[ToggleName.skalPrefylleVedtaksperider]) {
+        if (
+            !revurderesFra ||
+            !vedtakshistorikk ||
+            !toggles[ToggleName.skalPrefylleVedtaksperider]
+        ) {
             return;
         }
 
@@ -125,7 +129,7 @@ export const InnvilgeVedtak: React.FC<{
             .reduce(fyllHullMedOpphør, [] as IVedtaksperiode[]);
 
         vedtaksperiodeState.setValue([
-            ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra),
+            ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra, tomVedtaksperiodeRad),
             ...perioderMedEndretKey,
         ]);
 
@@ -133,9 +137,10 @@ export const InnvilgeVedtak: React.FC<{
             return { ...inntekt, endretKey: uuidv4() };
         });
 
-        inntektsperiodeState.setValue(
-            inntekterMedEndretKey.length > 0 ? inntekterMedEndretKey : [tomInntektsperiodeRad()]
-        );
+        inntektsperiodeState.setValue([
+            ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra, tomInntektsperiodeRad),
+            ...inntekterMedEndretKey,
+        ]);
 
         formState.setErrors((prevState) => ({ ...prevState, perioder: [], inntekter: [] }));
 
@@ -292,6 +297,7 @@ export const InnvilgeVedtak: React.FC<{
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
                         feilmelding={revurderesFraOgMedFeilmelding}
+                        vedtakshistorikk={vedtakshistorikk}
                     />
                 ) : null}
                 {skalViseVedtaksperiodeOgInntekt && (

@@ -47,8 +47,8 @@ const StyledInput = styled(InputMedTusenSkille)`
     text-align: left;
 `;
 
-export const tomInntektsperiodeRad = (): IInntektsperiode => ({
-    årMånedFra: '',
+export const tomInntektsperiodeRad = (årMånedFra?: string): IInntektsperiode => ({
+    årMånedFra: årMånedFra || '',
     endretKey: uuidv4(),
 });
 
