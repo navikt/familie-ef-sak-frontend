@@ -27,48 +27,38 @@ const SamlivInfo: FC<Props> = ({
     const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
 
     return (
-        <>
-            {sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
-                <GridTabell>
-                    {skalViseSøknadsdata && (
+        <GridTabell>
+            {skalViseSøknadsdata && sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
+                <>
+                    {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                         <>
-                            {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
-                                <>
-                                    <Søknadsgrunnlag />
-                                    <Normaltekst>Alene med barn fordi</Normaltekst>
-                                    <Normaltekst>
-                                        {(sivilstand.søknadsgrunnlag.årsakEnslig &&
-                                            ÅrsakEnsligTilTekst[
-                                                sivilstand.søknadsgrunnlag?.årsakEnslig
-                                            ]) ||
-                                            ''}
-                                    </Normaltekst>
-                                    <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
-                                </>
-                            )}
-
                             <Søknadsgrunnlag />
-                            {bosituasjon && (
-                                <>
-                                    <Normaltekst>Bosituasjon</Normaltekst>
-                                    <Normaltekst>
-                                        {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
-                                    </Normaltekst>
-                                </>
-                            )}
-                            <Bosituasjon
-                                bosituasjon={bosituasjon}
-                                sivilstandsplaner={sivilstandsplaner}
-                            />
+                            <Normaltekst>Alene med barn fordi</Normaltekst>
+                            <Normaltekst>
+                                {(sivilstand.søknadsgrunnlag.årsakEnslig &&
+                                    ÅrsakEnsligTilTekst[sivilstand.søknadsgrunnlag?.årsakEnslig]) ||
+                                    ''}
+                            </Normaltekst>
+                            <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
                         </>
                     )}
 
-                    {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
-                        <Bostedsadresse behandlingId={behandlingId} />
+                    <Søknadsgrunnlag />
+                    {bosituasjon && (
+                        <>
+                            <Normaltekst>Bosituasjon</Normaltekst>
+                            <Normaltekst>
+                                {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
+                            </Normaltekst>
+                        </>
                     )}
-                </GridTabell>
+                    <Bosituasjon bosituasjon={bosituasjon} sivilstandsplaner={sivilstandsplaner} />
+                </>
             )}
-        </>
+            {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
+                <Bostedsadresse behandlingId={behandlingId} />
+            )}
+        </GridTabell>
     );
 };
 
