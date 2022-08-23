@@ -11,6 +11,7 @@ interface DokumentVisningProps {
     hentDokument: (dokumentInfoId: string) => void;
     settDokumentTitler: Dispatch<SetStateAction<Record<string, string> | undefined>>;
     dokumentTitler?: Record<string, string>;
+    erPapirsøknad: boolean;
 }
 
 const StyledListe = styled.ul`
@@ -29,16 +30,12 @@ const StyledListeElement = styled.li`
     padding: 0.5rem;
 `;
 
-const StyledDokumentRad = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
 const DokumentVisning: React.FC<DokumentVisningProps> = ({
     journalPost,
     hentDokument,
     dokumentTitler,
     settDokumentTitler,
+    erPapirsøknad,
 }) => {
     const [dokumentForRedigering, settDokumentForRedigering] = useState<OrNothing<string>>();
 
@@ -58,26 +55,24 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
             <StyledListe>
                 {journalPost.dokumenter.map((dokument) => (
                     <StyledListeElement key={dokument.dokumentInfoId}>
-                        <StyledDokumentRad>
-                            {dokumentForRedigering === dokument.dokumentInfoId ? (
-                                <EndreDokumentTittel
-                                    endreDokumentNavn={endreDokumentNavn(dokument.dokumentInfoId)}
-                                    avbrytEndring={() => settDokumentForRedigering(null)}
-                                />
-                            ) : (
-                                <VisDokumentTittel
-                                    dokumentTittel={
-                                        (dokumentTitler &&
-                                            dokumentTitler[dokument.dokumentInfoId]) ||
-                                        dokument.tittel
-                                    }
-                                    hentDokument={() => hentDokument(dokument.dokumentInfoId)}
-                                    settDokumentForRedigering={() =>
-                                        settDokumentForRedigering(dokument.dokumentInfoId)
-                                    }
-                                />
-                            )}
-                        </StyledDokumentRad>
+                        {dokumentForRedigering === dokument.dokumentInfoId ? (
+                            <EndreDokumentTittel
+                                endreDokumentNavn={endreDokumentNavn(dokument.dokumentInfoId)}
+                                avbrytEndring={() => settDokumentForRedigering(null)}
+                            />
+                        ) : (
+                            <VisDokumentTittel
+                                dokumentTittel={
+                                    (dokumentTitler && dokumentTitler[dokument.dokumentInfoId]) ||
+                                    dokument.tittel
+                                }
+                                hentDokument={() => hentDokument(dokument.dokumentInfoId)}
+                                settDokumentForRedigering={() =>
+                                    settDokumentForRedigering(dokument.dokumentInfoId)
+                                }
+                                logiskeVedlegg={erPapirsøknad ? dokument.logiskeVedlegg : []}
+                            />
+                        )}
                     </StyledListeElement>
                 ))}
             </StyledListe>

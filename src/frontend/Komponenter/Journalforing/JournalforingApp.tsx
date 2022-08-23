@@ -233,7 +233,7 @@ export const JournalforingApp: React.FC = () => {
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => {
-                const erPapirSøknad =
+                const erPapirsøknad =
                     journalpostState.ustrukturertDokumentasjonType ===
                     UstrukturertDokumentasjonType.PAPIRSØKNAD;
                 return (
@@ -276,6 +276,7 @@ export const JournalforingApp: React.FC = () => {
                                     hentDokument={hentDokument}
                                     dokumentTitler={journalpostState.dokumentTitler}
                                     settDokumentTitler={journalpostState.settDokumentTitler}
+                                    erPapirsøknad={erPapirsøknad}
                                 />
                                 <SkjemaGruppe feil={feilmelding}>
                                     <BehandlingInnold
@@ -313,7 +314,7 @@ export const JournalforingApp: React.FC = () => {
                                                 skalBeOmBekreftelse(
                                                     journalpostState.behandling,
                                                     journalResponse.harStrukturertSøknad,
-                                                    erPapirSøknad
+                                                    erPapirsøknad
                                                 )
                                             ) {
                                                 if (journalResponse.harStrukturertSøknad) {
@@ -370,7 +371,7 @@ export const JournalforingApp: React.FC = () => {
                         <JournalføringIkkeMuligModal
                             visModal={journalpostState.visJournalføringIkkeMuligModal}
                             settVisModal={journalpostState.settJournalføringIkkeMuligModal}
-                            erPapirSøknad={erPapirSøknad}
+                            erPapirSøknad={erPapirsøknad}
                         />
                     </SideLayout>
                 );
