@@ -10,6 +10,8 @@ import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useApp } from '../../../../App/context/AppContext';
 import { IBarnMedLøpendeStønad } from './typer';
+import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
+import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
@@ -68,6 +70,36 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                         barnMedLøpendeStønad={barnMedLøpendeStønad}
                                         stønadstype={stønadstype}
                                     />
+                                    {idx === grunnlag.barnMedSamvær.length - 1 && (
+                                        <>
+                                            {skalViseSøknadsdata && (
+                                                <GridTabell underTabellMargin={0}>
+                                                    <DokumentasjonSendtInn
+                                                        dokumentasjon={
+                                                            grunnlag.dokumentasjon
+                                                                ?.avtaleOmDeltBosted
+                                                        }
+                                                        tittel={'Avtale om delt fast bosted'}
+                                                    />
+                                                    <DokumentasjonSendtInn
+                                                        dokumentasjon={
+                                                            grunnlag.dokumentasjon
+                                                                ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
+                                                        }
+                                                        tittel={
+                                                            'Dokumentasjon som viser at barnet bor hos deg'
+                                                        }
+                                                    />
+                                                    <DokumentasjonSendtInn
+                                                        dokumentasjon={
+                                                            grunnlag.dokumentasjon?.samværsavtale
+                                                        }
+                                                        tittel={'Samværsavtale'}
+                                                    />
+                                                </GridTabell>
+                                            )}
+                                        </>
+                                    )}
                                 </>
                             ),
                             høyre: (

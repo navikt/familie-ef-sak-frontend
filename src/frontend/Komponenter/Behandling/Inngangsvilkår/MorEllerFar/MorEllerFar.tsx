@@ -31,6 +31,7 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
                         />
                         <MorEllerFarInfo
                             barnMedSamvær={grunnlag.barnMedSamvær}
+                            dokumentasjon={grunnlag.dokumentasjon}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>

@@ -10,6 +10,7 @@ import { SøkerDelerBoligTilTekst } from './typer';
 import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 import { Bostedsadresse } from './Bostedsadresse';
 import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
+import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -24,7 +25,7 @@ const SamlivInfo: FC<Props> = ({
     behandlingId,
     behandlingsstatus,
 }) => {
-    const { sivilstand, bosituasjon, sivilstandsplaner } = grunnlag;
+    const { sivilstand, bosituasjon, sivilstandsplaner, dokumentasjon } = grunnlag;
 
     return (
         <>
@@ -66,6 +67,24 @@ const SamlivInfo: FC<Props> = ({
                     {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
                         <Bostedsadresse behandlingId={behandlingId} />
                     )}
+                </GridTabell>
+            )}
+            {skalViseSøknadsdata && (
+                <GridTabell underTabellMargin={0}>
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.separasjonsbekreftelse}
+                        tittel={'Separasjonsbekreftelse'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.samlivsbrudd}
+                        tittel={'Bekreftelse på samlivsbrudd med den andre forelderen'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.tidligereSamboerFortsattRegistrertPåAdresse}
+                        tittel={
+                            'Dokumentasjon som viser at du og tidligere samboer bor på ulike adresser'
+                        }
+                    />
                 </GridTabell>
             )}
         </>

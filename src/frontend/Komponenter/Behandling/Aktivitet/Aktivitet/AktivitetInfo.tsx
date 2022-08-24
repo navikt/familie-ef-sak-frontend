@@ -13,14 +13,22 @@ import Aksjeselskap from './Aksjeselskap';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmottakerSomFrilanser';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
+import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
     aktivitet: IAktivitet;
     skalViseSøknadsdata: boolean;
     stønadstype: Stønadstype;
+    dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, stønadstype }) => {
+const AktivitetInfo: FC<Props> = ({
+    aktivitet,
+    skalViseSøknadsdata,
+    stønadstype,
+    dokumentasjon,
+}) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -142,13 +150,50 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, stønadstyp
                             </Element>
                         </GridTabell>
                     )}
+                {skalViseSøknadsdata && særligeTilsynsbehov && (
+                    <SeksjonWrapper>
+                        <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
+                    </SeksjonWrapper>
+                )}
+                {skalViseSøknadsdata && (
+                    <GridTabell underTabellMargin={0}>
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.arbeidskontrakt}
+                            tittel={'Arbeidskontrakt som viser at du har fått tilbud om arbeid'}
+                        />
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.barnsSykdom}
+                            tittel={'Dokumentasjon på barnets sykdom'}
+                        />
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.barnMedSærligeBehov}
+                            tittel={'Dokumentasjon på barnets tilsynsbehov'}
+                        />
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.ikkeVilligTilÅTaImotTilbudOmArbeid}
+                            tittel={
+                                'Dokumentasjon som beskriver grunnen til at du ikke kan ta ethvert arbeid'
+                            }
+                        />
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.sykdom}
+                            tittel={'Dokumentasjon som viser at du er syk'}
+                        />
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.manglendeBarnepass}
+                            tittel={'Dokumentasjon som viser at du mangler barnepass'}
+                        />
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.lærlingkontrakt}
+                            tittel={'Lærlingkontrakt'}
+                        />
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.virksomhet}
+                            tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
+                        />
+                    </GridTabell>
+                )}
             </SeksjonWrapper>
-
-            {skalViseSøknadsdata && særligeTilsynsbehov && (
-                <SeksjonWrapper>
-                    <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
-                </SeksjonWrapper>
-            )}
         </>
     );
 };

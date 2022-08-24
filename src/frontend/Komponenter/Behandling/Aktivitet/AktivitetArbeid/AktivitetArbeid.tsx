@@ -52,6 +52,7 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
                                             aktivitet={grunnlag.aktivitet}
                                             skalViseSøknadsdata={skalViseSøknadsdata}
                                             stønadstype={behandling.stønadstype}
+                                            dokumentasjon={grunnlag.dokumentasjon}
                                         />
                                     )}
                                 </>
