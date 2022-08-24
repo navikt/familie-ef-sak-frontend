@@ -40,7 +40,7 @@ const kanJournalføres = (oppgave: IOppgave, skalJournalføreSkolepenger: boolea
         return false;
     }
 
-    return oppgavetype === 'JFR' && stønadstype;
+    return oppgavetype === 'JFR';
 };
 
 const måBehandlesIEFSak = (oppgave: IOppgave) => {

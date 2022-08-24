@@ -29,9 +29,11 @@ const SamlivInfo: FC<Props> = ({
 
     return (
         <>
-            {sivilstand.søknadsgrunnlag && bosituasjon && sivilstandsplaner && (
-                <GridTabell>
-                    {skalViseSøknadsdata && (
+            <GridTabell>
+                {skalViseSøknadsdata &&
+                    sivilstand.søknadsgrunnlag &&
+                    bosituasjon &&
+                    sivilstandsplaner && (
                         <>
                             {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                                 <>
@@ -63,12 +65,10 @@ const SamlivInfo: FC<Props> = ({
                             />
                         </>
                     )}
-
-                    {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
-                        <Bostedsadresse behandlingId={behandlingId} />
-                    )}
-                </GridTabell>
-            )}
+                {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
+                    <Bostedsadresse behandlingId={behandlingId} />
+                )}
+            </GridTabell>
             {skalViseSøknadsdata && (
                 <GridTabell underTabellMargin={0}>
                     <DokumentasjonSendtInn

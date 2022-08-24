@@ -4,7 +4,6 @@ import {
     IVedtakshistorikk,
     IVedtaksperiode,
 } from '../../../../../App/typer/vedtak';
-import { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import { v4 as uuidv4 } from 'uuid';
 import { månedÅrTilDate, plusMåneder, tilÅrMåned } from '../../../../../App/utils/dato';
 
@@ -36,15 +35,22 @@ export const fyllHullMedOpphør = (
 };
 
 /**
- * Lager en periode som legges før tidligere vedtaksperioder hvis revurderes fra er før tidligere dato
+ * Lager en periode som legges før tidligere perioder hvis revurderes fra er før tidligere dato
  */
-export const revurderFraInitPeriode = (
+export const revurderFraInitPeriode = <T>(
     vedtakshistorikk: IVedtakshistorikk,
-    revurderesFra: string | undefined
-): IVedtaksperiode[] => {
+    revurderesFra: string,
+    periode: (revurderesFra: string) => T
+): T[] => {
     const manglerPerioder = vedtakshistorikk.perioder.length === 0;
-    const fraOgMedDato = vedtakshistorikk.perioder[0]?.årMånedFra;
-    const erFørFørstePeriode = revurderesFra && fraOgMedDato && revurderesFra < fraOgMedDato;
+    const erFørFørstePeriode = revurdererFørFørstePeriode(vedtakshistorikk, revurderesFra);
+    return erFørFørstePeriode || manglerPerioder ? [periode(revurderesFra)] : [];
+};
 
-    return erFørFørstePeriode || manglerPerioder ? [tomVedtaksperiodeRad(revurderesFra)] : [];
+export const revurdererFørFørstePeriode = (
+    vedtakshistorikk: IVedtakshistorikk | undefined,
+    revurderesFra: string
+): boolean => {
+    const fraOgMedDato = vedtakshistorikk?.perioder[0]?.årMånedFra;
+    return !!fraOgMedDato && revurderesFra < fraOgMedDato;
 };
