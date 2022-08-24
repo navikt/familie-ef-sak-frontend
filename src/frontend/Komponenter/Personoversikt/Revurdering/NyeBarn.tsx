@@ -3,12 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { BarnForRevurdering } from '../../../App/typer/revurderingstype';
 import { datoTilAlder } from '../../../App/utils/dato';
-
-enum EVilkårsbehandleBarnValg {
-    VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
-    IKKE_VILKÅRSBEHANDLE = 'IKKE_VILKÅRSBEHANDLE',
-    IKKE_VALGT = 'IKKE_VALGT',
-}
+import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 
 const StyledNyeBarn = styled.div`
     margin-top: 2rem;

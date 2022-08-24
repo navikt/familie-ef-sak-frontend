@@ -4,6 +4,8 @@ import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
 import { Behandlingsårsak } from '../typer/Behandlingsårsak';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
+import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
+import { harValgtNyBehandling } from '../../Komponenter/Journalforing/journalførBehandlingUtil';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -19,6 +21,7 @@ interface JournalføringRequest {
     journalførendeEnhet: string;
     navIdent?: string;
     barnSomSkalFødes: BarnSomSkalFødes[];
+    vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
 }
 
 export interface BarnSomSkalFødes {
@@ -54,7 +57,26 @@ export interface JournalføringStateRequest {
     settUstrukturertDokumentasjonType: Dispatch<
         SetStateAction<UstrukturertDokumentasjonType | undefined>
     >;
+    vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
+    settVilkårsbehandleNyeBarn: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
 }
+
+const behandlingsårsak = (
+    behandling: BehandlingRequest,
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
+): Behandlingsårsak | undefined => {
+    if (!harValgtNyBehandling(behandling)) {
+        return undefined;
+    }
+    switch (ustrukturertDokumentasjonType) {
+        case UstrukturertDokumentasjonType.PAPIRSØKNAD:
+            return Behandlingsårsak.PAPIRSØKNAD;
+        case UstrukturertDokumentasjonType.ETTERSENDING:
+            return Behandlingsårsak.NYE_OPPLYSNINGER;
+        default:
+            return undefined;
+    }
+};
 
 export const useJournalføringState = (): JournalføringStateRequest => {
     const { axiosRequest } = useApp();
@@ -70,6 +92,14 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
     const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
         useState<UstrukturertDokumentasjonType>();
+    const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
+        EVilkårsbehandleBarnValg.IKKE_VALGT
+    );
+
+    useEffect(() => {
+        settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VALGT);
+        settBarnSomSkalFødes([]);
+    }, [ustrukturertDokumentasjonType, behandling?.behandlingsId]);
 
     const fullførJournalføring = (
         journalpostId: string,
@@ -81,15 +111,10 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             return;
         }
 
-        const behandlingsårsak =
-            ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD
-                ? Behandlingsårsak.PAPIRSØKNAD
-                : undefined;
         const nyBehandling: BehandlingRequest = {
             ...behandling,
-            årsak: behandlingsårsak,
+            årsak: behandlingsårsak(behandling, ustrukturertDokumentasjonType),
         };
-
         const data: JournalføringRequest = {
             oppgaveId,
             fagsakId,
@@ -98,6 +123,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             journalførendeEnhet,
             navIdent,
             barnSomSkalFødes,
+            vilkårsbehandleNyeBarn,
         };
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
@@ -106,8 +132,6 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             data,
         }).then((resp) => settInnsending(resp));
     };
-
-    useEffect(() => settBarnSomSkalFødes([]), [behandling]);
 
     return {
         oppgaveId,
@@ -131,5 +155,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         settBarnSomSkalFødes,
         ustrukturertDokumentasjonType,
         settUstrukturertDokumentasjonType,
+        vilkårsbehandleNyeBarn,
+        settVilkårsbehandleNyeBarn,
     };
 };

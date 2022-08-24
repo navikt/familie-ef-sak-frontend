@@ -18,12 +18,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Behandling } from '../../../App/typer/fagsak';
 import { NyeBarn } from './NyeBarn';
 import { Select } from 'nav-frontend-skjema';
-
-enum EVilkårsbehandleBarnValg {
-    VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
-    IKKE_VILKÅRSBEHANDLE = 'IKKE_VILKÅRSBEHANDLE',
-    IKKE_VALGT = 'IKKE_VALGT',
-}
+import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;

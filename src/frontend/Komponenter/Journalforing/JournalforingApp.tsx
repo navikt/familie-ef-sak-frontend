@@ -14,7 +14,6 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     BarnSomSkalFødes,
-    BehandlingRequest,
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../App/hooks/useJournalføringState';
@@ -40,6 +39,10 @@ import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
+import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
+import { BehandlingStatus } from '../../App/typer/behandlingstatus';
+import { harValgtNyBehandling } from './journalførBehandlingUtil';
+import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -66,7 +69,9 @@ export const KnappWrapper = styled.div`
     }
 `;
 
-const Venstrekolonne = styled.div``;
+const Venstrekolonne = styled.div`
+    max-width: 900px;
+`;
 const Høyrekolonne = styled.div``;
 const FlexKnapper = styled.div`
     display: flex;
@@ -94,6 +99,13 @@ const erUstrukturertSøknadOgManglerDokumentasjonsType = (
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
 ) => !journalResponse.harStrukturertSøknad && !ustrukturertDokumentasjonType;
 
+const erEttersendingOgManglerVilkårsbehandleNyeBarnValg = (
+    journalpostState: JournalføringStateRequest
+): boolean =>
+    journalpostState.ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING &&
+    harValgtNyBehandling(journalpostState.behandling) &&
+    journalpostState.vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT;
+
 const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateRequest) =>
     journalpostState.barnSomSkalFødes.some(
         (barn) => !barn.fødselTerminDato || barn.fødselTerminDato.trim() === ''
@@ -114,6 +126,8 @@ const validerJournalføringState = (
         return 'Et eller flere barn mangler gyldig dato';
     } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState)) {
         return 'Mangler tittel på et eller flere dokumenter';
+    } else if (erEttersendingOgManglerVilkårsbehandleNyeBarnValg(journalpostState)) {
+        return 'Mangler valg om å vilkårsbehandle nye barn';
     } else {
         return undefined;
     }
@@ -195,17 +209,18 @@ export const JournalforingApp: React.FC = () => {
     }
 
     const skalBeOmBekreftelse = (
-        behandling: BehandlingRequest | undefined,
+        erNyBehandling: boolean,
         harStrukturertSøknad: boolean,
-        erPapirSøknad: boolean
+        ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
     ) => {
-        const erNyBehandling = behandling?.behandlingsId === undefined;
         if (harStrukturertSøknad) {
             return !erNyBehandling;
-        } else if (erPapirSøknad) {
+        } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD) {
             return !erNyBehandling;
+        } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING) {
+            return !toggles[ToggleName.kanJournalføreEttersendingNyBehandling]; // er dette riktig? hva med nyBehandling?
         } else {
-            return erNyBehandling;
+            return erNyBehandling; // trengs denne?
         }
     };
 
@@ -229,6 +244,12 @@ export const JournalforingApp: React.FC = () => {
                 UstrukturertDokumentasjonType.PAPIRSØKNAD
         );
     };
+
+    const skalVelgeVilkårsbehandleNyeBarn =
+        toggles[ToggleName.kanJournalføreEttersendingNyBehandling] &&
+        journalpostState.ustrukturertDokumentasjonType ===
+            UstrukturertDokumentasjonType.ETTERSENDING &&
+        harValgtNyBehandling(journalpostState.behandling);
 
     return (
         <DataViewer response={{ journalResponse }}>
@@ -291,6 +312,21 @@ export const JournalforingApp: React.FC = () => {
                                             oppdaterBarnSomSkalFødes={oppdaterBarnSomSkalFødes}
                                         />
                                     )}
+                                    {skalVelgeVilkårsbehandleNyeBarn &&
+                                        fagsak.status === RessursStatus.SUKSESS &&
+                                        fagsak.data.behandlinger.some(
+                                            (b) => b.status === BehandlingStatus.FERDIGSTILT
+                                        ) && (
+                                            <EttersendingMedNyeBarn
+                                                fagsakId={fagsak.data.id}
+                                                vilkårsbehandleNyeBarn={
+                                                    journalpostState.vilkårsbehandleNyeBarn
+                                                }
+                                                settVilkårsbehandleNyeBarn={
+                                                    journalpostState.settVilkårsbehandleNyeBarn
+                                                }
+                                            />
+                                        )}
                                 </SkjemaGruppe>
                                 {(journalpostState.innsending.status === RessursStatus.FEILET ||
                                     journalpostState.innsending.status ===
@@ -312,9 +348,11 @@ export const JournalforingApp: React.FC = () => {
                                                 settFeilMeldning(feilmeldingFraValidering);
                                             } else if (
                                                 skalBeOmBekreftelse(
-                                                    journalpostState.behandling,
+                                                    harValgtNyBehandling(
+                                                        journalpostState.behandling
+                                                    ),
                                                     journalResponse.harStrukturertSøknad,
-                                                    erPapirsøknad
+                                                    journalpostState.ustrukturertDokumentasjonType
                                                 )
                                             ) {
                                                 if (journalResponse.harStrukturertSøknad) {

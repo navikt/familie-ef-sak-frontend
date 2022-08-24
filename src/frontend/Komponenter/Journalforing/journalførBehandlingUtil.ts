@@ -1,5 +1,6 @@
 import { Behandling, BehandlingResultat } from '../../App/typer/fagsak';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
+import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
 
 export const utledRiktigBehandlingstype = (
     tidligereBehandlinger: Behandling[]
@@ -12,3 +13,6 @@ export const utledRiktigBehandlingstype = (
         ? Behandlingstype.REVURDERING
         : Behandlingstype.FØRSTEGANGSBEHANDLING;
 };
+
+export const harValgtNyBehandling = (behandling: BehandlingRequest | undefined): boolean =>
+    behandling !== undefined && behandling.behandlingsId === undefined;
