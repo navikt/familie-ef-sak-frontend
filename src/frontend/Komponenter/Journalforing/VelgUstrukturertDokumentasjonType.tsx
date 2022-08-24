@@ -31,7 +31,7 @@ const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = 
     ETTERSENDNING: 'Ettersendning',
 };
 
-const advarselPapirsøknad = (
+const AdvarselPapirsøknad = (
     <div>
         <div>Årsak til behandling settes til papirsøknad</div>
         <AdvarselVisning>
@@ -102,7 +102,7 @@ const VelgUstrukturertDokumentasjonType: React.FC<{
                             ))}
                         </VelgUstrukturertDokumentasjonTypeSelect>
                         {ustrukturertDokumentasjonType ===
-                            UstrukturertDokumentasjonType.PAPIRSØKNAD && advarselPapirsøknad}
+                            UstrukturertDokumentasjonType.PAPIRSØKNAD && AdvarselPapirsøknad}
                     </>
                 );
             }}
