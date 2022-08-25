@@ -5,11 +5,6 @@ import { useApp } from '../../App/context/AppContext';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { NyeBarn } from '../../Felles/NyeBarn/NyeBarn';
-import styled from 'styled-components';
-
-const NyeBarnWrapper = styled.div`
-    //max-width: 60rem;
-`;
 
 const EttersendingMedNyeBarn: React.FC<{
     fagsakId: string;
@@ -34,16 +29,14 @@ const EttersendingMedNyeBarn: React.FC<{
         <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
             {({ nyeBarnSidenForrigeBehandling }) => {
                 return (
-                    <NyeBarnWrapper>
-                        <NyeBarn
-                            nyeBarnSidenForrigeBehandling={nyeBarnSidenForrigeBehandling.nyeBarn}
-                            måTaStillingTilBarn={
-                                !nyeBarnSidenForrigeBehandling.harBarnISisteIverksatteBehandling
-                            }
-                            vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
-                            settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
-                        />
-                    </NyeBarnWrapper>
+                    <NyeBarn
+                        nyeBarnSidenForrigeBehandling={nyeBarnSidenForrigeBehandling.nyeBarn}
+                        måTaStillingTilBarn={
+                            !nyeBarnSidenForrigeBehandling.harBarnISisteIverksatteBehandling
+                        }
+                        vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
+                        settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
+                    />
                 );
             }}
         </DataViewer>
