@@ -53,7 +53,7 @@ const VelgUstrukturertDokumentasjonType: React.FC<{
     oppgaveId: string;
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
     settUstrukturertDokumentasjonType: React.Dispatch<
-        React.SetStateAction<UstrukturertDokumentasjonType | undefined>
+        React.SetStateAction<UstrukturertDokumentasjonType>
     >;
 }> = ({ oppgaveId, ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType }) => {
     const { axiosRequest } = useApp();
