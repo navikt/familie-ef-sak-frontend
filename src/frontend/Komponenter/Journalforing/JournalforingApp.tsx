@@ -218,9 +218,10 @@ export const JournalforingApp: React.FC = () => {
         } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD) {
             return !erNyBehandling;
         } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING) {
-            return !toggles[ToggleName.kanJournalføreEttersendingNyBehandling]; // er dette riktig? hva med nyBehandling?
+            return erNyBehandling && !toggles[ToggleName.kanJournalføreEttersendingNyBehandling];
         } else {
-            return erNyBehandling; // trengs denne?
+            // Skal egentlige ikke komme hit pga validerJournalføringState
+            return erNyBehandling;
         }
     };
 
