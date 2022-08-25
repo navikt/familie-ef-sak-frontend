@@ -2,13 +2,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
-import { Behandlingsårsak } from '../typer/Behandlingsårsak';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
     behandlingstype?: Behandlingstype;
-    årsak?: Behandlingsårsak;
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType;
 }
 
 interface JournalføringRequest {
@@ -51,9 +50,7 @@ export interface JournalføringStateRequest {
     barnSomSkalFødes: BarnSomSkalFødes[];
     settBarnSomSkalFødes: Dispatch<SetStateAction<BarnSomSkalFødes[]>>;
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
-    settUstrukturertDokumentasjonType: Dispatch<
-        SetStateAction<UstrukturertDokumentasjonType | undefined>
-    >;
+    settUstrukturertDokumentasjonType: Dispatch<SetStateAction<UstrukturertDokumentasjonType>>;
 }
 
 export const useJournalføringState = (): JournalføringStateRequest => {
@@ -69,7 +66,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
     const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
-        useState<UstrukturertDokumentasjonType>();
+        useState<UstrukturertDokumentasjonType>(UstrukturertDokumentasjonType.IKKE_VALGT);
 
     const fullførJournalføring = (
         journalpostId: string,
@@ -81,13 +78,9 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             return;
         }
 
-        const behandlingsårsak =
-            ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD
-                ? Behandlingsårsak.PAPIRSØKNAD
-                : undefined;
         const nyBehandling: BehandlingRequest = {
             ...behandling,
-            årsak: behandlingsårsak,
+            ustrukturertDokumentasjonType,
         };
 
         const data: JournalføringRequest = {
