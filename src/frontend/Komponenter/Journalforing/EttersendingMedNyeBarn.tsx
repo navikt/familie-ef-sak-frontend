@@ -1,6 +1,12 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NyeBarnSidenForrigeBehandling } from '../../App/typer/revurderingstype';
-import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../App/typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -24,6 +30,16 @@ const EttersendingMedNyeBarn: React.FC<{
             settNyeBarnSidenForrigeBehandling(response);
         });
     }, [axiosRequest, fagsakId]);
+
+    useEffect(() => {
+        if (
+            nyeBarnSidenForrigeBehandling.status === RessursStatus.SUKSESS &&
+            nyeBarnSidenForrigeBehandling.data.harBarnISisteIverksatteBehandling
+        ) {
+            settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE);
+        }
+        return () => settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VALGT);
+    }, [settVilkårsbehandleNyeBarn, nyeBarnSidenForrigeBehandling]);
 
     return (
         <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>

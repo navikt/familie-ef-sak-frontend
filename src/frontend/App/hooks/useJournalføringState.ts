@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
@@ -74,11 +74,6 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
         EVilkårsbehandleBarnValg.IKKE_VALGT
     );
-
-    useEffect(() => {
-        settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VALGT);
-        settBarnSomSkalFødes([]);
-    }, [ustrukturertDokumentasjonType, behandling?.behandlingsId]);
 
     const fullførJournalføring = (
         journalpostId: string,
