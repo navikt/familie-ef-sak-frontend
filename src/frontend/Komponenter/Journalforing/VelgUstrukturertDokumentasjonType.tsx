@@ -23,13 +23,13 @@ const AdvarselVisning = styled(AlertStripeAdvarsel)`
 
 export enum UstrukturertDokumentasjonType {
     PAPIRSØKNAD = 'PAPIRSØKNAD',
-    ETTERSENDING = 'ETTERSENDNING',
+    ETTERSENDING = 'ETTERSENDING',
     IKKE_VALGT = 'IKKE_VALGT',
 }
 
 const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = {
     PAPIRSØKNAD: 'Papirsøknad',
-    ETTERSENDNING: 'Ettersendning',
+    ETTERSENDING: 'Ettersending',
     IKKE_VALGT: 'Ikke valgt',
 };
 
