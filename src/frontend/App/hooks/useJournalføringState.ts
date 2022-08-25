@@ -8,7 +8,7 @@ import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
 export interface BehandlingRequest {
     behandlingsId?: string;
     behandlingstype?: Behandlingstype;
-    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType;
+    ustrukturertDokumentasjonType?: UstrukturertDokumentasjonType;
 }
 
 interface JournalføringRequest {
