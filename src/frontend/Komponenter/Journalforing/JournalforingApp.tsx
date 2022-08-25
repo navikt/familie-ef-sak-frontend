@@ -43,6 +43,7 @@ import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { harValgtNyBehandling } from './journalførBehandlingUtil';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
+import { Behandlingstype } from '../../App/typer/behandlingstype';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -106,6 +107,13 @@ const erEttersendingOgManglerVilkårsbehandleNyeBarnValg = (
     harValgtNyBehandling(journalpostState.behandling) &&
     journalpostState.vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT;
 
+const erEttersendingPåNyFørstegangsbehandling = (
+    journalpostState: JournalføringStateRequest
+): boolean =>
+    harValgtNyBehandling(journalpostState.behandling) &&
+    journalpostState.behandling?.behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING &&
+    journalpostState.ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING;
+
 const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateRequest) =>
     journalpostState.barnSomSkalFødes.some(
         (barn) => !barn.fødselTerminDato || barn.fødselTerminDato.trim() === ''
@@ -126,6 +134,8 @@ const validerJournalføringState = (
         return 'Et eller flere barn mangler gyldig dato';
     } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState)) {
         return 'Mangler tittel på et eller flere dokumenter';
+    } else if (erEttersendingPåNyFørstegangsbehandling(journalpostState)) {
+        return 'Kan ikke journalføre ettersending på førstegangsbehandling';
     } else if (erEttersendingOgManglerVilkårsbehandleNyeBarnValg(journalpostState)) {
         return 'Mangler valg om å vilkårsbehandle nye barn';
     } else {
