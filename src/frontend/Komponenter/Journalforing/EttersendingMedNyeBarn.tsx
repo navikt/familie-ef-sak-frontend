@@ -40,8 +40,8 @@ const EttersendingMedNyeBarn: React.FC<{
                             måTaStillingTilBarn={
                                 !nyeBarnSidenForrigeBehandling.harBarnISisteIverksatteBehandling
                             }
-                            vilkårsbehandleVedMigrering={vilkårsbehandleNyeBarn}
-                            settVilkårsbehandleVedMigrering={settVilkårsbehandleNyeBarn}
+                            vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
+                            settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
                         />
                     </NyeBarnWrapper>
                 );

@@ -16,15 +16,15 @@ const StyledRadioGroup = styled(RadioGroup)`
 interface IProps {
     nyeBarnSidenForrigeBehandling: BarnForRevurdering[];
     måTaStillingTilBarn: boolean;
-    vilkårsbehandleVedMigrering: EVilkårsbehandleBarnValg;
-    settVilkårsbehandleVedMigrering: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
+    vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
+    settVilkårsbehandleNyeBarn: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
 }
 
 export const NyeBarn = ({
     nyeBarnSidenForrigeBehandling,
     måTaStillingTilBarn,
-    vilkårsbehandleVedMigrering,
-    settVilkårsbehandleVedMigrering,
+    vilkårsbehandleNyeBarn,
+    settVilkårsbehandleNyeBarn,
 }: IProps) => {
     if (måTaStillingTilBarn)
         return (
@@ -49,8 +49,8 @@ export const NyeBarn = ({
                 <StyledRadioGroup
                     legend=""
                     size="medium"
-                    value={vilkårsbehandleVedMigrering}
-                    onChange={(val) => settVilkårsbehandleVedMigrering(val)}
+                    value={vilkårsbehandleNyeBarn}
+                    onChange={(val) => settVilkårsbehandleNyeBarn(val)}
                 >
                     <Radio value={EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE}>
                         Vilkårsbehandle barn i EF Sak

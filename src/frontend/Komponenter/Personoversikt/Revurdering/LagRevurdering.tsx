@@ -155,10 +155,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             nyeBarnSidenForrigeBehandling
                                         }
                                         måTaStillingTilBarn={måTaStillingTilBarn}
-                                        vilkårsbehandleVedMigrering={vilkårsbehandleVedMigrering}
-                                        settVilkårsbehandleVedMigrering={
-                                            settVilkårsbehandleVedMigrering
-                                        }
+                                        vilkårsbehandleNyeBarn={vilkårsbehandleVedMigrering}
+                                        settVilkårsbehandleNyeBarn={settVilkårsbehandleVedMigrering}
                                     />
                                 )}
 
