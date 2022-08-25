@@ -2,15 +2,13 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
-import { Behandlingsårsak } from '../typer/Behandlingsårsak';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
-import { harValgtNyBehandling } from '../../Komponenter/Journalforing/journalførBehandlingUtil';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
     behandlingstype?: Behandlingstype;
-    årsak?: Behandlingsårsak;
+    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType;
 }
 
 interface JournalføringRequest {
@@ -54,29 +52,10 @@ export interface JournalføringStateRequest {
     barnSomSkalFødes: BarnSomSkalFødes[];
     settBarnSomSkalFødes: Dispatch<SetStateAction<BarnSomSkalFødes[]>>;
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
-    settUstrukturertDokumentasjonType: Dispatch<
-        SetStateAction<UstrukturertDokumentasjonType | undefined>
-    >;
+    settUstrukturertDokumentasjonType: Dispatch<SetStateAction<UstrukturertDokumentasjonType>>;
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
     settVilkårsbehandleNyeBarn: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
 }
-
-const behandlingsårsak = (
-    behandling: BehandlingRequest,
-    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
-): Behandlingsårsak | undefined => {
-    if (!harValgtNyBehandling(behandling)) {
-        return undefined;
-    }
-    switch (ustrukturertDokumentasjonType) {
-        case UstrukturertDokumentasjonType.PAPIRSØKNAD:
-            return Behandlingsårsak.PAPIRSØKNAD;
-        case UstrukturertDokumentasjonType.ETTERSENDING:
-            return Behandlingsårsak.NYE_OPPLYSNINGER;
-        default:
-            return undefined;
-    }
-};
 
 export const useJournalføringState = (): JournalføringStateRequest => {
     const { axiosRequest } = useApp();
@@ -91,7 +70,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
     const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
-        useState<UstrukturertDokumentasjonType>();
+        useState<UstrukturertDokumentasjonType>(UstrukturertDokumentasjonType.IKKE_VALGT);
     const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
         EVilkårsbehandleBarnValg.IKKE_VALGT
     );
@@ -113,8 +92,9 @@ export const useJournalføringState = (): JournalføringStateRequest => {
 
         const nyBehandling: BehandlingRequest = {
             ...behandling,
-            årsak: behandlingsårsak(behandling, ustrukturertDokumentasjonType),
+            ustrukturertDokumentasjonType,
         };
+
         const data: JournalføringRequest = {
             oppgaveId,
             fagsakId,

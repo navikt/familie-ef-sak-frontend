@@ -24,11 +24,13 @@ const AdvarselVisning = styled(AlertStripeAdvarsel)`
 export enum UstrukturertDokumentasjonType {
     PAPIRSØKNAD = 'PAPIRSØKNAD',
     ETTERSENDING = 'ETTERSENDNING',
+    IKKE_VALGT = 'IKKE_VALGT',
 }
 
 const ustrukturertTypeTilTekst: Record<UstrukturertDokumentasjonType, string> = {
     PAPIRSØKNAD: 'Papirsøknad',
     ETTERSENDNING: 'Ettersendning',
+    IKKE_VALGT: 'Ikke valgt',
 };
 
 const AdvarselPapirsøknad = (
@@ -51,7 +53,7 @@ const VelgUstrukturertDokumentasjonType: React.FC<{
     oppgaveId: string;
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
     settUstrukturertDokumentasjonType: React.Dispatch<
-        React.SetStateAction<UstrukturertDokumentasjonType | undefined>
+        React.SetStateAction<UstrukturertDokumentasjonType>
     >;
 }> = ({ oppgaveId, ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType }) => {
     const { axiosRequest } = useApp();
@@ -81,18 +83,14 @@ const VelgUstrukturertDokumentasjonType: React.FC<{
                         <VelgUstrukturertDokumentasjonTypeSelect
                             label="Type dokumentasjon"
                             onChange={(e) => {
-                                if (e.target.value.trim() !== '') {
-                                    settUstrukturertDokumentasjonType(
-                                        e.target.value as UstrukturertDokumentasjonType
-                                    );
-                                } else {
-                                    settUstrukturertDokumentasjonType(undefined);
-                                }
+                                settUstrukturertDokumentasjonType(
+                                    e.target.value as UstrukturertDokumentasjonType
+                                );
                             }}
                             value={ustrukturertDokumentasjonType}
                         >
-                            <option value={''}>Ikke valgt</option>
                             {[
+                                UstrukturertDokumentasjonType.IKKE_VALGT,
                                 UstrukturertDokumentasjonType.PAPIRSØKNAD,
                                 UstrukturertDokumentasjonType.ETTERSENDING,
                             ].map((type) => (
