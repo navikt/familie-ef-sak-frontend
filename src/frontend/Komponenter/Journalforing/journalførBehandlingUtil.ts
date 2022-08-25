@@ -1,6 +1,8 @@
-import { Behandling, BehandlingResultat } from '../../App/typer/fagsak';
+import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 
 export const utledRiktigBehandlingstype = (
     tidligereBehandlinger: Behandling[]
@@ -16,3 +18,7 @@ export const utledRiktigBehandlingstype = (
 
 export const harValgtNyBehandling = (behandling: BehandlingRequest | undefined): boolean =>
     behandling !== undefined && behandling.behandlingsId === undefined;
+
+export const erAlleBehandlingerFerdigstilte = (fagsak: Ressurs<Fagsak>): boolean =>
+    fagsak.status === RessursStatus.SUKSESS &&
+    fagsak.data.behandlinger.every((b) => b.status === BehandlingStatus.FERDIGSTILT);
