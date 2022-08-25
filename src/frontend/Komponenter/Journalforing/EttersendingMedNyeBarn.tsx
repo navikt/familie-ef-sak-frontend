@@ -4,7 +4,7 @@ import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../Ap
 import { useApp } from '../../App/context/AppContext';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { NyeBarn } from '../Personoversikt/Revurdering/NyeBarn';
+import { NyeBarn } from '../../Felles/NyeBarn/NyeBarn';
 import styled from 'styled-components';
 
 const NyeBarnWrapper = styled.div`

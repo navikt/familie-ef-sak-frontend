@@ -16,7 +16,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Behandling } from '../../../App/typer/fagsak';
-import { NyeBarn } from './NyeBarn';
+import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn';
 import { Select } from 'nav-frontend-skjema';
 import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 
