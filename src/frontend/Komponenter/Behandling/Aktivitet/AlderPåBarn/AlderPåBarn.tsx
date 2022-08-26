@@ -7,7 +7,6 @@ import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import AlderPåBarnInfo from './AlderPåBarnInfo';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 
 export const AlderPåBarn: React.FC<VilkårProps> = ({
@@ -60,7 +59,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                                     {idx === grunnlag.barnMedSamvær.length - 1 && (
                                         <>
                                             {skalViseSøknadsdata && (
-                                                <GridTabell underTabellMargin={0}>
+                                                <>
                                                     <DokumentasjonSendtInn
                                                         dokumentasjon={
                                                             grunnlag.dokumentasjon?.spesielleBehov
@@ -86,7 +85,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                                                             'Dokumentasjon som viser at du må være borte fra hjemmet i lengre perioder på grunn av jobb'
                                                         }
                                                     />
-                                                </GridTabell>
+                                                </>
                                             )}
                                         </>
                                     )}

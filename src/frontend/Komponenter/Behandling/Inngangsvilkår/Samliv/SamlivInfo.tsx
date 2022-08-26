@@ -70,7 +70,7 @@ const SamlivInfo: FC<Props> = ({
                 )}
             </GridTabell>
             {skalViseSøknadsdata && (
-                <GridTabell underTabellMargin={0}>
+                <>
                     <DokumentasjonSendtInn
                         dokumentasjon={dokumentasjon?.separasjonsbekreftelse}
                         tittel={'Separasjonsbekreftelse'}
@@ -85,7 +85,7 @@ const SamlivInfo: FC<Props> = ({
                             'Dokumentasjon som viser at du og tidligere samboer bor på ulike adresser'
                         }
                     />
-                </GridTabell>
+                </>
             )}
         </>
     );

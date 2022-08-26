@@ -68,12 +68,10 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                 );
             })}
             {skalViseSøknadsdata && (
-                <GridTabell underTabellMargin={0}>
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.terminbekreftelse}
-                        tittel={'Terminbekreftelse'}
-                    />
-                </GridTabell>
+                <DokumentasjonSendtInn
+                    dokumentasjon={dokumentasjon?.terminbekreftelse}
+                    tittel={'Terminbekreftelse'}
+                />
             )}
         </>
     );

@@ -27,12 +27,10 @@ const DokumentasjonUtdanningInfo: FC<Props> = ({
                 ) : null}
             </GridTabell>
             {skalViseSøknadsdata && (
-                <GridTabell underTabellMargin={0}>
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.utdanningsutgifter}
-                        tittel={'Utgifter til skolepenger'}
-                    />
-                </GridTabell>
+                <DokumentasjonSendtInn
+                    dokumentasjon={dokumentasjon?.utdanningsutgifter}
+                    tittel={'Utgifter til skolepenger'}
+                />
             )}
         </>
     );
