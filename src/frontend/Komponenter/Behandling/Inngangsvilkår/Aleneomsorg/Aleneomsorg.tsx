@@ -10,7 +10,6 @@ import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useApp } from '../../../../App/context/AppContext';
 import { IBarnMedLøpendeStønad } from './typer';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
@@ -73,7 +72,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                     {idx === grunnlag.barnMedSamvær.length - 1 && (
                                         <>
                                             {skalViseSøknadsdata && (
-                                                <GridTabell underTabellMargin={0}>
+                                                <div>
                                                     <DokumentasjonSendtInn
                                                         dokumentasjon={
                                                             grunnlag.dokumentasjon
@@ -96,7 +95,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                                         }
                                                         tittel={'Samværsavtale'}
                                                     />
-                                                </GridTabell>
+                                                </div>
                                             )}
                                         </>
                                     )}

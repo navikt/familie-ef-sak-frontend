@@ -6,7 +6,6 @@ import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import TilsynsutgifterBarnInfo from './TilsynsutgifterBarnInfo';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
@@ -49,7 +48,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                                     {index === grunnlag.barnMedSamvær.length - 1 && (
                                         <>
                                             {skalViseSøknadsdata && (
-                                                <GridTabell underTabellMargin={0}>
+                                                <div>
                                                     <DokumentasjonSendtInn
                                                         dokumentasjon={
                                                             grunnlag.dokumentasjon
@@ -66,7 +65,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                                                             'Faktura fra barnepassordningen for perioden du søker om nå'
                                                         }
                                                     />
-                                                </GridTabell>
+                                                </div>
                                             )}
                                         </>
                                     )}
