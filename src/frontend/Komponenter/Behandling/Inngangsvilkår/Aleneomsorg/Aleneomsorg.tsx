@@ -72,7 +72,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                     {idx === grunnlag.barnMedSamvær.length - 1 && (
                                         <>
                                             {skalViseSøknadsdata && (
-                                                <div>
+                                                <>
                                                     <DokumentasjonSendtInn
                                                         dokumentasjon={
                                                             grunnlag.dokumentasjon
@@ -95,7 +95,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                                         }
                                                         tittel={'Samværsavtale'}
                                                     />
-                                                </div>
+                                                </>
                                             )}
                                         </>
                                     )}

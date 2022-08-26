@@ -37,7 +37,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
                 )}
             </GridTabell>
             {skalViseSøknadsdata && (
-                <div>
+                <>
                     <DokumentasjonSendtInn
                         dokumentasjon={dokumentasjon?.uformeltGift}
                         tittel={'Dokumentasjon på inngått ekteskap'}
@@ -46,7 +46,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
                         dokumentasjon={dokumentasjon?.uformeltSeparertEllerSkilt}
                         tittel={'Dokumentasjon på separasjon eller skilsmisse'}
                     />
-                </div>
+                </>
             )}
         </>
     );

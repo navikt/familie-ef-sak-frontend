@@ -88,7 +88,7 @@ const AktivitetArbeidInfo: FC<Props> = ({
                     </GridTabell>
                 )}
                 {skalViseSøknadsdata && (
-                    <div>
+                    <>
                         <DokumentasjonSendtInn
                             dokumentasjon={dokumentasjon?.erIArbeid}
                             tittel={'Dokumentasjon som viser at du er for syk til å være i arbeid'}
@@ -98,7 +98,7 @@ const AktivitetArbeidInfo: FC<Props> = ({
                             dokumentasjon={dokumentasjon?.virksomhet}
                             tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
                         />
-                    </div>
+                    </>
                 )}
             </SeksjonWrapper>
         </>

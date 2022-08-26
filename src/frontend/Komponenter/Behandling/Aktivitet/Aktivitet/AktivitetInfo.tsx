@@ -156,7 +156,7 @@ const AktivitetInfo: FC<Props> = ({
                     </SeksjonWrapper>
                 )}
                 {skalViseSøknadsdata && (
-                    <div>
+                    <>
                         <DokumentasjonSendtInn
                             dokumentasjon={dokumentasjon?.arbeidskontrakt}
                             tittel={'Arbeidskontrakt som viser at du har fått tilbud om arbeid'}
@@ -191,7 +191,7 @@ const AktivitetInfo: FC<Props> = ({
                             dokumentasjon={dokumentasjon?.virksomhet}
                             tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
                         />
-                    </div>
+                    </>
                 )}
             </SeksjonWrapper>
         </>

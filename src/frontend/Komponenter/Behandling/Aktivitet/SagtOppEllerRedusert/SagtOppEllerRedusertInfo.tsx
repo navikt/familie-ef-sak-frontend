@@ -46,7 +46,7 @@ const SagtOppEllerRedusertInfo: FC<Props> = ({
                     ))}
             </GridTabell>
             {skalViseSøknadsdata && (
-                <div>
+                <>
                     <DokumentasjonSendtInn
                         dokumentasjon={dokumentasjon?.reduksjonAvArbeidsforhold}
                         tittel={
@@ -58,7 +58,7 @@ const SagtOppEllerRedusertInfo: FC<Props> = ({
                         dokumentasjon={dokumentasjon?.oppsigelse}
                         tittel={'Dokumentasjon på arbeidsforholdet og årsaken til at du sluttet'}
                     />
-                </div>
+                </>
             )}
         </>
     );

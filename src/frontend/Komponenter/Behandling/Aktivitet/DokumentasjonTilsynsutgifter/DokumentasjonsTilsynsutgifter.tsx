@@ -48,7 +48,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                                     {index === grunnlag.barnMedSamvær.length - 1 && (
                                         <>
                                             {skalViseSøknadsdata && (
-                                                <div>
+                                                <>
                                                     <DokumentasjonSendtInn
                                                         dokumentasjon={
                                                             grunnlag.dokumentasjon
@@ -65,7 +65,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                                                             'Faktura fra barnepassordningen for perioden du søker om nå'
                                                         }
                                                     />
-                                                </div>
+                                                </>
                                             )}
                                         </>
                                     )}

@@ -68,12 +68,10 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                 );
             })}
             {skalViseSøknadsdata && (
-                <div>
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.terminbekreftelse}
-                        tittel={'Terminbekreftelse'}
-                    />
-                </div>
+                <DokumentasjonSendtInn
+                    dokumentasjon={dokumentasjon?.terminbekreftelse}
+                    tittel={'Terminbekreftelse'}
+                />
             )}
         </>
     );

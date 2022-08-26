@@ -59,7 +59,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                                     {idx === grunnlag.barnMedSamvær.length - 1 && (
                                         <>
                                             {skalViseSøknadsdata && (
-                                                <div>
+                                                <>
                                                     <DokumentasjonSendtInn
                                                         dokumentasjon={
                                                             grunnlag.dokumentasjon?.spesielleBehov
@@ -85,7 +85,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                                                             'Dokumentasjon som viser at du må være borte fra hjemmet i lengre perioder på grunn av jobb'
                                                         }
                                                     />
-                                                </div>
+                                                </>
                                             )}
                                         </>
                                     )}
