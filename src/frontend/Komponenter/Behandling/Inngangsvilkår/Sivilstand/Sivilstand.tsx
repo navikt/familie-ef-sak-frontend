@@ -32,6 +32,7 @@ export const Sivilstand: React.FC<VilkårProps> = ({
                         <SivilstandInfo
                             sivilstand={grunnlag.sivilstand}
                             skalViseSøknadsdata={skalViseSøknadsdata}
+                            dokumentasjon={grunnlag.dokumentasjon}
                         />
                     </>
                 ),

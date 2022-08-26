@@ -10,13 +10,20 @@ import {
     SagtOppEllerRedusertTilTekst,
 } from '../../Inngangsvilkår/Samliv/typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
+import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
     skalViseSøknadsdata: boolean;
+    dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, skalViseSøknadsdata }) => {
+const SagtOppEllerRedusertInfo: FC<Props> = ({
+    sagtOppEllerRedusert,
+    skalViseSøknadsdata,
+    dokumentasjon,
+}) => {
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
         <>
@@ -38,6 +45,21 @@ const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, skalViseSø
                         </Normaltekst>
                     ))}
             </GridTabell>
+            {skalViseSøknadsdata && (
+                <GridTabell underTabellMargin={0}>
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.reduksjonAvArbeidsforhold}
+                        tittel={
+                            'Dokumentasjon på arbeidsforholdet og årsaken til at du reduserte arbeidstiden'
+                        }
+                    />
+
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.oppsigelse}
+                        tittel={'Dokumentasjon på arbeidsforholdet og årsaken til at du sluttet'}
+                    />
+                </GridTabell>
+            )}
         </>
     );
 };

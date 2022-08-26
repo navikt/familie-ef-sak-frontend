@@ -6,6 +6,8 @@ import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import TilsynsutgifterBarnInfo from './TilsynsutgifterBarnInfo';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
+import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
     vurderinger,
@@ -39,11 +41,36 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                         />
                         {grunnlag.barnMedSamvær.map((barn, index) => {
                             return (
-                                <TilsynsutgifterBarnInfo
-                                    key={index}
-                                    gjeldendeBarn={barn}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
+                                <React.Fragment key={index}>
+                                    <TilsynsutgifterBarnInfo
+                                        gjeldendeBarn={barn}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                    />
+                                    {index === grunnlag.barnMedSamvær.length - 1 && (
+                                        <>
+                                            {skalViseSøknadsdata && (
+                                                <GridTabell underTabellMargin={0}>
+                                                    <DokumentasjonSendtInn
+                                                        dokumentasjon={
+                                                            grunnlag.dokumentasjon
+                                                                ?.avtaleBarnepasser
+                                                        }
+                                                        tittel={'Avtalen du har med barnepasseren'}
+                                                    />
+                                                    <DokumentasjonSendtInn
+                                                        dokumentasjon={
+                                                            grunnlag.dokumentasjon
+                                                                ?.barnepassordningFaktura
+                                                        }
+                                                        tittel={
+                                                            'Faktura fra barnepassordningen for perioden du søker om nå'
+                                                        }
+                                                    />
+                                                </GridTabell>
+                                            )}
+                                        </>
+                                    )}
+                                </React.Fragment>
                             );
                         })}
                     </>
