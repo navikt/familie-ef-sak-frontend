@@ -38,6 +38,7 @@ function MappeVelger(props: Props): ReactElement {
             }}
         >
             <option value="">Alle</option>
+            <option value="null">Uplassert</option>
             {[...Object.entries<IMappe[]>(mapperPerEnhet)]
                 .sort(sorterMappeListerPåEnhetsnummer)
                 .map<ReactElement>(([val, mapper], index) => {
