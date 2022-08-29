@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../App/typer/toast';
 import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
-import { Behandling } from '../../App/typer/fagsak';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -31,7 +30,6 @@ interface IProps {
     settVisModal: (bool: boolean) => void;
     fagsakId: string;
     hentTilbakekrevinger: Dispatch<void>;
-    behandlinger: Behandling[];
 }
 
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
@@ -39,7 +37,6 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     settVisModal,
     fagsakId,
     hentTilbakekrevinger,
-    behandlinger,
 }) => {
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
@@ -117,7 +114,6 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
 
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
                 <LagRevurdering
-                    behandlinger={behandlinger}
                     fagsakId={fagsakId}
                     valgtBehandlingstype={valgtBehandlingstype}
                     lagRevurdering={lagRevurdering}
