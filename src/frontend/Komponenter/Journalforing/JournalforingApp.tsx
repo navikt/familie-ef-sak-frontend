@@ -39,6 +39,7 @@ import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
+import { erAlleBehandlingerFerdigstilte, harValgtNyBehandling } from './journalførBehandlingUtil';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -100,9 +101,12 @@ const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateReques
 
 const validerJournalføringState = (
     journalResponse: IJojurnalpostResponse,
-    journalpostState: JournalføringStateRequest
+    journalpostState: JournalføringStateRequest,
+    erAlleBehandlingerFerdigstilte: boolean
 ): string | undefined => {
-    if (
+    if (!erAlleBehandlingerFerdigstilte && harValgtNyBehandling(journalpostState.behandling)) {
+        return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
+    } else if (
         erUstrukturertSøknadOgManglerDokumentasjonsType(
             journalResponse,
             journalpostState.ustrukturertDokumentasjonType
@@ -303,7 +307,8 @@ export const JournalforingApp: React.FC = () => {
                                             const feilmeldingFraValidering =
                                                 validerJournalføringState(
                                                     journalResponse,
-                                                    journalpostState
+                                                    journalpostState,
+                                                    erAlleBehandlingerFerdigstilte(fagsak)
                                                 );
                                             if (feilmeldingFraValidering) {
                                                 settFeilMeldning(feilmeldingFraValidering);
