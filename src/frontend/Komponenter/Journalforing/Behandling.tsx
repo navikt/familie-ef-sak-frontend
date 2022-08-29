@@ -1,5 +1,5 @@
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Flatknapp } from 'nav-frontend-knapper';
@@ -37,6 +37,11 @@ const BehandlingInnold: React.FC<Props> = ({
 }) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
     const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
+
+    useEffect(() => {
+        settNyBehandling(undefined);
+        settHarValgtNyBehandling(false);
+    }, [fagsak]);
 
     const håndterCheck = (behandlingsId: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
