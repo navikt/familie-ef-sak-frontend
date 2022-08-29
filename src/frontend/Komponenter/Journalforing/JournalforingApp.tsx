@@ -13,7 +13,6 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
-    BarnSomSkalFødes,
     BehandlingRequest,
     JournalføringStateRequest,
     useJournalføringState,
@@ -209,10 +208,6 @@ export const JournalforingApp: React.FC = () => {
         }
     };
 
-    const oppdaterBarnSomSkalFødes = (barnSomSkalFødes: BarnSomSkalFødes[]) => {
-        journalpostState.settBarnSomSkalFødes(barnSomSkalFødes);
-    };
-
     const kanLeggeTilBarnSomSkalFødes = () => {
         const erNyBehandling =
             journalpostState.behandling &&
@@ -288,7 +283,9 @@ export const JournalforingApp: React.FC = () => {
                                     {kanLeggeTilBarnSomSkalFødes() && (
                                         <LeggTilBarnSomSkalFødes
                                             barnSomSkalFødes={journalpostState.barnSomSkalFødes}
-                                            oppdaterBarnSomSkalFødes={oppdaterBarnSomSkalFødes}
+                                            oppdaterBarnSomSkalFødes={
+                                                journalpostState.settBarnSomSkalFødes
+                                            }
                                         />
                                     )}
                                 </SkjemaGruppe>

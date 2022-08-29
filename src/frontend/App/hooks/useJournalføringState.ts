@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
@@ -106,8 +106,6 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             data,
         }).then((resp) => settInnsending(resp));
     };
-
-    useEffect(() => settBarnSomSkalFødes([]), [behandling]);
 
     return {
         oppgaveId,
