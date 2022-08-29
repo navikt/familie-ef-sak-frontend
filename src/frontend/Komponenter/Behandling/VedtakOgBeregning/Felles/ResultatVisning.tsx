@@ -1,5 +1,5 @@
 import React from 'react';
-import { IVurdering, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
+import { IVurdering, resultatTilTall, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
@@ -39,14 +39,6 @@ export const resultatTilTekst: Record<string, string> = {
     IKKE_OPPFYLT: 'ikke oppfylt',
     IKKE_AKTUELL: 'ikke aktuell',
     SKAL_IKKE_VURDERES: 'ikke vurdert',
-};
-
-export const resultatTilTall: Record<Vilkårsresultat, number> = {
-    OPPFYLT: 1,
-    IKKE_TATT_STILLING_TIL: 2,
-    IKKE_OPPFYLT: 3,
-    IKKE_AKTUELL: 4,
-    SKAL_IKKE_VURDERES: 5,
 };
 
 export const ResultatVisning: React.FC<{

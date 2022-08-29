@@ -176,7 +176,7 @@ export interface IInntektsperiode {
 }
 
 export interface IVedtaksperiode {
-    endretKey: Key | null | undefined;
+    endretKey?: string | null | undefined;
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;
