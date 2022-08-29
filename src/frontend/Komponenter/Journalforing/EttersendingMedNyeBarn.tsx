@@ -11,12 +11,18 @@ import { useApp } from '../../App/context/AppContext';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { NyeBarn } from '../../Felles/NyeBarn/NyeBarn';
+import { Fagsak } from '../../App/typer/fagsak';
+import { BehandlingStatus } from '../../App/typer/behandlingstatus';
+
+const harBehandlingOgAlleErFerdigstilte = (fagsak: Fagsak) =>
+    fagsak.behandlinger.length > 0 &&
+    fagsak.behandlinger.every((b) => b.status === BehandlingStatus.FERDIGSTILT);
 
 const EttersendingMedNyeBarn: React.FC<{
-    fagsakId: string;
+    fagsak: Fagsak;
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
     settVilkårsbehandleNyeBarn: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
-}> = ({ fagsakId, vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn }) => {
+}> = ({ fagsak, vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn }) => {
     const { axiosRequest } = useApp();
 
     const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
@@ -24,12 +30,14 @@ const EttersendingMedNyeBarn: React.FC<{
     >(byggTomRessurs());
 
     useEffect(() => {
-        axiosRequest<NyeBarnSidenForrigeBehandling, null>({
-            url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsakId}`,
-        }).then((response: RessursSuksess<NyeBarnSidenForrigeBehandling> | RessursFeilet) => {
-            settNyeBarnSidenForrigeBehandling(response);
-        });
-    }, [axiosRequest, fagsakId]);
+        if (harBehandlingOgAlleErFerdigstilte(fagsak)) {
+            axiosRequest<NyeBarnSidenForrigeBehandling, null>({
+                url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsak.id}`,
+            }).then((response: RessursSuksess<NyeBarnSidenForrigeBehandling> | RessursFeilet) => {
+                settNyeBarnSidenForrigeBehandling(response);
+            });
+        }
+    }, [axiosRequest, fagsak]);
 
     useEffect(() => {
         if (

@@ -39,7 +39,6 @@ import VelgUstrukturertDokumentasjonType, {
 } from './VelgUstrukturertDokumentasjonType';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
-import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { erAlleBehandlingerFerdigstilte, harValgtNyBehandling } from './journalførBehandlingUtil';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
@@ -269,8 +268,6 @@ export const JournalforingApp: React.FC = () => {
             UstrukturertDokumentasjonType.ETTERSENDING &&
         harValgtNyBehandling(journalpostState.behandling);
 
-    console.log(skalVelgeVilkårsbehandleNyeBarn);
-
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => {
@@ -335,12 +332,9 @@ export const JournalforingApp: React.FC = () => {
                                         />
                                     )}
                                     {skalVelgeVilkårsbehandleNyeBarn &&
-                                        fagsak.status === RessursStatus.SUKSESS &&
-                                        fagsak.data.behandlinger.every(
-                                            (b) => b.status === BehandlingStatus.FERDIGSTILT
-                                        ) && (
+                                        fagsak.status === RessursStatus.SUKSESS && (
                                             <EttersendingMedNyeBarn
-                                                fagsakId={fagsak.data.id}
+                                                fagsak={fagsak.data}
                                                 vilkårsbehandleNyeBarn={
                                                     journalpostState.vilkårsbehandleNyeBarn
                                                 }
