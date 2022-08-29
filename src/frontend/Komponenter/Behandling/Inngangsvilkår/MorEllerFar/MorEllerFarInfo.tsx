@@ -7,13 +7,16 @@ import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/Da
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
+import { IDokumentasjonGrunnlag } from '../vilkår';
+import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
     skalViseSøknadsdata: boolean;
+    dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata }) => {
+const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, dokumentasjon }) => {
     return (
         <>
             {barnMedSamvær.map((barn: IBarnMedSamvær) => {
@@ -64,6 +67,12 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata }) =>
                     </React.Fragment>
                 );
             })}
+            {skalViseSøknadsdata && (
+                <DokumentasjonSendtInn
+                    dokumentasjon={dokumentasjon?.terminbekreftelse}
+                    tittel={'Terminbekreftelse'}
+                />
+            )}
         </>
     );
 };
