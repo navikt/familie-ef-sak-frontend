@@ -98,7 +98,8 @@ const erUstrukturertSøknadOgManglerDokumentasjonsType = (
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
 ) =>
     !journalResponse.harStrukturertSøknad &&
-    ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.IKKE_VALGT;
+    ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.PAPIRSØKNAD &&
+    ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.ETTERSENDING;
 
 const erEttersendingPåNyBehandlingOgManglerVilkårsbehandleNyeBarnValg = (
     journalpostState: JournalføringStateRequest
