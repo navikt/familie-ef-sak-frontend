@@ -71,6 +71,10 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
         useState<UstrukturertDokumentasjonType>();
 
+    useEffect(() => {
+        settBehandling(undefined);
+    }, [fagsakId]);
+
     const fullførJournalføring = (
         journalpostId: string,
         journalførendeEnhet: string,
