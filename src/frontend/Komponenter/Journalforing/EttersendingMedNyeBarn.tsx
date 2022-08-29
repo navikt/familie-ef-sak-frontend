@@ -52,6 +52,9 @@ const EttersendingMedNyeBarn: React.FC<{
     return (
         <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
             {({ nyeBarnSidenForrigeBehandling }) => {
+                if (!nyeBarnSidenForrigeBehandling.nyeBarn.length) {
+                    return null;
+                }
                 return (
                     <NyeBarn
                         nyeBarnSidenForrigeBehandling={nyeBarnSidenForrigeBehandling.nyeBarn}
