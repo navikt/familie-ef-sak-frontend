@@ -27,9 +27,15 @@ function MappeVelger(props: Props): ReactElement {
         return 0;
     };
 
+    const utledValue = () => {
+        if (props.value === -1) return 'uplassert';
+        else if (props.value) return props.value;
+        return '';
+    };
+
     return (
         <Select
-            value={props.value || ''}
+            value={utledValue()}
             className="flex-item"
             label={props.label}
             onChange={(event) => {

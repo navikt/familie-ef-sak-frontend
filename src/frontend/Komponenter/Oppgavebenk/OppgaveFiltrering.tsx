@@ -191,7 +191,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     onChange={(val) => {
                         if (val === 'uplassert') {
                             settOppgaveRequest((prevState: IOppgaveRequest) => {
-                                return { ...prevState, erUtenMappe: true, mappeId: undefined };
+                                return { ...prevState, erUtenMappe: true, mappeId: -1 };
                             });
                         } else {
                             settOppgave('mappeId')(parseInt(val));
