@@ -73,7 +73,7 @@ const GråBoks = styled.div`
 
 const TokolonnersGrid = styled.div<{ paddingBottom?: number }>`
     display: grid;
-    grid-template-columns: 1.5rem 3fr 5fr;
+    grid-template-columns: 1.2rem 3fr 5fr;
     gap: 0.5rem;
     padding-bottom: ${(props) => props.paddingBottom}rem;
 `;
@@ -103,23 +103,27 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
             </Heading>
             {utdanning && skalViseSøknadsinfo ? (
                 <TokolonnersGrid>
-                    <Søknad height={24} />
-                    <BodyShort>Skole/utdanningssted</BodyShort>
-                    <BodyShort>{utdanning.skoleUtdanningssted}</BodyShort>
-                    <Søknad height={24} />
-                    <BodyShort>Linje/kurs/grad</BodyShort>
-                    <BodyShort>{utdanning.linjeKursGrad}</BodyShort>
-                    <Søknad height={24} />
-                    <BodyShort>Utdanningstype</BodyShort>
-                    <BodyShort>{UtdanningsformTilTekst[utdanning.offentligEllerPrivat]}</BodyShort>
-                    <Søknad height={24} />
-                    <BodyShort>Studieperiode</BodyShort>
-                    <BodyShort>{`${formaterNullableIsoDato(
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Skole/utdanningssted</BodyShort>
+                    <BodyShort size={'small'}>{utdanning.skoleUtdanningssted}</BodyShort>
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Linje/kurs/grad</BodyShort>
+                    <BodyShort size={'small'}>{utdanning.linjeKursGrad}</BodyShort>
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Utdanningstype</BodyShort>
+                    <BodyShort size={'small'}>
+                        {UtdanningsformTilTekst[utdanning.offentligEllerPrivat]}
+                    </BodyShort>
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Studieperiode</BodyShort>
+                    <BodyShort size={'small'}>{`${formaterNullableIsoDato(
                         utdanning.fra
                     )} - ${formaterNullableIsoDato(utdanning.til)}`}</BodyShort>
-                    <Søknad height={24} />
-                    <BodyShort>Studiebelastning</BodyShort>
-                    <BodyShort>{utledVisningForStudiebelastning(utdanning)}</BodyShort>
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Studiebelastning</BodyShort>
+                    <BodyShort size={'small'}>
+                        {utledVisningForStudiebelastning(utdanning)}
+                    </BodyShort>
                 </TokolonnersGrid>
             ) : (
                 <Detail>Ingen informasjon å vise</Detail>
@@ -180,19 +184,19 @@ const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
                 Søknadsinformasjon - Utgifter
             </Heading>
             {utdanning && skalViseSøknadsinfo ? (
-                <TokolonnersGrid paddingBottom={4}>
-                    <Søknad height={24} />
-                    <BodyShort>Semesteravgift</BodyShort>
+                <TokolonnersGrid paddingBottom={2.8}>
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Semesteravgift</BodyShort>
                     <HøyrestiltBodyShort>
                         {utledUtgiftsbeløp(utdanning.semesteravgift)}
                     </HøyrestiltBodyShort>
-                    <Søknad height={24} />
-                    <BodyShort>Studieavgift</BodyShort>
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Studieavgift</BodyShort>
                     <HøyrestiltBodyShort>
                         {utledUtgiftsbeløp(utdanning.studieavgift)}
                     </HøyrestiltBodyShort>
-                    <Søknad height={24} />
-                    <BodyShort>Eksamemensgebyr</BodyShort>
+                    <Søknad height={20} />
+                    <BodyShort size={'small'}>Eksamemensgebyr</BodyShort>
                     <HøyrestiltBodyShort>
                         {utledUtgiftsbeløp(utdanning.eksamensgebyr)}
                     </HøyrestiltBodyShort>

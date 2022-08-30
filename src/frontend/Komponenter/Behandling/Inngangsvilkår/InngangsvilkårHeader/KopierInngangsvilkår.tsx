@@ -40,7 +40,7 @@ const ForrigeBehandlingTabell = styled.table`
     td,
     th {
         border-bottom: 1px solid ${navFarger.navGra40};
-        padding: 0rem 2rem 0rem 0rem;
+        padding: 0rem 1.5rem 0rem 0rem;
         text-align: left;
     }
 `;

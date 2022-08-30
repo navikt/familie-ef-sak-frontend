@@ -14,8 +14,9 @@ import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
 import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { HenleggModal } from './Henleggelse/HenleggModal';
+import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
+import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 
 const Container = styled.div`
     display: flex;
@@ -34,6 +35,8 @@ interface HøyreMenyWrapperProps {
 const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     border-left: 2px solid ${navFarger.navGra40};
 
+    background-color: white;
+
     flex-shrink: 1;
     flex-grow: 0;
 
@@ -48,10 +51,6 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
     flex-grow: 1;
     flex-basis: 0px;
     min-width: 0px;
-
-    overflow-x: scroll;
-
-    height: 90vh;
 
     max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 `;
@@ -72,6 +71,7 @@ const BehandlingContent: FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
+    useSetPersonIdent(personopplysninger.personIdent);
     const { åpenHøyremeny } = useBehandling();
 
     return (

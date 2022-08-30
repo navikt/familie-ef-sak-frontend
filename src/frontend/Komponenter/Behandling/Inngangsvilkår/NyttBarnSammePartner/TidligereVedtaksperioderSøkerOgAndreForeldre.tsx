@@ -109,7 +109,7 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                             verdier={verdier}
                             kolonner={[
                                 {
-                                    overskrift: 'Stønad',
+                                    overskrift: 'Navn',
                                     tekstVerdi: (d) => d.navn,
                                 },
                                 {
@@ -118,8 +118,7 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                                         jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
                                 },
                                 {
-                                    overskrift: 'Infotrygd',
-                                    underskrift: '(inkluderer kun EF VP, ikke PE PP)',
+                                    overskrift: 'Infotrygd (kun EF VP)',
                                     tekstVerdi: (d) =>
                                         jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
                                 },

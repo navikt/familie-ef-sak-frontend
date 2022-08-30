@@ -39,6 +39,7 @@ import { IJojurnalpostResponse } from '../../App/typer/journalforing';
 import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
+import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -232,7 +233,7 @@ export const JournalforingApp: React.FC = () => {
     return (
         <DataViewer response={{ journalResponse }}>
             {({ journalResponse }) => {
-                const erPapirSøknad =
+                const erPapirsøknad =
                     journalpostState.ustrukturertDokumentasjonType ===
                     UstrukturertDokumentasjonType.PAPIRSØKNAD;
                 return (
@@ -247,19 +248,26 @@ export const JournalforingApp: React.FC = () => {
                         }`}</Sidetittel>
                         <Kolonner>
                             <Venstrekolonne>
-                                <UtledEllerVelgFagsak
-                                    journalResponse={journalResponse}
-                                    hentFagsak={hentFagsak}
-                                />
-                                {!journalResponse.harStrukturertSøknad && (
-                                    <VelgUstrukturertDokumentasjonType
-                                        oppgaveId={oppgaveIdParam}
-                                        ustrukturertDokumentasjonType={
-                                            journalpostState.ustrukturertDokumentasjonType
-                                        }
-                                        settUstrukturertDokumentasjonType={
-                                            journalpostState.settUstrukturertDokumentasjonType
-                                        }
+                                {!journalResponse.harStrukturertSøknad ? (
+                                    <>
+                                        <VelgFagsakForIkkeSøknad
+                                            journalResponse={journalResponse}
+                                            hentFagsak={hentFagsak}
+                                        />
+                                        <VelgUstrukturertDokumentasjonType
+                                            oppgaveId={oppgaveIdParam}
+                                            ustrukturertDokumentasjonType={
+                                                journalpostState.ustrukturertDokumentasjonType
+                                            }
+                                            settUstrukturertDokumentasjonType={
+                                                journalpostState.settUstrukturertDokumentasjonType
+                                            }
+                                        />
+                                    </>
+                                ) : (
+                                    <UtledEllerVelgFagsak
+                                        journalResponse={journalResponse}
+                                        hentFagsak={hentFagsak}
                                     />
                                 )}
                                 <Brukerinfo personIdent={journalResponse.personIdent} />
@@ -268,6 +276,7 @@ export const JournalforingApp: React.FC = () => {
                                     hentDokument={hentDokument}
                                     dokumentTitler={journalpostState.dokumentTitler}
                                     settDokumentTitler={journalpostState.settDokumentTitler}
+                                    erPapirsøknad={erPapirsøknad}
                                 />
                                 <SkjemaGruppe feil={feilmelding}>
                                     <BehandlingInnold
@@ -305,7 +314,7 @@ export const JournalforingApp: React.FC = () => {
                                                 skalBeOmBekreftelse(
                                                     journalpostState.behandling,
                                                     journalResponse.harStrukturertSøknad,
-                                                    erPapirSøknad
+                                                    erPapirsøknad
                                                 )
                                             ) {
                                                 if (journalResponse.harStrukturertSøknad) {
@@ -362,7 +371,7 @@ export const JournalforingApp: React.FC = () => {
                         <JournalføringIkkeMuligModal
                             visModal={journalpostState.visJournalføringIkkeMuligModal}
                             settVisModal={journalpostState.settJournalføringIkkeMuligModal}
-                            erPapirSøknad={erPapirSøknad}
+                            erPapirSøknad={erPapirsøknad}
                         />
                     </SideLayout>
                 );

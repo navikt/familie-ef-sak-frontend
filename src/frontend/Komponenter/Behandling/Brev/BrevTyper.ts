@@ -68,6 +68,9 @@ export interface Delmal {
 export interface DokumentNavn {
     apiNavn: string;
     visningsnavn: string;
+    overgangsstonad?: boolean;
+    barnetilsyn?: boolean;
+    skolepenger?: boolean;
 }
 
 export interface IAvsnitt {

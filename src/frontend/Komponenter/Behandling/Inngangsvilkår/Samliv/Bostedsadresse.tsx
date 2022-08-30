@@ -73,15 +73,21 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
                             <Registergrunnlag />
                             <Normaltekst>Brukers bostedsadresse</Normaltekst>
                             <div>
-                                <Normaltekst>{bostedsadresse?.visningsadresse}</Normaltekst>
-                                <LenkeKnapp
-                                    onClick={() => {
-                                        settVisBeboere(!visBeboere);
-                                    }}
-                                >
-                                    Se beboere
-                                    <LenkeIkon>{visBeboere ? <Collapse /> : <Expand />}</LenkeIkon>
-                                </LenkeKnapp>
+                                <Normaltekst>
+                                    {bostedsadresse?.visningsadresse || 'Mangler bostedsadresse'}
+                                </Normaltekst>
+                                {bostedsadresse && (
+                                    <LenkeKnapp
+                                        onClick={() => {
+                                            settVisBeboere(!visBeboere);
+                                        }}
+                                    >
+                                        Se beboere
+                                        <LenkeIkon>
+                                            {visBeboere ? <Collapse /> : <Expand />}
+                                        </LenkeIkon>
+                                    </LenkeKnapp>
+                                )}
                             </div>
                         </>
                     );

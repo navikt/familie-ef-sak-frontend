@@ -176,7 +176,7 @@ export interface IInntektsperiode {
 }
 
 export interface IVedtaksperiode {
-    endretKey: Key | null | undefined;
+    endretKey?: string; // intern for re-rendring
     periodeType: EPeriodetype | '' | undefined;
     aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;
@@ -241,15 +241,6 @@ export enum EUtgiftsperiodeProperty {
     barn = 'barn',
     utgifter = 'utgifter',
     erMidlertidigOpphør = 'erMidlertidigOpphør',
-}
-
-export type EUtgiftsperiodeSkolepengerProperty = keyof IPeriodeSkolepenger;
-
-export enum SkolepengerUtgiftProperty {
-    id = 'id',
-    årMånedFra = 'årMånedFra',
-    utgifter = 'utgifter',
-    stønad = 'stønad',
 }
 
 export enum EKontantstøttePeriodeProperty {

@@ -2,22 +2,37 @@ import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import Dokumentasjonsvisning from './Dokumentasjonsvisning';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
+import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
+import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 
 interface Props {
     aktivitet: IAktivitet;
     skalViseSøknadsdata: boolean;
+    dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const DokumentasjonUtdanningInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata }) => {
+const DokumentasjonUtdanningInfo: FC<Props> = ({
+    aktivitet,
+    skalViseSøknadsdata,
+    dokumentasjon,
+}) => {
     return (
-        <GridTabell>
-            {skalViseSøknadsdata ? (
-                <Dokumentasjonsvisning
-                    aktivitet={aktivitet}
-                    skalViseSøknadsdata={skalViseSøknadsdata}
+        <>
+            <GridTabell>
+                {skalViseSøknadsdata ? (
+                    <Dokumentasjonsvisning
+                        aktivitet={aktivitet}
+                        skalViseSøknadsdata={skalViseSøknadsdata}
+                    />
+                ) : null}
+            </GridTabell>
+            {skalViseSøknadsdata && (
+                <DokumentasjonSendtInn
+                    dokumentasjon={dokumentasjon?.utdanningsutgifter}
+                    tittel={'Utgifter til skolepenger'}
                 />
-            ) : null}
-        </GridTabell>
+            )}
+        </>
     );
 };
 

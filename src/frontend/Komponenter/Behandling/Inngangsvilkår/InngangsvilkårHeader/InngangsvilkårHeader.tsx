@@ -11,6 +11,7 @@ import { useApp } from '../../../../App/context/AppContext';
 
 const Container = styled.div`
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 `;
 

@@ -41,6 +41,7 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
                             <DokumentasjonUtdanningInfo
                                 aktivitet={grunnlag.aktivitet}
                                 skalViseSøknadsdata={skalViseSøknadsdata}
+                                dokumentasjon={grunnlag.dokumentasjon}
                             />
                         )}
                     </>
