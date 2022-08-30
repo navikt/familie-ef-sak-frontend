@@ -1,5 +1,5 @@
 import { Systemtittel } from 'nav-frontend-typografi';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Flatknapp } from 'nav-frontend-knapper';
@@ -13,6 +13,7 @@ import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
+import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 
 interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;
@@ -37,6 +38,11 @@ const BehandlingInnold: React.FC<Props> = ({
 }) => {
     const [nyBehandling, settNyBehandling] = useState<INyBehandling>();
     const [harValgtNyBehandling, settHarValgtNyBehandling] = useState<boolean>(false);
+
+    useEffect(() => {
+        settNyBehandling(undefined);
+        settHarValgtNyBehandling(false);
+    }, [fagsak]);
 
     const håndterCheck = (behandlingsId: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +69,7 @@ const BehandlingInnold: React.FC<Props> = ({
         settFeilmelding('');
         if (fagsak.status === RessursStatus.SUKSESS) {
             const kanOppretteNyBehandling = fagsak.data.behandlinger.every(
-                (behandling: Behandling) => behandling.status !== 'UTREDES'
+                (behandling: Behandling) => behandling.status === BehandlingStatus.FERDIGSTILT
             );
 
             if (kanOppretteNyBehandling) {
@@ -72,7 +78,7 @@ const BehandlingInnold: React.FC<Props> = ({
                 });
             } else {
                 settFeilmelding(
-                    'Kan ikke opprette ny behandling på fagsak med eksisterende behandling med status UTREDES'
+                    'Kan ikke opprette ny behandling på fagsak med en behandling som ikke er ferdigstilt'
                 );
             }
         } else {

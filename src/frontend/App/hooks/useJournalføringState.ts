@@ -75,6 +75,10 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         EVilkårsbehandleBarnValg.IKKE_VALGT
     );
 
+    useEffect(() => {
+        settBehandling(undefined);
+    }, [fagsakId]);
+
     const fullførJournalføring = (
         journalpostId: string,
         journalførendeEnhet: string,

@@ -1,4 +1,4 @@
-import { BodyShort, Label, RadioGroup, Radio } from '@navikt/ds-react';
+import { BodyShort, Label, Radio, RadioGroup } from '@navikt/ds-react';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { BarnForRevurdering } from '../../App/typer/revurderingstype';
