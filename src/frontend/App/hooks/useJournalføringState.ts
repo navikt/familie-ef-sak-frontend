@@ -111,8 +111,6 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         }).then((resp) => settInnsending(resp));
     };
 
-    useEffect(() => settBarnSomSkalFødes([]), [behandling]);
-
     return {
         oppgaveId,
         settOppgaveId,
