@@ -15,6 +15,7 @@ export const VilkårsresultatIkon: FC<{
         case Vilkårsresultat.IKKE_TATT_STILLING_TIL:
             return <IkkeVurdert className={className} heigth={heigth} width={width} />;
         case Vilkårsresultat.OPPFYLT:
+        case Vilkårsresultat.AUTOMATISK_OPPFYLT:
             return <Oppfylt className={className} heigth={heigth} width={width} />;
         case Vilkårsresultat.IKKE_OPPFYLT:
             return <IkkeOppfylt className={className} heigth={heigth} width={width} />;

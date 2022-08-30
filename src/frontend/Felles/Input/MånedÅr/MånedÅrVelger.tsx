@@ -50,8 +50,7 @@ const MånedÅrVelger: React.FC<Props> = ({
         } else {
             onEndret(undefined);
         }
-        // @ts-ignore
-    }, [år, måned]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [år, måned]);
 
     return (
         <div className={className} style={lesevisning ? { minWidth: '140px' } : {}}>

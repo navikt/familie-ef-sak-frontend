@@ -111,7 +111,9 @@ export const InnvilgeVedtak: React.FC<{
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
-    const låsVedtaksperiodeRad = revurderesFra && toggles[ToggleName.skalPrefylleVedtaksperider];
+    const låsVedtaksperiodeRad = !!(
+        revurderesFra && toggles[ToggleName.skalPrefylleVedtaksperider]
+    );
 
     useEffect(() => {
         if (
