@@ -62,7 +62,6 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
                     {erSaksbehandler && kanStarteRevurdering && skalViseOpprettNyBehandlingKnapp && (
                         <>
                             <LagBehandlingModal
-                                behandlinger={fagsak.behandlinger}
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsakId={fagsak.id}

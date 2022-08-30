@@ -1,0 +1,5 @@
+export enum EVilkårsbehandleBarnValg {
+    VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
+    IKKE_VILKÅRSBEHANDLE = 'IKKE_VILKÅRSBEHANDLE',
+    IKKE_VALGT = 'IKKE_VALGT',
+}

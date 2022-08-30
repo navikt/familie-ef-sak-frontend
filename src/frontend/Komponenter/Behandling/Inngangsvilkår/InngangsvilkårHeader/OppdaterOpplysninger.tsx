@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { Refresh } from '@navikt/ds-icons';
-import { FamilieKnapp } from '@navikt/familie-form-elements';
-import { HelpText } from '@navikt/ds-react';
+import { Button, HelpText } from '@navikt/ds-react';
 
 const FlexWrapper = styled.div`
     display: flex;
@@ -25,7 +24,7 @@ const Oppdateringstekst = styled(Undertekst)`
 `;
 
 const KnappTekst = styled(Element)`
-    padding-left: 0.25rem;
+    padding-left: 0rem;
 `;
 
 type Props = {
@@ -48,11 +47,11 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
         settNyGrunnlagsdataHentes(false);
     }, [oppdatertDato]);
 
-    return (
+    return behandlingErRedigerbar ? (
         <FlexWrapper>
             <Container>
                 <Oppdateringstekst children={grunnlagsdataSistOppdatert} />
-                <FamilieKnapp
+                <Button
                     aria-label={'Oppdater registeropplysninger'}
                     title={'Oppdater'}
                     onClick={() => {
@@ -61,18 +60,19 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
                             oppdaterGrunnlagsdata(behandlingId);
                         }
                     }}
-                    spinner={nyGrunnlagsdataHentes}
-                    type={'button'}
-                    erLesevisning={!behandlingErRedigerbar}
+                    loading={nyGrunnlagsdataHentes}
                     variant={'tertiary'}
+                    size={'small'}
                 >
                     <Refresh role="img" focusable="false" /> <KnappTekst>Oppdater</KnappTekst>
-                </FamilieKnapp>
+                </Button>
                 <HelpText>
                     Dersom søker har fått et nytt barn etter å ha sendt inn denne søknaden vil ikke
                     dette bli tatt med i oppdateringen.
                 </HelpText>
             </Container>
         </FlexWrapper>
+    ) : (
+        <></>
     );
 };
