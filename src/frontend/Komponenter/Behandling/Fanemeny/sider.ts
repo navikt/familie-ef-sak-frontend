@@ -84,12 +84,7 @@ export const siderForStønad = (stønadstype: Stønadstype): ISide[] => {
     }
 };
 
-const filtrerVekkHvisSanksjon = [
-    SideNavn.TIDLIGEREVEDTAKSPERIODER,
-    SideNavn.INNGANGSVILKÅR,
-    SideNavn.AKTIVITET,
-    SideNavn.VEDTAK_OG_BEREGNING,
-];
+const filtrerHvisSanksjon = [SideNavn.SANKSJON, SideNavn.SIMULERING, SideNavn.BREV];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
 const filtrerHvisGOmregning = [
     SideNavn.VEDTAK_OG_BEREGNING,
@@ -110,12 +105,12 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
         behandling.type === Behandlingstype.REVURDERING &&
         behandling.behandlingsårsak === Behandlingsårsak.SANKSJON_1_MND
     ) {
-        return sider.filter((side) => !filtrerVekkHvisSanksjon.includes(side.navn as SideNavn));
+        return sider.filter((side) => filtrerHvisSanksjon.includes(side.navn as SideNavn));
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
         return sider.filter((side) => filtrerHvisMigrering.includes(side.navn as SideNavn));
     }
-    if (behandling.behandlingsårsak == Behandlingsårsak.G_OMREGNING) {
+    if (behandling.behandlingsårsak === Behandlingsårsak.G_OMREGNING) {
         return sider.filter((side) => filtrerHvisGOmregning.includes(side.navn as SideNavn));
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
