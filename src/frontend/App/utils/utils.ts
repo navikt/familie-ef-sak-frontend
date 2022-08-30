@@ -31,6 +31,7 @@ export const oppdaterFilter = (
     return {
         ...object,
         [key]: val,
+        erUtenMappe: false,
     };
 };
 

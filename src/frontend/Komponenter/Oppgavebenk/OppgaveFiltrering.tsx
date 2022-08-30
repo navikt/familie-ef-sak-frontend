@@ -194,7 +194,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                                 return { ...prevState, erUtenMappe: true, mappeId: undefined };
                             });
                         } else {
-                            settOppgave('erUtenMappe')(parseInt('false'));
                             settOppgave('mappeId')(parseInt(val));
                         }
                     }}
