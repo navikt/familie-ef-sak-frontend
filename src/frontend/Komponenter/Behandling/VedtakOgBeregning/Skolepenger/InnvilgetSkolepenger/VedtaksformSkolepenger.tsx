@@ -223,7 +223,7 @@ export const VedtaksformSkolepenger: React.FC<{
             <WrapperDobbelMarginTop>
                 <UtregningstabellSkolepenger
                     beregningsresultat={beregningsresultat}
-                    skjulVisning={!harUtførtBeregning}
+                    skjulVisning={behandlingErRedigerbar && !harUtførtBeregning}
                 />
             </WrapperDobbelMarginTop>
             {behandlingErRedigerbar && (
