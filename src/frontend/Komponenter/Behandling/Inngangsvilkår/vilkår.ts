@@ -67,10 +67,11 @@ export enum Vilkårsresultat {
 
 export const resultatTilTall: Record<Vilkårsresultat, number> = {
     OPPFYLT: 1,
-    IKKE_TATT_STILLING_TIL: 2,
-    IKKE_OPPFYLT: 3,
-    IKKE_AKTUELL: 4,
-    SKAL_IKKE_VURDERES: 5,
+    AUTOMATISK_OPPFYLT: 2,
+    IKKE_TATT_STILLING_TIL: 3,
+    IKKE_OPPFYLT: 4,
+    IKKE_AKTUELL: 5,
+    SKAL_IKKE_VURDERES: 6,
 };
 
 /**

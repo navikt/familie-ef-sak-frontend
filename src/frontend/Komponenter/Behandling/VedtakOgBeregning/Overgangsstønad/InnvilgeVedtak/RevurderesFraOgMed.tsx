@@ -9,7 +9,7 @@ const WrapperMarginBottom = styled.div`
 
 export const RevurderesFraOgMed: React.FC<{
     settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
-    revurderesFra: string;
+    revurderesFra: string | undefined;
     feilmelding: string | null;
 }> = ({ settRevurderesFra, revurderesFra, feilmelding }) => {
     return (

@@ -35,6 +35,7 @@ const ResultatGrid = styled.div<{ stønadstype: Stønadstype }>`
 
 export const resultatTilTekst: Record<string, string> = {
     OPPFYLT: 'oppfylt',
+    AUTOMATISK_OPPFYLT: 'oppfylt (automatisk)',
     IKKE_TATT_STILLING_TIL: 'ikke vurdert',
     IKKE_OPPFYLT: 'ikke oppfylt',
     IKKE_AKTUELL: 'ikke aktuell',
