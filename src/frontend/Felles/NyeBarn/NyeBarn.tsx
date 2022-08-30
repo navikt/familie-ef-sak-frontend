@@ -1,9 +1,9 @@
-import { BodyShort, Label, RadioGroup, Radio } from '@navikt/ds-react';
+import { BodyShort, Label, Radio, RadioGroup } from '@navikt/ds-react';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { BarnForRevurdering } from '../../../App/typer/revurderingstype';
-import { datoTilAlder } from '../../../App/utils/dato';
-import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
+import { BarnForRevurdering } from '../../App/typer/revurderingstype';
+import { datoTilAlder } from '../../App/utils/dato';
+import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 
 const StyledNyeBarn = styled.div`
     margin-top: 2rem;
