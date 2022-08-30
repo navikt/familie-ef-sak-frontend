@@ -5,6 +5,7 @@ import { IBarnMedSamvær } from './Aleneomsorg/typer';
 import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../../App/typer/aktivitetstyper';
 import { Begrunnelse, SvarId } from '../Vurdering/typer';
 import { ITidligereVedtaksperioder } from '../TidligereVedtaksperioder/typer';
+import { IDokumentasjon } from '../../../App/typer/felles';
 
 export interface IVilkår {
     vurderinger: IVurdering[];
@@ -21,6 +22,7 @@ export interface IVilkårGrunnlag {
     sagtOppEllerRedusertStilling?: ISagtOppEllerRedusertStilling;
     aktivitet?: IAktivitet;
     registeropplysningerOpprettetTid: string;
+    dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
 export interface IVurdering {
@@ -32,6 +34,37 @@ export interface IVurdering {
     endretAv: string;
     endretTid: string;
     delvilkårsvurderinger: IDelvilkår[];
+}
+
+export interface IDokumentasjonGrunnlag {
+    erIArbeid?: IDokumentasjon;
+    virksomhet?: IDokumentasjon;
+    ikkeVilligTilÅTaImotTilbudOmArbeid?: IDokumentasjon;
+    tidligereSamboerFortsattRegistrertPåAdresse?: IDokumentasjon;
+    uformeltGift?: IDokumentasjon;
+    uformeltSeparertEllerSkilt?: IDokumentasjon;
+    separasjonsbekreftelse?: IDokumentasjon;
+    samlivsbrudd?: IDokumentasjon;
+    avtaleOmDeltBosted?: IDokumentasjon;
+    samværsavtale?: IDokumentasjon;
+    skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke?: IDokumentasjon;
+    erklæringOmSamlivsbrudd?: IDokumentasjon;
+    terminbekreftelse?: IDokumentasjon;
+    barnepassordningFaktura?: IDokumentasjon;
+    avtaleBarnepasser?: IDokumentasjon;
+    arbeidstid?: IDokumentasjon;
+    roterendeArbeidstid?: IDokumentasjon;
+    spesielleBehov?: IDokumentasjon;
+    sykdom?: IDokumentasjon;
+    barnsSykdom?: IDokumentasjon;
+    manglendeBarnepass?: IDokumentasjon;
+    barnMedSærligeBehov?: IDokumentasjon;
+    arbeidskontrakt?: IDokumentasjon;
+    lærlingkontrakt?: IDokumentasjon;
+    utdanningstilbud?: IDokumentasjon;
+    reduksjonAvArbeidsforhold?: IDokumentasjon;
+    oppsigelse?: IDokumentasjon;
+    utdanningsutgifter?: IDokumentasjon;
 }
 
 export type SvarPåVilkårsvurdering = Pick<

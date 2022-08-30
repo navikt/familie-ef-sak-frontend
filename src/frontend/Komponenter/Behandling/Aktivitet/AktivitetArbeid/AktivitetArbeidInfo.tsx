@@ -9,14 +9,22 @@ import Aksjeselskap from '../Aktivitet/Aksjeselskap';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon, EErIArbeid } from '../Aktivitet/typer';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
+import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 
 interface Props {
     aktivitet: IAktivitet;
     skalViseSøknadsdata: boolean;
     stønadstype: Stønadstype;
+    dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const AktivitetArbeidInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, stønadstype }) => {
+const AktivitetArbeidInfo: FC<Props> = ({
+    aktivitet,
+    skalViseSøknadsdata,
+    stønadstype,
+    dokumentasjon,
+}) => {
     const { arbeidsforhold, selvstendig, aksjeselskap, virksomhet, erIArbeid } = aktivitet;
 
     return (
@@ -78,6 +86,19 @@ const AktivitetArbeidInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdata, støn
                         </Normaltekst>
                         <Normaltekst>{virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
                     </GridTabell>
+                )}
+                {skalViseSøknadsdata && (
+                    <>
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.erIArbeid}
+                            tittel={'Dokumentasjon som viser at du er for syk til å være i arbeid'}
+                        />
+
+                        <DokumentasjonSendtInn
+                            dokumentasjon={dokumentasjon?.virksomhet}
+                            tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
+                        />
+                    </>
                 )}
             </SeksjonWrapper>
         </>

@@ -9,13 +9,13 @@ const KnappMedLuftUnder = styled(Flatknapp)`
     margin-bottom: 1rem;
 `;
 
-const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
+const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst?: string }> = ({
     onClick,
     knappetekst,
 }) => {
     return (
         <KnappMedLuftUnder onClick={onClick} htmlType="button">
-            <AddCircle style={{ marginRight: '1rem' }} />
+            <AddCircle style={knappetekst ? { marginRight: '1rem' } : {}} />
             {knappetekst}
         </KnappMedLuftUnder>
     );

@@ -21,6 +21,7 @@ import { Toast } from './Felles/Toast/Toast';
 import FagsakTilFagsakPersonRedirect from './Komponenter/Redirect/FagsakTilFagsakPersonRedirect';
 import OppgaveMigreringApp from './Komponenter/Migrering/OppgaveMigrering';
 import { AdminApp } from './Komponenter/Admin/AdminApp';
+import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
 
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
@@ -89,6 +90,7 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     return (
         <>
             <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
+            <ScrollToTop />
             <Routes>
                 <Route
                     path="/ekstern/fagsak/:eksternFagsakId/:behandlingIdEllerSaksoversikt"

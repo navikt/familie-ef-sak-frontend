@@ -40,6 +40,7 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
                             <SagtOppEllerRedusertInfo
                                 sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
                                 skalViseSøknadsdata={skalViseSøknadsdata}
+                                dokumentasjon={grunnlag.dokumentasjon}
                             />
                         )}
                     </>
