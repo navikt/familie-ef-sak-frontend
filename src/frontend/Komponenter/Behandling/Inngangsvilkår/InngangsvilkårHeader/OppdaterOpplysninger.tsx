@@ -62,9 +62,10 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
                         }
                     }}
                     spinner={nyGrunnlagsdataHentes}
-                    type={'button'}
+                    type={'flat'}
+                    kompakt={true}
+                    mini={true}
                     erLesevisning={!behandlingErRedigerbar}
-                    variant={'tertiary'}
                 >
                     <Refresh role="img" focusable="false" /> <KnappTekst>Oppdater</KnappTekst>
                 </FamilieKnapp>
