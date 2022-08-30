@@ -91,10 +91,6 @@ export const VedtaksformSkolepenger: React.FC<{
         ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
         : [];
 
-    const oppdaterHarUtførtBeregning = (harUtførtBeregning: boolean) => {
-        settHarUtførtBeregning(harUtførtBeregning);
-    };
-
     const lagreVedtak = (vedtaksRequest: IVedtakForSkolepenger) => {
         settLaster(true);
 
@@ -128,7 +124,7 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         settVisFeilmelding(false);
-        if (harUtførtBeregning) {
+        if (harUtførtBeregning || erOpphør) {
             const vedtaksRequest: IVedtakForSkolepenger = {
                 skoleårsperioder: form.skoleårsperioder,
                 begrunnelse: form.begrunnelse,
@@ -192,7 +188,7 @@ export const VedtaksformSkolepenger: React.FC<{
                     låsteUtgiftIder={utgiftsIderForrigeBehandling}
                     valideringsfeil={formState.errors.skoleårsperioder}
                     settValideringsFeil={formState.setErrors}
-                    oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
+                    oppdaterHarUtførtBeregning={settHarUtførtBeregning}
                 />
             ) : (
                 <OpphørSkolepenger
@@ -200,7 +196,6 @@ export const VedtaksformSkolepenger: React.FC<{
                     forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
                     valideringsfeil={formState.errors.skoleårsperioder}
                     settValideringsFeil={formState.setErrors}
-                    oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
                 />
             )}
             {feilmelding && (
@@ -208,7 +203,7 @@ export const VedtaksformSkolepenger: React.FC<{
                     {feilmelding}
                 </AlertStripeFeilPreWrap>
             )}
-            {behandlingErRedigerbar && (
+            {behandlingErRedigerbar && !erOpphør && (
                 <WrapperDobbelMarginTop>
                     <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
