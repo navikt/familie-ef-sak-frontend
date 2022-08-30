@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import SlettSøppelkasse from '../../Felles/Ikoner/SlettSøppelkasse';
@@ -44,6 +44,8 @@ const LeggTilBarnSomSkalFødes: React.FC<{
     barnSomSkalFødes: BarnSomSkalFødes[];
     oppdaterBarnSomSkalFødes: (terminbarn: BarnSomSkalFødes[]) => void;
 }> = ({ barnSomSkalFødes, oppdaterBarnSomSkalFødes }) => {
+    useEffect(() => () => oppdaterBarnSomSkalFødes([]), [oppdaterBarnSomSkalFødes]);
+
     const leggTilBarn = () => oppdaterBarnSomSkalFødes([...barnSomSkalFødes, { _id: uuidv4() }]);
 
     const fjernBarn = (terminbarnSomSkalSlettes: BarnSomSkalFødes) =>
