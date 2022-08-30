@@ -26,7 +26,6 @@ const Skoleårsperiode = styled.div`
 interface Props {
     skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
     forrigeSkoleårsperioder: ISkoleårsperiodeSkolepenger[];
-    oppdaterHarUtførtBeregning: (beregningUtført: boolean) => void;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
@@ -43,7 +42,6 @@ const beregnSkoleårForSkoleårsperiode = (periode: ISkoleårsperiodeSkolepenger
 const OpphørSkolepenger: React.FC<Props> = ({
     skoleårsperioder,
     forrigeSkoleårsperioder,
-    oppdaterHarUtførtBeregning,
     valideringsfeil,
     settValideringsFeil,
 }) => {
@@ -54,7 +52,6 @@ const OpphørSkolepenger: React.FC<Props> = ({
         const index = skoleårsperioder.value.indexOf(skoleårsperiode);
         skoleårsperioder.remove(index);
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-        oppdaterHarUtførtBeregning(false);
     };
 
     const tilbakestillSkoleårsperiode = (forrigeIndex: number) => {
@@ -72,7 +69,6 @@ const OpphørSkolepenger: React.FC<Props> = ({
             ];
         });
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-        oppdaterHarUtførtBeregning(false);
     };
 
     /**
@@ -88,7 +84,6 @@ const OpphørSkolepenger: React.FC<Props> = ({
         const skoleårsperiode = skoleårsperioder.value[index];
         skoleårsperioder.update({ ...skoleårsperiode, [property]: value }, index);
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-        oppdaterHarUtførtBeregning(false);
     };
 
     /**
