@@ -98,6 +98,15 @@ export enum Vilkårsresultat {
     SKAL_IKKE_VURDERES = 'SKAL_IKKE_VURDERES',
 }
 
+export const resultatTilTall: Record<Vilkårsresultat, number> = {
+    OPPFYLT: 1,
+    AUTOMATISK_OPPFYLT: 2,
+    IKKE_TATT_STILLING_TIL: 3,
+    IKKE_OPPFYLT: 4,
+    IKKE_AKTUELL: 5,
+    SKAL_IKKE_VURDERES: 6,
+};
+
 /**
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
  * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk

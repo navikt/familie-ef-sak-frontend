@@ -49,8 +49,8 @@ export const revurderFraInitPeriode = <T>(
 
 export const revurdererFørFørstePeriode = (
     vedtakshistorikk: IVedtakshistorikk | undefined,
-    revurderesFra: string
+    revurderesFra: string | undefined
 ): boolean => {
     const fraOgMedDato = vedtakshistorikk?.perioder[0]?.årMånedFra;
-    return !!fraOgMedDato && revurderesFra < fraOgMedDato;
+    return !!revurderesFra && !!fraOgMedDato && revurderesFra < fraOgMedDato;
 };

@@ -8,15 +8,23 @@ import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
-import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
-import { BarnForRevurdering, RevurderingInnhold } from '../../../App/typer/revurderingstype';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../../App/typer/ressurs';
+import {
+    NyeBarnSidenForrigeBehandling,
+    RevurderingInnhold,
+} from '../../../App/typer/revurderingstype';
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { useApp } from '../../../App/context/AppContext';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Behandling } from '../../../App/typer/fagsak';
-import { NyeBarn } from './NyeBarn';
+import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn.tsx/NyeBarn';
 import { Select } from 'nav-frontend-skjema';
 
 enum EVilkårsbehandleBarnValg {
@@ -55,7 +63,6 @@ interface IProps {
     valgtBehandlingstype: Behandlingstype;
     lagRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     settVisModal: (bool: boolean) => void;
-    behandlinger: Behandling[];
 }
 
 export const LagRevurdering: React.FunctionComponent<IProps> = ({
@@ -63,7 +70,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     valgtBehandlingstype,
     lagRevurdering,
     settVisModal,
-    behandlinger,
 }) => {
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
@@ -72,7 +78,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
 
     const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
-        Ressurs<BarnForRevurdering[]>
+        Ressurs<NyeBarnSidenForrigeBehandling>
     >(byggTomRessurs());
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
@@ -80,9 +86,9 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         useState<EVilkårsbehandleBarnValg>(EVilkårsbehandleBarnValg.IKKE_VALGT);
 
     useEffect(() => {
-        axiosRequest<BarnForRevurdering[], null>({
-            url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsakId}/nye-barn`,
-        }).then((response: RessursSuksess<BarnForRevurdering[]> | RessursFeilet) => {
+        axiosRequest<NyeBarnSidenForrigeBehandling, null>({
+            url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsakId}`,
+        }).then((response: RessursSuksess<NyeBarnSidenForrigeBehandling> | RessursFeilet) => {
             settNyeBarnSidenForrigeBehandling(response);
         });
     }, [axiosRequest, fagsakId]);
@@ -93,12 +99,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
 
     const erGOmregning = valgtBehandlingsårsak === Behandlingsårsak.G_OMREGNING;
     const måTaStillingTilBarn =
-        behandlinger.some(
-            (behandling) => behandling.behandlingsårsak === Behandlingsårsak.MIGRERING
-        ) &&
-        !behandlinger.some(
-            (behandling) => behandling.behandlingsårsak === Behandlingsårsak.SØKNAD
-        ) &&
+        nyeBarnSidenForrigeBehandling.status === RessursStatus.SUKSESS &&
+        !nyeBarnSidenForrigeBehandling.data.harBarnISisteIverksatteBehandling &&
         !erGOmregning;
 
     const skalTaMedAlleBarn =
@@ -120,7 +122,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
             <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
                 {({ nyeBarnSidenForrigeBehandling }) => {
                     const harNyeBarnSidenForrigeBehandling =
-                        nyeBarnSidenForrigeBehandling.length > 0;
+                        nyeBarnSidenForrigeBehandling.nyeBarn.length > 0;
                     const skalViseNyeBarnValg =
                         valgtBehandlingsårsak && harNyeBarnSidenForrigeBehandling && !erGOmregning;
 
@@ -157,13 +159,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                 {skalViseNyeBarnValg && (
                                     <NyeBarn
                                         nyeBarnSidenForrigeBehandling={
-                                            nyeBarnSidenForrigeBehandling
+                                            nyeBarnSidenForrigeBehandling.nyeBarn
                                         }
                                         måTaStillingTilBarn={måTaStillingTilBarn}
-                                        vilkårsbehandleVedMigrering={vilkårsbehandleVedMigrering}
-                                        settVilkårsbehandleVedMigrering={
-                                            settVilkårsbehandleVedMigrering
-                                        }
+                                        vilkårsbehandleNyeBarn={vilkårsbehandleVedMigrering}
+                                        settVilkårsbehandleNyeBarn={settVilkårsbehandleVedMigrering}
                                     />
                                 )}
 
@@ -184,7 +184,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                 lagRevurdering({
                                                     fagsakId,
                                                     barn: skalTaMedAlleBarn
-                                                        ? nyeBarnSidenForrigeBehandling
+                                                        ? nyeBarnSidenForrigeBehandling.nyeBarn
                                                         : [],
                                                     behandlingsårsak: valgtBehandlingsårsak,
                                                     kravMottatt: valgtDato,

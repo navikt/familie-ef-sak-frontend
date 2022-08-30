@@ -1,12 +1,12 @@
 import { Client, getOnBehalfOfAccessToken } from '@navikt/familie-backend';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { ClientRequest, IncomingMessage, ServerResponse } from 'http';
+import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
 import { oboConfig } from './config';
 import { logError, logInfo } from '@navikt/familie-logging';
 
-const restream = (proxyReq: ClientRequest, req: IncomingMessage, _res: ServerResponse) => {
+const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const requestBody = (req as Request).body;
     if (requestBody) {
         const bodyData = JSON.stringify(requestBody);
@@ -25,7 +25,7 @@ export const doProxy = (
         changeOrigin: true,
         logLevel: 'info',
         onProxyReq: restream,
-        pathRewrite: (path: string, _req: Request) => {
+        pathRewrite: (path: string) => {
             const newPath = path.replace(context, '');
             return `${pathPrefix}${newPath}`;
         },

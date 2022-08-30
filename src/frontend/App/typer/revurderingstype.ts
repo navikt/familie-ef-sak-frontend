@@ -1,5 +1,10 @@
 import { Behandlingsårsak } from './Behandlingsårsak';
 
+export interface NyeBarnSidenForrigeBehandling {
+    nyeBarn: BarnForRevurdering[];
+    harBarnISisteIverksatteBehandling: boolean;
+}
+
 export interface BarnForRevurdering {
     personIdent: string;
     navn: string;
