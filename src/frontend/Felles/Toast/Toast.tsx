@@ -33,22 +33,20 @@ export const Toast: React.FC = () => {
     });
 
     switch (toast) {
+        case null:
+        case undefined:
+            return null;
         case EToast.INNGANGSVILKÅR_GJENBRUKT:
             return (
                 <ContainerTopMiddle>
                     <AlertStripeSuksess>{toastTilTekst[toast]}</AlertStripeSuksess>
                 </ContainerTopMiddle>
             );
-        case EToast.BEHANDLING_HENLAGT:
-        case EToast.BREVMOTTAKERE_SATT:
-        case EToast.TILBAKEKREVING_OPPRETTET:
-        case EToast.VEDTAK_UNDERKJENT:
+        default:
             return (
                 <ContainerTopRight>
                     <AlertStripeSuksess>{toastTilTekst[toast]}</AlertStripeSuksess>
                 </ContainerTopRight>
             );
-        default:
-            return null;
     }
 };
