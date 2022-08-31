@@ -8,6 +8,7 @@ interface Props {
     label: string;
     onChange: (value: string) => void;
     options: IMappe[];
+    erUtenMappe?: boolean;
 }
 
 function MappeVelger(props: Props): ReactElement {
@@ -28,7 +29,7 @@ function MappeVelger(props: Props): ReactElement {
     };
 
     const utledValue = () => {
-        if (props.value === -1) return 'uplassert';
+        if (props.erUtenMappe) return 'uplassert';
         else if (props.value) return props.value;
         return '';
     };

@@ -194,12 +194,15 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                                 return { ...prevState, erUtenMappe: true, mappeId: -1 };
                             });
                         } else {
-                            settOppgave('mappeId')(parseInt(val));
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
+                                return { ...prevState, erUtenMappe: false, mappeId: parseInt(val) };
+                            });
                         }
                     }}
                     label="Enhetsmappe"
                     options={mapper}
                     value={oppgaveRequest.mappeId}
+                    erUtenMappe={oppgaveRequest.erUtenMappe}
                 />
 
                 <Select
