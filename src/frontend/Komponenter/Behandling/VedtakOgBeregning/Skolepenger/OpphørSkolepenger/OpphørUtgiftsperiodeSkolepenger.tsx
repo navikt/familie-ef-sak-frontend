@@ -88,6 +88,13 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                     {forrigeData.map((utgift, index) => {
                         const erFjernet = !nyePerioder[utgift.id];
 
+                        const harFlereUtgifter = data.length > 1;
+                        const skalViseFjernKnapp =
+                            behandlingErRedigerbar &&
+                            !skoleårErFjernet &&
+                            !erFjernet &&
+                            harFlereUtgifter;
+
                         return (
                             <Utgiftsrad
                                 erHeader={false}
@@ -102,7 +109,7 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                                 <Element>
                                     {formaterTallMedTusenSkilleEllerStrek(utgift.stønad)}
                                 </Element>
-                                {behandlingErRedigerbar && !skoleårErFjernet && !erFjernet && (
+                                {skalViseFjernKnapp && (
                                     <FjernKnapp
                                         onClick={() => fjernUtgift(utgift.id)}
                                         knappetekst="Fjern vedtaksperiode"

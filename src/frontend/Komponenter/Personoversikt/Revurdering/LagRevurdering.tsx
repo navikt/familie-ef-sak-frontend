@@ -24,14 +24,9 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import { useApp } from '../../../App/context/AppContext';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn.tsx/NyeBarn';
+import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn';
 import { Select } from 'nav-frontend-skjema';
-
-enum EVilkårsbehandleBarnValg {
-    VILKÅRSBEHANDLE = 'VILKÅRSBEHANDLE',
-    IKKE_VILKÅRSBEHANDLE = 'IKKE_VILKÅRSBEHANDLE',
-    IKKE_VALGT = 'IKKE_VALGT',
-}
+import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
