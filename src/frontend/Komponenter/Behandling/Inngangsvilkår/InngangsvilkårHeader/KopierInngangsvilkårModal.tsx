@@ -19,9 +19,22 @@ interface IProps {
     visModal: boolean;
     settVisModal: (bool: boolean) => void;
     behandlingId: string;
+    kopierBehandlingId: string;
+    gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 }
 
-const KopierInngangsvilkårModal: React.FunctionComponent<IProps> = ({ visModal, settVisModal }) => {
+const KopierInngangsvilkårModal: React.FunctionComponent<IProps> = ({
+    visModal,
+    settVisModal,
+    behandlingId,
+    kopierBehandlingId,
+    gjenbrukInngangsvilkår,
+}) => {
+    const kopierInngangsvilkår = (behandlingId: string, kopierBehandlingId: string) => {
+        settVisModal(false);
+        gjenbrukInngangsvilkår(behandlingId, kopierBehandlingId);
+    };
+
     return (
         <UIModalWrapper
             modal={{
@@ -36,7 +49,11 @@ const KopierInngangsvilkårModal: React.FunctionComponent<IProps> = ({ visModal,
                 Inngangsvilkår du allerede har vurdert i inneværende behandling vil bli overskrevet.
             </Normaltekst>
             <KnappeWrapper>
-                <StyledHovedknapp variant="primary" size="small">
+                <StyledHovedknapp
+                    variant="primary"
+                    size="small"
+                    onClick={() => kopierInngangsvilkår(behandlingId, kopierBehandlingId)}
+                >
                     Gjenbruk vilkårsvurdering
                 </StyledHovedknapp>
                 <Button variant="tertiary" size="small" onClick={() => settVisModal(false)}>

@@ -1,4 +1,5 @@
 import {
+    byggHenterRessurs,
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
@@ -14,6 +15,7 @@ import {
     SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
+import { EToast } from '../typer/toast';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
@@ -42,8 +44,9 @@ export const useHentVilkår = (): {
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
+    gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 } => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settToast } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
 
@@ -149,6 +152,22 @@ export const useHentVilkår = (): {
         },
         [axiosRequest]
     );
+    const gjenbrukInngangsvilkår = useCallback(
+        (behandlingId: string, kopierBehandlingId: string) => {
+            settVilkår(byggHenterRessurs());
+            axiosRequest<IVilkår, { behandlingId: string; kopierBehandlingId: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/vurdering/gjenbruk`,
+                data: { behandlingId: behandlingId, kopierBehandlingId: kopierBehandlingId },
+            }).then((respons: RessursSuksess<IVilkår> | RessursFeilet) => {
+                settVilkår(respons);
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settToast(EToast.INNGANGSVILKÅR_GJENBRUKT);
+                }
+            });
+        },
+        [axiosRequest, settToast]
+    );
 
     return {
         vilkår,
@@ -158,5 +177,6 @@ export const useHentVilkår = (): {
         nullstillVurdering,
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
+        gjenbrukInngangsvilkår,
     };
 };

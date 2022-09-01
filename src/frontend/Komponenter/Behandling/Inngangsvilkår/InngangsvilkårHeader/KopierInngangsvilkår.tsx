@@ -5,7 +5,7 @@ import navFarger from 'nav-frontend-core';
 import { Collapse, Expand } from '@navikt/ds-icons';
 import { Alert, Button } from '@navikt/ds-react';
 import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
-import { Behandling } from '../../../../App/typer/fagsak';
+import { Behandling, behandlingResultatTilTekst } from '../../../../App/typer/fagsak';
 import { behandlingstypeTilTekst } from '../../../../App/typer/behandlingstype';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { stønadstypeTilTekst } from '../../../../App/typer/behandlingstema';
@@ -53,9 +53,15 @@ const Gjenbruksknapp = styled(Button)`
 
 interface Props {
     behandlinger: Behandling[];
+    behandlingId: string;
+    gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 }
 
-export const KopierInngangsvilkår: React.FC<Props> = ({ behandlinger }) => {
+export const KopierInngangsvilkår: React.FC<Props> = ({
+    behandlinger,
+    behandlingId,
+    gjenbrukInngangsvilkår,
+}) => {
     const [visForrigeBehandlinger, settVisForrigeBehandlinger] = useState<boolean>(false);
     const [visModal, settVisModal] = useState<boolean>(false);
     const forrigeBehandling = behandlinger.slice(0, 1); // Dersom vi ønsker at bruker skal kunne velge mellom flere tidligere behandlinger kan denne linjen fjernes
@@ -104,14 +110,14 @@ export const KopierInngangsvilkår: React.FC<Props> = ({ behandlinger }) => {
                         <tbody>
                             {forrigeBehandling.map((behandling) => {
                                 return (
-                                    <tr>
+                                    <tr key={behandling.id}>
                                         <td>{stønadstypeTilTekst[behandling.stønadstype]}</td>
                                         <td>{behandlingstypeTilTekst[behandling.type]}</td>
                                         <td>
                                             {behandling.vedtaksdato &&
                                                 formaterIsoDato(behandling.vedtaksdato)}
                                         </td>
-                                        <td>{behandling.resultat}</td>
+                                        <td>{behandlingResultatTilTekst[behandling.resultat]}</td>
                                     </tr>
                                 );
                             })}
@@ -127,7 +133,9 @@ export const KopierInngangsvilkår: React.FC<Props> = ({ behandlinger }) => {
                     <KopierInngangsvilkårModal
                         visModal={visModal}
                         settVisModal={settVisModal}
-                        behandlingId={forrigeBehandling[0].id}
+                        behandlingId={behandlingId}
+                        kopierBehandlingId={forrigeBehandling[0].id}
+                        gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
                     />
                 </>
             )}
