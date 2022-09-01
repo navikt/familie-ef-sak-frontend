@@ -26,7 +26,7 @@ export const oppdaterFilter = (
     if (!val || val === '') {
         // eslint-disable-next-line
         const { [key]: dummy, ...remainder } = object;
-        return { ...remainder };
+        return remainder;
     }
     return {
         ...object,
