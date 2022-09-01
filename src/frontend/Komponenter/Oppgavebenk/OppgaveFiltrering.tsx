@@ -188,10 +188,21 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     skalSkjuleValgetAlle={true}
                 />
                 <MappeVelger
-                    onChange={(val) => settOppgave('mappeId')(parseInt(val))}
+                    onChange={(val) => {
+                        if (val === 'uplassert') {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
+                                return { ...prevState, erUtenMappe: true, mappeId: null };
+                            });
+                        } else {
+                            settOppgaveRequest((prevState: IOppgaveRequest) => {
+                                return { ...prevState, erUtenMappe: false, mappeId: parseInt(val) };
+                            });
+                        }
+                    }}
                     label="Enhetsmappe"
                     options={mapper}
                     value={oppgaveRequest.mappeId}
+                    erUtenMappe={oppgaveRequest.erUtenMappe}
                 />
 
                 <Select

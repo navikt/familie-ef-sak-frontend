@@ -8,6 +8,7 @@ interface Props {
     label: string;
     onChange: (value: string) => void;
     options: IMappe[];
+    erUtenMappe?: boolean;
 }
 
 function MappeVelger(props: Props): ReactElement {
@@ -27,9 +28,15 @@ function MappeVelger(props: Props): ReactElement {
         return 0;
     };
 
+    const utledValue = () => {
+        if (props.erUtenMappe) return 'uplassert';
+        else if (props.value) return props.value;
+        return '';
+    };
+
     return (
         <Select
-            value={props.value || ''}
+            value={utledValue()}
             className="flex-item"
             label={props.label}
             onChange={(event) => {
@@ -38,6 +45,7 @@ function MappeVelger(props: Props): ReactElement {
             }}
         >
             <option value="">Alle</option>
+            <option value="uplassert">Uplassert</option>
             {[...Object.entries<IMappe[]>(mapperPerEnhet)]
                 .sort(sorterMappeListerPåEnhetsnummer)
                 .map<ReactElement>(([val, mapper], index) => {
