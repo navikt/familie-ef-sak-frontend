@@ -8,6 +8,7 @@ import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Behandling } from '../../../../App/typer/fagsak';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../../App/context/AppContext';
+import { utledVilkårsgjenbruk } from '../utils';
 
 const Container = styled.div`
     display: flex;
@@ -54,6 +55,12 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
         finnBehandlingForGjenbrukAvVilkår(behandling.id);
     }, [behandling, finnBehandlingForGjenbrukAvVilkår]);
 
+    const skalViseGjenbrukVilkår = utledVilkårsgjenbruk(
+        toggles[ToggleName.visGjenbrukAvVilkår],
+        behandlingErRedigerbar,
+        behandling
+    );
+
     return (
         <Container>
             <OppdaterOpplysninger
@@ -62,7 +69,7 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                 oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
                 behandlingId={behandlingId}
             />
-            {toggles[ToggleName.visGjenbrukAvVilkår] && behandlingErRedigerbar && (
+            {skalViseGjenbrukVilkår && (
                 <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
                     {({ behandlingerForVilkårsgjenbruk }) =>
                         behandlingerForVilkårsgjenbruk.length > 0 ? (
