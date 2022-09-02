@@ -30,7 +30,7 @@ interface IProps {
     settVisModal: (bool: boolean) => void;
     fagsakId: string;
     hentTilbakekrevinger: Dispatch<void>;
-    åpenRevurderingFinnes: boolean;
+    kanStarteRevurdering: boolean;
 }
 
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
@@ -38,7 +38,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     settVisModal,
     fagsakId,
     hentTilbakekrevinger,
-    åpenRevurderingFinnes,
+    kanStarteRevurdering,
 }) => {
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
@@ -110,7 +110,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                 }}
             >
                 <option value="">Velg</option>
-                {åpenRevurderingFinnes && (
+                {kanStarteRevurdering && (
                     <option value={Behandlingstype.REVURDERING}>Revurdering</option>
                 )}
                 <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
