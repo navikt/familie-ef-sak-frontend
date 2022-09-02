@@ -43,7 +43,9 @@ export const utledVilkårsgjenbruk = (
     behandling: Behandling
 ): boolean => {
     const behandlingErRevurdering = behandling.type === Behandlingstype.REVURDERING;
-    const behandlingsårsakErSøknad = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+    const behandlingsårsakErSøknad =
+        behandling.behandlingsårsak === Behandlingsårsak.SØKNAD ||
+        behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD;
     const vilkårForRevurderingErOppfylt = behandlingErRevurdering ? behandlingsårsakErSøknad : true;
     return featureToggle && behandlingErRedigerbar && vilkårForRevurderingErOppfylt;
 };
