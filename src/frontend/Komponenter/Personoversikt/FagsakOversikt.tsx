@@ -10,9 +10,9 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
 import { erAlleBehandlingerErFerdigstilt } from './utils';
-import { Stønadstype } from '../../App/typer/behandlingstema';
-import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import { useToggles } from '../../App/context/TogglesContext';
+import { Stønadstype } from '../../App/typer/behandlingstema';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;
@@ -59,13 +59,14 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
                         eksternFagsakId={fagsak.eksternId}
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                     />
-                    {erSaksbehandler && kanStarteRevurdering && skalViseOpprettNyBehandlingKnapp && (
+                    {erSaksbehandler && skalViseOpprettNyBehandlingKnapp && (
                         <>
                             <LagBehandlingModal
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsakId={fagsak.id}
                                 hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
+                                kanStarteRevurdering={kanStarteRevurdering}
                             />
 
                             <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
