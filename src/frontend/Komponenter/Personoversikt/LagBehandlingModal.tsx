@@ -1,7 +1,7 @@
 import React, { Dispatch, useState } from 'react';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import styled from 'styled-components';
 import { Select } from 'nav-frontend-skjema';
@@ -101,6 +101,12 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                 onClose: () => settVisModal(false),
             }}
         >
+            {!kanStarteRevurdering && (
+                <AlertStripeInfo>
+                    Merk at det er ikke mulig å opprette en revurdering da det allerede finnes en
+                    åpen behandling på fagsaken. Det er kun mulig å opprette en tilbakekreving.
+                </AlertStripeInfo>
+            )}
             <StyledSelect
                 label="Behandlingstype"
                 value={valgtBehandlingstype || ''}
