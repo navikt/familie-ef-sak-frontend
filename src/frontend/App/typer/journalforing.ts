@@ -65,6 +65,7 @@ export interface IJournalpost {
 export interface IJojurnalpostResponse {
     journalpost: IJournalpost;
     personIdent: string;
+    navn: string;
     harStrukturertSøknad: boolean;
 }
 

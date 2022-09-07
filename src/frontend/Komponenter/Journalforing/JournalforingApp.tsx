@@ -309,7 +309,10 @@ export const JournalforingApp: React.FC = () => {
                                         hentFagsak={hentFagsak}
                                     />
                                 )}
-                                <Brukerinfo personIdent={journalResponse.personIdent} />
+                                <Brukerinfo
+                                    navn={journalResponse.navn}
+                                    personIdent={journalResponse.personIdent}
+                                />
                                 <DokumentVisning
                                     journalPost={journalResponse.journalpost}
                                     hentDokument={hentDokument}
