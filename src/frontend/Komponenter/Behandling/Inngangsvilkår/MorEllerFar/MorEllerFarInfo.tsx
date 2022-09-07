@@ -25,27 +25,15 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                 return (
                     <React.Fragment key={barn.barnId}>
                         <GridTabell>
-                            {registergrunnlag.navn ? (
-                                <>
-                                    <LiteBarn />
-                                    <Element>
-                                        {registergrunnlag.navn}
-                                        {registergrunnlag.dødsdato && (
-                                            <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                                        )}
-                                    </Element>
-                                </>
-                            ) : skalViseSøknadsdata ? (
-                                <>
-                                    <LiteBarn />
-                                    <Element>
-                                        {søknadsgrunnlag.navn ? søknadsgrunnlag.navn : 'Ikke født'}
-                                        {registergrunnlag.dødsdato && (
-                                            <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                                        )}
-                                    </Element>
-                                </>
-                            ) : null}
+                            <>
+                                <LiteBarn />
+                                <Element>
+                                    {registergrunnlag.navn ?? søknadsgrunnlag.navn ?? 'Ikke født'}
+                                    {registergrunnlag.dødsdato && (
+                                        <EtikettDød dødsdato={registergrunnlag.dødsdato} />
+                                    )}
+                                </Element>
+                            </>
                             {registergrunnlag.fødselsnummer ? (
                                 <>
                                     <Registergrunnlag />
@@ -54,7 +42,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                                         fødselsnummer={registergrunnlag.fødselsnummer}
                                     />
                                 </>
-                            ) : skalViseSøknadsdata ? (
+                            ) : (
                                 <>
                                     <Søknadsgrunnlag />
                                     <Normaltekst>Termindato</Normaltekst>
@@ -62,7 +50,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                                         {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                                     </Normaltekst>
                                 </>
-                            ) : null}
+                            )}
                         </GridTabell>
                     </React.Fragment>
                 );

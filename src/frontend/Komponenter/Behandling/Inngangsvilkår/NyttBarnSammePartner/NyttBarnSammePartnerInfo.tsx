@@ -14,11 +14,7 @@ interface Props {
     skalViseSøknadsdata: boolean;
 }
 
-const NyttBarnSammePartnerInfo: FC<Props> = ({
-    barnMedSamvær,
-    tidligereVedtaksperioder,
-    skalViseSøknadsdata,
-}) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksperioder }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
@@ -43,24 +39,20 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
                     </Normaltekst>
                 )}
             </div>
-            {skalViseSøknadsdata && (
-                <div>
-                    <FlexDiv>
-                        <Overskrift className="tittel" tag="h3">
-                            Brukers fremtidige barn lagt til i søknad
-                        </Overskrift>
-                    </FlexDiv>
-                    {søknadsgrunnlagNyttBarn.length ? (
-                        søknadsgrunnlagNyttBarn.map((barn) => (
-                            <SøknadgrunnlagNyttBarn barn={barn} />
-                        ))
-                    ) : (
-                        <Normaltekst>
-                            <i>Bruker har ingen barn lagt til i søknad</i>
-                        </Normaltekst>
-                    )}
-                </div>
-            )}
+            <div>
+                <FlexDiv>
+                    <Overskrift className="tittel" tag="h3">
+                        Brukers fremtidige barn lagt til i søknad
+                    </Overskrift>
+                </FlexDiv>
+                {søknadsgrunnlagNyttBarn.length ? (
+                    søknadsgrunnlagNyttBarn.map((barn) => <SøknadgrunnlagNyttBarn barn={barn} />)
+                ) : (
+                    <Normaltekst>
+                        <i>Bruker har ingen barn lagt til i søknad</i>
+                    </Normaltekst>
+                )}
+            </div>
         </>
     );
 };
