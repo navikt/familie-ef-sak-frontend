@@ -1,5 +1,5 @@
 import { ISøkeresultat, Søk } from '@navikt/familie-header';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     byggHenterRessurs,
     byggSuksessRessurs,
@@ -30,6 +30,8 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
         : [];
 };
 
+const erPositivtTall = (verdi: string) => /^\d+$/.test(verdi) && Number(verdi) !== 0;
+
 const PersonSøk: React.FC = () => {
     const { gåTilUrl, axiosRequest } = useApp();
     const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
@@ -45,21 +47,44 @@ const PersonSøk: React.FC = () => {
         nullstillResultat();
     };
 
-    const søk = (personIdent: string): void => {
-        if (!personIdent || resultat.status === RessursStatus.HENTER) return;
+    const oppdaterResultat = (response: RessursSuksess<ISøkPerson> | RessursFeilet): void => {
+        if (response.status === RessursStatus.SUKSESS) {
+            const søkeresultater: ISøkeresultat[] = tilSøkeresultatListe(response.data);
+            settResultat(byggSuksessRessurs(søkeresultater));
+        } else {
+            settResultat(response);
+        }
+    };
+
+    const søkPerson = useCallback(
+        (personIdent: string) => {
+            axiosRequest<ISøkPerson, IPersonIdent>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/sok/person`,
+                data: { personIdent: personIdent },
+            }).then(oppdaterResultat);
+        },
+        [axiosRequest]
+    );
+
+    const søkPersonEksternFagsakId = useCallback(
+        (eksternFagsakId: string) => {
+            axiosRequest<ISøkPerson, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/sok/person/fagsak-ekstern/${eksternFagsakId}`,
+            }).then(oppdaterResultat);
+        },
+        [axiosRequest]
+    );
+
+    const søk = (verdi: string): void => {
+        if (!verdi || resultat.status === RessursStatus.HENTER) return;
         settResultat(byggHenterRessurs());
-        axiosRequest<ISøkPerson, IPersonIdent>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/sok/`,
-            data: { personIdent: personIdent },
-        }).then((response: RessursSuksess<ISøkPerson> | RessursFeilet) => {
-            if (response.status === RessursStatus.SUKSESS) {
-                const søkeresultater: ISøkeresultat[] = tilSøkeresultatListe(response.data);
-                settResultat(byggSuksessRessurs(søkeresultater));
-            } else {
-                settResultat(response);
-            }
-        });
+        if (erPositivtTall(verdi) && verdi.length !== 11) {
+            søkPersonEksternFagsakId(verdi);
+        } else {
+            søkPerson(verdi);
+        }
     };
 
     return (
