@@ -11,7 +11,6 @@ import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer'
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
-    skalViseSøknadsdata: boolean;
 }
 
 const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksperioder }) => {

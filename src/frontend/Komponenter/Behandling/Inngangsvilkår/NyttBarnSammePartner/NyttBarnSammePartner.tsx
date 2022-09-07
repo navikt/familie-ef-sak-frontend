@@ -13,7 +13,6 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     nullstillVurdering,
     feilmeldinger,
     ikkeVurderVilkår,
-    skalViseSøknadsdata,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
@@ -35,7 +34,6 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                         <NyttBarnSammePartnerInfo
                             barnMedSamvær={barnMedSamvær}
                             tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
                         />
                     </>
                 ),
