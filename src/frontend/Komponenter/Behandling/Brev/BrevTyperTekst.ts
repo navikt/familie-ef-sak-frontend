@@ -13,7 +13,7 @@ export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
     {
         deloverskrift: 'Du må si ifra om endringer',
         innhold:
-            'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/familie/alene-med-barn/overgangsstonad#melde. Du sier ifra om endringer ved å skrive en beskjed til oss på nav.no/person/kontakt-oss/nb/skriv-til-oss.',
+            'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/familie/alene-med-barn/overgangsstonad#melde. Du sier ifra om endringer ved å logge inn på nav.no/skriv-til-oss.',
         id: uuidv4(),
     },
     {
@@ -65,7 +65,7 @@ export const initielleAvsnittVedtakInvilgelseBarnetilsyn: AvsnittMedId[] = [
     {
         deloverskrift: 'Du må si ifra om endringer',
         innhold:
-            'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/barnetilsyn-enslig#melde. Du sier ifra om endringer ved å skrive en beskjed til oss på nav.no/person/kontakt-oss/nb/skriv-til-oss.',
+            'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/barnetilsyn-enslig#melde. Du sier ifra om endringer ved å logge inn på nav.no/skriv-til-oss.',
         id: uuidv4(),
     },
     {
@@ -238,7 +238,7 @@ export const initielleAvsnittVedtakInvilgelseSkolepenger: AvsnittMedId[] = [
     {
         deloverskrift: 'Du må si ifra om endringer',
         innhold:
-            'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/skolepenger-enslig#melde. Du sier ifra om endringer ved å skrive en beskjed til oss på nav.no/person/kontakt-oss/nb/skriv-til-oss.',
+            'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/skolepenger-enslig#melde. Du sier ifra om endringer ved å logge inn på nav.no/skriv-til-oss.',
         id: uuidv4(),
     },
     {
