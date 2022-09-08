@@ -32,7 +32,8 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
                     <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
                 </>
             )}
-            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+            {(stønadstype === Stønadstype.OVERGANGSSTØNAD ||
+                stønadstype === Stønadstype.BARNETILSYN) && (
                 <>
                     <Normaltekst className={'førsteDataKolonne'}>
                         Beskrivelse av arbeidsuke
