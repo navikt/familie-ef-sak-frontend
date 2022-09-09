@@ -92,6 +92,7 @@ const PersonSøk: React.FC = () => {
             key={uuidSøk}
             søk={søk}
             label="Søk etter fagsak for en person"
+            placeholder="Fnr/saksnr"
             søkeresultater={resultat}
             nullstillSøkeresultater={nullstillResultat}
             søkeresultatOnClick={søkeresultatOnClick}
