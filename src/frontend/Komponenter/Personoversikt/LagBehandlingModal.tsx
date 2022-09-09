@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../App/typer/toast';
 import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
+import { Fagsak } from '../../App/typer/fagsak';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -28,7 +29,7 @@ export const StyledHovedknapp = styled(Hovedknapp)`
 interface IProps {
     visModal: boolean;
     settVisModal: (bool: boolean) => void;
-    fagsakId: string;
+    fagsak: Fagsak;
     hentTilbakekrevinger: Dispatch<void>;
     kanStarteRevurdering: boolean;
 }
@@ -36,7 +37,7 @@ interface IProps {
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     visModal,
     settVisModal,
-    fagsakId,
+    fagsak,
     hentTilbakekrevinger,
     kanStarteRevurdering,
 }) => {
@@ -52,7 +53,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             settSenderInnBehandling(true);
             axiosRequest<Ressurs<void>, null>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/tilbakekreving/fagsak/${fagsakId}/opprett-tilbakekreving`,
+                url: `/familie-ef-sak/api/tilbakekreving/fagsak/${fagsak.id}/opprett-tilbakekreving`,
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
@@ -76,7 +77,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             settSenderInnBehandling(true);
             axiosRequest<Ressurs<void>, RevurderingInnhold>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
+                url: `/familie-ef-sak/api/revurdering/${fagsak.id}`,
                 data: revurderingInnhold,
             })
                 .then((response) => {
@@ -123,7 +124,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             </StyledSelect>
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
                 <LagRevurdering
-                    fagsakId={fagsakId}
+                    fagsak={fagsak}
                     valgtBehandlingstype={valgtBehandlingstype}
                     lagRevurdering={lagRevurdering}
                     settVisModal={settVisModal}
