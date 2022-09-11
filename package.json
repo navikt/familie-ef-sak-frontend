@@ -127,7 +127,7 @@
     "styled-components": "^5.3.5",
     "svg-inline-loader": "^0.8.2",
     "use-debounce": "^8.0.1",
-    "uuid": "^8.3.2"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@axe-core/react": "^4.4.0",
