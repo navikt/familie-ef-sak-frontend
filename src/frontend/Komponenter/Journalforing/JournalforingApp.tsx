@@ -42,6 +42,7 @@ import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
 import { erAlleBehandlingerFerdigstilte, harValgtNyBehandling } from './journalførBehandlingUtil';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
+import { erGyldigDato } from '../../App/utils/dato';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -117,7 +118,10 @@ const erEttersendingPåNyFørstegangsbehandling = (
 
 const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateRequest) =>
     journalpostState.barnSomSkalFødes.some(
-        (barn) => !barn.fødselTerminDato || barn.fødselTerminDato.trim() === ''
+        (barn) =>
+            !barn.fødselTerminDato ||
+            barn.fødselTerminDato.trim() === '' ||
+            !erGyldigDato(barn.fødselTerminDato)
     );
 
 const validerJournalføringState = (

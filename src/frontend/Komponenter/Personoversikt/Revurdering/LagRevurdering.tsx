@@ -29,6 +29,7 @@ import { Select } from 'nav-frontend-skjema';
 import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { erGyldigDato } from '../../../App/utils/dato';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -154,6 +155,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                         settValgtDato(dato as string);
                                     }}
                                     valgtDato={valgtDato}
+                                    feil={
+                                        valgtDato && !erGyldigDato(valgtDato)
+                                            ? 'Ugyldig dato'
+                                            : undefined
+                                    }
                                 />
                                 {skalViseNyeBarnValg && (
                                     <NyeBarn
@@ -172,6 +178,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             const kanStarteRevurdering = !!(
                                                 valgtBehandlingsårsak &&
                                                 valgtDato &&
+                                                erGyldigDato(valgtDato) &&
                                                 !(
                                                     harNyeBarnSidenForrigeBehandling &&
                                                     måTaStillingTilBarn &&
