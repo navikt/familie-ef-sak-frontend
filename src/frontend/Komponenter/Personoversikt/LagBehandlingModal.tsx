@@ -12,6 +12,9 @@ import { EToast } from '../../App/typer/toast';
 import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
 import { Fagsak } from '../../App/typer/fagsak';
+import OpprettKlage from './Klage/OpprettKlage';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -41,6 +44,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     hentTilbakekrevinger,
     kanStarteRevurdering,
 }) => {
+    const { toggles } = useToggles();
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
 
@@ -93,6 +97,31 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
         }
     };
 
+    const opprettKlage = (behandlingId: string, mottattDato: string) => {
+        settFeilmeldingModal('');
+
+        if (!senderInnBehandling) {
+            settSenderInnBehandling(true);
+            axiosRequest<Ressurs<void>, { mottattDato: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/klage/${behandlingId}`,
+                data: { mottattDato },
+            })
+                .then((response) => {
+                    if (response.status === RessursStatus.SUKSESS) {
+                        //TODO hentKlager();
+                        settVisModal(false);
+                        settToast(EToast.KLAGE_OPPRETTET);
+                    } else {
+                        settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                    }
+                })
+                .finally(() => {
+                    settSenderInnBehandling(false);
+                });
+        }
+    };
+
     return (
         <UIModalWrapper
             modal={{
@@ -121,6 +150,9 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     <option value={Behandlingstype.REVURDERING}>Revurdering</option>
                 )}
                 <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
+                {toggles[ToggleName.visOpprettKlage] && (
+                    <option value={Behandlingstype.KLAGE}>Klage</option>
+                )}
             </StyledSelect>
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
                 <LagRevurdering
@@ -150,6 +182,13 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                         Avbryt
                     </Flatknapp>
                 </KnappeWrapper>
+            )}
+            {valgtBehandlingstype === Behandlingstype.KLAGE && (
+                <OpprettKlage
+                    fagsak={fagsak}
+                    opprettKlage={opprettKlage}
+                    settVisModal={settVisModal}
+                />
             )}
             {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
         </UIModalWrapper>
