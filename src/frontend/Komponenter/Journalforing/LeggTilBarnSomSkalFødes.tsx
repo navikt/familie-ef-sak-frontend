@@ -7,6 +7,7 @@ import { Button, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { v4 as uuidv4 } from 'uuid';
+import { erGyldigDato } from '../../App/utils/dato';
 
 const Tittel = styled(Heading)`
     color: ${navFarger.navBlaLighten40};
@@ -80,6 +81,11 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                             label={'Termindato'}
                             onChange={(dato) => oppdaterTermindato(barn._id, dato as string)}
                             valgtDato={barn.fødselTerminDato}
+                            feil={
+                                barn.fødselTerminDato && !erGyldigDato(barn.fødselTerminDato)
+                                    ? 'Ugyldig dato'
+                                    : undefined
+                            }
                         />
                         <FjernBanrKnapp
                             variant="tertiary"
