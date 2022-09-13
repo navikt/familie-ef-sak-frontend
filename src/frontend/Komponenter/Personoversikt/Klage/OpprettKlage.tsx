@@ -7,6 +7,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { compareDesc } from 'date-fns';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { erGyldigDato } from '../../../App/utils/dato';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -76,15 +77,14 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
                     settValgtDato(dato as string);
                 }}
                 valgtDato={valgtDato}
-                // TODO feil={}
+                feil={valgtDato && !erGyldigDato(valgtDato) && 'Ugyldig dato'}
             />
 
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             <KnappeWrapper>
                 <StyledHovedknapp
                     onClick={() => {
-                        // TODO && er gyldigDato
-                        if (valgtDato) {
+                        if (valgtDato && erGyldigDato(valgtDato)) {
                             opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
                         } else {
                             settFeilmelding('Vennligst fyll ut alle felter');
