@@ -7,34 +7,17 @@ import { useApp } from '../../../App/context/AppContext';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 
 interface ÅpneKlagerResponse {
-    infotrygd: {
-        overgangsstønad: boolean;
-        barnetilsyn: boolean;
-        skolepenger: boolean;
-    };
+    stønadstyper: Stønadstype[];
 }
 
 const AdvarselVisning = styled(AlertStripeAdvarsel)`
     margin-top: 1.5rem;
     max-width: 60rem;
+
     .alertstripe__tekst {
         max-width: 60rem;
     }
 `;
-
-const mapÅpneKlagerTilTekst = (åpneKlager: ÅpneKlagerResponse): string | undefined => {
-    const overgangsstønad = åpneKlager.infotrygd.overgangsstønad && Stønadstype.OVERGANGSSTØNAD;
-    const barnetilsyn = åpneKlager.infotrygd.barnetilsyn && Stønadstype.BARNETILSYN;
-    const skolepenger = åpneKlager.infotrygd.skolepenger && Stønadstype.SKOLEPENGER;
-
-    const stønadstyper = (
-        [overgangsstønad, barnetilsyn, skolepenger].filter((stønad) => !!stønad) as Stønadstype[]
-    ).map((stønad) => stønadstypeTilTekst[stønad]);
-    if (stønadstyper.length === 0) {
-        return undefined;
-    }
-    return stønadstyper.join(', ');
-};
 
 export const KlageInfotrygdInfo: React.FunctionComponent<{ fagsakPersonId: string }> = ({
     fagsakPersonId,
@@ -45,16 +28,20 @@ export const KlageInfotrygdInfo: React.FunctionComponent<{ fagsakPersonId: strin
     useEffect(() => {
         axiosRequest<ÅpneKlagerResponse, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/klage/fagsak-person/${fagsakPersonId}/apen`,
+            url: `/familie-ef-sak/api/klage/fagsak-person/${fagsakPersonId}/infotrygd`,
         }).then(settÅpneKlager);
     }, [axiosRequest, fagsakPersonId]);
 
     return (
         <DataViewer response={{ åpneKlager }}>
             {({ åpneKlager }) => {
-                const åpneKlagerTekst = mapÅpneKlagerTilTekst(åpneKlager);
-                if (!åpneKlagerTekst) return null;
+                if (åpneKlager.stønadstyper.length === 0) {
+                    return null;
+                }
 
+                const åpneKlagerTekst = åpneKlager.stønadstyper
+                    .map((stønadstype) => stønadstypeTilTekst[stønadstype])
+                    .join(', ');
                 return (
                     <AdvarselVisning>
                         Merk at det ligger en åpen klage i Infortrygd på stønadstype:{' '}
