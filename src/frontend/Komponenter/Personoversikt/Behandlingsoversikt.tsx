@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { FagsakOversikt } from './FagsakOversikt';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
+import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -19,6 +20,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
         <DataViewer response={{ fagsakPerson }}>
             {({ fagsakPerson }) => (
                 <>
+                    <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
                         <FagsakOversikt fagsak={fagsakPerson.overgangsstønad} />
                     )}
