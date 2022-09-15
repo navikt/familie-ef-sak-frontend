@@ -21,7 +21,7 @@ import { BehandlingApplikasjon } from './Behandlingsoversikt';
 import { PartialRecord } from '../../App/typer/common';
 import styled from 'styled-components';
 import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
-import { KlageBehandling, KlagebehandlingResultat } from '../../App/typer/klage';
+import { KlageBehandling, KlagebehandlingResultat, KlageÅrsak } from '../../App/typer/klage';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -41,7 +41,7 @@ const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
 interface BehandlingsoversiktTabellBehandling {
     id: string;
     type: Behandlingstype | TilbakekrevingBehandlingstype | string;
-    årsak?: Behandlingsårsak;
+    årsak?: Behandlingsårsak | KlageÅrsak;
     henlagtÅrsak?: EHenlagtårsak;
     status: string;
     vedtaksdato?: string;
@@ -98,6 +98,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 resultat: behandling.resultat,
                 opprettet: behandling.opprettet,
                 applikasjon: BehandlingApplikasjon.TILBAKEKREVING,
+                årsak: behandling.årsak,
             };
         }
     );
