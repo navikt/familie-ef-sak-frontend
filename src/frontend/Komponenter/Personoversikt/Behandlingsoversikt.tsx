@@ -3,6 +3,7 @@ import { FagsakOversikt } from './FagsakOversikt';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
+import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -11,14 +12,16 @@ export enum BehandlingApplikasjon {
 
 const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
+    const { hentKlagebehandlinger, klagebehandlinger } = useHentKlagebehandlinger();
 
     useEffect(() => {
         hentFagsakPerson(fagsakPersonId);
+        hentKlagebehandlinger(fagsakPersonId);
     }, [hentFagsakPerson, fagsakPersonId]);
 
     return (
-        <DataViewer response={{ fagsakPerson }}>
-            {({ fagsakPerson }) => (
+        <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
+            {({ fagsakPerson, klagebehandlinger }) => (
                 <>
                     <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
