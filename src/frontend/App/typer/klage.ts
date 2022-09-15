@@ -9,10 +9,10 @@ export interface KlageBehandling {
     id: string;
     mottattDato: string;
     opprettet: string;
-    resultat: KlagebehandlingResultat | null;
+    resultat: KlagebehandlingResultat | undefined;
     status: KlagebehandlingStatus;
-    vedtaksdato: string | null;
-    årsak: KlageÅrsak | null;
+    vedtaksdato: string | undefined;
+    årsak: KlageÅrsak | undefined;
 }
 
 export enum KlagebehandlingResultat {

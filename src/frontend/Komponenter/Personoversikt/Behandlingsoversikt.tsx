@@ -17,7 +17,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
     useEffect(() => {
         hentFagsakPerson(fagsakPersonId);
         hentKlagebehandlinger(fagsakPersonId);
-    }, [hentFagsakPerson, fagsakPersonId]);
+    }, [hentFagsakPerson, fagsakPersonId, hentKlagebehandlinger]);
 
     return (
         <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
@@ -25,13 +25,22 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
                 <>
                     <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
-                        <FagsakOversikt fagsak={fagsakPerson.overgangsstønad} />
+                        <FagsakOversikt
+                            fagsak={fagsakPerson.overgangsstønad}
+                            klageBehandlinger={klagebehandlinger.overgangsstønad}
+                        />
                     )}
                     {fagsakPerson.barnetilsyn && (
-                        <FagsakOversikt fagsak={fagsakPerson.barnetilsyn} />
+                        <FagsakOversikt
+                            fagsak={fagsakPerson.barnetilsyn}
+                            klageBehandlinger={klagebehandlinger.barnetilsyn}
+                        />
                     )}
                     {fagsakPerson.skolepenger && (
-                        <FagsakOversikt fagsak={fagsakPerson.skolepenger} />
+                        <FagsakOversikt
+                            fagsak={fagsakPerson.skolepenger}
+                            klageBehandlinger={klagebehandlinger.skolepenger}
+                        />
                     )}
                 </>
             )}
