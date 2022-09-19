@@ -4,6 +4,7 @@ import { BehandlingStatus } from './behandlingstatus';
 import { Steg } from '../../Komponenter/Behandling/Høyremeny/Steg';
 import { Behandlingsårsak, EHenlagtårsak } from '../typer/Behandlingsårsak';
 import { TilbakekrevingBehandlingsresultatstype } from './tilbakekreving';
+import { KlagebehandlingResultat } from './klage';
 
 export interface IFagsakPerson {
     id: string;
@@ -59,31 +60,19 @@ export enum BehandlingResultat {
     OPPHØRT = 'OPPHØRT',
 }
 
-export const behandlingResultatTilTekst: Record<BehandlingResultat, string> = {
+export const behandlingResultatTilTekst: Record<
+    BehandlingResultat | TilbakekrevingBehandlingsresultatstype | KlagebehandlingResultat,
+    string
+> = {
     INNVILGET: 'Innvilget',
     IKKE_SATT: 'Ikke satt',
     HENLAGT: 'Henlagt',
     OPPHØRT: 'Opphørt',
     AVSLÅTT: 'Avslått',
-};
-
-export const tilbakekrevingBehandlingsresultattypeTilTekst: Record<
-    TilbakekrevingBehandlingsresultatstype,
-    string
-> = {
     IKKE_FASTSATT: 'Ikke fastsatt',
     INGEN_TILBAKEBETALING: 'Ingen tilbakebetaling',
     DELVIS_TILBAKEBETALING: 'Delvis tilbakebetaling',
     FULL_TILBAKEBETALING: 'Full tilbakebetaling',
-    HENLAGT: 'Henlagt',
+    MEDHOLD: 'Medhold',
+    IKKE_MEDHOLD: 'Ikke medhold',
 };
-
-export const BehandlingResultatInkludertTilbakekreving = {
-    ...BehandlingResultat,
-    ...TilbakekrevingBehandlingsresultatstype,
-};
-
-export const behandlingResultatInkludertTilbakekrevingTilTekst: Record<
-    BehandlingResultat | TilbakekrevingBehandlingsresultatstype,
-    string
-> = { ...behandlingResultatTilTekst, ...tilbakekrevingBehandlingsresultattypeTilTekst };

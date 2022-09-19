@@ -1,4 +1,5 @@
 import { TilbakekrevingsbehandlingÅrsak } from './tilbakekreving';
+import { KlageÅrsak } from './klage';
 
 export enum Behandlingsårsak {
     KLAGE = 'KLAGE',
@@ -32,7 +33,7 @@ export const behandlingsårsaker: Behandlingsårsak[] = [
 ];
 
 export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
-    Behandlingsårsak | TilbakekrevingsbehandlingÅrsak,
+    Behandlingsårsak | TilbakekrevingsbehandlingÅrsak | KlageÅrsak,
     string
 > = {
     KLAGE: 'Klage',
@@ -50,6 +51,12 @@ export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
     REVURDERING_OPPLYSNINGER_OM_FORELDELSE: 'Nye opplysninger',
     REVURDERING_FEILUTBETALT_BELØP_HELT_ELLER_DELVIS_BORTFALT:
         'Feilutbetalt beløp helt eller delvis bortfalt',
+    FEIL_I_LOVANDVENDELSE: 'Feil i lovanvendelse',
+    FEIL_REGELVERKSFORSTÅELSE: 'Feil regelverkforståelse',
+    FEIL_ELLER_ENDRET_FAKTA: 'Feil eller endret fakta',
+    FEIL_PROSESSUELL: 'Feil prosessuell',
+    KØET_BEHANDLING: 'Køet behandling',
+    ANNET: 'Annet',
 };
 
 export enum EHenlagtårsak {
