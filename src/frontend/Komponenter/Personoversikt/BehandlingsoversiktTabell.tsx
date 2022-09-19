@@ -24,7 +24,7 @@ import { Link } from 'react-router-dom';
 import { BehandlingApplikasjon } from './Behandlingsoversikt';
 import { PartialRecord } from '../../App/typer/common';
 import styled from 'styled-components';
-import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
+import { klageBaseUrl, tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -99,6 +99,21 @@ export const BehandlingsoversiktTabell: React.FC<{
         return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
     };
 
+    const lagKlagebehandlingsLenke = (behandlingId: string): string => {
+        return `${klageBaseUrl()}behandling/${behandlingId}/formkrav`;
+    };
+
+    const lagEksternBehandlingApplikasjonLenke = (
+        eksternFagsakId: number,
+        behandlingId: string,
+        behandlingApplikasjon: string
+    ): string => {
+        if (behandlingApplikasjon === BehandlingApplikasjon.TILBAKEKREVING) {
+            return lagTilbakekrevingslenke(eksternFagsakId, behandlingId);
+        }
+        return lagKlagebehandlingsLenke(behandlingId);
+    };
+
     const finnÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
         behandling.type === TilbakekrevingBehandlingstype.TILBAKEKREVING
             ? 'Feilutbetaling'
@@ -158,9 +173,10 @@ export const BehandlingsoversiktTabell: React.FC<{
                                         className="lenke"
                                         target="_blank"
                                         rel="noreferrer"
-                                        href={lagTilbakekrevingslenke(
+                                        href={lagEksternBehandlingApplikasjonLenke(
                                             eksternFagsakId,
-                                            behandling.id
+                                            behandling.id,
+                                            behandling.applikasjon
                                         )}
                                     >
                                         {behandling.resultat
