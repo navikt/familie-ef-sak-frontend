@@ -97,7 +97,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 vedtaksdato: behandling.vedtaksdato,
                 resultat: behandling.resultat,
                 opprettet: behandling.opprettet,
-                applikasjon: BehandlingApplikasjon.TILBAKEKREVING,
+                applikasjon: BehandlingApplikasjon.KLAGE,
                 årsak: behandling.årsak,
             };
         }
