@@ -124,7 +124,7 @@ export const BehandlingsoversiktTabell: React.FC<{
     const lagEksternBehandlingApplikasjonLenke = (
         eksternFagsakId: number,
         behandlingId: string,
-        behandlingApplikasjon: string
+        behandlingApplikasjon: BehandlingApplikasjon
     ): string => {
         if (behandlingApplikasjon === BehandlingApplikasjon.TILBAKEKREVING) {
             return lagTilbakekrevingslenke(eksternFagsakId, behandlingId);
