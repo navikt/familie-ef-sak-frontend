@@ -50,7 +50,7 @@ interface BehandlingsoversiktTabellBehandling {
         | TilbakekrevingBehandlingsresultatstype
         | KlagebehandlingResultat;
     opprettet: string;
-    applikasjon: string;
+    applikasjon: BehandlingApplikasjon;
 }
 
 export const BehandlingsoversiktTabell: React.FC<{
