@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 import { BehandlingApplikasjon } from './Behandlingsoversikt';
 import { PartialRecord } from '../../App/typer/common';
 import styled from 'styled-components';
-import { tilbakekrevingBaseUrl } from '../../App/utils/miljø';
+import { klageBaseUrl, tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 import { KlageBehandling, KlagebehandlingResultat, KlageÅrsak } from '../../App/typer/klage';
 
 const StyledTable = styled.table`
@@ -50,7 +50,7 @@ interface BehandlingsoversiktTabellBehandling {
         | TilbakekrevingBehandlingsresultatstype
         | KlagebehandlingResultat;
     opprettet: string;
-    applikasjon: string;
+    applikasjon: BehandlingApplikasjon;
 }
 
 export const BehandlingsoversiktTabell: React.FC<{
@@ -97,7 +97,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 vedtaksdato: behandling.vedtaksdato,
                 resultat: behandling.resultat,
                 opprettet: behandling.opprettet,
-                applikasjon: BehandlingApplikasjon.TILBAKEKREVING,
+                applikasjon: BehandlingApplikasjon.KLAGE,
                 årsak: behandling.årsak,
             };
         }
@@ -115,6 +115,21 @@ export const BehandlingsoversiktTabell: React.FC<{
 
     const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string => {
         return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
+    };
+
+    const lagKlagebehandlingsLenke = (behandlingId: string): string => {
+        return `${klageBaseUrl()}/behandling/${behandlingId}`;
+    };
+
+    const lagEksternBehandlingApplikasjonLenke = (
+        eksternFagsakId: number,
+        behandlingId: string,
+        behandlingApplikasjon: BehandlingApplikasjon
+    ): string => {
+        if (behandlingApplikasjon === BehandlingApplikasjon.TILBAKEKREVING) {
+            return lagTilbakekrevingslenke(eksternFagsakId, behandlingId);
+        }
+        return lagKlagebehandlingsLenke(behandlingId);
     };
 
     const finnÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
@@ -174,9 +189,10 @@ export const BehandlingsoversiktTabell: React.FC<{
                                         className="lenke"
                                         target="_blank"
                                         rel="noreferrer"
-                                        href={lagTilbakekrevingslenke(
+                                        href={lagEksternBehandlingApplikasjonLenke(
                                             eksternFagsakId,
-                                            behandling.id
+                                            behandling.id,
+                                            behandling.applikasjon
                                         )}
                                     >
                                         {behandling.resultat

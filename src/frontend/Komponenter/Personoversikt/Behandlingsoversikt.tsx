@@ -7,6 +7,7 @@ import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandling
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
+    KLAGE = 'KLAGE',
     TILBAKEKREVING = 'TILBAKEKREVING',
 }
 
