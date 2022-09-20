@@ -18,6 +18,7 @@ export interface KlageBehandling {
 export enum KlagebehandlingResultat {
     MEDHOLD = 'MEDHOLD',
     IKKE_MEDHOLD = 'IKKE_MEDHOLD',
+    IKKE_MEDHOLD_FORMKRAV_AVVIST = 'IKKE_MEDHOLD_FORMKRAV_AVVIST',
     IKKE_SATT = 'IKKE_SATT',
 }
 
