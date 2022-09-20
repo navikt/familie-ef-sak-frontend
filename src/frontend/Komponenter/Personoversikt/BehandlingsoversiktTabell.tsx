@@ -118,7 +118,7 @@ export const BehandlingsoversiktTabell: React.FC<{
     };
 
     const lagKlagebehandlingsLenke = (behandlingId: string): string => {
-        return `${klageBaseUrl()}behandling/${behandlingId}/formkrav`;
+        return `${klageBaseUrl()}/behandling/${behandlingId}/formkrav`;
     };
 
     const lagEksternBehandlingApplikasjonLenke = (
