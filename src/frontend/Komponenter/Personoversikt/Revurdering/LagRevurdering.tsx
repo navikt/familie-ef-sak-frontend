@@ -27,6 +27,9 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn';
 import { Select } from 'nav-frontend-skjema';
 import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
+import { Fagsak } from '../../../App/typer/fagsak';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { erGyldigDato } from '../../../App/utils/dato';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -54,14 +57,14 @@ const KnappeWrapper = styled.div`
 `;
 
 interface IProps {
-    fagsakId: string;
+    fagsak: Fagsak;
     valgtBehandlingstype: Behandlingstype;
     lagRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     settVisModal: (bool: boolean) => void;
 }
 
 export const LagRevurdering: React.FunctionComponent<IProps> = ({
-    fagsakId,
+    fagsak,
     valgtBehandlingstype,
     lagRevurdering,
     settVisModal,
@@ -83,11 +86,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
 
     useEffect(() => {
         axiosRequest<NyeBarnSidenForrigeBehandling, null>({
-            url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsakId}`,
+            url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsak.id}`,
         }).then((response: RessursSuksess<NyeBarnSidenForrigeBehandling> | RessursFeilet) => {
             settNyeBarnSidenForrigeBehandling(response);
         });
-    }, [axiosRequest, fagsakId]);
+    }, [axiosRequest, fagsak]);
 
     const erGOmregning = valgtBehandlingsårsak === Behandlingsårsak.G_OMREGNING;
 
@@ -110,6 +113,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         switch (behandlingsårsak) {
             case Behandlingsårsak.KORRIGERING_UTEN_BREV:
                 return skalViseValgmulighetForKorrigering;
+            case Behandlingsårsak.G_OMREGNING:
+                return fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD;
             default:
                 return true;
         }
@@ -157,6 +162,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                         settValgtDato(dato as string);
                                     }}
                                     valgtDato={valgtDato}
+                                    feil={
+                                        valgtDato && !erGyldigDato(valgtDato)
+                                            ? 'Ugyldig dato'
+                                            : undefined
+                                    }
                                 />
                                 {skalViseNyeBarnValg && (
                                     <NyeBarn
@@ -175,6 +185,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             const kanStarteRevurdering = !!(
                                                 valgtBehandlingsårsak &&
                                                 valgtDato &&
+                                                erGyldigDato(valgtDato) &&
                                                 !(
                                                     måTaStillingTilBarn &&
                                                     vilkårsbehandleNyeBarn ===
@@ -183,7 +194,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             );
                                             if (kanStarteRevurdering) {
                                                 lagRevurdering({
-                                                    fagsakId,
+                                                    fagsakId: fagsak.id,
                                                     barn:
                                                         vilkårsbehandleNyeBarn ===
                                                         EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE

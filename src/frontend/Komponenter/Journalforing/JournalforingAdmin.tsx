@@ -120,7 +120,10 @@ export const JournalforingAdmin: React.FC = () => {
                             </Normaltekst>
                         </Blokk>
                         <Blokk>
-                            <Brukerinfo personIdent={journalResponse.personIdent} />
+                            <Brukerinfo
+                                navn={journalResponse.navn}
+                                personIdent={journalResponse.personIdent}
+                            />
                         </Blokk>
                         <Blokk>
                             <Systemtittel>Journalpost</Systemtittel>

@@ -13,6 +13,7 @@ import { erAlleBehandlingerErFerdigstilt } from './utils';
 import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
 import { Stønadstype } from '../../App/typer/behandlingstema';
+import { KlageBehandling } from '../../App/typer/klage';
 
 const KnappMedMargin = styled(Knapp)`
     margin-top: 1rem;
@@ -21,9 +22,10 @@ const KnappMedMargin = styled(Knapp)`
 
 interface Props {
     fagsak: Fagsak;
+    klageBehandlinger: KlageBehandling[];
 }
 
-export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
+export const FagsakOversikt: React.FC<Props> = ({ fagsak, klageBehandlinger }) => {
     const { axiosRequest, erSaksbehandler } = useApp();
     const { toggles } = useToggles();
 
@@ -58,13 +60,14 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak }) => {
                         behandlinger={fagsak.behandlinger}
                         eksternFagsakId={fagsak.eksternId}
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
+                        klageBehandlinger={klageBehandlinger}
                     />
                     {erSaksbehandler && skalViseOpprettNyBehandlingKnapp && (
                         <>
                             <LagBehandlingModal
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
-                                fagsakId={fagsak.id}
+                                fagsak={fagsak}
                                 hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
                                 kanStarteRevurdering={kanStarteRevurdering}
                             />

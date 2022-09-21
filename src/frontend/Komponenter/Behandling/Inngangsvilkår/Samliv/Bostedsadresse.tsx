@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
-import { AdresseType, ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
+import {
+    AdresseType,
+    IAdresse,
+    IPersonopplysninger,
+    ISøkeresultatPerson,
+} from '../../../../App/typer/personopplysninger';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
@@ -11,6 +16,7 @@ import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
 import { Collapse, Expand } from '@navikt/ds-icons';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { gyldigTilOgMedErNullEllerFremITid } from '../../../../Felles/Personopplysninger/adresseUtil';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -35,6 +41,17 @@ const LenkeIkon = styled.div`
     display: inline-block;
     position: relative;
 `;
+
+const nåværendeBostedsadresse = (
+    personopplysningerResponse: IPersonopplysninger
+): IAdresse | undefined => {
+    const bostedsadresse = personopplysningerResponse.adresse.find(
+        (adresse) => adresse.type === AdresseType.BOSTEDADRESSE
+    );
+    return bostedsadresse && gyldigTilOgMedErNullEllerFremITid(bostedsadresse)
+        ? bostedsadresse
+        : undefined;
+};
 
 export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
     const { personopplysningerResponse } = useBehandling();
@@ -64,9 +81,7 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
         <>
             <DataViewer response={{ personopplysningerResponse }}>
                 {({ personopplysningerResponse }) => {
-                    const bostedsadresse = personopplysningerResponse.adresse.find(
-                        (adresse) => adresse.type === AdresseType.BOSTEDADRESSE
-                    );
+                    const bostedsadresse = nåværendeBostedsadresse(personopplysningerResponse);
 
                     return (
                         <>

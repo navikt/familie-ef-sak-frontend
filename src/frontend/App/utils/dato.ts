@@ -7,6 +7,7 @@ import {
     isAfter,
     isBefore,
     isEqual,
+    isValid,
     parse,
     parseISO,
 } from 'date-fns';
@@ -58,6 +59,8 @@ export const erEtter = (first: string | Date, second: string | Date): boolean =>
 export const gjelderÅr = (dato: string, år: number): boolean => {
     return parseISO(dato).getFullYear() === år;
 };
+
+export const erGyldigDato = (dato: string | Date) => isValid(tilDato(dato));
 
 export const tilDato = (dato: string | Date): Date =>
     typeof dato === 'string' ? parseISO(dato) : dato;

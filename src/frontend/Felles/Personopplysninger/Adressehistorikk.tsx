@@ -8,9 +8,9 @@ import { IngenData, TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import { datoErEtterDagensDato } from '../../App/utils/utils';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -117,9 +117,6 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
         </TabellWrapper>
     );
 };
-
-const gyldigTilOgMedErNullEllerFremITid = (adresse: IAdresse) =>
-    !adresse.gyldigTilOgMed || datoErEtterDagensDato(adresse.gyldigTilOgMed);
 
 const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     adresser,

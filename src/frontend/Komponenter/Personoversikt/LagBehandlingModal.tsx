@@ -11,6 +11,10 @@ import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../App/typer/toast';
 import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
+import { Fagsak } from '../../App/typer/fagsak';
+import OpprettKlage from './Klage/OpprettKlage';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -28,7 +32,7 @@ export const StyledHovedknapp = styled(Hovedknapp)`
 interface IProps {
     visModal: boolean;
     settVisModal: (bool: boolean) => void;
-    fagsakId: string;
+    fagsak: Fagsak;
     hentTilbakekrevinger: Dispatch<void>;
     kanStarteRevurdering: boolean;
 }
@@ -36,10 +40,11 @@ interface IProps {
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     visModal,
     settVisModal,
-    fagsakId,
+    fagsak,
     hentTilbakekrevinger,
     kanStarteRevurdering,
 }) => {
+    const { toggles } = useToggles();
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
 
@@ -52,7 +57,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             settSenderInnBehandling(true);
             axiosRequest<Ressurs<void>, null>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/tilbakekreving/fagsak/${fagsakId}/opprett-tilbakekreving`,
+                url: `/familie-ef-sak/api/tilbakekreving/fagsak/${fagsak.id}/opprett-tilbakekreving`,
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
@@ -76,12 +81,37 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             settSenderInnBehandling(true);
             axiosRequest<Ressurs<void>, RevurderingInnhold>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/revurdering/${fagsakId}`,
+                url: `/familie-ef-sak/api/revurdering/${fagsak.id}`,
                 data: revurderingInnhold,
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
                         navigate(`/behandling/${response.data}`);
+                    } else {
+                        settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                    }
+                })
+                .finally(() => {
+                    settSenderInnBehandling(false);
+                });
+        }
+    };
+
+    const opprettKlage = (behandlingId: string, mottattDato: string) => {
+        settFeilmeldingModal('');
+
+        if (!senderInnBehandling) {
+            settSenderInnBehandling(true);
+            axiosRequest<Ressurs<void>, { mottattDato: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/klage/${behandlingId}`,
+                data: { mottattDato },
+            })
+                .then((response) => {
+                    if (response.status === RessursStatus.SUKSESS) {
+                        //TODO hentKlager();
+                        settVisModal(false);
+                        settToast(EToast.KLAGE_OPPRETTET);
                     } else {
                         settFeilmeldingModal(response.frontendFeilmelding || response.melding);
                     }
@@ -120,10 +150,13 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     <option value={Behandlingstype.REVURDERING}>Revurdering</option>
                 )}
                 <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
+                {toggles[ToggleName.visOpprettKlage] && (
+                    <option value={Behandlingstype.KLAGE}>Klage</option>
+                )}
             </StyledSelect>
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
                 <LagRevurdering
-                    fagsakId={fagsakId}
+                    fagsak={fagsak}
                     valgtBehandlingstype={valgtBehandlingstype}
                     lagRevurdering={lagRevurdering}
                     settVisModal={settVisModal}
@@ -149,6 +182,13 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                         Avbryt
                     </Flatknapp>
                 </KnappeWrapper>
+            )}
+            {valgtBehandlingstype === Behandlingstype.KLAGE && (
+                <OpprettKlage
+                    fagsak={fagsak}
+                    opprettKlage={opprettKlage}
+                    settVisModal={settVisModal}
+                />
             )}
             {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
         </UIModalWrapper>

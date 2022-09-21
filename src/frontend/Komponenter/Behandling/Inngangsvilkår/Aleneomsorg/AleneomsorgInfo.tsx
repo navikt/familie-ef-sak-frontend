@@ -56,7 +56,7 @@ const AleneomsorgInfo: FC<{
                             )}
                         </Element>
                     </>
-                ) : skalViseSøknadsdata ? (
+                ) : (
                     <>
                         <Søknadsgrunnlag />
                         <Element>Barnets navn</Element>
@@ -66,7 +66,7 @@ const AleneomsorgInfo: FC<{
                                 : 'Ikke født'}
                         </Element>
                     </>
-                ) : null}
+                )}
                 {registergrunnlag.fødselsnummer ? (
                     <>
                         <Registergrunnlag />
@@ -75,17 +75,15 @@ const AleneomsorgInfo: FC<{
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
                     </>
-                ) : skalViseSøknadsdata ? (
-                    søknadsgrunnlag.fødselTermindato && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <Normaltekst>Termindato</Normaltekst>
-                            <Normaltekst>
-                                {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                            </Normaltekst>
-                        </>
-                    )
-                ) : null}
+                ) : (
+                    <>
+                        <Søknadsgrunnlag />
+                        <Normaltekst>Termindato</Normaltekst>
+                        <Normaltekst>
+                            {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
+                        </Normaltekst>
+                    </>
+                )}
 
                 <Bosted
                     harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
