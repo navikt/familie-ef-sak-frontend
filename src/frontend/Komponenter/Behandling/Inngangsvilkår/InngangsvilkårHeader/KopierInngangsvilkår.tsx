@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
-import { Collapse, Expand } from '@navikt/ds-icons';
-import { Alert, Button } from '@navikt/ds-react';
+import { Collapse, Expand, ExternalLink } from '@navikt/ds-icons';
+import { Alert, Button, Link } from '@navikt/ds-react';
 import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
 import { Behandling, behandlingResultatTilTekst } from '../../../../App/typer/fagsak';
 import { behandlingstypeTilTekst } from '../../../../App/typer/behandlingstype';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { stønadstypeTilTekst } from '../../../../App/typer/behandlingstema';
 import KopierInngangsvilkårModal from './KopierInngangsvilkårModal';
+import { behandlingStatusTilTekst } from '../../../../App/typer/behandlingstatus';
 
 const Alertstripe = styled(Alert)`
     margin-top: 1rem;
     margin-right: 2rem;
     margin-left: 2rem;
     margin-bottom: 1rem;
-    width: 40rem;
 `;
 
 const InfoHeader = styled.div`
@@ -100,6 +100,9 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
                                     <b>Behandlingstype</b>
                                 </th>
                                 <th>
+                                    <b>Status</b>
+                                </th>
+                                <th>
                                     <b>Vedtaksdato</b>
                                 </th>
                                 <th>
@@ -112,7 +115,16 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
                                 return (
                                     <tr key={behandling.id}>
                                         <td>{stønadstypeTilTekst[behandling.stønadstype]}</td>
-                                        <td>{behandlingstypeTilTekst[behandling.type]}</td>
+                                        <td>
+                                            <Link
+                                                href={`/behandling/${behandling.id}/inngangsvilkar`}
+                                                target={'_blank'}
+                                            >
+                                                {behandlingstypeTilTekst[behandling.type]}
+                                                <ExternalLink />
+                                            </Link>
+                                        </td>
+                                        <td>{behandlingStatusTilTekst[behandling.status]}</td>
                                         <td>
                                             {behandling.vedtaksdato &&
                                                 formaterIsoDato(behandling.vedtaksdato)}
