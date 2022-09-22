@@ -26,7 +26,7 @@ export const EnsligTextArea: React.FC<Props> = ({
         <>
             <StyledFamilieTextArea
                 value={value}
-                onChange={(e) => onChange(e)}
+                onChange={(e) => onChange && onChange(e)}
                 label={label}
                 maxLength={maxLength}
                 erLesevisning={erLesevisning}

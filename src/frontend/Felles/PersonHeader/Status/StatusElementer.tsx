@@ -109,9 +109,8 @@ export const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 onClick={() => {
                     settÅpenStatusMeny(!åpenStatusMeny);
                 }}
-            >
-                <Expand />
-            </VisStatuserKnapp>
+                icon={<Expand />}
+            />
             <StatusMenyInnhold åpen={åpenStatusMeny}>
                 <ul>
                     <VisStønadOgBehandlingstypePåLitenSkjerm>

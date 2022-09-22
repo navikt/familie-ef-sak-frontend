@@ -9,6 +9,7 @@ interface ÅrProps {
     antallÅrTilbake: number;
     lesevisning?: boolean;
     disabled?: boolean;
+    className?: string;
 }
 
 const lagÅrOptions = (år: number | undefined, antallÅrFrem: number, antallÅrTilbake: number) => {
@@ -29,19 +30,23 @@ const Årvelger: React.FC<ÅrProps> = ({
     antallÅrTilbake,
     lesevisning = false,
     disabled = false,
+    className,
 }) => {
     const årOptions = lagÅrOptions(år, antallÅrFrem, antallÅrTilbake);
     return (
         <FamilieSelect
             lesevisningVerdi={år ? år.toString() : ''}
             value={år}
-            bredde={'xs'}
             onChange={(event) => {
                 event.persist();
                 settÅr(parseInt(event.target.value));
             }}
             erLesevisning={lesevisning}
             disabled={disabled}
+            label={'År'}
+            hideLabel
+            className={className}
+            size={'small'}
         >
             <option value="">År</option>
             {årOptions}

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FlexDiv } from '../../../Komponenter/Oppgavebenk/OppgaveFiltrering';
 import styled from 'styled-components';
 import MånedVelger from './MånedVelger';
 import Årvelger from './ÅrVelger';
@@ -23,7 +22,18 @@ const DatolabelStyle = styled.label`
 `;
 
 const StyledMånedVelger = styled(MånedVelger)`
-    padding-right: 0.25rem;
+    margin-right: 0.25rem;
+    gap: 0;
+`;
+
+const StyledÅrVelger = styled(Årvelger)`
+    gap: 0;
+`;
+
+const FlexDiv = styled.div`
+    display: flex;
+    width: max-content;
+    margin-right: 2rem;
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
@@ -66,7 +76,7 @@ const MånedÅrVelger: React.FC<Props> = ({
                     lesevisning={lesevisning}
                     disabled={disabled}
                 />
-                <Årvelger
+                <StyledÅrVelger
                     år={år}
                     settÅr={settÅr}
                     antallÅrTilbake={antallÅrTilbake}
