@@ -80,8 +80,9 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     >(byggTomRessurs());
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
-    const [vilkårsbehandleVedMigrering, settVilkårsbehandleVedMigrering] =
-        useState<EVilkårsbehandleBarnValg>(EVilkårsbehandleBarnValg.IKKE_VALGT);
+    const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
+        EVilkårsbehandleBarnValg.IKKE_VALGT
+    );
 
     useEffect(() => {
         axiosRequest<NyeBarnSidenForrigeBehandling, null>({
@@ -91,20 +92,22 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         });
     }, [axiosRequest, fagsak]);
 
-    useEffect(() => {
-        settVilkårsbehandleVedMigrering(EVilkårsbehandleBarnValg.IKKE_VALGT);
-    }, [valgtBehandlingsårsak]);
-
     const erGOmregning = valgtBehandlingsårsak === Behandlingsårsak.G_OMREGNING;
-    const måTaStillingTilBarn =
-        nyeBarnSidenForrigeBehandling.status === RessursStatus.SUKSESS &&
-        !nyeBarnSidenForrigeBehandling.data.harBarnISisteIverksatteBehandling &&
-        !erGOmregning;
 
-    const skalTaMedAlleBarn =
-        (!måTaStillingTilBarn ||
-            vilkårsbehandleVedMigrering === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE) &&
-        !erGOmregning;
+    useEffect(() => {
+        if (
+            nyeBarnSidenForrigeBehandling.status === RessursStatus.SUKSESS &&
+            nyeBarnSidenForrigeBehandling.data.harBarnISisteIverksatteBehandling
+        ) {
+            if (erGOmregning) {
+                settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE);
+            } else {
+                settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE);
+            }
+        } else {
+            settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VALGT);
+        }
+    }, [settVilkårsbehandleNyeBarn, nyeBarnSidenForrigeBehandling, erGOmregning]);
 
     const skalViseÅrsak = (behandlingsårsak: Behandlingsårsak) => {
         switch (behandlingsårsak) {
@@ -123,6 +126,10 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 {({ nyeBarnSidenForrigeBehandling }) => {
                     const harNyeBarnSidenForrigeBehandling =
                         nyeBarnSidenForrigeBehandling.nyeBarn.length > 0;
+                    const måTaStillingTilBarn =
+                        harNyeBarnSidenForrigeBehandling &&
+                        !nyeBarnSidenForrigeBehandling.harBarnISisteIverksatteBehandling &&
+                        !erGOmregning;
                     const skalViseNyeBarnValg =
                         valgtBehandlingsårsak && harNyeBarnSidenForrigeBehandling && !erGOmregning;
 
@@ -167,8 +174,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                             nyeBarnSidenForrigeBehandling.nyeBarn
                                         }
                                         måTaStillingTilBarn={måTaStillingTilBarn}
-                                        vilkårsbehandleNyeBarn={vilkårsbehandleVedMigrering}
-                                        settVilkårsbehandleNyeBarn={settVilkårsbehandleVedMigrering}
+                                        vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
+                                        settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
                                     />
                                 )}
 
@@ -180,20 +187,22 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                                 valgtDato &&
                                                 erGyldigDato(valgtDato) &&
                                                 !(
-                                                    harNyeBarnSidenForrigeBehandling &&
                                                     måTaStillingTilBarn &&
-                                                    vilkårsbehandleVedMigrering ===
+                                                    vilkårsbehandleNyeBarn ===
                                                         EVilkårsbehandleBarnValg.IKKE_VALGT
                                                 )
                                             );
                                             if (kanStarteRevurdering) {
                                                 lagRevurdering({
                                                     fagsakId: fagsak.id,
-                                                    barn: skalTaMedAlleBarn
-                                                        ? nyeBarnSidenForrigeBehandling.nyeBarn
-                                                        : [],
+                                                    barn:
+                                                        vilkårsbehandleNyeBarn ===
+                                                        EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
+                                                            ? nyeBarnSidenForrigeBehandling.nyeBarn
+                                                            : [],
                                                     behandlingsårsak: valgtBehandlingsårsak,
                                                     kravMottatt: valgtDato,
+                                                    vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
                                                 });
                                             } else {
                                                 settFeilmeldingModal(
