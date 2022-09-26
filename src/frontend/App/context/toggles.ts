@@ -14,7 +14,6 @@ export enum ToggleName {
     skalViseOpprettNyBehandlingSkolepenger = 'familie.ef.sak.frontend-skal-vise-opprett-ny-behandling-knapp-skolepenger',
     skalPrefylleVedtaksperider = 'familie.ef.sak.frontend-prefyll-vedtaksperioder',
     skolepengerOpphør = 'familie.ef.sak.skolepenger-opphor',
-    visGjenbrukAvVilkår = 'familie.ef.sak.frontend-skal-vise-alertboks-gjenbruk-vilkar',
     visVedtakPeriodeLeggTilRad = 'familie.ef.sak.frontend-vis-vedtak-legg-til-rad-knapp',
     visOpprettKlage = 'familie.ef.sak.frontend-vis-opprett-klage',
 }
