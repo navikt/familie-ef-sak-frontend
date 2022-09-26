@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { OppdaterOpplysninger } from './OppdaterOpplysninger';
 import { KopierInngangsvilkår } from './KopierInngangsvilkår';
-import { ToggleName } from '../../../../App/context/toggles';
-import { useToggles } from '../../../../App/context/TogglesContext';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Behandling } from '../../../../App/typer/fagsak';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
@@ -36,7 +34,6 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     const [behandlingerForVilkårsgjenbruk, settbehandlingerForVilkårsgjenbruk] = useState<
         Ressurs<Behandling[]>
     >(byggTomRessurs());
-    const { toggles } = useToggles();
     const { axiosRequest } = useApp();
 
     const finnBehandlingForGjenbrukAvVilkår = useCallback(
@@ -55,11 +52,7 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
         finnBehandlingForGjenbrukAvVilkår(behandling.id);
     }, [behandling, finnBehandlingForGjenbrukAvVilkår]);
 
-    const skalViseGjenbrukVilkår = utledVilkårsgjenbruk(
-        toggles[ToggleName.visGjenbrukAvVilkår],
-        behandlingErRedigerbar,
-        behandling
-    );
+    const skalViseGjenbrukVilkår = utledVilkårsgjenbruk(behandlingErRedigerbar, behandling);
 
     return (
         <Container>
