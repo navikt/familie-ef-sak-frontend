@@ -1,14 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Radio } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { Element } from 'nav-frontend-typografi';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
     EKontantstøttePeriodeProperty,
     ERadioValg,
     IPeriodeMedBeløp,
-    radiovalgTilTekst,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -21,6 +18,7 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/ut
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Label, Radio } from '@navikt/ds-react';
 
 const KontantstøttePeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -96,31 +94,31 @@ const KontantstøtteValg: React.FC<Props> = ({
         <>
             <FamilieRadioGruppe
                 legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?"
-                feil={valideringsfeil?.harKontantstøtte}
+                error={valideringsfeil?.harKontantstøtte}
                 erLesevisning={!behandlingErRedigerbar}
-                verdi={radiovalgTilTekst[kontantstøtte.value as ERadioValg]}
+                value={kontantstøtte.value as ERadioValg}
             >
                 <Radio
                     name={'Kontantstøtte'}
-                    label={'Ja'}
                     value={ERadioValg.JA}
-                    checked={kontantstøtte.value === ERadioValg.JA}
                     onChange={(event) => kontantstøtte.onChange(event)}
-                />
+                >
+                    Ja
+                </Radio>
                 <Radio
                     name={'Kontantstøtte'}
-                    label={'Nei'}
                     value={ERadioValg.NEI}
-                    checked={kontantstøtte.value === ERadioValg.NEI}
                     onChange={(event) => kontantstøtte.onChange(event)}
-                />
+                >
+                    Nei
+                </Radio>
             </FamilieRadioGruppe>
             {kontantstøtte.value === ERadioValg.JA && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
-                        <Element>Periode fra og med</Element>
-                        <Element>Periode til og med</Element>
-                        <Element>Kontantstøtte</Element>
+                        <Label>Periode fra og med</Label>
+                        <Label>Periode til og med</Label>
+                        <Label>Kontantstøtte</Label>
                     </KolonneHeaderWrapper>
                     {kontantstøttePerioder.value.map((periode, index) => {
                         const { årMånedFra, årMånedTil, beløp } = periode;
@@ -153,6 +151,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                     />
                                     <StyledInput
                                         type="number"
+                                        size={'small'}
                                         onKeyPress={tilHeltall}
                                         value={harTallverdi(beløp) ? beløp : ''}
                                         onChange={(e) => {
@@ -164,6 +163,8 @@ const KontantstøtteValg: React.FC<Props> = ({
                                             );
                                         }}
                                         erLesevisning={!behandlingErRedigerbar}
+                                        label={'Utgifter kontantstøtte'}
+                                        hideLabel
                                     />
                                     {skalViseFjernKnapp && (
                                         <FjernKnapp

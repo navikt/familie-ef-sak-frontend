@@ -3,7 +3,6 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import Modal from 'nav-frontend-modal';
 import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { Radio } from 'nav-frontend-skjema';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
@@ -12,6 +11,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EToast } from '../../../App/typer/toast';
 import { EHenlagtårsak } from '../../../App/typer/Behandlingsårsak';
+import { Radio } from '@navikt/ds-react';
 
 interface IHenlegg {
     settHenlagtårsak: (årsak: EHenlagtårsak) => void;
@@ -96,23 +96,30 @@ const Henlegging: React.FC<IHenlegg> = ({
 }) => (
     <>
         <h4>Henlegg</h4>
-        <FamilieRadioGruppe erLesevisning={false}>
+        <FamilieRadioGruppe
+            erLesevisning={false}
+            legend={'Hvorfor skal behandlingen henlegges'}
+            value={henlagtårsak}
+            hideLegend
+        >
             <Radio
-                checked={henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE}
-                label="Trukket tilbake"
                 name="henleggRadio"
+                value={EHenlagtårsak.TRUKKET_TILBAKE}
                 onChange={() => {
                     settHenlagtårsak(EHenlagtårsak.TRUKKET_TILBAKE);
                 }}
-            />
+            >
+                Trukket tilbake
+            </Radio>
             <Radio
-                checked={henlagtårsak === EHenlagtårsak.FEILREGISTRERT}
-                label="Feilregistrert"
                 name="henleggRadio"
+                value={EHenlagtårsak.FEILREGISTRERT}
                 onChange={() => {
                     settHenlagtårsak(EHenlagtårsak.FEILREGISTRERT);
                 }}
-            />
+            >
+                Feilregistrert
+            </Radio>
             <Hovedknapp htmlType={'submit'} onClick={lagreHenleggelse} disabled={låsKnapp}>
                 Henlegg
             </Hovedknapp>

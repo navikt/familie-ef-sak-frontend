@@ -6,7 +6,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { ListState } from '../../../../App/hooks/felles/useListState';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
@@ -26,7 +26,7 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
             ? '10rem 10rem 18rem 2rem 4rem 4rem'
             : '12rem 12rem 25rem 2rem 4rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
+    margin-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
 
 const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
@@ -36,13 +36,14 @@ const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
 
 const StyledInput = styled(InputMedTusenSkille)`
     text-align: left;
+    height: fit-content;
 `;
 
 const NavnContainer = styled.div`
     margin-bottom: 1rem;
 `;
 
-const TekstEnLinje = styled(Element)`
+const TekstEnLinje = styled(Label)`
     white-space: nowrap;
 `;
 
@@ -215,7 +216,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 );
                             }}
                             erLesevisning={!behandlingErRedigerbar}
-                            label={''}
+                            label={'Utgifter'}
+                            hideLabel
                         />
                         <CheckboxContainer>
                             {!behandlingErRedigerbar && erMidlertidigOpphør ? (

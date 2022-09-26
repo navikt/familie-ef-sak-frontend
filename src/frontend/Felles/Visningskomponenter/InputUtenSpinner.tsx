@@ -31,6 +31,8 @@ const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = (props) => {
             type="text"
             value={props.formatValue ? props.formatValue(props.value) : props.value}
             onWheel={(event) => event.currentTarget.blur()}
+            label={''}
+            hideLabel
         />
     );
 };
