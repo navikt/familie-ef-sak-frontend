@@ -48,12 +48,20 @@ export const erEtterDagensDato = (dato: string | Date): boolean => {
     return erEtter(dato, new Date());
 };
 
+export const erFørDagensDato = (dato: string | Date): boolean => {
+    return erFør(dato, new Date());
+};
+
 /**
  * @param first date the date that should be after the other one to return true
  * @param second dateToCompare the date to compare with
  */
 export const erEtter = (first: string | Date, second: string | Date): boolean => {
     return isAfter(tilDato(first), tilDato(second));
+};
+
+export const erFør = (first: string | Date, second: string | Date): boolean => {
+    return isBefore(tilDato(first), tilDato(second));
 };
 
 export const gjelderÅr = (dato: string, år: number): boolean => {

@@ -7,7 +7,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { compareDesc } from 'date-fns';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { erGyldigDato } from '../../../App/utils/dato';
+import { erFørDagensDato, erGyldigDato } from '../../../App/utils/dato';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -68,6 +68,17 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
         );
     }
 
+    const validerValgtDato = (valgtDato: string | undefined) => {
+        settFeilmelding('');
+        if (valgtDato && erGyldigDato(valgtDato) && erFørDagensDato(valgtDato)) {
+            opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
+        } else if (!valgtDato) {
+            settFeilmelding('Vennligst velg en dato fra datovelgeren');
+        } else {
+            settFeilmelding('Vennligst velg en gyldig dato som ikke er fremover i tid');
+        }
+    };
+
     return (
         <FlexDiv>
             <StyledFamilieDatovelger
@@ -82,15 +93,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
 
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             <KnappeWrapper>
-                <StyledHovedknapp
-                    onClick={() => {
-                        if (valgtDato && erGyldigDato(valgtDato)) {
-                            opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
-                        } else {
-                            settFeilmelding('Vennligst fyll ut alle felter');
-                        }
-                    }}
-                >
+                <StyledHovedknapp onClick={() => validerValgtDato(valgtDato)}>
                     Opprett
                 </StyledHovedknapp>
                 <Flatknapp
