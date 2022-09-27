@@ -48,6 +48,10 @@ export const erEtterDagensDato = (dato: string | Date): boolean => {
     return erEtter(dato, new Date());
 };
 
+export const erFørEllerLikDagensDato = (dato: string | Date): boolean => {
+    return !erEtter(dato, new Date());
+};
+
 /**
  * @param first date the date that should be after the other one to return true
  * @param second dateToCompare the date to compare with

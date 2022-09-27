@@ -7,7 +7,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { compareDesc } from 'date-fns';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { erGyldigDato } from '../../../App/utils/dato';
+import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -68,6 +68,17 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
         );
     }
 
+    const validerValgtDato = (valgtDato: string | undefined) => {
+        settFeilmelding('');
+        if (valgtDato && erGyldigDato(valgtDato) && erFørEllerLikDagensDato(valgtDato)) {
+            opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
+        } else if (!valgtDato) {
+            settFeilmelding('Vennligst velg en dato fra datovelgeren');
+        } else {
+            settFeilmelding('Vennligst velg en gyldig dato som ikke er fremover i tid');
+        }
+    };
+
     return (
         <FlexDiv>
             <StyledFamilieDatovelger
@@ -78,19 +89,12 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
                 }}
                 valgtDato={valgtDato}
                 feil={valgtDato && !erGyldigDato(valgtDato) && 'Ugyldig dato'}
+                limitations={{ maxDate: new Date().toISOString() }}
             />
 
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             <KnappeWrapper>
-                <StyledHovedknapp
-                    onClick={() => {
-                        if (valgtDato && erGyldigDato(valgtDato)) {
-                            opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
-                        } else {
-                            settFeilmelding('Vennligst fyll ut alle felter');
-                        }
-                    }}
-                >
+                <StyledHovedknapp onClick={() => validerValgtDato(valgtDato)}>
                     Opprett
                 </StyledHovedknapp>
                 <Flatknapp
