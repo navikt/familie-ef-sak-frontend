@@ -7,7 +7,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { compareDesc } from 'date-fns';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { erFørDagensDato, erGyldigDato } from '../../../App/utils/dato';
+import { erFørMorgendagensDato, erGyldigDato } from '../../../App/utils/dato';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -70,7 +70,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
 
     const validerValgtDato = (valgtDato: string | undefined) => {
         settFeilmelding('');
-        if (valgtDato && erGyldigDato(valgtDato) && erFørDagensDato(valgtDato)) {
+        if (valgtDato && erGyldigDato(valgtDato) && erFørMorgendagensDato(valgtDato)) {
             opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
         } else if (!valgtDato) {
             settFeilmelding('Vennligst velg en dato fra datovelgeren');

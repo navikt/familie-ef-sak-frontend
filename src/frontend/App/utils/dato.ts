@@ -48,7 +48,7 @@ export const erEtterDagensDato = (dato: string | Date): boolean => {
     return erEtter(dato, new Date());
 };
 
-export const erFørDagensDato = (dato: string | Date): boolean => {
+export const erFørMorgendagensDato = (dato: string | Date): boolean => {
     return erFør(dato, new Date());
 };
 
