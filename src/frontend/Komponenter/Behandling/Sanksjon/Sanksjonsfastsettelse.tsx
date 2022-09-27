@@ -8,7 +8,6 @@ import {
     Sanksjonsårsak,
     sanksjonsårsaker,
     sanksjonsårsakTilTekst,
-    stønaderForSanksjonInfo,
 } from '../../../App/typer/Sanksjonsårsak';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
@@ -41,6 +40,8 @@ import {
 } from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { Behandling } from '../../../App/typer/fagsak';
+import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -81,15 +82,16 @@ interface Props {
 
 const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
+    const { behandling } = useBehandling();
     useEffect(() => {
         hentVedtak();
     }, [hentVedtak]);
     return (
-        <DataViewer response={{ vedtak }}>
-            {({ vedtak }) => {
+        <DataViewer response={{ vedtak, behandling }}>
+            {({ vedtak, behandling }) => {
                 return (
                     <SanksjonsvedtakVisning
-                        behandlingId={behandlingId}
+                        behandling={behandling}
                         lagretVedtak={vedtak}
                         key={'sanksjonsvedtakVisning'}
                     />
@@ -100,9 +102,9 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
 };
 
 const SanksjonsvedtakVisning: FC<{
-    behandlingId: string;
+    behandling: Behandling;
     lagretVedtak?: IVedtakForOvergangsstønad;
-}> = ({ behandlingId, lagretVedtak }) => {
+}> = ({ behandling, lagretVedtak }) => {
     const lagretSanksjonertVedtak =
         lagretVedtak?._type === IVedtakType.Sanksjonering
             ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
@@ -147,10 +149,10 @@ const SanksjonsvedtakVisning: FC<{
 
         axiosRequest<string, ISanksjonereVedtakForOvergangsstønad>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}/lagre-vedtak`,
+            url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandlingId}/simulering`))
+            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
             .finally(() => {
                 settLaster(false);
             });
@@ -230,9 +232,9 @@ const SanksjonsvedtakVisning: FC<{
                             <InfoVisning>
                                 {sanksjonInfoDel1}
                                 <ul>
-                                    {stønaderForSanksjonInfo.map((stønad) => (
-                                        <li key={stønad}>{stønad}</li>
-                                    ))}
+                                    <li key={behandling.stønadstype}>
+                                        {stønadstypeTilTekst[behandling.stønadstype]}
+                                    </li>
                                 </ul>
                                 {sanksjonInfoDel2}
                             </InfoVisning>
