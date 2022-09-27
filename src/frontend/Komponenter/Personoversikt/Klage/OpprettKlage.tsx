@@ -7,7 +7,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { compareDesc } from 'date-fns';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { erFørMorgendagensDato, erGyldigDato } from '../../../App/utils/dato';
+import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 
 const StyledFamilieDatovelger = styled(FamilieDatovelger)`
     margin-top: 2rem;
@@ -70,7 +70,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
 
     const validerValgtDato = (valgtDato: string | undefined) => {
         settFeilmelding('');
-        if (valgtDato && erGyldigDato(valgtDato) && erFørMorgendagensDato(valgtDato)) {
+        if (valgtDato && erGyldigDato(valgtDato) && erFørEllerLikDagensDato(valgtDato)) {
             opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
         } else if (!valgtDato) {
             settFeilmelding('Vennligst velg en dato fra datovelgeren');
@@ -89,6 +89,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
                 }}
                 valgtDato={valgtDato}
                 feil={valgtDato && !erGyldigDato(valgtDato) && 'Ugyldig dato'}
+                limitations={{ maxDate: new Date().toISOString() }}
             />
 
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
