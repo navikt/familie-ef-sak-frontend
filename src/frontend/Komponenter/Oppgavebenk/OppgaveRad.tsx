@@ -59,6 +59,12 @@ const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
     );
 };
 
+const oppgaveErKlage = (oppgave: IOppgave) => {
+    return (
+        oppgave.behandlesAvApplikasjon === 'familie-klage' && oppgave.behandlingstype === 'ae0058'
+    );
+};
+
 const kanMigreres = (oppgave: IOppgave) => {
     return (
         oppgave.behandlesAvApplikasjon === '' &&
@@ -76,6 +82,8 @@ const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
         return Handling.JOURNALFØR;
     } else if (oppgaveErTilbakekreving(oppgave)) {
         return Handling.TILBAKE;
+    } else if (oppgaveErKlage(oppgave)) {
+        return Handling.KLAGE;
     } else if (kanMigreres(oppgave) && toggles[ToggleName.kanMigrereFagsak]) {
         return Handling.JOURNALFØR_MIGRERING;
     }
@@ -154,6 +162,12 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 return (
                     <Flatknapp onClick={gåTilVurderMigrering} disabled={laster}>
                         Journalfør (migrering)
+                    </Flatknapp>
+                );
+            case Handling.KLAGE:
+                return (
+                    <Flatknapp onClick={} disabled={laster}>
+                        Gå til klagebehandling
                     </Flatknapp>
                 );
             default:

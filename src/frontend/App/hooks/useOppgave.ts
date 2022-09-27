@@ -102,6 +102,10 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
+    const gåTilBehandlingsoversikt = (personIdent: string) => {
+        settLaster(true);
+    };
+
     return {
         feilmelding,
         settFeilmelding,
