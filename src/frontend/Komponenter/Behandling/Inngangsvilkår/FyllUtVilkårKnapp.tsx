@@ -7,6 +7,7 @@ import { AxiosRequestConfig } from 'axios';
 import { Behandling } from '../../../App/typer/fagsak';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const VilkårKnapp = styled(Button)`
     margin-top: 1rem;
@@ -28,6 +29,7 @@ export const FyllUtVilkårKnapp: React.FC<Props> = ({
     const { axiosRequest } = useApp();
     const behandlingId = behandling.id;
     const [feilmelding, settFeilmelding] = useState<string>('');
+    const { hentBehandling } = useBehandling();
 
     const automatiskFyllUtVilkår = useCallback(() => {
         settFeilmelding('');
@@ -38,11 +40,12 @@ export const FyllUtVilkårKnapp: React.FC<Props> = ({
         axiosRequest<string, null>(requestConfig).then((res) => {
             if (res.status === RessursStatus.SUKSESS) {
                 hentVilkår(behandlingId);
+                hentBehandling.rerun();
             } else {
                 settFeilmelding(res.frontendFeilmelding);
             }
         });
-    }, [axiosRequest, behandlingId, hentVilkår, settFeilmelding]);
+    }, [axiosRequest, behandlingId, hentVilkår, settFeilmelding, hentBehandling]);
 
     if (!toggles[ToggleName.visAutomatiskUtfylleVilkår] || !behandlingErRedigerbar) {
         return <></>;
