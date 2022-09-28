@@ -14,6 +14,7 @@ import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 import { useApp } from '../../../App/context/AppContext';
+import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
 
 interface Props {
     behandlingId: string;
@@ -54,6 +55,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
                 return (
                     <>
+                        <FyllUtVilkårKnapp behandling={behandling} hentVilkår={hentVilkår} />
                         {erSaksbehandler && (
                             <InngangsvilkårHeader
                                 oppdatertDato={grunnlagsdataInnhentetDato}
