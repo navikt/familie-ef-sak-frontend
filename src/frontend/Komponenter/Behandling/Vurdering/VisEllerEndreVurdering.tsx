@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
     IVurdering,
     OppdaterVilkårsvurdering,
@@ -68,6 +68,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
     );
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
     const { nullstillIkkePersistertKomponent, erSaksbehandler } = useApp();
+
+    useEffect(() => {
+        settRedigeringsmodus(utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar));
+    }, [vurdering, feilmelding, behandlingErRedigerbar]);
 
     const ikkeVurder = () => {
         nullstillIkkePersistertKomponent(vurdering.id);

@@ -16,9 +16,14 @@ const VilkårKnapp = styled(Button)`
 interface Props {
     behandling: Behandling;
     hentVilkår: (behandlingId: string) => void;
+    behandlingErRedigerbar: boolean;
 }
 
-export const FyllUtVilkårKnapp: React.FC<Props> = ({ behandling, hentVilkår }) => {
+export const FyllUtVilkårKnapp: React.FC<Props> = ({
+    behandling,
+    hentVilkår,
+    behandlingErRedigerbar,
+}) => {
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
     const behandlingId = behandling.id;
@@ -39,7 +44,7 @@ export const FyllUtVilkårKnapp: React.FC<Props> = ({ behandling, hentVilkår })
         });
     }, [axiosRequest, behandlingId, hentVilkår, settFeilmelding]);
 
-    if (!toggles[ToggleName.visAutomatiskUtfylleVilkår]) {
+    if (!toggles[ToggleName.visAutomatiskUtfylleVilkår] || !behandlingErRedigerbar) {
         return <></>;
     }
 

@@ -55,7 +55,11 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
                 return (
                     <>
-                        <FyllUtVilkårKnapp behandling={behandling} hentVilkår={hentVilkår} />
+                        <FyllUtVilkårKnapp
+                            behandling={behandling}
+                            hentVilkår={hentVilkår}
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                        />
                         {erSaksbehandler && (
                             <InngangsvilkårHeader
                                 oppdatertDato={grunnlagsdataInnhentetDato}
