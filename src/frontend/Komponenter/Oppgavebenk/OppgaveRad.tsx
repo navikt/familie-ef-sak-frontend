@@ -150,6 +150,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                     </Flatknapp>
                 );
             case Handling.TILBAKE:
+            case Handling.KLAGE:
                 return (
                     <Flatknapp
                         onClick={() =>
@@ -166,19 +167,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 return (
                     <Flatknapp onClick={gåTilVurderMigrering} disabled={laster}>
                         Journalfør (migrering)
-                    </Flatknapp>
-                );
-            case Handling.KLAGE:
-                return (
-                    <Flatknapp
-                        onClick={() =>
-                            plukkOppgaveOgGåTilBehandlingsoversikt(
-                                oppgave.identer && oppgave.identer[0].ident
-                            )
-                        }
-                        disabled={laster}
-                    >
-                        Gå til klagebehandling
                     </Flatknapp>
                 );
             default:
