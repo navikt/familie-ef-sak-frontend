@@ -92,7 +92,7 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
-    const gåTilFagsak = (personIdent: string) => {
+    const plukkOppgaveOgGåTilBehandlingsoversikt = (personIdent: string) => {
         settLaster(true);
         settOppgaveTilSaksbehandler()
             .then(() => hentFagsak(personIdent, Stønadstype.OVERGANGSSTØNAD)) //TODO: Når vi får behandlingstema på tilbakekrevingsoppgaver vi bruke behandlingstema til å sjekke stønadstype
@@ -102,10 +102,6 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
-    const gåTilBehandlingsoversikt = (personIdent: string) => {
-        settLaster(true);
-    };
-
     return {
         feilmelding,
         settFeilmelding,
@@ -113,6 +109,6 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilVurderMigrering,
         gåTilJournalføring,
         laster,
-        gåTilFagsak,
+        plukkOppgaveOgGåTilBehandlingsoversikt,
     };
 };

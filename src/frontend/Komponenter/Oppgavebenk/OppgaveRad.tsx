@@ -97,7 +97,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         gåTilVurderMigrering,
         gåTilJournalføring,
         laster,
-        gåTilFagsak,
+        plukkOppgaveOgGåTilBehandlingsoversikt,
         feilmelding,
     } = useOppgave(oppgave);
 
@@ -152,7 +152,11 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
             case Handling.TILBAKE:
                 return (
                     <Flatknapp
-                        onClick={() => gåTilFagsak(oppgave.identer && oppgave.identer[0].ident)}
+                        onClick={() =>
+                            plukkOppgaveOgGåTilBehandlingsoversikt(
+                                oppgave.identer && oppgave.identer[0].ident
+                            )
+                        }
                         disabled={laster}
                     >
                         Gå til fagsak
@@ -166,7 +170,14 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 );
             case Handling.KLAGE:
                 return (
-                    <Flatknapp onClick={} disabled={laster}>
+                    <Flatknapp
+                        onClick={() =>
+                            plukkOppgaveOgGåTilBehandlingsoversikt(
+                                oppgave.identer && oppgave.identer[0].ident
+                            )
+                        }
+                        disabled={laster}
+                    >
                         Gå til klagebehandling
                     </Flatknapp>
                 );
