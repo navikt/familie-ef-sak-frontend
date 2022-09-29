@@ -19,6 +19,7 @@ import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
+import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
 
 interface Props {
     oppgave: IOppgave;
@@ -135,6 +136,10 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         ? `${behandlingstype} (${behandlingstema})`
         : behandlingstema;
 
+    const utledetFolkeregisterIdent = oppgave.identer.filter(
+        (i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT
+    )[0].ident;
+
     const utledKnappPåHandling = () => {
         switch (utledHandling(oppgave, toggles)) {
             case Handling.JOURNALFØR:
@@ -153,11 +158,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
             case Handling.KLAGE:
                 return (
                     <Flatknapp
-                        onClick={() =>
-                            plukkOppgaveOgGåTilBehandlingsoversikt(
-                                oppgave.identer && oppgave.identer[0].ident
-                            )
-                        }
+                        onClick={() => {
+                            plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent);
+                        }}
                         disabled={laster}
                     >
                         Gå til fagsak
@@ -199,7 +202,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 <td>{fristFerdigstillelseDato}</td>
                 <td>{prioritet}</td>
                 <td>{oppgave.beskrivelse}</td>
-                <td>{oppgave.identer && oppgave.identer[0].ident}</td>
+                <td>{utledetFolkeregisterIdent}</td>
                 <td>{oppgave.tildeltEnhetsnr}</td>
                 <td>{enhetsmappe}</td>
                 <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
