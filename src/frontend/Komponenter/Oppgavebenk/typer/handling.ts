@@ -3,5 +3,6 @@ export enum Handling {
     SAKSBEHANDLE = 'SAKSBEHANDLE',
     JOURNALFØR_MIGRERING = 'JOURNALFØR_MIGRERING',
     TILBAKE = 'TILBAKE',
+    KLAGE = 'KLAGE',
     INGEN = 'INGEN',
 }
