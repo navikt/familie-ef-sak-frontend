@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
-import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VergerOgFullmektigeFraRegister } from './VergerOgFullmektigeFraRegister';
 import { SøkWrapper } from './SøkWrapper';
 import { SkalBrukerHaBrev } from './SkalBrukerHaBrev';
@@ -61,8 +60,7 @@ export const BrevmottakereModal: FC<{
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
 }> = ({ personopplysninger, behandlingId }) => {
-    const { axiosRequest } = useApp();
-    const { visBrevmottakereModal, settVisBrevmottakereModal } = useBehandling();
+    const { axiosRequest, visBrevmottakereModal, settVisBrevmottakereModal } = useApp();
     const initielleBrevmottakere = useMemo(
         () => [
             {
