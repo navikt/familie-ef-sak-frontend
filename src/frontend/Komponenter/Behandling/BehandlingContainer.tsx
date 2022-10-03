@@ -11,7 +11,7 @@ import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
-import { BrevmottakereModal } from './Brevmottakere/BrevmottakereModal';
+import { BrevmottakereModalForBehandling } from './Brevmottakere/BrevmottakereModal';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { HenleggModal } from './Henleggelse/HenleggModal';
@@ -82,7 +82,7 @@ const BehandlingContent: FC<{
                     <Fanemeny behandlingId={behandling.id} />
                     <BehandlingRoutes />
                     <GodkjennEndringer behandling={behandling} />
-                    <BrevmottakereModal
+                    <BrevmottakereModalForBehandling
                         behandlingId={behandling.id}
                         personopplysninger={personopplysninger}
                     />
