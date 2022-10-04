@@ -29,7 +29,7 @@ import {
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Button } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
 import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
 import { IBrevmottakere, tomBrevmottakere } from '../Brevmottakere/typer';
 
@@ -210,9 +210,31 @@ const FrittståendeBrev: React.FC<Props> = ({
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
 
+    const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
+        return [
+            ...brevMottakere.personer.map(
+                (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
+            ),
+            ...brevMottakere.organisasjoner.map(
+                (org) => `${org.organisasjonsnavn} (${org.mottakerRolle.toLowerCase()})`
+            ),
+        ];
+    };
+
+    const brevmottakerErValgt =
+        brevmottakere.personer.length > 0 || brevmottakere.organisasjoner.length > 0;
+
     return (
         <StyledBrev>
             <h1>Fritekstbrev</h1>
+            {brevmottakerErValgt && (
+                <Alert variant={'info'}>
+                    <Heading size={'xsmall'}>Mottakere av brev:</Heading>
+                    {utledNavnPåMottakere(brevmottakere).map((navn) => (
+                        <BodyShort>{navn}</BodyShort>
+                    ))}
+                </Alert>
+            )}
             <Button variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
                 Legg til verge eller fullmektig
             </Button>
