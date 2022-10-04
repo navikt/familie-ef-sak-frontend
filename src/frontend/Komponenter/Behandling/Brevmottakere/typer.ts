@@ -9,6 +9,8 @@ export interface IBrevmottakere {
     organisasjoner: IOrganisasjonMottaker[];
 }
 
+export const tomBrevmottakere = { personer: [], organisasjoner: [] };
+
 export interface IOrganisasjonMottaker {
     organisasjonsnummer: string;
     organisasjonsnavn: string;

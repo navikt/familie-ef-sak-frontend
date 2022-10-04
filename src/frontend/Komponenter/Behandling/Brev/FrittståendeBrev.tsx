@@ -1,10 +1,14 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import {
+    byggSuksessRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../../App/typer/ressurs';
 import { useDebouncedCallback } from 'use-debounce';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
@@ -25,6 +29,9 @@ import {
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Button } from '@navikt/ds-react';
+import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
+import { IBrevmottakere, tomBrevmottakere } from '../Brevmottakere/typer';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -46,12 +53,14 @@ type Props = {
     oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
     fagsakId: string;
     mellomlagretFrittståendeBrev?: IFrittståendeBrev;
+    personopplysninger: IPersonopplysninger;
 };
 
 const FrittståendeBrev: React.FC<Props> = ({
     oppdaterBrevressurs,
     fagsakId,
     mellomlagretFrittståendeBrev,
+    personopplysninger,
 }) => {
     const [brevType, settBrevType] = useState<FrittståendeBrevtype | undefined>(
         mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.brevType
@@ -66,7 +75,8 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
-    const { axiosRequest } = useApp();
+    const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(tomBrevmottakere);
+    const { axiosRequest, settVisBrevmottakereModal } = useApp();
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -120,16 +130,6 @@ const FrittståendeBrev: React.FC<Props> = ({
         });
     };
 
-    const personopplysningerConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
-        }),
-        [fagsakId]
-    );
-
-    const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
-
     const mellomlagreFrittståendeBrev = (brev: IFrittståendeBrev): void => {
         axiosRequest<string, IFrittståendeBrev>({
             method: 'POST',
@@ -138,8 +138,17 @@ const FrittståendeBrev: React.FC<Props> = ({
         });
     };
 
+    const oppdaterBrevmottakere = (brevmottakere: IBrevmottakere) => {
+        settBrevmottakere(brevmottakere);
+        const value = byggSuksessRessurs('ok') as RessursSuksess<string>;
+        return Promise.resolve(value);
+    };
+
+    const hentBrevmottakere = () => {
+        return Promise.resolve(byggSuksessRessurs(brevmottakere) as RessursSuksess<IBrevmottakere>);
+    };
+
     const genererBrev = () => {
-        if (personopplysninger.status !== RessursStatus.SUKSESS) return;
         if (!brevType) return;
 
         const brev: IFrittståendeBrev = {
@@ -204,6 +213,9 @@ const FrittståendeBrev: React.FC<Props> = ({
     return (
         <StyledBrev>
             <h1>Fritekstbrev</h1>
+            <Button variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
+                Legg til verge eller fullmektig
+            </Button>
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}
@@ -251,6 +263,11 @@ const FrittståendeBrev: React.FC<Props> = ({
                     </ModalKnapper>
                 </UIModalWrapper>
             )}
+            <BrevmottakereModal
+                personopplysninger={personopplysninger}
+                kallSettBrevmottakere={oppdaterBrevmottakere}
+                kallHentBrevmottakere={hentBrevmottakere}
+            />
         </StyledBrev>
     );
 };
