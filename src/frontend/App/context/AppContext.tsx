@@ -74,6 +74,14 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         }
     };
 
+    const kanGåTilUrlIPersonoversikt = (url: string): boolean => {
+        if (ulagretData) {
+            settValgtSide(url);
+            settVisUlagretDataModal(true);
+        }
+        return !ulagretData;
+    };
+
     const axiosRequest: AxiosRequestCallback = useCallback(
         <RES, REQ>(
             config: AxiosRequestConfig<REQ>
@@ -102,6 +110,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         nullstillIkkePersistertKomponent,
         nullstillIkkePersisterteKomponenter,
         gåTilUrl,
+        kanGåTilUrlIPersonoversikt,
         valgtSide,
         visUlagretDataModal,
         settVisUlagretDataModal,

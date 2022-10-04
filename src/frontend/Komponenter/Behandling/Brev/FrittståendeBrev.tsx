@@ -76,7 +76,12 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
     const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(tomBrevmottakere);
-    const { axiosRequest, settVisBrevmottakereModal } = useApp();
+    const {
+        axiosRequest,
+        settVisBrevmottakereModal,
+        settIkkePersistertKomponent,
+        nullstillIkkePersistertKomponent,
+    } = useApp();
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -139,6 +144,7 @@ const FrittståendeBrev: React.FC<Props> = ({
     };
 
     const oppdaterBrevmottakere = (brevmottakere: IBrevmottakere) => {
+        settIkkePersistertKomponent('frittstående brev');
         settBrevmottakere(brevmottakere);
         const value = byggSuksessRessurs('ok') as RessursSuksess<string>;
         return Promise.resolve(value);
@@ -200,6 +206,7 @@ const FrittståendeBrev: React.FC<Props> = ({
             if (respons.status === RessursStatus.SUKSESS) {
                 setUtsendingSuksess(true);
                 nulstillBrev();
+                nullstillIkkePersistertKomponent('frittstående brev');
             } else {
                 settFeilmelding(respons.frontendFeilmelding);
             }
@@ -226,12 +233,12 @@ const FrittståendeBrev: React.FC<Props> = ({
 
     return (
         <StyledBrev>
-            <h1>Fritekstbrev</h1>
+            <h1>Brev</h1>
             {brevmottakerErValgt && (
                 <Alert variant={'info'}>
                     <Heading size={'xsmall'}>Mottakere av brev:</Heading>
                     {utledNavnPåMottakere(brevmottakere).map((navn) => (
-                        <BodyShort>{navn}</BodyShort>
+                        <BodyShort key={navn}>{navn}</BodyShort>
                     ))}
                 </Alert>
             )}
