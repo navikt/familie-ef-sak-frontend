@@ -73,17 +73,17 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [avsnitt, settAvsnitt] = useState<AvsnittMedId[]>(
         initielleAvsnittMellomlager(mellomlagretFrittståendeBrev)
     );
+    const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(
+        mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.mottakere
+            ? mellomlagretFrittståendeBrev.mottakere
+            : tomBrevmottakere
+    );
+
     const [feilmelding, settFeilmelding] = useState('');
     const [utsendingSuksess, setUtsendingSuksess] = useState(false);
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(tomBrevmottakere);
-    const {
-        axiosRequest,
-        settVisBrevmottakereModal,
-        settIkkePersistertKomponent,
-        nullstillIkkePersistertKomponent,
-    } = useApp();
+    const { axiosRequest, settVisBrevmottakereModal } = useApp();
     const { toggles } = useToggles();
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
@@ -147,7 +147,6 @@ const FrittståendeBrev: React.FC<Props> = ({
     };
 
     const oppdaterBrevmottakere = (brevmottakere: IBrevmottakere) => {
-        settIkkePersistertKomponent('frittstående brev');
         settBrevmottakere(brevmottakere);
         const value = byggSuksessRessurs('ok') as RessursSuksess<string>;
         return Promise.resolve(value);
@@ -165,6 +164,7 @@ const FrittståendeBrev: React.FC<Props> = ({
             avsnitt,
             fagsakId: fagsakId as string,
             brevType: brevType as FrittståendeBrevtype,
+            mottakere: brevmottakere,
         };
         mellomlagreFrittståendeBrev(brev);
         axiosRequest<string, IFrittståendeBrev>({
@@ -204,12 +204,12 @@ const FrittståendeBrev: React.FC<Props> = ({
                 avsnitt,
                 fagsakId,
                 brevType,
+                brevmottakere,
             } as IFrittståendeBrev,
         }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 setUtsendingSuksess(true);
                 nulstillBrev();
-                nullstillIkkePersistertKomponent('frittstående brev');
             } else {
                 settFeilmelding(respons.frontendFeilmelding);
             }
@@ -219,6 +219,8 @@ const FrittståendeBrev: React.FC<Props> = ({
 
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
+    //eslint-disable-next-line
+    useEffect(() => genererBrev, [brevmottakere]);
 
     const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
         return [

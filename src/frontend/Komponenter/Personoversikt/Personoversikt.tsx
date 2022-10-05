@@ -91,7 +91,7 @@ const PersonoversiktContent: React.FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ fagsakPerson, personopplysninger }) => {
     const navigate = useNavigate();
-    const { erSaksbehandler, kanGåTilUrlIPersonoversikt } = useApp();
+    const { erSaksbehandler } = useApp();
     const paths = useLocation().pathname.split('/').slice(-1);
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
@@ -103,10 +103,7 @@ const PersonoversiktContent: React.FC<{
                 <TabsPure
                     tabs={tabs.map((tab) => ({ label: tab.label, aktiv: tab.path === path }))}
                     onChange={(_, tabNumber) => {
-                        const url = `person/${fagsakPerson.id}/${tabs[tabNumber].path}`;
-                        if (kanGåTilUrlIPersonoversikt(url)) {
-                            navigate(tabs[tabNumber].path);
-                        }
+                        navigate(tabs[tabNumber].path);
                     }}
                 />
 
