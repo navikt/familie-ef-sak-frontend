@@ -32,6 +32,8 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
 import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
 import { IBrevmottakere, tomBrevmottakere } from '../Brevmottakere/typer';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -82,6 +84,7 @@ const FrittståendeBrev: React.FC<Props> = ({
         settIkkePersistertKomponent,
         nullstillIkkePersistertKomponent,
     } = useApp();
+    const { toggles } = useToggles();
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -242,9 +245,11 @@ const FrittståendeBrev: React.FC<Props> = ({
                     ))}
                 </Alert>
             )}
-            <Button variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
-                Legg til verge eller fullmektig
-            </Button>
+            {toggles[ToggleName.visKnappVergeFrittståendeBrev] && (
+                <Button variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
+                    Legg til verge eller fullmektig
+                </Button>
+            )}
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}
