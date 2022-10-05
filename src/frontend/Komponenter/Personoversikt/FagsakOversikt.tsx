@@ -1,5 +1,5 @@
 import LagBehandlingModal from './LagBehandlingModal';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
 import { Fagsak } from '../../App/typer/fagsak';
 import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
@@ -23,9 +23,14 @@ const KnappMedMargin = styled(Knapp)`
 interface Props {
     fagsak: Fagsak;
     klageBehandlinger: KlageBehandling[];
+    hentKlageBehandlinger: Dispatch<void>;
 }
 
-export const FagsakOversikt: React.FC<Props> = ({ fagsak, klageBehandlinger }) => {
+export const FagsakOversikt: React.FC<Props> = ({
+    fagsak,
+    klageBehandlinger,
+    hentKlageBehandlinger,
+}) => {
     const { axiosRequest, erSaksbehandler } = useApp();
     const { toggles } = useToggles();
 
@@ -69,6 +74,7 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak, klageBehandlinger }) =
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsak={fagsak}
                                 hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
+                                hentKlageBehandlinger={hentKlageBehandlinger}
                                 kanStarteRevurdering={kanStarteRevurdering}
                             />
 
