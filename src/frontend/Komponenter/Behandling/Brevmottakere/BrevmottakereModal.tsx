@@ -106,7 +106,7 @@ export const BrevmottakereModal: FC<{
             kallHentBrevmottakere().then(
                 (resp: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
                     if (resp.status === RessursStatus.SUKSESS) {
-                        if (resp.data) {
+                        if (resp.data?.personer?.length || resp.data?.organisasjoner?.length) {
                             settValgtePersonMottakere(resp.data.personer);
                             settValgteOrganisasjonMottakere(resp.data.organisasjoner);
                         } else {

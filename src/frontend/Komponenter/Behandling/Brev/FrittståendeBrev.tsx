@@ -74,9 +74,7 @@ const FrittståendeBrev: React.FC<Props> = ({
         initielleAvsnittMellomlager(mellomlagretFrittståendeBrev)
     );
     const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(
-        mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.mottakere
-            ? mellomlagretFrittståendeBrev.mottakere
-            : tomBrevmottakere
+        mellomlagretFrittståendeBrev?.mottakere || tomBrevmottakere
     );
 
     const [feilmelding, settFeilmelding] = useState('');
@@ -148,12 +146,11 @@ const FrittståendeBrev: React.FC<Props> = ({
 
     const oppdaterBrevmottakere = (brevmottakere: IBrevmottakere) => {
         settBrevmottakere(brevmottakere);
-        const value = byggSuksessRessurs('ok') as RessursSuksess<string>;
-        return Promise.resolve(value);
+        return Promise.resolve(byggSuksessRessurs('ok'));
     };
 
     const hentBrevmottakere = () => {
-        return Promise.resolve(byggSuksessRessurs(brevmottakere) as RessursSuksess<IBrevmottakere>);
+        return Promise.resolve(byggSuksessRessurs(brevmottakere));
     };
 
     const genererBrev = () => {
