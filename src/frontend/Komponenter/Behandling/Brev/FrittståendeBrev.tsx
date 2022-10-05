@@ -183,6 +183,7 @@ const FrittståendeBrev: React.FC<Props> = ({
         settAvsnitt([]);
         settOverskrift('');
         settBrevType(FrittståendeBrevtype.INFORMASJONSBREV);
+        settBrevmottakere(tomBrevmottakere);
     };
 
     const sendBrev = () => {
