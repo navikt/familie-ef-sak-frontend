@@ -219,8 +219,11 @@ const FrittståendeBrev: React.FC<Props> = ({
 
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
-    //eslint-disable-next-line
-    useEffect(() => genererBrev, [brevmottakere]);
+
+    useEffect(() => {
+        genererBrev();
+        //eslint-disable-next-line
+    }, [brevmottakere]);
 
     const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
         return [
@@ -242,8 +245,8 @@ const FrittståendeBrev: React.FC<Props> = ({
             {brevmottakerErValgt && (
                 <Alert variant={'info'}>
                     <Heading size={'xsmall'}>Mottakere av brev:</Heading>
-                    {utledNavnPåMottakere(brevmottakere).map((navn) => (
-                        <BodyShort key={navn}>{navn}</BodyShort>
+                    {utledNavnPåMottakere(brevmottakere).map((navn, index) => (
+                        <BodyShort key={navn + index}>{navn}</BodyShort>
                     ))}
                 </Alert>
             )}
