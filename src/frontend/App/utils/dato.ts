@@ -64,7 +64,18 @@ export const gjelderÅr = (dato: string, år: number): boolean => {
     return parseISO(dato).getFullYear() === år;
 };
 
-export const erGyldigDato = (dato: string | Date) => isValid(tilDato(dato));
+const erGyldigFormat = (verdi: string) => {
+    const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (verdi && String(verdi).match(YYYYMMDD)) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+export const erGyldigDato = (dato: string | Date): boolean =>
+    typeof dato === 'string' ? erGyldigFormat(dato) && isValid(tilDato(dato)) : isValid(dato);
 
 export const tilDato = (dato: string | Date): Date =>
     typeof dato === 'string' ? parseISO(dato) : dato;
