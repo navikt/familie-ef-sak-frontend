@@ -201,8 +201,8 @@ const FrittståendeBrev: React.FC<Props> = ({
                 avsnitt,
                 fagsakId,
                 brevType,
-                brevmottakere,
-            } as IFrittståendeBrev,
+                mottakere: brevmottakere,
+            },
         }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 setUtsendingSuksess(true);
