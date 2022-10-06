@@ -31,7 +31,7 @@ import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
 import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
-import { IBrevmottakere, tomBrevmottakere } from '../Brevmottakere/typer';
+import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 
@@ -64,6 +64,19 @@ const FrittståendeBrev: React.FC<Props> = ({
     mellomlagretFrittståendeBrev,
     personopplysninger,
 }) => {
+    const brevmottakereMedBruker = (personopplysninger: IPersonopplysninger) => {
+        return {
+            personer: [
+                {
+                    mottakerRolle: EBrevmottakerRolle.BRUKER,
+                    personIdent: personopplysninger.personIdent,
+                    navn: personopplysninger.navn.visningsnavn,
+                },
+            ],
+            organisasjoner: [],
+        };
+    };
+
     const [brevType, settBrevType] = useState<FrittståendeBrevtype | undefined>(
         mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.brevType
     );
@@ -74,7 +87,7 @@ const FrittståendeBrev: React.FC<Props> = ({
         initielleAvsnittMellomlager(mellomlagretFrittståendeBrev)
     );
     const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(
-        mellomlagretFrittståendeBrev?.mottakere || tomBrevmottakere
+        mellomlagretFrittståendeBrev?.mottakere || brevmottakereMedBruker(personopplysninger)
     );
 
     const [feilmelding, settFeilmelding] = useState('');
@@ -83,6 +96,9 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest, settVisBrevmottakereModal } = useApp();
     const { toggles } = useToggles();
+
+    const brevmottakereValgt =
+        brevmottakere.personer.length > 0 || brevmottakere.organisasjoner.length > 0;
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -183,13 +199,14 @@ const FrittståendeBrev: React.FC<Props> = ({
         settAvsnitt([]);
         settOverskrift('');
         settBrevType(FrittståendeBrevtype.INFORMASJONSBREV);
-        settBrevmottakere(tomBrevmottakere);
+        settBrevmottakere(brevmottakereMedBruker(personopplysninger));
     };
 
     const sendBrev = () => {
         if (senderInnBrev) return;
         if (!brevType) return;
         if (!fagsakId) return;
+        if (!brevmottakereValgt) return;
         settSenderInnBrev(true);
         setUtsendingSuksess(false);
         settFeilmelding('');
@@ -270,7 +287,10 @@ const FrittståendeBrev: React.FC<Props> = ({
                 context={FritekstBrevContext.FRITTSTÅENDE}
                 stønadstype={Stønadstype.OVERGANGSSTØNAD}
             />
-            <StyledHovedKnapp disabled={!brevType} onClick={() => settVisModal(true)}>
+            <StyledHovedKnapp
+                disabled={!brevType || !brevmottakereValgt}
+                onClick={() => settVisModal(true)}
+            >
                 Send brev
             </StyledHovedKnapp>
             {visModal && (
