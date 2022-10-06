@@ -177,7 +177,7 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     const skalViseVedtaksperiodeOgInntekt =
-        behandling.type !== Behandlingstype.REVURDERING ||
+        !behandling.forrigeBehandlingId ||
         revurderesFra ||
         !behandlingErRedigerbar ||
         !toggles[ToggleName.skalPrefylleVedtaksperider];
@@ -293,7 +293,7 @@ export const InnvilgeVedtak: React.FC<{
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
                 {toggles[ToggleName.skalPrefylleVedtaksperider] &&
-                behandling.type === Behandlingstype.REVURDERING &&
+                behandling.forrigeBehandlingId &&
                 behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
