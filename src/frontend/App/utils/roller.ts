@@ -2,7 +2,7 @@ import { ISaksbehandler } from '../typer/saksbehandler';
 import { AppEnv } from '../api/env';
 
 export type SaksbehadlerRolle = 'veileder' | 'saksbehandler' | 'beslutter';
-export type Rolle = SaksbehadlerRolle | 'kode6' | 'kode7';
+export type Rolle = SaksbehadlerRolle | 'kode6' | 'kode7' | 'egenAnsatt';
 
 /**
  * Mapper rolle til gruppe
@@ -36,7 +36,15 @@ export const harTilgangTilRolle = (
 };
 
 export const harStrengtFortroligRolle = (env: AppEnv, saksbehandler: ISaksbehandler): boolean => {
+    return harRolle(env, saksbehandler, 'kode6');
+};
+
+export const harEgenAnsattRolle = (env: AppEnv, saksbehandler: ISaksbehandler): boolean => {
+    return harRolle(env, saksbehandler, 'egenAnsatt');
+};
+
+const harRolle = (env: AppEnv, saksbehandler: ISaksbehandler, rolle: Rolle) => {
     const saksbehandlerGrupper = saksbehandler.groups;
     if (!saksbehandlerGrupper) return false;
-    return saksbehandlerGrupper.some((gruppe) => gruppe === env.roller['kode6']);
+    return saksbehandlerGrupper.some((gruppe) => gruppe === env.roller[rolle]);
 };
