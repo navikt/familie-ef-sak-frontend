@@ -118,7 +118,7 @@ const BrevInnhold: React.FC<Props> = ({
                         nyBrevType ? skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[nyBrevType]) : []
                     );
                 }}
-                value={brevType}
+                value={brevType || ''}
             >
                 <option value={''}>Ikke valgt</option>
                 {Object.values(
