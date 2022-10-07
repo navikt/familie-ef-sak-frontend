@@ -77,6 +77,10 @@ const FrittståendeBrev: React.FC<Props> = ({
         };
     };
 
+    const brevmottakereValgt = (mottakere?: IBrevmottakere) => {
+        return mottakere && (mottakere.personer.length > 0 || mottakere.organisasjoner.length > 0);
+    };
+
     const [brevType, settBrevType] = useState<FrittståendeBrevtype | undefined>(
         mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.brevType
     );
@@ -87,7 +91,10 @@ const FrittståendeBrev: React.FC<Props> = ({
         initielleAvsnittMellomlager(mellomlagretFrittståendeBrev)
     );
     const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(
-        mellomlagretFrittståendeBrev?.mottakere || brevmottakereMedBruker(personopplysninger)
+        mellomlagretFrittståendeBrev?.mottakere &&
+            brevmottakereValgt(mellomlagretFrittståendeBrev.mottakere)
+            ? mellomlagretFrittståendeBrev.mottakere
+            : brevmottakereMedBruker(personopplysninger)
     );
 
     const [feilmelding, settFeilmelding] = useState('');
@@ -96,9 +103,6 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest, settVisBrevmottakereModal } = useApp();
     const { toggles } = useToggles();
-
-    const brevmottakereValgt =
-        brevmottakere.personer.length > 0 || brevmottakere.organisasjoner.length > 0;
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -206,7 +210,7 @@ const FrittståendeBrev: React.FC<Props> = ({
         if (senderInnBrev) return;
         if (!brevType) return;
         if (!fagsakId) return;
-        if (!brevmottakereValgt) return;
+        if (!brevmottakereValgt(brevmottakere)) return;
         settSenderInnBrev(true);
         setUtsendingSuksess(false);
         settFeilmelding('');
@@ -288,7 +292,7 @@ const FrittståendeBrev: React.FC<Props> = ({
                 stønadstype={Stønadstype.OVERGANGSSTØNAD}
             />
             <StyledHovedKnapp
-                disabled={!brevType || !brevmottakereValgt}
+                disabled={!brevType || !brevmottakereValgt(brevmottakere)}
                 onClick={() => settVisModal(true)}
             >
                 Send brev
