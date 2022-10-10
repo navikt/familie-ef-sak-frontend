@@ -10,7 +10,6 @@ export enum ToggleName {
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     kanLeggeTilTerminbarnVidJournalføring = 'familie.ef.sak.frontend-journalforing-kan-legge-til-terminbarn',
     kanJournalføreEttersendingNyBehandling = 'familie.ef.sak.frontend-journalforing-ettersending-ny-behandling',
-    kanJournalFøreSkolepenger = 'familie.ef.sak.skolepenger',
     skalPrefylleVedtaksperider = 'familie.ef.sak.frontend-prefyll-vedtaksperioder',
     skolepengerOpphør = 'familie.ef.sak.skolepenger-opphor',
     visVedtakPeriodeLeggTilRad = 'familie.ef.sak.frontend-vis-vedtak-legg-til-rad-knapp',

@@ -3,11 +3,9 @@ import { IOppgave } from './typer/oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
 import {
     Behandlingstema,
-    behandlingstemaTilStønadstype,
     behandlingstemaTilTekst,
     OppgaveBehandlingstype,
     oppgaveBehandlingstypeTilTekst,
-    Stønadstype,
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Flatknapp as Knapp } from 'nav-frontend-knapper';
@@ -33,13 +31,8 @@ const StyledPopoverinnhold = styled.p`
 
 const Flatknapp = hiddenIf(Knapp);
 
-const kanJournalføres = (oppgave: IOppgave, skalJournalføreSkolepenger: boolean) => {
-    const { behandlingstema, oppgavetype } = oppgave;
-    const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
-
-    if (!skalJournalføreSkolepenger && stønadstype === Stønadstype.SKOLEPENGER) {
-        return false;
-    }
+const kanJournalføres = (oppgave: IOppgave) => {
+    const { oppgavetype } = oppgave;
 
     return oppgavetype === 'JFR';
 };
@@ -79,7 +72,7 @@ const kanMigreres = (oppgave: IOppgave) => {
 const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
-    } else if (kanJournalføres(oppgave, toggles[ToggleName.kanJournalFøreSkolepenger])) {
+    } else if (kanJournalføres(oppgave)) {
         return Handling.JOURNALFØR;
     } else if (oppgaveErTilbakekreving(oppgave)) {
         return Handling.TILBAKE;
