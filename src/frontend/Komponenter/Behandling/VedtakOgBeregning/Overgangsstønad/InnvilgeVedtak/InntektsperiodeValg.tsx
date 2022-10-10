@@ -21,8 +21,6 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
-import { useToggles } from '../../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../../App/context/toggles';
 import { Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -77,9 +75,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { toggles } = useToggles();
-    const skalViseLeggTilKnapp =
-        toggles[ToggleName.visVedtakPeriodeLeggTilRad] && behandlingErRedigerbar;
+    const skalViseLeggTilKnapp = behandlingErRedigerbar;
 
     const oppdaterInntektslisteElement = (
         index: number,
