@@ -225,7 +225,7 @@ const FrittståendeBrev: React.FC<Props> = ({
                 tittel={'Bekreft utsending av brev'}
                 visModal={visModal}
                 onClose={() => lukkModal()}
-                onConfirm={() => sendBrev()}
+                hovedKnappClick={() => sendBrev()}
                 lukkKnappDisabled={utsendingSuksess}
                 hovedKnappDisabled={senderInnBrev || utsendingSuksess}
                 lukkKnappTekst={'Avbryt'}

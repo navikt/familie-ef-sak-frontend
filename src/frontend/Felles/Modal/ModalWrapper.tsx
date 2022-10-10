@@ -36,12 +36,12 @@ interface ModalProps {
     tittel: string;
     visModal: boolean;
     onClose: () => void;
-    onConfirm: () => void;
+    hovedKnappClick?: () => void;
     lukkKnappDisabled?: boolean;
     hovedKnappDisabled?: boolean;
     lukkKnappTekst?: string;
     hovedKnappTekst?: string;
-    visKnapper?: boolean;
+    skjulKnapper?: boolean;
     children?: React.ReactNode;
 }
 
@@ -49,12 +49,12 @@ export const ModalWrapper: React.FC<ModalProps> = ({
     tittel,
     visModal,
     onClose,
-    onConfirm,
+    hovedKnappClick,
     lukkKnappDisabled,
     hovedKnappDisabled,
     lukkKnappTekst,
     hovedKnappTekst,
-    visKnapper,
+    skjulKnapper,
     children,
 }) => {
     return (
@@ -64,7 +64,7 @@ export const ModalWrapper: React.FC<ModalProps> = ({
                     {tittel}
                 </Tittel>
                 <Innhold>{children}</Innhold>
-                {visKnapper && (
+                {!skjulKnapper && (
                     <ButtonContainer>
                         <ModalKnapp
                             variant="tertiary"
@@ -75,7 +75,7 @@ export const ModalWrapper: React.FC<ModalProps> = ({
                         </ModalKnapp>
                         <ModalKnapp
                             variant="primary"
-                            onClick={() => onConfirm()}
+                            onClick={hovedKnappClick ? () => hovedKnappClick() : () => null}
                             disabled={hovedKnappDisabled}
                         >
                             {hovedKnappTekst}
