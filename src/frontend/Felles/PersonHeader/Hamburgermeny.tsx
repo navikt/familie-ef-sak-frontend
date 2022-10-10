@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Hamburger } from '@navikt/ds-icons';
 import styled from 'styled-components';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { useApp } from '../../App/context/AppContext';
 import { useBehandling } from '../../App/context/BehandlingContext';
+import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
+import { Behandling } from '../../App/typer/fagsak';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -58,9 +60,11 @@ const Knapp = styled.button`
     text-align: left;
 `;
 
-export const Hamburgermeny = () => {
+export const Hamburgermeny: FC<{ behandling?: Behandling }> = ({ behandling }) => {
     const ref = useRef(null);
     const { settVisBrevmottakereModal } = useApp();
+    const { settVisUtestengModal } = useApp();
+
     const { settVisHenleggModal } = useBehandling();
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
@@ -89,26 +93,41 @@ export const Hamburgermeny = () => {
                 }}
             />
             <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
-                <ul>
-                    <li>
-                        <Knapp
-                            onClick={() => {
-                                settVisBrevmottakereModal(true);
-                            }}
-                        >
-                            <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
-                        </Knapp>
-                    </li>
-                    <li>
-                        <Knapp
-                            onClick={() => {
-                                settVisHenleggModal(true);
-                            }}
-                        >
-                            <Normaltekst>Henlegg</Normaltekst>
-                        </Knapp>
-                    </li>
-                </ul>
+                {behandling && erBehandlingRedigerbar(behandling) && (
+                    <ul>
+                        <li>
+                            <Knapp
+                                onClick={() => {
+                                    settVisBrevmottakereModal(true);
+                                }}
+                            >
+                                <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
+                            </Knapp>
+                        </li>
+                        <li>
+                            <Knapp
+                                onClick={() => {
+                                    settVisHenleggModal(true);
+                                }}
+                            >
+                                <Normaltekst>Henlegg</Normaltekst>
+                            </Knapp>
+                        </li>
+                    </ul>
+                )}
+                {!behandling && (
+                    <ul>
+                        <li>
+                            <Knapp
+                                onClick={() => {
+                                    settVisUtestengModal(true);
+                                }}
+                            >
+                                <Normaltekst>Legg til utestengelse</Normaltekst>
+                            </Knapp>
+                        </li>
+                    </ul>
+                )}
             </HamburgerMenyInnhold>
         </div>
     );
