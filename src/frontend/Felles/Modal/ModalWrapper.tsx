@@ -42,6 +42,7 @@ interface ModalProps {
     lukkKnappTekst?: string;
     hovedKnappTekst?: string;
     skjulKnapper?: boolean;
+    ariaLabel?: string;
     children?: React.ReactNode;
 }
 
@@ -55,10 +56,15 @@ export const ModalWrapper: React.FC<ModalProps> = ({
     lukkKnappTekst,
     hovedKnappTekst,
     skjulKnapper,
+    ariaLabel,
     children,
 }) => {
     return (
-        <ModalContainer open={visModal} aria-label={tittel} onClose={() => onClose()}>
+        <ModalContainer
+            open={visModal}
+            aria-label={ariaLabel ? ariaLabel : tittel}
+            onClose={() => onClose()}
+        >
             <Modal.Content>
                 <Tittel spacing={true} size={'medium'}>
                     {tittel}
