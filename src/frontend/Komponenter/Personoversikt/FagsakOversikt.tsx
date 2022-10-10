@@ -1,5 +1,5 @@
 import LagBehandlingModal from './LagBehandlingModal';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
 import { Fagsak } from '../../App/typer/fagsak';
 import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
@@ -10,9 +10,6 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
 import { erAlleBehandlingerErFerdigstilt } from './utils';
-import { ToggleName } from '../../App/context/toggles';
-import { useToggles } from '../../App/context/TogglesContext';
-import { Stønadstype } from '../../App/typer/behandlingstema';
 import { KlageBehandling } from '../../App/typer/klage';
 
 const KnappMedMargin = styled(Knapp)`
@@ -23,11 +20,15 @@ const KnappMedMargin = styled(Knapp)`
 interface Props {
     fagsak: Fagsak;
     klageBehandlinger: KlageBehandling[];
+    hentKlageBehandlinger: Dispatch<void>;
 }
 
-export const FagsakOversikt: React.FC<Props> = ({ fagsak, klageBehandlinger }) => {
+export const FagsakOversikt: React.FC<Props> = ({
+    fagsak,
+    klageBehandlinger,
+    hentKlageBehandlinger,
+}) => {
     const { axiosRequest, erSaksbehandler } = useApp();
-    const { toggles } = useToggles();
 
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
@@ -40,11 +41,6 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak, klageBehandlinger }) =
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
         Ressurs<TilbakekrevingBehandling[]>
     >(byggTomRessurs());
-
-    const skalViseOpprettNyBehandlingKnapp =
-        fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
-        fagsak.stønadstype === Stønadstype.BARNETILSYN ||
-        toggles[ToggleName.skalViseOpprettNyBehandlingSkolepenger];
 
     useEffect(() => {
         hentTilbakekrevingBehandlinger();
@@ -62,13 +58,14 @@ export const FagsakOversikt: React.FC<Props> = ({ fagsak, klageBehandlinger }) =
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                         klageBehandlinger={klageBehandlinger}
                     />
-                    {erSaksbehandler && skalViseOpprettNyBehandlingKnapp && (
+                    {erSaksbehandler && (
                         <>
                             <LagBehandlingModal
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsak={fagsak}
                                 hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
+                                hentKlageBehandlinger={hentKlageBehandlinger}
                                 kanStarteRevurdering={kanStarteRevurdering}
                             />
 

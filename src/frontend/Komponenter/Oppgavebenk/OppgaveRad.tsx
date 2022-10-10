@@ -3,11 +3,9 @@ import { IOppgave } from './typer/oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
 import {
     Behandlingstema,
-    behandlingstemaTilStønadstype,
     behandlingstemaTilTekst,
     OppgaveBehandlingstype,
     oppgaveBehandlingstypeTilTekst,
-    Stønadstype,
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Flatknapp as Knapp } from 'nav-frontend-knapper';
@@ -19,6 +17,7 @@ import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName, Toggles } from '../../App/context/toggles';
+import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
 
 interface Props {
     oppgave: IOppgave;
@@ -32,13 +31,8 @@ const StyledPopoverinnhold = styled.p`
 
 const Flatknapp = hiddenIf(Knapp);
 
-const kanJournalføres = (oppgave: IOppgave, skalJournalføreSkolepenger: boolean) => {
-    const { behandlingstema, oppgavetype } = oppgave;
-    const stønadstype = behandlingstemaTilStønadstype(behandlingstema);
-
-    if (!skalJournalføreSkolepenger && stønadstype === Stønadstype.SKOLEPENGER) {
-        return false;
-    }
+const kanJournalføres = (oppgave: IOppgave) => {
+    const { oppgavetype } = oppgave;
 
     return oppgavetype === 'JFR';
 };
@@ -59,6 +53,12 @@ const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
     );
 };
 
+const oppgaveErKlage = (oppgave: IOppgave) => {
+    return (
+        oppgave.behandlesAvApplikasjon === 'familie-klage' && oppgave.behandlingstype === 'ae0058'
+    );
+};
+
 const kanMigreres = (oppgave: IOppgave) => {
     return (
         oppgave.behandlesAvApplikasjon === '' &&
@@ -72,10 +72,12 @@ const kanMigreres = (oppgave: IOppgave) => {
 const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
-    } else if (kanJournalføres(oppgave, toggles[ToggleName.kanJournalFøreSkolepenger])) {
+    } else if (kanJournalføres(oppgave)) {
         return Handling.JOURNALFØR;
     } else if (oppgaveErTilbakekreving(oppgave)) {
         return Handling.TILBAKE;
+    } else if (oppgaveErKlage(oppgave)) {
+        return Handling.KLAGE;
     } else if (kanMigreres(oppgave) && toggles[ToggleName.kanMigrereFagsak]) {
         return Handling.JOURNALFØR_MIGRERING;
     }
@@ -89,7 +91,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         gåTilVurderMigrering,
         gåTilJournalføring,
         laster,
-        gåTilFagsak,
+        plukkOppgaveOgGåTilBehandlingsoversikt,
         feilmelding,
     } = useOppgave(oppgave);
 
@@ -127,6 +129,10 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         ? `${behandlingstype} (${behandlingstema})`
         : behandlingstema;
 
+    const utledetFolkeregisterIdent = oppgave.identer.filter(
+        (i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT
+    )[0].ident;
+
     const utledKnappPåHandling = () => {
         switch (utledHandling(oppgave, toggles)) {
             case Handling.JOURNALFØR:
@@ -142,9 +148,12 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                     </Flatknapp>
                 );
             case Handling.TILBAKE:
+            case Handling.KLAGE:
                 return (
                     <Flatknapp
-                        onClick={() => gåTilFagsak(oppgave.identer && oppgave.identer[0].ident)}
+                        onClick={() => {
+                            plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent);
+                        }}
                         disabled={laster}
                     >
                         Gå til fagsak
@@ -186,7 +195,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 <td>{fristFerdigstillelseDato}</td>
                 <td>{prioritet}</td>
                 <td>{oppgave.beskrivelse}</td>
-                <td>{oppgave.identer && oppgave.identer[0].ident}</td>
+                <td>{utledetFolkeregisterIdent}</td>
                 <td>{oppgave.tildeltEnhetsnr}</td>
                 <td>{enhetsmappe}</td>
                 <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>

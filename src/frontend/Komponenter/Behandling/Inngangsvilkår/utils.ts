@@ -38,7 +38,6 @@ export const utledBegrunnelseFraVilkårOgRegel = (
         ?.find((vurdering) => vurdering.regelId === regelId)?.begrunnelse;
 
 export const utledVilkårsgjenbruk = (
-    featureToggle: boolean,
     behandlingErRedigerbar: boolean,
     behandling: Behandling
 ): boolean => {
@@ -47,5 +46,5 @@ export const utledVilkårsgjenbruk = (
         behandling.behandlingsårsak === Behandlingsårsak.SØKNAD ||
         behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD;
     const vilkårForRevurderingErOppfylt = behandlingErRevurdering ? behandlingsårsakErSøknad : true;
-    return featureToggle && behandlingErRedigerbar && vilkårForRevurderingErOppfylt;
+    return behandlingErRedigerbar && vilkårForRevurderingErOppfylt;
 };

@@ -34,6 +34,7 @@ interface IProps {
     settVisModal: (bool: boolean) => void;
     fagsak: Fagsak;
     hentTilbakekrevinger: Dispatch<void>;
+    hentKlageBehandlinger: Dispatch<void>;
     kanStarteRevurdering: boolean;
 }
 
@@ -42,6 +43,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     settVisModal,
     fagsak,
     hentTilbakekrevinger,
+    hentKlageBehandlinger,
     kanStarteRevurdering,
 }) => {
     const { toggles } = useToggles();
@@ -109,7 +111,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
-                        //TODO hentKlager();
+                        hentKlageBehandlinger();
                         settVisModal(false);
                         settToast(EToast.KLAGE_OPPRETTET);
                     } else {

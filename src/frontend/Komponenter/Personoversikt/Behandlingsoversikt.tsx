@@ -20,6 +20,9 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
         hentKlagebehandlinger(fagsakPersonId);
     }, [hentFagsakPerson, fagsakPersonId, hentKlagebehandlinger]);
 
+    const reHentKlagebehandlinger = () => {
+        hentKlagebehandlinger(fagsakPersonId);
+    };
     return (
         <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
             {({ fagsakPerson, klagebehandlinger }) => (
@@ -29,18 +32,21 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
                         <FagsakOversikt
                             fagsak={fagsakPerson.overgangsstønad}
                             klageBehandlinger={klagebehandlinger.overgangsstønad}
+                            hentKlageBehandlinger={reHentKlagebehandlinger}
                         />
                     )}
                     {fagsakPerson.barnetilsyn && (
                         <FagsakOversikt
                             fagsak={fagsakPerson.barnetilsyn}
                             klageBehandlinger={klagebehandlinger.barnetilsyn}
+                            hentKlageBehandlinger={reHentKlagebehandlinger}
                         />
                     )}
                     {fagsakPerson.skolepenger && (
                         <FagsakOversikt
                             fagsak={fagsakPerson.skolepenger}
                             klageBehandlinger={klagebehandlinger.skolepenger}
+                            hentKlageBehandlinger={reHentKlagebehandlinger}
                         />
                     )}
                 </>

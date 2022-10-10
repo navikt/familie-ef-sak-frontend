@@ -54,7 +54,7 @@ export const byggFeiletRessurs = <T>(melding: string, error?: Error): Ressurs<T>
     };
 };
 
-export const byggSuksessRessurs = <T>(data: T): Ressurs<T> => {
+export const byggSuksessRessurs = <T>(data: T): RessursSuksess<T> => {
     return {
         data,
         status: RessursStatus.SUKSESS,

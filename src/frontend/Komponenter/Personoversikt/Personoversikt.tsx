@@ -67,14 +67,20 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Brev',
         path: 'frittstaaende-brev',
-        komponent: (fagsakPerson, _, erSaksbehandler) => {
+        komponent: (fagsakPerson, personopplysninger, erSaksbehandler) => {
             const fagsakId =
                 fagsakPerson.overgangsstønad ||
                 fagsakPerson.barnetilsyn ||
                 fagsakPerson.skolepenger;
 
             return (
-                erSaksbehandler && fagsakId && <FrittståendeBrevMedVisning fagsakId={fagsakId} />
+                erSaksbehandler &&
+                fagsakId && (
+                    <FrittståendeBrevMedVisning
+                        fagsakId={fagsakId}
+                        personopplysninger={personopplysninger}
+                    />
+                )
             );
         },
     },

@@ -1,4 +1,5 @@
 import { Behandlingsårsak } from './Behandlingsårsak';
+import { EVilkårsbehandleBarnValg } from './vilkårsbehandleBarnValg';
 
 export interface NyeBarnSidenForrigeBehandling {
     nyeBarn: BarnForRevurdering[];
@@ -15,5 +16,6 @@ export interface RevurderingInnhold {
     fagsakId: string;
     behandlingsårsak: Behandlingsårsak;
     kravMottatt: string;
+    vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
     barn: BarnForRevurdering[];
 }
