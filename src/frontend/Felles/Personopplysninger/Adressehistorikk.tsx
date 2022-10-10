@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import UIModalWrapper from '../Modal/UIModalWrapper';
 import { Element } from 'nav-frontend-typografi';
 import { IngenData, TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
+import { ModalWrapper } from '../Modal/ModalWrapper';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -159,18 +159,14 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                     );
                 })}
             </tbody>
-            {beboereAdresseIModal && (
-                <UIModalWrapper
-                    modal={{
-                        tittel: 'Beboere',
-                        lukkKnapp: true,
-                        visModal: true,
-                        onClose: () => settBeboereAdresseIModal(undefined),
-                    }}
-                >
-                    <Beboere fagsakPersonId={fagsakPersonId} />
-                </UIModalWrapper>
-            )}
+            <ModalWrapper
+                tittel={'Beboere'}
+                visModal={beboereAdresseIModal != undefined}
+                onClose={() => settBeboereAdresseIModal(undefined)}
+                skjulKnapper={true}
+            >
+                <Beboere fagsakPersonId={fagsakPersonId} />
+            </ModalWrapper>
         </>
     );
 };
