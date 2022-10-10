@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
-import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VergerOgFullmektigeFraRegister } from './VergerOgFullmektigeFraRegister';
 import { SøkWrapper } from './SøkWrapper';
 import { SkalBrukerHaBrev } from './SkalBrukerHaBrev';
@@ -58,11 +57,15 @@ const VertikalLinje = styled.div`
 `;
 
 export const BrevmottakereModal: FC<{
-    behandlingId: string;
     personopplysninger: IPersonopplysninger;
-}> = ({ personopplysninger, behandlingId }) => {
-    const { axiosRequest } = useApp();
-    const { visBrevmottakereModal, settVisBrevmottakereModal } = useBehandling();
+    kallSettBrevmottakere: (
+        brevmottakere: IBrevmottakere
+    ) => Promise<RessursSuksess<string> | RessursFeilet>;
+    kallHentBrevmottakere: () => Promise<
+        RessursSuksess<IBrevmottakere | undefined> | RessursFeilet
+    >;
+}> = ({ personopplysninger, kallSettBrevmottakere, kallHentBrevmottakere }) => {
+    const { visBrevmottakereModal, settVisBrevmottakereModal } = useApp();
     const initielleBrevmottakere = useMemo(
         () => [
             {
@@ -85,13 +88,9 @@ export const BrevmottakereModal: FC<{
     const settBrevmottakere = () => {
         settFeilmelding('');
         settInnsendingSukksess(false);
-        axiosRequest<string, IBrevmottakere>({
-            url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
-            method: 'POST',
-            data: {
-                personer: valgtePersonMottakere,
-                organisasjoner: valgteOrganisasjonMottakere,
-            },
+        kallSettBrevmottakere({
+            personer: valgtePersonMottakere,
+            organisasjoner: valgteOrganisasjonMottakere,
         }).then((response: RessursSuksess<string> | RessursFeilet) => {
             if (response.status === RessursStatus.SUKSESS) {
                 settVisBrevmottakereModal(false);
@@ -104,28 +103,27 @@ export const BrevmottakereModal: FC<{
 
     useEffect(() => {
         const hentBrevmottakere = () => {
-            axiosRequest<IBrevmottakere | undefined, null>({
-                url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
-                method: 'GET',
-            }).then((resp: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
-                if (resp.status === RessursStatus.SUKSESS) {
-                    if (resp.data) {
-                        settValgtePersonMottakere(resp.data.personer);
-                        settValgteOrganisasjonMottakere(resp.data.organisasjoner);
-                    } else {
-                        settValgtePersonMottakere(initielleBrevmottakere);
-                        settValgteOrganisasjonMottakere([]);
+            kallHentBrevmottakere().then(
+                (resp: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
+                    if (resp.status === RessursStatus.SUKSESS) {
+                        if (resp.data?.personer?.length || resp.data?.organisasjoner?.length) {
+                            settValgtePersonMottakere(resp.data.personer);
+                            settValgteOrganisasjonMottakere(resp.data.organisasjoner);
+                        } else {
+                            settValgtePersonMottakere(initielleBrevmottakere);
+                            settValgteOrganisasjonMottakere([]);
+                        }
+                    } else if (resp.status === RessursStatus.FEILET) {
+                        settFeilmelding(resp.frontendFeilmelding);
                     }
-                } else if (resp.status === RessursStatus.FEILET) {
-                    settFeilmelding(resp.frontendFeilmelding);
                 }
-            });
+            );
         };
 
         if (visBrevmottakereModal) {
             hentBrevmottakere();
         }
-    }, [axiosRequest, behandlingId, visBrevmottakereModal, initielleBrevmottakere]);
+    }, [kallHentBrevmottakere, visBrevmottakereModal, initielleBrevmottakere]);
 
     return (
         <StyledModal

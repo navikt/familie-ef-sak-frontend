@@ -1,10 +1,14 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import {
+    byggSuksessRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../../App/typer/ressurs';
 import { useDebouncedCallback } from 'use-debounce';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -25,6 +29,11 @@ import {
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
+import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
+import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 import { EToast } from '../../../App/typer/toast';
 
 const StyledBrev = styled.div`
@@ -47,13 +56,32 @@ type Props = {
     oppdaterBrevressurs: (brevRessurs: Ressurs<string>) => void;
     fagsakId: string;
     mellomlagretFrittståendeBrev?: IFrittståendeBrev;
+    personopplysninger: IPersonopplysninger;
 };
 
 const FrittståendeBrev: React.FC<Props> = ({
     oppdaterBrevressurs,
     fagsakId,
     mellomlagretFrittståendeBrev,
+    personopplysninger,
 }) => {
+    const brevmottakereMedBruker = (personopplysninger: IPersonopplysninger) => {
+        return {
+            personer: [
+                {
+                    mottakerRolle: EBrevmottakerRolle.BRUKER,
+                    personIdent: personopplysninger.personIdent,
+                    navn: personopplysninger.navn.visningsnavn,
+                },
+            ],
+            organisasjoner: [],
+        };
+    };
+
+    const brevmottakereValgt = (mottakere?: IBrevmottakere) => {
+        return mottakere && (mottakere.personer.length > 0 || mottakere.organisasjoner.length > 0);
+    };
+
     const [brevType, settBrevType] = useState<FrittståendeBrevtype | undefined>(
         mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.brevType
     );
@@ -63,10 +91,18 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [avsnitt, settAvsnitt] = useState<AvsnittMedId[]>(
         initielleAvsnittMellomlager(mellomlagretFrittståendeBrev)
     );
+    const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(
+        mellomlagretFrittståendeBrev?.mottakere &&
+            brevmottakereValgt(mellomlagretFrittståendeBrev.mottakere)
+            ? mellomlagretFrittståendeBrev.mottakere
+            : brevmottakereMedBruker(personopplysninger)
+    );
+
     const [feilmelding, settFeilmelding] = useState('');
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
-    const { axiosRequest, settToast } = useApp();
+    const { axiosRequest, settVisBrevmottakereModal, settToast } = useApp();
+    const { toggles } = useToggles();
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -120,16 +156,6 @@ const FrittståendeBrev: React.FC<Props> = ({
         });
     };
 
-    const personopplysningerConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/fagsak/${fagsakId}`,
-        }),
-        [fagsakId]
-    );
-
-    const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
-
     const mellomlagreFrittståendeBrev = (brev: IFrittståendeBrev): void => {
         axiosRequest<string, IFrittståendeBrev>({
             method: 'POST',
@@ -138,8 +164,16 @@ const FrittståendeBrev: React.FC<Props> = ({
         });
     };
 
+    const oppdaterBrevmottakere = (brevmottakere: IBrevmottakere) => {
+        settBrevmottakere(brevmottakere);
+        return Promise.resolve(byggSuksessRessurs('ok'));
+    };
+
+    const hentBrevmottakere = () => {
+        return Promise.resolve(byggSuksessRessurs(brevmottakere));
+    };
+
     const genererBrev = () => {
-        if (personopplysninger.status !== RessursStatus.SUKSESS) return;
         if (!brevType) return;
 
         const brev: IFrittståendeBrev = {
@@ -147,6 +181,7 @@ const FrittståendeBrev: React.FC<Props> = ({
             avsnitt,
             fagsakId: fagsakId as string,
             brevType: brevType as FrittståendeBrevtype,
+            mottakere: brevmottakere,
         };
         mellomlagreFrittståendeBrev(brev);
         axiosRequest<string, IFrittståendeBrev>({
@@ -167,12 +202,14 @@ const FrittståendeBrev: React.FC<Props> = ({
         settAvsnitt([]);
         settOverskrift('');
         settBrevType(undefined);
+        settBrevmottakere(brevmottakereMedBruker(personopplysninger));
     };
 
     const sendBrev = () => {
         if (senderInnBrev) return;
         if (!brevType) return;
         if (!fagsakId) return;
+        if (!brevmottakereValgt(brevmottakere)) return;
         settSenderInnBrev(true);
         settFeilmelding('');
 
@@ -184,7 +221,8 @@ const FrittståendeBrev: React.FC<Props> = ({
                 avsnitt,
                 fagsakId,
                 brevType,
-            } as IFrittståendeBrev,
+                mottakere: brevmottakere,
+            },
         }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 nullstillBrev();
@@ -200,9 +238,41 @@ const FrittståendeBrev: React.FC<Props> = ({
     const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
     useEffect(utsattGenererBrev, [utsattGenererBrev, avsnitt, overskrift]);
 
+    useEffect(() => {
+        genererBrev();
+        //eslint-disable-next-line
+    }, [brevmottakere]);
+
+    const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
+        return [
+            ...brevMottakere.personer.map(
+                (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
+            ),
+            ...brevMottakere.organisasjoner.map(
+                (org) => `${org.organisasjonsnavn} (${org.mottakerRolle.toLowerCase()})`
+            ),
+        ];
+    };
+
+    const brevmottakerErValgt =
+        brevmottakere.personer.length > 0 || brevmottakere.organisasjoner.length > 0;
+
     return (
         <StyledBrev>
-            <h1>Fritekstbrev</h1>
+            <h1>Brev</h1>
+            {brevmottakerErValgt && (
+                <Alert variant={'info'}>
+                    <Heading size={'xsmall'}>Mottakere av brev:</Heading>
+                    {utledNavnPåMottakere(brevmottakere).map((navn, index) => (
+                        <BodyShort key={navn + index}>{navn}</BodyShort>
+                    ))}
+                </Alert>
+            )}
+            {toggles[ToggleName.visKnappVergeFrittståendeBrev] && (
+                <Button variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
+                    Legg til verge eller fullmektig
+                </Button>
+            )}
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}
@@ -220,7 +290,10 @@ const FrittståendeBrev: React.FC<Props> = ({
                 context={FritekstBrevContext.FRITTSTÅENDE}
                 stønadstype={Stønadstype.OVERGANGSSTØNAD}
             />
-            <StyledHovedKnapp disabled={!brevType} onClick={() => settVisModal(true)}>
+            <StyledHovedKnapp
+                disabled={!brevType || !brevmottakereValgt(brevmottakere)}
+                onClick={() => settVisModal(true)}
+            >
                 Send brev
             </StyledHovedKnapp>
             {visModal && (
@@ -247,6 +320,11 @@ const FrittståendeBrev: React.FC<Props> = ({
                     </ModalKnapper>
                 </UIModalWrapper>
             )}
+            <BrevmottakereModal
+                personopplysninger={personopplysninger}
+                kallSettBrevmottakere={oppdaterBrevmottakere}
+                kallHentBrevmottakere={hentBrevmottakere}
+            />
         </StyledBrev>
     );
 };
