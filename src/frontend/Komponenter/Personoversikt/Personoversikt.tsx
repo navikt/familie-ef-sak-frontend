@@ -17,6 +17,7 @@ import { IFagsakPerson } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
+import { UtestengelseModal } from './Modal/UtestengelseModal';
 
 type TabWithRouter = {
     label: string;
@@ -122,6 +123,7 @@ const PersonoversiktContent: React.FC<{
                     <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />
                 </Routes>
             </Side>
+            <UtestengelseModal />
         </>
     );
 };
