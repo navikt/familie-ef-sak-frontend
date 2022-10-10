@@ -69,6 +69,10 @@ const kanMigreres = (oppgave: IOppgave) => {
     );
 };
 
+const oppgaveErVurderKonsekvensForYtelse = (oppgave: IOppgave) => {
+    return oppgave.oppgavetype === 'VUR_KONS_YTE';
+};
+
 const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
@@ -80,6 +84,8 @@ const utledHandling = (oppgave: IOppgave, toggles: Toggles): Handling => {
         return Handling.KLAGE;
     } else if (kanMigreres(oppgave) && toggles[ToggleName.kanMigrereFagsak]) {
         return Handling.JOURNALFØR_MIGRERING;
+    } else if (oppgaveErVurderKonsekvensForYtelse(oppgave)) {
+        return Handling.BEHANDLINGSOVERSIKT;
     }
     return Handling.INGEN;
 };
@@ -148,6 +154,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                     </Flatknapp>
                 );
             case Handling.TILBAKE:
+            case Handling.BEHANDLINGSOVERSIKT:
             case Handling.KLAGE:
                 return (
                     <Flatknapp
