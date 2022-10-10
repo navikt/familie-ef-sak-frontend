@@ -17,4 +17,5 @@ export enum ToggleName {
     visVedtakPeriodeLeggTilRad = 'familie.ef.sak.frontend-vis-vedtak-legg-til-rad-knapp',
     visOpprettKlage = 'familie.ef.sak.frontend-vis-opprett-klage',
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
+    visKnappVergeFrittståendeBrev = 'familie.ef.sak.frontend-verge-frittstaende-brev',
 }

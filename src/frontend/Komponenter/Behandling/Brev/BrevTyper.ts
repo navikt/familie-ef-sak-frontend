@@ -12,6 +12,7 @@ import {
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { IBrevmottakere } from '../Brevmottakere/typer';
 
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 export type ValgteDelmaler = { [delmalNavn: string]: boolean };
@@ -93,6 +94,7 @@ export interface IFrittståendeBrev {
     avsnitt: IAvsnitt[];
     fagsakId: string;
     brevType: FrittståendeBrevtype;
+    mottakere?: IBrevmottakere;
 }
 
 export enum FrittståendeBrevtype {
