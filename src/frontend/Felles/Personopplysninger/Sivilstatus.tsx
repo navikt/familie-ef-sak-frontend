@@ -7,13 +7,8 @@ import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNu
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { Normaltekst } from 'nav-frontend-typografi';
 import EtikettDød from '../Etiketter/EtikettDød';
-import styled from 'styled-components';
-import { NavdsSemanticColorText, NavdsSemanticColorTextMuted } from '@navikt/ds-tokens/dist/tokens';
 
 const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
-const TabellRad = styled.tr<{ gjeldende: boolean }>`
-    color: ${(props) => (props.gjeldende ? NavdsSemanticColorText : NavdsSemanticColorTextMuted)};
-`;
 
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
@@ -24,7 +19,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                 <tbody>
                     {sivilstander.map((sivilstand, indeks) => {
                         return (
-                            <TabellRad key={indeks} gjeldende={sivilstand.erGjeldende}>
+                            <tr key={indeks}>
                                 <td>
                                     {sivilstandTilTekst[sivilstand.type]}{' '}
                                     {sivilstand.erGjeldende ? '(gjeldende)' : ''}
@@ -45,7 +40,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                         <Normaltekst>-</Normaltekst>
                                     )}
                                 </td>
-                            </TabellRad>
+                            </tr>
                         );
                     })}
                 </tbody>
