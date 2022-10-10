@@ -84,9 +84,7 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const erFørstegangsInnvilgelse = behandling.forrigeBehandlingId === null;
-
-    const formState = useFormState<InnvilgeVedtakForm, boolean>(
+    const formState = useFormState<InnvilgeVedtakForm>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
             inntektBegrunnelse: lagretInnvilgetVedtak?.inntektBegrunnelse || '',
@@ -98,8 +96,7 @@ export const InnvilgeVedtak: React.FC<{
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
         },
-        validerInnvilgetVedtakForm,
-        erFørstegangsInnvilgelse
+        validerInnvilgetVedtakForm
     );
 
     const inntektsperiodeState = formState.getProps('inntekter') as ListState<IInntektsperiode>;
@@ -177,7 +174,7 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     const skalViseVedtaksperiodeOgInntekt =
-        behandling.type !== Behandlingstype.REVURDERING ||
+        !behandling.forrigeBehandlingId ||
         revurderesFra ||
         !behandlingErRedigerbar ||
         !toggles[ToggleName.skalPrefylleVedtaksperider];
@@ -293,7 +290,7 @@ export const InnvilgeVedtak: React.FC<{
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
                 {toggles[ToggleName.skalPrefylleVedtaksperider] &&
-                behandling.type === Behandlingstype.REVURDERING &&
+                behandling.forrigeBehandlingId &&
                 behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
