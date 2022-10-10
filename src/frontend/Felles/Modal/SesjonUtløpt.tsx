@@ -1,18 +1,23 @@
 import React from 'react';
-import UIModalWrapper from './UIModalWrapper';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { ModalWrapper } from './ModalWrapper';
+import { BodyLong } from '@navikt/ds-react';
+import styled from 'styled-components';
+
+const Innhold = styled(BodyLong)`
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+`;
 
 const UgyldigSesjon: React.FC = () => {
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: 'Ugyldig sesjon',
-                lukkKnapp: false,
-                visModal: true,
-            }}
+        <ModalWrapper
+            tittel={'Ugyldig sesjon'}
+            visModal={true}
+            onClose={() => null}
+            skjulKnapper={true}
         >
-            <Normaltekst>Prøv å last siden på nytt</Normaltekst>
-        </UIModalWrapper>
+            <Innhold>Prøv å last siden på nytt</Innhold>
+        </ModalWrapper>
     );
 };
 
