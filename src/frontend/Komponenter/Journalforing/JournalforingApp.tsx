@@ -259,7 +259,6 @@ export const JournalforingApp: React.FC = () => {
             journalResponse.status === RessursStatus.SUKSESS &&
             !journalResponse.data.harStrukturertSøknad;
         return (
-            toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] &&
             erNyBehandling &&
             harIkkeStrukturertSøknad &&
             journalpostState.ustrukturertDokumentasjonType ===

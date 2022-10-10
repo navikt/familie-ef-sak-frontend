@@ -8,7 +8,6 @@ export enum ToggleName {
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
     kanMigrereFagsak = 'familie.ef.sak.migrering',
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
-    kanLeggeTilTerminbarnVidJournalføring = 'familie.ef.sak.frontend-journalforing-kan-legge-til-terminbarn',
     kanJournalføreEttersendingNyBehandling = 'familie.ef.sak.frontend-journalforing-ettersending-ny-behandling',
     skalPrefylleVedtaksperider = 'familie.ef.sak.frontend-prefyll-vedtaksperioder',
     skolepengerOpphør = 'familie.ef.sak.skolepenger-opphor',
