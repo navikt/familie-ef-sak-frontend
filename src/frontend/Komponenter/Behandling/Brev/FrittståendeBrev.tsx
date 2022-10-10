@@ -11,7 +11,7 @@ import {
 } from '../../../App/typer/ressurs';
 import { useDebouncedCallback } from 'use-debounce';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import {
     AvsnittMedId,
@@ -34,6 +34,7 @@ import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
 import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import { EToast } from '../../../App/typer/toast';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -98,10 +99,9 @@ const FrittståendeBrev: React.FC<Props> = ({
     );
 
     const [feilmelding, settFeilmelding] = useState('');
-    const [utsendingSuksess, setUtsendingSuksess] = useState(false);
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
-    const { axiosRequest, settVisBrevmottakereModal } = useApp();
+    const { axiosRequest, settVisBrevmottakereModal, settToast } = useApp();
     const { toggles } = useToggles();
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
@@ -196,13 +196,12 @@ const FrittståendeBrev: React.FC<Props> = ({
     const lukkModal = () => {
         settVisModal(false);
         settFeilmelding('');
-        setUtsendingSuksess(false);
     };
 
-    const nulstillBrev = () => {
+    const nullstillBrev = () => {
         settAvsnitt([]);
         settOverskrift('');
-        settBrevType(FrittståendeBrevtype.INFORMASJONSBREV);
+        settBrevType(undefined);
         settBrevmottakere(brevmottakereMedBruker(personopplysninger));
     };
 
@@ -212,7 +211,6 @@ const FrittståendeBrev: React.FC<Props> = ({
         if (!fagsakId) return;
         if (!brevmottakereValgt(brevmottakere)) return;
         settSenderInnBrev(true);
-        setUtsendingSuksess(false);
         settFeilmelding('');
 
         axiosRequest<string, IFrittståendeBrev>({
@@ -227,8 +225,9 @@ const FrittståendeBrev: React.FC<Props> = ({
             },
         }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
-                setUtsendingSuksess(true);
-                nulstillBrev();
+                nullstillBrev();
+                settToast(EToast.BREV_SENDT);
+                lukkModal();
             } else {
                 settFeilmelding(respons.frontendFeilmelding);
             }
@@ -311,14 +310,11 @@ const FrittståendeBrev: React.FC<Props> = ({
                     {feilmelding && (
                         <AlertStripeFeil>Utsending feilet. {feilmelding}</AlertStripeFeil>
                     )}
-                    {utsendingSuksess && (
-                        <AlertStripeSuksess>Brevet er nå sendt.</AlertStripeSuksess>
-                    )}
                     <ModalKnapper>
-                        <Knapp onClick={lukkModal} disabled={utsendingSuksess}>
+                        <Knapp onClick={lukkModal} disabled={senderInnBrev}>
                             Avbryt
                         </Knapp>
-                        <Hovedknapp onClick={sendBrev} disabled={senderInnBrev || utsendingSuksess}>
+                        <Hovedknapp onClick={sendBrev} disabled={senderInnBrev}>
                             Send brev
                         </Hovedknapp>
                     </ModalKnapper>
