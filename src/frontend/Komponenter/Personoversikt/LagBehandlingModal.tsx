@@ -15,9 +15,13 @@ import { Fagsak } from '../../App/typer/fagsak';
 import OpprettKlage from './Klage/OpprettKlage';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
+import { Alert } from '@navikt/ds-react';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 33.5rem;
 `;
 
 export const KnappeWrapper = styled.div`
@@ -125,75 +129,153 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     };
 
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: 'Opprett ny behandling',
-                lukkKnapp: true,
-                visModal: visModal,
-                onClose: () => settVisModal(false),
-            }}
-        >
-            {!kanStarteRevurdering && (
-                <AlertStripeInfo>
-                    Merk at det er ikke mulig å opprette en revurdering da det allerede finnes en
-                    åpen behandling på fagsaken. Det er kun mulig å opprette en tilbakekreving.
-                </AlertStripeInfo>
-            )}
-            <StyledSelect
-                label="Behandlingstype"
-                value={valgtBehandlingstype || ''}
-                onChange={(e) => {
-                    settValgtBehandlingstype(e.target.value as Behandlingstype);
-                    settFeilmeldingModal(undefined);
-                }}
-            >
-                <option value="">Velg</option>
-                {kanStarteRevurdering && (
-                    <option value={Behandlingstype.REVURDERING}>Revurdering</option>
-                )}
-                <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
-                {toggles[ToggleName.visOpprettKlage] && (
-                    <option value={Behandlingstype.KLAGE}>Klage</option>
-                )}
-            </StyledSelect>
-            {valgtBehandlingstype === Behandlingstype.REVURDERING && (
-                <LagRevurdering
-                    fagsak={fagsak}
-                    valgtBehandlingstype={valgtBehandlingstype}
-                    lagRevurdering={lagRevurdering}
-                    settVisModal={settVisModal}
-                />
-            )}
+        <>
+            {true && (
+                <UIModalWrapper
+                    modal={{
+                        tittel: 'Opprett ny behandling',
+                        lukkKnapp: true,
+                        visModal: visModal,
+                        onClose: () => settVisModal(false),
+                    }}
+                >
+                    {!kanStarteRevurdering && (
+                        <AlertStripeInfo>
+                            Merk at det er ikke mulig å opprette en revurdering da det allerede
+                            finnes en åpen behandling på fagsaken. Det er kun mulig å opprette en
+                            tilbakekreving.
+                        </AlertStripeInfo>
+                    )}
+                    <StyledSelect
+                        label="Behandlingstype"
+                        value={valgtBehandlingstype || ''}
+                        onChange={(e) => {
+                            settValgtBehandlingstype(e.target.value as Behandlingstype);
+                            settFeilmeldingModal(undefined);
+                        }}
+                    >
+                        <option value="">Velg</option>
+                        {kanStarteRevurdering && (
+                            <option value={Behandlingstype.REVURDERING}>Revurdering</option>
+                        )}
+                        <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
+                        {toggles[ToggleName.visOpprettKlage] && (
+                            <option value={Behandlingstype.KLAGE}>Klage</option>
+                        )}
+                    </StyledSelect>
+                    {valgtBehandlingstype === Behandlingstype.REVURDERING && (
+                        <LagRevurdering
+                            fagsak={fagsak}
+                            valgtBehandlingstype={valgtBehandlingstype}
+                            lagRevurdering={lagRevurdering}
+                            settVisModal={settVisModal}
+                        />
+                    )}
 
-            {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
-                <KnappeWrapper>
-                    <StyledHovedknapp
-                        onClick={() => {
-                            if (!senderInnBehandling) {
-                                opprettTilbakekrevingBehandling();
-                            }
+                    {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
+                        <KnappeWrapper>
+                            <StyledHovedknapp
+                                onClick={() => {
+                                    if (!senderInnBehandling) {
+                                        opprettTilbakekrevingBehandling();
+                                    }
+                                }}
+                            >
+                                Opprett
+                            </StyledHovedknapp>
+                            <Flatknapp
+                                onClick={() => {
+                                    settVisModal(false);
+                                }}
+                            >
+                                Avbryt
+                            </Flatknapp>
+                        </KnappeWrapper>
+                    )}
+                    {valgtBehandlingstype === Behandlingstype.KLAGE && (
+                        <OpprettKlage
+                            fagsak={fagsak}
+                            opprettKlage={opprettKlage}
+                            settVisModal={settVisModal}
+                        />
+                    )}
+                    {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
+                </UIModalWrapper>
+            )}
+            {true && (
+                <ModalWrapper
+                    tittel={'Opprett ny behandling'}
+                    visModal={visModal}
+                    onClose={() => settVisModal(false)}
+                    onConfirm={() => console.log('yes')}
+                    lukkKnappDisabled={false}
+                    hovedKnappDisabled={false}
+                    lukkKnappTekst={'Avbryt'}
+                    hovedKnappTekst={'Bekreft'}
+                >
+                    {!kanStarteRevurdering && (
+                        <Alert variant={'info'}>
+                            Merk at det er ikke mulig å opprette en revurdering da det allerede
+                            finnes en åpen behandling på fagsaken. Det er kun mulig å opprette en
+                            tilbakekreving.
+                        </Alert>
+                    )}
+                    <StyledSelect
+                        label="Behandlingstype"
+                        value={valgtBehandlingstype || ''}
+                        onChange={(e) => {
+                            settValgtBehandlingstype(e.target.value as Behandlingstype);
+                            settFeilmeldingModal(undefined);
                         }}
                     >
-                        Opprett
-                    </StyledHovedknapp>
-                    <Flatknapp
-                        onClick={() => {
-                            settVisModal(false);
-                        }}
-                    >
-                        Avbryt
-                    </Flatknapp>
-                </KnappeWrapper>
+                        <option value="">Velg</option>
+                        {kanStarteRevurdering && (
+                            <option value={Behandlingstype.REVURDERING}>Revurdering</option>
+                        )}
+                        <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
+                        {toggles[ToggleName.visOpprettKlage] && (
+                            <option value={Behandlingstype.KLAGE}>Klage</option>
+                        )}
+                    </StyledSelect>
+                    {valgtBehandlingstype === Behandlingstype.REVURDERING && (
+                        <LagRevurdering
+                            fagsak={fagsak}
+                            valgtBehandlingstype={valgtBehandlingstype}
+                            lagRevurdering={lagRevurdering}
+                            settVisModal={settVisModal}
+                        />
+                    )}
+                    {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
+                        <KnappeWrapper>
+                            <StyledHovedknapp
+                                onClick={() => {
+                                    if (!senderInnBehandling) {
+                                        opprettTilbakekrevingBehandling();
+                                    }
+                                }}
+                            >
+                                Opprett
+                            </StyledHovedknapp>
+                            <Flatknapp
+                                onClick={() => {
+                                    settVisModal(false);
+                                }}
+                            >
+                                Avbryt
+                            </Flatknapp>
+                        </KnappeWrapper>
+                    )}
+                    {valgtBehandlingstype === Behandlingstype.KLAGE && (
+                        <OpprettKlage
+                            fagsak={fagsak}
+                            opprettKlage={opprettKlage}
+                            settVisModal={settVisModal}
+                        />
+                    )}
+                    {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
+                </ModalWrapper>
             )}
-            {valgtBehandlingstype === Behandlingstype.KLAGE && (
-                <OpprettKlage
-                    fagsak={fagsak}
-                    opprettKlage={opprettKlage}
-                    settVisModal={settVisModal}
-                />
-            )}
-            {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
-        </UIModalWrapper>
+        </>
     );
 };
 
