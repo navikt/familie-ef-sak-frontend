@@ -20,7 +20,10 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                     {sivilstander.map((sivilstand, indeks) => {
                         return (
                             <tr key={indeks}>
-                                <td>{sivilstandTilTekst[sivilstand.type]}</td>
+                                <td>
+                                    {sivilstandTilTekst[sivilstand.type]}{' '}
+                                    {sivilstand.erGjeldende ? '(gjeldende)' : ''}
+                                </td>
                                 <td>{formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}</td>
                                 <td>
                                     {sivilstand.navn}

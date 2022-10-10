@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
+import UIModalWrapper from '../Modal/UIModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useApp } from '../../../App/context/AppContext';
+import { useApp } from '../../App/context/AppContext';
 
 const SentrerKnapper = styled.div`
     display: flex;

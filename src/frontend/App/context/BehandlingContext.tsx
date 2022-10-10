@@ -55,7 +55,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const [visBrevmottakereModal, settVisBrevmottakereModal] = useState(false);
     const [visHenleggModal, settVisHenleggModal] = useState(false);
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
@@ -69,8 +68,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentTotrinnskontroll,
         hentBehandlingshistorikk,
         regler,
-        visBrevmottakereModal,
-        settVisBrevmottakereModal,
         visHenleggModal,
         settVisHenleggModal,
         åpenHøyremeny,
