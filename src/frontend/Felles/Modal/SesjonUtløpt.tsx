@@ -15,6 +15,7 @@ const UgyldigSesjon: React.FC = () => {
             visModal={true}
             closeButton={false}
             aksjonsknapper={false}
+            ariaLabel={'Sesjonen har utløpt. Prøv å last inn siden på nytt.'}
         >
             <Innhold>Prøv å last siden på nytt</Innhold>
         </ModalWrapper>

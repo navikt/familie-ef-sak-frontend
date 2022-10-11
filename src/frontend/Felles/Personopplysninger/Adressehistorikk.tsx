@@ -163,7 +163,8 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                 tittel={'Beboere'}
                 visModal={beboereAdresseIModal != undefined}
                 onClose={() => settBeboereAdresseIModal(undefined)}
-                aksjonsknapper={true}
+                aksjonsknapper={false}
+                ariaLabel={'Tabell over beboere på bostedsadresse.'}
             >
                 <Beboere fagsakPersonId={fagsakPersonId} />
             </ModalWrapper>
