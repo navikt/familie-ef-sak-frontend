@@ -28,7 +28,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
     const avstandTilSøkerTekst = (avstandTilSøker: IAvstandTilSøker): string => {
         switch (avstandTilSøker.langAvstandTilSøker) {
             case EAvstandTilSøker.JA:
-                return avstandTilSøker.avstandIKm + 'km';
+                return avstandTilSøker.avstandIKm + ' km';
             case EAvstandTilSøker.JA_UPRESIS:
                 return 'Mer enn 1 km';
             case EAvstandTilSøker.UKJENT:
