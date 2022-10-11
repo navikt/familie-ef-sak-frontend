@@ -28,7 +28,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
     const avstandTilSøkerTekst = (avstandTilSøker: IAvstandTilSøker): string => {
         switch (avstandTilSøker.langAvstandTilSøker) {
             case EAvstandTilSøker.JA:
-                return avstandTilSøker.avstandIKm + 'km';
+                return avstandTilSøker.avstandIKm + ' km';
             case EAvstandTilSøker.JA_UPRESIS:
                 return 'Mer enn 1 km';
             default:
@@ -116,7 +116,8 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         )}
                 </>
             )}
-            {
+
+            {forelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
                     <Normaltekst>Annen forelder automatisk beregnet avstand til søker</Normaltekst>
@@ -125,7 +126,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                             avstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
                     </Normaltekst>
                 </>
-            }
+            )}
         </GridTabell>
     );
 };
