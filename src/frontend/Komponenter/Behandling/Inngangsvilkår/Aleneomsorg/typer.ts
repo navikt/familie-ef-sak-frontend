@@ -79,9 +79,9 @@ export enum EAvstandTilSøker {
 }
 
 export const avstandTilSøker: Record<EAvstandTilSøker, string> = {
-    ja: 'Ja',
-    jaUpresis: 'Ja, upresis',
-    ukjent: 'ukjent',
+    ja: 'km',
+    jaUpresis: 'Mer enn 1 km',
+    ukjent: 'Kan ikke automatisk beregnes',
 };
 
 export interface IBarnMedSamværRegistergrunnlag {

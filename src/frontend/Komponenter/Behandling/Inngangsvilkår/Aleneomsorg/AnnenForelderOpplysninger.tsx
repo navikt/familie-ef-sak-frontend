@@ -2,7 +2,12 @@ import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from './typer';
+import {
+    EAvstandTilSøker,
+    IAnnenForelder,
+    IAvstandTilSøker,
+    IBarnMedSamværSøknadsgrunnlag,
+} from './typer';
 import { AnnenForelderNavnOgFnr } from '../NyttBarnSammePartner/AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
@@ -20,6 +25,16 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
         harVerdi(forelder.fødselsnummer) ||
         harVerdi(forelder.fødselsdato);
 
+    const avstandTilSøkerTekst = (avstandTilSøker: IAvstandTilSøker): string => {
+        switch (avstandTilSøker.langAvstandTilSøker) {
+            case EAvstandTilSøker.JA:
+                return avstandTilSøker.avstandIKm + 'km';
+            case EAvstandTilSøker.JA_UPRESIS:
+                return 'Mer enn 1 km';
+            case EAvstandTilSøker.UKJENT:
+                return 'Kan ikke automatisk beregnes';
+        }
+    };
     const visForelderSøknadInfo =
         !forelderRegister?.dødsfall &&
         ((forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad)) ||
@@ -105,9 +120,9 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 <>
                     <Registergrunnlag />
                     <Normaltekst>Annen forelder automatisk beregnet avstand til søker</Normaltekst>
-                    <Normaltekst>{forelderRegister?.avstandTilSøker.avstandIKm}</Normaltekst>
                     <Normaltekst>
-                        {forelderRegister?.avstandTilSøker.langAvstandTilSøker}
+                        {forelderRegister &&
+                            avstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
                     </Normaltekst>
                 </>
             }
