@@ -6,6 +6,8 @@ import { useApp } from '../../App/context/AppContext';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 import { Behandling } from '../../App/typer/fagsak';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -62,8 +64,8 @@ const Knapp = styled.button`
 
 export const Hamburgermeny: FC<{ behandling?: Behandling }> = ({ behandling }) => {
     const ref = useRef(null);
-    const { settVisBrevmottakereModal } = useApp();
-    const { settVisUtestengModal } = useApp();
+    const { settVisBrevmottakereModal, settVisUtestengModal } = useApp();
+    const { toggles } = useToggles();
 
     const { settVisHenleggModal } = useBehandling();
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
@@ -115,7 +117,7 @@ export const Hamburgermeny: FC<{ behandling?: Behandling }> = ({ behandling }) =
                         </li>
                     </ul>
                 )}
-                {!behandling && (
+                {!behandling && toggles[ToggleName.visUtestengelse] && (
                     <ul>
                         <li>
                             <Knapp
