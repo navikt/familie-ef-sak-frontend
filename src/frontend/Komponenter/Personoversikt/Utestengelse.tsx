@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 const StyledTable = styled(Table)`
     width: 18rem;
+    margin-left: 1rem;
 `;
 
 const StyledUtestengelse = styled.div`
