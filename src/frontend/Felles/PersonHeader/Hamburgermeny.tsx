@@ -1,13 +1,9 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Hamburger } from '@navikt/ds-icons';
 import styled from 'styled-components';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { useApp } from '../../App/context/AppContext';
 import { useBehandling } from '../../App/context/BehandlingContext';
-import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
-import { Behandling } from '../../App/typer/fagsak';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -62,11 +58,9 @@ const Knapp = styled.button`
     text-align: left;
 `;
 
-export const Hamburgermeny: FC<{ behandling?: Behandling }> = ({ behandling }) => {
+export const Hamburgermeny = () => {
     const ref = useRef(null);
-    const { settVisBrevmottakereModal, settVisUtestengModal } = useApp();
-    const { toggles } = useToggles();
-
+    const { settVisBrevmottakereModal } = useApp();
     const { settVisHenleggModal } = useBehandling();
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
@@ -95,41 +89,26 @@ export const Hamburgermeny: FC<{ behandling?: Behandling }> = ({ behandling }) =
                 }}
             />
             <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
-                {behandling && erBehandlingRedigerbar(behandling) && (
-                    <ul>
-                        <li>
-                            <Knapp
-                                onClick={() => {
-                                    settVisBrevmottakereModal(true);
-                                }}
-                            >
-                                <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
-                            </Knapp>
-                        </li>
-                        <li>
-                            <Knapp
-                                onClick={() => {
-                                    settVisHenleggModal(true);
-                                }}
-                            >
-                                <Normaltekst>Henlegg</Normaltekst>
-                            </Knapp>
-                        </li>
-                    </ul>
-                )}
-                {!behandling && toggles[ToggleName.visUtestengelse] && (
-                    <ul>
-                        <li>
-                            <Knapp
-                                onClick={() => {
-                                    settVisUtestengModal(true);
-                                }}
-                            >
-                                <Normaltekst>Legg til utestengelse</Normaltekst>
-                            </Knapp>
-                        </li>
-                    </ul>
-                )}
+                <ul>
+                    <li>
+                        <Knapp
+                            onClick={() => {
+                                settVisBrevmottakereModal(true);
+                            }}
+                        >
+                            <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
+                        </Knapp>
+                    </li>
+                    <li>
+                        <Knapp
+                            onClick={() => {
+                                settVisHenleggModal(true);
+                            }}
+                        >
+                            <Normaltekst>Henlegg</Normaltekst>
+                        </Knapp>
+                    </li>
+                </ul>
             </HamburgerMenyInnhold>
         </div>
     );

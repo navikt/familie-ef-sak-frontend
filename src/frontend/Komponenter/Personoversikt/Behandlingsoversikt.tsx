@@ -4,7 +4,6 @@ import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson'
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
 import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
-import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
 import Utestengelse from './Utestengelse';
 
 export enum BehandlingApplikasjon {
@@ -16,23 +15,21 @@ export enum BehandlingApplikasjon {
 const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
     const { hentKlagebehandlinger, klagebehandlinger } = useHentKlagebehandlinger();
-    const { hentUtestengelser, utestengelser } = useHentUtestengelser();
 
     useEffect(() => {
         hentFagsakPerson(fagsakPersonId);
         hentKlagebehandlinger(fagsakPersonId);
-        hentUtestengelser(fagsakPersonId);
-    }, [fagsakPersonId, hentFagsakPerson, hentKlagebehandlinger, hentUtestengelser]);
+    }, [fagsakPersonId, hentFagsakPerson, hentKlagebehandlinger]);
 
     const reHentKlagebehandlinger = () => {
         hentKlagebehandlinger(fagsakPersonId);
     };
     return (
-        <DataViewer response={{ fagsakPerson, klagebehandlinger, utestengelser }}>
-            {({ fagsakPerson, klagebehandlinger, utestengelser }) => (
+        <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
+            {({ fagsakPerson, klagebehandlinger }) => (
                 <>
                     <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
-                    <Utestengelse utestengelser={utestengelser} />
+                    <Utestengelse fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
                         <FagsakOversikt
                             fagsak={fagsakPerson.overgangsstønad}

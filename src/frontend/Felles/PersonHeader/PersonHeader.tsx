@@ -17,6 +17,7 @@ import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Hamburgermeny } from './Hamburgermeny';
+import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 import {
     behandlingstypeTilTekst,
     behandlingstypeTilTekstKort,
@@ -251,7 +252,9 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                     </StatuserLitenSkjerm>
                 </>
             )}
-            {erSaksbehandler && <StyledHamburgermeny behandling={behandling} />}
+            {erSaksbehandler && behandling && erBehandlingRedigerbar(behandling) && (
+                <StyledHamburgermeny />
+            )}
         </PersonHeaderWrapper>
     );
 };

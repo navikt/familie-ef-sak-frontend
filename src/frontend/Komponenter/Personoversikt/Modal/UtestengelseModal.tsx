@@ -40,7 +40,10 @@ interface IOpprettUtestengelse {
 /**
  * TODO: Endre til ny modal
  */
-export const UtestengelseModal: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
+export const UtestengelseModal: FC<{
+    fagsakPersonId: string;
+    hentUtestengelser: (fagsakPersonId: string) => void;
+}> = ({ fagsakPersonId, hentUtestengelser }) => {
     const { axiosRequest, visUtestengModal, settVisUtestengModal } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
 
@@ -68,6 +71,7 @@ export const UtestengelseModal: FC<{ fagsakPersonId: string }> = ({ fagsakPerson
                 },
             }).then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
+                    hentUtestengelser(fagsakPersonId);
                     lukkModal();
                 } else {
                     settFeilmelding(response.frontendFeilmelding || response.melding);
