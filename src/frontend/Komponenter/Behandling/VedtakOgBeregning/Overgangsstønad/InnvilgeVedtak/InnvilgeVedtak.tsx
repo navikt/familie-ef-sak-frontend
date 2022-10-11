@@ -34,8 +34,6 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
-import { useToggles } from '../../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../../App/context/toggles';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 
@@ -80,8 +78,6 @@ export const InnvilgeVedtak: React.FC<{
         string | null
     >(null);
 
-    const { toggles } = useToggles();
-
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const formState = useFormState<InnvilgeVedtakForm>(
@@ -108,16 +104,10 @@ export const InnvilgeVedtak: React.FC<{
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
-    const låsVedtaksperiodeRad = !!(
-        revurderesFra && toggles[ToggleName.skalPrefylleVedtaksperider]
-    );
+    const låsVedtaksperiodeRad = !!revurderesFra;
 
     useEffect(() => {
-        if (
-            !revurderesFra ||
-            !vedtakshistorikk ||
-            !toggles[ToggleName.skalPrefylleVedtaksperider]
-        ) {
+        if (!revurderesFra || !vedtakshistorikk) {
             return;
         }
 
@@ -174,10 +164,7 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     const skalViseVedtaksperiodeOgInntekt =
-        !behandling.forrigeBehandlingId ||
-        revurderesFra ||
-        !behandlingErRedigerbar ||
-        !toggles[ToggleName.skalPrefylleVedtaksperider];
+        !behandling.forrigeBehandlingId || revurderesFra || !behandlingErRedigerbar;
 
     const hentLagretBeløpForYtelse = useCallback(() => {
         axiosRequest<IBeløpsperiode[], void>({
@@ -289,9 +276,7 @@ export const InnvilgeVedtak: React.FC<{
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
             <WrapperDobbelMarginTop>
-                {toggles[ToggleName.skalPrefylleVedtaksperider] &&
-                behandling.forrigeBehandlingId &&
-                behandlingErRedigerbar ? (
+                {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
@@ -381,11 +366,7 @@ export const InnvilgeVedtak: React.FC<{
                         <Hovedknapp
                             hidden={!behandlingErRedigerbar}
                             htmlType="submit"
-                            disabled={
-                                laster ||
-                                (!!revurderesFraOgMedFeilmelding &&
-                                    toggles[ToggleName.skalPrefylleVedtaksperider])
-                            }
+                            disabled={laster || !!revurderesFraOgMedFeilmelding}
                         >
                             Lagre vedtak
                         </Hovedknapp>

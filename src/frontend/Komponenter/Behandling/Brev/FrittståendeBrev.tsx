@@ -10,9 +10,7 @@ import {
     RessursSuksess,
 } from '../../../App/typer/ressurs';
 import { useDebouncedCallback } from 'use-debounce';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import {
     AvsnittMedId,
     FritekstBrevContext,
@@ -35,21 +33,19 @@ import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { EToast } from '../../../App/typer/toast';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
     width: inherit;
 `;
 
-const ModalKnapper = styled.div`
-    margin-top: 1rem;
-    width: 70%;
-    display: flex;
-    justify-content: space-between;
-`;
-
 const StyledHovedKnapp = styled(Hovedknapp)`
     margin-top: 1rem;
+`;
+
+const AlertStripe = styled(Alert)`
+    margin-top: 2rem;
 `;
 
 type Props = {
@@ -296,30 +292,20 @@ const FrittståendeBrev: React.FC<Props> = ({
             >
                 Send brev
             </StyledHovedKnapp>
-            {visModal && (
-                <UIModalWrapper
-                    modal={{
-                        tittel: 'Bekreft utsending av brev',
-                        lukkKnapp: true,
-                        visModal: true,
-                        onClose: () => {
-                            lukkModal();
-                        },
-                    }}
-                >
-                    {feilmelding && (
-                        <AlertStripeFeil>Utsending feilet. {feilmelding}</AlertStripeFeil>
-                    )}
-                    <ModalKnapper>
-                        <Knapp onClick={lukkModal} disabled={senderInnBrev}>
-                            Avbryt
-                        </Knapp>
-                        <Hovedknapp onClick={sendBrev} disabled={senderInnBrev}>
-                            Send brev
-                        </Hovedknapp>
-                    </ModalKnapper>
-                </UIModalWrapper>
-            )}
+            <ModalWrapper
+                tittel={'Bekreft utsending av brev'}
+                visModal={visModal}
+                onClose={() => lukkModal()}
+                hovedKnappClick={() => sendBrev()}
+                lukkKnappDisabled={senderInnBrev}
+                hovedKnappDisabled={senderInnBrev}
+                lukkKnappTekst={'Avbryt'}
+                hovedKnappTekst={'Send brev'}
+            >
+                {feilmelding && (
+                    <AlertStripe variant={'error'}>Utsending feilet. {feilmelding}</AlertStripe>
+                )}
+            </ModalWrapper>
             <BrevmottakereModal
                 personopplysninger={personopplysninger}
                 kallSettBrevmottakere={oppdaterBrevmottakere}
