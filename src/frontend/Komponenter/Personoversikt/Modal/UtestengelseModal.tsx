@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { BodyLong, BodyShort, Button } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, Label } from '@navikt/ds-react';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { månederMellom, månedÅrTilDate } from '../../../App/utils/dato';
@@ -17,6 +17,29 @@ const HuskListe = styled.ol`
     padding-left: 1.75rem;
 `;
 
+const Periode = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const AntallMånederWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const AntallMåneder = styled(BodyShort)`
+    margin-top: 1.25rem;
+    text-align: center;
+`;
+
+interface IOpprettUtestengelse {
+    fagsakPersonId: string;
+    periode: { fom: string; tom: string };
+}
+
+/**
+ * TODO: Endre til ny modal
+ */
 export const UtestengelseModal: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { axiosRequest, visUtestengModal, settVisUtestengModal } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -25,33 +48,45 @@ export const UtestengelseModal: FC<{ fagsakPersonId: string }> = ({ fagsakPerson
     const [tilOgMed, settTilOgMed] = useState<string>();
     const [senderInnUtestenging, settSenderInnUtestenging] = useState<boolean>(false);
 
-    console.log(!!axiosRequest);
-    console.log(!!settFeilmelding);
-
     const lagUtestenging = () => {
         settFeilmelding('');
-        if (!senderInnUtestenging && fraOgMed && tilOgMed) {
+        if (!fraOgMed || !tilOgMed) {
+            settFeilmelding('Mangler fra eller til-dato');
+            return;
+        }
+        if (!senderInnUtestenging) {
             settSenderInnUtestenging(true);
-            axiosRequest<Ressurs<void>, { fagsakPersonId: string; fom: string; tom: string }>({
+            axiosRequest<Ressurs<void>, IOpprettUtestengelse>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/utestengelse/${fagsakPersonId}`,
-                data: { fagsakPersonId: fagsakPersonId, fom: fraOgMed, tom: tilOgMed },
+                data: {
+                    fagsakPersonId: fagsakPersonId,
+                    periode: {
+                        fom: fraOgMed,
+                        tom: tilOgMed,
+                    },
+                },
             }).then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
                     lukkModal();
                 } else {
                     settFeilmelding(response.frontendFeilmelding || response.melding);
                 }
+                settSenderInnUtestenging(false);
             });
         }
     };
 
-    function lukkModal() {
+    const lukkModal = () => {
+        settFeilmelding('');
         settVisUtestengModal(false);
         settFraOgMed(undefined);
         settTilOgMed(undefined);
         settSenderInnUtestenging(false);
-    }
+    };
+
+    const antallMåneder =
+        fraOgMed && tilOgMed && månederMellom(månedÅrTilDate(fraOgMed), månedÅrTilDate(tilOgMed));
 
     return (
         <UIModalWrapper
@@ -77,34 +112,29 @@ export const UtestengelseModal: FC<{ fagsakPersonId: string }> = ({ fagsakPerson
                         Sendes brev om utestengelse til bruker fra EF Sak frittstående brevutsender
                     </li>
                 </HuskListe>
-                Periode fra og med: {fraOgMed}
-                <MånedÅrVelger
-                    antallÅrFrem={2}
-                    antallÅrTilbake={1}
-                    disabled={false}
-                    feilmelding={''}
-                    aria-label={'Inntekt fra'}
-                    onEndret={(e) => settFraOgMed(e)}
-                ></MånedÅrVelger>
-                Periode til og med: {tilOgMed}
-                <MånedÅrVelger
-                    antallÅrFrem={2}
-                    antallÅrTilbake={1}
-                    disabled={false}
-                    feilmelding={''}
-                    aria-label={'Inntekt fra'}
-                    onEndret={(e) => settTilOgMed(e)}
-                ></MånedÅrVelger>
-                Ant.mnd ={' '}
-                {fraOgMed &&
-                    tilOgMed &&
-                    månederMellom(månedÅrTilDate(fraOgMed), månedÅrTilDate(tilOgMed))}
-                <Button
-                    variant="primary"
-                    onClick={() => {
-                        lagUtestenging();
-                    }}
-                >
+                <Periode>
+                    <MånedÅrVelger
+                        antallÅrFrem={2}
+                        antallÅrTilbake={1}
+                        feilmelding={''}
+                        label={'Periode fra og med'}
+                        aria-label={'Periode fra og med'}
+                        onEndret={(e) => settFraOgMed(e)}
+                    ></MånedÅrVelger>
+                    <MånedÅrVelger
+                        antallÅrFrem={2}
+                        antallÅrTilbake={1}
+                        feilmelding={''}
+                        label={'Periode til og med'}
+                        aria-label={'Periode til og med'}
+                        onEndret={(e) => settTilOgMed(e)}
+                    ></MånedÅrVelger>
+                    <AntallMånederWrapper>
+                        <Label size={'small'}>Ant.mnd</Label>
+                        <AntallMåneder size={'small'}>{antallMåneder}</AntallMåneder>
+                    </AntallMånederWrapper>
+                </Periode>
+                <Button variant="primary" onClick={() => lagUtestenging()}>
                     Bekreft utestengelse
                 </Button>
                 {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
