@@ -2,32 +2,32 @@ import { BehandlingResultat, Fagsak } from '../../../App/typer/fagsak';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
-import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { compareDesc } from 'date-fns';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
+import { Alert, Button } from '@navikt/ds-react';
 
-const StyledFamilieDatovelger = styled(FamilieDatovelger)`
+const AlertStripe = styled(Alert)`
+    margin-top: 1rem;
+`;
+
+const DatoContainer = styled.div`
     margin-top: 2rem;
+    margin-bottom: 18rem;
 `;
 
-const FlexDiv = styled.div`
+const ButtonContainer = styled.div`
     display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    min-height: 400px;
+    margin-top: 1rem;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
 `;
 
-export const StyledHovedknapp = styled(Hovedknapp)`
-    margin-left: 2rem;
-    margin-right: 0.5rem;
-`;
-
-const KnappeWrapper = styled.div`
-    margin: 0 auto;
-    margin-top: 4rem;
+const ModalKnapp = styled(Button)`
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    margin-left: 1rem;
 `;
 
 interface IProps {
@@ -55,7 +55,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
     settVisModal,
     opprettKlage,
 }) => {
-    const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
 
     const sisteFerdigstilteBehandlingen = sisteBehandlingSomErFerdigstilt(fagsak);
@@ -80,32 +80,34 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
     };
 
     return (
-        <FlexDiv>
-            <StyledFamilieDatovelger
-                id={'krav-mottatt'}
-                label={'Krav mottatt'}
-                onChange={(dato) => {
-                    settValgtDato(dato as string);
-                }}
-                valgtDato={valgtDato}
-                feil={valgtDato && !erGyldigDato(valgtDato) && 'Ugyldig dato'}
-                limitations={{ maxDate: new Date().toISOString() }}
-            />
-
-            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
-            <KnappeWrapper>
-                <StyledHovedknapp onClick={() => validerValgtDato(valgtDato)}>
-                    Opprett
-                </StyledHovedknapp>
-                <Flatknapp
+        <>
+            <DatoContainer>
+                <FamilieDatovelger
+                    id={'krav-mottatt'}
+                    label={'Krav mottatt'}
+                    onChange={(dato) => {
+                        settValgtDato(dato as string);
+                    }}
+                    valgtDato={valgtDato}
+                    feil={valgtDato && !erGyldigDato(valgtDato) && 'Ugyldig dato'}
+                    limitations={{ maxDate: new Date().toISOString() }}
+                />
+                {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
+            </DatoContainer>
+            <ButtonContainer>
+                <ModalKnapp
+                    variant="tertiary"
                     onClick={() => {
                         settVisModal(false);
                     }}
                 >
                     Avbryt
-                </Flatknapp>
-            </KnappeWrapper>
-        </FlexDiv>
+                </ModalKnapp>
+                <ModalKnapp variant="primary" onClick={() => validerValgtDato(valgtDato)}>
+                    Opprett
+                </ModalKnapp>
+            </ButtonContainer>
+        </>
     );
 };
 

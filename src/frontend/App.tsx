@@ -1,4 +1,4 @@
-import Modal from 'nav-frontend-modal';
+import { Modal } from '@navikt/ds-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { AppProvider, useApp } from './App/context/AppContext';
@@ -23,6 +23,7 @@ import OppgaveMigreringApp from './Komponenter/Migrering/OppgaveMigrering';
 import { AdminApp } from './Komponenter/Admin/AdminApp';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
 
+// @ts-ignore
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
 const App: React.FC = () => {
