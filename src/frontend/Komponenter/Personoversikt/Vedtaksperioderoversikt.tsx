@@ -22,6 +22,7 @@ import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/Vedtaksperiod
 import VedtaksperioderOvergangsstønad from './HistorikkVedtaksperioder/VedtaksperioderOvergangsstønad';
 import { IVedtakForSkolepenger } from '../../App/typer/vedtak';
 import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/VedtaksperioderSkolepeger';
+import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 
 const StyledInputs = styled.div`
     display: flex;
@@ -239,16 +240,12 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
 };
 
 const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
-    const fagsakPersonConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/fagsak-person/${fagsakPerson.id}/utvidet`,
-        }),
-        [fagsakPerson]
-    );
-    const fagsakPersonMedBehandlinger = useDataHenter<IFagsakPersonMedBehandlinger, null>(
-        fagsakPersonConfig
-    );
+    const { hentFagsakPerson, fagsakPerson: fagsakPersonMedBehandlinger } =
+        useHentFagsakPersonUtvidet();
+
+    useEffect(() => {
+        hentFagsakPerson(fagsakPerson.id);
+    }, [fagsakPerson, hentFagsakPerson]);
 
     return (
         <DataViewer response={{ fagsakPersonMedBehandlinger }}>
