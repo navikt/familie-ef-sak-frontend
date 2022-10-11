@@ -35,13 +35,15 @@ const ModalKnapp = styled(Button)`
 interface ModalProps {
     tittel: string;
     visModal: boolean;
-    onClose: () => void;
+    closeButton?: boolean;
+    onClose?: () => void;
+    aksjonsknapper?: boolean;
     hovedKnappClick?: () => void;
-    lukkKnappDisabled?: boolean;
-    hovedKnappDisabled?: boolean;
-    lukkKnappTekst?: string;
     hovedKnappTekst?: string;
-    skjulKnapper?: boolean;
+    hovedKnappDisabled?: boolean;
+    lukkKnappClick?: () => void;
+    lukkKnappTekst?: string;
+    lukkKnappDisabled?: boolean;
     ariaLabel?: string;
     children?: React.ReactNode;
 }
@@ -49,13 +51,15 @@ interface ModalProps {
 export const ModalWrapper: React.FC<ModalProps> = ({
     tittel,
     visModal,
+    closeButton,
     onClose,
+    aksjonsknapper = true,
     hovedKnappClick,
-    lukkKnappDisabled,
-    hovedKnappDisabled,
-    lukkKnappTekst,
     hovedKnappTekst,
-    skjulKnapper,
+    hovedKnappDisabled,
+    lukkKnappClick,
+    lukkKnappTekst,
+    lukkKnappDisabled,
     ariaLabel,
     children,
 }) => {
@@ -63,18 +67,19 @@ export const ModalWrapper: React.FC<ModalProps> = ({
         <ModalContainer
             open={visModal}
             aria-label={ariaLabel ? ariaLabel : tittel}
-            onClose={() => onClose()}
+            onClose={onClose ? () => onClose() : () => null}
+            closeButton={closeButton}
         >
             <Modal.Content>
                 <Tittel spacing={true} size={'medium'}>
                     {tittel}
                 </Tittel>
                 <Innhold>{children}</Innhold>
-                {!skjulKnapper && (
+                {aksjonsknapper && (
                     <ButtonContainer>
                         <ModalKnapp
                             variant="tertiary"
-                            onClick={() => onClose()}
+                            onClick={lukkKnappClick ? () => lukkKnappClick() : () => null}
                             disabled={lukkKnappDisabled}
                         >
                             {lukkKnappTekst}

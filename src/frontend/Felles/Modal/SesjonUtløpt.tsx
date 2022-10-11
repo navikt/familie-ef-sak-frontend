@@ -13,8 +13,8 @@ const UgyldigSesjon: React.FC = () => {
         <ModalWrapper
             tittel={'Ugyldig sesjon'}
             visModal={true}
-            onClose={() => null}
-            skjulKnapper={true}
+            closeButton={false}
+            aksjonsknapper={false}
         >
             <Innhold>Prøv å last siden på nytt</Innhold>
         </ModalWrapper>

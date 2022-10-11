@@ -144,7 +144,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             hovedKnappDisabled={false}
             lukkKnappTekst={'Avbryt'}
             hovedKnappTekst={'Bekreft'}
-            skjulKnapper={true}
+            aksjonsknapper={true}
         >
             {!kanStarteRevurdering && (
                 <Alert variant={'info'}>
