@@ -73,15 +73,15 @@ export interface IAvstandTilSøker {
 }
 
 export enum EAvstandTilSøker {
-    JA = 'ja',
-    JA_UPRESIS = 'jaUpresis',
-    UKJENT = 'ukjent',
+    JA = 'JA',
+    JA_UPRESIS = 'JA_UPRESIS',
+    UKJENT = 'UKJENT',
 }
 
 export const avstandTilSøker: Record<EAvstandTilSøker, string> = {
-    ja: 'km',
-    jaUpresis: 'Mer enn 1 km',
-    ukjent: 'Kan ikke automatisk beregnes',
+    JA: 'km',
+    JA_UPRESIS: 'Mer enn 1 km',
+    UKJENT: 'Kan ikke automatisk beregnes',
 };
 
 export interface IBarnMedSamværRegistergrunnlag {
