@@ -31,7 +31,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 return avstandTilSøker.avstandIKm + 'km';
             case EAvstandTilSøker.JA_UPRESIS:
                 return 'Mer enn 1 km';
-            case EAvstandTilSøker.UKJENT:
+            default:
                 return 'Kan ikke automatisk beregnes';
         }
     };
