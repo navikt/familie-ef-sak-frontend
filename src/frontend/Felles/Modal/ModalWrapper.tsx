@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { Button, Heading, Modal } from '@navikt/ds-react';
 import React from 'react';
 
-const ModalContainer = styled(Modal)`
+const ModalContainer = styled(Modal)<{ maxWidth: boolean }>`
     min-width: 30rem;
+    max-width: ${(props) => (props.maxWidth ? '40rem' : '80rem')};
 `;
 
 const Tittel = styled(Heading)`
@@ -43,6 +44,7 @@ interface ModalProps {
     lukkKnappClick?: () => void;
     lukkKnappTekst?: string;
     lukkKnappDisabled?: boolean;
+    maxWidth?: boolean;
     ariaLabel?: string;
     children?: React.ReactNode;
 }
@@ -59,6 +61,7 @@ export const ModalWrapper: React.FC<ModalProps> = ({
     lukkKnappClick,
     lukkKnappTekst,
     lukkKnappDisabled,
+    maxWidth = true,
     ariaLabel,
     children,
 }) => {
@@ -68,6 +71,7 @@ export const ModalWrapper: React.FC<ModalProps> = ({
             aria-label={ariaLabel ? ariaLabel : tittel}
             onClose={onClose ? () => onClose() : () => null}
             closeButton={closeButton}
+            maxWidth={maxWidth}
         >
             <Modal.Content>
                 <Tittel spacing={true} size={'medium'}>
