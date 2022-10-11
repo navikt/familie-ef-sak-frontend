@@ -101,6 +101,16 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         )}
                 </>
             )}
+            {
+                <>
+                    <Registergrunnlag />
+                    <Normaltekst>Annen forelder automatisk beregnet avstand til søker</Normaltekst>
+                    <Normaltekst>{forelderRegister?.avstandTilSøker.avstandIKm}</Normaltekst>
+                    <Normaltekst>
+                        {forelderRegister?.avstandTilSøker.langAvstandTilSøker}
+                    </Normaltekst>
+                </>
+            }
         </GridTabell>
     );
 };

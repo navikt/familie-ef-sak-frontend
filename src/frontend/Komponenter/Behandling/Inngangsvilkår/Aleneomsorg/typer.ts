@@ -64,7 +64,25 @@ export interface IAnnenForelder {
     land?: string;
     dødsfall?: string;
     tidligereVedtaksperioder?: ITidligereVedtaksperioder;
+    avstandTilSøker: IAvstandTilSøker;
 }
+
+export interface IAvstandTilSøker {
+    avstandIKm: number;
+    langAvstandTilSøker: EAvstandTilSøker;
+}
+
+export enum EAvstandTilSøker {
+    JA = 'ja',
+    JA_UPRESIS = 'jaUpresis',
+    UKJENT = 'ukjent',
+}
+
+export const avstandTilSøker: Record<EAvstandTilSøker, string> = {
+    ja: 'Ja',
+    jaUpresis: 'Ja, upresis',
+    ukjent: 'ukjent',
+};
 
 export interface IBarnMedSamværRegistergrunnlag {
     navn?: string;
