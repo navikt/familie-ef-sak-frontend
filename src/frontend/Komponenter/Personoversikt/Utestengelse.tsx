@@ -70,6 +70,10 @@ const Utestengelse: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
         hentUtestengelser(fagsakPersonId);
     }, [fagsakPersonId, hentUtestengelser]);
 
+    if (!toggles[ToggleName.visUtestengelse]) {
+        return null;
+    }
+
     return (
         <UtestengelseContainer>
             <Heading level="3" size="medium">
@@ -77,7 +81,7 @@ const Utestengelse: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
             </Heading>
             <UtestengelseTabell utestengelser={utestengelser} />
 
-            {erSaksbehandler && toggles[ToggleName.visUtestengelse] && (
+            {erSaksbehandler && (
                 <StyledButton variant={'secondary'} onClick={() => settVisUtestengModal(true)}>
                     <Normaltekst>Legg til utestengelse</Normaltekst>
                 </StyledButton>

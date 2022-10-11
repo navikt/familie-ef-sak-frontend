@@ -29,7 +29,6 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
             {({ fagsakPerson, klagebehandlinger }) => (
                 <>
                     <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
-                    <Utestengelse fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
                         <FagsakOversikt
                             fagsak={fagsakPerson.overgangsstønad}
@@ -51,6 +50,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
                             hentKlageBehandlinger={reHentKlagebehandlinger}
                         />
                     )}
+                    <Utestengelse fagsakPersonId={fagsakPersonId} />
                 </>
             )}
         </DataViewer>
