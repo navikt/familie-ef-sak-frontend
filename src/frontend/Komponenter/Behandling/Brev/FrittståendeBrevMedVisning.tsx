@@ -7,9 +7,11 @@ import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import FrittståendeBrev from './FrittståendeBrev';
+import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 
 type Props = {
     fagsakId: string;
+    personopplysninger: IPersonopplysninger;
 };
 
 const BrevMedVisning = styled.div`
@@ -21,7 +23,7 @@ const BrevMedVisning = styled.div`
     grid-gap: 1rem;
 `;
 
-const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId }: Props) => {
+const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysninger }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
     const hentMellomlagretFrittståendeBrev: AxiosRequestConfig = useMemo(
         () => ({
@@ -42,6 +44,7 @@ const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId }: Props) => {
                         oppdaterBrevressurs={oppdaterBrevressurs}
                         fagsakId={fagsakId}
                         mellomlagretFrittståendeBrev={mellomlagretFrittståendeBrev}
+                        personopplysninger={personopplysninger}
                     />
                 )}
             </DataViewer>

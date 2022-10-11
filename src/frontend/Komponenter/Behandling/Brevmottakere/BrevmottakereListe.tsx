@@ -49,8 +49,8 @@ export const BrevmottakereListe: FC<Props> = ({
     return (
         <>
             <StyledIngress>Brevmottakere</StyledIngress>
-            {valgtePersonMottakere.map((mottaker) => (
-                <StyledMottakerBoks>
+            {valgtePersonMottakere.map((mottaker, index) => (
+                <StyledMottakerBoks key={mottaker.navn + index}>
                     <Flexboks>
                         <Normaltekst>
                             {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
@@ -62,8 +62,8 @@ export const BrevmottakereListe: FC<Props> = ({
                     </LenkeKnapp>
                 </StyledMottakerBoks>
             ))}
-            {valgteOrganisasjonMottakere.map((mottaker) => (
-                <StyledMottakerBoks>
+            {valgteOrganisasjonMottakere.map((mottaker, index) => (
+                <StyledMottakerBoks key={mottaker.navnHosOrganisasjon + index}>
                     <div>
                         <Normaltekst>{`${mottaker.navnHosOrganisasjon}`}</Normaltekst>
                         <Normaltekst>

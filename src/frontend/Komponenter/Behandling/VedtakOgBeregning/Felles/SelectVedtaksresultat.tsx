@@ -9,8 +9,6 @@ import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { Button, Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { useToggles } from '../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../App/context/toggles';
 import { NullstillVedtakModalContext } from '../NullstillVedtakModalContext';
 
 interface Props {
@@ -45,14 +43,11 @@ const HjelpeTekst = styled(HelpText)`
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { toggles } = useToggles();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig =
         behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
-    const tillaterOpphørForSkolepenger =
-        behandling.stønadstype !== Stønadstype.SKOLEPENGER || toggles[ToggleName.skolepengerOpphør];
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 
@@ -98,11 +93,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     </option>
                     <option
                         value={EBehandlingResultat.OPPHØRT}
-                        disabled={
-                            !opphørMulig ||
-                            nullUtbetalingPgaKontantstøtte ||
-                            !tillaterOpphørForSkolepenger
-                        }
+                        disabled={!opphørMulig || nullUtbetalingPgaKontantstøtte}
                     >
                         Opphørt
                     </option>

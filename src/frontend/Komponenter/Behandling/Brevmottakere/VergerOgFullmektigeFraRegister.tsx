@@ -53,34 +53,32 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
         <>
             <StyledIngress>Verge/Fullmektig fra register</StyledIngress>
             {muligeMottakere.length ? (
-                muligeMottakere.map((mottaker) => {
+                muligeMottakere.map((mottaker, index) => {
                     const mottakerValgt = !!valgteMottakere.find(
                         (valgtMottaker) => valgtMottaker.personIdent === mottaker.personIdent
                     );
                     return (
-                        <>
-                            <StyledMottakerBoks>
-                                <Kolonner>
-                                    {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
-                                    <KopierbartNullableFødselsnummer
-                                        fødselsnummer={mottaker.personIdent}
-                                    />
-                                </Kolonner>
-                                {!mottakerValgt && (
-                                    <VertikalSentrering>
-                                        <div>
-                                            <Button
-                                                variant="secondary"
-                                                size="small"
-                                                onClick={settMottaker(mottaker)}
-                                            >
-                                                Legg til
-                                            </Button>
-                                        </div>
-                                    </VertikalSentrering>
-                                )}
-                            </StyledMottakerBoks>
-                        </>
+                        <StyledMottakerBoks key={mottaker.navn + index}>
+                            <Kolonner>
+                                {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
+                                <KopierbartNullableFødselsnummer
+                                    fødselsnummer={mottaker.personIdent}
+                                />
+                            </Kolonner>
+                            {!mottakerValgt && (
+                                <VertikalSentrering>
+                                    <div>
+                                        <Button
+                                            variant="secondary"
+                                            size="small"
+                                            onClick={settMottaker(mottaker)}
+                                        >
+                                            Legg til
+                                        </Button>
+                                    </div>
+                                </VertikalSentrering>
+                            )}
+                        </StyledMottakerBoks>
                     );
                 })
             ) : (

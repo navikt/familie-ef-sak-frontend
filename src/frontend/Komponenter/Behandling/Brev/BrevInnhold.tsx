@@ -118,7 +118,7 @@ const BrevInnhold: React.FC<Props> = ({
                         nyBrevType ? skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[nyBrevType]) : []
                     );
                 }}
-                value={brevType}
+                value={brevType || ''}
             >
                 <option value={''}>Ikke valgt</option>
                 {Object.values(
@@ -165,7 +165,7 @@ const BrevInnhold: React.FC<Props> = ({
                         const knappWrapperId = `knappWrapper-${rad.id}`;
 
                         return (
-                            <ToKolonneLayout id={toKolonneId}>
+                            <ToKolonneLayout key={toKolonneId} id={toKolonneId}>
                                 <Innholdsrad key={rad.id} border>
                                     <Input
                                         onChange={endreDeloverskriftAvsnitt(rad.id)}

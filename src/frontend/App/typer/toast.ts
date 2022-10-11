@@ -6,6 +6,7 @@ export enum EToast {
     BREVMOTTAKERE_SATT = 'BREVMOTTAKERE_SATT',
     INNGANGSVILKÅR_GJENBRUKT = 'INNGANGSVILKÅR_GJENBRUKT',
     VEDTAK_NULLSTILT = 'VEDTAK_NULLSTILT',
+    BREV_SENDT = 'BREV_SENDT',
 }
 
 export const toastTilTekst: Record<EToast, string> = {
@@ -17,4 +18,5 @@ export const toastTilTekst: Record<EToast, string> = {
     BREVMOTTAKERE_SATT: 'Brevmottakere er satt',
     INNGANGSVILKÅR_GJENBRUKT: 'Vilkårsvurdering gjenbrukt',
     VEDTAK_NULLSTILT: 'Lagret vedtak nullstilt',
+    BREV_SENDT: 'Brevet er nå sendt',
 };
