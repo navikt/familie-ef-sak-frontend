@@ -125,9 +125,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         oppgave.behandlingstype &&
         oppgaveBehandlingstypeTilTekst[oppgave.behandlingstype as OppgaveBehandlingstype];
 
-    const typeBehandling = behandlingstype
-        ? `${behandlingstype} (${behandlingstema})`
-        : behandlingstema;
+    const typeBehandling = behandlingstype ? behandlingstype : behandlingstema;
 
     const utledetFolkeregisterIdent = oppgave.identer.filter(
         (i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT
