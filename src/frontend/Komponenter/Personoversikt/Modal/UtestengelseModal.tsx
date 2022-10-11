@@ -7,6 +7,7 @@ import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { månederMellom, månedÅrTilDate } from '../../../App/utils/dato';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { EToast } from '../../../App/typer/toast';
 
 const ModalInnhold = styled.div`
     margin-top: 3rem;
@@ -37,14 +38,11 @@ interface IOpprettUtestengelse {
     periode: { fom: string; tom: string };
 }
 
-/**
- * TODO: Endre til ny modal
- */
 export const UtestengelseModal: FC<{
     fagsakPersonId: string;
     hentUtestengelser: (fagsakPersonId: string) => void;
 }> = ({ fagsakPersonId, hentUtestengelser }) => {
-    const { axiosRequest, visUtestengModal, settVisUtestengModal } = useApp();
+    const { axiosRequest, visUtestengModal, settVisUtestengModal, settToast } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const [fraOgMed, settFraOgMed] = useState<string>();
@@ -72,6 +70,7 @@ export const UtestengelseModal: FC<{
             }).then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
                     hentUtestengelser(fagsakPersonId);
+                    settToast(EToast.OPPRETTET_UTESTENGELSE);
                     lukkModal();
                 } else {
                     settFeilmelding(response.frontendFeilmelding || response.melding);
