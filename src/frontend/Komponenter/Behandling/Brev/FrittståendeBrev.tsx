@@ -97,6 +97,7 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [feilmelding, settFeilmelding] = useState('');
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
+    const [visNullstillBrevModal, settVisNullstillBrevModal] = useState<boolean>(false);
     const { axiosRequest, settVisBrevmottakereModal, settToast } = useApp();
     const { toggles } = useToggles();
 
@@ -149,6 +150,16 @@ const FrittståendeBrev: React.FC<Props> = ({
     const fjernRad = (radId: string) => {
         settAvsnitt((eksisterendeAvsnitt: AvsnittMedId[]) => {
             return eksisterendeAvsnitt.filter((rad) => radId !== rad.id);
+        });
+    };
+
+    const nullstillMellomlagretBrev = (): void => {
+        axiosRequest<string, null>({
+            method: 'DELETE',
+            url: `/familie-ef-sak/api/brev/mellomlager/frittstaende/${fagsakId}`,
+        }).then(() => {
+            nullstillBrev();
+            settVisNullstillBrevModal(false);
         });
     };
 
@@ -285,7 +296,9 @@ const FrittståendeBrev: React.FC<Props> = ({
                 flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
                 context={FritekstBrevContext.FRITTSTÅENDE}
                 stønadstype={Stønadstype.OVERGANGSSTØNAD}
+                settVisNullstillBrevModal={settVisNullstillBrevModal}
             />
+
             <StyledHovedKnapp
                 disabled={!brevType || !brevmottakereValgt(brevmottakere)}
                 onClick={() => settVisModal(true)}
@@ -305,6 +318,16 @@ const FrittståendeBrev: React.FC<Props> = ({
                 {feilmelding && (
                     <AlertStripe variant={'error'}>Utsending feilet. {feilmelding}</AlertStripe>
                 )}
+            </ModalWrapper>
+            <ModalWrapper
+                tittel={'Bekreft nullstilling av brev'}
+                visModal={visNullstillBrevModal}
+                onClose={() => settVisNullstillBrevModal(false)}
+                hovedKnappClick={() => nullstillMellomlagretBrev()}
+                lukkKnappTekst={'Avbryt'}
+                hovedKnappTekst={'Nullstill'}
+            >
+                Er du sikker på at du vil nullstille brevet? Du vil miste alle lagrede opplysninger
             </ModalWrapper>
             <BrevmottakereModal
                 personopplysninger={personopplysninger}
