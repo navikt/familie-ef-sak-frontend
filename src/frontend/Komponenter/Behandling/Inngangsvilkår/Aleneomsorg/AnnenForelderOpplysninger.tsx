@@ -116,7 +116,8 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         )}
                 </>
             )}
-            {
+
+            {forelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
                     <Normaltekst>Annen forelder automatisk beregnet avstand til søker</Normaltekst>
@@ -125,7 +126,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                             avstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
                     </Normaltekst>
                 </>
-            }
+            )}
         </GridTabell>
     );
 };
