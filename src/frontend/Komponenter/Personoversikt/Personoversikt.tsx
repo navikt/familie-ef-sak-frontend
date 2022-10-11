@@ -17,6 +17,7 @@ import { IFagsakPerson } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
+import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 
 type TabWithRouter = {
     label: string;
@@ -130,6 +131,8 @@ const Personoversikt: React.FC = () => {
     const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
     useSetValgtFagsakPersonId(fagsakPersonId);
 
+    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPerson();
+
     const personopplysningerConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -138,20 +141,15 @@ const Personoversikt: React.FC = () => {
         [fagsakPersonId]
     );
 
-    const fagsakPersonConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/fagsak-person/${fagsakPersonId}`,
-        }),
-        [fagsakPersonId]
-    );
+    useEffect(() => {
+        hentFagsakPerson(fagsakPersonId);
+    }, [hentFagsakPerson, fagsakPersonId]);
 
     useEffect(() => {
         document.title = 'Brukeroversikt';
     }, []);
 
     const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
-    const fagsakPerson = useDataHenter<IFagsakPerson, null>(fagsakPersonConfig);
 
     return (
         <DataViewer response={{ personopplysninger, fagsakPerson }}>
