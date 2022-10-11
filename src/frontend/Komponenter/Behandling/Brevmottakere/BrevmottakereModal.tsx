@@ -9,10 +9,9 @@ import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { BrevmottakereListe } from './BrevmottakereListe';
 import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
-import Modal from 'nav-frontend-modal';
-import { Systemtittel } from 'nav-frontend-typografi';
 import { Button } from '@navikt/ds-react';
 import { EToast } from '../../../App/typer/toast';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 
 const GridContainer = styled.div`
     display: grid;
@@ -32,13 +31,8 @@ const SentrerKnapper = styled.div`
     }
 `;
 
-const StyledModal = styled(Modal)`
-    padding: 3rem;
+const StylishModal = styled(ModalWrapper)`
     max-width: 1100px;
-`;
-
-const StyledSystemtittel = styled(Systemtittel)`
-    margin-bottom: 2rem;
 `;
 
 const HorisontalLinje = styled.div`
@@ -126,15 +120,15 @@ export const BrevmottakereModal: FC<{
     }, [kallHentBrevmottakere, visBrevmottakereModal, initielleBrevmottakere]);
 
     return (
-        <StyledModal
-            isOpen={visBrevmottakereModal}
-            onRequestClose={() => {
+        <StylishModal
+            tittel={'Hvem skal motta brevet?'}
+            visModal={visBrevmottakereModal}
+            onClose={() => {
                 settVisBrevmottakereModal(false);
             }}
-            closeButton={true}
-            contentLabel={'Velg brevmottakere'}
+            aksjonsknapper={false}
+            ariaLabel={'Velg brevmottakere'}
         >
-            <StyledSystemtittel>Hvem skal motta brevet?</StyledSystemtittel>
             <GridContainer>
                 <Venstrekolonne>
                     <VergerOgFullmektigeFraRegister
@@ -176,6 +170,6 @@ export const BrevmottakereModal: FC<{
             </SentrerKnapper>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             {innsendingSuksess && <AlertStripeSuksess>Brevmottakere er satt</AlertStripeSuksess>}
-        </StyledModal>
+        </StylishModal>
     );
 };

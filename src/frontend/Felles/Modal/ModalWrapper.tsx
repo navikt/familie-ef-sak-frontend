@@ -4,7 +4,6 @@ import React from 'react';
 
 const ModalContainer = styled(Modal)`
     min-width: 30rem;
-    max-width: 40rem;
 `;
 
 const Tittel = styled(Heading)`
