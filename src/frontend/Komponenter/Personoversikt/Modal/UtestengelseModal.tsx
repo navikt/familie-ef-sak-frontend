@@ -4,6 +4,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BodyLong, BodyShort } from '@navikt/ds-react';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
+import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
 
 const ModalInnhold = styled.div`
     margin-top: 3rem;
@@ -18,6 +19,8 @@ export const UtestengelseModal: FC = () => {
     const { axiosRequest, visUtestengModal, settVisUtestengModal } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
 
+    const [fraOgMed, settFraOgMed] = useState<string>();
+    const [tilOgMed, settTilOgMed] = useState<string>();
     console.log(!!axiosRequest);
     console.log(!!settFeilmelding);
 
@@ -35,7 +38,6 @@ export const UtestengelseModal: FC = () => {
                     Husk at perioden for utestenging trer i kraft fra og med måneden etter den
                     måneden vedtak om utestenging er fattet.
                 </BodyLong>
-
                 <BodyShort>Husk også at det må:</BodyShort>
                 <HuskListe>
                     <li>Oppretts notat om utestengelse i Gosys</li>
@@ -44,7 +46,25 @@ export const UtestengelseModal: FC = () => {
                         Sendes brev om utestengelse til bruker fra EF Sak frittstående brevutsender
                     </li>
                 </HuskListe>
-                {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+                Periode fra og med: {fraOgMed}
+                <MånedÅrVelger
+                    antallÅrFrem={2}
+                    antallÅrTilbake={1}
+                    disabled={false}
+                    feilmelding={''}
+                    aria-label={'Inntekt fra'}
+                    onEndret={(e) => settFraOgMed(e)}
+                ></MånedÅrVelger>
+                Periode til og med: {tilOgMed}
+                <MånedÅrVelger
+                    antallÅrFrem={2}
+                    antallÅrTilbake={1}
+                    disabled={false}
+                    feilmelding={''}
+                    aria-label={'Inntekt fra'}
+                    onEndret={(e) => settTilOgMed(e)}
+                ></MånedÅrVelger>
+                Ant.mnd ={feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             </ModalInnhold>
         </UIModalWrapper>
     );
