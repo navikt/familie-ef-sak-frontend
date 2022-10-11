@@ -123,7 +123,7 @@ const PersonoversiktContent: React.FC<{
                     <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />
                 </Routes>
             </Side>
-            <UtestengelseModal />
+            <UtestengelseModal fagsakPersonId={fagsakPerson.id} />
         </>
     );
 };

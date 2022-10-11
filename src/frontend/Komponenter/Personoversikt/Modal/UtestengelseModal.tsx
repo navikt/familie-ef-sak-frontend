@@ -2,9 +2,11 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { BodyLong, BodyShort } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button } from '@navikt/ds-react';
 import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
 import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
+import { månederMellom, månedÅrTilDate } from '../../../App/utils/dato';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 
 const ModalInnhold = styled.div`
     margin-top: 3rem;
@@ -15,20 +17,49 @@ const HuskListe = styled.ol`
     padding-left: 1.75rem;
 `;
 
-export const UtestengelseModal: FC = () => {
+export const UtestengelseModal: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { axiosRequest, visUtestengModal, settVisUtestengModal } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const [fraOgMed, settFraOgMed] = useState<string>();
     const [tilOgMed, settTilOgMed] = useState<string>();
+    const [senderInnUtestenging, settSenderInnUtestenging] = useState<boolean>(false);
+
     console.log(!!axiosRequest);
     console.log(!!settFeilmelding);
+
+    const lagUtestenging = () => {
+        settFeilmelding('');
+        if (!senderInnUtestenging && fraOgMed && tilOgMed) {
+            settSenderInnUtestenging(true);
+            axiosRequest<Ressurs<void>, { fagsakPersonId: string; fom: string; tom: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/utestengelse/${fagsakPersonId}`,
+                data: { fagsakPersonId: fagsakPersonId, fom: fraOgMed, tom: tilOgMed },
+            }).then((response) => {
+                if (response.status === RessursStatus.SUKSESS) {
+                    lukkModal();
+                } else {
+                    settFeilmelding(response.frontendFeilmelding || response.melding);
+                }
+            });
+        }
+    };
+
+    function lukkModal() {
+        settVisUtestengModal(false);
+        settFraOgMed(undefined);
+        settTilOgMed(undefined);
+        settSenderInnUtestenging(false);
+    }
 
     return (
         <UIModalWrapper
             modal={{
                 tittel: 'Utestengelse',
-                onClose: () => settVisUtestengModal(false),
+                onClose: () => {
+                    lukkModal();
+                },
                 lukkKnapp: true,
                 visModal: visUtestengModal,
             }}
@@ -64,7 +95,19 @@ export const UtestengelseModal: FC = () => {
                     aria-label={'Inntekt fra'}
                     onEndret={(e) => settTilOgMed(e)}
                 ></MånedÅrVelger>
-                Ant.mnd ={feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+                Ant.mnd ={' '}
+                {fraOgMed &&
+                    tilOgMed &&
+                    månederMellom(månedÅrTilDate(fraOgMed), månedÅrTilDate(tilOgMed))}
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        lagUtestenging();
+                    }}
+                >
+                    Bekreft utestengelse
+                </Button>
+                {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             </ModalInnhold>
         </UIModalWrapper>
     );
