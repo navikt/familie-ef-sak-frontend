@@ -2,11 +2,11 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { BodyLong, BodyShort, Button, Label } from '@navikt/ds-react';
-import UIModalWrapper from '../../../Felles/Modal/UIModalWrapper';
+import { BodyLong, BodyShort, Label } from '@navikt/ds-react';
 import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { månederMellom, månedÅrTilDate } from '../../../App/utils/dato';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 
 const ModalInnhold = styled.div`
     margin-top: 3rem;
@@ -93,15 +93,15 @@ export const UtestengelseModal: FC<{
         fraOgMed && tilOgMed && månederMellom(månedÅrTilDate(fraOgMed), månedÅrTilDate(tilOgMed));
 
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: 'Utestengelse',
-                onClose: () => {
-                    lukkModal();
-                },
-                lukkKnapp: true,
-                visModal: visUtestengModal,
-            }}
+        <ModalWrapper
+            tittel="Utestengelse"
+            visModal={visUtestengModal}
+            onClose={() => lukkModal()}
+            hovedKnappClick={() => lagUtestenging()}
+            hovedKnappTekst={'Bekreft utestengelse'}
+            hovedKnappDisabled={senderInnUtestenging}
+            lukkKnappTekst={'Avbryt'}
+            lukkKnappDisabled={senderInnUtestenging}
         >
             <ModalInnhold>
                 <BodyLong spacing={true}>
@@ -138,11 +138,8 @@ export const UtestengelseModal: FC<{
                         <AntallMåneder size={'small'}>{antallMåneder}</AntallMåneder>
                     </AntallMånederWrapper>
                 </Periode>
-                <Button variant="primary" onClick={() => lagUtestenging()}>
-                    Bekreft utestengelse
-                </Button>
                 {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             </ModalInnhold>
-        </UIModalWrapper>
+        </ModalWrapper>
     );
 };
