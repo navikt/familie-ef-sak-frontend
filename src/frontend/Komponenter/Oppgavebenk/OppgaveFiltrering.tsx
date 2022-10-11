@@ -18,7 +18,7 @@ import {
 } from './oppgavefilterStorage';
 import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
-import { harStrengtFortroligRolle } from '../../App/utils/roller';
+import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/roller';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button } from '@navikt/ds-react';
 
@@ -96,6 +96,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         appEnv,
         innloggetSaksbehandler
     );
+    const harSaksbehandlerEgenAnsattRolle = harEgenAnsattRolle(appEnv, innloggetSaksbehandler);
     const tomOppgaveRequest = harSaksbehandlerStrengtFortroligRolle
         ? { enhet: FortroligEnhet.VIKAFOSSEN }
         : { enhet: IkkeFortroligEnhet.NAY };
@@ -187,7 +188,10 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                 <CustomSelect
                     onChange={settOppgave('enhet')}
                     label="Enhet"
-                    options={enhetTilTekst(harSaksbehandlerStrengtFortroligRolle)}
+                    options={enhetTilTekst(
+                        harSaksbehandlerStrengtFortroligRolle,
+                        harSaksbehandlerEgenAnsattRolle
+                    )}
                     value={oppgaveRequest.enhet}
                     sortDesc={true}
                     skalSkjuleValgetAlle={true}
@@ -196,7 +200,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     onChange={(val) => {
                         if (val === 'uplassert') {
                             settOppgaveRequest((prevState: IOppgaveRequest) => {
-                                return { ...prevState, erUtenMappe: true, mappeId: null };
+                                return { ...prevState, erUtenMappe: true, mappeId: undefined };
                             });
                         } else {
                             settOppgaveRequest((prevState: IOppgaveRequest) => {

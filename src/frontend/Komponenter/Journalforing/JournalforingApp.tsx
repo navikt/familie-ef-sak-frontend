@@ -30,8 +30,6 @@ import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { BodyLong, Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import { IJojurnalpostResponse } from '../../App/typer/journalforing';
 import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
@@ -125,8 +123,7 @@ const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateReques
 const validerJournalføringState = (
     journalResponse: IJojurnalpostResponse,
     journalpostState: JournalføringStateRequest,
-    erAlleBehandlingerFerdigstilte: boolean,
-    kanJournalføreEttersendingNyBehandling: boolean
+    erAlleBehandlingerFerdigstilte: boolean
 ): string | undefined => {
     if (!erAlleBehandlingerFerdigstilte && harValgtNyBehandling(journalpostState.behandling)) {
         return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
@@ -143,10 +140,7 @@ const validerJournalføringState = (
         return 'Mangler tittel på et eller flere dokumenter';
     } else if (erEttersendingPåNyFørstegangsbehandling(journalpostState)) {
         return 'Kan ikke journalføre ettersending på ny førstegangsbehandling';
-    } else if (
-        kanJournalføreEttersendingNyBehandling &&
-        erEttersendingPåNyBehandlingOgManglerVilkårsbehandleNyeBarnValg(journalpostState)
-    ) {
+    } else if (erEttersendingPåNyBehandlingOgManglerVilkårsbehandleNyeBarnValg(journalpostState)) {
         return 'Mangler valg om å vilkårsbehandle nye barn';
     } else {
         return undefined;
@@ -156,7 +150,6 @@ const validerJournalføringState = (
 export const JournalforingApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
-    const { toggles } = useToggles();
     const query: URLSearchParams = useQueryParams();
     const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
@@ -228,9 +221,6 @@ export const JournalforingApp: React.FC = () => {
         return <Navigate to="/oppgavebenk" />;
     }
 
-    const kanJournalføreEttersendingNyBehandling =
-        toggles[ToggleName.kanJournalføreEttersendingNyBehandling];
-
     const skalBeOmBekreftelse = (
         erNyBehandling: boolean,
         harStrukturertSøknad: boolean,
@@ -241,7 +231,7 @@ export const JournalforingApp: React.FC = () => {
         } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD) {
             return !erNyBehandling;
         } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING) {
-            return erNyBehandling && !kanJournalføreEttersendingNyBehandling;
+            return erNyBehandling;
         } else {
             // Skal egentlige ikke komme hit pga validerJournalføringState
             return erNyBehandling;
@@ -257,7 +247,6 @@ export const JournalforingApp: React.FC = () => {
             journalResponse.status === RessursStatus.SUKSESS &&
             !journalResponse.data.harStrukturertSøknad;
         return (
-            toggles[ToggleName.kanLeggeTilTerminbarnVidJournalføring] &&
             erNyBehandling &&
             harIkkeStrukturertSøknad &&
             journalpostState.ustrukturertDokumentasjonType ===
@@ -266,7 +255,6 @@ export const JournalforingApp: React.FC = () => {
     };
 
     const skalVelgeVilkårsbehandleNyeBarn =
-        kanJournalføreEttersendingNyBehandling &&
         journalpostState.ustrukturertDokumentasjonType ===
             UstrukturertDokumentasjonType.ETTERSENDING &&
         harValgtNyBehandling(journalpostState.behandling);
@@ -365,8 +353,7 @@ export const JournalforingApp: React.FC = () => {
                                                 validerJournalføringState(
                                                     journalResponse,
                                                     journalpostState,
-                                                    erAlleBehandlingerFerdigstilte(fagsak),
-                                                    kanJournalføreEttersendingNyBehandling
+                                                    erAlleBehandlingerFerdigstilte(fagsak)
                                                 );
                                             if (feilmeldingFraValidering) {
                                                 settFeilMeldning(feilmeldingFraValidering);

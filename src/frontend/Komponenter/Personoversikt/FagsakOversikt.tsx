@@ -10,9 +10,6 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
 import { erAlleBehandlingerErFerdigstilt } from './utils';
-import { ToggleName } from '../../App/context/toggles';
-import { useToggles } from '../../App/context/TogglesContext';
-import { Stønadstype } from '../../App/typer/behandlingstema';
 import { KlageBehandling } from '../../App/typer/klage';
 
 const KnappMedMargin = styled(Knapp)`
@@ -32,7 +29,6 @@ export const FagsakOversikt: React.FC<Props> = ({
     hentKlageBehandlinger,
 }) => {
     const { axiosRequest, erSaksbehandler } = useApp();
-    const { toggles } = useToggles();
 
     const hentTilbakekrevingBehandlinger = () =>
         axiosRequest<TilbakekrevingBehandling[], null>({
@@ -45,11 +41,6 @@ export const FagsakOversikt: React.FC<Props> = ({
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
         Ressurs<TilbakekrevingBehandling[]>
     >(byggTomRessurs());
-
-    const skalViseOpprettNyBehandlingKnapp =
-        fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
-        fagsak.stønadstype === Stønadstype.BARNETILSYN ||
-        toggles[ToggleName.skalViseOpprettNyBehandlingSkolepenger];
 
     useEffect(() => {
         hentTilbakekrevingBehandlinger();
@@ -67,7 +58,7 @@ export const FagsakOversikt: React.FC<Props> = ({
                         tilbakekrevingBehandlinger={tilbakekrevingBehandlinger}
                         klageBehandlinger={klageBehandlinger}
                     />
-                    {erSaksbehandler && skalViseOpprettNyBehandlingKnapp && (
+                    {erSaksbehandler && (
                         <>
                             <LagBehandlingModal
                                 visModal={visLagBehandlingModal}

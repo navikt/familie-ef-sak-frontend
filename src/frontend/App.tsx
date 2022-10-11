@@ -12,7 +12,7 @@ import BehandlingContainer from './Komponenter/Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
 import { JournalforingApp } from './Komponenter/Journalforing/JournalforingApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
-import UlagretDataModal from './Komponenter/Behandling/Fanemeny/UlagretDataModal';
+import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
 import { AppEnv, hentEnv } from './App/api/env';

@@ -7,24 +7,33 @@ export enum FortroligEnhet {
     VIKAFOSSEN = '2103',
 }
 
-export const enhetTilTekstIkkeFortrolig: Record<IkkeFortroligEnhet, string> = {
+const enhetTilTekstIkkeFortrolig: Record<IkkeFortroligEnhet.NAY, string> = {
     '4489': '4489 NAY',
+};
+
+const enhetTilTekstEgenAnsatte: Record<IkkeFortroligEnhet.EGNE_ANSATTE, string> = {
     '4483': '4483 Egne ansatte',
 };
 
-export const enhetTilTekstFortrolig: Record<FortroligEnhet, string> = {
+const enhetTilTekstFortrolig: Record<FortroligEnhet, string> = {
     '2103': '2103 NAV Vikafossen',
 };
 
 export const enhetTilTekstPåString: Record<string, string> = {
     ...enhetTilTekstIkkeFortrolig,
     ...enhetTilTekstFortrolig,
+    ...enhetTilTekstEgenAnsatte,
 };
 
 export const enhetTilTekst = (
-    harSaksbehandlerStrengtFortroligRolle: boolean
+    harSaksbehandlerStrengtFortroligRolle: boolean,
+    harSaksbehandlerEgenAnsattRolle: boolean
 ): Record<string, string> => {
-    return harSaksbehandlerStrengtFortroligRolle
-        ? enhetTilTekstFortrolig
-        : enhetTilTekstIkkeFortrolig;
+    if (harSaksbehandlerStrengtFortroligRolle) {
+        return enhetTilTekstFortrolig;
+    } else if (harSaksbehandlerEgenAnsattRolle) {
+        return { ...enhetTilTekstIkkeFortrolig, ...enhetTilTekstEgenAnsatte };
+    } else {
+        return enhetTilTekstIkkeFortrolig;
+    }
 };

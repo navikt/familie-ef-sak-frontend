@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Hamburger } from '@navikt/ds-icons';
 import styled from 'styled-components';
-import { useBehandling } from '../../App/context/BehandlingContext';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { useApp } from '../../App/context/AppContext';
+import { useBehandling } from '../../App/context/BehandlingContext';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -59,7 +60,8 @@ const Knapp = styled.button`
 
 export const Hamburgermeny = () => {
     const ref = useRef(null);
-    const { settVisBrevmottakereModal, settVisHenleggModal } = useBehandling();
+    const { settVisBrevmottakereModal } = useApp();
+    const { settVisHenleggModal } = useBehandling();
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
     useEffect(() => {
