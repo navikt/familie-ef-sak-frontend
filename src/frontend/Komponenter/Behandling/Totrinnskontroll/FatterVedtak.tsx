@@ -7,7 +7,6 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { BorderBox } from './Totrinnskontroll';
 import { RessursStatus } from '@navikt/familie-typer';
-import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EToast } from '../../../App/typer/toast';
@@ -43,12 +42,14 @@ interface TotrinnskontrollForm {
     begrunnelse?: string;
 }
 
-const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const FatterVedtak: React.FC<{
+    behandlingId: string;
+    settVisModal: (vis: boolean) => void;
+}> = ({ behandlingId, settVisModal }) => {
     const [godkjent, settGodkjent] = useState<boolean>();
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
-    const { modalDispatch } = useModal();
     const { axiosRequest, settToast, gåTilUrl } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
     const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
@@ -73,10 +74,7 @@ const FatterVedtak: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
                     if (godkjent) {
                         hentBehandlingshistorikk.rerun();
                         hentTotrinnskontroll.rerun();
-                        modalDispatch({
-                            type: ModalAction.VIS_MODAL,
-                            modalType: ModalType.VEDTAK_GODKJENT,
-                        });
+                        settVisModal(true);
                     } else {
                         settToast(EToast.VEDTAK_UNDERKJENT);
                         gåTilUrl('/oppgavebenk');

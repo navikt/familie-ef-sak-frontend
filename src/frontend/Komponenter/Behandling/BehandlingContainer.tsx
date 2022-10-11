@@ -6,8 +6,6 @@ import Fanemeny from './Fanemeny/Fanemeny';
 import navFarger from 'nav-frontend-core';
 import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingContext';
-import { ModalProvider } from '../../App/context/ModalContext';
-import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
@@ -57,12 +55,9 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
 
 const BehandlingContainer: FC = () => {
     return (
-        <ModalProvider>
-            <BehandlingProvider>
-                <ModalController />
-                <BehandlingOverbygg />
-            </BehandlingProvider>
-        </ModalProvider>
+        <BehandlingProvider>
+            <BehandlingOverbygg />
+        </BehandlingProvider>
     );
 };
 

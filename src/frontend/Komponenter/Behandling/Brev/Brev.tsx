@@ -114,12 +114,11 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                 )}
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
-            {behandlingErRedigerbar && (
-                <SendTilBeslutterFooter
-                    behandlingId={behandlingId}
-                    kanSendesTilBeslutter={kanSendesTilBeslutter}
-                />
-            )}
+            <SendTilBeslutterFooter
+                behandlingId={behandlingId}
+                kanSendesTilBeslutter={kanSendesTilBeslutter}
+                behandlingErRedigerbar={behandlingErRedigerbar}
+            />
         </>
     );
 };
