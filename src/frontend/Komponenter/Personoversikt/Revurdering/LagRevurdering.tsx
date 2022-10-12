@@ -22,38 +22,38 @@ import {
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { useApp } from '../../../App/context/AppContext';
-import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn';
 import { Select } from 'nav-frontend-skjema';
 import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { erGyldigDato } from '../../../App/utils/dato';
+import { Alert, Button } from '@navikt/ds-react';
 
-const StyledFamilieDatovelger = styled(FamilieDatovelger)`
+const DatoContainer = styled.div`
+    margin-top: 2rem;
+    margin-bottom: 18rem;
+`;
+
+const StyledSelect = styled(Select)`
     margin-top: 2rem;
 `;
 
-const FlexDiv = styled.div<{ horisontal: boolean }>`
+const AlertStripe = styled(Alert)`
+    margin-top: 1rem;
+`;
+
+const ButtonContainer = styled.div`
     display: flex;
-    justify-content: space-between;
-    margin-bottom: ${(props) => (props.horisontal ? '18rem' : '1rem')};
-    flex-direction: ${(props) => (props.horisontal ? 'row' : 'column')};
+    margin-top: 1rem;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
 `;
 
-export const StyledHovedknapp = styled(Hovedknapp)`
-    margin-left: 2rem;
-    margin-right: 0.5rem;
-`;
-
-export const StyledSelect = styled(Select)`
-    margin-top: 2rem;
-`;
-
-const KnappeWrapper = styled.div`
-    margin: 0 auto;
-    margin-top: 4rem;
+const ModalKnapp = styled(Button)`
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    margin-left: 1rem;
 `;
 
 interface IProps {
@@ -120,113 +120,115 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         }
     };
 
-    return (
-        <>
-            <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
-                {({ nyeBarnSidenForrigeBehandling }) => {
-                    const harNyeBarnSidenForrigeBehandling =
-                        nyeBarnSidenForrigeBehandling.nyeBarn.length > 0;
-                    const måTaStillingTilBarn =
-                        harNyeBarnSidenForrigeBehandling &&
-                        !nyeBarnSidenForrigeBehandling.harBarnISisteIverksatteBehandling &&
-                        !erGOmregning;
-                    const skalViseNyeBarnValg =
-                        valgtBehandlingsårsak && harNyeBarnSidenForrigeBehandling && !erGOmregning;
+    const opprettRevurdering = (
+        måTaStillingTilBarn: boolean,
+        nyeBarnSidenForrigeBehandling: NyeBarnSidenForrigeBehandling
+    ) => {
+        const kanStarteRevurdering = !!(
+            valgtBehandlingsårsak &&
+            valgtDato &&
+            erGyldigDato(valgtDato) &&
+            !(måTaStillingTilBarn && vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT)
+        );
+        if (kanStarteRevurdering) {
+            lagRevurdering({
+                fagsakId: fagsak.id,
+                barn:
+                    vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
+                        ? nyeBarnSidenForrigeBehandling.nyeBarn
+                        : [],
+                behandlingsårsak: valgtBehandlingsårsak,
+                kravMottatt: valgtDato,
+                vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
+            });
+        } else {
+            settFeilmeldingModal('Vennligst fyll ut alle felter');
+        }
+    };
 
-                    return (
-                        <>
-                            <StyledSelect
-                                label="Årsak"
-                                value={valgtBehandlingsårsak || ''}
-                                onChange={(e) => {
-                                    settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
+    return (
+        <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
+            {({ nyeBarnSidenForrigeBehandling }) => {
+                const harNyeBarnSidenForrigeBehandling =
+                    nyeBarnSidenForrigeBehandling.nyeBarn.length > 0;
+                const måTaStillingTilBarn =
+                    harNyeBarnSidenForrigeBehandling &&
+                    !nyeBarnSidenForrigeBehandling.harBarnISisteIverksatteBehandling &&
+                    !erGOmregning;
+                const skalViseNyeBarnValg =
+                    valgtBehandlingsårsak && harNyeBarnSidenForrigeBehandling && !erGOmregning;
+
+                return (
+                    <>
+                        <StyledSelect
+                            label="Årsak"
+                            value={valgtBehandlingsårsak || ''}
+                            onChange={(e) => {
+                                settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
+                            }}
+                        >
+                            <option value="">Velg</option>
+                            {valgtBehandlingstype === Behandlingstype.REVURDERING &&
+                                behandlingsårsaker
+                                    .filter(skalViseÅrsak)
+                                    .map((behandlingsårsak: Behandlingsårsak, index: number) => (
+                                        <option key={index} value={behandlingsårsak}>
+                                            {behandlingsårsakTilTekst[behandlingsårsak]}
+                                        </option>
+                                    ))}
+                        </StyledSelect>
+                        <DatoContainer>
+                            <FamilieDatovelger
+                                id={'krav-mottatt'}
+                                label={'Krav mottatt'}
+                                onChange={(dato) => {
+                                    settValgtDato(dato as string);
+                                }}
+                                valgtDato={valgtDato}
+                                feil={
+                                    valgtDato && !erGyldigDato(valgtDato)
+                                        ? 'Ugyldig dato'
+                                        : undefined
+                                }
+                            />
+                            {feilmeldingModal && (
+                                <AlertStripe variant={'error'}>{feilmeldingModal}</AlertStripe>
+                            )}
+                            {skalViseNyeBarnValg && (
+                                <NyeBarn
+                                    nyeBarnSidenForrigeBehandling={
+                                        nyeBarnSidenForrigeBehandling.nyeBarn
+                                    }
+                                    måTaStillingTilBarn={måTaStillingTilBarn}
+                                    vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
+                                    settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
+                                />
+                            )}
+                        </DatoContainer>
+                        <ButtonContainer>
+                            <ModalKnapp
+                                variant="tertiary"
+                                onClick={() => {
+                                    settVisModal(false);
                                 }}
                             >
-                                <option value="">Velg</option>
-                                {valgtBehandlingstype === Behandlingstype.REVURDERING &&
-                                    behandlingsårsaker
-                                        .filter(skalViseÅrsak)
-                                        .map(
-                                            (behandlingsårsak: Behandlingsårsak, index: number) => (
-                                                <option key={index} value={behandlingsårsak}>
-                                                    {behandlingsårsakTilTekst[behandlingsårsak]}
-                                                </option>
-                                            )
-                                        )}
-                            </StyledSelect>
-                            <FlexDiv horisontal={!skalViseNyeBarnValg}>
-                                <StyledFamilieDatovelger
-                                    id={'krav-mottatt'}
-                                    label={'Krav mottatt'}
-                                    onChange={(dato) => {
-                                        settValgtDato(dato as string);
-                                    }}
-                                    valgtDato={valgtDato}
-                                    feil={
-                                        valgtDato && !erGyldigDato(valgtDato)
-                                            ? 'Ugyldig dato'
-                                            : undefined
-                                    }
-                                />
-                                {skalViseNyeBarnValg && (
-                                    <NyeBarn
-                                        nyeBarnSidenForrigeBehandling={
-                                            nyeBarnSidenForrigeBehandling.nyeBarn
-                                        }
-                                        måTaStillingTilBarn={måTaStillingTilBarn}
-                                        vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
-                                        settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
-                                    />
-                                )}
-
-                                <KnappeWrapper>
-                                    <StyledHovedknapp
-                                        onClick={() => {
-                                            const kanStarteRevurdering = !!(
-                                                valgtBehandlingsårsak &&
-                                                valgtDato &&
-                                                erGyldigDato(valgtDato) &&
-                                                !(
-                                                    måTaStillingTilBarn &&
-                                                    vilkårsbehandleNyeBarn ===
-                                                        EVilkårsbehandleBarnValg.IKKE_VALGT
-                                                )
-                                            );
-                                            if (kanStarteRevurdering) {
-                                                lagRevurdering({
-                                                    fagsakId: fagsak.id,
-                                                    barn:
-                                                        vilkårsbehandleNyeBarn ===
-                                                        EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
-                                                            ? nyeBarnSidenForrigeBehandling.nyeBarn
-                                                            : [],
-                                                    behandlingsårsak: valgtBehandlingsårsak,
-                                                    kravMottatt: valgtDato,
-                                                    vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
-                                                });
-                                            } else {
-                                                settFeilmeldingModal(
-                                                    'Vennligst fyll ut alle felter'
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        Opprett
-                                    </StyledHovedknapp>
-                                    <Flatknapp
-                                        onClick={() => {
-                                            settVisModal(false);
-                                        }}
-                                    >
-                                        Avbryt
-                                    </Flatknapp>
-                                </KnappeWrapper>
-                            </FlexDiv>
-                        </>
-                    );
-                }}
-            </DataViewer>
-            {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
-        </>
+                                Avbryt
+                            </ModalKnapp>
+                            <ModalKnapp
+                                variant="primary"
+                                onClick={() =>
+                                    opprettRevurdering(
+                                        måTaStillingTilBarn,
+                                        nyeBarnSidenForrigeBehandling
+                                    )
+                                }
+                            >
+                                Opprett
+                            </ModalKnapp>
+                        </ButtonContainer>
+                    </>
+                );
+            }}
+        </DataViewer>
     );
 };
