@@ -140,7 +140,6 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             tittel={'Opprett ny behandling'}
             visModal={visModal}
             onClose={() => settVisModal(false)}
-            aksjonsknapper={false}
         >
             {!kanStarteRevurdering && (
                 <Alert variant={'info'}>

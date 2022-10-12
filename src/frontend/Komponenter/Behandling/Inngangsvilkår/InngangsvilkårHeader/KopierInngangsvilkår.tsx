@@ -143,13 +143,19 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
                         tittel={'Gjenbruk av vilkårsvurderinger'}
                         visModal={visModal}
                         onClose={() => settVisModal(false)}
-                        hovedKnappClick={() => {
-                            settVisModal(false);
-                            gjenbrukInngangsvilkår(behandlingId, forrigeBehandling[0].id);
+                        aksjonsknapper={{
+                            hovedKnapp: {
+                                onClick: () => {
+                                    settVisModal(false);
+                                    gjenbrukInngangsvilkår(behandlingId, forrigeBehandling[0].id);
+                                },
+                                tekst: 'Gjenbruk vilkårsvurdering',
+                            },
+                            lukkKnapp: {
+                                onClick: () => settVisModal(false),
+                                tekst: 'Avbryt',
+                            },
                         }}
-                        hovedKnappTekst={'Gjenbruk vilkårsvurdering'}
-                        lukkKnappClick={() => settVisModal(false)}
-                        lukkKnappTekst={'Avbryt'}
                     >
                         <BodyLong>
                             Er du sikker på at du vil gjenbruke vilkårsvurdering fra tidligere

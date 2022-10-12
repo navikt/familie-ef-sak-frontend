@@ -439,7 +439,6 @@ const JournalføringIkkeMuligModal: React.FC<{
             tittel={'Journalføring ikke mulig'}
             visModal={visModal}
             onClose={() => settVisModal(false)}
-            aksjonsknapper={false}
         >
             {erPapirSøknad ? (
                 <BodyLong>
@@ -473,17 +472,23 @@ const BekreftJournalføringModal: React.FC<{
             tittel={''}
             visModal={journalpostState.visBekreftelsesModal}
             onClose={() => journalpostState.settVisBekreftelsesModal(false)}
-            hovedKnappClick={() => {
-                journalpostState.settVisBekreftelsesModal(false);
-                journalpostState.fullførJournalføring(
-                    journalpostId,
-                    innloggetSaksbehandler?.enhet || '9999',
-                    innloggetSaksbehandler?.navIdent
-                );
+            aksjonsknapper={{
+                hovedKnapp: {
+                    onClick: () => {
+                        journalpostState.settVisBekreftelsesModal(false);
+                        journalpostState.fullførJournalføring(
+                            journalpostId,
+                            innloggetSaksbehandler?.enhet || '9999',
+                            innloggetSaksbehandler?.navIdent
+                        );
+                    },
+                    tekst: 'Journalfør allikevel',
+                },
+                lukkKnapp: {
+                    onClick: () => journalpostState.settVisBekreftelsesModal(false),
+                    tekst: 'Tilbake',
+                },
             }}
-            hovedKnappTekst={'Journalfør allikevel'}
-            lukkKnappClick={() => journalpostState.settVisBekreftelsesModal(false)}
-            lukkKnappTekst={'Tilbake'}
             ariaLabel={'Bekreft journalføring av oppgave, eller avbryt'}
         >
             <ModalTekst>

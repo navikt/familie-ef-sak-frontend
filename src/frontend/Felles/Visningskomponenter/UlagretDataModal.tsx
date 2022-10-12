@@ -19,16 +19,22 @@ const UlagretDataModal: FC = () => {
             }
             visModal={visUlagretDataModal}
             onClose={() => settVisUlagretDataModal(false)}
-            hovedKnappClick={() => settVisUlagretDataModal(false)}
-            hovedKnappTekst={'Gå tilbake for å lagre'}
-            lukkKnappClick={() => {
-                if (valgtSide) {
-                    nullstillIkkePersisterteKomponenter();
-                    navigate(valgtSide);
-                }
-                settVisUlagretDataModal(false);
+            aksjonsknapper={{
+                hovedKnapp: {
+                    onClick: () => settVisUlagretDataModal(false),
+                    tekst: 'Gå tilbake for å lagre',
+                },
+                lukkKnapp: {
+                    onClick: () => {
+                        if (valgtSide) {
+                            nullstillIkkePersisterteKomponenter();
+                            navigate(valgtSide);
+                        }
+                        settVisUlagretDataModal(false);
+                    },
+                    tekst: 'Forlat siden',
+                },
             }}
-            lukkKnappTekst={'Forlat siden'}
         />
     );
 };

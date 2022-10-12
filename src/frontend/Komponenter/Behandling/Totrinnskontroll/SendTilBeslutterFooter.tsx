@@ -82,10 +82,16 @@ const SendTilBeslutterFooter: React.FC<{
                 tittel={'Vedtaket er sendt til beslutter'}
                 visModal={visModal}
                 onClose={() => settVisModal(false)}
-                hovedKnappClick={() => gåTilUrl('/oppgavebenk')}
-                hovedKnappTekst={'Til oppgavebenk'}
-                lukkKnappClick={() => lukkModal()}
-                lukkKnappTekst={'Lukk'}
+                aksjonsknapper={{
+                    hovedKnapp: {
+                        onClick: () => gåTilUrl('/oppgavebenk'),
+                        tekst: 'Til oppgavebenk',
+                    },
+                    lukkKnapp: {
+                        onClick: () => lukkModal(),
+                        tekst: 'Lukk',
+                    },
+                }}
             />
         </>
     );

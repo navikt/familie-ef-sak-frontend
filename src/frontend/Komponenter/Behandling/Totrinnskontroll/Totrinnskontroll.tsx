@@ -35,7 +35,6 @@ export const BorderBox = styled.div`
 `;
 
 const Totrinnskontroll: FC = () => {
-    const { hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const { gåTilUrl } = useApp();
     const [visModal, settVisModal] = useState(false);
 
@@ -46,14 +45,13 @@ const Totrinnskontroll: FC = () => {
                 tittel={'Vedtaket er sendt til beslutter'}
                 visModal={visModal}
                 onClose={() => settVisModal(false)}
-                hovedKnappClick={() => gåTilUrl('/oppgavebenk')}
-                hovedKnappTekst={'Til oppgavebenk'}
-                lukkKnappClick={() => {
-                    settVisModal(false);
-                    hentBehandling.rerun();
-                    hentBehandlingshistorikk.rerun();
+                aksjonsknapper={{
+                    hovedKnapp: {
+                        onClick: () => gåTilUrl('/oppgavebenk'),
+                        tekst: 'Til oppgavebenk',
+                    },
+                    lukkKnapp: { onClick: () => settVisModal(false), tekst: 'Lukk' },
                 }}
-                lukkKnappTekst={'Lukk'}
             />
         </>
     );
