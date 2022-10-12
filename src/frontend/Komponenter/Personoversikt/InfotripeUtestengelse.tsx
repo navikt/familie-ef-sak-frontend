@@ -19,7 +19,7 @@ export const InfotripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]>
                 const harGjeldendeUtestengelse = utestengelser.some((utestengelse) =>
                     erEtterDagensDato(utestengelse.periode.tom)
                 );
-                if (!utestengelser.length || !harGjeldendeUtestengelse) {
+                if (!harGjeldendeUtestengelse) {
                     return null;
                 }
                 return (
