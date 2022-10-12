@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { Button, Heading, Modal } from '@navikt/ds-react';
 import React from 'react';
 
-const ModalContainer = styled(Modal)`
+const ModalContainer = styled(Modal)<{ maxWidth: boolean }>`
     min-width: 30rem;
-    max-width: 40rem;
+    max-width: ${(props) => (props.maxWidth ? '40rem' : '80rem')};
 `;
 
 const Tittel = styled(Heading)`
@@ -35,40 +35,54 @@ const ModalKnapp = styled(Button)`
 interface ModalProps {
     tittel: string;
     visModal: boolean;
-    onClose: () => void;
+    closeButton?: boolean;
+    onClose?: () => void;
+    aksjonsknapper?: boolean;
     hovedKnappClick?: () => void;
-    lukkKnappDisabled?: boolean;
-    hovedKnappDisabled?: boolean;
-    lukkKnappTekst?: string;
     hovedKnappTekst?: string;
-    skjulKnapper?: boolean;
+    hovedKnappDisabled?: boolean;
+    lukkKnappClick?: () => void;
+    lukkKnappTekst?: string;
+    lukkKnappDisabled?: boolean;
+    maxWidth?: boolean;
+    ariaLabel?: string;
     children?: React.ReactNode;
 }
 
 export const ModalWrapper: React.FC<ModalProps> = ({
     tittel,
     visModal,
+    closeButton,
     onClose,
+    aksjonsknapper = true,
     hovedKnappClick,
-    lukkKnappDisabled,
-    hovedKnappDisabled,
-    lukkKnappTekst,
     hovedKnappTekst,
-    skjulKnapper,
+    hovedKnappDisabled,
+    lukkKnappClick,
+    lukkKnappTekst,
+    lukkKnappDisabled,
+    maxWidth = true,
+    ariaLabel,
     children,
 }) => {
     return (
-        <ModalContainer open={visModal} aria-label={tittel} onClose={() => onClose()}>
+        <ModalContainer
+            open={visModal}
+            aria-label={ariaLabel ? ariaLabel : tittel}
+            onClose={onClose ? () => onClose() : () => null}
+            closeButton={closeButton}
+            maxWidth={maxWidth}
+        >
             <Modal.Content>
                 <Tittel spacing={true} size={'medium'}>
                     {tittel}
                 </Tittel>
                 <Innhold>{children}</Innhold>
-                {!skjulKnapper && (
+                {aksjonsknapper && (
                     <ButtonContainer>
                         <ModalKnapp
                             variant="tertiary"
-                            onClick={() => onClose()}
+                            onClick={lukkKnappClick ? () => lukkKnappClick() : () => null}
                             disabled={lukkKnappDisabled}
                         >
                             {lukkKnappTekst}

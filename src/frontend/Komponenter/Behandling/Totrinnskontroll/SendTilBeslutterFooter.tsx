@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { ModalAction, ModalType, useModal } from '../../../App/context/ModalContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 
 const Footer = styled.footer`
     width: calc(100%);
@@ -30,12 +30,13 @@ const StyledHovedknapp = styled(Hovedknapp)`
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
     kanSendesTilBeslutter?: boolean;
-}> = ({ behandlingId, kanSendesTilBeslutter }) => {
-    const { axiosRequest } = useApp();
-    const { modalDispatch } = useModal();
-    const { hentTotrinnskontroll, hentBehandling } = useBehandling();
+    behandlingErRedigerbar?: boolean;
+}> = ({ behandlingId, kanSendesTilBeslutter, behandlingErRedigerbar }) => {
+    const { axiosRequest, gåTilUrl } = useApp();
+    const { hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [visModal, settVisModal] = useState<boolean>(false);
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -48,10 +49,7 @@ const SendTilBeslutterFooter: React.FC<{
                 if (res.status === RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
                     hentTotrinnskontroll.rerun();
-                    modalDispatch({
-                        type: ModalAction.VIS_MODAL,
-                        modalType: ModalType.SENDT_TIL_BESLUTTER,
-                    });
+                    settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }
@@ -59,19 +57,36 @@ const SendTilBeslutterFooter: React.FC<{
             .finally(() => settLaster(false));
     };
 
+    const lukkModal = () => {
+        settVisModal(false);
+        hentBehandling.rerun();
+        hentBehandlingshistorikk.rerun();
+    };
+
     return (
         <>
-            <Footer>
-                {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
-                <MidtstiltInnhold>
-                    <StyledHovedknapp
-                        onClick={sendTilBeslutter}
-                        disabled={laster || kanSendesTilBeslutter === false}
-                    >
-                        Send til beslutter
-                    </StyledHovedknapp>
-                </MidtstiltInnhold>
-            </Footer>
+            {behandlingErRedigerbar && (
+                <Footer>
+                    {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                    <MidtstiltInnhold>
+                        <StyledHovedknapp
+                            onClick={sendTilBeslutter}
+                            disabled={laster || !kanSendesTilBeslutter}
+                        >
+                            Send til beslutter
+                        </StyledHovedknapp>
+                    </MidtstiltInnhold>
+                </Footer>
+            )}
+            <ModalWrapper
+                tittel={'Vedtaket er sendt til beslutter'}
+                visModal={visModal}
+                onClose={() => settVisModal(false)}
+                hovedKnappClick={() => gåTilUrl('/oppgavebenk')}
+                hovedKnappTekst={'Til oppgavebenk'}
+                lukkKnappClick={() => lukkModal()}
+                lukkKnappTekst={'Lukk'}
+            />
         </>
     );
 };

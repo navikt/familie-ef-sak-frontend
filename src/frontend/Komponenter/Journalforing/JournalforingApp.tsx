@@ -4,7 +4,7 @@ import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import Brukerinfo from './Brukerinfo';
-import { Normaltekst, Sidetittel } from 'nav-frontend-typografi';
+import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
@@ -26,9 +26,8 @@ import {
     oppgaveRequestKey,
 } from '../Oppgavebenk/oppgavefilterStorage';
 import BehandlingInnold from './Behandling';
-import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
-import { Button } from '@navikt/ds-react';
+import { BodyLong, Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { IJojurnalpostResponse } from '../../App/typer/journalforing';
@@ -41,6 +40,7 @@ import { erAlleBehandlingerFerdigstilte, harValgtNyBehandling } from './journalf
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
+import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -56,15 +56,13 @@ const Kolonner = styled.div`
     flex-wrap: wrap;
 `;
 
-export const KnappWrapper = styled.div`
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+const ModalKnapp = styled(Button)`
+    margin-bottom: 1rem;
+    float: right;
+`;
 
-    .flex-item {
-        margin-right: 1.5rem;
-    }
+const ModalTekst = styled(BodyLong)`
+    margin-top: 2rem;
 `;
 
 const Venstrekolonne = styled.div`
@@ -437,42 +435,31 @@ const JournalføringIkkeMuligModal: React.FC<{
     erPapirSøknad: boolean;
 }> = ({ visModal, settVisModal, erPapirSøknad }) => {
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: `Journalføring ikke mulig`,
-                lukkKnapp: true,
-                onClose: () => settVisModal(false),
-                visModal: visModal,
-            }}
+        <ModalWrapper
+            tittel={'Journalføring ikke mulig'}
+            visModal={visModal}
+            onClose={() => settVisModal(false)}
+            aksjonsknapper={false}
         >
-            <div>
-                {erPapirSøknad ? (
-                    <Normaltekst>
-                        Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
-                        behandling via journalføringsbildet når det ikke er tilknyttet en digital
-                        søknad til journalposten.
-                    </Normaltekst>
-                ) : (
-                    <Normaltekst>
-                        Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
-                        journalføringsbildet når det ikke er tilknyttet en digital søknad til
-                        journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
-                        opprett ny behandling derifra. Deretter kan du journalføre mot den nye
-                        behandlingen.
-                    </Normaltekst>
-                )}
-            </div>
-            <KnappWrapper>
-                <Button
-                    variant={'tertiary'}
-                    className={'flex-item'}
-                    onClick={() => {
-                        settVisModal(false);
-                    }}
-                    children="Tilbake"
-                />
-            </KnappWrapper>
-        </UIModalWrapper>
+            {erPapirSøknad ? (
+                <BodyLong>
+                    Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
+                    behandling via journalføringsbildet når det ikke er tilknyttet en digital søknad
+                    til journalposten.
+                </BodyLong>
+            ) : (
+                <BodyLong>
+                    Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
+                    journalføringsbildet når det ikke er tilknyttet en digital søknad til
+                    journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
+                    opprett ny behandling derifra. Deretter kan du journalføre mot den nye
+                    behandlingen.
+                </BodyLong>
+            )}
+            <ModalKnapp variant={'tertiary'} onClick={() => settVisModal(false)}>
+                Tilbake
+            </ModalKnapp>
+        </ModalWrapper>
     );
 };
 
@@ -482,44 +469,27 @@ const BekreftJournalføringModal: React.FC<{
     innloggetSaksbehandler: ISaksbehandler;
 }> = ({ journalpostState, journalpostId, innloggetSaksbehandler }) => {
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: ``,
-                lukkKnapp: true,
-                onClose: () => journalpostState.settVisBekreftelsesModal(false),
-                visModal: journalpostState.visBekreftelsesModal,
+        <ModalWrapper
+            tittel={''}
+            visModal={journalpostState.visBekreftelsesModal}
+            onClose={() => journalpostState.settVisBekreftelsesModal(false)}
+            hovedKnappClick={() => {
+                journalpostState.settVisBekreftelsesModal(false);
+                journalpostState.fullførJournalføring(
+                    journalpostId,
+                    innloggetSaksbehandler?.enhet || '9999',
+                    innloggetSaksbehandler?.navIdent
+                );
             }}
+            hovedKnappTekst={'Journalfør allikevel'}
+            lukkKnappClick={() => journalpostState.settVisBekreftelsesModal(false)}
+            lukkKnappTekst={'Tilbake'}
+            ariaLabel={'Bekreft journalføring av oppgave, eller avbryt'}
         >
-            <div>
-                <Normaltekst>
-                    Behandlingen du har valgt har allerede en digital søknad tilknyttet seg. Om du
-                    skal gjennomføre en ny saksbehandling av søknaden må du opprette en ny
-                    behandling.
-                </Normaltekst>
-            </div>
-            <KnappWrapper>
-                <Button
-                    variant={'tertiary'}
-                    className={'flex-item'}
-                    onClick={() => {
-                        journalpostState.settVisBekreftelsesModal(false);
-                    }}
-                    children="Tilbake"
-                />
-                <Button
-                    variant={'primary'}
-                    className={'flex-item'}
-                    onClick={() => {
-                        journalpostState.settVisBekreftelsesModal(false);
-                        journalpostState.fullførJournalføring(
-                            journalpostId,
-                            innloggetSaksbehandler?.enhet || '9999',
-                            innloggetSaksbehandler?.navIdent
-                        );
-                    }}
-                    children="Journalfør allikevel"
-                />
-            </KnappWrapper>
-        </UIModalWrapper>
+            <ModalTekst>
+                Behandlingen du har valgt har allerede en digital søknad tilknyttet seg. Om du skal
+                gjennomføre en ny saksbehandling av søknaden må du opprette en ny behandling.
+            </ModalTekst>
+        </ModalWrapper>
     );
 };
