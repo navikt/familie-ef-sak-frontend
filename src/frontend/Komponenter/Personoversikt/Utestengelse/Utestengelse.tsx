@@ -29,9 +29,9 @@ const StyledButton = styled(Button)`
 
 const UtestengelseTabell: FC<{
     utestengelser: Ressurs<IUtestengelse[]>;
-    settSlettId: (id: string) => void;
+    settUtestengelseTilSletting: (utestengelse: IUtestengelse) => void;
     erSaksbehandler: boolean;
-}> = ({ utestengelser, settSlettId, erSaksbehandler }) => {
+}> = ({ utestengelser, settUtestengelseTilSletting, erSaksbehandler }) => {
     return (
         <DataViewer response={{ utestengelser }}>
             {({ utestengelser }) => {
@@ -65,7 +65,9 @@ const UtestengelseTabell: FC<{
                                                         {
                                                             tekst: 'Slett',
                                                             onClick: () =>
-                                                                settSlettId(utestengelse.id),
+                                                                settUtestengelseTilSletting(
+                                                                    utestengelse
+                                                                ),
                                                         },
                                                     ]}
                                                 />
@@ -87,7 +89,7 @@ const Utestengelse: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { erSaksbehandler, settVisUtestengModal } = useApp();
     const { toggles } = useToggles();
 
-    const [slettId, settSlettId] = useState<string>();
+    const [utestengelseTilSletting, settUtestengelseTilSletting] = useState<IUtestengelse>();
 
     useEffect(() => {
         hentUtestengelser();
@@ -105,7 +107,7 @@ const Utestengelse: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
             <UtestengelseTabell
                 utestengelser={utestengelser}
                 erSaksbehandler={erSaksbehandler}
-                settSlettId={settSlettId}
+                settUtestengelseTilSletting={settUtestengelseTilSletting}
             />
 
             {erSaksbehandler && (
@@ -119,8 +121,8 @@ const Utestengelse: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
             />
             <SlettUtestengelseModal
                 fagsakPersonId={fagsakPersonId}
-                id={slettId}
-                clearId={() => settSlettId(undefined)}
+                utestengelseTilSletting={utestengelseTilSletting}
+                clearUtestengelseTilSletting={() => settUtestengelseTilSletting(undefined)}
                 hentUtestengelser={hentUtestengelser}
             />
         </UtestengelseContainer>

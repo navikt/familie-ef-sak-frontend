@@ -4,13 +4,20 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer
 import { useApp } from '../../../App/context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BodyShort } from '@navikt/ds-react';
+import { IUtestengelse } from '../../../App/typer/utestengelse';
+import { formaterIsoDato } from '../../../App/utils/formatter';
 
 export const SlettUtestengelseModal: FC<{
     fagsakPersonId: string;
-    id: string | undefined;
-    clearId: () => void;
+    utestengelseTilSletting: IUtestengelse | undefined;
+    clearUtestengelseTilSletting: () => void;
     hentUtestengelser: () => void;
-}> = ({ fagsakPersonId, id, clearId, hentUtestengelser }) => {
+}> = ({
+    fagsakPersonId,
+    utestengelseTilSletting,
+    clearUtestengelseTilSletting,
+    hentUtestengelser,
+}) => {
     const { axiosRequest } = useApp();
 
     const [feilmelding, settFeilmelding] = useState<string>('');
@@ -19,7 +26,7 @@ export const SlettUtestengelseModal: FC<{
     const lukkModal = () => {
         settFeilmelding('');
         settLaster(false);
-        clearId();
+        clearUtestengelseTilSletting();
     };
 
     const slettUtestengelse = (fagsakPersonid: string, id: string) => {
@@ -41,7 +48,7 @@ export const SlettUtestengelseModal: FC<{
             }
         });
     };
-    if (!id) {
+    if (!utestengelseTilSletting) {
         return null;
     }
 
@@ -49,16 +56,24 @@ export const SlettUtestengelseModal: FC<{
         <ModalWrapper
             tittel={'Vil du slette utestengelsen?'}
             visModal={true}
-            lukkKnappTekst={'Avbryt'}
-            lukkKnappClick={lukkModal}
-            lukkKnappDisabled={laster}
-            hovedKnappTekst={'Slett utestengelsen'}
-            hovedKnappClick={() => slettUtestengelse(fagsakPersonId, id)}
-            hovedKnappDisabled={laster}
+            aksjonsknapper={{
+                lukkKnapp: {
+                    tekst: 'Avbryt',
+                    onClick: lukkModal,
+                    disabled: laster,
+                },
+                hovedKnapp: {
+                    tekst: 'Slett utestengelsen',
+                    onClick: () => slettUtestengelse(fagsakPersonId, utestengelseTilSletting.id),
+                    disabled: laster,
+                },
+            }}
             onClose={lukkModal}
-            closeButton={true}
         >
-            <BodyShort>Utestengelsen vil bli slettet på brukeren</BodyShort>
+            <BodyShort>
+                Utestengelsen ({formaterIsoDato(utestengelseTilSletting.periode.fom)} -{' '}
+                {formaterIsoDato(utestengelseTilSletting.periode.tom)}) vil bli slettet på brukeren
+            </BodyShort>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
         </ModalWrapper>
     );
