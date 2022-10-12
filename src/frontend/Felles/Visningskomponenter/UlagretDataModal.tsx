@@ -1,19 +1,7 @@
 import React, { FC } from 'react';
-import UIModalWrapper from '../Modal/UIModalWrapper';
-import { Button } from '@navikt/ds-react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
-
-const SentrerKnapper = styled.div`
-    display: flex;
-    justify-content: center;
-
-    > button {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-`;
+import { ModalWrapper } from '../Modal/ModalWrapper';
 
 const UlagretDataModal: FC = () => {
     const {
@@ -25,38 +13,23 @@ const UlagretDataModal: FC = () => {
     const navigate = useNavigate();
 
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: 'Du har ikke lagret dine siste endringer og vil miste disse om du forlater siden.',
-                lukkKnapp: false,
-                visModal: visUlagretDataModal,
-                onClose: () => settVisUlagretDataModal(false),
-                className: 'cake',
+        <ModalWrapper
+            tittel={
+                'Du har ikke lagret dine siste endringer og vil miste disse om du forlater siden'
+            }
+            visModal={visUlagretDataModal}
+            onClose={() => settVisUlagretDataModal(false)}
+            hovedKnappClick={() => settVisUlagretDataModal(false)}
+            hovedKnappTekst={'Gå tilbake for å lagre'}
+            lukkKnappClick={() => {
+                if (valgtSide) {
+                    nullstillIkkePersisterteKomponenter();
+                    navigate(valgtSide);
+                }
+                settVisUlagretDataModal(false);
             }}
-        >
-            <SentrerKnapper>
-                <Button
-                    variant="tertiary"
-                    onClick={() => {
-                        if (valgtSide) {
-                            nullstillIkkePersisterteKomponenter();
-                            navigate(valgtSide);
-                        }
-                        settVisUlagretDataModal(false);
-                    }}
-                >
-                    Forlat siden
-                </Button>
-                <Button
-                    variant="primary"
-                    onClick={() => {
-                        settVisUlagretDataModal(false);
-                    }}
-                >
-                    Gå tilbake for å lagre
-                </Button>
-            </SentrerKnapper>
-        </UIModalWrapper>
+            lukkKnappTekst={'Forlat siden'}
+        />
     );
 };
 

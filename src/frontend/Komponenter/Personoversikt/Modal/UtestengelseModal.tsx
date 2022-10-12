@@ -101,6 +101,7 @@ export const UtestengelseModal: FC<{
             hovedKnappDisabled={senderInnUtestenging}
             lukkKnappTekst={'Avbryt'}
             lukkKnappDisabled={senderInnUtestenging}
+            lukkKnappClick={() => lukkModal()}
         >
             <ModalInnhold>
                 <BodyLong spacing={true}>
