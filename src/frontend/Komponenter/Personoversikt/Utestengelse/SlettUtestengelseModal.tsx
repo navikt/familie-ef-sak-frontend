@@ -32,13 +32,13 @@ export const SlettUtestengelseModal: FC<{
             method: 'DELETE',
             url: `/familie-ef-sak/api/utestengelse/${fagsakPersonid}/${id}`,
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            settLaster(false);
             if (res.status === RessursStatus.SUKSESS) {
                 hentUtestengelser();
                 lukkModal();
             } else {
                 settFeilmelding(res.frontendFeilmelding);
             }
-            settLaster(false);
         });
     };
     if (!id) {
