@@ -20,7 +20,6 @@ export const InfotripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]>
                     erEtterDagensDato(utestengelse.periode.tom)
                 );
                 if (!utestengelser.length || !harGjeldendeUtestengelse) {
-                    console.log('Ingen gjeldende utestengelse funnet ', utestengelser);
                     return null;
                 }
                 return (
