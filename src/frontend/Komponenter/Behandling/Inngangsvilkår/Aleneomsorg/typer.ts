@@ -78,7 +78,7 @@ export enum EAvstandTilSøker {
     UKJENT = 'UKJENT',
 }
 
-export const avstandTilSøker: Record<EAvstandTilSøker, string> = {
+export const avstandTilSøkerTekst: Record<EAvstandTilSøker, string> = {
     JA: 'km',
     JA_UPRESIS: 'Mer enn 1 km',
     UKJENT: 'Kan ikke automatisk beregnes',

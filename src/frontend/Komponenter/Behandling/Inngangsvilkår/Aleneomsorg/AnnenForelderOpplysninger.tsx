@@ -3,6 +3,7 @@ import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import {
+    avstandTilSøkerTekst,
     EAvstandTilSøker,
     IAnnenForelder,
     IAvstandTilSøker,
@@ -25,14 +26,12 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
         harVerdi(forelder.fødselsnummer) ||
         harVerdi(forelder.fødselsdato);
 
-    const avstandTilSøkerTekst = (avstandTilSøker: IAvstandTilSøker): string => {
+    const utledAvstandTilSøkerTekst = (avstandTilSøker: IAvstandTilSøker): string => {
         switch (avstandTilSøker.langAvstandTilSøker) {
             case EAvstandTilSøker.JA:
                 return avstandTilSøker.avstandIKm + ' km';
-            case EAvstandTilSøker.JA_UPRESIS:
-                return 'Mer enn 1 km';
             default:
-                return 'Kan ikke automatisk beregnes';
+                return avstandTilSøkerTekst[avstandTilSøker.langAvstandTilSøker];
         }
     };
     const visForelderSøknadInfo =
@@ -123,7 +122,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                     <Normaltekst>Annen forelder automatisk beregnet avstand til søker</Normaltekst>
                     <Normaltekst>
                         {forelderRegister &&
-                            avstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
+                            utledAvstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
                     </Normaltekst>
                 </>
             )}
