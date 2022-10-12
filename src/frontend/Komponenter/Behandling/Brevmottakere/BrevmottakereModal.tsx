@@ -31,10 +31,6 @@ const SentrerKnapper = styled.div`
     }
 `;
 
-const Modal = styled(ModalWrapper)`
-    max-width: 1100px;
-`;
-
 const HorisontalLinje = styled.div`
     height: 0;
 
@@ -120,14 +116,13 @@ export const BrevmottakereModal: FC<{
     }, [kallHentBrevmottakere, visBrevmottakereModal, initielleBrevmottakere]);
 
     return (
-        <Modal
+        <ModalWrapper
             tittel={'Hvem skal motta brevet?'}
             visModal={visBrevmottakereModal}
             onClose={() => {
                 settVisBrevmottakereModal(false);
             }}
-            aksjonsknapper={false}
-            maxWidth={false}
+            maxWidth={70}
             ariaLabel={'Velg brevmottakere'}
         >
             <GridContainer>
@@ -171,6 +166,6 @@ export const BrevmottakereModal: FC<{
             </SentrerKnapper>
             {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
             {innsendingSuksess && <AlertStripeSuksess>Brevmottakere er satt</AlertStripeSuksess>}
-        </Modal>
+        </ModalWrapper>
     );
 };
