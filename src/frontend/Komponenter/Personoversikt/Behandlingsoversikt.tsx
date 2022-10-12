@@ -5,7 +5,7 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
 import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
 import Utestengelse from './Utestengelse';
-import { InfotripeUtestengelse } from './InfotripeUtestengelse';
+import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
 
 export enum BehandlingApplikasjon {
@@ -35,7 +35,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
         <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
             {({ fagsakPerson, klagebehandlinger }) => (
                 <>
-                    <InfotripeUtestengelse utestengelser={utestengelser} />
+                    <InfostripeUtestengelse utestengelser={utestengelser} />
                     <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
                         <FagsakOversikt
