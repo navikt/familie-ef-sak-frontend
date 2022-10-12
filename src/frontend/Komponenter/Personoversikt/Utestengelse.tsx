@@ -7,7 +7,6 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { useApp } from '../../App/context/AppContext';
 import { useToggles } from '../../App/context/TogglesContext';
 import { UtestengelseModal } from './Modal/UtestengelseModal';
-import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { IUtestengelse } from '../../App/typer/utestengelse';
 import { Ressurs } from '../../App/typer/ressurs';
@@ -61,8 +60,11 @@ const UtestengelseTabell: FC<{ utestengelser: Ressurs<IUtestengelse[]> }> = ({ u
     );
 };
 
-const Utestengelse: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
-    const { hentUtestengelser, utestengelser } = useHentUtestengelser();
+const Utestengelse: FC<{
+    fagsakPersonId: string;
+    utestengelser: Ressurs<IUtestengelse[]>;
+    hentUtestengelser: (fagsakPersonId: string) => void;
+}> = ({ fagsakPersonId, utestengelser, hentUtestengelser }) => {
     const { erSaksbehandler, settVisUtestengModal } = useApp();
     const { toggles } = useToggles();
 
