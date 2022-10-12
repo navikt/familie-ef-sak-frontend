@@ -10,7 +10,7 @@ const AdvarselVisning = styled(Alert)`
     margin-top: 0.5rem;
 `;
 
-export const InfotripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]> }> = ({
+export const InfostripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]> }> = ({
     utestengelser,
 }) => {
     return (
