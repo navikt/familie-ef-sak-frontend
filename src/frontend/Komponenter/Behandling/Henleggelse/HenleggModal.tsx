@@ -55,15 +55,20 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             .finally(() => settLåsKnapp(false));
     };
 
+    const lukkModal = () => {
+        settFeilmelding('');
+        settVisHenleggModal(false);
+    };
+
     return (
         <ModalWrapper
             tittel={'Henlegg'}
             visModal={visHenleggModal}
-            onClose={() => settVisHenleggModal(false)}
+            onClose={() => lukkModal()}
             hovedKnappClick={() => lagreHenleggelse()}
             hovedKnappTekst={'Henlegg'}
             hovedKnappDisabled={låsKnapp}
-            lukkKnappClick={() => settVisHenleggModal(false)}
+            lukkKnappClick={() => lukkModal()}
             lukkKnappTekst={'Avbryt'}
             ariaLabel={'Velg årsak til henleggelse av behandlingen'}
         >

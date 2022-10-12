@@ -57,6 +57,12 @@ const SendTilBeslutterFooter: React.FC<{
             .finally(() => settLaster(false));
     };
 
+    const lukkModal = () => {
+        settVisModal(false);
+        hentBehandling.rerun();
+        hentBehandlingshistorikk.rerun();
+    };
+
     return (
         <>
             {behandlingErRedigerbar && (
@@ -78,11 +84,7 @@ const SendTilBeslutterFooter: React.FC<{
                 onClose={() => settVisModal(false)}
                 hovedKnappClick={() => gåTilUrl('/oppgavebenk')}
                 hovedKnappTekst={'Til oppgavebenk'}
-                lukkKnappClick={() => {
-                    settVisModal(false);
-                    hentBehandling.rerun();
-                    hentBehandlingshistorikk.rerun();
-                }}
+                lukkKnappClick={() => lukkModal()}
                 lukkKnappTekst={'Lukk'}
             />
         </>
