@@ -291,12 +291,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     Tilbakestill filtrering
                 </Knapp>
             </KnappWrapper>
-            <ModalWrapper
-                tittel={'Ugyldig oppgave'}
-                visModal={!!feilmelding}
-                closeButton={false}
-                aksjonsknapper={false}
-            >
+            <ModalWrapper tittel={'Ugyldig oppgave'} visModal={!!feilmelding}>
                 <AlertStripe variant={'warning'}>{feilmelding}</AlertStripe>
                 <ModalKnapp
                     variant={'primary'}
