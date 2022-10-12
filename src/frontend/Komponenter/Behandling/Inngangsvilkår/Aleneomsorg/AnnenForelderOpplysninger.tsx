@@ -119,7 +119,9 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             {!forelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
-                    <Normaltekst>Annen forelder automatisk beregnet avstand til søker</Normaltekst>
+                    <Normaltekst>
+                        Annen forelders avstand til bruker (automatisk beregnet)
+                    </Normaltekst>
                     <Normaltekst>
                         {forelderRegister &&
                             utledAvstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
