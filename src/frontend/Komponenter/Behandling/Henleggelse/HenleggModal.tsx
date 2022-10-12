@@ -65,11 +65,14 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             tittel={'Henlegg'}
             visModal={visHenleggModal}
             onClose={() => lukkModal()}
-            hovedKnappClick={() => lagreHenleggelse()}
-            hovedKnappTekst={'Henlegg'}
-            hovedKnappDisabled={låsKnapp}
-            lukkKnappClick={() => lukkModal()}
-            lukkKnappTekst={'Avbryt'}
+            aksjonsknapper={{
+                hovedKnapp: {
+                    onClick: () => lagreHenleggelse(),
+                    tekst: 'Henlegg',
+                    disabled: låsKnapp,
+                },
+                lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+            }}
             ariaLabel={'Velg årsak til henleggelse av behandlingen'}
         >
             <RadioGroup legend={''} onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}>

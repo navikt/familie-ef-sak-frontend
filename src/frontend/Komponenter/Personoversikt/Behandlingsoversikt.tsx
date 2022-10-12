@@ -24,36 +24,34 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
         hentKlagebehandlinger(fagsakPersonId);
     };
     return (
-        <>
-            <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
-                {({ fagsakPerson, klagebehandlinger }) => (
-                    <>
-                        <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
-                        {fagsakPerson.overgangsstønad && (
-                            <FagsakOversikt
-                                fagsak={fagsakPerson.overgangsstønad}
-                                klageBehandlinger={klagebehandlinger.overgangsstønad}
-                                hentKlageBehandlinger={reHentKlagebehandlinger}
-                            />
-                        )}
-                        {fagsakPerson.barnetilsyn && (
-                            <FagsakOversikt
-                                fagsak={fagsakPerson.barnetilsyn}
-                                klageBehandlinger={klagebehandlinger.barnetilsyn}
-                                hentKlageBehandlinger={reHentKlagebehandlinger}
-                            />
-                        )}
-                        {fagsakPerson.skolepenger && (
-                            <FagsakOversikt
-                                fagsak={fagsakPerson.skolepenger}
-                                klageBehandlinger={klagebehandlinger.skolepenger}
-                                hentKlageBehandlinger={reHentKlagebehandlinger}
-                            />
-                        )}
-                    </>
-                )}
-            </DataViewer>
-        </>
+        <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
+            {({ fagsakPerson, klagebehandlinger }) => (
+                <>
+                    <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
+                    {fagsakPerson.overgangsstønad && (
+                        <FagsakOversikt
+                            fagsak={fagsakPerson.overgangsstønad}
+                            klageBehandlinger={klagebehandlinger.overgangsstønad}
+                            hentKlageBehandlinger={reHentKlagebehandlinger}
+                        />
+                    )}
+                    {fagsakPerson.barnetilsyn && (
+                        <FagsakOversikt
+                            fagsak={fagsakPerson.barnetilsyn}
+                            klageBehandlinger={klagebehandlinger.barnetilsyn}
+                            hentKlageBehandlinger={reHentKlagebehandlinger}
+                        />
+                    )}
+                    {fagsakPerson.skolepenger && (
+                        <FagsakOversikt
+                            fagsak={fagsakPerson.skolepenger}
+                            klageBehandlinger={klagebehandlinger.skolepenger}
+                            hentKlageBehandlinger={reHentKlagebehandlinger}
+                        />
+                    )}
+                </>
+            )}
+        </DataViewer>
     );
 };
 

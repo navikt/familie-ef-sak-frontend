@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { Button, Heading, Modal } from '@navikt/ds-react';
 import React from 'react';
 
-const ModalContainer = styled(Modal)<{ maxWidth: boolean }>`
+const ModalContainer = styled(Modal)<{ maxWidth?: number }>`
     min-width: 30rem;
-    max-width: ${(props) => (props.maxWidth ? '40rem' : '80rem')};
+    max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}rem` : '40rem')};
 `;
 
 const Tittel = styled(Heading)`
@@ -35,43 +35,35 @@ const ModalKnapp = styled(Button)`
 interface ModalProps {
     tittel: string;
     visModal: boolean;
-    closeButton?: boolean;
     onClose?: () => void;
-    aksjonsknapper?: boolean;
-    hovedKnappClick?: () => void;
-    hovedKnappTekst?: string;
-    hovedKnappDisabled?: boolean;
-    lukkKnappClick?: () => void;
-    lukkKnappTekst?: string;
-    lukkKnappDisabled?: boolean;
-    maxWidth?: boolean;
+    aksjonsknapper?: { hovedKnapp: Aksjonsknapp; lukkKnapp: Aksjonsknapp };
+    maxWidth?: number;
     ariaLabel?: string;
     children?: React.ReactNode;
+}
+
+interface Aksjonsknapp {
+    onClick: () => void;
+    tekst: string;
+    disabled?: boolean;
 }
 
 export const ModalWrapper: React.FC<ModalProps> = ({
     tittel,
     visModal,
-    closeButton,
     onClose,
-    aksjonsknapper = true,
-    hovedKnappClick,
-    hovedKnappTekst,
-    hovedKnappDisabled,
-    lukkKnappClick,
-    lukkKnappTekst,
-    lukkKnappDisabled,
-    maxWidth = true,
+    aksjonsknapper,
+    maxWidth,
     ariaLabel,
     children,
 }) => {
     return (
         <ModalContainer
             open={visModal}
-            aria-label={ariaLabel ? ariaLabel : tittel}
+            closeButton={!!onClose}
             onClose={onClose ? () => onClose() : () => null}
-            closeButton={closeButton}
             maxWidth={maxWidth}
+            aria-label={ariaLabel ? ariaLabel : tittel}
         >
             <Modal.Content>
                 <Tittel spacing={true} size={'medium'}>
@@ -82,17 +74,17 @@ export const ModalWrapper: React.FC<ModalProps> = ({
                     <ButtonContainer>
                         <ModalKnapp
                             variant="tertiary"
-                            onClick={lukkKnappClick ? () => lukkKnappClick() : () => null}
-                            disabled={lukkKnappDisabled}
+                            onClick={aksjonsknapper.lukkKnapp.onClick}
+                            disabled={aksjonsknapper.lukkKnapp.disabled}
                         >
-                            {lukkKnappTekst}
+                            {aksjonsknapper.lukkKnapp.tekst}
                         </ModalKnapp>
                         <ModalKnapp
                             variant="primary"
-                            onClick={hovedKnappClick ? () => hovedKnappClick() : () => null}
-                            disabled={hovedKnappDisabled}
+                            onClick={aksjonsknapper.hovedKnapp.onClick}
+                            disabled={aksjonsknapper.hovedKnapp.disabled}
                         >
-                            {hovedKnappTekst}
+                            {aksjonsknapper.hovedKnapp.tekst}
                         </ModalKnapp>
                     </ButtonContainer>
                 )}
