@@ -4,7 +4,7 @@ import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson'
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
 import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
-import Utestengelse from './Utestengelse';
+import Utestengelse from './Utestengelse/Utestengelse';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',

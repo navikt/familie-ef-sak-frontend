@@ -4,23 +4,20 @@ import { useApp } from '../context/AppContext';
 import { IUtestengelse } from '../typer/utestengelse';
 
 interface IProps {
-    hentUtestengelser: (fagsakPersonId: string) => void;
+    hentUtestengelser: () => void;
     utestengelser: Ressurs<IUtestengelse[]>;
 }
 
-export const useHentUtestengelser = (): IProps => {
+export const useHentUtestengelser = (fagsakPersonId: string): IProps => {
     const { axiosRequest } = useApp();
     const [utestengelser, settUtestengelser] = useState<Ressurs<IUtestengelse[]>>(byggTomRessurs());
-    const hentUtestengelser = useCallback(
-        (fagsakPersonid: string) => {
-            settUtestengelser(byggHenterRessurs());
-            axiosRequest<IUtestengelse[], null>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/utestengelse/${fagsakPersonid}`,
-            }).then(settUtestengelser);
-        },
-        [axiosRequest]
-    );
+    const hentUtestengelser = useCallback(() => {
+        settUtestengelser(byggHenterRessurs());
+        axiosRequest<IUtestengelse[], null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/utestengelse/${fagsakPersonId}`,
+        }).then(settUtestengelser);
+    }, [axiosRequest, fagsakPersonId]);
     return {
         hentUtestengelser,
         utestengelser,
