@@ -96,12 +96,18 @@ export const UtestengelseModal: FC<{
             tittel="Utestengelse"
             visModal={visUtestengModal}
             onClose={() => lukkModal()}
-            hovedKnappClick={() => lagUtestenging()}
-            hovedKnappTekst={'Bekreft utestengelse'}
-            hovedKnappDisabled={senderInnUtestenging}
-            lukkKnappTekst={'Avbryt'}
-            lukkKnappDisabled={senderInnUtestenging}
-            lukkKnappClick={() => lukkModal()}
+            aksjonsknapper={{
+                lukkKnapp: {
+                    tekst: 'Avbryt',
+                    disabled: senderInnUtestenging,
+                    onClick: () => lukkModal(),
+                },
+                hovedKnapp: {
+                    tekst: 'Bekreft utestengelse',
+                    disabled: senderInnUtestenging,
+                    onClick: () => lagUtestenging(),
+                },
+            }}
         >
             <ModalInnhold>
                 <BodyLong spacing={true}>
