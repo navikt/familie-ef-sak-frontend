@@ -7,7 +7,7 @@ import { IUtestengelse } from '../../App/typer/utestengelse';
 import { Ressurs } from '../../App/typer/ressurs';
 
 const AdvarselVisning = styled(Alert)`
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
 `;
 
 export const InfotripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]> }> = ({

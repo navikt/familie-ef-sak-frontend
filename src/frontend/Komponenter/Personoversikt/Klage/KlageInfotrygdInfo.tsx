@@ -11,7 +11,7 @@ interface ÅpneKlagerResponse {
 }
 
 const AdvarselVisning = styled(Alert)`
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
 `;
 
 export const KlageInfotrygdInfo: React.FunctionComponent<{ fagsakPersonId: string }> = ({
