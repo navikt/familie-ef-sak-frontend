@@ -5,6 +5,7 @@ import { IUtestengelse } from '../typer/utestengelse';
 
 interface IProps {
     hentUtestengelser: (fagsakPersonId: string) => void;
+    hentUtestengelserForBehandling: (behandlingId: string) => void;
     utestengelser: Ressurs<IUtestengelse[]>;
 }
 
@@ -21,8 +22,19 @@ export const useHentUtestengelser = (): IProps => {
         },
         [axiosRequest]
     );
+    const hentUtestengelserForBehandling = useCallback(
+        (behandlingId: string) => {
+            settUtestengelser(byggHenterRessurs());
+            axiosRequest<IUtestengelse[], null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/utestengelse/behandling/${behandlingId}`,
+            }).then(settUtestengelser);
+        },
+        [axiosRequest]
+    );
     return {
         hentUtestengelser,
+        hentUtestengelserForBehandling,
         utestengelser,
     };
 };
