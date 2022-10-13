@@ -12,11 +12,11 @@ export const useHentUtestengelser = (): IProps => {
     const { axiosRequest } = useApp();
     const [utestengelser, settUtestengelser] = useState<Ressurs<IUtestengelse[]>>(byggTomRessurs());
     const hentUtestengelser = useCallback(
-        (fagsakPersonid: string) => {
+        (fagsakPersonId: string) => {
             settUtestengelser(byggHenterRessurs());
             axiosRequest<IUtestengelse[], null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/utestengelse/${fagsakPersonid}`,
+                url: `/familie-ef-sak/api/utestengelse/${fagsakPersonId}`,
             }).then(settUtestengelser);
         },
         [axiosRequest]

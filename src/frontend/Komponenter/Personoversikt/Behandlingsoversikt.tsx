@@ -4,9 +4,9 @@ import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson'
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
 import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
-import Utestengelse from './Utestengelse';
-import { InfostripeUtestengelse } from './InfostripeUtestengelse';
+import Utestengelse from './Utestengelse/Utestengelse';
 import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
+import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -21,7 +21,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
 
     useEffect(() => {
         hentUtestengelser(fagsakPersonId);
-    }, [fagsakPersonId, hentUtestengelser]);
+    }, [hentUtestengelser, fagsakPersonId]);
 
     useEffect(() => {
         hentFagsakPerson(fagsakPersonId);
