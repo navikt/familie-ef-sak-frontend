@@ -35,7 +35,7 @@ import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
-    width: inherit;
+    width: 48rem;
 `;
 
 const StyledHovedKnapp = styled(Hovedknapp)`
@@ -48,12 +48,12 @@ const AlertStripe = styled(Alert)`
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: 9rem 30rem 16rem;
+    grid-template-columns: 9rem 23rem 16rem;
 `;
 
 const InfoHeader = styled.div`
     display: grid;
-    grid-template-columns: 34rem 14rem;
+    grid-template-columns: 29rem 14rem;
 `;
 
 const SideTittel = styled(Heading)`
