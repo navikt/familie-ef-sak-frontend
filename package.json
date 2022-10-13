@@ -29,7 +29,7 @@
     "@navikt/ds-icons": "^0.8.12",
     "@navikt/ds-react": "^0.19.19",
     "@navikt/familie-backend": "7.0.1",
-    "@navikt/familie-dokumentliste": "^3.0.1",
+    "@navikt/familie-dokumentliste": "^4.0.1",
     "@navikt/familie-endringslogg": "^3.0.0",
     "@navikt/familie-form-elements": "^6.0.0",
     "@navikt/familie-header": "^5.0.0",
