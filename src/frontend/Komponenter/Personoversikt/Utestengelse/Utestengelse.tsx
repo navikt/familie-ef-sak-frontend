@@ -38,7 +38,7 @@ const UtestengelseTabell: FC<{
                     return null;
                 }
                 return (
-                    <StyledTable>
+                    <StyledTable size={'small'}>
                         <Table.Header>
                             <Table.Row>
                                 <Table.ColumnHeader>Fra</Table.ColumnHeader>
