@@ -24,7 +24,7 @@ export const InfostripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]
                 }
                 return (
                     <AdvarselVisning variant={'warning'} size={'small'}>
-                        Bruker har utestengelse.
+                        Bruker har vedtak om utestengelse i periodene:
                         <ul>
                             {utestengelser.map((utestengelse) => (
                                 <li key={utestengelse.id}>
