@@ -115,6 +115,9 @@ export const BrevmottakereModal: FC<{
         }
     }, [kallHentBrevmottakere, visBrevmottakereModal, initielleBrevmottakere]);
 
+    const harValgtMottakere =
+        valgtePersonMottakere.length > 0 || valgteOrganisasjonMottakere.length > 0;
+
     return (
         <ModalWrapper
             tittel={'Hvem skal motta brevet?'}
@@ -160,7 +163,7 @@ export const BrevmottakereModal: FC<{
                 <Button variant="tertiary" onClick={() => settVisBrevmottakereModal(false)}>
                     Avbryt
                 </Button>
-                <Button variant="primary" onClick={settBrevmottakere}>
+                <Button variant="primary" onClick={settBrevmottakere} disabled={!harValgtMottakere}>
                     Sett mottakere
                 </Button>
             </SentrerKnapper>
