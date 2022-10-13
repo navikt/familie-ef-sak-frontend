@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Heading, Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import styled from 'styled-components';
@@ -7,7 +7,6 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { useApp } from '../../../App/context/AppContext';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { UtestengelseModal } from './UtestengelseModal';
-import { useHentUtestengelser } from '../../../App/hooks/useHentUtestengelser';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IUtestengelse } from '../../../App/typer/utestengelse';
 import { Ressurs } from '../../../App/typer/ressurs';
@@ -84,16 +83,15 @@ const UtestengelseTabell: FC<{
     );
 };
 
-const Utestengelse: FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
-    const { hentUtestengelser, utestengelser } = useHentUtestengelser(fagsakPersonId);
+const Utestengelse: FC<{
+    fagsakPersonId: string;
+    utestengelser: Ressurs<IUtestengelse[]>;
+    hentUtestengelser: () => void;
+}> = ({ fagsakPersonId, utestengelser, hentUtestengelser }) => {
     const { erSaksbehandler, settVisUtestengModal } = useApp();
     const { toggles } = useToggles();
 
     const [utestengelseTilSletting, settUtestengelseTilSletting] = useState<IUtestengelse>();
-
-    useEffect(() => {
-        hentUtestengelser();
-    }, [fagsakPersonId, hentUtestengelser]);
 
     if (!toggles[ToggleName.visUtestengelse]) {
         return null;
