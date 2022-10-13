@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Hamburger } from '@navikt/ds-icons';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { Hamburger, EllipsisV } from '@navikt/ds-icons';
 import styled from 'styled-components';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { useApp } from '../../App/context/AppContext';
-import { useBehandling } from '../../App/context/BehandlingContext';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -15,6 +13,18 @@ const HamburgerMenyIkon = styled(Hamburger)`
     &:hover {
         cursor: pointer;
     }
+`;
+
+const HamburgerMenyEllipsisVIkon = styled(EllipsisV)`
+    margin: 0.5rem 0.5rem 0 0.5rem;
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+const HamburgerWrapper = styled.div`
+    position: relative;
 `;
 
 const HamburgerMenyInnhold = styled.div`
@@ -31,6 +41,8 @@ const HamburgerMenyInnhold = styled.div`
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+
+    white-space: nowrap;
 
     ul,
     li {
@@ -58,10 +70,18 @@ const Knapp = styled.button`
     text-align: left;
 `;
 
-export const Hamburgermeny = () => {
+export interface MenyItem {
+    tekst: string;
+    onClick: () => void;
+}
+
+export interface Props {
+    type?: 'hamburger' | 'ellipsisV';
+    items: MenyItem[];
+}
+
+export const Hamburgermeny: FC<Props> = ({ type = 'hamburger', items }) => {
     const ref = useRef(null);
-    const { settVisBrevmottakereModal } = useApp();
-    const { settVisHenleggModal } = useBehandling();
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
     useEffect(() => {
@@ -82,34 +102,33 @@ export const Hamburgermeny = () => {
     }, [åpenHamburgerMeny]);
 
     return (
-        <div ref={ref}>
-            <HamburgerMenyIkon
-                onClick={() => {
-                    settÅpenHamburgerMeny(!åpenHamburgerMeny);
-                }}
-            />
+        <HamburgerWrapper ref={ref}>
+            {type === 'hamburger' ? (
+                <HamburgerMenyIkon
+                    onClick={() => {
+                        settÅpenHamburgerMeny(!åpenHamburgerMeny);
+                    }}
+                />
+            ) : (
+                <HamburgerMenyEllipsisVIkon
+                    width={'1.75em'}
+                    height={'1.75em'}
+                    onClick={() => {
+                        settÅpenHamburgerMeny(!åpenHamburgerMeny);
+                    }}
+                />
+            )}
             <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
                 <ul>
-                    <li>
-                        <Knapp
-                            onClick={() => {
-                                settVisBrevmottakereModal(true);
-                            }}
-                        >
-                            <Normaltekst>Sett Verge/Fullmakt mottakere</Normaltekst>
-                        </Knapp>
-                    </li>
-                    <li>
-                        <Knapp
-                            onClick={() => {
-                                settVisHenleggModal(true);
-                            }}
-                        >
-                            <Normaltekst>Henlegg</Normaltekst>
-                        </Knapp>
-                    </li>
+                    {items.map((p) => (
+                        <li key={p.tekst}>
+                            <Knapp onClick={p.onClick}>
+                                <Normaltekst>{p.tekst}</Normaltekst>
+                            </Knapp>
+                        </li>
+                    ))}
                 </ul>
             </HamburgerMenyInnhold>
-        </div>
+        </HamburgerWrapper>
     );
 };
