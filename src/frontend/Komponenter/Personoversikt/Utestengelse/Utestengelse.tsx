@@ -86,7 +86,7 @@ const UtestengelseTabell: FC<{
 const Utestengelse: FC<{
     fagsakPersonId: string;
     utestengelser: Ressurs<IUtestengelse[]>;
-    hentUtestengelser: () => void;
+    hentUtestengelser: (fagsakPersonId: string) => void;
 }> = ({ fagsakPersonId, utestengelser, hentUtestengelser }) => {
     const { erSaksbehandler, settVisUtestengModal } = useApp();
     const { toggles } = useToggles();
@@ -120,7 +120,7 @@ const Utestengelse: FC<{
             <SlettUtestengelseModal
                 fagsakPersonId={fagsakPersonId}
                 utestengelseTilSletting={utestengelseTilSletting}
-                clearUtestengelseTilSletting={() => settUtestengelseTilSletting(undefined)}
+                fjernUtestengelseTilSletting={() => settUtestengelseTilSletting(undefined)}
                 hentUtestengelser={hentUtestengelser}
             />
         </UtestengelseContainer>

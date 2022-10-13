@@ -10,12 +10,12 @@ import { formaterIsoDato } from '../../../App/utils/formatter';
 export const SlettUtestengelseModal: FC<{
     fagsakPersonId: string;
     utestengelseTilSletting: IUtestengelse | undefined;
-    clearUtestengelseTilSletting: () => void;
-    hentUtestengelser: () => void;
+    fjernUtestengelseTilSletting: () => void;
+    hentUtestengelser: (fagsakPersonId: string) => void;
 }> = ({
     fagsakPersonId,
     utestengelseTilSletting,
-    clearUtestengelseTilSletting,
+    fjernUtestengelseTilSletting,
     hentUtestengelser,
 }) => {
     const { axiosRequest } = useApp();
@@ -26,7 +26,7 @@ export const SlettUtestengelseModal: FC<{
     const lukkModal = () => {
         settFeilmelding('');
         settLaster(false);
-        clearUtestengelseTilSletting();
+        fjernUtestengelseTilSletting();
     };
 
     const slettUtestengelse = (fagsakPersonid: string, id: string) => {
@@ -41,7 +41,7 @@ export const SlettUtestengelseModal: FC<{
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             settLaster(false);
             if (res.status === RessursStatus.SUKSESS) {
-                hentUtestengelser();
+                hentUtestengelser(fagsakPersonId);
                 lukkModal();
             } else {
                 settFeilmelding(res.frontendFeilmelding);

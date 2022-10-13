@@ -17,11 +17,11 @@ export enum BehandlingApplikasjon {
 const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
     const { hentKlagebehandlinger, klagebehandlinger } = useHentKlagebehandlinger();
-    const { hentUtestengelser, utestengelser } = useHentUtestengelser(fagsakPersonId);
+    const { hentUtestengelser, utestengelser } = useHentUtestengelser();
 
     useEffect(() => {
-        hentUtestengelser();
-    }, [hentUtestengelser]);
+        hentUtestengelser(fagsakPersonId);
+    }, [hentUtestengelser, fagsakPersonId]);
 
     useEffect(() => {
         hentFagsakPerson(fagsakPersonId);

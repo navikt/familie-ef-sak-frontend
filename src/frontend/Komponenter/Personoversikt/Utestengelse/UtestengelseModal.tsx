@@ -40,7 +40,7 @@ interface IOpprettUtestengelse {
 
 export const UtestengelseModal: FC<{
     fagsakPersonId: string;
-    hentUtestengelser: () => void;
+    hentUtestengelser: (fagsakPersonId: string) => void;
 }> = ({ fagsakPersonId, hentUtestengelser }) => {
     const { axiosRequest, visUtestengModal, settVisUtestengModal, settToast } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -69,7 +69,7 @@ export const UtestengelseModal: FC<{
                 },
             }).then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    hentUtestengelser();
+                    hentUtestengelser(fagsakPersonId);
                     settToast(EToast.OPPRETTET_UTESTENGELSE);
                     lukkModal();
                 } else {
