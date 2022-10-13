@@ -19,7 +19,7 @@ const StyledTable = styled(Table)`
 `;
 
 const UtestengelseContainer = styled.div`
-    margin-top: 1.5rem;
+    margin-top: 4rem;
 `;
 
 const StyledButton = styled(Button)`
