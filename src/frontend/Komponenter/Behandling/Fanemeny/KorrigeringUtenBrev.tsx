@@ -13,12 +13,11 @@ const KorrigeringUtenBrev: React.FC<Props> = ({ behandlingId }) => {
     return (
         <>
             <AlertStripeInfo>Korrigering av vedtak uten brevutsendelse</AlertStripeInfo>
-            {behandlingErRedigerbar && (
-                <SendTilBeslutterFooter
-                    behandlingId={behandlingId}
-                    kanSendesTilBeslutter={behandlingErRedigerbar}
-                />
-            )}
+            <SendTilBeslutterFooter
+                behandlingId={behandlingId}
+                kanSendesTilBeslutter={behandlingErRedigerbar}
+                behandlingErRedigerbar={behandlingErRedigerbar}
+            />
         </>
     );
 };

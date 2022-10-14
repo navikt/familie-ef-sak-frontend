@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
@@ -14,6 +14,8 @@ import Advarsel from '../../../Felles/Ikoner/Advarsel';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import Info from '../../../Felles/Ikoner/Info';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { useApp } from '../../../App/context/AppContext';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -33,6 +35,29 @@ export const BorderBox = styled.div`
 `;
 
 const Totrinnskontroll: FC = () => {
+    const { gåTilUrl } = useApp();
+    const [visModal, settVisModal] = useState(false);
+
+    return (
+        <>
+            <TotrinnskontrollSwitch settVisModal={settVisModal} />
+            <ModalWrapper
+                tittel={'Vedtaket er sendt til beslutter'}
+                visModal={visModal}
+                onClose={() => settVisModal(false)}
+                aksjonsknapper={{
+                    hovedKnapp: {
+                        onClick: () => gåTilUrl('/oppgavebenk'),
+                        tekst: 'Til oppgavebenk',
+                    },
+                    lukkKnapp: { onClick: () => settVisModal(false), tekst: 'Lukk' },
+                }}
+            />
+        </>
+    );
+};
+
+const TotrinnskontrollSwitch: FC<{ settVisModal: (vis: boolean) => void }> = ({ settVisModal }) => {
     const { behandling, totrinnskontroll } = useBehandling();
 
     if (
@@ -44,7 +69,7 @@ const Totrinnskontroll: FC = () => {
 
     switch (totrinnskontroll.data.status) {
         case TotrinnskontrollStatus.KAN_FATTE_VEDTAK:
-            return <FatterVedtak behandlingId={behandling.data.id} />;
+            return <FatterVedtak behandlingId={behandling.data.id} settVisModal={settVisModal} />;
         case TotrinnskontrollStatus.IKKE_AUTORISERT:
             return <SendtTilBeslutter totrinnskontroll={totrinnskontroll.data.totrinnskontroll} />;
         case TotrinnskontrollStatus.TOTRINNSKONTROLL_UNDERKJENT:
@@ -57,8 +82,6 @@ const Totrinnskontroll: FC = () => {
             return null;
     }
 };
-
-export default Totrinnskontroll;
 
 const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet }> = ({
     totrinnskontroll,
@@ -99,3 +122,5 @@ const TotrinnskontrollUnderkjent: React.FC<{
         </BorderBox>
     );
 };
+
+export default Totrinnskontroll;

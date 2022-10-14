@@ -309,11 +309,15 @@ const FrittståendeBrev: React.FC<Props> = ({
                 tittel={'Bekreft utsending av brev'}
                 visModal={visModal}
                 onClose={() => lukkModal()}
-                hovedKnappClick={() => sendBrev()}
-                lukkKnappDisabled={senderInnBrev}
-                hovedKnappDisabled={senderInnBrev}
-                lukkKnappTekst={'Avbryt'}
-                hovedKnappTekst={'Send brev'}
+                aksjonsknapper={{
+                    hovedKnapp: {
+                        onClick: () => sendBrev(),
+                        tekst: 'Send brev',
+                        disabled: senderInnBrev,
+                    },
+                    lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+                }}
+                ariaLabel={'Bekreft ustending av frittstående brev'}
             >
                 {feilmelding && (
                     <AlertStripe variant={'error'}>Utsending feilet. {feilmelding}</AlertStripe>

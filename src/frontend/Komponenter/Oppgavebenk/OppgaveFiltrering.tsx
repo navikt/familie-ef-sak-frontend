@@ -19,8 +19,8 @@ import {
 import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
 import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/roller';
-import Alertstripe from 'nav-frontend-alertstriper';
-import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
+import { Alert, Button } from '@navikt/ds-react';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -43,9 +43,14 @@ export const KnappWrapper = styled.div`
     }
 `;
 
-const MidtstiltKnapp = styled(Hovedknapp)`
-    margin: 1rem auto;
-    display: flex;
+const AlertStripe = styled(Alert)`
+    width: 33rem;
+`;
+
+const ModalKnapp = styled(Button)`
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    float: right;
 `;
 
 interface IOppgaveFiltrering {
@@ -286,24 +291,18 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     Tilbakestill filtrering
                 </Knapp>
             </KnappWrapper>
-            <UIModalWrapper
-                modal={{
-                    tittel: 'Ugyldig oppgave',
-                    lukkKnapp: true,
-                    visModal: !!feilmelding,
-                    onClose: () => settFeilmelding(''),
-                }}
-            >
-                <Alertstripe type={'advarsel'}>{feilmelding}</Alertstripe>
-                <MidtstiltKnapp
+            <ModalWrapper tittel={'Ugyldig oppgave'} visModal={!!feilmelding}>
+                <AlertStripe variant={'warning'}>{feilmelding}</AlertStripe>
+                <ModalKnapp
+                    variant={'primary'}
                     onClick={() => {
                         settFeilmelding('');
                         sjekkFeilOgHentOppgaver();
                     }}
                 >
                     Hent oppgaver
-                </MidtstiltKnapp>
-            </UIModalWrapper>
+                </ModalKnapp>
+            </ModalWrapper>
         </>
     );
 };

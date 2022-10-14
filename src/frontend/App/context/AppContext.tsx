@@ -34,6 +34,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     const [valgtFagsakPersonId, settValgtFagsakPersonId] = useState<string>();
     const [personIdent, settPersonIdent] = useState<string>();
     const [visBrevmottakereModal, settVisBrevmottakereModal] = useState(false);
+    const [visUtestengModal, settVisUtestengModal] = useState(false);
 
     useEffect(
         () => settUlagretData(ikkePersisterteKomponenter.size > 0),
@@ -119,6 +120,8 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         erSaksbehandler,
         visBrevmottakereModal,
         settVisBrevmottakereModal,
+        visUtestengModal,
+        settVisUtestengModal,
     };
 });
 

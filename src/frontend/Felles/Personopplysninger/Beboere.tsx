@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
 
 const StyledModalTabellWrapper = styled(TabellWrapper)`
-    padding-top: 0rem;
+    margin-bottom: 1rem;
     grid-template-columns: max-content;
 `;
 
@@ -38,24 +38,22 @@ const Beboere: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
             <DataViewer response={{ søkResultat }}>
                 {({ søkResultat }) => {
                     return (
-                        <>
-                            <StyledModalTabellWrapper>
-                                <table className="tabell">
-                                    <KolonneTitler titler={['Navn', 'Fødselsnummer', 'Adresse']} />
-                                    <tbody>
-                                        {søkResultat.hits.map((beboer, indeks) => {
-                                            return (
-                                                <tr key={indeks}>
-                                                    <BredTd>{beboer.visningsnavn}</BredTd>
-                                                    <BredTd>{beboer.personIdent}</BredTd>
-                                                    <BredTd>{beboer.visningsadresse}</BredTd>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </StyledModalTabellWrapper>
-                        </>
+                        <StyledModalTabellWrapper>
+                            <table className="tabell">
+                                <KolonneTitler titler={['Navn', 'Fødselsnummer', 'Adresse']} />
+                                <tbody>
+                                    {søkResultat.hits.map((beboer, indeks) => {
+                                        return (
+                                            <tr key={indeks}>
+                                                <BredTd>{beboer.visningsnavn}</BredTd>
+                                                <BredTd>{beboer.personIdent}</BredTd>
+                                                <BredTd>{beboer.visningsadresse}</BredTd>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </StyledModalTabellWrapper>
                     );
                 }}
             </DataViewer>

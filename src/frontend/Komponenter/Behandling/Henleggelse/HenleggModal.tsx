@@ -1,25 +1,18 @@
 import React, { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import Modal from 'nav-frontend-modal';
-import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { Radio } from 'nav-frontend-skjema';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { EToast } from '../../../App/typer/toast';
 import { EHenlagtårsak } from '../../../App/typer/Behandlingsårsak';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { Alert, Radio, RadioGroup } from '@navikt/ds-react';
+import styled from 'styled-components';
 
-interface IHenlegg {
-    settHenlagtårsak: (årsak: EHenlagtårsak) => void;
-    lagreHenleggelse: () => void;
-    låsKnapp: boolean;
-    henlagtårsak?: EHenlagtårsak;
-    settVisHenleggModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const AlertStripe = styled(Alert)`
+    margin-top: 1rem;
+`;
 
 export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { visHenleggModal, settVisHenleggModal } = useBehandling();
@@ -62,61 +55,31 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             .finally(() => settLåsKnapp(false));
     };
 
-    const ModalInnhold = styled.div`
-        margin-top: 3rem;
-    `;
+    const lukkModal = () => {
+        settFeilmelding('');
+        settVisHenleggModal(false);
+    };
 
     return (
-        <Modal
-            isOpen={visHenleggModal}
-            onRequestClose={() => settVisHenleggModal(false)}
-            closeButton={true}
-            contentLabel={'Velg årsak til henleggelse'}
+        <ModalWrapper
+            tittel={'Henlegg'}
+            visModal={visHenleggModal}
+            onClose={() => lukkModal()}
+            aksjonsknapper={{
+                hovedKnapp: {
+                    onClick: () => lagreHenleggelse(),
+                    tekst: 'Henlegg',
+                    disabled: låsKnapp,
+                },
+                lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+            }}
+            ariaLabel={'Velg årsak til henleggelse av behandlingen'}
         >
-            <ModalInnhold>
-                <Henlegging
-                    lagreHenleggelse={lagreHenleggelse}
-                    henlagtårsak={henlagtårsak}
-                    settHenlagtårsak={settHenlagtårsak}
-                    låsKnapp={låsKnapp}
-                    settVisHenleggModal={settVisHenleggModal}
-                />
-                {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
-            </ModalInnhold>
-        </Modal>
+            <RadioGroup legend={''} onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}>
+                <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
+                <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
+            </RadioGroup>
+            {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
+        </ModalWrapper>
     );
 };
-
-const Henlegging: React.FC<IHenlegg> = ({
-    settHenlagtårsak,
-    lagreHenleggelse,
-    låsKnapp,
-    henlagtårsak,
-    settVisHenleggModal,
-}) => (
-    <>
-        <h4>Henlegg</h4>
-        <FamilieRadioGruppe erLesevisning={false}>
-            <Radio
-                checked={henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE}
-                label="Trukket tilbake"
-                name="henleggRadio"
-                onChange={() => {
-                    settHenlagtårsak(EHenlagtårsak.TRUKKET_TILBAKE);
-                }}
-            />
-            <Radio
-                checked={henlagtårsak === EHenlagtårsak.FEILREGISTRERT}
-                label="Feilregistrert"
-                name="henleggRadio"
-                onChange={() => {
-                    settHenlagtårsak(EHenlagtårsak.FEILREGISTRERT);
-                }}
-            />
-            <Hovedknapp htmlType={'submit'} onClick={lagreHenleggelse} disabled={låsKnapp}>
-                Henlegg
-            </Hovedknapp>
-            <Knapp onClick={() => settVisHenleggModal(false)}>Avbryt</Knapp>
-        </FamilieRadioGruppe>
-    </>
-);

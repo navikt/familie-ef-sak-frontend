@@ -1,4 +1,4 @@
-import { Modal } from '@navikt/ds-react';
+import { BodyLong, Modal } from '@navikt/ds-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { AppProvider, useApp } from './App/context/AppContext';
@@ -6,13 +6,12 @@ import { hentInnloggetBruker } from './App/api/saksbehandler';
 import { ISaksbehandler } from './App/typer/saksbehandler';
 import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
 import { TogglesProvider } from './App/context/TogglesContext';
-import { BrowserRouter, Route, Navigate, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
 import BehandlingContainer from './Komponenter/Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
 import { JournalforingApp } from './Komponenter/Journalforing/JournalforingApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
-import UgyldigSesjon from './Felles/Modal/SesjonUtløpt';
 import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
@@ -22,9 +21,16 @@ import FagsakTilFagsakPersonRedirect from './Komponenter/Redirect/FagsakTilFagsa
 import OppgaveMigreringApp from './Komponenter/Migrering/OppgaveMigrering';
 import { AdminApp } from './Komponenter/Admin/AdminApp';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
+import styled from 'styled-components';
+import { ModalWrapper } from './Felles/Modal/ModalWrapper';
 
 // @ts-ignore
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
+
+const Innhold = styled(BodyLong)`
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+`;
 
 const App: React.FC = () => {
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler>();
@@ -68,7 +74,13 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
             {autentisert ? (
                 <AppInnhold innloggetSaksbehandler={innloggetSaksbehandler} />
             ) : (
-                <UgyldigSesjon />
+                <ModalWrapper
+                    tittel={'Ugyldig sesjon'}
+                    visModal={true}
+                    ariaLabel={'Sesjonen har utløpt. Prøv å last inn siden på nytt.'}
+                >
+                    <Innhold>Prøv å last siden på nytt</Innhold>
+                </ModalWrapper>
             )}
         </BrowserRouter>
     );

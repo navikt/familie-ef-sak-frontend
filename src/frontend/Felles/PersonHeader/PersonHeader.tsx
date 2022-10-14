@@ -16,7 +16,7 @@ import { ISøkPerson } from '../../App/typer/personsøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { Hamburgermeny } from './Hamburgermeny';
+import { PersonHeaderHamburgermeny } from './PersonHeaderHamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 import {
     behandlingstypeTilTekst,
@@ -77,7 +77,7 @@ export const PersonHeaderWrapper = styled(Sticky)`
     }
 `;
 
-const StyledHamburgermeny = styled(Hamburgermeny)`
+const StyledHamburgermeny = styled(PersonHeaderHamburgermeny)`
     margin-left: auto;
     display: block;
     position: sticky;

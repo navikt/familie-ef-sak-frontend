@@ -4,6 +4,9 @@ import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson'
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
 import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
+import Utestengelse from './Utestengelse/Utestengelse';
+import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
+import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -14,11 +17,16 @@ export enum BehandlingApplikasjon {
 const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
     const { hentKlagebehandlinger, klagebehandlinger } = useHentKlagebehandlinger();
+    const { hentUtestengelser, utestengelser } = useHentUtestengelser();
+
+    useEffect(() => {
+        hentUtestengelser(fagsakPersonId);
+    }, [hentUtestengelser, fagsakPersonId]);
 
     useEffect(() => {
         hentFagsakPerson(fagsakPersonId);
         hentKlagebehandlinger(fagsakPersonId);
-    }, [hentFagsakPerson, fagsakPersonId, hentKlagebehandlinger]);
+    }, [fagsakPersonId, hentFagsakPerson, hentKlagebehandlinger]);
 
     const reHentKlagebehandlinger = () => {
         hentKlagebehandlinger(fagsakPersonId);
@@ -27,6 +35,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
         <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
             {({ fagsakPerson, klagebehandlinger }) => (
                 <>
+                    <InfostripeUtestengelse utestengelser={utestengelser} />
                     <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
                         <FagsakOversikt
@@ -49,6 +58,11 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
                             hentKlageBehandlinger={reHentKlagebehandlinger}
                         />
                     )}
+                    <Utestengelse
+                        fagsakPersonId={fagsakPersonId}
+                        utestengelser={utestengelser}
+                        hentUtestengelser={hentUtestengelser}
+                    />
                 </>
             )}
         </DataViewer>

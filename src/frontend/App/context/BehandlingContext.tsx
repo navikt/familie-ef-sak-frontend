@@ -11,6 +11,7 @@ import { useHentRegler } from '../hooks/useHentRegler';
 import { RessursStatus } from '../typer/ressurs';
 import { erBehandlingRedigerbar } from '../typer/behandlingstatus';
 import { useApp } from './AppContext';
+import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { axiosRequest } = useApp();
@@ -29,6 +30,11 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
         behandlingId,
     ]);
+
+    const { hentUtestengelserForBehandling, utestengelser } = useHentUtestengelser();
+    useEffect(() => {
+        hentUtestengelserForBehandling(behandlingId);
+    }, [hentUtestengelserForBehandling, behandlingId]);
 
     const { hentRegler, regler } = useHentRegler();
     // eslint-disable-next-line
@@ -72,6 +78,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         settVisHenleggModal,
         åpenHøyremeny,
         settÅpenHøyremeny,
+        utestengelser,
     };
 });
 
