@@ -34,6 +34,7 @@ const UlagretDataModal: FC = () => {
                     },
                     tekst: 'Forlat siden',
                 },
+                marginTop: 4,
             }}
         />
     );

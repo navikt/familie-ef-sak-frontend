@@ -103,6 +103,7 @@ export const UtestengelseModal: FC<{
                     disabled: senderInnUtestenging,
                     onClick: () => lagUtestenging(),
                 },
+                marginTop: 2,
             }}
         >
             <BodyLong spacing={true}>
@@ -123,7 +124,7 @@ export const UtestengelseModal: FC<{
                     label={'Periode fra og med'}
                     aria-label={'Periode fra og med'}
                     onEndret={(e) => settFraOgMed(e)}
-                ></MånedÅrVelger>
+                />
                 <MånedÅrVelger
                     antallÅrFrem={2}
                     antallÅrTilbake={1}
@@ -131,7 +132,7 @@ export const UtestengelseModal: FC<{
                     label={'Periode til og med'}
                     aria-label={'Periode til og med'}
                     onEndret={(e) => settTilOgMed(e)}
-                ></MånedÅrVelger>
+                />
                 <AntallMånederWrapper>
                     <Label size={'small'}>Ant.mnd</Label>
                     <AntallMåneder size={'small'}>{antallMåneder}</AntallMåneder>

@@ -18,10 +18,10 @@ const Innhold = styled.div`
     margin-left: 2rem;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.div<{ marginTop?: number }>`
     display: flex;
     justify-content: flex-end;
-    margin-top: 4rem;
+    margin-top: ${(props) => (props.marginTop ? `${props.marginTop}rem` : '1rem')};
     margin-right: 2rem;
     margin-bottom: 0.5rem;
 `;
@@ -36,7 +36,7 @@ interface ModalProps {
     tittel: string;
     visModal: boolean;
     onClose?: () => void;
-    aksjonsknapper?: { hovedKnapp: Aksjonsknapp; lukkKnapp: Aksjonsknapp };
+    aksjonsknapper?: { hovedKnapp: Aksjonsknapp; lukkKnapp: Aksjonsknapp; marginTop?: number };
     maxWidth?: number;
     ariaLabel?: string;
     children?: React.ReactNode;
@@ -71,7 +71,7 @@ export const ModalWrapper: React.FC<ModalProps> = ({
                 </Tittel>
                 <Innhold>{children}</Innhold>
                 {aksjonsknapper && (
-                    <ButtonContainer>
+                    <ButtonContainer marginTop={aksjonsknapper.marginTop}>
                         <ModalKnapp
                             variant="tertiary"
                             onClick={aksjonsknapper.lukkKnapp.onClick}

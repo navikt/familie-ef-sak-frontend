@@ -91,6 +91,7 @@ const SendTilBeslutterFooter: React.FC<{
                         onClick: () => lukkModal(),
                         tekst: 'Lukk',
                     },
+                    marginTop: 4,
                 }}
             />
         </>
