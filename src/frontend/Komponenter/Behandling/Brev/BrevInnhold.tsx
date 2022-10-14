@@ -4,7 +4,7 @@ import { Input, Select, Textarea } from 'nav-frontend-skjema';
 import Panel from 'nav-frontend-paneler';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
-import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
+import LeggTilKnapp, { KnappMedLuftUnder } from '../../../Felles/Knapper/LeggTilKnapp';
 import {
     AvsnittMedId,
     BrevtyperTilAvsnitt,
@@ -44,7 +44,7 @@ const Overskrift = styled(Input)`
 const LeggTilKnappWrapper = styled.div`
     margin-top: 1.5rem;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
 `;
 
 const BrevKolonner = styled.div`
@@ -77,6 +77,7 @@ type Props = {
     context: FritekstBrevContext;
     behandlingsårsak?: Behandlingsårsak;
     stønadstype: Stønadstype;
+    settVisNullstillBrevModal?: (visModal: boolean) => void;
 };
 
 const BrevInnhold: React.FC<Props> = ({
@@ -96,6 +97,7 @@ const BrevInnhold: React.FC<Props> = ({
     context,
     behandlingsårsak,
     stønadstype,
+    settVisNullstillBrevModal,
 }) => {
     const ikkeRedigerBareBrev: (FrittståendeBrevtype | FritekstBrevtype | undefined)[] = [
         FrittståendeBrevtype.VARSEL_OM_AKTIVITETSPLIKT,
@@ -204,14 +206,19 @@ const BrevInnhold: React.FC<Props> = ({
                             </ToKolonneLayout>
                         );
                     })}
-                    {brevSkalKunneRedigeres && (
-                        <LeggTilKnappWrapper>
+                    <LeggTilKnappWrapper>
+                        {brevSkalKunneRedigeres && (
                             <LeggTilKnapp
                                 onClick={leggAvsnittBakSisteSynligeAvsnitt}
                                 knappetekst="Legg til avsnitt"
                             />
-                        </LeggTilKnappWrapper>
-                    )}
+                        )}
+                        {settVisNullstillBrevModal && (
+                            <KnappMedLuftUnder onClick={() => settVisNullstillBrevModal(true)}>
+                                Nullstill brev
+                            </KnappMedLuftUnder>
+                        )}
+                    </LeggTilKnappWrapper>
                 </>
             )}
         </BrevKolonner>
