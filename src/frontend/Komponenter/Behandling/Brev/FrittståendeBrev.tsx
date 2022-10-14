@@ -303,6 +303,7 @@ const FrittståendeBrev: React.FC<Props> = ({
                         disabled: senderInnBrev,
                     },
                     lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+                    marginTop: 4,
                 }}
                 ariaLabel={'Bekreft ustending av frittstående brev'}
             >

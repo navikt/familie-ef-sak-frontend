@@ -67,6 +67,7 @@ export const SlettUtestengelseModal: FC<{
                     onClick: () => slettUtestengelse(fagsakPersonId, utestengelseTilSletting.id),
                     disabled: laster,
                 },
+                marginTop: 4,
             }}
             onClose={lukkModal}
         >
