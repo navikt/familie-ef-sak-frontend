@@ -157,7 +157,7 @@ const FrittståendeBrev: React.FC<Props> = ({
         axiosRequest<string, null>({
             method: 'DELETE',
             url: `/familie-ef-sak/api/brev/mellomlager/frittstaende/${fagsakId}`,
-        }).then(() => {
+        }).finally(() => {
             nullstillBrev();
             settVisNullstillBrevModal(false);
         });
@@ -327,9 +327,10 @@ const FrittståendeBrev: React.FC<Props> = ({
                 tittel={'Bekreft nullstilling av brev'}
                 visModal={visNullstillBrevModal}
                 onClose={() => settVisNullstillBrevModal(false)}
-                hovedKnappClick={() => nullstillMellomlagretBrev()}
-                lukkKnappTekst={'Avbryt'}
-                hovedKnappTekst={'Nullstill'}
+                aksjonsknapper={{
+                    hovedKnapp: { onClick: () => nullstillMellomlagretBrev(), tekst: 'Nullstill' },
+                    lukkKnapp: { onClick: () => settVisNullstillBrevModal(false), tekst: 'Avbryt' },
+                }}
             >
                 Er du sikker på at du vil nullstille brevet? Du vil miste alle lagrede opplysninger
             </ModalWrapper>
