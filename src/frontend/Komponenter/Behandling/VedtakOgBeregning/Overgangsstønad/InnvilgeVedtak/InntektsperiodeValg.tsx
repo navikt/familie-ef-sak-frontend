@@ -30,7 +30,7 @@ const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype fjernRadKnapp leggTilKnapp;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 12rem 3rem 3rem'};
+        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '13rem 12rem 12rem 12rem 3rem 3rem'};
     grid-gap: 1rem;
 `;
 
@@ -38,7 +38,7 @@ const TittelContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '11.5rem 12rem 12rem 12rem 4rem'};
+        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '13rem 12rem 12rem 12rem 4rem'};
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
@@ -133,6 +133,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
                         />
 
                         <StyledInput
+                            label={'Forventet inntekt'}
+                            hideLabel
                             type="number"
                             value={harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''}
                             onChange={(e) => {
@@ -146,7 +148,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             erLesevisning={!behandlingErRedigerbar}
                         />
                         <StyledInput
-                            aria-label={'Samordningsfradrag (mnd)'}
+                            label={'Samordningsfradrag (mnd)'}
+                            hideLabel
                             type="number"
                             value={
                                 harTallverdi(rad.samordningsfradrag) ? rad.samordningsfradrag : ''
@@ -163,8 +166,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                         />
                         <div>
                             <FamilieSelect
-                                aria-label={'Type samordninsfradrag'}
-                                bredde={'m'}
+                                label={'Type samordninsfradrag'}
+                                hideLabel
+                                size={'medium'}
                                 value={
                                     skalVelgeSamordningstype ? samordningsfradragstype.value : ''
                                 }

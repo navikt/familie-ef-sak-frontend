@@ -24,9 +24,9 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     grid-template-columns: ${(props) =>
         props.lesevisning
             ? '10rem 10rem 18rem 2rem 4rem 4rem'
-            : '12rem 12rem 25rem 2rem 4rem 2rem 4rem'};
+            : '14rem 14rem 25rem 2rem 4rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
+    padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
 
 const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
@@ -36,7 +36,6 @@ const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
 
 const StyledInput = styled(InputMedTusenSkille)`
     text-align: left;
-    height: fit-content;
 `;
 
 const NavnContainer = styled.div`
@@ -48,7 +47,6 @@ const TekstEnLinje = styled(Label)`
 `;
 
 const CheckboxContainer = styled.div`
-    position: relative;
     bottom: 0.5rem;
 `;
 

@@ -46,7 +46,6 @@ const Årvelger: React.FC<ÅrProps> = ({
             label={'År'}
             hideLabel
             className={className}
-            size={'small'}
         >
             <option value="">År</option>
             {årOptions}

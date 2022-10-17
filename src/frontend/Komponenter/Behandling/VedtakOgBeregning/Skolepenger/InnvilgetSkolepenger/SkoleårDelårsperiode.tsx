@@ -6,7 +6,7 @@ import {
     studietyper,
 } from '../../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
@@ -15,6 +15,7 @@ import { tomSkoleårsperiode, ValideringsPropsMedOppdatering } from '../typer';
 import InputUtenSpinner from '../../../../../Felles/Visningskomponenter/InputUtenSpinner';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
+import { Label } from '@navikt/ds-react';
 
 const SkoleårsperiodeRad = styled.div<{
     lesevisning?: boolean;
@@ -24,7 +25,7 @@ const SkoleårsperiodeRad = styled.div<{
     display: grid;
     grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger antallMnd studiebelastning';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 12rem 11.5rem 4rem 8rem 4rem'};
+        props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 13rem 12.5rem 5rem 8rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
     text-decoration: ${(props) => (props.skoleårErFjernet ? 'line-through' : 'inherit')};
@@ -89,11 +90,11 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
     return (
         <>
             <SkoleårsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
-                <Element>Studietype</Element>
-                <Element>Periode fra og med</Element>
-                <Element>Periode til og med</Element>
-                <Element>Ant. mnd</Element>
-                <Element>Studiebelastning</Element>
+                <Label>Studietype</Label>
+                <Label>Periode fra og med</Label>
+                <Label>Periode til og med</Label>
+                <Label>Ant. mnd</Label>
+                <Label>Studiebelastning</Label>
             </SkoleårsperiodeRad>
             {data.map((periode, index) => {
                 const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
@@ -110,9 +111,10 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                             skoleårErFjernet={skoleårErFjernet}
                         >
                             <StyledSelect
-                                aria-label="Periodetype"
+                                label="Periodetype"
+                                hideLabel
                                 value={studietype}
-                                feil={valideringsfeil && valideringsfeil[index]?.studietype}
+                                error={valideringsfeil && valideringsfeil[index]?.studietype}
                                 onChange={(e) => {
                                     oppdaterStudietype(e.target.value as ESkolepengerStudietype);
                                 }}
@@ -148,9 +150,11 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 {kalkulerAntallMåneder(årMånedFra, årMånedTil)}
                             </AntallMåneder>
                             <StyledInput
+                                label={'Studiebelastning'}
+                                hideLabel
                                 onKeyPress={tilHeltall}
                                 type="number"
-                                feil={valideringsfeil && valideringsfeil[index]?.studiebelastning}
+                                error={valideringsfeil && valideringsfeil[index]?.studiebelastning}
                                 value={harTallverdi(studiebelastning) ? studiebelastning : ''}
                                 formatValue={(k) => k + ' %'}
                                 onChange={(e) =>

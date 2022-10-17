@@ -44,7 +44,6 @@ const MånedVelger: React.FC<MånedProps> = ({
             disabled={disabled}
             label={'Måned'}
             hideLabel
-            size={'small'}
         >
             <option value="">Måned</option>
             {månedValg.map((mnd) => (

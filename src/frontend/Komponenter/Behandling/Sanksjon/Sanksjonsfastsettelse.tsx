@@ -47,6 +47,7 @@ export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
 const SanksjonVelger = styled(FamilieSelect)`
     margin-top: 1rem;
+    max-width: 40rem;
 `;
 
 const Container = styled.div`
@@ -185,7 +186,6 @@ const SanksjonsvedtakVisning: FC<{
                     <SanksjonVelger
                         label="Brukeren har uten rimelig grunn:"
                         value={sanksjonårsak.value}
-                        bredde={'xxl'}
                         onChange={(e) => {
                             settIkkePersistertKomponent(SANKSJONERE_VEDTAK);
                             sanksjonårsak.onChange(e);

@@ -31,6 +31,15 @@ const AktivitetKolonne = styled.div`
     }
 `;
 
+const StyledFamilieSelect = styled(FamilieSelect)`
+    align-items: start;
+
+    /* Fjerner rød prikk før feilmelding */
+    .navds-error-message::before {
+        content: none;
+    }
+`;
+
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     const {
         periodeType,
@@ -49,10 +58,11 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     switch (periodeType) {
         case EPeriodetype.FORLENGELSE:
             return (
-                <FamilieSelect
-                    aria-label={'Aktivitet'}
+                <StyledFamilieSelect
+                    label={'Velg aktivitet'}
+                    hideLabel
                     value={aktivitet || ''}
-                    feil={aktivitetfeil}
+                    error={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
@@ -73,15 +83,16 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </FamilieSelect>
+                </StyledFamilieSelect>
             );
         case EPeriodetype.HOVEDPERIODE:
         case EPeriodetype.NY_PERIODE_FOR_NYTT_BARN:
             return (
-                <FamilieSelect
-                    aria-label={'Aktivitet'}
+                <StyledFamilieSelect
+                    label={'Velg aktivitet'}
+                    hideLabel
                     value={aktivitet || ''}
-                    feil={aktivitetfeil}
+                    error={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
@@ -108,14 +119,15 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </optgroup>
                         );
                     })}
-                </FamilieSelect>
+                </StyledFamilieSelect>
             );
         case EPeriodetype.UTVIDELSE:
             return (
                 <FamilieSelect
-                    aria-label={'Aktivitet'}
+                    label={'Velg aktivitet'}
+                    hideLabel
                     value={aktivitet || ''}
-                    feil={aktivitetfeil}
+                    error={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,

@@ -26,7 +26,7 @@ const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 8rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 8rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.75rem;
 `;
@@ -35,7 +35,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem' : '12rem 12rem 8rem'};
+        props.lesevisning ? '8rem 10rem 7rem' : '13rem 13rem 8rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;

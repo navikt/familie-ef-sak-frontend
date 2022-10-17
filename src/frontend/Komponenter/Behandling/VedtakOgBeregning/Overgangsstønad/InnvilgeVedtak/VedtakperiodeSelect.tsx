@@ -8,8 +8,14 @@ import styled from 'styled-components';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 
 const StyledSelect = styled(FamilieSelect)`
+    align-items: start;
     min-width: 140px;
     max-width: 200px;
+
+    /*Fjerner rød prikk før feilmelding */
+    .navds-error-message::before {
+        content: none;
+    }
 `;
 
 interface VedtakperiodeSelectProps {
@@ -31,9 +37,10 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
 }) => {
     return (
         <StyledSelect
-            aria-label="Periodetype"
+            label="Periodetype"
+            hideLabel
             value={periodeType}
-            feil={feil}
+            error={feil}
             onChange={(e) => {
                 oppdaterVedtakslisteElement(EVedtaksperiodeProperty.periodeType, e.target.value);
             }}

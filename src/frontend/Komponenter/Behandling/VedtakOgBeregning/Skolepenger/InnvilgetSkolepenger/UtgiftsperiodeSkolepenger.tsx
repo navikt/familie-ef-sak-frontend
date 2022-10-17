@@ -20,7 +20,7 @@ const Utgiftsrad = styled.div<{
         if (props.lesevisning) {
             return '9rem 4rem 4rem';
         }
-        return '12rem 5rem 5rem 4rem';
+        return '12rem 6rem 6rem 4rem';
     }};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
@@ -101,10 +101,12 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     onEndret={() => {}}
                                 />
                                 <StyledInputMedTusenSkille
+                                    label={'Utgifter'}
+                                    hideLabel
                                     onKeyPress={tilHeltall}
                                     type="number"
                                     value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
-                                    feil={valideringsfeil && valideringsfeil[index]?.utgifter}
+                                    error={valideringsfeil && valideringsfeil[index]?.utgifter}
                                     onChange={(e) => {
                                         oppdaterUtgift(
                                             index,
@@ -116,10 +118,12 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     disabled={erLåstFraForrigeBehandling}
                                 />
                                 <StyledInputMedTusenSkille
+                                    label={'Stønadsbeløp'}
+                                    hideLabel
                                     onKeyPress={tilHeltall}
                                     type="number"
                                     value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
-                                    feil={valideringsfeil && valideringsfeil[index]?.stønad}
+                                    error={valideringsfeil && valideringsfeil[index]?.stønad}
                                     onChange={(e) => {
                                         oppdaterUtgift(
                                             index,
