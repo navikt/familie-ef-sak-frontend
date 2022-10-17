@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import { ISærligeTilsynsbehov } from '../../../../App/typer/aktivitetstyper';
 import { GridTabell, GridTabellRad } from '../../../../Felles/Visningskomponenter/GridTabell';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
-import { PopoverOrientering } from 'nav-frontend-popover';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { HelpText } from '@navikt/ds-react';
 
 const StyledList = styled.ul`
     list-style-type: square;
@@ -49,7 +48,7 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
             <GridTabell kolonner={3}>
                 <TittelHjelpetekstWrapper className={'førsteDataKolonne'}>
                     <Element className={'litenSpacingHoyre'}>Annet</Element>
-                    <Hjelpetekst type={PopoverOrientering.OverVenstre}>{hjelpetekst}</Hjelpetekst>
+                    <HelpText placement={'top-start'}>{hjelpetekst}</HelpText>
                 </TittelHjelpetekstWrapper>
 
                 <Søknadsgrunnlag />
