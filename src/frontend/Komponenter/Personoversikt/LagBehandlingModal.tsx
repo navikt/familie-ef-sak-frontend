@@ -1,8 +1,6 @@
 import React, { Dispatch, useState } from 'react';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
-import UIModalWrapper from '../../Felles/Modal/UIModalWrapper';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import styled from 'styled-components';
 import { Select } from 'nav-frontend-skjema';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
@@ -15,9 +13,13 @@ import { Fagsak } from '../../App/typer/fagsak';
 import OpprettKlage from './Klage/OpprettKlage';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
+import { Alert, Button } from '@navikt/ds-react';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 33.5rem;
 `;
 
 export const KnappeWrapper = styled.div`
@@ -25,8 +27,17 @@ export const KnappeWrapper = styled.div`
     margin-bottom: 1rem;
 `;
 
-export const StyledHovedknapp = styled(Hovedknapp)`
-    margin-right: 1rem;
+const ButtonContainer = styled.div`
+    display: flex;
+    margin-top: 1rem;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+`;
+
+const ModalKnapp = styled(Button)`
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    margin-left: 1rem;
 `;
 
 interface IProps {
@@ -125,19 +136,16 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     };
 
     return (
-        <UIModalWrapper
-            modal={{
-                tittel: 'Opprett ny behandling',
-                lukkKnapp: true,
-                visModal: visModal,
-                onClose: () => settVisModal(false),
-            }}
+        <ModalWrapper
+            tittel={'Opprett ny behandling'}
+            visModal={visModal}
+            onClose={() => settVisModal(false)}
         >
             {!kanStarteRevurdering && (
-                <AlertStripeInfo>
+                <Alert variant={'info'}>
                     Merk at det er ikke mulig å opprette en revurdering da det allerede finnes en
                     åpen behandling på fagsaken. Det er kun mulig å opprette en tilbakekreving.
-                </AlertStripeInfo>
+                </Alert>
             )}
             <StyledSelect
                 label="Behandlingstype"
@@ -164,10 +172,18 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     settVisModal={settVisModal}
                 />
             )}
-
             {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
-                <KnappeWrapper>
-                    <StyledHovedknapp
+                <ButtonContainer>
+                    <ModalKnapp
+                        variant="tertiary"
+                        onClick={() => {
+                            settVisModal(false);
+                        }}
+                    >
+                        Avbryt
+                    </ModalKnapp>
+                    <ModalKnapp
+                        variant="primary"
                         onClick={() => {
                             if (!senderInnBehandling) {
                                 opprettTilbakekrevingBehandling();
@@ -175,15 +191,8 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                         }}
                     >
                         Opprett
-                    </StyledHovedknapp>
-                    <Flatknapp
-                        onClick={() => {
-                            settVisModal(false);
-                        }}
-                    >
-                        Avbryt
-                    </Flatknapp>
-                </KnappeWrapper>
+                    </ModalKnapp>
+                </ButtonContainer>
             )}
             {valgtBehandlingstype === Behandlingstype.KLAGE && (
                 <OpprettKlage
@@ -193,7 +202,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                 />
             )}
             {feilmeldingModal && <AlertStripeFeil>{feilmeldingModal}</AlertStripeFeil>}
-        </UIModalWrapper>
+        </ModalWrapper>
     );
 };
 

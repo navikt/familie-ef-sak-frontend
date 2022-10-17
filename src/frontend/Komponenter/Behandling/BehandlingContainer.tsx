@@ -6,8 +6,6 @@ import Fanemeny from './Fanemeny/Fanemeny';
 import navFarger from 'nav-frontend-core';
 import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingContext';
-import { ModalProvider } from '../../App/context/ModalContext';
-import ModalController from '../../Felles/Modal/ModalController';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
@@ -17,6 +15,7 @@ import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { HenleggModal } from './Henleggelse/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
+import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 
 const Container = styled.div`
     display: flex;
@@ -57,12 +56,9 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
 
 const BehandlingContainer: FC = () => {
     return (
-        <ModalProvider>
-            <BehandlingProvider>
-                <ModalController />
-                <BehandlingOverbygg />
-            </BehandlingProvider>
-        </ModalProvider>
+        <BehandlingProvider>
+            <BehandlingOverbygg />
+        </BehandlingProvider>
     );
 };
 
@@ -72,7 +68,7 @@ const BehandlingContent: FC<{
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
     useSetPersonIdent(personopplysninger.personIdent);
-    const { åpenHøyremeny } = useBehandling();
+    const { åpenHøyremeny, utestengelser } = useBehandling();
 
     return (
         <>
@@ -80,6 +76,7 @@ const BehandlingContent: FC<{
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />
+                    <InfostripeUtestengelse utestengelser={utestengelser} />
                     <BehandlingRoutes />
                     <GodkjennEndringer behandling={behandling} />
                     <BrevmottakereModalForBehandling

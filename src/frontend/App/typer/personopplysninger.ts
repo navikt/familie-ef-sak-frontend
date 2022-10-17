@@ -101,6 +101,7 @@ export interface ISivilstand {
     relatertVedSivilstand?: string;
     navn?: string;
     dødsdato?: string;
+    erGjeldende: boolean;
 }
 
 export interface IInnflyttingTilNorge {

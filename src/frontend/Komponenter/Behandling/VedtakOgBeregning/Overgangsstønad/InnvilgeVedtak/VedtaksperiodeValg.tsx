@@ -19,8 +19,6 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Label, Tooltip } from '@navikt/ds-react';
-import { useToggles } from '../../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../../App/context/toggles';
 import { v4 as uuidv4 } from 'uuid';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
@@ -74,9 +72,6 @@ const VedtaksperiodeValg: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { toggles } = useToggles();
-    const skalViseLeggTilKnapp =
-        toggles[ToggleName.visVedtakPeriodeLeggTilRad] && behandlingErRedigerbar;
 
     const oppdaterVedtakslisteElement = (
         index: number,
@@ -130,11 +125,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             {vedtaksperiodeListe.value.map((vedtaksperiode, index) => {
                 const { periodeType, aktivitet, årMånedFra, årMånedTil } = vedtaksperiode;
                 const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
-                // når featuretoggle for skalViseLeggTilKnapp fjernes, så kan skalViseFjernKnapp inlineas då den alltid skal vises
-                const skalViseFjernKnapp =
-                    behandlingErRedigerbar &&
-                    index !== 0 &&
-                    (skalViseLeggTilKnapp || index === vedtaksperiodeListe.value.length - 1);
+                const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
 
                 return (
                     <VedtakPeriodeContainer
@@ -194,7 +185,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                         ) : (
                             <div />
                         )}
-                        {skalViseLeggTilKnapp && (
+                        {behandlingErRedigerbar && (
                             <Tooltip content="Legg til rad under" placement="right">
                                 <KnappWrapper>
                                     <LeggTilKnapp

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Flatknapp } from 'nav-frontend-knapper';
 import hiddenIf from '../HiddenIf/hiddenIf';
 
-const KnappMedLuftUnder = styled(Flatknapp)`
+export const KnappMedLuftUnder = styled(Flatknapp)`
     padding: 0;
     margin-bottom: 1rem;
 `;
