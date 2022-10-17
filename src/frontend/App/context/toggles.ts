@@ -10,6 +10,5 @@ export enum ToggleName {
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     visOpprettKlage = 'familie.ef.sak.frontend-vis-opprett-klage',
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
-    visKnappVergeFrittståendeBrev = 'familie.ef.sak.frontend-verge-frittstaende-brev',
     visUtestengelse = 'familie.ef.sak.frontend-utestengelse',
 }
