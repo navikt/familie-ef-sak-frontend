@@ -31,14 +31,14 @@ const StyledInputUtenSpinner = styled(FamilieInput)`
     }
 `;
 
-const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = (props) => {
+const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = ({ formatValue, ...props }) => {
     const [harFokus, settHarFokus] = useState(false);
     if (!harFokus) {
         return (
             <StyledInputUtenSpinner
                 {...props}
                 type="text"
-                value={props.formatValue ? props.formatValue(props.value) : props.value}
+                value={formatValue ? formatValue(props.value) : props.value}
                 onWheel={(event) => event.currentTarget.blur()}
                 label={''}
                 onFocus={() => settHarFokus(true)}
