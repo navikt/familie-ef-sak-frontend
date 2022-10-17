@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FamilieInput, IFamilieInputProps } from '@navikt/familie-form-elements';
 import { NavdsSpacing12 } from '@navikt/ds-tokens/dist/tokens';
@@ -32,16 +32,32 @@ const StyledInputUtenSpinner = styled(FamilieInput)`
 `;
 
 const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = (props) => {
-    return (
-        <StyledInputUtenSpinner
-            {...props}
-            type="text"
-            value={props.formatValue ? props.formatValue(props.value) : props.value}
-            onWheel={(event) => event.currentTarget.blur()}
-            label={''}
-            hideLabel
-        />
-    );
+    const [harFokus, settHarFokus] = useState(false);
+    if (!harFokus) {
+        return (
+            <StyledInputUtenSpinner
+                {...props}
+                type="text"
+                value={props.formatValue ? props.formatValue(props.value) : props.value}
+                onWheel={(event) => event.currentTarget.blur()}
+                label={''}
+                onFocus={() => settHarFokus(true)}
+                hideLabel
+            />
+        );
+    } else {
+        return (
+            <StyledInputUtenSpinner
+                {...props}
+                type="text"
+                value={props.value}
+                onWheel={(event) => event.currentTarget.blur()}
+                onBlur={() => settHarFokus(false)}
+                label={''}
+                hideLabel
+            />
+        );
+    }
 };
 
 export default InputUtenSpinner;
