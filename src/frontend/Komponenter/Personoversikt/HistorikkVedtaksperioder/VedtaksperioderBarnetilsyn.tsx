@@ -64,24 +64,21 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean, index: num
                 <Rad>
                     {!erSanksjon && formaterTallMedTusenSkille(andel.andel.beløp)}
                     {stønadsbeløpetErRedusert && (
-                        /* @ts-ignore:next-line */
                         <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
-                            {
-                                utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside(
-                                    beløpErRedusertPgaSats,
-                                    beløpErRedusertPgaTilleggsstønad,
-                                    andel.andel.antallBarn,
-                                    andel.andel.beløpFørFratrekkOgSatsJustering,
-                                    andel.andel.sats,
-                                    andel.andel.tilleggsstønad
-                                ).map((visningstekst, index) => {
-                                    return index === 0 ? (
-                                        <div>{visningstekst}</div>
-                                    ) : (
-                                        <LinjeSplitter>{visningstekst}</LinjeSplitter>
-                                    );
-                                }) as unknown as string // Hack. Prop er definert som string for HelpText, men den rendrer bare children uansett.
-                            }
+                            {utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside(
+                                beløpErRedusertPgaSats,
+                                beløpErRedusertPgaTilleggsstønad,
+                                andel.andel.antallBarn,
+                                andel.andel.beløpFørFratrekkOgSatsJustering,
+                                andel.andel.sats,
+                                andel.andel.tilleggsstønad
+                            ).map((visningstekst, index) => {
+                                return index === 0 ? (
+                                    <div>{visningstekst}</div>
+                                ) : (
+                                    <LinjeSplitter>{visningstekst}</LinjeSplitter>
+                                );
+                            })}
                         </HelpText>
                     )}
                 </Rad>
