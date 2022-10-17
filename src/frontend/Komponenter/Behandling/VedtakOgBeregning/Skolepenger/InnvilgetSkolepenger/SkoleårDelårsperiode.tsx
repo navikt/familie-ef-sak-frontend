@@ -13,9 +13,9 @@ import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import styled from 'styled-components';
 import { tomSkoleårsperiode, ValideringsPropsMedOppdatering } from '../typer';
 import InputUtenSpinner from '../../../../../Felles/Visningskomponenter/InputUtenSpinner';
-import { FamilieSelect } from '@navikt/familie-form-elements';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Label } from '@navikt/ds-react';
+import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
 const SkoleårsperiodeRad = styled.div<{
     lesevisning?: boolean;
@@ -41,7 +41,7 @@ const StyledInput = styled(InputUtenSpinner)`
     text-align: left;
 `;
 
-const StyledSelect = styled(FamilieSelect)`
+const StyledSelect = styled(EnsligFamilieSelect)`
     min-width: 140px;
     max-width: 200px;
 `;

@@ -18,11 +18,11 @@ import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
-import { FamilieSelect } from '@navikt/familie-form-elements';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
+import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -161,7 +161,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             erLesevisning={!behandlingErRedigerbar}
                         />
                         <div>
-                            <FamilieSelect
+                            <EnsligFamilieSelect
                                 label={'Type samordninsfradrag'}
                                 hideLabel
                                 size={'medium'}
@@ -188,7 +188,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 <option value={ESamordningsfradragtype.UFØRETRYGD}>
                                     Uføretrygd
                                 </option>
-                            </FamilieSelect>
+                            </EnsligFamilieSelect>
                             <SkjemaelementFeilmelding>
                                 {samordningValideringsfeil}
                             </SkjemaelementFeilmelding>

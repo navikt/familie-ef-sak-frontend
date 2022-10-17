@@ -8,9 +8,9 @@ import {
 } from '../../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { OrNothing } from '../../../../../App/hooks/felles/useSorteringState';
+import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
 interface Props {
     periodeType: EPeriodetype | '' | undefined;
@@ -31,13 +31,8 @@ const AktivitetKolonne = styled.div`
     }
 `;
 
-const StyledFamilieSelect = styled(FamilieSelect)`
+const StyledFamilieSelect = styled(EnsligFamilieSelect)`
     align-items: start;
-
-    /* Fjerner rød prikk før feilmelding */
-    .navds-error-message::before {
-        content: none;
-    }
 `;
 
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
@@ -123,7 +118,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
             );
         case EPeriodetype.UTVIDELSE:
             return (
-                <FamilieSelect
+                <EnsligFamilieSelect
                     label={'Velg aktivitet'}
                     hideLabel
                     value={aktivitet || ''}
@@ -148,7 +143,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </FamilieSelect>
+                </EnsligFamilieSelect>
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (

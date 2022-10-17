@@ -1,7 +1,6 @@
 import { behandlingResultatTilTekst, EBehandlingResultat } from '../../../../App/typer/vedtak';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../../App/typer/behandlingstype';
@@ -10,6 +9,7 @@ import { useApp } from '../../../../App/context/AppContext';
 import { Button, Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { NullstillVedtakModalContext } from '../NullstillVedtakModalContext';
+import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
 
 interface Props {
     behandling: Behandling;
@@ -19,7 +19,7 @@ interface Props {
     skalViseNullstillVedtakKnapp: boolean;
 }
 
-const StyledSelect = styled(FamilieSelect)`
+const StyledSelect = styled(EnsligFamilieSelect)`
     width: 200px;
     .skjemaelement__label {
         font-size: 1.25rem;

@@ -29,7 +29,6 @@ import useFormState, { FormState } from '../../../App/hooks/felles/useFormState'
 import { validerSanksjonereVedtakForm } from '../VedtakOgBeregning/Overgangsstønad/vedtaksvalidering';
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
-import { FamilieSelect } from '@navikt/familie-form-elements';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import {
@@ -42,10 +41,11 @@ import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Behandling } from '../../../App/typer/fagsak';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
+import { EnsligFamilieSelect } from '../../../Felles/Input/EnsligFamilieSelect';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
-const SanksjonVelger = styled(FamilieSelect)`
+const SanksjonVelger = styled(EnsligFamilieSelect)`
     margin-top: 1rem;
     max-width: 40rem;
 `;

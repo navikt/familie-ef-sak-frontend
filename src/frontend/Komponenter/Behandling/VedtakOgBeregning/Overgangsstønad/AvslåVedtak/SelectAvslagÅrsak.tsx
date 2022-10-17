@@ -5,11 +5,11 @@ import {
 } from '../../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
 interface Props {
     avslagÅrsak?: EAvslagÅrsak;
@@ -17,7 +17,7 @@ interface Props {
     feilmelding: string;
 }
 
-const StyledSelect = styled(FamilieSelect)`
+const StyledSelect = styled(EnsligFamilieSelect)`
     max-width: 200px;
     .skjemaelement__label {
         font-size: 1.25rem;
@@ -50,6 +50,8 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                 }}
                 lesevisningVerdi={avslagÅrsak && avslagÅrsakTilTekst[avslagÅrsak]}
+                label={'Årsak avslag'}
+                hideLabel={true}
             >
                 <option value="">Velg</option>
                 {årsakerTilAvslag.map((årsak) => {

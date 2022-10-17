@@ -5,17 +5,12 @@ import {
     periodetypeTilTekst,
 } from '../../../../../App/typer/vedtak';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
-const StyledSelect = styled(FamilieSelect)`
+const StyledSelect = styled(EnsligFamilieSelect)`
     align-items: start;
     min-width: 140px;
     max-width: 200px;
-
-    /*Fjerner rød prikk før feilmelding */
-    .navds-error-message::before {
-        content: none;
-    }
 `;
 
 interface VedtakperiodeSelectProps {
