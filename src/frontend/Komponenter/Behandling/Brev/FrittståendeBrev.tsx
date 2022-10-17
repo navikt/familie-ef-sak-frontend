@@ -120,6 +120,7 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest, settToast } = useApp();
+    const [visNullstillBrevModal, settVisNullstillBrevModal] = useState<boolean>(false);
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -170,6 +171,16 @@ const FrittståendeBrev: React.FC<Props> = ({
     const fjernRad = (radId: string) => {
         settAvsnitt((eksisterendeAvsnitt: AvsnittMedId[]) => {
             return eksisterendeAvsnitt.filter((rad) => radId !== rad.id);
+        });
+    };
+
+    const nullstillMellomlagretBrev = (): void => {
+        axiosRequest<string, null>({
+            method: 'DELETE',
+            url: `/familie-ef-sak/api/brev/mellomlager/frittstaende/${fagsakId}`,
+        }).finally(() => {
+            nullstillBrev();
+            settVisNullstillBrevModal(false);
         });
     };
 
@@ -282,7 +293,9 @@ const FrittståendeBrev: React.FC<Props> = ({
                 flyttAvsnittNed={oppdaterFlyttAvsnittNedover}
                 context={FritekstBrevContext.FRITTSTÅENDE}
                 stønadstype={Stønadstype.OVERGANGSSTØNAD}
+                settVisNullstillBrevModal={settVisNullstillBrevModal}
             />
+
             <StyledHovedKnapp
                 disabled={!brevType || !brevmottakereValgt(brevmottakere)}
                 onClick={() => settVisModal(true)}
@@ -300,12 +313,24 @@ const FrittståendeBrev: React.FC<Props> = ({
                         disabled: senderInnBrev,
                     },
                     lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+                    marginTop: 4,
                 }}
                 ariaLabel={'Bekreft ustending av frittstående brev'}
             >
                 {feilmelding && (
                     <AlertStripe variant={'error'}>Utsending feilet. {feilmelding}</AlertStripe>
                 )}
+            </ModalWrapper>
+            <ModalWrapper
+                tittel={'Bekreft nullstilling av brev'}
+                visModal={visNullstillBrevModal}
+                onClose={() => settVisNullstillBrevModal(false)}
+                aksjonsknapper={{
+                    hovedKnapp: { onClick: () => nullstillMellomlagretBrev(), tekst: 'Nullstill' },
+                    lukkKnapp: { onClick: () => settVisNullstillBrevModal(false), tekst: 'Avbryt' },
+                }}
+            >
+                Er du sikker på at du vil nullstille brevet? Du vil miste alle lagrede opplysninger
             </ModalWrapper>
             <BrevmottakereModal
                 personopplysninger={personopplysninger}
@@ -350,7 +375,7 @@ const BrevMottakere: React.FC<{ mottakere: IBrevmottakere }> = ({ mottakere }) =
             </InfoHeader>
             <ul>
                 {navn.map((navn, index) => (
-                    <li>
+                    <li key={navn + index}>
                         <BodyShort key={navn + index}>{navn}</BodyShort>
                     </li>
                 ))}

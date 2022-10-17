@@ -15,6 +15,7 @@ import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { HenleggModal } from './Henleggelse/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
+import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 
 const Container = styled.div`
     display: flex;
@@ -67,7 +68,7 @@ const BehandlingContent: FC<{
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
     useSetPersonIdent(personopplysninger.personIdent);
-    const { åpenHøyremeny } = useBehandling();
+    const { åpenHøyremeny, utestengelser } = useBehandling();
 
     return (
         <>
@@ -75,6 +76,7 @@ const BehandlingContent: FC<{
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />
+                    <InfostripeUtestengelse utestengelser={utestengelser} />
                     <BehandlingRoutes />
                     <GodkjennEndringer behandling={behandling} />
                     <BrevmottakereModalForBehandling

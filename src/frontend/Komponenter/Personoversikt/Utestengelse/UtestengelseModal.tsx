@@ -9,10 +9,6 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { EToast } from '../../../App/typer/toast';
 
-const ModalInnhold = styled.div`
-    margin-top: 3rem;
-`;
-
 const HuskListe = styled.ol`
     margin-top: 0.25rem;
     padding-left: 1.75rem;
@@ -96,50 +92,53 @@ export const UtestengelseModal: FC<{
             tittel="Utestengelse"
             visModal={visUtestengModal}
             onClose={() => lukkModal()}
-            hovedKnappClick={() => lagUtestenging()}
-            hovedKnappTekst={'Bekreft utestengelse'}
-            hovedKnappDisabled={senderInnUtestenging}
-            lukkKnappTekst={'Avbryt'}
-            lukkKnappDisabled={senderInnUtestenging}
-            lukkKnappClick={() => lukkModal()}
+            aksjonsknapper={{
+                lukkKnapp: {
+                    tekst: 'Avbryt',
+                    disabled: senderInnUtestenging,
+                    onClick: () => lukkModal(),
+                },
+                hovedKnapp: {
+                    tekst: 'Bekreft utestengelse',
+                    disabled: senderInnUtestenging,
+                    onClick: () => lagUtestenging(),
+                },
+                marginTop: 2,
+            }}
         >
-            <ModalInnhold>
-                <BodyLong spacing={true}>
-                    Husk at perioden for utestenging trer i kraft fra og med måneden etter den
-                    måneden vedtak om utestenging er fattet.
-                </BodyLong>
-                <BodyShort>Husk også at det må:</BodyShort>
-                <HuskListe>
-                    <li>Oppretts notat om utestengelse i Gosys</li>
-                    <li>Hvis bruker har løpende stønader manuelt opphøre disse</li>
-                    <li>
-                        Sendes brev om utestengelse til bruker fra EF Sak frittstående brevutsender
-                    </li>
-                </HuskListe>
-                <Periode>
-                    <MånedÅrVelger
-                        antallÅrFrem={2}
-                        antallÅrTilbake={1}
-                        feilmelding={''}
-                        label={'Periode fra og med'}
-                        aria-label={'Periode fra og med'}
-                        onEndret={(e) => settFraOgMed(e)}
-                    ></MånedÅrVelger>
-                    <MånedÅrVelger
-                        antallÅrFrem={2}
-                        antallÅrTilbake={1}
-                        feilmelding={''}
-                        label={'Periode til og med'}
-                        aria-label={'Periode til og med'}
-                        onEndret={(e) => settTilOgMed(e)}
-                    ></MånedÅrVelger>
-                    <AntallMånederWrapper>
-                        <Label size={'small'}>Ant.mnd</Label>
-                        <AntallMåneder size={'small'}>{antallMåneder}</AntallMåneder>
-                    </AntallMånederWrapper>
-                </Periode>
-                {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
-            </ModalInnhold>
+            <BodyLong spacing={true}>
+                Husk at perioden for utestenging trer i kraft fra og med måneden etter den måneden
+                vedtak om utestenging er fattet.
+            </BodyLong>
+            <BodyShort>Husk også at det må:</BodyShort>
+            <HuskListe>
+                <li>Opprett notat om utestengelse i Gosys</li>
+                <li>Hvis bruker har løpende stønader manuelt opphøre disse</li>
+                <li>Sendes brev om utestengelse til bruker fra EF Sak frittstående brevutsender</li>
+            </HuskListe>
+            <Periode>
+                <MånedÅrVelger
+                    antallÅrFrem={2}
+                    antallÅrTilbake={1}
+                    feilmelding={''}
+                    label={'Periode fra og med'}
+                    aria-label={'Periode fra og med'}
+                    onEndret={(e) => settFraOgMed(e)}
+                />
+                <MånedÅrVelger
+                    antallÅrFrem={2}
+                    antallÅrTilbake={1}
+                    feilmelding={''}
+                    label={'Periode til og med'}
+                    aria-label={'Periode til og med'}
+                    onEndret={(e) => settTilOgMed(e)}
+                />
+                <AntallMånederWrapper>
+                    <Label size={'small'}>Ant.mnd</Label>
+                    <AntallMåneder size={'small'}>{antallMåneder}</AntallMåneder>
+                </AntallMånederWrapper>
+            </Periode>
+            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
         </ModalWrapper>
     );
 };

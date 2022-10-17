@@ -64,7 +64,25 @@ export interface IAnnenForelder {
     land?: string;
     dødsfall?: string;
     tidligereVedtaksperioder?: ITidligereVedtaksperioder;
+    avstandTilSøker: IAvstandTilSøker;
 }
+
+export interface IAvstandTilSøker {
+    avstandIKm?: number;
+    langAvstandTilSøker: EAvstandTilSøker;
+}
+
+export enum EAvstandTilSøker {
+    JA = 'JA',
+    JA_UPRESIS = 'JA_UPRESIS',
+    UKJENT = 'UKJENT',
+}
+
+export const avstandTilSøkerTekst: Record<EAvstandTilSøker, string> = {
+    JA: 'km',
+    JA_UPRESIS: 'Mer enn 1 km',
+    UKJENT: 'Kan ikke automatisk beregnes',
+};
 
 export interface IBarnMedSamværRegistergrunnlag {
     navn?: string;

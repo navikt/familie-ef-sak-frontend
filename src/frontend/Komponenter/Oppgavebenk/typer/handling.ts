@@ -5,4 +5,5 @@ export enum Handling {
     TILBAKE = 'TILBAKE',
     KLAGE = 'KLAGE',
     INGEN = 'INGEN',
+    BEHANDLINGSOVERSIKT = 'BEHANDLINGSOVERSIKT',
 }
