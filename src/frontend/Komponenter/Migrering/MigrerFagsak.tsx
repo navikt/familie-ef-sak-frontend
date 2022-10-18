@@ -27,7 +27,7 @@ const StyledKnapp = styled(Button)`
     margin: 0.25rem;
 `;
 
-const visMigrertStatus = (migrertStatus: Ressurs<string>) => {
+export const visMigrertStatus = (migrertStatus: Ressurs<string>) => {
     return (
         <>
             {migrertStatus.status === RessursStatus.SUKSESS && (
