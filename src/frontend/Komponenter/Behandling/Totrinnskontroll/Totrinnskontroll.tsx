@@ -36,21 +36,21 @@ export const BorderBox = styled.div`
 
 const Totrinnskontroll: FC = () => {
     const { gåTilUrl } = useApp();
-    const [visModal, settVisModal] = useState(false);
+    const [visGodkjentModal, settVisGodkjentModal] = useState(false);
 
     return (
         <>
-            <TotrinnskontrollSwitch settVisModal={settVisModal} />
+            <TotrinnskontrollSwitch settVisGodkjentModal={settVisGodkjentModal} />
             <ModalWrapper
-                tittel={'Vedtaket er sendt til beslutter'}
-                visModal={visModal}
-                onClose={() => settVisModal(false)}
+                tittel={'Vedtaket er godkjent'}
+                visModal={visGodkjentModal}
+                onClose={() => settVisGodkjentModal(false)}
                 aksjonsknapper={{
                     hovedKnapp: {
                         onClick: () => gåTilUrl('/oppgavebenk'),
                         tekst: 'Til oppgavebenk',
                     },
-                    lukkKnapp: { onClick: () => settVisModal(false), tekst: 'Lukk' },
+                    lukkKnapp: { onClick: () => settVisGodkjentModal(false), tekst: 'Lukk' },
                     marginTop: 4,
                 }}
             />
@@ -58,7 +58,9 @@ const Totrinnskontroll: FC = () => {
     );
 };
 
-const TotrinnskontrollSwitch: FC<{ settVisModal: (vis: boolean) => void }> = ({ settVisModal }) => {
+const TotrinnskontrollSwitch: FC<{ settVisGodkjentModal: (vis: boolean) => void }> = ({
+    settVisGodkjentModal,
+}) => {
     const { behandling, totrinnskontroll } = useBehandling();
 
     if (
@@ -70,7 +72,12 @@ const TotrinnskontrollSwitch: FC<{ settVisModal: (vis: boolean) => void }> = ({ 
 
     switch (totrinnskontroll.data.status) {
         case TotrinnskontrollStatus.KAN_FATTE_VEDTAK:
-            return <FatterVedtak behandlingId={behandling.data.id} settVisModal={settVisModal} />;
+            return (
+                <FatterVedtak
+                    behandlingId={behandling.data.id}
+                    settVisGodkjentModal={settVisGodkjentModal}
+                />
+            );
         case TotrinnskontrollStatus.IKKE_AUTORISERT:
             return <SendtTilBeslutter totrinnskontroll={totrinnskontroll.data.totrinnskontroll} />;
         case TotrinnskontrollStatus.TOTRINNSKONTROLL_UNDERKJENT:
