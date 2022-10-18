@@ -15,9 +15,8 @@ import {
     HistorikkTabell,
 } from './vedtakshistorikkUtil';
 import { EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
-import EtikettBase from 'nav-frontend-etiketter';
 import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
-import { HelpText } from '@navikt/ds-react';
+import { HelpText, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean, index: number) => {
@@ -46,9 +45,9 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean, index: num
             {sanksjonFinnes && (
                 <td>
                     {erSanksjon && (
-                        <EtikettBase mini type={etikettType(EPeriodetype.SANKSJON)}>
+                        <Tag variant={etikettType(EPeriodetype.SANKSJON)} size={'small'}>
                             {periodetypeTilTekst[EPeriodetype.SANKSJON]}
-                        </EtikettBase>
+                        </Tag>
                     )}
                 </td>
             )}

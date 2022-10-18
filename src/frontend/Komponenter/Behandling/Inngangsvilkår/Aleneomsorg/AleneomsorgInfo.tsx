@@ -10,11 +10,11 @@ import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { EtikettAdvarsel, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
+import { Tag } from '@navikt/ds-react';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -32,13 +32,13 @@ const AleneomsorgInfo: FC<{
     ) => {
         const harLøpendeStønad = barnMedLøpendeStønad.barn.includes(personIdent);
         return harLøpendeStønad ? (
-            <EtikettSuksess>{`ja - per ${formaterNullableIsoDato(
+            <Tag variant={'success'}>{`ja - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
-            )}`}</EtikettSuksess>
+            )}`}</Tag>
         ) : (
-            <EtikettAdvarsel>{`nei - per ${formaterNullableIsoDato(
+            <Tag variant={'error'}>{`nei - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
-            )}`}</EtikettAdvarsel>
+            )}`}</Tag>
         );
     };
 
@@ -118,9 +118,9 @@ const AleneomsorgInfo: FC<{
                         <Normaltekst>Søkes det om stønad til barnetilsyn for barnet</Normaltekst>
                         <Normaltekst>
                             {barnepass?.skalHaBarnepass ? (
-                                <EtikettSuksess>ja</EtikettSuksess>
+                                <Tag variant={'success'}>ja</Tag>
                             ) : (
-                                <EtikettAdvarsel>nei</EtikettAdvarsel>
+                                <Tag variant={'error'}>nei</Tag>
                             )}
                         </Normaltekst>
                     </>

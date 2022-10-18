@@ -8252,16 +8252,6 @@ nav-frontend-core@^6.0.1, nav-frontend-core@^6.0.x:
   resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-6.0.1.tgz#81feef412890cb84074d329a2e3a8b6bca4ba314"
   integrity sha512-zFAPRXgmS3Nhu5SyafsTnCFg2/PEbrUF+g1xGo+pKIxGfJgCeLi47gPSe7Kjeh3IwIo0ex3cA7tfbUIWOY65dQ==
 
-nav-frontend-etiketter-style@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/nav-frontend-etiketter-style/-/nav-frontend-etiketter-style-2.0.1.tgz#65d8c7fed802d87cb79b43f8b08bb8bec5493c1e"
-  integrity sha512-AOHQ8O9crd5YKoRV774tSqNFaw8VfbZqwYGEDLI60VQXlv6F06G3XuMH5yMBDMFw1yiy0HuAG6Lef8rq01cxxA==
-
-nav-frontend-etiketter@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/nav-frontend-etiketter/-/nav-frontend-etiketter-3.0.1.tgz#576403726b6eb08d24c55121de0efeaa827af446"
-  integrity sha512-MrTGwtyZLJFh/5W4dEROERAGQT2c0tH6DkJoak5fRspUaEXM5NS5duSsJYlnNUF19I2KAb/5lvB7PeDtyz87zQ==
-
 nav-frontend-ikoner-assets@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/nav-frontend-ikoner-assets/-/nav-frontend-ikoner-assets-3.0.1.tgz#7531ea6da2a5b2d9cd7071b2b3a495fdf6b309e7"

@@ -3,11 +3,11 @@ import { IBarn } from '../../App/typer/personopplysninger';
 import TabellOverskrift from './TabellOverskrift';
 import LiteBarn from '../Ikoner/LiteBarn';
 import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
-import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
+import { Tag } from '@navikt/ds-react';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -84,12 +84,12 @@ const FødselsnummerBarn: React.FC<{
                     <SpanMedVenstreMargin>
                         {alder !== undefined ? (
                             alder < 18 ? (
-                                <EtikettSuksess>{alder} år</EtikettSuksess>
+                                <Tag variant={'success'}>{alder} år</Tag>
                             ) : (
-                                <EtikettInfo>Over 18 år</EtikettInfo>
+                                <Tag variant={'info'}>Over 18 år</Tag>
                             )
                         ) : (
-                            <EtikettFokus>Ukjent alder</EtikettFokus>
+                            <Tag variant={'warning'}>Ukjent alder</Tag>
                         )}
                     </SpanMedVenstreMargin>
                 )}

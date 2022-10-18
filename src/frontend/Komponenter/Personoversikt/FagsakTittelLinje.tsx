@@ -3,9 +3,9 @@ import React from 'react';
 import { Fagsak } from '../../App/typer/fagsak';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { formatterEnumVerdi } from '../../App/utils/utils';
-import { EtikettInfo } from 'nav-frontend-etiketter';
+import { Tag } from '@navikt/ds-react';
 
-const StyledEtikettInfo = styled(EtikettInfo)`
+const StyledTag = styled(Tag)`
     margin-left: 1rem;
 `;
 const TittelLinje = styled.div`
@@ -18,6 +18,10 @@ export const FagsakTittelLinje: React.FC<{
 }> = ({ fagsak }) => (
     <TittelLinje>
         <Systemtittel tag="h3">Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}</Systemtittel>
-        {fagsak.erLøpende && <StyledEtikettInfo mini>Løpende</StyledEtikettInfo>}
+        {fagsak.erLøpende && (
+            <StyledTag variant={'info'} size={'small'}>
+                Løpende
+            </StyledTag>
+        )}
     </TittelLinje>
 );

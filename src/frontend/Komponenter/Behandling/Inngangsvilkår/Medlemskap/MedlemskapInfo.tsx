@@ -10,9 +10,9 @@ import Utenlandsopphold from './Utenlandsopphold';
 import { IMedlemskap } from './typer';
 import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
 import InnflyttingUtflytting from './InnflyttingUtflytting';
-import Etikett from 'nav-frontend-etiketter';
 import UnntakIMedl from './UnntakIMedl';
 import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
+import { Tag } from '@navikt/ds-react';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -42,7 +42,7 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
                     <>
                         <Registergrunnlag />
                         <Normaltekst>Medlemskapstatus i MEDL</Normaltekst>
-                        <Etikett type="fokus">Innslag funnet</Etikett>
+                        <Tag variant={'warning'}>Innslag funnet</Tag>
                     </>
                 )}
             </GridTabell>
