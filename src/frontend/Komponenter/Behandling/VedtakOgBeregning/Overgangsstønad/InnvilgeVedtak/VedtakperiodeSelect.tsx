@@ -5,9 +5,10 @@ import {
     periodetypeTilTekst,
 } from '../../../../../App/typer/vedtak';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
-const StyledSelect = styled(FamilieSelect)`
+const StyledSelect = styled(EnsligFamilieSelect)`
+    align-items: start;
     min-width: 140px;
     max-width: 200px;
 `;
@@ -31,9 +32,10 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
 }) => {
     return (
         <StyledSelect
-            aria-label="Periodetype"
+            label="Periodetype"
+            hideLabel
             value={periodeType}
-            feil={feil}
+            error={feil}
             onChange={(e) => {
                 oppdaterVedtakslisteElement(EVedtaksperiodeProperty.periodeType, e.target.value);
             }}

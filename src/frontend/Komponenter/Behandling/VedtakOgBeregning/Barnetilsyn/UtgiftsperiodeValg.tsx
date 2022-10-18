@@ -6,7 +6,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { ListState } from '../../../../App/hooks/felles/useListState';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
@@ -16,6 +16,7 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/ut
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
+import { Label } from '@navikt/ds-react';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -23,9 +24,9 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     grid-template-columns: ${(props) =>
         props.lesevisning
             ? '10rem 10rem 18rem 2rem 4rem 4rem'
-            : '12rem 12rem 25rem 2rem 4rem 2rem 4rem'};
+            : '14rem 14rem 25rem 2rem 4rem 2rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: ${(props) => (props.erHeader ? '0,5rem' : 0)};
+    padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
 
 const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
@@ -41,12 +42,11 @@ const NavnContainer = styled.div`
     margin-bottom: 1rem;
 `;
 
-const TekstEnLinje = styled(Element)`
+const TekstEnLinje = styled(Label)`
     white-space: nowrap;
 `;
 
 const CheckboxContainer = styled.div`
-    position: relative;
     bottom: 0.5rem;
 `;
 
@@ -131,11 +131,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     return (
         <>
             <UtgiftsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
-                <Element>Periode fra og med</Element>
-                <Element>Periode til og med</Element>
-                <Element>Velg barn</Element>
-                <Element>Ant.</Element>
-                <Element>Utgifter</Element>
+                <Label>Periode fra og med</Label>
+                <Label>Periode til og med</Label>
+                <Label>Velg barn</Label>
+                <Label>Ant.</Label>
+                <Label>Utgifter</Label>
                 <TekstEnLinje>Ingen stønad/opphør</TekstEnLinje>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
@@ -166,9 +166,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             erLesevisning={!behandlingErRedigerbar}
                         />
                         {behandlingErRedigerbar ? (
-                            /* @ts-ignore:next-line */
                             <FamilieReactSelect
                                 placeholder={'Velg barn'}
+                                label={''}
                                 options={barnForPeriode}
                                 creatable={false}
                                 isMulti={true}
@@ -203,6 +203,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                         <StyledInput
                             onKeyPress={tilHeltall}
                             type="number"
+                            size={'small'}
                             value={harTallverdi(utgifter) ? utgifter : ''}
                             disabled={erMidlertidigOpphør}
                             onChange={(e) => {
@@ -213,6 +214,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 );
                             }}
                             erLesevisning={!behandlingErRedigerbar}
+                            label={'Utgifter'}
+                            hideLabel
                         />
                         <CheckboxContainer>
                             {!behandlingErRedigerbar && erMidlertidigOpphør ? (
@@ -220,7 +223,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             ) : (
                                 <FamilieCheckbox
                                     erLesevisning={!behandlingErRedigerbar}
-                                    label={''}
                                     checked={erMidlertidigOpphør}
                                     onChange={() => {
                                         oppdaterUtgiftsperiodeDersomMidlertidigOpphør(
@@ -228,6 +230,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                             !erMidlertidigOpphør
                                         );
                                     }}
+                                    children={null}
                                 />
                             )}
                         </CheckboxContainer>

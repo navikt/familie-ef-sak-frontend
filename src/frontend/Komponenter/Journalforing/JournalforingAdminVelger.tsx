@@ -17,6 +17,10 @@ const Blokk = styled.div`
     max-width: 10rem;
 `;
 
+const StyledInput = styled(FamilieInput)`
+    width: max-content;
+`;
+
 export const JournalforingAdminVelger: React.FC = () => {
     const [journalpostId, settJournalpostId] = useState<string>('');
     const [erGyligFnr, settErGyldigFnr] = useState<boolean>(false);
@@ -31,7 +35,7 @@ export const JournalforingAdminVelger: React.FC = () => {
         <SideLayout className={'container'}>
             <Sidetittel>Opprett ny behandling for journalpost</Sidetittel>
             <Blokk>
-                <FamilieInput
+                <StyledInput
                     label={'Skriv inn journalpostID'}
                     value={journalpostId}
                     onChange={(e) => {

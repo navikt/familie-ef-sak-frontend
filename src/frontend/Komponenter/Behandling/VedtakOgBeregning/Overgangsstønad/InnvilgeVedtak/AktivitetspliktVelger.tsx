@@ -8,9 +8,9 @@ import {
 } from '../../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
-import { FamilieSelect } from '@navikt/familie-form-elements';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { OrNothing } from '../../../../../App/hooks/felles/useSorteringState';
+import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
 interface Props {
     periodeType: EPeriodetype | '' | undefined;
@@ -31,6 +31,10 @@ const AktivitetKolonne = styled.div`
     }
 `;
 
+const StyledFamilieSelect = styled(EnsligFamilieSelect)`
+    align-items: start;
+`;
+
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     const {
         periodeType,
@@ -49,10 +53,11 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     switch (periodeType) {
         case EPeriodetype.FORLENGELSE:
             return (
-                <FamilieSelect
-                    aria-label={'Aktivitet'}
+                <StyledFamilieSelect
+                    label={'Velg aktivitet'}
+                    hideLabel
                     value={aktivitet || ''}
-                    feil={aktivitetfeil}
+                    error={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
@@ -73,15 +78,16 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </FamilieSelect>
+                </StyledFamilieSelect>
             );
         case EPeriodetype.HOVEDPERIODE:
         case EPeriodetype.NY_PERIODE_FOR_NYTT_BARN:
             return (
-                <FamilieSelect
-                    aria-label={'Aktivitet'}
+                <StyledFamilieSelect
+                    label={'Velg aktivitet'}
+                    hideLabel
                     value={aktivitet || ''}
-                    feil={aktivitetfeil}
+                    error={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
@@ -108,14 +114,15 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </optgroup>
                         );
                     })}
-                </FamilieSelect>
+                </StyledFamilieSelect>
             );
         case EPeriodetype.UTVIDELSE:
             return (
-                <FamilieSelect
-                    aria-label={'Aktivitet'}
+                <EnsligFamilieSelect
+                    label={'Velg aktivitet'}
+                    hideLabel
                     value={aktivitet || ''}
-                    feil={aktivitetfeil}
+                    error={aktivitetfeil}
                     onChange={(e) => {
                         oppdaterVedtakslisteElement(
                             index,
@@ -136,7 +143,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </FamilieSelect>
+                </EnsligFamilieSelect>
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (

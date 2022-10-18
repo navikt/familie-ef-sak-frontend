@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FamilieInput, IFamilieInputProps } from '@navikt/familie-form-elements';
+import { NavdsSpacing12 } from '@navikt/ds-tokens/dist/tokens';
 
 export interface PropsInputUtenSpinner extends IFamilieInputProps {
     value: number | string | undefined;
@@ -11,6 +12,7 @@ const StyledInputUtenSpinner = styled(FamilieInput)`
     text-align: right;
     input {
         text-align: right;
+        height: ${NavdsSpacing12};
     }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -22,39 +24,40 @@ const StyledInputUtenSpinner = styled(FamilieInput)`
     input[type='number'] {
         -moz-appearance: textfield;
     }
+
+    /* Fjerner rød prikk før feilmelding */
+    .navds-error-message::before {
+        content: none;
+    }
 `;
 
-const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = (props) => {
-    // Må bytte til input[type=text] for å støtte visuell tusenseparator
+const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = ({ formatValue, ...props }) => {
     const [harFokus, settHarFokus] = useState(false);
-
-    // Unngå at scrolling endrer verdi i inputfeltet
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const handleWheel = (e: WheelEvent) => e.preventDefault();
-    useEffect(() => {
-        if (inputRef) {
-            inputRef?.current?.addEventListener('wheel', handleWheel);
-
-            return () => {
-                inputRef?.current?.removeEventListener('wheel', handleWheel);
-            };
-        }
-    }, [inputRef]);
-
     if (!harFokus) {
         return (
             <StyledInputUtenSpinner
                 {...props}
                 type="text"
-                value={props.formatValue ? props.formatValue(props.value) : props.value}
+                value={formatValue ? formatValue(props.value) : props.value}
+                onWheel={(event) => event.currentTarget.blur()}
+                label={''}
                 onFocus={() => settHarFokus(true)}
-                inputRef={(ref) => {
-                    inputRef.current = ref;
-                }}
+                hideLabel
+            />
+        );
+    } else {
+        return (
+            <StyledInputUtenSpinner
+                {...props}
+                type="text"
+                value={props.value}
+                onWheel={(event) => event.currentTarget.blur()}
+                onBlur={() => settHarFokus(false)}
+                label={''}
+                hideLabel
             />
         );
     }
-    return <StyledInputUtenSpinner {...props} onBlur={() => settHarFokus(false)} />;
 };
 
 export default InputUtenSpinner;

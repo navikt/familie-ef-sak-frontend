@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { Radio } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Element } from 'nav-frontend-typografi';
@@ -8,7 +7,6 @@ import {
     ERadioValg,
     ETilleggsstønadPeriodeProperty,
     IPeriodeMedBeløp,
-    radiovalgTilTekst,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { ListState } from '../../../../App/hooks/felles/useListState';
@@ -22,12 +20,13 @@ import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
+import { Radio } from '@navikt/ds-react';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 8rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 8rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.75rem;
 `;
@@ -36,7 +35,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem' : '12rem 12rem 8rem'};
+        props.lesevisning ? '8rem 10rem 7rem' : '13rem 13rem 8rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
@@ -107,46 +106,46 @@ const TilleggsstønadValg: React.FC<Props> = ({
         <>
             <FamilieRadioGruppe
                 legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften i perioden(e) det er søkt om?"
-                feil={valideringsfeil.harTilleggsstønad}
+                error={valideringsfeil.harTilleggsstønad}
                 erLesevisning={!behandlingErRedigerbar}
-                verdi={radiovalgTilTekst[tilleggsstønad.value as ERadioValg]}
+                value={tilleggsstønad.value as ERadioValg}
             >
                 <Radio
                     name={'Tilleggsstønad'}
-                    label={'Ja'}
                     value={ERadioValg.JA}
-                    checked={tilleggsstønad.value === ERadioValg.JA}
                     onChange={(event) => tilleggsstønad.onChange(event)}
-                />
+                >
+                    Ja
+                </Radio>
                 <Radio
                     name={'Tilleggsstønad'}
-                    label={'Nei'}
                     value={ERadioValg.NEI}
-                    checked={tilleggsstønad.value === ERadioValg.NEI}
                     onChange={(event) => tilleggsstønad.onChange(event)}
-                />
+                >
+                    Nei
+                </Radio>
             </FamilieRadioGruppe>
             {tilleggsstønad.value === ERadioValg.JA && (
                 <FamilieRadioGruppe
                     legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?"
-                    feil={valideringsfeil.skalStønadReduseres}
+                    error={valideringsfeil.skalStønadReduseres}
                     erLesevisning={!behandlingErRedigerbar}
-                    verdi={radiovalgTilTekst[stønadsreduksjon.value as ERadioValg]}
+                    value={stønadsreduksjon.value as ERadioValg}
                 >
                     <Radio
                         name={'Redusere'}
-                        label={'Ja'}
                         value={ERadioValg.JA}
-                        checked={stønadsreduksjon.value === ERadioValg.JA}
                         onChange={(event) => stønadsreduksjon.onChange(event)}
-                    />
+                    >
+                        Ja
+                    </Radio>
                     <Radio
                         name={'Redusere'}
-                        label={'Nei'}
                         value={ERadioValg.NEI}
-                        checked={stønadsreduksjon.value === ERadioValg.NEI}
                         onChange={(event) => stønadsreduksjon.onChange(event)}
-                    />
+                    >
+                        Nei
+                    </Radio>
                 </FamilieRadioGruppe>
             )}
             {tilleggsstønad.value === ERadioValg.JA && stønadsreduksjon.value === ERadioValg.JA && (
@@ -163,7 +162,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                             index === tilleggsstønadPerioder.value.length - 1 &&
                             index !== 0;
                         return (
-                            <>
+                            <React.Fragment key={`${årMånedFra}${årMånedTil}${index}`}>
                                 <TilleggsstønadPeriodeContainer>
                                     <MånedÅrPeriode
                                         årMånedFraInitiell={årMånedFra}
@@ -188,6 +187,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                     />
                                     <StyledInput
                                         type="number"
+                                        size={'small'}
                                         onKeyPress={tilHeltall}
                                         value={harTallverdi(beløp) ? beløp : ''}
                                         onChange={(e) => {
@@ -199,6 +199,8 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                             );
                                         }}
                                         erLesevisning={!behandlingErRedigerbar}
+                                        label={'Stønadsreduksjon'}
+                                        hideLabel
                                     />
                                     {skalViseFjernKnapp && (
                                         <FjernKnapp
@@ -217,7 +219,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                         />
                                     )}
                                 </TilleggsstønadPeriodeContainer>
-                            </>
+                            </React.Fragment>
                         );
                     })}
                     <LeggTilKnapp

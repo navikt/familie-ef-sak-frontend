@@ -34,8 +34,9 @@ const TerminbarnMedDatovelger = styled.div`
     }
 `;
 
-const FjernBanrKnapp = styled(Button)`
+const FjernBarnKnapp = styled(Button)`
     width: 4rem;
+    margin-bottom: 0.5rem;
 `;
 const LeggTilBarnKnapp = styled(Button)`
     margin-top: 1rem;
@@ -87,18 +88,21 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                                     : undefined
                             }
                         />
-                        <FjernBanrKnapp
+                        <FjernBarnKnapp
                             variant="tertiary"
                             size="small"
                             onClick={() => fjernBarn(barn)}
-                        >
-                            <SlettSøppelkasse withDefaultStroke={false} />
-                        </FjernBanrKnapp>
+                            icon={<SlettSøppelkasse withDefaultStroke={false} />}
+                        />
                     </TerminbarnMedDatovelger>
                 ))}
                 <div>
-                    <LeggTilBarnKnapp variant="tertiary" size="small" onClick={leggTilBarn}>
-                        <LeggtilMedSirkel width={24} heigth={24} />
+                    <LeggTilBarnKnapp
+                        variant="tertiary"
+                        size="small"
+                        onClick={leggTilBarn}
+                        icon={<LeggtilMedSirkel width={24} heigth={24} />}
+                    >
                         <span>Legg til termindato</span>
                     </LeggTilBarnKnapp>
                 </div>

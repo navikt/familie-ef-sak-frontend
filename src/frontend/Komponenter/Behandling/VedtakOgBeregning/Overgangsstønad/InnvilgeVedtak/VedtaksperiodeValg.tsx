@@ -13,13 +13,12 @@ import VedtakperiodeSelect from './VedtakperiodeSelect';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
-import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
-import { Tooltip } from '@navikt/ds-react';
+import { Label, Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
@@ -28,7 +27,7 @@ const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     grid-template-columns: ${(props) =>
         props.lesevisning
             ? '8rem 10rem 7rem 7rem 7rem'
-            : '12rem 12rem 11.5rem 11.5rem 4rem 3rem 3rem'};
+            : '12rem 12rem 14rem 14rem 4.5rem 3rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
 `;
 
@@ -36,7 +35,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 11.5rem 11.5rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 14rem 14rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
@@ -45,6 +44,10 @@ const KnappWrapper = styled.div`
     button {
         width: 3rem;
     }
+`;
+
+const StyledLeggTilKnapp = styled(LeggTilKnapp)`
+    margin-top: 0.5rem;
 `;
 
 interface Props {
@@ -114,10 +117,10 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     return (
         <>
             <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
-                <Element>Periodetype</Element>
-                <Element>Aktivitet</Element>
-                <Element>Fra og med</Element>
-                <Element>Til og med</Element>
+                <Label>Periodetype</Label>
+                <Label>Aktivitet</Label>
+                <Label>Fra og med</Label>
+                <Label>Til og med</Label>
             </KolonneHeaderWrapper>
             {vedtaksperiodeListe.value.map((vedtaksperiode, index) => {
                 const { periodeType, aktivitet, årMånedFra, årMånedTil } = vedtaksperiode;
@@ -161,9 +164,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             erLesevisning={!behandlingErRedigerbar}
                             disabledFra={index === 0 && låsVedtaksperiodeRad}
                         />
-                        <Element style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
+                        <Label style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
                             {antallMåneder && `${antallMåneder} mnd`}
-                        </Element>
+                        </Label>
                         {skalViseFjernKnapp ? (
                             <FjernKnapp
                                 onClick={() => {
@@ -196,7 +199,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     </VedtakPeriodeContainer>
                 );
             })}
-            <LeggTilKnapp
+            <StyledLeggTilKnapp
                 onClick={() => vedtaksperiodeListe.push(tomVedtaksperiodeRad())}
                 knappetekst="Legg til vedtaksperiode"
                 hidden={!behandlingErRedigerbar}
