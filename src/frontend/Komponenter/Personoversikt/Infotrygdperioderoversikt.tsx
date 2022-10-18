@@ -14,6 +14,7 @@ import { Stønadstype } from '../../App/typer/behandlingstema';
 import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
 import { Migreringsstatus } from '../../App/typer/migrering';
+import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
 
 const StyledAlertStripe = styled(AlertStripeInfo)`
     margin: 1rem 0;
@@ -110,6 +111,7 @@ export const Infotrygdperioderoversikt: React.FC<{
                         onMigrert={onMigrert}
                         fraOppgavebenken={fraOppgavebenken}
                     />
+                    {!fraOppgavebenken && <MigrerBarnetilsyn fagsakPerson={fagsakPerson} />}
                 </InfotrygdperioderoversiktContainer>
             )}
         </DataViewer>

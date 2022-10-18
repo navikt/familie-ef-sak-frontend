@@ -7,6 +7,7 @@ export enum ToggleName {
 
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
     kanMigrereFagsak = 'familie.ef.sak.migrering',
+    kanMigrereBarnetilsyn = 'familie.ef.sak.migrering.barnetilsyn',
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     visOpprettKlage = 'familie.ef.sak.frontend-vis-opprett-klage',
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
