@@ -78,20 +78,6 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
-    const gåTilVurderMigrering = () => {
-        settLaster(true);
-        settOppgaveTilSaksbehandler()
-            .then(() =>
-                gåTilUrl(
-                    `/oppgavemigrering?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`
-                )
-            )
-            .catch((error: Error) => {
-                settFeilmelding(error.message);
-            })
-            .finally(() => settLaster(false));
-    };
-
     const plukkOppgaveOgGåTilBehandlingsoversikt = (personIdent: string) => {
         settLaster(true);
         settOppgaveTilSaksbehandler()
@@ -106,7 +92,6 @@ export const useOppgave = (oppgave: IOppgave) => {
         feilmelding,
         settFeilmelding,
         gåTilBehandleSakOppgave,
-        gåTilVurderMigrering,
         gåTilJournalføring,
         laster,
         plukkOppgaveOgGåTilBehandlingsoversikt,
