@@ -2,17 +2,12 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { BodyLong, BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort, Label } from '@navikt/ds-react';
 import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { månederMellom, månedÅrTilDate } from '../../../App/utils/dato';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { EToast } from '../../../App/typer/toast';
-
-const HuskListe = styled.ol`
-    margin-top: 0.25rem;
-    padding-left: 1.75rem;
-`;
 
 const Periode = styled.div`
     display: flex;
@@ -89,7 +84,7 @@ export const UtestengelseModal: FC<{
 
     return (
         <ModalWrapper
-            tittel="Utestengelse"
+            tittel="Legg til utestengelse"
             visModal={visUtestengModal}
             onClose={() => lukkModal()}
             aksjonsknapper={{
@@ -106,16 +101,6 @@ export const UtestengelseModal: FC<{
                 marginTop: 2,
             }}
         >
-            <BodyLong spacing={true}>
-                Husk at perioden for utestenging trer i kraft fra og med måneden etter den måneden
-                vedtak om utestenging er fattet.
-            </BodyLong>
-            <BodyShort>Husk også at det må:</BodyShort>
-            <HuskListe>
-                <li>Opprett notat om utestengelse i Gosys</li>
-                <li>Hvis bruker har løpende stønader manuelt opphøre disse</li>
-                <li>Sendes brev om utestengelse til bruker fra EF Sak frittstående brevutsender</li>
-            </HuskListe>
             <Periode>
                 <MånedÅrVelger
                     antallÅrFrem={2}
