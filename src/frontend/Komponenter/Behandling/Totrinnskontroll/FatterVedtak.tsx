@@ -44,8 +44,8 @@ interface TotrinnskontrollForm {
 
 const FatterVedtak: React.FC<{
     behandlingId: string;
-    settVisModal: (vis: boolean) => void;
-}> = ({ behandlingId, settVisModal }) => {
+    settVisGodkjentModal: (vis: boolean) => void;
+}> = ({ behandlingId, settVisGodkjentModal }) => {
     const [godkjent, settGodkjent] = useState<boolean>();
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
@@ -74,7 +74,7 @@ const FatterVedtak: React.FC<{
                     if (godkjent) {
                         hentBehandlingshistorikk.rerun();
                         hentTotrinnskontroll.rerun();
-                        settVisModal(true);
+                        settVisGodkjentModal(true);
                     } else {
                         settToast(EToast.VEDTAK_UNDERKJENT);
                         gåTilUrl('/oppgavebenk');

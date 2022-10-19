@@ -13,7 +13,7 @@ import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
-import { Migreringsstatus } from '../../App/typer/migrering';
+import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
 
 const StyledAlertStripe = styled(AlertStripeInfo)`
     margin: 1rem 0;
@@ -83,9 +83,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 export const Infotrygdperioderoversikt: React.FC<{
     fagsakPerson: IFagsakPerson;
     personIdent: string;
-    onMigrert?: (status: Migreringsstatus) => void;
-    fraOppgavebenken?: boolean;
-}> = ({ fagsakPerson, personIdent, onMigrert, fraOppgavebenken }) => {
+}> = ({ fagsakPerson, personIdent }) => {
     const infotrygdPerioderConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'POST',
@@ -105,11 +103,8 @@ export const Infotrygdperioderoversikt: React.FC<{
                 <InfotrygdperioderoversiktContainer>
                     <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
                     <InfotrygdSaker personIdent={personIdent} />
-                    <MigrerFagsak
-                        fagsakPerson={fagsakPerson}
-                        onMigrert={onMigrert}
-                        fraOppgavebenken={fraOppgavebenken}
-                    />
+                    <MigrerFagsak fagsakPerson={fagsakPerson} />
+                    <MigrerBarnetilsyn fagsakPerson={fagsakPerson} />
                 </InfotrygdperioderoversiktContainer>
             )}
         </DataViewer>

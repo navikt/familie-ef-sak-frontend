@@ -27,17 +27,15 @@ import {
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Heading, Label, Tooltip } from '@navikt/ds-react';
 import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
 import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import { EToast } from '../../../App/typer/toast';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
-    width: inherit;
+    width: 48rem;
 `;
 
 const StyledHovedKnapp = styled(Hovedknapp)`
@@ -46,6 +44,30 @@ const StyledHovedKnapp = styled(Hovedknapp)`
 
 const AlertStripe = styled(Alert)`
     margin-top: 2rem;
+`;
+
+const Grid = styled.div`
+    display: grid;
+    grid-template-columns: 9rem 23rem 16rem;
+`;
+
+const InfoHeader = styled.div`
+    display: grid;
+    grid-template-columns: 29rem 14rem;
+`;
+
+const SideTittel = styled(Heading)`
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+`;
+
+const KompaktButton = styled(Button)`
+    padding: 0;
+    justify-content: right;
+
+    .navds-button__inner {
+        margin: 0;
+    }
 `;
 
 type Props = {
@@ -97,9 +119,8 @@ const FrittståendeBrev: React.FC<Props> = ({
     const [feilmelding, settFeilmelding] = useState('');
     const [senderInnBrev, settSenderInnBrev] = useState(false);
     const [visModal, settVisModal] = useState<boolean>(false);
+    const { axiosRequest, settToast } = useApp();
     const [visNullstillBrevModal, settVisNullstillBrevModal] = useState<boolean>(false);
-    const { axiosRequest, settVisBrevmottakereModal, settToast } = useApp();
-    const { toggles } = useToggles();
 
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FrittståendeBrevtype);
@@ -250,36 +271,12 @@ const FrittståendeBrev: React.FC<Props> = ({
         //eslint-disable-next-line
     }, [brevmottakere]);
 
-    const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
-        return [
-            ...brevMottakere.personer.map(
-                (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
-            ),
-            ...brevMottakere.organisasjoner.map(
-                (org) => `${org.organisasjonsnavn} (${org.mottakerRolle.toLowerCase()})`
-            ),
-        ];
-    };
-
-    const brevmottakerErValgt =
-        brevmottakere.personer.length > 0 || brevmottakere.organisasjoner.length > 0;
-
     return (
         <StyledBrev>
-            <h1>Brev</h1>
-            {brevmottakerErValgt && (
-                <Alert variant={'info'}>
-                    <Heading size={'xsmall'}>Mottakere av brev:</Heading>
-                    {utledNavnPåMottakere(brevmottakere).map((navn, index) => (
-                        <BodyShort key={navn + index}>{navn}</BodyShort>
-                    ))}
-                </Alert>
-            )}
-            {toggles[ToggleName.visKnappVergeFrittståendeBrev] && (
-                <Button variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
-                    Legg til verge eller fullmektig
-                </Button>
-            )}
+            <SideTittel level={'1'} size={'large'}>
+                Brev
+            </SideTittel>
+            <BrevMottakere mottakere={brevmottakere} />
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}
@@ -341,6 +338,59 @@ const FrittståendeBrev: React.FC<Props> = ({
                 kallHentBrevmottakere={hentBrevmottakere}
             />
         </StyledBrev>
+    );
+};
+
+const BrevMottakere: React.FC<{ mottakere: IBrevmottakere }> = ({ mottakere }) => {
+    const { settVisBrevmottakereModal } = useApp();
+    const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
+        return [
+            ...brevMottakere.personer.map(
+                (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
+            ),
+            ...brevMottakere.organisasjoner.map(
+                (org) => `${org.organisasjonsnavn} (${org.mottakerRolle.toLowerCase()})`
+            ),
+        ];
+    };
+
+    const navn = utledNavnPåMottakere(mottakere);
+    const flereBrevmottakereErValgt = navn.length > 1;
+    const brukerErBrevmottaker = mottakere.personer.find(
+        (person) => person.mottakerRolle === EBrevmottakerRolle.BRUKER
+    );
+
+    return flereBrevmottakereErValgt || !brukerErBrevmottaker ? (
+        <Alert variant={'info'}>
+            <InfoHeader>
+                <Label>Brevmottakere:</Label>
+                <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
+                    <KompaktButton
+                        variant={'tertiary'}
+                        onClick={() => settVisBrevmottakereModal(true)}
+                    >
+                        Legg til/endre brevmottakere
+                    </KompaktButton>
+                </Tooltip>
+            </InfoHeader>
+            <ul>
+                {navn.map((navn, index) => (
+                    <li key={navn + index}>
+                        <BodyShort key={navn + index}>{navn}</BodyShort>
+                    </li>
+                ))}
+            </ul>
+        </Alert>
+    ) : (
+        <Grid>
+            <Label>Brevmottaker:</Label>
+            <BodyShort>{navn.map((navn) => navn)}</BodyShort>
+            <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
+                <KompaktButton variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
+                    Legg til/endre brevmottakere
+                </KompaktButton>
+            </Tooltip>
+        </Grid>
     );
 };
 

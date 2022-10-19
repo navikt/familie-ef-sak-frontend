@@ -7,7 +7,7 @@ import {
     Ressurs,
     RessursStatus,
 } from '../../App/typer/ressurs';
-import { MigreringInfoResponse, Migreringsstatus } from '../../App/typer/migrering';
+import { MigreringInfoResponse } from '../../App/typer/migrering';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import {
@@ -20,14 +20,13 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import styled from 'styled-components';
-import Info from '../../Felles/Ikoner/Info';
 import { Button } from '@navikt/ds-react';
 
 const StyledKnapp = styled(Button)`
     margin: 0.25rem;
 `;
 
-const visMigrertStatus = (migrertStatus: Ressurs<string>) => {
+export const visMigrertStatus = (migrertStatus: Ressurs<string>) => {
     return (
         <>
             {migrertStatus.status === RessursStatus.SUKSESS && (
@@ -72,9 +71,7 @@ const visMigreringInfo = (migreringInfo: MigreringInfoResponse) => {
 
 const MigrerFagsak: React.FC<{
     fagsakPerson: IFagsakPerson;
-    onMigrert?: (status: Migreringsstatus) => void;
-    fraOppgavebenken?: boolean;
-}> = ({ fagsakPerson, onMigrert, fraOppgavebenken }) => {
+}> = ({ fagsakPerson }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
@@ -115,9 +112,6 @@ const MigrerFagsak: React.FC<{
         settMigrertStatus(byggHenterRessurs());
         axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
             settMigrertStatus(res);
-            if (res.status === RessursStatus.SUKSESS && onMigrert) {
-                onMigrert(Migreringsstatus.ER_MIGRERT);
-            }
         });
     };
 
@@ -147,40 +141,6 @@ const MigrerFagsak: React.FC<{
                                     </StyledKnapp>
                                 </div>
                             )}
-                            {migreringInfo.kanMigreres && fraOppgavebenken && (
-                                <>
-                                    <div>
-                                        <Info heigth={24} width={24} /> Etter migrering vil du bli
-                                        sendt videre til journalføring.
-                                    </div>
-                                    <div>
-                                        Hvis du ønsker å journalføre på en ny behandling må du
-                                        refreshe siden til at behandlingen får statusen "IVERKSATT"
-                                    </div>
-                                </>
-                            )}
-                            {fraOppgavebenken &&
-                                migreringInfo.kanGåVidereTilJournalføring &&
-                                onMigrert && (
-                                    <>
-                                        <div>
-                                            Gå til journalføring om du ønsker å opprette saken i EF
-                                            Sak
-                                        </div>
-                                        <div>
-                                            <StyledKnapp
-                                                variant={'secondary'}
-                                                onClick={() =>
-                                                    onMigrert(
-                                                        Migreringsstatus.KAN_GÅ_VIDERE_TIL_JOURNALFØRING
-                                                    )
-                                                }
-                                            >
-                                                Gå videre til journalføring
-                                            </StyledKnapp>
-                                        </div>
-                                    </>
-                                )}
                         </>
                     );
                 }}
