@@ -21,7 +21,14 @@ import { BehandlingApplikasjon } from './Behandlingsoversikt';
 import { PartialRecord } from '../../App/typer/common';
 import styled from 'styled-components';
 import { klageBaseUrl, tilbakekrevingBaseUrl } from '../../App/utils/miljø';
-import { KlageBehandling, KlagebehandlingResultat, KlageÅrsak } from '../../App/typer/klage';
+import {
+    KlageBehandling,
+    KlagebehandlingEksternType,
+    KlageBehandlingEksternUtfall,
+    klagebehandlingEksternUtfallTilTekst,
+    KlagebehandlingResultat,
+    KlageÅrsak,
+} from '../../App/typer/klage';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -51,6 +58,7 @@ interface BehandlingsoversiktTabellBehandling {
         | KlagebehandlingResultat;
     opprettet: string;
     applikasjon: BehandlingApplikasjon;
+    eksternKlageresultat?: KlageBehandlingEksternUtfall[];
 }
 
 export const BehandlingsoversiktTabell: React.FC<{
@@ -99,6 +107,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 opprettet: behandling.opprettet,
                 applikasjon: BehandlingApplikasjon.KLAGE,
                 årsak: behandling.årsak,
+                eksternKlageresultat: behandling.eksternKlageresultat,
             };
         }
     );
@@ -141,6 +150,28 @@ export const BehandlingsoversiktTabell: React.FC<{
 
     const finnHenlagtÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
         behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';
+
+    const utledBehandlingResultatTilTekst = (behandling: BehandlingsoversiktTabellBehandling) => {
+        if (
+            behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
+            behandling.eksternKlageresultat
+        ) {
+            const klageResultatMedUtfall = behandling.eksternKlageresultat.filter(
+                (resultat) =>
+                    resultat.utfall &&
+                    resultat.type == KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET
+            );
+            const harAnke = behandling.eksternKlageresultat.length > 1;
+            const ankeTekst = harAnke ? ' (har anke)' : '';
+            if (klageResultatMedUtfall.length > 0) {
+                const utfall = klageResultatMedUtfall[0];
+                if (utfall.utfall) {
+                    return klagebehandlingEksternUtfallTilTekst[utfall.utfall] + ankeTekst;
+                }
+            }
+        }
+        return behandling.resultat ? behandlingResultatTilTekst[behandling.resultat] : 'Ikke satt';
+    };
 
     return (
         <StyledTable className="tabell">
@@ -195,9 +226,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                                             behandling.applikasjon
                                         )}
                                     >
-                                        {behandling.resultat
-                                            ? behandlingResultatTilTekst[behandling.resultat]
-                                            : 'Ikke satt'}
+                                        {utledBehandlingResultatTilTekst(behandling)}
                                     </a>
                                 )}
                             </td>
