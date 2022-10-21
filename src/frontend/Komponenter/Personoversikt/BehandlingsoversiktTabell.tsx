@@ -62,14 +62,14 @@ interface BehandlingsoversiktTabellBehandling {
         | KlagebehandlingResultat;
     opprettet: string;
     applikasjon: BehandlingApplikasjon;
-    eksternKlageresultat?: KlageBehandlingEksternUtfall[];
+    klageinstansResultat?: KlageBehandlingEksternUtfall[];
 }
 
 const VisAnkeEksistererIkon: React.FC<{
     behandling: BehandlingsoversiktTabellBehandling;
 }> = ({ behandling }) => {
-    if (behandling.applikasjon === BehandlingApplikasjon.KLAGE && behandling.eksternKlageresultat) {
-        const harAnke = behandling.eksternKlageresultat.some(
+    if (behandling.applikasjon === BehandlingApplikasjon.KLAGE && behandling.klageinstansResultat) {
+        const harAnke = behandling.klageinstansResultat.some(
             (resultat) => resultat.type != KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET
         );
         if (harAnke) {
@@ -125,7 +125,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 opprettet: behandling.opprettet,
                 applikasjon: BehandlingApplikasjon.KLAGE,
                 årsak: behandling.årsak,
-                eksternKlageresultat: behandling.eksternKlageresultat,
+                klageinstansResultat: behandling.klageinstansResultat,
             };
         }
     );
@@ -171,7 +171,7 @@ export const BehandlingsoversiktTabell: React.FC<{
 
     const utledBehandlingResultatTilTekst = (behandling: BehandlingsoversiktTabellBehandling) => {
         if (behandling.applikasjon === BehandlingApplikasjon.KLAGE) {
-            const klageBehandlingAvsluttetUtfall = behandling.eksternKlageresultat?.find(
+            const klageBehandlingAvsluttetUtfall = behandling.klageinstansResultat?.find(
                 (resultat) =>
                     resultat.utfall &&
                     resultat.type == KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET

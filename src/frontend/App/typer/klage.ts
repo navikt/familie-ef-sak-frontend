@@ -13,7 +13,7 @@ export interface KlageBehandling {
     status: KlagebehandlingStatus;
     vedtaksdato: string | undefined;
     årsak: KlageÅrsak | undefined;
-    eksternKlageresultat: KlageBehandlingEksternUtfall[];
+    klageinstansResultat: KlageBehandlingEksternUtfall[];
 }
 
 export interface KlageBehandlingEksternUtfall {
