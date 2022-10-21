@@ -68,18 +68,14 @@ interface BehandlingsoversiktTabellBehandling {
 const VisAnkeEksistererIkon: React.FC<{
     behandling: BehandlingsoversiktTabellBehandling;
 }> = ({ behandling }) => {
-    console.log(behandling);
-
     if (behandling.applikasjon === BehandlingApplikasjon.KLAGE && behandling.eksternKlageresultat) {
         const harAnke = behandling.eksternKlageresultat.some(
             (resultat) => resultat.type != KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET
         );
-
         if (harAnke) {
             return <StyledWarningColored title={'har anke informasjon'} />;
         }
     }
-
     return null;
 };
 
