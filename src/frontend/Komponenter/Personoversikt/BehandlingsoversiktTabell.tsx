@@ -29,10 +29,14 @@ import {
     KlagebehandlingResultat,
     KlageÅrsak,
 } from '../../App/typer/klage';
-
+import { WarningColored } from '@navikt/ds-icons';
 const StyledTable = styled.table`
     width: 60%;
     padding: 2rem;
+    margin-left: 1rem;
+`;
+
+const StyledWarningColored = styled(WarningColored)`
     margin-left: 1rem;
 `;
 
@@ -60,6 +64,24 @@ interface BehandlingsoversiktTabellBehandling {
     applikasjon: BehandlingApplikasjon;
     eksternKlageresultat?: KlageBehandlingEksternUtfall[];
 }
+
+const VisAnkeEksistererIkon: React.FC<{
+    behandling: BehandlingsoversiktTabellBehandling;
+}> = ({ behandling }) => {
+    console.log(behandling);
+
+    if (behandling.applikasjon === BehandlingApplikasjon.KLAGE && behandling.eksternKlageresultat) {
+        const harAnke = behandling.eksternKlageresultat.some(
+            (resultat) => resultat.type != KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET
+        );
+
+        if (harAnke) {
+            return <StyledWarningColored title={'har anke informasjon'} />;
+        }
+    }
+
+    return null;
+};
 
 export const BehandlingsoversiktTabell: React.FC<{
     behandlinger: Behandling[];
@@ -152,22 +174,15 @@ export const BehandlingsoversiktTabell: React.FC<{
         behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';
 
     const utledBehandlingResultatTilTekst = (behandling: BehandlingsoversiktTabellBehandling) => {
-        if (
-            behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
-            behandling.eksternKlageresultat
-        ) {
-            const klageResultatMedUtfall = behandling.eksternKlageresultat.filter(
+        if (behandling.applikasjon === BehandlingApplikasjon.KLAGE) {
+            const klageBehandlingAvsluttetUtfall = behandling.eksternKlageresultat?.find(
                 (resultat) =>
                     resultat.utfall &&
                     resultat.type == KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET
-            );
-            const harAnke = behandling.eksternKlageresultat.length > 1;
-            const ankeTekst = harAnke ? ' (har anke)' : '';
-            if (klageResultatMedUtfall.length > 0) {
-                const utfall = klageResultatMedUtfall[0];
-                if (utfall.utfall) {
-                    return klagebehandlingEksternUtfallTilTekst[utfall.utfall] + ankeTekst;
-                }
+            )?.utfall;
+
+            if (klageBehandlingAvsluttetUtfall) {
+                return klagebehandlingEksternUtfallTilTekst[klageBehandlingAvsluttetUtfall];
             }
         }
         return behandling.resultat ? behandlingResultatTilTekst[behandling.resultat] : 'Ikke satt';
@@ -216,18 +231,21 @@ export const BehandlingsoversiktTabell: React.FC<{
                                         {finnHenlagtÅrsak(behandling)}
                                     </Link>
                                 ) : (
-                                    <a
-                                        className="lenke"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        href={lagEksternBehandlingApplikasjonLenke(
-                                            eksternFagsakId,
-                                            behandling.id,
-                                            behandling.applikasjon
-                                        )}
-                                    >
-                                        {utledBehandlingResultatTilTekst(behandling)}
-                                    </a>
+                                    <>
+                                        <a
+                                            className="lenke"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            href={lagEksternBehandlingApplikasjonLenke(
+                                                eksternFagsakId,
+                                                behandling.id,
+                                                behandling.applikasjon
+                                            )}
+                                        >
+                                            {utledBehandlingResultatTilTekst(behandling)}{' '}
+                                        </a>
+                                        <VisAnkeEksistererIkon behandling={behandling} />
+                                    </>
                                 )}
                             </td>
                         </tr>
