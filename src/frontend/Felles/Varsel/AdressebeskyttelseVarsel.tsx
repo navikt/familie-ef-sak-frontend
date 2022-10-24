@@ -1,6 +1,6 @@
 import React from 'react';
 import { Adressebeskyttelse } from '../../App/typer/personopplysninger';
-import { EtikettAdvarsel } from 'nav-frontend-etiketter';
+import { Tag } from '@navikt/ds-react';
 
 interface IProps {
     adressebeskyttelse: Adressebeskyttelse;
@@ -9,11 +9,23 @@ interface IProps {
 const AdressebeskyttelseVarsel: React.FC<IProps> = ({ adressebeskyttelse }) => {
     switch (adressebeskyttelse) {
         case Adressebeskyttelse.STRENGT_FORTROLIG_UTLAND:
-            return <EtikettAdvarsel mini>Kode 6 U</EtikettAdvarsel>;
+            return (
+                <Tag variant={'error'} size={'small'}>
+                    Kode 6 U
+                </Tag>
+            );
         case Adressebeskyttelse.STRENGT_FORTROLIG:
-            return <EtikettAdvarsel mini>Kode 6</EtikettAdvarsel>;
+            return (
+                <Tag variant={'error'} size={'small'}>
+                    Kode 6
+                </Tag>
+            );
         case Adressebeskyttelse.FORTROLIG:
-            return <EtikettAdvarsel mini>Kode 7</EtikettAdvarsel>;
+            return (
+                <Tag variant={'error'} size={'small'}>
+                    Kode 7
+                </Tag>
+            );
         default:
             return null;
     }

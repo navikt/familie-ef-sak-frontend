@@ -5,7 +5,6 @@ import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Side } from '../../Felles/Visningskomponenter/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';
-import { TabsPure } from 'nav-frontend-tabs';
 import Personopplysninger from './Personopplysninger';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
@@ -18,6 +17,7 @@ import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
+import { Tabs } from '@navikt/ds-react';
 
 type TabWithRouter = {
     label: string;
@@ -101,12 +101,18 @@ const PersonoversiktContent: React.FC<{
         <>
             <PersonHeaderComponent data={personopplysninger} />
             <Side className={'container'}>
-                <TabsPure
-                    tabs={tabs.map((tab) => ({ label: tab.label, aktiv: tab.path === path }))}
-                    onChange={(_, tabNumber) => {
-                        navigate(tabs[tabNumber].path);
+                <Tabs
+                    value={path}
+                    onChange={(tabPath) => {
+                        navigate(tabPath);
                     }}
-                />
+                >
+                    <Tabs.List>
+                        {tabs.map((tab) => {
+                            return <Tabs.Tab value={tab.path} label={tab.label} />;
+                        })}
+                    </Tabs.List>
+                </Tabs>
 
                 <Routes>
                     {tabs.map((tab) => (

@@ -9,22 +9,14 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
 import { Checkbox } from 'nav-frontend-skjema';
-import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import styled from 'styled-components';
+import { Accordion } from '@navikt/ds-react';
+import { NavdsBorderRadiusMedium, NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
 
 const DelmalValg = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-`;
-
-const StyledEkspanderbartpanelBase = styled(EkspanderbartpanelBase)`
-    flex: 100%;
-    .ingressTittel {
-        font-size: 18px;
-        line-height: 26px;
-        font-weight: 600;
-    }
 `;
 
 interface Props {
@@ -76,45 +68,57 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     return (
         <DelmalValg>
             <Checkbox label="" onChange={håndterToggleDelmal} checked={valgt} />
-            <StyledEkspanderbartpanelBase
-                tittel={delmal?.delmalNavn}
-                apen={ekspanderbartPanelÅpen}
-                onClick={() => {
-                    settEkspanderbartPanelÅpen(!ekspanderbartPanelÅpen);
+            <Accordion
+                style={{
+                    width: '100%',
+                    border: `1px solid ${NavdsSemanticColorBorder}`,
+                    borderRadius: `${NavdsBorderRadiusMedium}`,
                 }}
-                className={'ingressTittel'}
             >
-                {delmalValgfelt &&
-                    delmalValgfelt.map((valgFelt, index) => (
-                        <ValgfeltSelect
-                            valgFelt={valgFelt}
-                            dokument={dokument}
-                            valgteFelt={valgteFelt}
-                            settValgteFelt={settValgteFelt}
-                            flettefelter={flettefelter}
-                            settFlettefelter={settFlettefelter}
-                            handleFlettefeltInput={handleFlettefeltInput}
-                            delmal={delmal}
-                            key={`${valgteFelt.valgFeltKategori}${index}`}
-                            settKanSendeTilBeslutter={settKanSendeTilBeslutter}
-                        />
-                    ))}
-                {delmalFlettefelter
-                    .flatMap((f) => f.flettefelt)
-                    .filter(
-                        (felt, index, self) => self.findIndex((t) => t._ref === felt._ref) === index
-                    )
-                    .map((flettefelt) => (
-                        <Flettefelt
-                            fetLabel={true}
-                            flettefelt={flettefelt}
-                            dokument={dokument}
-                            flettefelter={flettefelter}
-                            handleFlettefeltInput={handleFlettefeltInput}
-                            key={flettefelt._ref}
-                        />
-                    ))}
-            </StyledEkspanderbartpanelBase>
+                <Accordion.Item>
+                    <Accordion.Header
+                        style={{
+                            borderRadius: `${NavdsBorderRadiusMedium}`,
+                            border: 'none',
+                        }}
+                    >
+                        {delmal?.delmalNavn}
+                    </Accordion.Header>
+                    <Accordion.Content style={{ border: 'none', padding: '1rem' }}>
+                        {delmalValgfelt &&
+                            delmalValgfelt.map((valgFelt, index) => (
+                                <ValgfeltSelect
+                                    valgFelt={valgFelt}
+                                    dokument={dokument}
+                                    valgteFelt={valgteFelt}
+                                    settValgteFelt={settValgteFelt}
+                                    flettefelter={flettefelter}
+                                    settFlettefelter={settFlettefelter}
+                                    handleFlettefeltInput={handleFlettefeltInput}
+                                    delmal={delmal}
+                                    key={`${valgteFelt.valgFeltKategori}${index}`}
+                                    settKanSendeTilBeslutter={settKanSendeTilBeslutter}
+                                />
+                            ))}
+                        {delmalFlettefelter
+                            .flatMap((f) => f.flettefelt)
+                            .filter(
+                                (felt, index, self) =>
+                                    self.findIndex((t) => t._ref === felt._ref) === index
+                            )
+                            .map((flettefelt) => (
+                                <Flettefelt
+                                    fetLabel={true}
+                                    flettefelt={flettefelt}
+                                    dokument={dokument}
+                                    flettefelter={flettefelter}
+                                    handleFlettefeltInput={handleFlettefeltInput}
+                                    key={flettefelt._ref}
+                                />
+                            ))}
+                    </Accordion.Content>
+                </Accordion.Item>
+            </Accordion>
         </DelmalValg>
     );
 };

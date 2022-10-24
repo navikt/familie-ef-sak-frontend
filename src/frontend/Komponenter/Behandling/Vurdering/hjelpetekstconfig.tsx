@@ -1,18 +1,18 @@
 import NæreBoforholdHjelpetekst from '../Inngangsvilkår/Aleneomsorg/NæreBoforholdHjelpetekst';
 import React from 'react';
-import { PopoverOrientering } from 'nav-frontend-popover';
 import { RimeligGrunnHjelpetekst } from '../Aktivitet/SagtOppEllerRedusert/RimeligGrunnHjelpetekst';
+import { HelpTextProps } from '@navikt/ds-react';
 
 export const hjelpeTekstConfig: Record<
     string,
-    { komponent: React.FC; plassering: PopoverOrientering }
+    { komponent: React.FC; plassering: HelpTextProps['placement'] }
 > = {
     NÆRE_BOFORHOLD: {
         komponent: NæreBoforholdHjelpetekst,
-        plassering: PopoverOrientering.Under,
+        plassering: 'bottom',
     },
     SAGT_OPP_ELLER_REDUSERT: {
         komponent: RimeligGrunnHjelpetekst,
-        plassering: PopoverOrientering.OverHoyre,
+        plassering: 'top-end',
     },
 };

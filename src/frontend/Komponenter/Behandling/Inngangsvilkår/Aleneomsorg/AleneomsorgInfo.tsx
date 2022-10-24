@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
@@ -7,15 +7,14 @@ import Bosted from './Bosted';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import Samvær from './Samvær';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
-import { StyledLesmerpanel } from '../../../../Felles/Visningskomponenter/StyledLesmerpanel';
-import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { EtikettAdvarsel, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
+import { Tag } from '@navikt/ds-react';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -23,6 +22,7 @@ const AleneomsorgInfo: FC<{
     barnMedLøpendeStønad: Ressurs<IBarnMedLøpendeStønad>;
     stønadstype: Stønadstype;
 }> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad, stønadstype }) => {
+    const [åpentPanel, settÅpentPanel] = useState(false);
     const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -32,13 +32,13 @@ const AleneomsorgInfo: FC<{
     ) => {
         const harLøpendeStønad = barnMedLøpendeStønad.barn.includes(personIdent);
         return harLøpendeStønad ? (
-            <EtikettSuksess>{`ja - per ${formaterNullableIsoDato(
+            <Tag variant={'success'}>{`ja - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
-            )}`}</EtikettSuksess>
+            )}`}</Tag>
         ) : (
-            <EtikettAdvarsel>{`nei - per ${formaterNullableIsoDato(
+            <Tag variant={'error'}>{`nei - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
-            )}`}</EtikettAdvarsel>
+            )}`}</Tag>
         );
     };
 
@@ -118,9 +118,9 @@ const AleneomsorgInfo: FC<{
                         <Normaltekst>Søkes det om stønad til barnetilsyn for barnet</Normaltekst>
                         <Normaltekst>
                             {barnepass?.skalHaBarnepass ? (
-                                <EtikettSuksess>ja</EtikettSuksess>
+                                <Tag variant={'success'}>ja</Tag>
                             ) : (
-                                <EtikettAdvarsel>nei</EtikettAdvarsel>
+                                <Tag variant={'error'}>nei</Tag>
                             )}
                         </Normaltekst>
                     </>
@@ -145,23 +145,26 @@ const AleneomsorgInfo: FC<{
             </GridTabell>
 
             {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
-                <StyledLesmerpanel>
-                    <Lesmerpanel apneTekst={'Vis info om barnet'} lukkTekst={'Lukk info om barnet'}>
-                        {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
-                            <>
-                                {skalViseSøknadsdata && (
-                                    <AnnenForelderOpplysninger
-                                        søknadsgrunnlag={søknadsgrunnlag}
-                                        forelderRegister={registergrunnlag.forelder}
-                                    />
-                                )}
-                                {!registergrunnlag.forelder?.dødsfall && (
-                                    <Samvær søknadsgrunnlag={søknadsgrunnlag} />
-                                )}
-                            </>
-                        )}
-                    </Lesmerpanel>
-                </StyledLesmerpanel>
+                <UtvidPanel
+                    åpen={åpentPanel}
+                    knappTekst={åpentPanel ? 'Lukk info om barnet' : 'Vis info om barnet'}
+                    onClick={() => settÅpentPanel(!åpentPanel)}
+                    position={'left'}
+                >
+                    {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
+                        <>
+                            {skalViseSøknadsdata && (
+                                <AnnenForelderOpplysninger
+                                    søknadsgrunnlag={søknadsgrunnlag}
+                                    forelderRegister={registergrunnlag.forelder}
+                                />
+                            )}
+                            {!registergrunnlag.forelder?.dødsfall && (
+                                <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                            )}
+                        </>
+                    )}
+                </UtvidPanel>
             )}
         </>
     );

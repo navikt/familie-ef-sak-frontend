@@ -6,11 +6,11 @@ import { Element } from 'nav-frontend-typografi';
 import { IngenData, TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import { Knapp } from 'nav-frontend-knapper';
-import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
 import { ModalWrapper } from '../Modal/ModalWrapper';
+import UtvidPanel from '../UtvidPanel/UtvidPanel';
 
 const StyledKnapp = styled(Knapp)`
     margin-left: 1rem;
@@ -19,12 +19,6 @@ const StyledKnapp = styled(Knapp)`
 const StyledFlexDiv = styled.div`
     display: flex;
     justify-content: space-between;
-`;
-
-const StyledLesmer = styled(Lesmerpanel)`
-    .lesMerPanel__mer {
-        padding-top: 0rem;
-    }
 `;
 
 const MAX_LENGDE_ADRESSER = 5;
@@ -59,10 +53,9 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
     } else {
         const introAdresser = adresser.slice(0, MAX_LENGDE_ADRESSER);
         return (
-            <StyledLesmer
-                onOpen={() => setIsClosed(false)}
-                onClose={() => setIsClosed(true)}
-                className={'adresser'}
+            <UtvidPanel
+                åpen={!isClosed}
+                onClick={() => setIsClosed(!isClosed)}
                 intro={
                     isClosed && (
                         <Adresser
@@ -72,11 +65,10 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
                         />
                     )
                 }
-                apneTekst={'Vis flere adresser'}
-                lukkTekst={'Skjul adresser'}
+                knappTekst={isClosed ? 'Vis flere adresser' : 'Skjul adresser'}
             >
                 <Adresser adresser={adresser} fagsakPersonId={fagsakPersonId} type={type} />
-            </StyledLesmer>
+            </UtvidPanel>
         );
     }
 };
