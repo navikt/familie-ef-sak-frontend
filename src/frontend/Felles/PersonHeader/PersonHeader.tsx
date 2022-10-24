@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
-import { EtikettFokus, EtikettInfo, EtikettSuksess } from 'nav-frontend-etiketter';
 import { Behandling } from '../../App/typer/fagsak';
 import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
@@ -29,6 +28,7 @@ import {
     stønadstypeTilTekstKort,
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
+import { Tag } from '@navikt/ds-react';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -184,24 +184,32 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                 )}
                 {egenAnsatt && (
                     <ElementWrapper>
-                        <EtikettFokus mini>Egen ansatt</EtikettFokus>
+                        <Tag variant={'warning'} size={'small'}>
+                            Egen ansatt
+                        </Tag>
                     </ElementWrapper>
                 )}
                 {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
                     <ElementWrapper>
-                        <EtikettFokus mini>Fullmakt</EtikettFokus>
+                        <Tag variant={'warning'} size={'small'}>
+                            Fullmakt
+                        </Tag>
                     </ElementWrapper>
                 )}
 
                 {vergemål.length > 0 && (
                     <ElementWrapper>
-                        <EtikettFokus mini>Verge</EtikettFokus>
+                        <Tag variant={'warning'} size={'small'}>
+                            Verge
+                        </Tag>
                     </ElementWrapper>
                 )}
 
                 {erMigrert && (
                     <ElementWrapper>
-                        <EtikettFokus mini>Migrert</EtikettFokus>
+                        <Tag variant={'warning'} size={'small'}>
+                            Migrert
+                        </Tag>
                     </ElementWrapper>
                 )}
 
@@ -209,36 +217,36 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                     {behandling && (
                         <ElementWrapper>
                             <TagsLitenSkjerm>
-                                <EtikettSuksess mini>
+                                <Tag variant={'success'} size={'small'}>
                                     {stønadstypeTilTekstKort[behandling.stønadstype]}
-                                </EtikettSuksess>
+                                </Tag>
                             </TagsLitenSkjerm>
                             <TagsStorSkjerm>
-                                <EtikettSuksess mini>
+                                <Tag variant={'success'} size={'small'}>
                                     {stønadstypeTilTekst[behandling.stønadstype]}
-                                </EtikettSuksess>
+                                </Tag>
                             </TagsStorSkjerm>
                         </ElementWrapper>
                     )}
                     {behandling && (
                         <ElementWrapper>
                             <TagsLitenSkjerm>
-                                <EtikettInfo mini>
+                                <Tag variant={'info'} size={'small'}>
                                     {behandlingstypeTilTekstKort[behandling.type]}
-                                </EtikettInfo>
+                                </Tag>
                             </TagsLitenSkjerm>
                             <TagsStorSkjerm>
-                                <EtikettInfo mini>
+                                <Tag variant={'info'} size={'small'}>
                                     {behandlingstypeTilTekst[behandling.type]}
-                                </EtikettInfo>
+                                </Tag>
                             </TagsStorSkjerm>
                         </ElementWrapper>
                     )}
                     {behandling && behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
                         <ElementWrapper>
-                            <EtikettFokus mini>
+                            <Tag variant={'warning'} size={'small'}>
                                 {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
-                            </EtikettFokus>
+                            </Tag>
                         </ElementWrapper>
                     )}
                 </TagsKnyttetTilBehandling>

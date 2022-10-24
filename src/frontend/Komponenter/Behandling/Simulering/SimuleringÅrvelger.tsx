@@ -1,8 +1,8 @@
 import React from 'react';
 import { ISimuleringÅrsvelger } from './SimuleringTyper';
-import { HoyreChevron, VenstreChevron } from 'nav-frontend-chevron';
-import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
+import { Button } from '@navikt/ds-react';
+import { Left, Right } from '@navikt/ds-icons';
 
 const Årstall = styled.span`
     margin: 0 1rem;
@@ -14,13 +14,19 @@ const SimuleringÅrvelger: React.FC<{ årsvelger: ISimuleringÅrsvelger }> = ({ 
     const kanVelgeNesteÅr = muligeÅr.some((muligÅr) => muligÅr > valgtÅr);
     return (
         <div>
-            <Knapp disabled={!kanVelgeForrigeÅr} onClick={() => settÅr(valgtÅr - 1)} kompakt mini>
-                <VenstreChevron />
-            </Knapp>
+            <Button
+                icon={<Left />}
+                disabled={!kanVelgeForrigeÅr}
+                onClick={() => settÅr(valgtÅr - 1)}
+                size={'small'}
+            />
             <Årstall className="typo-undertittel">{valgtÅr}</Årstall>
-            <Knapp disabled={!kanVelgeNesteÅr} onClick={() => settÅr(valgtÅr + 1)} kompakt mini>
-                <HoyreChevron />
-            </Knapp>
+            <Button
+                icon={<Right />}
+                disabled={!kanVelgeNesteÅr}
+                onClick={() => settÅr(valgtÅr + 1)}
+                size={'small'}
+            />
         </div>
     );
 };

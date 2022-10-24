@@ -1,12 +1,12 @@
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import * as React from 'react';
 import { FC } from 'react';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Regel } from './typer';
 import { DelvilkårContainer } from './DelvilkårContainer';
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
+import { HelpText } from '@navikt/ds-react';
 
 interface Props {
     regel: Regel;
@@ -36,9 +36,9 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
                 ))}
             </RadioGruppe>
             {hjelpetekst && (
-                <Hjelpetekst type={hjelpetekst.plassering}>
+                <HelpText placement={hjelpetekst.plassering}>
                     {React.createElement(hjelpetekst.komponent)}
-                </Hjelpetekst>
+                </HelpText>
             )}
         </DelvilkårContainer>
     );

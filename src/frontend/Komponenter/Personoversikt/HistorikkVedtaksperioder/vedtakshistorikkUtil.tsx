@@ -8,6 +8,7 @@ import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import { EPeriodetype } from '../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
+import { TagProps } from '@navikt/ds-react';
 
 export const HistorikkTabell = styled.table`
     margin-top: 2rem;
@@ -33,18 +34,18 @@ export const historikkEndring = (endring?: AndelHistorikkEndring) =>
         </Link>
     );
 
-export const etikettType = (periodeType?: EPeriodetype) => {
+export const etikettType = (periodeType?: EPeriodetype): TagProps['variant'] => {
     switch (periodeType) {
         case EPeriodetype.HOVEDPERIODE:
-            return 'suksess';
+            return 'success';
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return 'info';
         case EPeriodetype.UTVIDELSE:
-            return 'fokus';
+            return 'warning';
         case EPeriodetype.MIGRERING:
         case EPeriodetype.FORLENGELSE:
         case EPeriodetype.SANKSJON:
-            return 'advarsel';
+            return 'error';
         default:
             return 'info';
     }

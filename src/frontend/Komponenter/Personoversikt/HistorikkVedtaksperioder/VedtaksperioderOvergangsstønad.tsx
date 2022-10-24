@@ -7,7 +7,6 @@ import {
     formaterTallMedTusenSkille,
 } from '../../../App/utils/formatter';
 import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
-import EtikettBase from 'nav-frontend-etiketter';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
 import React from 'react';
 import {
@@ -17,6 +16,7 @@ import {
     HistorikkTabell,
 } from './vedtakshistorikkUtil';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
+import { Tag } from '@navikt/ds-react';
 
 const lenketekst = (andel: AndelHistorikk) => {
     if (
@@ -39,9 +39,9 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
                 {formaterNullableMånedÅr(andel.andel.stønadTil)}
             </td>
             <td>
-                <EtikettBase mini type={etikettType(andel.periodeType)}>
+                <Tag variant={etikettType(andel.periodeType)} size={'small'}>
                     {periodetypeTilTekst[andel.periodeType || '']}
-                </EtikettBase>
+                </Tag>
             </td>
             <td>
                 {erSanksjon

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Folkeregisterpersonstatus } from '../../App/typer/personopplysninger';
-import { EtikettAdvarsel } from 'nav-frontend-etiketter';
+import { Tag } from '@navikt/ds-react';
 
 interface IProps {
     folkeregisterpersonstatus: Folkeregisterpersonstatus;
@@ -9,11 +9,23 @@ interface IProps {
 const PersonStatusVarsel: React.FC<IProps> = ({ folkeregisterpersonstatus }) => {
     switch (folkeregisterpersonstatus) {
         case Folkeregisterpersonstatus.DØD:
-            return <EtikettAdvarsel mini>Død</EtikettAdvarsel>;
+            return (
+                <Tag variant={'error'} size={'small'}>
+                    Død
+                </Tag>
+            );
         case Folkeregisterpersonstatus.FORSVUNNET:
-            return <EtikettAdvarsel mini>Forsvunnet</EtikettAdvarsel>;
+            return (
+                <Tag variant={'error'} size={'small'}>
+                    Forsvunnet
+                </Tag>
+            );
         case Folkeregisterpersonstatus.UTFLYTTET:
-            return <EtikettAdvarsel mini>Utflyttet</EtikettAdvarsel>;
+            return (
+                <Tag variant={'error'} size={'small'}>
+                    Utflyttet
+                </Tag>
+            );
         default:
             return null;
     }
