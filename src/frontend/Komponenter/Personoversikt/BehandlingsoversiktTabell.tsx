@@ -23,20 +23,21 @@ import styled from 'styled-components';
 import { klageBaseUrl, tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 import {
     KlageBehandling,
-    KlagebehandlingEksternType,
-    KlageBehandlingEksternUtfall,
-    klagebehandlingEksternUtfallTilTekst,
     KlagebehandlingResultat,
+    KlageinstansEventType,
+    KlageinstansResultat,
+    klageinstansUtfallTilTekst,
     KlageÅrsak,
 } from '../../App/typer/klage';
 import { WarningColored } from '@navikt/ds-icons';
+
 const StyledTable = styled.table`
     width: 60%;
     padding: 2rem;
     margin-left: 1rem;
 `;
 
-const StyledWarningColored = styled(WarningColored)`
+const AdvarselIkon = styled(WarningColored)`
     margin-left: 1rem;
 `;
 
@@ -62,22 +63,8 @@ interface BehandlingsoversiktTabellBehandling {
         | KlagebehandlingResultat;
     opprettet: string;
     applikasjon: BehandlingApplikasjon;
-    klageinstansResultat?: KlageBehandlingEksternUtfall[];
+    klageinstansResultat?: KlageinstansResultat[];
 }
-
-const VisAnkeEksistererIkon: React.FC<{
-    behandling: BehandlingsoversiktTabellBehandling;
-}> = ({ behandling }) => {
-    if (behandling.applikasjon === BehandlingApplikasjon.KLAGE && behandling.klageinstansResultat) {
-        const harAnke = behandling.klageinstansResultat.some(
-            (resultat) => resultat.type != KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET
-        );
-        if (harAnke) {
-            return <StyledWarningColored title={'har anke informasjon'} />;
-        }
-    }
-    return null;
-};
 
 export const BehandlingsoversiktTabell: React.FC<{
     behandlinger: Behandling[];
@@ -174,14 +161,24 @@ export const BehandlingsoversiktTabell: React.FC<{
             const klageBehandlingAvsluttetUtfall = behandling.klageinstansResultat?.find(
                 (resultat) =>
                     resultat.utfall &&
-                    resultat.type == KlagebehandlingEksternType.KLAGEBEHANDLING_AVSLUTTET
+                    resultat.type == KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET
             )?.utfall;
 
             if (klageBehandlingAvsluttetUtfall) {
-                return klagebehandlingEksternUtfallTilTekst[klageBehandlingAvsluttetUtfall];
+                return klageinstansUtfallTilTekst[klageBehandlingAvsluttetUtfall];
             }
         }
         return behandling.resultat ? behandlingResultatTilTekst[behandling.resultat] : 'Ikke satt';
+    };
+
+    const ankeHarEksistertPåBehandling = (behandling: BehandlingsoversiktTabellBehandling) => {
+        return (
+            behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
+            behandling.klageinstansResultat &&
+            behandling.klageinstansResultat.some(
+                (resultat) => resultat.type != KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET
+            )
+        );
     };
 
     return (
@@ -238,9 +235,11 @@ export const BehandlingsoversiktTabell: React.FC<{
                                                 behandling.applikasjon
                                             )}
                                         >
-                                            {utledBehandlingResultatTilTekst(behandling)}{' '}
+                                            {utledBehandlingResultatTilTekst(behandling)}
                                         </a>
-                                        <VisAnkeEksistererIkon behandling={behandling} />
+                                        {ankeHarEksistertPåBehandling(behandling) && (
+                                            <AdvarselIkon title={'Har anke informasjon'} />
+                                        )}
                                     </>
                                 )}
                             </td>

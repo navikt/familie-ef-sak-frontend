@@ -13,22 +13,22 @@ export interface KlageBehandling {
     status: KlagebehandlingStatus;
     vedtaksdato: string | undefined;
     årsak: KlageÅrsak | undefined;
-    klageinstansResultat: KlageBehandlingEksternUtfall[];
+    klageinstansResultat: KlageinstansResultat[];
 }
 
-export interface KlageBehandlingEksternUtfall {
-    type: KlagebehandlingEksternType;
-    utfall: KlagebehandlingEksternUtfall;
+export interface KlageinstansResultat {
+    type: KlageinstansEventType;
+    utfall: KlageinstansUtfall;
     mottattEllerAvsluttetTidspunkt: string | undefined;
 }
 
-export enum KlagebehandlingEksternType {
+export enum KlageinstansEventType {
     KLAGEBEHANDLING_AVSLUTTET = 'KLAGEBEHANDLING_AVSLUTTET',
     ANKEBEHANDLING_OPPRETTET = 'ANKEBEHANDLING_OPPRETTET',
     ANKEBEHANDLING_AVSLUTTET = 'ANKEBEHANDLING_AVSLUTTET',
 }
 
-export enum KlagebehandlingEksternUtfall {
+export enum KlageinstansUtfall {
     TRUKKET = 'TRUKKET',
     RETUR = 'RETUR',
     OPPHEVET = 'OPPHEVET',
@@ -39,7 +39,7 @@ export enum KlagebehandlingEksternUtfall {
     AVVIST = 'AVVIST',
 }
 
-export const klagebehandlingEksternUtfallTilTekst: Record<KlagebehandlingEksternUtfall, string> = {
+export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
     TRUKKET: 'Trukket KA',
     RETUR: 'Retur KA',
     OPPHEVET: 'Opphevet KA',
