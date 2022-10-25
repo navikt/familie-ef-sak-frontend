@@ -85,39 +85,41 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     >
                         {delmal?.delmalNavn}
                     </Accordion.Header>
-                    <Accordion.Content style={{ border: 'none', padding: '1rem' }}>
-                        {delmalValgfelt &&
-                            delmalValgfelt.map((valgFelt, index) => (
-                                <ValgfeltSelect
-                                    valgFelt={valgFelt}
-                                    dokument={dokument}
-                                    valgteFelt={valgteFelt}
-                                    settValgteFelt={settValgteFelt}
-                                    flettefelter={flettefelter}
-                                    settFlettefelter={settFlettefelter}
-                                    handleFlettefeltInput={handleFlettefeltInput}
-                                    delmal={delmal}
-                                    key={`${valgteFelt.valgFeltKategori}${index}`}
-                                    settKanSendeTilBeslutter={settKanSendeTilBeslutter}
-                                />
-                            ))}
-                        {delmalFlettefelter
-                            .flatMap((f) => f.flettefelt)
-                            .filter(
-                                (felt, index, self) =>
-                                    self.findIndex((t) => t._ref === felt._ref) === index
-                            )
-                            .map((flettefelt) => (
-                                <Flettefelt
-                                    fetLabel={true}
-                                    flettefelt={flettefelt}
-                                    dokument={dokument}
-                                    flettefelter={flettefelter}
-                                    handleFlettefeltInput={handleFlettefeltInput}
-                                    key={flettefelt._ref}
-                                />
-                            ))}
-                    </Accordion.Content>
+                    {ekspanderbartPanelÅpen && (
+                        <Accordion.Content style={{ border: 'none', padding: '1rem' }}>
+                            {delmalValgfelt &&
+                                delmalValgfelt.map((valgFelt, index) => (
+                                    <ValgfeltSelect
+                                        valgFelt={valgFelt}
+                                        dokument={dokument}
+                                        valgteFelt={valgteFelt}
+                                        settValgteFelt={settValgteFelt}
+                                        flettefelter={flettefelter}
+                                        settFlettefelter={settFlettefelter}
+                                        handleFlettefeltInput={handleFlettefeltInput}
+                                        delmal={delmal}
+                                        key={`${valgteFelt.valgFeltKategori}${index}`}
+                                        settKanSendeTilBeslutter={settKanSendeTilBeslutter}
+                                    />
+                                ))}
+                            {delmalFlettefelter
+                                .flatMap((f) => f.flettefelt)
+                                .filter(
+                                    (felt, index, self) =>
+                                        self.findIndex((t) => t._ref === felt._ref) === index
+                                )
+                                .map((flettefelt) => (
+                                    <Flettefelt
+                                        fetLabel={true}
+                                        flettefelt={flettefelt}
+                                        dokument={dokument}
+                                        flettefelter={flettefelter}
+                                        handleFlettefeltInput={handleFlettefeltInput}
+                                        key={flettefelt._ref}
+                                    />
+                                ))}
+                        </Accordion.Content>
+                    )}
                 </Accordion.Item>
             </Accordion>
         </DelmalValg>
