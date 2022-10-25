@@ -10,8 +10,8 @@ import { ITilbakekrevingsvalg } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import navFarger from 'nav-frontend-core';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -125,9 +125,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                             ikon={<Søknad />}
                             label={'Forhåndsvis varsel'}
                         />
-                        {forhåndsvisningsFeil && (
-                            <AlertStripeFeil>{forhåndsvisningsFeil}</AlertStripeFeil>
-                        )}
+                        {forhåndsvisningsFeil && <AlertError>{forhåndsvisningsFeil}</AlertError>}
                     </VarselValg>
                 )}
                 <Radio

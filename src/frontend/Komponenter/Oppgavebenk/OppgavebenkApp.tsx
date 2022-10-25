@@ -8,14 +8,14 @@ import { Side } from '../../Felles/Visningskomponenter/Side';
 import { IMappe, tomMappeListe } from './typer/mappe';
 import OppgaveFiltrering from './OppgaveFiltrering';
 import { erProd } from '../../App/utils/miljø';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import styled from 'styled-components';
+import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 
 export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
-const InfoVisning = styled(AlertStripeInfo)`
+const InfoVisning = styled(AlertInfo)`
     margin-top: 2rem;
     max-width: 60rem;
-    .alertstripe__tekst {
+    .navds-alert__wrapper {
         max-width: 60rem;
     }
 `;

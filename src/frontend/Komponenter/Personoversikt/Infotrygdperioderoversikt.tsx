@@ -6,7 +6,6 @@ import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Checkbox } from 'nav-frontend-skjema';
 import { InfotrygdPerioderResponse, Perioder } from '../../App/typer/infotrygd';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import MigrerFagsak from '../Migrering/MigrerFagsak';
 import InfotrygdSaker from '../Migrering/InfotrygdSaker';
 import { IFagsakPerson } from '../../App/typer/fagsak';
@@ -14,11 +13,12 @@ import { Stønadstype } from '../../App/typer/behandlingstema';
 import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
 import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
+import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 
-const StyledAlertStripe = styled(AlertStripeInfo)`
+const StyledAlertStripe = styled(AlertInfo)`
     margin: 1rem 0;
     max-width: 51rem;
-    .alertstripe__tekst {
+    .navds-alert__wrapper {
         max-width: 51rem;
     }
 `;

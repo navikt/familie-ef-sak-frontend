@@ -9,7 +9,7 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import AktivitetArbeidInfo from './AktivitetArbeidInfo';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 
 export const AktivitetArbeid: React.FC<VilkårProps> = ({
     vurderinger,
@@ -26,9 +26,9 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
 
     if (!vurdering) {
         return (
-            <AlertStripeFeil>
+            <AlertError>
                 OBS: Noe er galt - det finnes ingen vilkår for aktivitet for denne behandlingen
-            </AlertStripeFeil>
+            </AlertError>
         );
     }
 

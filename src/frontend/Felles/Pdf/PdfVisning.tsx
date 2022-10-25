@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Ressurs } from '../../App/typer/ressurs';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import styled from 'styled-components';
 import { Document, Page, pdfjs } from 'react-pdf';
 import DataViewer from '../DataViewer/DataViewer';
 import Pagination from 'paginering';
+import { AlertError } from '../Visningskomponenter/Alerts';
 
 // eslint-disable-next-line
 const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
@@ -64,10 +64,8 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                     <StyledDokument
                         file={`data:application/pdf;base64,${pdfFilInnhold}`}
                         onLoadSuccess={onDocumentLoadSuccess}
-                        error={
-                            <AlertStripeFeil children={'Ukjent feil ved henting av dokument.'} />
-                        }
-                        noData={<AlertStripeFeil children={'Dokumentet er tomt.'} />}
+                        error={<AlertError children={'Ukjent feil ved henting av dokument.'} />}
+                        noData={<AlertError children={'Dokumentet er tomt.'} />}
                         loading={<NavFrontendSpinner />}
                     >
                         <Page pageNumber={pageNumber} />

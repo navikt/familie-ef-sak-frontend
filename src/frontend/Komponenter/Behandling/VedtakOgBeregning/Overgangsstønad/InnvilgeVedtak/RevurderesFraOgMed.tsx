@@ -4,16 +4,16 @@ import styled from 'styled-components';
 import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { IVedtakshistorikk } from '../../../../../App/typer/vedtak';
 import { revurdererFørFørstePeriode } from './revurderFraUtils';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { AlertWarning } from '../../../../../Felles/Visningskomponenter/Alerts';
 
 const WrapperMarginBottom = styled.div`
     margin-bottom: 2rem;
 `;
 
-const Advarsel = styled(AlertStripeAdvarsel)`
+const Advarsel = styled(AlertWarning)`
     margin-top: 0.5rem;
     max-width: 60rem;
-    .alertstripe__tekst {
+    .navds-alert__wrapper {
         max-width: 60rem;
     }
 `;

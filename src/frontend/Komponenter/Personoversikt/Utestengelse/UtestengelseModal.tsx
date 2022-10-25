@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BodyShort, Label } from '@navikt/ds-react';
 import MånedÅrVelger from '../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { månederMellom, månedÅrTilDate } from '../../../App/utils/dato';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { EToast } from '../../../App/typer/toast';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 const Periode = styled.div`
     display: flex;
@@ -123,7 +123,7 @@ export const UtestengelseModal: FC<{
                     <AntallMåneder size={'small'}>{antallMåneder}</AntallMåneder>
                 </AntallMånederWrapper>
             </Periode>
-            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+            {feilmelding && <AlertError>{feilmelding}</AlertError>}
         </ModalWrapper>
     );
 };

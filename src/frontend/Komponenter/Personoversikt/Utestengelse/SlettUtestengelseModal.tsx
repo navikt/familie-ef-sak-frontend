@@ -2,10 +2,10 @@ import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import React, { FC, useState } from 'react';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { BodyShort } from '@navikt/ds-react';
 import { IUtestengelse } from '../../../App/typer/utestengelse';
 import { formaterIsoDato } from '../../../App/utils/formatter';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 export const SlettUtestengelseModal: FC<{
     fagsakPersonId: string;
@@ -75,7 +75,7 @@ export const SlettUtestengelseModal: FC<{
                 Utestengelsen ({formaterIsoDato(utestengelseTilSletting.periode.fom)} -{' '}
                 {formaterIsoDato(utestengelseTilSletting.periode.tom)}) vil bli slettet på brukeren
             </BodyShort>
-            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+            {feilmelding && <AlertError>{feilmelding}</AlertError>}
         </ModalWrapper>
     );
 };

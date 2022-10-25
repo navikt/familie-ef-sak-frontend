@@ -7,7 +7,7 @@ import Søknad from '../../../Felles/Ikoner/Søknad';
 import { useApp } from '../../../App/context/AppContext';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 const VisningsContainer = styled.div`
     margin-top: 1rem;
@@ -77,9 +77,7 @@ export const VisTilbakekreving: React.FC<Props> = ({
                             onClick={visBrevINyFane}
                         />
                     )}
-                    {forhåndsvisningsFeil && (
-                        <AlertStripeFeil>{forhåndsvisningsFeil}</AlertStripeFeil>
-                    )}
+                    {forhåndsvisningsFeil && <AlertError>{forhåndsvisningsFeil}</AlertError>}
                 </>
             )}
             <UnderOverskrfit>Begrunnelse (internt notat):</UnderOverskrfit>

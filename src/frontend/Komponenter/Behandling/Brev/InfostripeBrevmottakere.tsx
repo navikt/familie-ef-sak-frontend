@@ -1,6 +1,6 @@
 import React from 'react';
 import { IBrevmottakere } from '../Brevmottakere/typer';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 
 export const InfostripeBrevmottakere: React.FC<{ brevmottakere: IBrevmottakere }> = ({
     brevmottakere,
@@ -16,9 +16,9 @@ export const InfostripeBrevmottakere: React.FC<{ brevmottakere: IBrevmottakere }
             ),
         ].join(', ') + '.';
     return (
-        <AlertStripeInfo>
+        <AlertInfo>
             Mottakere av brev:{<br />}
             {brevmottakereStreng}
-        </AlertStripeInfo>
+        </AlertInfo>
     );
 };

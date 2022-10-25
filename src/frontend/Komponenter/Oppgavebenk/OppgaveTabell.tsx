@@ -1,7 +1,6 @@
 import React from 'react';
 import { RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import SystemetLaster from '../../Felles/SystemetLaster/SystemetLaster';
-import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { OppgaveRessurs } from './OppgavebenkApp';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './typer/oppgave';
@@ -13,6 +12,7 @@ import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import Pagination from 'paginering';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { IMappe } from './typer/mappe';
+import { AlertError, AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 
 const SIDE_STORRELSE = 15;
 
@@ -55,7 +55,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
     if (status === RessursStatus.HENTER) {
         return <SystemetLaster />;
     } else if (status === RessursStatus.IKKE_TILGANG) {
-        return <AlertStripeFeil children="Ikke tilgang!" />;
+        return <AlertError children="Ikke tilgang!" />;
     } else if (
         oppgaveRessurs.status === RessursStatus.FEILET ||
         oppgaveRessurs.status === RessursStatus.FUNKSJONELL_FEIL
@@ -66,7 +66,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
             />
         );
     } else if (status === RessursStatus.IKKE_HENTET) {
-        return <AlertStripeInfo> Du må utføre et søk for å se oppgaver i listen.</AlertStripeInfo>;
+        return <AlertInfo> Du må utføre et søk for å se oppgaver i listen.</AlertInfo>;
     }
 
     return (

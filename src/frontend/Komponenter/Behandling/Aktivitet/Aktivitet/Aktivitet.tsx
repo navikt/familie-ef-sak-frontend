@@ -8,7 +8,7 @@ import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 
 export const Aktivitet: React.FC<VilkårProps> = ({
     vurderinger,
@@ -23,9 +23,9 @@ export const Aktivitet: React.FC<VilkårProps> = ({
     const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.AKTIVITET);
     if (!vurdering) {
         return (
-            <AlertStripeFeil>
+            <AlertError>
                 OBS: Noe er galt - det finnes ingen vilkår for aktivitet for denne behandlingen
-            </AlertStripeFeil>
+            </AlertError>
         );
     }
     return (

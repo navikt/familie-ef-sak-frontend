@@ -7,7 +7,6 @@ import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { AlertStripeAdvarsel, AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -21,6 +20,7 @@ import {
 import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/journalforing';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
+import { AlertError, AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
 
 const Blokk = styled.div`
     margin-bottom: 1rem;
@@ -156,11 +156,11 @@ export const JournalforingAdmin: React.FC = () => {
                             Opprett behandling
                         </Hovedknapp>
                         {!journalResponse.harStrukturertSøknad && (
-                            <AlertStripeAdvarsel>
+                            <AlertWarning>
                                 Kan ikke finne en digital søknad på denne journalposten.
-                            </AlertStripeAdvarsel>
+                            </AlertWarning>
                         )}
-                        {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+                        {feilmelding && <AlertError>{feilmelding}</AlertError>}
                     </SideLayout>
                 )}
             </DataViewer>

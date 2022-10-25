@@ -10,7 +10,6 @@ import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     JournalføringStateRequest,
@@ -41,6 +40,7 @@ import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnV
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
+import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
 
 const SideLayout = styled.div`
     max-width: 1600px;
@@ -341,9 +341,9 @@ export const JournalforingApp: React.FC = () => {
                                 {(journalpostState.innsending.status === RessursStatus.FEILET ||
                                     journalpostState.innsending.status ===
                                         RessursStatus.FUNKSJONELL_FEIL) && (
-                                    <AlertStripeFeil>
+                                    <AlertError>
                                         {journalpostState.innsending.frontendFeilmelding}
-                                    </AlertStripeFeil>
+                                    </AlertError>
                                 )}
                                 <FlexKnapper>
                                     <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>

@@ -6,12 +6,12 @@ import {
     RessursSuksess,
 } from '../../App/typer/ressurs';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AlertStripeFeilPreWrap, {
     AlertStripeVariant,
 } from '../Visningskomponenter/AlertStripeFeilPreWrap';
+import { AlertError } from '../Visningskomponenter/Alerts';
 
 /**
  * Input: { behandling: Ressurss<Behandling>, personopslyninger: Ressurss<IPersonopplysninger> }
@@ -39,7 +39,7 @@ const renderFeil = (responses: Ressurs<any>[], alertOption: AlertStripeVariant) 
                 feilet.status === RessursStatus.FEILET
             ) {
                 return (
-                    <AlertStripeFeilPreWrap key={index} alertVariant={alertOption}>
+                    <AlertStripeFeilPreWrap key={index} alertvariant={alertOption}>
                         {feilet.frontendFeilmelding}
                     </AlertStripeFeilPreWrap>
                 );
@@ -79,7 +79,7 @@ function DataViewer<T extends Record<string, unknown>>(
             alertStripeVariant ? alertStripeVariant : AlertStripeVariant.IKKE_VALGT
         );
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
-        return <AlertStripeFeil children="Ikke tilgang!" />;
+        return <AlertError children="Ikke tilgang!" />;
     } else if (harNoenRessursMedStatus(responses, RessursStatus.HENTER)) {
         return <SystemetLaster />;
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_HENTET)) {

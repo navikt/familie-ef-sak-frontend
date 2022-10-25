@@ -5,7 +5,7 @@ import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerL
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 
 export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
@@ -21,10 +21,10 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     );
     if (!vurdering) {
         return (
-            <AlertStripeFeil>
+            <AlertError>
                 OBS: Noe er galt - det finnes ingen vilkår for "sagt opp eller redusert stilling"
                 for denne behandlingen
-            </AlertStripeFeil>
+            </AlertError>
         );
     }
     return (

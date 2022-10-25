@@ -10,7 +10,6 @@ import {
     sanksjonsårsakTilTekst,
 } from '../../../App/typer/Sanksjonsårsak';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +41,7 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Behandling } from '../../../App/typer/fagsak';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { EnsligFamilieSelect } from '../../../Felles/Input/EnsligFamilieSelect';
+import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -62,17 +62,17 @@ const NormaltekstMedMargin = styled(Normaltekst)`
     margin-top: 1rem;
 `;
 
-const InfoVisning = styled(AlertStripeInfo)`
+const InfoVisning = styled(AlertInfo)`
     max-width: 60rem;
-    .alertstripe__tekst {
+    .navds-alert__wrapper {
         max-width: 60rem;
     }
 `;
 
-const AdvarselVisning = styled(AlertStripeAdvarsel)`
+const AdvarselVisning = styled(AlertWarning)`
     margin-top: 1.5rem;
     max-width: 60rem;
-    .alertstripe__tekst {
+    .navds-alert__wrapper {
         max-width: 60rem;
     }
 `;

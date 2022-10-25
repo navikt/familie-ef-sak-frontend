@@ -11,10 +11,10 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
+import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 
 const StyledFormElement = styled.div`
     margin-top: 2rem;
@@ -115,7 +115,7 @@ export const Opphør: React.FC<{
                     </Hovedknapp>
                 </StyledFormElement>
             </form>
-            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
+            {feilmelding && <AlertError>{feilmelding}</AlertError>}
         </>
     );
 };
