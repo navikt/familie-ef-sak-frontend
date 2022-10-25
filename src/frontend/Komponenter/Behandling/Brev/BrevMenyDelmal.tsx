@@ -75,12 +75,13 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     borderRadius: `${NavdsBorderRadiusMedium}`,
                 }}
             >
-                <Accordion.Item>
+                <Accordion.Item open={ekspanderbartPanelÅpen}>
                     <Accordion.Header
                         style={{
                             borderRadius: `${NavdsBorderRadiusMedium}`,
                             border: 'none',
                         }}
+                        onClick={() => settEkspanderbartPanelÅpen(!ekspanderbartPanelÅpen)}
                     >
                         {delmal?.delmalNavn}
                     </Accordion.Header>
