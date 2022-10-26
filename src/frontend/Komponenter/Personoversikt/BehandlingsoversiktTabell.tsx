@@ -176,8 +176,8 @@ export const BehandlingsoversiktTabell: React.FC<{
             behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
             behandling.klageinstansResultat?.some(
                 (resultat) =>
-                    resultat.type == KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
-                    resultat.type == KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET
+                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
+                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET
             )
         );
     };
