@@ -21,11 +21,24 @@ import { BehandlingApplikasjon } from './Behandlingsoversikt';
 import { PartialRecord } from '../../App/typer/common';
 import styled from 'styled-components';
 import { klageBaseUrl, tilbakekrevingBaseUrl } from '../../App/utils/miljø';
-import { KlageBehandling, KlagebehandlingResultat, KlageÅrsak } from '../../App/typer/klage';
+import {
+    KlageBehandling,
+    KlagebehandlingResultat,
+    KlageinstansEventType,
+    KlageinstansResultat,
+    klageinstansUtfallTilTekst,
+    KlageÅrsak,
+} from '../../App/typer/klage';
+import { WarningColored } from '@navikt/ds-icons';
+import { Tooltip } from '@navikt/ds-react';
 
 const StyledTable = styled.table`
     width: 60%;
     padding: 2rem;
+    margin-left: 1rem;
+`;
+
+const AdvarselIkon = styled(WarningColored)`
     margin-left: 1rem;
 `;
 
@@ -51,6 +64,7 @@ interface BehandlingsoversiktTabellBehandling {
         | KlagebehandlingResultat;
     opprettet: string;
     applikasjon: BehandlingApplikasjon;
+    klageinstansResultat?: KlageinstansResultat[];
 }
 
 export const BehandlingsoversiktTabell: React.FC<{
@@ -99,6 +113,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 opprettet: behandling.opprettet,
                 applikasjon: BehandlingApplikasjon.KLAGE,
                 årsak: behandling.årsak,
+                klageinstansResultat: behandling.klageinstansResultat,
             };
         }
     );
@@ -141,6 +156,32 @@ export const BehandlingsoversiktTabell: React.FC<{
 
     const finnHenlagtÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
         behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';
+
+    const utledBehandlingResultatTilTekst = (behandling: BehandlingsoversiktTabellBehandling) => {
+        if (behandling.applikasjon === BehandlingApplikasjon.KLAGE) {
+            const klageBehandlingAvsluttetUtfall = behandling.klageinstansResultat?.find(
+                (resultat) =>
+                    resultat.utfall &&
+                    resultat.type == KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET
+            )?.utfall;
+
+            if (klageBehandlingAvsluttetUtfall) {
+                return klageinstansUtfallTilTekst[klageBehandlingAvsluttetUtfall];
+            }
+        }
+        return behandling.resultat ? behandlingResultatTilTekst[behandling.resultat] : 'Ikke satt';
+    };
+
+    const ankeHarEksistertPåBehandling = (behandling: BehandlingsoversiktTabellBehandling) => {
+        return (
+            behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
+            behandling.klageinstansResultat?.some(
+                (resultat) =>
+                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
+                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET
+            )
+        );
+    };
 
     return (
         <StyledTable className="tabell">
@@ -185,20 +226,25 @@ export const BehandlingsoversiktTabell: React.FC<{
                                         {finnHenlagtÅrsak(behandling)}
                                     </Link>
                                 ) : (
-                                    <a
-                                        className="lenke"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        href={lagEksternBehandlingApplikasjonLenke(
-                                            eksternFagsakId,
-                                            behandling.id,
-                                            behandling.applikasjon
+                                    <>
+                                        <a
+                                            className="lenke"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            href={lagEksternBehandlingApplikasjonLenke(
+                                                eksternFagsakId,
+                                                behandling.id,
+                                                behandling.applikasjon
+                                            )}
+                                        >
+                                            {utledBehandlingResultatTilTekst(behandling)}
+                                        </a>
+                                        {ankeHarEksistertPåBehandling(behandling) && (
+                                            <Tooltip content="Det finnes informasjon om anke på denne klagen. Gå inn på klagebehandlingens resultatside for å se detaljer.">
+                                                <AdvarselIkon title={'Har anke informasjon'} />
+                                            </Tooltip>
                                         )}
-                                    >
-                                        {behandling.resultat
-                                            ? behandlingResultatTilTekst[behandling.resultat]
-                                            : 'Ikke satt'}
-                                    </a>
+                                    </>
                                 )}
                             </td>
                         </tr>

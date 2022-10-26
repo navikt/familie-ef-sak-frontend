@@ -13,7 +13,42 @@ export interface KlageBehandling {
     status: KlagebehandlingStatus;
     vedtaksdato: string | undefined;
     årsak: KlageÅrsak | undefined;
+    klageinstansResultat: KlageinstansResultat[];
 }
+
+export interface KlageinstansResultat {
+    type: KlageinstansEventType;
+    utfall: KlageinstansUtfall;
+    mottattEllerAvsluttetTidspunkt: string | undefined;
+}
+
+export enum KlageinstansEventType {
+    KLAGEBEHANDLING_AVSLUTTET = 'KLAGEBEHANDLING_AVSLUTTET',
+    ANKEBEHANDLING_OPPRETTET = 'ANKEBEHANDLING_OPPRETTET',
+    ANKEBEHANDLING_AVSLUTTET = 'ANKEBEHANDLING_AVSLUTTET',
+}
+
+export enum KlageinstansUtfall {
+    TRUKKET = 'TRUKKET',
+    RETUR = 'RETUR',
+    OPPHEVET = 'OPPHEVET',
+    MEDHOLD = 'MEDHOLD',
+    DELVIS_MEDHOLD = 'DELVIS_MEDHOLD',
+    STADFESTELSE = 'STADFESTELSE',
+    UGUNST = 'UGUNST',
+    AVVIST = 'AVVIST',
+}
+
+export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
+    TRUKKET: 'Trukket KA',
+    RETUR: 'Retur KA',
+    OPPHEVET: 'Opphevet KA',
+    MEDHOLD: 'Medhold KA',
+    DELVIS_MEDHOLD: 'Delvis medhold KA',
+    STADFESTELSE: 'Stadfestelse KA',
+    UGUNST: 'Ugunst (Ugyldig) KA',
+    AVVIST: 'Avvist KA',
+};
 
 export enum KlagebehandlingResultat {
     MEDHOLD = 'MEDHOLD',
