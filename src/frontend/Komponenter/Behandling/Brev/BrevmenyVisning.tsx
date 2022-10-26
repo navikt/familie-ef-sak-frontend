@@ -21,13 +21,12 @@ import {
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import styled from 'styled-components';
-import Panel from 'nav-frontend-paneler';
 import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Panel } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';

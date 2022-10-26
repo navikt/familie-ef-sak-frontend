@@ -1,5 +1,4 @@
 import React from 'react';
-import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
@@ -8,6 +7,7 @@ import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/u
 import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
+import { Link } from '@navikt/ds-react';
 
 const StyledTable = styled.table`
     width: 70%;
@@ -38,16 +38,17 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                         <tr key={arbeidssøker.id}>
                             <td>
                                 <div style={{ display: 'flex' }}>
-                                    <Lenke
+                                    <Link
                                         role={'link'}
                                         href={'#'}
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                            e.preventDefault();
                                             gåTilUrl(`/fagsak/${arbeidssøker.fagsakId}`);
                                         }}
                                         style={{ marginRight: '1rem' }}
                                     >
                                         <Element>{arbeidssøker.navn}</Element>
-                                    </Lenke>
+                                    </Link>
                                     <KopierbartNullableFødselsnummer
                                         fødselsnummer={arbeidssøker.personIdent}
                                     />

@@ -2,21 +2,17 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Behandling, behandlingResultatTilTekst } from '../../App/typer/fagsak';
 import { Menyknapp } from 'nav-frontend-ikonknapper';
-import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
 import { stegTypeTilStegtekst } from '../../Komponenter/Behandling/Høyremeny/Steg';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
+import { Popover } from '@navikt/ds-react';
 
 const BehandlingsinfoWrapper = styled.div`
     margin: auto;
     padding-right: 0.25rem;
-`;
-
-const PopoverInnehold = styled.div`
-    padding: 1rem;
 `;
 
 const PopoverTabell = styled.div`
@@ -40,10 +36,10 @@ const StyledMenyKnapp = styled(Menyknapp)`
 const popoverId = 'visBehandlingsinfo-popover';
 
 const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const [anker, settAnker] = useState<HTMLButtonElement>();
+    const [anker, settAnker] = useState<HTMLButtonElement | null>(null);
 
-    const togglePopover = (nyAnker: HTMLButtonElement | undefined) => {
-        settAnker(anker ? undefined : nyAnker);
+    const togglePopover = (nyAnker: HTMLButtonElement) => {
+        settAnker(anker ? null : nyAnker);
     };
 
     return (
@@ -51,7 +47,7 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
             <StyledMenyKnapp
                 id="visBehandlingsinfo"
                 onClick={(e) => togglePopover(e.currentTarget)}
-                aria-expanded={anker !== undefined}
+                aria-expanded={anker !== null}
                 aria-controls={popoverId}
                 aria-haspopup="menu"
             >
@@ -59,14 +55,14 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
             </StyledMenyKnapp>
             <Popover
                 id={popoverId}
-                ankerEl={anker}
-                onRequestClose={() => settAnker(undefined)}
-                orientering={PopoverOrientering.Under}
-                autoFokus={false}
+                anchorEl={anker}
+                open={!!anker}
+                onClose={() => settAnker(null)}
+                placement={'bottom'}
                 tabIndex={-1}
-                utenPil
+                arrow={false}
             >
-                <PopoverInnehold>
+                <Popover.Content>
                     <PopoverTabell>
                         <GråTekst>Behandlingsstatus</GråTekst>
                         <Normaltekst>{behandlingStatusTilTekst[behandling.status]}</Normaltekst>
@@ -84,7 +80,7 @@ const Behandlingsinfo: FC<{ behandling: Behandling }> = ({ behandling }) => {
                         <Normaltekst>{stegTypeTilStegtekst[behandling.steg]}</Normaltekst>
                     </PopoverTabell>
                     <GråTekst>Id: {behandling.id}</GråTekst>
-                </PopoverInnehold>
+                </Popover.Content>
             </Popover>
         </BehandlingsinfoWrapper>
     );

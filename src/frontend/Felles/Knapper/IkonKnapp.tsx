@@ -1,9 +1,9 @@
 import React from 'react';
 
 import KnappBase, { KnappBaseProps } from 'nav-frontend-knapper';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
+import { Loader } from '@navikt/ds-react';
 
 interface IProps {
     erLesevisning: boolean;
@@ -65,7 +65,7 @@ const IkonTilKnapp: React.FC<{ ikon: React.ReactChild; spinner?: boolean }> = ({
     ikon,
     spinner,
 }) => {
-    return <>{spinner ? <NavFrontendSpinner /> : ikon}</>;
+    return <>{spinner ? <Loader size={'medium'} transparent={true} /> : ikon}</>;
 };
 
 export default IkonKnapp;

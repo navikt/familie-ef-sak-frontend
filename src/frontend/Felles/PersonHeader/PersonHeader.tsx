@@ -12,7 +12,6 @@ import { erEtterDagensDato, nullableDatoTilAlder } from '../../App/utils/dato';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
-import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
 import { PersonHeaderHamburgermeny } from './PersonHeaderHamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
@@ -27,7 +26,7 @@ import {
     stønadstypeTilTekstKort,
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
-import { Tag } from '@navikt/ds-react';
+import { Link, Tag } from '@navikt/ds-react';
 import { AlertError } from '../Visningskomponenter/Alerts';
 
 const Visningsnavn = styled(Element)`
@@ -36,7 +35,7 @@ const Visningsnavn = styled(Element)`
     white-space: nowrap;
 `;
 
-const ResponsivLenke = styled(Lenke)`
+const ResponsivLenke = styled(Link)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -163,7 +162,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                     <ResponsivLenke
                         role={'link'}
                         href={`/person/${fagsakPersonId}`}
-                        onClick={(e) => {
+                        onClick={(e: MouseEvent) => {
                             e.preventDefault();
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
