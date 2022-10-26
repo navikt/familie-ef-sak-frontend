@@ -14,7 +14,6 @@ import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
 import Lenke from 'nav-frontend-lenker';
 import { IPersonIdent } from '../../App/typer/felles';
-import Alertstripe from 'nav-frontend-alertstriper';
 import { PersonHeaderHamburgermeny } from './PersonHeaderHamburgermeny';
 import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 import {
@@ -29,6 +28,7 @@ import {
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 import { Tag } from '@navikt/ds-react';
+import { AlertError } from '../Visningskomponenter/Alerts';
 
 const Visningsnavn = styled(Element)`
     text-overflow: ellipsis;
@@ -154,7 +154,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
 
     return (
         <PersonHeaderWrapper>
-            {feilFagsakHenting && <Alertstripe type="feil">Kunne ikke hente fagsak</Alertstripe>}
+            {feilFagsakHenting && <AlertError>Kunne ikke hente fagsak</AlertError>}
             <VisittKort
                 alder={20}
                 ident={personIdent}

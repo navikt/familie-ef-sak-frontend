@@ -109,7 +109,7 @@ const PersonoversiktContent: React.FC<{
                 >
                     <Tabs.List>
                         {tabs.map((tab) => {
-                            return <Tabs.Tab value={tab.path} label={tab.label} />;
+                            return <Tabs.Tab key={tab.path} value={tab.path} label={tab.label} />;
                         })}
                     </Tabs.List>
                 </Tabs>

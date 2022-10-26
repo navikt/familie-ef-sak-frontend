@@ -5,8 +5,8 @@ import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import TilsynsutgifterBarnInfo from './TilsynsutgifterBarnInfo';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
+import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
     vurderinger,
@@ -23,9 +23,9 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
 
     if (!vurdering) {
         return (
-            <AlertStripeFeil>
+            <AlertError>
                 Noe er galt - det finnes ingen vilkår for dokumentasjon av tilsynsutgifter
-            </AlertStripeFeil>
+            </AlertError>
         );
     }
 

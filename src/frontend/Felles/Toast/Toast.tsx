@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { useApp } from '../../App/context/AppContext';
 import { EToast, toastTilTekst } from '../../App/typer/toast';
+import { AlertSuccess } from '../Visningskomponenter/Alerts';
 
 const ContainerTopRight = styled.div`
     z-index: 9999;
@@ -39,13 +39,13 @@ export const Toast: React.FC = () => {
         case EToast.INNGANGSVILKÅR_GJENBRUKT:
             return (
                 <ContainerTopMiddle>
-                    <AlertStripeSuksess>{toastTilTekst[toast]}</AlertStripeSuksess>
+                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
                 </ContainerTopMiddle>
             );
         default:
             return (
                 <ContainerTopRight>
-                    <AlertStripeSuksess>{toastTilTekst[toast]}</AlertStripeSuksess>
+                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
                 </ContainerTopRight>
             );
     }

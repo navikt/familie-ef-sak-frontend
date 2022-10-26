@@ -3,7 +3,6 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Steg } from '../Høyremeny/Steg';
 import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
-import AlertStripe from 'nav-frontend-alertstriper';
 import { VedtaksoppsummeringOvergangsstønad } from './Overgangsstønad/VedtaksoppsummeringOvergangsstønad';
 import VedtakOgBeregningOvergangsstønad from './Overgangsstønad/VedtakOgBeregningOvergangsstønad';
 import VedtakOgBeregningBarnetilsyn from './Barnetilsyn/VedtakOgBeregningBarnetilsyn';
@@ -18,16 +17,17 @@ import { VedtaksoppsummeringSkolepenger } from './Skolepenger/Vedtaksoppsummerin
 import { NullstillVedtakModal } from './Felles/NullstillVedtakModal';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
-const AlertStripeLeft = styled(AlertStripe)`
+const AlertErrorLeft = styled(AlertError)`
     margin-left: 2rem;
     margin-top: 1rem;
 `;
 
 const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
-    <AlertStripeLeft type="feil" form="inline">
+    <AlertErrorLeft inline>
         <Element>Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.</Element>
-    </AlertStripeLeft>
+    </AlertErrorLeft>
 );
 
 export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandlingId }) => {

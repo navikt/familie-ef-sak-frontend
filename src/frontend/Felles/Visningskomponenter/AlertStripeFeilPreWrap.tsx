@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertError } from './Alerts';
 
-const AlertStripeFeilPreWrap = styled(AlertStripeFeil)<{ alertVariant?: AlertStripeVariant }>`
+const AlertStripeFeilPreWrap = styled(AlertError)<{ alertvariant?: AlertStripeVariant }>`
     white-space: pre-wrap;
     word-wrap: break-word;
     grid-column: ${(props) =>
-        props.alertVariant === AlertStripeVariant.SAMLIV_VILKÅR ? '1 / span 3' : ''};
+        props.alertvariant === AlertStripeVariant.SAMLIV_VILKÅR ? '1 / span 3' : ''};
 `;
 
 export enum AlertStripeVariant {

@@ -5,18 +5,18 @@ import { IOppgave } from '../Oppgavebenk/typer/oppgave';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
 
 const VelgUstrukturertDokumentasjonTypeSelect = styled(Select)`
     width: 10rem;
     margin: 1rem 0;
 `;
 
-const AdvarselVisning = styled(AlertStripeAdvarsel)`
+const AdvarselVisning = styled(AlertWarning)`
     margin: 0.5rem 0;
     max-width: 60rem;
 
-    .alertstripe__tekst {
+    .navds-alert__wrapper {
         max-width: 60rem;
     }
 `;

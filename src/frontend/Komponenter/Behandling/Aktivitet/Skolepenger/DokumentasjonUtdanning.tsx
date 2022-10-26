@@ -4,8 +4,8 @@ import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import DokumentasjonUtdanningInfo from './DokumentasjonUtdanningInfo';
+import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 
 export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
     vurderinger,
@@ -22,9 +22,9 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
 
     if (!vurdering) {
         return (
-            <AlertStripeFeil>
+            <AlertError>
                 OBS: Noe er galt - det finnes ingen vilkår for aktivitet for denne behandlingen
-            </AlertStripeFeil>
+            </AlertError>
         );
     }
 

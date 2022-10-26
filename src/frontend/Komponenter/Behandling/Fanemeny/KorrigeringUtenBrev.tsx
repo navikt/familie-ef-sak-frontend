@@ -1,7 +1,7 @@
 import React from 'react';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import AlertStripeInfo from 'nav-frontend-alertstriper/lib/info-alertstripe';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 
 interface Props {
     behandlingId: string;
@@ -12,7 +12,7 @@ const KorrigeringUtenBrev: React.FC<Props> = ({ behandlingId }) => {
 
     return (
         <>
-            <AlertStripeInfo>Korrigering av vedtak uten brevutsendelse</AlertStripeInfo>
+            <AlertInfo>Korrigering av vedtak uten brevutsendelse</AlertInfo>
             <SendTilBeslutterFooter
                 behandlingId={behandlingId}
                 kanSendesTilBeslutter={behandlingErRedigerbar}

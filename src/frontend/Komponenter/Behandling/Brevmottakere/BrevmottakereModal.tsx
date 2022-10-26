@@ -5,13 +5,13 @@ import { SøkWrapper } from './SøkWrapper';
 import { SkalBrukerHaBrev } from './SkalBrukerHaBrev';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { BrevmottakereListe } from './BrevmottakereListe';
 import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
 import { EToast } from '../../../App/typer/toast';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { AlertError, AlertSuccess } from '../../../Felles/Visningskomponenter/Alerts';
 
 const GridContainer = styled.div`
     display: grid;
@@ -167,8 +167,8 @@ export const BrevmottakereModal: FC<{
                     Sett mottakere
                 </Button>
             </SentrerKnapper>
-            {feilmelding && <AlertStripeFeil>{feilmelding}</AlertStripeFeil>}
-            {innsendingSuksess && <AlertStripeSuksess>Brevmottakere er satt</AlertStripeSuksess>}
+            {feilmelding && <AlertError>{feilmelding}</AlertError>}
+            {innsendingSuksess && <AlertSuccess>Brevmottakere er satt</AlertSuccess>}
         </ModalWrapper>
     );
 };
