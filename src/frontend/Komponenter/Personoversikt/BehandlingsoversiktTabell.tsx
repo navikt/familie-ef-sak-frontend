@@ -30,6 +30,7 @@ import {
     KlageÅrsak,
 } from '../../App/typer/klage';
 import { WarningColored } from '@navikt/ds-icons';
+import { Tooltip } from '@navikt/ds-react';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -239,7 +240,9 @@ export const BehandlingsoversiktTabell: React.FC<{
                                             {utledBehandlingResultatTilTekst(behandling)}
                                         </a>
                                         {ankeHarEksistertPåBehandling(behandling) && (
-                                            <AdvarselIkon title={'Har anke informasjon'} />
+                                            <Tooltip content="Det finnes informasjon om anke på denne klagen. Gå inn på klagebehandlingens resultatside for å se detaljer.">
+                                                <AdvarselIkon title={'Har anke informasjon'} />
+                                            </Tooltip>
                                         )}
                                     </>
                                 )}
