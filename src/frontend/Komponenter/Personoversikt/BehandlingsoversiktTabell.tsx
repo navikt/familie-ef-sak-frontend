@@ -174,9 +174,10 @@ export const BehandlingsoversiktTabell: React.FC<{
     const ankeHarEksistertPåBehandling = (behandling: BehandlingsoversiktTabellBehandling) => {
         return (
             behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
-            behandling.klageinstansResultat &&
-            behandling.klageinstansResultat.some(
-                (resultat) => resultat.type != KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET
+            behandling.klageinstansResultat?.some(
+                (resultat) =>
+                    resultat.type == KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
+                    resultat.type == KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET
             )
         );
     };
