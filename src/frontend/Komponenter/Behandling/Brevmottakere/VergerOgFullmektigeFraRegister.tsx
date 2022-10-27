@@ -14,7 +14,7 @@ interface Props {
     fullmakter: IFullmakt[];
 }
 
-const StyledIngress = styled(Ingress)`
+const Undertittel = styled(Ingress)`
     margin-bottom: 1rem;
 `;
 
@@ -50,7 +50,7 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
 
     return (
         <>
-            <StyledIngress>Verge/Fullmektig fra register</StyledIngress>
+            <Undertittel>Verge/Fullmektig fra register</Undertittel>
             {muligeMottakere.length ? (
                 muligeMottakere.map((mottaker, index) => {
                     const mottakerValgt = !!valgteMottakere.find(
