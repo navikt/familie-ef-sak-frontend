@@ -3,12 +3,12 @@ import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import { Normaltekst } from 'nav-frontend-typografi';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VisTilbakekreving } from './VisTilbakekreving';
 import { TilbakekrevingSkjema } from './TilbakekrevingSkjema';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { Loader } from '@navikt/ds-react';
 
 export enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -148,7 +148,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
     };
     switch (åpenTilbakekrevingStatus) {
         case ÅpenTilbakekrevingStatus.LASTER:
-            return <NavFrontendSpinner />;
+            return <Loader size={'xlarge'} variant="interaction" transparent={true} />;
         case ÅpenTilbakekrevingStatus.HAR_ÅPEN:
             return (
                 <div>

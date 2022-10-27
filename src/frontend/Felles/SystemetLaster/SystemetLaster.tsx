@@ -1,8 +1,7 @@
-import NavFrontendSpinner from 'nav-frontend-spinner';
-import { Systemtittel } from 'nav-frontend-typografi';
 import * as React from 'react';
 import { FC } from 'react';
 import styled from 'styled-components';
+import { Heading, Loader } from '@navikt/ds-react';
 
 const StyledSystemetLaster = styled.div`
     height: 100%;
@@ -25,12 +24,9 @@ const SystemetLaster: FC = () => {
     return (
         <StyledSystemetLaster>
             <StyledWrapper>
-                <Systemtittel children={'Systemet laster'} />
+                <Heading size={'medium'}> Systemet laster</Heading>
                 <StyledSpinner>
-                    <NavFrontendSpinner
-                        className={'systemet-laster__content--spinner'}
-                        transparent={true}
-                    />
+                    <Loader size={'xlarge'} variant="interaction" transparent={true} />
                 </StyledSpinner>
             </StyledWrapper>
         </StyledSystemetLaster>

@@ -1,7 +1,6 @@
 import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 import { Input, Select, Textarea } from 'nav-frontend-skjema';
-import Panel from 'nav-frontend-paneler';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp, { KnappMedLuftUnder } from '../../../Felles/Knapper/LeggTilKnapp';
@@ -20,6 +19,7 @@ import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Panel } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;

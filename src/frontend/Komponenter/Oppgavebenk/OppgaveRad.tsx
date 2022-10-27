@@ -11,21 +11,16 @@ import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Flatknapp as Knapp } from 'nav-frontend-knapper';
 import hiddenIf from '../../Felles/HiddenIf/hiddenIf';
 import { useOppgave } from '../../App/hooks/useOppgave';
-import Popover, { PopoverOrientering } from 'nav-frontend-popover';
-import styled from 'styled-components';
 import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
+import { Popover } from '@navikt/ds-react';
 
 interface Props {
     oppgave: IOppgave;
     mapper: Record<number, string>;
     settFeilmelding: (feilmelding: string) => void;
 }
-
-const StyledPopoverinnhold = styled.p`
-    margin: 1rem;
-`;
 
 const Flatknapp = hiddenIf(Knapp);
 
@@ -85,14 +80,14 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         feilmelding,
     } = useOppgave(oppgave);
 
-    const [anker, settAnker] = useState<HTMLElement>();
+    const [anker, settAnker] = useState<Element | null>(null);
 
     useEffect(() => {
         settFeilmelding(feilmelding);
     }, [feilmelding, settFeilmelding]);
 
     const togglePopover = (element: React.MouseEvent<HTMLElement>) => {
-        settAnker(anker ? undefined : element.currentTarget);
+        settAnker(anker ? null : element.currentTarget);
     };
 
     const regDato = oppgave.opprettetTidspunkt && formaterIsoDato(oppgave.opprettetTidspunkt);
@@ -162,15 +157,15 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                     {regDato}
                     <Popover
                         id={`registreringstidspunkt-for-oppgave-${oppgave.id}`}
-                        ankerEl={anker}
-                        onRequestClose={() => settAnker(undefined)}
-                        orientering={PopoverOrientering.Hoyre}
-                        autoFokus={false}
+                        anchorEl={anker}
+                        open={!!anker}
+                        onClose={() => settAnker(null)}
+                        placement={'right'}
                         tabIndex={-1}
                     >
-                        <StyledPopoverinnhold>
+                        <Popover.Content>
                             Registreringstidspunkt: {regDatoMedKlokkeslett}
-                        </StyledPopoverinnhold>
+                        </Popover.Content>
                     </Popover>
                 </td>
                 <td>{oppgavetype}</td>
