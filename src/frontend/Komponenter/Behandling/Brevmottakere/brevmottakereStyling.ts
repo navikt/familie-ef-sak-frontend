@@ -1,12 +1,12 @@
 import { TextField } from '@navikt/ds-react';
 import styled from 'styled-components';
 
-export const StyledSøkInput = styled(TextField)`
+export const Søkefelt = styled(TextField)`
     width: 50%;
     padding-right: 1rem;
 `;
 
-export const StyledSøkResultat = styled.div`
+export const Søkeresultat = styled.div`
     margin-top: 2rem;
     margin-bottom: 10rem;
     display: grid;

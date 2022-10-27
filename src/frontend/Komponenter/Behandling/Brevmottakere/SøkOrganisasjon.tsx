@@ -3,7 +3,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IOrganisasjonMottaker } from './typer';
-import { StyledSøkInput, StyledSøkResultat } from './brevmottakereStyling';
+import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
 import { BodyShort, Button, TextField } from '@navikt/ds-react';
 
 interface Props {
@@ -49,7 +49,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
 
     return (
         <>
-            <StyledSøkInput
+            <Søkefelt
                 label={'Organisasjonsnummer'}
                 htmlSize={26}
                 placeholder={'Søk'}
@@ -60,7 +60,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                 {({ organisasjonRessurs }) => {
                     return (
                         <>
-                            <StyledSøkResultat>
+                            <Søkeresultat>
                                 <div>
                                     <BodyShort>{organisasjonRessurs.navn}</BodyShort>
                                     {organisasjonRessurs.organisasjonsnummer}
@@ -82,7 +82,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                                     onChange={(e) => settNavnHosOrganisasjon(e.target.value)}
                                     error={feil}
                                 />
-                            </StyledSøkResultat>
+                            </Søkeresultat>
                         </>
                     );
                 }}

@@ -4,7 +4,7 @@ import { EBrevmottakerRolle, IBrevmottaker } from './typer';
 import styled from 'styled-components';
 import { Ingress, Radio, RadioGroup } from '@navikt/ds-react';
 
-const StyledRadioGruppe = styled(RadioGroup)`
+const RadioGruppe = styled(RadioGroup)`
     display: flex;
 
     > div {
@@ -12,7 +12,7 @@ const StyledRadioGruppe = styled(RadioGroup)`
     }
 `;
 
-const StyledIngress = styled(Ingress)`
+const Underoverskrift = styled(Ingress)`
     margin-bottom: 1rem;
 `;
 
@@ -58,8 +58,8 @@ export const SkalBrukerHaBrev: FC<Props> = ({
 
     return (
         <>
-            <StyledIngress>Skal bruker motta brevet?</StyledIngress>
-            <StyledRadioGruppe legend={'Skal bruker motta brevet?'} hideLegend>
+            <Underoverskrift>Skal bruker motta brevet?</Underoverskrift>
+            <RadioGruppe legend={'Skal bruker motta brevet?'} hideLegend>
                 <Radio
                     value={'Ja'}
                     name={'brukerHaBrevRadio'}
@@ -76,7 +76,7 @@ export const SkalBrukerHaBrev: FC<Props> = ({
                 >
                     Nei
                 </Radio>
-            </StyledRadioGruppe>
+            </RadioGruppe>
         </>
     );
 };

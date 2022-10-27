@@ -3,7 +3,7 @@ import { SøkPerson } from './SøkPerson';
 import { SøkOrganisasjon } from './SøkOrganisasjon';
 import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
-import { Select } from '@navikt/ds-react';
+import { Ingress, Select } from '@navikt/ds-react';
 
 interface Props {
     settValgtePersonMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
@@ -15,6 +15,10 @@ enum ESøktype {
     ORGANISASJON = 'ORGANISASJON',
     PERSON = 'PERSON',
 }
+
+const Underoverskrift = styled(Ingress)`
+    margin-bottom: 1rem;
+`;
 
 const SøkTypeSelect = styled(Select)`
     width: 200px;
@@ -30,8 +34,10 @@ export const SøkWrapper: FC<Props> = ({
 
     return (
         <>
+            <Underoverskrift>Manuelt søk</Underoverskrift>
             <SøkTypeSelect
                 label={'Manuelt søk'}
+                hideLabel
                 value={søktype}
                 onChange={(e) => settSøktype(e.target.value as ESøktype)}
             >
