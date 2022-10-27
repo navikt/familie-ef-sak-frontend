@@ -3,9 +3,8 @@ import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
-import { Normaltekst } from 'nav-frontend-typografi';
-import { Button } from '@navikt/ds-react';
-import { StyledSøkInput, StyledSøkResultat } from './brevmottakereStyling';
+import { BodyShort, Button } from '@navikt/ds-react';
+import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
 import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {
@@ -45,8 +44,9 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
 
     return (
         <>
-            <StyledSøkInput
+            <Søkefelt
                 label={'Personident'}
+                htmlSize={26}
                 placeholder={'Personen som skal ha brevet'}
                 value={søkIdent}
                 onChange={(e) => settSøkIdent(e.target.value)}
@@ -54,9 +54,9 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
             <DataViewer response={{ søkRessurs }}>
                 {({ søkRessurs }) => {
                     return (
-                        <StyledSøkResultat>
+                        <Søkeresultat>
                             <div>
-                                <Normaltekst>{søkRessurs.navn}</Normaltekst>
+                                <BodyShort>{søkRessurs.navn}</BodyShort>
                                 {søkRessurs.personIdent}
                             </div>
                             <VertikalSentrering>
@@ -73,7 +73,7 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
                                     </Button>
                                 </div>
                             </VertikalSentrering>
-                        </StyledSøkResultat>
+                        </Søkeresultat>
                     );
                 }}
             </DataViewer>

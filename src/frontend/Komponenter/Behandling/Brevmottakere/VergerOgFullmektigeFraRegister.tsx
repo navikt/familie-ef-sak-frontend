@@ -1,11 +1,10 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import { IFullmakt, IVergemål } from '../../../App/typer/personopplysninger';
 import { IBrevmottaker } from './typer';
 import { fullmaktTilBrevMottaker, vergemålTilBrevmottaker } from './brevmottakerUtils';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import { Button } from '@navikt/ds-react';
+import { Ingress, Button, BodyShort } from '@navikt/ds-react';
 import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {
@@ -15,7 +14,7 @@ interface Props {
     fullmakter: IFullmakt[];
 }
 
-const StyledIngress = styled(Ingress)`
+const Undertittel = styled(Ingress)`
     margin-bottom: 1rem;
 `;
 
@@ -51,7 +50,7 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
 
     return (
         <>
-            <StyledIngress>Verge/Fullmektig fra register</StyledIngress>
+            <Undertittel>Verge/Fullmektig fra register</Undertittel>
             {muligeMottakere.length ? (
                 muligeMottakere.map((mottaker, index) => {
                     const mottakerValgt = !!valgteMottakere.find(
@@ -82,7 +81,7 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
                     );
                 })
             ) : (
-                <Normaltekst>Ingen verge/fullmektig i register</Normaltekst>
+                <BodyShort>Ingen verge/fullmektig i register</BodyShort>
             )}
         </>
     );

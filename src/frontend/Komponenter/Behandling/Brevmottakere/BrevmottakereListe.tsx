@@ -1,10 +1,10 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import { BodyShort, Ingress } from '@navikt/ds-react';
 
 interface Props {
     valgtePersonMottakere: IBrevmottaker[];
@@ -13,7 +13,7 @@ interface Props {
     settValgteOrganisasjonMottakere: Dispatch<SetStateAction<IOrganisasjonMottaker[]>>;
 }
 
-const StyledIngress = styled(Ingress)`
+const Undertittel = styled(Ingress)`
     margin-bottom: 1rem;
 `;
 
@@ -48,14 +48,14 @@ export const BrevmottakereListe: FC<Props> = ({
     };
     return (
         <>
-            <StyledIngress>Brevmottakere</StyledIngress>
+            <Undertittel>Brevmottakere</Undertittel>
             {valgtePersonMottakere.map((mottaker, index) => (
                 <StyledMottakerBoks key={mottaker.navn + index}>
                     <Flexboks>
-                        <Normaltekst>
+                        <BodyShort>
                             {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
                             <KopierbartNullableFødselsnummer fødselsnummer={mottaker.personIdent} />
-                        </Normaltekst>
+                        </BodyShort>
                     </Flexboks>
                     <LenkeKnapp onClick={fjernPersonMottaker(mottaker.personIdent)}>
                         <SlettSøppelkasse withDefaultStroke={false} />
@@ -65,10 +65,10 @@ export const BrevmottakereListe: FC<Props> = ({
             {valgteOrganisasjonMottakere.map((mottaker, index) => (
                 <StyledMottakerBoks key={mottaker.navnHosOrganisasjon + index}>
                     <div>
-                        <Normaltekst>{`${mottaker.navnHosOrganisasjon}`}</Normaltekst>
-                        <Normaltekst>
+                        <BodyShort>{`${mottaker.navnHosOrganisasjon}`}</BodyShort>
+                        <BodyShort>
                             {`Organisasjonsnummer: ${mottaker.organisasjonsnummer}`}
-                        </Normaltekst>
+                        </BodyShort>
                     </div>
                     <LenkeKnapp onClick={fjernOrganisasjonMottaker(mottaker.organisasjonsnummer)}>
                         <SlettSøppelkasse withDefaultStroke={false} />
