@@ -1,12 +1,10 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Input } from 'nav-frontend-skjema';
 import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { Element } from 'nav-frontend-typografi';
-import { Knapp } from 'nav-frontend-knapper';
 import { IOrganisasjonMottaker } from './typer';
 import { StyledSøkInput, StyledSøkResultat } from './brevmottakereStyling';
+import { BodyShort, Button, TextField } from '@navikt/ds-react';
 
 interface Props {
     valgteMottakere: IOrganisasjonMottaker[];
@@ -53,6 +51,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
         <>
             <StyledSøkInput
                 label={'Organisasjonsnummer'}
+                htmlSize={26}
                 placeholder={'Søk'}
                 value={organisasjonsnummer}
                 onChange={(e) => settOrganisasjonsnummer(e.target.value)}
@@ -63,24 +62,25 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                         <>
                             <StyledSøkResultat>
                                 <div>
-                                    <Element>{organisasjonRessurs.navn}</Element>
+                                    <BodyShort>{organisasjonRessurs.navn}</BodyShort>
                                     {organisasjonRessurs.organisasjonsnummer}
                                 </div>
-                                <Knapp
+                                <Button
+                                    variant={'secondary'}
                                     onClick={leggTilOrganisasjon(
                                         organisasjonRessurs.organisasjonsnummer,
                                         organisasjonRessurs.navn
                                     )}
                                 >
                                     Legg til
-                                </Knapp>
-                                <Input
-                                    bredde={'M'}
+                                </Button>
+                                <TextField
+                                    htmlSize={25}
                                     label={'Ved'}
                                     placeholder={'Personen brevet skal til'}
                                     value={navnHosOrganisasjon}
                                     onChange={(e) => settNavnHosOrganisasjon(e.target.value)}
-                                    feil={feil}
+                                    error={feil}
                                 />
                             </StyledSøkResultat>
                         </>

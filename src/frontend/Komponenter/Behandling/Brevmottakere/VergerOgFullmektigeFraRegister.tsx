@@ -1,11 +1,10 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import { IFullmakt, IVergemål } from '../../../App/typer/personopplysninger';
 import { IBrevmottaker } from './typer';
 import { fullmaktTilBrevMottaker, vergemålTilBrevmottaker } from './brevmottakerUtils';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import { Button } from '@navikt/ds-react';
+import { Ingress, Button, BodyShort } from '@navikt/ds-react';
 import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {
@@ -82,7 +81,7 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
                     );
                 })
             ) : (
-                <Normaltekst>Ingen verge/fullmektig i register</Normaltekst>
+                <BodyShort>Ingen verge/fullmektig i register</BodyShort>
             )}
         </>
     );

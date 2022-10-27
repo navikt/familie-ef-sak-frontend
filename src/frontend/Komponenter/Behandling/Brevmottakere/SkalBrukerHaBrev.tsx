@@ -1,11 +1,10 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Ingress } from 'nav-frontend-typografi';
-import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
 import styled from 'styled-components';
+import { Ingress, Radio, RadioGroup } from '@navikt/ds-react';
 
-const StyledRadioGruppe = styled(RadioGruppe)`
+const StyledRadioGruppe = styled(RadioGroup)`
     display: flex;
 
     > div {
@@ -60,19 +59,23 @@ export const SkalBrukerHaBrev: FC<Props> = ({
     return (
         <>
             <StyledIngress>Skal bruker motta brevet?</StyledIngress>
-            <StyledRadioGruppe>
+            <StyledRadioGruppe legend={'Skal bruker motta brevet?'} hideLegend>
                 <Radio
-                    label={'Ja'}
+                    value={'Ja'}
                     name={'brukerHaBrevRadio'}
                     checked={brukerSkalHaBrev}
                     onChange={toggleBrukerSkalHaBrev}
-                />
+                >
+                    Ja
+                </Radio>
                 <Radio
-                    label={'Nei'}
+                    value={'Nei'}
                     name={'brukerHaBrevRadio'}
                     checked={!brukerSkalHaBrev}
                     onChange={toggleBrukerSkalHaBrev}
-                />
+                >
+                    Nei
+                </Radio>
             </StyledRadioGruppe>
         </>
     );

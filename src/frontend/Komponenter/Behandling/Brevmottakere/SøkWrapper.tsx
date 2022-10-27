@@ -1,10 +1,9 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Ingress } from 'nav-frontend-typografi';
-import { Select } from 'nav-frontend-skjema';
 import { SøkPerson } from './SøkPerson';
 import { SøkOrganisasjon } from './SøkOrganisasjon';
 import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
+import { Select } from '@navikt/ds-react';
 
 interface Props {
     settValgtePersonMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
@@ -16,10 +15,6 @@ enum ESøktype {
     ORGANISASJON = 'ORGANISASJON',
     PERSON = 'PERSON',
 }
-
-const StyledIngress = styled(Ingress)`
-    margin-bottom: 1rem;
-`;
 
 const SøkTypeSelect = styled(Select)`
     width: 200px;
@@ -35,8 +30,8 @@ export const SøkWrapper: FC<Props> = ({
 
     return (
         <>
-            <StyledIngress>Manuelt søk</StyledIngress>
             <SøkTypeSelect
+                label={'Manuelt søk'}
                 value={søktype}
                 onChange={(e) => settSøktype(e.target.value as ESøktype)}
             >
