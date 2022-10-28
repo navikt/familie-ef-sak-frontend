@@ -59,21 +59,15 @@ export const SkalBrukerHaBrev: FC<Props> = ({
     return (
         <>
             <Underoverskrift>Skal bruker motta brevet?</Underoverskrift>
-            <RadioGruppe legend={'Skal bruker motta brevet?'} hideLegend>
-                <Radio
-                    value={'Ja'}
-                    name={'brukerHaBrevRadio'}
-                    checked={brukerSkalHaBrev}
-                    onChange={toggleBrukerSkalHaBrev}
-                >
+            <RadioGruppe
+                legend={'Skal bruker motta brevet?'}
+                hideLegend
+                value={brukerSkalHaBrev ? 'Ja' : 'Nei'}
+            >
+                <Radio value={'Ja'} name={'brukerHaBrevRadio'} onChange={toggleBrukerSkalHaBrev}>
                     Ja
                 </Radio>
-                <Radio
-                    value={'Nei'}
-                    name={'brukerHaBrevRadio'}
-                    checked={!brukerSkalHaBrev}
-                    onChange={toggleBrukerSkalHaBrev}
-                >
+                <Radio value={'Nei'} name={'brukerHaBrevRadio'} onChange={toggleBrukerSkalHaBrev}>
                     Nei
                 </Radio>
             </RadioGruppe>
