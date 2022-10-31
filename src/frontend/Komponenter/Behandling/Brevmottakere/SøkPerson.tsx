@@ -38,7 +38,7 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
     const leggTilBrevmottaker = (personIdent: string, navn: string) => () => {
         settValgteMottakere((prevState) => [
             ...prevState,
-            { navn, personIdent, mottakerRolle: EBrevmottakerRolle.VERGE }, // TODO
+            { navn, personIdent, mottakerRolle: EBrevmottakerRolle.VERGE },
         ]);
     };
 
