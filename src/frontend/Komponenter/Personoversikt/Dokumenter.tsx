@@ -17,7 +17,7 @@ import {
 } from '../../App/typer/journalforing';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
-import { DownFilled, RightFilled } from '@navikt/ds-icons';
+import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -57,7 +57,7 @@ const InnUt = styled.div`
     }
 `;
 
-const avsenderMottaker = (dokument: Dokumentinfo): string => {
+const utledAvsenderMottakerDetaljer = (dokument: Dokumentinfo): string => {
     let avsender = '';
     const avsenderMottaker = dokument.avsenderMottaker;
     if (!avsenderMottaker) {
@@ -82,6 +82,12 @@ const avsenderMottaker = (dokument: Dokumentinfo): string => {
         avsender += ')';
     }
     return avsender;
+};
+
+const ikoneForJournalposttype: Record<Journalposttype, React.ReactElement> = {
+    I: <LeftFilled />,
+    N: <DownFilled />,
+    U: <RightFilled />,
 };
 
 const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
@@ -142,11 +148,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
             <Td>
                 <InnUt>
-                    {dokument.journalposttype === Journalposttype.N ? (
-                        <DownFilled />
-                    ) : (
-                        <RightFilled />
-                    )}
+                    {ikoneForJournalposttype[dokument.journalposttype]}
                     <strong>{dokument.journalposttype}</strong>
                 </InnUt>
             </Td>
@@ -161,7 +163,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 </HovedLenke>
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
-            <Td>{avsenderMottaker(dokument)}</Td>
+            <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
             <Td>
                 <Normaltekst>
                     {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
