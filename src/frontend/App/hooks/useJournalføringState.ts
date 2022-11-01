@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
+import { DokumentTitler } from '../typer/journalføring';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -12,7 +13,7 @@ export interface BehandlingRequest {
 }
 
 interface JournalføringRequest {
-    dokumentTitler?: Record<string, string>;
+    dokumentTitler?: DokumentTitler;
     fagsakId: string;
     oppgaveId: string;
     behandling?: BehandlingRequest;
@@ -32,8 +33,8 @@ export interface JournalføringStateRequest {
     settFagsakId: Dispatch<SetStateAction<string>>;
     behandling?: BehandlingRequest;
     settBehandling: Dispatch<SetStateAction<BehandlingRequest | undefined>>;
-    dokumentTitler?: Record<string, string>;
-    settDokumentTitler: Dispatch<SetStateAction<Record<string, string> | undefined>>;
+    dokumentTitler?: DokumentTitler;
+    settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
     fullførJournalføring: (journalførendeEnhet: string, navIdent?: string) => void;
@@ -56,7 +57,7 @@ export const useJournalføringState = (
     const { axiosRequest } = useApp();
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
-    const [dokumentTitler, settDokumentTitler] = useState<Record<string, string>>();
+    const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [visJournalføringIkkeMuligModal, settJournalføringIkkeMuligModal] =

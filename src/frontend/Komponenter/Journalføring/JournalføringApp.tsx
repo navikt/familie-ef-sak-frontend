@@ -37,7 +37,11 @@ import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { harTittelForAlleDokumenter } from './journalføringUtil';
+import {
+    harTittelForAlleDokumenter,
+    JOURNALPOST_QUERY_STRING,
+    OPPGAVEID_QUERY_STRING,
+} from './journalføringUtil';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -108,7 +112,7 @@ const validerJournalføringState = (
         return 'Mangler type dokumentasjon';
     } else if (inneholderBarnSomErUgyldige(journalpostState)) {
         return 'Et eller flere barn mangler gyldig dato';
-    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState)) {
+    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState.dokumentTitler)) {
         return 'Mangler tittel på et eller flere dokumenter';
     } else if (erEttersendingPåNyFørstegangsbehandling(journalpostState)) {
         return 'Kan ikke journalføre ettersending på ny førstegangsbehandling';
@@ -213,6 +217,13 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             }`}</Sidetittel>
             <Kolonner>
                 <Venstrekolonne>
+                    <div>
+                        <Link
+                            to={`/journalfor-klage?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`}
+                        >
+                            Gjelder dette klage?
+                        </Link>
+                    </div>
                     {!journalResponse.harStrukturertSøknad ? (
                         <>
                             <VelgFagsakForIkkeSøknad
