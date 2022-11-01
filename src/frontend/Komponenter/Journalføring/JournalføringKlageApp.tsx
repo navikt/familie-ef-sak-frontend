@@ -18,7 +18,11 @@ import {
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { harTittelForAlleDokumenter } from './journalføringUtil';
+import {
+    FRA_VANLIG_QUERY_STRING,
+    harTittelForAlleDokumenter,
+    lagJournalføringUrl,
+} from './journalføringUtil';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -36,6 +40,7 @@ import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandling
 import BehandlingKlageInnold from './BehandlingKlageInnold';
 import { Klagebehandlinger } from '../../App/typer/klage';
 import { Fagsak } from '../../App/typer/fagsak';
+import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 
 const validerJournalføringState = (
     journalResponse: IJojurnalpostResponse,
@@ -74,6 +79,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     oppgaveId,
     journalResponse,
 }) => {
+    const query: URLSearchParams = useQueryParams();
+    const fraVanligJournalføring = query.get(FRA_VANLIG_QUERY_STRING) === 'true';
+
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
 
@@ -124,6 +132,13 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             }`}</Sidetittel>
             <Kolonner>
                 <Venstrekolonne>
+                    {fraVanligJournalføring && (
+                        <div>
+                            <Link to={lagJournalføringUrl(journalpostId, oppgaveId)}>
+                                Gjelder ikke dette klage?
+                            </Link>
+                        </div>
+                    )}
                     <VelgFagsakForIkkeSøknad
                         journalResponse={journalResponse}
                         hentFagsak={hentFagsak}

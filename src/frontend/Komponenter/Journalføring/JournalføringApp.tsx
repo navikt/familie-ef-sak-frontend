@@ -37,11 +37,7 @@ import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import {
-    harTittelForAlleDokumenter,
-    JOURNALPOST_QUERY_STRING,
-    OPPGAVEID_QUERY_STRING,
-} from './journalføringUtil';
+import { harTittelForAlleDokumenter, lagJournalføringKlageUrl } from './journalføringUtil';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -218,9 +214,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             <Kolonner>
                 <Venstrekolonne>
                     <div>
-                        <Link
-                            to={`/journalfor-klage?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`}
-                        >
+                        <Link to={lagJournalføringKlageUrl(journalpostId, oppgaveId)}>
                             Gjelder dette klage?
                         </Link>
                     </div>
