@@ -11,7 +11,10 @@ import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
-import { journalstatusTilTekst } from '../../App/typer/journalforing';
+import {
+    avsenderMottakerIdTypeTilTekst,
+    journalstatusTilTekst,
+} from '../../App/typer/journalforing';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Journalstatus } from '@navikt/familie-typer';
 
@@ -42,6 +45,33 @@ const HovedLenke = styled.a`
 const DivMedVenstreMargin = styled.div`
     margin-left: 2rem;
 `;
+
+const avsenderMottaker = (dokument: Dokumentinfo): string => {
+    let avsender = '';
+    const avsenderMottaker = dokument.avsenderMottaker;
+    if (!avsenderMottaker) {
+        return avsender;
+    }
+    if (avsenderMottaker.navn) {
+        avsender += avsenderMottaker.navn;
+    }
+    const type = avsenderMottaker.type;
+    const id = avsenderMottaker.id;
+    if (!avsenderMottaker.erLikBruker && (type || id)) {
+        avsender += ' (';
+        if (type && avsenderMottakerIdTypeTilTekst[type]) {
+            avsender += avsenderMottakerIdTypeTilTekst[type];
+            if (id) {
+                avsender += ' ';
+            }
+        }
+        if (id) {
+            avsender += id;
+        }
+        avsender += ')';
+    }
+    return avsender;
+};
 
 const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
     const dokumentConfig: AxiosRequestConfig = useMemo(
@@ -109,11 +139,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 </HovedLenke>
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
-            <Td>
-                {dokument.avsenderMottaker?.navn}{' '}
-                {dokument.avsenderMottaker?.erLikBruker === false &&
-                    `(${dokument.avsenderMottaker.id})`}
-            </Td>
+            <Td>{avsenderMottaker(dokument)}</Td>
             <Td>
                 <Normaltekst>
                     {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
