@@ -16,7 +16,8 @@ import {
     journalstatusTilTekst,
 } from '../../App/typer/journalforing';
 import { IFagsakPerson } from '../../App/typer/fagsak';
-import { Journalstatus } from '@navikt/familie-typer';
+import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
+import { DownFilled, RightFilled } from '@navikt/ds-icons';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -44,6 +45,16 @@ const HovedLenke = styled.a`
 
 const DivMedVenstreMargin = styled.div`
     margin-left: 2rem;
+`;
+
+const InnUt = styled.div`
+    svg {
+        vertical-align: -0.2em;
+    }
+
+    strong {
+        padding-left: 0.25rem;
+    }
 `;
 
 const avsenderMottaker = (dokument: Dokumentinfo): string => {
@@ -108,6 +119,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({ dokument }) => (
         <tr>
             <Td></Td>
+            <Td></Td>
             <Td>
                 <LenkeVenstreMargin
                     href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
@@ -128,6 +140,16 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     }) => (
         <TrHoveddokument>
             <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
+            <Td>
+                <InnUt>
+                    {dokument.journalposttype === Journalposttype.N ? (
+                        <DownFilled />
+                    ) : (
+                        <RightFilled />
+                    )}
+                    <strong>{dokument.journalposttype}</strong>
+                </InnUt>
+            </Td>
             <Td>
                 <HovedLenke
                     key={dokument.journalpostId}
@@ -160,9 +182,10 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
                                 <table className="tabell">
                                     <thead>
-                                        <Kolonnetittel text={'Dato'} width={15} />
-                                        <Kolonnetittel text={'Tittel'} width={60} />
-                                        <Kolonnetittel text={'Avsender/mottaker'} width={25} />
+                                        <Kolonnetittel text={'Dato'} width={12} />
+                                        <Kolonnetittel text={'Inn/ut'} width={5} />
+                                        <Kolonnetittel text={'Tittel'} width={43} />
+                                        <Kolonnetittel text={'Avsender/mottaker'} width={20} />
                                         <Kolonnetittel text={'Status'} width={10} />
                                     </thead>
                                     <tbody>
