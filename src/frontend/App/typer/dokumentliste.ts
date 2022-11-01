@@ -1,5 +1,5 @@
 import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
-import { IJournalpostAvsenderMottaker } from './journalforing';
+import { IJournalpostAvsenderMottaker } from './journalføring';
 
 export interface Dokumentinfo {
     dokumentinfoId: string;

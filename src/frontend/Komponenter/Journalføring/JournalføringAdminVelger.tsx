@@ -21,7 +21,7 @@ const StyledInput = styled(FamilieInput)`
     width: max-content;
 `;
 
-export const JournalforingAdminVelger: React.FC = () => {
+export const JournalføringAdminVelger: React.FC = () => {
     const [journalpostId, settJournalpostId] = useState<string>('');
     const [erGyligFnr, settErGyldigFnr] = useState<boolean>(false);
     const navigate = useNavigate();

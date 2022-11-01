@@ -11,13 +11,13 @@ import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
-import {
-    avsenderMottakerIdTypeTilTekst,
-    journalstatusTilTekst,
-} from '../../App/typer/journalforing';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
 import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
+import {
+    avsenderMottakerIdTypeTilTekst,
+    journalstatusTilTekst,
+} from '../../App/typer/journalføring';
 
 const DokumenterVisning = styled.div`
     display: flex;

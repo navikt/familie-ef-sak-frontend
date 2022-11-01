@@ -17,7 +17,7 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../Oppgavebenk/oppgavefilterStorage';
-import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/journalforing';
+import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/journalføring';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { AlertError, AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
@@ -35,7 +35,7 @@ type IJournalpostParams = {
     journalpostid: string;
 };
 
-export const JournalforingAdmin: React.FC = () => {
+export const JournalføringAdmin: React.FC = () => {
     const { journalpostid } = useParams<IJournalpostParams>();
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
