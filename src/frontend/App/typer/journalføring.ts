@@ -62,6 +62,32 @@ export interface IJournalpost {
     datoMottatt: string;
 }
 
+export interface IJournalpostAvsenderMottaker {
+    erLikBruker: boolean;
+    id?: string;
+    land?: string;
+    navn?: string;
+    type?: AvsenderMottakerIdType;
+}
+
+export enum AvsenderMottakerIdType {
+    FNR = 'FNR',
+    HPRNR = 'HPRNR',
+    ORGNR = 'ORGNR',
+    UKJENT = 'UKJENT',
+    UTL_ORG = 'UTL_ORG',
+    NULL = 'NULL',
+}
+
+export const avsenderMottakerIdTypeTilTekst: Record<AvsenderMottakerIdType, string> = {
+    FNR: 'fnr',
+    HPRNR: 'helsepersonellregister',
+    ORGNR: 'orgnr',
+    UKJENT: 'ukjent',
+    UTL_ORG: 'utl. inst.',
+    NULL: '',
+};
+
 export interface IJojurnalpostResponse {
     journalpost: IJournalpost;
     personIdent: string;
