@@ -62,6 +62,14 @@ export interface IJournalpost {
     datoMottatt: string;
 }
 
+export interface IJournalpostAvsenderMottaker {
+    erLikBruker: boolean;
+    id?: string;
+    land?: string;
+    navn?: string;
+    type?: string;
+}
+
 export interface IJojurnalpostResponse {
     journalpost: IJournalpost;
     personIdent: string;

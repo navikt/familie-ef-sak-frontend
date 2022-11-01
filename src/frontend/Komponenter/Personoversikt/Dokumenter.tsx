@@ -89,6 +89,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
             <Td></Td>
+            <Td></Td>
         </tr>
     );
 
@@ -107,6 +108,11 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                     {dokument.tittel}
                 </HovedLenke>
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+            </Td>
+            <Td>
+                {dokument.avsenderMottaker?.navn}{' '}
+                {dokument.avsenderMottaker?.erLikBruker === false &&
+                    `(${dokument.avsenderMottaker.id})`}
             </Td>
             <Td>
                 <Normaltekst>
@@ -129,7 +135,8 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                 <table className="tabell">
                                     <thead>
                                         <Kolonnetittel text={'Dato'} width={15} />
-                                        <Kolonnetittel text={'Tittel'} width={75} />
+                                        <Kolonnetittel text={'Tittel'} width={60} />
+                                        <Kolonnetittel text={'Avsender/mottaker'} width={25} />
                                         <Kolonnetittel text={'Status'} width={10} />
                                     </thead>
                                     <tbody>
