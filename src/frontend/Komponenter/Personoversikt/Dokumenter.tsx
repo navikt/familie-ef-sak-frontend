@@ -50,10 +50,7 @@ const DivMedVenstreMargin = styled.div`
 const InnUt = styled.div`
     svg {
         vertical-align: -0.2em;
-    }
-
-    strong {
-        padding-left: 0.25rem;
+        margin-right: 0.5rem;
     }
 `;
 
