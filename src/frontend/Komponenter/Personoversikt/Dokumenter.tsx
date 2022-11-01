@@ -54,6 +54,9 @@ const InnUt = styled.div`
     }
 `;
 
+/**
+ * Genererer en string av typen `<navn> (<type>: <id>)`
+ */
 const utledAvsenderMottakerDetaljer = (dokument: Dokumentinfo): string => {
     let avsender = '';
     const avsenderMottaker = dokument.avsenderMottaker;
@@ -70,7 +73,7 @@ const utledAvsenderMottakerDetaljer = (dokument: Dokumentinfo): string => {
         if (type && avsenderMottakerIdTypeTilTekst[type]) {
             avsender += avsenderMottakerIdTypeTilTekst[type];
             if (id) {
-                avsender += ' ';
+                avsender += ': ';
             }
         }
         if (id) {
