@@ -1,7 +1,7 @@
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useMemo, useState } from 'react';
-import { IJojurnalpostResponse } from '../typer/journalforing';
+import { IJojurnalpostResponse } from '../typer/journalføring';
 import { AxiosRequestConfig } from 'axios';
 import { OrNothing } from './felles/useSorteringState';
 

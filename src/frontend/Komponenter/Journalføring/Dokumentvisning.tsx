@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { Systemtittel } from 'nav-frontend-typografi';
 import VisDokumentTittel from './VisDokumentTittel';
-import { IJournalpost } from '../../App/typer/journalforing';
+import { IJournalpost } from '../../App/typer/journalføring';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
 
 interface DokumentVisningProps {

@@ -29,7 +29,7 @@ import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { BodyLong, Button } from '@navikt/ds-react';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
-import { IJojurnalpostResponse } from '../../App/typer/journalforing';
+import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
@@ -149,7 +149,7 @@ const validerJournalføringState = (
     }
 };
 
-export const JournalforingApp: React.FC = () => {
+export const JournalføringApp: React.FC = () => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
     const query: URLSearchParams = useQueryParams();

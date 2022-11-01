@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import React from 'react';
-import { JournalforingAdmin } from '../Journalforing/JournalforingAdmin';
-import { JournalforingAdminVelger } from '../Journalforing/JournalforingAdminVelger';
+import { JournalføringAdmin } from '../Journalføring/JournalføringAdmin';
+import { JournalføringAdminVelger } from '../Journalføring/JournalføringAdminVelger';
 import GamleBehandlinger from '../Behandling/GamleBehandlinger/GamleBehandlinger';
 
 export const AdminApp: React.FC = () => {
@@ -9,11 +9,11 @@ export const AdminApp: React.FC = () => {
         <Routes>
             <Route
                 path={`/ny-behandling-for-ferdigstilt-journalpost/:journalpostid`}
-                element={<JournalforingAdmin />}
+                element={<JournalføringAdmin />}
             />
             <Route
                 path={`/ny-behandling-for-ferdigstilt-journalpost`}
-                element={<JournalforingAdminVelger />}
+                element={<JournalføringAdminVelger />}
             />
             <Route path={`/gamle-behandlinger`} element={<GamleBehandlinger />} />
             <Route path="*" element={<Navigate to="/" replace={true} />} />
