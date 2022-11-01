@@ -142,6 +142,8 @@ const validerJournalføringState = (
         return 'Kan ikke journalføre ettersending på ny førstegangsbehandling';
     } else if (erEttersendingPåNyBehandlingOgManglerVilkårsbehandleNyeBarnValg(journalpostState)) {
         return 'Mangler valg om å vilkårsbehandle nye barn';
+    } else if (journalResponse.journalpost.tema !== 'ENF') {
+        return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
     } else {
         return undefined;
     }
