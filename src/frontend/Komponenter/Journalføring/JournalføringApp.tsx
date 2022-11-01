@@ -316,7 +316,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             </Kolonner>
             <BekreftJournalføringModal
                 journalpostState={journalpostState}
-                journalpostId={journalpostId}
                 innloggetSaksbehandler={innloggetSaksbehandler}
             />
             <JournalføringIkkeMuligModal
@@ -363,9 +362,8 @@ const JournalføringIkkeMuligModal: React.FC<{
 
 const BekreftJournalføringModal: React.FC<{
     journalpostState: JournalføringStateRequest;
-    journalpostId: string;
     innloggetSaksbehandler: ISaksbehandler;
-}> = ({ journalpostState, journalpostId, innloggetSaksbehandler }) => {
+}> = ({ journalpostState, innloggetSaksbehandler }) => {
     return (
         <ModalWrapper
             tittel={''}
@@ -376,7 +374,6 @@ const BekreftJournalføringModal: React.FC<{
                     onClick: () => {
                         journalpostState.settVisBekreftelsesModal(false);
                         journalpostState.fullførJournalføring(
-                            journalpostId,
                             innloggetSaksbehandler?.enhet || '9999',
                             innloggetSaksbehandler?.navIdent
                         );
