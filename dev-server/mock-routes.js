@@ -52,7 +52,7 @@ app.get('/familie-ef-sak/api/perioder/fagsak/:id/historikk', (req, res) => {
 });
 
 app.get('/familie-ef-sak/api/journalpost/:id', (req, res) => {
-    const filnavn = `journalforing.json`;
+    const filnavn = `journalføring.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 
@@ -67,7 +67,7 @@ app.get('/familie-ef-sak/api/vurdering/:id/vilkar', (req, res) => {
 });
 
 app.get('/familie-ef-sak/api/journalpost/:id/dokument/:dokumentInfoId', (req, res) => {
-    const filnavn = `journalforing-dokument.json`;
+    const filnavn = `journalføring-dokument.json`;
     setTimeout(() => res.send(lesMockFil(filnavn)), delayMs);
 });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IJojurnalpostResponse } from '../../App/typer/journalforing';
+import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import {
     behandlingstemaTilStønadstype,
     Stønadstype,

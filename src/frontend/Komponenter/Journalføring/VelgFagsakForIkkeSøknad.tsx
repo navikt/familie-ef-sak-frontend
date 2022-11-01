@@ -1,4 +1,4 @@
-import { IJojurnalpostResponse } from '../../App/typer/journalforing';
+import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import {
     behandlingstemaTilStønadstype,
     Stønadstype,

@@ -11,7 +11,7 @@ import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
-import { journalstatusTilTekst } from '../../App/typer/journalforing';
+import { journalstatusTilTekst } from '../../App/typer/journalføring';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Journalstatus } from '@navikt/familie-typer';
 

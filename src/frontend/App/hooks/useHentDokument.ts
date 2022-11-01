@@ -2,7 +2,7 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { OrNothing } from './felles/useSorteringState';
-import { IJournalpost } from '../typer/journalforing';
+import { IJournalpost } from '../typer/journalføring';
 
 interface HentDokumentResponse {
     hentDokument: (dokumentinfoId: string) => void;
