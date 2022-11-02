@@ -4,6 +4,10 @@ import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
 import { useEffect, useState } from 'react';
 import { useHentFagsak } from './useHentFagsak';
 import { Stønadstype } from '../typer/behandlingstema';
+import {
+    lagJournalføringKlageUrl,
+    lagJournalføringUrl,
+} from '../../Komponenter/Journalføring/journalføringUtil';
 
 interface OppgaveDto {
     behandlingId: string;
@@ -64,12 +68,16 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
-    const gåTilJournalføring = () => {
+    const gåTilJournalføring = (gjelderKlage = false) => {
         settLaster(true);
+        const journalpostId = oppgave.journalpostId || '';
+        const oppgaveId = oppgave.id || '';
         settOppgaveTilSaksbehandler()
             .then(() =>
                 gåTilUrl(
-                    `/journalfor?journalpostId=${oppgave.journalpostId}&oppgaveId=${oppgave.id}`
+                    gjelderKlage
+                        ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
+                        : lagJournalføringUrl(journalpostId, oppgaveId)
                 )
             )
             .catch((error: Error) => {

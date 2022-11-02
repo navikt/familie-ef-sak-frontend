@@ -15,6 +15,8 @@ import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
 import { Popover } from '@navikt/ds-react';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 interface Props {
     oppgave: IOppgave;
@@ -46,11 +48,11 @@ const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
     );
 };
 
-const oppgaveErKlage = (oppgave: IOppgave) => {
-    return (
-        oppgave.behandlesAvApplikasjon === 'familie-klage' && oppgave.behandlingstype === 'ae0058'
-    );
-};
+const oppgaveErKlage = (oppgave: IOppgave) =>
+    oppgave.behandlesAvApplikasjon === 'familie-klage' && oppgave.behandlingstype === 'ae0058';
+
+const oppgaveErJournalførKlage = (oppgave: IOppgave) =>
+    oppgave.oppgavetype === 'JFR' && oppgave.behandlingstype === 'ae0058';
 
 const oppgaveErVurderKonsekvensForYtelse = (oppgave: IOppgave) => {
     return oppgave.oppgavetype === 'VUR_KONS_YTE';
@@ -59,6 +61,8 @@ const oppgaveErVurderKonsekvensForYtelse = (oppgave: IOppgave) => {
 const utledHandling = (oppgave: IOppgave): Handling => {
     if (måBehandlesIEFSak(oppgave)) {
         return Handling.SAKSBEHANDLE;
+    } else if (oppgaveErJournalførKlage(oppgave)) {
+        return Handling.JOURNALFØR_KLAGE;
     } else if (kanJournalføres(oppgave)) {
         return Handling.JOURNALFØR;
     } else if (oppgaveErTilbakekreving(oppgave)) {
@@ -79,6 +83,8 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         plukkOppgaveOgGåTilBehandlingsoversikt,
         feilmelding,
     } = useOppgave(oppgave);
+
+    const { toggles } = useToggles();
 
     const [anker, settAnker] = useState<Element | null>(null);
 
@@ -120,8 +126,17 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         switch (utledHandling(oppgave)) {
             case Handling.JOURNALFØR:
                 return (
-                    <Flatknapp onClick={gåTilJournalføring} disabled={laster}>
+                    <Flatknapp onClick={() => gåTilJournalføring()} disabled={laster}>
                         Gå til journalpost
+                    </Flatknapp>
+                );
+            case Handling.JOURNALFØR_KLAGE:
+                return (
+                    <Flatknapp
+                        onClick={() => gåTilJournalføring(true)}
+                        disabled={laster || !toggles[ToggleName.journalføringKlage]}
+                    >
+                        Gå til journalpost (klage)
                     </Flatknapp>
                 );
             case Handling.SAKSBEHANDLE:
