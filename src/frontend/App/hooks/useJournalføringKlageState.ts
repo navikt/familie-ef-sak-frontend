@@ -5,13 +5,14 @@ import { DokumentTitler } from '../typer/journalføring';
 
 export interface BehandlingKlageRequest {
     behandlingId?: string;
+    mottattDato?: string;
 }
 
 interface JournalføringRequest {
     dokumentTitler?: DokumentTitler;
     fagsakId: string;
     oppgaveId: string;
-    behandlingId?: string;
+    behandling: BehandlingKlageRequest;
     journalførendeEnhet: string;
     navIdent?: string;
 }
@@ -50,7 +51,7 @@ export const useJournalføringKlageState = (
         const data: JournalføringRequest = {
             oppgaveId,
             fagsakId,
-            behandlingId: behandling.behandlingId,
+            behandling,
             dokumentTitler,
             journalførendeEnhet,
             navIdent,

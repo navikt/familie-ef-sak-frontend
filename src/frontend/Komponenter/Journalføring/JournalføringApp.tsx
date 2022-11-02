@@ -47,6 +47,8 @@ import JournalføringWrapper, {
     Venstrekolonne,
 } from './JournalføringWrapper';
 import JournalføringPdfVisning from './JournalføringPdfVisning';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 const ModalKnapp = styled(Button)`
     margin-bottom: 1rem;
@@ -130,6 +132,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     journalResponse,
 }) => {
     const { innloggetSaksbehandler } = useApp();
+    const { toggles } = useToggles();
     const navigate = useNavigate();
 
     const journalpostId = journalResponse.journalpost.journalpostId;
@@ -214,9 +217,11 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             <Kolonner>
                 <Venstrekolonne>
                     <div>
-                        <Link to={lagJournalføringKlageUrl(journalpostId, oppgaveId)}>
-                            Gjelder dette klage?
-                        </Link>
+                        {toggles[ToggleName.journalføringKlage] && (
+                            <Link to={lagJournalføringKlageUrl(journalpostId, oppgaveId)}>
+                                Gjelder dette klage?
+                            </Link>
+                        )}
                     </div>
                     {!journalResponse.harStrukturertSøknad ? (
                         <>

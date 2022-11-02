@@ -41,6 +41,11 @@ import BehandlingKlageInnold from './BehandlingKlageInnold';
 import { Klagebehandlinger } from '../../App/typer/klage';
 import { Fagsak } from '../../App/typer/fagsak';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
+import { FamilieDatovelger } from '@navikt/familie-form-elements';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
+import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
+import { erGyldigDato } from '../../App/utils/dato';
 
 const validerJournalføringState = (
     journalResponse: IJojurnalpostResponse,
@@ -52,6 +57,13 @@ const validerJournalføringState = (
         return 'Mangler tittel på et eller flere dokumenter';
     } else if (journalResponse.journalpost.tema !== 'ENF') {
         return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
+    } else if (
+        harValgtNyKlageBehandling(journalpostState.behandling) &&
+        !journalResponse.journalpost.datoMottatt &&
+        (!journalpostState.behandling.mottattDato ||
+            !erGyldigDato(journalpostState.behandling.mottattDato))
+    ) {
+        return 'Mangler gyldig mottatt dato';
     } else {
         return undefined;
     }
@@ -79,6 +91,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     oppgaveId,
     journalResponse,
 }) => {
+    const { toggles } = useToggles();
     const query: URLSearchParams = useQueryParams();
     const fraVanligJournalføring = query.get(FRA_VANLIG_QUERY_STRING) === 'true';
 
@@ -123,6 +136,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
 
     const valgtFagsak = utledValgtFagsak(fagsak);
 
+    const erNyBehandling = harValgtNyKlageBehandling(journalpostState.behandling);
     return (
         <SideLayout className={'container'}>
             <Sidetittel>{`Registrere journalpost for klage ${
@@ -162,6 +176,21 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                             valgtFagsak={valgtFagsak}
                             settFeilmelding={settFeilMeldning}
                         />
+                        {erNyBehandling && !journalResponse.journalpost.datoMottatt && (
+                            <div>
+                                <FamilieDatovelger
+                                    id={'datoMottatt'}
+                                    label={'Klage mottatt'}
+                                    onChange={(mottattDato) => {
+                                        journalpostState.settBehandling((prevState) => ({
+                                            ...prevState,
+                                            mottattDato,
+                                        }));
+                                    }}
+                                    valgtDato={journalpostState.behandling?.mottattDato}
+                                />
+                            </div>
+                        )}
                     </SkjemaGruppe>
                     {(journalpostState.innsending.status === RessursStatus.FEILET ||
                         journalpostState.innsending.status === RessursStatus.FUNKSJONELL_FEIL) && (
@@ -185,6 +214,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                 }
                             }}
                             spinner={journalpostState.innsending.status === RessursStatus.HENTER}
+                            disabled={toggles[ToggleName.journalføringKlage]}
                         >
                             Journalfør
                         </Hovedknapp>
