@@ -1,21 +1,17 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
-import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import Brukerinfo from './Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../App/hooks/useJournalføringState';
-import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { useHentDokument } from '../../App/hooks/useHentDokument';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -41,20 +37,16 @@ import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-
-const SideLayout = styled.div`
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 2rem;
-`;
-
-const Kolonner = styled.div`
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-`;
+import { harTittelForAlleDokumenter } from './journalføringUtil';
+import JournalføringWrapper, {
+    FlexKnapper,
+    Høyrekolonne,
+    JournalføringAppProps,
+    Kolonner,
+    SideLayout,
+    Venstrekolonne,
+} from './JournalføringWrapper';
+import JournalføringPdfVisning from './JournalføringPdfVisning';
 
 const ModalKnapp = styled(Button)`
     margin-bottom: 1rem;
@@ -64,31 +56,6 @@ const ModalKnapp = styled(Button)`
 const ModalTekst = styled(BodyLong)`
     margin-top: 2rem;
 `;
-
-const Venstrekolonne = styled.div`
-    max-width: 900px;
-`;
-const Høyrekolonne = styled.div``;
-const FlexKnapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const JOURNALPOST_QUERY_STRING = 'journalpostId';
-const OPPGAVEID_QUERY_STRING = 'oppgaveId';
-
-const harTittelForAlleDokumenter = (
-    journalResponse: IJojurnalpostResponse,
-    journalpostState: JournalføringStateRequest
-) =>
-    journalResponse.journalpost.dokumenter
-        .map(
-            (d) =>
-                d.tittel ||
-                (journalpostState.dokumentTitler &&
-                    journalpostState.dokumentTitler[d.dokumentInfoId])
-        )
-        .every((tittel) => tittel && tittel.trim());
 
 const erUstrukturertSøknadOgManglerDokumentasjonsType = (
     journalResponse: IJojurnalpostResponse,
@@ -125,7 +92,12 @@ const validerJournalføringState = (
     journalpostState: JournalføringStateRequest,
     erAlleBehandlingerFerdigstilte: boolean
 ): string | undefined => {
-    if (!erAlleBehandlingerFerdigstilte && harValgtNyBehandling(journalpostState.behandling)) {
+    if (!journalpostState.behandling) {
+        return 'Du må velge en behandling for å journalføre';
+    } else if (
+        !erAlleBehandlingerFerdigstilte &&
+        harValgtNyBehandling(journalpostState.behandling)
+    ) {
         return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
     } else if (
         erUstrukturertSøknadOgManglerDokumentasjonsType(
@@ -150,37 +122,26 @@ const validerJournalføringState = (
 };
 
 export const JournalføringApp: React.FC = () => {
+    return <JournalføringWrapper komponent={JournalføringAppContent} />;
+};
+
+const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
+    oppgaveId,
+    journalResponse,
+}) => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
-    const query: URLSearchParams = useQueryParams();
-    const oppgaveIdParam = query.get(OPPGAVEID_QUERY_STRING);
-    const journalpostIdParam = query.get(JOURNALPOST_QUERY_STRING);
 
-    const journalpostState: JournalføringStateRequest = useJournalføringState();
-    const { hentJournalPost, journalResponse } = useHentJournalpost(journalpostIdParam);
-    const {
-        hentDokument,
-        valgtDokument,
-        hentFørsteDokument,
-        hentNesteDokument,
-        hentForrigeDokument,
-    } = useHentDokument(journalpostIdParam);
+    const journalpostId = journalResponse.journalpost.journalpostId;
+
+    const journalpostState: JournalføringStateRequest = useJournalføringState(
+        oppgaveId,
+        journalpostId
+    );
+    const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
+
     const { hentFagsak, fagsak } = useHentFagsak();
     const [feilmelding, settFeilMeldning] = useState('');
-
-    useEffect(() => {
-        if (journalpostState.forsøktJournalført && !journalpostState.behandling) {
-            settFeilMeldning('Du må velge en behandling for å journalføre');
-        }
-    }, [journalpostState]);
-
-    useEffect(() => {
-        if (oppgaveIdParam && journalpostIdParam) {
-            hentJournalPost();
-            journalpostState.settOppgaveId(oppgaveIdParam);
-        }
-        // eslint-disable-next-line
-    }, [oppgaveIdParam, journalpostIdParam]);
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
@@ -191,22 +152,11 @@ export const JournalføringApp: React.FC = () => {
 
             lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), {
                 ...lagredeOppgaveFiltreringer,
-                ident:
-                    journalResponse.status === RessursStatus.SUKSESS
-                        ? journalResponse.data.personIdent
-                        : undefined,
+                ident: journalResponse.personIdent,
             });
             navigate('/oppgavebenk');
         }
-        // eslint-disable-next-line
-    }, [journalpostState.innsending]);
-
-    useEffect(() => {
-        if (journalResponse.status === RessursStatus.SUKSESS) {
-            hentFørsteDokument(journalResponse.data.journalpost);
-        }
-        // eslint-disable-next-line
-    }, [journalResponse]);
+    }, [innloggetSaksbehandler, journalResponse, journalpostState, navigate]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
@@ -214,14 +164,6 @@ export const JournalføringApp: React.FC = () => {
         }
         // eslint-disable-next-line
     }, [fagsak]);
-
-    useEffect(() => {
-        document.title = 'Journalpost';
-    }, []);
-
-    if (!oppgaveIdParam || !journalpostIdParam) {
-        return <Navigate to="/oppgavebenk" />;
-    }
 
     const skalBeOmBekreftelse = (
         erNyBehandling: boolean,
@@ -245,9 +187,7 @@ export const JournalføringApp: React.FC = () => {
             journalpostState.behandling &&
             journalpostState.behandling.behandlingstype &&
             !journalpostState.behandling.behandlingsId;
-        const harIkkeStrukturertSøknad =
-            journalResponse.status === RessursStatus.SUKSESS &&
-            !journalResponse.data.harStrukturertSøknad;
+        const harIkkeStrukturertSøknad = !journalResponse.harStrukturertSøknad;
         return (
             erNyBehandling &&
             harIkkeStrukturertSøknad &&
@@ -261,173 +201,129 @@ export const JournalføringApp: React.FC = () => {
             UstrukturertDokumentasjonType.ETTERSENDING &&
         harValgtNyBehandling(journalpostState.behandling);
 
+    const erPapirsøknad =
+        journalpostState.ustrukturertDokumentasjonType ===
+        UstrukturertDokumentasjonType.PAPIRSØKNAD;
     return (
-        <DataViewer response={{ journalResponse }}>
-            {({ journalResponse }) => {
-                const erPapirsøknad =
-                    journalpostState.ustrukturertDokumentasjonType ===
-                    UstrukturertDokumentasjonType.PAPIRSØKNAD;
-                return (
-                    <SideLayout className={'container'}>
-                        <Sidetittel>{`Registrere journalpost${
-                            journalResponse.journalpost.behandlingstema
-                                ? ': ' +
-                                  behandlingstemaTilTekst[
-                                      journalResponse.journalpost.behandlingstema
-                                  ]
-                                : ''
-                        }`}</Sidetittel>
-                        <Kolonner>
-                            <Venstrekolonne>
-                                {!journalResponse.harStrukturertSøknad ? (
-                                    <>
-                                        <VelgFagsakForIkkeSøknad
-                                            journalResponse={journalResponse}
-                                            hentFagsak={hentFagsak}
-                                        />
-                                        <VelgUstrukturertDokumentasjonType
-                                            oppgaveId={oppgaveIdParam}
-                                            ustrukturertDokumentasjonType={
-                                                journalpostState.ustrukturertDokumentasjonType
-                                            }
-                                            settUstrukturertDokumentasjonType={
-                                                journalpostState.settUstrukturertDokumentasjonType
-                                            }
-                                        />
-                                    </>
-                                ) : (
-                                    <UtledEllerVelgFagsak
-                                        journalResponse={journalResponse}
-                                        hentFagsak={hentFagsak}
-                                    />
-                                )}
-                                <Brukerinfo
-                                    navn={journalResponse.navn}
-                                    personIdent={journalResponse.personIdent}
-                                />
-                                <DokumentVisning
-                                    journalPost={journalResponse.journalpost}
-                                    hentDokument={hentDokument}
-                                    dokumentTitler={journalpostState.dokumentTitler}
-                                    settDokumentTitler={journalpostState.settDokumentTitler}
-                                    erPapirsøknad={erPapirsøknad}
-                                />
-                                <SkjemaGruppe feil={feilmelding}>
-                                    <BehandlingInnold
-                                        settBehandling={journalpostState.settBehandling}
-                                        behandling={journalpostState.behandling}
-                                        fagsak={fagsak}
-                                        settFeilmelding={settFeilMeldning}
-                                    />
-                                    {kanLeggeTilBarnSomSkalFødes() && (
-                                        <LeggTilBarnSomSkalFødes
-                                            barnSomSkalFødes={journalpostState.barnSomSkalFødes}
-                                            oppdaterBarnSomSkalFødes={
-                                                journalpostState.settBarnSomSkalFødes
-                                            }
-                                        />
-                                    )}
-                                    {skalVelgeVilkårsbehandleNyeBarn &&
-                                        fagsak.status === RessursStatus.SUKSESS && (
-                                            <EttersendingMedNyeBarn
-                                                fagsak={fagsak.data}
-                                                vilkårsbehandleNyeBarn={
-                                                    journalpostState.vilkårsbehandleNyeBarn
-                                                }
-                                                settVilkårsbehandleNyeBarn={
-                                                    journalpostState.settVilkårsbehandleNyeBarn
-                                                }
-                                            />
-                                        )}
-                                </SkjemaGruppe>
-                                {(journalpostState.innsending.status === RessursStatus.FEILET ||
-                                    journalpostState.innsending.status ===
-                                        RessursStatus.FUNKSJONELL_FEIL) && (
-                                    <AlertError>
-                                        {journalpostState.innsending.frontendFeilmelding}
-                                    </AlertError>
-                                )}
-                                <FlexKnapper>
-                                    <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                                    <Hovedknapp
-                                        onClick={() => {
-                                            const feilmeldingFraValidering =
-                                                validerJournalføringState(
-                                                    journalResponse,
-                                                    journalpostState,
-                                                    erAlleBehandlingerFerdigstilte(fagsak)
-                                                );
-                                            if (feilmeldingFraValidering) {
-                                                settFeilMeldning(feilmeldingFraValidering);
-                                            } else if (
-                                                skalBeOmBekreftelse(
-                                                    harValgtNyBehandling(
-                                                        journalpostState.behandling
-                                                    ),
-                                                    journalResponse.harStrukturertSøknad,
-                                                    journalpostState.ustrukturertDokumentasjonType
-                                                )
-                                            ) {
-                                                if (journalResponse.harStrukturertSøknad) {
-                                                    journalpostState.settVisBekreftelsesModal(true);
-                                                } else if (!journalResponse.harStrukturertSøknad) {
-                                                    journalpostState.settJournalføringIkkeMuligModal(
-                                                        true
-                                                    );
-                                                }
-                                            } else {
-                                                journalpostState.fullførJournalføring(
-                                                    journalpostIdParam,
-                                                    innloggetSaksbehandler?.enhet || '9999',
-                                                    innloggetSaksbehandler?.navIdent
-                                                );
-                                            }
-                                        }}
-                                        spinner={
-                                            journalpostState.innsending.status ===
-                                            RessursStatus.HENTER
-                                        }
-                                    >
-                                        Journalfør
-                                    </Hovedknapp>
-                                </FlexKnapper>
-                            </Venstrekolonne>
-                            <Høyrekolonne>
-                                <FlexKnapper>
-                                    <Knapp
-                                        onClick={() =>
-                                            hentForrigeDokument(journalResponse.journalpost)
-                                        }
-                                        mini
-                                    >
-                                        Forrige Dokument
-                                    </Knapp>
-                                    <Knapp
-                                        onClick={() =>
-                                            hentNesteDokument(journalResponse.journalpost)
-                                        }
-                                        mini
-                                    >
-                                        Neste Dokument
-                                    </Knapp>
-                                </FlexKnapper>
-                                <PdfVisning pdfFilInnhold={valgtDokument} />
-                            </Høyrekolonne>
-                        </Kolonner>
-                        <BekreftJournalføringModal
-                            journalpostState={journalpostState}
-                            journalpostId={journalpostIdParam}
-                            innloggetSaksbehandler={innloggetSaksbehandler}
+        <SideLayout className={'container'}>
+            <Sidetittel>{`Registrere journalpost${
+                journalResponse.journalpost.behandlingstema
+                    ? ': ' + behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
+                    : ''
+            }`}</Sidetittel>
+            <Kolonner>
+                <Venstrekolonne>
+                    {!journalResponse.harStrukturertSøknad ? (
+                        <>
+                            <VelgFagsakForIkkeSøknad
+                                journalResponse={journalResponse}
+                                hentFagsak={hentFagsak}
+                            />
+                            <VelgUstrukturertDokumentasjonType
+                                oppgaveId={oppgaveId}
+                                ustrukturertDokumentasjonType={
+                                    journalpostState.ustrukturertDokumentasjonType
+                                }
+                                settUstrukturertDokumentasjonType={
+                                    journalpostState.settUstrukturertDokumentasjonType
+                                }
+                            />
+                        </>
+                    ) : (
+                        <UtledEllerVelgFagsak
+                            journalResponse={journalResponse}
+                            hentFagsak={hentFagsak}
                         />
-                        <JournalføringIkkeMuligModal
-                            visModal={journalpostState.visJournalføringIkkeMuligModal}
-                            settVisModal={journalpostState.settJournalføringIkkeMuligModal}
-                            erPapirSøknad={erPapirsøknad}
+                    )}
+                    <Brukerinfo
+                        navn={journalResponse.navn}
+                        personIdent={journalResponse.personIdent}
+                    />
+                    <DokumentVisning
+                        journalPost={journalResponse.journalpost}
+                        hentDokument={hentDokumentResponse.hentDokument}
+                        dokumentTitler={journalpostState.dokumentTitler}
+                        settDokumentTitler={journalpostState.settDokumentTitler}
+                        erPapirsøknad={erPapirsøknad}
+                    />
+                    <SkjemaGruppe feil={feilmelding}>
+                        <BehandlingInnold
+                            settBehandling={journalpostState.settBehandling}
+                            behandling={journalpostState.behandling}
+                            fagsak={fagsak}
+                            settFeilmelding={settFeilMeldning}
                         />
-                    </SideLayout>
-                );
-            }}
-        </DataViewer>
+                        {kanLeggeTilBarnSomSkalFødes() && (
+                            <LeggTilBarnSomSkalFødes
+                                barnSomSkalFødes={journalpostState.barnSomSkalFødes}
+                                oppdaterBarnSomSkalFødes={journalpostState.settBarnSomSkalFødes}
+                            />
+                        )}
+                        {skalVelgeVilkårsbehandleNyeBarn &&
+                            fagsak.status === RessursStatus.SUKSESS && (
+                                <EttersendingMedNyeBarn
+                                    fagsak={fagsak.data}
+                                    vilkårsbehandleNyeBarn={journalpostState.vilkårsbehandleNyeBarn}
+                                    settVilkårsbehandleNyeBarn={
+                                        journalpostState.settVilkårsbehandleNyeBarn
+                                    }
+                                />
+                            )}
+                    </SkjemaGruppe>
+                    {(journalpostState.innsending.status === RessursStatus.FEILET ||
+                        journalpostState.innsending.status === RessursStatus.FUNKSJONELL_FEIL) && (
+                        <AlertError>{journalpostState.innsending.frontendFeilmelding}</AlertError>
+                    )}
+                    <FlexKnapper>
+                        <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
+                        <Hovedknapp
+                            onClick={() => {
+                                const feilmeldingFraValidering = validerJournalføringState(
+                                    journalResponse,
+                                    journalpostState,
+                                    erAlleBehandlingerFerdigstilte(fagsak)
+                                );
+                                if (feilmeldingFraValidering) {
+                                    settFeilMeldning(feilmeldingFraValidering);
+                                } else if (
+                                    skalBeOmBekreftelse(
+                                        harValgtNyBehandling(journalpostState.behandling),
+                                        journalResponse.harStrukturertSøknad,
+                                        journalpostState.ustrukturertDokumentasjonType
+                                    )
+                                ) {
+                                    if (journalResponse.harStrukturertSøknad) {
+                                        journalpostState.settVisBekreftelsesModal(true);
+                                    } else if (!journalResponse.harStrukturertSøknad) {
+                                        journalpostState.settJournalføringIkkeMuligModal(true);
+                                    }
+                                } else {
+                                    journalpostState.fullførJournalføring(
+                                        innloggetSaksbehandler?.enhet || '9999',
+                                        innloggetSaksbehandler?.navIdent
+                                    );
+                                }
+                            }}
+                            spinner={journalpostState.innsending.status === RessursStatus.HENTER}
+                        >
+                            Journalfør
+                        </Hovedknapp>
+                    </FlexKnapper>
+                </Venstrekolonne>
+                <Høyrekolonne>
+                    <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
+                </Høyrekolonne>
+            </Kolonner>
+            <BekreftJournalføringModal
+                journalpostState={journalpostState}
+                innloggetSaksbehandler={innloggetSaksbehandler}
+            />
+            <JournalføringIkkeMuligModal
+                visModal={journalpostState.visJournalføringIkkeMuligModal}
+                settVisModal={journalpostState.settJournalføringIkkeMuligModal}
+                erPapirSøknad={erPapirsøknad}
+            />
+        </SideLayout>
     );
 };
 
@@ -466,9 +362,8 @@ const JournalføringIkkeMuligModal: React.FC<{
 
 const BekreftJournalføringModal: React.FC<{
     journalpostState: JournalføringStateRequest;
-    journalpostId: string;
     innloggetSaksbehandler: ISaksbehandler;
-}> = ({ journalpostState, journalpostId, innloggetSaksbehandler }) => {
+}> = ({ journalpostState, innloggetSaksbehandler }) => {
     return (
         <ModalWrapper
             tittel={''}
@@ -479,7 +374,6 @@ const BekreftJournalføringModal: React.FC<{
                     onClick: () => {
                         journalpostState.settVisBekreftelsesModal(false);
                         journalpostState.fullførJournalføring(
-                            journalpostId,
                             innloggetSaksbehandler?.enhet || '9999',
                             innloggetSaksbehandler?.navIdent
                         );
