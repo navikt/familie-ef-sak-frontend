@@ -1,7 +1,6 @@
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
-import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
@@ -9,6 +8,7 @@ import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { KlageBehandling, Klagebehandlinger, KlagebehandlingStatus } from '../../App/typer/klage';
 import { BehandlingKlageRequest } from '../../App/hooks/useJournalføringKlageState';
 import { Button, Checkbox } from '@navikt/ds-react';
+import { AddCircle } from '@navikt/ds-icons';
 
 interface Props {
     settBehandling: (behandling?: BehandlingKlageRequest) => void;
@@ -132,9 +132,13 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                     </DataViewer>
                 </tbody>
             </table>
-            {!behandling?.behandlingId && (
-                <Button variant={'primary'} type="button" onClick={lagNyBehandlingRad}>
-                    <LeggtilMedSirkel />
+            {!nyBehandling && !behandling?.behandlingId && (
+                <Button
+                    variant={'tertiary'}
+                    type={'button'}
+                    onClick={lagNyBehandlingRad}
+                    icon={<AddCircle />}
+                >
                     <span>Opprett ny behandling</span>
                 </Button>
             )}

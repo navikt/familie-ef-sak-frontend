@@ -1,8 +1,6 @@
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
-import { Flatknapp } from 'nav-frontend-knapper';
-import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { Behandling, Fagsak } from '../../App/typer/fagsak';
@@ -13,7 +11,8 @@ import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
-import { Checkbox } from '@navikt/ds-react';
+import { Button, Checkbox } from '@navikt/ds-react';
+import { AddCircle } from '@navikt/ds-icons';
 
 interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;
@@ -144,11 +143,15 @@ const BehandlingInnold: React.FC<Props> = ({
                     </DataViewer>
                 </tbody>
             </table>
-            {!nyBehandling && (
-                <Flatknapp onClick={lagNyBehandlingRad}>
-                    <LeggtilMedSirkel />
+            {!nyBehandling && !behandling?.behandlingsId && (
+                <Button
+                    variant={'tertiary'}
+                    type={'button'}
+                    onClick={lagNyBehandlingRad}
+                    icon={<AddCircle />}
+                >
                     <span>Opprett ny behandling</span>
-                </Flatknapp>
+                </Button>
             )}
         </>
     );
