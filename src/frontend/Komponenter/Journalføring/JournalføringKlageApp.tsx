@@ -46,6 +46,12 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
 import { erGyldigDato } from '../../App/utils/dato';
+import styled from 'styled-components';
+
+const KlageMottatt = styled.div`
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+`;
 
 const validerJournalføringState = (
     journalResponse: IJojurnalpostResponse,
@@ -177,8 +183,8 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                             valgtFagsak={valgtFagsak}
                             settFeilmelding={settFeilMeldning}
                         />
-                        {erNyBehandling && !journalResponse.journalpost.datoMottatt && (
-                            <div>
+                        {erNyBehandling && (
+                            <KlageMottatt>
                                 <FamilieDatovelger
                                     id={'datoMottatt'}
                                     label={'Klage mottatt'}
@@ -189,8 +195,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                         }));
                                     }}
                                     valgtDato={journalpostState.behandling?.mottattDato}
+                                    erLesesvisning={!!journalResponse.journalpost.datoMottatt}
                                 />
-                            </div>
+                            </KlageMottatt>
                         )}
                     </SkjemaGruppe>
                     {(journalpostState.innsending.status === RessursStatus.FEILET ||
