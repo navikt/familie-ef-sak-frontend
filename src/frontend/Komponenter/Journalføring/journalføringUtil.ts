@@ -12,7 +12,7 @@ export const lagJournalføringKlageUrl = (journalpostId: string, oppgaveId: stri
 };
 
 export const lagJournalføringUrl = (journalpostId: string, oppgaveId: string): string => {
-    return `/journalfor-klage?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
+    return `/journalfor?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
 };
 
 export const harTittelForAlleDokumenter = (

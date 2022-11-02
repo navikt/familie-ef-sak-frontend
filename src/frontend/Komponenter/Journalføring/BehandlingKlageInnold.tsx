@@ -1,8 +1,6 @@
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
-import { Checkbox } from 'nav-frontend-skjema';
-import { Flatknapp } from 'nav-frontend-knapper';
 import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -10,6 +8,7 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { KlageBehandling, Klagebehandlinger, KlagebehandlingStatus } from '../../App/typer/klage';
 import { BehandlingKlageRequest } from '../../App/hooks/useJournalføringKlageState';
+import { Button, Checkbox } from '@navikt/ds-react';
 
 interface Props {
     settBehandling: (behandling?: BehandlingKlageRequest) => void;
@@ -101,8 +100,9 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                                                             behandlingsEl.id ===
                                                             behandling?.behandlingId
                                                         }
-                                                        label={behandlingsEl.status}
-                                                    />
+                                                    >
+                                                        {behandlingsEl.status}
+                                                    </Checkbox>
                                                 </td>
                                                 <td>{behandlingsEl.status}</td>
                                                 <td>
@@ -119,8 +119,9 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                                             <Checkbox
                                                 onChange={håndterCheck('ny')}
                                                 checked={harValgtNyBehandling}
-                                                label={'ny'}
-                                            />
+                                            >
+                                                Ny
+                                            </Checkbox>
                                         </td>
                                         <td>NY</td>
                                         <td>–</td>
@@ -132,10 +133,10 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                 </tbody>
             </table>
             {!behandling?.behandlingId && (
-                <Flatknapp onClick={lagNyBehandlingRad}>
+                <Button variant={'primary'} type="button" onClick={lagNyBehandlingRad}>
                     <LeggtilMedSirkel />
                     <span>Opprett ny behandling</span>
-                </Flatknapp>
+                </Button>
             )}
         </>
     );
