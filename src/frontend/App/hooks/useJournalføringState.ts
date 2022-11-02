@@ -18,7 +18,6 @@ interface JournalføringRequest {
     oppgaveId: string;
     behandling?: BehandlingRequest;
     journalførendeEnhet: string;
-    navIdent?: string;
     barnSomSkalFødes: BarnSomSkalFødes[];
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
 }
@@ -37,7 +36,7 @@ export interface JournalføringStateRequest {
     settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
-    fullførJournalføring: (journalførendeEnhet: string, navIdent?: string) => void;
+    fullførJournalføring: () => void;
     visBekreftelsesModal: boolean;
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
     visJournalføringIkkeMuligModal: boolean;
@@ -54,7 +53,7 @@ export const useJournalføringState = (
     oppgaveId: string,
     journalpostId: string
 ): JournalføringStateRequest => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
@@ -73,7 +72,7 @@ export const useJournalføringState = (
         settBehandling(undefined);
     }, [fagsakId]);
 
-    const fullførJournalføring = (journalførendeEnhet: string, navIdent?: string) => {
+    const fullførJournalføring = () => {
         if (!behandling || innsending.status === RessursStatus.HENTER) {
             return;
         }
@@ -88,8 +87,7 @@ export const useJournalføringState = (
             fagsakId,
             behandling: nyBehandling,
             dokumentTitler,
-            journalførendeEnhet,
-            navIdent,
+            journalførendeEnhet: innloggetSaksbehandler.enhet || '9999',
             barnSomSkalFødes,
             vilkårsbehandleNyeBarn,
         };

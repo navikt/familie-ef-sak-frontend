@@ -14,7 +14,6 @@ interface JournalføringRequest {
     oppgaveId: string;
     behandling: BehandlingKlageRequest;
     journalførendeEnhet: string;
-    navIdent?: string;
 }
 
 export interface JournalføringKlageStateRequest {
@@ -26,14 +25,14 @@ export interface JournalføringKlageStateRequest {
     settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
-    fullførJournalføring: (journalførendeEnhet: string, navIdent?: string) => void;
+    fullførJournalføring: () => void;
 }
 
 export const useJournalføringKlageState = (
     oppgaveId: string,
     journalpostId: string
 ): JournalføringKlageStateRequest => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingKlageRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
@@ -43,7 +42,7 @@ export const useJournalføringKlageState = (
         settBehandling(undefined);
     }, [fagsakId]);
 
-    const fullførJournalføring = (journalførendeEnhet: string, navIdent?: string) => {
+    const fullførJournalføring = () => {
         if (!behandling || innsending.status === RessursStatus.HENTER) {
             return;
         }
@@ -53,8 +52,7 @@ export const useJournalføringKlageState = (
             fagsakId,
             behandling,
             dokumentTitler,
-            journalførendeEnhet,
-            navIdent,
+            journalførendeEnhet: innloggetSaksbehandler.enhet || '9999',
         };
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({

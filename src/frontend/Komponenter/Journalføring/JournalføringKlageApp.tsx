@@ -211,10 +211,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                 if (feilmeldingFraValidering) {
                                     settFeilMeldning(feilmeldingFraValidering);
                                 } else {
-                                    journalpostState.fullførJournalføring(
-                                        innloggetSaksbehandler?.enhet || '9999',
-                                        innloggetSaksbehandler?.navIdent
-                                    );
+                                    journalpostState.fullførJournalføring();
                                 }
                             }}
                             spinner={journalpostState.innsending.status === RessursStatus.HENTER}
