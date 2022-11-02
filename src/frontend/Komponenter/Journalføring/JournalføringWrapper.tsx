@@ -26,6 +26,7 @@ export const Venstrekolonne = styled.div`
 `;
 export const Høyrekolonne = styled.div``;
 export const FlexKnapper = styled.div`
+    margin: 1rem;
     display: flex;
     justify-content: space-between;
 `;

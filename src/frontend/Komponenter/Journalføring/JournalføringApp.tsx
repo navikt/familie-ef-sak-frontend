@@ -23,7 +23,6 @@ import {
 import BehandlingInnold from './Behandling';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { BodyLong, Button } from '@navikt/ds-react';
-import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import VelgUstrukturertDokumentasjonType, {
@@ -47,6 +46,9 @@ import JournalføringWrapper, {
     Venstrekolonne,
 } from './JournalføringWrapper';
 import JournalføringPdfVisning from './JournalføringPdfVisning';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
+import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 
 const ModalKnapp = styled(Button)`
     margin-bottom: 1rem;
@@ -108,7 +110,7 @@ const validerJournalføringState = (
         return 'Mangler type dokumentasjon';
     } else if (inneholderBarnSomErUgyldige(journalpostState)) {
         return 'Et eller flere barn mangler gyldig dato';
-    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState)) {
+    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState.dokumentTitler)) {
         return 'Mangler tittel på et eller flere dokumenter';
     } else if (erEttersendingPåNyFørstegangsbehandling(journalpostState)) {
         return 'Kan ikke journalføre ettersending på ny førstegangsbehandling';
@@ -130,6 +132,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     journalResponse,
 }) => {
     const { innloggetSaksbehandler } = useApp();
+    const { toggles } = useToggles();
     const navigate = useNavigate();
 
     const journalpostId = journalResponse.journalpost.journalpostId;
@@ -213,6 +216,12 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             }`}</Sidetittel>
             <Kolonner>
                 <Venstrekolonne>
+                    <JournalpostTittelOgLenke
+                        journalpost={journalResponse.journalpost}
+                        oppgaveId={oppgaveId}
+                        visLenke={toggles[ToggleName.journalføringKlage]}
+                        fra={'vanlig'}
+                    />
                     {!journalResponse.harStrukturertSøknad ? (
                         <>
                             <VelgFagsakForIkkeSøknad
@@ -298,10 +307,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                         journalpostState.settJournalføringIkkeMuligModal(true);
                                     }
                                 } else {
-                                    journalpostState.fullførJournalføring(
-                                        innloggetSaksbehandler?.enhet || '9999',
-                                        innloggetSaksbehandler?.navIdent
-                                    );
+                                    journalpostState.fullførJournalføring();
                                 }
                             }}
                             spinner={journalpostState.innsending.status === RessursStatus.HENTER}
@@ -314,10 +320,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                     <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
                 </Høyrekolonne>
             </Kolonner>
-            <BekreftJournalføringModal
-                journalpostState={journalpostState}
-                innloggetSaksbehandler={innloggetSaksbehandler}
-            />
+            <BekreftJournalføringModal journalpostState={journalpostState} />
             <JournalføringIkkeMuligModal
                 visModal={journalpostState.visJournalføringIkkeMuligModal}
                 settVisModal={journalpostState.settJournalføringIkkeMuligModal}
@@ -362,8 +365,7 @@ const JournalføringIkkeMuligModal: React.FC<{
 
 const BekreftJournalføringModal: React.FC<{
     journalpostState: JournalføringStateRequest;
-    innloggetSaksbehandler: ISaksbehandler;
-}> = ({ journalpostState, innloggetSaksbehandler }) => {
+}> = ({ journalpostState }) => {
     return (
         <ModalWrapper
             tittel={''}
@@ -373,10 +375,7 @@ const BekreftJournalføringModal: React.FC<{
                 hovedKnapp: {
                     onClick: () => {
                         journalpostState.settVisBekreftelsesModal(false);
-                        journalpostState.fullførJournalføring(
-                            innloggetSaksbehandler?.enhet || '9999',
-                            innloggetSaksbehandler?.navIdent
-                        );
+                        journalpostState.fullførJournalføring();
                     },
                     tekst: 'Journalfør allikevel',
                 },

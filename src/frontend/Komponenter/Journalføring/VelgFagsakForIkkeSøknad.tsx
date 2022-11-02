@@ -5,7 +5,7 @@ import {
     stønadstypeTilTekst,
 } from '../../App/typer/behandlingstema';
 import React, { useEffect, useState } from 'react';
-import { BodyShort, Label, Select } from '@navikt/ds-react';
+import { Select } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 export function VelgFagsakForIkkeSøknad(props: {
@@ -27,8 +27,6 @@ export function VelgFagsakForIkkeSøknad(props: {
 
     return (
         <>
-            <Label>Journalposttittel</Label>
-            <BodyShort>{journalResponse.journalpost.tittel}</BodyShort>
             <StyledSelect
                 value={stønadstype || ''}
                 label={'Velg stønadstype'}

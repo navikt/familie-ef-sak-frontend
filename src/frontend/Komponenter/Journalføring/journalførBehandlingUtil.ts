@@ -3,6 +3,7 @@ import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
+import { BehandlingKlageRequest } from '../../App/hooks/useJournalføringKlageState';
 
 export const utledRiktigBehandlingstype = (
     tidligereBehandlinger: Behandling[]
@@ -18,6 +19,10 @@ export const utledRiktigBehandlingstype = (
 
 export const harValgtNyBehandling = (behandling: BehandlingRequest | undefined): boolean =>
     behandling !== undefined && behandling.behandlingsId === undefined;
+
+export const harValgtNyKlageBehandling = (
+    behandling: BehandlingKlageRequest | undefined
+): boolean => behandling !== undefined && behandling.behandlingId === undefined;
 
 export const erAlleBehandlingerFerdigstilte = (fagsak: Ressurs<Fagsak>): boolean =>
     fagsak.status === RessursStatus.SUKSESS &&

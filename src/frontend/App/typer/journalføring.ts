@@ -99,3 +99,5 @@ export interface BrukerInfo {
     id: string;
     type: BrukerId;
 }
+
+export type DokumentTitler = Record<string, string>;
