@@ -5,7 +5,6 @@ import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
-import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import {
     IMellomlagretBrevResponse,
@@ -19,6 +18,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Select } from '@navikt/ds-react';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;

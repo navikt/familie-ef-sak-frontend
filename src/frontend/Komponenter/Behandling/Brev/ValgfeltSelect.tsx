@@ -1,4 +1,3 @@
-import { Select } from 'nav-frontend-skjema';
 import {
     BrevStruktur,
     Delmal,
@@ -11,7 +10,7 @@ import {
 import React, { Dispatch, SetStateAction } from 'react';
 import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
-import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
+import { Checkbox, Label, Select } from '@navikt/ds-react';
 
 const StyledValgfeltSelect = styled.div`
     padding-bottom: 0.5rem;
@@ -83,7 +82,8 @@ export const ValgfeltSelect: React.FC<Props> = ({
                     ))}
                 </Select>
             ) : (
-                <CheckboxGroup legend={valgFelt.valgfeltVisningsnavn}>
+                <>
+                    <Label size={'small'}>{valgFelt.valgfeltVisningsnavn}</Label>
                     <Checkbox
                         checked={!!valgteFelt[valgFelt.valgFeltApiNavn]}
                         onClick={(e) => {
@@ -100,7 +100,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
                     >
                         {valgFelt.valgMuligheter[0].visningsnavnValgmulighet}
                     </Checkbox>
-                </CheckboxGroup>
+                </>
             )}
             {Object.entries(valgteFelt)
                 .filter(([valgNavn]) => valgNavn === valgFelt.valgFeltApiNavn)

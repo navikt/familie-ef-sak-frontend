@@ -1,6 +1,5 @@
 import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
-import { Input, Select, Textarea } from 'nav-frontend-skjema';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp, { KnappMedLuftUnder } from '../../../Felles/Knapper/LeggTilKnapp';
@@ -19,7 +18,7 @@ import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Panel } from '@navikt/ds-react';
+import { Panel, Select, Textarea, TextField } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -37,7 +36,7 @@ const ToKolonneLayout = styled.div`
     display: flex;
 `;
 
-const Overskrift = styled(Input)`
+const Overskrift = styled(TextField)`
     margin-top: 1rem;
 `;
 
@@ -169,7 +168,7 @@ const BrevInnhold: React.FC<Props> = ({
                         return (
                             <ToKolonneLayout key={toKolonneId} id={toKolonneId}>
                                 <Innholdsrad key={rad.id} border>
-                                    <Input
+                                    <TextField
                                         onChange={endreDeloverskriftAvsnitt(rad.id)}
                                         label="Deloverskrift (valgfri)"
                                         id={deloverskriftId}
