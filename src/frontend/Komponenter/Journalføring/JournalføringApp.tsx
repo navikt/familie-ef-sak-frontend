@@ -37,7 +37,7 @@ import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { harTittelForAlleDokumenter, lagJournalføringKlageUrl } from './journalføringUtil';
+import { harTittelForAlleDokumenter } from './journalføringUtil';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -49,6 +49,7 @@ import JournalføringWrapper, {
 import JournalføringPdfVisning from './JournalføringPdfVisning';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 
 const ModalKnapp = styled(Button)`
     margin-bottom: 1rem;
@@ -216,13 +217,12 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             }`}</Sidetittel>
             <Kolonner>
                 <Venstrekolonne>
-                    <div>
-                        {toggles[ToggleName.journalføringKlage] && (
-                            <Link to={lagJournalføringKlageUrl(journalpostId, oppgaveId)}>
-                                Gjelder dette klage?
-                            </Link>
-                        )}
-                    </div>
+                    <JournalpostTittelOgLenke
+                        journalpost={journalResponse.journalpost}
+                        oppgaveId={oppgaveId}
+                        visLenke={toggles[ToggleName.journalføringKlage]}
+                        fra={'vanlig'}
+                    />
                     {!journalResponse.harStrukturertSøknad ? (
                         <>
                             <VelgFagsakForIkkeSøknad

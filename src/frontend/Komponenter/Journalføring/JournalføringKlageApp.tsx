@@ -18,11 +18,7 @@ import {
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import {
-    FRA_VANLIG_QUERY_STRING,
-    harTittelForAlleDokumenter,
-    lagJournalføringUrl,
-} from './journalføringUtil';
+import { FRA_VANLIG_QUERY_STRING, harTittelForAlleDokumenter } from './journalføringUtil';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -47,6 +43,7 @@ import { ToggleName } from '../../App/context/toggles';
 import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
 import { erGyldigDato } from '../../App/utils/dato';
 import styled from 'styled-components';
+import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;
@@ -153,13 +150,12 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             }`}</Sidetittel>
             <Kolonner>
                 <Venstrekolonne>
-                    {fraVanligJournalføring && (
-                        <div>
-                            <Link to={lagJournalføringUrl(journalpostId, oppgaveId)}>
-                                Gjelder ikke dette klage?
-                            </Link>
-                        </div>
-                    )}
+                    <JournalpostTittelOgLenke
+                        journalpost={journalResponse.journalpost}
+                        oppgaveId={oppgaveId}
+                        visLenke={toggles[ToggleName.journalføringKlage] && fraVanligJournalføring}
+                        fra={'klage'}
+                    />
                     <VelgFagsakForIkkeSøknad
                         journalResponse={journalResponse}
                         hentFagsak={hentFagsak}
