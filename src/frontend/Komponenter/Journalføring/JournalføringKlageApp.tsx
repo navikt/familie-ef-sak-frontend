@@ -137,6 +137,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     const valgtFagsak = utledValgtFagsak(fagsak);
 
     const erNyBehandling = harValgtNyKlageBehandling(journalpostState.behandling);
+
     return (
         <SideLayout className={'container'}>
             <Sidetittel>{`Registrere journalpost for klage ${
@@ -214,7 +215,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                 }
                             }}
                             spinner={journalpostState.innsending.status === RessursStatus.HENTER}
-                            disabled={toggles[ToggleName.journalføringKlage]}
+                            disabled={!toggles[ToggleName.journalføringKlage]}
                         >
                             Journalfør
                         </Hovedknapp>
