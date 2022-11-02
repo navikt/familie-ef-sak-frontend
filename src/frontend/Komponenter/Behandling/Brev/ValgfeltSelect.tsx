@@ -85,6 +85,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
             ) : (
                 <CheckboxGroup legend={valgFelt.valgfeltVisningsnavn}>
                     <Checkbox
+                        checked={!!valgteFelt[valgFelt.valgFeltApiNavn]}
                         onClick={(e) => {
                             if ((e.target as HTMLInputElement).checked) {
                                 doSettValgteFelt(
