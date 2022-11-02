@@ -44,6 +44,7 @@ import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
 import { erGyldigDato } from '../../App/utils/dato';
 import styled from 'styled-components';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
+import KlageInfotrygdInfo from '../Personoversikt/Klage/KlageInfotrygdInfo';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;
@@ -150,6 +151,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             }`}</Sidetittel>
             <Kolonner>
                 <Venstrekolonne>
+                    {fagsak.status === RessursStatus.SUKSESS && (
+                        <KlageInfotrygdInfo fagsakPersonId={fagsak.data.fagsakPersonId} />
+                    )}
                     <JournalpostTittelOgLenke
                         journalpost={journalResponse.journalpost}
                         oppgaveId={oppgaveId}
