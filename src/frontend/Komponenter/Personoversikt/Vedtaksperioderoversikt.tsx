@@ -210,7 +210,7 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
                     {behandlinger.map((b) => (
                         <option key={b.id} value={b.id}>
                             {behandlingstypeTilTekst[b.type]}{' '}
-                            {formaterNullableIsoDatoTid(b.opprettet)}
+                            {formaterNullableIsoDatoTid(b.vedtaksdato)}
                         </option>
                     ))}
                 </BehandlingSelect>
