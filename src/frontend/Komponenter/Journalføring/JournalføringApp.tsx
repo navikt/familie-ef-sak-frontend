@@ -217,7 +217,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             <Kolonner>
                 <Venstrekolonne>
                     <JournalpostTittelOgLenke
-                        journalpost={journalResponse.journalpost}
+                        journalResponse={journalResponse}
                         oppgaveId={oppgaveId}
                         visLenke={toggles[ToggleName.journalføringKlage]}
                         fra={'vanlig'}

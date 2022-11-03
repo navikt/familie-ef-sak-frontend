@@ -18,7 +18,7 @@ import {
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { FRA_VANLIG_QUERY_STRING, harTittelForAlleDokumenter } from './journalføringUtil';
+import { harTittelForAlleDokumenter } from './journalføringUtil';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -36,7 +36,6 @@ import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandling
 import BehandlingKlageInnold from './BehandlingKlageInnold';
 import { Klagebehandlinger } from '../../App/typer/klage';
 import { Fagsak } from '../../App/typer/fagsak';
-import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
@@ -96,8 +95,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     journalResponse,
 }) => {
     const { toggles } = useToggles();
-    const query: URLSearchParams = useQueryParams();
-    const fraVanligJournalføring = query.get(FRA_VANLIG_QUERY_STRING) === 'true';
 
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
@@ -155,9 +152,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                         <KlageInfotrygdInfo fagsakPersonId={fagsak.data.fagsakPersonId} />
                     )}
                     <JournalpostTittelOgLenke
-                        journalpost={journalResponse.journalpost}
+                        journalResponse={journalResponse}
                         oppgaveId={oppgaveId}
-                        visLenke={toggles[ToggleName.journalføringKlage] && fraVanligJournalføring}
+                        visLenke={toggles[ToggleName.journalføringKlage]}
                         fra={'klage'}
                     />
                     <VelgFagsakForIkkeSøknad
