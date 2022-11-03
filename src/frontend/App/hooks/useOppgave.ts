@@ -68,14 +68,14 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
-    const gåTilJournalføring = (gjelderKlage = false) => {
+    const gåTilJournalføring = (type: 'klage' | 'stønad') => {
         settLaster(true);
         const journalpostId = oppgave.journalpostId || '';
         const oppgaveId = oppgave.id || '';
         settOppgaveTilSaksbehandler()
             .then(() =>
                 gåTilUrl(
-                    gjelderKlage
+                    type === 'klage'
                         ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
                         : lagJournalføringUrl(journalpostId, oppgaveId)
                 )

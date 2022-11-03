@@ -126,14 +126,14 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         switch (utledHandling(oppgave)) {
             case Handling.JOURNALFØR:
                 return (
-                    <Flatknapp onClick={() => gåTilJournalføring()} disabled={laster}>
+                    <Flatknapp onClick={() => gåTilJournalføring('stønad')} disabled={laster}>
                         Gå til journalpost
                     </Flatknapp>
                 );
             case Handling.JOURNALFØR_KLAGE:
                 return (
                     <Flatknapp
-                        onClick={() => gåTilJournalføring(true)}
+                        onClick={() => gåTilJournalføring('klage')}
                         disabled={laster || !toggles[ToggleName.journalføringKlage]}
                     >
                         Gå til journalpost (klage)
