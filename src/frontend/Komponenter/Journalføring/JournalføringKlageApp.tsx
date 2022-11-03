@@ -152,7 +152,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                         <KlageInfotrygdInfo fagsakPersonId={fagsak.data.fagsakPersonId} />
                     )}
                     <JournalpostTittelOgLenke
-                        journalpost={journalResponse.journalpost}
+                        journalResponse={journalResponse}
                         oppgaveId={oppgaveId}
                         visLenke={toggles[ToggleName.journalføringKlage]}
                         fra={'klage'}
