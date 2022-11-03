@@ -1,4 +1,4 @@
-export type Behandlingstema = 'ab0177' | 'ab0028' | 'ab0071' | 'ae0058';
+export type Behandlingstema = 'ab0177' | 'ab0028' | 'ab0071';
 export type OppgavetypeTilbakekreving = 'ae0161';
 export type OppgavetypeKlage = 'ae0058';
 export type OppgaveBehandlingstype = OppgavetypeTilbakekreving | OppgavetypeKlage;
@@ -7,7 +7,6 @@ export const behandlingstemaTilTekst: Record<Behandlingstema, string> = {
     ab0071: 'Overgangsstønad',
     ab0177: 'Skolepenger',
     ab0028: 'Barnetilsyn',
-    ae0058: 'Klage',
 };
 
 export enum Stønadstype {
