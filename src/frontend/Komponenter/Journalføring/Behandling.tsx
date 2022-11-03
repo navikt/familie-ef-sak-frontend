@@ -109,6 +109,7 @@ const BehandlingInnold: React.FC<Props> = ({
                                                 checked={
                                                     behandlingsEl.id === behandling?.behandlingsId
                                                 }
+                                                hideLabel={true}
                                             >
                                                 {behandlingsEl.type}
                                             </Checkbox>

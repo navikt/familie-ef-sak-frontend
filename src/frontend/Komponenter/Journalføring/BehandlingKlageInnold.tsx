@@ -59,7 +59,8 @@ const BehandlingKlageInnold: React.FC<Props> = ({
         if (behandlinger.status === RessursStatus.SUKSESS && valgtFagsak) {
             const kanOppretteNyBehandling = behandlinger.data[valgtFagsak].every(
                 (behandling: KlageBehandling) =>
-                    behandling.status === KlagebehandlingStatus.FERDIGSTILT
+                    behandling.status === KlagebehandlingStatus.FERDIGSTILT ||
+                    behandling.status === KlagebehandlingStatus.VENTER
             );
 
             if (kanOppretteNyBehandling) {
@@ -81,6 +82,7 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Behandlingstype</th>
                         <th>Status</th>
                         <th>Sist endret</th>
                     </tr>
@@ -100,10 +102,12 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                                                             behandlingsEl.id ===
                                                             behandling?.behandlingId
                                                         }
+                                                        hideLabel={true}
                                                     >
                                                         {behandlingsEl.status}
                                                     </Checkbox>
                                                 </td>
+                                                <td>Klage</td>
                                                 <td>{behandlingsEl.status}</td>
                                                 <td>
                                                     {formaterNullableIsoDato(
@@ -123,6 +127,7 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                                                 Ny
                                             </Checkbox>
                                         </td>
+                                        <td>Klage</td>
                                         <td>NY</td>
                                         <td>–</td>
                                     </StyledNyBehandlingRad>
