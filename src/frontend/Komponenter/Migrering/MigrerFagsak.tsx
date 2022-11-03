@@ -28,9 +28,6 @@ const StyledKnapp = styled(Button)`
 
 const GodkjennSimuleringsfeil = styled(CheckboxGroup)`
     margin-top: 1rem;
-    .navds-checkboxes {
-        margin-top: 0;
-    }
 `;
 
 export const visMigrertStatus = (
