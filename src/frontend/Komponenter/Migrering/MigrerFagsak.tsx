@@ -20,13 +20,23 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
+import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react';
 
 const StyledKnapp = styled(Button)`
     margin: 0.25rem;
 `;
 
-export const visMigrertStatus = (migrertStatus: Ressurs<string>) => {
+const GodkjennSimuleringsfeil = styled(CheckboxGroup)`
+    margin-top: 1rem;
+    .navds-checkboxes {
+        margin-top: 0;
+    }
+`;
+
+export const visMigrertStatus = (
+    migrertStatus: Ressurs<string>,
+    settIgnorerFeilISimulering?: (verdi: boolean) => void
+) => {
     return (
         <>
             {migrertStatus.status === RessursStatus.SUKSESS && (
@@ -35,9 +45,22 @@ export const visMigrertStatus = (migrertStatus: Ressurs<string>) => {
             {(migrertStatus.status === RessursStatus.FEILET ||
                 migrertStatus.status === RessursStatus.FUNKSJONELL_FEIL ||
                 migrertStatus.status === RessursStatus.IKKE_TILGANG) && (
-                <div style={{ color: 'red' }}>
-                    {migrertStatus.frontendFeilmelding || migrertStatus.melding}
-                </div>
+                <>
+                    <div style={{ color: 'red' }}>
+                        {migrertStatus.frontendFeilmelding || migrertStatus.melding}
+                    </div>
+                    {settIgnorerFeilISimulering &&
+                        migrertStatus.frontendFeilmelding.startsWith('Etterbetaling er') && (
+                            <GodkjennSimuleringsfeil
+                                legend={'Simuleringen gir etterbetaling'}
+                                onChange={(values: boolean[]) =>
+                                    settIgnorerFeilISimulering(values.some((val) => val))
+                                }
+                            >
+                                <Checkbox value={true}>Forstått</Checkbox>
+                            </GodkjennSimuleringsfeil>
+                        )}
+                </>
             )}
         </>
     );
@@ -78,20 +101,13 @@ const MigrerFagsak: React.FC<{
         byggTomRessurs()
     );
     const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
+    const [ignorerFeilISimulering, settIgnorerFeilISimulering] = useState<boolean>();
 
     const { id: fagsakPersonId } = fagsakPerson;
 
     const hentMigreringConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}`,
-        }),
-        [fagsakPersonId]
-    );
-
-    const migrerFagsakConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'POST',
             url: `/familie-ef-sak/api/migrering/${fagsakPersonId}`,
         }),
         [fagsakPersonId]
@@ -110,7 +126,13 @@ const MigrerFagsak: React.FC<{
 
     const migrerFagsak = () => {
         settMigrertStatus(byggHenterRessurs());
-        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
+        axiosRequest<string, { ignorerFeilISimulering?: boolean }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}`,
+            data: {
+                ignorerFeilISimulering,
+            },
+        }).then((res: Ressurs<string>) => {
             settMigrertStatus(res);
         });
     };
@@ -126,7 +148,7 @@ const MigrerFagsak: React.FC<{
                     return (
                         <>
                             {visMigreringInfo(migreringInfo)}
-                            {visMigrertStatus(migrertStatus)}
+                            {visMigrertStatus(migrertStatus, settIgnorerFeilISimulering)}
 
                             {migreringInfo.kanMigreres && (
                                 <div>
