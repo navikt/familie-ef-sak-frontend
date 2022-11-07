@@ -52,16 +52,17 @@ export const visMigrertStatus = (
                         migrertStatus.frontendFeilmelding.startsWith('Etterbetaling er') && (
                             <GodkjennSimuleringsfeil>
                                 <CheckboxGroup
-                                    legend={'Simuleringen gir etterbetaling'}
+                                    legend={
+                                        'Det er registrert en etterbetaling. ' +
+                                        'NØS må kontaktes hvis bruker ikke skal ha denne utbetalt.'
+                                    }
                                     onChange={(values: boolean[]) =>
                                         settIgnorerFeilISimulering(values.some((val) => val))
                                     }
                                 >
                                     <Checkbox value={true}>
-                                        <div>
-                                            Det er registrert en etterbetaling. NØS må kontaktes
-                                            hvis bruker ikke skal ha denne utbetalt.
-                                        </div>
+                                        Jeg tar kontakt med NØS dersom etterbetalingen ikke skal
+                                        utbetales
                                     </Checkbox>
                                 </CheckboxGroup>
                             </GodkjennSimuleringsfeil>
