@@ -108,11 +108,8 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
-
-    const utledVisningsnavn = (): string => {
-        const alder = nullableDatoTilAlder(fødselsdato);
-        return alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
-    };
+    const alder = nullableDatoTilAlder(fødselsdato);
+    const visningsnavn = alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
 
     const utledOmFagsakErMigrert = (fagsak: {
         fagsakId: string;
@@ -167,7 +164,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
-                        <Visningsnavn>{utledVisningsnavn()}</Visningsnavn>
+                        <Visningsnavn>{visningsnavn}</Visningsnavn>
                     </ResponsivLenke>
                 }
             >
@@ -179,6 +176,13 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                 {adressebeskyttelse && (
                     <ElementWrapper>
                         <AdressebeskyttelseVarsel adressebeskyttelse={adressebeskyttelse} />
+                    </ElementWrapper>
+                )}
+                {alder && alder < 18 && (
+                    <ElementWrapper>
+                        <Tag variant={'warning'} size={'small'}>
+                            Under 18
+                        </Tag>
                     </ElementWrapper>
                 )}
                 {egenAnsatt && (
