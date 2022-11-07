@@ -71,6 +71,7 @@ export const BrevmottakereModal: FC<{
     const [valgteOrganisasjonMottakere, settValgteOrganisasjonMottakere] = useState<
         IOrganisasjonMottaker[]
     >([]);
+
     const [feilmelding, settFeilmelding] = useState('');
     const [innsendingSuksess, settInnsendingSukksess] = useState(false);
     const { settToast } = useApp();

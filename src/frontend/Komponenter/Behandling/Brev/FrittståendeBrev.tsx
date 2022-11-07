@@ -27,11 +27,17 @@ import {
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Alert, BodyShort, Button, Heading, Label, Tooltip } from '@navikt/ds-react';
+import { Alert, Heading } from '@navikt/ds-react';
 import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
-import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
+import { IBrevmottakere } from '../Brevmottakere/typer';
 import { EToast } from '../../../App/typer/toast';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import BrevMottakere from './BrevMottakere';
+import {
+    brevmottakereMedBruker,
+    brevmottakereValgt,
+    mottakereEllerBruker,
+} from '../Brevmottakere/brevmottakerUtils';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -46,28 +52,9 @@ const AlertStripe = styled(Alert)`
     margin-top: 2rem;
 `;
 
-const Grid = styled.div`
-    display: grid;
-    grid-template-columns: 9rem 23rem 16rem;
-`;
-
-const InfoHeader = styled.div`
-    display: grid;
-    grid-template-columns: 29rem 14rem;
-`;
-
 const SideTittel = styled(Heading)`
     margin-top: 1rem;
     margin-bottom: 1rem;
-`;
-
-const KompaktButton = styled(Button)`
-    padding: 0;
-    justify-content: right;
-
-    .navds-button__inner {
-        margin: 0;
-    }
 `;
 
 type Props = {
@@ -83,23 +70,6 @@ const FrittståendeBrev: React.FC<Props> = ({
     mellomlagretFrittståendeBrev,
     personopplysninger,
 }) => {
-    const brevmottakereMedBruker = (personopplysninger: IPersonopplysninger) => {
-        return {
-            personer: [
-                {
-                    mottakerRolle: EBrevmottakerRolle.BRUKER,
-                    personIdent: personopplysninger.personIdent,
-                    navn: personopplysninger.navn.visningsnavn,
-                },
-            ],
-            organisasjoner: [],
-        };
-    };
-
-    const brevmottakereValgt = (mottakere?: IBrevmottakere) => {
-        return mottakere && (mottakere.personer.length > 0 || mottakere.organisasjoner.length > 0);
-    };
-
     const [brevType, settBrevType] = useState<FrittståendeBrevtype | undefined>(
         mellomlagretFrittståendeBrev && mellomlagretFrittståendeBrev.brevType
     );
@@ -110,10 +80,7 @@ const FrittståendeBrev: React.FC<Props> = ({
         initielleAvsnittMellomlager(mellomlagretFrittståendeBrev)
     );
     const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(
-        mellomlagretFrittståendeBrev?.mottakere &&
-            brevmottakereValgt(mellomlagretFrittståendeBrev.mottakere)
-            ? mellomlagretFrittståendeBrev.mottakere
-            : brevmottakereMedBruker(personopplysninger)
+        mottakereEllerBruker(personopplysninger, mellomlagretFrittståendeBrev?.mottakere)
     );
 
     const [feilmelding, settFeilmelding] = useState('');
@@ -338,59 +305,6 @@ const FrittståendeBrev: React.FC<Props> = ({
                 kallHentBrevmottakere={hentBrevmottakere}
             />
         </StyledBrev>
-    );
-};
-
-const BrevMottakere: React.FC<{ mottakere: IBrevmottakere }> = ({ mottakere }) => {
-    const { settVisBrevmottakereModal } = useApp();
-    const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
-        return [
-            ...brevMottakere.personer.map(
-                (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
-            ),
-            ...brevMottakere.organisasjoner.map(
-                (org) => `${org.organisasjonsnavn} (${org.mottakerRolle.toLowerCase()})`
-            ),
-        ];
-    };
-
-    const navn = utledNavnPåMottakere(mottakere);
-    const flereBrevmottakereErValgt = navn.length > 1;
-    const brukerErBrevmottaker = mottakere.personer.find(
-        (person) => person.mottakerRolle === EBrevmottakerRolle.BRUKER
-    );
-
-    return flereBrevmottakereErValgt || !brukerErBrevmottaker ? (
-        <Alert variant={'info'}>
-            <InfoHeader>
-                <Label>Brevmottakere:</Label>
-                <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
-                    <KompaktButton
-                        variant={'tertiary'}
-                        onClick={() => settVisBrevmottakereModal(true)}
-                    >
-                        Legg til/endre brevmottakere
-                    </KompaktButton>
-                </Tooltip>
-            </InfoHeader>
-            <ul>
-                {navn.map((navn, index) => (
-                    <li key={navn + index}>
-                        <BodyShort key={navn + index}>{navn}</BodyShort>
-                    </li>
-                ))}
-            </ul>
-        </Alert>
-    ) : (
-        <Grid>
-            <Label>Brevmottaker:</Label>
-            <BodyShort>{navn.map((navn) => navn)}</BodyShort>
-            <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
-                <KompaktButton variant={'tertiary'} onClick={() => settVisBrevmottakereModal(true)}>
-                    Legg til/endre brevmottakere
-                </KompaktButton>
-            </Tooltip>
-        </Grid>
     );
 };
 
