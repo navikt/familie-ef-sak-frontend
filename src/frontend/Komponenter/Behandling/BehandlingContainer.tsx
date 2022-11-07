@@ -15,6 +15,7 @@ import { HenleggModal } from './Henleggelse/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
+import { BrevmottakereModalForBehandling } from './Brevmottakere/BrevmottakereModalForBehandling';
 
 const Container = styled.div`
     display: flex;
@@ -77,6 +78,10 @@ const BehandlingContent: FC<{
                     <Fanemeny behandlingId={behandling.id} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <BehandlingRoutes />
+                    <BrevmottakereModalForBehandling
+                        behandlingId={behandling.id}
+                        personopplysninger={personopplysninger}
+                    />
                     <GodkjennEndringer behandling={behandling} />
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
