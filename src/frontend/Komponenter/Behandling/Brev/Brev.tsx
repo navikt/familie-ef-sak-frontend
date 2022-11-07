@@ -75,14 +75,14 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     return (
         <>
             <StyledBrev>
-                {behandlingErRedigerbar && (
-                    <DataViewer response={{ personopplysningerResponse, behandling }}>
-                        {({ personopplysningerResponse, behandling }) => (
-                            <div>
-                                <BrevmottakereForBehandling
-                                    behandlingId={behandling.id}
-                                    personopplysninger={personopplysningerResponse}
-                                />
+                <DataViewer response={{ personopplysningerResponse, behandling }}>
+                    {({ personopplysningerResponse, behandling }) => (
+                        <div>
+                            <BrevmottakereForBehandling
+                                behandlingId={behandling.id}
+                                personopplysninger={personopplysningerResponse}
+                            />
+                            {behandlingErRedigerbar && (
                                 <Brevmeny
                                     behandlingId={behandlingId}
                                     oppdaterBrevRessurs={oppdaterBrevRessurs}
@@ -90,10 +90,10 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                     settKanSendesTilBeslutter={settKanSendesTilBeslutter}
                                     behandling={behandling}
                                 />
-                            </div>
-                        )}
-                    </DataViewer>
-                )}
+                            )}
+                        </div>
+                    )}
+                </DataViewer>
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
             <SendTilBeslutterFooter
