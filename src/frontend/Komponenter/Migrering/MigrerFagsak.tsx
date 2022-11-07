@@ -21,13 +21,15 @@ import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react';
+import { AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
 
 const StyledKnapp = styled(Button)`
     margin: 0.25rem;
 `;
 
-const GodkjennSimuleringsfeil = styled(CheckboxGroup)`
+const GodkjennSimuleringsfeil = styled(AlertWarning)`
     margin-top: 1rem;
+    max-width: 60rem;
 `;
 
 export const visMigrertStatus = (
@@ -48,13 +50,20 @@ export const visMigrertStatus = (
                     </div>
                     {settIgnorerFeilISimulering &&
                         migrertStatus.frontendFeilmelding.startsWith('Etterbetaling er') && (
-                            <GodkjennSimuleringsfeil
-                                legend={'Simuleringen gir etterbetaling'}
-                                onChange={(values: boolean[]) =>
-                                    settIgnorerFeilISimulering(values.some((val) => val))
-                                }
-                            >
-                                <Checkbox value={true}>Forstått</Checkbox>
+                            <GodkjennSimuleringsfeil>
+                                <CheckboxGroup
+                                    legend={'Simuleringen gir etterbetaling'}
+                                    onChange={(values: boolean[]) =>
+                                        settIgnorerFeilISimulering(values.some((val) => val))
+                                    }
+                                >
+                                    <Checkbox value={true}>
+                                        <div>
+                                            Det er registrert en etterbetaling. NØS må kontaktes
+                                            hvis bruker ikke skal ha denne utbetalt.
+                                        </div>
+                                    </Checkbox>
+                                </CheckboxGroup>
                             </GodkjennSimuleringsfeil>
                         )}
                 </>
