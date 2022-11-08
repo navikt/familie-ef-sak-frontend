@@ -11,9 +11,13 @@ import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy } from '../../App/utils/utils';
 import { tekstMapping } from '../../App/utils/tekstmapping';
-import { journalstatusTilTekst } from '../../App/typer/journalforing';
 import { IFagsakPerson } from '../../App/typer/fagsak';
-import { Journalstatus } from '@navikt/familie-typer';
+import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
+import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
+import {
+    avsenderMottakerIdTypeTilTekst,
+    journalstatusTilTekst,
+} from '../../App/typer/journalføring';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -42,6 +46,49 @@ const HovedLenke = styled.a`
 const DivMedVenstreMargin = styled.div`
     margin-left: 2rem;
 `;
+
+const InnUt = styled.div`
+    svg {
+        vertical-align: -0.2em;
+        margin-right: 0.5rem;
+    }
+`;
+
+/**
+ * Genererer en string av typen `<navn> (<type>: <id>)`
+ */
+const utledAvsenderMottakerDetaljer = (dokument: Dokumentinfo): string => {
+    let avsender = '';
+    const avsenderMottaker = dokument.avsenderMottaker;
+    if (!avsenderMottaker) {
+        return avsender;
+    }
+    if (avsenderMottaker.navn) {
+        avsender += avsenderMottaker.navn;
+    }
+    const type = avsenderMottaker.type;
+    const id = avsenderMottaker.id;
+    if (!avsenderMottaker.erLikBruker && (type || id)) {
+        avsender += ' (';
+        if (type && avsenderMottakerIdTypeTilTekst[type]) {
+            avsender += avsenderMottakerIdTypeTilTekst[type];
+            if (id) {
+                avsender += ': ';
+            }
+        }
+        if (id) {
+            avsender += id;
+        }
+        avsender += ')';
+    }
+    return avsender;
+};
+
+const ikoneForJournalposttype: Record<Journalposttype, React.ReactElement> = {
+    I: <LeftFilled />,
+    N: <DownFilled />,
+    U: <RightFilled />,
+};
 
 const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
     const dokumentConfig: AxiosRequestConfig = useMemo(
@@ -78,6 +125,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({ dokument }) => (
         <tr>
             <Td></Td>
+            <Td></Td>
             <Td>
                 <LenkeVenstreMargin
                     href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
@@ -89,6 +137,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
             <Td></Td>
+            <Td></Td>
         </tr>
     );
 
@@ -97,6 +146,12 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     }) => (
         <TrHoveddokument>
             <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
+            <Td>
+                <InnUt>
+                    {ikoneForJournalposttype[dokument.journalposttype]}
+                    <strong>{dokument.journalposttype}</strong>
+                </InnUt>
+            </Td>
             <Td>
                 <HovedLenke
                     key={dokument.journalpostId}
@@ -108,6 +163,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 </HovedLenke>
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
+            <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
             <Td>
                 <Normaltekst>
                     {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
@@ -128,8 +184,10 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
                                 <table className="tabell">
                                     <thead>
-                                        <Kolonnetittel text={'Dato'} width={15} />
-                                        <Kolonnetittel text={'Tittel'} width={75} />
+                                        <Kolonnetittel text={'Dato'} width={12} />
+                                        <Kolonnetittel text={'Inn/ut'} width={5} />
+                                        <Kolonnetittel text={'Tittel'} width={43} />
+                                        <Kolonnetittel text={'Avsender/mottaker'} width={20} />
                                         <Kolonnetittel text={'Status'} width={10} />
                                     </thead>
                                     <tbody>

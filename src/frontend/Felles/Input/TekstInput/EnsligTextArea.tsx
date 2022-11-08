@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FamilieTextarea, IFamilieTextareaProps } from '@navikt/familie-form-elements';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
+import { EnsligErrorMessage } from '../../ErrorMessage/EnsligErrorMessage';
 
 const StyledFamilieTextArea: React.FC<IFamilieTextareaProps> = styled(FamilieTextarea)`
     white-space: pre-wrap;
@@ -31,7 +31,7 @@ export const EnsligTextArea: React.FC<Props> = ({
                 maxLength={maxLength}
                 erLesevisning={erLesevisning}
             />
-            <SkjemaelementFeilmelding>{feilmelding}</SkjemaelementFeilmelding>
+            <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
         </>
     );
 };

@@ -9,6 +9,7 @@ import {
     initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode,
     initielleAvsnittVedtakInvilgelseSkolepenger,
     initielleAvsnittVedtakAvslagSkolepenger,
+    initielleAvsnittInnhentingAvOpplysninger,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -179,7 +180,7 @@ export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> 
 export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtype, AvsnittMedId[]> =
     {
         INFORMASJONSBREV: initielleAvsnittTom,
-        INNHENTING_AV_OPPLYSNINGER: initielleAvsnittTom,
+        INNHENTING_AV_OPPLYSNINGER: initielleAvsnittInnhentingAvOpplysninger,
         SANKSJON: initielleAvsnittTom,
         VARSEL_OM_AKTIVITETSPLIKT: initielleAvsnittVarselOmAktivitetsplikt,
         VARSEL_OM_SANKSJON: initielleAvsnittTom,

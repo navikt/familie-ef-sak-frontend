@@ -12,5 +12,6 @@ export enum ToggleName {
     visOpprettKlage = 'familie.ef.sak.frontend-vis-opprett-klage',
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
     visUtestengelse = 'familie.ef.sak.frontend-utestengelse',
+    journalføringKlage = 'familie.ef.sak.frontend-journalforing-klage',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
 }

@@ -2,8 +2,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
-import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalforing/VelgUstrukturertDokumentasjonType';
+import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
+import { DokumentTitler } from '../typer/journalføring';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -12,12 +13,11 @@ export interface BehandlingRequest {
 }
 
 interface JournalføringRequest {
-    dokumentTitler?: Record<string, string>;
+    dokumentTitler?: DokumentTitler;
     fagsakId: string;
     oppgaveId: string;
     behandling?: BehandlingRequest;
     journalførendeEnhet: string;
-    navIdent?: string;
     barnSomSkalFødes: BarnSomSkalFødes[];
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
 }
@@ -28,23 +28,15 @@ export interface BarnSomSkalFødes {
 }
 
 export interface JournalføringStateRequest {
-    oppgaveId: string;
-    settOppgaveId: Dispatch<SetStateAction<string>>;
     fagsakId: string;
     settFagsakId: Dispatch<SetStateAction<string>>;
     behandling?: BehandlingRequest;
     settBehandling: Dispatch<SetStateAction<BehandlingRequest | undefined>>;
-    dokumentTitler?: Record<string, string>;
-    settDokumentTitler: Dispatch<SetStateAction<Record<string, string> | undefined>>;
-    forsøktJournalført: boolean;
-    settForsøktJournalført: Dispatch<SetStateAction<boolean>>;
+    dokumentTitler?: DokumentTitler;
+    settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
-    fullførJournalføring: (
-        journalpostId: string,
-        journalførendeEnhet: string,
-        navIdent?: string
-    ) => void;
+    fullførJournalføring: () => void;
     visBekreftelsesModal: boolean;
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
     visJournalføringIkkeMuligModal: boolean;
@@ -57,13 +49,14 @@ export interface JournalføringStateRequest {
     settVilkårsbehandleNyeBarn: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
 }
 
-export const useJournalføringState = (): JournalføringStateRequest => {
-    const { axiosRequest } = useApp();
-    const [oppgaveId, settOppgaveId] = useState<string>('');
+export const useJournalføringState = (
+    oppgaveId: string,
+    journalpostId: string
+): JournalføringStateRequest => {
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
-    const [dokumentTitler, settDokumentTitler] = useState<Record<string, string>>();
-    const [forsøktJournalført, settForsøktJournalført] = useState<boolean>(false);
+    const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [visJournalføringIkkeMuligModal, settJournalføringIkkeMuligModal] =
@@ -79,12 +72,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
         settBehandling(undefined);
     }, [fagsakId]);
 
-    const fullførJournalføring = (
-        journalpostId: string,
-        journalførendeEnhet: string,
-        navIdent?: string
-    ) => {
-        settForsøktJournalført(true);
+    const fullførJournalføring = () => {
         if (!behandling || innsending.status === RessursStatus.HENTER) {
             return;
         }
@@ -99,8 +87,7 @@ export const useJournalføringState = (): JournalføringStateRequest => {
             fagsakId,
             behandling: nyBehandling,
             dokumentTitler,
-            journalførendeEnhet,
-            navIdent,
+            journalførendeEnhet: innloggetSaksbehandler.enhet || '9999',
             barnSomSkalFødes,
             vilkårsbehandleNyeBarn,
         };
@@ -113,16 +100,12 @@ export const useJournalføringState = (): JournalføringStateRequest => {
     };
 
     return {
-        oppgaveId,
-        settOppgaveId,
         fagsakId,
         settFagsakId,
         behandling,
         settBehandling,
         dokumentTitler,
         settDokumentTitler,
-        forsøktJournalført,
-        settForsøktJournalført,
         innsending,
         settInnsending,
         fullførJournalføring,

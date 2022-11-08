@@ -1,11 +1,11 @@
 import { erFlettefeltFritektsfelt, finnFlettefeltVisningsnavnFraRef } from './BrevUtils';
-import { Input, Textarea } from 'nav-frontend-skjema';
 import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 import styled from 'styled-components';
+import { Textarea, TextField } from '@navikt/ds-react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledInput = styled(({ fetLabel, ...props }) => <Input {...props} />)`
+const StyledInput = styled(({ fetLabel, ...props }) => <TextField {...props} />)`
     padding-top: 0.5rem;
     .skjemaelement__label {
         font-weight: ${(fetLabel) => (fetLabel ? 600 : 300)};

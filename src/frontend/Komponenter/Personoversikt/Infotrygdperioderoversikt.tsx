@@ -4,7 +4,6 @@ import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { Checkbox } from 'nav-frontend-skjema';
 import { InfotrygdPerioderResponse, Perioder } from '../../App/typer/infotrygd';
 import MigrerFagsak from '../Migrering/MigrerFagsak';
 import InfotrygdSaker from '../Migrering/InfotrygdSaker';
@@ -14,6 +13,7 @@ import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
 import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
+import { Checkbox } from '@navikt/ds-react';
 
 const StyledAlertStripe = styled(AlertInfo)`
     margin: 1rem 0;
@@ -60,12 +60,13 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
             <CheckboxContainer>
                 {skalViseCheckbox && (
                     <Checkbox
-                        label={'Vis summerte perioder'}
                         onChange={() => {
                             settVisSummert((prevState) => !prevState);
                         }}
                         checked={visSummert}
-                    />
+                    >
+                        Vis summerte perioder
+                    </Checkbox>
                 )}
             </CheckboxContainer>
             <h2>Overgangsstønad</h2>

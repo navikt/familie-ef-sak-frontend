@@ -10,7 +10,7 @@ import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-route
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
 import BehandlingContainer from './Komponenter/Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
-import { JournalforingApp } from './Komponenter/Journalforing/JournalforingApp';
+import { JournalføringApp } from './Komponenter/Journalføring/JournalføringApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
 import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
@@ -22,6 +22,7 @@ import { AdminApp } from './Komponenter/Admin/AdminApp';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
 import styled from 'styled-components';
 import { ModalWrapper } from './Felles/Modal/ModalWrapper';
+import { JournalføringKlageApp } from './Komponenter/Journalføring/JournalføringKlageApp';
 
 // @ts-ignore
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
@@ -110,7 +111,8 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                 />
                 <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
                 <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
-                <Route path="/journalfor" element={<JournalforingApp />} />
+                <Route path="/journalfor" element={<JournalføringApp />} />
+                <Route path="/journalfor-klage" element={<JournalføringKlageApp />} />
                 <Route path="/admin/*" element={<AdminApp />} />
                 <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
                 <Route path="/person/:fagsakPersonId/*" element={<Personoversikt />} />

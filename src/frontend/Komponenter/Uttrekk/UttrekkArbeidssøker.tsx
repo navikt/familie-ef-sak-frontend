@@ -12,9 +12,9 @@ import {
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Sidetittel, Systemtittel } from 'nav-frontend-typografi';
-import { Checkbox } from 'nav-frontend-skjema';
 import { Adressebeskyttelse } from '../../App/typer/personopplysninger';
 import UttrekkArbeidssøkerTabell from './UttrekkArbeidssøkerTabell';
+import { Checkbox } from '@navikt/ds-react';
 
 const UttrekkArbeidssøkerContent = styled.div`
     padding: 1rem;
@@ -147,11 +147,9 @@ const UttrekkArbeidssøkerMedMetadata: React.FC<{
         <>
             <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
             <Infoboks arbeidssøkere={arbeidssøkere} />
-            <Checkbox
-                label={'Vis kontrollerte'}
-                onChange={() => toggleVisKontrollerte()}
-                checked={visKontrollerte}
-            />
+            <Checkbox onChange={() => toggleVisKontrollerte()} checked={visKontrollerte}>
+                Vis kontrollerte
+            </Checkbox>
             <UttrekkArbeidssøkerTabell
                 arbeidssøkere={arbeidssøkere.arbeidssøkere}
                 settKontrollert={settKontrollert}

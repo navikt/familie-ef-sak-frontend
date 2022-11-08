@@ -279,3 +279,23 @@ export const initielleAvsnittVedtakAvslagSkolepenger: AvsnittMedId[] = [
         id: uuidv4(),
     },
 ];
+
+export const initielleAvsnittInnhentingAvOpplysninger: AvsnittMedId[] = [
+    {
+        deloverskrift: 'Hva skjer hvis du ikke sender opplysningene?',
+        innhold:
+            'Du har plikt til å gi de opplysningene og levere de dokumentene som er nødvendige for at vi skal kunne vurdere om du har rett til stønaden. Hvis vi ikke får opplysningene innen fristen, vil vi behandle saken din ut fra de opplysningene vi har. Dette går frem av folketrygdloven § 21-3.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Saksbehandlingstid',
+        innhold: 'Saksbehandlingstidene finner du på nav.no/saksbehandlingstider.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner nyttig informasjon på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];

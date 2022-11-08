@@ -1,17 +1,17 @@
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
-import { OrNothing } from './felles/useSorteringState';
-import { IJournalpost } from '../typer/journalforing';
+import { IJournalpost } from '../typer/journalføring';
 
-interface HentDokumentResponse {
+export interface HentDokumentResponse {
     hentDokument: (dokumentinfoId: string) => void;
     valgtDokument: Ressurs<string>;
-    hentFørsteDokument: (journalpost: IJournalpost) => void;
-    hentNesteDokument: (journalpost: IJournalpost) => void;
-    hentForrigeDokument: (journalpost: IJournalpost) => void;
+    hentFørsteDokument: () => void;
+    hentNesteDokument: () => void;
+    hentForrigeDokument: () => void;
 }
-export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDokumentResponse => {
+
+export const useHentDokument = (journalpost: IJournalpost): HentDokumentResponse => {
     const { axiosRequest } = useApp();
     const [valgtDokument, settValgtDokument] = useState<Ressurs<string>>(byggTomRessurs());
     const [valgtDokumentInfoId, settDokumentInfoId] = useState<string | undefined>();
@@ -21,61 +21,43 @@ export const useHentDokument = (journalpostIdParam: OrNothing<string>): HentDoku
             settValgtDokument(byggHenterRessurs());
             axiosRequest<string, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/journalpost/${journalpostIdParam}/dokument/${dokumentInfoId}`,
+                url: `/familie-ef-sak/api/journalpost/${journalpost.journalpostId}/dokument/${dokumentInfoId}`,
             }).then((res: Ressurs<string>) => settValgtDokument(res));
         },
-        // eslint-disable-next-line
-        [journalpostIdParam]
-    );
-
-    const hentFørsteDokument = useCallback(
-        (journalpost: IJournalpost) => {
-            hentDokumentForIndex(journalpost, 0);
-        },
-        // eslint-disable-next-line
-        [journalpostIdParam]
+        [axiosRequest, journalpost.journalpostId]
     );
 
     const hentDokumentForIndex = useCallback(
-        (journalpost: IJournalpost, index: number) => {
+        (index: number) => {
             if (journalpost.dokumenter && journalpost.dokumenter.length > index) {
                 hentDokument(journalpost.dokumenter[index].dokumentInfoId);
             }
         },
-        // eslint-disable-next-line
-        [journalpostIdParam]
+        [hentDokument, journalpost]
     );
 
-    const indeksForValgtDokument = useCallback(
-        (journalpost: IJournalpost) => {
-            return journalpost.dokumenter.findIndex(
-                (dok) => dok.dokumentInfoId === valgtDokumentInfoId
-            );
-        },
-        // eslint-disable-next-line
-        [valgtDokumentInfoId]
-    );
+    const hentFørsteDokument = useCallback(() => {
+        hentDokumentForIndex(0);
+    }, [hentDokumentForIndex]);
 
-    const hentNesteDokument = useCallback(
-        (journalpost: IJournalpost) => {
-            const nesteEllerFørsteIndeks =
-                (indeksForValgtDokument(journalpost) + 1) % journalpost.dokumenter.length;
-            hentDokumentForIndex(journalpost, nesteEllerFørsteIndeks);
-        },
-        // eslint-disable-next-line
-        [journalpostIdParam, valgtDokumentInfoId]
-    );
+    const indeksForValgtDokument = useCallback(() => {
+        return journalpost.dokumenter.findIndex(
+            (dok) => dok.dokumentInfoId === valgtDokumentInfoId
+        );
+    }, [journalpost, valgtDokumentInfoId]);
 
-    const hentForrigeDokument = useCallback(
-        (journalpost: IJournalpost) => {
-            const forrigeEllerSisteIndeks =
-                (indeksForValgtDokument(journalpost) - 1 + journalpost.dokumenter.length) %
-                journalpost.dokumenter.length;
-            hentDokumentForIndex(journalpost, forrigeEllerSisteIndeks);
-        },
-        // eslint-disable-next-line
-        [journalpostIdParam, valgtDokumentInfoId]
-    );
+    const hentNesteDokument = useCallback(() => {
+        const nesteEllerFørsteIndeks =
+            (indeksForValgtDokument() + 1) % journalpost.dokumenter.length;
+        hentDokumentForIndex(nesteEllerFørsteIndeks);
+    }, [hentDokumentForIndex, indeksForValgtDokument, journalpost]);
+
+    const hentForrigeDokument = useCallback(() => {
+        const forrigeEllerSisteIndeks =
+            (indeksForValgtDokument() - 1 + journalpost.dokumenter.length) %
+            journalpost.dokumenter.length;
+        hentDokumentForIndex(forrigeEllerSisteIndeks);
+    }, [hentDokumentForIndex, indeksForValgtDokument, journalpost]);
 
     return {
         hentDokument,

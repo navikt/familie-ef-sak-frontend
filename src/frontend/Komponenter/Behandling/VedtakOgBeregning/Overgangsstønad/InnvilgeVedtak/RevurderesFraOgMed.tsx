@@ -1,10 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import styled from 'styled-components';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { IVedtakshistorikk } from '../../../../../App/typer/vedtak';
 import { revurdererFørFørstePeriode } from './revurderFraUtils';
 import { AlertWarning } from '../../../../../Felles/Visningskomponenter/Alerts';
+import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 
 const WrapperMarginBottom = styled.div`
     margin-bottom: 2rem;
@@ -37,7 +37,7 @@ export const RevurderesFraOgMed: React.FC<{
                 antallÅrFrem={3}
                 årMånedInitiell={revurderesFra}
             />
-            {feilmelding && <SkjemaelementFeilmelding>{feilmelding}</SkjemaelementFeilmelding>}
+            <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
             {revurdererFørFørstePeriode(vedtakshistorikk, revurderesFra) && (
                 <Advarsel>
                     Fom-datoen for denne revurderingen er før fom-datoen for tidligere vedtak. Husk

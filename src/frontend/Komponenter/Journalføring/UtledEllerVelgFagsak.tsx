@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { IJojurnalpostResponse } from '../../App/typer/journalforing';
+import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import {
     behandlingstemaTilStønadstype,
     Stønadstype,
     stønadstypeTilTekst,
 } from '../../App/typer/behandlingstema';
-import { Alert, BodyShort, Label, Select } from '@navikt/ds-react';
+import { Alert, Select } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 const DivMedBottomPadding = styled.div`
@@ -35,10 +35,6 @@ export const UtledEllerVelgFagsak: React.FC<{
         if (!stønadstypeFraJournalpost) {
             return (
                 <DivMedBottomPadding>
-                    <div>
-                        <Label>Journalposttittel</Label>
-                        <BodyShort>{journalResponse.journalpost.tittel}</BodyShort>
-                    </div>
                     <Alert variant={'info'}>
                         Journalposten har ikke behandlingstema. Velg stønadstype.
                     </Alert>

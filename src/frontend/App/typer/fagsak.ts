@@ -74,6 +74,6 @@ export const behandlingResultatTilTekst: Record<
     DELVIS_TILBAKEBETALING: 'Delvis tilbakebetaling',
     FULL_TILBAKEBETALING: 'Full tilbakebetaling',
     MEDHOLD: 'Medhold',
-    IKKE_MEDHOLD: 'Ikke medhold',
+    IKKE_MEDHOLD: 'Oversendt til KA',
     IKKE_MEDHOLD_FORMKRAV_AVVIST: 'Ikke medhold, formkrav avvist',
 };

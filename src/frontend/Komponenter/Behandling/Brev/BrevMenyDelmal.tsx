@@ -8,15 +8,15 @@ import {
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
-import { Checkbox } from 'nav-frontend-skjema';
 import styled from 'styled-components';
-import { Accordion } from '@navikt/ds-react';
+import { Accordion, Checkbox } from '@navikt/ds-react';
 import { NavdsBorderRadiusMedium, NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
 
 const DelmalValg = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    gap: 0.5rem;
 `;
 
 interface Props {
@@ -67,7 +67,9 @@ export const BrevMenyDelmal: React.FC<Props> = ({
 
     return (
         <DelmalValg>
-            <Checkbox label="" onChange={håndterToggleDelmal} checked={valgt} />
+            <Checkbox hideLabel onChange={håndterToggleDelmal} checked={valgt}>
+                Velg delmal
+            </Checkbox>
             <Accordion
                 style={{
                     width: '100%',
