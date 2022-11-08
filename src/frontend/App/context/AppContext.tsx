@@ -9,6 +9,7 @@ import { EToast } from '../typer/toast';
 import { AppEnv } from '../api/env';
 import { AxiosRequestCallback } from '../typer/axiosRequest';
 import { harTilgangTilRolle } from '../utils/roller';
+import { v4 as uuidv4 } from 'uuid';
 
 interface IProps {
     autentisertSaksbehandler: ISaksbehandler;
@@ -79,8 +80,12 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         <RES, REQ>(
             config: AxiosRequestConfig<REQ>
         ): Promise<RessursFeilet | RessursSuksess<RES>> => {
+            const requestId = uuidv4().replaceAll('-', '');
             return preferredAxios
-                .request<Ressurs<RES>>(config)
+                .request<Ressurs<RES>>({
+                    ...config,
+                    headers: { ...config.headers, 'x-request-id': requestId },
+                })
                 .then((response: AxiosResponse<Ressurs<RES>>) => {
                     const responsRessurs: Ressurs<RES> = response.data;
                     return håndterRessurs(responsRessurs, innloggetSaksbehandler, response.headers);
