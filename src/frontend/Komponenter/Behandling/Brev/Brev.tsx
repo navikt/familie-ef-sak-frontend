@@ -8,8 +8,7 @@ import Brevmeny from './Brevmeny';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
-import { IBrevmottakere } from '../Brevmottakere/typer';
-import { InfostripeBrevmottakere } from './InfostripeBrevmottakere';
+import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -31,14 +30,11 @@ interface Props {
 }
 
 const Brev: React.FC<Props> = ({ behandlingId }) => {
-    const { axiosRequest, toast } = useApp();
+    const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll, behandling } =
         useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const [brevmottakereRessurs, settBrevMottakereRessurs] = useState(
-        byggTomRessurs<IBrevmottakere | undefined>()
-    );
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -76,42 +72,28 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
-    useEffect(() => {
-        const hentBrevmottakere = () => {
-            axiosRequest<IBrevmottakere | undefined, null>({
-                url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
-                method: 'GET',
-            }).then((resp: Ressurs<IBrevmottakere | undefined>) => {
-                settBrevMottakereRessurs(resp);
-            });
-        };
-
-        hentBrevmottakere();
-    }, [axiosRequest, behandlingId, settBrevMottakereRessurs, toast]);
-
     return (
         <>
-            <DataViewer response={{ brevmottakereRessurs }}>
-                {({ brevmottakereRessurs }) =>
-                    brevmottakereRessurs ? (
-                        <InfostripeBrevmottakere brevmottakere={brevmottakereRessurs} />
-                    ) : null
-                }
-            </DataViewer>
             <StyledBrev>
-                {behandlingErRedigerbar && (
-                    <DataViewer response={{ personopplysningerResponse, behandling }}>
-                        {({ personopplysningerResponse, behandling }) => (
-                            <Brevmeny
-                                behandlingId={behandlingId}
-                                oppdaterBrevRessurs={oppdaterBrevRessurs}
+                <DataViewer response={{ personopplysningerResponse, behandling }}>
+                    {({ personopplysningerResponse, behandling }) => (
+                        <div>
+                            <BrevmottakereForBehandling
+                                behandlingId={behandling.id}
                                 personopplysninger={personopplysningerResponse}
-                                settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                behandling={behandling}
                             />
-                        )}
-                    </DataViewer>
-                )}
+                            {behandlingErRedigerbar && (
+                                <Brevmeny
+                                    behandlingId={behandlingId}
+                                    oppdaterBrevRessurs={oppdaterBrevRessurs}
+                                    personopplysninger={personopplysningerResponse}
+                                    settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                    behandling={behandling}
+                                />
+                            )}
+                        </div>
+                    )}
+                </DataViewer>
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </StyledBrev>
             <SendTilBeslutterFooter

@@ -9,13 +9,13 @@ import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingC
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
-import { BrevmottakereModalForBehandling } from './Brevmottakere/BrevmottakereModalForBehandling';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { HenleggModal } from './Henleggelse/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
+import { BrevmottakereModalForBehandling } from './Brevmottakere/BrevmottakereModalForBehandling';
 
 const Container = styled.div`
     display: flex;
@@ -78,11 +78,11 @@ const BehandlingContent: FC<{
                     <Fanemeny behandlingId={behandling.id} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <BehandlingRoutes />
-                    <GodkjennEndringer behandling={behandling} />
                     <BrevmottakereModalForBehandling
                         behandlingId={behandling.id}
                         personopplysninger={personopplysninger}
                     />
+                    <GodkjennEndringer behandling={behandling} />
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
