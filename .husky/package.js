@@ -10,9 +10,15 @@ const { dependencies: dependenciesComment, devDependencies: devDependenciesComme
     readFileSync(path)
 );
 
-const mergeComments = (packagePart, commentPart) =>
-    Object.keys(packagePart).reduce((acc, curr) => {
-        acc[curr] = commentPart[curr] || '';
+let newKeys = [];
+
+const mergeComments = (current, previous) =>
+    Object.keys(current).reduce((acc, key) => {
+        const prevValue = previous[key];
+        if (prevValue === undefined || prevValue === null) {
+            newKeys.push(key);
+        }
+        acc[key] = prevValue || '';
         return acc;
     }, {});
 
@@ -21,3 +27,8 @@ const newPackageComment = {
     devDependencies: mergeComments(devDependencies, devDependenciesComment),
 };
 writeFileSync(path, JSON.stringify(newPackageComment, null, 2));
+
+if (newKeys.length) {
+    console.log('Nye dependencies mangler kommentarer', newKeys);
+    process.exit(1);
+}
