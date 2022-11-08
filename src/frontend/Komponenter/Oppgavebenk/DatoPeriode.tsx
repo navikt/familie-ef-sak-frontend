@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FlexDiv } from './OppgaveFiltrering';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
-import { ErrorMessage } from '@navikt/ds-react';
+import { EnsligErrorMessage } from '../../Felles/ErrorMessage/EnsligErrorMessage';
 
 const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;
@@ -42,7 +42,7 @@ const DatoPeriode: React.FC<Props> = ({
                     {datoTilTekst}
                 </DatolabelStyle>
                 <Datepicker onChange={settDatoTil} value={valgtDatoTil} />
-                {datoFeil && <ErrorMessage>{datoFeil}</ErrorMessage>}
+                <EnsligErrorMessage>{datoFeil}</EnsligErrorMessage>
             </div>
         </FlexDiv>
     );
