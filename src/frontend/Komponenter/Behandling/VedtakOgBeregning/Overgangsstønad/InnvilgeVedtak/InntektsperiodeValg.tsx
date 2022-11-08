@@ -19,8 +19,7 @@ import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
-import { Tooltip } from '@navikt/ds-react';
+import { ErrorMessage, Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 
@@ -189,9 +188,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     Uføretrygd
                                 </option>
                             </EnsligFamilieSelect>
-                            <SkjemaelementFeilmelding>
-                                {samordningValideringsfeil}
-                            </SkjemaelementFeilmelding>
+                            <ErrorMessage>{samordningValideringsfeil}</ErrorMessage>
                         </div>
                         {skalViseFjernKnapp ? (
                             <FjernKnapp

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import MånedVelger from './MånedVelger';
 import Årvelger from './ÅrVelger';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { useEffectNotInitialRender } from '../../../App/hooks/felles/useEffectNotInitialRender';
+import { ErrorMessage } from '@navikt/ds-react';
 
 interface Props {
     className?: string;
@@ -85,7 +85,7 @@ const MånedÅrVelger: React.FC<Props> = ({
                     disabled={disabled}
                 />
             </FlexDiv>
-            {feilmelding && <SkjemaelementFeilmelding>{feilmelding}</SkjemaelementFeilmelding>}
+            {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
         </div>
     );
 };
