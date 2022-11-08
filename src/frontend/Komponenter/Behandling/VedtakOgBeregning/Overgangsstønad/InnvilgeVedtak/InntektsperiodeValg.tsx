@@ -188,7 +188,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     Uføretrygd
                                 </option>
                             </EnsligFamilieSelect>
-                            <ErrorMessage>{samordningValideringsfeil}</ErrorMessage>
+                            {samordningValideringsfeil && (
+                                <ErrorMessage>{samordningValideringsfeil}</ErrorMessage>
+                            )}
                         </div>
                         {skalViseFjernKnapp ? (
                             <FjernKnapp

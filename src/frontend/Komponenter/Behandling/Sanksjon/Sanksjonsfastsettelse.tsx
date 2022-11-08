@@ -207,7 +207,9 @@ const SanksjonsvedtakVisning: FC<{
                             </option>
                         ))}
                     </SanksjonVelger>
-                    <ErrorMessage>{formState.errors.sanksjonsårsak}</ErrorMessage>
+                    {formState.errors.sanksjonsårsak && (
+                        <ErrorMessage>{formState.errors.sanksjonsårsak}</ErrorMessage>
+                    )}
                 </section>
                 {sanksjonårsak.value && (
                     <>

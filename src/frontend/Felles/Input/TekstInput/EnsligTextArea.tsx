@@ -31,7 +31,7 @@ export const EnsligTextArea: React.FC<Props> = ({
                 maxLength={maxLength}
                 erLesevisning={erLesevisning}
             />
-            <ErrorMessage>{feilmelding}</ErrorMessage>
+            {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
         </>
     );
 };
