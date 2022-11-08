@@ -1,9 +1,9 @@
 import { Datepicker } from 'nav-datovelger';
 import React from 'react';
 import styled from 'styled-components';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import { FlexDiv } from './OppgaveFiltrering';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
+import { ErrorMessage } from '@navikt/ds-react';
 
 const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;
@@ -42,7 +42,7 @@ const DatoPeriode: React.FC<Props> = ({
                     {datoTilTekst}
                 </DatolabelStyle>
                 <Datepicker onChange={settDatoTil} value={valgtDatoTil} />
-                {datoFeil && <SkjemaelementFeilmelding>{datoFeil}</SkjemaelementFeilmelding>}
+                {datoFeil && <ErrorMessage>{datoFeil}</ErrorMessage>}
             </div>
         </FlexDiv>
     );

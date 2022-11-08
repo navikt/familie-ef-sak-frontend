@@ -29,7 +29,6 @@ import { validerSanksjonereVedtakForm } from '../VedtakOgBeregning/Overgangsstø
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { SkjemaelementFeilmelding } from 'nav-frontend-skjema';
 import {
     antallDagerIgjenAvNåværendeMåned,
     nesteMånedOgNesteMånedsÅrFormatert,
@@ -42,6 +41,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { EnsligFamilieSelect } from '../../../Felles/Input/EnsligFamilieSelect';
 import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
+import { ErrorMessage } from '@navikt/ds-react';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -207,9 +207,7 @@ const SanksjonsvedtakVisning: FC<{
                             </option>
                         ))}
                     </SanksjonVelger>
-                    <SkjemaelementFeilmelding>
-                        {formState.errors.sanksjonsårsak}
-                    </SkjemaelementFeilmelding>
+                    <ErrorMessage>{formState.errors.sanksjonsårsak}</ErrorMessage>
                 </section>
                 {sanksjonårsak.value && (
                     <>
