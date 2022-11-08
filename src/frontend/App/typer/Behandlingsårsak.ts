@@ -10,6 +10,7 @@ export enum Behandlingsårsak {
     G_OMREGNING = 'G_OMREGNING',
     KORRIGERING_UTEN_BREV = 'KORRIGERING_UTEN_BREV',
     PAPIRSØKNAD = 'PAPIRSØKNAD',
+    SATSENDRING = 'SATSENDRING',
 }
 
 export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
@@ -21,6 +22,7 @@ export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
     G_OMREGNING: 'G-omregning',
     KORRIGERING_UTEN_BREV: 'Korrigering uten brev',
     PAPIRSØKNAD: 'Papirsøknad',
+    SATSENDRING: 'Satsendring',
 };
 
 export const behandlingsårsaker: Behandlingsårsak[] = [
@@ -30,6 +32,7 @@ export const behandlingsårsaker: Behandlingsårsak[] = [
     Behandlingsårsak.SØKNAD,
     Behandlingsårsak.G_OMREGNING,
     Behandlingsårsak.KORRIGERING_UTEN_BREV,
+    Behandlingsårsak.SATSENDRING,
 ];
 
 export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
@@ -42,6 +45,7 @@ export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
     SØKNAD: 'Søknad',
     MIGRERING: 'Migrering',
     G_OMREGNING: 'G-omregning',
+    SATSENDRING: 'Satsendring',
     KORRIGERING_UTEN_BREV: 'Korrigering uten brev',
     PAPIRSØKNAD: 'Papirsøknad',
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
