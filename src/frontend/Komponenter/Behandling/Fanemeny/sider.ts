@@ -86,16 +86,12 @@ export const siderForStønad = (stønadstype: Stønadstype): ISide[] => {
 
 const filtrerHvisSanksjon = [SideNavn.SANKSJON, SideNavn.SIMULERING, SideNavn.BREV];
 const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
-const filtrerHvisGOmregning = [
+const filtrerHvisGOmregningEllerSatsendring = [
     SideNavn.VEDTAK_OG_BEREGNING,
     SideNavn.SIMULERING,
     SideNavn.KORRIGERING_UTEN_BREV,
 ];
-const filtrerHvisSatsendring = [
-    SideNavn.VEDTAK_OG_BEREGNING,
-    SideNavn.SIMULERING,
-    SideNavn.KORRIGERING_UTEN_BREV,
-];
+
 const filtrerVekkHvisStandard = [SideNavn.SANKSJON, SideNavn.KORRIGERING_UTEN_BREV];
 const filtrerVekkHvisKorrigeringUtenBrev = [SideNavn.SANKSJON, SideNavn.BREV];
 
@@ -115,11 +111,13 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
     if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
         return sider.filter((side) => filtrerHvisMigrering.includes(side.navn as SideNavn));
     }
-    if (behandling.behandlingsårsak === Behandlingsårsak.G_OMREGNING) {
-        return sider.filter((side) => filtrerHvisGOmregning.includes(side.navn as SideNavn));
-    }
-    if (behandling.behandlingsårsak === Behandlingsårsak.SATSENDRING) {
-        return sider.filter((side) => filtrerHvisSatsendring.includes(side.navn as SideNavn));
+    if (
+        behandling.behandlingsårsak === Behandlingsårsak.G_OMREGNING ||
+        behandling.behandlingsårsak === Behandlingsårsak.SATSENDRING
+    ) {
+        return sider.filter((side) =>
+            filtrerHvisGOmregningEllerSatsendring.includes(side.navn as SideNavn)
+        );
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
         return sider.filter(
