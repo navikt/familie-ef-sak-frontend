@@ -115,6 +115,11 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 return skalViseValgmulighetForKorrigering;
             case Behandlingsårsak.G_OMREGNING:
                 return fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+            case Behandlingsårsak.SATSENDRING:
+                return (
+                    toggles[ToggleName.visSatsendring] &&
+                    fagsak.stønadstype === Stønadstype.BARNETILSYN
+                );
             default:
                 return true;
         }
