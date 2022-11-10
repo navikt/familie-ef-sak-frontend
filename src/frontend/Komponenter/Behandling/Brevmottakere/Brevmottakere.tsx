@@ -12,33 +12,26 @@ const Brevmottakere: React.FC<{
     kallSettBrevmottakere: (
         brevmottakere: IBrevmottakere
     ) => Promise<RessursSuksess<string> | RessursFeilet>;
-    kallHentBrevmottakere: () => Promise<
-        RessursSuksess<IBrevmottakere | undefined> | RessursFeilet
-    >;
     kanEndreBrevmottakere?: boolean;
-}> = ({
-    personopplysninger,
-    mottakere,
-    kallSettBrevmottakere,
-    kallHentBrevmottakere,
-    kanEndreBrevmottakere = true,
-}) => {
+}> = ({ personopplysninger, mottakere, kallSettBrevmottakere, kanEndreBrevmottakere = true }) => {
     const [visBrevmottakereModal, settVisBrevmottakereModal] = useState(false);
 
+    const brevMottakere = mottakereEllerBruker(personopplysninger, mottakere);
     return (
         <>
             <BrevMottakereListe
-                mottakere={mottakereEllerBruker(personopplysninger, mottakere)}
+                mottakere={brevMottakere}
                 kanEndreBrevmottakere={kanEndreBrevmottakere}
                 settVisBrevmottakereModal={settVisBrevmottakereModal}
             />
-            <BrevmottakereModal
-                personopplysninger={personopplysninger}
-                kallSettBrevmottakere={kallSettBrevmottakere}
-                kallHentBrevmottakere={kallHentBrevmottakere}
-                visBrevmottakereModal={visBrevmottakereModal}
-                settVisBrevmottakereModal={settVisBrevmottakereModal}
-            />
+            {visBrevmottakereModal && (
+                <BrevmottakereModal
+                    personopplysninger={personopplysninger}
+                    mottakere={brevMottakere}
+                    kallSettBrevmottakere={kallSettBrevmottakere}
+                    settVisBrevmottakereModal={settVisBrevmottakereModal}
+                />
+            )}
         </>
     );
 };

@@ -163,10 +163,6 @@ const FrittståendeBrev: React.FC<Props> = ({
         return Promise.resolve(byggSuksessRessurs('ok'));
     };
 
-    const hentBrevmottakere = () => {
-        return Promise.resolve(byggSuksessRessurs(brevmottakere));
-    };
-
     const genererBrev = () => {
         if (!brevType) return;
 
@@ -246,7 +242,6 @@ const FrittståendeBrev: React.FC<Props> = ({
                 personopplysninger={personopplysninger}
                 mottakere={brevmottakere}
                 kallSettBrevmottakere={oppdaterBrevmottakere}
-                kallHentBrevmottakere={hentBrevmottakere}
             />
             <BrevInnhold
                 brevType={brevType}

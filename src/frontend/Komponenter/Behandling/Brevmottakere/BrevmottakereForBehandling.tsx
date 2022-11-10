@@ -2,7 +2,14 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useApp } from '../../../App/context/AppContext';
 import { IBrevmottakere } from './typer';
-import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
+import {
+    byggSuksessRessurs,
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
 import { useBehandling } from '../../../App/context/BehandlingContext';
@@ -12,7 +19,7 @@ export const BrevmottakereForBehandling: FC<{
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
 }> = ({ personopplysninger, behandlingId }) => {
-    const { axiosRequest, toast } = useApp();
+    const { axiosRequest } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
 
     const [mottakere, settMottakere] = useState<Ressurs<IBrevmottakere | undefined>>(
@@ -24,6 +31,11 @@ export const BrevmottakereForBehandling: FC<{
             url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
             method: 'POST',
             data: brevmottakere,
+        }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                settMottakere(byggSuksessRessurs(brevmottakere));
+            }
+            return res;
         });
 
     const hentBrevmottakere = useCallback(() => {
@@ -41,8 +53,7 @@ export const BrevmottakereForBehandling: FC<{
 
     useEffect(() => {
         hentBrevmottakere();
-        // toast brukes for å oppdatere brevmottakere fra hamburgermeny, kan fjernes når man fjernet sette mottakere fra hamburger
-    }, [hentBrevmottakere, toast]);
+    }, [hentBrevmottakere]);
 
     return (
         <DataViewer response={{ mottakere }}>
@@ -51,8 +62,7 @@ export const BrevmottakereForBehandling: FC<{
                     personopplysninger={personopplysninger}
                     mottakere={mottakere}
                     kallSettBrevmottakere={settBrevmottakere}
-                    kallHentBrevmottakere={hentBrevmottakere}
-                    kanEndreBrevmottakere={!behandlingErRedigerbar}
+                    kanEndreBrevmottakere={behandlingErRedigerbar}
                 />
             )}
         </DataViewer>
