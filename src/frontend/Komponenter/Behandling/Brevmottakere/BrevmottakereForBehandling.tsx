@@ -2,13 +2,11 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useApp } from '../../../App/context/AppContext';
 import { IBrevmottakere } from './typer';
-import { BrevmottakereModal } from './BrevmottakereModal';
-import BrevMottakere from '../Brev/BrevMottakere';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
-import { mottakereEllerBruker } from './brevmottakerUtils';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import Brevmottakere from './Brevmottakere';
 
 export const BrevmottakereForBehandling: FC<{
     behandlingId: string;
@@ -49,17 +47,13 @@ export const BrevmottakereForBehandling: FC<{
     return (
         <DataViewer response={{ mottakere }}>
             {({ mottakere }) => (
-                <>
-                    <BrevMottakere
-                        mottakere={mottakereEllerBruker(personopplysninger, mottakere)}
-                        lesemodus={behandlingErRedigerbar}
-                    />
-                    <BrevmottakereModal
-                        personopplysninger={personopplysninger}
-                        kallSettBrevmottakere={settBrevmottakere}
-                        kallHentBrevmottakere={hentBrevmottakere}
-                    />
-                </>
+                <Brevmottakere
+                    personopplysninger={personopplysninger}
+                    mottakere={mottakere}
+                    kallSettBrevmottakere={settBrevmottakere}
+                    kallHentBrevmottakere={hentBrevmottakere}
+                    kanEndreBrevmottakere={!behandlingErRedigerbar}
+                />
             )}
         </DataViewer>
     );

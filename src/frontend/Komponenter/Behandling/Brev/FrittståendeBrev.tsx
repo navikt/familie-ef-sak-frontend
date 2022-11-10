@@ -28,16 +28,15 @@ import {
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Alert, Heading } from '@navikt/ds-react';
-import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { EToast } from '../../../App/typer/toast';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import BrevMottakere from './BrevMottakere';
 import {
     brevmottakereMedBruker,
     brevmottakereValgt,
     mottakereEllerBruker,
 } from '../Brevmottakere/brevmottakerUtils';
+import Brevmottakere from '../Brevmottakere/Brevmottakere';
 
 const StyledBrev = styled.div`
     margin-bottom: 10rem;
@@ -243,7 +242,12 @@ const FrittståendeBrev: React.FC<Props> = ({
             <SideTittel level={'1'} size={'large'}>
                 Brev
             </SideTittel>
-            <BrevMottakere mottakere={brevmottakere} />
+            <Brevmottakere
+                personopplysninger={personopplysninger}
+                mottakere={brevmottakere}
+                kallSettBrevmottakere={oppdaterBrevmottakere}
+                kallHentBrevmottakere={hentBrevmottakere}
+            />
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}
@@ -299,11 +303,6 @@ const FrittståendeBrev: React.FC<Props> = ({
             >
                 Er du sikker på at du vil nullstille brevet? Du vil miste alle lagrede opplysninger
             </ModalWrapper>
-            <BrevmottakereModal
-                personopplysninger={personopplysninger}
-                kallSettBrevmottakere={oppdaterBrevmottakere}
-                kallHentBrevmottakere={hentBrevmottakere}
-            />
         </StyledBrev>
     );
 };

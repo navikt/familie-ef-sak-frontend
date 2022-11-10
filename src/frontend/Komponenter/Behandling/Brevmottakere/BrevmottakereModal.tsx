@@ -54,8 +54,15 @@ export const BrevmottakereModal: FC<{
     kallHentBrevmottakere: () => Promise<
         RessursSuksess<IBrevmottakere | undefined> | RessursFeilet
     >;
-}> = ({ personopplysninger, kallSettBrevmottakere, kallHentBrevmottakere }) => {
-    const { visBrevmottakereModal, settVisBrevmottakereModal } = useApp();
+    visBrevmottakereModal: boolean;
+    settVisBrevmottakereModal: (verdi: boolean) => void;
+}> = ({
+    personopplysninger,
+    kallSettBrevmottakere,
+    kallHentBrevmottakere,
+    visBrevmottakereModal,
+    settVisBrevmottakereModal,
+}) => {
     const initielleBrevmottakere = useMemo(
         () => [
             {
