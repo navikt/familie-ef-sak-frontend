@@ -24,6 +24,13 @@
       "eslint --fix --max-warnings=0"
     ]
   },
+  "dependencyComments": {
+    "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",
+    "request-promise": "Overrider versjon som kommer fra familie-frontend-backend",
+    "body-parser": "Overrider versjon som  kommer fra familie-frontend backend",
+    "react-collapse": "Trengs for datovelgeren, overrider versjonen som ligger der"
+
+  },
   "dependencies": {
     "@navikt/ds-css": "^1.5.4",
     "@navikt/ds-icons": "^1.5.4",
