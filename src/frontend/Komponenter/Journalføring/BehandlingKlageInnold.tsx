@@ -123,6 +123,7 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                                             <Checkbox
                                                 onChange={håndterCheck('ny')}
                                                 checked={harValgtNyBehandling}
+                                                hideLabel={true}
                                             >
                                                 Ny
                                             </Checkbox>
