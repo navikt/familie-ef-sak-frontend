@@ -7,7 +7,6 @@ import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     JournalføringStateRequest,
     useJournalføringState,
@@ -22,7 +21,7 @@ import {
 } from '../Oppgavebenk/oppgavefilterStorage';
 import BehandlingInnold from './Behandling';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
-import { BodyLong, Button } from '@navikt/ds-react';
+import { BodyLong, Button, Fieldset } from '@navikt/ds-react';
 import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import VelgUstrukturertDokumentasjonType, {
@@ -255,7 +254,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                         settDokumentTitler={journalpostState.settDokumentTitler}
                         erPapirsøknad={erPapirsøknad}
                     />
-                    <SkjemaGruppe feil={feilmelding}>
+                    <Fieldset error={feilmelding} hideLegend legend={'Behandlingsvalg'}>
                         <BehandlingInnold
                             settBehandling={journalpostState.settBehandling}
                             behandling={journalpostState.behandling}
@@ -278,7 +277,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                     }
                                 />
                             )}
-                    </SkjemaGruppe>
+                    </Fieldset>
                     {(journalpostState.innsending.status === RessursStatus.FEILET ||
                         journalpostState.innsending.status === RessursStatus.FUNKSJONELL_FEIL) && (
                         <AlertError>{journalpostState.innsending.frontendFeilmelding}</AlertError>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Input, Select } from 'nav-frontend-skjema';
 import { oppgaveTypeTilTekst } from './typer/oppgavetema';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
@@ -20,7 +19,7 @@ import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
 import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/roller';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
-import { Alert, Button } from '@navikt/ds-react';
+import { Alert, Button, Select, TextField } from '@navikt/ds-react';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -29,7 +28,6 @@ export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
 
     .flex-item {
         padding-right: 1.5rem;
-        padding-bottom: 1.5rem;
     }
 `;
 
@@ -41,6 +39,7 @@ export const KnappWrapper = styled.div`
     .flex-item {
         margin-right: 1.5rem;
     }
+    margin-top: 1.5rem;
 `;
 
 const AlertStripe = styled(Alert)`
@@ -258,7 +257,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     )}
                 </Select>
 
-                <Input
+                <TextField
                     value={oppgaveRequest.ident || ''}
                     label="Personident"
                     inputMode="numeric"

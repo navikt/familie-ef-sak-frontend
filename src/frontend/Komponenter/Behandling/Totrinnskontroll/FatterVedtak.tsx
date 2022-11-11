@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import * as React from 'react';
 import { FormEvent, useState } from 'react';
-import { Radio, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { BorderBox } from './Totrinnskontroll';
@@ -10,6 +9,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EToast } from '../../../App/typer/toast';
+import { Radio, Textarea } from '@navikt/ds-react';
 
 const RadioButtonWrapper = styled.div`
     display: block;
@@ -95,23 +95,27 @@ const FatterVedtak: React.FC<{
                 </Normaltekst>
                 <RadioButtonWrapper>
                     <RadioMedPadding
+                        value={true}
                         checked={godkjent === true}
-                        label="Godkjenn"
                         name="minRadioKnapp"
                         onChange={() => {
                             settGodkjent(true);
                             settBegrunnelse(undefined);
                         }}
-                    />
+                    >
+                        Godkjenn
+                    </RadioMedPadding>
                     <RadioMedPadding
                         checked={godkjent === false}
-                        label="Underkjenn"
+                        value={false}
                         name="minRadioKnapp"
                         onChange={() => {
                             settGodkjent(false);
                             settBegrunnelse(undefined);
                         }}
-                    />
+                    >
+                        Underkjenn
+                    </RadioMedPadding>
                 </RadioButtonWrapper>
                 {godkjent === false && (
                     <Textarea
@@ -120,6 +124,8 @@ const FatterVedtak: React.FC<{
                         onChange={(e) => {
                             settBegrunnelse(e.target.value);
                         }}
+                        label={'Begrunnelse'}
+                        hideLabel
                     />
                 )}
                 {erUtfylt && (

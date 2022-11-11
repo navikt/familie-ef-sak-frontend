@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { Textarea as TextareaNav } from 'nav-frontend-skjema';
 import { BegrunnelseRegel, Regel } from './typer';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
 import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
+import { Textarea as TextareaNav } from '@navikt/ds-react';
 
-// @ts-ignore klager på typefeil fra nav-frontend-skjema som vi ikke får fikset
 const Textarea = hiddenIf(TextareaNav);
 
 interface Props {

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Radio } from 'nav-frontend-skjema';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Søknad from '../../../Felles/Ikoner/Søknad';
 import IkonKnapp from '../../../Felles/Knapper/IkonKnapp';
@@ -12,6 +10,7 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import navFarger from 'nav-frontend-core';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -83,7 +82,14 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
 
     return (
         <>
-            <FamilieRadioGruppe erLesevisning={false} legend={<h2>Tilbakekreving</h2>}>
+            <RadioGroup
+                value={tilbakekrevingsvalg}
+                onChange={(tilbakekrevingsvalg: ITilbakekrevingsvalg) => {
+                    settIkkePersistertKomponent('tilbakekreving');
+                    endreTilbakekrevingsvalg(tilbakekrevingsvalg);
+                }}
+                legend={<h2>Tilbakekreving</h2>}
+            >
                 <EnsligTextArea
                     label={'Begrunnelse (internt notat)'}
                     erLesevisning={false}
@@ -94,16 +100,9 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         endreBegrunnelse(e.target.value);
                     }}
                 />
-                <Radio
-                    checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
-                    label="Opprett tilbakekreving, send varsel"
-                    name="tilbakekrevingRadio"
-                    onChange={() => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        endreTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_MED_VARSEL);
-                    }}
-                    feil={!!valideringsfeil}
-                />
+                <Radio value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL} name="tilbakekrevingRadio">
+                    Opprett tilbakekreving, send varsel
+                </Radio>
                 {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
                     <VarselValg>
                         <EnsligTextArea
@@ -128,27 +127,13 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         {forhåndsvisningsFeil && <AlertError>{forhåndsvisningsFeil}</AlertError>}
                     </VarselValg>
                 )}
-                <Radio
-                    checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL}
-                    label="Opprett tilbakekreving, ikke send varsel"
-                    name="tilbakekrevingRadio"
-                    onChange={() => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        endreTilbakekrevingsvalg(ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL);
-                    }}
-                    feil={!!valideringsfeil}
-                />
-                <Radio
-                    checked={tilbakekrevingsvalg === ITilbakekrevingsvalg.AVVENT}
-                    label="Avvent"
-                    name="tilbakekrevingRadio"
-                    onChange={() => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        endreTilbakekrevingsvalg(ITilbakekrevingsvalg.AVVENT);
-                    }}
-                    feil={!!valideringsfeil}
-                />
-            </FamilieRadioGruppe>
+                <Radio value={ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL} name="tilbakekrevingRadio">
+                    Opprett tilbakekreving, ikke send varsel
+                </Radio>
+                <Radio value={ITilbakekrevingsvalg.AVVENT} name="tilbakekrevingRadio">
+                    Avvent
+                </Radio>
+            </RadioGroup>
             {valideringsfeil && <ErrorTekst>{valideringsfeil}</ErrorTekst>}
             <Hovedknapp htmlType={'submit'} onClick={lagreTilbakekrevingsValg} disabled={låsKnapp}>
                 Lagre tilbakekrevingsvalg

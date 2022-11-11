@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Select } from 'nav-frontend-skjema';
+import { Select } from '@navikt/ds-react';
 
 interface Props<U extends string> {
     value?: string | number;

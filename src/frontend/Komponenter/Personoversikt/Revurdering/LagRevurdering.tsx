@@ -23,12 +23,11 @@ import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { useApp } from '../../../App/context/AppContext';
 import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn';
-import { Select } from 'nav-frontend-skjema';
 import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { erGyldigDato } from '../../../App/utils/dato';
-import { Alert, Button } from '@navikt/ds-react';
+import { Alert, Button, Select } from '@navikt/ds-react';
 
 const DatoContainer = styled.div`
     margin-top: 2rem;
