@@ -13,16 +13,21 @@ import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBeh
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
     padding: 2rem 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 5rem;
+    display: flex;
+    flex-flow: wrap;
+    gap: 3rem;
     justify-content: center;
+`;
 
-    @media only screen and (max-width: 1250px) {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 3rem;
-    }
+const VenstreKolonne = styled.div`
+    flex-basis: 450px;
+    flex-shrink: 1;
+    flex-grow: 1;
+`;
+
+const HøyreKolonne = styled.div`
+    flex-shrink: 0;
+    flex-grow: 1;
 `;
 
 interface Props {
@@ -77,7 +82,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
             <StyledBrev>
                 <DataViewer response={{ personopplysningerResponse, behandling }}>
                     {({ personopplysningerResponse, behandling }) => (
-                        <div>
+                        <VenstreKolonne>
                             <BrevmottakereForBehandling
                                 behandlingId={behandling.id}
                                 personopplysninger={personopplysningerResponse}
@@ -91,10 +96,12 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                     behandling={behandling}
                                 />
                             )}
-                        </div>
+                        </VenstreKolonne>
                     )}
                 </DataViewer>
-                <PdfVisning pdfFilInnhold={brevRessurs} />
+                <HøyreKolonne>
+                    <PdfVisning pdfFilInnhold={brevRessurs} />
+                </HøyreKolonne>
             </StyledBrev>
             <SendTilBeslutterFooter
                 behandlingId={behandlingId}

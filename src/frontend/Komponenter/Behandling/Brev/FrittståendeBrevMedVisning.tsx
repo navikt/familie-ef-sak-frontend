@@ -18,9 +18,18 @@ const BrevMedVisning = styled.div`
     width: 100%;
     padding-left: 2rem;
     padding-right: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
+    display: flex;
+    column-gap: 4rem;
+    flex-flow: wrap;
+`;
+
+const VenstreKolonne = styled.div`
+    width: 48rem;
+`;
+
+const HøyreKolonne = styled.div`
+    flex-shrink: 0;
+    flex-grow: 1;
 `;
 
 const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysninger }: Props) => {
@@ -40,15 +49,19 @@ const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysni
         <BrevMedVisning>
             <DataViewer response={{ mellomlagretFrittståendeBrev }}>
                 {({ mellomlagretFrittståendeBrev }) => (
-                    <FrittståendeBrev
-                        oppdaterBrevressurs={oppdaterBrevressurs}
-                        fagsakId={fagsakId}
-                        mellomlagretFrittståendeBrev={mellomlagretFrittståendeBrev}
-                        personopplysninger={personopplysninger}
-                    />
+                    <VenstreKolonne>
+                        <FrittståendeBrev
+                            oppdaterBrevressurs={oppdaterBrevressurs}
+                            fagsakId={fagsakId}
+                            mellomlagretFrittståendeBrev={mellomlagretFrittståendeBrev}
+                            personopplysninger={personopplysninger}
+                        />
+                    </VenstreKolonne>
                 )}
             </DataViewer>
-            <PdfVisning pdfFilInnhold={brevRessurs} />
+            <HøyreKolonne>
+                <PdfVisning pdfFilInnhold={brevRessurs} />
+            </HøyreKolonne>
         </BrevMedVisning>
     );
 };
