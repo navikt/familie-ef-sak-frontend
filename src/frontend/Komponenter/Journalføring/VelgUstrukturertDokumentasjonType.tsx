@@ -8,7 +8,7 @@ import { AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
 import { Select } from '@navikt/ds-react';
 
 const VelgUstrukturertDokumentasjonTypeSelect = styled(Select)`
-    width: 10rem;
+    width: 14rem;
     margin: 1rem 0;
 `;
 
