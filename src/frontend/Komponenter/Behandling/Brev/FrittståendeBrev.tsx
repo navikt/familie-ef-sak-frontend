@@ -40,8 +40,7 @@ import {
 } from '../Brevmottakere/brevmottakerUtils';
 
 const StyledBrev = styled.div`
-    margin-bottom: 10rem;
-    width: 48rem;
+    margin-bottom: 5rem;
 `;
 
 const StyledHovedKnapp = styled(Hovedknapp)`

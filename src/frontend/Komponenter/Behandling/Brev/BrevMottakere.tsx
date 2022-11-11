@@ -5,13 +5,13 @@ import { Alert, BodyShort, Button, Label, Tooltip } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 const Grid = styled.div`
-    display: grid;
-    grid-template-columns: 9rem 23rem 16rem;
+    display: flex;
+    gap: 2rem;
 `;
 
 const InfoHeader = styled.div`
-    display: grid;
-    grid-template-columns: 29rem 14rem;
+    display: flex;
+    gap: 1rem;
 `;
 
 const KompaktButton = styled(Button)`
