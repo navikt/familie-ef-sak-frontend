@@ -2,7 +2,7 @@ import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
-import LeggTilKnapp, { KnappMedLuftUnder } from '../../../Felles/Knapper/LeggTilKnapp';
+import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import {
     AvsnittMedId,
     BrevtyperTilAvsnitt,
@@ -18,7 +18,7 @@ import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Panel, Select, Textarea, TextField } from '@navikt/ds-react';
+import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -213,9 +213,12 @@ const BrevInnhold: React.FC<Props> = ({
                             />
                         )}
                         {settVisNullstillBrevModal && (
-                            <KnappMedLuftUnder onClick={() => settVisNullstillBrevModal(true)}>
+                            <Button
+                                variant={'tertiary'}
+                                onClick={() => settVisNullstillBrevModal(true)}
+                            >
                                 Nullstill brev
-                            </KnappMedLuftUnder>
+                            </Button>
                         )}
                     </LeggTilKnappWrapper>
                 </>

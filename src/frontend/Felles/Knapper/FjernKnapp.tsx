@@ -1,24 +1,29 @@
 import { Delete } from '@navikt/ds-icons';
 import React from 'react';
-import { Flatknapp } from 'nav-frontend-knapper';
 import hiddenIf from '../HiddenIf/hiddenIf';
+import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
 
-const StyledKnapp = styled(Flatknapp)`
-    padding: 0;
-    margin-bottom: 0.25rem;
-    height: 2rem;
+const KnappMedLuftUnder = styled(Button)`
+    margin-bottom: 0.5rem;
 `;
-
 const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     onClick,
     knappetekst,
 }) => {
     return (
-        <StyledKnapp onClick={onClick} htmlType="button">
-            <Delete />
-            <span className="sr-only">{knappetekst}</span>
-        </StyledKnapp>
+        <KnappMedLuftUnder
+            onClick={onClick}
+            type="button"
+            variant={'tertiary'}
+            icon={
+                <Delete>
+                    <span className="sr-only" hidden>
+                        {knappetekst}
+                    </span>
+                </Delete>
+            }
+        />
     );
 };
 
