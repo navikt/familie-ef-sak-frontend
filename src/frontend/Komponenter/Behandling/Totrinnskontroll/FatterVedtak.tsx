@@ -9,7 +9,7 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EToast } from '../../../App/typer/toast';
-import { Radio, Textarea } from '@navikt/ds-react';
+import { Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 
 const RadioButtonWrapper = styled.div`
     display: block;
@@ -42,17 +42,25 @@ interface TotrinnskontrollForm {
     begrunnelse?: string;
 }
 
+enum Totrinnsresultat {
+    IKKE_VALGT = 'IKKE_VALGT',
+    GODKJENT = 'GODKJENT',
+    UNDERKJENT = 'UNDERKJENT',
+}
+
 const FatterVedtak: React.FC<{
     behandlingId: string;
     settVisGodkjentModal: (vis: boolean) => void;
 }> = ({ behandlingId, settVisGodkjentModal }) => {
-    const [godkjent, settGodkjent] = useState<boolean>();
+    const [godkjent, settGodkjent] = useState<Totrinnsresultat>(Totrinnsresultat.IKKE_VALGT);
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
     const { axiosRequest, settToast, gåTilUrl } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
-    const erUtfylt = godkjent === true || (godkjent === false && (begrunnelse || '').length > 0);
+    const erUtfylt =
+        godkjent === Totrinnsresultat.GODKJENT ||
+        (godkjent === Totrinnsresultat.UNDERKJENT && (begrunnelse || '').length > 0);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -65,7 +73,7 @@ const FatterVedtak: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
             data: {
-                godkjent: !!godkjent,
+                godkjent: godkjent === Totrinnsresultat.GODKJENT ? true : false,
                 begrunnelse,
             },
         })
@@ -94,30 +102,30 @@ const FatterVedtak: React.FC<{
                     Kontroller opplysninger og faglige vurderinger gjort under behandlingen
                 </Normaltekst>
                 <RadioButtonWrapper>
-                    <RadioMedPadding
-                        value={'Godkjent'}
-                        checked={godkjent === true}
-                        name="minRadioKnapp"
-                        onChange={() => {
-                            settGodkjent(true);
-                            settBegrunnelse(undefined);
-                        }}
-                    >
-                        Godkjenn
-                    </RadioMedPadding>
-                    <RadioMedPadding
-                        checked={godkjent === false}
-                        value={'Underkjent'}
-                        name="minRadioKnapp"
-                        onChange={() => {
-                            settGodkjent(false);
-                            settBegrunnelse(undefined);
-                        }}
-                    >
-                        Underkjenn
-                    </RadioMedPadding>
+                    <RadioGroup legend={'Beslutt vedtak'} value={godkjent} hideLegend>
+                        <RadioMedPadding
+                            value={Totrinnsresultat.GODKJENT}
+                            name="minRadioKnapp"
+                            onChange={() => {
+                                settGodkjent(Totrinnsresultat.GODKJENT);
+                                settBegrunnelse(undefined);
+                            }}
+                        >
+                            Godkjenn
+                        </RadioMedPadding>
+                        <RadioMedPadding
+                            value={Totrinnsresultat.UNDERKJENT}
+                            name="minRadioKnapp"
+                            onChange={() => {
+                                settGodkjent(Totrinnsresultat.UNDERKJENT);
+                                settBegrunnelse(undefined);
+                            }}
+                        >
+                            Underkjenn
+                        </RadioMedPadding>
+                    </RadioGroup>
                 </RadioButtonWrapper>
-                {godkjent === false && (
+                {godkjent === Totrinnsresultat.UNDERKJENT && (
                     <Textarea
                         value={begrunnelse || ''}
                         maxLength={0}
