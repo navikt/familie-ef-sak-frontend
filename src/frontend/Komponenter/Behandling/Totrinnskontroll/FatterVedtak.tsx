@@ -95,7 +95,7 @@ const FatterVedtak: React.FC<{
                 </Normaltekst>
                 <RadioButtonWrapper>
                     <RadioMedPadding
-                        value={true}
+                        value={'Godkjent'}
                         checked={godkjent === true}
                         name="minRadioKnapp"
                         onChange={() => {
@@ -107,7 +107,7 @@ const FatterVedtak: React.FC<{
                     </RadioMedPadding>
                     <RadioMedPadding
                         checked={godkjent === false}
-                        value={false}
+                        value={'Underkjent'}
                         name="minRadioKnapp"
                         onChange={() => {
                             settGodkjent(false);
