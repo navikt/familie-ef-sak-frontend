@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { FnrInput, Select } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { Select, TextField } from '@navikt/ds-react';
+import { fnr } from '@navikt/fnrvalidator';
 
-const StyledFnrInput = styled(FnrInput)`
+const StyledFnrInput = styled(TextField)`
     width: 150px;
     margin: 0.5rem 0;
 `;
@@ -58,11 +59,14 @@ export const OpprettDummyBehandling: React.FC = () => {
         <StyledOpprettDummyBehandling>
             <StyledFnrInput
                 label={'[Test] Opprett dummy-behandling'}
-                onValidate={(erGyldig) =>
-                    settFeilmelding(!erGyldig ? 'Ugyldig fødselsnummer' : undefined)
-                }
                 value={personIdent}
-                onChange={(e) => settPersonIdent(e.target.value)}
+                onChange={(e) => {
+                    const verdi = e.target.value;
+                    settPersonIdent(verdi);
+                    settFeilmelding(
+                        fnr(verdi).status === 'invalid' ? 'Ugyldig fødselsnummer' : undefined
+                    );
+                }}
             />
 
             <Select

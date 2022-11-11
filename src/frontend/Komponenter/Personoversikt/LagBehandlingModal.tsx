@@ -1,7 +1,6 @@
 import React, { Dispatch, useState } from 'react';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import styled from 'styled-components';
-import { Select } from 'nav-frontend-skjema';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +12,7 @@ import OpprettKlage from './Klage/OpprettKlage';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
-import { Alert, Button } from '@navikt/ds-react';
+import { Alert, Button, Select } from '@navikt/ds-react';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
 
 export const StyledSelect = styled(Select)`

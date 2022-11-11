@@ -6,7 +6,6 @@ import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst, Stønadstype } from '../../App/typer/behandlingstema';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { useHentDokument } from '../../App/hooks/useHentDokument';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -44,6 +43,7 @@ import { erGyldigDato } from '../../App/utils/dato';
 import styled from 'styled-components';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 import KlageInfotrygdInfo from '../Personoversikt/Klage/KlageInfotrygdInfo';
+import { Fieldset } from '@navikt/ds-react';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;
@@ -172,7 +172,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                         settDokumentTitler={journalpostState.settDokumentTitler}
                         erPapirsøknad={!journalResponse.harStrukturertSøknad}
                     />
-                    <SkjemaGruppe feil={feilmelding}>
+                    <Fieldset error={feilmelding} legend={'Klagevalg'} hideLegend>
                         <BehandlingKlageInnold
                             settBehandling={journalpostState.settBehandling}
                             behandling={journalpostState.behandling}
@@ -196,7 +196,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                 />
                             </KlageMottatt>
                         )}
-                    </SkjemaGruppe>
+                    </Fieldset>
                     {(journalpostState.innsending.status === RessursStatus.FEILET ||
                         journalpostState.innsending.status === RessursStatus.FUNKSJONELL_FEIL) && (
                         <AlertError>{journalpostState.innsending.frontendFeilmelding}</AlertError>
