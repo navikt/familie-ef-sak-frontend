@@ -38,7 +38,7 @@ const StyledInput = styled(InputMedTusenSkille)`
     text-align: left;
 `;
 
-const NavnContainer = styled.div`
+const ContainerMedLuftUnder = styled.div`
     margin-bottom: 1rem;
 `;
 
@@ -187,13 +187,13 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 }}
                             />
                         ) : (
-                            <NavnContainer>
+                            <ContainerMedLuftUnder>
                                 {barnForPeriode
                                     .filter((barn) => utgiftsperiode.barn.includes(barn.value))
                                     .map((barn) => (
                                         <Normaltekst>{barn.label}</Normaltekst>
                                     ))}
-                            </NavnContainer>
+                            </ContainerMedLuftUnder>
                         )}
                         <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
                             utgiftsperioder.value[index].barn
@@ -235,29 +235,33 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             )}
                         </CheckboxContainer>
                         {skalViseFjernKnapp && (
-                            <FjernKnapp
-                                onClick={() => {
-                                    utgiftsperioder.remove(index);
-                                    settValideringsFeil(
-                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const perioder = (
-                                                prevState.utgiftsperioder ?? []
-                                            ).filter((_, i) => i !== index);
-                                            return { ...prevState, perioder };
-                                        }
-                                    );
-                                }}
-                                knappetekst="Fjern vedtaksperiode"
-                            />
+                            <div>
+                                <FjernKnapp
+                                    onClick={() => {
+                                        utgiftsperioder.remove(index);
+                                        settValideringsFeil(
+                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                const perioder = (
+                                                    prevState.utgiftsperioder ?? []
+                                                ).filter((_, i) => i !== index);
+                                                return { ...prevState, perioder };
+                                            }
+                                        );
+                                    }}
+                                    knappetekst="Fjern vedtaksperiode"
+                                />
+                            </div>
                         )}
                     </UtgiftsperiodeRad>
                 );
             })}
-            <LeggTilKnapp
-                onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
-                knappetekst="Legg til vedtaksperiode"
-                hidden={!behandlingErRedigerbar}
-            />
+            <ContainerMedLuftUnder>
+                <LeggTilKnapp
+                    onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
+                    knappetekst="Legg til vedtaksperiode"
+                    hidden={!behandlingErRedigerbar}
+                />
+            </ContainerMedLuftUnder>
         </>
     );
 };

@@ -26,6 +26,10 @@ const Utgiftsrad = styled.div<{
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
 `;
 
+const ContainerMedLuftUnder = styled.div`
+    margin-bottom: 1rem;
+`;
+
 const StyledInputMedTusenSkille = styled(InputMedTusenSkille)`
     text-align: left;
 `;
@@ -135,20 +139,24 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     disabled={erLåstFraForrigeBehandling}
                                 />
                                 {skalViseFjernKnapp && (
-                                    <FjernKnapp
-                                        onClick={() => fjernUtgift(utgift.id)}
-                                        knappetekst="Fjern vedtaksperiode"
-                                    />
+                                    <div style={{ alignItems: 'baseline' }}>
+                                        <FjernKnapp
+                                            onClick={() => fjernUtgift(utgift.id)}
+                                            knappetekst="Fjern vedtaksperiode"
+                                        />
+                                    </div>
                                 )}
                             </Utgiftsrad>
                         );
                     })}
                 </FlexColumn>
-                <LeggTilKnapp
-                    onClick={() => oppdater([...data, tomUtgift()])}
-                    knappetekst="Legg til utgift"
-                    hidden={!behandlingErRedigerbar}
-                />
+                <ContainerMedLuftUnder>
+                    <LeggTilKnapp
+                        onClick={() => oppdater([...data, tomUtgift()])}
+                        knappetekst="Legg til utgift"
+                        hidden={!behandlingErRedigerbar}
+                    />
+                </ContainerMedLuftUnder>
             </div>
         </FlexRow>
     );
