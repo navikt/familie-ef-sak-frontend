@@ -27,20 +27,18 @@ import {
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Alert, Button, Heading } from '@navikt/ds-react';
-import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { EToast } from '../../../App/typer/toast';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import BrevMottakere from './BrevMottakere';
 import {
     brevmottakereMedBruker,
     brevmottakereValgt,
     mottakereEllerBruker,
 } from '../Brevmottakere/brevmottakerUtils';
+import Brevmottakere from '../Brevmottakere/Brevmottakere';
 
 const StyledBrev = styled.div`
-    margin-bottom: 10rem;
-    width: 48rem;
+    margin-bottom: 5rem;
 `;
 
 const Knapp = styled(Button)`
@@ -165,10 +163,6 @@ const FrittståendeBrev: React.FC<Props> = ({
         return Promise.resolve(byggSuksessRessurs('ok'));
     };
 
-    const hentBrevmottakere = () => {
-        return Promise.resolve(byggSuksessRessurs(brevmottakere));
-    };
-
     const genererBrev = () => {
         if (!brevType) return;
 
@@ -244,7 +238,11 @@ const FrittståendeBrev: React.FC<Props> = ({
             <SideTittel level={'1'} size={'large'}>
                 Brev
             </SideTittel>
-            <BrevMottakere mottakere={brevmottakere} />
+            <Brevmottakere
+                personopplysninger={personopplysninger}
+                mottakere={brevmottakere}
+                kallSettBrevmottakere={oppdaterBrevmottakere}
+            />
             <BrevInnhold
                 brevType={brevType}
                 endreBrevType={endreBrevType}
@@ -300,11 +298,6 @@ const FrittståendeBrev: React.FC<Props> = ({
             >
                 Er du sikker på at du vil nullstille brevet? Du vil miste alle lagrede opplysninger
             </ModalWrapper>
-            <BrevmottakereModal
-                personopplysninger={personopplysninger}
-                kallSettBrevmottakere={oppdaterBrevmottakere}
-                kallHentBrevmottakere={hentBrevmottakere}
-            />
         </StyledBrev>
     );
 };

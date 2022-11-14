@@ -24,6 +24,7 @@ const Utgiftsrad = styled.div<{
     grid-gap: 0.5rem;
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
     text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
+    align-items: center;
 `;
 
 const FlexRow = styled.div`

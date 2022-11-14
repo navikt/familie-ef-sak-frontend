@@ -181,7 +181,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                 {alder && alder < 18 && (
                     <ElementWrapper>
                         <Tag variant={'warning'} size={'small'}>
-                            Under 18
+                            Under 18 år
                         </Tag>
                     </ElementWrapper>
                 )}

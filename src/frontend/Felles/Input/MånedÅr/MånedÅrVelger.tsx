@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import MånedVelger from './MånedVelger';
 import Årvelger from './ÅrVelger';
 import { useEffectNotInitialRender } from '../../../App/hooks/felles/useEffectNotInitialRender';
-import { ErrorMessage } from '@navikt/ds-react';
+import { EnsligErrorMessage } from '../../ErrorMessage/EnsligErrorMessage';
 
 interface Props {
     className?: string;
@@ -85,7 +85,7 @@ const MånedÅrVelger: React.FC<Props> = ({
                     disabled={disabled}
                 />
             </FlexDiv>
-            {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+            <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
         </div>
     );
 };

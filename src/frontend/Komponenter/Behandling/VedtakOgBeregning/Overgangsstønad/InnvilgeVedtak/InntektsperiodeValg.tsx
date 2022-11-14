@@ -19,9 +19,10 @@ import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
-import { ErrorMessage, Tooltip } from '@navikt/ds-react';
+import { Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
+import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -29,6 +30,7 @@ const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     grid-template-columns: ${(props) =>
         props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '13rem 12rem 12rem 12rem 3rem 3rem'};
     grid-gap: 1rem;
+    margin-bottom: 0.5rem;
 `;
 
 const TittelContainer = styled.div<{ lesevisning?: boolean }>`
@@ -188,23 +190,25 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     Uføretrygd
                                 </option>
                             </EnsligFamilieSelect>
-                            <ErrorMessage>{samordningValideringsfeil}</ErrorMessage>
+                            <EnsligErrorMessage>{samordningValideringsfeil}</EnsligErrorMessage>
                         </div>
                         {skalViseFjernKnapp ? (
-                            <FjernKnapp
-                                onClick={() => {
-                                    inntektsperiodeListe.remove(index);
-                                    setValideringsFeil(
-                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const inntekter = (prevState.inntekter ?? []).filter(
-                                                (_, i) => i !== index
-                                            );
-                                            return { ...prevState, inntekter: inntekter };
-                                        }
-                                    );
-                                }}
-                                knappetekst="Fjern inntektsperiode"
-                            />
+                            <KnappWrapper>
+                                <FjernKnapp
+                                    onClick={() => {
+                                        inntektsperiodeListe.remove(index);
+                                        setValideringsFeil(
+                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                const inntekter = (
+                                                    prevState.inntekter ?? []
+                                                ).filter((_, i) => i !== index);
+                                                return { ...prevState, inntekter: inntekter };
+                                            }
+                                        );
+                                    }}
+                                    knappetekst="Fjern inntektsperiode"
+                                />
+                            </KnappWrapper>
                         ) : (
                             <div />
                         )}

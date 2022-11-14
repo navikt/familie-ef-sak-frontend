@@ -41,7 +41,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { EnsligFamilieSelect } from '../../../Felles/Input/EnsligFamilieSelect';
 import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
-import { ErrorMessage } from '@navikt/ds-react';
+import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -207,7 +207,7 @@ const SanksjonsvedtakVisning: FC<{
                             </option>
                         ))}
                     </SanksjonVelger>
-                    <ErrorMessage>{formState.errors.sanksjonsårsak}</ErrorMessage>
+                    <EnsligErrorMessage>{formState.errors.sanksjonsårsak}</EnsligErrorMessage>
                 </section>
                 {sanksjonårsak.value && (
                     <>

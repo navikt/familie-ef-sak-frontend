@@ -14,7 +14,6 @@ import {
     IFagsakPerson,
     IFagsakPersonMedBehandlinger,
 } from '../../App/typer/fagsak';
-import { Select } from 'nav-frontend-skjema';
 import { compareDesc } from 'date-fns';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
@@ -23,7 +22,7 @@ import VedtaksperioderOvergangsstønad from './HistorikkVedtaksperioder/Vedtaksp
 import { IVedtakForSkolepenger } from '../../App/typer/vedtak';
 import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/VedtaksperioderSkolepeger';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
-import { Checkbox } from '@navikt/ds-react';
+import { Checkbox, Select } from '@navikt/ds-react';
 
 const StyledInputs = styled.div`
     display: flex;

@@ -26,10 +26,11 @@ export const håndterFeil = <T>(
 ): RessursSuksess<T> | RessursFeilet => {
     const headers = error.response?.headers;
     if (!error.response?.data.status) {
+        const requestId = error.config?.headers?.['x-request-id'];
         loggFeil(
             error,
             innloggetSaksbehandler,
-            `Savner body/status i response - Url: ${window.location.href} - Prøvde å kalle ${error.config.url} (${error.config.method})`,
+            `Savner body/status i response - Url: ${window.location.href} - Prøvde å kalle ${error.config?.url} (${error.config?.method}) requestId=${requestId}`,
             headers
         );
         return lagUkjentFeilRessurs(headers);

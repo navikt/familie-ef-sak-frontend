@@ -22,6 +22,9 @@ const Skoleårsperiode = styled.div`
     padding: 1rem;
     background-color: ${navFarger.navGraBakgrunn};
 `;
+const ContainerMedLuftUnder = styled.div`
+    margin-bottom: 1rem;
+`;
 
 interface Props {
     skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
@@ -115,20 +118,24 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                 låsteUtgiftIder={låsteUtgiftIder}
                             />
                             {skalViseFjernKnapp && (
-                                <FjernKnappMedTekst
-                                    onClick={() => fjernSkoleårsperiode(index)}
-                                    knappetekst="Fjern skoleår"
-                                />
+                                <div>
+                                    <FjernKnappMedTekst
+                                        onClick={() => fjernSkoleårsperiode(index)}
+                                        knappetekst="Fjern skoleår"
+                                    />
+                                </div>
                             )}
                         </Skoleårsperiode>
                     </>
                 );
             })}
-            <LeggTilKnapp
-                onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
-                knappetekst="Legg til skoleår"
-                hidden={!behandlingErRedigerbar}
-            />
+            <ContainerMedLuftUnder>
+                <LeggTilKnapp
+                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                    knappetekst="Legg til skoleår"
+                    hidden={!behandlingErRedigerbar}
+                />
+            </ContainerMedLuftUnder>
         </>
     );
 };
