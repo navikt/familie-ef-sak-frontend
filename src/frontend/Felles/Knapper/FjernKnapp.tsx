@@ -16,13 +16,7 @@ const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
             onClick={onClick}
             type="button"
             variant={'tertiary'}
-            icon={
-                <Delete>
-                    <span className="sr-only" hidden>
-                        {knappetekst}
-                    </span>
-                </Delete>
-            }
+            icon={<Delete title={knappetekst} />}
         />
     );
 };

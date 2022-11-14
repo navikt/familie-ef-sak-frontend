@@ -18,11 +18,7 @@ const TilbakestillKnapp: React.FC<{
             onClick={onClick}
             type="button"
             variant={visKnapptekst ? 'secondary' : 'tertiary'}
-            icon={
-                <Cancel>
-                    {!visKnapptekst && <span className={'sr-only'}>{knappetekst}</span>}
-                </Cancel>
-            }
+            icon={<Cancel title={knappetekst} />}
         >
             {visKnapptekst && <span>{knappetekst}</span>}
         </StyledKnapp>

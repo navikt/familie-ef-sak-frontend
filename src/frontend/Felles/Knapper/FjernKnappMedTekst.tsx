@@ -8,7 +8,12 @@ const FjernKnappMedTekst: React.FC<{ onClick: () => void; knappetekst: string }>
     knappetekst,
 }) => {
     return (
-        <Button onClick={onClick} type="button" variant={'secondary'} icon={<Delete />}>
+        <Button
+            onClick={onClick}
+            type="button"
+            variant={'secondary'}
+            icon={<Delete title={knappetekst} />}
+        >
             <span>{knappetekst}</span>
         </Button>
     );

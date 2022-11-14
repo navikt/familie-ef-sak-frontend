@@ -17,7 +17,7 @@ const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst?: string }> = ({
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
-            icon={<AddCircle />}
+            icon={<AddCircle title={knappetekst} />}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </KnappMedLuftUnder>
