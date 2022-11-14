@@ -28,7 +28,7 @@ export enum SideNavn {
     SANKSJON = 'Sanksjonsfastsettelse',
     TIDLIGEREVEDTAKSPERIODER = 'Tidligere vedtaksperioder',
     VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
-    ÅRSAK_REVURDERING = 'ÅRSAK_REVURDERING',
+    ÅRSAK_REVURDERING = 'Årsak revurdering',
 }
 
 const alleSider: ISide[] = [
