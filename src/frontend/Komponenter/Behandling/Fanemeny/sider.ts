@@ -11,6 +11,7 @@ import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import KorrigeringUtenBrev from './KorrigeringUtenBrev';
+import { ÅrsakRevurdering } from '../ÅrsakRevurdering/ÅrsakRevurdering';
 
 export interface ISide {
     href: string;
@@ -27,9 +28,15 @@ export enum SideNavn {
     SANKSJON = 'Sanksjonsfastsettelse',
     TIDLIGEREVEDTAKSPERIODER = 'Tidligere vedtaksperioder',
     VEDTAK_OG_BEREGNING = 'Vedtak og beregning',
+    ÅRSAK_REVURDERING = 'ÅRSAK_REVURDERING',
 }
 
 const alleSider: ISide[] = [
+    {
+        href: 'arsak-revurdering',
+        navn: SideNavn.ÅRSAK_REVURDERING,
+        komponent: ÅrsakRevurdering,
+    },
     {
         href: 'tidligere-vedtaksperioder',
         navn: SideNavn.TIDLIGEREVEDTAKSPERIODER,
