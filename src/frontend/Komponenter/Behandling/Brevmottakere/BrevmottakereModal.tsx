@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { VergerOgFullmektigeFraRegister } from './VergerOgFullmektigeFraRegister';
 import { SøkWrapper } from './SøkWrapper';
@@ -6,7 +6,7 @@ import { SkalBrukerHaBrev } from './SkalBrukerHaBrev';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { BrevmottakereListe } from './BrevmottakereListe';
-import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
+import { IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
 import { EToast } from '../../../App/typer/toast';
@@ -48,29 +48,18 @@ const VertikalLinje = styled.div`
 
 export const BrevmottakereModal: FC<{
     personopplysninger: IPersonopplysninger;
+    mottakere: IBrevmottakere;
     kallSettBrevmottakere: (
         brevmottakere: IBrevmottakere
     ) => Promise<RessursSuksess<string> | RessursFeilet>;
-    kallHentBrevmottakere: () => Promise<
-        RessursSuksess<IBrevmottakere | undefined> | RessursFeilet
-    >;
-}> = ({ personopplysninger, kallSettBrevmottakere, kallHentBrevmottakere }) => {
-    const { visBrevmottakereModal, settVisBrevmottakereModal } = useApp();
-    const initielleBrevmottakere = useMemo(
-        () => [
-            {
-                mottakerRolle: EBrevmottakerRolle.BRUKER,
-                personIdent: personopplysninger.personIdent,
-                navn: personopplysninger.navn.visningsnavn,
-            },
-        ],
-        [personopplysninger]
+    settVisBrevmottakereModal: (verdi: boolean) => void;
+}> = ({ personopplysninger, mottakere, kallSettBrevmottakere, settVisBrevmottakereModal }) => {
+    const [valgtePersonMottakere, settValgtePersonMottakere] = useState<IBrevmottaker[]>(
+        mottakere.personer
     );
-    const [valgtePersonMottakere, settValgtePersonMottakere] =
-        useState<IBrevmottaker[]>(initielleBrevmottakere);
     const [valgteOrganisasjonMottakere, settValgteOrganisasjonMottakere] = useState<
         IOrganisasjonMottaker[]
-    >([]);
+    >(mottakere.organisasjoner);
 
     const [feilmelding, settFeilmelding] = useState('');
     const [innsendingSuksess, settInnsendingSukksess] = useState(false);
@@ -92,37 +81,13 @@ export const BrevmottakereModal: FC<{
         });
     };
 
-    useEffect(() => {
-        const hentBrevmottakere = () => {
-            kallHentBrevmottakere().then(
-                (resp: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
-                    if (resp.status === RessursStatus.SUKSESS) {
-                        if (resp.data?.personer?.length || resp.data?.organisasjoner?.length) {
-                            settValgtePersonMottakere(resp.data.personer);
-                            settValgteOrganisasjonMottakere(resp.data.organisasjoner);
-                        } else {
-                            settValgtePersonMottakere(initielleBrevmottakere);
-                            settValgteOrganisasjonMottakere([]);
-                        }
-                    } else if (resp.status === RessursStatus.FEILET) {
-                        settFeilmelding(resp.frontendFeilmelding);
-                    }
-                }
-            );
-        };
-
-        if (visBrevmottakereModal) {
-            hentBrevmottakere();
-        }
-    }, [kallHentBrevmottakere, visBrevmottakereModal, initielleBrevmottakere]);
-
     const harValgtMottakere =
         valgtePersonMottakere.length > 0 || valgteOrganisasjonMottakere.length > 0;
 
     return (
         <ModalWrapper
             tittel={'Hvem skal motta brevet?'}
-            visModal={visBrevmottakereModal}
+            visModal={true}
             onClose={() => {
                 settVisBrevmottakereModal(false);
             }}

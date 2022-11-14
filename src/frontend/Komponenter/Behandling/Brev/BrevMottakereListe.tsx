@@ -1,6 +1,5 @@
 import React from 'react';
 import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
-import { useApp } from '../../../App/context/AppContext';
 import { Alert, BodyShort, Button, Label, Tooltip } from '@navikt/ds-react';
 import styled from 'styled-components';
 
@@ -23,11 +22,11 @@ const KompaktButton = styled(Button)`
     }
 `;
 
-const BrevMottakere: React.FC<{ mottakere: IBrevmottakere; lesemodus?: boolean }> = ({
-    mottakere,
-    lesemodus = true,
-}) => {
-    const { settVisBrevmottakereModal } = useApp();
+const BrevMottakereListe: React.FC<{
+    mottakere: IBrevmottakere;
+    kanEndreBrevmottakere: boolean;
+    settVisBrevmottakereModal: (verdi: boolean) => void;
+}> = ({ mottakere, kanEndreBrevmottakere, settVisBrevmottakereModal }) => {
     const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
         return [
             ...brevMottakere.personer.map(
@@ -49,7 +48,7 @@ const BrevMottakere: React.FC<{ mottakere: IBrevmottakere; lesemodus?: boolean }
         <Alert variant={'info'}>
             <InfoHeader>
                 <Label>Brevmottakere:</Label>
-                {lesemodus && (
+                {kanEndreBrevmottakere && (
                     <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
                         <KompaktButton
                             variant={'tertiary'}
@@ -72,7 +71,7 @@ const BrevMottakere: React.FC<{ mottakere: IBrevmottakere; lesemodus?: boolean }
         <Grid>
             <Label>Brevmottaker:</Label>
             <BodyShort>{navn.map((navn) => navn)}</BodyShort>
-            {lesemodus && (
+            {kanEndreBrevmottakere && (
                 <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
                     <KompaktButton
                         variant={'tertiary'}
@@ -86,4 +85,4 @@ const BrevMottakere: React.FC<{ mottakere: IBrevmottakere; lesemodus?: boolean }
     );
 };
 
-export default BrevMottakere;
+export default BrevMottakereListe;

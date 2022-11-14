@@ -34,7 +34,6 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     const [valgtFagsakId, settValgtFagsakId] = useState<string>();
     const [valgtFagsakPersonId, settValgtFagsakPersonId] = useState<string>();
     const [personIdent, settPersonIdent] = useState<string>();
-    const [visBrevmottakereModal, settVisBrevmottakereModal] = useState(false);
     const [visUtestengModal, settVisUtestengModal] = useState(false);
 
     useEffect(
@@ -123,8 +122,6 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         personIdent,
         settPersonIdent,
         erSaksbehandler,
-        visBrevmottakereModal,
-        settVisBrevmottakereModal,
         visUtestengModal,
         settVisUtestengModal,
     };
