@@ -5,16 +5,17 @@ import { Fagsak } from '../../App/typer/fagsak';
 import { TilbakekrevingBehandling } from '../../App/typer/tilbakekreving';
 import { useApp } from '../../App/context/AppContext';
 import styled from 'styled-components';
-import { Knapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
 import { erAlleBehandlingerErFerdigstilt } from './utils';
 import { KlageBehandling } from '../../App/typer/klage';
+import { Button } from '@navikt/ds-react';
 
-const KnappMedMargin = styled(Knapp)`
-    margin-top: 1rem;
-    margin-right: 1rem;
+const Knapp = styled(Button)`
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    margin-top: 0.5rem;
 `;
 
 interface Props {
@@ -69,9 +70,13 @@ export const FagsakOversikt: React.FC<Props> = ({
                                 kanStarteRevurdering={kanStarteRevurdering}
                             />
 
-                            <KnappMedMargin onClick={() => settVisLagBehandlingModal(true)}>
+                            <Knapp
+                                onClick={() => settVisLagBehandlingModal(true)}
+                                variant={'secondary'}
+                                type={'button'}
+                            >
                                 Opprett ny behandling
-                            </KnappMedMargin>
+                            </Knapp>
                         </>
                     )}
                 </>

@@ -10,7 +10,6 @@ import {
     RessursSuksess,
 } from '../../../App/typer/ressurs';
 import { useDebouncedCallback } from 'use-debounce';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import {
     AvsnittMedId,
     FritekstBrevContext,
@@ -27,7 +26,7 @@ import {
 } from './BrevUtils';
 import BrevInnhold from './BrevInnhold';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Alert, Heading } from '@navikt/ds-react';
+import { Alert, Button, Heading } from '@navikt/ds-react';
 import { BrevmottakereModal } from '../Brevmottakere/BrevmottakereModal';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { EToast } from '../../../App/typer/toast';
@@ -44,7 +43,9 @@ const StyledBrev = styled.div`
     width: 48rem;
 `;
 
-const StyledHovedKnapp = styled(Hovedknapp)`
+const Knapp = styled(Button)`
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
     margin-top: 1rem;
 `;
 
@@ -262,13 +263,13 @@ const FrittståendeBrev: React.FC<Props> = ({
                 stønadstype={Stønadstype.OVERGANGSSTØNAD}
                 settVisNullstillBrevModal={settVisNullstillBrevModal}
             />
-
-            <StyledHovedKnapp
+            <Knapp
                 disabled={!brevType || !brevmottakereValgt(brevmottakere)}
                 onClick={() => settVisModal(true)}
+                type={'button'}
             >
                 Send brev
-            </StyledHovedKnapp>
+            </Knapp>
             <ModalWrapper
                 tittel={'Bekreft utsending av brev'}
                 visModal={visModal}

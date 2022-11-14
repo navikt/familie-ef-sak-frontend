@@ -8,23 +8,25 @@ import {
     oppgaveBehandlingstypeTilTekst,
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
-import { Flatknapp as Knapp } from 'nav-frontend-knapper';
-import hiddenIf from '../../Felles/HiddenIf/hiddenIf';
 import { useOppgave } from '../../App/hooks/useOppgave';
 import { Handling } from './typer/handling';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
-import { Popover } from '@navikt/ds-react';
+import { Button, Popover } from '@navikt/ds-react';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import styled from 'styled-components';
+
+const TabellKnapp = styled(Button)`
+    width: fit-content;
+    white-space: nowrap;
+`;
 
 interface Props {
     oppgave: IOppgave;
     mapper: Record<number, string>;
     settFeilmelding: (feilmelding: string) => void;
 }
-
-const Flatknapp = hiddenIf(Knapp);
 
 const kanJournalføres = (oppgave: IOppgave) => {
     const { oppgavetype } = oppgave;
@@ -126,37 +128,55 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         switch (utledHandling(oppgave)) {
             case Handling.JOURNALFØR:
                 return (
-                    <Flatknapp onClick={() => gåTilJournalføring('stønad')} disabled={laster}>
+                    <TabellKnapp
+                        type={'button'}
+                        variant={'tertiary'}
+                        size={'small'}
+                        onClick={() => gåTilJournalføring('stønad')}
+                        disabled={laster}
+                    >
                         Gå til journalpost
-                    </Flatknapp>
+                    </TabellKnapp>
                 );
             case Handling.JOURNALFØR_KLAGE:
                 return (
-                    <Flatknapp
+                    <TabellKnapp
+                        type={'button'}
+                        variant={'tertiary'}
+                        size={'small'}
                         onClick={() => gåTilJournalføring('klage')}
                         disabled={laster || !toggles[ToggleName.journalføringKlage]}
                     >
                         Gå til journalpost (klage)
-                    </Flatknapp>
+                    </TabellKnapp>
                 );
             case Handling.SAKSBEHANDLE:
                 return (
-                    <Flatknapp onClick={gåTilBehandleSakOppgave} disabled={laster}>
+                    <TabellKnapp
+                        type={'button'}
+                        variant={'tertiary'}
+                        size={'small'}
+                        onClick={gåTilBehandleSakOppgave}
+                        disabled={laster}
+                    >
                         Start Behandling
-                    </Flatknapp>
+                    </TabellKnapp>
                 );
             case Handling.TILBAKE:
             case Handling.BEHANDLINGSOVERSIKT:
             case Handling.KLAGE:
                 return (
-                    <Flatknapp
+                    <TabellKnapp
+                        type={'button'}
+                        variant={'tertiary'}
+                        size={'small'}
                         onClick={() => {
                             plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent);
                         }}
                         disabled={laster}
                     >
                         Gå til fagsak
-                    </Flatknapp>
+                    </TabellKnapp>
                 );
             default:
                 return (

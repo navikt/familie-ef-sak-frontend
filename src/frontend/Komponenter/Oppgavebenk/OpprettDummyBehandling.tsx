@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { FnrInput, Select } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { Button } from '@navikt/ds-react';
 
 const StyledFnrInput = styled(FnrInput)`
     width: 150px;
@@ -80,9 +80,9 @@ export const OpprettDummyBehandling: React.FC = () => {
                 <option value="SKOLEPENGER">Skolepenger</option>
             </Select>
 
-            <Knapp mini disabled={!harSattPersonIdent} onClick={opprettBehandling}>
+            <Button type={'button'} disabled={!harSattPersonIdent} onClick={opprettBehandling}>
                 Lag behandling
-            </Knapp>
+            </Button>
             {harFeil && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
         </StyledOpprettDummyBehandling>
     );

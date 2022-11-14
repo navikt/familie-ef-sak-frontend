@@ -10,22 +10,24 @@ import {
 } from '../Inngangsvilkår/vilkår';
 import {
     begrunnelseErPåkrevdOgUtfyllt,
-    erAllaDelvilkårBesvarte,
+    erAlleDelvilkårBesvarte,
     hentSvarsalternativ,
     leggTilNesteIdHvis,
     oppdaterSvarIListe,
 } from './utils';
-
-import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import Begrunnelse from './Begrunnelse';
 import Delvilkår from './Delvilkår';
 import { useApp } from '../../../App/context/AppContext';
+import { Button } from '@navikt/ds-react';
+import styled from 'styled-components';
 
-const Lagreknapp = hiddenIf(Hovedknapp);
 /**
  * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
  */
+
+const LagreKnapp = styled(Button)`
+    margin-top: 1rem;
+`;
 
 const EndreVurderingComponent: FC<{
     vilkårType: VilkårType;
@@ -95,6 +97,8 @@ const EndreVurderingComponent: FC<{
         settIkkePersistertKomponent(vurdering.id);
     };
 
+    const skalViseLagreKnapp = erAlleDelvilkårBesvarte(delvilkårsvurderinger, regler);
+
     return (
         <form
             onSubmit={(event) => {
@@ -133,17 +137,16 @@ const EndreVurderingComponent: FC<{
                     );
                 });
             })}
-            <Lagreknapp
-                htmlType="submit"
-                style={{ marginTop: '1rem' }}
-                mini
-                hidden={!erAllaDelvilkårBesvarte(delvilkårsvurderinger, regler)}
-                onClick={() => {
-                    nullstillIkkePersistertKomponent(vurdering.id);
-                }}
-            >
-                Lagre
-            </Lagreknapp>
+            {skalViseLagreKnapp && (
+                <LagreKnapp
+                    onClick={() => {
+                        nullstillIkkePersistertKomponent(vurdering.id);
+                    }}
+                    type={'submit'}
+                >
+                    Lagre
+                </LagreKnapp>
+            )}
         </form>
     );
 };

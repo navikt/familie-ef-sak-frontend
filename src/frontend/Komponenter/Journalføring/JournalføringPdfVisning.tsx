@@ -1,8 +1,8 @@
-import { Knapp } from 'nav-frontend-knapper';
 import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import React, { useEffect } from 'react';
 import { HentDokumentResponse } from '../../App/hooks/useHentDokument';
 import styled from 'styled-components';
+import { Button } from '@navikt/ds-react';
 
 const FlexKnapper = styled.div`
     display: flex;
@@ -23,12 +23,12 @@ const JournalføringPdfVisning: React.FC<{ hentDokumentResponse: HentDokumentRes
     return (
         <>
             <FlexKnapper>
-                <Knapp onClick={() => hentForrigeDokument()} mini>
+                <Button type={'button'} variant={'secondary'} onClick={() => hentForrigeDokument()}>
                     Forrige Dokument
-                </Knapp>
-                <Knapp onClick={() => hentNesteDokument()} mini>
+                </Button>
+                <Button type={'button'} variant={'secondary'} onClick={() => hentNesteDokument()}>
                     Neste Dokument
-                </Knapp>
+                </Button>
             </FlexKnapper>
             <PdfVisning pdfFilInnhold={valgtDokument} />
         </>

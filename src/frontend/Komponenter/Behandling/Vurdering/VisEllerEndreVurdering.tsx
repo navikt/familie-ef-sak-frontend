@@ -8,11 +8,20 @@ import {
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
-import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { KnappWrapper } from '../../Oppgavebenk/OppgaveFiltrering';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { useApp } from '../../../App/context/AppContext';
+import { Button } from '@navikt/ds-react';
+import styled from 'styled-components';
+
+const KnappWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const Knapp = styled(Button)`
+    margin-right: 1rem;
+`;
 
 export enum Redigeringsmodus {
     REDIGERING = 'REDIGERING',
@@ -110,17 +119,17 @@ const VisEllerEndreVurdering: FC<Props> = ({
             return (
                 <KnappWrapper>
                     <Knapp
-                        className="flex-item"
-                        mini
                         onClick={() => {
                             settRedigeringsmodus(Redigeringsmodus.REDIGERING);
                         }}
+                        variant={'secondary'}
+                        type={'button'}
                     >
                         {venstreKnappetekst ? venstreKnappetekst : 'Vurder vilkår'}
                     </Knapp>
-                    <Flatknapp className="lenke" mini htmlType="button" onClick={ikkeVurder}>
+                    <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
-                    </Flatknapp>
+                    </Button>
                 </KnappWrapper>
             );
         case Redigeringsmodus.REDIGERING:

@@ -6,7 +6,6 @@ import Brukerinfo from './Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
     JournalføringStateRequest,
@@ -207,6 +206,32 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     const erPapirsøknad =
         journalpostState.ustrukturertDokumentasjonType ===
         UstrukturertDokumentasjonType.PAPIRSØKNAD;
+
+    const journalFør = () => {
+        const feilmeldingFraValidering = validerJournalføringState(
+            journalResponse,
+            journalpostState,
+            erAlleBehandlingerFerdigstilte(fagsak)
+        );
+        if (feilmeldingFraValidering) {
+            settFeilMeldning(feilmeldingFraValidering);
+        } else if (
+            skalBeOmBekreftelse(
+                harValgtNyBehandling(journalpostState.behandling),
+                journalResponse.harStrukturertSøknad,
+                journalpostState.ustrukturertDokumentasjonType
+            )
+        ) {
+            if (journalResponse.harStrukturertSøknad) {
+                journalpostState.settVisBekreftelsesModal(true);
+            } else if (!journalResponse.harStrukturertSøknad) {
+                journalpostState.settJournalføringIkkeMuligModal(true);
+            }
+        } else {
+            journalpostState.fullførJournalføring();
+        }
+    };
+
     return (
         <SideLayout className={'container'}>
             <Sidetittel>{`Registrere journalpost${
@@ -285,35 +310,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                     )}
                     <FlexKnapper>
                         <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                        <Hovedknapp
-                            onClick={() => {
-                                const feilmeldingFraValidering = validerJournalføringState(
-                                    journalResponse,
-                                    journalpostState,
-                                    erAlleBehandlingerFerdigstilte(fagsak)
-                                );
-                                if (feilmeldingFraValidering) {
-                                    settFeilMeldning(feilmeldingFraValidering);
-                                } else if (
-                                    skalBeOmBekreftelse(
-                                        harValgtNyBehandling(journalpostState.behandling),
-                                        journalResponse.harStrukturertSøknad,
-                                        journalpostState.ustrukturertDokumentasjonType
-                                    )
-                                ) {
-                                    if (journalResponse.harStrukturertSøknad) {
-                                        journalpostState.settVisBekreftelsesModal(true);
-                                    } else if (!journalResponse.harStrukturertSøknad) {
-                                        journalpostState.settJournalføringIkkeMuligModal(true);
-                                    }
-                                } else {
-                                    journalpostState.fullførJournalføring();
-                                }
-                            }}
-                            spinner={journalpostState.innsending.status === RessursStatus.HENTER}
-                        >
+                        <Button type={'button'} onClick={() => journalFør()}>
                             Journalfør
-                        </Hovedknapp>
+                        </Button>
                     </FlexKnapper>
                 </Venstrekolonne>
                 <Høyrekolonne>

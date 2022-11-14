@@ -5,20 +5,21 @@ import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
 import { Element } from 'nav-frontend-typografi';
 import { IngenData, TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
-import { Knapp } from 'nav-frontend-knapper';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-
-const StyledKnapp = styled(Knapp)`
-    margin-left: 1rem;
-`;
+import { Button } from '@navikt/ds-react';
 
 const StyledFlexDiv = styled.div`
     display: flex;
     justify-content: space-between;
+`;
+
+const Knapp = styled(Button)`
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
 `;
 
 const MAX_LENGDE_ADRESSER = 5;
@@ -138,12 +139,14 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                     {adresse.type === AdresseType.BOSTEDADRESSE &&
                                         indeks === 0 &&
                                         gyldigTilOgMedErNullEllerFremITid(adresse) && (
-                                            <StyledKnapp
+                                            <Knapp
                                                 onClick={() => settBeboereAdresseIModal(adresse)}
-                                                mini
+                                                variant={'secondary'}
+                                                size={'small'}
+                                                type={'button'}
                                             >
                                                 Se Beboere
-                                            </StyledKnapp>
+                                            </Knapp>
                                         )}
                                 </StyledFlexDiv>
                             </Td>

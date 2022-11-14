@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Radio } from 'nav-frontend-skjema';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import Søknad from '../../../Felles/Ikoner/Søknad';
 import IkonKnapp from '../../../Felles/Knapper/IkonKnapp';
 import styled from 'styled-components';
@@ -12,6 +11,7 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import navFarger from 'nav-frontend-core';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { Button } from '@navikt/ds-react';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -150,9 +150,9 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                 />
             </FamilieRadioGruppe>
             {valideringsfeil && <ErrorTekst>{valideringsfeil}</ErrorTekst>}
-            <Hovedknapp htmlType={'submit'} onClick={lagreTilbakekrevingsValg} disabled={låsKnapp}>
+            <Button type={'submit'} onClick={lagreTilbakekrevingsValg} disabled={låsKnapp}>
                 Lagre tilbakekrevingsvalg
-            </Hovedknapp>
+            </Button>
         </>
     );
 };
