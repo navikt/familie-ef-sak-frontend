@@ -37,6 +37,10 @@ const AntallMåneder = styled(Normaltekst)<{ erLesevisning: boolean }>`
     text-align: center;
 `;
 
+const ContainerMedLuftUnder = styled.div`
+    margin-bottom: 1rem;
+`;
+
 const StyledInput = styled(InputUtenSpinner)`
     text-align: left;
 `;
@@ -167,22 +171,29 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 erLesevisning={erLesevisning}
                             />
                             {skalViseFjernKnapp && (
-                                <FjernKnapp
-                                    onClick={() => fjernDelårsperiode(index)}
-                                    knappetekst="Fjern delårsperiode"
-                                />
+                                <div>
+                                    <FjernKnapp
+                                        onClick={() => fjernDelårsperiode(index)}
+                                        knappetekst="Fjern delårsperiode"
+                                    />
+                                </div>
                             )}
                         </SkoleårsperiodeRad>
                     </>
                 );
             })}
-            <LeggTilKnapp
-                onClick={() =>
-                    oppdater([...data, { ...tomSkoleårsperiode, studietype: data[0].studietype }])
-                }
-                knappetekst="Legg til periode"
-                hidden={erLesevisning || erOpphør}
-            />
+            <ContainerMedLuftUnder>
+                <LeggTilKnapp
+                    onClick={() =>
+                        oppdater([
+                            ...data,
+                            { ...tomSkoleårsperiode, studietype: data[0].studietype },
+                        ])
+                    }
+                    knappetekst="Legg til periode"
+                    hidden={erLesevisning || erOpphør}
+                />
+            </ContainerMedLuftUnder>
         </>
     );
 };
