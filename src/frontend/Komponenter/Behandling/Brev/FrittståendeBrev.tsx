@@ -39,8 +39,7 @@ import {
 import Brevmottakere from '../Brevmottakere/Brevmottakere';
 
 const StyledBrev = styled.div`
-    margin-bottom: 10rem;
-    width: 48rem;
+    margin-bottom: 5rem;
 `;
 
 const StyledHovedKnapp = styled(Hovedknapp)`

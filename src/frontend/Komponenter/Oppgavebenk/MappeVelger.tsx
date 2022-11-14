@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { Select } from 'nav-frontend-skjema';
 import { IMappe } from './typer/mappe';
 import { enhetTilTekstPåString } from './typer/enhet';
+import { Select } from '@navikt/ds-react';
 
 interface Props {
     value?: string | number;
