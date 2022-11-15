@@ -6,7 +6,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { Alert } from '@navikt/ds-react';
 
-interface ÅpneKlagerResponse {
+interface ÅpneInfotrygdKlagerResponse {
     stønadstyper: Stønadstype[];
 }
 
@@ -18,10 +18,12 @@ export const KlageInfotrygdInfo: React.FunctionComponent<{ fagsakPersonId: strin
     fagsakPersonId,
 }) => {
     const { axiosRequest } = useApp();
-    const [åpneKlager, settÅpneKlager] = useState<Ressurs<ÅpneKlagerResponse>>(byggTomRessurs());
+    const [åpneKlager, settÅpneKlager] = useState<Ressurs<ÅpneInfotrygdKlagerResponse>>(
+        byggTomRessurs()
+    );
 
     useEffect(() => {
-        axiosRequest<ÅpneKlagerResponse, null>({
+        axiosRequest<ÅpneInfotrygdKlagerResponse, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/klage/fagsak-person/${fagsakPersonId}/infotrygd`,
         }).then(settÅpneKlager);

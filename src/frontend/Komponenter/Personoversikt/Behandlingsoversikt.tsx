@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { FagsakOversikt } from './FagsakOversikt';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import KlageInfotrygdInfo from './Klage/KlageInfotrygdInfo';
 import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
 import Utestengelse from './Utestengelse/Utestengelse';
 import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
+import { ÅpneKlager } from './Klage/ÅpneKlager';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -36,7 +36,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
             {({ fagsakPerson, klagebehandlinger }) => (
                 <>
                     <InfostripeUtestengelse utestengelser={utestengelser} />
-                    <KlageInfotrygdInfo fagsakPersonId={fagsakPersonId} />
+                    <ÅpneKlager fagsakPersonId={fagsakPersonId} />
                     {fagsakPerson.overgangsstønad && (
                         <FagsakOversikt
                             fagsak={fagsakPerson.overgangsstønad}
