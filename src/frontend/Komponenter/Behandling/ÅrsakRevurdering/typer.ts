@@ -1,6 +1,6 @@
 export interface Revurderingsinformasjon {
-    kravMottatt: string;
-    årsakRevurdering: IÅrsakRevurdering;
+    kravMottatt?: string;
+    årsakRevurdering?: IÅrsakRevurdering;
 }
 
 export interface IÅrsakRevurdering {
