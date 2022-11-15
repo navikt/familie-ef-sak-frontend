@@ -1,34 +1,65 @@
-import React from 'react';
-import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
-import IkkeVurdert from '../../../Felles/Ikoner/IkkeVurdert';
-import Oppfylt from '../../../Felles/Ikoner/Oppfylt';
-import { Undertittel } from 'nav-frontend-typografi';
-import styled from 'styled-components';
+import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements';
+import {
+    Opplysningskilde,
+    opplysningskildeTilTekst,
+    Revurderingsinformasjon,
+    Årsak,
+    årsakRevuderingTilTekst,
+} from './typer';
+import React, { useState } from 'react';
+import { Behandling } from '../../../App/typer/fagsak';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 interface Props {
-    behandlingId: string;
+    revurderingsinformasjon: Revurderingsinformasjon;
+    behandling: Behandling;
 }
 
-const FlexDiv = styled.div`
-    display: flex;
-    gap: 0.5rem;
-`;
+export const ÅrsakRevurdering: React.FC<Props> = ({ revurderingsinformasjon }) => {
+    const { behandlingErRedigerbar } = useBehandling();
+    const [kravMottat, settKravMotatt] = useState<string>(revurderingsinformasjon.kravMottatt);
+    const [opplysningskilde, settOpplysningskilde] = useState<Opplysningskilde>(
+        revurderingsinformasjon.årsakRevurdering.opplysningskilde
+    );
+    const [årsakRevurdering, settÅrsakRevurdering] = useState<Årsak>(
+        revurderingsinformasjon.årsakRevurdering.årsak
+    );
 
-export const ÅrsakRevurdering: React.FC<Props> = () => {
     return (
-        <ToKolonnerLayout skillelinje={false}>
-            {{
-                venstre: (
-                    <FlexDiv>
-                        <ÅrsakRevurderingIkon oppfylt={true} />
-                        <Undertittel>Årsak til revurdering</Undertittel>
-                    </FlexDiv>
-                ),
-                høyre: <></>,
-            }}
-        </ToKolonnerLayout>
+        <>
+            <FamilieDatovelger
+                erLesesvisning={!behandlingErRedigerbar}
+                label={'Krav mottatt'}
+                id={'krav-mottatt'}
+                valgtDato={kravMottat}
+                onChange={(dato) => {
+                    settKravMotatt(dato as string);
+                }}
+            />
+            <FamilieSelect
+                label={'Hvordan har vi fått opplysningene?'}
+                value={opplysningskilde}
+                onChange={(e) => settOpplysningskilde(e.target.value as Opplysningskilde)}
+                erLesevisning={!behandlingErRedigerbar}
+            >
+                {Object.values(Opplysningskilde).map((kilde) => (
+                    <option key={kilde} value={kilde}>
+                        {opplysningskildeTilTekst[kilde]}
+                    </option>
+                ))}
+            </FamilieSelect>
+            <FamilieSelect
+                label={'Årsak til revurdering'}
+                value={årsakRevurdering}
+                onChange={(e) => settÅrsakRevurdering(e.target.value as Årsak)}
+                erLesevisning={!behandlingErRedigerbar}
+            >
+                {Object.values(Årsak).map((årsak) => (
+                    <option key={årsak} value={årsak}>
+                        {årsakRevuderingTilTekst[årsak]}
+                    </option>
+                ))}
+            </FamilieSelect>
+        </>
     );
 };
-
-const ÅrsakRevurderingIkon: React.FC<{ oppfylt: boolean }> = ({ oppfylt }) =>
-    oppfylt ? <Oppfylt heigth={23} width={21} /> : <IkkeVurdert heigth={23} width={21} />;
