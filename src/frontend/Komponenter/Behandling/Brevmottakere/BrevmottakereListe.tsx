@@ -1,10 +1,9 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import styled from 'styled-components';
-import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
-import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import { BodyShort, Ingress } from '@navikt/ds-react';
+import { BodyShort, Button, Ingress } from '@navikt/ds-react';
+import { Delete } from '@navikt/ds-icons';
 
 interface Props {
     valgtePersonMottakere: IBrevmottaker[];
@@ -57,9 +56,12 @@ export const BrevmottakereListe: FC<Props> = ({
                             <KopierbartNullableFødselsnummer fødselsnummer={mottaker.personIdent} />
                         </BodyShort>
                     </Flexboks>
-                    <LenkeKnapp onClick={fjernPersonMottaker(mottaker.personIdent)}>
-                        <SlettSøppelkasse withDefaultStroke={false} />
-                    </LenkeKnapp>
+                    <Button
+                        type={'button'}
+                        variant={'tertiary'}
+                        onClick={fjernPersonMottaker(mottaker.personIdent)}
+                        icon={<Delete />}
+                    />
                 </StyledMottakerBoks>
             ))}
             {valgteOrganisasjonMottakere.map((mottaker, index) => (
@@ -70,9 +72,12 @@ export const BrevmottakereListe: FC<Props> = ({
                             {`Organisasjonsnummer: ${mottaker.organisasjonsnummer}`}
                         </BodyShort>
                     </div>
-                    <LenkeKnapp onClick={fjernOrganisasjonMottaker(mottaker.organisasjonsnummer)}>
-                        <SlettSøppelkasse withDefaultStroke={false} />
-                    </LenkeKnapp>
+                    <Button
+                        type={'button'}
+                        variant={'tertiary'}
+                        onClick={fjernOrganisasjonMottaker(mottaker.organisasjonsnummer)}
+                        icon={<Delete />}
+                    />
                 </StyledMottakerBoks>
             ))}
         </>
