@@ -10,11 +10,17 @@ interface Props {
     behandling: Behandling;
 }
 
-export const ÅrsakRevurdering: React.FC<Props> = ({ revurderingsinformasjon, behandling }) => {
+export const ÅrsakRevurdering: React.FC<Props> = ({
+    revurderingsinformasjon: initState,
+    behandling,
+}) => {
     const { behandlingErRedigerbar } = useBehandling();
 
+    const [revurderingsinformasjon, settRevurderingsinformasjon] =
+        useState<Revurderingsinformasjon>(initState);
+
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
-        behandlingErRedigerbar && revurderingsinformasjon.årsakRevurdering !== undefined
+        behandlingErRedigerbar && revurderingsinformasjon.årsakRevurdering === undefined
     );
     return (
         <>
@@ -23,6 +29,7 @@ export const ÅrsakRevurdering: React.FC<Props> = ({ revurderingsinformasjon, be
                     revurderingsinformasjon={revurderingsinformasjon}
                     behandling={behandling}
                     settRedigeringsmodus={settRedigeringsmodus}
+                    settRevurderingsinformasjon={settRevurderingsinformasjon}
                 />
             ) : (
                 <VisÅrsakRevurdering

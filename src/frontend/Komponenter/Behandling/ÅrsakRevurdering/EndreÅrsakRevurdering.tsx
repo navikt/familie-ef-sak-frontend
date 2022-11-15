@@ -1,12 +1,13 @@
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import {
+    IÅrsakRevurdering,
     Opplysningskilde,
     opplysningskildeTilTekst,
     Revurderingsinformasjon,
     Årsak,
     årsakRevuderingTilTekst,
 } from './typer';
-import React, { useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Button, Select, Textarea } from '@navikt/ds-react';
@@ -18,27 +19,22 @@ interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
     behandling: Behandling;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
+    settRevurderingsinformasjon: Dispatch<React.SetStateAction<Revurderingsinformasjon>>;
 }
 
 export const EndreÅrsakRevurdering: React.FC<Props> = ({
     revurderingsinformasjon,
     behandling,
     settRedigeringsmodus,
+    settRevurderingsinformasjon,
 }) => {
     const { axiosRequest } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
-    const [kravMottatt, settKravMotatt] = useState<string | undefined>(
-        revurderingsinformasjon.kravMottatt
-    );
-    const [opplysningskilde, settOpplysningskilde] = useState<Opplysningskilde | undefined>(
-        revurderingsinformasjon.årsakRevurdering?.opplysningskilde
-    );
-    const [årsakRevurdering, settÅrsakRevurdering] = useState<Årsak | undefined>(
-        revurderingsinformasjon.årsakRevurdering?.årsak
-    );
-    const [beskrivelse, settBeskrivelse] = useState<string | undefined>(
-        revurderingsinformasjon.årsakRevurdering?.beskrivelse
-    );
+
+    const { kravMottatt, årsakRevurdering } = revurderingsinformasjon;
+    const opplysningskilde = årsakRevurdering?.opplysningskilde;
+    const årsak = årsakRevurdering?.årsak;
+    const beskrivelse = årsakRevurdering?.beskrivelse;
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
@@ -51,22 +47,14 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
             settFeilmelding('Mangler opplysningskilde');
             return;
         }
-
-        if (!årsakRevurdering) {
+        if (!årsak) {
             settFeilmelding('Mangler årsak');
             return;
         }
         axiosRequest<string, Revurderingsinformasjon>({
             method: 'POST',
             url: `familie-ef-sak/api/revurdering/informasjon/${behandling.id}`,
-            data: {
-                kravMottatt,
-                årsakRevurdering: {
-                    årsak: årsakRevurdering,
-                    opplysningskilde,
-                    beskrivelse,
-                },
-            },
+            data: revurderingsinformasjon,
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 settRedigeringsmodus(false);
@@ -74,6 +62,16 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 settFeilmelding(res.frontendFeilmelding);
             }
         });
+    };
+
+    const oppdaterÅrsakRevurdering = (nyeVerdier: Partial<IÅrsakRevurdering>) => {
+        settRevurderingsinformasjon((prevState) => ({
+            ...prevState,
+            årsakRevurdering: {
+                ...(prevState.årsakRevurdering || {}),
+                ...nyeVerdier,
+            },
+        }));
     };
 
     return (
@@ -84,13 +82,20 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 id={'krav-mottatt'}
                 valgtDato={kravMottatt || ''}
                 onChange={(dato) => {
-                    settKravMotatt(dato as string);
+                    settRevurderingsinformasjon((prevState) => ({
+                        ...prevState,
+                        kravMottatt: dato as string,
+                    }));
                 }}
             />
             <Select
                 label={'Hvordan har vi fått opplysningene?'}
                 value={opplysningskilde}
-                onChange={(e) => settOpplysningskilde(e.target.value as Opplysningskilde)}
+                onChange={(e) =>
+                    oppdaterÅrsakRevurdering({
+                        opplysningskilde: e.target.value as Opplysningskilde,
+                    })
+                }
             >
                 <option value="">Ikke valgt</option>
                 {Object.values(Opplysningskilde).map((kilde) => (
@@ -101,11 +106,13 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
             </Select>
             <Select
                 label={'Årsak til revurdering'}
-                value={årsakRevurdering}
-                onChange={(e) => {
-                    settBeskrivelse(undefined);
-                    settÅrsakRevurdering(e.target.value as Årsak);
-                }}
+                value={årsak}
+                onChange={(e) =>
+                    oppdaterÅrsakRevurdering({
+                        årsak: e.target.value as Årsak,
+                        beskrivelse: undefined,
+                    })
+                }
             >
                 <option value="">Ikke valgt</option>
                 {Object.values(Årsak).map((årsak) => (
@@ -118,7 +125,11 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 <Textarea
                     label={'Beskrivelse av årsak'}
                     value={beskrivelse}
-                    onChange={(e) => settBeskrivelse(e.target.value)}
+                    onChange={(e) =>
+                        oppdaterÅrsakRevurdering({
+                            beskrivelse: e.target.value,
+                        })
+                    }
                 />
             )}
             <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>

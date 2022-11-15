@@ -4,8 +4,8 @@ export interface Revurderingsinformasjon {
 }
 
 export interface IÅrsakRevurdering {
-    årsak: Årsak;
-    opplysningskilde: Opplysningskilde;
+    årsak?: Årsak;
+    opplysningskilde?: Opplysningskilde;
     beskrivelse?: string;
 }
 
