@@ -10,7 +10,6 @@ import {
     sanksjonsårsakTilTekst,
 } from '../../../App/typer/Sanksjonsårsak';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
@@ -42,6 +41,7 @@ import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { EnsligFamilieSelect } from '../../../Felles/Input/EnsligFamilieSelect';
 import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
+import { Button } from '@navikt/ds-react';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -64,6 +64,7 @@ const NormaltekstMedMargin = styled(Normaltekst)`
 
 const InfoVisning = styled(AlertInfo)`
     max-width: 60rem;
+
     .navds-alert__wrapper {
         max-width: 60rem;
     }
@@ -72,6 +73,7 @@ const InfoVisning = styled(AlertInfo)`
 const AdvarselVisning = styled(AlertWarning)`
     margin-top: 1.5rem;
     max-width: 60rem;
+
     .navds-alert__wrapper {
         max-width: 60rem;
     }
@@ -262,13 +264,13 @@ const SanksjonsvedtakVisning: FC<{
                             )}
                         </Seksjon>
                         <Seksjon>
-                            <Hovedknapp
+                            <Button
                                 hidden={!behandlingErRedigerbar}
-                                htmlType="submit"
+                                type="submit"
                                 disabled={laster}
                             >
                                 Lagre vedtak
-                            </Hovedknapp>
+                            </Button>
                         </Seksjon>
                     </>
                 )}

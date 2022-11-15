@@ -1,10 +1,10 @@
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 import { dokumentTitler } from './konstanter/dokumenttitler';
 import navFarger from 'nav-frontend-core';
 import { CSSObjectWithLabel, StylesConfig } from 'react-select';
+import { Button } from '@navikt/ds-react';
 
 const StyledKnapper = styled.div`
     display: flex;
@@ -12,7 +12,7 @@ const StyledKnapper = styled.div`
     margin-top: 0.5rem;
 `;
 
-const StyledHovedKnapp = styled(Hovedknapp)`
+const HovedKnapp = styled(Button)`
     margin-right: 0.25rem;
 `;
 
@@ -26,6 +26,7 @@ interface OptionType {
     label: string;
     value: string;
 }
+
 const customStyles: StylesConfig = {
     container: (defaultStyles: CSSObjectWithLabel, state) => ({
         ...defaultStyles,
@@ -64,24 +65,27 @@ const EndreDokumentTittel: React.FC<{
                 }}
             />
             <StyledKnapper>
-                <StyledHovedKnapp
-                    kompakt
+                <HovedKnapp
+                    type="button"
                     onClick={() => {
                         props.endreDokumentNavn(nyttDokumentNavn);
                         settNyttDokumentNavn('');
                     }}
+                    size={'small'}
                 >
                     Lagre
-                </StyledHovedKnapp>
-                <Knapp
-                    kompakt
+                </HovedKnapp>
+                <Button
+                    type="button"
+                    variant={'secondary'}
                     onClick={() => {
                         props.avbrytEndring();
                         settNyttDokumentNavn('');
                     }}
+                    size={'small'}
                 >
                     Avbryt
-                </Knapp>
+                </Button>
             </StyledKnapper>
         </StyledWrapper>
     );

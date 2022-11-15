@@ -8,7 +8,6 @@ import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
-import { GodkjennEndringer } from './Endringer/GodkjennEndringer';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { HenleggModal } from './Henleggelse/HenleggModal';
@@ -47,13 +46,13 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
 const InnholdWrapper = styled.div<InnholdWrapperProps>`
     flex-shrink: 0;
     flex-grow: 1;
-    flex-basis: 0px;
-    min-width: 0px;
+    flex-basis: 0;
+    min-width: 0;
 
     max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 `;
 
-const BehandlingContainer: FC = () => {
+export const BehandlingContainer: FC = () => {
     return (
         <BehandlingProvider>
             <BehandlingOverbygg />
@@ -77,7 +76,6 @@ const BehandlingContent: FC<{
                     <Fanemeny behandlingId={behandling.id} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <BehandlingRoutes />
-                    <GodkjennEndringer behandling={behandling} />
                     <HenleggModal behandling={behandling} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
@@ -106,5 +104,3 @@ const BehandlingOverbygg: FC = () => {
         </DataViewer>
     );
 };
-
-export default BehandlingContainer;

@@ -5,7 +5,6 @@ import Brukerinfo from './Brukerinfo';
 import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst, Stønadstype } from '../../App/typer/behandlingstema';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useHentDokument } from '../../App/hooks/useHentDokument';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -43,7 +42,7 @@ import { erGyldigDato } from '../../App/utils/dato';
 import styled from 'styled-components';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 import KlageInfotrygdInfo from '../Personoversikt/Klage/KlageInfotrygdInfo';
-import { Fieldset } from '@navikt/ds-react';
+import { Button, Fieldset } from '@navikt/ds-react';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;
@@ -139,6 +138,18 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
 
     const erNyBehandling = harValgtNyKlageBehandling(journalpostState.behandling);
 
+    const journalFør = () => {
+        const feilmeldingFraValidering = validerJournalføringState(
+            journalResponse,
+            journalpostState
+        );
+        if (feilmeldingFraValidering) {
+            settFeilMeldning(feilmeldingFraValidering);
+        } else {
+            journalpostState.fullførJournalføring();
+        }
+    };
+
     return (
         <SideLayout className={'container'}>
             <Sidetittel>{`Registrere journalpost for klage ${
@@ -203,23 +214,14 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                     )}
                     <FlexKnapper>
                         <Link to="/oppgavebenk">Tilbake til oppgavebenk</Link>
-                        <Hovedknapp
-                            onClick={() => {
-                                const feilmeldingFraValidering = validerJournalføringState(
-                                    journalResponse,
-                                    journalpostState
-                                );
-                                if (feilmeldingFraValidering) {
-                                    settFeilMeldning(feilmeldingFraValidering);
-                                } else {
-                                    journalpostState.fullførJournalføring();
-                                }
-                            }}
-                            spinner={journalpostState.innsending.status === RessursStatus.HENTER}
+                        <Button
+                            type="button"
+                            onClick={journalFør}
+                            loading={journalpostState.innsending.status === RessursStatus.HENTER}
                             disabled={!toggles[ToggleName.journalføringKlage]}
                         >
                             Journalfør
-                        </Hovedknapp>
+                        </Button>
                     </FlexKnapper>
                 </Venstrekolonne>
                 <Høyrekolonne>

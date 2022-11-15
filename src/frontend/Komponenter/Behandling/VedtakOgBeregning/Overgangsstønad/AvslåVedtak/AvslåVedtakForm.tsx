@@ -1,18 +1,18 @@
 import React, { FormEvent, useEffect } from 'react';
 import styled from 'styled-components';
-import { Hovedknapp as HovedKnappNAV } from 'nav-frontend-knapper';
 import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import SelectAvslagÅrsak from './SelectAvslagÅrsak';
 import { EAvslagÅrsak } from '../../../../../App/typer/vedtak';
+import { Button } from '@navikt/ds-react';
 
 const StyledForm = styled.form`
     margin-top: 2rem;
 `;
 
-const StyledHovedKnapp = styled(HovedKnappNAV)`
+const HovedKnapp = styled(Button)`
     margin-top: 2rem;
 `;
 
@@ -67,13 +67,9 @@ const AvslåVedtakForm: React.FC<Props> = ({
                     maxLength={0}
                     erLesevisning={!behandlingErRedigerbar}
                 />
-                <StyledHovedKnapp
-                    htmlType="submit"
-                    disabled={laster}
-                    hidden={!behandlingErRedigerbar}
-                >
+                <HovedKnapp type="submit" disabled={laster} hidden={!behandlingErRedigerbar}>
                     Lagre vedtak
-                </StyledHovedKnapp>
+                </HovedKnapp>
             </StyledForm>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>

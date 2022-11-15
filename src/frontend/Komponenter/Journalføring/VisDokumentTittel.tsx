@@ -1,13 +1,11 @@
 import React from 'react';
-import Rediger from '../../Felles/Ikoner/Rediger';
-import VisPdf from '../../Felles/Ikoner/VisPdf';
 import styled from 'styled-components';
-import { Flatknapp } from 'nav-frontend-knapper';
 import { ILogiskVedlegg } from '../../App/typer/dokumentliste';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
+import { EditFilled, FileContent } from '@navikt/ds-icons';
 
-const StyledFlatKnapp = styled(Flatknapp)`
-    margin-right: 0.25rem;
+const IkonKnapp = styled(Button)`
+    margin-right: 0.5rem;
 `;
 
 const StyledDokumentRad = styled.div`
@@ -37,12 +35,20 @@ const VisDokumentTittel: React.FC<VisDokumentTittelProps> = ({
             <StyledDokumentRad>
                 <span>{dokumentTittel}</span>
                 <div>
-                    <StyledFlatKnapp kompakt={true} onClick={settDokumentForRedigering}>
-                        <Rediger />
-                    </StyledFlatKnapp>
-                    <StyledFlatKnapp kompakt onClick={hentDokument}>
-                        <VisPdf />
-                    </StyledFlatKnapp>
+                    <IkonKnapp
+                        type="button"
+                        variant={'tertiary'}
+                        size={'small'}
+                        icon={<EditFilled />}
+                        onClick={settDokumentForRedigering}
+                    />
+                    <IkonKnapp
+                        type="button"
+                        variant={'tertiary'}
+                        size={'small'}
+                        icon={<FileContent />}
+                        onClick={hentDokument}
+                    />
                 </div>
             </StyledDokumentRad>
             {logiskeVedlegg.length > 0 && (

@@ -28,8 +28,6 @@ export const dagsgrenseForAdvarsel = 6;
 export const sanksjonInfoDel1 =
     'Sanksjonen gjelder for alle brukerens stønader etter kapittel 15, herunder stønader etter tilleggsstønadsforskriften. Følgende stønader i EF Sak vil bli stoppet automatisk i overforstående periode av dette vedtaket:';
 
-export const stønaderForSanksjonInfo = ['Overgangssstønad'];
-
 export const sanksjonInfoDel2 =
     'Har brukeren andre løpende stønader i EF Sak, Infotrygd eller Arena må disse stanses manuelt.';
 

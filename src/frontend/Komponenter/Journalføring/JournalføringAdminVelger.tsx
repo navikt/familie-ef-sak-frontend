@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Sidetittel } from 'nav-frontend-typografi';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { useNavigate } from 'react-router-dom';
 import validator from '@navikt/fnrvalidator';
+import { Button } from '@navikt/ds-react';
 
 const SideLayout = styled.div`
     max-width: 50rem;
@@ -44,7 +44,9 @@ export const JournalføringAdminVelger: React.FC = () => {
                     }}
                 />
             </Blokk>
-            <Hovedknapp onClick={() => gåVidere()}>Velg journalpost</Hovedknapp>
+            <Button type="button" onClick={() => gåVidere()}>
+                Velg journalpost
+            </Button>
             {erGyligFnr && (
                 <div style={{ color: 'red' }}>
                     Valgt id for journalpost er også et gyldig fødselsnummer, har du tastet feil?

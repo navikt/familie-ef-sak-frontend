@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
-import Søknad from '../../../Felles/Ikoner/Søknad';
-import IkonKnapp from '../../../Felles/Knapper/IkonKnapp';
 import styled from 'styled-components';
 import { ITilbakekrevingsvalg } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
@@ -9,8 +7,8 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import navFarger from 'nav-frontend-core';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { Button } from '@navikt/ds-react';
-import { Radio, RadioGroup } from '@navikt/ds-react';
+import { Button, Radio, RadioGroup } from '@navikt/ds-react';
+import { FileContent } from '@navikt/ds-icons';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -115,15 +113,15 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                                 endreVarseltekst(e.target.value);
                             }}
                         />
-                        <IkonKnapp
-                            kompakt={true}
-                            mini={true}
-                            erLesevisning={false}
+                        <Button
+                            type={'button'}
+                            variant={'tertiary'}
+                            icon={<FileContent />}
+                            size={'xsmall'}
                             onClick={åpneBrevINyFane}
-                            knappPosisjon={'venstre'}
-                            ikon={<Søknad />}
-                            label={'Forhåndsvis varsel'}
-                        />
+                        >
+                            Forhåndsvis varselbrev
+                        </Button>
                         {forhåndsvisningsFeil && <AlertError>{forhåndsvisningsFeil}</AlertError>}
                     </VarselValg>
                 )}
