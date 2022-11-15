@@ -103,7 +103,7 @@
     "react-day-picker": "^7.4.10",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
-    "react-pdf": "5.7.0",
+    "react-pdf": "6.0.3",
     "react-router-dom": "^6.4.0",
     "react-select": "^5.5.2",
     "request-promise": "^4.2.6",
