@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { Collapse, Expand, ExternalLink } from '@navikt/ds-icons';
-import { Alert, BodyLong, Button, Link } from '@navikt/ds-react';
-import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
+import { Alert, BodyLong, Button, Heading, Link } from '@navikt/ds-react';
 import { Behandling, behandlingResultatTilTekst } from '../../../../App/typer/fagsak';
 import { behandlingstypeTilTekst } from '../../../../App/typer/behandlingstype';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
@@ -14,17 +12,6 @@ import { ModalWrapper } from '../../../../Felles/Modal/ModalWrapper';
 
 const Alertstripe = styled(Alert)`
     margin: 1rem 2rem 2rem 1rem;
-`;
-
-const InfoHeader = styled.div`
-    display: grid;
-    grid-template-columns: 26rem 2rem;
-`;
-
-const LenkeIkon = styled.div`
-    top: 2px;
-    display: inline-block;
-    position: relative;
 `;
 
 const ForrigeBehandlingTabell = styled.table`
@@ -40,6 +27,10 @@ const ForrigeBehandlingTabell = styled.table`
         padding: 0rem 1.5rem 0rem 0rem;
         text-align: left;
     }
+`;
+
+const ÅpneLukkeKnapp = styled(Button)`
+    width: fit-content;
 `;
 
 const Gjenbruksknapp = styled(Button)`
@@ -65,26 +56,20 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
 
     return (
         <Alertstripe variant={'info'} fullWidth={false}>
-            <InfoHeader>
-                <LenkeKnapp
+            <Heading spacing size="small" level="3">
+                <ÅpneLukkeKnapp
+                    type={'button'}
+                    variant={'tertiary'}
+                    icon={visForrigeBehandlinger ? <Collapse /> : <Expand />}
+                    iconPosition={'right'}
                     onClick={() => {
                         settVisForrigeBehandlinger((prevState) => !prevState);
                     }}
-                    minWidth={'16px'}
+                    size={'small'}
                 >
-                    <Normaltekst>
-                        Gjenbruk vurdering av inngangsvilkår fra forrige behandling?
-                    </Normaltekst>
-                </LenkeKnapp>
-                <LenkeKnapp
-                    onClick={() => {
-                        settVisForrigeBehandlinger((prevState) => !prevState);
-                    }}
-                    minWidth={'16px'}
-                >
-                    <LenkeIkon>{visForrigeBehandlinger ? <Collapse /> : <Expand />}</LenkeIkon>
-                </LenkeKnapp>
-            </InfoHeader>
+                    Gjenbruk vurdering av inngangsvilkår fra forrige behandling?
+                </ÅpneLukkeKnapp>
+            </Heading>
             {visForrigeBehandlinger && (
                 <>
                     <ForrigeBehandlingTabell>

@@ -8,12 +8,12 @@ import { HistorikkElementProps, LinjeProps, StyledHistorikkElementProps } from '
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
-import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import { ExternalLink } from '@navikt/ds-icons';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
+import { Button } from '@navikt/ds-react';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -26,11 +26,6 @@ const Linje = styled.div`
     min-height: ${(props: LinjeProps) =>
         props.siste ? '30px' : props.størreMellomrom ? '75px' : '60px'};
     height: ${(props: LinjeProps) => (props.siste ? '30px' : '100%')};
-`;
-
-const LenkeKnappWrapper = styled.div`
-    margin-top: 0.2rem;
-    font-size: 14px;
 `;
 
 const Innhold = styled.div``;
@@ -124,12 +119,16 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                     <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
                 )}
                 {vedtakIverksatt && harVedtaksbrev && (
-                    <LenkeKnappWrapper>
-                        <LenkeKnapp onClick={hentOgÅpneVedtaksbrev}>
-                            <span>Vedtaksbrev</span>
-                            <ExternalLink />
-                        </LenkeKnapp>
-                    </LenkeKnappWrapper>
+                    <Button
+                        type={'button'}
+                        variant={'tertiary'}
+                        onClick={hentOgÅpneVedtaksbrev}
+                        icon={<ExternalLink />}
+                        iconPosition={'right'}
+                        size={'xsmall'}
+                    >
+                        Vedtaksbrev
+                    </Button>
                 )}
             </Innhold>
         </StyledHistorikkElement>
