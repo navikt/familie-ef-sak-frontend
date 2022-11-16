@@ -19,8 +19,8 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/ut
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { FamilieRadioGruppe } from '@navikt/familie-form-elements';
 import { Radio } from '@navikt/ds-react';
+import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -107,7 +107,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
 
     return (
         <>
-            <FamilieRadioGruppe
+            <EnsligRadioGruppe
                 legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften i perioden(e) det er søkt om?"
                 error={valideringsfeil.harTilleggsstønad}
                 erLesevisning={!behandlingErRedigerbar}
@@ -127,9 +127,9 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 >
                     Nei
                 </Radio>
-            </FamilieRadioGruppe>
+            </EnsligRadioGruppe>
             {tilleggsstønad.value === ERadioValg.JA && (
-                <FamilieRadioGruppe
+                <EnsligRadioGruppe
                     legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?"
                     error={valideringsfeil.skalStønadReduseres}
                     erLesevisning={!behandlingErRedigerbar}
@@ -149,7 +149,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     >
                         Nei
                     </Radio>
-                </FamilieRadioGruppe>
+                </EnsligRadioGruppe>
             )}
             {tilleggsstønad.value === ERadioValg.JA && stønadsreduksjon.value === ERadioValg.JA && (
                 <>

@@ -2816,25 +2816,15 @@
   resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/1.5.6/5a02a5501bb30bd8798c060c4d6d67c7697e76cf#5a02a5501bb30bd8798c060c4d6d67c7697e76cf"
   integrity sha512-Kp5gzstB0J99J+cDKFgRQlgR31egle5SrL9uA+otgqKoVCroV8QM0q9wFOjFaxOv8GMHKylI6VRFFwONXiDhlQ==
 
-"@navikt/ds-icons@^1.3.2":
-  version "1.3.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/1.3.2/432941aedc514f07b16719090d6f6d47f94f0dd2#432941aedc514f07b16719090d6f6d47f94f0dd2"
-  integrity sha512-TWkEeQgnsn9dR0jsoKbDqA3qgZDmNPN8eFTyEoFVf36mQPmWvwFDJz+tYm9SFfIF1koRRF7FoVFGv7fbexvkDg==
-
 "@navikt/ds-icons@^1.5.4":
   version "1.5.4"
   resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/1.5.4/f95ac8bb0c12100e8fc7ab8c2f116655c6c7df2d#f95ac8bb0c12100e8fc7ab8c2f116655c6c7df2d"
   integrity sha512-Aet2cGZwmE8pGTWEQb3eTNbMwL+gEVBQy6UhqlqDTjVsgGcRUNJCcVLIH2eGUV1zDhtMFzGU6Bw14Es6KwUHJA==
 
-"@navikt/ds-react-internal@^1.3.x":
-  version "1.3.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-react-internal/1.3.2/4a38d20b5b778174cc62f1dc275c19e9ccebd644#4a38d20b5b778174cc62f1dc275c19e9ccebd644"
-  integrity sha512-TzAI/RSKMl4HaOKMWwklI4lqTAXubmCMiFsfh255RmOoVow6jlbulcFjSwCOFiTL6j6CZ2ALNFoVp4S24YRAig==
-  dependencies:
-    "@navikt/ds-icons" "^1.3.2"
-    "@navikt/ds-react" "^1.3.2"
-    clsx "^1.1.1"
-    copy-to-clipboard "^3.3.1"
+"@navikt/ds-icons@^1.5.8":
+  version "1.5.8"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/1.5.8/e2f8a761a434e6a583619066349689b393cc44a6#e2f8a761a434e6a583619066349689b393cc44a6"
+  integrity sha512-xl+LtiqSoeeXE+7QnChfq1d3rVFeAEHNQQ65dpbeE8LjYTDpvHftDi5i8zBLkmzhMFz1bFYNsL9pvDlPSnMPnQ==
 
 "@navikt/ds-react-internal@^1.5.4":
   version "1.5.4"
@@ -2843,6 +2833,16 @@
   dependencies:
     "@navikt/ds-icons" "^1.5.4"
     "@navikt/ds-react" "^1.5.4"
+    clsx "^1.1.1"
+    copy-to-clipboard "^3.3.1"
+
+"@navikt/ds-react-internal@^1.5.x":
+  version "1.5.8"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-react-internal/1.5.8/daed6824c1152abfa60d368f1d6443b2046b8586#daed6824c1152abfa60d368f1d6443b2046b8586"
+  integrity sha512-aZezNVttdB8IpkRTjlklpxmzguwKJ2w/mia0i1Vo8JeYe5LKo4uxnvjbyqRwmZYjoMTA/Cmpb7qBMpEbWKbJww==
+  dependencies:
+    "@navikt/ds-icons" "^1.5.8"
+    "@navikt/ds-react" "^1.5.8"
     clsx "^1.1.1"
     copy-to-clipboard "^3.3.1"
 
@@ -2860,18 +2860,6 @@
     react-day-picker "8.3.4"
     react-modal "3.15.1"
 
-"@navikt/ds-react@^1.3.2":
-  version "1.3.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/1.3.2/1cc404c1f96ef91028ee215c80d45365e3465e6d#1cc404c1f96ef91028ee215c80d45365e3465e6d"
-  integrity sha512-+DTQAmCoY3OJfKj6Jzp2Y8t5nEZ7iYPiYaGxek77K1+4JIQc2NS/qWV7kYDRHwanX1aH8hKL5sTHryQmgKaglQ==
-  dependencies:
-    "@floating-ui/react-dom-interactions" "0.9.2"
-    "@navikt/ds-icons" "^1.3.2"
-    "@radix-ui/react-tabs" "1.0.0"
-    "@radix-ui/react-toggle-group" "1.0.0"
-    clsx "^1.1.1"
-    react-modal "3.15.1"
-
 "@navikt/ds-react@^1.5.4":
   version "1.5.4"
   resolved "https://npm.pkg.github.com/download/@navikt/ds-react/1.5.4/d9598b79f467fc8846178a421bd2864c44c2795f#d9598b79f467fc8846178a421bd2864c44c2795f"
@@ -2879,6 +2867,20 @@
   dependencies:
     "@floating-ui/react-dom-interactions" "0.9.2"
     "@navikt/ds-icons" "^1.5.4"
+    "@radix-ui/react-tabs" "1.0.0"
+    "@radix-ui/react-toggle-group" "1.0.0"
+    clsx "^1.2.1"
+    date-fns "2.29.3"
+    react-day-picker "8.3.4"
+    react-modal "3.15.1"
+
+"@navikt/ds-react@^1.5.8":
+  version "1.5.8"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/1.5.8/c8cd7726ef92680388bc8685414afe7013c8c336#c8cd7726ef92680388bc8685414afe7013c8c336"
+  integrity sha512-xRytJL1PPjaolvWkScFMhvTLdt1qP08D/VXlPJL3/71PZQ/gBb+giwfufBWyVLGvgfRsbrqy0X3YyLBE3afR1Q==
+  dependencies:
+    "@floating-ui/react-dom-interactions" "0.9.2"
+    "@navikt/ds-icons" "^1.5.8"
     "@radix-ui/react-tabs" "1.0.0"
     "@radix-ui/react-toggle-group" "1.0.0"
     clsx "^1.2.1"
@@ -2981,20 +2983,20 @@
     nav-frontend-typografi-style "^2.0.1"
     react-select "^5.4.0"
 
-"@navikt/familie-header@^6.0.4":
-  version "6.0.4"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/6.0.4/7f09c016f36f62cb9fb6b8ba8906e7bd12ab8913#7f09c016f36f62cb9fb6b8ba8906e7bd12ab8913"
-  integrity sha512-UQY52pgc6KB5vgfiYQpAlGvCDnaLvyUBO4GKK7MmQkOFbb0Cd0CcTRp4aZS4AO/IA3c/muBM0f2QqZFqzje35w==
+"@navikt/familie-header@^6.0.5":
+  version "6.0.5"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/6.0.5/f89acddcbd1828d47b1d00cbc117c8ea3bb2d8c6#f89acddcbd1828d47b1d00cbc117c8ea3bb2d8c6"
+  integrity sha512-KP0MVGUXTNE7O/bxjamgEK70Wfeegbi16QG5Mi6amwOxXegXQMhP4S5caXOVBBUNPIYcturtIs3pSiQ8jWCWFA==
   dependencies:
     "@babel/preset-typescript" "^7.18.6"
     "@navikt/ds-css" "^1.5.x"
     "@navikt/ds-css-internal" "^1.5.x"
     "@navikt/ds-icons" "^1.5.x"
     "@navikt/ds-react" "^1.5.x"
-    "@navikt/ds-react-internal" "^1.3.x"
-    "@navikt/familie-ikoner" "^4.0.7"
-    "@navikt/familie-typer" "^5.0.4"
-    "@navikt/familie-validering" "^2.0.6"
+    "@navikt/ds-react-internal" "^1.5.x"
+    "@navikt/familie-ikoner" "^4.0.8"
+    "@navikt/familie-typer" "^5.0.5"
+    "@navikt/familie-validering" "^2.0.7"
     "@types/react-dom" "^18.x"
     classnames "^2.3.1"
     lodash.throttle "^4.1.1"
@@ -3008,6 +3010,13 @@
   dependencies:
     "@navikt/familie-typer" "^5.0.4"
 
+"@navikt/familie-ikoner@^4.0.8":
+  version "4.0.8"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-ikoner/4.0.8/f58be4fd36ea4012cbcc395d3b298205af8ba42a#f58be4fd36ea4012cbcc395d3b298205af8ba42a"
+  integrity sha512-ooasW6epDss6qPXtTfcWXzRc999xF1nVq2edx9k0Itb9WDg7nt0beE80aEKf7jx/6Ougxz0fYj2WEtSYagaytA==
+  dependencies:
+    "@navikt/familie-typer" "^5.0.5"
+
 "@navikt/familie-logging@^3.0.5":
   version "3.0.5"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/3.0.5/249c4e40bde7c78662338999a7004d65c3ba60d2#249c4e40bde7c78662338999a7004d65c3ba60d2"
@@ -3020,10 +3029,15 @@
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/5.0.4/e593ebc4fd8c019d125a2a942d100442dcb574f0#e593ebc4fd8c019d125a2a942d100442dcb574f0"
   integrity sha512-GkYyuhncCfFjtYcvvwKH1yKKzmcaIGzE2/ilqNhVN2akYzPdbJlYIT/3GUwL8SCCwwlMtzWtA4cp9l3ugv9W1g==
 
-"@navikt/familie-validering@^2.0.6":
-  version "2.0.6"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-validering/2.0.6/2112a653092ec7e14827914000ac8e10648149d9#2112a653092ec7e14827914000ac8e10648149d9"
-  integrity sha512-KS9+skTRsWXktTPT6IJ/ULKdq43lymJxEuyVmkXzzfjB0NyZEUQfMzGFTSMwretYsrpMtJZaQvAjTH62Ql2Epg==
+"@navikt/familie-typer@^5.0.5":
+  version "5.0.5"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/5.0.5/3bd0620fbe9df105bf5faf882f091e53a05952c8#3bd0620fbe9df105bf5faf882f091e53a05952c8"
+  integrity sha512-kqGgaIoJDdeQbq6ehusuVYtfnXFZD3wCoAwb4aePphwP+N9+vvsXufwDRy4Hjzq0fKgYMVjfnLC8Z+ZnlgI1Bg==
+
+"@navikt/familie-validering@^2.0.7":
+  version "2.0.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-validering/2.0.7/b8ffa5526e7021310e55c990f8a8a8c2e5133c18#b8ffa5526e7021310e55c990f8a8a8c2e5133c18"
+  integrity sha512-vgMN1vix5hTTEe62RRNRthp370MlqUb1Yvx7KWGg9EL/7o3twZC/5/U8yyFIzDaQXu1jaEM3+d33FnLDtSxMNQ==
   dependencies:
     "@babel/preset-typescript" "^7.18.6"
     "@types/jest" "^28.1.4"
