@@ -3,7 +3,7 @@ import {
     Revurderingsinformasjon,
     årsakRevuderingTilTekst,
 } from './typer';
-import React from 'react';
+import React, { useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { FamilieLesefelt } from '@navikt/familie-form-elements';
@@ -13,43 +13,76 @@ import {
     formaterNullableIsoDato,
 } from '../../../App/utils/formatter';
 import { Undertittel } from 'nav-frontend-typografi';
-import { Edit } from '@navikt/ds-icons';
+import { Delete, Edit } from '@navikt/ds-icons';
 import {
+    SistOppdatertOgVurderingWrapper,
     StyledStrek,
     StyledVurderingLesemodus,
     TittelOgKnappWrapper,
-    SistOppdatertOgVurderingWrapper,
 } from '../Vurdering/StyledVurdering';
+import { useApp } from '../../../App/context/AppContext';
+import { Behandling } from '../../../App/typer/fagsak';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
     settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
+    behandling: Behandling;
+    oppdaterRevurderingsinformasjon: (revurderingsinformasjon: Revurderingsinformasjon) => void;
 }
 
 export const VisÅrsakRevurdering: React.FC<Props> = ({
     revurderingsinformasjon,
     settRedigeringsmodus,
+    behandling,
+    oppdaterRevurderingsinformasjon,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { axiosRequest } = useApp();
+    const [feil, settFeil] = useState('');
 
     const årsakRevurdering = revurderingsinformasjon.årsakRevurdering;
 
-    // TODO endret til
+    const slettÅrsakRevurdering = () => {
+        axiosRequest<string, null>({
+            method: 'DELETE',
+            url: `/familie-ef-sak/api/revurdering/informasjon/${behandling.id}`,
+        }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                settFeil('');
+                oppdaterRevurderingsinformasjon({});
+                hentBehandling.rerun();
+            } else {
+                settFeil('Kunne ikke slette: ' + res.frontendFeilmelding);
+            }
+        });
+    };
 
     return (
         <StyledVurderingLesemodus>
             <BrukerMedBlyantIkon />
             <TittelOgKnappWrapper>
                 <Undertittel>Vurdert</Undertittel>
-                <Button
-                    variant={'tertiary'}
-                    type={'button'}
-                    hidden={!behandlingErRedigerbar}
-                    onClick={() => settRedigeringsmodus(true)}
-                    icon={<Edit />}
-                >
-                    Rediger
-                </Button>
+                <div>
+                    <Button
+                        variant={'tertiary'}
+                        type={'button'}
+                        hidden={!behandlingErRedigerbar}
+                        onClick={() => settRedigeringsmodus(true)}
+                        icon={<Edit />}
+                    >
+                        Rediger
+                    </Button>
+                    <Button
+                        variant={'tertiary'}
+                        type={'button'}
+                        hidden={!behandlingErRedigerbar}
+                        onClick={slettÅrsakRevurdering}
+                        icon={<Delete />}
+                    >
+                        Slett
+                    </Button>
+                </div>
             </TittelOgKnappWrapper>
             <StyledStrek />
             <SistOppdatertOgVurderingWrapper>
@@ -95,6 +128,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                         revurdering ble lagt til som egen fane i behandling.
                     </Alert>
                 )}
+                {feil && <Alert variant={'error'}>{feil}</Alert>}
             </SistOppdatertOgVurderingWrapper>
         </StyledVurderingLesemodus>
     );

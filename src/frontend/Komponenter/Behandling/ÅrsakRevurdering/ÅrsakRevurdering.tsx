@@ -36,7 +36,12 @@ export const ÅrsakRevurdering: React.FC<Props> = ({
             ) : (
                 <VisÅrsakRevurdering
                     revurderingsinformasjon={revurderingsinformasjon}
+                    oppdaterRevurderingsinformasjon={(revurderingsinformasjon) => {
+                        settRevurderingsinformasjon(revurderingsinformasjon);
+                        settRedigeringsmodus(true);
+                    }}
                     settRedigeringsmodus={settRedigeringsmodus}
+                    behandling={behandling}
                 />
             )}
         </>
