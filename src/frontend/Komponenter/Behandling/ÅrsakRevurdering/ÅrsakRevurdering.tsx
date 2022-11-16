@@ -20,7 +20,7 @@ export const ÅrsakRevurdering: React.FC<Props> = ({
         useState<Revurderingsinformasjon>(initState);
 
     const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
-        behandlingErRedigerbar && revurderingsinformasjon.årsakRevurdering === undefined
+        behandlingErRedigerbar && !revurderingsinformasjon.årsakRevurdering
     );
     return (
         <>
