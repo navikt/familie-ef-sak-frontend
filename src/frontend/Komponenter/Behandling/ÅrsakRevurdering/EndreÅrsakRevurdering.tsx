@@ -34,7 +34,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
     oppdaterRevurderingsinformasjon,
 }) => {
     const { axiosRequest } = useApp();
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
         useState<Revurderingsinformasjon>(initStateRevurderingsinformasjon);
@@ -70,6 +70,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
             },
         }).then((res: RessursSuksess<Revurderingsinformasjon> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
+                hentBehandling.rerun();
                 oppdaterRevurderingsinformasjon(res.data);
             } else {
                 settFeilmelding(res.frontendFeilmelding);
