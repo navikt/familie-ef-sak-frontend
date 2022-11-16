@@ -7,8 +7,19 @@ import React from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { FamilieLesefelt } from '@navikt/familie-form-elements';
-import { Alert, Button } from '@navikt/ds-react';
-import RedigerBlyant from '../../../Felles/Ikoner/RedigerBlyant';
+import { Alert, Button, Detail } from '@navikt/ds-react';
+import {
+    formaterIsoDatoTidMedSekunder,
+    formaterNullableIsoDato,
+} from '../../../App/utils/formatter';
+import { Undertittel } from 'nav-frontend-typografi';
+import { Edit } from '@navikt/ds-icons';
+import {
+    StyledStrek,
+    StyledVurderingLesemodus,
+    TittelOgKnappWrapper,
+    SistOppdatertOgVurderingWrapper,
+} from '../Vurdering/StyledVurdering';
 
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
@@ -26,20 +37,33 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
     // TODO endret til
 
     return (
-        <>
+        <StyledVurderingLesemodus>
             <BrukerMedBlyantIkon />
-            <div>
+            <TittelOgKnappWrapper>
+                <Undertittel>Vurdert</Undertittel>
                 <Button
                     variant={'tertiary'}
+                    type={'button'}
                     hidden={!behandlingErRedigerbar}
                     onClick={() => settRedigeringsmodus(true)}
-                    icon={<RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />}
+                    icon={<Edit />}
                 >
                     Rediger
                 </Button>
+            </TittelOgKnappWrapper>
+            <StyledStrek />
+            <SistOppdatertOgVurderingWrapper>
+                {revurderingsinformasjon.endretTid && (
+                    <Detail>
+                        Sist endret dato{' '}
+                        {formaterIsoDatoTidMedSekunder(revurderingsinformasjon.endretTid)}
+                    </Detail>
+                )}
                 <FamilieLesefelt
                     label={'Krav mottatt'}
-                    verdi={revurderingsinformasjon.kravMottatt || 'Ingen data'}
+                    verdi={
+                        formaterNullableIsoDato(revurderingsinformasjon.kravMottatt) || 'Ingen data'
+                    }
                 />
                 {årsakRevurdering && (
                     <>
@@ -71,7 +95,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                         revurdering ble lagt til som egen fane i behandling.
                     </Alert>
                 )}
-            </div>
-        </>
+            </SistOppdatertOgVurderingWrapper>
+        </StyledVurderingLesemodus>
     );
 };

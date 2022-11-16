@@ -12,20 +12,12 @@ import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakW
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { Button } from '@navikt/ds-react';
 import { Delete, Edit } from '@navikt/ds-icons';
-
-const StyledVurdering = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, max-content);
-    grid-template-rows: repeat(2, max-content);
-    grid-gap: 0.25rem 1rem;
-`;
-
-const StyledStrek = styled.span`
-    border-left: 3px solid ${navFarger.navLillaLighten20};
-    margin-left: 0.55rem;
-    grid-column: 1/2;
-    min-height: 10rem;
-`;
+import {
+    SistOppdatertOgVurderingWrapper,
+    StyledStrek,
+    StyledVurderingLesemodus,
+    TittelOgKnappWrapper,
+} from './StyledVurdering';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -51,20 +43,8 @@ const StyledIkonOgTittel = styled.span`
     }
 `;
 
-const TittelOgKnappWrapper = styled.span`
-    display: flex;
-    justify-content: space-between;
-    width: 40rem;
-`;
-
 const SistOppdatertTekst = styled(Undertekst)`
     color: ${navFarger.navGra60};
-`;
-
-const VilkårOgSistOppdatertWrapper = styled.span`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
 `;
 
 interface Props {
@@ -96,7 +76,7 @@ const VisVurdering: FC<Props> = ({
         (delvilkårsvurdering) => delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT
     );
     return (
-        <StyledVurdering key={vurdering.id}>
+        <StyledVurderingLesemodus key={vurdering.id}>
             <BrukerMedBlyantIkon />
 
             <TittelOgKnappWrapper>
@@ -143,7 +123,7 @@ const VisVurdering: FC<Props> = ({
             </TittelOgKnappWrapper>
 
             <StyledStrek />
-            <VilkårOgSistOppdatertWrapper>
+            <SistOppdatertOgVurderingWrapper>
                 {sistOppdatert &&
                     (vilkårsresultat === Vilkårsresultat.OPPFYLT ||
                         vilkårsresultat === Vilkårsresultat.AUTOMATISK_OPPFYLT ||
@@ -173,8 +153,8 @@ const VisVurdering: FC<Props> = ({
                         ))
                     )}
                 </StyledVilkår>
-            </VilkårOgSistOppdatertWrapper>
-        </StyledVurdering>
+            </SistOppdatertOgVurderingWrapper>
+        </StyledVurderingLesemodus>
     );
 };
 
