@@ -63,26 +63,26 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
             <BrukerMedBlyantIkon />
             <TittelOgKnappWrapper>
                 <Undertittel>Vurdert</Undertittel>
-                <div>
-                    <Button
-                        variant={'tertiary'}
-                        type={'button'}
-                        hidden={!behandlingErRedigerbar}
-                        onClick={() => settRedigeringsmodus(true)}
-                        icon={<Edit />}
-                    >
-                        Rediger
-                    </Button>
-                    <Button
-                        variant={'tertiary'}
-                        type={'button'}
-                        hidden={!behandlingErRedigerbar}
-                        onClick={slettÅrsakRevurdering}
-                        icon={<Delete />}
-                    >
-                        Slett
-                    </Button>
-                </div>
+                {behandlingErRedigerbar && (
+                    <div>
+                        <Button
+                            variant={'tertiary'}
+                            type={'button'}
+                            onClick={() => settRedigeringsmodus(true)}
+                            icon={<Edit />}
+                        >
+                            Rediger
+                        </Button>
+                        <Button
+                            variant={'tertiary'}
+                            type={'button'}
+                            onClick={slettÅrsakRevurdering}
+                            icon={<Delete />}
+                        >
+                            Slett
+                        </Button>
+                    </div>
+                )}
             </TittelOgKnappWrapper>
             <StyledStrek />
             <SistOppdatertOgVurderingWrapper>
