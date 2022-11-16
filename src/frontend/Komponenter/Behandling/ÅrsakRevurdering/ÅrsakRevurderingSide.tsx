@@ -28,6 +28,8 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
         Ressurs<Revurderingsinformasjon>
     >(byggTomRessurs());
 
+    const [vurderingUtfylt, settVurderingUtfylt] = useState(false);
+
     useEffect(() => {
         axiosRequest<Revurderingsinformasjon, null>({
             url: `/familie-ef-sak/api/revurdering/informasjon/${behandlingId}`,
@@ -40,7 +42,7 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
             {{
                 venstre: (
                     <FlexDiv>
-                        <ÅrsakRevurderingIkon oppfylt={true} />
+                        <ÅrsakRevurderingIkon oppfylt={vurderingUtfylt} />
                         <Undertittel>Årsak til revurdering</Undertittel>
                     </FlexDiv>
                 ),
@@ -50,6 +52,7 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
                             <ÅrsakRevurdering
                                 revurderingsinformasjon={revurderingsinformasjon}
                                 behandling={behandling}
+                                settVurderingUtfylt={settVurderingUtfylt}
                             />
                         )}
                     </DataViewer>
