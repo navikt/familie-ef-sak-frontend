@@ -30,11 +30,18 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
         <>
             <BrukerMedBlyantIkon />
             <div>
+                <LenkeKnapp
+                    hidden={!behandlingErRedigerbar}
+                    onClick={() => settRedigeringsmodus(true)}
+                >
+                    <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
+                    <span>Rediger</span>
+                </LenkeKnapp>
                 <FamilieLesefelt
                     label={'Krav mottatt'}
                     verdi={revurderingsinformasjon.kravMottatt || 'Ingen data'}
                 />
-                {årsakRevurdering ? (
+                {årsakRevurdering && (
                     <>
                         <FamilieLesefelt
                             label={'Hvordan har vi fått opplysningene?'}
@@ -57,22 +64,14 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                             />
                         )}
                     </>
-                ) : (
+                )}
+                {!årsakRevurdering && !behandlingErRedigerbar && (
                     <Alert variant={'info'}>
                         Ingen informasjon å vise. Behandlingen ble opprettet før årsak til
                         revurdering ble lagt til som egen fane i behandling.
                     </Alert>
                 )}
             </div>
-            {
-                <LenkeKnapp
-                    hidden={!behandlingErRedigerbar}
-                    onClick={() => settRedigeringsmodus(true)}
-                >
-                    <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
-                    <span>Rediger</span>
-                </LenkeKnapp>
-            }
         </>
     );
 };
