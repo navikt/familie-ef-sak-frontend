@@ -64,8 +64,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const [visHenleggModal, settVisHenleggModal] = useState(false);
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
-    const årsakRevurdering = useState();
-
     return {
         behandling,
         behandlingErRedigerbar,
@@ -81,7 +79,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         åpenHøyremeny,
         settÅpenHøyremeny,
         utestengelser,
-        årsakRevurdering,
     };
 });
 
