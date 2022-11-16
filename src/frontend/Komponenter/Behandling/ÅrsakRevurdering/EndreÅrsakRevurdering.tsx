@@ -5,6 +5,7 @@ import {
     opplysningskildeTilTekst,
     Revurderingsinformasjon,
     Årsak,
+    årsakerForStønadstype,
     årsakRevuderingTilTekst,
 } from './typer';
 import React, { useState } from 'react';
@@ -128,7 +129,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 }
             >
                 <option value="">Ikke valgt</option>
-                {Object.values(Årsak).map((årsak) => (
+                {Object.values(årsakerForStønadstype(behandling.stønadstype)).map((årsak) => (
                     <option key={årsak} value={årsak}>
                         {årsakRevuderingTilTekst[årsak]}
                     </option>

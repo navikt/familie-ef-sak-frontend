@@ -1,3 +1,5 @@
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+
 export interface Revurderingsinformasjon {
     kravMottatt?: string;
     årsakRevurdering?: IÅrsakRevurdering;
@@ -141,4 +143,15 @@ export const opplysningskildeTilTekst: Record<Opplysningskilde, string> = {
     BESKJED_ANNEN_ENHET: 'Beskjed fra annen enhet',
     LIVSHENDELSER: 'Livshendelser',
     OPPLYSNINGER_INTERNE_KONTROLLER: 'Opplysninger fra interne kontroller',
+};
+
+export const årsakerForStønadstype = (stønadstype: Stønadstype): Årsak[] => {
+    switch (stønadstype) {
+        case Stønadstype.BARNETILSYN:
+            return ÅrsakerBarnetilsyn;
+        case Stønadstype.OVERGANGSSTØNAD:
+            return ÅrsakerOvergangsstønad;
+        case Stønadstype.SKOLEPENGER:
+            return ÅrsakerSkolepenger;
+    }
 };
