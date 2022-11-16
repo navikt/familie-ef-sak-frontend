@@ -14,6 +14,13 @@ import { Button, Select, Textarea } from '@navikt/ds-react';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
+import styled from 'styled-components';
+
+const StyledEndreÅrsakRevurdering = styled.div`
+    > * {
+        margin-bottom: 1rem;
+    }
+`;
 
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
@@ -80,7 +87,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
         }));
 
     return (
-        <>
+        <StyledEndreÅrsakRevurdering>
             <FamilieDatovelger
                 erLesesvisning={!behandlingErRedigerbar}
                 label={'Krav mottatt'}
@@ -141,6 +148,6 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
             <Button variant={'primary'} onClick={lagreRevurderingsinformasjon}>
                 Lagre
             </Button>
-        </>
+        </StyledEndreÅrsakRevurdering>
     );
 };
