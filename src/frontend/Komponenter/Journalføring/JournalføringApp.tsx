@@ -48,6 +48,7 @@ import JournalføringPdfVisning from './JournalføringPdfVisning';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
+import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
 
 const ModalKnapp = styled(Button)`
     margin-bottom: 1rem;
@@ -215,6 +216,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             }`}</Sidetittel>
             <Kolonner>
                 <Venstrekolonne>
+                    {fagsak.status === RessursStatus.SUKSESS && (
+                        <ÅpneKlager fagsakPersonId={fagsak.data.fagsakPersonId} />
+                    )}
                     <JournalpostTittelOgLenke
                         journalResponse={journalResponse}
                         oppgaveId={oppgaveId}
