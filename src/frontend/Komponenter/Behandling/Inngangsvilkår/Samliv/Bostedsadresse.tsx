@@ -12,11 +12,11 @@ import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import LenkeKnapp from '../../../../Felles/Knapper/LenkeKnapp';
 import { Collapse, Expand } from '@navikt/ds-icons';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { gyldigTilOgMedErNullEllerFremITid } from '../../../../Felles/Personopplysninger/adresseUtil';
+import { Button } from '@navikt/ds-react';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -32,14 +32,6 @@ const BeboereTabell = styled.table<BeboereTabellProps>`
     margin-top: 2rem;
 
     display: ${(props) => (props.vis ? 'block' : 'none')};
-`;
-
-const LenkeIkon = styled.div`
-    margin-left: 0.5rem;
-    top: 2px;
-
-    display: inline-block;
-    position: relative;
 `;
 
 const nåværendeBostedsadresse = (
@@ -92,16 +84,18 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
                                     {bostedsadresse?.visningsadresse || 'Mangler bostedsadresse'}
                                 </Normaltekst>
                                 {bostedsadresse && (
-                                    <LenkeKnapp
+                                    <Button
+                                        type={'button'}
+                                        variant={'tertiary'}
+                                        icon={visBeboere ? <Collapse /> : <Expand />}
+                                        iconPosition={'right'}
                                         onClick={() => {
                                             settVisBeboere(!visBeboere);
                                         }}
+                                        size={'small'}
                                     >
                                         Se beboere
-                                        <LenkeIkon>
-                                            {visBeboere ? <Collapse /> : <Expand />}
-                                        </LenkeIkon>
-                                    </LenkeKnapp>
+                                    </Button>
                                 )}
                             </div>
                         </>

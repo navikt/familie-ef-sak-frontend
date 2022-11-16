@@ -1,7 +1,5 @@
 import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
-import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
-import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import {
     AvsnittMedId,
@@ -19,6 +17,7 @@ import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
+import { Delete } from '@navikt/ds-icons';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -49,6 +48,11 @@ const LeggTilKnappWrapper = styled.div`
 const BrevKolonner = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+const SlettKnapp = styled(Button)`
+    width: fit-content;
+    place-self: center;
 `;
 
 const FlyttAvsnittKnappWrapper = styled.div`
@@ -181,10 +185,14 @@ const BrevInnhold: React.FC<Props> = ({
                                         value={rad.innhold}
                                         maxLength={0}
                                     />
-                                    <LenkeKnapp onClick={() => fjernRad(rad.id)}>
-                                        <SlettSøppelkasse withDefaultStroke={false} />
+                                    <SlettKnapp
+                                        type={'button'}
+                                        variant={'secondary'}
+                                        onClick={() => fjernRad(rad.id)}
+                                        icon={<Delete />}
+                                    >
                                         Slett avsnitt
-                                    </LenkeKnapp>
+                                    </SlettKnapp>
                                 </Innholdsrad>
                                 <FlyttAvsnittKnappWrapper id={knappWrapperId}>
                                     {index > 0 && (

@@ -7,25 +7,26 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import EndreVurderingComponent from './EndreVurderingComponent';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
-import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
+import { Cancel } from '@navikt/ds-icons';
+import { Button } from '@navikt/ds-react';
 
-const OuterEndreVurderingContainer = styled.div`
+const Container = styled.div`
     > *:not(:first-child) {
         margin-top: 10px;
     }
 `;
 
-const AvbrytKnappContainer = styled.div`
+const FlexRow = styled.div`
     display: flex;
     justify-content: flex-start;
 `;
 
-const InnerEndreVurderingContainer = styled.div`
+const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
 `;
-const StyledUndertittel = styled(Undertittel)`
-    padding-right: 10rem;
+const VurderingTittel = styled(Undertittel)`
+    padding-right: 1rem;
 `;
 
 interface Props {
@@ -68,25 +69,32 @@ const EndreVurdering: FC<Props> = ({
     };
 
     return (
-        <OuterEndreVurderingContainer>
+        <Container>
             {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
             {regler.status === RessursStatus.SUKSESS && (
-                <InnerEndreVurderingContainer>
-                    <AvbrytKnappContainer>
-                        <StyledUndertittel>Vilkår vurderes</StyledUndertittel>
-                        <LenkeKnapp onClick={avbrytVurdering}>
+                <FlexColumn>
+                    <FlexRow>
+                        <VurderingTittel>Vilkår vurderes</VurderingTittel>
+                        <Button
+                            type={'button'}
+                            variant={'tertiary'}
+                            icon={<Cancel />}
+                            onClick={avbrytVurdering}
+                            size={'small'}
+                        >
                             <span>Avbryt</span>
-                        </LenkeKnapp>
-                    </AvbrytKnappContainer>
+                        </Button>
+                    </FlexRow>
+
                     <EndreVurderingComponent
                         oppdaterVurdering={oppdaterVurdering}
                         vilkårType={vurdering.vilkårType}
                         regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
                         vurdering={vurdering}
                     />
-                </InnerEndreVurderingContainer>
+                </FlexColumn>
             )}
-        </OuterEndreVurderingContainer>
+        </Container>
     );
 };
 export default EndreVurdering;
