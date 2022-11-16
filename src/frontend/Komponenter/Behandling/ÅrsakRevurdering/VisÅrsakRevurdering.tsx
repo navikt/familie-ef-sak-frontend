@@ -7,9 +7,8 @@ import React from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { FamilieLesefelt } from '@navikt/familie-form-elements';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Button } from '@navikt/ds-react';
 import RedigerBlyant from '../../../Felles/Ikoner/RedigerBlyant';
-import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
@@ -30,13 +29,14 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
         <>
             <BrukerMedBlyantIkon />
             <div>
-                <LenkeKnapp
+                <Button
+                    variant={'tertiary'}
                     hidden={!behandlingErRedigerbar}
                     onClick={() => settRedigeringsmodus(true)}
+                    icon={<RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />}
                 >
-                    <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
-                    <span>Rediger</span>
-                </LenkeKnapp>
+                    Rediger
+                </Button>
                 <FamilieLesefelt
                     label={'Krav mottatt'}
                     verdi={revurderingsinformasjon.kravMottatt || 'Ingen data'}
