@@ -7,7 +7,7 @@ import {
     Årsak,
     årsakRevuderingTilTekst,
 } from './typer';
-import React, { Dispatch, useState } from 'react';
+import React, { useState } from 'react';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Button, Select, Textarea } from '@navikt/ds-react';
@@ -18,18 +18,19 @@ import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMess
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
     behandling: Behandling;
-    settRedigeringsmodus: (erRedigeringsmodus: boolean) => void;
-    settRevurderingsinformasjon: Dispatch<React.SetStateAction<Revurderingsinformasjon>>;
+    oppdaterRevurderingsinformasjon: (revurderingsinformasjon: Revurderingsinformasjon) => void;
 }
 
 export const EndreÅrsakRevurdering: React.FC<Props> = ({
-    revurderingsinformasjon,
+    revurderingsinformasjon: initStateRevurderingsinformasjon,
     behandling,
-    settRedigeringsmodus,
-    settRevurderingsinformasjon,
+    oppdaterRevurderingsinformasjon,
 }) => {
     const { axiosRequest } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
+
+    const [revurderingsinformasjon, settRevurderingsinformasjon] =
+        useState<Revurderingsinformasjon>(initStateRevurderingsinformasjon);
 
     const { kravMottatt, årsakRevurdering } = revurderingsinformasjon;
     const { opplysningskilde, årsak, beskrivelse } = årsakRevurdering || {};
@@ -49,20 +50,27 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
             settFeilmelding('Mangler årsak');
             return;
         }
-        axiosRequest<string, Revurderingsinformasjon>({
+        axiosRequest<Revurderingsinformasjon, Revurderingsinformasjon>({
             method: 'POST',
             url: `familie-ef-sak/api/revurdering/informasjon/${behandling.id}`,
-            data: revurderingsinformasjon,
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            data: {
+                kravMottatt,
+                årsakRevurdering: {
+                    opplysningskilde,
+                    årsak,
+                    beskrivelse,
+                },
+            },
+        }).then((res: RessursSuksess<Revurderingsinformasjon> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
-                settRedigeringsmodus(false);
+                oppdaterRevurderingsinformasjon(res.data);
             } else {
                 settFeilmelding(res.frontendFeilmelding);
             }
         });
     };
 
-    const oppdaterÅrsakRevurdering = (nyeVerdier: Partial<IÅrsakRevurdering>) => {
+    const oppdaterÅrsakRevurdering = (nyeVerdier: Partial<IÅrsakRevurdering>) =>
         settRevurderingsinformasjon((prevState) => ({
             ...prevState,
             årsakRevurdering: {
@@ -70,7 +78,6 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 ...nyeVerdier,
             },
         }));
-    };
 
     return (
         <>
