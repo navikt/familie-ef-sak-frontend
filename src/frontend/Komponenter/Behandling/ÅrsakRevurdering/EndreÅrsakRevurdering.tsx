@@ -32,9 +32,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
 
     const { kravMottatt, årsakRevurdering } = revurderingsinformasjon;
-    const opplysningskilde = årsakRevurdering?.opplysningskilde;
-    const årsak = årsakRevurdering?.årsak;
-    const beskrivelse = årsakRevurdering?.beskrivelse;
+    const { opplysningskilde, årsak, beskrivelse } = årsakRevurdering || {};
 
     const [feilmelding, settFeilmelding] = useState<string>();
 

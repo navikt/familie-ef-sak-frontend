@@ -23,6 +23,9 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
 
     const årsakRevurdering = revurderingsinformasjon.årsakRevurdering;
+
+    // TODO endret til
+
     return (
         <>
             <BrukerMedBlyantIkon />
@@ -35,11 +38,17 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                     <>
                         <FamilieLesefelt
                             label={'Hvordan har vi fått opplysningene?'}
-                            verdi={opplysningskildeTilTekst[årsakRevurdering.opplysningskilde]}
+                            verdi={
+                                årsakRevurdering.opplysningskilde &&
+                                opplysningskildeTilTekst[årsakRevurdering.opplysningskilde]
+                            }
                         />
                         <FamilieLesefelt
                             label={'Årsak til revurdering'}
-                            verdi={årsakRevuderingTilTekst[årsakRevurdering.årsak]}
+                            verdi={
+                                årsakRevurdering.årsak &&
+                                årsakRevuderingTilTekst[årsakRevurdering.årsak]
+                            }
                         />
                         {årsakRevurdering.beskrivelse && (
                             <FamilieLesefelt
