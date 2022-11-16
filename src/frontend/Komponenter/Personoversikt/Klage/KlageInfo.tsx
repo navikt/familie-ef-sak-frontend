@@ -15,12 +15,12 @@ const AdvarselVisning = styled(Alert)`
     margin-top: 0.5rem;
 `;
 
-function erKlageUnderArbeid(klagebehandling: KlageBehandling) {
+const erKlageUnderArbeid = (klagebehandling: KlageBehandling) => {
     return (
         klagebehandling.status == KlagebehandlingStatus.OPPRETTET ||
         klagebehandling.status == KlagebehandlingStatus.UTREDES
     );
-}
+};
 
 const åpneKlager = (klagebehandlinger: Klagebehandlinger): Stønadstype[] => {
     const stønadstyperMedÅpenKlage: Stønadstype[] = [];
@@ -37,9 +37,7 @@ const åpneKlager = (klagebehandlinger: Klagebehandlinger): Stønadstype[] => {
     return stønadstyperMedÅpenKlage;
 };
 
-export const KlageInfo: React.FunctionComponent<{ fagsakPersonId: string }> = ({
-    fagsakPersonId,
-}) => {
+const KlageInfo: React.FunctionComponent<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { hentKlagebehandlinger, klagebehandlinger } = useHentKlagebehandlinger();
     useEffect(() => {
         if (klagebehandlinger.status === RessursStatus.IKKE_HENTET) {
