@@ -1,43 +1,24 @@
 import React from 'react';
-import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
+import { behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
 import { PartialRecord } from '../../../App/typer/common';
-import {
-    Behandling,
-    BehandlingResultat,
-    behandlingResultatTilTekst,
-} from '../../../App/typer/fagsak';
-import {
-    TilbakekrevingBehandlingsresultatstype,
-    TilbakekrevingBehandlingstype,
-} from '../../../App/typer/tilbakekreving';
+import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
 import { Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
-import { behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
-import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
 import SorteringsHeader from '../../Oppgavebenk/OppgaveSorteringHeader';
 import { useSorteringState } from '../../../App/hooks/felles/useSorteringState';
 import styled from 'styled-components';
-import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
+import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 
 const StyledTable = styled(Table)`
     padding: 2rem;
 `;
 
-interface GamleBehandlingerTabell {
-    id: string;
-    opprettet: string;
-    stønadstype: Stønadstype;
-    type: Behandlingstype | TilbakekrevingBehandlingstype;
-    behandlingsårsak?: Behandlingsårsak;
-    resultat?: BehandlingResultat | TilbakekrevingBehandlingsresultatstype;
-}
-
-const TabellData: PartialRecord<keyof GamleBehandlingerTabell, string> = {
+const TabellData: PartialRecord<keyof Behandling, string> = {
     opprettet: 'Behandling opprettetdato',
-    type: 'Type',
     stønadstype: 'Stønadstype',
+    type: 'Type',
     behandlingsårsak: 'Årsak',
     resultat: 'Resultat',
 };
@@ -45,13 +26,10 @@ const TabellData: PartialRecord<keyof GamleBehandlingerTabell, string> = {
 export const GamleBehandlingerTabell: React.FC<{
     gamleBehandlinger: Behandling[];
 }> = ({ gamleBehandlinger }) => {
-    const { sortertListe, settSortering, sortConfig } = useSorteringState<GamleBehandlingerTabell>(
-        gamleBehandlinger,
-        {
-            sorteringsfelt: 'opprettet',
-            rekkefolge: 'ascending',
-        }
-    );
+    const { sortertListe, settSortering, sortConfig } = useSorteringState(gamleBehandlinger, {
+        sorteringsfelt: 'opprettet',
+        rekkefolge: 'ascending',
+    });
 
     return (
         <StyledTable className="tabell" size="medium" zebraStripes={true}>
@@ -65,10 +43,10 @@ export const GamleBehandlingerTabell: React.FC<{
                                     : undefined
                             }
                             tekst={tekst}
-                            onClick={() => settSortering(felt as keyof GamleBehandlingerTabell)}
+                            onClick={() => settSortering(felt as keyof Behandling)}
                             key={`${index}${felt}`}
                         />
-                    ))}{' '}
+                    ))}
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -79,17 +57,13 @@ export const GamleBehandlingerTabell: React.FC<{
                                 {formaterIsoDato(behandling.opprettet)}
                             </Table.DataCell>
                             <Table.DataCell scope="row">
-                                {
-                                    behandlingsårsakTilTekst[
-                                        behandling.behandlingsårsak as Behandlingsårsak
-                                    ]
-                                }
+                                {stønadstypeTilTekst[behandling.stønadstype]}
                             </Table.DataCell>
                             <Table.DataCell scope="row">
-                                {behandlingstypeTilTekst[behandling.type as Behandlingstype]}
+                                {behandlingstypeTilTekst[behandling.type]}
                             </Table.DataCell>
                             <Table.DataCell scope="row">
-                                {stønadstypeTilTekst[behandling.stønadstype as Stønadstype]}
+                                {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
                             </Table.DataCell>
                             <Table.DataCell>
                                 <Link
@@ -98,11 +72,7 @@ export const GamleBehandlingerTabell: React.FC<{
                                         pathname: `/behandling/${behandling.id}`,
                                     }}
                                 >
-                                    {
-                                        behandlingResultatTilTekst[
-                                            behandling.resultat as BehandlingResultat
-                                        ]
-                                    }
+                                    {behandlingResultatTilTekst[behandling.resultat]}
                                 </Link>
                             </Table.DataCell>
                         </Table.Row>
