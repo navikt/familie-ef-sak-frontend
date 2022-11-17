@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Brukerinfo from './Brukerinfo';
 import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
@@ -21,6 +20,7 @@ import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/jo
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { AlertError, AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
+import { Button } from '@navikt/ds-react';
 
 const Blokk = styled.div`
     margin-bottom: 1rem;
@@ -149,12 +149,13 @@ export const JournalføringAdmin: React.FC = () => {
                             )}
                         </Blokk>
 
-                        <Hovedknapp
+                        <Button
+                            type="button"
                             onClick={() => sendInn(journalResponse, fagsak.id)}
-                            spinner={senderInn}
+                            loading={senderInn}
                         >
                             Opprett behandling
-                        </Hovedknapp>
+                        </Button>
                         {!journalResponse.harStrukturertSøknad && (
                             <AlertWarning>
                                 Kan ikke finne en digital søknad på denne journalposten.

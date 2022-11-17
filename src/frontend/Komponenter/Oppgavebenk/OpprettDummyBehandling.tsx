@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { Knapp } from 'nav-frontend-knapper';
+import { Button, Select, TextField } from '@navikt/ds-react';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { Select, TextField } from '@navikt/ds-react';
 import { fnr } from '@navikt/fnrvalidator';
 
 const StyledFnrInput = styled(TextField)`
@@ -84,9 +83,9 @@ export const OpprettDummyBehandling: React.FC = () => {
                 <option value="SKOLEPENGER">Skolepenger</option>
             </Select>
 
-            <Knapp mini disabled={!harSattPersonIdent} onClick={opprettBehandling}>
+            <Button type={'button'} disabled={!harSattPersonIdent} onClick={opprettBehandling}>
                 Lag behandling
-            </Knapp>
+            </Button>
             {harFeil && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
         </StyledOpprettDummyBehandling>
     );

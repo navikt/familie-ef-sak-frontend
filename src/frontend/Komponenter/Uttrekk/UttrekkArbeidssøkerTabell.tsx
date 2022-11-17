@@ -2,12 +2,11 @@ import React from 'react';
 import { Element } from 'nav-frontend-typografi';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
-import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/utils/formatter';
 import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
-import { Link } from '@navikt/ds-react';
+import { Button, Link } from '@navikt/ds-react';
 
 const StyledTable = styled.table`
     width: 70%;
@@ -62,8 +61,9 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                             <td>{nullableBooleanTilTekst(arbeidssøker.registrertArbeidssøker)}</td>
                             <td>
                                 {!arbeidssøker.kontrollert ? (
-                                    <Knapp
-                                        mini
+                                    <Button
+                                        type={'button'}
+                                        variant={'secondary'}
                                         onClick={() =>
                                             settKontrollert(
                                                 arbeidssøker.id,
@@ -72,13 +72,14 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                         }
                                     >
                                         Sett kontrollert
-                                    </Knapp>
+                                    </Button>
                                 ) : (
                                     <>
                                         {formaterNullableIsoDatoTid(arbeidssøker.kontrollertTid)} (
                                         {arbeidssøker.kontrollertAv})
-                                        <Flatknapp
-                                            mini
+                                        <Button
+                                            type={'button'}
+                                            variant={'tertiary'}
                                             style={{ marginLeft: '1rem' }}
                                             onClick={() =>
                                                 settKontrollert(
@@ -88,7 +89,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                             }
                                         >
                                             Tilbakestill
-                                        </Flatknapp>
+                                        </Button>
                                     </>
                                 )}
                             </td>

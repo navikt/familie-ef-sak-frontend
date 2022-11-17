@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ITilbakekrevingsvalg, TilbakekrevingsvalgTilTekst } from './Tilbakekreving';
-import IkonKnapp from '../../../Felles/Knapper/IkonKnapp';
-import Søknad from '../../../Felles/Ikoner/Søknad';
 import { useApp } from '../../../App/context/AppContext';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { FileContent } from '@navikt/ds-icons';
+import { Button } from '@navikt/ds-react';
 
 const VisningsContainer = styled.div`
     margin-top: 1rem;
@@ -68,14 +68,15 @@ export const VisTilbakekreving: React.FC<Props> = ({
                     <UnderOverskrfit>Fritekst i varselet</UnderOverskrfit>
                     <Normaltekst>{varseltekst}</Normaltekst>
                     {kanForhåndsvise && (
-                        <IkonKnapp
-                            erLesevisning={false}
-                            ikon={<Søknad />}
-                            label={'Forhåndsvis varselbrev'}
-                            kompakt={true}
-                            mini={true}
+                        <Button
+                            type={'button'}
+                            variant={'tertiary'}
+                            icon={<FileContent />}
+                            size={'xsmall'}
                             onClick={visBrevINyFane}
-                        />
+                        >
+                            Forhåndsvis varselbrev
+                        </Button>
                     )}
                     {forhåndsvisningsFeil && <AlertError>{forhåndsvisningsFeil}</AlertError>}
                 </>

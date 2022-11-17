@@ -8,7 +8,7 @@ import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
 import { TogglesProvider } from './App/context/TogglesContext';
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
-import BehandlingContainer from './Komponenter/Behandling/BehandlingContainer';
+import { BehandlingContainer } from './Komponenter/Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
 import { JournalføringApp } from './Komponenter/Journalføring/JournalføringApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';

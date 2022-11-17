@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../App/context/AppContext';
@@ -8,6 +7,7 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { Button } from '@navikt/ds-react';
 
 const Footer = styled.footer`
     width: calc(100%);
@@ -22,7 +22,7 @@ const MidtstiltInnhold = styled.div`
     display: flex;
 `;
 
-const StyledHovedknapp = styled(Hovedknapp)`
+const HovedKnapp = styled(Button)`
     margin-left: 1rem;
     margin-right: 1rem;
 `;
@@ -69,12 +69,13 @@ const SendTilBeslutterFooter: React.FC<{
                 <Footer>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                     <MidtstiltInnhold>
-                        <StyledHovedknapp
+                        <HovedKnapp
                             onClick={sendTilBeslutter}
                             disabled={laster || !kanSendesTilBeslutter}
+                            type={'button'}
                         >
                             Send til beslutter
-                        </StyledHovedknapp>
+                        </HovedKnapp>
                     </MidtstiltInnhold>
                 </Footer>
             )}

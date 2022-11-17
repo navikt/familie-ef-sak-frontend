@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
-import { Hovedknapp as HovedknappNAV, Knapp } from 'nav-frontend-knapper';
 import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
 import {
     EBehandlingResultat,
@@ -21,7 +20,6 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
-import hiddenIf from '../../../../../Felles/HiddenIf/hiddenIf';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
@@ -32,12 +30,10 @@ import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/Al
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
-import { Heading } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
-
-const Hovedknapp = hiddenIf(HovedknappNAV);
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -348,9 +344,13 @@ export const InnvilgeVedtak: React.FC<{
                         </WrapperMarginTop>
                         {behandlingErRedigerbar && (
                             <WrapperMarginTop>
-                                <Knapp type={'standard'} onClick={beregnPerioder} htmlType="button">
+                                <Button
+                                    onClick={beregnPerioder}
+                                    variant={'secondary'}
+                                    type={'button'}
+                                >
                                     Beregn
-                                </Knapp>
+                                </Button>
                             </WrapperMarginTop>
                         )}
                     </WrapperMarginTop>
@@ -362,15 +362,17 @@ export const InnvilgeVedtak: React.FC<{
                             {feilmelding}
                         </AlertStripeFeilPreWrap>
                     )}
-                    <WrapperDobbelMarginTop>
-                        <Hovedknapp
-                            hidden={!behandlingErRedigerbar}
-                            htmlType="submit"
-                            disabled={laster || !!revurderesFraOgMedFeilmelding}
-                        >
-                            Lagre vedtak
-                        </Hovedknapp>
-                    </WrapperDobbelMarginTop>
+                    {behandlingErRedigerbar && (
+                        <WrapperDobbelMarginTop>
+                            <Button
+                                variant={'primary'}
+                                disabled={laster || !!revurderesFraOgMedFeilmelding}
+                                type={'submit'}
+                            >
+                                Lagre vedtak
+                            </Button>
+                        </WrapperDobbelMarginTop>
+                    )}
                 </>
             )}
         </form>

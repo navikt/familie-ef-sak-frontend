@@ -111,16 +111,20 @@ const VisVurdering: FC<Props> = ({
                 {behandlingErRedigerbar && (
                     <>
                         <div>
-                            <Button
-                                type={'button'}
-                                variant={'tertiary'}
-                                icon={<Edit />}
-                                hidden={vilkårsresultat === Vilkårsresultat.SKAL_IKKE_VURDERES}
-                                onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
-                                size={'small'}
-                            >
-                                <span>Rediger</span>
-                            </Button>
+                            {vilkårsresultat !== Vilkårsresultat.SKAL_IKKE_VURDERES && (
+                                <Button
+                                    type={'button'}
+                                    variant={'tertiary'}
+                                    icon={<Edit />}
+                                    onClick={() =>
+                                        settRedigeringsmodus(Redigeringsmodus.REDIGERING)
+                                    }
+                                    size={'small'}
+                                >
+                                    <span>Rediger</span>
+                                </Button>
+                            )}
+
                             <Button
                                 type={'button'}
                                 variant={'tertiary'}

@@ -3,7 +3,6 @@ import { Button, Heading, Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import styled from 'styled-components';
 import { ToggleName } from '../../../App/context/toggles';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { useApp } from '../../../App/context/AppContext';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { UtestengelseModal } from './UtestengelseModal';
@@ -22,8 +21,8 @@ const UtestengelseContainer = styled.div`
     margin-top: 4rem;
 `;
 
-const StyledButton = styled(Button)`
-    margin-top: 1rem;
+const Knapp = styled(Button)`
+    margin-top: 0.5rem;
 `;
 
 const UtestengelseTabell: FC<{
@@ -109,9 +108,13 @@ const Utestengelse: FC<{
             />
 
             {erSaksbehandler && (
-                <StyledButton variant={'secondary'} onClick={() => settVisUtestengModal(true)}>
-                    <Normaltekst>Legg til utestengelse</Normaltekst>
-                </StyledButton>
+                <Knapp
+                    variant={'secondary'}
+                    onClick={() => settVisUtestengModal(true)}
+                    type={'button'}
+                >
+                    Legg til utestengelse
+                </Knapp>
             )}
             <UtestengelseModal
                 fagsakPersonId={fagsakPersonId}

@@ -2,14 +2,13 @@ import styled from 'styled-components';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import * as React from 'react';
 import { FormEvent, useState } from 'react';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../App/context/AppContext';
 import { BorderBox } from './Totrinnskontroll';
 import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EToast } from '../../../App/typer/toast';
-import { Radio, RadioGroup, Textarea } from '@navikt/ds-react';
+import { Button, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
 
 const RadioButtonWrapper = styled.div`
     display: block;
@@ -73,7 +72,7 @@ const FatterVedtak: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
             data: {
-                godkjent: godkjent === Totrinnsresultat.GODKJENT ? true : false,
+                godkjent: godkjent === Totrinnsresultat.GODKJENT,
                 begrunnelse,
             },
         })
@@ -138,9 +137,9 @@ const FatterVedtak: React.FC<{
                 )}
                 {erUtfylt && (
                     <SubmitButtonWrapper>
-                        <Hovedknapp htmlType="submit" disabled={laster}>
+                        <Button type="submit" disabled={laster}>
                             Fullfør
-                        </Hovedknapp>
+                        </Button>
                     </SubmitButtonWrapper>
                 )}
                 {feil && <AlertStripeFeilPreWrap>{feil}</AlertStripeFeilPreWrap>}

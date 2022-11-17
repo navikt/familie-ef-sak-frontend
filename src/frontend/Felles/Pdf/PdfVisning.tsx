@@ -3,9 +3,8 @@ import { Ressurs } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import { Document, Page, pdfjs } from 'react-pdf';
 import DataViewer from '../DataViewer/DataViewer';
-import Pagination from 'paginering';
 import { AlertError } from '../Visningskomponenter/Alerts';
-import { Loader } from '@navikt/ds-react';
+import { Loader, Pagination } from '@navikt/ds-react';
 
 // eslint-disable-next-line
 const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
@@ -56,10 +55,9 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
             {({ pdfFilInnhold }) => (
                 <DokumentWrapper>
                     <StyledPagination
-                        numberOfItems={numPages}
-                        onChange={setPageNumber}
-                        itemsPerPage={1}
-                        currentPage={pageNumber}
+                        page={pageNumber}
+                        count={numPages}
+                        onPageChange={setPageNumber}
                     />
                     <StyledDokument
                         file={`data:application/pdf;base64,${pdfFilInnhold}`}
@@ -73,10 +71,9 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         <Page pageNumber={pageNumber} />
                     </StyledDokument>
                     <StyledPagination
-                        numberOfItems={numPages}
-                        onChange={setPageNumber}
-                        itemsPerPage={1}
-                        currentPage={pageNumber}
+                        page={pageNumber}
+                        count={numPages}
+                        onPageChange={setPageNumber}
                     />
                 </DokumentWrapper>
             )}

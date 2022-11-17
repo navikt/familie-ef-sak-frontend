@@ -37,7 +37,7 @@ export function hentSvarsalternativ(
     }
 }
 
-export function erAllaDelvilkårBesvarte(
+export function erAlleDelvilkårBesvarte(
     delvilkårsvurderinger: IDelvilkår[],
     regler: Regler
 ): boolean {

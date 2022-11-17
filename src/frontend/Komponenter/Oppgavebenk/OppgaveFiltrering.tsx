@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { oppgaveTypeTilTekst } from './typer/oppgavetema';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
@@ -31,15 +30,10 @@ export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     }
 `;
 
-export const KnappWrapper = styled.div`
+const KnappWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-
-    .flex-item {
-        margin-right: 1.5rem;
-    }
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 `;
 
 const AlertStripe = styled(Alert)`
@@ -50,6 +44,10 @@ const ModalKnapp = styled(Button)`
     margin-top: 1rem;
     margin-bottom: 2rem;
     float: right;
+`;
+
+const FiltreringKnapp = styled(Button)`
+    margin-right: 1.5rem;
 `;
 
 interface IOppgaveFiltrering {
@@ -149,6 +147,12 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         }
         lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), oppgaveRequest);
         hentOppgaver(oppgaveRequest);
+    };
+
+    const tilbakestillFiltrering = () => {
+        lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), tomOppgaveRequest);
+        settOppgaveRequest(tomOppgaveRequest);
+        hentOppgaver(tomOppgaveRequest);
     };
 
     return (
@@ -273,22 +277,16 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
             </FlexDiv>
 
             <KnappWrapper>
-                <Hovedknapp className="flex-item" onClick={sjekkFeilOgHentOppgaver}>
+                <FiltreringKnapp onClick={sjekkFeilOgHentOppgaver} type={'button'}>
                     Hent oppgaver
-                </Hovedknapp>
-                <Knapp
-                    className="flex-item"
-                    onClick={() => {
-                        lagreTilLocalStorage(
-                            oppgaveRequestKey(innloggetSaksbehandler.navIdent),
-                            tomOppgaveRequest
-                        );
-                        settOppgaveRequest(tomOppgaveRequest);
-                        hentOppgaver(tomOppgaveRequest);
-                    }}
+                </FiltreringKnapp>
+                <FiltreringKnapp
+                    variant={'secondary'}
+                    onClick={tilbakestillFiltrering}
+                    type={'button'}
                 >
                     Tilbakestill filtrering
-                </Knapp>
+                </FiltreringKnapp>
             </KnappWrapper>
             <ModalWrapper tittel={'Ugyldig oppgave'} visModal={!!feilmelding}>
                 <AlertStripe variant={'warning'}>{feilmelding}</AlertStripe>

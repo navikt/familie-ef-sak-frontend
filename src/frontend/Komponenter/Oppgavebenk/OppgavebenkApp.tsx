@@ -15,6 +15,7 @@ export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
 const InfoVisning = styled(AlertInfo)`
     margin-top: 2rem;
     max-width: 60rem;
+
     .navds-alert__wrapper {
         max-width: 60rem;
     }

@@ -256,11 +256,12 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 );
             })}
             <ContainerMedLuftUnder>
-                <LeggTilKnapp
-                    onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
-                    knappetekst="Legg til vedtaksperiode"
-                    hidden={!behandlingErRedigerbar}
-                />
+                {behandlingErRedigerbar && (
+                    <LeggTilKnapp
+                        onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
+                        knappetekst="Legg til vedtaksperiode"
+                    />
+                )}
             </ContainerMedLuftUnder>
         </>
     );

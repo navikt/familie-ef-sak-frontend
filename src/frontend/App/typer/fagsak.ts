@@ -39,7 +39,6 @@ export interface Behandling {
     steg: Steg;
     status: BehandlingStatus;
     sistEndret: string;
-    endringerIRegistergrunnlag?: IEndringerRegistergrunnlag;
     opprettet: string;
     resultat: BehandlingResultat;
     behandlingsårsak: Behandlingsårsak;

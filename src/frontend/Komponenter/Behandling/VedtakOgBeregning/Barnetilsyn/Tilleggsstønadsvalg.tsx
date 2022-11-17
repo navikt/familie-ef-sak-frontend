@@ -231,11 +231,12 @@ const TilleggsstønadValg: React.FC<Props> = ({
                         );
                     })}
                     <ContainerMedLuftUnder>
-                        <LeggTilKnapp
-                            onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad)}
-                            knappetekst="Legg til periode"
-                            hidden={!behandlingErRedigerbar}
-                        />
+                        {behandlingErRedigerbar && (
+                            <LeggTilKnapp
+                                onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad)}
+                                knappetekst="Legg til periode"
+                            />
+                        )}
                     </ContainerMedLuftUnder>
                 </>
             )}

@@ -1,7 +1,6 @@
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import React, { FormEvent, useState } from 'react';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../../../../../App/context/AppContext';
 import {
     EBehandlingResultat,
@@ -15,6 +14,7 @@ import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
+import { Button } from '@navikt/ds-react';
 
 const StyledFormElement = styled.div`
     margin-top: 2rem;
@@ -106,13 +106,11 @@ export const Opphør: React.FC<{
                     />
                 </StyledFormElement>
                 <StyledFormElement>
-                    <Hovedknapp
-                        htmlType={'submit'}
-                        disabled={laster}
-                        hidden={!behandlingErRedigerbar}
-                    >
-                        Lagre vedtak
-                    </Hovedknapp>
+                    {behandlingErRedigerbar && (
+                        <Button type="submit" disabled={laster}>
+                            Lagre vedtak
+                        </Button>
+                    )}
                 </StyledFormElement>
             </form>
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
