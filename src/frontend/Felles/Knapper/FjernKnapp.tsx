@@ -1,6 +1,5 @@
 import { Delete } from '@navikt/ds-icons';
 import React from 'react';
-import hiddenIf from '../HiddenIf/hiddenIf';
 import { Button } from '@navikt/ds-react';
 
 const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
@@ -17,4 +16,4 @@ const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
     );
 };
 
-export default hiddenIf(FjernKnapp);
+export default FjernKnapp;

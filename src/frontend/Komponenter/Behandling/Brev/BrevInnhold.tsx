@@ -12,12 +12,10 @@ import {
     stønadstypeTilBrevtyper,
 } from './BrevTyper';
 import { skjulAvsnittIBrevbygger } from './BrevUtils';
-import OppKnapp from '../../../Felles/Knapper/OppKnapp';
-import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
-import { Delete } from '@navikt/ds-icons';
+import { Delete, Down, Up } from '@navikt/ds-icons';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -196,17 +194,23 @@ const BrevInnhold: React.FC<Props> = ({
                                 </Innholdsrad>
                                 <FlyttAvsnittKnappWrapper id={knappWrapperId}>
                                     {index > 0 && (
-                                        <OppKnapp
+                                        <Button
+                                            type={'button'}
                                             onClick={() => {
                                                 flyttAvsnittOpp(rad.id);
                                             }}
+                                            variant={'tertiary'}
+                                            icon={<Up />}
                                         />
                                     )}
                                     {index + 1 < avsnittSomSkalVises.length && (
-                                        <NedKnapp
+                                        <Button
+                                            type={'button'}
                                             onClick={() => {
                                                 flyttAvsnittNed(rad.id);
                                             }}
+                                            variant={'tertiary'}
+                                            icon={<Down />}
                                         />
                                     )}
                                 </FlyttAvsnittKnappWrapper>
@@ -234,5 +238,4 @@ const BrevInnhold: React.FC<Props> = ({
         </BrevKolonner>
     );
 };
-
 export default BrevInnhold;

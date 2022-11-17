@@ -1,6 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons';
 import React from 'react';
-import hiddenIf from '../HiddenIf/hiddenIf';
 import { Button } from '@navikt/ds-react';
 
 const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst?: string }> = ({
@@ -19,4 +18,4 @@ const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst?: string }> = ({
     );
 };
 
-export default hiddenIf(LeggTilKnapp);
+export default LeggTilKnapp;

@@ -9,8 +9,9 @@ import {
     formaterIsoMånedÅrFull,
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../../../App/utils/formatter';
-import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
+import { Button } from '@navikt/ds-react';
+import { Cancel } from '@navikt/ds-icons';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -25,6 +26,10 @@ const Utgiftsrad = styled.div<{
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
     text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
     align-items: center;
+`;
+
+const StyledKnapp = styled(Button)`
+    margin-bottom: 0.25rem;
 `;
 
 const FlexRow = styled.div`
@@ -117,9 +122,11 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                                     />
                                 )}
                                 {behandlingErRedigerbar && !skoleårErFjernet && erFjernet && (
-                                    <TilbakestillKnapp
+                                    <StyledKnapp
                                         onClick={() => tilbakestillUtgift(index)}
-                                        knappetekst="Tilbakestill utgift"
+                                        type="button"
+                                        variant={'tertiary'}
+                                        icon={<Cancel title={'Tilbakestill utgift'} />}
                                     />
                                 )}
                             </Utgiftsrad>

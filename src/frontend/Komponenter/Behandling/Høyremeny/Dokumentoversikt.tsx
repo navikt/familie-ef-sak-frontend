@@ -6,7 +6,6 @@ import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
-import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import styled from 'styled-components';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -82,4 +81,4 @@ const Dokumentoversikt: React.FC = () => {
     );
 };
 
-export default hiddenIf(Dokumentoversikt);
+export default Dokumentoversikt;
