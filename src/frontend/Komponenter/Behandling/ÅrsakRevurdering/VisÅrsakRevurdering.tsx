@@ -76,7 +76,6 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                             variant={'tertiary'}
                             type={'button'}
                             onClick={() => settRedigeringsmodus(true)}
-                            disabled={laster}
                             icon={<Edit />}
                         >
                             Rediger
@@ -85,6 +84,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                             variant={'tertiary'}
                             type={'button'}
                             onClick={slettÅrsakRevurdering}
+                            disabled={laster}
                             icon={<Delete />}
                         >
                             Slett
