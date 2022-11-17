@@ -40,22 +40,29 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const { axiosRequest } = useApp();
     const [feil, settFeil] = useState('');
+    const [laster, settLaster] = useState(false);
 
     const årsakRevurdering = revurderingsinformasjon.årsakRevurdering;
 
     const slettÅrsakRevurdering = () => {
+        if (laster) {
+            return;
+        }
+        settLaster(true);
         axiosRequest<string, null>({
             method: 'DELETE',
             url: `/familie-ef-sak/api/revurdering/informasjon/${behandling.id}`,
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                settFeil('');
-                oppdaterRevurderingsinformasjon({});
-                hentBehandling.rerun();
-            } else {
-                settFeil('Kunne ikke slette: ' + res.frontendFeilmelding);
-            }
-        });
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    settFeil('');
+                    oppdaterRevurderingsinformasjon({});
+                    hentBehandling.rerun();
+                } else {
+                    settFeil('Kunne ikke slette: ' + res.frontendFeilmelding);
+                }
+            })
+            .finally(() => settLaster(false));
     };
 
     return (
@@ -69,6 +76,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                             variant={'tertiary'}
                             type={'button'}
                             onClick={() => settRedigeringsmodus(true)}
+                            disabled={laster}
                             icon={<Edit />}
                         >
                             Rediger

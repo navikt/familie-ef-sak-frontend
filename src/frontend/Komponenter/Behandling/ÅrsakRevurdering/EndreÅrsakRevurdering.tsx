@@ -44,8 +44,12 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
     const { opplysningskilde, årsak, beskrivelse } = årsakRevurdering || {};
 
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [laster, settLaster] = useState(false);
 
     const lagreRevurderingsinformasjon = () => {
+        if (laster) {
+            return;
+        }
         if (!kravMottatt) {
             settFeilmelding('Mangler krav mottatt');
             return;
@@ -58,6 +62,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
             settFeilmelding('Mangler årsak');
             return;
         }
+        settLaster(true);
         axiosRequest<Revurderingsinformasjon, Revurderingsinformasjon>({
             method: 'POST',
             url: `familie-ef-sak/api/revurdering/informasjon/${behandling.id}`,
@@ -69,14 +74,16 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                     beskrivelse,
                 },
             },
-        }).then((res: RessursSuksess<Revurderingsinformasjon> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                hentBehandling.rerun();
-                oppdaterRevurderingsinformasjon(res.data);
-            } else {
-                settFeilmelding(res.frontendFeilmelding);
-            }
-        });
+        })
+            .then((res: RessursSuksess<Revurderingsinformasjon> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    hentBehandling.rerun();
+                    oppdaterRevurderingsinformasjon(res.data);
+                } else {
+                    settFeilmelding(res.frontendFeilmelding);
+                }
+            })
+            .finally(() => settLaster(false));
     };
 
     const oppdaterÅrsakRevurdering = (nyeVerdier: Partial<IÅrsakRevurdering>) =>
@@ -147,7 +154,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 />
             )}
             <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
-            <Button variant={'primary'} onClick={lagreRevurderingsinformasjon}>
+            <Button variant={'primary'} onClick={lagreRevurderingsinformasjon} disabled={laster}>
                 Lagre
             </Button>
         </StyledEndreÅrsakRevurdering>
