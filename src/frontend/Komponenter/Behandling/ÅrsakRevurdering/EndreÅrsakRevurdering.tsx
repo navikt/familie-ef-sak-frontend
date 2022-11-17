@@ -17,7 +17,7 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
 import styled from 'styled-components';
 
-const StyledEndreÅrsakRevurdering = styled.div`
+const Container = styled.div`
     > * {
         margin-bottom: 1rem;
     }
@@ -96,7 +96,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
         }));
 
     return (
-        <StyledEndreÅrsakRevurdering>
+        <Container>
             <FamilieDatovelger
                 erLesesvisning={!behandlingErRedigerbar}
                 label={'Krav mottatt'}
@@ -157,6 +157,6 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
             <Button variant={'primary'} onClick={lagreRevurderingsinformasjon} disabled={laster}>
                 Lagre
             </Button>
-        </StyledEndreÅrsakRevurdering>
+        </Container>
     );
 };

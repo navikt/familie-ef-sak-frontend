@@ -16,8 +16,8 @@ import { Undertittel } from 'nav-frontend-typografi';
 import { Delete, Edit } from '@navikt/ds-icons';
 import {
     SistOppdatertOgVurderingWrapper,
-    StyledStrek,
-    StyledVurderingLesemodus,
+    VertikalStrek,
+    VurderingLesemodusGrid,
     TittelOgKnappWrapper,
 } from '../Vurdering/StyledVurdering';
 import { useApp } from '../../../App/context/AppContext';
@@ -66,7 +66,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
     };
 
     return (
-        <StyledVurderingLesemodus>
+        <VurderingLesemodusGrid>
             <BrukerMedBlyantIkon />
             <TittelOgKnappWrapper>
                 <Undertittel>Vurdert</Undertittel>
@@ -92,7 +92,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                     </div>
                 )}
             </TittelOgKnappWrapper>
-            <StyledStrek />
+            <VertikalStrek />
             <SistOppdatertOgVurderingWrapper>
                 {revurderingsinformasjon.endretTid && (
                     <Detail>
@@ -138,6 +138,6 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                 )}
                 {feil && <Alert variant={'error'}>{feil}</Alert>}
             </SistOppdatertOgVurderingWrapper>
-        </StyledVurderingLesemodus>
+        </VurderingLesemodusGrid>
     );
 };

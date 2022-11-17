@@ -14,8 +14,8 @@ import { Button } from '@navikt/ds-react';
 import { Delete, Edit } from '@navikt/ds-icons';
 import {
     SistOppdatertOgVurderingWrapper,
-    StyledStrek,
-    StyledVurderingLesemodus,
+    VertikalStrek,
+    VurderingLesemodusGrid,
     TittelOgKnappWrapper,
 } from './StyledVurdering';
 
@@ -76,7 +76,7 @@ const VisVurdering: FC<Props> = ({
         (delvilkårsvurdering) => delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT
     );
     return (
-        <StyledVurderingLesemodus key={vurdering.id}>
+        <VurderingLesemodusGrid key={vurdering.id}>
             <BrukerMedBlyantIkon />
 
             <TittelOgKnappWrapper>
@@ -122,7 +122,7 @@ const VisVurdering: FC<Props> = ({
                 )}
             </TittelOgKnappWrapper>
 
-            <StyledStrek />
+            <VertikalStrek />
             <SistOppdatertOgVurderingWrapper>
                 {sistOppdatert &&
                     (vilkårsresultat === Vilkårsresultat.OPPFYLT ||
@@ -154,7 +154,7 @@ const VisVurdering: FC<Props> = ({
                     )}
                 </StyledVilkår>
             </SistOppdatertOgVurderingWrapper>
-        </StyledVurderingLesemodus>
+        </VurderingLesemodusGrid>
     );
 };
 

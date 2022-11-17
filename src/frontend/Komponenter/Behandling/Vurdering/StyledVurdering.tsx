@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 
-export const StyledVurderingLesemodus = styled.div`
+export const VurderingLesemodusGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, max-content);
     grid-template-rows: repeat(2, max-content);
@@ -20,7 +20,7 @@ export const SistOppdatertOgVurderingWrapper = styled.span`
     gap: 1rem;
 `;
 
-export const StyledStrek = styled.span`
+export const VertikalStrek = styled.span`
     border-left: 3px solid ${navFarger.navLillaLighten20};
     margin-left: 0.55rem;
     grid-column: 1/2;
