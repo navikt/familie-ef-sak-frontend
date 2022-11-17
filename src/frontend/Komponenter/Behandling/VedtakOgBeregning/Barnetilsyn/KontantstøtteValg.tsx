@@ -195,11 +195,12 @@ const KontantstøtteValg: React.FC<Props> = ({
                         );
                     })}
                     <ContainerMedLuftUnder>
-                        <LeggTilKnapp
-                            onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad)}
-                            knappetekst="Legg til periode"
-                            hidden={!behandlingErRedigerbar}
-                        />
+                        {behandlingErRedigerbar && (
+                            <LeggTilKnapp
+                                onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad)}
+                                knappetekst="Legg til periode"
+                            />
+                        )}
                     </ContainerMedLuftUnder>
                 </>
             )}

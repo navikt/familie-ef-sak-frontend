@@ -264,13 +264,11 @@ const SanksjonsvedtakVisning: FC<{
                             )}
                         </Seksjon>
                         <Seksjon>
-                            <Button
-                                hidden={!behandlingErRedigerbar}
-                                type="submit"
-                                disabled={laster}
-                            >
-                                Lagre vedtak
-                            </Button>
+                            {behandlingErRedigerbar && (
+                                <Button type="submit" disabled={laster}>
+                                    Lagre vedtak
+                                </Button>
+                            )}
                         </Seksjon>
                     </>
                 )}

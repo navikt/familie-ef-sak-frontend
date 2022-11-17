@@ -151,11 +151,12 @@ const UtgiftsperiodeSkolepenger: React.FC<
                     })}
                 </FlexColumn>
                 <ContainerMedLuftUnder>
-                    <LeggTilKnapp
-                        onClick={() => oppdater([...data, tomUtgift()])}
-                        knappetekst="Legg til utgift"
-                        hidden={!behandlingErRedigerbar}
-                    />
+                    {behandlingErRedigerbar && (
+                        <LeggTilKnapp
+                            onClick={() => oppdater([...data, tomUtgift()])}
+                            knappetekst="Legg til utgift"
+                        />
+                    )}
                 </ContainerMedLuftUnder>
             </div>
         </FlexRow>

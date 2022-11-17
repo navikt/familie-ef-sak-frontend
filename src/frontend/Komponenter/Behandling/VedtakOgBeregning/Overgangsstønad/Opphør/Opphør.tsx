@@ -106,9 +106,11 @@ export const Opphør: React.FC<{
                     />
                 </StyledFormElement>
                 <StyledFormElement>
-                    <Button type="submit" disabled={laster} hidden={!behandlingErRedigerbar}>
-                        Lagre vedtak
-                    </Button>
+                    {behandlingErRedigerbar && (
+                        <Button type="submit" disabled={laster}>
+                            Lagre vedtak
+                        </Button>
+                    )}
                 </StyledFormElement>
             </form>
             {feilmelding && <AlertError>{feilmelding}</AlertError>}

@@ -111,13 +111,20 @@ const VisVurdering: FC<Props> = ({
                 {behandlingErRedigerbar && (
                     <>
                         <StyledRedigerOgSlettKnapp>
-                            <LenkeKnapp
-                                hidden={vilkårsresultat === Vilkårsresultat.SKAL_IKKE_VURDERES}
-                                onClick={() => settRedigeringsmodus(Redigeringsmodus.REDIGERING)}
-                            >
-                                <RedigerBlyant width={19} heigth={19} withDefaultStroke={false} />
-                                <span>Rediger</span>
-                            </LenkeKnapp>
+                            {vilkårsresultat !== Vilkårsresultat.SKAL_IKKE_VURDERES && (
+                                <LenkeKnapp
+                                    onClick={() =>
+                                        settRedigeringsmodus(Redigeringsmodus.REDIGERING)
+                                    }
+                                >
+                                    <RedigerBlyant
+                                        width={19}
+                                        heigth={19}
+                                        withDefaultStroke={false}
+                                    />
+                                    <span>Rediger</span>
+                                </LenkeKnapp>
+                            )}
                             <LenkeKnapp onClick={resetVurdering}>
                                 <SlettSøppelkasse
                                     width={19}

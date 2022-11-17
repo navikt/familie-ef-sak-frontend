@@ -183,16 +183,17 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                 );
             })}
             <ContainerMedLuftUnder>
-                <LeggTilKnapp
-                    onClick={() =>
-                        oppdater([
-                            ...data,
-                            { ...tomSkoleårsperiode, studietype: data[0].studietype },
-                        ])
-                    }
-                    knappetekst="Legg til periode"
-                    hidden={erLesevisning || erOpphør}
-                />
+                {!erLesevisning && !erOpphør && (
+                    <LeggTilKnapp
+                        onClick={() =>
+                            oppdater([
+                                ...data,
+                                { ...tomSkoleårsperiode, studietype: data[0].studietype },
+                            ])
+                        }
+                        knappetekst="Legg til periode"
+                    />
+                )}
             </ContainerMedLuftUnder>
         </>
     );

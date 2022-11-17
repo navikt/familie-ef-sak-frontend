@@ -202,11 +202,12 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     </VedtakPeriodeContainer>
                 );
             })}
-            <StyledLeggTilKnapp
-                onClick={() => vedtaksperiodeListe.push(tomVedtaksperiodeRad())}
-                knappetekst="Legg til vedtaksperiode"
-                hidden={!behandlingErRedigerbar}
-            />
+            {behandlingErRedigerbar && (
+                <StyledLeggTilKnapp
+                    onClick={() => vedtaksperiodeListe.push(tomVedtaksperiodeRad())}
+                    knappetekst="Legg til vedtaksperiode"
+                />
+            )}
         </>
     );
 };

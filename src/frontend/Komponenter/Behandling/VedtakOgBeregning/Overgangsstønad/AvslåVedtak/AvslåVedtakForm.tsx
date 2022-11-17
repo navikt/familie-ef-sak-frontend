@@ -67,9 +67,11 @@ const AvslåVedtakForm: React.FC<Props> = ({
                     maxLength={0}
                     erLesevisning={!behandlingErRedigerbar}
                 />
-                <HovedKnapp type="submit" disabled={laster} hidden={!behandlingErRedigerbar}>
-                    Lagre vedtak
-                </HovedKnapp>
+                {behandlingErRedigerbar && (
+                    <HovedKnapp type="submit" disabled={laster}>
+                        Lagre vedtak
+                    </HovedKnapp>
+                )}
             </StyledForm>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>

@@ -130,11 +130,12 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                 );
             })}
             <ContainerMedLuftUnder>
-                <LeggTilKnapp
-                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
-                    knappetekst="Legg til skoleår"
-                    hidden={!behandlingErRedigerbar}
-                />
+                {behandlingErRedigerbar && (
+                    <LeggTilKnapp
+                        onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                        knappetekst="Legg til skoleår"
+                    />
+                )}
             </ContainerMedLuftUnder>
         </>
     );
