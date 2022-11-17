@@ -121,7 +121,10 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                 {adresser.map((adresse, indeks) => {
                     return (
                         <tr key={indeks}>
-                            <Td>{adresse.visningsadresse}</Td>
+                            <Td>
+                                {adresse.visningsadresse}
+                                {adresse.erGjeldende ? ' (gjeldende)' : ''}
+                            </Td>
                             <Td>{adresse.type !== AdresseType.BOSTEDADRESSE && adresse.type}</Td>
                             <Td>
                                 {formaterNullableIsoDato(
