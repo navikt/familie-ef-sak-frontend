@@ -10,7 +10,12 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button } from '@navikt/ds-react';
+import { Button, HelpText } from '@navikt/ds-react';
+
+const BostedsadresseTittelMedHjelpetekst = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
 
 const StyledFlexDiv = styled.div`
     display: flex;
@@ -80,6 +85,19 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
     </Td>
 );
 
+const TittelBostedsadresser: React.ReactElement = (
+    <BostedsadresseTittelMedHjelpetekst>
+        <span>Bostedsadresses</span>
+        <HelpText title="Gjeldende" placement={'right'}>
+            Folkeregisteret skal til enhver tid kun ha en gyldig bostedsadresse per person. Denne
+            vil i EF Sak markeres med (gjeldende). Hver gang en ny bostedsadresse blir registrert så
+            vil den bli gjeldene og den forrige bli historisk/ikke gjeldene. Merk at det i enkelte
+            tilfeller ikke vil være adressen med den nyeste fra-datoen som er gjeldene, feks ved en
+            korreksjon i Folkeregisteret.
+        </HelpText>
+    </BostedsadresseTittelMedHjelpetekst>
+);
+
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
     adresser,
     fagsakPersonId,
@@ -89,7 +107,9 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
         <TabellWrapper>
             <TabellOverskrift
                 Ikon={Bygning}
-                tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
+                tittel={
+                    type === AdresseType.BOSTEDADRESSE ? TittelBostedsadresser : 'Andre adresser'
+                }
             />
             {(adresser.length !== 0 && (
                 <table className="tabell">

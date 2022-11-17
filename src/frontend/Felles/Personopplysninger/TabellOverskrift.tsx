@@ -4,7 +4,7 @@ import { Undertittel } from 'nav-frontend-typografi';
 
 interface Props {
     Ikon: React.FC;
-    tittel: string;
+    tittel: React.ReactElement | string;
 }
 
 const StyledTittel = styled(Undertittel)`
