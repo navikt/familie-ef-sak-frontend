@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { Button } from '@navikt/ds-react';
+import { Button, Select, TextField } from '@navikt/ds-react';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { Select, TextField } from '@navikt/ds-react';
 import { fnr } from '@navikt/fnrvalidator';
 
 const StyledFnrInput = styled(TextField)`

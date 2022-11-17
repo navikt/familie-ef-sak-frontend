@@ -33,6 +33,7 @@ export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
 const KnappWrapper = styled.div`
     display: flex;
     flex-direction: row;
+    margin-top: 1rem;
 `;
 
 const AlertStripe = styled(Alert)`
