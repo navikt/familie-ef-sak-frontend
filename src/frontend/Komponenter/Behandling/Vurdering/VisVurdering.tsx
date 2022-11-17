@@ -1,27 +1,23 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { Element, Feilmelding, Normaltekst, Undertekst, Undertittel } from 'nav-frontend-typografi';
-import RedigerBlyant from '../../../Felles/Ikoner/RedigerBlyant';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
-import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
-import LenkeKnapp from '../../../Felles/Knapper/LenkeKnapp';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { resultatTilTekst } from '../VedtakOgBeregning/Felles/ResultatVisning';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
+import { Button } from '@navikt/ds-react';
+import { Delete, Edit } from '@navikt/ds-icons';
 
 const StyledVurdering = styled.div`
     display: grid;
     grid-template-columns: repeat(3, max-content);
     grid-template-rows: repeat(2, max-content);
     grid-gap: 0.25rem 1rem;
-`;
-const StyledRedigerOgSlettKnapp = styled.div`
-    min-width: auto;
 `;
 
 const StyledStrek = styled.span`
@@ -34,6 +30,7 @@ const StyledStrek = styled.span`
 const StyledVilkår = styled.div`
     grid-column: 2/4;
     max-width: 40rem;
+
     .typo-normal {
         margin-top: 0.25rem;
         margin-bottom: 1.5rem;
@@ -48,6 +45,7 @@ const StyledFeilmelding = styled.div`
 const StyledIkonOgTittel = styled.span`
     margin-bottom: 0.5rem;
     display: flex;
+
     svg {
         margin-right: 1rem;
     }
@@ -55,6 +53,8 @@ const StyledIkonOgTittel = styled.span`
 
 const TittelOgKnappWrapper = styled.span`
     display: flex;
+    justify-content: space-between;
+    width: 40rem;
 `;
 
 const SistOppdatertTekst = styled(Undertekst)`
@@ -110,30 +110,31 @@ const VisVurdering: FC<Props> = ({
                 </StyledIkonOgTittel>
                 {behandlingErRedigerbar && (
                     <>
-                        <StyledRedigerOgSlettKnapp>
+                        <div>
                             {vilkårsresultat !== Vilkårsresultat.SKAL_IKKE_VURDERES && (
-                                <LenkeKnapp
+                                <Button
+                                    type={'button'}
+                                    variant={'tertiary'}
+                                    icon={<Edit />}
                                     onClick={() =>
                                         settRedigeringsmodus(Redigeringsmodus.REDIGERING)
                                     }
+                                    size={'small'}
                                 >
-                                    <RedigerBlyant
-                                        width={19}
-                                        heigth={19}
-                                        withDefaultStroke={false}
-                                    />
                                     <span>Rediger</span>
-                                </LenkeKnapp>
+                                </Button>
                             )}
-                            <LenkeKnapp onClick={resetVurdering}>
-                                <SlettSøppelkasse
-                                    width={19}
-                                    heigth={19}
-                                    withDefaultStroke={false}
-                                />
-                                <span>Slett</span>
-                            </LenkeKnapp>
-                        </StyledRedigerOgSlettKnapp>
+
+                            <Button
+                                type={'button'}
+                                variant={'tertiary'}
+                                icon={<Delete />}
+                                onClick={resetVurdering}
+                                size={'small'}
+                            >
+                                <span>slett</span>
+                            </Button>
+                        </div>
                         {feilmelding && (
                             <StyledFeilmelding>
                                 <Feilmelding>
