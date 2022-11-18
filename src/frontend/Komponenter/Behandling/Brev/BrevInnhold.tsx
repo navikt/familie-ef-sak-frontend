@@ -15,7 +15,9 @@ import { skjulAvsnittIBrevbygger } from './BrevUtils';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
-import { Delete, Down, Up } from '@navikt/ds-icons';
+import { Delete } from '@navikt/ds-icons';
+import NedKnapp from '../../../Felles/Knapper/NedKnapp';
+import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -194,23 +196,17 @@ const BrevInnhold: React.FC<Props> = ({
                                 </Innholdsrad>
                                 <FlyttAvsnittKnappWrapper id={knappWrapperId}>
                                     {index > 0 && (
-                                        <Button
-                                            type={'button'}
+                                        <OppKnapp
                                             onClick={() => {
                                                 flyttAvsnittOpp(rad.id);
                                             }}
-                                            variant={'tertiary'}
-                                            icon={<Up />}
                                         />
                                     )}
                                     {index + 1 < avsnittSomSkalVises.length && (
-                                        <Button
-                                            type={'button'}
+                                        <NedKnapp
                                             onClick={() => {
                                                 flyttAvsnittNed(rad.id);
                                             }}
-                                            variant={'tertiary'}
-                                            icon={<Down />}
                                         />
                                     )}
                                 </FlyttAvsnittKnappWrapper>

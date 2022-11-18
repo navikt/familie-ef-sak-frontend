@@ -13,7 +13,6 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../App/context/AppContext';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
@@ -21,6 +20,7 @@ import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { Radio } from '@navikt/ds-react';
 import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
+import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -222,7 +222,6 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                                         }
                                                     );
                                                 }}
-                                                knappetekst="Fjern periode"
                                             />
                                         </div>
                                     )}

@@ -11,7 +11,6 @@ import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import VedtakperiodeSelect from './VedtakperiodeSelect';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
-import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
@@ -20,6 +19,7 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Label, Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -182,7 +182,6 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                             }
                                         );
                                     }}
-                                    knappetekst="Fjern vedtaksperiode"
                                 />
                             </KnappWrapper>
                         ) : (

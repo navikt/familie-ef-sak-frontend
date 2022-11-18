@@ -12,8 +12,8 @@ import { locateIndexToRestorePreviousItemInCurrentItems, oppdaterValideringsfeil
 import SkoleårDelårsperiode from '../InnvilgetSkolepenger/SkoleårDelårsperiode';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from '../InnvilgetSkolepenger/VedtaksformSkolepenger';
-import { Button } from '@navikt/ds-react';
-import { Cancel, Delete } from '@navikt/ds-icons';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -23,7 +23,7 @@ const Skoleårsperiode = styled.div`
     background-color: ${navFarger.navGraBakgrunn};
 `;
 
-const StyledKnapp = styled(Button)`
+const TilbakestillButton = styled(TilbakestillKnapp)`
     margin-bottom: 0.25rem;
 `;
 
@@ -163,24 +163,16 @@ const OpphørSkolepenger: React.FC<Props> = ({
                             behandlingErRedigerbar={behandlingErRedigerbar}
                         />
                         {behandlingErRedigerbar && !erFjernet && (
-                            <Button
+                            <FjernKnapp
                                 onClick={() => fjernSkoleårsperiode(skoleårsperiode.periode)}
-                                type="button"
-                                variant={'secondary'}
-                                icon={<Delete title={'Opphør skoleår'} />}
-                            >
-                                <span>Opphør skoleår</span>
-                            </Button>
+                                knappetekst={'Opphør skoleår'}
+                            />
                         )}
                         {behandlingErRedigerbar && erFjernet && (
-                            <StyledKnapp
+                            <TilbakestillButton
                                 onClick={() => tilbakestillSkoleårsperiode(index)}
-                                type="button"
-                                variant={'secondary'}
-                                icon={<Cancel title={'Tilbakestill skoleår'} />}
-                            >
-                                <span>Tilbakestill skoleår</span>
-                            </StyledKnapp>
+                                knappetekst={'Tilbakestill skoleår'}
+                            />
                         )}
                     </Skoleårsperiode>
                 );

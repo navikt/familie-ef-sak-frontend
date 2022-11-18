@@ -4,7 +4,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
-import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { ListState } from '../../../../App/hooks/felles/useListState';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
@@ -17,6 +16,7 @@ import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMed
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
 import { Label } from '@navikt/ds-react';
+import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -235,22 +235,19 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             )}
                         </CheckboxContainer>
                         {skalViseFjernKnapp && (
-                            <div>
-                                <FjernKnapp
-                                    onClick={() => {
-                                        utgiftsperioder.remove(index);
-                                        settValideringsFeil(
-                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                const perioder = (
-                                                    prevState.utgiftsperioder ?? []
-                                                ).filter((_, i) => i !== index);
-                                                return { ...prevState, perioder };
-                                            }
-                                        );
-                                    }}
-                                    knappetekst="Fjern vedtaksperiode"
-                                />
-                            </div>
+                            <FjernKnapp
+                                onClick={() => {
+                                    utgiftsperioder.remove(index);
+                                    settValideringsFeil(
+                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                            const perioder = (
+                                                prevState.utgiftsperioder ?? []
+                                            ).filter((_, i) => i !== index);
+                                            return { ...prevState, perioder };
+                                        }
+                                    );
+                                }}
+                            />
                         )}
                     </UtgiftsperiodeRad>
                 );

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import React from 'react';
 import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
-import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SkolepengerOpphørProps } from '../typer';
 import navFarger from 'nav-frontend-core';
 import {
@@ -10,8 +9,8 @@ import {
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../../../App/utils/formatter';
 import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
-import { Button } from '@navikt/ds-react';
-import { Cancel } from '@navikt/ds-icons';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -28,7 +27,7 @@ const Utgiftsrad = styled.div<{
     align-items: center;
 `;
 
-const StyledKnapp = styled(Button)`
+const TilbakestillButton = styled(TilbakestillKnapp)`
     margin-bottom: 0.25rem;
 `;
 
@@ -116,18 +115,10 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                                     {formaterTallMedTusenSkilleEllerStrek(utgift.stønad)}
                                 </Element>
                                 {skalViseFjernKnapp && (
-                                    <FjernKnapp
-                                        onClick={() => fjernUtgift(utgift.id)}
-                                        knappetekst="Fjern vedtaksperiode"
-                                    />
+                                    <FjernKnapp onClick={() => fjernUtgift(utgift.id)} />
                                 )}
                                 {behandlingErRedigerbar && !skoleårErFjernet && erFjernet && (
-                                    <StyledKnapp
-                                        onClick={() => tilbakestillUtgift(index)}
-                                        type="button"
-                                        variant={'tertiary'}
-                                        icon={<Cancel title={'Tilbakestill utgift'} />}
-                                    />
+                                    <TilbakestillButton onClick={() => tilbakestillUtgift(index)} />
                                 )}
                             </Utgiftsrad>
                         );

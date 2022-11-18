@@ -13,8 +13,7 @@ import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import navFarger from 'nav-frontend-core';
 import { oppdaterValideringsfeil } from '../utils';
-import { Delete } from '@navikt/ds-icons';
-import { Button } from '@navikt/ds-react';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -119,14 +118,10 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                 låsteUtgiftIder={låsteUtgiftIder}
                             />
                             {skalViseFjernKnapp && (
-                                <Button
+                                <FjernKnapp
                                     onClick={() => fjernSkoleårsperiode(index)}
-                                    type="button"
-                                    variant={'secondary'}
-                                    icon={<Delete title={'Fjern skoleår'} />}
-                                >
-                                    <span>Fjern skoleår</span>
-                                </Button>
+                                    knappetekst={'Fjern skoleår'}
+                                />
                             )}
                         </Skoleårsperiode>
                     </>

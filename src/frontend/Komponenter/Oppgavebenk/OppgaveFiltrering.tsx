@@ -277,7 +277,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
             </FlexDiv>
 
             <KnappWrapper>
-                <FiltreringKnapp onClick={sjekkFeilOgHentOppgaver} type={'button'}>
+                <FiltreringKnapp onClick={sjekkFeilOgHentOppgaver} type={'submit'}>
                     Hent oppgaver
                 </FiltreringKnapp>
                 <FiltreringKnapp
@@ -296,6 +296,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                         settFeilmelding('');
                         sjekkFeilOgHentOppgaver();
                     }}
+                    type={'submit'}
                 >
                     Hent oppgaver
                 </ModalKnapp>

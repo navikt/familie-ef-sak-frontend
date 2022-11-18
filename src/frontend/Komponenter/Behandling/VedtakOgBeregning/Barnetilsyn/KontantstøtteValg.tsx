@@ -12,13 +12,13 @@ import { ListState } from '../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../App/context/AppContext';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { Label, Radio } from '@navikt/ds-react';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
+import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 
 const KontantstøttePeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -186,7 +186,6 @@ const KontantstøtteValg: React.FC<Props> = ({
                                                         }
                                                     );
                                                 }}
-                                                knappetekst="Fjern kontantstøtteperiode"
                                             />
                                         </div>
                                     )}

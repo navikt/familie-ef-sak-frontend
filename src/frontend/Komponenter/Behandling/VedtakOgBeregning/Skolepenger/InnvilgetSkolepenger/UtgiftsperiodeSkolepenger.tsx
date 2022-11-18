@@ -4,11 +4,11 @@ import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
-import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import navFarger from 'nav-frontend-core';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -140,10 +140,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                 />
                                 {skalViseFjernKnapp && (
                                     <div style={{ alignItems: 'baseline' }}>
-                                        <FjernKnapp
-                                            onClick={() => fjernUtgift(utgift.id)}
-                                            knappetekst="Fjern vedtaksperiode"
-                                        />
+                                        <FjernKnapp onClick={() => fjernUtgift(utgift.id)} />
                                     </div>
                                 )}
                             </Utgiftsrad>
