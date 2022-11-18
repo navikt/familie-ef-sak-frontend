@@ -9,6 +9,8 @@ import navFarger from 'nav-frontend-core';
 import { Steg } from '../Høyremeny/Steg';
 import Fane from './Fane';
 import { useApp } from '../../../App/context/AppContext';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -31,6 +33,7 @@ interface Props {
 const Fanemeny: FC<Props> = ({ behandlingId }) => {
     const { behandling, behandlingErRedigerbar } = useBehandling();
     const { erSaksbehandler } = useApp();
+    const { toggles } = useToggles();
     const låsendeSteg = [Steg.VILKÅR, Steg.BEREGNE_YTELSE];
     const fanerSomKanLåses = [SideNavn.SIMULERING, SideNavn.BREV, SideNavn.KORRIGERING_UTEN_BREV];
     const fanerSomErLåstForVeilederUnderArbeid = [
@@ -46,13 +49,18 @@ const Fanemeny: FC<Props> = ({ behandlingId }) => {
         return fanerSomKanLåses.includes(side.navn as SideNavn) && låsendeSteg.includes(steg);
     };
 
+    const skalViseÅrsakRevurdering = toggles[ToggleName.årsakRevurdering];
+
     return (
         <DataViewer response={{ behandling }}>
             {({ behandling }) => (
                 <>
                     <StickyMedBoxShadow>
                         <StyledFanemeny>
-                            {filtrerSiderEtterBehandlingstype(behandling).map((side, index) => (
+                            {filtrerSiderEtterBehandlingstype(
+                                behandling,
+                                skalViseÅrsakRevurdering
+                            ).map((side, index) => (
                                 <Fane
                                     side={side}
                                     behandlingId={behandlingId}
