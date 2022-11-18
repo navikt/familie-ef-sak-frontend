@@ -142,7 +142,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                     </option>
                 ))}
             </Select>
-            {årsakRevurdering === Årsak.ANNET && (
+            {årsakRevurdering?.årsak === Årsak.ANNET && (
                 <Textarea
                     label={'Beskrivelse av årsak'}
                     value={beskrivelse}

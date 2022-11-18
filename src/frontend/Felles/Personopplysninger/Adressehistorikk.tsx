@@ -10,7 +10,7 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button } from '@navikt/ds-react';
+import { Button, HelpText } from '@navikt/ds-react';
 
 const StyledFlexDiv = styled.div`
     display: flex;
@@ -80,6 +80,14 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
     </Td>
 );
 
+const TittelbeskrivelseBostedsadresser: React.ReactElement = (
+    <HelpText title="Gjeldende" placement={'right'}>
+        En person skal til enhver tid ha kun en folkeregistrert bostedsadresse. I EF Sak er denne
+        adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke vil være
+        adressen med den nyeste fra-datoen som er gjeldende.
+    </HelpText>
+);
+
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
     adresser,
     fagsakPersonId,
@@ -90,6 +98,11 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
             <TabellOverskrift
                 Ikon={Bygning}
                 tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
+                tittelbeskrivelse={
+                    type === AdresseType.BOSTEDADRESSE
+                        ? TittelbeskrivelseBostedsadresser
+                        : undefined
+                }
             />
             {(adresser.length !== 0 && (
                 <table className="tabell">

@@ -4,12 +4,20 @@ import { filtrerSiderEtterBehandlingstype } from './Fanemeny/sider';
 import { useBehandling } from '../../App/context/BehandlingContext';
 import { RessursSuksess } from '../../App/typer/ressurs';
 import { Behandling } from '../../App/typer/fagsak';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 const BehandlingRoutes: React.FC = () => {
+    const { toggles } = useToggles();
     const { behandling } = useBehandling();
     const behandlingSuksess = behandling as RessursSuksess<Behandling>;
 
-    const siderForBehandling = filtrerSiderEtterBehandlingstype(behandlingSuksess.data);
+    const skalViseÅrsakRevurdering = toggles[ToggleName.årsakRevurdering];
+
+    const siderForBehandling = filtrerSiderEtterBehandlingstype(
+        behandlingSuksess.data,
+        skalViseÅrsakRevurdering
+    );
     return (
         <Routes>
             {siderForBehandling.map((side) => (
