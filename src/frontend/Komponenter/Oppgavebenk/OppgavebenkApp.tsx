@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 
 export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
+
 const InfoVisning = styled(AlertInfo)`
     margin-top: 2rem;
     max-width: 60rem;
@@ -19,6 +20,10 @@ const InfoVisning = styled(AlertInfo)`
     .navds-alert__wrapper {
         max-width: 60rem;
     }
+`;
+
+const TabellContainer = styled.div`
+    margin-top: 1rem;
 `;
 
 export const OppgavebenkApp: React.FC = () => {
@@ -70,11 +75,13 @@ export const OppgavebenkApp: React.FC = () => {
                     feilmelding={feilmelding}
                     settFeilmelding={settFeilmelding}
                 />
-                <OppgaveTabell
-                    oppgaveRessurs={oppgaveRessurs}
-                    mapper={mapper}
-                    settFeilmelding={settFeilmelding}
-                />
+                <TabellContainer>
+                    <OppgaveTabell
+                        oppgaveRessurs={oppgaveRessurs}
+                        mapper={mapper}
+                        settFeilmelding={settFeilmelding}
+                    />
+                </TabellContainer>
             </Side>
         );
     }
