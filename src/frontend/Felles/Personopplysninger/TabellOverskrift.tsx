@@ -4,11 +4,14 @@ import { Undertittel } from 'nav-frontend-typografi';
 
 interface Props {
     Ikon: React.FC;
-    tittel: React.ReactElement | string;
+    tittel: string;
+    tittelbeskrivelse?: React.ReactElement;
 }
 
-const StyledTittel = styled(Undertittel)`
+const StyledTittel = styled.div`
     grid-area: tittel;
+    display: flex;
+    gap: 1rem;
 `;
 
 const StyledIkon = styled.div`
@@ -16,13 +19,16 @@ const StyledIkon = styled.div`
     justify-self: left;
 `;
 
-const TabellOverskrift: React.FC<Props> = ({ Ikon, tittel }) => {
+const TabellOverskrift: React.FC<Props> = ({ Ikon, tittel, tittelbeskrivelse }) => {
     return (
         <>
             <StyledIkon>
                 <Ikon />
             </StyledIkon>
-            <StyledTittel>{tittel}</StyledTittel>
+            <StyledTittel>
+                <Undertittel>{tittel}</Undertittel>
+                <div>{tittelbeskrivelse}</div>
+            </StyledTittel>
         </>
     );
 };

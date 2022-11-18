@@ -12,11 +12,6 @@ import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
 import { Button, HelpText } from '@navikt/ds-react';
 
-const BostedsadresseTittelMedHjelpetekst = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
 const StyledFlexDiv = styled.div`
     display: flex;
     justify-content: space-between;
@@ -85,15 +80,12 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
     </Td>
 );
 
-const TittelBostedsadresser: React.ReactElement = (
-    <BostedsadresseTittelMedHjelpetekst>
-        <span>Bostedsadresser</span>
-        <HelpText title="Gjeldende" placement={'right'}>
-            En person skal til enhver tid ha kun en folkeregistrert bostedsadresse. I EF Sak er
-            denne adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke
-            vil være adressen med den nyeste fra-datoen som er gjeldende.
-        </HelpText>
-    </BostedsadresseTittelMedHjelpetekst>
+const TittelbeskrivelseBostedsadresser: React.ReactElement = (
+    <HelpText title="Gjeldende" placement={'right'}>
+        En person skal til enhver tid ha kun en folkeregistrert bostedsadresse. I EF Sak er denne
+        adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke vil være
+        adressen med den nyeste fra-datoen som er gjeldende.
+    </HelpText>
 );
 
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
@@ -105,8 +97,11 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
         <TabellWrapper>
             <TabellOverskrift
                 Ikon={Bygning}
-                tittel={
-                    type === AdresseType.BOSTEDADRESSE ? TittelBostedsadresser : 'Andre adresser'
+                tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
+                tittelbeskrivelse={
+                    type === AdresseType.BOSTEDADRESSE
+                        ? TittelbeskrivelseBostedsadresser
+                        : undefined
                 }
             />
             {(adresser.length !== 0 && (
