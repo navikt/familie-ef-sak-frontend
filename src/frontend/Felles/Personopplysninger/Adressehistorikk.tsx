@@ -87,13 +87,11 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
 
 const TittelBostedsadresser: React.ReactElement = (
     <BostedsadresseTittelMedHjelpetekst>
-        <span>Bostedsadresses</span>
+        <span>Bostedsadresser</span>
         <HelpText title="Gjeldende" placement={'right'}>
-            Folkeregisteret skal til enhver tid kun ha en gyldig bostedsadresse per person. Denne
-            vil i EF Sak markeres med (gjeldende). Hver gang en ny bostedsadresse blir registrert så
-            vil den bli gjeldene og den forrige bli historisk/ikke gjeldene. Merk at det i enkelte
-            tilfeller ikke vil være adressen med den nyeste fra-datoen som er gjeldene, feks ved en
-            korreksjon i Folkeregisteret.
+            En person skal til enhver tid ha kun en folkeregistrert bostedsadresse. I EF Sak er
+            denne adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke
+            vil være adressen med den nyeste fra-datoen som er gjeldende.
         </HelpText>
     </BostedsadresseTittelMedHjelpetekst>
 );
