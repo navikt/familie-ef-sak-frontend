@@ -107,7 +107,7 @@ const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>
 
 export const filtrerSiderEtterBehandlingstype = (
     behandling: Behandling,
-    skalViseÅrsakRevurdering = true
+    skalViseÅrsakRevurdering: boolean
 ): ISide[] => {
     const sider = siderForStønad(behandling.stønadstype).filter((side) =>
         ikkeVisBrevHvisHenlagt(behandling, side)
