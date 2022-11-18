@@ -140,7 +140,10 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                 />
                                 {skalViseFjernKnapp && (
                                     <div style={{ alignItems: 'baseline' }}>
-                                        <FjernKnapp onClick={() => fjernUtgift(utgift.id)} />
+                                        <FjernKnapp
+                                            onClick={() => fjernUtgift(utgift.id)}
+                                            ikontekst={'Fjern utgiftsperiode'}
+                                        />
                                     </div>
                                 )}
                             </Utgiftsrad>

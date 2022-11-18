@@ -5,13 +5,14 @@ import { Button } from '@navikt/ds-react';
 const FjernKnapp: React.FC<{
     onClick: () => void;
     knappetekst?: string;
-}> = ({ onClick, knappetekst }) => {
+    ikontekst?: string;
+}> = ({ onClick, knappetekst, ikontekst }) => {
     return (
         <Button
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
-            icon={<Delete title={knappetekst ? knappetekst : 'fjern'} />}
+            icon={<Delete title={knappetekst ? knappetekst : ikontekst} />}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Button>

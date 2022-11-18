@@ -2,16 +2,17 @@ import { AddCircle } from '@navikt/ds-icons';
 import React from 'react';
 import { Button } from '@navikt/ds-react';
 
-const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst?: string }> = ({
+const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst?: string; ikontekst?: string }> = ({
     onClick,
     knappetekst,
+    ikontekst,
 }) => {
     return (
         <Button
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
-            icon={<AddCircle title={knappetekst ? knappetekst : 'legg til'} />}
+            icon={<AddCircle title={knappetekst ? knappetekst : ikontekst} />}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Button>

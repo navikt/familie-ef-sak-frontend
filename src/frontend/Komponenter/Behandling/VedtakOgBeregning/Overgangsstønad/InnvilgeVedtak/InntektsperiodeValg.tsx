@@ -206,6 +206,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             }
                                         );
                                     }}
+                                    ikontekst={'Fjern inntektsperiode'}
                                 />
                             </KnappWrapper>
                         ) : (
@@ -218,6 +219,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         onClick={() => {
                                             leggTilTomRadUnder(index);
                                         }}
+                                        ikontekst={'Legg til ny rad'}
                                     />
                                 </KnappWrapper>
                             </Tooltip>

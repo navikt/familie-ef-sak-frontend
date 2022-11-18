@@ -18,6 +18,7 @@ import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
 import { Delete } from '@navikt/ds-icons';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import OppKnapp from '../../../Felles/Knapper/OppKnapp';
+import TilbakestillKnapp from '../../../Felles/Knapper/TilbakestillKnapp';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -200,6 +201,7 @@ const BrevInnhold: React.FC<Props> = ({
                                             onClick={() => {
                                                 flyttAvsnittOpp(rad.id);
                                             }}
+                                            ikontekst={'Flytt avsnitt opp'}
                                         />
                                     )}
                                     {index + 1 < avsnittSomSkalVises.length && (
@@ -207,6 +209,7 @@ const BrevInnhold: React.FC<Props> = ({
                                             onClick={() => {
                                                 flyttAvsnittNed(rad.id);
                                             }}
+                                            ikontekst={'Flytt avsnitt ned'}
                                         />
                                     )}
                                 </FlyttAvsnittKnappWrapper>
@@ -221,12 +224,10 @@ const BrevInnhold: React.FC<Props> = ({
                             />
                         )}
                         {settVisNullstillBrevModal && (
-                            <Button
-                                variant={'tertiary'}
+                            <TilbakestillKnapp
                                 onClick={() => settVisNullstillBrevModal(true)}
-                            >
-                                Nullstill brev
-                            </Button>
+                                knappetekst={'Nullstill brev'}
+                            />
                         )}
                     </LeggTilKnappWrapper>
                 </>

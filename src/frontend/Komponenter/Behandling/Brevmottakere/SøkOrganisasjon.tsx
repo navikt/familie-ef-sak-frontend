@@ -4,7 +4,8 @@ import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IOrganisasjonMottaker } from './typer';
 import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
-import { BodyShort, Button, TextField } from '@navikt/ds-react';
+import { BodyShort, TextField } from '@navikt/ds-react';
+import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 
 interface Props {
     valgteMottakere: IOrganisasjonMottaker[];
@@ -65,15 +66,13 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                                     <BodyShort>{organisasjonRessurs.navn}</BodyShort>
                                     {organisasjonRessurs.organisasjonsnummer}
                                 </div>
-                                <Button
-                                    variant={'secondary'}
+                                <LeggTilKnapp
                                     onClick={leggTilOrganisasjon(
                                         organisasjonRessurs.organisasjonsnummer,
                                         organisasjonRessurs.navn
                                     )}
-                                >
-                                    Legg til
-                                </Button>
+                                    knappetekst={'Legg til'}
+                                />
                                 <TextField
                                     htmlSize={25}
                                     label={'Ved'}

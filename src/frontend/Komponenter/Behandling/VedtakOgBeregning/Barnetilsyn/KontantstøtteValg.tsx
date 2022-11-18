@@ -170,24 +170,20 @@ const KontantstøtteValg: React.FC<Props> = ({
                                         hideLabel
                                     />
                                     {skalViseFjernKnapp && (
-                                        <div>
-                                            <FjernKnapp
-                                                onClick={() => {
-                                                    kontantstøttePerioder.remove(index);
-                                                    settValideringsFeil(
-                                                        (
-                                                            prevState: FormErrors<InnvilgeVedtakForm>
-                                                        ) => {
-                                                            const perioder = (
-                                                                prevState.kontantstøtteperioder ??
-                                                                []
-                                                            ).filter((_, i) => i !== index);
-                                                            return { ...prevState, perioder };
-                                                        }
-                                                    );
-                                                }}
-                                            />
-                                        </div>
+                                        <FjernKnapp
+                                            onClick={() => {
+                                                kontantstøttePerioder.remove(index);
+                                                settValideringsFeil(
+                                                    (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                        const perioder = (
+                                                            prevState.kontantstøtteperioder ?? []
+                                                        ).filter((_, i) => i !== index);
+                                                        return { ...prevState, perioder };
+                                                    }
+                                                );
+                                            }}
+                                            ikontekst={'Fjern kontantstøtteperiode'}
+                                        />
                                     )}
                                 </KontantstøttePeriodeContainer>
                             </React.Fragment>

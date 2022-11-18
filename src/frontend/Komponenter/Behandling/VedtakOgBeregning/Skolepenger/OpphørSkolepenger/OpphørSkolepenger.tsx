@@ -165,7 +165,7 @@ const OpphørSkolepenger: React.FC<Props> = ({
                         {behandlingErRedigerbar && !erFjernet && (
                             <FjernKnapp
                                 onClick={() => fjernSkoleårsperiode(skoleårsperiode.periode)}
-                                knappetekst={'Opphør skoleår'}
+                                knappetekst={'Fjern skoleårsperide'}
                             />
                         )}
                         {behandlingErRedigerbar && erFjernet && (

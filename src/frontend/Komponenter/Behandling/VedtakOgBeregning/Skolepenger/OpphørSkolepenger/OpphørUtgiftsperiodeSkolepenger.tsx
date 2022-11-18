@@ -115,10 +115,16 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                                     {formaterTallMedTusenSkilleEllerStrek(utgift.stønad)}
                                 </Element>
                                 {skalViseFjernKnapp && (
-                                    <FjernKnapp onClick={() => fjernUtgift(utgift.id)} />
+                                    <FjernKnapp
+                                        onClick={() => fjernUtgift(utgift.id)}
+                                        ikontekst={'Fjern utgift'}
+                                    />
                                 )}
                                 {behandlingErRedigerbar && !skoleårErFjernet && erFjernet && (
-                                    <TilbakestillButton onClick={() => tilbakestillUtgift(index)} />
+                                    <TilbakestillButton
+                                        onClick={() => tilbakestillUtgift(index)}
+                                        ikontekst={'Tilbakestill utgiftsrad'}
+                                    />
                                 )}
                             </Utgiftsrad>
                         );

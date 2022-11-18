@@ -206,24 +206,20 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                         hideLabel
                                     />
                                     {skalViseFjernKnapp && (
-                                        <div>
-                                            <FjernKnapp
-                                                onClick={() => {
-                                                    tilleggsstønadPerioder.remove(index);
-                                                    settValideringsfeil(
-                                                        (
-                                                            prevState: FormErrors<InnvilgeVedtakForm>
-                                                        ) => {
-                                                            const perioder = (
-                                                                prevState.tilleggsstønadsperioder ??
-                                                                []
-                                                            ).filter((_, i) => i !== index);
-                                                            return { ...prevState, perioder };
-                                                        }
-                                                    );
-                                                }}
-                                            />
-                                        </div>
+                                        <FjernKnapp
+                                            onClick={() => {
+                                                tilleggsstønadPerioder.remove(index);
+                                                settValideringsfeil(
+                                                    (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                        const perioder = (
+                                                            prevState.tilleggsstønadsperioder ?? []
+                                                        ).filter((_, i) => i !== index);
+                                                        return { ...prevState, perioder };
+                                                    }
+                                                );
+                                            }}
+                                            ikontekst={'Fjern periode for tilleggsstønad'}
+                                        />
                                     )}
                                 </TilleggsstønadPeriodeContainer>
                             </React.Fragment>

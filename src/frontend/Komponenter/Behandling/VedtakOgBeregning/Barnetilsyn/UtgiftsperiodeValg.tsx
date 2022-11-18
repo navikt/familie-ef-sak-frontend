@@ -247,6 +247,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                         }
                                     );
                                 }}
+                                ikontekst={'Fjern utgiftsperiode'}
                             />
                         )}
                     </UtgiftsperiodeRad>

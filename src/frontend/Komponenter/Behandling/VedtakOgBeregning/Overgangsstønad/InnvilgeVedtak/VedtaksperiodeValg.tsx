@@ -182,6 +182,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                             }
                                         );
                                     }}
+                                    ikontekst={'Fjern vedtaksperiode'}
                                 />
                             </KnappWrapper>
                         ) : (
@@ -194,6 +195,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                         onClick={() => {
                                             leggTilTomRadUnder(index);
                                         }}
+                                        ikontekst={'Legg til ny rad'}
                                     />
                                 </KnappWrapper>
                             </Tooltip>

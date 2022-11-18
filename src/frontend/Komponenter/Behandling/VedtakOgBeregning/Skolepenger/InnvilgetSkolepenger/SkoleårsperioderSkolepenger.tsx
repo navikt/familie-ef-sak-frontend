@@ -120,7 +120,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             {skalViseFjernKnapp && (
                                 <FjernKnapp
                                     onClick={() => fjernSkoleårsperiode(index)}
-                                    knappetekst={'Fjern skoleår'}
+                                    knappetekst={'Fjern skoleårsperiode'}
                                 />
                             )}
                         </Skoleårsperiode>
