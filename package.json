@@ -90,7 +90,6 @@
     "nav-frontend-tabell-style": "^2.1.1",
     "nav-frontend-typografi": "^4.0.1",
     "nav-frontend-typografi-style": "^2.0.1",
-    "paginering": "^1.1.1",
     "passport": "^0.6.0",
     "passport-azure-ad": "^4.3.2",
     "pdfjs-dist": "2.12.313",

@@ -9,12 +9,16 @@ import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import { usePagineringState } from '../../App/hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
-import Pagination from 'paginering';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { IMappe } from './typer/mappe';
 import { AlertError, AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
+import { Pagination } from '@navikt/ds-react';
+import styled from 'styled-components';
 
-const SIDE_STORRELSE = 15;
+const FlexBox = styled.div`
+    display: flex;
+    justify-content: center;
+`;
 
 export interface IOppgaverResponse {
     antallTreffTotalt: number;
@@ -29,6 +33,7 @@ interface Props {
 
 const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmelding }) => {
     const { status } = oppgaveRessurs;
+
     const oppgaveListe =
         status === RessursStatus.SUKSESS
             ? (oppgaveRessurs as RessursSuksess<IOppgaverResponse>).data.oppgaver
@@ -39,10 +44,10 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
         rekkefolge: 'ascending',
     });
 
-    const { valgtSide, settValgtSide, slicedListe } = usePagineringState(
+    const { valgtSide, settValgtSide, slicedListe, antallSider } = usePagineringState(
         status === RessursStatus.SUKSESS ? sortertListe : [],
         1,
-        SIDE_STORRELSE
+        15
     );
     const mapperAsRecord = (mapper: IMappe[]): Record<number, string> =>
         mapper.reduce((acc, item) => {
@@ -71,12 +76,11 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
 
     return (
         <>
-            <Pagination
-                numberOfItems={sortertListe.length}
-                onChange={settValgtSide}
-                itemsPerPage={SIDE_STORRELSE}
-                currentPage={valgtSide}
-            />
+            {antallSider > 1 && (
+                <FlexBox>
+                    <Pagination page={valgtSide} count={antallSider} onPageChange={settValgtSide} />
+                </FlexBox>
+            )}
             <table className="tabell tabell--stripet">
                 <thead>
                     <tr>
