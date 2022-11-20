@@ -38,7 +38,6 @@ export enum Årsak {
     ENDRING_ANTALL_BARN = 'ENDRING_ANTALL_BARN',
     ENDRING_UTGIFTER_SKOLEPENGER = 'ENDRING_UTGIFTER_SKOLEPENGER',
 
-    SANKSJON_1_MÅNED = 'SANKSJON_1_MÅNED',
     UTESTENGELSE = 'UTESTENGELSE',
     ANNET = 'ANNET',
     KLAGE_OMGJØRING = 'KLAGE_OMGJØRING',
@@ -63,17 +62,16 @@ export const årsakRevuderingTilTekst: Record<Årsak, string> = {
     ENDRING_STØNADSPERIODE: 'Endring av stønadsperiode',
     SØKNAD_NY_PERIODE_HOVEDPERIODE_IKKE_BRUKT_OPP_TIDLIGERE:
         'Søknad ny periode - hovedperiode ikke brukt opp tidligere',
-    SØKNAD_BRUKT_OPP_HOVEDPERIODEN_TIDLIGERE: 'Ny søknad - brukt opp hovedperioden tidligere',
+    SØKNAD_BRUKT_OPP_HOVEDPERIODEN_TIDLIGERE: 'Søknad - brukt opp hovedperioden tidligere',
     SØKNAD_ETTER_AVSLAG: 'Søknad etter avslag',
     SØKNAD_ETTER_OPPHØR: 'Søknad etter opphør',
     ENDRING_TILSYNSUTGIFTER: 'Endring i tilsynsutgifter',
     ENDRING_ANTALL_BARN: 'Endring i antall barn brukeren skal ha stønad for',
     ENDRING_UTGIFTER_SKOLEPENGER: 'Endring i utgifter til skolepenger',
-    SANKSJON_1_MÅNED: 'Sanksjon 1 måned',
     UTESTENGELSE: 'Utestengelse',
     ANNET: 'Annet',
-    KLAGE_OMGJØRING: 'Klage omgjøring',
-    ANKE_OMGJØRING: 'Anke omgjøring',
+    KLAGE_OMGJØRING: 'Klage - Omgjøring',
+    ANKE_OMGJØRING: 'Anke - Omgjøring',
 };
 
 export const ÅrsakerOvergangsstønad: Årsak[] = [
@@ -92,7 +90,6 @@ export const ÅrsakerOvergangsstønad: Årsak[] = [
     Årsak.SØKNAD_BRUKT_OPP_HOVEDPERIODEN_TIDLIGERE,
     Årsak.SØKNAD_ETTER_AVSLAG,
     Årsak.SØKNAD_ETTER_OPPHØR,
-    Årsak.SANKSJON_1_MÅNED,
     Årsak.UTESTENGELSE,
     Årsak.ANNET,
     Årsak.KLAGE_OMGJØRING,
@@ -108,7 +105,6 @@ export const ÅrsakerBarnetilsyn: Årsak[] = [
     Årsak.SØKNAD_ETTER_OPPHØR,
     Årsak.ENDRING_TILSYNSUTGIFTER,
     Årsak.ENDRING_ANTALL_BARN,
-    Årsak.SANKSJON_1_MÅNED,
     Årsak.UTESTENGELSE,
     Årsak.ANNET,
     Årsak.KLAGE_OMGJØRING,
@@ -122,7 +118,6 @@ export const ÅrsakerSkolepenger: Årsak[] = [
     Årsak.SØKNAD_ETTER_AVSLAG,
     Årsak.SØKNAD_ETTER_OPPHØR,
     Årsak.ENDRING_UTGIFTER_SKOLEPENGER,
-    Årsak.SANKSJON_1_MÅNED,
     Årsak.UTESTENGELSE,
     Årsak.ANNET,
     Årsak.KLAGE_OMGJØRING,
