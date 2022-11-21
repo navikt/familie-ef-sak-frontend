@@ -9,6 +9,12 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
+import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
+import {
+    EAvslagÅrsak,
+    EBehandlingResultat,
+    IVedtakForOvergangsstønad,
+} from '../../../App/typer/vedtak';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -34,12 +40,24 @@ interface Props {
     behandlingId: string;
 }
 
+const skalFerdigstilleUtenBeslutter = (vedtak?: IVedtakForOvergangsstønad | undefined): boolean => {
+    return !!(
+        vedtak &&
+        vedtak.resultatType === EBehandlingResultat.AVSLÅ &&
+        vedtak.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
+    );
+};
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll, behandling } =
         useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
+    const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
+
+    useEffect(() => {
+        hentVedtak();
+    }, [hentVedtak]);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -78,10 +96,10 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
     return (
-        <>
-            <StyledBrev>
-                <DataViewer response={{ personopplysningerResponse, behandling }}>
-                    {({ personopplysningerResponse, behandling }) => (
+        <DataViewer response={{ personopplysningerResponse, behandling, vedtak }}>
+            {({ personopplysningerResponse, behandling, vedtak }) => (
+                <>
+                    <StyledBrev>
                         <VenstreKolonne>
                             <BrevmottakereForBehandling
                                 behandlingId={behandling.id}
@@ -94,21 +112,23 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                     personopplysninger={personopplysningerResponse}
                                     settKanSendesTilBeslutter={settKanSendesTilBeslutter}
                                     behandling={behandling}
+                                    vedtaksresultat={vedtak?.resultatType}
                                 />
                             )}
                         </VenstreKolonne>
-                    )}
-                </DataViewer>
-                <HøyreKolonne>
-                    <PdfVisning pdfFilInnhold={brevRessurs} />
-                </HøyreKolonne>
-            </StyledBrev>
-            <SendTilBeslutterFooter
-                behandlingId={behandlingId}
-                kanSendesTilBeslutter={kanSendesTilBeslutter}
-                behandlingErRedigerbar={behandlingErRedigerbar}
-            />
-        </>
+                        <HøyreKolonne>
+                            <PdfVisning pdfFilInnhold={brevRessurs} />
+                        </HøyreKolonne>
+                    </StyledBrev>
+                    <SendTilBeslutterFooter
+                        behandlingId={behandlingId}
+                        kanSendesTilBeslutter={kanSendesTilBeslutter}
+                        ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
+                        behandlingErRedigerbar={behandlingErRedigerbar}
+                    />
+                </>
+            )}
+        </DataViewer>
     );
 };
 

@@ -10,6 +10,8 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
+import { useToggles } from '../../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../../App/context/toggles';
 
 interface Props {
     avslagÅrsak?: EAvslagÅrsak;
@@ -37,8 +39,16 @@ const FeilmeldingTekst = styled(Normaltekst)`
 const SelectAvslagÅrsak = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
+    const { toggles } = useToggles();
     const { avslagÅrsak, settAvslagÅrsak, feilmelding } = props;
 
+    const avslagÅrsaker = toggles[ToggleName.avslagMindreInntektsendringer]
+        ? årsakerTilAvslag
+        : [
+              EAvslagÅrsak.BARN_OVER_ÅTTE_ÅR,
+              EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
+              EAvslagÅrsak.STØNADSTID_OPPBRUKT,
+          ];
     return (
         <>
             <Element>Årsak</Element>
@@ -54,7 +64,7 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
                 hideLabel={true}
             >
                 <option value="">Velg</option>
-                {årsakerTilAvslag.map((årsak) => {
+                {avslagÅrsaker.map((årsak) => {
                     return (
                         <option value={årsak} key={årsak}>
                             {avslagÅrsakTilTekst[årsak]}
