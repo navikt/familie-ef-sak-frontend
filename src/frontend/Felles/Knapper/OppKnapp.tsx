@@ -1,10 +1,16 @@
 import { Up } from '@navikt/ds-icons';
 import React from 'react';
-import hiddenIf from '../HiddenIf/hiddenIf';
 import { Button } from '@navikt/ds-react';
 
-const OppKnapp: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-    return <Button type={'button'} onClick={onClick} variant={'tertiary'} icon={<Up />} />;
+const OppKnapp: React.FC<{ onClick: () => void; ikontekst: string }> = ({ onClick, ikontekst }) => {
+    return (
+        <Button
+            type={'button'}
+            onClick={onClick}
+            variant={'tertiary'}
+            icon={<Up title={ikontekst} />}
+        />
+    );
 };
 
-export default hiddenIf(OppKnapp);
+export default OppKnapp;

@@ -6,14 +6,14 @@ import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import navFarger from 'nav-frontend-core';
-import FjernKnappMedTekst from '../../../../../Felles/Knapper/FjernKnappMedTekst';
 import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger';
 import { beregnSkoleår, GyldigSkoleår } from '../skoleår';
-import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { locateIndexToRestorePreviousItemInCurrentItems, oppdaterValideringsfeil } from '../utils';
 import SkoleårDelårsperiode from '../InnvilgetSkolepenger/SkoleårDelårsperiode';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from '../InnvilgetSkolepenger/VedtaksformSkolepenger';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
@@ -21,6 +21,10 @@ const Skoleårsperiode = styled.div`
     margin-left: 0rem;
     padding: 1rem;
     background-color: ${navFarger.navGraBakgrunn};
+`;
+
+const TilbakestillButton = styled(TilbakestillKnapp)`
+    margin-bottom: 0.25rem;
 `;
 
 interface Props {
@@ -159,16 +163,15 @@ const OpphørSkolepenger: React.FC<Props> = ({
                             behandlingErRedigerbar={behandlingErRedigerbar}
                         />
                         {behandlingErRedigerbar && !erFjernet && (
-                            <FjernKnappMedTekst
+                            <FjernKnapp
                                 onClick={() => fjernSkoleårsperiode(skoleårsperiode.periode)}
-                                knappetekst="Opphør skoleår"
+                                knappetekst={'Fjern skoleårsperide'}
                             />
                         )}
                         {behandlingErRedigerbar && erFjernet && (
-                            <TilbakestillKnapp
+                            <TilbakestillButton
                                 onClick={() => tilbakestillSkoleårsperiode(index)}
-                                knappetekst="Tilbakestill skoleår"
-                                visKnapptekst={true}
+                                knappetekst={'Tilbakestill skoleår'}
                             />
                         )}
                     </Skoleårsperiode>

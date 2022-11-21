@@ -8,7 +8,6 @@ import {
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
-import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import styled from 'styled-components';
 import { tomSkoleårsperiode, ValideringsPropsMedOppdatering } from '../typer';
@@ -16,6 +15,7 @@ import InputUtenSpinner from '../../../../../Felles/Visningskomponenter/InputUte
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Label } from '@navikt/ds-react';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 
 const SkoleårsperiodeRad = styled.div<{
     lesevisning?: boolean;
@@ -171,12 +171,10 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 erLesevisning={erLesevisning}
                             />
                             {skalViseFjernKnapp && (
-                                <div>
-                                    <FjernKnapp
-                                        onClick={() => fjernDelårsperiode(index)}
-                                        knappetekst="Fjern delårsperiode"
-                                    />
-                                </div>
+                                <FjernKnapp
+                                    onClick={() => fjernDelårsperiode(index)}
+                                    ikontekst={'Fjern delårsperiode'}
+                                />
                             )}
                         </SkoleårsperiodeRad>
                     </>

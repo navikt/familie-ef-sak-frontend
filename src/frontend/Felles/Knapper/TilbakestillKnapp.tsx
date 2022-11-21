@@ -1,28 +1,22 @@
 import { Cancel } from '@navikt/ds-icons';
 import React from 'react';
-import hiddenIf from '../HiddenIf/hiddenIf';
-import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
-
-const StyledKnapp = styled(Button)`
-    margin-bottom: 0.25rem;
-`;
 
 const TilbakestillKnapp: React.FC<{
     onClick: () => void;
-    knappetekst: string;
-    visKnapptekst?: boolean;
-}> = ({ onClick, knappetekst, visKnapptekst }) => {
+    knappetekst?: string;
+    ikontekst?: string;
+}> = ({ onClick, knappetekst, ikontekst }) => {
     return (
-        <StyledKnapp
+        <Button
             onClick={onClick}
             type="button"
-            variant={visKnapptekst ? 'secondary' : 'tertiary'}
-            icon={<Cancel title={knappetekst} />}
+            variant={knappetekst ? 'secondary' : 'tertiary'}
+            icon={<Cancel title={knappetekst ? knappetekst : ikontekst} />}
         >
-            {visKnapptekst && <span>{knappetekst}</span>}
-        </StyledKnapp>
+            {knappetekst && <span>{knappetekst}</span>}
+        </Button>
     );
 };
 
-export default hiddenIf(TilbakestillKnapp);
+export default TilbakestillKnapp;

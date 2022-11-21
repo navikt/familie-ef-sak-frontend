@@ -1,16 +1,8 @@
 import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import {
-    Element,
-    Normaltekst as NormaltekstNavFrontend,
-    Undertekst,
-    Undertittel,
-} from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertekst, Undertittel } from 'nav-frontend-typografi';
 import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
-import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { Calculator } from '@navikt/ds-icons';
-
-const Normaltekst = hiddenIf(NormaltekstNavFrontend);
 
 export enum TabellIkon {
     REGISTER = 'REGISTER',

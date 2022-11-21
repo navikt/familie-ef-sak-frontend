@@ -10,7 +10,6 @@ import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/Input
 import { harTallverdi, tilTallverdi } from '../../../../../App/utils/utils';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
-import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { Element } from 'nav-frontend-typografi';
@@ -23,6 +22,7 @@ import { Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -206,7 +206,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             }
                                         );
                                     }}
-                                    knappetekst="Fjern inntektsperiode"
+                                    ikontekst={'Fjern inntektsperiode'}
                                 />
                             </KnappWrapper>
                         ) : (
@@ -219,6 +219,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         onClick={() => {
                                             leggTilTomRadUnder(index);
                                         }}
+                                        ikontekst={'Legg til ny rad'}
                                     />
                                 </KnappWrapper>
                             </Tooltip>

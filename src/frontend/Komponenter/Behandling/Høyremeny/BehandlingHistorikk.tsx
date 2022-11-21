@@ -1,7 +1,6 @@
 import * as React from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import hiddenIf from '../../../Felles/HiddenIf/hiddenIf';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import HistorikkElement from './HistorikkElement';
 import { behandlingHarBlittGodkjent } from './utils';
@@ -49,4 +48,4 @@ const BehandlingHistorikk: React.FC<IBehandlingHistorikkProps> = ({ behandlingId
     );
 };
 
-export default hiddenIf(BehandlingHistorikk);
+export default BehandlingHistorikk;

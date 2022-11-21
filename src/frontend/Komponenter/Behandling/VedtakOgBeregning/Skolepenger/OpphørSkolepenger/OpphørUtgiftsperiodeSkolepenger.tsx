@@ -2,15 +2,15 @@ import styled from 'styled-components';
 import React from 'react';
 import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
 import { Element } from 'nav-frontend-typografi';
-import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SkolepengerOpphørProps } from '../typer';
 import navFarger from 'nav-frontend-core';
 import {
     formaterIsoMånedÅrFull,
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../../../App/utils/formatter';
-import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -25,6 +25,10 @@ const Utgiftsrad = styled.div<{
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
     text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
     align-items: center;
+`;
+
+const TilbakestillButton = styled(TilbakestillKnapp)`
+    margin-bottom: 0.25rem;
 `;
 
 const FlexRow = styled.div`
@@ -113,13 +117,13 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                                 {skalViseFjernKnapp && (
                                     <FjernKnapp
                                         onClick={() => fjernUtgift(utgift.id)}
-                                        knappetekst="Fjern vedtaksperiode"
+                                        ikontekst={'Fjern utgift'}
                                     />
                                 )}
                                 {behandlingErRedigerbar && !skoleårErFjernet && erFjernet && (
-                                    <TilbakestillKnapp
+                                    <TilbakestillButton
                                         onClick={() => tilbakestillUtgift(index)}
-                                        knappetekst="Tilbakestill utgift"
+                                        ikontekst={'Tilbakestill utgiftsrad'}
                                     />
                                 )}
                             </Utgiftsrad>

@@ -1,20 +1,22 @@
 import { Delete } from '@navikt/ds-icons';
 import React from 'react';
-import hiddenIf from '../HiddenIf/hiddenIf';
 import { Button } from '@navikt/ds-react';
 
-const FjernKnapp: React.FC<{ onClick: () => void; knappetekst: string }> = ({
-    onClick,
-    knappetekst,
-}) => {
+const FjernKnapp: React.FC<{
+    onClick: () => void;
+    knappetekst?: string;
+    ikontekst?: string;
+}> = ({ onClick, knappetekst, ikontekst }) => {
     return (
         <Button
             onClick={onClick}
             type="button"
-            variant={'tertiary'}
-            icon={<Delete title={knappetekst} />}
-        />
+            variant={knappetekst ? 'secondary' : 'tertiary'}
+            icon={<Delete title={knappetekst ? knappetekst : ikontekst} />}
+        >
+            {knappetekst && <span>{knappetekst}</span>}
+        </Button>
     );
 };
 
-export default hiddenIf(FjernKnapp);
+export default FjernKnapp;

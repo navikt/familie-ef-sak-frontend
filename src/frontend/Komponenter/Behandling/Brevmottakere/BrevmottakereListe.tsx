@@ -2,8 +2,8 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import { BodyShort, Button, Ingress } from '@navikt/ds-react';
-import { Delete } from '@navikt/ds-icons';
+import { BodyShort, Ingress } from '@navikt/ds-react';
+import FjernKnapp from '../../../Felles/Knapper/FjernKnapp';
 
 interface Props {
     valgtePersonMottakere: IBrevmottaker[];
@@ -56,11 +56,9 @@ export const BrevmottakereListe: FC<Props> = ({
                             <KopierbartNullableFødselsnummer fødselsnummer={mottaker.personIdent} />
                         </BodyShort>
                     </Flexboks>
-                    <Button
-                        type={'button'}
-                        variant={'tertiary'}
+                    <FjernKnapp
                         onClick={fjernPersonMottaker(mottaker.personIdent)}
-                        icon={<Delete />}
+                        ikontekst={'Fjern person fra mottakerliste'}
                     />
                 </StyledMottakerBoks>
             ))}
@@ -72,11 +70,9 @@ export const BrevmottakereListe: FC<Props> = ({
                             {`Organisasjonsnummer: ${mottaker.organisasjonsnummer}`}
                         </BodyShort>
                     </div>
-                    <Button
-                        type={'button'}
-                        variant={'tertiary'}
+                    <FjernKnapp
                         onClick={fjernOrganisasjonMottaker(mottaker.organisasjonsnummer)}
-                        icon={<Delete />}
+                        ikontekst={'Fjern organisasjon fra mottakerliste'}
                     />
                 </StyledMottakerBoks>
             ))}
