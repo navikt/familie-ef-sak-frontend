@@ -24,6 +24,7 @@ import { klageBaseUrl, tilbakekrevingBaseUrl } from '../../App/utils/miljø';
 import {
     KlageBehandling,
     KlagebehandlingResultat,
+    KlageHenlagtÅrsak,
     KlageinstansEventType,
     KlageinstansResultat,
     klageinstansUtfallTilTekst,
@@ -55,7 +56,7 @@ interface BehandlingsoversiktTabellBehandling {
     id: string;
     type: Behandlingstype | TilbakekrevingBehandlingstype | string;
     årsak?: Behandlingsårsak | KlageÅrsak;
-    henlagtÅrsak?: EHenlagtårsak;
+    henlagtÅrsak?: EHenlagtårsak | KlageHenlagtÅrsak;
     status: string;
     vedtaksdato?: string;
     resultat?:
@@ -114,6 +115,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 applikasjon: BehandlingApplikasjon.KLAGE,
                 årsak: behandling.årsak,
                 klageinstansResultat: behandling.klageinstansResultat,
+                henlagtÅrsak: behandling.henlagtÅrsak,
             };
         }
     );
