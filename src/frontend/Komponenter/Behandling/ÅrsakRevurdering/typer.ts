@@ -125,6 +125,7 @@ export const ÅrsakerSkolepenger: Årsak[] = [
 ];
 
 export enum Opplysningskilde {
+    INNSENDT_SØKNAD = 'INNSENDT_SØKNAD',
     MELDING_MODIA = 'MELDING_MODIA',
     INNSENDT_DOKUMENTASJON = 'INNSENDT_DOKUMENTASJON',
     BESKJED_ANNEN_ENHET = 'BESKJED_ANNEN_ENHET',
@@ -132,6 +133,7 @@ export enum Opplysningskilde {
 }
 
 export const opplysningskildeTilTekst: Record<Opplysningskilde, string> = {
+    INNSENDT_SØKNAD: 'Innsendt søknad',
     MELDING_MODIA: 'Melding i Modia',
     INNSENDT_DOKUMENTASJON: 'Innsendt dokumentasjon',
     BESKJED_ANNEN_ENHET: 'Beskjed fra annen enhet',
