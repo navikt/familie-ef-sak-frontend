@@ -11,7 +11,6 @@ import {
     useMellomlagringBrev,
 } from '../../../App/hooks/useMellomlagringBrev';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
-import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import FritekstBrev from './FritekstBrev';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
@@ -19,6 +18,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Select } from '@navikt/ds-react';
+import { EBehandlingResultat } from '../../../App/typer/vedtak';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -26,6 +26,7 @@ export interface BrevmenyProps {
     personopplysninger: IPersonopplysninger;
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
     behandling: Behandling;
+    vedtaksresultat?: EBehandlingResultat;
 }
 
 const StyledBrevMeny = styled.div`
@@ -39,9 +40,8 @@ const datasett = 'ef-brev';
 const fritekstmal = 'Fritekstbrev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
-    const behandling = props.behandling;
+    const { behandling, vedtaksresultat, behandlingId } = props;
     const { axiosRequest } = useApp();
-    const { hentVedtak, vedtaksresultat } = useHentVedtak(props.behandlingId);
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
         behandling.stønadstype
@@ -51,7 +51,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
         byggTomRessurs()
     );
-    const { mellomlagretBrev } = useMellomlagringBrev(props.behandlingId);
+    const { mellomlagretBrev } = useMellomlagringBrev(behandlingId);
     const { flettefeltStore } = useVerdierForBrev(beløpsperioder);
     const { toggles } = useToggles();
 
@@ -82,10 +82,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     useEffect(() => {
         hentBeløpsperioder(vedtaksresultat);
     }, [vedtaksresultat, hentBeløpsperioder]);
-
-    useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak]);
 
     useEffect(() => {
         if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
@@ -143,7 +139,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 <DataViewer response={{ mellomlagretBrev }}>
                     {({ mellomlagretBrev }) => (
                         <FritekstBrev
-                            behandlingId={props.behandlingId}
+                            behandlingId={behandlingId}
                             oppdaterBrevressurs={props.oppdaterBrevRessurs}
                             mellomlagretFritekstbrev={mellomlagretBrev as IMellomlagretBrevFritekst}
                         />

@@ -15,4 +15,5 @@ export enum ToggleName {
     journalføringKlage = 'familie.ef.sak.frontend-journalforing-klage',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     årsakRevurdering = 'familie.ef.sak.revurdering-arsak',
+    avslagMindreInntektsendringer = 'familie.ef.sak.avslag-mindre-inntektsendringer',
 }

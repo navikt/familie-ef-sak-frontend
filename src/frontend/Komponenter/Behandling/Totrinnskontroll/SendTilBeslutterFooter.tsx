@@ -8,6 +8,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 
 const Footer = styled.footer`
     width: calc(100%);
@@ -31,7 +32,13 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar?: boolean;
-}> = ({ behandlingId, kanSendesTilBeslutter, behandlingErRedigerbar }) => {
+    ferdigstillUtenBeslutter: boolean;
+}> = ({
+    behandlingId,
+    kanSendesTilBeslutter,
+    behandlingErRedigerbar,
+    ferdigstillUtenBeslutter,
+}) => {
     const { axiosRequest, gåTilUrl } = useApp();
     const { hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
@@ -63,24 +70,34 @@ const SendTilBeslutterFooter: React.FC<{
         hentBehandlingshistorikk.rerun();
     };
 
+    const ferdigstillTittel = ferdigstillUtenBeslutter
+        ? 'Ferdigstill behandling'
+        : 'Send til beslutter';
+    const modalTittel = ferdigstillUtenBeslutter
+        ? 'Vedtaket er ferdigstilt'
+        : 'Vedtaket er sendt til beslutter';
+
     return (
         <>
             {behandlingErRedigerbar && (
                 <Footer>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                    {ferdigstillUtenBeslutter && (
+                        <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
+                    )}
                     <MidtstiltInnhold>
                         <HovedKnapp
                             onClick={sendTilBeslutter}
                             disabled={laster || !kanSendesTilBeslutter}
                             type={'button'}
                         >
-                            Send til beslutter
+                            {ferdigstillTittel}
                         </HovedKnapp>
                     </MidtstiltInnhold>
                 </Footer>
             )}
             <ModalWrapper
-                tittel={'Vedtaket er sendt til beslutter'}
+                tittel={modalTittel}
                 visModal={visModal}
                 onClose={() => settVisModal(false)}
                 aksjonsknapper={{

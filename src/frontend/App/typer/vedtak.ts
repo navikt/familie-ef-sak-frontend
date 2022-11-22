@@ -272,12 +272,14 @@ export enum EAvslagÅrsak {
     BARN_OVER_ÅTTE_ÅR = 'BARN_OVER_ÅTTE_ÅR',
     STØNADSTID_OPPBRUKT = 'STØNADSTID_OPPBRUKT',
     MANGLENDE_OPPLYSNINGER = 'MANGLENDE_OPPLYSNINGER',
+    MINDRE_INNTEKTSENDRINGER = 'MINDRE_INNTEKTSENDRINGER',
 }
 
 export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.BARN_OVER_ÅTTE_ÅR,
     EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
+    EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER,
 ];
 
 export enum ESkolepengerStudietype {
@@ -406,6 +408,7 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     BARN_OVER_ÅTTE_ÅR: 'Barnet er over 8 år',
     STØNADSTID_OPPBRUKT: 'Stønadstiden er brukt opp',
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
+    MINDRE_INNTEKTSENDRINGER: 'Mindre inntektsendringer',
 };
 
 export const samordningsfradragstypeTilTekst: Record<ESamordningsfradragtype, string> = {
