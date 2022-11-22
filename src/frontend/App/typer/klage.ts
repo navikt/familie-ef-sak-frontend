@@ -14,6 +14,7 @@ export interface KlageBehandling {
     vedtaksdato: string | undefined;
     årsak: KlageÅrsak | undefined;
     klageinstansResultat: KlageinstansResultat[];
+    henlagtÅrsak: KlageHenlagtÅrsak | undefined;
 }
 
 export interface KlageinstansResultat {
@@ -71,4 +72,9 @@ export enum KlageÅrsak {
     FEIL_PROSESSUELL = 'FEIL_PROSESSUELL',
     KØET_BEHANDLING = 'KØET_BEHANDLING',
     ANNET = 'ANNET',
+}
+
+export enum KlageHenlagtÅrsak {
+    TRUKKET_TILBAKE = 'TRUKKET_TILBAKE',
+    FEILREGISTRERT = 'FEILREGISTRERT',
 }
