@@ -105,10 +105,7 @@ const filtrerVekkHvisKorrigeringUtenBrev = [SideNavn.SANKSJON, SideNavn.BREV];
 const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>
     behandling.resultat !== BehandlingResultat.HENLAGT || side.navn !== SideNavn.BREV;
 
-export const filtrerSiderEtterBehandlingstype = (
-    behandling: Behandling,
-    skalViseÅrsakRevurdering: boolean
-): ISide[] => {
+export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
     const sider = siderForStønad(behandling.stønadstype).filter((side) =>
         ikkeVisBrevHvisHenlagt(behandling, side)
     );
@@ -129,21 +126,16 @@ export const filtrerSiderEtterBehandlingstype = (
             filtrerHvisGOmregningEllerSatsendring.includes(side.navn as SideNavn)
         );
     }
-    const erRevureringOgSkalViseÅrsakRevurdering =
-        behandling.type !== Behandlingstype.FØRSTEGANGSBEHANDLING && skalViseÅrsakRevurdering;
+
     if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
         return sider
             .filter((side) => !filtrerVekkHvisKorrigeringUtenBrev.includes(side.navn as SideNavn))
-            .filter(
-                (side) =>
-                    side.navn !== SideNavn.ÅRSAK_REVURDERING ||
-                    erRevureringOgSkalViseÅrsakRevurdering
-            );
+            .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));
     }
     return sider
         .filter((side) => !filtrerVekkHvisStandard.includes(side.navn as SideNavn))
-        .filter(
-            (side) =>
-                side.navn !== SideNavn.ÅRSAK_REVURDERING || erRevureringOgSkalViseÅrsakRevurdering
-        );
+        .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));
 };
+
+const filtrerVekkÅrsakRevurderingHvisIkkeRevurdering = (side: ISide, behandling: Behandling) =>
+    side.navn !== SideNavn.ÅRSAK_REVURDERING || behandling.type === Behandlingstype.REVURDERING;
