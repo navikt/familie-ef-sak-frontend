@@ -41,8 +41,8 @@ interface Props {
 }
 
 const skalFerdigstilleUtenBeslutter = (vedtak?: IVedtakForOvergangsstønad | undefined): boolean => {
-    return !!(
-        vedtak &&
+    return (
+        !!vedtak &&
         vedtak.resultatType === EBehandlingResultat.AVSLÅ &&
         vedtak.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
     );
