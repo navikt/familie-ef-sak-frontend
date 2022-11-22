@@ -18,6 +18,7 @@ export const SistOppdatertOgVurderingWrapper = styled.span`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 40rem;
 `;
 
 export const VertikalStrek = styled.span`
