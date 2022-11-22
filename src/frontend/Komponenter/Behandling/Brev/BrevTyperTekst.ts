@@ -25,7 +25,7 @@ export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
         id: uuidv4(),
     },
     {
@@ -45,7 +45,7 @@ export const initielleAvsnittVedtakAvslag: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
         id: uuidv4(),
     },
     {
@@ -71,7 +71,7 @@ export const initielleAvsnittVedtakInvilgelseBarnetilsyn: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
         id: uuidv4(),
     },
     {
@@ -91,7 +91,7 @@ export const initielleAvsnittVedtakAvslagBarnetilsyn: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
         id: uuidv4(),
     },
     {
@@ -244,7 +244,7 @@ export const initielleAvsnittVedtakInvilgelseSkolepenger: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
         id: uuidv4(),
     },
     {
@@ -264,7 +264,7 @@ export const initielleAvsnittVedtakAvslagSkolepenger: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette brevet. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
         id: uuidv4(),
     },
     {

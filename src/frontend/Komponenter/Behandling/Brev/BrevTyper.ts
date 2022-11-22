@@ -117,6 +117,8 @@ export enum FritekstBrevtype {
     VEDTAK_AVSLAG_BARNETILSYN = 'VEDTAK_AVSLAG_BARNETILSYN',
     VEDTAK_INNVILGELSE_SKOLEPENGER = 'VEDTAK_INNVILGELSE_SKOLEPENGER',
     VEDTAK_AVSLAG_SKOLEPENGER = 'VEDTAK_AVSLAG_SKOLEPENGER',
+    VEDTAK_OPPHØR_BARNETILSYN = 'VEDTAK_OPPHØR_BARNETILSYN',
+    VEDTAK_OPPHØR_SKOLEPENGER = 'VEDTAK_OPPHØR_SKOLEPENGER',
 }
 
 export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrevtype, string> = {
@@ -135,6 +137,8 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE: 'Vi trenger opplysninger fra deg',
     VEDTAK_INNVILGELSE_SKOLEPENGER: 'Du får stønad til skolepenger',
     VEDTAK_AVSLAG_SKOLEPENGER: 'Vi har avslått søknaden din om stønad til skolepenger',
+    VEDTAK_OPPHØR_BARNETILSYN: 'Vi har stanset stønaden din til barnetilsyn',
+    VEDTAK_OPPHØR_SKOLEPENGER: 'Vi har stanset stønaden din til skolepenger',
 };
 
 export const BrevtyperTilSelectNavn: Record<
@@ -157,6 +161,8 @@ export const BrevtyperTilSelectNavn: Record<
         'Innhenting av karakterutskrift (utvidet periode)',
     VEDTAK_INNVILGELSE_SKOLEPENGER: 'Vedtak innvilgelse',
     VEDTAK_AVSLAG_SKOLEPENGER: 'Vedtak avslag',
+    VEDTAK_OPPHØR_BARNETILSYN: 'Vedtak opphør',
+    VEDTAK_OPPHØR_SKOLEPENGER: 'Vedtak opphør',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
@@ -170,10 +176,12 @@ export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> 
     BARNETILSYN: [
         FritekstBrevtype.VEDTAK_INNVILGELSE_BARNETILSYN,
         FritekstBrevtype.VEDTAK_AVSLAG_BARNETILSYN,
+        FritekstBrevtype.VEDTAK_OPPHØR_BARNETILSYN,
     ],
     SKOLEPENGER: [
         FritekstBrevtype.VEDTAK_INNVILGELSE_SKOLEPENGER,
         FritekstBrevtype.VEDTAK_AVSLAG_SKOLEPENGER,
+        FritekstBrevtype.VEDTAK_OPPHØR_SKOLEPENGER,
     ],
 };
 
@@ -196,6 +204,8 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
             initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode,
         VEDTAK_INNVILGELSE_SKOLEPENGER: initielleAvsnittVedtakInvilgelseSkolepenger,
         VEDTAK_AVSLAG_SKOLEPENGER: initielleAvsnittVedtakAvslagSkolepenger,
+        VEDTAK_OPPHØR_BARNETILSYN: initielleAvsnittVedtakAvslag,
+        VEDTAK_OPPHØR_SKOLEPENGER: initielleAvsnittVedtakAvslag,
     };
 
 export enum FritekstBrevContext {
