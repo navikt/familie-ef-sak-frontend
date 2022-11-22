@@ -1,5 +1,5 @@
 import { TilbakekrevingsbehandlingÅrsak } from './tilbakekreving';
-import { KlageÅrsak } from './klage';
+import { KlageHenlagtÅrsak, KlageÅrsak } from './klage';
 
 export enum Behandlingsårsak {
     KLAGE = 'KLAGE',
@@ -68,7 +68,7 @@ export enum EHenlagtårsak {
     FEILREGISTRERT = 'FEILREGISTRERT',
 }
 
-export const henlagtÅrsakTilTekst: Record<EHenlagtårsak, string> = {
+export const henlagtÅrsakTilTekst: Record<EHenlagtårsak | KlageHenlagtÅrsak, string> = {
     TRUKKET_TILBAKE: 'Trukket tilbake',
     FEILREGISTRERT: 'Feilregistrert',
 };
