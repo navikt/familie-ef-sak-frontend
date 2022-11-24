@@ -2,6 +2,7 @@ import React from 'react';
 import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
 import { Alert, BodyShort, Button, Label, Tooltip } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { IOrganisasjon } from '../Brevmottakere/SøkOrganisasjon';
 
 const Grid = styled.div`
     display: flex;
@@ -22,18 +23,34 @@ const KompaktButton = styled(Button)`
     }
 `;
 
+const finnOrganisasjonsnavn = (
+    organisasjoner: IOrganisasjon[],
+    organisasjonsnummer: string
+): string => {
+    return (
+        organisasjoner.find(
+            (organisasjon) => organisasjon.organisasjonsnummer === organisasjonsnummer
+        )?.navn ?? organisasjonsnummer
+    );
+};
+
 const BrevMottakereListe: React.FC<{
     mottakere: IBrevmottakere;
     kanEndreBrevmottakere: boolean;
+    organisasjoner: IOrganisasjon[];
     settVisBrevmottakereModal: (verdi: boolean) => void;
-}> = ({ mottakere, kanEndreBrevmottakere, settVisBrevmottakereModal }) => {
+}> = ({ mottakere, kanEndreBrevmottakere, settVisBrevmottakereModal, organisasjoner }) => {
     const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
         return [
             ...brevMottakere.personer.map(
                 (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
             ),
             ...brevMottakere.organisasjoner.map(
-                (org) => `${org.organisasjonsnavn} (${org.mottakerRolle.toLowerCase()})`
+                (org) =>
+                    `${finnOrganisasjonsnavn(
+                        organisasjoner,
+                        org.organisasjonsnummer
+                    )} (${org.mottakerRolle.toLowerCase()})`
             ),
         ];
     };
