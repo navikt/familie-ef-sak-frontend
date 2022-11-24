@@ -3,7 +3,7 @@ import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
 import {
     formaterIsoDatoTid,
-    formaterNullableMånedÅr,
+    formaterNullableIsoDato,
     formaterTallMedTusenSkille,
 } from '../../../App/utils/formatter';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
@@ -38,9 +38,9 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean, index: num
     return (
         <HistorikkRad type={andel.endring?.type} key={index}>
             <td>
-                {formaterNullableMånedÅr(andel.andel.stønadFra)}
+                {formaterNullableIsoDato(andel.andel.stønadFra)}
                 {' - '}
-                {formaterNullableMånedÅr(andel.andel.stønadTil)}
+                {formaterNullableIsoDato(andel.andel.stønadTil)}
             </td>
             {sanksjonFinnes && (
                 <td>

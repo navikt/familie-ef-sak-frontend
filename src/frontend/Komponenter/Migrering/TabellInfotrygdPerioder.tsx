@@ -1,10 +1,6 @@
 import React from 'react';
 import { InfotrygdPeriodeMedFlereEndringer } from '../Infotrygd/typer';
-import {
-    formaterNullableIsoDato,
-    formaterNullableMånedÅr,
-    formaterTallMedTusenSkille,
-} from '../../App/utils/formatter';
+import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../App/utils/formatter';
 import {
     aktivitetstypeTilKode,
     aktivitetstypeTilTekst,
@@ -29,9 +25,9 @@ const HøyrestiltTekst = styled.p`
 `;
 
 const formatStønadTom = (periode: InfotrygdPeriodeMedFlereEndringer): string => {
-    const stønadTom = formaterNullableMånedÅr(periode.stønadTom) as string;
+    const stønadTom = formaterNullableIsoDato(periode.stønadTom) as string;
     if (periode.kode === Kode.OPPHØRT || periode.kode === Kode.OVERTFØRT_NY_LØSNING) {
-        return `${formaterNullableMånedÅr(periode.opphørsdato)} (${stønadTom})`;
+        return `${formaterNullableIsoDato(periode.opphørsdato)} (${stønadTom})`;
     } else {
         return stønadTom;
     }
@@ -115,7 +111,7 @@ export const TabellInfotrygdOvergangsstønadperioder: React.FC<{
                         <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
                             <Tooltip content={stønadOgVedtaksIdString}>
                                 <Table.DataCell>
-                                    {formaterNullableMånedÅr(periode.stønadFom)}
+                                    {formaterNullableIsoDato(periode.stønadFom)}
                                     {' - '}
                                     {formatStønadTom(periode)}
                                 </Table.DataCell>
@@ -216,7 +212,7 @@ export const TabellInfotrygdBarnetilsynperioder: React.FC<{
                         <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
                             <Tooltip content={stønadOgVedtaksIdString}>
                                 <Table.DataCell>
-                                    {formaterNullableMånedÅr(periode.stønadFom)}
+                                    {formaterNullableIsoDato(periode.stønadFom)}
                                     {' - '}
                                     {formatStønadTom(periode)}
                                 </Table.DataCell>
@@ -279,7 +275,7 @@ export const InfotrygdPerioderSkolepenger: React.FC<{
                     return (
                         <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
                             <Table.DataCell>
-                                {formaterNullableMånedÅr(periode.stønadFom)}
+                                {formaterNullableIsoDato(periode.stønadFom)}
                                 {' - '}
                                 {formatStønadTom(periode)}
                             </Table.DataCell>
