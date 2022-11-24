@@ -47,10 +47,10 @@ const BrevMottakereListe: React.FC<{
             ),
             ...brevMottakere.organisasjoner.map(
                 (org) =>
-                    `${finnOrganisasjonsnavn(
+                    `${org.navnHosOrganisasjon} - ${finnOrganisasjonsnavn(
                         organisasjoner,
                         org.organisasjonsnummer
-                    )} (${org.mottakerRolle.toLowerCase()})`
+                    )} (${org.organisasjonsnummer})`
             ),
         ];
     };
