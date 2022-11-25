@@ -1,14 +1,14 @@
 import React from 'react';
 import { SummertPeriode } from '../../App/typer/infotrygd';
-import { formaterNullableMånedÅr, formaterTallMedTusenSkille } from '../../App/utils/formatter';
+import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../App/utils/formatter';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { Table } from '@navikt/ds-react';
 
 const formatFomTom = (periode: SummertPeriode) => (
     <>
-        {formaterNullableMånedÅr(periode.stønadFom)}
+        {formaterNullableIsoDato(periode.stønadFom)}
         {' - '}
-        {formaterNullableMånedÅr(periode.stønadTom)}
+        {formaterNullableIsoDato(periode.stønadTom)}
     </>
 );
 
