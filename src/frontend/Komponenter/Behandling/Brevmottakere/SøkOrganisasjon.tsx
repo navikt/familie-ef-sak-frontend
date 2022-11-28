@@ -32,7 +32,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
         }
     }, [axiosRequest, organisasjonsnummer]);
 
-    const leggTilOrganisasjon = (organisasjonsnummer: string, organisasjonsnavn: string) => () => {
+    const leggTilOrganisasjon = (organisasjonsnummer: string) => () => {
         if (!navnHosOrganisasjon) {
             settFeil('Oppgi kontaktperson hos organisasjonen');
             return;
@@ -41,7 +41,6 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
         settValgteMottakere([
             {
                 organisasjonsnummer,
-                organisasjonsnavn,
                 navnHosOrganisasjon: navnHosOrganisasjon,
                 mottakerRolle: 'VERGE',
             },
@@ -68,8 +67,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                                 </div>
                                 <LeggTilKnapp
                                     onClick={leggTilOrganisasjon(
-                                        organisasjonRessurs.organisasjonsnummer,
-                                        organisasjonRessurs.navn
+                                        organisasjonRessurs.organisasjonsnummer
                                     )}
                                     knappetekst={'Legg til'}
                                 />
