@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { IOpplysningerOmAdresse } from '../vilkår';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     data: IOpplysningerOmAdresse;
@@ -18,13 +18,13 @@ export const OpplysningerOmAdresse: FC<Props> = ({ data }) => {
     return (
         <>
             <Søknadsgrunnlag />
-            <Normaltekst>Bor på denne adressen ({data.adresse})</Normaltekst>
+            <BodyShort>Bor på denne adressen ({data.adresse})</BodyShort>
             <BooleanTekst value={data.søkerBorPåRegistrertAdresse} />
 
             {data.harMeldtFlytteendring && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Har meldt adresseendring til Folkeregisteret</Normaltekst>
+                    <BodyShort>Har meldt adresseendring til Folkeregisteret</BodyShort>
                     <BooleanTekst value={data.harMeldtFlytteendring} />
                 </>
             )}
