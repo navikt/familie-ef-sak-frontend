@@ -28,7 +28,7 @@ const lagInntektsperioder = (beløpsperioder?: IBeløpsperiode[]): string => {
                             samordningskolonneTittel &&
                             `<th style="width: 90px; word-wrap: break-word; ${borderStylingCompact}">${samordningskolonneTittel}</th>`
                         }
-                        <th style="width: 55px; word-wrap: break-word; ${borderStylingCompact}">Dette får du ubetalt pr. måned</th>
+                        <th style="width: 55px; word-wrap: break-word; ${borderStylingCompact}">Dette får du utbetalt pr. måned</th>
                     </tr>
                 </thead>
                 <tbody>

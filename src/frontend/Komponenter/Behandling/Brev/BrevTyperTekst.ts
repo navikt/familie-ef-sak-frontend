@@ -41,7 +41,7 @@ export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
     },
 ];
 
-export const initielleAvsnittVedtakAvslag: AvsnittMedId[] = [
+export const initielleAvsnittVedtakAvslagOvergangsstønad: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
@@ -57,6 +57,46 @@ export const initielleAvsnittVedtakAvslag: AvsnittMedId[] = [
         deloverskrift: 'Har du spørsmål?',
         innhold:
             'Du finner nyttig informasjon på nav.no/overgangsstonad-enslig. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
+
+export const initielleAvsnittVedtakOpphørBarnetilsyn: AvsnittMedId[] = [
+    {
+        deloverskrift: 'Du har rett til å klage',
+        innhold:
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Du har rett til innsyn',
+        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner nyttig informasjon på nav.no/barnetilsyn-enslig. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
+
+export const initielleAvsnittVedtakOpphørSkolepenger: AvsnittMedId[] = [
+    {
+        deloverskrift: 'Du har rett til å klage',
+        innhold:
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Du har rett til innsyn',
+        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner nyttig informasjon på nav.no/skolepenger-enslig. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];

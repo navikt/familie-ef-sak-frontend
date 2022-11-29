@@ -1,7 +1,7 @@
 import {
     initielleAvsnittTom,
     initielleAvsnittVarselOmAktivitetsplikt,
-    initielleAvsnittVedtakAvslag,
+    initielleAvsnittVedtakAvslagOvergangsstønad,
     initielleAvsnittVedtakAvslagBarnetilsyn,
     initielleAvsnittVedtakInvilgelse,
     initielleAvsnittVedtakInvilgelseBarnetilsyn,
@@ -10,6 +10,8 @@ import {
     initielleAvsnittVedtakInvilgelseSkolepenger,
     initielleAvsnittVedtakAvslagSkolepenger,
     initielleAvsnittInnhentingAvOpplysninger,
+    initielleAvsnittVedtakOpphørBarnetilsyn,
+    initielleAvsnittVedtakOpphørSkolepenger,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -193,8 +195,8 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         VARSEL_OM_AKTIVITETSPLIKT: initielleAvsnittVarselOmAktivitetsplikt,
         VARSEL_OM_SANKSJON: initielleAvsnittTom,
         VEDTAK_INVILGELSE: initielleAvsnittVedtakInvilgelse,
-        VEDTAK_AVSLAG: initielleAvsnittVedtakAvslag,
-        VEDTAK_OPPHØR: initielleAvsnittVedtakAvslag,
+        VEDTAK_AVSLAG: initielleAvsnittVedtakAvslagOvergangsstønad,
+        VEDTAK_OPPHØR: initielleAvsnittVedtakAvslagOvergangsstønad,
         VEDTAK_REVURDERING: initielleAvsnittVedtakInvilgelse,
         VEDTAK_INNVILGELSE_BARNETILSYN: initielleAvsnittVedtakInvilgelseBarnetilsyn,
         VEDTAK_AVSLAG_BARNETILSYN: initielleAvsnittVedtakAvslagBarnetilsyn,
@@ -204,8 +206,8 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
             initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode,
         VEDTAK_INNVILGELSE_SKOLEPENGER: initielleAvsnittVedtakInvilgelseSkolepenger,
         VEDTAK_AVSLAG_SKOLEPENGER: initielleAvsnittVedtakAvslagSkolepenger,
-        VEDTAK_OPPHØR_BARNETILSYN: initielleAvsnittVedtakAvslag,
-        VEDTAK_OPPHØR_SKOLEPENGER: initielleAvsnittVedtakAvslag,
+        VEDTAK_OPPHØR_BARNETILSYN: initielleAvsnittVedtakOpphørBarnetilsyn,
+        VEDTAK_OPPHØR_SKOLEPENGER: initielleAvsnittVedtakOpphørSkolepenger,
     };
 
 export enum FritekstBrevContext {

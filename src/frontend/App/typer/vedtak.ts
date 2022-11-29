@@ -395,7 +395,7 @@ export const aktivitetTilTekst: Record<EAktivitet | '', string> = {
     FORLENGELSE_STØNAD_PÅVENTE_ARBEID: 'Stønad i påvente av arbeid (§15-8 femte ledd)',
     FORLENGELSE_STØNAD_PÅVENTE_UTDANNING: 'Stønad i påvente av utdanning (§15-8 femte ledd)',
     FORLENGELSE_STØNAD_PÅVENTE_ARBEID_REELL_ARBEIDSSØKER:
-        'Stønad i påvente av arbeid - reell arnbeidssøker (§15-8 femte ledd)',
+        'Stønad i påvente av arbeid - reell arbeidssøker (§15-8 femte ledd)',
     FORLENGELSE_STØNAD_PÅVENTE_OPPSTART_KVALIFISERINGSPROGRAM:
         'Stønad i påvente av oppstart kvalifiseringsprogram',
     FORLENGELSE_STØNAD_PÅVENTE_TILSYNSORDNING:
@@ -408,7 +408,7 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     BARN_OVER_ÅTTE_ÅR: 'Barnet er over 8 år',
     STØNADSTID_OPPBRUKT: 'Stønadstiden er brukt opp',
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
-    MINDRE_INNTEKTSENDRINGER: 'Mindre inntektsendringer',
+    MINDRE_INNTEKTSENDRINGER: 'Ikke 10 % endring inntekt',
 };
 
 export const samordningsfradragstypeTilTekst: Record<ESamordningsfradragtype, string> = {
