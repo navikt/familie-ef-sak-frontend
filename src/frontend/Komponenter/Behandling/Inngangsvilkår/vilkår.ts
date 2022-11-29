@@ -22,7 +22,14 @@ export interface IVilkårGrunnlag {
     sagtOppEllerRedusertStilling?: ISagtOppEllerRedusertStilling;
     aktivitet?: IAktivitet;
     registeropplysningerOpprettetTid: string;
+    opplysningerOmAdresse?: IOpplysningerOmAdresse;
     dokumentasjon?: IDokumentasjonGrunnlag;
+}
+
+export interface IOpplysningerOmAdresse {
+    adresse?: string;
+    søkerBorPåRegistrertAdresse?: boolean;
+    harMeldtFlytteendring?: boolean;
 }
 
 export interface IVurdering {
@@ -65,6 +72,7 @@ export interface IDokumentasjonGrunnlag {
     reduksjonAvArbeidsforhold?: IDokumentasjon;
     oppsigelse?: IDokumentasjon;
     utdanningsutgifter?: IDokumentasjon;
+    meldtFlytteendring?: IDokumentasjon;
 }
 
 export type SvarPåVilkårsvurdering = Pick<
