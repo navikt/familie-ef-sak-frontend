@@ -18,11 +18,11 @@ export const Addresseopplysninger: FC<Props> = ({ data }) => {
             <BodyShort>Bor på denne adressen ({data.adresse})</BodyShort>
             <BooleanTekst value={data.søkerBorPåRegistrertAdresse} />
 
-            {data.harMeldtFlytteendring && (
+            {data.harMeldtAdresseendring && (
                 <>
                     <Søknadsgrunnlag />
                     <BodyShort>Har meldt adresseendring til Folkeregisteret</BodyShort>
-                    <BooleanTekst value={data.harMeldtFlytteendring} />
+                    <BooleanTekst value={data.harMeldtAdresseendring} />
                 </>
             )}
         </>

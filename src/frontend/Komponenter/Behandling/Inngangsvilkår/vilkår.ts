@@ -29,7 +29,7 @@ export interface IVilkårGrunnlag {
 export interface IAdresseopplysninger {
     adresse?: string;
     søkerBorPåRegistrertAdresse: boolean;
-    harMeldtFlytteendring?: boolean;
+    harMeldtAdresseendring?: boolean;
 }
 
 export interface IVurdering {
@@ -72,7 +72,7 @@ export interface IDokumentasjonGrunnlag {
     reduksjonAvArbeidsforhold?: IDokumentasjon;
     oppsigelse?: IDokumentasjon;
     utdanningsutgifter?: IDokumentasjon;
-    meldtFlytteendring?: IDokumentasjon;
+    meldtAdresseendring?: IDokumentasjon;
 }
 
 export type SvarPåVilkårsvurdering = Pick<
