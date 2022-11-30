@@ -28,7 +28,7 @@ export interface IVilkårGrunnlag {
 
 export interface IAdresseopplysninger {
     adresse?: string;
-    søkerBorPåRegistrertAdresse?: boolean;
+    søkerBorPåRegistrertAdresse: boolean;
     harMeldtFlytteendring?: boolean;
 }
 

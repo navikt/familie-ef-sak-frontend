@@ -70,9 +70,7 @@ const SamlivInfo: FC<Props> = ({
                 {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
                     <Bostedsadresse behandlingId={behandlingId} />
                 )}
-                {skalViseSøknadsdata && adresseopplysninger && (
-                    <Addresseopplysninger data={adresseopplysninger} />
-                )}
+                {skalViseSøknadsdata && <Addresseopplysninger data={adresseopplysninger} />}
             </GridTabell>
             {skalViseSøknadsdata && (
                 <>

@@ -5,14 +5,11 @@ import { IAdresseopplysninger } from '../vilkår';
 import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
-    data: IAdresseopplysninger;
+    data?: IAdresseopplysninger;
 }
 
 export const Addresseopplysninger: FC<Props> = ({ data }) => {
-    if (
-        data.søkerBorPåRegistrertAdresse === undefined ||
-        data.søkerBorPåRegistrertAdresse === null
-    ) {
+    if (!data) {
         return null;
     }
     return (
