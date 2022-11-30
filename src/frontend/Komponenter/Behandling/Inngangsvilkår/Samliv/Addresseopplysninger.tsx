@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
-import { IOpplysningerOmAdresse } from '../vilkår';
+import { IAdresseopplysninger } from '../vilkår';
 import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
-    data: IOpplysningerOmAdresse;
+    data: IAdresseopplysninger;
 }
 
-export const OpplysningerOmAdresse: FC<Props> = ({ data }) => {
+export const Addresseopplysninger: FC<Props> = ({ data }) => {
     if (
         data.søkerBorPåRegistrertAdresse === undefined ||
         data.søkerBorPåRegistrertAdresse === null

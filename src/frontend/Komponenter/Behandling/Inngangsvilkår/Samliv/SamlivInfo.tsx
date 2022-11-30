@@ -11,7 +11,7 @@ import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 import { Bostedsadresse } from './Bostedsadresse';
 import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
-import { OpplysningerOmAdresse } from './OpplysningerOmAdresse';
+import { Addresseopplysninger } from './Addresseopplysninger';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -26,7 +26,7 @@ const SamlivInfo: FC<Props> = ({
     behandlingId,
     behandlingsstatus,
 }) => {
-    const { sivilstand, bosituasjon, sivilstandsplaner, opplysningerOmAdresse, dokumentasjon } =
+    const { sivilstand, bosituasjon, sivilstandsplaner, adresseopplysninger, dokumentasjon } =
         grunnlag;
 
     return (
@@ -70,8 +70,8 @@ const SamlivInfo: FC<Props> = ({
                 {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
                     <Bostedsadresse behandlingId={behandlingId} />
                 )}
-                {skalViseSøknadsdata && opplysningerOmAdresse && (
-                    <OpplysningerOmAdresse data={opplysningerOmAdresse} />
+                {skalViseSøknadsdata && adresseopplysninger && (
+                    <Addresseopplysninger data={adresseopplysninger} />
                 )}
             </GridTabell>
             {skalViseSøknadsdata && (

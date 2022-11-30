@@ -22,11 +22,11 @@ export interface IVilkårGrunnlag {
     sagtOppEllerRedusertStilling?: ISagtOppEllerRedusertStilling;
     aktivitet?: IAktivitet;
     registeropplysningerOpprettetTid: string;
-    opplysningerOmAdresse?: IOpplysningerOmAdresse;
+    adresseopplysninger?: IAdresseopplysninger;
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-export interface IOpplysningerOmAdresse {
+export interface IAdresseopplysninger {
     adresse?: string;
     søkerBorPåRegistrertAdresse?: boolean;
     harMeldtFlytteendring?: boolean;
