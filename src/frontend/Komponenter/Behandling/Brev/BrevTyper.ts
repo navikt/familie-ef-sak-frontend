@@ -12,6 +12,7 @@ import {
     initielleAvsnittInnhentingAvOpplysninger,
     initielleAvsnittVedtakOpphørBarnetilsyn,
     initielleAvsnittVedtakOpphørSkolepenger,
+    initielleAvsnittSvartidKlage,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -107,6 +108,7 @@ export enum FrittståendeBrevtype {
     VARSEL_OM_SANKSJON = 'VARSEL_OM_SANKSJON',
     INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE = 'INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE',
     INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE = 'INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE',
+    BREV_OM_SVARTID_KLAGE = 'BREV_OM_SVARTID_KLAGE',
 }
 
 export enum FritekstBrevtype {
@@ -141,6 +143,7 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_AVSLAG_SKOLEPENGER: 'Vi har avslått søknaden din om stønad til skolepenger',
     VEDTAK_OPPHØR_BARNETILSYN: 'Vi har stanset stønaden din til barnetilsyn',
     VEDTAK_OPPHØR_SKOLEPENGER: 'Vi har stanset stønaden din til skolepenger',
+    BREV_OM_SVARTID_KLAGE: 'Vi har fått klagen din',
 };
 
 export const BrevtyperTilSelectNavn: Record<
@@ -165,6 +168,7 @@ export const BrevtyperTilSelectNavn: Record<
     VEDTAK_AVSLAG_SKOLEPENGER: 'Vedtak avslag',
     VEDTAK_OPPHØR_BARNETILSYN: 'Vedtak opphør',
     VEDTAK_OPPHØR_SKOLEPENGER: 'Vedtak opphør',
+    BREV_OM_SVARTID_KLAGE: 'Brev om svartid - klage',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
@@ -208,6 +212,7 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         VEDTAK_AVSLAG_SKOLEPENGER: initielleAvsnittVedtakAvslagSkolepenger,
         VEDTAK_OPPHØR_BARNETILSYN: initielleAvsnittVedtakOpphørBarnetilsyn,
         VEDTAK_OPPHØR_SKOLEPENGER: initielleAvsnittVedtakOpphørSkolepenger,
+        BREV_OM_SVARTID_KLAGE: initielleAvsnittSvartidKlage,
     };
 
 export enum FritekstBrevContext {
