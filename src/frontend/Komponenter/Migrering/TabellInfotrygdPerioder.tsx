@@ -97,6 +97,9 @@ const utledTabellHeaderSkolepenger = () => {
     );
 };
 
+const tooltipTekstStønadIdVedtakId = (periode: InfotrygdPeriodeMedFlereEndringer) =>
+    'stønadId: ' + periode.stønadId + ' vedtakId: ' + periode.vedtakId;
+
 export const TabellInfotrygdOvergangsstønadperioder: React.FC<{
     perioder: InfotrygdPeriodeMedFlereEndringer[];
 }> = ({ perioder }) => {
@@ -105,17 +108,13 @@ export const TabellInfotrygdOvergangsstønadperioder: React.FC<{
             <Table.Header>{utledTabellHeaderOvergangsstønad()}</Table.Header>
             <Table.Body>
                 {perioder.map((periode) => {
-                    const stønadOgVedtaksIdString =
-                        'stønadId: ' + periode.stønadId + ' vedtakId: ' + periode.vedtakId;
                     return (
                         <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
-                            <Tooltip content={stønadOgVedtaksIdString}>
-                                <Table.DataCell>
-                                    {formaterNullableIsoDato(periode.stønadFom)}
-                                    {' - '}
-                                    {formatStønadTom(periode)}
-                                </Table.DataCell>
-                            </Tooltip>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(periode.stønadFom)}
+                                {' - '}
+                                {formatStønadTom(periode)}
+                            </Table.DataCell>
                             <Table.DataCell>
                                 <HøyrestiltTekst>
                                     {formaterTallMedTusenSkille(periode.månedsbeløp)}
@@ -189,7 +188,10 @@ export const TabellInfotrygdOvergangsstønadperioder: React.FC<{
                                     </Tooltip>
                                 )}
                             </Table.DataCell>
-                            <Table.DataCell>{periode.brukerId}</Table.DataCell>
+
+                            <Tooltip content={tooltipTekstStønadIdVedtakId(periode)}>
+                                <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                            </Tooltip>
                         </Table.Row>
                     );
                 })}
@@ -206,17 +208,13 @@ export const TabellInfotrygdBarnetilsynperioder: React.FC<{
             <Table.Header>{utledTabellHeaderBarnetilsyn()}</Table.Header>
             <Table.Body>
                 {perioder.map((periode) => {
-                    const stønadOgVedtaksIdString =
-                        'stønadId: ' + periode.stønadId + ' vedtakId: ' + periode.vedtakId;
                     return (
                         <Table.Row key={`${periode.stønadId}-${periode.vedtakId}`}>
-                            <Tooltip content={stønadOgVedtaksIdString}>
-                                <Table.DataCell>
-                                    {formaterNullableIsoDato(periode.stønadFom)}
-                                    {' - '}
-                                    {formatStønadTom(periode)}
-                                </Table.DataCell>
-                            </Tooltip>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(periode.stønadFom)}
+                                {' - '}
+                                {formatStønadTom(periode)}
+                            </Table.DataCell>
                             <Table.DataCell>
                                 <HøyrestiltTekst>
                                     {formaterTallMedTusenSkille(periode.månedsbeløp)}
@@ -255,7 +253,9 @@ export const TabellInfotrygdBarnetilsynperioder: React.FC<{
                                     <TabellTekst>{sakstypeTilKode[periode.sakstype]}</TabellTekst>
                                 </Tooltip>
                             </Table.DataCell>
-                            <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                            <Tooltip content={tooltipTekstStønadIdVedtakId(periode)}>
+                                <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                            </Tooltip>
                         </Table.Row>
                     );
                 })}
@@ -299,7 +299,9 @@ export const InfotrygdPerioderSkolepenger: React.FC<{
                                 {periode.initiellKode && `(${kodeTilTekst[periode.initiellKode]})`}
                             </Table.DataCell>
                             <Table.DataCell>{sakstypeTilTekst[periode.sakstype]}</Table.DataCell>
-                            <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                            <Tooltip content={tooltipTekstStønadIdVedtakId(periode)}>
+                                <Table.DataCell>{periode.brukerId}</Table.DataCell>
+                            </Tooltip>
                         </Table.Row>
                     );
                 })}
