@@ -15,13 +15,15 @@ export const Addresseopplysninger: FC<Props> = ({ data }) => {
     return (
         <>
             <Søknadsgrunnlag />
-            <BodyShort>Bor på denne adressen ({data.adresse})</BodyShort>
+            <BodyShort size={'small'}>Bor på denne adressen ({data.adresse})</BodyShort>
             <BooleanTekst value={data.søkerBorPåRegistrertAdresse} />
 
             {data.harMeldtAdresseendring && (
                 <>
                     <Søknadsgrunnlag />
-                    <BodyShort>Har meldt adresseendring til Folkeregisteret</BodyShort>
+                    <BodyShort size={'small'}>
+                        Har meldt adresseendring til Folkeregisteret
+                    </BodyShort>
                     <BooleanTekst value={data.harMeldtAdresseendring} />
                 </>
             )}
