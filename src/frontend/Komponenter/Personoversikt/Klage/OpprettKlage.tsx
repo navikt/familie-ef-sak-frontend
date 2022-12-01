@@ -34,6 +34,7 @@ interface IProps {
     fagsak: Fagsak;
     settVisModal: (bool: boolean) => void;
     opprettKlage: (behandlingId: string, mottattDato: string) => void;
+    kanOppretteKlagebehandling: boolean;
 }
 
 const behandlingsresultat = [
@@ -54,6 +55,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
     fagsak,
     settVisModal,
     opprettKlage,
+    kanOppretteKlagebehandling,
 }) => {
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
@@ -61,10 +63,13 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
     const sisteFerdigstilteBehandlingen = sisteBehandlingSomErFerdigstilt(fagsak);
 
     if (!sisteFerdigstilteBehandlingen) {
+        return <Normaltekst>Finnes ikke noen ferdigstilt behandling å klage på</Normaltekst>;
+    }
+    if (!kanOppretteKlagebehandling) {
         return (
-            <>
-                <Normaltekst>Finnes ikke noen ferdigstilt behandling å klage på</Normaltekst>
-            </>
+            <Normaltekst>
+                Kan ikke opprette ny behandling på fagsak med en behandling som ikke er ferdigstilt
+            </Normaltekst>
         );
     }
 

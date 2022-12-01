@@ -46,6 +46,7 @@ interface IProps {
     hentTilbakekrevinger: Dispatch<void>;
     hentKlageBehandlinger: Dispatch<void>;
     kanStarteRevurdering: boolean;
+    kanOppretteKlagebehandling: boolean;
 }
 
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
@@ -55,6 +56,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     hentTilbakekrevinger,
     hentKlageBehandlinger,
     kanStarteRevurdering,
+    kanOppretteKlagebehandling,
 }) => {
     const { toggles } = useToggles();
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
@@ -198,6 +200,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     fagsak={fagsak}
                     opprettKlage={opprettKlage}
                     settVisModal={settVisModal}
+                    kanOppretteKlagebehandling={kanOppretteKlagebehandling}
                 />
             )}
             {feilmeldingModal && <AlertError>{feilmeldingModal}</AlertError>}
