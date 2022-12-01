@@ -3,7 +3,6 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import Brukerinfo from './Brukerinfo';
-import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
@@ -20,7 +19,8 @@ import { IJojurnalpostResponse, journalstatusTilTekst } from '../../App/typer/jo
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { AlertError, AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
-import { Button } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
+import { BodyLongSmall, BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
 
 const Blokk = styled.div`
     margin-bottom: 1rem;
@@ -112,12 +112,14 @@ export const JournalføringAdmin: React.FC = () => {
             <DataViewer response={{ journalResponse, fagsak }}>
                 {({ journalResponse, fagsak }) => (
                     <SideLayout className={'container'}>
-                        <Sidetittel>Opprett ny behandling for journalpost</Sidetittel>
+                        <Heading size={'xlarge'} level={'1'}>
+                            Opprett ny behandling for journalpost
+                        </Heading>
                         <Blokk>
-                            <Normaltekst>
+                            <BodyLongSmall>
                                 Her kan du opprette en ny behandling med søknadsdata for en
                                 journalpost som er ferdigstilt
-                            </Normaltekst>
+                            </BodyLongSmall>
                         </Blokk>
                         <Blokk>
                             <Brukerinfo
@@ -126,26 +128,32 @@ export const JournalføringAdmin: React.FC = () => {
                             />
                         </Blokk>
                         <Blokk>
-                            <Systemtittel>Journalpost</Systemtittel>
-                            <Normaltekst>{stønadstypeTilTekst[fagsak.stønadstype]}</Normaltekst>
-                            <Normaltekst>
+                            <Heading size={'medium'} level={'2'}>
+                                Journalpost
+                            </Heading>
+                            <BodyShortSmall>
+                                {stønadstypeTilTekst[fagsak.stønadstype]}
+                            </BodyShortSmall>
+                            <BodyShortSmall>
                                 JournalpostID: {journalResponse.journalpost.journalpostId}
-                            </Normaltekst>
-                            <Normaltekst>
+                            </BodyShortSmall>
+                            <BodyShortSmall>
                                 Status:{' '}
                                 {journalstatusTilTekst[journalResponse.journalpost.journalstatus]}
-                            </Normaltekst>
-                            <Normaltekst>
+                            </BodyShortSmall>
+                            <BodyShortSmall>
                                 Dato mottatt:{' '}
                                 {formaterIsoDatoTid(journalResponse.journalpost.datoMottatt)}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </Blokk>
                         <Blokk>
-                            <Systemtittel>Behandlingstype</Systemtittel>
+                            <Heading size={'medium'} level={'2'}>
+                                Behandlingstype
+                            </Heading>
                             {nyBehandlingstype && (
-                                <Normaltekst>
+                                <BodyShortSmall>
                                     {behandlingstypeTilTekst[nyBehandlingstype]}
-                                </Normaltekst>
+                                </BodyShortSmall>
                             )}
                         </Blokk>
 

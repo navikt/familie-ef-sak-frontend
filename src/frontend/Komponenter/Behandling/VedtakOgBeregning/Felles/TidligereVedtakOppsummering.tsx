@@ -1,12 +1,12 @@
 import React from 'react';
 import { IVurdering, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from '../../Vurdering/tekster';
 import { BreakWordNormaltekst } from '../../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { BodyLong, Heading, Label } from '@navikt/ds-react';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     tidligereVedtaksvilkår: IVurdering[];
@@ -20,7 +20,7 @@ const BegrunnelseWrapper = styled.div`
     padding-top: 1rem;
 `;
 
-const Ikontekst = styled(Normaltekst)`
+const Ikontekst = styled(BodyShortSmall)`
     padding-top: 0.15rem;
     margin-left: 0.25rem;
 `;
@@ -60,7 +60,7 @@ const TidligereVedtakOppsummering: React.FC<Props> = ({ tidligereVedtaksvilkår 
                                 )}
                                 {vurdering.begrunnelse && (
                                     <BegrunnelseWrapper>
-                                        <Element>Begrunnelse</Element>{' '}
+                                        <LabelSmallAsText>Begrunnelse</LabelSmallAsText>{' '}
                                         <TekstWrapper>
                                             <BreakWordNormaltekst>
                                                 {vurdering.begrunnelse}

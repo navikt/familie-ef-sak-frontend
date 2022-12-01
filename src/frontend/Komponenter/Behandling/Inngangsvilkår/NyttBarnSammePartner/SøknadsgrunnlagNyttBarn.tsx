@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { SøknadsgrunnlagNyttBarn } from './typer';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { mapBarnNavnTekst } from './utils';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
+import { Label } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     barn: SøknadsgrunnlagNyttBarn;
@@ -25,29 +26,31 @@ const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
         <GridTabell>
             <>
                 <LiteBarn />
-                <Element tag="h4">{mapBarnNavnTekst(barn)}</Element>
+                <Label as="h4" size={'small'}>
+                    {mapBarnNavnTekst(barn)}
+                </Label>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Termindato</Normaltekst>
-                <Normaltekst>{formaterNullableIsoDato(barn.fødselTermindato)}</Normaltekst>
+                <BodyShortSmall>Termindato</BodyShortSmall>
+                <BodyShortSmall>{formaterNullableIsoDato(barn.fødselTermindato)}</BodyShortSmall>
             </>
             {annenForelder && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Annen forelder lagt til i søknad</Normaltekst>
+                    <BodyShortSmall>Annen forelder lagt til i søknad</BodyShortSmall>
                     <AnnenForelderNavnOgFnr forelder={annenForelder} />
                 </>
             )}
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Annen forelder</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Annen forelder</BodyShortSmall>
+                    <BodyShortSmall>
                         {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
                             ? ikkeOppgittAnnenForelderBegrunnelse
                             : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
         </GridTabell>

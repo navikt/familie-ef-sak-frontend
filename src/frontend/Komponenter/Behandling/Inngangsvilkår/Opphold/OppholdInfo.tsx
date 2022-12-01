@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { IMedlemskap } from '../Medlemskap/typer';
@@ -10,6 +9,7 @@ import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
 import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -29,13 +29,15 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
         <>
             <GridTabell>
                 <Registergrunnlag />
-                <Normaltekst>Statsborgerskap</Normaltekst>
-                <Normaltekst>{registergrunnlag.nåværendeStatsborgerskap.join(', ')}</Normaltekst>
+                <BodyShortSmall>Statsborgerskap</BodyShortSmall>
+                <BodyShortSmall>
+                    {registergrunnlag.nåværendeStatsborgerskap.join(', ')}
+                </BodyShortSmall>
 
                 {skalViseSøknadsdata && søknadsgrunnlag && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Søker og barn oppholder seg i Norge</Normaltekst>
+                        <BodyShortSmall>Søker og barn oppholder seg i Norge</BodyShortSmall>
                         <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
                     </>
                 )}

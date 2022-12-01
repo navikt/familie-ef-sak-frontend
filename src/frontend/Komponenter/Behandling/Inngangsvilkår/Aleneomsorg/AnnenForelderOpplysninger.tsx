@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import {
     avstandTilSøkerTekst,
     EAvstandTilSøker,
@@ -14,6 +13,7 @@ import { harVerdi } from '../../../../App/utils/utils';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const StyledHelpText = styled(HelpText)`
     & + .navds-popover {
@@ -52,8 +52,8 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             {visForelderSøknadInfo && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Annen forelder</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Annen forelder</BodyShortSmall>
+                    <BodyLongSmall>
                         {forelderSøknad &&
                         harNavnFødselsdatoEllerFnr(forelderSøknad) &&
                         !søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse ? (
@@ -67,7 +67,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                                     : '-'}
                             </>
                         )}
-                    </Normaltekst>
+                    </BodyLongSmall>
                 </>
             )}
 
@@ -76,22 +76,24 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 harNavnFødselsdatoEllerFnr(forelderRegister) && (
                     <>
                         <Registergrunnlag />
-                        <Normaltekst>Annen forelder</Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>Annen forelder</BodyShortSmall>
+                        <BodyLongSmall>
                             {forelderRegister ? (
                                 <AnnenForelderNavnOgFnr forelder={forelderRegister} />
                             ) : (
                                 '-'
                             )}
-                        </Normaltekst>
+                        </BodyLongSmall>
                     </>
                 )}
 
             {forelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
-                    <Normaltekst>Annen forelder dødsdato</Normaltekst>
-                    <Normaltekst>{formaterNullableIsoDato(forelderRegister.dødsfall)}</Normaltekst>
+                    <BodyShortSmall>Annen forelder dødsdato</BodyShortSmall>
+                    <BodyShortSmall>
+                        {formaterNullableIsoDato(forelderRegister.dødsfall)}
+                    </BodyShortSmall>
                 </>
             )}
             {!forelderRegister?.dødsfall && (
@@ -99,12 +101,12 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                     {forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad) && (
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Annen forelder bor i</Normaltekst>
-                            <Normaltekst>
+                            <BodyShortSmall>Annen forelder bor i</BodyShortSmall>
+                            <BodyShortSmall>
                                 {forelderSøknad?.bosattINorge
                                     ? 'Norge'
                                     : forelderSøknad?.land || '-'}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     )}
 
@@ -113,12 +115,12 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         harNavnFødselsdatoEllerFnr(forelderRegister) && (
                             <>
                                 <Registergrunnlag />
-                                <Normaltekst>Annen forelder bor i</Normaltekst>
-                                <Normaltekst>
+                                <BodyShortSmall>Annen forelder bor i</BodyShortSmall>
+                                <BodyShortSmall>
                                     {forelderRegister?.bosattINorge
                                         ? 'Norge'
                                         : forelderRegister.land || '-'}
-                                </Normaltekst>
+                                </BodyShortSmall>
                             </>
                         )}
                 </>
@@ -129,13 +131,13 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 !forelderRegister?.dødsfall && (
                     <>
                         <Registergrunnlag />
-                        <Normaltekst>
+                        <BodyLongSmall>
                             Annen forelders avstand til bruker (automatisk beregnet)
-                        </Normaltekst>
-                        <Normaltekst>
+                        </BodyLongSmall>
+                        <BodyShortSmall>
                             {forelderRegister &&
                                 utledAvstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
-                        </Normaltekst>
+                        </BodyShortSmall>
                         <StyledHelpText placement={'right'}>
                             Automatisk beregning av avstand mellom bostedsadressene til bruker og
                             annen forelder. Dette betyr de ulike resultatene:

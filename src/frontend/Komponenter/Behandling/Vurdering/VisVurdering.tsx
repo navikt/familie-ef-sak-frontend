@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { Element, Feilmelding, Normaltekst, Undertekst, Undertittel } from 'nav-frontend-typografi';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
@@ -10,7 +9,7 @@ import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { resultatTilTekst } from '../VedtakOgBeregning/Felles/ResultatVisning';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
-import { Button } from '@navikt/ds-react';
+import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
 import { Delete, Edit } from '@navikt/ds-icons';
 import {
     SistOppdatertOgVurderingWrapper,
@@ -18,6 +17,11 @@ import {
     VurderingLesemodusGrid,
     TittelOgKnappWrapper,
 } from './StyledVurdering';
+import {
+    BodyShortSmall,
+    DetailSmall,
+    LabelSmallAsText,
+} from '../../../Felles/Visningskomponenter/Tekster';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -43,7 +47,7 @@ const StyledIkonOgTittel = styled.span`
     }
 `;
 
-const SistOppdatertTekst = styled(Undertekst)`
+const SistOppdatertTekst = styled(DetailSmall)`
     color: ${navFarger.navGra60};
 `;
 
@@ -81,12 +85,12 @@ const VisVurdering: FC<Props> = ({
 
             <TittelOgKnappWrapper>
                 <StyledIkonOgTittel>
-                    <Undertittel>
+                    <Heading size={'small'} level={'3'}>
                         {tittelTekst
                             ? tittelTekst
                             : `Vilkår ${resultatTilTekst[vurdering.resultat]}`}
                         {erAutomatiskVurdert ? ` (automatisk)` : ``}
-                    </Undertittel>
+                    </Heading>
                 </StyledIkonOgTittel>
                 {behandlingErRedigerbar && (
                     <>
@@ -117,9 +121,9 @@ const VisVurdering: FC<Props> = ({
                         </div>
                         {feilmelding && (
                             <StyledFeilmelding>
-                                <Feilmelding>
+                                <ErrorMessage size={'small'}>
                                     Oppdatering av vilkår feilet: {feilmelding}
-                                </Feilmelding>{' '}
+                                </ErrorMessage>{' '}
                             </StyledFeilmelding>
                         )}
                     </>
@@ -139,15 +143,17 @@ const VisVurdering: FC<Props> = ({
                         delvilkårsvurdering.vurderinger.map((vurdering) => (
                             <React.Fragment key={vurdering.regelId}>
                                 <div>
-                                    <Element>{delvilkårTypeTilTekst[vurdering.regelId]}</Element>
-                                    <Normaltekst>
+                                    <LabelSmallAsText>
+                                        {delvilkårTypeTilTekst[vurdering.regelId]}
+                                    </LabelSmallAsText>
+                                    <BodyShortSmall>
                                         {vurdering.svar && svarTypeTilTekst[vurdering.svar]}
-                                    </Normaltekst>
+                                    </BodyShortSmall>
                                 </div>
 
                                 {vurdering.begrunnelse && (
                                     <>
-                                        <Element>Begrunnelse</Element>
+                                        <LabelSmallAsText>Begrunnelse</LabelSmallAsText>
                                         <BreakWordNormaltekst>
                                             {vurdering.begrunnelse}
                                         </BreakWordNormaltekst>

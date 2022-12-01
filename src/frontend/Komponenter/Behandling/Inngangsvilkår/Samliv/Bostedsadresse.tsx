@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
 import {
     AdresseType,
@@ -17,6 +16,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { gyldigTilOgMedErNullEllerFremITid } from '../../../../Felles/Personopplysninger/adresseUtil';
 import { Button } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -78,11 +78,11 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
                     return (
                         <>
                             <Registergrunnlag />
-                            <Normaltekst>Brukers bostedsadresse</Normaltekst>
+                            <BodyShortSmall>Brukers bostedsadresse</BodyShortSmall>
                             <div>
-                                <Normaltekst>
+                                <BodyShortSmall>
                                     {bostedsadresse?.visningsadresse || 'Mangler bostedsadresse'}
-                                </Normaltekst>
+                                </BodyShortSmall>
                                 {bostedsadresse && (
                                     <Button
                                         type={'button'}

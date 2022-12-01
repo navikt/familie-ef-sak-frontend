@@ -4,11 +4,11 @@ import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../../App/utils/formatter';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
@@ -18,11 +18,11 @@ const Rad = styled.div<{ erTittelRad?: boolean }>`
     margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
 `;
 
-const HøyrejustertNormaltekst = styled(Normaltekst)`
+const HøyrejustertNormaltekst = styled(BodyShortSmall)`
     text-align: right;
 `;
 
-const HøyrejusterElement = styled(Element)`
+const HøyrejusterElement = styled(LabelSmallAsText)`
     text-align: right;
 `;
 
@@ -41,16 +41,16 @@ export const UtregningstabellSkolepenger: React.FC<{
                         Utregning
                     </Heading>
                     <Rad erTittelRad>
-                        <Element>Fra</Element>
+                        <LabelSmallAsText>Fra</LabelSmallAsText>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
                     </Rad>
                     {beregningsresultat.perioder.map((periode) => {
                         return (
                             <Rad>
-                                <Normaltekst>
+                                <BodyShortSmall>
                                     {formaterNullableMånedÅr(periode.årMånedFra)}
-                                </Normaltekst>
+                                </BodyShortSmall>
                                 <HøyrejustertNormaltekst>
                                     {formaterTallMedTusenSkille(periode.utgifter)} kr
                                 </HøyrejustertNormaltekst>

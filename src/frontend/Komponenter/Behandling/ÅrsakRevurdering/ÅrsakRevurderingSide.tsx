@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import IkkeVurdert from '../../../Felles/Ikoner/IkkeVurdert';
 import Oppfylt from '../../../Felles/Ikoner/Oppfylt';
-import { Undertittel } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Revurderingsinformasjon } from './typer';
@@ -10,6 +9,7 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import { ÅrsakRevurdering } from './ÅrsakRevurdering';
+import { Heading } from '@navikt/ds-react';
 
 interface Props {
     behandlingId: string;
@@ -43,7 +43,9 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
                 venstre: (
                     <FlexDiv>
                         <ÅrsakRevurderingIkon oppfylt={vurderingUtfylt} />
-                        <Undertittel>Årsak til revurdering</Undertittel>
+                        <Heading size={'small'} level={'3'}>
+                            Årsak til revurdering
+                        </Heading>
                     </FlexDiv>
                 ),
                 høyre: (

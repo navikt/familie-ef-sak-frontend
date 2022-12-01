@@ -7,12 +7,11 @@ import React, { useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { FamilieLesefelt } from '@navikt/familie-form-elements';
-import { Alert, Button, Detail } from '@navikt/ds-react';
+import { Alert, Button, Detail, Heading } from '@navikt/ds-react';
 import {
     formaterIsoDatoTidMedSekunder,
     formaterNullableIsoDato,
 } from '../../../App/utils/formatter';
-import { Undertittel } from 'nav-frontend-typografi';
 import { Delete, Edit } from '@navikt/ds-icons';
 import {
     SistOppdatertOgVurderingWrapper,
@@ -69,7 +68,9 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
         <VurderingLesemodusGrid>
             <BrukerMedBlyantIkon />
             <TittelOgKnappWrapper>
-                <Undertittel>Vurdert</Undertittel>
+                <Heading size={'small'} level={'3'}>
+                    Vurdert
+                </Heading>
                 {behandlingErRedigerbar && (
                     <div>
                         <Button

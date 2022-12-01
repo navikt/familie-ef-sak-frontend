@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import Statsborgerskap from './Statsborgerskap';
@@ -13,6 +12,7 @@ import InnflyttingUtflytting from './InnflyttingUtflytting';
 import UnntakIMedl from './UnntakIMedl';
 import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
 import { Tag } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -34,14 +34,14 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
                 {skalViseSøknadsdata && søknadsgrunnlag && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Har bodd i Norge siste 5 år</Normaltekst>
+                        <BodyShortSmall>Har bodd i Norge siste 5 år</BodyShortSmall>
                         <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
                     </>
                 )}
                 {finnesUnntakIMedl && (
                     <>
                         <Registergrunnlag />
-                        <Normaltekst>Medlemskapstatus i MEDL</Normaltekst>
+                        <BodyShortSmall>Medlemskapstatus i MEDL</BodyShortSmall>
                         <Tag variant={'warning'}>Innslag funnet</Tag>
                     </>
                 )}

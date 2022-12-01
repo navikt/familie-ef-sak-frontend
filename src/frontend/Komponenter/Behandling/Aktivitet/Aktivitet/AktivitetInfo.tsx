@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import SelvstendigNæringsdrivendeEllerFrilanser from './SelvstendigNæringsdrivendeEllerFrilanser';
 import Arbeidssøker from './Arbeidssøker';
@@ -15,6 +14,7 @@ import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmott
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -50,13 +50,13 @@ const AktivitetInfo: FC<Props> = ({
                     arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
                         <GridTabell kolonner={3}>
                             <Søknadsgrunnlag />
-                            <Element className={'undertittel'}>
+                            <LabelSmallAsText className={'undertittel'}>
                                 {
                                     ArbeidssituasjonTilTekst[
                                         EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr
                                     ]
                                 }
-                            </Element>
+                            </LabelSmallAsText>
                         </GridTabell>
                     )}
 
@@ -99,24 +99,29 @@ const AktivitetInfo: FC<Props> = ({
                 {skalViseSøknadsdata && datoOppstartJobb && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
+                        <LabelSmallAsText className={'undertittel'}>
                             {ArbeidssituasjonTilTekst[EArbeidssituasjon.harFåttJobbTilbud]}
-                        </Element>
-                        <Normaltekst className={'førsteDataKolonne'}>Startdato ny jobb</Normaltekst>
-                        <Normaltekst> {formaterNullableIsoDato(datoOppstartJobb)}</Normaltekst>
+                        </LabelSmallAsText>
+                        <BodyShortSmall className={'førsteDataKolonne'}>
+                            Startdato ny jobb
+                        </BodyShortSmall>
+                        <BodyShortSmall>
+                            {' '}
+                            {formaterNullableIsoDato(datoOppstartJobb)}
+                        </BodyShortSmall>
                     </GridTabell>
                 )}
 
                 {skalViseSøknadsdata && virksomhet && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
+                        <LabelSmallAsText className={'undertittel'}>
                             {ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]}
-                        </Element>
-                        <Normaltekst className={'førsteDataKolonne'}>
+                        </LabelSmallAsText>
+                        <BodyShortSmall className={'førsteDataKolonne'}>
                             Beskrivelse av virksomheten
-                        </Normaltekst>
-                        <Normaltekst>{virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
+                        </BodyShortSmall>
+                        <BodyShortSmall>{virksomhet?.virksomhetsbeskrivelse}</BodyShortSmall>
                     </GridTabell>
                 )}
 
@@ -141,13 +146,13 @@ const AktivitetInfo: FC<Props> = ({
                     ) && (
                         <GridTabell kolonner={3}>
                             <Søknadsgrunnlag />
-                            <Element className={'undertittel'}>
+                            <LabelSmallAsText className={'undertittel'}>
                                 {
                                     ArbeidssituasjonTilTekst[
                                         EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
                                     ]
                                 }
-                            </Element>
+                            </LabelSmallAsText>
                         </GridTabell>
                     )}
                 {skalViseSøknadsdata && særligeTilsynsbehov && (

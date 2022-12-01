@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from '../Sivilstand/typer';
 import { hentPersonInfo } from '../utils';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -18,25 +18,25 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
                 søknadsgrunnlag.samlivsbruddsdato && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Dato for samlivsbrudd</Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>Dato for samlivsbrudd</BodyShortSmall>
+                        <BodyShortSmall>
                             {formaterNullableIsoDato(søknadsgrunnlag.samlivsbruddsdato)}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </>
                 )}
 
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Tidligere samboer</Normaltekst>
-                    <Normaltekst>{hentPersonInfo(tidligereSamboer)}</Normaltekst>
+                    <BodyShortSmall>Tidligere samboer</BodyShortSmall>
+                    <BodyShortSmall>{hentPersonInfo(tidligereSamboer)}</BodyShortSmall>
                     {søknadsgrunnlag.fraflytningsdato && (
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Flyttet fra hverandre</Normaltekst>
-                            <Normaltekst>
+                            <BodyShortSmall>Flyttet fra hverandre</BodyShortSmall>
+                            <BodyShortSmall>
                                 {formaterNullableIsoDato(søknadsgrunnlag.fraflytningsdato)}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     )}
                 </>
@@ -46,10 +46,10 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
                 søknadsgrunnlag.endringSamværsordningDato && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Endringen skjer/skjedde</Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>Endringen skjer/skjedde</BodyShortSmall>
+                        <BodyShortSmall>
                             {formaterNullableIsoDato(søknadsgrunnlag.endringSamværsordningDato)}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </>
                 )}
         </>

@@ -1,12 +1,16 @@
 import React, { FC } from 'react';
 import { ISærligeTilsynsbehov } from '../../../../App/typer/aktivitetstyper';
 import { GridTabell, GridTabellRad } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { HelpText } from '@navikt/ds-react';
+import { BodyLong, HelpText } from '@navikt/ds-react';
+import {
+    BodyLongSmall,
+    BodyShortSmall,
+    LabelSmallAsText,
+} from '../../../../Felles/Visningskomponenter/Tekster';
 
 const StyledList = styled.ul`
     list-style-type: square;
@@ -16,7 +20,7 @@ const StyledList = styled.ul`
 
 const hjelpetekst = (
     <ul>
-        <Normaltekst>
+        <BodyLong>
             Mulig alternativer i søknadsdialog:
             <li>Jeg er syk</li>
             <li>Barnet mitt er sykt </li>
@@ -26,7 +30,7 @@ const hjelpetekst = (
                 sosiale problemer
             </li>
             <li>Nei</li>
-        </Normaltekst>
+        </BodyLong>
     </ul>
 );
 
@@ -47,16 +51,18 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
         <>
             <GridTabell kolonner={3}>
                 <TittelHjelpetekstWrapper className={'førsteDataKolonne'}>
-                    <Element className={'litenSpacingHoyre'}>Annet</Element>
+                    <LabelSmallAsText className={'litenSpacingHoyre'}>Annet</LabelSmallAsText>
                     <HelpText placement={'top-start'}>{hjelpetekst}</HelpText>
                 </TittelHjelpetekstWrapper>
 
                 <Søknadsgrunnlag />
-                <Normaltekst className={'førsteDataKolonne'}>Mer om søkers situasjon</Normaltekst>
+                <BodyShortSmall className={'førsteDataKolonne'}>
+                    Mer om søkers situasjon
+                </BodyShortSmall>
                 <StyledList>
                     {dinSituasjon.map((svarsalternativ) => (
                         <li key={svarsalternativ}>
-                            <Normaltekst>{DinSituasjonTilTekst[svarsalternativ]}</Normaltekst>
+                            <BodyShortSmall>{DinSituasjonTilTekst[svarsalternativ]}</BodyShortSmall>
                         </li>
                     ))}
                 </StyledList>
@@ -65,15 +71,15 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                     {særligTilsynsbehov.map((barnetsBehov) => (
                         <GridTabell key={barnetsBehov.id} kolonner={3} underTabellMargin={2}>
                             <Søknadsgrunnlag />
-                            <Normaltekst>
+                            <BodyLongSmall>
                                 Om tilsynsbehov for: <br />
                                 {barnetsBehov.navn
                                     ? `${barnetsBehov.navn} `
                                     : `Barn ${
                                           barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
                                       } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`}
-                            </Normaltekst>
-                            <Normaltekst>{barnetsBehov.særligeTilsynsbehov}</Normaltekst>
+                            </BodyLongSmall>
+                            <BodyShortSmall>{barnetsBehov.særligeTilsynsbehov}</BodyShortSmall>
                         </GridTabell>
                     ))}
                 </GridTabellRad>

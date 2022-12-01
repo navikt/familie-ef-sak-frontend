@@ -1,6 +1,9 @@
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import React from 'react';
 import styled from 'styled-components';
+import {
+    BodyShortSmall,
+    LabelSmallAsText,
+} from '../../../../../Felles/Visningskomponenter/Tekster';
 
 export const StyledDiv = styled.div`
     margin-top: 2rem;
@@ -10,8 +13,10 @@ export const StyledDiv = styled.div`
 export const IngenBegrunnelseOppgitt: React.FC = () => {
     return (
         <StyledDiv>
-            <Element className={'blokk-xxs'}>Begrunnelse</Element>
-            <Normaltekst style={{ fontStyle: 'italic' }}>Ingen opplysninger oppgitt.</Normaltekst>
+            <LabelSmallAsText className={'blokk-xxs'}>Begrunnelse</LabelSmallAsText>
+            <BodyShortSmall style={{ fontStyle: 'italic' }}>
+                Ingen opplysninger oppgitt.
+            </BodyShortSmall>
         </StyledDiv>
     );
 };

@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import Dokumentasjonsvisning from './Dokumentasjonsvisning';
 import { TidligereUtdanninger } from '../Aktivitet/Utdanning';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
+import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const BlåStrek = styled.span`
     border-left: 2px solid ${navFarger.navBlaLighten40};
@@ -19,7 +19,7 @@ const Flex = styled.div`
     margin-bottom: 1rem;
 `;
 
-const BegrunnelseTekst = styled(Normaltekst)`
+const BegrunnelseTekst = styled(BodyLongSmall)`
     margin-left: 1.32rem;
     max-width: 30rem;
 `;
@@ -50,7 +50,7 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
                         />
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Målet med utdanningen</Normaltekst>
+                            <BodyShortSmall>Målet med utdanningen</BodyShortSmall>
                         </>
                     </HovedTabell>
                     <Flex>
@@ -62,10 +62,10 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
                     <UtdanningTabell>
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Har tatt utdanning etter grunnskolen?</Normaltekst>
-                            <Normaltekst>
+                            <BodyShortSmall>Har tatt utdanning etter grunnskolen?</BodyShortSmall>
+                            <BodyShortSmall>
                                 {underUtdanning?.utdanningEtterGrunnskolen ? 'Ja' : 'Nei'}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     </UtdanningTabell>
                     {underUtdanning?.utdanningEtterGrunnskolen && (

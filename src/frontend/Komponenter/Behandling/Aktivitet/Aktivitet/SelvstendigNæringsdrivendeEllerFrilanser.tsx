@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { ISelvstendig } from '../../../../App/typer/aktivitetstyper';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
     firma: ISelvstendig;
@@ -13,32 +13,34 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
     return (
         <>
             <Søknadsgrunnlag />
-            <Element className={'undertittel'}>
+            <LabelSmallAsText className={'undertittel'}>
                 {
                     ArbeidssituasjonTilTekst[
                         EArbeidssituasjon.erSelvstendigNæringsdriveneEllerFrilanser
                     ]
                 }
-            </Element>
-            <Normaltekst className={'førsteDataKolonne'}> Firma</Normaltekst>
-            <Normaltekst> {firma.firmanavn}</Normaltekst>
-            <Normaltekst className={'førsteDataKolonne'}>Organisasjonsnummer</Normaltekst>
-            <Normaltekst>{firma.organisasjonsnummer}</Normaltekst>
-            <Normaltekst className={'førsteDataKolonne'}>Etableringsdato</Normaltekst>
-            <Normaltekst>{formaterNullableIsoDato(firma.etableringsdato)}</Normaltekst>
+            </LabelSmallAsText>
+            <BodyShortSmall className={'førsteDataKolonne'}> Firma</BodyShortSmall>
+            <BodyShortSmall> {firma.firmanavn}</BodyShortSmall>
+            <BodyShortSmall className={'førsteDataKolonne'}>Organisasjonsnummer</BodyShortSmall>
+            <BodyShortSmall>{firma.organisasjonsnummer}</BodyShortSmall>
+            <BodyShortSmall className={'førsteDataKolonne'}>Etableringsdato</BodyShortSmall>
+            <BodyShortSmall>{formaterNullableIsoDato(firma.etableringsdato)}</BodyShortSmall>
             {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
                 <>
-                    <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
-                    <Normaltekst>{firma.arbeidsmengde + ' %'}</Normaltekst>
+                    <BodyShortSmall className={'førsteDataKolonne'}>
+                        Stillingsprosent
+                    </BodyShortSmall>
+                    <BodyShortSmall>{firma.arbeidsmengde + ' %'}</BodyShortSmall>
                 </>
             )}
             {(stønadstype === Stønadstype.OVERGANGSSTØNAD ||
                 stønadstype === Stønadstype.BARNETILSYN) && (
                 <>
-                    <Normaltekst className={'førsteDataKolonne'}>
+                    <BodyShortSmall className={'førsteDataKolonne'}>
                         Beskrivelse av arbeidsuke
-                    </Normaltekst>
-                    <Normaltekst>{firma.hvordanSerArbeidsukenUt}</Normaltekst>
+                    </BodyShortSmall>
+                    <BodyShortSmall>{firma.hvordanSerArbeidsukenUt}</BodyShortSmall>
                 </>
             )}
         </>

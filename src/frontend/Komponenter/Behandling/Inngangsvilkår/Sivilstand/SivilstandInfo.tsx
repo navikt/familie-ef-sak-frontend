@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ISivilstandInngangsvilkår } from './typer';
 import { sivilstandTilTekst } from '../../../../App/typer/personopplysninger';
@@ -8,6 +7,7 @@ import Søknadsinformasjon from './Søknadsinformasjon';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../vilkår';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -21,13 +21,13 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
         <>
             <GridTabell>
                 <Registergrunnlag />
-                <Normaltekst>Sivilstatus</Normaltekst>
-                <Normaltekst>
+                <BodyShortSmall>Sivilstatus</BodyShortSmall>
+                <BodyShortSmall>
                     {sivilstandTilTekst[registergrunnlag.type]}
                     {registergrunnlag.navn && ` - ${registergrunnlag.navn}`}
                     {registergrunnlag.gyldigFraOgMed &&
                         ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`}
-                </Normaltekst>
+                </BodyShortSmall>
 
                 {skalViseSøknadsdata && søknadsgrunnlag && (
                     <Søknadsinformasjon

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IVilkårGrunnlag } from '../vilkår';
 import { SivilstandType } from '../../../../App/typer/personopplysninger';
@@ -11,6 +10,7 @@ import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 import { Bostedsadresse } from './Bostedsadresse';
 import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -38,14 +38,14 @@ const SamlivInfo: FC<Props> = ({
                             {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                                 <>
                                     <Søknadsgrunnlag />
-                                    <Normaltekst>Alene med barn fordi</Normaltekst>
-                                    <Normaltekst>
+                                    <BodyShortSmall>Alene med barn fordi</BodyShortSmall>
+                                    <BodyShortSmall>
                                         {(sivilstand.søknadsgrunnlag.årsakEnslig &&
                                             ÅrsakEnsligTilTekst[
                                                 sivilstand.søknadsgrunnlag?.årsakEnslig
                                             ]) ||
                                             ''}
-                                    </Normaltekst>
+                                    </BodyShortSmall>
                                     <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
                                 </>
                             )}
@@ -53,10 +53,10 @@ const SamlivInfo: FC<Props> = ({
                             <Søknadsgrunnlag />
                             {bosituasjon && (
                                 <>
-                                    <Normaltekst>Bosituasjon</Normaltekst>
-                                    <Normaltekst>
+                                    <BodyShortSmall>Bosituasjon</BodyShortSmall>
+                                    <BodyShortSmall>
                                         {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
-                                    </Normaltekst>
+                                    </BodyShortSmall>
                                 </>
                             )}
                             <Bosituasjon

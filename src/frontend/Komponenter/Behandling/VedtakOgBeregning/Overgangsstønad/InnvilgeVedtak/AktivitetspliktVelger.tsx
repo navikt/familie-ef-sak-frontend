@@ -8,9 +8,9 @@ import {
 } from '../../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { OrNothing } from '../../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
+import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     periodeType: EPeriodetype | '' | undefined;
@@ -148,13 +148,13 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
                 <AktivitetKolonne>
-                    <Normaltekst>Ikke aktivitetsplikt</Normaltekst>
+                    <BodyShortSmall>Ikke aktivitetsplikt</BodyShortSmall>
                 </AktivitetKolonne>
             );
         default:
             return (
                 <AktivitetKolonne>
-                    <Normaltekst>-</Normaltekst>
+                    <BodyShortSmall>-</BodyShortSmall>
                 </AktivitetKolonne>
             );
     }

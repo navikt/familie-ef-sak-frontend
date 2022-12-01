@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IBarnMedLøpendeStønad, IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
@@ -15,6 +14,7 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
 import { Tag } from '@navikt/ds-react';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -48,29 +48,29 @@ const AleneomsorgInfo: FC<{
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
-                        <Element>Barnets navn</Element>
-                        <Element>
+                        <LabelSmallAsText>Barnets navn</LabelSmallAsText>
+                        <LabelSmallAsText>
                             {registergrunnlag.navn}
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}
-                        </Element>
+                        </LabelSmallAsText>
                     </>
                 ) : (
                     <>
                         <Søknadsgrunnlag />
-                        <Element>Barnets navn</Element>
-                        <Element>
+                        <LabelSmallAsText>Barnets navn</LabelSmallAsText>
+                        <LabelSmallAsText>
                             {søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
                                 ? 'Ikke utfylt'
                                 : 'Ikke født'}
-                        </Element>
+                        </LabelSmallAsText>
                     </>
                 )}
                 {registergrunnlag.fødselsnummer ? (
                     <>
                         <Registergrunnlag />
-                        <Normaltekst>Fødsels eller D-nummer</Normaltekst>
+                        <BodyShortSmall>Fødsels eller D-nummer</BodyShortSmall>
                         <KopierbartNullableFødselsnummer
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
@@ -78,10 +78,10 @@ const AleneomsorgInfo: FC<{
                 ) : (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Termindato</Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>Termindato</BodyShortSmall>
+                        <BodyShortSmall>
                             {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </>
                 )}
 
@@ -94,35 +94,37 @@ const AleneomsorgInfo: FC<{
                 {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Barnet skal ha adresse hos søker</Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>Barnet skal ha adresse hos søker</BodyShortSmall>
+                        <BodyShortSmall>
                             {skalBarnetBoHosSøkerTilTekst[søknadsgrunnlag.skalBoBorHosSøker]}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </>
                 )}
 
                 {skalViseSøknadsdata && harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Annen forelder </Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>Annen forelder </BodyShortSmall>
+                        <BodyShortSmall>
                             {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
                                 ? ikkeOppgittAnnenForelderBegrunnelse
                                 : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </>
                 )}
                 {skalViseSøknadsdata && stønadstype === Stønadstype.BARNETILSYN && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Søkes det om stønad til barnetilsyn for barnet</Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>
+                            Søkes det om stønad til barnetilsyn for barnet
+                        </BodyShortSmall>
+                        <BodyShortSmall>
                             {barnepass?.skalHaBarnepass ? (
                                 <Tag variant={'success'}>ja</Tag>
                             ) : (
                                 <Tag variant={'error'}>nei</Tag>
                             )}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </>
                 )}
                 {
@@ -131,12 +133,12 @@ const AleneomsorgInfo: FC<{
                             return (
                                 <>
                                     <Registergrunnlag />
-                                    <Normaltekst>
+                                    <BodyShortSmall>
                                         Har brukeren løpende stønad for barnet? (i EF Sak)
-                                    </Normaltekst>
-                                    <Normaltekst>
+                                    </BodyShortSmall>
+                                    <BodyShortSmall>
                                         {utledEtikettForLøpendeStønad(barnMedLøpendeStønad, barnId)}
-                                    </Normaltekst>
+                                    </BodyShortSmall>
                                 </>
                             );
                         }}

@@ -1,9 +1,8 @@
 import { RegistergrunnlagNyttBarn, SøknadsgrunnlagNyttBarn } from './typer';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import styled from 'styled-components';
-import { Element } from 'nav-frontend-typografi';
 
-export const Overskrift = styled(Element)`
+export const Overskrift = styled.div`
     margin-left: 0.5rem;
     margin-bottom: 1rem;
 `;

@@ -1,5 +1,4 @@
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato, formaterNullableMånedÅr } from '../../../../App/utils/formatter';
 import React, { useMemo } from 'react';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
@@ -11,6 +10,7 @@ import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const BoldTekst = styled(Label)`
     margin-left: 0.25rem;
@@ -55,21 +55,23 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string; stønadstype: Stø
                     <Div flexDirection="row" className="blokk-xxs">
                         <IkonOgTekstWrapper>
                             <Søknadsgrunnlag />
-                            <BoldTekst size="small">Søknadsdato:</BoldTekst>
+                            <BoldTekst size="small" as={'p'}>
+                                Søknadsdato:
+                            </BoldTekst>
                         </IkonOgTekstWrapper>
-                        <Normaltekst>
+                        <BodyShortSmall>
                             {formaterNullableIsoDato(søknadDataResponse.søknadsdato)}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </Div>
                     <Div flexDirection="row" className="blokk-xxs">
                         <IkonOgTekstWrapper>
                             <Søknadsgrunnlag />
                             <BoldTekst size="small">Søker stønad fra:</BoldTekst>
                         </IkonOgTekstWrapper>
-                        <Normaltekst>
+                        <BodyShortSmall>
                             {formaterNullableMånedÅr(søknadDataResponse.søkerStønadFra) ||
                                 'Søker ikke stønad fra bestemt tidspunkt'}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </Div>
                 </Container>
             )}

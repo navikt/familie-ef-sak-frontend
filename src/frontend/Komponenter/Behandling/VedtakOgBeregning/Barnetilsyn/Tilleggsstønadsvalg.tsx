@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { Element } from 'nav-frontend-typografi';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
     ERadioValg,
@@ -21,6 +20,7 @@ import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextAr
 import { Radio } from '@navikt/ds-react';
 import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
+import { LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -154,9 +154,9 @@ const TilleggsstønadValg: React.FC<Props> = ({
             {tilleggsstønad.value === ERadioValg.JA && stønadsreduksjon.value === ERadioValg.JA && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
-                        <Element>Periode fra og med</Element>
-                        <Element>Periode til og med</Element>
-                        <Element>Stønadsreduksjon</Element>
+                        <LabelSmallAsText>Periode fra og med</LabelSmallAsText>
+                        <LabelSmallAsText>Periode til og med</LabelSmallAsText>
+                        <LabelSmallAsText>Stønadsreduksjon</LabelSmallAsText>
                     </KolonneHeaderWrapper>
                     {tilleggsstønadPerioder.value.map((periode, index) => {
                         const { årMånedFra, årMånedTil, beløp } = periode;

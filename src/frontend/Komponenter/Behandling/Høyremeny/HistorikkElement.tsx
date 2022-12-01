@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
@@ -14,6 +13,7 @@ import { BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 import { Button } from '@navikt/ds-react';
+import { DetailSmall, LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -105,18 +105,20 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 <Linje siste={siste} størreMellomrom={harMetadata} />
             </IkonMedStipletLinje>
             <Innhold>
-                <Element>{hendelseTilHistorikkTekst[behandlingshistorikk.hendelse]}</Element>
-                <Undertekst>
+                <LabelSmallAsText>
+                    {hendelseTilHistorikkTekst[behandlingshistorikk.hendelse]}
+                </LabelSmallAsText>
+                <DetailSmall>
                     {formaterIsoDatoTidKort(behandlingshistorikk.endretTid)} |{' '}
                     {behandlingshistorikk.endretAvNavn}
-                </Undertekst>
+                </DetailSmall>
                 {behandlingshistorikk.metadata?.begrunnelse && skalViseBegrunnelse && (
                     <BreakWordUndertekst>
                         Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
                     </BreakWordUndertekst>
                 )}
                 {behandlingshistorikk.metadata?.årsak && (
-                    <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
+                    <DetailSmall>Årsak: {behandlingshistorikk.metadata?.årsak}</DetailSmall>
                 )}
                 {vedtakIverksatt && harVedtaksbrev && (
                     <Button

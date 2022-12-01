@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { ITidligereUtdanning, IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import {
     ArbeidssituasjonTilTekst,
@@ -11,6 +10,7 @@ import {
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { GridTabellWrapper } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 export const UnderUtdanning: FC<{
     underUtdanning: IUnderUtdanning;
@@ -18,42 +18,47 @@ export const UnderUtdanning: FC<{
     return (
         <>
             <Søknadsgrunnlag />
-            <Element className={'undertittel'}>
+            <LabelSmallAsText className={'undertittel'}>
                 {ArbeidssituasjonTilTekst[EArbeidssituasjon.tarUtdanning]}
-            </Element>
+            </LabelSmallAsText>
 
-            <Normaltekst className={'førsteDataKolonne'}>Skole/Utdanningssted</Normaltekst>
-            <Normaltekst> {underUtdanning.skoleUtdanningssted}</Normaltekst>
+            <BodyShortSmall className={'førsteDataKolonne'}>Skole/Utdanningssted</BodyShortSmall>
+            <BodyShortSmall> {underUtdanning.skoleUtdanningssted}</BodyShortSmall>
 
-            <Normaltekst className={'førsteDataKolonne'}>Linje/Kurs/Grad</Normaltekst>
-            <Normaltekst> {underUtdanning.linjeKursGrad}</Normaltekst>
+            <BodyShortSmall className={'førsteDataKolonne'}>Linje/Kurs/Grad</BodyShortSmall>
+            <BodyShortSmall> {underUtdanning.linjeKursGrad}</BodyShortSmall>
 
-            <Normaltekst className={'førsteDataKolonne'}>Offentlig eller privat</Normaltekst>
-            <Normaltekst>{UtdanningsformTilTekst[underUtdanning.offentligEllerPrivat]}</Normaltekst>
+            <BodyShortSmall className={'førsteDataKolonne'}>Offentlig eller privat</BodyShortSmall>
+            <BodyShortSmall>
+                {UtdanningsformTilTekst[underUtdanning.offentligEllerPrivat]}
+            </BodyShortSmall>
 
-            <Normaltekst className={'førsteDataKolonne'}>Studiets tidsperiode</Normaltekst>
-            <Normaltekst>{`${formaterNullableIsoDato(
+            <BodyShortSmall className={'førsteDataKolonne'}>Studiets tidsperiode</BodyShortSmall>
+            <BodyShortSmall>{`${formaterNullableIsoDato(
                 underUtdanning.fra
-            )} - ${formaterNullableIsoDato(underUtdanning.til)}`}</Normaltekst>
+            )} - ${formaterNullableIsoDato(underUtdanning.til)}`}</BodyShortSmall>
 
-            <Normaltekst className={'førsteDataKolonne'}>Heltid eller deltid</Normaltekst>
-            <Normaltekst> {StudieandelTilTekst[underUtdanning.heltidEllerDeltid]}</Normaltekst>
+            <BodyShortSmall className={'førsteDataKolonne'}>Heltid eller deltid</BodyShortSmall>
+            <BodyShortSmall>
+                {' '}
+                {StudieandelTilTekst[underUtdanning.heltidEllerDeltid]}
+            </BodyShortSmall>
 
             {underUtdanning.hvorMyeSkalDuStudere && (
                 <>
-                    <Normaltekst className={'førsteDataKolonne'}>
+                    <BodyShortSmall className={'førsteDataKolonne'}>
                         Hvor mye skal søker studere
-                    </Normaltekst>
-                    <Normaltekst> {underUtdanning.hvorMyeSkalDuStudere + ' %'}</Normaltekst>
+                    </BodyShortSmall>
+                    <BodyShortSmall> {underUtdanning.hvorMyeSkalDuStudere + ' %'}</BodyShortSmall>
                 </>
             )}
 
-            <Normaltekst className={'førsteDataKolonne'}>Målet for utdanningen</Normaltekst>
-            <Normaltekst> {underUtdanning.hvaErMåletMedUtdanningen}</Normaltekst>
+            <BodyShortSmall className={'førsteDataKolonne'}>Målet for utdanningen</BodyShortSmall>
+            <BodyShortSmall> {underUtdanning.hvaErMåletMedUtdanningen}</BodyShortSmall>
 
-            <Normaltekst className={'førsteDataKolonne  leggTilSpacing'}>
+            <BodyShortSmall className={'førsteDataKolonne  leggTilSpacing'}>
                 Har søker utdanning etter grunnskolen
-            </Normaltekst>
+            </BodyShortSmall>
             <BooleanTekst value={underUtdanning.utdanningEtterGrunnskolen} />
         </>
     );
@@ -64,19 +69,19 @@ export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanni
 }) => {
     return (
         <>
-            <Element className={'førsteDataKolonne'}>Linje/Kurs/grad</Element>
-            <Element>Tidsperiode</Element>
+            <LabelSmallAsText className={'førsteDataKolonne'}>Linje/Kurs/grad</LabelSmallAsText>
+            <LabelSmallAsText>Tidsperiode</LabelSmallAsText>
 
             {tidligereUtdanninger?.map((utdanning, index) => (
                 <GridTabellWrapper key={utdanning.linjeKursGrad + index}>
-                    <Normaltekst className={'førsteDataKolonne'}>
+                    <BodyShortSmall className={'førsteDataKolonne'}>
                         {utdanning.linjeKursGrad}
-                    </Normaltekst>
-                    <Normaltekst>
+                    </BodyShortSmall>
+                    <BodyShortSmall>
                         {`${formaterIsoMånedÅr(utdanning.fra)} - ${formaterIsoMånedÅr(
                             utdanning.til
                         )}`}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </GridTabellWrapper>
             ))}
         </>

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     IBarnMedSamvær,
     typeBarnepassordningTilTekst,
@@ -10,8 +9,9 @@ import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../../../App/utils/dato';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import styled from 'styled-components';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const TekstMedVenstrePadding = styled(Normaltekst)`
+const TekstMedVenstrePadding = styled(BodyShortSmall)`
     padding-left: 0.5rem;
     font-style: italic;
 `;
@@ -34,12 +34,12 @@ const TilsynsutgifterBarnInfo: FC<{
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
-                        <Element>
+                        <LabelSmallAsText>
                             {registergrunnlag.navn} ({alder} år)
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}
-                        </Element>
+                        </LabelSmallAsText>
                     </>
                 ) : null}
                 <TekstMedVenstrePadding>Ingen søknadsopplysninger</TekstMedVenstrePadding>

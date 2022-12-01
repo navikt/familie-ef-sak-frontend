@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     harSammeAdresseSøknad?: boolean;
@@ -14,22 +14,22 @@ const Bosted: FC<Props> = ({ harSammeAdresseSøknad, harSammeAdresseRegister, er
             {harSammeAdresseRegister !== undefined && harSammeAdresseRegister !== null ? (
                 <>
                     <Registergrunnlag />
-                    <Normaltekst>Bosted</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Bosted</BodyShortSmall>
+                    <BodyShortSmall>
                         {harSammeAdresseRegister
                             ? 'Registrert på søkers adresse'
                             : 'Ikke registrert på søkers adresse'}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             ) : (
                 harSammeAdresseSøknad !== undefined &&
                 harSammeAdresseSøknad !== null && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Bosted</Normaltekst>
-                        <Normaltekst>
+                        <BodyShortSmall>Bosted</BodyShortSmall>
+                        <BodyShortSmall>
                             {utledVisningAvBostedVerdier(erBarnetFødt, harSammeAdresseSøknad)}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     </>
                 )
             )}

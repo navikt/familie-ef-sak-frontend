@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { Refresh } from '@navikt/ds-icons';
 import { Button, HelpText } from '@navikt/ds-react';
+import { DetailSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const FlexWrapper = styled.div`
     display: flex;
@@ -18,12 +18,12 @@ const Container = styled.div`
     }
 `;
 
-const Oppdateringstekst = styled(Undertekst)`
+const Oppdateringstekst = styled(DetailSmall)`
     color: ${navFarger.navGra60};
     padding-right: 0.25rem;
 `;
 
-const KnappTekst = styled(Element)`
+const KnappTekst = styled(LabelSmallAsText)`
     padding-left: 0rem;
 `;
 

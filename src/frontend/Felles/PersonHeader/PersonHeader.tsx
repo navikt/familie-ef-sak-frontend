@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import VisittKort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
-import { Element } from 'nav-frontend-typografi';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
 import { Behandling } from '../../App/typer/fagsak';
@@ -26,13 +25,15 @@ import {
     stønadstypeTilTekstKort,
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
-import { Link, Tag } from '@navikt/ds-react';
+import { BodyShort, Link, Tag } from '@navikt/ds-react';
 import { AlertError } from '../Visningskomponenter/Alerts';
+import { NavdsFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
 
-const Visningsnavn = styled(Element)`
+const Visningsnavn = styled(BodyShort)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-weight: ${NavdsFontWeightBold};
 `;
 
 const ResponsivLenke = styled(Link)`
@@ -164,7 +165,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
-                        <Visningsnavn>{visningsnavn}</Visningsnavn>
+                        <Visningsnavn size={'small'}>{visningsnavn}</Visningsnavn>
                     </ResponsivLenke>
                 }
             >

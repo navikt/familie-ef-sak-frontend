@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { IAksjeselskap } from '../../../../App/typer/aktivitetstyper';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype }> = ({
     aksjeselskap,
@@ -12,15 +12,17 @@ const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype
     return (
         <>
             <Søknadsgrunnlag />
-            <Element className={'undertittel'}>
+            <LabelSmallAsText className={'undertittel'}>
                 {ArbeidssituasjonTilTekst[EArbeidssituasjon.erAnsattIEgetAS]}
-            </Element>
-            <Normaltekst className={'førsteDataKolonne'}>Aksjeselskap</Normaltekst>
-            <Normaltekst> {aksjeselskap.navn}</Normaltekst>
+            </LabelSmallAsText>
+            <BodyShortSmall className={'førsteDataKolonne'}>Aksjeselskap</BodyShortSmall>
+            <BodyShortSmall> {aksjeselskap.navn}</BodyShortSmall>
             {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
                 <>
-                    <Normaltekst className={'førsteDataKolonne'}>Stillingsprosent</Normaltekst>
-                    <Normaltekst> {aksjeselskap.arbeidsmengde + ' %'}</Normaltekst>
+                    <BodyShortSmall className={'førsteDataKolonne'}>
+                        Stillingsprosent
+                    </BodyShortSmall>
+                    <BodyShortSmall> {aksjeselskap.arbeidsmengde + ' %'}</BodyShortSmall>
                 </>
             )}
         </>

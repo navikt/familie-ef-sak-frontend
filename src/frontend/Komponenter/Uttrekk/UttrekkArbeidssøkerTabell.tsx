@@ -1,5 +1,4 @@
 import React from 'react';
-import { Element } from 'nav-frontend-typografi';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
 import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/utils/formatter';
@@ -7,6 +6,7 @@ import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
 import { Button, Link } from '@navikt/ds-react';
+import { LabelSmallAsText } from '../../Felles/Visningskomponenter/Tekster';
 
 const StyledTable = styled.table`
     width: 70%;
@@ -46,7 +46,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                         }}
                                         style={{ marginRight: '1rem' }}
                                     >
-                                        <Element>{arbeidssøker.navn}</Element>
+                                        <LabelSmallAsText>{arbeidssøker.navn}</LabelSmallAsText>
                                     </Link>
                                     <KopierbartNullableFødselsnummer
                                         fødselsnummer={arbeidssøker.personIdent}

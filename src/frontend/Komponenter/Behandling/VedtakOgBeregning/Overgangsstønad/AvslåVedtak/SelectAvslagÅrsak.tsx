@@ -8,10 +8,13 @@ import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
+import {
+    BodyShortSmall,
+    LabelSmallAsText,
+} from '../../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     avslagÅrsak?: EAvslagÅrsak;
@@ -29,7 +32,7 @@ const StyledSelect = styled(EnsligFamilieSelect)`
     margin-bottom: 1rem;
 `;
 
-const FeilmeldingTekst = styled(Normaltekst)`
+const FeilmeldingTekst = styled(BodyShortSmall)`
     margin-top: 0;
     margin-bottom: 2rem;
     font-weight: 600;
@@ -51,7 +54,7 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
           ];
     return (
         <>
-            <Element>Årsak</Element>
+            <LabelSmallAsText>Årsak</LabelSmallAsText>
             <StyledSelect
                 value={avslagÅrsak}
                 erLesevisning={!behandlingErRedigerbar}

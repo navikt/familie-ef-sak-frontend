@@ -1,11 +1,11 @@
 import React from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../App/utils/formatter';
 import styled from 'styled-components';
 import { RadTittel, RadVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
+import { BodyShortSmall, LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
 
 const BoksMedBottomBorder = styled.div`
     border-bottom: 1px solid #a0a0a0;
@@ -21,29 +21,31 @@ export const TotaltForPeriode: React.FC<{
 }> = ({ fom, tomSisteUtbetaling, feilutbetaling, etterbetaling }) => (
     <BoksMedBottomBorder>
         <div>
-            <Element>
+            <LabelSmallAsText>
                 Totalt for periode {formaterNullableMånedÅr(fom)} til og med{' '}
                 {formaterNullableMånedÅr(tomSisteUtbetaling)}
-            </Element>
+            </LabelSmallAsText>
         </div>
         <SimuleringOversiktTabell>
             <tbody>
                 <tr>
                     <RadTittel>
-                        <Normaltekst>Feilutbetaling</Normaltekst>
+                        <BodyShortSmall>Feilutbetaling</BodyShortSmall>
                     </RadTittel>
                     <RadVerdi>
-                        <Element>
+                        <LabelSmallAsText>
                             {`-${formaterTallMedTusenSkilleEllerStrek(feilutbetaling)}`} kr
-                        </Element>
+                        </LabelSmallAsText>
                     </RadVerdi>
                 </tr>
                 <tr>
                     <RadTittel>
-                        <Normaltekst>Etterbetaling</Normaltekst>
+                        <BodyShortSmall>Etterbetaling</BodyShortSmall>
                     </RadTittel>
                     <RadVerdi>
-                        <Element>{formaterTallMedTusenSkilleEllerStrek(etterbetaling)} kr</Element>
+                        <LabelSmallAsText>
+                            {formaterTallMedTusenSkilleEllerStrek(etterbetaling)} kr
+                        </LabelSmallAsText>
                     </RadVerdi>
                 </tr>
             </tbody>

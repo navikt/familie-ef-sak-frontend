@@ -1,10 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { ISide, SideNavn } from './sider';
 import { useApp } from '../../../App/context/AppContext';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { NavdsGlobalColorGray300 } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;
@@ -40,15 +41,15 @@ const StyledNavLink = styled(NavLink)`
     }
 `;
 
-const StyledLenketekst = styled(Normaltekst)`
+const StyledLenketekst = styled(BodyShortSmall)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 `;
 
-const StyledTekst = styled(Normaltekst)`
+const StyledTekst = styled(BodyShortSmall)`
     border-bottom: 5px solid white;
-    color: ${navFarger.navGra20};
+    color: ${NavdsGlobalColorGray300};
     text-align: center;
     text-decoration: none;
     width: 100%;

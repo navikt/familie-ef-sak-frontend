@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Undertekst } from 'nav-frontend-typografi';
+import { DetailSmall } from './Tekster';
 
-export const BreakWordUndertekst = styled(Undertekst)`
+export const BreakWordUndertekst = styled(DetailSmall)`
     white-space: pre-wrap;
     word-wrap: break-word;
 `;

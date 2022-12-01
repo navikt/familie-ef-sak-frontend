@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import Brukerinfo from './Brukerinfo';
-import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst, Stønadstype } from '../../App/typer/behandlingstema';
 import { useHentDokument } from '../../App/hooks/useHentDokument';
@@ -41,7 +40,7 @@ import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
 import { erGyldigDato } from '../../App/utils/dato';
 import styled from 'styled-components';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
-import { Button, Fieldset } from '@navikt/ds-react';
+import { Button, Fieldset, Heading } from '@navikt/ds-react';
 import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
 
 const KlageMottatt = styled.div`
@@ -152,11 +151,11 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
 
     return (
         <SideLayout className={'container'}>
-            <Sidetittel>{`Registrere journalpost for klage ${
+            <Heading size={'xlarge'} level={'1'}>{`Registrere journalpost for klage ${
                 journalResponse.journalpost.behandlingstema
                     ? ': ' + behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
                     : ''
-            }`}</Sidetittel>
+            }`}</Heading>
             <Kolonner>
                 <Venstrekolonne>
                     {fagsak.status === RessursStatus.SUKSESS && (

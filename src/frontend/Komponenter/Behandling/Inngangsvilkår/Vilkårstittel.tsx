@@ -1,9 +1,10 @@
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import React from 'react';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { Vilkårsresultat } from './vilkår';
+import { Heading } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 type VilkårtittelProps = {
     tittel: string;
@@ -16,7 +17,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
 
-    .typo-undertittel {
+    .tittel {
         margin: 0 1rem 0 0.5rem;
     }
     .paragrafTittel {
@@ -32,9 +33,11 @@ export const Vilkårstittel: React.FC<VilkårtittelProps> = ({
     return (
         <Container>
             <VilkårsresultatIkon vilkårsresultat={vilkårsresultat} />
-            <Undertittel>{tittel}</Undertittel>
+            <Heading className={'tittel'} size="small" level="5">
+                {tittel}
+            </Heading>
             {paragrafTittel && (
-                <Normaltekst className={'paragrafTittel'}>{paragrafTittel}</Normaltekst>
+                <BodyShortSmall className={'paragrafTittel'}>{paragrafTittel}</BodyShortSmall>
             )}
         </Container>
     );

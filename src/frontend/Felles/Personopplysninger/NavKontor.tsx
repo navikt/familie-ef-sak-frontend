@@ -3,7 +3,7 @@ import { IngenData } from './TabellWrapper';
 import { INavKontor } from '../../App/typer/personopplysninger';
 import Bygning from '../Ikoner/Bygning';
 import styled from 'styled-components';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Heading } from '@navikt/ds-react';
 
 const StyledNavKontor = styled.div`
     display: grid;
@@ -17,7 +17,7 @@ const StyledBygning = styled(Bygning)`
     grid-area: ikon;
 `;
 
-const StyledTittel = styled(Undertittel)`
+const StyledTittel = styled(Heading)`
     grid-area: tittel;
 `;
 
@@ -29,7 +29,9 @@ const NavKontor: React.FC<{ navKontor?: INavKontor }> = ({ navKontor }) => {
     return (
         <StyledNavKontor>
             <StyledBygning />
-            <StyledTittel>NAV-Kontor</StyledTittel>
+            <StyledTittel size={'small'} level={'5'}>
+                NAV-Kontor
+            </StyledTittel>
             <StyledKontorNavn>
                 {navKontor ? `${navKontor.enhetNr} - ${navKontor.navn}` : <IngenData />}
             </StyledKontorNavn>

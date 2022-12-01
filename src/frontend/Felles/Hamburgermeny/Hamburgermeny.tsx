@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Hamburger, EllipsisV } from '@navikt/ds-icons';
 import styled from 'styled-components';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
@@ -122,9 +121,7 @@ export const Hamburgermeny: FC<Props> = ({ type = 'hamburger', items }) => {
                 <ul>
                     {items.map((p) => (
                         <li key={p.tekst}>
-                            <Knapp onClick={p.onClick}>
-                                <Normaltekst>{p.tekst}</Normaltekst>
-                            </Knapp>
+                            <Knapp onClick={p.onClick}>{p.tekst}</Knapp>
                         </li>
                     ))}
                 </ul>
