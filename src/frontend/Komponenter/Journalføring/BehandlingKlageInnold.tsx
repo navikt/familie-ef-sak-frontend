@@ -62,7 +62,7 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                 settNyBehandling(true);
             } else {
                 settFeilmelding(
-                    'Kan ikke opprette ny behandling på fagsak med en behandling som ikke er ferdigstilt'
+                    'Kan ikke opprette ny behandling på fagsak med en klagebehandling som ikke er ferdigstilt'
                 );
             }
         } else {
