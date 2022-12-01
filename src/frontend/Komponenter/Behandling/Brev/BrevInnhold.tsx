@@ -105,6 +105,9 @@ const BrevInnhold: React.FC<Props> = ({
 }) => {
     const ikkeRedigerBareBrev: (FrittståendeBrevtype | FritekstBrevtype | undefined)[] = [
         FrittståendeBrevtype.VARSEL_OM_AKTIVITETSPLIKT,
+        FrittståendeBrevtype.BREV_OM_SVARTID_KLAGE,
+        FrittståendeBrevtype.INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE,
+        FrittståendeBrevtype.INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE,
     ];
     const finnesSynligeAvsnitt = avsnitt.some((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
     const brevSkalKunneRedigeres = !ikkeRedigerBareBrev.includes(brevType);
