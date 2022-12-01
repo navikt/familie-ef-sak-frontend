@@ -11,7 +11,6 @@ export interface IBrevmottakere {
 
 export interface IOrganisasjonMottaker {
     organisasjonsnummer: string;
-    organisasjonsnavn: string;
     navnHosOrganisasjon: string;
     mottakerRolle: 'VERGE';
 }

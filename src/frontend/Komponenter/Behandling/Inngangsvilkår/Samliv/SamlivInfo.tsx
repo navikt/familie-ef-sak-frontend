@@ -11,6 +11,7 @@ import { Bostedsadresse } from './Bostedsadresse';
 import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { Addresseopplysninger } from './Addresseopplysninger';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -25,7 +26,8 @@ const SamlivInfo: FC<Props> = ({
     behandlingId,
     behandlingsstatus,
 }) => {
-    const { sivilstand, bosituasjon, sivilstandsplaner, dokumentasjon } = grunnlag;
+    const { sivilstand, bosituasjon, sivilstandsplaner, adresseopplysninger, dokumentasjon } =
+        grunnlag;
 
     return (
         <>
@@ -68,6 +70,7 @@ const SamlivInfo: FC<Props> = ({
                 {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
                     <Bostedsadresse behandlingId={behandlingId} />
                 )}
+                {skalViseSøknadsdata && <Addresseopplysninger data={adresseopplysninger} />}
             </GridTabell>
             {skalViseSøknadsdata && (
                 <>
@@ -84,6 +87,10 @@ const SamlivInfo: FC<Props> = ({
                         tittel={
                             'Dokumentasjon som viser at du og tidligere samboer bor på ulike adresser'
                         }
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.meldtAdresseendring}
+                        tittel={'Dokumentasjon på meldt Adresseendring'}
                     />
                 </>
             )}

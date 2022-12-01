@@ -339,3 +339,19 @@ export const initielleAvsnittInnhentingAvOpplysninger: AvsnittMedId[] = [
         id: uuidv4(),
     },
 ];
+
+export const initielleAvsnittSvartidKlage: AvsnittMedId[] = [
+    {
+        deloverskrift: '',
+        innhold:
+            'Vi behandler klagen din så raskt som mulig.\n' +
+            'Du kan lese mer om saksbehandlingstider på nav.no/saksbehandlingstid.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner nyttig informasjon på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
