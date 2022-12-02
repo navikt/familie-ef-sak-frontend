@@ -172,7 +172,7 @@ export const BrevtyperTilSelectNavn: Record<
     VEDTAK_OPPHØR_BARNETILSYN: 'Vedtak opphør',
     VEDTAK_OPPHØR_SKOLEPENGER: 'Vedtak opphør',
     BREV_OM_SVARTID_KLAGE: 'Brev om svartid - klage',
-    BREV_OM_FORLENGET_SVARTID: 'Brev om forlenget svartid - klage',
+    BREV_OM_FORLENGET_SVARTID_KLAGE: 'Brev om forlenget svartid - klage',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
