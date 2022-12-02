@@ -8,9 +8,13 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import Aksjeselskap from '../Aktivitet/Aksjeselskap';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon, EErIArbeid } from '../Aktivitet/typer';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
+import {
+    BodyLongSmall,
+    BodyShortSmall,
+    SmallTextLabel,
+} from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -33,9 +37,9 @@ const AktivitetArbeidInfo: FC<Props> = ({
                 {skalViseSøknadsdata && erIArbeid === EErIArbeid.NeiFordiJegErSyk && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
+                        <SmallTextLabel className={'undertittel'}>
                             Er ikke i arbeid fordi søker er syk
-                        </Element>
+                        </SmallTextLabel>
                     </GridTabell>
                 )}
 
@@ -78,13 +82,13 @@ const AktivitetArbeidInfo: FC<Props> = ({
                 {skalViseSøknadsdata && virksomhet && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <Element className={'undertittel'}>
+                        <SmallTextLabel className={'undertittel'}>
                             {ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]}
-                        </Element>
-                        <Normaltekst className={'førsteDataKolonne'}>
+                        </SmallTextLabel>
+                        <BodyShortSmall className={'førsteDataKolonne'}>
                             Beskrivelse av virksomheten
-                        </Normaltekst>
-                        <Normaltekst>{virksomhet?.virksomhetsbeskrivelse}</Normaltekst>
+                        </BodyShortSmall>
+                        <BodyLongSmall>{virksomhet?.virksomhetsbeskrivelse}</BodyLongSmall>
                     </GridTabell>
                 )}
                 {skalViseSøknadsdata && (

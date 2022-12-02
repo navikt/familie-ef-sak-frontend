@@ -10,12 +10,12 @@ import {
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { useOppgave } from '../../App/hooks/useOppgave';
 import { Handling } from './typer/handling';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
 import { Button, Popover } from '@navikt/ds-react';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import styled from 'styled-components';
+import { BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
 
 const TabellKnapp = styled(Button)`
     width: fit-content;
@@ -180,7 +180,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 );
             default:
                 return (
-                    <Normaltekst style={{ marginLeft: '2.5rem' }}>Må håndteres i Gosys</Normaltekst>
+                    <BodyShortSmall style={{ marginLeft: '2.5rem' }}>
+                        Må håndteres i Gosys
+                    </BodyShortSmall>
                 );
         }
     };

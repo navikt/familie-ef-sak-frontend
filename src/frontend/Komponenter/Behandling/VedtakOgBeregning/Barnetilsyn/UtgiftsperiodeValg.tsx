@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../App/hooks/felles/useListState';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
@@ -17,6 +16,7 @@ import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
 import { Label } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -29,7 +29,7 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
 
-const AntallBarn = styled(Normaltekst)<{ lesevisning: boolean }>`
+const AntallBarn = styled(BodyShortSmall)<{ lesevisning: boolean }>`
     margin-top: ${(props) => (props.lesevisning ? '0.65rem' : '0rem')};
     text-align: center;
 `;
@@ -50,7 +50,7 @@ const CheckboxContainer = styled.div`
     bottom: 0.5rem;
 `;
 
-const TekstIngenStønad = styled(Normaltekst)`
+const TekstIngenStønad = styled(BodyShortSmall)`
     margin-top: 0.5rem;
 `;
 
@@ -191,7 +191,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 {barnForPeriode
                                     .filter((barn) => utgiftsperiode.barn.includes(barn.value))
                                     .map((barn) => (
-                                        <Normaltekst>{barn.label}</Normaltekst>
+                                        <BodyShortSmall>{barn.label}</BodyShortSmall>
                                     ))}
                             </ContainerMedLuftUnder>
                         )}

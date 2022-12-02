@@ -1,4 +1,3 @@
-import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
@@ -11,7 +10,7 @@ import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
-import { Button, Checkbox } from '@navikt/ds-react';
+import { Button, Checkbox, Heading } from '@navikt/ds-react';
 import { AddCircle } from '@navikt/ds-icons';
 
 interface Props {
@@ -87,7 +86,9 @@ const BehandlingInnold: React.FC<Props> = ({
 
     return (
         <>
-            <Systemtittel>Behandling</Systemtittel>
+            <Heading size={'medium'} level={'2'}>
+                Behandling
+            </Heading>
             <table className="tabell">
                 <thead>
                     <tr>

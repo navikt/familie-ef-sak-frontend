@@ -1,13 +1,13 @@
 import React from 'react';
 import { IVurdering, resultatTilTall, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { Label } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const Ikontekst = styled(Normaltekst)`
+const Ikontekst = styled(BodyShortSmall)`
     margin-left: 0.25rem;
 `;
 

@@ -17,7 +17,7 @@ export const GridTabell = styled.div<{
     margin-bottom: ${(props) =>
         props.underTabellMargin === 0 ? 0 : props.underTabellMargin || 3}rem;
 
-    > .typo-normal {
+    > .navds-body-short {
         padding-right: 2.5rem;
     }
 
@@ -41,10 +41,10 @@ export const GridTabell = styled.div<{
 
         display: flex;
         align-items: center;
-        .typo-undertittel {
+        .navds-heading {
             margin-right: 1rem;
         }
-        .typo-etikett-liten {
+        .navds-tag {
             color: ${navFarger.navGra60};
         }
     }

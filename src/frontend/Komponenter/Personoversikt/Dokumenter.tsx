@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper';
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { groupBy } from '../../App/utils/utils';
@@ -18,6 +17,7 @@ import {
     avsenderMottakerIdTypeTilTekst,
     journalstatusTilTekst,
 } from '../../App/typer/journalføring';
+import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -108,7 +108,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
 
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
         <Td width={`${width}%`}>
-            <Element>{text}</Element>
+            <SmallTextLabel>{text}</SmallTextLabel>
         </Td>
     );
 
@@ -165,9 +165,9 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             </Td>
             <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
             <Td>
-                <Normaltekst>
+                <BodyShortSmall>
                     {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
-                </Normaltekst>
+                </BodyShortSmall>
             </Td>
         </TrHoveddokument>
     );

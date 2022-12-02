@@ -20,7 +20,7 @@ const SimuleringÅrvelger: React.FC<{ årsvelger: ISimuleringÅrsvelger }> = ({ 
                 onClick={() => settÅr(valgtÅr - 1)}
                 size={'small'}
             />
-            <Årstall className="typo-undertittel">{valgtÅr}</Årstall>
+            <Årstall>{valgtÅr}</Årstall>
             <Button
                 icon={<Right />}
                 disabled={!kanVelgeNesteÅr}

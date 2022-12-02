@@ -4,7 +4,6 @@ import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Alert, Heading, HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
@@ -13,6 +12,11 @@ import {
     blirNullUtbetalingPgaOverstigendeKontantstøtte,
     utledHjelpetekstForBeløpFørFratrekkOgSatsjustering,
 } from '../Felles/utils';
+import {
+    BodyLongSmall,
+    BodyShortSmall,
+    SmallTextLabel,
+} from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
@@ -22,15 +26,15 @@ const Rad = styled.div<{ erTittelRad?: boolean }>`
     margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
 `;
 
-const HøyrejustertNormaltekst = styled(Normaltekst)`
+const HøyrejustertTekst = styled(BodyShortSmall)`
     text-align: right;
 `;
 
-const HøyrejusterElement = styled(Element)`
+const HøyrejusterElement = styled(SmallTextLabel)`
     text-align: right;
 `;
 
-const VenstrejustertElement = styled(Element)`
+const VenstrejustertElement = styled(SmallTextLabel)`
     text-align: left;
 `;
 
@@ -50,7 +54,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                         Utregning
                     </Heading>
                     <Rad erTittelRad>
-                        <Element>Periode</Element>
+                        <SmallTextLabel>Periode</SmallTextLabel>
                         <HøyrejusterElement>Ant. barn</HøyrejusterElement>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Kontantstøtte</HøyrejusterElement>
@@ -59,30 +63,30 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                     </Rad>
                     {beregningsresultat.map((rad) => (
                         <Rad>
-                            <Normaltekst>
+                            <BodyShortSmall>
                                 {`${formaterNullableMånedÅr(
                                     rad.periode.fradato
                                 )} - ${formaterNullableMånedÅr(rad.periode.tildato)}`}
-                            </Normaltekst>
-                            <HøyrejustertNormaltekst>
+                            </BodyShortSmall>
+                            <HøyrejustertTekst>
                                 {rad.beregningsgrunnlag.antallBarn}
-                            </HøyrejustertNormaltekst>
-                            <HøyrejustertNormaltekst>
+                            </HøyrejustertTekst>
+                            <HøyrejustertTekst>
                                 {formaterTallMedTusenSkille(rad.beregningsgrunnlag.utgifter)}
-                            </HøyrejustertNormaltekst>
-                            <HøyrejustertNormaltekst>
+                            </HøyrejustertTekst>
+                            <HøyrejustertTekst>
                                 {formaterTallMedTusenSkille(
                                     rad.beregningsgrunnlag.kontantstøttebeløp
                                 )}
-                            </HøyrejustertNormaltekst>
-                            <HøyrejustertNormaltekst>
+                            </HøyrejustertTekst>
+                            <HøyrejustertTekst>
                                 {formaterTallMedTusenSkille(
                                     rad.beregningsgrunnlag.tilleggsstønadsbeløp
                                 )}
-                            </HøyrejustertNormaltekst>
-                            <HøyrejustertNormaltekst>
+                            </HøyrejustertTekst>
+                            <HøyrejustertTekst>
                                 {formaterTallMedTusenSkille(rad.beløp)}
-                            </HøyrejustertNormaltekst>
+                            </HøyrejustertTekst>
                             {rad.beløpFørFratrekkOgSatsjustering > rad.sats && (
                                 <VenstrejustertElement>
                                     <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
@@ -102,11 +106,11 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                                 <Heading spacing size="xsmall" level="5">
                                     Avslag/Opphør - kontantstøtte overstiger tilsynsutgifter.
                                 </Heading>
-                                <Normaltekst>
+                                <BodyLongSmall>
                                     Siden kontantstøttebeløpet overstiger utgiftsbeløpet er
                                     vedtaksresultatet automatisk endret til "Avslag/opphør pga
                                     kontantstøtte"
-                                </Normaltekst>
+                                </BodyLongSmall>
                             </Alert>
                         </AdvarselContainter>
                     )}

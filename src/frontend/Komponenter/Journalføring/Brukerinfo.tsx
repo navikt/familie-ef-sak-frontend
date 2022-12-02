@@ -1,7 +1,8 @@
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import React from 'react';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import styled from 'styled-components';
+import { Heading } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
 
 interface BrukerinfoProps {
     navn: string;
@@ -18,9 +19,11 @@ const FlexDiv = styled.div`
 const Brukerinfo: React.FC<BrukerinfoProps> = ({ navn, personIdent }) => {
     return (
         <>
-            <Systemtittel>Navn og fødselsnummer</Systemtittel>
+            <Heading size={'medium'} level={'2'}>
+                Navn og fødselsnummer
+            </Heading>
             <FlexDiv>
-                <Normaltekst>{navn} -</Normaltekst>
+                <BodyShortSmall>{navn} -</BodyShortSmall>
                 <KopierbartNullableFødselsnummer fødselsnummer={personIdent} />
             </FlexDiv>
         </>

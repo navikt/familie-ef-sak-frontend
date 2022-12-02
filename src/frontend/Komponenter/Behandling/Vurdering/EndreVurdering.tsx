@@ -2,13 +2,12 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { IVurdering, SvarPåVilkårsvurdering } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { Feilmelding, Undertittel } from 'nav-frontend-typografi';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import EndreVurderingComponent from './EndreVurderingComponent';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { Cancel } from '@navikt/ds-icons';
-import { Button } from '@navikt/ds-react';
+import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
 
 const Container = styled.div`
     > *:not(:first-child) {
@@ -25,7 +24,7 @@ const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
 `;
-const VurderingTittel = styled(Undertittel)`
+const VurderingTittel = styled.div`
     padding-right: 1rem;
 `;
 
@@ -70,11 +69,19 @@ const EndreVurdering: FC<Props> = ({
 
     return (
         <Container>
-            {feilmelding && <Feilmelding>Oppdatering av vilkår feilet: {feilmelding}</Feilmelding>}
+            {feilmelding && (
+                <ErrorMessage size={'small'}>
+                    Oppdatering av vilkår feilet: {feilmelding}
+                </ErrorMessage>
+            )}
             {regler.status === RessursStatus.SUKSESS && (
                 <FlexColumn>
                     <FlexRow>
-                        <VurderingTittel>Vilkår vurderes</VurderingTittel>
+                        <VurderingTittel>
+                            <Heading size={'small'} level={'3'}>
+                                Vilkår vurderes
+                            </Heading>
+                        </VurderingTittel>
                         <Button
                             type={'button'}
                             variant={'tertiary'}

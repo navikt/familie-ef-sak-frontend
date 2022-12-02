@@ -1,7 +1,6 @@
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
@@ -9,6 +8,8 @@ import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnum
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { IDokumentasjonGrunnlag } from '../vilkår';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -27,17 +28,17 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                         <GridTabell>
                             <>
                                 <LiteBarn />
-                                <Element>
+                                <Label size={'small'} as={'div'}>
                                     {registergrunnlag.navn ?? søknadsgrunnlag.navn ?? 'Ikke født'}
                                     {registergrunnlag.dødsdato && (
                                         <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                                     )}
-                                </Element>
+                                </Label>
                             </>
                             {registergrunnlag.fødselsnummer ? (
                                 <>
                                     <Registergrunnlag />
-                                    <Normaltekst>Fødsels- eller D-nummer</Normaltekst>
+                                    <BodyShortSmall>Fødsels- eller D-nummer</BodyShortSmall>
                                     <KopierbartNullableFødselsnummer
                                         fødselsnummer={registergrunnlag.fødselsnummer}
                                     />
@@ -45,10 +46,10 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                             ) : (
                                 <>
                                     <Søknadsgrunnlag />
-                                    <Normaltekst>Termindato</Normaltekst>
-                                    <Normaltekst>
+                                    <BodyShortSmall>Termindato</BodyShortSmall>
+                                    <BodyShortSmall>
                                         {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                                    </Normaltekst>
+                                    </BodyShortSmall>
                                 </>
                             )}
                         </GridTabell>

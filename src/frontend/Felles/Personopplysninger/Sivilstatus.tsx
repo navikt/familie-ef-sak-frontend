@@ -5,8 +5,8 @@ import { KolonneTitler, TabellWrapper } from './TabellWrapper';
 import { ISivilstand, sivilstandTilTekst } from '../../App/typer/personopplysninger';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
-import { Normaltekst } from 'nav-frontend-typografi';
 import EtikettDød from '../Etiketter/EtikettDød';
+import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
 const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
 
@@ -37,7 +37,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                             fødselsnummer={sivilstand.relatertVedSivilstand}
                                         />
                                     ) : (
-                                        <Normaltekst>-</Normaltekst>
+                                        <BodyShortSmall>-</BodyShortSmall>
                                     )}
                                 </td>
                             </tr>

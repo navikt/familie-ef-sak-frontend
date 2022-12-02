@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Element, Undertekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
@@ -14,6 +13,7 @@ import { BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 import { Button } from '@navikt/ds-react';
+import { DetailSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -38,12 +38,9 @@ const StyledHistorikkElement = styled.li`
     padding: ${(props: StyledHistorikkElementProps) =>
         props.første ? '0.75rem 2rem 0' : '0 2rem'};
 
-    .typo-normal,
-    .typo-element {
-        color: ${navFarger.navMorkGra};
-    }
-
-    .typo-undertekst {
+    .navds-body-short,
+    .navds-label,
+    .navds-detail {
         color: ${navFarger.navMorkGra};
     }
 `;
@@ -105,18 +102,20 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                 <Linje siste={siste} størreMellomrom={harMetadata} />
             </IkonMedStipletLinje>
             <Innhold>
-                <Element>{hendelseTilHistorikkTekst[behandlingshistorikk.hendelse]}</Element>
-                <Undertekst>
+                <SmallTextLabel>
+                    {hendelseTilHistorikkTekst[behandlingshistorikk.hendelse]}
+                </SmallTextLabel>
+                <DetailSmall>
                     {formaterIsoDatoTidKort(behandlingshistorikk.endretTid)} |{' '}
                     {behandlingshistorikk.endretAvNavn}
-                </Undertekst>
+                </DetailSmall>
                 {behandlingshistorikk.metadata?.begrunnelse && skalViseBegrunnelse && (
                     <BreakWordUndertekst>
                         Begrunnelse: {behandlingshistorikk.metadata?.begrunnelse}
                     </BreakWordUndertekst>
                 )}
                 {behandlingshistorikk.metadata?.årsak && (
-                    <Undertekst>Årsak: {behandlingshistorikk.metadata?.årsak}</Undertekst>
+                    <DetailSmall>Årsak: {behandlingshistorikk.metadata?.årsak}</DetailSmall>
                 )}
                 {vedtakIverksatt && harVedtaksbrev && (
                     <Button

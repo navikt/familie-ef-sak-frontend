@@ -1,10 +1,11 @@
 import { ISimulering } from './SimuleringTyper';
 import React from 'react';
 import styled from 'styled-components';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { TotaltForPeriode } from './TotaltForPeriode';
 import { NestePeriode } from './NestePeriode';
+import { Heading } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 interface ISimuleringOversikt {
     simulering: ISimulering;
@@ -27,7 +28,7 @@ export const RadVerdi = styled.td`
     text-align: right;
 `;
 
-export const ResultatVerdi = styled(Normaltekst)<{ verdi: number }>`
+export const ResultatVerdi = styled(BodyShortSmall)<{ verdi: number }>`
     color: ${(props) => (props.verdi > 0 ? navFarger.navGronn : navFarger.redError)};
 `;
 
@@ -42,7 +43,9 @@ const SimuleringOversikt: React.FC<ISimuleringOversikt> = ({ simulering }) => {
     const nestePeriode = simulering.perioder.find((p) => p.fom === fomDatoNestePeriode);
     return (
         <>
-            <Systemtittel>Simulering</Systemtittel>
+            <Heading size={'medium'} level={'2'}>
+                Simulering
+            </Heading>
             <BoksMedBorder>
                 <TotaltForPeriode
                     fom={fom}

@@ -11,8 +11,9 @@ import {
     IVedtakForOvergangsstønad,
     IVedtakType,
 } from '../../../App/typer/vedtak';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { nåværendeÅrOgMånedFormatert } from '../Sanksjon/utils';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { Heading } from '@navikt/ds-react';
 
 const SimuleringsContainer = styled.div`
     margin: 2rem;
@@ -22,7 +23,7 @@ const Seksjon = styled.div`
     margin-top: 2rem;
 `;
 
-const NormaltekstMedMargin = styled(Normaltekst)`
+const TekstMedMargin = styled(BodyShortSmall)`
     margin-top: 1rem;
 `;
 
@@ -76,8 +77,10 @@ const SimuleringTabellWrapper: React.FC<{
             />
             {lagretSanksjonertVedtak && (
                 <Seksjon>
-                    <Undertittel>Sanksjonsperiode</Undertittel>
-                    <NormaltekstMedMargin>
+                    <Heading size={'small'} level={'3'}>
+                        Sanksjonsperiode
+                    </Heading>
+                    <TekstMedMargin>
                         Måneden for sanksjon er{' '}
                         <b>
                             {nåværendeÅrOgMånedFormatert(
@@ -86,7 +89,7 @@ const SimuleringTabellWrapper: React.FC<{
                         </b>{' '}
                         som er måneden etter dette vedtaket. Bruker vil ikke få utbetalt stønad i
                         denne perioden.
-                    </NormaltekstMedMargin>
+                    </TekstMedMargin>
                 </Seksjon>
             )}
             {harFeilutbetaling() && <Tilbakekreving behandlingId={behandlingId} />}

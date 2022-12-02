@@ -1,5 +1,4 @@
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { useEffect } from 'react';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { RessursStatus } from '../../../../App/typer/ressurs';
@@ -7,6 +6,7 @@ import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
 import { utledUtgiftsbeløp } from '../../../../App/utils/formatter';
 import { useHentVilkår } from '../../../../App/hooks/useHentVilkår';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const BoldTekst = styled(Label)`
     margin-left: 0.25rem;
@@ -16,7 +16,7 @@ const Container = styled.div`
     width: 250px;
 `;
 
-const HøyrestiltTekst = styled(Normaltekst)`
+const HøyrestiltTekst = styled(BodyShortSmall)`
     display: flex;
     justify-content: right;
 `;

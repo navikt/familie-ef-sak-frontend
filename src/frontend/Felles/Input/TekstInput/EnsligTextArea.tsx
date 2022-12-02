@@ -7,9 +7,6 @@ const StyledFamilieTextArea: React.FC<IFamilieTextareaProps> = styled(FamilieTex
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 60rem;
-    .typo-element {
-        padding-bottom: 0.5rem;
-    }
 `;
 
 type Props = { feilmelding?: string } & IFamilieTextareaProps;

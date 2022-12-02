@@ -27,9 +27,9 @@ import {
 } from './vedtaksvalidering';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
-import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
+import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 export type InnvilgeVedtakForm = {
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
@@ -40,7 +40,7 @@ const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
 `;
 
-export const AdvarselTekst = styled(Normaltekst)`
+export const AdvarselTekst = styled(BodyShortSmall)`
     color: ${navFarger.redError};
 `;
 

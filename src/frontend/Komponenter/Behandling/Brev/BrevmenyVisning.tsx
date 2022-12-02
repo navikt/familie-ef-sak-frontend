@@ -9,7 +9,6 @@ import {
     ValgteDelmaler,
     ValgtFelt,
 } from './BrevTyper';
-import { Undertittel } from 'nav-frontend-typografi';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
     finnFletteFeltApinavnFraRef,
@@ -26,7 +25,7 @@ import { apiLoggFeil } from '../../../App/api/axios';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
-import { Alert, Panel } from '@navikt/ds-react';
+import { Alert, Heading, Panel } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
@@ -39,7 +38,7 @@ const BrevFelter = styled.div`
     min-width: 450px;
 `;
 
-const BrevMenyTittel = styled(Undertittel)`
+const BrevMenyTittel = styled.div`
     margin-bottom: 1rem;
 `;
 
@@ -210,7 +209,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
                 return (
                     <Panel key={key}>
-                        {key !== 'undefined' && <BrevMenyTittel>{key}</BrevMenyTittel>}
+                        {key !== 'undefined' && (
+                            <BrevMenyTittel>
+                                <Heading size={'small'} level={'5'}>
+                                    {key}
+                                </Heading>
+                            </BrevMenyTittel>
+                        )}
                         {delmaler.map((delmal: Delmal, index: number) => {
                             return (
                                 <BrevMenyDelmalWrapper

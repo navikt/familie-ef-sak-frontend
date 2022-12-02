@@ -6,7 +6,6 @@ import {
     studietyper,
 } from '../../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import styled from 'styled-components';
@@ -16,6 +15,7 @@ import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Label } from '@navikt/ds-react';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 const SkoleårsperiodeRad = styled.div<{
     lesevisning?: boolean;
@@ -31,7 +31,7 @@ const SkoleårsperiodeRad = styled.div<{
     text-decoration: ${(props) => (props.skoleårErFjernet ? 'line-through' : 'inherit')};
 `;
 
-const AntallMåneder = styled(Normaltekst)<{ erLesevisning: boolean }>`
+const AntallMåneder = styled(BodyShortSmall)<{ erLesevisning: boolean }>`
     margin-top: ${(props) => (props.erLesevisning ? '0rem' : '0.65rem')};
     margin-right: ${(props) => (props.erLesevisning ? '1.2rem' : '0rem')};
     text-align: center;

@@ -12,7 +12,6 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
-import { Element } from 'nav-frontend-typografi';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
@@ -23,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -100,10 +100,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
     return (
         <>
             <TittelContainer lesevisning={!behandlingErRedigerbar}>
-                <Element>Fra</Element>
-                <Element>Forventet inntekt (år)</Element>
-                <Element>Samordningsfradrag (mnd)</Element>
-                <Element>Type samordningsfradrag</Element>
+                <SmallTextLabel>Fra</SmallTextLabel>
+                <SmallTextLabel>Forventet inntekt (år)</SmallTextLabel>
+                <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
+                <SmallTextLabel>Type samordningsfradrag</SmallTextLabel>
             </TittelContainer>
             {inntektsperiodeListe.value.map((rad, index) => {
                 const skalViseFjernKnapp =

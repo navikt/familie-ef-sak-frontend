@@ -11,10 +11,9 @@ import {
 } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import { Adressebeskyttelse } from '../../App/typer/personopplysninger';
 import UttrekkArbeidssøkerTabell from './UttrekkArbeidssøkerTabell';
-import { Checkbox } from '@navikt/ds-react';
+import { Checkbox, Heading } from '@navikt/ds-react';
 
 const UttrekkArbeidssøkerContent = styled.div`
     padding: 1rem;
@@ -121,7 +120,9 @@ const UttrekkArbeidssøker: React.FC = () => {
 
     return (
         <UttrekkArbeidssøkerContent>
-            <Sidetittel>Uttrekk arbeidssøkere (P43)</Sidetittel>
+            <Heading size={'large'} level={'1'}>
+                Uttrekk arbeidssøkere (P43)
+            </Heading>
             {feilmelding && <div style={{ color: 'red' }}>Feilmelding: {feilmelding}</div>}
             <DataViewer response={{ arbeidssøkere }}>
                 {({ arbeidssøkere }) => (
@@ -145,7 +146,9 @@ const UttrekkArbeidssøkerMedMetadata: React.FC<{
 }> = ({ arbeidssøkere, settKontrollert, visKontrollerte, toggleVisKontrollerte }) => {
     return (
         <>
-            <Systemtittel>{formaterIsoMånedÅr(arbeidssøkere.årMåned)}</Systemtittel>
+            <Heading size={'small'} level={'3'}>
+                {formaterIsoMånedÅr(arbeidssøkere.årMåned)}
+            </Heading>
             <Infoboks arbeidssøkere={arbeidssøkere} />
             <Checkbox onChange={() => toggleVisKontrollerte()} checked={visKontrollerte}>
                 Vis kontrollerte

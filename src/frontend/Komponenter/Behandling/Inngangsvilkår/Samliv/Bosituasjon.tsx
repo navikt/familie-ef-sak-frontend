@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { IPersonDetaljer } from '../Sivilstand/typer';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -26,14 +26,14 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner }) => {
                 ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Tidligere samboer</Normaltekst>
-                    <Normaltekst>{hentPersonInfo(bosituasjon.samboer)}</Normaltekst>
+                    <BodyShortSmall>Tidligere samboer</BodyShortSmall>
+                    <BodyShortSmall>{hentPersonInfo(bosituasjon.samboer)}</BodyShortSmall>
 
                     <Søknadsgrunnlag />
-                    <Normaltekst>Flyttet fra hverandre</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Flyttet fra hverandre</BodyShortSmall>
+                    <BodyShortSmall>
                         {formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
 
@@ -53,12 +53,12 @@ const SamboerInfoOgDatoSammenflytting: FC<{
 }> = ({ samboer, sammenflyttingsdato }) => (
     <>
         <Søknadsgrunnlag />
-        <Normaltekst>Samboer</Normaltekst>
-        <Normaltekst>{hentPersonInfo(samboer)}</Normaltekst>
+        <BodyShortSmall>Samboer</BodyShortSmall>
+        <BodyShortSmall>{hentPersonInfo(samboer)}</BodyShortSmall>
 
         <Søknadsgrunnlag />
-        <Normaltekst>Flyttet sammen</Normaltekst>
-        <Normaltekst>{formaterNullableIsoDato(sammenflyttingsdato)}</Normaltekst>
+        <BodyShortSmall>Flyttet sammen</BodyShortSmall>
+        <BodyShortSmall>{formaterNullableIsoDato(sammenflyttingsdato)}</BodyShortSmall>
     </>
 );
 
@@ -67,21 +67,23 @@ const Sivilstandsplaner: FC<{ sivilstandsplaner: ISivilstandsplaner }> = ({
 }) => (
     <>
         <Søknadsgrunnlag />
-        <Normaltekst>Skal gifte seg eller bli samboer</Normaltekst>
+        <BodyShortSmall>Skal gifte seg eller bli samboer</BodyShortSmall>
         <BooleanTekst value={!!sivilstandsplaner.harPlaner} />
 
         {sivilstandsplaner.harPlaner && (
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Dato</Normaltekst>
-                <Normaltekst>{formaterNullableIsoDato(sivilstandsplaner.fraDato)}</Normaltekst>
+                <BodyShortSmall>Dato</BodyShortSmall>
+                <BodyShortSmall>
+                    {formaterNullableIsoDato(sivilstandsplaner.fraDato)}
+                </BodyShortSmall>
 
                 <Søknadsgrunnlag />
-                <Normaltekst>Ektefelle eller samboer</Normaltekst>
-                <Normaltekst>{`${sivilstandsplaner.vordendeSamboerEktefelle?.navn} - ${
+                <BodyShortSmall>Ektefelle eller samboer</BodyShortSmall>
+                <BodyShortSmall>{`${sivilstandsplaner.vordendeSamboerEktefelle?.navn} - ${
                     sivilstandsplaner.vordendeSamboerEktefelle?.personIdent ||
                     formaterNullableIsoDato(sivilstandsplaner.vordendeSamboerEktefelle?.fødselsdato)
-                }`}</Normaltekst>
+                }`}</BodyShortSmall>
             </>
         )}
     </>

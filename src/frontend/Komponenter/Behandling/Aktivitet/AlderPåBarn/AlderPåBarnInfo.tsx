@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { ÅrsakBarnepassTilTekst } from './AlderPåBarnTyper';
 import { nullableDatoTilAlder } from '../../../../App/utils/dato';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
     gjeldendeBarn,
@@ -21,18 +21,18 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
-                        <Element>
+                        <SmallTextLabel>
                             {registergrunnlag.navn} ({alder} år)
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}
-                        </Element>
+                        </SmallTextLabel>
                     </>
                 ) : null}
                 {registergrunnlag.fødselsnummer ? (
                     <>
                         <Registergrunnlag />
-                        <Normaltekst>Fødsels eller D-nummer</Normaltekst>
+                        <BodyShortSmall>Fødsels eller D-nummer</BodyShortSmall>
                         <KopierbartNullableFødselsnummer
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
@@ -41,8 +41,10 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                 {barnepass && barnepass.årsakBarnepass ? (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Hvorfor trenger barnet pass?</Normaltekst>
-                        <Element>{ÅrsakBarnepassTilTekst[barnepass.årsakBarnepass]}</Element>
+                        <BodyShortSmall>Hvorfor trenger barnet pass?</BodyShortSmall>
+                        <SmallTextLabel>
+                            {ÅrsakBarnepassTilTekst[barnepass.årsakBarnepass]}
+                        </SmallTextLabel>
                     </>
                 ) : null}
             </GridTabell>

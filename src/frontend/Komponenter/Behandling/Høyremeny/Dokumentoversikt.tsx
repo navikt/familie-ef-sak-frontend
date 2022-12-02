@@ -8,12 +8,12 @@ import { useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import styled from 'styled-components';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
-import { Undertittel } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { compareDesc } from 'date-fns';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
+import { Heading } from '@navikt/ds-react';
 
-const StyledUndertittel = styled(Undertittel)`
+const Tittel = styled.div`
     padding: 0.5rem 1rem;
     color: ${navFarger.navGra80};
 `;
@@ -68,7 +68,11 @@ const Dokumentoversikt: React.FC = () => {
                     const sortertDokumentliste = sorterDokumentlisten(dokumentResponse);
                     return (
                         <>
-                            <StyledUndertittel>Dokumentoversikt</StyledUndertittel>
+                            <Tittel>
+                                <Heading size={'small'} level={'5'}>
+                                    Dokumentoversikt
+                                </Heading>
+                            </Tittel>
                             <Dokumentliste
                                 dokumenter={sortertDokumentliste}
                                 onClick={lastNedDokument}

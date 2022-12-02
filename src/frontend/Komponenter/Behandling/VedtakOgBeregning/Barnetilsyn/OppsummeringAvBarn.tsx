@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Heading, Label } from '@navikt/ds-react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { ResultatSwitch } from '../../../../Felles/Ikoner/ResultatSwitch';
 import {
@@ -12,6 +11,7 @@ import {
 import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Container = styled.div`
     margin: 1rem;
@@ -24,7 +24,7 @@ const BoldTekst = styled(Label)`
     margin-left: 0.25rem;
 `;
 
-const MarginTekst = styled(Normaltekst)`
+const MarginTekst = styled(BodyShortSmall)`
     margin-left: 0.25rem;
 `;
 
@@ -40,7 +40,7 @@ const GridLinje = styled.div`
     margin-bottom: 0.75rem;
 `;
 
-const Ikontekst = styled(Normaltekst)`
+const Ikontekst = styled(BodyShortSmall)`
     margin-left: 0.5rem;
 `;
 
@@ -90,7 +90,7 @@ export const OppsummeringAvBarn: React.FC<{
             </Heading>
             <BorderWrapper>
                 {barnepassordninger.length === 0 && (
-                    <Normaltekst>Ingen søknadsinformasjon</Normaltekst>
+                    <BodyShortSmall>Ingen søknadsinformasjon</BodyShortSmall>
                 )}
                 {barnepassordninger.map((barnepassordning, index) => {
                     return (
@@ -109,24 +109,24 @@ export const OppsummeringAvBarn: React.FC<{
                                     <Søknadsgrunnlag />
                                     <MarginTekst>Navn passordning</MarginTekst>
                                 </IkonOgTekstWrapper>
-                                <Normaltekst>{barnepassordning.navn}</Normaltekst>
+                                <BodyShortSmall>{barnepassordning.navn}</BodyShortSmall>
                             </GridLinje>
                             <GridLinje>
                                 <IkonOgTekstWrapper>
                                     <Søknadsgrunnlag />
                                     <MarginTekst>Periode passordning</MarginTekst>
                                 </IkonOgTekstWrapper>
-                                <Normaltekst>
+                                <BodyShortSmall>
                                     {formaterIsoDato(barnepassordning.fra)} -{' '}
                                     {formaterIsoDato(barnepassordning.til)}
-                                </Normaltekst>
+                                </BodyShortSmall>
                             </GridLinje>
                             <NedersteGridLinje>
                                 <IkonOgTekstWrapper>
                                     <Søknadsgrunnlag />
                                     <MarginTekst>Utgifter per måned</MarginTekst>
                                 </IkonOgTekstWrapper>
-                                <Normaltekst>{barnepassordning.beløp},-</Normaltekst>
+                                <BodyShortSmall>{barnepassordning.beløp},-</BodyShortSmall>
                             </NedersteGridLinje>
                         </React.Fragment>
                     );

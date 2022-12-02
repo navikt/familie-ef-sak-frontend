@@ -9,7 +9,6 @@ import {
     sanksjonsårsaker,
     sanksjonsårsakTilTekst,
 } from '../../../App/typer/Sanksjonsårsak';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
@@ -41,7 +40,8 @@ import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { EnsligFamilieSelect } from '../../../Felles/Input/EnsligFamilieSelect';
 import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
-import { Button } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -58,7 +58,7 @@ const Seksjon = styled.div`
     margin-top: 2rem;
 `;
 
-const NormaltekstMedMargin = styled(Normaltekst)`
+const TekstMedMargin = styled(BodyShortSmall)`
     margin-top: 1rem;
 `;
 
@@ -184,7 +184,9 @@ const SanksjonsvedtakVisning: FC<{
         <Container>
             <form onSubmit={formState.onSubmit(handleSubmit)}>
                 <section>
-                    <Undertittel>Sanksjon</Undertittel>
+                    <Heading size={'small'} level={'3'}>
+                        Sanksjon
+                    </Heading>
                     <SanksjonVelger
                         label="Brukeren har uten rimelig grunn:"
                         value={sanksjonårsak.value}
@@ -214,8 +216,10 @@ const SanksjonsvedtakVisning: FC<{
                 {sanksjonårsak.value && (
                     <>
                         <Seksjon>
-                            <Undertittel>Sanksjonsperiode</Undertittel>
-                            <NormaltekstMedMargin>
+                            <Heading size={'small'} level={'3'}>
+                                Sanksjonsperiode
+                            </Heading>
+                            <TekstMedMargin>
                                 Måneden for sanksjon er{' '}
                                 <b>
                                     {nåværendeÅrOgMånedFormatert(
@@ -226,7 +230,7 @@ const SanksjonsvedtakVisning: FC<{
                                 </b>{' '}
                                 som er måneden etter dette vedtaket. Bruker vil ikke få utbetalt
                                 stønad i denne perioden.
-                            </NormaltekstMedMargin>
+                            </TekstMedMargin>
                         </Seksjon>
                         <Seksjon>
                             <InfoVisning>
