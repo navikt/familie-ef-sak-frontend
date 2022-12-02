@@ -52,58 +52,58 @@ const TilsynsutgifterBarnInfo: FC<{
             {registergrunnlag.navn ? (
                 <>
                     <Registergrunnlag />
-                    <Element>
+                    <SmallTextLabel>
                         {registergrunnlag.navn} ({alder} år)
                         {registergrunnlag.dødsdato && (
                             <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                         )}
-                    </Element>
+                    </SmallTextLabel>
                 </>
             ) : null}
             {harPassordning ? (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>{passordningTittel}</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>{passordningTittel}</BodyShortSmall>
+                    <BodyShortSmall>
                         {barnepass?.barnepassordninger.map((ordning) => {
                             return typeBarnepassordningTilTekst[ordning.type]; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             ) : null}
             {harPassordning ? (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Navn passordning</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Navn passordning</BodyShortSmall>
+                    <BodyShortSmall>
                         {barnepass?.barnepassordninger.map((ordning) => {
                             return ordning.navn; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             ) : null}
             {harPassordning ? (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Periode passordning</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Periode passordning</BodyShortSmall>
+                    <BodyShortSmall>
                         {barnepass?.barnepassordninger.map((ordning) => {
                             return `${formaterNullableIsoDato(
                                 ordning.fra
                             )} - ${formaterNullableIsoDato(ordning.til)}`; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             ) : null}
             {harPassordning ? (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Utgifter</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Utgifter</BodyShortSmall>
+                    <BodyShortSmall>
                         {barnepass?.barnepassordninger.map((ordning) => {
                             return ordning.beløp + ',-'; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             ) : null}
         </GridTabell>
