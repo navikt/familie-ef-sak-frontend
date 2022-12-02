@@ -69,9 +69,9 @@ export const FagsakOversikt: React.FC<Props> = ({
                                 hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
                                 hentKlageBehandlinger={hentKlageBehandlinger}
                                 kanStarteRevurdering={kanStarteRevurdering}
-                                kanOppretteKlagebehandling={
-                                    !kanOppretteBehandling(klageBehandlinger)
-                                }
+                                kanOppretteKlagebehandling={kanOppretteBehandling(
+                                    klageBehandlinger
+                                )}
                             />
 
                             <Knapp
