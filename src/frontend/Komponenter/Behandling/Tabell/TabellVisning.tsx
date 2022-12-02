@@ -6,7 +6,7 @@ import { Heading, Label } from '@navikt/ds-react';
 import {
     BodyShortSmall,
     DetailSmall,
-    LabelSmallAsText,
+    SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
 
 export enum TabellIkon {
@@ -61,12 +61,9 @@ function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T
 
             <>
                 {kolonner.map((kolonne, index) => (
-                    <LabelSmallAsText
-                        className={index === 0 ? 'førsteDataKolonne' : ''}
-                        key={index}
-                    >
+                    <SmallTextLabel className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
                         {kolonne.overskrift}
-                    </LabelSmallAsText>
+                    </SmallTextLabel>
                 ))}
                 {verdier.map((item) =>
                     kolonner.map((kolonne, index) => (

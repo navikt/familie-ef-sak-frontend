@@ -7,12 +7,12 @@ import { ISøknadsdato } from '../../../../App/typer/beregningssøknadsdata';
 import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
-import { Heading, Label } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const BoldTekst = styled(Label)`
+const BoldTekst = styled(BodyShortSmall)`
     margin-left: 0.25rem;
 `;
 
@@ -55,9 +55,7 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string; stønadstype: Stø
                     <Div flexDirection="row" className="blokk-xxs">
                         <IkonOgTekstWrapper>
                             <Søknadsgrunnlag />
-                            <BoldTekst size="small" as={'p'}>
-                                Søknadsdato:
-                            </BoldTekst>
+                            <BoldTekst>Søknadsdato:</BoldTekst>
                         </IkonOgTekstWrapper>
                         <BodyShortSmall>
                             {formaterNullableIsoDato(søknadDataResponse.søknadsdato)}
@@ -66,7 +64,7 @@ export const Søknadsdatoer: React.FC<{ behandlingId: string; stønadstype: Stø
                     <Div flexDirection="row" className="blokk-xxs">
                         <IkonOgTekstWrapper>
                             <Søknadsgrunnlag />
-                            <BoldTekst size="small">Søker stønad fra:</BoldTekst>
+                            <BoldTekst>Søker stønad fra:</BoldTekst>
                         </IkonOgTekstWrapper>
                         <BodyShortSmall>
                             {formaterNullableMånedÅr(søknadDataResponse.søkerStønadFra) ||

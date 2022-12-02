@@ -3,15 +3,15 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { IArbeidssøker } from '../../../../App/typer/aktivitetstyper';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Arbeidssøker: FC<{ arbeidssøker: IArbeidssøker }> = ({ arbeidssøker }) => {
     return (
         <>
             <Søknadsgrunnlag />
-            <LabelSmallAsText className={'undertittel'}>
+            <SmallTextLabel className={'undertittel'}>
                 {ArbeidssituasjonTilTekst[EArbeidssituasjon.erArbeidssøker]}
-            </LabelSmallAsText>
+            </SmallTextLabel>
             <BodyShortSmall className={'førsteDataKolonne'}>
                 Registrert som arbeidssøker hos Nav
             </BodyShortSmall>

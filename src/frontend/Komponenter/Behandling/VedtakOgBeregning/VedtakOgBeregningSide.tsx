@@ -17,7 +17,7 @@ import { NullstillVedtakModal } from './Felles/NullstillVedtakModal';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
+import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const AlertErrorLeft = styled(AlertError)`
     margin-left: 2rem;
@@ -26,9 +26,9 @@ const AlertErrorLeft = styled(AlertError)`
 
 const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
     <AlertErrorLeft inline>
-        <LabelSmallAsText>
+        <SmallTextLabel>
             Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.
-        </LabelSmallAsText>
+        </SmallTextLabel>
     </AlertErrorLeft>
 );
 

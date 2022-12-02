@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { Refresh } from '@navikt/ds-icons';
 import { Button, HelpText } from '@navikt/ds-react';
-import { DetailSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { DetailSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const FlexWrapper = styled.div`
     display: flex;
@@ -23,7 +23,7 @@ const Oppdateringstekst = styled(DetailSmall)`
     padding-right: 0.25rem;
 `;
 
-const KnappTekst = styled(LabelSmallAsText)`
+const KnappTekst = styled(SmallTextLabel)`
     padding-left: 0rem;
 `;
 

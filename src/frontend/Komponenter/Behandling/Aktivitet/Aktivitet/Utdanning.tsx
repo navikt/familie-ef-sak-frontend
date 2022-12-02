@@ -10,7 +10,7 @@ import {
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { GridTabellWrapper } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 export const UnderUtdanning: FC<{
     underUtdanning: IUnderUtdanning;
@@ -18,9 +18,9 @@ export const UnderUtdanning: FC<{
     return (
         <>
             <Søknadsgrunnlag />
-            <LabelSmallAsText className={'undertittel'}>
+            <SmallTextLabel className={'undertittel'}>
                 {ArbeidssituasjonTilTekst[EArbeidssituasjon.tarUtdanning]}
-            </LabelSmallAsText>
+            </SmallTextLabel>
 
             <BodyShortSmall className={'førsteDataKolonne'}>Skole/Utdanningssted</BodyShortSmall>
             <BodyShortSmall> {underUtdanning.skoleUtdanningssted}</BodyShortSmall>
@@ -69,8 +69,8 @@ export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanni
 }) => {
     return (
         <>
-            <LabelSmallAsText className={'førsteDataKolonne'}>Linje/Kurs/grad</LabelSmallAsText>
-            <LabelSmallAsText>Tidsperiode</LabelSmallAsText>
+            <SmallTextLabel className={'førsteDataKolonne'}>Linje/Kurs/grad</SmallTextLabel>
+            <SmallTextLabel>Tidsperiode</SmallTextLabel>
 
             {tidligereUtdanninger?.map((utdanning, index) => (
                 <GridTabellWrapper key={utdanning.linjeKursGrad + index}>

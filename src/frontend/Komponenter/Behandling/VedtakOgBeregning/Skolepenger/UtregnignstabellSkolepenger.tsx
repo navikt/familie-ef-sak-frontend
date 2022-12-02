@@ -8,7 +8,7 @@ import {
     formaterNullableMånedÅr,
     formaterTallMedTusenSkille,
 } from '../../../../App/utils/formatter';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
     display: grid;
@@ -22,7 +22,7 @@ const HøyrejustertNormaltekst = styled(BodyShortSmall)`
     text-align: right;
 `;
 
-const HøyrejusterElement = styled(LabelSmallAsText)`
+const HøyrejusterElement = styled(SmallTextLabel)`
     text-align: right;
 `;
 
@@ -41,7 +41,7 @@ export const UtregningstabellSkolepenger: React.FC<{
                         Utregning
                     </Heading>
                     <Rad erTittelRad>
-                        <LabelSmallAsText>Fra</LabelSmallAsText>
+                        <SmallTextLabel>Fra</SmallTextLabel>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
                     </Rad>

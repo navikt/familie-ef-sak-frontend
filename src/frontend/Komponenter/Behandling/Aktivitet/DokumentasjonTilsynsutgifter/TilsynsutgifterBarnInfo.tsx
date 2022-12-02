@@ -9,7 +9,7 @@ import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../../../App/utils/dato';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import styled from 'styled-components';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const TekstMedVenstrePadding = styled(BodyShortSmall)`
     padding-left: 0.5rem;
@@ -34,12 +34,12 @@ const TilsynsutgifterBarnInfo: FC<{
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
-                        <LabelSmallAsText>
+                        <SmallTextLabel>
                             {registergrunnlag.navn} ({alder} år)
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </>
                 ) : null}
                 <TekstMedVenstrePadding>Ingen søknadsopplysninger</TekstMedVenstrePadding>

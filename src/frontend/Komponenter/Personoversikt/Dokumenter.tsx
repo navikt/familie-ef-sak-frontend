@@ -17,7 +17,7 @@ import {
     avsenderMottakerIdTypeTilTekst,
     journalstatusTilTekst,
 } from '../../App/typer/journalføring';
-import { BodyShortSmall, LabelSmallAsText } from '../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -108,7 +108,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
 
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
         <Td width={`${width}%`}>
-            <LabelSmallAsText>{text}</LabelSmallAsText>
+            <SmallTextLabel>{text}</SmallTextLabel>
         </Td>
     );
 

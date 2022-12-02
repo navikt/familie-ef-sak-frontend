@@ -10,7 +10,7 @@ import {
 import { locateIndexToRestorePreviousItemInCurrentItems } from '../utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
-import { LabelSmallAsText } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -86,9 +86,9 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
             <div style={{ marginLeft: '1rem' }}>
                 <FlexColumn>
                     <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
-                        <LabelSmallAsText>Utbetalingsmåned</LabelSmallAsText>
-                        <LabelSmallAsText>Utgifter</LabelSmallAsText>
-                        <LabelSmallAsText>Stønadsbeløp</LabelSmallAsText>
+                        <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
+                        <SmallTextLabel>Utgifter</SmallTextLabel>
+                        <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                     </Utgiftsrad>
                     {forrigeData.map((utgift, index) => {
                         const erFjernet = !nyePerioder[utgift.id];
@@ -107,15 +107,15 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
                                 key={index}
                                 erFjernet={erFjernet}
                             >
-                                <LabelSmallAsText>
+                                <SmallTextLabel>
                                     {formaterIsoMånedÅrFull(utgift.årMånedFra)}
-                                </LabelSmallAsText>
-                                <LabelSmallAsText>
+                                </SmallTextLabel>
+                                <SmallTextLabel>
                                     {formaterTallMedTusenSkilleEllerStrek(utgift.utgifter)}
-                                </LabelSmallAsText>
-                                <LabelSmallAsText>
+                                </SmallTextLabel>
+                                <SmallTextLabel>
                                     {formaterTallMedTusenSkilleEllerStrek(utgift.stønad)}
-                                </LabelSmallAsText>
+                                </SmallTextLabel>
                                 {skalViseFjernKnapp && (
                                     <FjernKnapp
                                         onClick={() => fjernUtgift(utgift.id)}

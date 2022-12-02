@@ -3,7 +3,7 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { IAksjeselskap } from '../../../../App/typer/aktivitetstyper';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype }> = ({
     aksjeselskap,
@@ -12,9 +12,9 @@ const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype
     return (
         <>
             <Søknadsgrunnlag />
-            <LabelSmallAsText className={'undertittel'}>
+            <SmallTextLabel className={'undertittel'}>
                 {ArbeidssituasjonTilTekst[EArbeidssituasjon.erAnsattIEgetAS]}
-            </LabelSmallAsText>
+            </SmallTextLabel>
             <BodyShortSmall className={'førsteDataKolonne'}>Aksjeselskap</BodyShortSmall>
             <BodyShortSmall> {aksjeselskap.navn}</BodyShortSmall>
             {stønadstype === Stønadstype.OVERGANGSSTØNAD && (

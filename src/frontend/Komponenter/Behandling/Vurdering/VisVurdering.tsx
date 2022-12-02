@@ -20,17 +20,22 @@ import {
 import {
     BodyShortSmall,
     DetailSmall,
-    LabelSmallAsText,
+    SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
     max-width: 40rem;
+`;
 
-    .typo-normal {
-        margin-top: 0.25rem;
-        margin-bottom: 1.5rem;
-    }
+const TekstMedSpacing = styled(BodyShortSmall)`
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+`;
+
+const BreakWordTekstMedSpacing = styled(BreakWordNormaltekst)`
+    margin-top: 0.25rem;
+    margin-bottom: 1.5rem;
 `;
 
 const StyledFeilmelding = styled.div`
@@ -143,20 +148,20 @@ const VisVurdering: FC<Props> = ({
                         delvilkårsvurdering.vurderinger.map((vurdering) => (
                             <React.Fragment key={vurdering.regelId}>
                                 <div>
-                                    <LabelSmallAsText>
+                                    <SmallTextLabel>
                                         {delvilkårTypeTilTekst[vurdering.regelId]}
-                                    </LabelSmallAsText>
-                                    <BodyShortSmall>
+                                    </SmallTextLabel>
+                                    <TekstMedSpacing>
                                         {vurdering.svar && svarTypeTilTekst[vurdering.svar]}
-                                    </BodyShortSmall>
+                                    </TekstMedSpacing>
                                 </div>
 
                                 {vurdering.begrunnelse && (
                                     <>
-                                        <LabelSmallAsText>Begrunnelse</LabelSmallAsText>
-                                        <BreakWordNormaltekst>
+                                        <SmallTextLabel>Begrunnelse</SmallTextLabel>
+                                        <BreakWordTekstMedSpacing>
                                             {vurdering.begrunnelse}
-                                        </BreakWordNormaltekst>
+                                        </BreakWordTekstMedSpacing>
                                     </>
                                 )}
                             </React.Fragment>

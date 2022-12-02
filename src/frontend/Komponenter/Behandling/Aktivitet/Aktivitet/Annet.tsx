@@ -9,7 +9,7 @@ import { BodyLong, HelpText } from '@navikt/ds-react';
 import {
     BodyLongSmall,
     BodyShortSmall,
-    LabelSmallAsText,
+    SmallTextLabel,
 } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const StyledList = styled.ul`
@@ -51,7 +51,7 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
         <>
             <GridTabell kolonner={3}>
                 <TittelHjelpetekstWrapper className={'førsteDataKolonne'}>
-                    <LabelSmallAsText className={'litenSpacingHoyre'}>Annet</LabelSmallAsText>
+                    <SmallTextLabel className={'litenSpacingHoyre'}>Annet</SmallTextLabel>
                     <HelpText placement={'top-start'}>{hjelpetekst}</HelpText>
                 </TittelHjelpetekstWrapper>
 

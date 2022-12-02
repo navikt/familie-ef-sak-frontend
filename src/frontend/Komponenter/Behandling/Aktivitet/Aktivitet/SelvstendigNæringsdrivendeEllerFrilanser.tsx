@@ -4,7 +4,7 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
     firma: ISelvstendig;
@@ -13,13 +13,13 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
     return (
         <>
             <Søknadsgrunnlag />
-            <LabelSmallAsText className={'undertittel'}>
+            <SmallTextLabel className={'undertittel'}>
                 {
                     ArbeidssituasjonTilTekst[
                         EArbeidssituasjon.erSelvstendigNæringsdriveneEllerFrilanser
                     ]
                 }
-            </LabelSmallAsText>
+            </SmallTextLabel>
             <BodyShortSmall className={'førsteDataKolonne'}> Firma</BodyShortSmall>
             <BodyShortSmall> {firma.firmanavn}</BodyShortSmall>
             <BodyShortSmall className={'førsteDataKolonne'}>Organisasjonsnummer</BodyShortSmall>

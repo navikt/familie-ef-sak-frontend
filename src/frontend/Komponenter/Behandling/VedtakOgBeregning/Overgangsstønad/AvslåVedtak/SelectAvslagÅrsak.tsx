@@ -11,10 +11,7 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
-import {
-    BodyShortSmall,
-    LabelSmallAsText,
-} from '../../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     avslagÅrsak?: EAvslagÅrsak;
@@ -54,7 +51,6 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
           ];
     return (
         <>
-            <LabelSmallAsText>Årsak</LabelSmallAsText>
             <StyledSelect
                 value={avslagÅrsak}
                 erLesevisning={!behandlingErRedigerbar}
@@ -64,7 +60,7 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
                 }}
                 lesevisningVerdi={avslagÅrsak && avslagÅrsakTilTekst[avslagÅrsak]}
                 label={'Årsak avslag'}
-                hideLabel={true}
+                hideLabel={false}
             >
                 <option value="">Velg</option>
                 {avslagÅrsaker.map((årsak) => {

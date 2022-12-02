@@ -5,7 +5,7 @@ import {
 } from '../../../App/utils/formatter';
 import styled from 'styled-components';
 import { RadTittel, RadVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
-import { BodyShortSmall, LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const BoksMedBottomBorder = styled.div`
     border-bottom: 1px solid #a0a0a0;
@@ -21,10 +21,10 @@ export const TotaltForPeriode: React.FC<{
 }> = ({ fom, tomSisteUtbetaling, feilutbetaling, etterbetaling }) => (
     <BoksMedBottomBorder>
         <div>
-            <LabelSmallAsText>
+            <SmallTextLabel>
                 Totalt for periode {formaterNullableMånedÅr(fom)} til og med{' '}
                 {formaterNullableMånedÅr(tomSisteUtbetaling)}
-            </LabelSmallAsText>
+            </SmallTextLabel>
         </div>
         <SimuleringOversiktTabell>
             <tbody>
@@ -33,9 +33,9 @@ export const TotaltForPeriode: React.FC<{
                         <BodyShortSmall>Feilutbetaling</BodyShortSmall>
                     </RadTittel>
                     <RadVerdi>
-                        <LabelSmallAsText>
+                        <SmallTextLabel>
                             {`-${formaterTallMedTusenSkilleEllerStrek(feilutbetaling)}`} kr
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </RadVerdi>
                 </tr>
                 <tr>
@@ -43,9 +43,9 @@ export const TotaltForPeriode: React.FC<{
                         <BodyShortSmall>Etterbetaling</BodyShortSmall>
                     </RadTittel>
                     <RadVerdi>
-                        <LabelSmallAsText>
+                        <SmallTextLabel>
                             {formaterTallMedTusenSkilleEllerStrek(etterbetaling)} kr
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </RadVerdi>
                 </tr>
             </tbody>

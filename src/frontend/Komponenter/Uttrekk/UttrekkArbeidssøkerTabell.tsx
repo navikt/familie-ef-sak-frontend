@@ -6,7 +6,7 @@ import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
 import { Button, Link } from '@navikt/ds-react';
-import { LabelSmallAsText } from '../../Felles/Visningskomponenter/Tekster';
+import { SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
 
 const StyledTable = styled.table`
     width: 70%;
@@ -46,7 +46,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                         }}
                                         style={{ marginRight: '1rem' }}
                                     >
-                                        <LabelSmallAsText>{arbeidssøker.navn}</LabelSmallAsText>
+                                        <SmallTextLabel>{arbeidssøker.navn}</SmallTextLabel>
                                     </Link>
                                     <KopierbartNullableFødselsnummer
                                         fødselsnummer={arbeidssøker.personIdent}

@@ -7,13 +7,13 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { FileContent } from '@navikt/ds-icons';
 import { Button, Heading } from '@navikt/ds-react';
-import { BodyShortSmall, LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const VisningsContainer = styled.div`
     margin-top: 1rem;
 `;
 
-const UnderOverskrfit = styled(LabelSmallAsText)`
+const UnderOverskrfit = styled(SmallTextLabel)`
     margin-top: 1rem;
 `;
 

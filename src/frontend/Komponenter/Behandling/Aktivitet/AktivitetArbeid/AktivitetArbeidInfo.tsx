@@ -13,7 +13,7 @@ import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import {
     BodyLongSmall,
     BodyShortSmall,
-    LabelSmallAsText,
+    SmallTextLabel,
 } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
@@ -37,9 +37,9 @@ const AktivitetArbeidInfo: FC<Props> = ({
                 {skalViseSøknadsdata && erIArbeid === EErIArbeid.NeiFordiJegErSyk && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <LabelSmallAsText className={'undertittel'}>
+                        <SmallTextLabel className={'undertittel'}>
                             Er ikke i arbeid fordi søker er syk
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </GridTabell>
                 )}
 
@@ -82,9 +82,9 @@ const AktivitetArbeidInfo: FC<Props> = ({
                 {skalViseSøknadsdata && virksomhet && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <LabelSmallAsText className={'undertittel'}>
+                        <SmallTextLabel className={'undertittel'}>
                             {ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                         <BodyShortSmall className={'førsteDataKolonne'}>
                             Beskrivelse av virksomheten
                         </BodyShortSmall>

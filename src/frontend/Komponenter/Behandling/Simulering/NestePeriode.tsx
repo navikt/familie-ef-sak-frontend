@@ -6,7 +6,7 @@ import {
 } from '../../../App/utils/formatter';
 import { RadTittel, RadVerdi, ResultatVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
 import { ISimuleringPeriode } from './SimuleringTyper';
-import { BodyShortSmall, LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefined }> = ({
     nestePeriode,
@@ -19,7 +19,7 @@ export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefin
 
     return (
         <>
-            <LabelSmallAsText>Neste utbetaling</LabelSmallAsText>
+            <SmallTextLabel>Neste utbetaling</SmallTextLabel>
             <SimuleringOversiktTabell>
                 <tbody>
                     <tr>
@@ -30,9 +30,9 @@ export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefin
                         </RadTittel>
                         <RadVerdi>
                             <ResultatVerdi verdi={resultat}>
-                                <LabelSmallAsText>
+                                <SmallTextLabel>
                                     {formaterTallMedTusenSkilleEllerStrek(resultat)} kr
-                                </LabelSmallAsText>
+                                </SmallTextLabel>
                             </ResultatVerdi>
                         </RadVerdi>
                     </tr>

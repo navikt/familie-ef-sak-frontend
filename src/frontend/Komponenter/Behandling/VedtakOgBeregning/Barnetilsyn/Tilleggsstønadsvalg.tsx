@@ -20,7 +20,7 @@ import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextAr
 import { Radio } from '@navikt/ds-react';
 import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
-import { LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -154,9 +154,9 @@ const TilleggsstønadValg: React.FC<Props> = ({
             {tilleggsstønad.value === ERadioValg.JA && stønadsreduksjon.value === ERadioValg.JA && (
                 <>
                     <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
-                        <LabelSmallAsText>Periode fra og med</LabelSmallAsText>
-                        <LabelSmallAsText>Periode til og med</LabelSmallAsText>
-                        <LabelSmallAsText>Stønadsreduksjon</LabelSmallAsText>
+                        <SmallTextLabel>Periode fra og med</SmallTextLabel>
+                        <SmallTextLabel>Periode til og med</SmallTextLabel>
+                        <SmallTextLabel>Stønadsreduksjon</SmallTextLabel>
                     </KolonneHeaderWrapper>
                     {tilleggsstønadPerioder.value.map((periode, index) => {
                         const { årMånedFra, årMånedTil, beløp } = periode;

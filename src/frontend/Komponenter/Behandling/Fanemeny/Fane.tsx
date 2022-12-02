@@ -26,7 +26,7 @@ const StyledNavLink = styled(NavLink)`
     :hover {
         border-bottom: 5px solid ${navFarger.navBlaLighten20};
 
-        .typo-normal {
+        .navds-body-short {
             color: ${navFarger.navBla};
         }
     }
@@ -35,7 +35,7 @@ const StyledNavLink = styled(NavLink)`
         background-color: ${navFarger.navLysGra};
         border-bottom: 5px solid ${navFarger.navBla};
 
-        .typo-normal {
+        .navds-body-short {
             font-weight: bold;
         }
     }

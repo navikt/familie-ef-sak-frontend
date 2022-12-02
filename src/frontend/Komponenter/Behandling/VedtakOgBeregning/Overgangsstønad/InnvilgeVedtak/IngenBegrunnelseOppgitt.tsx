@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-    BodyShortSmall,
-    LabelSmallAsText,
-} from '../../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 export const StyledDiv = styled.div`
     margin-top: 2rem;
@@ -13,7 +10,7 @@ export const StyledDiv = styled.div`
 export const IngenBegrunnelseOppgitt: React.FC = () => {
     return (
         <StyledDiv>
-            <LabelSmallAsText className={'blokk-xxs'}>Begrunnelse</LabelSmallAsText>
+            <SmallTextLabel className={'blokk-xxs'}>Begrunnelse</SmallTextLabel>
             <BodyShortSmall style={{ fontStyle: 'italic' }}>
                 Ingen opplysninger oppgitt.
             </BodyShortSmall>

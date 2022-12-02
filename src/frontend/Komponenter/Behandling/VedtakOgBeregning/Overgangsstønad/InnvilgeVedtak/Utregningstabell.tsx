@@ -8,10 +8,7 @@ import {
 import { IBeløpsperiode } from '../../../../../App/typer/vedtak';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
-import {
-    BodyShortSmall,
-    LabelSmallAsText,
-} from '../../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
@@ -42,11 +39,11 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                             Utregning
                         </Heading>
                         <TittelContainer>
-                            <LabelSmallAsText>Periode</LabelSmallAsText>
-                            <LabelSmallAsText>Inntekt (år)</LabelSmallAsText>
-                            <LabelSmallAsText>Beløp før samordning</LabelSmallAsText>
-                            <LabelSmallAsText>Samordningsfradrag (mnd)</LabelSmallAsText>
-                            <LabelSmallAsText>Stønadsbeløp pr. mnd</LabelSmallAsText>
+                            <SmallTextLabel>Periode</SmallTextLabel>
+                            <SmallTextLabel>Inntekt (år)</SmallTextLabel>
+                            <SmallTextLabel>Beløp før samordning</SmallTextLabel>
+                            <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
+                            <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
                         </TittelContainer>
                         {beregnetStønad.map((beløpsPeriode) => {
                             return (

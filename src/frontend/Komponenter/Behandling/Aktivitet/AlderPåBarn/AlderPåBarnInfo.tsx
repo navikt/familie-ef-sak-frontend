@@ -6,7 +6,7 @@ import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnum
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { ÅrsakBarnepassTilTekst } from './AlderPåBarnTyper';
 import { nullableDatoTilAlder } from '../../../../App/utils/dato';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
     gjeldendeBarn,
@@ -21,12 +21,12 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
-                        <LabelSmallAsText>
+                        <SmallTextLabel>
                             {registergrunnlag.navn} ({alder} år)
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </>
                 ) : null}
                 {registergrunnlag.fødselsnummer ? (
@@ -42,9 +42,9 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                     <>
                         <Søknadsgrunnlag />
                         <BodyShortSmall>Hvorfor trenger barnet pass?</BodyShortSmall>
-                        <LabelSmallAsText>
+                        <SmallTextLabel>
                             {ÅrsakBarnepassTilTekst[barnepass.årsakBarnepass]}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </>
                 ) : null}
             </GridTabell>

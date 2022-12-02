@@ -10,7 +10,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { OrNothing } from '../../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
-import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     periodeType: EPeriodetype | '' | undefined;
@@ -25,9 +25,9 @@ interface Props {
     aktivitetfeil: OrNothing<string>;
 }
 
-const AktivitetKolonne = styled.div`
-    .typo-normal {
-        padding: 0.5rem 0 1rem 0;
+const AktivitetKolonne = styled.div<{ medPadding?: boolean }>`
+    .navds-body-short {
+        padding: ${(props) => (props.medPadding ? '0.5rem 0 1rem 0' : '0rem')};
     }
 `;
 
@@ -147,14 +147,14 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
-                <AktivitetKolonne>
-                    <BodyShortSmall>Ikke aktivitetsplikt</BodyShortSmall>
+                <AktivitetKolonne medPadding={!erLesevisning}>
+                    <BodyShort>Ikke aktivitetsplikt</BodyShort>
                 </AktivitetKolonne>
             );
         default:
             return (
-                <AktivitetKolonne>
-                    <BodyShortSmall>-</BodyShortSmall>
+                <AktivitetKolonne medPadding={!erLesevisning}>
+                    <BodyShort>-</BodyShort>
                 </AktivitetKolonne>
             );
     }

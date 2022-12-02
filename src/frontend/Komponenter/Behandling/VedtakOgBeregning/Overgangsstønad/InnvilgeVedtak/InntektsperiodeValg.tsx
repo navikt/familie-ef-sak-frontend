@@ -22,7 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { LabelSmallAsText } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -100,10 +100,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
     return (
         <>
             <TittelContainer lesevisning={!behandlingErRedigerbar}>
-                <LabelSmallAsText>Fra</LabelSmallAsText>
-                <LabelSmallAsText>Forventet inntekt (år)</LabelSmallAsText>
-                <LabelSmallAsText>Samordningsfradrag (mnd)</LabelSmallAsText>
-                <LabelSmallAsText>Type samordningsfradrag</LabelSmallAsText>
+                <SmallTextLabel>Fra</SmallTextLabel>
+                <SmallTextLabel>Forventet inntekt (år)</SmallTextLabel>
+                <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
+                <SmallTextLabel>Type samordningsfradrag</SmallTextLabel>
             </TittelContainer>
             {inntektsperiodeListe.value.map((rad, index) => {
                 const skalViseFjernKnapp =

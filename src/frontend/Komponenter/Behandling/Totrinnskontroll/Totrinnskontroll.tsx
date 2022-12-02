@@ -16,7 +16,7 @@ import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakW
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
 import { Heading } from '@navikt/ds-react';
-import { BodyShortSmall, LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -102,7 +102,7 @@ const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet 
             </Heading>
             <div className="ikon-med-tekst">
                 <Info heigth={20} width={20} />
-                <LabelSmallAsText>Vedtaket er sendt til godkjenning</LabelSmallAsText>
+                <SmallTextLabel>Vedtaket er sendt til godkjenning</SmallTextLabel>
             </div>
             <div>
                 <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
@@ -122,14 +122,14 @@ const TotrinnskontrollUnderkjent: React.FC<{
             </Heading>
             <div className="ikon-med-tekst">
                 <Advarsel heigth={20} width={20} />
-                <LabelSmallAsText>Vedtaket er underkjent</LabelSmallAsText>
+                <SmallTextLabel>Vedtaket er underkjent</SmallTextLabel>
             </div>
             <div>
                 <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
                 <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
             <div>
-                <LabelSmallAsText>Begrunnelse:</LabelSmallAsText>
+                <SmallTextLabel>Begrunnelse:</SmallTextLabel>
                 <BreakWordNormaltekst>{totrinnskontroll.begrunnelse}</BreakWordNormaltekst>
             </div>
         </BorderBox>

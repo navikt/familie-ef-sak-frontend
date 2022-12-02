@@ -15,7 +15,7 @@ import {
 import {
     BodyLongSmall,
     BodyShortSmall,
-    LabelSmallAsText,
+    SmallTextLabel,
 } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Rad = styled.div<{ erTittelRad?: boolean }>`
@@ -30,11 +30,11 @@ const HøyrejustertTekst = styled(BodyShortSmall)`
     text-align: right;
 `;
 
-const HøyrejusterElement = styled(LabelSmallAsText)`
+const HøyrejusterElement = styled(SmallTextLabel)`
     text-align: right;
 `;
 
-const VenstrejustertElement = styled(LabelSmallAsText)`
+const VenstrejustertElement = styled(SmallTextLabel)`
     text-align: left;
 `;
 
@@ -54,7 +54,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                         Utregning
                     </Heading>
                     <Rad erTittelRad>
-                        <LabelSmallAsText>Periode</LabelSmallAsText>
+                        <SmallTextLabel>Periode</SmallTextLabel>
                         <HøyrejusterElement>Ant. barn</HøyrejusterElement>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Kontantstøtte</HøyrejusterElement>

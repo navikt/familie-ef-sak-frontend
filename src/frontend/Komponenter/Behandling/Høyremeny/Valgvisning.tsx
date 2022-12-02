@@ -13,7 +13,7 @@ const StyledIkonWrapper = styled.div`
     border-bottom: ${navFarger.navGra40} solid 2px;
     text-align: center;
 
-    .typo-normal {
+    .navds-body-short {
         font-size: 12px;
         margin-top: -5px;
     }

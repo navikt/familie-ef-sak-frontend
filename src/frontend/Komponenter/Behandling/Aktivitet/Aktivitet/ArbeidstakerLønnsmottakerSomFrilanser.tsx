@@ -4,7 +4,7 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon, EStilling, StillingTilTekst } from './typer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{
     arbeidsforhold: IArbeidsforhold;
@@ -13,13 +13,13 @@ export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{
     return (
         <>
             <Søknadsgrunnlag />
-            <LabelSmallAsText className={'undertittel'}>
+            <SmallTextLabel className={'undertittel'}>
                 {
                     ArbeidssituasjonTilTekst[
                         EArbeidssituasjon.erArbeidstakerOgEllerLønnsmottakerFrilanser
                     ]
                 }
-            </LabelSmallAsText>
+            </SmallTextLabel>
 
             <BodyShortSmall className={'førsteDataKolonne'}> Arbeidssted</BodyShortSmall>
             <BodyShortSmall> {arbeidsforhold.arbeidsgivernavn}</BodyShortSmall>

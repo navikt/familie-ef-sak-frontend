@@ -28,7 +28,7 @@ export const DetailSmall = forwardRef<HTMLParagraphElement, Omit<DetailProps, 's
     }
 );
 
-export const LabelSmallAsText = forwardRef<HTMLParagraphElement, Omit<LabelProps, 'size'>>(
+export const SmallTextLabel = forwardRef<HTMLParagraphElement, Omit<LabelProps, 'size'>>(
     (props, ref) => {
         return <Label size={'small'} {...props} ref={ref} as={'p'} />;
     }

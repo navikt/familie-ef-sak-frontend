@@ -8,7 +8,7 @@ import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import navFarger from 'nav-frontend-core';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { LabelSmallAsText } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -86,9 +86,9 @@ const UtgiftsperiodeSkolepenger: React.FC<
             <div style={{ marginLeft: '1rem' }}>
                 <FlexColumn>
                     <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
-                        <LabelSmallAsText>Utbetalingsmåned</LabelSmallAsText>
-                        <LabelSmallAsText>Utgifter</LabelSmallAsText>
-                        <LabelSmallAsText>Stønadsbeløp</LabelSmallAsText>
+                        <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
+                        <SmallTextLabel>Utgifter</SmallTextLabel>
+                        <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                     </Utgiftsrad>
                     {data.map((utgift, index) => {
                         const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;

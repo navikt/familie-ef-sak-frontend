@@ -14,7 +14,7 @@ import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmott
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -50,13 +50,13 @@ const AktivitetInfo: FC<Props> = ({
                     arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
                         <GridTabell kolonner={3}>
                             <Søknadsgrunnlag />
-                            <LabelSmallAsText className={'undertittel'}>
+                            <SmallTextLabel className={'undertittel'}>
                                 {
                                     ArbeidssituasjonTilTekst[
                                         EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr
                                     ]
                                 }
-                            </LabelSmallAsText>
+                            </SmallTextLabel>
                         </GridTabell>
                     )}
 
@@ -99,9 +99,9 @@ const AktivitetInfo: FC<Props> = ({
                 {skalViseSøknadsdata && datoOppstartJobb && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <LabelSmallAsText className={'undertittel'}>
+                        <SmallTextLabel className={'undertittel'}>
                             {ArbeidssituasjonTilTekst[EArbeidssituasjon.harFåttJobbTilbud]}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                         <BodyShortSmall className={'førsteDataKolonne'}>
                             Startdato ny jobb
                         </BodyShortSmall>
@@ -115,9 +115,9 @@ const AktivitetInfo: FC<Props> = ({
                 {skalViseSøknadsdata && virksomhet && (
                     <GridTabell kolonner={3}>
                         <Søknadsgrunnlag />
-                        <LabelSmallAsText className={'undertittel'}>
+                        <SmallTextLabel className={'undertittel'}>
                             {ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                         <BodyShortSmall className={'førsteDataKolonne'}>
                             Beskrivelse av virksomheten
                         </BodyShortSmall>
@@ -146,13 +146,13 @@ const AktivitetInfo: FC<Props> = ({
                     ) && (
                         <GridTabell kolonner={3}>
                             <Søknadsgrunnlag />
-                            <LabelSmallAsText className={'undertittel'}>
+                            <SmallTextLabel className={'undertittel'}>
                                 {
                                     ArbeidssituasjonTilTekst[
                                         EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
                                     ]
                                 }
-                            </LabelSmallAsText>
+                            </SmallTextLabel>
                         </GridTabell>
                     )}
                 {skalViseSøknadsdata && særligeTilsynsbehov && (

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
 import SimuleringÅrvelger from './SimuleringÅrvelger';
-import { BodyShortSmall, LabelSmallAsText } from '../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const Tabell = styled.table`
     border-collapse: collapse;
@@ -45,7 +45,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                     {perioder.map((p) => {
                         return (
                             <MånedHeader key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
-                                <LabelSmallAsText>{p.måned}</LabelSmallAsText>
+                                <SmallTextLabel>{p.måned}</SmallTextLabel>
                             </MånedHeader>
                         );
                     })}
@@ -54,7 +54,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
             <tbody>
                 <tr>
                     <BasisKolonne>
-                        <LabelSmallAsText>Nytt beløp</LabelSmallAsText>
+                        <SmallTextLabel>Nytt beløp</SmallTextLabel>
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (
@@ -68,7 +68,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                 </tr>
                 <tr>
                     <BasisKolonne>
-                        <LabelSmallAsText>Tidligere utbetalt</LabelSmallAsText>
+                        <SmallTextLabel>Tidligere utbetalt</SmallTextLabel>
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (
@@ -82,7 +82,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                 </tr>
                 <tr>
                     <BasisKolonne>
-                        <LabelSmallAsText>Resultat</LabelSmallAsText>
+                        <SmallTextLabel>Resultat</SmallTextLabel>
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (

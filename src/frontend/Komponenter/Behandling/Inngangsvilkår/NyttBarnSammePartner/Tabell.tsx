@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props<T> {
     data: T[];
@@ -38,7 +38,7 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
                     <tr>
                         {kolonner.map((kolonne, index) => (
                             <th key={index}>
-                                <LabelSmallAsText>{kolonne.overskrift}</LabelSmallAsText>
+                                <SmallTextLabel>{kolonne.overskrift}</SmallTextLabel>
                             </th>
                         ))}
                     </tr>

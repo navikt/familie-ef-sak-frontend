@@ -14,7 +14,7 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
 import { Tag } from '@navikt/ds-react';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -48,23 +48,23 @@ const AleneomsorgInfo: FC<{
                 {registergrunnlag.navn ? (
                     <>
                         <Registergrunnlag />
-                        <LabelSmallAsText>Barnets navn</LabelSmallAsText>
-                        <LabelSmallAsText>
+                        <SmallTextLabel>Barnets navn</SmallTextLabel>
+                        <SmallTextLabel>
                             {registergrunnlag.navn}
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </>
                 ) : (
                     <>
                         <Søknadsgrunnlag />
-                        <LabelSmallAsText>Barnets navn</LabelSmallAsText>
-                        <LabelSmallAsText>
+                        <SmallTextLabel>Barnets navn</SmallTextLabel>
+                        <SmallTextLabel>
                             {søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
                                 ? 'Ikke utfylt'
                                 : 'Ikke født'}
-                        </LabelSmallAsText>
+                        </SmallTextLabel>
                     </>
                 )}
                 {registergrunnlag.fødselsnummer ? (

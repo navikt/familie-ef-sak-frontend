@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { BodyLong, Heading, Label } from '@navikt/ds-react';
-import { BodyShortSmall, LabelSmallAsText } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     tidligereVedtaksvilkår: IVurdering[];
@@ -60,7 +60,7 @@ const TidligereVedtakOppsummering: React.FC<Props> = ({ tidligereVedtaksvilkår 
                                 )}
                                 {vurdering.begrunnelse && (
                                     <BegrunnelseWrapper>
-                                        <LabelSmallAsText>Begrunnelse</LabelSmallAsText>{' '}
+                                        <SmallTextLabel>Begrunnelse</SmallTextLabel>{' '}
                                         <TekstWrapper>
                                             <BreakWordNormaltekst>
                                                 {vurdering.begrunnelse}
