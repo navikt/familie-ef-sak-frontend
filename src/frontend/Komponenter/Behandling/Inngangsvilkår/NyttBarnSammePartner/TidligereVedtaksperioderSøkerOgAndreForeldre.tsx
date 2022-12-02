@@ -5,7 +5,6 @@ import {
     ITidligereInnvilgetVedtak,
     ITidligereVedtaksperioder,
 } from '../../TidligereVedtaksperioder/typer';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { Tooltip } from '@navikt/ds-react';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
 import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
@@ -13,6 +12,7 @@ import { nonNull } from '../../../../App/utils/utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../../App/typer/personopplysninger';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;
@@ -60,7 +60,7 @@ const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined)
         <Tooltip
             content={`OS: ${harTidligereOvergangsstønad} BT: ${harTidligereBarnetilsyn} SP: ${harTidligereSkolepenger}`}
         >
-            <Normaltekst>{mapTrueFalse(harTidligereVedtak)}</Normaltekst>
+            <BodyShortSmall>{mapTrueFalse(harTidligereVedtak)}</BodyShortSmall>
         </Tooltip>
     );
 };

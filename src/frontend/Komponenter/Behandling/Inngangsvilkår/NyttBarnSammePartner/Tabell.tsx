@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
+import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props<T> {
     data: T[];
@@ -24,7 +24,7 @@ const StyledTable = styled.table`
     }
 `;
 
-const StyledNormalTekst = styled(Normaltekst)`
+const IngenDataContainer = styled.div`
     color: ${navFarger.navGra60};
     margin-left: 1.5rem;
     margin-top: 1.5rem;
@@ -37,7 +37,9 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
                 <thead>
                     <tr>
                         {kolonner.map((kolonne, index) => (
-                            <th key={index}>{kolonne.overskrift}</th>
+                            <th key={index}>
+                                <SmallTextLabel>{kolonne.overskrift}</SmallTextLabel>
+                            </th>
                         ))}
                     </tr>
                 </thead>
@@ -47,7 +49,11 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
                             return (
                                 <tr key={index}>
                                     {kolonner.map((kolonne, index) => (
-                                        <td key={index}>{kolonne.tekstVerdi(item) || ''}</td>
+                                        <td key={index}>
+                                            <BodyShortSmall>
+                                                {kolonne.tekstVerdi(item) || ''}
+                                            </BodyShortSmall>
+                                        </td>
                                     ))}
                                 </tr>
                             );
@@ -55,7 +61,11 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
                     </tbody>
                 )}
             </StyledTable>
-            {data.length === 0 && onEmpty && <StyledNormalTekst>{onEmpty}</StyledNormalTekst>}
+            {data.length === 0 && onEmpty && (
+                <IngenDataContainer>
+                    <BodyShortSmall>{onEmpty}</BodyShortSmall>
+                </IngenDataContainer>
+            )}
         </div>
     );
 }

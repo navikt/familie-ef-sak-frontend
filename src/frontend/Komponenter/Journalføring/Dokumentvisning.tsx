@@ -1,10 +1,10 @@
 import EndreDokumentTittel from './EndreDokumentTittel';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
-import { Systemtittel } from 'nav-frontend-typografi';
 import VisDokumentTittel from './VisDokumentTittel';
 import { IJournalpost } from '../../App/typer/journalføring';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
+import { Heading } from '@navikt/ds-react';
 
 interface DokumentVisningProps {
     journalPost: IJournalpost;
@@ -51,7 +51,9 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
 
     return (
         <StyledDokumentWrapper>
-            <Systemtittel>Dokumenter</Systemtittel>
+            <Heading size={'medium'} level={'2'}>
+                Dokumenter
+            </Heading>
             <StyledListe>
                 {journalPost.dokumenter.map((dokument) => (
                     <StyledListeElement key={dokument.dokumentInfoId}>

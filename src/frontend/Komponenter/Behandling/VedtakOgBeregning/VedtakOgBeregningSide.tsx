@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Steg } from '../Høyremeny/Steg';
-import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { VedtaksoppsummeringOvergangsstønad } from './Overgangsstønad/VedtaksoppsummeringOvergangsstønad';
 import VedtakOgBeregningOvergangsstønad from './Overgangsstønad/VedtakOgBeregningOvergangsstønad';
@@ -18,6 +17,7 @@ import { NullstillVedtakModal } from './Felles/NullstillVedtakModal';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const AlertErrorLeft = styled(AlertError)`
     margin-left: 2rem;
@@ -26,7 +26,9 @@ const AlertErrorLeft = styled(AlertError)`
 
 const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
     <AlertErrorLeft inline>
-        <Element>Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.</Element>
+        <SmallTextLabel>
+            Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.
+        </SmallTextLabel>
     </AlertErrorLeft>
 );
 

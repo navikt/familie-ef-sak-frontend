@@ -1,10 +1,10 @@
 import { ISimuleringTabell } from './SimuleringTyper';
 import React from 'react';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import navFarger from 'nav-frontend-core';
 import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
 import SimuleringÅrvelger from './SimuleringÅrvelger';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const Tabell = styled.table`
     border-collapse: collapse;
@@ -29,7 +29,7 @@ const MånedHeader = styled(VerdiKolonne)<{ gjelderNestePeriode: boolean }>`
     border-bottom: 1px solid ${navFarger.navGra80};
 `;
 
-const ResultatVerdi = styled(Normaltekst)<{ verdi: number }>`
+const ResultatVerdi = styled(BodyShortSmall)<{ verdi: number }>`
     color: ${(props) => (props.verdi > 0 ? navFarger.navGronn : navFarger.redError)};
 `;
 
@@ -45,7 +45,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                     {perioder.map((p) => {
                         return (
                             <MånedHeader key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
-                                <Element>{p.måned}</Element>
+                                <SmallTextLabel>{p.måned}</SmallTextLabel>
                             </MånedHeader>
                         );
                     })}
@@ -54,35 +54,35 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
             <tbody>
                 <tr>
                     <BasisKolonne>
-                        <Element>Nytt beløp</Element>
+                        <SmallTextLabel>Nytt beløp</SmallTextLabel>
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (
                             <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
-                                <Normaltekst>
+                                <BodyShortSmall>
                                     {formaterTallMedTusenSkilleEllerStrek(p.nyttBeløp)}
-                                </Normaltekst>
+                                </BodyShortSmall>
                             </VerdiKolonne>
                         );
                     })}
                 </tr>
                 <tr>
                     <BasisKolonne>
-                        <Element>Tidligere utbetalt</Element>
+                        <SmallTextLabel>Tidligere utbetalt</SmallTextLabel>
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (
                             <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
-                                <Normaltekst>
+                                <BodyShortSmall>
                                     {formaterTallMedTusenSkilleEllerStrek(p.tidligereUtbetalt)}
-                                </Normaltekst>
+                                </BodyShortSmall>
                             </VerdiKolonne>
                         );
                     })}
                 </tr>
                 <tr>
                     <BasisKolonne>
-                        <Element>Resultat</Element>
+                        <SmallTextLabel>Resultat</SmallTextLabel>
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (

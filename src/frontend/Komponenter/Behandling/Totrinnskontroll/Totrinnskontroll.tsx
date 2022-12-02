@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import {
@@ -16,6 +15,8 @@ import Info from '../../../Felles/Ikoner/Info';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
+import { Heading } from '@navikt/ds-react';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -96,14 +97,16 @@ const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet 
 }) => {
     return (
         <BorderBox>
-            <Undertittel>Totrinnskontroll</Undertittel>
+            <Heading size={'small'} level={'3'}>
+                Totrinnskontroll
+            </Heading>
             <div className="ikon-med-tekst">
                 <Info heigth={20} width={20} />
-                <Element>Vedtaket er sendt til godkjenning</Element>
+                <SmallTextLabel>Vedtaket er sendt til godkjenning</SmallTextLabel>
             </div>
             <div>
-                <Normaltekst>{totrinnskontroll.opprettetAv}</Normaltekst>
-                <Normaltekst>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</Normaltekst>
+                <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
+                <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
         </BorderBox>
     );
@@ -114,17 +117,19 @@ const TotrinnskontrollUnderkjent: React.FC<{
 }> = ({ totrinnskontroll }) => {
     return (
         <BorderBox>
-            <Undertittel>Totrinnskontroll</Undertittel>
+            <Heading size={'small'} level={'3'}>
+                Totrinnskontroll
+            </Heading>
             <div className="ikon-med-tekst">
                 <Advarsel heigth={20} width={20} />
-                <Element>Vedtaket er underkjent</Element>
+                <SmallTextLabel>Vedtaket er underkjent</SmallTextLabel>
             </div>
             <div>
-                <Normaltekst>{totrinnskontroll.opprettetAv}</Normaltekst>
-                <Normaltekst>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</Normaltekst>
+                <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
+                <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
             <div>
-                <Element>Begrunnelse:</Element>
+                <SmallTextLabel>Begrunnelse:</SmallTextLabel>
                 <BreakWordNormaltekst>{totrinnskontroll.begrunnelse}</BreakWordNormaltekst>
             </div>
         </BorderBox>

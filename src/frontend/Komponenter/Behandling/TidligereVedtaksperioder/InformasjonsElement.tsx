@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Element, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
+import { BodyShort, Heading, Label } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     tittel: string;
@@ -18,20 +19,25 @@ const InformasjonsElement: React.FC<Props> = ({
     return (
         <ToKolonnerLayout skillelinje={false}>
             {{
-                venstre: <Systemtittel>{tittel}</Systemtittel>,
+                venstre: (
+                    <Heading size={'medium'} level={'2'}>
+                        {tittel}
+                    </Heading>
+                ),
                 høyre: (
                     <>
-                        <Element className="blokk-s">
+                        <Label size={'small'} as={'div'} className="blokk-s">
                             {spørsmåltekst}
                             {hjelpetekst && (
-                                <Normaltekst
+                                <BodyShort
+                                    size={'small'}
                                     style={{ marginLeft: '0.25rem' }}
-                                    tag="span"
+                                    as="span"
                                     children={hjelpetekst}
                                 />
                             )}
-                        </Element>
-                        <Normaltekst>{spørsmålsvar}</Normaltekst>
+                        </Label>
+                        <BodyShortSmall>{spørsmålsvar}</BodyShortSmall>
                     </>
                 ),
             }}

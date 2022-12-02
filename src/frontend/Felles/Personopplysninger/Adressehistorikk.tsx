@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import { Element } from 'nav-frontend-typografi';
 import { IngenData, TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
@@ -10,7 +9,7 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button, HelpText } from '@navikt/ds-react';
+import { Button, HelpText, Label } from '@navikt/ds-react';
 
 const StyledFlexDiv = styled.div`
     display: flex;
@@ -76,7 +75,7 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
 
 const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
     <Td width={`${width}%`}>
-        <Element>{text}</Element>
+        <Label as={'p'}>{text}</Label>
     </Td>
 );
 

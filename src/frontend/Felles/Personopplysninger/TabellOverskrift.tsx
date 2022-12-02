@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Heading } from '@navikt/ds-react';
 
 interface Props {
     Ikon: React.FC;
@@ -26,7 +26,9 @@ const TabellOverskrift: React.FC<Props> = ({ Ikon, tittel, tittelbeskrivelse }) 
                 <Ikon />
             </StyledIkon>
             <StyledTittel>
-                <Undertittel>{tittel}</Undertittel>
+                <Heading size={'small'} level={'5'}>
+                    {tittel}
+                </Heading>
                 <div>{tittelbeskrivelse}</div>
             </StyledTittel>
         </>

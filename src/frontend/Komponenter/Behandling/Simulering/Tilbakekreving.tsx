@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VisTilbakekreving } from './VisTilbakekreving';
 import { TilbakekrevingSkjema } from './TilbakekrevingSkjema';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Loader } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 export enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -155,9 +155,9 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
                     {(behandlingErRedigerbar || !tilbakekrevingsvalg) && (
                         <>
                             <h2>Tilbakekreving</h2>
-                            <Normaltekst>
+                            <BodyShortSmall>
                                 Det finnes allerede en åpen tilbakekrevingssak.
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     )}
                     {!behandlingErRedigerbar && tilbakekrevingsvalg && (

@@ -7,10 +7,10 @@ import {
     IBarnMedSamværSøknadsgrunnlag,
 } from './typer';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
@@ -23,92 +23,92 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
                 søknadsgrunnlag.spørsmålAvtaleOmDeltBosted != null && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Skriftlig avtale om delt fast bosted</Normaltekst>
+                        <BodyShortSmall>Skriftlig avtale om delt fast bosted</BodyShortSmall>
                         <BooleanTekst value={søknadsgrunnlag.spørsmålAvtaleOmDeltBosted} />
                     </>
                 )}
             {søknadsgrunnlag.skalAnnenForelderHaSamvær && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Annen forelders samvær</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Annen forelders samvær</BodyShortSmall>
+                    <BodyShortSmall>
                         {harSamværMedBarnTilTekst[søknadsgrunnlag.skalAnnenForelderHaSamvær]}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
             {søknadsgrunnlag.harDereSkriftligAvtaleOmSamvær && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Skriftlig samværsavtale</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Skriftlig samværsavtale</BodyShortSmall>
+                    <BodyShortSmall>
                         {
                             harSkriftligSamværsavtaleTilTekst[
                                 søknadsgrunnlag.harDereSkriftligAvtaleOmSamvær
                             ]
                         }
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
             {søknadsgrunnlag.hvordanPraktiseresSamværet && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Praktisering av samværet</Normaltekst>
-                    <Normaltekst>{søknadsgrunnlag.hvordanPraktiseresSamværet}</Normaltekst>
+                    <BodyShortSmall>Praktisering av samværet</BodyShortSmall>
+                    <BodyShortSmall>{søknadsgrunnlag.hvordanPraktiseresSamværet}</BodyShortSmall>
                 </>
             )}
             {søknadsgrunnlag.borAnnenForelderISammeHus && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Foreldre har nære boforhold</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Foreldre har nære boforhold</BodyShortSmall>
+                    <BodyShortSmall>
                         {
                             borAnnenForelderISammeHusTilTekst[
                                 søknadsgrunnlag.borAnnenForelderISammeHus
                             ]
                         }
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
             {søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Beskrivelse av boforhold</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Beskrivelse av boforhold</BodyShortSmall>
+                    <BodyShortSmall>
                         {søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
             {søknadsgrunnlag.harDereTidligereBoddSammen !== null &&
                 søknadsgrunnlag.harDereTidligereBoddSammen !== undefined && (
                     <>
                         <Søknadsgrunnlag />
-                        <Normaltekst>Foreldrene har bodd sammen tidligere</Normaltekst>
+                        <BodyShortSmall>Foreldrene har bodd sammen tidligere</BodyShortSmall>
                         <BooleanTekst value={søknadsgrunnlag.harDereTidligereBoddSammen} />
                     </>
                 )}
             {søknadsgrunnlag.nårFlyttetDereFraHverandre && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Fraflyttingsdato</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Fraflyttingsdato</BodyShortSmall>
+                    <BodyShortSmall>
                         {formaterNullableIsoDato(søknadsgrunnlag.nårFlyttetDereFraHverandre)}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
             {søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Kontakt mellom foreldrene</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Kontakt mellom foreldrene</BodyShortSmall>
+                    <BodyShortSmall>
                         {hvorMyeSammenTilTekst[søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder]}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
             {søknadsgrunnlag.beskrivSamværUtenBarn && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Beskrivelse av kontakt</Normaltekst>
-                    <Normaltekst>{søknadsgrunnlag.beskrivSamværUtenBarn}</Normaltekst>
+                    <BodyShortSmall>Beskrivelse av kontakt</BodyShortSmall>
+                    <BodyShortSmall>{søknadsgrunnlag.beskrivSamværUtenBarn}</BodyShortSmall>
                 </>
             )}
         </GridTabell>

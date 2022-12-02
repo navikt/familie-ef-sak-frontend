@@ -1,5 +1,4 @@
 import React from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     formaterIsoMånedÅrFull,
     formaterStrengMedStorForbokstav,
@@ -7,6 +6,7 @@ import {
 } from '../../../App/utils/formatter';
 import { RadTittel, RadVerdi, ResultatVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
 import { ISimuleringPeriode } from './SimuleringTyper';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefined }> = ({
     nestePeriode,
@@ -19,20 +19,20 @@ export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefin
 
     return (
         <>
-            <Element>Neste utbetaling</Element>
+            <SmallTextLabel>Neste utbetaling</SmallTextLabel>
             <SimuleringOversiktTabell>
                 <tbody>
                     <tr>
                         <RadTittel>
-                            <Normaltekst>
+                            <BodyShortSmall>
                                 {formaterStrengMedStorForbokstav(formaterIsoMånedÅrFull(fomDato))}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </RadTittel>
                         <RadVerdi>
                             <ResultatVerdi verdi={resultat}>
-                                <Element>
+                                <SmallTextLabel>
                                     {formaterTallMedTusenSkilleEllerStrek(resultat)} kr
-                                </Element>
+                                </SmallTextLabel>
                             </ResultatVerdi>
                         </RadVerdi>
                     </tr>

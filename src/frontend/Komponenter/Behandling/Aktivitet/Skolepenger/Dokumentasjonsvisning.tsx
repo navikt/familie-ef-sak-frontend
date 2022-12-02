@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { formaterNullableIsoDato, utledUtgiftsbeløp } from '../../../../App/utils/formatter';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { UtdanningsformTilTekst } from '../Aktivitet/typer';
 import styled from 'styled-components';
 import { utledVisningForStudiebelastning } from '../../Inngangsvilkår/utils';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -17,7 +17,7 @@ const UtgiftContainer = styled.div<{ kolonneBredde: string }>`
     grid-template-columns: ${(props) => props.kolonneBredde};
 `;
 
-const HøyrestiltTekst = styled(Normaltekst)`
+const HøyrestiltTekst = styled(BodyShortSmall)`
     display: flex;
     justify-content: right;
 `;
@@ -61,63 +61,59 @@ const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {
         <>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Skole/utdanningssted</Normaltekst>
-                <Normaltekst>{underUtdanning?.skoleUtdanningssted}</Normaltekst>
+                <BodyShortSmall>Skole/utdanningssted</BodyShortSmall>
+                <BodyShortSmall>{underUtdanning?.skoleUtdanningssted}</BodyShortSmall>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Linje/kurs/grad</Normaltekst>
-                <Normaltekst>{underUtdanning?.linjeKursGrad}</Normaltekst>
+                <BodyShortSmall>Linje/kurs/grad</BodyShortSmall>
+                <BodyShortSmall>{underUtdanning?.linjeKursGrad}</BodyShortSmall>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Utdanningstype</Normaltekst>
+                <BodyShortSmall>Utdanningstype</BodyShortSmall>
                 {underUtdanning?.offentligEllerPrivat && (
-                    <Normaltekst>
+                    <BodyShortSmall>
                         {UtdanningsformTilTekst[underUtdanning?.offentligEllerPrivat]}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 )}
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Studieperiode</Normaltekst>
-                <Normaltekst>{`${formaterNullableIsoDato(
+                <BodyShortSmall>Studieperiode</BodyShortSmall>
+                <BodyShortSmall>{`${formaterNullableIsoDato(
                     underUtdanning?.fra
-                )} -  ${formaterNullableIsoDato(underUtdanning?.til)}`}</Normaltekst>
+                )} -  ${formaterNullableIsoDato(underUtdanning?.til)}`}</BodyShortSmall>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Studiebelastning</Normaltekst>
-                <Normaltekst>{utledVisningForStudiebelastning(underUtdanning)}</Normaltekst>
+                <BodyShortSmall>Studiebelastning</BodyShortSmall>
+                <BodyShortSmall>{utledVisningForStudiebelastning(underUtdanning)}</BodyShortSmall>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Semesteravgift</Normaltekst>
+                <BodyShortSmall>Semesteravgift</BodyShortSmall>
                 <UtgiftContainer kolonneBredde={kolonnebredde}>
                     <HøyrestiltTekst>
-                        <Normaltekst>
-                            {utledUtgiftsbeløp(underUtdanning?.semesteravgift)}
-                        </Normaltekst>
+                        {utledUtgiftsbeløp(underUtdanning?.semesteravgift)}
                     </HøyrestiltTekst>
                 </UtgiftContainer>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Studieavgift</Normaltekst>
+                <BodyShortSmall>Studieavgift</BodyShortSmall>
                 <UtgiftContainer kolonneBredde={kolonnebredde}>
                     <HøyrestiltTekst>
-                        <Normaltekst>{utledUtgiftsbeløp(underUtdanning?.studieavgift)}</Normaltekst>
+                        {utledUtgiftsbeløp(underUtdanning?.studieavgift)}
                     </HøyrestiltTekst>
                 </UtgiftContainer>
             </>
             <>
                 <Søknadsgrunnlag />
-                <Normaltekst>Eksamensgebyr</Normaltekst>
+                <BodyShortSmall>Eksamensgebyr</BodyShortSmall>
                 <UtgiftContainer kolonneBredde={kolonnebredde}>
                     <HøyrestiltTekst>
-                        <Normaltekst>
-                            {utledUtgiftsbeløp(underUtdanning?.eksamensgebyr)}
-                        </Normaltekst>
+                        {utledUtgiftsbeløp(underUtdanning?.eksamensgebyr)}
                     </HøyrestiltTekst>
                 </UtgiftContainer>
             </>

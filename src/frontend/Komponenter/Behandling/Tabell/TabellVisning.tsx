@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Element, Normaltekst, Undertekst, Undertittel } from 'nav-frontend-typografi';
 import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Calculator } from '@navikt/ds-icons';
+import { Heading, Label } from '@navikt/ds-react';
+import {
+    BodyShortSmall,
+    DetailSmall,
+    SmallTextLabel,
+} from '../../../Felles/Visningskomponenter/Tekster';
 
 export enum TabellIkon {
     REGISTER = 'REGISTER',
@@ -41,33 +46,33 @@ function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T
         <GridTabell kolonner={kolonner.length + 1} utenIkon={!ikon}>
             {ikon && mapIkon(ikon)}
             {tittelType === 'undertittel' ? (
-                <Undertittel className="tittel" tag="h3">
+                <Heading size="small" className="tittel" level={'3'}>
                     {tittel}
-                </Undertittel>
+                </Heading>
             ) : (
-                <Element className="tittel" tag="h3">
+                <Label className="tittel" as="h3" size={'small'}>
                     {' '}
                     {tittel}
                     {undertittel && (
-                        <Undertekst style={{ marginLeft: '0.25rem' }}>{undertittel}</Undertekst>
+                        <DetailSmall style={{ marginLeft: '0.25rem' }}>{undertittel}</DetailSmall>
                     )}
-                </Element>
+                </Label>
             )}
 
             <>
                 {kolonner.map((kolonne, index) => (
-                    <Element className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
+                    <SmallTextLabel className={index === 0 ? 'førsteDataKolonne' : ''} key={index}>
                         {kolonne.overskrift}
-                    </Element>
+                    </SmallTextLabel>
                 ))}
                 {verdier.map((item) =>
                     kolonner.map((kolonne, index) => (
-                        <Normaltekst
+                        <BodyShortSmall
                             className={index === 0 ? 'førsteDataKolonne' : 'kolonne'}
                             key={index}
                         >
                             {kolonne.tekstVerdi(item) || ''}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     ))
                 )}
             </>

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ITilbakekrevingsvalg, TilbakekrevingsvalgTilTekst } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { FileContent } from '@navikt/ds-icons';
-import { Button } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
 const VisningsContainer = styled.div`
     margin-top: 1rem;
 `;
 
-const UnderOverskrfit = styled(Element)`
+const UnderOverskrfit = styled(SmallTextLabel)`
     margin-top: 1rem;
 `;
 
@@ -58,15 +58,17 @@ export const VisTilbakekreving: React.FC<Props> = ({
 
     return (
         <VisningsContainer>
-            <h2>Tilbakekreving</h2>
+            <Heading size={'medium'} as={'h2'}>
+                Tilbakekreving
+            </Heading>
             <UnderOverskrfit>Valg for tilbakekreving:</UnderOverskrfit>
-            <Normaltekst>
+            <BodyShortSmall>
                 {TilbakekrevingsvalgTilTekst[tilbakekrevingsvalg as ITilbakekrevingsvalg]}
-            </Normaltekst>
+            </BodyShortSmall>
             {varseltekst && (
                 <>
                     <UnderOverskrfit>Fritekst i varselet</UnderOverskrfit>
-                    <Normaltekst>{varseltekst}</Normaltekst>
+                    <BodyShortSmall>{varseltekst}</BodyShortSmall>
                     {kanForhåndsvise && (
                         <Button
                             type={'button'}
@@ -82,7 +84,7 @@ export const VisTilbakekreving: React.FC<Props> = ({
                 </>
             )}
             <UnderOverskrfit>Begrunnelse (internt notat):</UnderOverskrfit>
-            <Normaltekst>{begrunnelse ? begrunnelse : 'Ingen begrunnelse'}</Normaltekst>
+            <BodyShortSmall>{begrunnelse ? begrunnelse : 'Ingen begrunnelse'}</BodyShortSmall>
         </VisningsContainer>
     );
 };

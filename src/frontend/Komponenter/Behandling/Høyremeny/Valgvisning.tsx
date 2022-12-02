@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import navFarger from 'nav-frontend-core';
 import { Høyremenyvalg } from './Høyremeny';
 import { Folder, ClockFilled } from '@navikt/ds-icons';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 const StyledIkonWrapper = styled.div`
     width: 100%;
@@ -13,7 +13,7 @@ const StyledIkonWrapper = styled.div`
     border-bottom: ${navFarger.navGra40} solid 2px;
     text-align: center;
 
-    .typo-normal {
+    .navds-body-short {
         font-size: 12px;
         margin-top: -5px;
     }
@@ -57,7 +57,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
                 onClick={() => settAktiv(Høyremenyvalg.Logg)}
             >
                 <ClockFilled aria-label="Historikk" />
-                <Normaltekst>Historikk</Normaltekst>
+                <BodyShortSmall>Historikk</BodyShortSmall>
             </StyledIkon>
             <StyledIkon
                 role={'button'}
@@ -65,7 +65,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
                 onClick={() => settAktiv(Høyremenyvalg.Mappe)}
             >
                 <Folder />
-                <Normaltekst>Dokumenter</Normaltekst>
+                <BodyShortSmall>Dokumenter</BodyShortSmall>
             </StyledIkon>
         </StyledIkonWrapper>
     );

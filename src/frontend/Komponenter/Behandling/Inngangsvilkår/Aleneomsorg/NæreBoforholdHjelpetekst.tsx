@@ -1,9 +1,9 @@
 import React from 'react';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyLong } from '@navikt/ds-react';
 
 const NæreBoforholdHjelpetekst: React.FC = () => {
     return (
-        <Normaltekst tag="div">
+        <BodyLong as={'div'}>
             <p>Det er definert som nære boforhold når:</p>
             <ul>
                 <li>
@@ -19,7 +19,7 @@ const NæreBoforholdHjelpetekst: React.FC = () => {
                 <li>Foreldrene bor i nærmeste bolig eller rekkehus i samme gate</li>
                 <li>Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate</li>
             </ul>
-        </Normaltekst>
+        </BodyLong>
     );
 };
 

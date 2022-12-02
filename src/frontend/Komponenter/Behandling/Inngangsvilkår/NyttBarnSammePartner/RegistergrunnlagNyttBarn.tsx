@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { RegistergrunnlagNyttBarn } from './typer';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
+import { Label } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
@@ -22,21 +23,21 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
         <GridTabell>
             <>
                 <LiteBarn />
-                <Element>
+                <Label size={'small'} as={'div'}>
                     {barn.navn}
                     {barn.dødsdato && <EtikettDød dødsdato={barn.dødsdato} />}
-                </Element>
+                </Label>
             </>
             <>
                 <Registergrunnlag />
-                <Normaltekst>Fødsels eller D-nummer</Normaltekst>
-                <Normaltekst>{barn.fødselsnummer}</Normaltekst>
+                <BodyShortSmall>Fødsels eller D-nummer</BodyShortSmall>
+                <BodyShortSmall>{barn.fødselsnummer}</BodyShortSmall>
             </>
 
             {annenForelderRegister && (
                 <>
                     <Registergrunnlag />
-                    <Normaltekst>Annen forelder fra folkeregister</Normaltekst>
+                    <BodyShortSmall>Annen forelder fra folkeregister</BodyShortSmall>
                     <AnnenForelderNavnOgFnr forelder={annenForelderRegister} />
                 </>
             )}
@@ -44,22 +45,22 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Annen forelder</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Annen forelder</BodyShortSmall>
+                    <BodyShortSmall>
                         {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
                             ? ikkeOppgittAnnenForelderBegrunnelse
                             : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
 
             {barn.annenForelderRegister?.dødsfall && (
                 <>
                     <Registergrunnlag />
-                    <Normaltekst>Annen forelder dødsdato</Normaltekst>
-                    <Normaltekst>
+                    <BodyShortSmall>Annen forelder dødsdato</BodyShortSmall>
+                    <BodyShortSmall>
                         {formaterNullableIsoDato(barn.annenForelderRegister.dødsfall)}
-                    </Normaltekst>
+                    </BodyShortSmall>
                 </>
             )}
         </GridTabell>

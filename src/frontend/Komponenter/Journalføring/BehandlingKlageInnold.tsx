@@ -1,14 +1,14 @@
-import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { KlageBehandling, Klagebehandlinger, KlagebehandlingStatus } from '../../App/typer/klage';
+import { KlageBehandling, Klagebehandlinger } from '../../App/typer/klage';
 import { BehandlingKlageRequest } from '../../App/hooks/useJournalføringKlageState';
-import { Button, Checkbox } from '@navikt/ds-react';
+import { Button, Checkbox, Heading } from '@navikt/ds-react';
 import { AddCircle } from '@navikt/ds-icons';
+import { kanOppretteBehandling } from '../../App/utils/klage';
 
 interface Props {
     settBehandling: (behandling?: BehandlingKlageRequest) => void;
@@ -57,17 +57,11 @@ const BehandlingKlageInnold: React.FC<Props> = ({
     const lagNyBehandlingRad = () => {
         settFeilmelding('');
         if (behandlinger.status === RessursStatus.SUKSESS && valgtFagsak) {
-            const kanOppretteNyBehandling = behandlinger.data[valgtFagsak].every(
-                (behandling: KlageBehandling) =>
-                    behandling.status === KlagebehandlingStatus.FERDIGSTILT ||
-                    behandling.status === KlagebehandlingStatus.VENTER
-            );
-
-            if (kanOppretteNyBehandling) {
+            if (kanOppretteBehandling(behandlinger.data[valgtFagsak])) {
                 settNyBehandling(true);
             } else {
                 settFeilmelding(
-                    'Kan ikke opprette ny behandling på fagsak med en behandling som ikke er ferdigstilt'
+                    'Kan ikke opprette ny behandling på fagsak med en klagebehandling som ikke er ferdigstilt'
                 );
             }
         } else {
@@ -77,7 +71,9 @@ const BehandlingKlageInnold: React.FC<Props> = ({
 
     return (
         <>
-            <Systemtittel>Behandling</Systemtittel>
+            <Heading size={'medium'} level={'2'}>
+                Behandling
+            </Heading>
             <table className="tabell">
                 <thead>
                     <tr>

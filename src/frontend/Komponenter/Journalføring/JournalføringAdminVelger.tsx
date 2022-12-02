@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Sidetittel } from 'nav-frontend-typografi';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { useNavigate } from 'react-router-dom';
 import validator from '@navikt/fnrvalidator';
-import { Button } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
 
 const SideLayout = styled.div`
     max-width: 50rem;
@@ -33,7 +32,9 @@ export const JournalføringAdminVelger: React.FC = () => {
 
     return (
         <SideLayout className={'container'}>
-            <Sidetittel>Opprett ny behandling for journalpost</Sidetittel>
+            <Heading size={'large'} level={'2'}>
+                Opprett ny behandling for journalpost
+            </Heading>
             <Blokk>
                 <StyledInput
                     label={'Skriv inn journalpostID'}

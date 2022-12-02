@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { compareDesc } from 'date-fns';
 import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -61,11 +61,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
     const sisteFerdigstilteBehandlingen = sisteBehandlingSomErFerdigstilt(fagsak);
 
     if (!sisteFerdigstilteBehandlingen) {
-        return (
-            <>
-                <Normaltekst>Finnes ikke noen ferdigstilt behandling å klage på</Normaltekst>
-            </>
-        );
+        return <BodyShortSmall>Finnes ikke noen ferdigstilt behandling å klage på</BodyShortSmall>;
     }
 
     const validerValgtDato = (valgtDato: string | undefined) => {

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import Brukerinfo from './Brukerinfo';
-import { Sidetittel } from 'nav-frontend-typografi';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import {
@@ -20,7 +19,7 @@ import {
 } from '../Oppgavebenk/oppgavefilterStorage';
 import BehandlingInnold from './Behandling';
 import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
-import { BodyLong, Button, Fieldset } from '@navikt/ds-react';
+import { BodyLong, Button, Fieldset, Heading } from '@navikt/ds-react';
 import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import VelgUstrukturertDokumentasjonType, {
@@ -234,11 +233,11 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
 
     return (
         <SideLayout className={'container'}>
-            <Sidetittel>{`Registrere journalpost${
+            <Heading size={'xlarge'} level={'1'}>{`Registrere journalpost${
                 journalResponse.journalpost.behandlingstema
                     ? ': ' + behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
                     : ''
-            }`}</Sidetittel>
+            }`}</Heading>
             <Kolonner>
                 <Venstrekolonne>
                     {fagsak.status === RessursStatus.SUKSESS && (

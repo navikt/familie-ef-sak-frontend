@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import React from 'react';
 import { Fagsak } from '../../App/typer/fagsak';
-import { Systemtittel } from 'nav-frontend-typografi';
 import { formatterEnumVerdi } from '../../App/utils/utils';
-import { Tag } from '@navikt/ds-react';
+import { Heading, Tag } from '@navikt/ds-react';
 
 const StyledTag = styled(Tag)`
     margin-left: 1rem;
@@ -17,7 +16,9 @@ export const FagsakTittelLinje: React.FC<{
     fagsak: Fagsak;
 }> = ({ fagsak }) => (
     <TittelLinje>
-        <Systemtittel tag="h3">Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}</Systemtittel>
+        <Heading size={'small'} level="3">
+            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+        </Heading>
         {fagsak.erLøpende && (
             <StyledTag variant={'info'} size={'small'}>
                 Løpende

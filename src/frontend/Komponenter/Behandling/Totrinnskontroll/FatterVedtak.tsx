@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import * as React from 'react';
 import { FormEvent, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
@@ -8,7 +7,8 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EToast } from '../../../App/typer/toast';
-import { Button, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
+import { Button, Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 const RadioButtonWrapper = styled.div`
     display: block;
@@ -28,7 +28,7 @@ const StyledForm = styled.form`
     }
 `;
 
-const StyledUndertittel = styled(Undertittel)`
+const TittelContainer = styled.div`
     margin: 0.5rem 0;
 `;
 
@@ -96,10 +96,14 @@ const FatterVedtak: React.FC<{
     return (
         <StyledForm onSubmit={fatteTotrinnsKontroll}>
             <BorderBox>
-                <StyledUndertittel>Totrinnskontroll</StyledUndertittel>
-                <Normaltekst>
+                <TittelContainer>
+                    <Heading size={'small'} level={'3'}>
+                        Totrinnskontroll
+                    </Heading>
+                </TittelContainer>
+                <BodyShortSmall>
                     Kontroller opplysninger og faglige vurderinger gjort under behandlingen
-                </Normaltekst>
+                </BodyShortSmall>
                 <RadioButtonWrapper>
                     <RadioGroup legend={'Beslutt vedtak'} value={godkjent} hideLegend>
                         <RadioMedPadding

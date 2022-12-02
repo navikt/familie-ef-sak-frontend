@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { SivilstandType } from '../../../../App/typer/personopplysninger';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag, ÅrsakEnsligTilTekst } from './typer';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { hentBooleanTekst } from '../utils';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     sivilstandtype: SivilstandType;
@@ -21,13 +21,15 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Gift uten at det er registrert i folkeregisteret</Normaltekst>
+                    <BodyShortSmall>
+                        Gift uten at det er registrert i folkeregisteret
+                    </BodyShortSmall>
                     {erUformeltGift !== undefined && <BooleanTekst value={erUformeltGift} />}
 
                     <Søknadsgrunnlag />
-                    <Normaltekst>
+                    <BodyShortSmall>
                         Separert eller skilt uten at det er registrert i folkeregisteret
-                    </Normaltekst>
+                    </BodyShortSmall>
                     {erUformeltSeparertEllerSkilt !== undefined && (
                         <BooleanTekst value={erUformeltSeparertEllerSkilt} />
                     )}
@@ -38,22 +40,22 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Søkt separasjon, skilsmisse eller reist sak</Normaltekst>
+                    <BodyShortSmall>Søkt separasjon, skilsmisse eller reist sak</BodyShortSmall>
                     {søknad.søktOmSkilsmisseSeparasjon !== undefined && (
-                        <Normaltekst>
+                        <BodyShortSmall>
                             {søknad.søktOmSkilsmisseSeparasjon
                                 ? `${hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}, 
                             ${formaterNullableIsoDato(søknad.datoSøktSeparasjon)}`
                                 : hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}
-                        </Normaltekst>
+                        </BodyShortSmall>
                     )}
                     {søknad.fraflytningsdato && (
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Dato for fraflytting</Normaltekst>
-                            <Normaltekst>
+                            <BodyShortSmall>Dato for fraflytting</BodyShortSmall>
+                            <BodyShortSmall>
                                 {formaterNullableIsoDato(søknad.fraflytningsdato)}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     )}
                 </>
@@ -63,51 +65,51 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Søknadsgrunnlag />
-                    <Normaltekst>Alene med barn fordi</Normaltekst>
+                    <BodyShortSmall>Alene med barn fordi</BodyShortSmall>
                     {søknad.årsakEnslig && (
-                        <Normaltekst>{ÅrsakEnsligTilTekst[søknad.årsakEnslig]}</Normaltekst>
+                        <BodyShortSmall>{ÅrsakEnsligTilTekst[søknad.årsakEnslig]}</BodyShortSmall>
                     )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Dato for samlivsbrudd</Normaltekst>
+                            <BodyShortSmall>Dato for samlivsbrudd</BodyShortSmall>
 
-                            <Normaltekst>
+                            <BodyShortSmall>
                                 {søknad.samlivsbruddsdato
                                     ? formaterNullableIsoDato(søknad.samlivsbruddsdato)
                                     : '-'}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Tidligere samboer</Normaltekst>
-                            <Normaltekst>{`${tidligereSamboer?.navn} - ${
+                            <BodyShortSmall>Tidligere samboer</BodyShortSmall>
+                            <BodyShortSmall>{`${tidligereSamboer?.navn} - ${
                                 tidligereSamboer?.personIdent
                                     ? tidligereSamboer?.personIdent
                                     : formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
-                            }`}</Normaltekst>
+                            }`}</BodyShortSmall>
 
                             <Søknadsgrunnlag />
-                            <Normaltekst>Dato for fraflytting</Normaltekst>
-                            <Normaltekst>
+                            <BodyShortSmall>Dato for fraflytting</BodyShortSmall>
+                            <BodyShortSmall>
                                 {formaterNullableIsoDato(søknad.fraflytningsdato)}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.endringISamværsordning && (
                         <>
                             <Søknadsgrunnlag />
-                            <Normaltekst>Endringen skjedde</Normaltekst>
-                            <Normaltekst>
+                            <BodyShortSmall>Endringen skjedde</BodyShortSmall>
+                            <BodyShortSmall>
                                 {søknad.endringSamværsordningDato
                                     ? formaterNullableIsoDato(søknad.endringSamværsordningDato)
                                     : '-'}
-                            </Normaltekst>
+                            </BodyShortSmall>
                         </>
                     )}
                 </>

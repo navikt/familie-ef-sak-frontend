@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn, Overskrift } from './utils';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
@@ -7,6 +6,8 @@ import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
 import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
 import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -26,30 +27,34 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
             </div>
             <div>
                 <FlexDiv>
-                    <Overskrift className="tittel" tag="h3">
-                        Brukers barn registrert i folkeregisteret
+                    <Overskrift>
+                        <Label className="tittel" as="h3" size={'small'}>
+                            Brukers barn registrert i folkeregisteret
+                        </Label>
                     </Overskrift>
                 </FlexDiv>
                 {registergrunnlagNyttBarn.map((barn) => (
                     <RegistergrunnlagNyttBarn barn={barn} />
                 )) || (
-                    <Normaltekst>
+                    <BodyShortSmall>
                         <i>Bruker har ingen barn lagt til i folkeregister</i>
-                    </Normaltekst>
+                    </BodyShortSmall>
                 )}
             </div>
             <div>
                 <FlexDiv>
-                    <Overskrift className="tittel" tag="h3">
-                        Brukers fremtidige barn lagt til i søknad
+                    <Overskrift>
+                        <Label className="tittel" as="h3" size={'small'}>
+                            Brukers fremtidige barn lagt til i søknad
+                        </Label>
                     </Overskrift>
                 </FlexDiv>
                 {søknadsgrunnlagNyttBarn.length ? (
                     søknadsgrunnlagNyttBarn.map((barn) => <SøknadgrunnlagNyttBarn barn={barn} />)
                 ) : (
-                    <Normaltekst>
+                    <BodyShortSmall>
                         <i>Bruker har ingen barn lagt til i søknad</i>
-                    </Normaltekst>
+                    </BodyShortSmall>
                 )}
             </div>
         </>

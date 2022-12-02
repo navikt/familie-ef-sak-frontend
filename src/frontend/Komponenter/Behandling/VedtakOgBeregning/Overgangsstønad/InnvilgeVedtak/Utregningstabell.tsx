@@ -7,8 +7,8 @@ import {
 } from '../../../../../App/utils/formatter';
 import { IBeløpsperiode } from '../../../../../App/typer/vedtak';
 import styled from 'styled-components';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Heading } from '@navikt/ds-react';
+import { BodyShortSmall, SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
@@ -39,40 +39,40 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                             Utregning
                         </Heading>
                         <TittelContainer>
-                            <Element>Periode</Element>
-                            <Element>Inntekt (år)</Element>
-                            <Element>Beløp før samordning</Element>
-                            <Element>Samordningsfradrag (mnd)</Element>
-                            <Element>Stønadsbeløp pr. mnd</Element>
+                            <SmallTextLabel>Periode</SmallTextLabel>
+                            <SmallTextLabel>Inntekt (år)</SmallTextLabel>
+                            <SmallTextLabel>Beløp før samordning</SmallTextLabel>
+                            <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
+                            <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
                         </TittelContainer>
                         {beregnetStønad.map((beløpsPeriode) => {
                             return (
                                 <InnholdContainer>
-                                    <Normaltekst>
+                                    <BodyShortSmall>
                                         {`${formaterNullableMånedÅr(
                                             beløpsPeriode.periode.fradato
                                         )} - ${formaterNullableMånedÅr(
                                             beløpsPeriode.periode.tildato
                                         )}`}
-                                    </Normaltekst>
-                                    <Normaltekst>
+                                    </BodyShortSmall>
+                                    <BodyShortSmall>
                                         {formaterTallMedTusenSkille(
                                             beløpsPeriode.beregningsgrunnlag.inntekt
                                         )}
-                                    </Normaltekst>
-                                    <Normaltekst>
+                                    </BodyShortSmall>
+                                    <BodyShortSmall>
                                         {formaterTallMedTusenSkille(
                                             beløpsPeriode.beløpFørSamordning
                                         )}
-                                    </Normaltekst>
-                                    <Normaltekst>
+                                    </BodyShortSmall>
+                                    <BodyShortSmall>
                                         {formaterTallMedTusenSkille(
                                             beløpsPeriode.beregningsgrunnlag.samordningsfradrag
                                         )}
-                                    </Normaltekst>
-                                    <Normaltekst>
+                                    </BodyShortSmall>
+                                    <BodyShortSmall>
                                         {formaterTallMedTusenSkille(beløpsPeriode.beløp)}
-                                    </Normaltekst>
+                                    </BodyShortSmall>
                                 </InnholdContainer>
                             );
                         })}

@@ -5,7 +5,7 @@ import {
     RegelIdDDokumentasjonUtdanning,
 } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { BodyLong, BodyShort, Detail, Heading } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 import Søknad from '../../../../Felles/Ikoner/Søknad';
 import { UtdanningsformTilTekst } from '../../Aktivitet/Aktivitet/typer';
 import { formaterNullableIsoDato, utledUtgiftsbeløp } from '../../../../App/utils/formatter';
@@ -16,6 +16,11 @@ import {
     utledBegrunnelseFraVilkårOgRegel,
     utledVisningForStudiebelastning,
 } from '../../Inngangsvilkår/utils';
+import {
+    BodyLongSmall,
+    BodyShortSmall,
+    DetailSmall,
+} from '../../../../Felles/Visningskomponenter/Tekster';
 
 type Props = {
     vilkår: IVilkår;
@@ -78,12 +83,12 @@ const TokolonnersGrid = styled.div<{ paddingBottom?: number }>`
     padding-bottom: ${(props) => props.paddingBottom}rem;
 `;
 
-const BreakWordBody = styled(BodyLong)`
+const BreakWordBody = styled(BodyLongSmall)`
     white-space: pre-wrap;
     word-wrap: break-word;
 `;
 
-const HøyrestiltBodyShort = styled(BodyShort)`
+const HøyrestiltBodyShort = styled(BodyShortSmall)`
     text-align: right;
     width: 5rem;
 `;
@@ -104,29 +109,27 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
             {utdanning && skalViseSøknadsinfo ? (
                 <TokolonnersGrid>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Skole/utdanningssted</BodyShort>
-                    <BodyShort size={'small'}>{utdanning.skoleUtdanningssted}</BodyShort>
+                    <BodyShortSmall>Skole/utdanningssted</BodyShortSmall>
+                    <BodyShortSmall>{utdanning.skoleUtdanningssted}</BodyShortSmall>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Linje/kurs/grad</BodyShort>
-                    <BodyShort size={'small'}>{utdanning.linjeKursGrad}</BodyShort>
+                    <BodyShortSmall>Linje/kurs/grad</BodyShortSmall>
+                    <BodyShortSmall>{utdanning.linjeKursGrad}</BodyShortSmall>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Utdanningstype</BodyShort>
-                    <BodyShort size={'small'}>
+                    <BodyShortSmall>Utdanningstype</BodyShortSmall>
+                    <BodyShortSmall>
                         {UtdanningsformTilTekst[utdanning.offentligEllerPrivat]}
-                    </BodyShort>
+                    </BodyShortSmall>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Studieperiode</BodyShort>
-                    <BodyShort size={'small'}>{`${formaterNullableIsoDato(
+                    <BodyShortSmall>Studieperiode</BodyShortSmall>
+                    <BodyShortSmall>{`${formaterNullableIsoDato(
                         utdanning.fra
-                    )} - ${formaterNullableIsoDato(utdanning.til)}`}</BodyShort>
+                    )} - ${formaterNullableIsoDato(utdanning.til)}`}</BodyShortSmall>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Studiebelastning</BodyShort>
-                    <BodyShort size={'small'}>
-                        {utledVisningForStudiebelastning(utdanning)}
-                    </BodyShort>
+                    <BodyShortSmall>Studiebelastning</BodyShortSmall>
+                    <BodyShortSmall>{utledVisningForStudiebelastning(utdanning)}</BodyShortSmall>
                 </TokolonnersGrid>
             ) : (
-                <Detail>Ingen informasjon å vise</Detail>
+                <DetailSmall>Ingen informasjon å vise</DetailSmall>
             )}
         </div>
     );
@@ -147,7 +150,7 @@ const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ 
             {begrunnelseDokumentasjonUtdanning ? (
                 <BreakWordBody>{begrunnelseDokumentasjonUtdanning}</BreakWordBody>
             ) : (
-                <Detail>Ingen begrunnelse</Detail>
+                <DetailSmall>Ingen begrunnelse</DetailSmall>
             )}
         </div>
     );
@@ -168,7 +171,7 @@ const SaksbehanldingsinformasjonUtgifter: React.FC<{ vilkår: IVilkår }> = ({ v
             {begrunnelseDokumentasjonUtgifterUtdanning ? (
                 <BreakWordBody>{begrunnelseDokumentasjonUtgifterUtdanning}</BreakWordBody>
             ) : (
-                <Detail>Ingen begrunnelse</Detail>
+                <DetailSmall>Ingen begrunnelse</DetailSmall>
             )}
         </div>
     );
@@ -186,23 +189,23 @@ const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
             {utdanning && skalViseSøknadsinfo ? (
                 <TokolonnersGrid paddingBottom={2.8}>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Semesteravgift</BodyShort>
+                    <BodyShortSmall>Semesteravgift</BodyShortSmall>
                     <HøyrestiltBodyShort>
                         {utledUtgiftsbeløp(utdanning.semesteravgift)}
                     </HøyrestiltBodyShort>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Studieavgift</BodyShort>
+                    <BodyShortSmall>Studieavgift</BodyShortSmall>
                     <HøyrestiltBodyShort>
                         {utledUtgiftsbeløp(utdanning.studieavgift)}
                     </HøyrestiltBodyShort>
                     <Søknad height={20} />
-                    <BodyShort size={'small'}>Eksamemensgebyr</BodyShort>
+                    <BodyShortSmall>Eksamemensgebyr</BodyShortSmall>
                     <HøyrestiltBodyShort>
                         {utledUtgiftsbeløp(utdanning.eksamensgebyr)}
                     </HøyrestiltBodyShort>
                 </TokolonnersGrid>
             ) : (
-                <Detail>Ingen informasjon å vise</Detail>
+                <DetailSmall>Ingen informasjon å vise</DetailSmall>
             )}
         </div>
     );
