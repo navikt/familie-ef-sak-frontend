@@ -11,7 +11,7 @@ import {
     FrittståendeBrevtype,
     stønadstypeTilBrevtyper,
 } from './BrevTyper';
-import { skjulAvsnittIBrevbygger } from './BrevUtils';
+import { skjulAvsnittUtenVerdi } from './BrevUtils';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
@@ -124,7 +124,7 @@ const BrevInnhold: React.FC<Props> = ({
                     endreBrevType(nyBrevType);
                     endreOverskrift(nyBrevType ? BrevtyperTilOverskrift[nyBrevType] : '');
                     endreAvsnitt(
-                        nyBrevType ? skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[nyBrevType]) : []
+                        nyBrevType ? skjulAvsnittUtenVerdi(BrevtyperTilAvsnitt[nyBrevType]) : []
                     );
                 }}
                 value={brevType || ''}

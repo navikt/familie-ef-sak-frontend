@@ -143,8 +143,14 @@ export const initielleAvsnittMellomlager = (
         ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))
         : [];
 
-export const skjulAvsnittIBrevbygger = (avsnitt: AvsnittMedId[]): AvsnittMedId[] =>
-    avsnitt.map((avsnitt) => ({ ...avsnitt, skalSkjulesIBrevbygger: true }));
+export const skjulAvsnittUtenVerdi = (avsnitt: AvsnittMedId[]): AvsnittMedId[] =>
+    avsnitt.map((avsnitt) => {
+        if (avsnitt.skalSkjulesIBrevbygger === undefined) {
+            return { ...avsnitt, skalSkjulesIBrevbygger: true };
+        } else {
+            return avsnitt;
+        }
+    });
 
 export const leggAvsnittBakSisteSynligeAvsnitt = (
     eksisterendeAvsnitt: AvsnittMedId[]
