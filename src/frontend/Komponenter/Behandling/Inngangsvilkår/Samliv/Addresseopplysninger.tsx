@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { IAdresseopplysninger } from '../vilkår';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
     data?: IAdresseopplysninger;
@@ -15,15 +15,13 @@ export const Addresseopplysninger: FC<Props> = ({ data }) => {
     return (
         <>
             <Søknadsgrunnlag />
-            <BodyShort size={'small'}>Bor på denne adressen ({data.adresse})</BodyShort>
+            <BodyShortSmall>Bor på denne adressen ({data.adresse})</BodyShortSmall>
             <BooleanTekst value={data.søkerBorPåRegistrertAdresse} />
 
             {data.harMeldtAdresseendring && (
                 <>
                     <Søknadsgrunnlag />
-                    <BodyShort size={'small'}>
-                        Har meldt adresseendring til Folkeregisteret
-                    </BodyShort>
+                    <BodyShortSmall>Har meldt adresseendring til Folkeregisteret</BodyShortSmall>
                     <BooleanTekst value={data.harMeldtAdresseendring} />
                 </>
             )}

@@ -6,7 +6,7 @@ import { ISivilstand, sivilstandTilTekst } from '../../App/typer/personopplysnin
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import EtikettDød from '../Etiketter/EtikettDød';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
 const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
 
@@ -37,7 +37,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                             fødselsnummer={sivilstand.relatertVedSivilstand}
                                         />
                                     ) : (
-                                        <BodyShort size={'small'}>-</BodyShort>
+                                        <BodyShortSmall>-</BodyShortSmall>
                                     )}
                                 </td>
                             </tr>

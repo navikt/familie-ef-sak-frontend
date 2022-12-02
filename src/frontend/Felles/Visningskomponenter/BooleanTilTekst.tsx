@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShortSmall } from './Tekster';
 
 interface BooleanTekstProps {
     value: boolean;
 }
 
 export const BooleanTekst: FC<BooleanTekstProps> = (props: { value: boolean }) => (
-    <BodyShort size={'small'}>{props.value ? 'Ja' : 'Nei'}</BodyShort>
+    <BodyShortSmall>{props.value ? 'Ja' : 'Nei'}</BodyShortSmall>
 );

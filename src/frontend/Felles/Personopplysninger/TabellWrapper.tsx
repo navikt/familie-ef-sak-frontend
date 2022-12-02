@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
 export const BredTd = styled.td`
     width: ${(props) => props.width ?? '25%'};
@@ -63,7 +63,7 @@ export const KolonneTitler: React.FC<{ titler: Kolonnetittel[] }> = ({ titler })
 export const IngenData: React.FC = () => {
     return (
         <StyledInnholdWrapper>
-            <BodyShort size={'small'}>Ingen data</BodyShort>
+            <BodyShortSmall>Ingen data</BodyShortSmall>
         </StyledInnholdWrapper>
     );
 };

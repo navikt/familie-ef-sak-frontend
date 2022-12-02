@@ -25,11 +25,12 @@ import {
     stønadstypeTilTekstKort,
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
-import { BodyShort, Link, Tag } from '@navikt/ds-react';
+import { Link, Tag } from '@navikt/ds-react';
 import { AlertError } from '../Visningskomponenter/Alerts';
 import { NavdsFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
+import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
-const Visningsnavn = styled(BodyShort)`
+const Visningsnavn = styled(BodyShortSmall)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -165,7 +166,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                             gåTilUrl(`/person/${fagsakPersonId}`);
                         }}
                     >
-                        <Visningsnavn size={'small'}>{visningsnavn}</Visningsnavn>
+                        <Visningsnavn>{visningsnavn}</Visningsnavn>
                     </ResponsivLenke>
                 }
             >
