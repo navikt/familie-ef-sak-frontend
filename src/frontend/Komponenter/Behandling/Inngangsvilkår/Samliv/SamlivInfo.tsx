@@ -90,7 +90,7 @@ const SamlivInfo: FC<Props> = ({
                     />
                     <DokumentasjonSendtInn
                         dokumentasjon={dokumentasjon?.meldtAdresseendring}
-                        tittel={'Dokumentasjon på meldt Adresseendring'}
+                        tittel={'Dokumentasjon på meldt adresseendring'}
                     />
                 </>
             )}
