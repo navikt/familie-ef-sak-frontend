@@ -21,11 +21,11 @@ export const StyledSelect = styled(Select)`
     width: 33.5rem;
 `;
 
-export const KnappeWrapper = styled.div`
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+const Alerts = styled.div`
+    > :not(:first-child) {
+        margin-top: 1rem;
+    }
 `;
-
 const ButtonContainer = styled.div`
     display: flex;
     margin-top: 1rem;
@@ -46,6 +46,7 @@ interface IProps {
     hentTilbakekrevinger: Dispatch<void>;
     hentKlageBehandlinger: Dispatch<void>;
     kanStarteRevurdering: boolean;
+    kanOppretteKlagebehandling: boolean;
 }
 
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
@@ -55,6 +56,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     hentTilbakekrevinger,
     hentKlageBehandlinger,
     kanStarteRevurdering,
+    kanOppretteKlagebehandling,
 }) => {
     const { toggles } = useToggles();
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
@@ -140,12 +142,21 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             visModal={visModal}
             onClose={() => settVisModal(false)}
         >
-            {!kanStarteRevurdering && (
-                <Alert variant={'info'}>
-                    Merk at det er ikke mulig å opprette en revurdering da det allerede finnes en
-                    åpen behandling på fagsaken. Det er kun mulig å opprette en tilbakekreving.
-                </Alert>
-            )}
+            <Alerts>
+                {!kanStarteRevurdering && (
+                    <Alert variant={'info'}>
+                        Merk at det er ikke mulig å opprette en revurdering da det allerede finnes
+                        en åpen behandling på fagsaken. Det er kun mulig å opprette en
+                        tilbakekreving.
+                    </Alert>
+                )}
+                {!kanOppretteKlagebehandling && (
+                    <Alert variant={'info'}>
+                        Merk at det er ikke mulig å opprette en klagebehandling da det allerede
+                        finnes en åpen klagebehandling på fagsaken
+                    </Alert>
+                )}
+            </Alerts>
             <StyledSelect
                 label="Behandlingstype"
                 value={valgtBehandlingstype || ''}
@@ -159,7 +170,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     <option value={Behandlingstype.REVURDERING}>Revurdering</option>
                 )}
                 <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
-                {toggles[ToggleName.visOpprettKlage] && (
+                {toggles[ToggleName.visOpprettKlage] && kanOppretteKlagebehandling && (
                     <option value={Behandlingstype.KLAGE}>Klage</option>
                 )}
             </StyledSelect>

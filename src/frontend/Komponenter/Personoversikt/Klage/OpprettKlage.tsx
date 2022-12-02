@@ -61,11 +61,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
     const sisteFerdigstilteBehandlingen = sisteBehandlingSomErFerdigstilt(fagsak);
 
     if (!sisteFerdigstilteBehandlingen) {
-        return (
-            <>
-                <BodyShortSmall>Finnes ikke noen ferdigstilt behandling å klage på</BodyShortSmall>
-            </>
-        );
+        return <BodyShortSmall>Finnes ikke noen ferdigstilt behandling å klage på</BodyShortSmall>;
     }
 
     const validerValgtDato = (valgtDato: string | undefined) => {
