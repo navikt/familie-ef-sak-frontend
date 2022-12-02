@@ -355,3 +355,20 @@ export const initielleAvsnittSvartidKlage: AvsnittMedId[] = [
         id: uuidv4(),
     },
 ];
+
+export const initielleAvsnittForlengetSvartidKlage: AvsnittMedId[] = [
+    {
+        deloverskrift: '',
+        innhold:
+            'Vi trenger lenger tid til å behandle klagen din.\n' +
+            'Du kan forvente svar fra oss innen [antall] uker.',
+        id: uuidv4(),
+        skalSkjulesIBrevbygger: false,
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner nyttig informasjon på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];

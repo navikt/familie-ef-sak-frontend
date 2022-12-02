@@ -11,10 +11,10 @@ import {
     FrittståendeBrevtype,
     stønadstypeTilBrevtyper,
 } from './BrevTyper';
-import { skjulAvsnittIBrevbygger } from './BrevUtils';
+import { skjulAvsnittUtenVerdi } from './BrevUtils';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
+import { Alert, Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
 import { Delete } from '@navikt/ds-icons';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import OppKnapp from '../../../Felles/Knapper/OppKnapp';
@@ -62,6 +62,11 @@ const FlyttAvsnittKnappWrapper = styled.div`
     justify-content: space-evenly;
     margin-left: 0.5rem;
     margin-top: 1rem;
+`;
+
+const Varsel = styled(Alert)`
+    margin-top: 1rem;
+    width: 95%;
 `;
 
 type Props = {
@@ -114,6 +119,8 @@ const BrevInnhold: React.FC<Props> = ({
     const avsnittSomSkalVises = avsnitt.filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
 
     const brevtyper = stønadstypeTilBrevtyper[stønadstype];
+    const skalViseVarselFyllInnUker =
+        brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID_KLAGE;
 
     return (
         <BrevKolonner>
@@ -124,7 +131,7 @@ const BrevInnhold: React.FC<Props> = ({
                     endreBrevType(nyBrevType);
                     endreOverskrift(nyBrevType ? BrevtyperTilOverskrift[nyBrevType] : '');
                     endreAvsnitt(
-                        nyBrevType ? skjulAvsnittIBrevbygger(BrevtyperTilAvsnitt[nyBrevType]) : []
+                        nyBrevType ? skjulAvsnittUtenVerdi(BrevtyperTilAvsnitt[nyBrevType]) : []
                     );
                 }}
                 value={brevType || ''}
@@ -166,6 +173,12 @@ const BrevInnhold: React.FC<Props> = ({
                                 knappetekst="Legg til avsnitt"
                             />
                         </LeggTilKnappWrapper>
+                    )}
+                    {skalViseVarselFyllInnUker && (
+                        <Varsel variant={'warning'}>
+                            Husk å fylle ut antall uker forventet svartid i{' '}
+                            <span style={{ fontWeight: 'bold' }}>[antall]</span> i avsnittet under
+                        </Varsel>
                     )}
                     {avsnittSomSkalVises.map((rad, index) => {
                         const deloverskriftId = `deloverskrift-${rad.id}`;
