@@ -107,7 +107,7 @@
     "snyk": "^1.1061.0",
     "styled-components": "^5.3.5",
     "svg-inline-loader": "^0.8.2",
-    "use-debounce": "^8.0.1",
+    "use-debounce": "^9.0.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
