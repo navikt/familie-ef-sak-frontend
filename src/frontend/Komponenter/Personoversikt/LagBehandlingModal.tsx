@@ -9,8 +9,6 @@ import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
 import { Fagsak } from '../../App/typer/fagsak';
 import OpprettKlage from './Klage/OpprettKlage';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select } from '@navikt/ds-react';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
@@ -58,7 +56,6 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     kanStarteRevurdering,
     kanOppretteKlagebehandling,
 }) => {
-    const { toggles } = useToggles();
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
 
@@ -170,9 +167,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     <option value={Behandlingstype.REVURDERING}>Revurdering</option>
                 )}
                 <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
-                {toggles[ToggleName.visOpprettKlage] && kanOppretteKlagebehandling && (
-                    <option value={Behandlingstype.KLAGE}>Klage</option>
-                )}
+                {kanOppretteKlagebehandling && <option value={Behandlingstype.KLAGE}>Klage</option>}
             </StyledSelect>
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
                 <LagRevurdering

@@ -43,8 +43,6 @@ import JournalføringWrapper, {
     Venstrekolonne,
 } from './JournalføringWrapper';
 import JournalføringPdfVisning from './JournalføringPdfVisning';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
 
@@ -130,7 +128,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     journalResponse,
 }) => {
     const { innloggetSaksbehandler } = useApp();
-    const { toggles } = useToggles();
     const navigate = useNavigate();
 
     const journalpostId = journalResponse.journalpost.journalpostId;
@@ -246,7 +243,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                     <JournalpostTittelOgLenke
                         journalResponse={journalResponse}
                         oppgaveId={oppgaveId}
-                        visLenke={toggles[ToggleName.journalføringKlage]}
                         fra={'vanlig'}
                     />
                     {!journalResponse.harStrukturertSøknad ? (
