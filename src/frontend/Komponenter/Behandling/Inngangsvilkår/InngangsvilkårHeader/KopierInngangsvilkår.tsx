@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { Collapse, Expand, ExternalLink } from '@navikt/ds-icons';
 import { Alert, BodyLong, Button, Heading, Link } from '@navikt/ds-react';
 import { Behandling, behandlingResultatTilTekst } from '../../../../App/typer/fagsak';
@@ -9,6 +8,7 @@ import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { stønadstypeTilTekst } from '../../../../App/typer/behandlingstema';
 import { behandlingStatusTilTekst } from '../../../../App/typer/behandlingstatus';
 import { ModalWrapper } from '../../../../Felles/Modal/ModalWrapper';
+import { NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
 
 const Alertstripe = styled(Alert)`
     margin: 1rem 2rem 2rem 1rem;
@@ -23,7 +23,7 @@ const ForrigeBehandlingTabell = styled.table`
 
     td,
     th {
-        border-bottom: 1px solid ${navFarger.navGra40};
+        border-bottom: 1px solid ${NavdsSemanticColorBorder};
         padding: 0rem 1.5rem 0rem 0rem;
         text-align: left;
     }

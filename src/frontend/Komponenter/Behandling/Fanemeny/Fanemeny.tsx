@@ -5,10 +5,13 @@ import { filtrerSiderEtterBehandlingstype, ISide, SideNavn } from './sider';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
-import navFarger from 'nav-frontend-core';
 import { Steg } from '../Høyremeny/Steg';
 import Fane from './Fane';
 import { useApp } from '../../../App/context/AppContext';
+import {
+    NavdsGlobalColorWhite,
+    NavdsSemanticColorBorderMuted,
+} from '@navikt/ds-tokens/dist/tokens';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -21,8 +24,8 @@ const StyledFanemeny = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border-bottom: ${navFarger.navGra40} solid 2px;
-    background-color: ${navFarger.white};
+    border-bottom: ${NavdsSemanticColorBorderMuted} solid 2px;
+    background-color: ${NavdsGlobalColorWhite};
 `;
 interface Props {
     behandlingId: string;

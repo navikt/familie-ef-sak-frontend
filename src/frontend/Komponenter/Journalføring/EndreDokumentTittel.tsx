@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 import { dokumentTitler } from './konstanter/dokumenttitler';
-import navFarger from 'nav-frontend-core';
 import { CSSObjectWithLabel, StylesConfig } from 'react-select';
 import { Button } from '@navikt/ds-react';
+import {
+    NavdsGlobalColorBlue500,
+    NavdsGlobalColorBlue800,
+    NavdsSemanticColorBorder,
+} from '@navikt/ds-tokens/dist/tokens';
 
 const StyledKnapper = styled.div`
     display: flex;
@@ -32,17 +36,17 @@ const customStyles: StylesConfig = {
         ...defaultStyles,
         backgroundColor: '#fff',
         borderRadius: 4,
-        boxShadow: state.isFocused ? `0 0 0 3px ${navFarger.fokusFarge}` : '',
-        border: `1px solid ${navFarger.navGra60}`,
+        boxShadow: state.isFocused ? `0 0 0 3px ${NavdsGlobalColorBlue800}` : '',
+        border: `1px solid ${NavdsSemanticColorBorder}`,
     }),
     control: (defaultStyles: CSSObjectWithLabel) => ({
         ...defaultStyles,
-        borderColor: navFarger.navGra40,
+        borderColor: NavdsSemanticColorBorder,
         outline: 'none',
         border: 'none',
         backgroundColor: '#fff',
         ':hover': {
-            borderColor: navFarger.navBla,
+            borderColor: NavdsGlobalColorBlue500,
         },
     }),
 };

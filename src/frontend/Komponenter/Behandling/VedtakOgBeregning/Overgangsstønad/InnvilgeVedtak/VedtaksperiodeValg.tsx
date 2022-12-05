@@ -26,7 +26,7 @@ const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger antallMåneder fjernknapp leggTilKnapp';
     grid-template-columns: ${(props) =>
         props.lesevisning
-            ? '8rem 10rem 7rem 7rem 7rem'
+            ? '9rem 10rem 8rem 8rem 7rem'
             : '12rem 12rem 14rem 14rem 4.5rem 3rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
@@ -36,7 +36,7 @@ const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '12rem 12rem 14rem 14rem 4rem'};
+        props.lesevisning ? '9rem 10rem 8rem 8rem 7rem' : '12rem 12rem 14rem 14rem 4rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;

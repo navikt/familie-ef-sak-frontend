@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
@@ -9,12 +8,13 @@ import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStr
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import { NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
 
 const Footer = styled.footer`
     width: calc(100%);
     position: fixed;
     bottom: 0;
-    background-color: ${navFarger.navGra80};
+    background-color: ${NavdsSemanticColorBorder};
 `;
 
 const MidtstiltInnhold = styled.div`

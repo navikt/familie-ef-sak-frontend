@@ -8,14 +8,14 @@ import { useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
 import styled from 'styled-components';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
-import navFarger from 'nav-frontend-core';
 import { compareDesc } from 'date-fns';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
 import { Heading } from '@navikt/ds-react';
+import { NavdsGlobalColorGray800 } from '@navikt/ds-tokens/dist/tokens';
 
 const Tittel = styled.div`
     padding: 0.5rem 1rem;
-    color: ${navFarger.navGra80};
+    color: ${NavdsGlobalColorGray800};
 `;
 
 type AlleDokument = {

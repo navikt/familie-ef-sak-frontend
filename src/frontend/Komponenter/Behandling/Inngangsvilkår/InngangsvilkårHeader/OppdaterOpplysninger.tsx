@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { Refresh } from '@navikt/ds-icons';
 import { Button, HelpText } from '@navikt/ds-react';
 import { DetailSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { NavdsSemanticColorTextMuted } from '@navikt/ds-tokens/dist/tokens';
 
 const FlexWrapper = styled.div`
     display: flex;
@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 const Oppdateringstekst = styled(DetailSmall)`
-    color: ${navFarger.navGra60};
+    color: ${NavdsSemanticColorTextMuted};
     padding-right: 0.25rem;
 `;
 

@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 import { Back, Next } from '@navikt/ds-icons';
-import navFarger from 'nav-frontend-core';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
+import { NavdsGlobalColorBlue400 } from '@navikt/ds-tokens/dist/tokens';
 
 interface IHøyremenyProps {
     behandlingId: string;
@@ -33,7 +33,7 @@ const StyledNext = styled(Next)`
 const StyledButton = styled.button`
     position: absolute;
 
-    background-color: ${navFarger.navBlaLighten20};
+    background-color: ${NavdsGlobalColorBlue400};
 
     margin-left: -12px;
 

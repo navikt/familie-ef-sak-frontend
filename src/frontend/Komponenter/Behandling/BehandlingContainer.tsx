@@ -3,7 +3,6 @@ import { FC, useEffect } from 'react';
 import Høyremeny from './Høyremeny/Høyremeny';
 import styled from 'styled-components';
 import Fanemeny from './Fanemeny/Fanemeny';
-import navFarger from 'nav-frontend-core';
 import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -14,6 +13,7 @@ import { HenleggModal } from './Henleggelse/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
+import { NavdsSemanticColorBorderMuted } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     display: flex;
@@ -30,7 +30,7 @@ interface HøyreMenyWrapperProps {
 }
 
 const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
-    border-left: 2px solid ${navFarger.navGra40};
+    border-left: 2px solid ${NavdsSemanticColorBorderMuted};
 
     background-color: white;
 

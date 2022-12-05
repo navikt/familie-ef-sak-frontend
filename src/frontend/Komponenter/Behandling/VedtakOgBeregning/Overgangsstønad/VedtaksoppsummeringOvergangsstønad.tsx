@@ -10,10 +10,10 @@ import {
 } from '../Felles/utils';
 import { Søknadsdatoer } from './Søknadsdatoer';
 import { Heading } from '@navikt/ds-react';
-import navFarger from 'nav-frontend-core';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { NavdsSemanticColorCanvasBackground } from '@navikt/ds-tokens/dist/tokens';
 
 const OppsummeringContainer = styled.div<{ åpenHøyremeny: boolean }>`
     display: flex;
@@ -29,7 +29,7 @@ const Oppsummeringsboks = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     padding: 1rem;
-    background-color: ${navFarger.navGraBakgrunn};
+    background-color: ${NavdsSemanticColorCanvasBackground};
 `;
 
 export const VedtaksoppsummeringOvergangsstønad: React.FC<{
