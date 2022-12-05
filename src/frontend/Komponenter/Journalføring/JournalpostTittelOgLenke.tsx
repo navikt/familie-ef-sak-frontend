@@ -13,9 +13,8 @@ const TittelOgLink = styled.div`
 const JournalpostTittelOgLenke: React.FC<{
     journalResponse: IJojurnalpostResponse;
     oppgaveId: string;
-    visLenke: boolean;
     fra: 'klage' | 'vanlig';
-}> = ({ journalResponse, oppgaveId, visLenke, fra }) => {
+}> = ({ journalResponse, oppgaveId, fra }) => {
     const journalpost = journalResponse.journalpost;
     const journalpostId = journalpost.journalpostId;
     return (
@@ -24,8 +23,7 @@ const JournalpostTittelOgLenke: React.FC<{
                 <Label>Journalposttittel</Label>
                 <BodyShort>{journalpost.tittel}</BodyShort>
             </div>
-            {visLenke &&
-                !journalResponse.harStrukturertSøknad &&
+            {!journalResponse.harStrukturertSøknad &&
                 (fra === 'klage' ? (
                     <Link to={lagJournalføringUrl(journalpostId, oppgaveId)}>
                         Journalføringen gjelder ikke en klage

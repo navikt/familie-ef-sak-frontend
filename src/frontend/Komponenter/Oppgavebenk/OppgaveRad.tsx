@@ -12,8 +12,6 @@ import { useOppgave } from '../../App/hooks/useOppgave';
 import { Handling } from './typer/handling';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
 import { Button, Popover } from '@navikt/ds-react';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import styled from 'styled-components';
 import { BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
 
@@ -86,8 +84,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
         feilmelding,
     } = useOppgave(oppgave);
 
-    const { toggles } = useToggles();
-
     const [anker, settAnker] = useState<Element | null>(null);
 
     useEffect(() => {
@@ -145,7 +141,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                         variant={'tertiary'}
                         size={'small'}
                         onClick={() => gåTilJournalføring('klage')}
-                        disabled={laster || !toggles[ToggleName.journalføringKlage]}
+                        disabled={laster}
                     >
                         Gå til journalpost (klage)
                     </TabellKnapp>

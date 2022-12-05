@@ -34,8 +34,6 @@ import BehandlingKlageInnold from './BehandlingKlageInnold';
 import { Klagebehandlinger } from '../../App/typer/klage';
 import { Fagsak } from '../../App/typer/fagsak';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
 import { erGyldigDato } from '../../App/utils/dato';
 import styled from 'styled-components';
@@ -92,8 +90,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     oppgaveId,
     journalResponse,
 }) => {
-    const { toggles } = useToggles();
-
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
 
@@ -164,7 +160,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                     <JournalpostTittelOgLenke
                         journalResponse={journalResponse}
                         oppgaveId={oppgaveId}
-                        visLenke={toggles[ToggleName.journalføringKlage]}
                         fra={'klage'}
                     />
                     <VelgFagsakForIkkeSøknad
@@ -217,7 +212,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                             type="button"
                             onClick={journalFør}
                             loading={journalpostState.innsending.status === RessursStatus.HENTER}
-                            disabled={!toggles[ToggleName.journalføringKlage]}
                         >
                             Journalfør
                         </Button>
