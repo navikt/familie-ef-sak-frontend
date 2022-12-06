@@ -4,6 +4,7 @@ import {
     Ressurs,
     RessursStatus,
     RessursSuksess,
+    utledFrontendFeilmelding,
 } from '../../App/typer/ressurs';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
 import { Link } from 'react-router-dom';
@@ -79,7 +80,12 @@ function DataViewer<T extends Record<string, unknown>>(
             alertStripeVariant ? alertStripeVariant : AlertStripeVariant.IKKE_VALGT
         );
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
-        return <AlertError children="Ikke tilgang!" />;
+        return (
+            <AlertError>
+                <div>Ikke tilgang.</div>
+                <div>{utledFrontendFeilmelding(responses)}</div>
+            </AlertError>
+        );
     } else if (harNoenRessursMedStatus(responses, RessursStatus.HENTER)) {
         return <SystemetLaster />;
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_HENTET)) {
