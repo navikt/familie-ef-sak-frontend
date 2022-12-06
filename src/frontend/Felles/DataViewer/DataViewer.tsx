@@ -63,17 +63,19 @@ function DataViewer<T extends Record<string, unknown>>(
 ): JSX.Element | null {
     const { response, children, alertStripeVariant } = props;
     const responses = Object.values(response);
-    if (harNoenRessursMedStatus(responses, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.FEILET)) {
-        return renderFeil(
-            responses,
-            alertStripeVariant ? alertStripeVariant : AlertStripeVariant.IKKE_VALGT
-        );
-    } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
+    if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
         return (
             <AlertError>
                 <div>Ikke tilgang.</div>
                 <div>{utledFrontendFeilmelding(responses)}</div>
             </AlertError>
+        );
+    } else if (
+        harNoenRessursMedStatus(responses, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.FEILET)
+    ) {
+        return renderFeil(
+            responses,
+            alertStripeVariant ? alertStripeVariant : AlertStripeVariant.IKKE_VALGT
         );
     } else if (harNoenRessursMedStatus(responses, RessursStatus.HENTER)) {
         return <SystemetLaster />;
