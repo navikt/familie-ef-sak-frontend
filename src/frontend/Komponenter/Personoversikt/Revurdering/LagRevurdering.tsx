@@ -26,12 +26,12 @@ import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn';
 import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { erGyldigDato } from '../../../App/utils/dato';
+import { erEtterDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button, Select } from '@navikt/ds-react';
 
 const DatoContainer = styled.div`
     margin-top: 2rem;
-    margin-bottom: 18rem;
+    min-height: 20rem;
 `;
 
 const StyledSelect = styled(Select)`
@@ -128,13 +128,18 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         måTaStillingTilBarn: boolean,
         nyeBarnSidenForrigeBehandling: NyeBarnSidenForrigeBehandling
     ) => {
-        const kanStarteRevurdering = !!(
-            valgtBehandlingsårsak &&
-            valgtDato &&
-            erGyldigDato(valgtDato) &&
-            !(måTaStillingTilBarn && vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT)
-        );
-        if (kanStarteRevurdering) {
+        if (!valgtBehandlingsårsak) {
+            settFeilmeldingModal('Vennligst velg en årsak');
+        } else if (!valgtDato || !erGyldigDato(valgtDato)) {
+            settFeilmeldingModal('Vennligst velg en dato fra datovelgeren');
+        } else if (erEtterDagensDato(valgtDato)) {
+            settFeilmeldingModal('Vennligst velg en gyldig dato som ikke er fremover i tid');
+        } else if (
+            måTaStillingTilBarn &&
+            vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT
+        ) {
+            settFeilmeldingModal('Vennligst ta stilling til barn');
+        } else {
             lagRevurdering({
                 fagsakId: fagsak.id,
                 barn:
@@ -145,8 +150,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 kravMottatt: valgtDato,
                 vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
             });
-        } else {
-            settFeilmeldingModal('Vennligst fyll ut alle felter');
         }
     };
 
@@ -194,10 +197,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                         ? 'Ugyldig dato'
                                         : undefined
                                 }
+                                limitations={{ maxDate: new Date().toISOString() }}
                             />
-                            {feilmeldingModal && (
-                                <AlertStripe variant={'error'}>{feilmeldingModal}</AlertStripe>
-                            )}
                             {skalViseNyeBarnValg && (
                                 <NyeBarn
                                     nyeBarnSidenForrigeBehandling={
@@ -207,6 +208,9 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                     vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
                                     settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
                                 />
+                            )}
+                            {feilmeldingModal && (
+                                <AlertStripe variant={'error'}>{feilmeldingModal}</AlertStripe>
                             )}
                         </DatoContainer>
                         <ButtonContainer>
