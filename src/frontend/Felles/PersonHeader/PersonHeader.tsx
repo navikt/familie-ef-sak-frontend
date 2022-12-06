@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
 import { Behandling } from '../../App/typer/fagsak';
-import navFarger from 'nav-frontend-core';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato, nullableDatoTilAlder } from '../../App/utils/dato';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
@@ -27,7 +26,7 @@ import {
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 import { Link, Tag } from '@navikt/ds-react';
 import { AlertError } from '../Visningskomponenter/Alerts';
-import { NavdsFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
+import { NavdsFontWeightBold, NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
 const Visningsnavn = styled(BodyShortSmall)`
@@ -68,7 +67,7 @@ const TagsStorSkjerm = styled.div`
 export const PersonHeaderWrapper = styled(Sticky)`
     display: flex;
 
-    border-bottom: 1px solid ${navFarger.navGra80};
+    border-bottom: 1px solid ${NavdsSemanticColorBorder};
     z-index: 23;
     top: 55px;
 

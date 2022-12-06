@@ -5,12 +5,12 @@ import SlettSøppelkasse from '../../Felles/Ikoner/SlettSøppelkasse';
 import { BarnSomSkalFødes } from '../../App/hooks/useJournalføringState';
 import { Button, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
+import { NavdsGlobalColorBlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { v4 as uuidv4 } from 'uuid';
 import { erGyldigDato } from '../../App/utils/dato';
 
 const Tittel = styled(Heading)`
-    color: ${navFarger.navBlaLighten40};
+    color: ${NavdsGlobalColorBlue300};
 `;
 
 const LeggTilBarnContent = styled.div`
@@ -18,7 +18,7 @@ const LeggTilBarnContent = styled.div`
 `;
 
 const InlineContent = styled.div`
-    border-left: 2px solid ${navFarger.navBlaLighten40};
+    border-left: 2px solid ${NavdsGlobalColorBlue300};
     padding-left: 1rem;
     margin-left: 1rem;
 `;

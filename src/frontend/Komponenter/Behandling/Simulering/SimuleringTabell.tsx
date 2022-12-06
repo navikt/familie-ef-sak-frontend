@@ -1,10 +1,15 @@
 import { ISimuleringTabell } from './SimuleringTyper';
 import React from 'react';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
 import SimuleringÅrvelger from './SimuleringÅrvelger';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
+import {
+    NavdsGlobalColorGreen500,
+    NavdsGlobalColorRed500,
+    NavdsSemanticColorBorder,
+    NavdsSemanticColorBorderMuted,
+} from '@navikt/ds-tokens/dist/tokens';
 
 const Tabell = styled.table`
     border-collapse: collapse;
@@ -12,25 +17,26 @@ const Tabell = styled.table`
 
 const ÅrHeader = styled.th`
     padding: 0.75rem;
-    border-bottom: 1px solid ${navFarger.navGra80};
+    border-bottom: 1px solid ${NavdsSemanticColorBorder};
 `;
 
 const BasisKolonne = styled.td`
     padding: 0.75rem;
-    border-bottom: 1px solid ${navFarger.navGra20};
+    border-bottom: 1px solid ${NavdsSemanticColorBorderMuted};
 `;
 
 const VerdiKolonne = styled(BasisKolonne)<{ gjelderNestePeriode: boolean }>`
     text-align: right;
-    border-left: ${(props) => props.gjelderNestePeriode && `1px dashed ${navFarger.navGra60}`};
+    border-left: ${(props) =>
+        props.gjelderNestePeriode && `1px dashed ${NavdsSemanticColorBorder}`};
 `;
 
 const MånedHeader = styled(VerdiKolonne)<{ gjelderNestePeriode: boolean }>`
-    border-bottom: 1px solid ${navFarger.navGra80};
+    border-bottom: 1px solid ${NavdsSemanticColorBorder};
 `;
 
 const ResultatVerdi = styled(BodyShortSmall)<{ verdi: number }>`
-    color: ${(props) => (props.verdi > 0 ? navFarger.navGronn : navFarger.redError)};
+    color: ${(props) => (props.verdi > 0 ? NavdsGlobalColorGreen500 : NavdsGlobalColorRed500)};
 `;
 
 const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {

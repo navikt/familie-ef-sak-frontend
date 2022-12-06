@@ -1,11 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import navFarger from 'nav-frontend-core';
 import { ISide, SideNavn } from './sider';
 import { useApp } from '../../../App/context/AppContext';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { NavdsGlobalColorGray300 } from '@navikt/ds-tokens/dist/tokens';
+import {
+    NavdsGlobalColorBlue400,
+    NavdsGlobalColorBlue500,
+    NavdsGlobalColorGray100,
+    NavdsGlobalColorGray300,
+    NavdsSemanticColorLink,
+} from '@navikt/ds-tokens/dist/tokens';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;
@@ -24,16 +29,16 @@ const StyledNavLink = styled(NavLink)`
     padding-right: 5px;
 
     :hover {
-        border-bottom: 5px solid ${navFarger.navBlaLighten20};
+        border-bottom: 5px solid ${NavdsGlobalColorBlue400};
 
         .navds-body-short {
-            color: ${navFarger.navBla};
+            color: ${NavdsSemanticColorLink};
         }
     }
 
     &.active {
-        background-color: ${navFarger.navLysGra};
-        border-bottom: 5px solid ${navFarger.navBla};
+        background-color: ${NavdsGlobalColorGray100};
+        border-bottom: 5px solid ${NavdsGlobalColorBlue500};
 
         .navds-body-short {
             font-weight: bold;

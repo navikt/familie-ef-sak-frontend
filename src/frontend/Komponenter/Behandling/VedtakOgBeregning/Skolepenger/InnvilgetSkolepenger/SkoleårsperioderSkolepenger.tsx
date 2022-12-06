@@ -11,16 +11,16 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import SkoleårDelårsperiode from './SkoleårDelårsperiode';
 import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
-import navFarger from 'nav-frontend-core';
 import { oppdaterValideringsfeil } from '../utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import { NavdsSemanticColorCanvasBackground } from '@navikt/ds-tokens/dist/tokens';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     margin-left: 0rem;
     padding: 1rem;
-    background-color: ${navFarger.navGraBakgrunn};
+    background-color: ${NavdsSemanticColorCanvasBackground};
 `;
 const ContainerMedLuftUnder = styled.div`
     margin-bottom: 1rem;

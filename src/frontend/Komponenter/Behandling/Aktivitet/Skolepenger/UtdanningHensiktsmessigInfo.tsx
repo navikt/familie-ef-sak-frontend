@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import Dokumentasjonsvisning from './Dokumentasjonsvisning';
 import { TidligereUtdanninger } from '../Aktivitet/Utdanning';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { NavdsGlobalColorBlue300 } from '@navikt/ds-tokens/dist/tokens';
 
 const BlåStrek = styled.span`
-    border-left: 2px solid ${navFarger.navBlaLighten40};
+    border-left: 2px solid ${NavdsGlobalColorBlue300};
     margin-left: 0.33rem;
 `;
 

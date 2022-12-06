@@ -1,16 +1,21 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { Høyremenyvalg } from './Høyremeny';
 import { Folder, ClockFilled } from '@navikt/ds-icons';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import {
+    NavdsGlobalColorBlue400,
+    NavdsGlobalColorBlue500,
+    NavdsGlobalColorGray100,
+    NavdsSemanticColorBorder,
+} from '@navikt/ds-tokens/dist/tokens';
 
 const StyledIkonWrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border-bottom: ${navFarger.navGra40} solid 2px;
+    border-bottom: ${NavdsSemanticColorBorder} solid 2px;
     text-align: center;
 
     .navds-body-short {
@@ -28,19 +33,19 @@ const StyledIkon = styled.div<IkonProps>`
     padding-top: 1rem;
     padding-bottom: 0.62rem;
 
-    background-color: ${navFarger.navBla};
-    color: ${navFarger.navBla};
+    background-color: ${NavdsGlobalColorBlue500};
+    color: ${NavdsGlobalColorBlue500};
 
     :hover {
         cursor: pointer;
         svg {
-            fill: ${navFarger.navBlaLighten20};
+            fill: ${NavdsGlobalColorBlue400};
         }
-        border-bottom: 5px solid ${navFarger.navBlaLighten20};
+        border-bottom: 5px solid ${NavdsGlobalColorBlue400};
     }
 
-    background-color: ${(props) => (props.erAktiv ? navFarger.navLysGra : 'white')};
-    border-bottom: 5px solid ${(props) => (props.erAktiv ? navFarger.navBla : 'white')};
+    background-color: ${(props) => (props.erAktiv ? NavdsGlobalColorGray100 : 'white')};
+    border-bottom: 5px solid ${(props) => (props.erAktiv ? NavdsGlobalColorBlue500 : 'white')};
 `;
 
 interface ValgvisningProps {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC } from 'react';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
@@ -22,6 +21,7 @@ import {
     DetailSmall,
     SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
+import { NavdsSemanticColorTextMuted } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -53,7 +53,7 @@ const StyledIkonOgTittel = styled.span`
 `;
 
 const SistOppdatertTekst = styled(DetailSmall)`
-    color: ${navFarger.navGra60};
+    color: ${NavdsSemanticColorTextMuted};
 `;
 
 interface Props {

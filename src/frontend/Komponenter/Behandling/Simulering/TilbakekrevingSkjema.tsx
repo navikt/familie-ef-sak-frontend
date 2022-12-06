@@ -5,10 +5,10 @@ import { ITilbakekrevingsvalg } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
-import navFarger from 'nav-frontend-core';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Button, Radio, RadioGroup } from '@navikt/ds-react';
 import { FileContent } from '@navikt/ds-icons';
+import { NavdsGlobalColorRed500 } from '@navikt/ds-tokens/dist/tokens';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -19,7 +19,7 @@ const ErrorTekst = styled.div`
     font-size: 1rem;
     line-height: 1.375rem;
     font-weight: 600;
-    color: ${navFarger.redError};
+    color: ${NavdsGlobalColorRed500};
     margin-bottom: 1rem;
 `;
 

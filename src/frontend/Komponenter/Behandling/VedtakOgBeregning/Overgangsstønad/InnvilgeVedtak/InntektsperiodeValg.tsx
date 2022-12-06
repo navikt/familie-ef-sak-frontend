@@ -22,13 +22,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype fjernRadKnapp leggTilKnapp;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '13rem 12rem 12rem 12rem 3rem 3rem'};
+        props.lesevisning ? '8rem 11rem 13.5rem 13rem' : '13rem 12rem 12rem 12rem 3rem 3rem'};
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
@@ -37,7 +37,7 @@ const TittelContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '6.5rem 10rem 12.5rem 12rem' : '13rem 12rem 12rem 12rem 4rem'};
+        props.lesevisning ? '8rem 11rem 13.5rem 13rem' : '13rem 12rem 12rem 12rem 4rem'};
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
@@ -100,10 +100,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
     return (
         <>
             <TittelContainer lesevisning={!behandlingErRedigerbar}>
-                <SmallTextLabel>Fra</SmallTextLabel>
-                <SmallTextLabel>Forventet inntekt (år)</SmallTextLabel>
-                <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
-                <SmallTextLabel>Type samordningsfradrag</SmallTextLabel>
+                <TextLabel>Fra</TextLabel>
+                <TextLabel>Forventet inntekt (år)</TextLabel>
+                <TextLabel>Samordningsfradrag (mnd)</TextLabel>
+                <TextLabel>Type samordningsfradrag</TextLabel>
             </TittelContainer>
             {inntektsperiodeListe.value.map((rad, index) => {
                 const skalViseFjernKnapp =

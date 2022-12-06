@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import navFarger from 'nav-frontend-core';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
 import { HistorikkElementProps, LinjeProps, StyledHistorikkElementProps } from './typer';
@@ -14,6 +13,7 @@ import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 import { Button } from '@navikt/ds-react';
 import { DetailSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
+import { NavdsGlobalColorGray900 } from '@navikt/ds-tokens/dist/tokens';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -41,7 +41,7 @@ const StyledHistorikkElement = styled.li`
     .navds-body-short,
     .navds-label,
     .navds-detail {
-        color: ${navFarger.navMorkGra};
+        color: ${NavdsGlobalColorGray900};
     }
 `;
 

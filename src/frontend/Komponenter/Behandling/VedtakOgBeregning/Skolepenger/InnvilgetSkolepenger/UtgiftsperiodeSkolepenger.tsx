@@ -6,9 +6,9 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import navFarger from 'nav-frontend-core';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { NavdsGlobalColorBlue300, NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
 
 const Utgiftsrad = styled.div<{
     lesevisning?: boolean;
@@ -46,7 +46,7 @@ const FlexColumn = styled.div`
 
 const FargetStrek = styled.span<{ lesevisning?: boolean }>`
     border-left: 3px solid
-        ${(props) => (props.lesevisning ? navFarger.navGra80 : navFarger.navBlaLighten40)};
+        ${(props) => (props.lesevisning ? NavdsSemanticColorBorder : NavdsGlobalColorBlue300)};
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     margin-bottom: 0.75rem;
