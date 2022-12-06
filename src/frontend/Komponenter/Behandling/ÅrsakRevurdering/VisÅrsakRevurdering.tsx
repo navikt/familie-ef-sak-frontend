@@ -22,6 +22,7 @@ import {
 import { useApp } from '../../../App/context/AppContext';
 import { Behandling } from '../../../App/typer/fagsak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
+import styled from 'styled-components';
 
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
@@ -29,6 +30,11 @@ interface Props {
     behandling: Behandling;
     oppdaterRevurderingsinformasjon: (revurderingsinformasjon: Revurderingsinformasjon) => void;
 }
+
+const BreakWordFamilieLesefelt = styled(FamilieLesefelt)`
+    white-space: pre-wrap;
+    word-wrap: break-word;
+`;
 
 export const VisÅrsakRevurdering: React.FC<Props> = ({
     revurderingsinformasjon,
@@ -124,7 +130,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                             }
                         />
                         {årsakRevurdering.beskrivelse && (
-                            <FamilieLesefelt
+                            <BreakWordFamilieLesefelt
                                 label={'Beskrivelse av årsak'}
                                 verdi={årsakRevurdering.beskrivelse}
                             />
