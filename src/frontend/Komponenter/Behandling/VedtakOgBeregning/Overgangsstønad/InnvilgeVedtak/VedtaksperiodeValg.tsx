@@ -162,7 +162,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                                 );
                             }}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                            erLesevisning={!behandlingErRedigerbar}
+                            erLesevisning={
+                                !behandlingErRedigerbar || periodeType === EPeriodetype.SANKSJON
+                            }
                             disabledFra={index === 0 && låsVedtaksperiodeRad}
                         />
                         <Label style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
