@@ -66,6 +66,12 @@ export const harNoenRessursMedStatus = (
     ...status: RessursStatus[]
 ): boolean => ressurser.some((ressurs) => status.includes(ressurs.status));
 
+export const utledFrontendFeilmelding = (ressurser: RessursFeilet[]) => {
+    const ressursUtenTilgang = ressurser.find(
+        (ressurs) => ressurs.status === RessursStatus.IKKE_TILGANG
+    );
+    return ressursUtenTilgang?.frontendFeilmelding;
+};
 export const erAvTypeFeil = <T>(data: Ressurs<T>): boolean =>
     [RessursStatus.FEILET, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.IKKE_TILGANG].includes(
         data.status

@@ -4,10 +4,9 @@ import {
     Ressurs,
     RessursStatus,
     RessursSuksess,
+    utledFrontendFeilmelding,
 } from '../../App/typer/ressurs';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import AlertStripeFeilPreWrap, {
     AlertStripeVariant,
 } from '../Visningskomponenter/AlertStripeFeilPreWrap';
@@ -26,10 +25,6 @@ interface DataViewerProps<T extends Record<string, unknown>> {
     alertStripeVariant?: AlertStripeVariant;
 }
 
-const StyledLenke = styled(Link)`
-    margin-left: 1rem;
-`;
-
 // eslint-disable-next-line
 const renderFeil = (responses: Ressurs<any>[], alertOption: AlertStripeVariant) => (
     <>
@@ -47,11 +42,6 @@ const renderFeil = (responses: Ressurs<any>[], alertOption: AlertStripeVariant) 
                 return null;
             }
         })}
-        {alertOption === AlertStripeVariant.IKKE_VALGT && (
-            <StyledLenke className="lenke" to={{ pathname: '/oppgavebenk' }}>
-                Gå til oppgavebenk
-            </StyledLenke>
-        )}
     </>
 );
 
@@ -73,13 +63,20 @@ function DataViewer<T extends Record<string, unknown>>(
 ): JSX.Element | null {
     const { response, children, alertStripeVariant } = props;
     const responses = Object.values(response);
-    if (harNoenRessursMedStatus(responses, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.FEILET)) {
+    if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
+        return (
+            <AlertError>
+                <div>Ikke tilgang.</div>
+                <div>{utledFrontendFeilmelding(responses)}</div>
+            </AlertError>
+        );
+    } else if (
+        harNoenRessursMedStatus(responses, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.FEILET)
+    ) {
         return renderFeil(
             responses,
             alertStripeVariant ? alertStripeVariant : AlertStripeVariant.IKKE_VALGT
         );
-    } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_TILGANG)) {
-        return <AlertError children="Ikke tilgang!" />;
     } else if (harNoenRessursMedStatus(responses, RessursStatus.HENTER)) {
         return <SystemetLaster />;
     } else if (harNoenRessursMedStatus(responses, RessursStatus.IKKE_HENTET)) {
