@@ -7,8 +7,6 @@ import {
     utledFrontendFeilmelding,
 } from '../../App/typer/ressurs';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import AlertStripeFeilPreWrap, {
     AlertStripeVariant,
 } from '../Visningskomponenter/AlertStripeFeilPreWrap';
@@ -27,10 +25,6 @@ interface DataViewerProps<T extends Record<string, unknown>> {
     alertStripeVariant?: AlertStripeVariant;
 }
 
-const StyledLenke = styled(Link)`
-    margin-left: 1rem;
-`;
-
 // eslint-disable-next-line
 const renderFeil = (responses: Ressurs<any>[], alertOption: AlertStripeVariant) => (
     <>
@@ -48,11 +42,6 @@ const renderFeil = (responses: Ressurs<any>[], alertOption: AlertStripeVariant) 
                 return null;
             }
         })}
-        {alertOption === AlertStripeVariant.IKKE_VALGT && (
-            <StyledLenke className="lenke" to={{ pathname: '/oppgavebenk' }}>
-                Gå til oppgavebenk
-            </StyledLenke>
-        )}
     </>
 );
 
