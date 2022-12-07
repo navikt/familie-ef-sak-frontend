@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../../App/context/AppContext';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { AxiosRequestConfig } from 'axios';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
@@ -19,16 +18,9 @@ const MigrerBarnetilsyn: React.FC<{
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
     const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
+    const [ignorerFeilISimulering, settIgnorerFeilISimulering] = useState<boolean>();
 
     const { id: fagsakPersonId } = fagsakPerson;
-
-    const migrerFagsakConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'POST',
-            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}/barnetilsyn`,
-        }),
-        [fagsakPersonId]
-    );
 
     if (!toggles[ToggleName.kanMigrereBarnetilsyn]) {
         return null;
@@ -36,7 +28,13 @@ const MigrerBarnetilsyn: React.FC<{
 
     const migrerFagsak = () => {
         settMigrertStatus(byggHenterRessurs());
-        axiosRequest<string, void>(migrerFagsakConfig).then((res: Ressurs<string>) => {
+        axiosRequest<string, { ignorerFeilISimulering?: boolean }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/migrering/${fagsakPersonId}/barnetilsyn`,
+            data: {
+                ignorerFeilISimulering,
+            },
+        }).then((res: Ressurs<string>) => {
             settMigrertStatus(res);
         });
     };
@@ -45,7 +43,7 @@ const MigrerBarnetilsyn: React.FC<{
         <div style={{ marginTop: '1rem' }}>
             <h1>Migrering - Barnetilsyn</h1>
             <div>
-                {visMigrertStatus(migrertStatus)}
+                {visMigrertStatus(migrertStatus, settIgnorerFeilISimulering)}
                 <StyledKnapp
                     onClick={migrerFagsak}
                     disabled={
