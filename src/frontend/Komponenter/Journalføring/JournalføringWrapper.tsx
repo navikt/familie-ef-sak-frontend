@@ -8,7 +8,6 @@ import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import styled from 'styled-components';
 
 export const SideLayout = styled.div`
-    max-width: 1600px;
     margin: 0 auto;
     padding: 2rem;
 `;
@@ -17,12 +16,12 @@ export const Kolonner = styled.div`
     margin-top: 2rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
 `;
 
 export const Venstrekolonne = styled.div`
-    max-width: 900px;
+    margin-right: 2rem;
 `;
 export const Høyrekolonne = styled.div``;
 export const FlexKnapper = styled.div`
