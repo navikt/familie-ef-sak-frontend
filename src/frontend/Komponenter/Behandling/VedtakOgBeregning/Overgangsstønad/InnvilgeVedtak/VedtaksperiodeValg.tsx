@@ -67,6 +67,8 @@ export const tomVedtaksperiodeRad = (årMånedFra?: string): IVedtaksperiode => 
     endretKey: uuidv4(),
 });
 
+type SanksjonsModal = { visModal: false } | { visModal: true; index: number };
+
 const VedtaksperiodeValg: React.FC<Props> = ({
     vedtaksperiodeListe,
     valideringsfeil,
@@ -76,9 +78,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
-    const [sanksjonsmodal, settSanksjonsmodal] = useState<
-        { visModal: false } | { visModal: true; index: number }
-    >({ visModal: false });
+    const [sanksjonsmodal, settSanksjonsmodal] = useState<SanksjonsModal>({ visModal: false });
 
     const oppdaterVedtakslisteElement = (
         index: number,
