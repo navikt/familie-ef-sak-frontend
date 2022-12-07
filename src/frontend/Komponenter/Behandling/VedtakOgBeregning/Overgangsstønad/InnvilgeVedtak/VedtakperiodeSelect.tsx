@@ -24,6 +24,15 @@ interface VedtakperiodeSelectProps {
     feil?: string;
 }
 
+const valgbarePeriodetyper = [
+    EPeriodetype.PERIODE_FØR_FØDSEL,
+    EPeriodetype.HOVEDPERIODE,
+    EPeriodetype.NY_PERIODE_FOR_NYTT_BARN,
+    EPeriodetype.UTVIDELSE,
+    EPeriodetype.FORLENGELSE,
+    EPeriodetype.MIDLERTIDIG_OPPHØR,
+];
+
 const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     oppdaterVedtakslisteElement,
     behandlingErRedigerbar,
@@ -43,14 +52,7 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
             lesevisningVerdi={periodeType && periodetypeTilTekst[periodeType]}
         >
             <option value="">Velg</option>
-            {[
-                EPeriodetype.PERIODE_FØR_FØDSEL,
-                EPeriodetype.HOVEDPERIODE,
-                EPeriodetype.NY_PERIODE_FOR_NYTT_BARN,
-                EPeriodetype.UTVIDELSE,
-                EPeriodetype.FORLENGELSE,
-                EPeriodetype.MIDLERTIDIG_OPPHØR,
-            ].map((type) => (
+            {valgbarePeriodetyper.map((type) => (
                 <option key={type} value={type}>
                     {periodetypeTilTekst[type]}
                 </option>

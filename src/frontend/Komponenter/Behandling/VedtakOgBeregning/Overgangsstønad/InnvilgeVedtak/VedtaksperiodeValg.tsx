@@ -76,7 +76,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
-    const [sanksjonsindex, settSanksjonsindex] = useState<number | undefined>(undefined);
+    const [sanksjonsmodal, settSanksjonsmodal] = useState<
+        { visModal: false } | { visModal: true; index: number }
+    >({ visModal: false });
 
     const oppdaterVedtakslisteElement = (
         index: number,
@@ -119,9 +121,13 @@ const VedtaksperiodeValg: React.FC<Props> = ({
         }
     };
 
+    const lukkSanksjonsmodal = () => {
+        settSanksjonsmodal({ visModal: false });
+    };
+
     const slettPeriode = (index: number) => {
-        if (sanksjonsindex !== undefined) {
-            settSanksjonsindex(undefined);
+        if (sanksjonsmodal.visModal) {
+            lukkSanksjonsmodal();
         }
         vedtaksperiodeListe.remove(index);
         setValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
@@ -132,7 +138,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
 
     const slettPeriodeModalHvisSanksjon = (index: number) => {
         if (vedtaksperiodeListe.value[index].periodeType === EPeriodetype.SANKSJON) {
-            settSanksjonsindex(index);
+            settSanksjonsmodal({ visModal: true, index: index });
         } else {
             slettPeriode(index);
         }
@@ -224,27 +230,27 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     knappetekst="Legg til vedtaksperiode"
                 />
             )}
-            {sanksjonsindex !== undefined && (
+            {sanksjonsmodal.visModal && (
                 <ModalWrapper
                     tittel={'Vil du oppheve sanksjon'}
                     visModal={true}
                     aksjonsknapper={{
                         hovedKnapp: {
-                            onClick: () => slettPeriode(sanksjonsindex),
+                            onClick: () => slettPeriode(sanksjonsmodal.index),
                             tekst: 'Fjern sanksjon',
                         },
                         lukkKnapp: {
-                            onClick: () => settSanksjonsindex(undefined),
+                            onClick: lukkSanksjonsmodal,
                             tekst: 'Avbryt',
                         },
                     }}
-                    onClose={() => settSanksjonsindex(undefined)}
+                    onClose={lukkSanksjonsmodal}
                 >
                     Du er i ferd med å fjerne en periode bruker er ilagt sanksjon (
                     {formaterIsoMånedÅrFull(
-                        vedtaksperiodeListe.value[sanksjonsindex].årMånedFra || ''
+                        vedtaksperiodeListe.value[sanksjonsmodal.index].årMånedFra || ''
                     )}
-                    ). Merk at denne handlingen ikke kan reverseres.
+                    ). Er du sikker på at du vil gjøre dette?
                 </ModalWrapper>
             )}
         </>
