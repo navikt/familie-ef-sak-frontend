@@ -181,6 +181,7 @@ export interface IVedtaksperiode {
     aktivitet: EAktivitet | '' | undefined;
     årMånedFra?: string;
     årMånedTil?: string;
+    sanksjonsårsak?: Sanksjonsårsak;
 }
 
 export type IBeregningsrequest = {
