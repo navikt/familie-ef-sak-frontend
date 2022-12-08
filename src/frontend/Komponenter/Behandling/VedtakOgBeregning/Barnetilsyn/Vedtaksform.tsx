@@ -79,7 +79,7 @@ export const Vedtaksform: React.FC<{
         {
             utgiftsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.perioder
-                : [tomUtgiftsperiodeRad],
+                : [tomUtgiftsperiodeRad()],
             harKontantstøtte: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.perioderKontantstøtte &&
                   lagretInnvilgetVedtak.perioderKontantstøtte.length > 0
@@ -88,7 +88,7 @@ export const Vedtaksform: React.FC<{
                 : ERadioValg.IKKE_SATT,
             kontantstøtteperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.perioderKontantstøtte
-                : [tomKontantstøtteRad],
+                : [tomKontantstøtteRad()],
             harTilleggsstønad: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.tilleggsstønad.harTilleggsstønad
                     ? ERadioValg.JA
@@ -103,7 +103,7 @@ export const Vedtaksform: React.FC<{
                     : ERadioValg.IKKE_SATT,
             tilleggsstønadsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.tilleggsstønad.perioder
-                : [tomTilleggsstønadRad],
+                : [tomTilleggsstønadRad()],
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerInnvilgetVedtakForm

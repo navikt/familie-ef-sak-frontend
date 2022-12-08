@@ -17,16 +17,17 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/ut
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { Radio } from '@navikt/ds-react';
+import { Radio, Tooltip } from '@navikt/ds-react';
 import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { v4 as uuidv4 } from 'uuid';
 
 const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp';
+    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp leggTilKnapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 8rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 8rem 4rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
@@ -56,11 +57,12 @@ interface Props {
     settValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-export const tomTilleggsstønadRad: IPeriodeMedBeløp = {
+export const tomTilleggsstønadRad = (): IPeriodeMedBeløp => ({
     årMånedFra: '',
     årMånedTil: '',
     beløp: undefined,
-};
+    endretKey: uuidv4(),
+});
 
 const TilleggsstønadValg: React.FC<Props> = ({
     tilleggsstønad,
@@ -92,6 +94,14 @@ const TilleggsstønadValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const leggTilTomRadUnder = (index: number) => {
+        tilleggsstønadPerioder.setValue((prevState) => [
+            ...prevState.slice(0, index + 1),
+            tomTilleggsstønadRad(),
+            ...prevState.slice(index + 1, prevState.length),
+        ]);
     };
 
     const periodeVariantTilleggsstønadPeriodeProperty = (
@@ -160,12 +170,9 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     </KolonneHeaderWrapper>
                     {tilleggsstønadPerioder.value.map((periode, index) => {
                         const { årMånedFra, årMånedTil, beløp } = periode;
-                        const skalViseFjernKnapp =
-                            behandlingErRedigerbar &&
-                            index === tilleggsstønadPerioder.value.length - 1 &&
-                            index !== 0;
+                        const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
                         return (
-                            <React.Fragment key={`${årMånedFra}${årMånedTil}${index}`}>
+                            <React.Fragment key={periode.endretKey}>
                                 <TilleggsstønadPeriodeContainer>
                                     <MånedÅrPeriode
                                         årMånedFraInitiell={årMånedFra}
@@ -205,7 +212,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                         label={'Stønadsreduksjon'}
                                         hideLabel
                                     />
-                                    {skalViseFjernKnapp && (
+                                    {skalViseFjernKnapp ? (
                                         <FjernKnapp
                                             onClick={() => {
                                                 tilleggsstønadPerioder.remove(index);
@@ -220,6 +227,16 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                             }}
                                             ikontekst={'Fjern periode for tilleggsstønad'}
                                         />
+                                    ) : (
+                                        <div />
+                                    )}
+                                    {behandlingErRedigerbar && (
+                                        <Tooltip content="Legg til rad under" placement="right">
+                                            <LeggTilKnapp
+                                                onClick={() => leggTilTomRadUnder(index)}
+                                                ikontekst={'Legg til ny rad'}
+                                            />
+                                        </Tooltip>
                                     )}
                                 </TilleggsstønadPeriodeContainer>
                             </React.Fragment>
@@ -228,7 +245,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     <ContainerMedLuftUnder>
                         {behandlingErRedigerbar && (
                             <LeggTilKnapp
-                                onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad)}
+                                onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad())}
                                 knappetekst="Legg til periode"
                             />
                         )}

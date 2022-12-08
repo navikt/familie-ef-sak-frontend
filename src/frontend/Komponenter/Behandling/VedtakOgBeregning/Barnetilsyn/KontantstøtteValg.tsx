@@ -15,16 +15,17 @@ import { InnvilgeVedtakForm } from './Vedtaksform';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
-import { Label, Radio } from '@navikt/ds-react';
+import { Label, Radio, Tooltip } from '@navikt/ds-react';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
+import { v4 as uuidv4 } from 'uuid';
 
 const KontantstøttePeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp';
+    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp leggTilKnapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 6rem 4rem'};
+        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 6rem 4rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
@@ -52,11 +53,12 @@ interface Props {
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-export const tomKontantstøtteRad: IPeriodeMedBeløp = {
+export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
     årMånedFra: '',
     årMånedTil: '',
     beløp: undefined,
-};
+    endretKey: uuidv4(),
+});
 
 const KontantstøtteValg: React.FC<Props> = ({
     kontantstøtte,
@@ -80,6 +82,14 @@ const KontantstøtteValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const leggTilTomRadUnder = (index: number) => {
+        kontantstøttePerioder.setValue((prevState) => [
+            ...prevState.slice(0, index + 1),
+            tomKontantstøtteRad(),
+            ...prevState.slice(index + 1, prevState.length),
+        ]);
     };
 
     const periodeVariantTilKontantstøtteperiodeProperty = (
@@ -125,12 +135,9 @@ const KontantstøtteValg: React.FC<Props> = ({
                     </KolonneHeaderWrapper>
                     {kontantstøttePerioder.value.map((periode, index) => {
                         const { årMånedFra, årMånedTil, beløp } = periode;
-                        const skalViseFjernKnapp =
-                            behandlingErRedigerbar &&
-                            index === kontantstøttePerioder.value.length - 1 &&
-                            index !== 0;
+                        const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
                         return (
-                            <React.Fragment key={index}>
+                            <React.Fragment key={periode.endretKey}>
                                 <KontantstøttePeriodeContainer>
                                     <MånedÅrPeriode
                                         årMånedFraInitiell={årMånedFra}
@@ -169,7 +176,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                         label={'Utgifter kontantstøtte'}
                                         hideLabel
                                     />
-                                    {skalViseFjernKnapp && (
+                                    {skalViseFjernKnapp ? (
                                         <FjernKnapp
                                             onClick={() => {
                                                 kontantstøttePerioder.remove(index);
@@ -184,6 +191,16 @@ const KontantstøtteValg: React.FC<Props> = ({
                                             }}
                                             ikontekst={'Fjern kontantstøtteperiode'}
                                         />
+                                    ) : (
+                                        <div />
+                                    )}
+                                    {behandlingErRedigerbar && (
+                                        <Tooltip content="Legg til rad under" placement="right">
+                                            <LeggTilKnapp
+                                                onClick={() => leggTilTomRadUnder(index)}
+                                                ikontekst={'Legg til ny rad'}
+                                            />
+                                        </Tooltip>
                                     )}
                                 </KontantstøttePeriodeContainer>
                             </React.Fragment>
@@ -192,7 +209,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                     <ContainerMedLuftUnder>
                         {behandlingErRedigerbar && (
                             <LeggTilKnapp
-                                onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad)}
+                                onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad())}
                                 knappetekst="Legg til periode"
                             />
                         )}

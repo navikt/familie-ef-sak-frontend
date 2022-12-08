@@ -14,17 +14,18 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/ut
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
-import { Label } from '@navikt/ds-react';
+import { Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { v4 as uuidv4 } from 'uuid';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter checkbox slettknapp';
+    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter checkbox slettknapp leggTilKnapp';
     grid-template-columns: ${(props) =>
         props.lesevisning
             ? '10rem 10rem 18rem 2rem 4rem 4rem'
-            : '14rem 14rem 25rem 2rem 4rem 2rem 4rem'};
+            : '14rem 14rem 25rem 2rem 4rem 2rem 4rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
@@ -61,13 +62,14 @@ interface Props {
     barn: IBarnMedSamvær[];
 }
 
-export const tomUtgiftsperiodeRad: IUtgiftsperiode = {
+export const tomUtgiftsperiodeRad = (): IUtgiftsperiode => ({
     årMånedFra: '',
     årMånedTil: '',
     barn: [],
     utgifter: undefined,
     erMidlertidigOpphør: false,
-};
+    endretKey: uuidv4(),
+});
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
     utgiftsperioder,
@@ -91,6 +93,14 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             index
         );
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    };
+
+    const leggTilTomRadUnder = (index: number) => {
+        utgiftsperioder.setValue((prevState) => [
+            ...prevState.slice(0, index + 1),
+            tomUtgiftsperiodeRad(),
+            ...prevState.slice(index + 1, prevState.length),
+        ]);
     };
 
     const oppdaterUtgiftsperiodeDersomMidlertidigOpphør = (
@@ -140,17 +150,17 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
                 const { årMånedFra, årMånedTil, utgifter, erMidlertidigOpphør } = utgiftsperiode;
-                const skalViseFjernKnapp =
-                    behandlingErRedigerbar &&
-                    index === utgiftsperioder.value.length - 1 &&
-                    index !== 0;
+                const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
 
                 const barnForPeriode = barnFormatertForBarnVelger(barn);
                 const ikkeValgteBarn = barnForPeriode.filter((barn) =>
                     utgiftsperiode.barn.includes(barn.value)
                 );
                 return (
-                    <UtgiftsperiodeRad key={index} lesevisning={!behandlingErRedigerbar}>
+                    <UtgiftsperiodeRad
+                        key={utgiftsperiode.endretKey}
+                        lesevisning={!behandlingErRedigerbar}
+                    >
                         <MånedÅrPeriode
                             årMånedFraInitiell={årMånedFra}
                             årMånedTilInitiell={årMånedTil}
@@ -234,7 +244,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 />
                             )}
                         </CheckboxContainer>
-                        {skalViseFjernKnapp && (
+                        {skalViseFjernKnapp ? (
                             <FjernKnapp
                                 onClick={() => {
                                     utgiftsperioder.remove(index);
@@ -249,6 +259,16 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 }}
                                 ikontekst={'Fjern utgiftsperiode'}
                             />
+                        ) : (
+                            <div />
+                        )}
+                        {behandlingErRedigerbar && (
+                            <Tooltip content="Legg til rad under" placement="right">
+                                <LeggTilKnapp
+                                    onClick={() => leggTilTomRadUnder(index)}
+                                    ikontekst={'Legg til ny rad'}
+                                />
+                            </Tooltip>
                         )}
                     </UtgiftsperiodeRad>
                 );
@@ -256,7 +276,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             <ContainerMedLuftUnder>
                 {behandlingErRedigerbar && (
                     <LeggTilKnapp
-                        onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad)}
+                        onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad())}
                         knappetekst="Legg til vedtaksperiode"
                     />
                 )}
