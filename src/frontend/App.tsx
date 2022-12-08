@@ -23,6 +23,8 @@ import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
 import styled from 'styled-components';
 import { ModalWrapper } from './Felles/Modal/ModalWrapper';
 import { JournalføringKlageApp } from './Komponenter/Journalføring/JournalføringKlageApp';
+import VelgPersonOgStønadstype from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstype';
+import OpprettFørstegangsbehandling from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandling';
 
 // @ts-ignore
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
@@ -117,6 +119,14 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                 <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
                 <Route path="/person/:fagsakPersonId/*" element={<Personoversikt />} />
                 <Route path="/uttrekk/arbeidssoker" element={<UttrekkArbeidssøker />} />
+                <Route
+                    path={`/opprett-forstegangsbehandling`}
+                    element={<VelgPersonOgStønadstype />}
+                />
+                <Route
+                    path={`/opprett-forstegangsbehandling/:fagsakId`}
+                    element={<OpprettFørstegangsbehandling />}
+                />
                 <Route path="/" element={<Navigate to="/oppgavebenk" replace={true} />} />
             </Routes>
             <UlagretDataModal />

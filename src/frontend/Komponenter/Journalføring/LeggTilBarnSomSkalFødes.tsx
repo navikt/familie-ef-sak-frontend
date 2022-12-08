@@ -45,7 +45,8 @@ const LeggTilBarnKnapp = styled(Button)`
 const LeggTilBarnSomSkalFødes: React.FC<{
     barnSomSkalFødes: BarnSomSkalFødes[];
     oppdaterBarnSomSkalFødes: (terminbarn: BarnSomSkalFødes[]) => void;
-}> = ({ barnSomSkalFødes, oppdaterBarnSomSkalFødes }) => {
+    tittel?: string;
+}> = ({ barnSomSkalFødes, oppdaterBarnSomSkalFødes, tittel = 'Journalføre papirsøknad?' }) => {
     useEffect(() => () => oppdaterBarnSomSkalFødes([]), [oppdaterBarnSomSkalFødes]);
 
     const leggTilBarn = () => oppdaterBarnSomSkalFødes([...barnSomSkalFødes, { _id: uuidv4() }]);
@@ -70,7 +71,7 @@ const LeggTilBarnSomSkalFødes: React.FC<{
     return (
         <LeggTilBarnContent>
             <Tittel spacing size="xsmall" level="6">
-                Journalføre papirsøknad?
+                {tittel}
             </Tittel>
             <InlineContent>
                 Dersom søkeren har terminbarn i søknaden må disse legges til her.
