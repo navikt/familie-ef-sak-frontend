@@ -13,4 +13,5 @@ export enum ToggleName {
     visUtestengelse = 'familie.ef.sak.frontend-utestengelse',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     avslagMindreInntektsendringer = 'familie.ef.sak.avslag-mindre-inntektsendringer',
+    førstegangsbehandling = 'familie.ef.sak.opprett-forstegangsbehandling',
 }

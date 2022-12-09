@@ -73,6 +73,12 @@ const lagEksterneLenker = (
         });
         if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
             eksterneLenker.push({
+                name: 'Opprett førstegangsbehandling manuelt',
+                href: '/opprett-forstegangsbehandling',
+            });
+        }
+        if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
+            eksterneLenker.push({
                 name: '[Admin] Lag behandling fra journalpost',
                 href: '/admin/ny-behandling-for-ferdigstilt-journalpost/',
             });
