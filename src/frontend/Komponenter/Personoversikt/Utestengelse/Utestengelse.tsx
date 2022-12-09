@@ -2,9 +2,7 @@ import React, { FC, useState } from 'react';
 import { Button, Heading, Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import styled from 'styled-components';
-import { ToggleName } from '../../../App/context/toggles';
 import { useApp } from '../../../App/context/AppContext';
-import { useToggles } from '../../../App/context/TogglesContext';
 import { UtestengelseModal } from './UtestengelseModal';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IUtestengelse } from '../../../App/typer/utestengelse';
@@ -88,13 +86,8 @@ const Utestengelse: FC<{
     hentUtestengelser: (fagsakPersonId: string) => void;
 }> = ({ fagsakPersonId, utestengelser, hentUtestengelser }) => {
     const { erSaksbehandler, settVisUtestengModal } = useApp();
-    const { toggles } = useToggles();
 
     const [utestengelseTilSletting, settUtestengelseTilSletting] = useState<IUtestengelse>();
-
-    if (!toggles[ToggleName.visUtestengelse]) {
-        return null;
-    }
 
     return (
         <UtestengelseContainer>
