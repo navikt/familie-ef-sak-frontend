@@ -72,7 +72,7 @@ export const utledFrontendFeilmelding = (ressurser: RessursFeilet[]) => {
     );
     return ressursUtenTilgang?.frontendFeilmelding;
 };
-export const erAvTypeFeil = <T>(data: Ressurs<T>): boolean =>
+export const erAvTypeFeil = <T>(data: Ressurs<T>): data is RessursFeilet =>
     [RessursStatus.FEILET, RessursStatus.FUNKSJONELL_FEIL, RessursStatus.IKKE_TILGANG].includes(
         data.status
     );

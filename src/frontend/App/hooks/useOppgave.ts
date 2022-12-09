@@ -1,4 +1,4 @@
-import { RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
+import { erAvTypeFeil, RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
 import { useEffect, useState } from 'react';
@@ -24,6 +24,11 @@ export const useOppgave = (oppgave: IOppgave) => {
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             gåTilUrl(`/person/${fagsak.data.fagsakPersonId}`);
+        } else if (erAvTypeFeil(fagsak)) {
+            settFeilmelding(
+                'Henting av fagsak feilet, prøv på nytt. Feil: ' +
+                    (fagsak.frontendFeilmelding || fagsak.errorMelding || 'Ukjent feil')
+            );
         }
     }, [fagsak, gåTilUrl]);
 
@@ -35,7 +40,9 @@ export const useOppgave = (oppgave: IOppgave) => {
             if (res.status === RessursStatus.SUKSESS) {
                 return Promise.resolve();
             } else {
-                return Promise.reject(new Error(res.frontendFeilmelding));
+                return Promise.reject(
+                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                );
             }
         });
     };
