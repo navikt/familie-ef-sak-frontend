@@ -27,7 +27,7 @@ const WrapperMarginTop = styled.div`
     margin-top: 1rem;
 `;
 
-const settEndretKey = (
+const oppdaterVedtakMedEndretKey = (
     vedtak: IInnvilgeVedtakForBarnetilsyn | undefined
 ): IInnvilgeVedtakForBarnetilsyn | undefined => {
     if (!vedtak) {
@@ -85,7 +85,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                 return (
                                     <Vedtaksform
                                         behandling={behandling}
-                                        lagretVedtak={settEndretKey(
+                                        lagretVedtak={oppdaterVedtakMedEndretKey(
                                             vedtak as IInnvilgeVedtakForBarnetilsyn | undefined // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
                                         )}
                                         barn={barnSomOppfyllerAlleVilkår(vilkår)}
