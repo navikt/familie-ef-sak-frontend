@@ -288,7 +288,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     Tilbakestill filtrering
                 </FiltreringKnapp>
             </KnappWrapper>
-            <ModalWrapper tittel={'Ugyldig oppgave'} visModal={!!feilmelding}>
+            <ModalWrapper tittel={'Ugyldig oppgave eller annet feil'} visModal={!!feilmelding}>
                 <AlertStripe variant={'warning'}>{feilmelding}</AlertStripe>
                 <ModalKnapp
                     variant={'primary'}
