@@ -16,6 +16,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
 import styled from 'styled-components';
+import { erGyldigDato } from '../../../App/utils/dato';
 
 const Container = styled.div`
     > * {
@@ -50,7 +51,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
         if (laster) {
             return;
         }
-        if (!kravMottatt) {
+        if (!kravMottatt || !erGyldigDato(kravMottatt)) {
             settFeilmelding('Mangler krav mottatt');
             return;
         }
@@ -108,6 +109,8 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                         kravMottatt: dato as string,
                     }));
                 }}
+                feil={kravMottatt && !erGyldigDato(kravMottatt) ? 'Ugyldig dato' : undefined}
+                limitations={{ maxDate: new Date().toISOString() }}
             />
             <Select
                 label={'Hvordan har vi fått opplysningene?'}
