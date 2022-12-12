@@ -60,6 +60,15 @@ export const validerVedtaksperioder = ({
     const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
     const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
     let harPeriodeFør7mndFremITiden = false;
+
+    const yngsteBarnErOver8FørUtgangAvPerioden = (
+        yngsteBarnFødselsdato: string,
+        årMånedTil: string | undefined
+    ) => {
+        console.log(yngsteBarnFødselsdato + årMånedTil);
+        return false;
+    };
+
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
@@ -68,6 +77,17 @@ export const validerVedtaksperioder = ({
             årMånedFra: undefined,
             årMånedTil: undefined,
         };
+
+        if (
+            periodeType === EPeriodetype.HOVEDPERIODE &&
+            yngsteBarnErOver8FørUtgangAvPerioden('2022-01-01', årMånedTil) //TODO bruk riktig dato
+        ) {
+            vedtaksperiodeFeil = {
+                ...vedtaksperiodeFeil,
+                periodeType:
+                    'Yngste barn er over 8 før utgang av perioden. Må ha barn under 8 i hele hovedperioden. ',
+            };
+        }
 
         if (periodeType === '' || periodeType === undefined) {
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, periodeType: 'Mangler periodetype' };

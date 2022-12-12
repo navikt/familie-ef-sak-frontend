@@ -34,6 +34,8 @@ import { Button, Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
+import { useHentVilkår } from '../../../../../App/hooks/useHentVilkår';
+import { erEtter } from '../../../../../App/utils/dato';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -56,6 +58,10 @@ export const InnvilgeVedtak: React.FC<{
         lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
             ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
+
+    const { vilkår } = useHentVilkår();
+    const [yngsteBarn, settYngsteBarn] = useState<string | null>(null);
+
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -75,6 +81,27 @@ export const InnvilgeVedtak: React.FC<{
     >(null);
 
     const [feilmelding, settFeilmelding] = useState<string>();
+
+    useEffect(() => {
+        if (vilkår.status === RessursStatus.SUKSESS) {
+            const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
+                .map((b) => b.registergrunnlag)
+                .map((r) => r.fødselsdato)
+                .reduce((a, b) => {
+                    if (!a && b) {
+                        return b;
+                    }
+                    if (!b && a) {
+                        return a;
+                    }
+                    if (a && b) {
+                        return erEtter(a, b) ? b : a;
+                    }
+                });
+
+            tidligsteDato && settYngsteBarn(tidligsteDato);
+        }
+    }, [vilkår]);
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -271,6 +298,7 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
+            <p>{yngsteBarn}</p>s
             <WrapperDobbelMarginTop>
                 {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
@@ -369,7 +397,7 @@ export const InnvilgeVedtak: React.FC<{
                                 disabled={laster || !!revurderesFraOgMedFeilmelding}
                                 type={'submit'}
                             >
-                                Lagre vedtak
+                                Lagre vedtak!
                             </Button>
                         </WrapperDobbelMarginTop>
                     )}
