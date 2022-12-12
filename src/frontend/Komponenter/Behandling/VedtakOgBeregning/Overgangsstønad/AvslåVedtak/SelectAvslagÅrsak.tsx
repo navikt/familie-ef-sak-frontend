@@ -9,8 +9,6 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
-import { useToggles } from '../../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../../App/context/toggles';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
@@ -39,16 +37,8 @@ const FeilmeldingTekst = styled(BodyShortSmall)`
 const SelectAvslagÅrsak = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { toggles } = useToggles();
     const { avslagÅrsak, settAvslagÅrsak, feilmelding } = props;
 
-    const avslagÅrsaker = toggles[ToggleName.avslagMindreInntektsendringer]
-        ? årsakerTilAvslag
-        : [
-              EAvslagÅrsak.BARN_OVER_ÅTTE_ÅR,
-              EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
-              EAvslagÅrsak.STØNADSTID_OPPBRUKT,
-          ];
     return (
         <>
             <StyledSelect
@@ -63,7 +53,7 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
                 hideLabel={false}
             >
                 <option value="">Velg</option>
-                {avslagÅrsaker.map((årsak) => {
+                {årsakerTilAvslag.map((årsak) => {
                     return (
                         <option value={årsak} key={årsak}>
                             {avslagÅrsakTilTekst[årsak]}
