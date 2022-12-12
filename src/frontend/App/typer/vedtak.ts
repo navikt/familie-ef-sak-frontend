@@ -105,12 +105,14 @@ export type IUtgiftsperiode = {
     barn: string[];
     utgifter: number | undefined;
     erMidlertidigOpphør: boolean | undefined;
+    endretKey?: string; // intern for re-rendring
 };
 
 export type IPeriodeMedBeløp = {
     årMånedFra: string;
     årMånedTil: string;
     beløp: number | undefined;
+    endretKey?: string; // intern for re-rendring
 };
 
 export type IVedtakForSkolepenger = {
