@@ -250,10 +250,10 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     utgiftsperioder.remove(index);
                                     settValideringsFeil(
                                         (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const perioder = (
+                                            const utgiftsperioder = (
                                                 prevState.utgiftsperioder ?? []
                                             ).filter((_, i) => i !== index);
-                                            return { ...prevState, perioder };
+                                            return { ...prevState, utgiftsperioder };
                                         }
                                     );
                                 }}
