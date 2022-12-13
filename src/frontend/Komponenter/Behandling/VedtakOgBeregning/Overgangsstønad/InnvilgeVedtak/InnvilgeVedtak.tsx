@@ -92,16 +92,9 @@ export const InnvilgeVedtak: React.FC<{
             const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
                 .map((b) => b.registergrunnlag)
                 .map((r) => r.fødselsdato)
+                .filter((fødselsdato): fødselsdato is string => !!fødselsdato)
                 .reduce((a, b) => {
-                    if (!a && b) {
-                        return b;
-                    }
-                    if (!b && a) {
-                        return a;
-                    }
-                    if (a && b) {
-                        return erEtter(a, b) ? b : a;
-                    }
+                    return erEtter(a, b) ? a : b;
                 });
             console.log('Tidligste dato: ' + tidligsteDato);
             tidligsteDato && settYngsteBarn(tidligsteDato);
