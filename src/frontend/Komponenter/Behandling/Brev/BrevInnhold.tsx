@@ -119,8 +119,9 @@ const BrevInnhold: React.FC<Props> = ({
     const avsnittSomSkalVises = avsnitt.filter((avsnitt) => !avsnitt.skalSkjulesIBrevbygger);
 
     const brevtyper = stønadstypeTilBrevtyper[stønadstype];
-    const skalViseVarselFyllInnUker =
-        brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID_KLAGE;
+    const skalViseVarselOmManuelleFlettefelter =
+        brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID_KLAGE ||
+        brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID;
 
     return (
         <BrevKolonner>
@@ -174,10 +175,21 @@ const BrevInnhold: React.FC<Props> = ({
                             />
                         </LeggTilKnappWrapper>
                     )}
-                    {skalViseVarselFyllInnUker && (
+                    {skalViseVarselOmManuelleFlettefelter && (
                         <Varsel variant={'warning'}>
-                            Husk å fylle ut antall uker forventet svartid i{' '}
-                            <span style={{ fontWeight: 'bold' }}>[antall]</span> i avsnittet under
+                            {brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID_KLAGE && (
+                                <>
+                                    Husk å fylle ut antall uker forventet svartid i{' '}
+                                    <span style={{ fontWeight: 'bold' }}>[antall]</span> i avsnittet
+                                    under
+                                </>
+                            )}
+                            {brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID && (
+                                <>
+                                    Husk å fylle ut hvilken stønad det gjelder og antall uker
+                                    forventet svartid i avsnittet under.
+                                </>
+                            )}
                         </Varsel>
                     )}
                     {avsnittSomSkalVises.map((rad, index) => {
