@@ -42,7 +42,7 @@ const SkjemaContainer = styled.div`
 interface Førstegangsbehandling {
     kravMottatt: string;
     behandlingsårsak: Behandlingsårsak;
-    barnSomSkalFødes: BarnSomSkalFødes[];
+    barn: BarnSomSkalFødes[];
 }
 
 const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
@@ -102,7 +102,7 @@ const OpprettFørstegangsbehandling = () => {
                 url: `/familie-ef-sak/api/forstegangsbehandling/${fagsakData.id}/opprett`,
                 data: {
                     kravMottatt: kravMottattDato,
-                    barnSomSkalFødes: barnSomSkalFødes,
+                    barn: barnSomSkalFødes,
                     behandlingsårsak: årsak,
                 },
             })
