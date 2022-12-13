@@ -17,7 +17,7 @@ export const FagsakTittelLinje: React.FC<{
 }> = ({ fagsak }) => (
     <TittelLinje>
         <Heading size={'small'} level="3">
-            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)}
+            Fagsak: {formatterEnumVerdi(fagsak.stønadstype)} (SaksId: {fagsak.eksternId})
         </Heading>
         {fagsak.erLøpende && (
             <StyledTag variant={'info'} size={'small'}>
