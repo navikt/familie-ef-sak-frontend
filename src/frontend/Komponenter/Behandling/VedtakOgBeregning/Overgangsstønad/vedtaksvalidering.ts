@@ -5,10 +5,13 @@ import {
     IVedtaksperiode,
 } from '../../../../App/typer/vedtak';
 import {
+    erEtter,
     erMånedÅrEtter,
     erMånedÅrEtterEllerLik,
     erMånedÅrLik,
+    månedÅrTilDate,
     plusMåneder,
+    tilDato,
     tilÅrMåned,
 } from '../../../../App/utils/dato';
 import { InnvilgeVedtakForm } from './InnvilgeVedtak/InnvilgeVedtak';
@@ -21,6 +24,7 @@ export const validerInnvilgetVedtakForm = ({
     periodeBegrunnelse,
     inntektBegrunnelse,
     samordningsfradragType,
+    yngsteBarnDato,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     const periodeBegrunnelseFeil =
         periodeBegrunnelse === '' || periodeBegrunnelse === undefined
@@ -40,107 +44,123 @@ export const validerInnvilgetVedtakForm = ({
             : undefined;
 
     return {
-        ...validerVedtaksperioder({ perioder, inntekter }),
+        ...validerVedtaksperioder({ perioder, inntekter, yngsteBarnDato }),
         inntektBegrunnelse: inntektBegrunnelseFeil,
         periodeBegrunnelse: periodeBegrunnelseFeil,
         samordningsfradragType: typeSamordningFeil,
+        yngsteBarnDato,
     };
 };
 
 export const validerVedtaksperioder = ({
     perioder,
     inntekter,
+    yngsteBarnDato,
 }: {
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
+    yngsteBarnDato: string;
 }): FormErrors<{
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
+    yngsteBarnDato: string;
 }> => {
     const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
     const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
+
     let harPeriodeFør7mndFremITiden = false;
+
+    const åtteÅrFremITiden = (barnDatoStreng: string) => {
+        const barnDato = månedÅrTilDate(barnDatoStreng);
+        return plusMåneder(tilDato(barnDato), 96);
+    };
 
     const yngsteBarnErOver8FørUtgangAvPerioden = (
         yngsteBarnFødselsdato: string,
         årMånedTil: string | undefined
     ) => {
-        console.log(yngsteBarnFødselsdato + årMånedTil);
+        if (årMånedTil && erEtter(yngsteBarnFødselsdato, åtteÅrFremITiden(yngsteBarnFødselsdato))) {
+            true;
+        }
         return false;
     };
 
-    const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
-        const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
-        let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
-            aktivitet: undefined,
-            periodeType: undefined,
-            årMånedFra: undefined,
-            årMånedTil: undefined,
-        };
-
-        if (
-            periodeType === EPeriodetype.HOVEDPERIODE &&
-            yngsteBarnErOver8FørUtgangAvPerioden('2022-01-01', årMånedTil) //TODO bruk riktig dato
-        ) {
-            vedtaksperiodeFeil = {
-                ...vedtaksperiodeFeil,
-                periodeType:
-                    'Yngste barn er over 8 før utgang av perioden. Må ha barn under 8 i hele hovedperioden. ',
+    const feilIVedtaksPerioder = (yngsteBarnDato: string) =>
+        perioder.map((vedtaksperiode, index) => {
+            const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
+            let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
+                aktivitet: undefined,
+                periodeType: undefined,
+                årMånedFra: undefined,
+                årMånedTil: undefined,
             };
-        }
 
-        if (periodeType === '' || periodeType === undefined) {
-            vedtaksperiodeFeil = { ...vedtaksperiodeFeil, periodeType: 'Mangler periodetype' };
-        }
-
-        if (aktivitet === undefined || aktivitet === '') {
-            vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };
-        }
-        if (
-            periodeType === EPeriodetype.PERIODE_FØR_FØDSEL &&
-            aktivitet !== EAktivitet.IKKE_AKTIVITETSPLIKT
-        ) {
-            vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };
-        }
-
-        if (!årMånedTil || !årMånedFra) {
-            return { ...vedtaksperiodeFeil, årMånedFra: 'Mangelfull utfylling av vedtaksperiode' };
-        }
-
-        if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
-            return {
-                ...vedtaksperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
-            };
-        }
-        const forrige = index > 0 && perioder[index - 1];
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
-                return {
+            if (
+                periodeType === EPeriodetype.HOVEDPERIODE &&
+                yngsteBarnErOver8FørUtgangAvPerioden(yngsteBarnDato, årMånedTil)
+            ) {
+                vedtaksperiodeFeil = {
                     ...vedtaksperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    periodeType:
+                        'Yngste barn er over 8 før utgang av perioden. Må ha barn under 8 i hele hovedperioden. ',
                 };
             }
-        }
 
-        // Det er gyldig med periode etter 7mnd frem i tiden, hvis det finnes en periode før 7mnd frem i tiden
-        if (!erMånedÅrEtter(syvMånederFremITiden, årMånedFra)) {
-            harPeriodeFør7mndFremITiden = true;
-        }
-        if (erMånedÅrEtter(syvMånederFremITiden, årMånedFra) && !harPeriodeFør7mndFremITiden) {
-            return {
-                ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 7mnd frem i tid`,
-            };
-        }
-        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
-            return {
-                ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
-            };
-        }
-        return vedtaksperiodeFeil;
-    });
+            if (periodeType === '' || periodeType === undefined) {
+                vedtaksperiodeFeil = { ...vedtaksperiodeFeil, periodeType: 'Mangler periodetype' };
+            }
+
+            if (aktivitet === undefined || aktivitet === '') {
+                vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };
+            }
+            if (
+                periodeType === EPeriodetype.PERIODE_FØR_FØDSEL &&
+                aktivitet !== EAktivitet.IKKE_AKTIVITETSPLIKT
+            ) {
+                vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };
+            }
+
+            if (!årMånedTil || !årMånedFra) {
+                return {
+                    ...vedtaksperiodeFeil,
+                    årMånedFra: 'Mangelfull utfylling av vedtaksperiode',
+                };
+            }
+
+            if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
+                return {
+                    ...vedtaksperiodeFeil,
+                    årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                };
+            }
+            const forrige = index > 0 && perioder[index - 1];
+            if (forrige && forrige.årMånedTil) {
+                if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+                    return {
+                        ...vedtaksperiodeFeil,
+                        årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    };
+                }
+            }
+
+            // Det er gyldig med periode etter 7mnd frem i tiden, hvis det finnes en periode før 7mnd frem i tiden
+            if (!erMånedÅrEtter(syvMånederFremITiden, årMånedFra)) {
+                harPeriodeFør7mndFremITiden = true;
+            }
+            if (erMånedÅrEtter(syvMånederFremITiden, årMånedFra) && !harPeriodeFør7mndFremITiden) {
+                return {
+                    ...vedtaksperiodeFeil,
+                    årMånedFra: `Startdato (${årMånedFra}) mer enn 7mnd frem i tid`,
+                };
+            }
+            if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
+                return {
+                    ...vedtaksperiodeFeil,
+                    årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
+                };
+            }
+            return vedtaksperiodeFeil;
+        });
 
     const inntektsperiodeFeil = inntekter.map((inntektsperiode, index) => {
         const årMånedFra = inntektsperiode.årMånedFra;
@@ -176,8 +196,9 @@ export const validerVedtaksperioder = ({
     });
 
     return {
-        perioder: feilIVedtaksPerioder,
+        perioder: feilIVedtaksPerioder(yngsteBarnDato),
         inntekter: inntektsperiodeFeil,
+        yngsteBarnDato,
     };
 };
 

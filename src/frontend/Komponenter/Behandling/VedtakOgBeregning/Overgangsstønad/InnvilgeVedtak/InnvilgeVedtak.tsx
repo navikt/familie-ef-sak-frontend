@@ -59,8 +59,9 @@ export const InnvilgeVedtak: React.FC<{
             ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
 
-    const { vilkår } = useHentVilkår();
-    const [yngsteBarn, settYngsteBarn] = useState<string | null>(null);
+    const { vilkår, hentVilkår } = useHentVilkår();
+
+    const [yngsteBarn, settYngsteBarn] = useState<string>('3000-01-01');
 
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
@@ -83,6 +84,10 @@ export const InnvilgeVedtak: React.FC<{
     const [feilmelding, settFeilmelding] = useState<string>();
 
     useEffect(() => {
+        hentVilkår(behandling.id);
+    }, [behandling.id, hentVilkår]);
+
+    useEffect(() => {
         if (vilkår.status === RessursStatus.SUKSESS) {
             const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
                 .map((b) => b.registergrunnlag)
@@ -98,7 +103,7 @@ export const InnvilgeVedtak: React.FC<{
                         return erEtter(a, b) ? b : a;
                     }
                 });
-
+            console.log('Tidligste dato: ' + tidligsteDato);
             tidligsteDato && settYngsteBarn(tidligsteDato);
         }
     }, [vilkår]);
@@ -114,6 +119,7 @@ export const InnvilgeVedtak: React.FC<{
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
+            yngsteBarnDato: yngsteBarn,
         },
         validerInnvilgetVedtakForm
     );
@@ -287,6 +293,7 @@ export const InnvilgeVedtak: React.FC<{
             perioder: form.perioder,
             inntekter: form.inntekter,
             samordningsfradragType: skalVelgeSamordningstype ? form.samordningsfradragType : null,
+            yngsteBarnDato: yngsteBarn,
         };
         switch (behandling.type) {
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
@@ -298,7 +305,6 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <p>{yngsteBarn}</p>s
             <WrapperDobbelMarginTop>
                 {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
