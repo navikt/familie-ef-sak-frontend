@@ -17,7 +17,7 @@ import { datoTilAlder } from '../../../../App/utils/dato';
 import { Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { v4 as uuidv4 } from 'uuid';
+import { tomUtgiftsperiodeRad } from './utils';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -61,15 +61,6 @@ interface Props {
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     barn: IBarnMedSamvær[];
 }
-
-export const tomUtgiftsperiodeRad = (): IUtgiftsperiode => ({
-    årMånedFra: '',
-    årMånedTil: '',
-    barn: [],
-    utgifter: undefined,
-    erMidlertidigOpphør: false,
-    endretKey: uuidv4(),
-});
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
     utgiftsperioder,
@@ -156,6 +147,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 const ikkeValgteBarn = barnForPeriode.filter((barn) =>
                     utgiftsperiode.barn.includes(barn.value)
                 );
+                console.log(utgiftsperiode.endretKey);
                 return (
                     <UtgiftsperiodeRad
                         key={utgiftsperiode.endretKey}
