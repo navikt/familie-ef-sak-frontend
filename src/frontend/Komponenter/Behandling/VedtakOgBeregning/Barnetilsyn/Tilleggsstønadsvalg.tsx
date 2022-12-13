@@ -218,10 +218,13 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                                 tilleggsstønadPerioder.remove(index);
                                                 settValideringsfeil(
                                                     (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                        const perioder = (
+                                                        const tilleggsstønadsperioder = (
                                                             prevState.tilleggsstønadsperioder ?? []
                                                         ).filter((_, i) => i !== index);
-                                                        return { ...prevState, perioder };
+                                                        return {
+                                                            ...prevState,
+                                                            tilleggsstønadsperioder,
+                                                        };
                                                     }
                                                 );
                                             }}
