@@ -79,7 +79,7 @@ export const validerVedtaksperioder = ({
         yngsteBarnFødselsdato: string,
         årMånedTil: string | undefined
     ) => {
-        if (årMånedTil && erEtter(yngsteBarnFødselsdato, åtteÅrFremITiden(yngsteBarnFødselsdato))) {
+        if (årMånedTil && erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato))) {
             true;
         }
         return false;
