@@ -61,8 +61,6 @@ export const InnvilgeVedtak: React.FC<{
 
     const { vilkår, hentVilkår } = useHentVilkår();
 
-    const [yngsteBarn, settYngsteBarn] = useState<string>('3000-01-01');
-
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -87,20 +85,6 @@ export const InnvilgeVedtak: React.FC<{
         hentVilkår(behandling.id);
     }, [behandling.id, hentVilkår]);
 
-    useEffect(() => {
-        if (vilkår.status === RessursStatus.SUKSESS) {
-            const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
-                .map((b) => b.registergrunnlag)
-                .map((r) => r.fødselsdato)
-                .filter((fødselsdato): fødselsdato is string => !!fødselsdato)
-                .reduce((a, b) => {
-                    return erEtter(a, b) ? a : b;
-                });
-            console.log('Tidligste dato: ' + tidligsteDato);
-            tidligsteDato && settYngsteBarn(tidligsteDato);
-        }
-    }, [vilkår]);
-
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
@@ -112,7 +96,7 @@ export const InnvilgeVedtak: React.FC<{
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
-            yngsteBarnDato: yngsteBarn,
+            yngsteBarnDato: '3000-01-01',
         },
         validerInnvilgetVedtakForm
     );
@@ -122,11 +106,31 @@ export const InnvilgeVedtak: React.FC<{
     const periodeBegrunnelse = formState.getProps('periodeBegrunnelse') as FieldState;
     const inntektBegrunnelse = formState.getProps('inntektBegrunnelse') as FieldState;
     const typeSamordningsfradag = formState.getProps('samordningsfradragType') as FieldState;
+    const yngsteBarnDato = formState.getProps('yngsteBarnDato') as FieldState;
 
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
     const låsVedtaksperiodeRad = !!revurderesFra;
+
+    useEffect(() => {
+        if (vilkår.status === RessursStatus.SUKSESS) {
+            // const termindato = vilkår.data.grunnlag.barnMedSamvær
+            //     .map((b) => b.søknadsgrunnlag)
+            //     .map((sb) => sb.fødselTermindato); Finnes det noe her?
+
+            const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
+                .map((b) => b.registergrunnlag)
+                .map((r) => r.fødselsdato)
+                .filter((fødselsdato): fødselsdato is string => !!fødselsdato)
+                .reduce((a, b) => {
+                    return erEtter(a, b) ? a : b;
+                });
+            console.log('Tidligste dato: ' + tidligsteDato);
+            //tidligsteDato && settYngsteBarn(tidligsteDato);
+            tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
+        }
+    }, [vilkår, yngsteBarnDato]);
 
     useEffect(() => {
         if (!revurderesFra || !vedtakshistorikk) {
@@ -286,7 +290,7 @@ export const InnvilgeVedtak: React.FC<{
             perioder: form.perioder,
             inntekter: form.inntekter,
             samordningsfradragType: skalVelgeSamordningstype ? form.samordningsfradragType : null,
-            yngsteBarnDato: yngsteBarn,
+            yngsteBarnDato: '3000-01-01',
         };
         switch (behandling.type) {
             case Behandlingstype.FØRSTEGANGSBEHANDLING:
