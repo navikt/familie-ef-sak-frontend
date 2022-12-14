@@ -202,7 +202,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                 const inntekter = (
                                                     prevState.inntekter ?? []
                                                 ).filter((_, i) => i !== index);
-                                                return { ...prevState, inntekter: inntekter };
+                                                return { ...prevState, inntekter };
                                             }
                                         );
                                     }}

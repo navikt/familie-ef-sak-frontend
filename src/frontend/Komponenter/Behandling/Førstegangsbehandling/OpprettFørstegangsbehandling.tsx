@@ -3,7 +3,7 @@ import { useApp } from '../../../App/context/AppContext';
 import LeggTilBarnSomSkalFødes from '../../Journalføring/LeggTilBarnSomSkalFødes';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Fagsak } from '../../../App/typer/fagsak';
+import { Behandling, BehandlingResultat, Fagsak } from '../../../App/typer/fagsak';
 import {
     byggTomRessurs,
     Ressurs,
@@ -15,15 +15,20 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { BodyLong, BodyShort, Button, Heading, Label } from '@navikt/ds-react';
 import { TextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
-import { FamilieDatovelger, FamilieSelect } from '@navikt/familie-form-elements';
+import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { erGyldigDato } from '../../../App/utils/dato';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import styled from 'styled-components';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
 
 type IFagsakParam = {
     fagsakId: string;
 };
+const FeilmeldingWrapper = styled.div`
+    margin-top: 2rem;
+`;
+
 const Container = styled.div`
     margin: 2rem;
     max-width: 60rem;
@@ -37,7 +42,7 @@ const SkjemaContainer = styled.div`
 interface Førstegangsbehandling {
     kravMottatt: string;
     behandlingsårsak: Behandlingsårsak;
-    barnSomSkalFødes: BarnSomSkalFødes[];
+    barn: BarnSomSkalFødes[];
 }
 
 const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
@@ -48,12 +53,20 @@ const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
             !erGyldigDato(barn.fødselTerminDato)
     );
 
+const kanOppretteFørstegangsbehandling = (behandlinger: Behandling[]): boolean => {
+    return !behandlinger.some((behandling) => {
+        return (
+            behandling.type != Behandlingstype.FØRSTEGANGSBEHANDLING ||
+            behandling.resultat != BehandlingResultat.HENLAGT
+        );
+    });
+};
 const OpprettFørstegangsbehandling = () => {
     const { fagsakId } = useParams<IFagsakParam>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
     const [kravMottattDato, settKravMottattDato] = useState<string>();
-    const [årsak, settÅrsak] = useState<Behandlingsårsak>();
+    const årsak = Behandlingsårsak.PAPIRSØKNAD;
     const [feilmelding, settFeilmelding] = useState<string>();
     const [senderInn, settSenderInn] = useState<boolean>(false);
     const { axiosRequest } = useApp();
@@ -89,7 +102,7 @@ const OpprettFørstegangsbehandling = () => {
                 url: `/familie-ef-sak/api/forstegangsbehandling/${fagsakData.id}/opprett`,
                 data: {
                     kravMottatt: kravMottattDato,
-                    barnSomSkalFødes: barnSomSkalFødes,
+                    barn: barnSomSkalFødes,
                     behandlingsårsak: årsak,
                 },
             })
@@ -119,51 +132,57 @@ const OpprettFørstegangsbehandling = () => {
             <DataViewer response={{ fagsak }}>
                 {({ fagsak }) => (
                     <>
-                        <TextLabel>Stønadstype: </TextLabel>
-                        <BodyShort>{stønadstypeTilTekst[fagsak.stønadstype]}</BodyShort>
-                        <TextLabel>Fødselsnummer: </TextLabel>
-                        <BodyShort>{fagsak.personIdent}</BodyShort>
-                        <SkjemaContainer>
-                            <Label htmlFor={'krav-mottatt'}>Krav mottatt</Label>
-                            <FamilieDatovelger
-                                id={'krav-mottatt'}
-                                label={''}
-                                onChange={(dato) => {
-                                    settKravMottattDato(dato as string);
-                                }}
-                                valgtDato={kravMottattDato}
-                                feil={
-                                    kravMottattDato &&
-                                    !erGyldigDato(kravMottattDato) &&
-                                    'Ugyldig dato'
-                                }
-                                limitations={{ maxDate: new Date().toISOString() }}
+                        <div>
+                            <TextLabel>Stønadstype: </TextLabel>
+                            <BodyShort>{stønadstypeTilTekst[fagsak.stønadstype]}</BodyShort>
+                            <TextLabel>Fødselsnummer: </TextLabel>
+                            <BodyShort>{fagsak.personIdent}</BodyShort>
+                        </div>
+                        <div>
+                            <TextLabel>Årsak:</TextLabel>
+                            <BodyShort>
+                                {behandlingsårsakTilTekst[Behandlingsårsak.PAPIRSØKNAD]}
+                            </BodyShort>
+                            <SkjemaContainer>
+                                <Label htmlFor={'krav-mottatt'}>Krav mottatt</Label>
+                                <FamilieDatovelger
+                                    id={'krav-mottatt'}
+                                    label={''}
+                                    onChange={(dato) => {
+                                        settKravMottattDato(dato as string);
+                                    }}
+                                    valgtDato={kravMottattDato}
+                                    feil={
+                                        kravMottattDato &&
+                                        !erGyldigDato(kravMottattDato) &&
+                                        'Ugyldig dato'
+                                    }
+                                    limitations={{ maxDate: new Date().toISOString() }}
+                                />
+                            </SkjemaContainer>
+                            <LeggTilBarnSomSkalFødes
+                                barnSomSkalFødes={barnSomSkalFødes}
+                                oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
+                                tittel={'Terminbarn'}
                             />
-                            <FamilieSelect
-                                value={årsak || ''}
-                                label={'Velg årsak'}
-                                onChange={(e) => settÅrsak(e.target.value as Behandlingsårsak)}
+                            <Button
+                                type={'button'}
+                                onClick={() => opprettBehandling(fagsak)}
+                                disabled={!kanOppretteFørstegangsbehandling(fagsak.behandlinger)}
                             >
-                                <option value="">Velg årsak</option>
-                                <option value={Behandlingsårsak.NYE_OPPLYSNINGER}>
-                                    {behandlingsårsakTilTekst[Behandlingsårsak.NYE_OPPLYSNINGER]}
-                                </option>
-                                <option value={Behandlingsårsak.PAPIRSØKNAD}>
-                                    {behandlingsårsakTilTekst[Behandlingsårsak.PAPIRSØKNAD]}
-                                </option>
-                            </FamilieSelect>
-                        </SkjemaContainer>
-                        <LeggTilBarnSomSkalFødes
-                            barnSomSkalFødes={barnSomSkalFødes}
-                            oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
-                            tittel={'Terminbarn'}
-                        />
-                        <Button type={'button'} onClick={() => opprettBehandling(fagsak)}>
-                            Opprett førstegangsbehandling
-                        </Button>
-                        {feilmelding && (
-                            <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
-                        )}
+                                Opprett førstegangsbehandling
+                            </Button>
+                            <FeilmeldingWrapper>
+                                {feilmelding && (
+                                    <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
+                                )}
+                                {!kanOppretteFørstegangsbehandling(fagsak.behandlinger) && (
+                                    <AlertStripeFeilPreWrap>
+                                        Det finnes allerede en behandling på denne brukeren
+                                    </AlertStripeFeilPreWrap>
+                                )}
+                            </FeilmeldingWrapper>
+                        </div>
                     </>
                 )}
             </DataViewer>
