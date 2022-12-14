@@ -9,7 +9,6 @@ import {
     erMånedÅrEtter,
     erMånedÅrEtterEllerLik,
     erMånedÅrLik,
-    månedÅrTilDate,
     plusMåneder,
     tilDato,
     tilÅrMåned,
@@ -71,19 +70,14 @@ export const validerVedtaksperioder = ({
     let harPeriodeFør7mndFremITiden = false;
 
     const åtteÅrFremITiden = (barnDatoStreng: string) => {
-        const barnDato = månedÅrTilDate(barnDatoStreng);
-        return plusMåneder(tilDato(barnDato), 96);
+        return plusMåneder(tilDato(barnDatoStreng), 96);
     };
 
     const yngsteBarnErOver8FørUtgangAvPerioden = (
         yngsteBarnFødselsdato: string,
         årMånedTil: string | undefined
     ) => {
-        console.log('VALIDER: ', yngsteBarnFødselsdato);
-        if (årMånedTil && erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato))) {
-            true;
-        }
-        return false;
+        return årMånedTil && erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato));
     };
 
     const feilIVedtaksPerioder = (yngsteBarnDato: string) =>
@@ -100,15 +94,11 @@ export const validerVedtaksperioder = ({
                 periodeType === EPeriodetype.HOVEDPERIODE &&
                 yngsteBarnErOver8FørUtgangAvPerioden(yngsteBarnDato, årMånedTil)
             ) {
-                console.log('VALIDER: FEIL FUNNET!', yngsteBarnDato);
-
                 vedtaksperiodeFeil = {
                     ...vedtaksperiodeFeil,
                     periodeType:
                         'Yngste barn er over 8 før utgang av perioden. Må ha barn under 8 i hele hovedperioden. ',
                 };
-            } else {
-                console.log('VALIDER: INGEN FEIL FUNNET', yngsteBarnDato);
             }
 
             if (periodeType === '' || periodeType === undefined) {

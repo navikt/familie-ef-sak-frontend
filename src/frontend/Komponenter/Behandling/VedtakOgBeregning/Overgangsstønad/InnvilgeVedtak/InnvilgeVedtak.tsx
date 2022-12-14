@@ -35,7 +35,8 @@ import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 import { useHentVilkår } from '../../../../../App/hooks/useHentVilkår';
-import { erEtter } from '../../../../../App/utils/dato';
+import { erEtter, erGyldigDato } from '../../../../../App/utils/dato';
+import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -113,23 +114,34 @@ export const InnvilgeVedtak: React.FC<{
 
     const låsVedtaksperiodeRad = !!revurderesFra;
 
-    useEffect(() => {
+    const yngsteBarnFødselsdato = (vilkår: Ressurs<IVilkår>): string | undefined => {
         if (vilkår.status === RessursStatus.SUKSESS) {
-            // const termindato = vilkår.data.grunnlag.barnMedSamvær
-            //     .map((b) => b.søknadsgrunnlag)
-            //     .map((sb) => sb.fødselTermindato); Finnes det noe her?
+            const terminbarnFødselsdatoer = vilkår.data.grunnlag.barnMedSamvær
+                .map((b) => b.søknadsgrunnlag)
+                .map((sb) => sb.fødselTermindato)
+                .filter(
+                    (fødselTermindato): fødselTermindato is string =>
+                        !!fødselTermindato && erGyldigDato(fødselTermindato)
+                );
 
             const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
                 .map((b) => b.registergrunnlag)
                 .map((r) => r.fødselsdato)
-                .filter((fødselsdato): fødselsdato is string => !!fødselsdato)
+                .filter(
+                    (fødselsdato): fødselsdato is string =>
+                        !!fødselsdato && erGyldigDato(fødselsdato)
+                )
+                .concat(terminbarnFødselsdatoer)
                 .reduce((a, b) => {
                     return erEtter(a, b) ? a : b;
                 });
-            console.log('Tidligste dato: ' + tidligsteDato);
-            //tidligsteDato && settYngsteBarn(tidligsteDato);
-            tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
+            return tidligsteDato;
         }
+    };
+
+    useEffect(() => {
+        const tidligsteDato = yngsteBarnFødselsdato(vilkår);
+        tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
     }, [vilkår, yngsteBarnDato]);
 
     useEffect(() => {
