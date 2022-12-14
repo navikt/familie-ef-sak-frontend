@@ -5,7 +5,11 @@ import {
     IvedtakForBarnetilsyn,
 } from '../../../../App/typer/vedtak';
 import { v4 as uuidv4 } from 'uuid';
-import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
+import {
+    fyllHullMedOpphør,
+    revurdererFørFørstePeriode,
+    revurderFraInitPeriode,
+} from './revurderFraUtils';
 import { tomUtgiftsperiodeRad } from './utils';
 import React, { FC, useCallback, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
@@ -17,7 +21,7 @@ import { ToggleName } from '../../../../App/context/toggles';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useEffectNotInitialRender } from '../../../../App/hooks/felles/useEffectNotInitialRender';
-import { RevurderesFraOgMed } from './RevurderesFraOgMed';
+import { RevurderesFraOgMed } from '../Felles/RevurderesFraOgMed';
 import { Vedtaksform } from './Vedtaksform';
 
 const oppdaterVedtakMedEndretKey = (
@@ -121,7 +125,10 @@ export const InnvilgeBarnetilsyn: FC<{
                     settRevurderesFra={settRevurderesFra}
                     revurderesFra={revurderesFra}
                     feilmelding={revurderesFraOgMedFeilmelding}
-                    vedtakshistorikk={vedtakshistorikk}
+                    revurdererFørFørstePeriode={revurdererFørFørstePeriode(
+                        vedtakshistorikk,
+                        revurderesFra
+                    )}
                 />
             )}
             {(!toggle || vedtak) && (
