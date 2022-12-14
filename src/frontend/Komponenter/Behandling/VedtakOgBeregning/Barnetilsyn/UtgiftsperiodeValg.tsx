@@ -60,6 +60,7 @@ interface Props {
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     barn: IBarnMedSamvær[];
+    låsFraDatoFørsteRad: boolean;
 }
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
@@ -67,6 +68,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     valideringsfeil,
     settValideringsFeil,
     barn,
+    låsFraDatoFørsteRad,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -165,6 +167,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             }}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
+                            disabledFra={index === 0 && låsFraDatoFørsteRad}
                         />
                         {behandlingErRedigerbar ? (
                             <FamilieReactSelect

@@ -274,6 +274,7 @@ export const Vedtaksform: React.FC<{
                 valideringsfeil={formState.errors.utgiftsperioder}
                 settValideringsFeil={formState.setErrors}
                 barn={barn}
+                låsFraDatoFørsteRad={!!lagretVedtak}
             />
             <div>
                 {!behandlingErRedigerbar && begrunnelseState.value === '' ? (

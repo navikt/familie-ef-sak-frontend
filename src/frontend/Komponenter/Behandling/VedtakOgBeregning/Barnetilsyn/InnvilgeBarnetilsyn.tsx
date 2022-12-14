@@ -131,7 +131,7 @@ export const InnvilgeBarnetilsyn: FC<{
                     )}
                 />
             )}
-            {(!toggle || vedtak) && (
+            {(!toggle || !behandling.forrigeBehandlingId || vedtak) && (
                 <Vedtaksform
                     behandling={behandling}
                     lagretVedtak={oppdaterVedtakMedEndretKey(vedtak)}
