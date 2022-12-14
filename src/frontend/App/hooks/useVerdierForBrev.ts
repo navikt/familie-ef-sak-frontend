@@ -6,6 +6,14 @@ import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak'
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
     tomdatoInnvilgelseForstegangsbehandling = 'tomdatoInnvilgelseForstegangsbehandling',
+    fomdatoInnvilgelse = 'fomdatoInnvilgelse',
+    tomdatoInnvilgelse = 'tomdatoInnvilgelse',
+    fomdatoInnvilgelseBarnetilsyn = 'fomdatoInnvilgelseBarnetilsyn',
+    tomdatoInnvilgelseBarnetilsyn = 'tomdatoInnvilgelseBarnetilsyn',
+    fomdatoInnvilgelseSkolepenger = 'fomdatoInnvilgelseSkolepenger',
+    tomdatoInnvilgelseSkolepenger = 'tomdatoInnvilgelseSkolepenger',
+    fomdatoRevurderingBT = 'fomdatoRevurderingBT',
+    tomdatoRevurderingBT = 'tomdatoRevurderingBT',
 }
 
 export const useVerdierForBrev = (
@@ -20,14 +28,20 @@ export const useVerdierForBrev = (
             beløpsperioder.data.length > 0
         ) {
             const perioder = beløpsperioder.data;
+            const tilDato = formaterIsoDato(perioder[perioder.length - 1].periode.tildato);
+            const fraDato = formaterIsoDato(perioder[0].periode.fradato);
             settFlettefeltStore((prevState) => ({
                 ...prevState,
-                [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
-                    perioder[perioder.length - 1].periode.tildato
-                ),
-                [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: formaterIsoDato(
-                    perioder[0].periode.fradato
-                ),
+                [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: tilDato,
+                [EBehandlingFlettefelt.tomdatoInnvilgelse]: tilDato,
+                [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: fraDato,
+                [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
+                [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
+                [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
+                [EBehandlingFlettefelt.fomdatoInnvilgelseSkolepenger]: fraDato,
+                [EBehandlingFlettefelt.tomdatoInnvilgelseSkolepenger]: tilDato,
+                [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
+                [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
             }));
         }
     }, [beløpsperioder]);
