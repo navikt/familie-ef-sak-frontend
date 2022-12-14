@@ -8,6 +8,14 @@ import { BodyLong, Button, Heading } from '@navikt/ds-react';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+
+const AlertInfoPreWrap = styled(AlertInfo)`
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-top: 2rem;
+`;
+
 const Container = styled.div`
     margin: 2rem;
     max-width: 60rem;
@@ -62,6 +70,14 @@ const VelgPersonOgStønadstype = () => {
                 Velg stønadstype og fødselsnummer for å gå videre til opprettelse av
                 førstegangsbehandling
             </BodyLong>
+            <AlertInfoPreWrap>
+                Denne funksjonen skal brukes hvis du trenger å opprette en førstegangsbehandling
+                uten at det finnes en digital søknad. Typiske scenarioer for bruk er henlagte
+                papirsøknader, papirsøknader journalført i Gosys, tilleggsstønadssøknader som
+                gjelder stønad til barnetilsyn.
+                {'\n\n'}
+                Dersom det foreligger en digital søknad så skal denne admin-journalføres.
+            </AlertInfoPreWrap>
             <SkjemaContainer>
                 <FamilieSelect
                     value={stønadstype || ''}
