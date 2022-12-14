@@ -14,11 +14,12 @@ import {
 import { skjulAvsnittUtenVerdi } from './BrevUtils';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Alert, Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
+import { Button, Panel, Select, Textarea, TextField } from '@navikt/ds-react';
 import { Delete } from '@navikt/ds-icons';
 import NedKnapp from '../../../Felles/Knapper/NedKnapp';
 import OppKnapp from '../../../Felles/Knapper/OppKnapp';
 import TilbakestillKnapp from '../../../Felles/Knapper/TilbakestillKnapp';
+import { VarselFyllInn } from './VarselFyllInn';
 
 const StyledSelect = styled(Select)`
     margin-top: 1rem;
@@ -62,11 +63,6 @@ const FlyttAvsnittKnappWrapper = styled.div`
     justify-content: space-evenly;
     margin-left: 0.5rem;
     margin-top: 1rem;
-`;
-
-const Varsel = styled(Alert)`
-    margin-top: 1rem;
-    width: 95%;
 `;
 
 type Props = {
@@ -175,23 +171,7 @@ const BrevInnhold: React.FC<Props> = ({
                             />
                         </LeggTilKnappWrapper>
                     )}
-                    {skalViseVarselOmManuelleFlettefelter && (
-                        <Varsel variant={'warning'}>
-                            {brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID_KLAGE && (
-                                <>
-                                    Husk å fylle ut antall uker forventet svartid i{' '}
-                                    <span style={{ fontWeight: 'bold' }}>[antall]</span> i avsnittet
-                                    under
-                                </>
-                            )}
-                            {brevType === FrittståendeBrevtype.BREV_OM_FORLENGET_SVARTID && (
-                                <>
-                                    Husk å fylle ut hvilken stønad det gjelder og antall uker
-                                    forventet svartid i avsnittet under.
-                                </>
-                            )}
-                        </Varsel>
-                    )}
+                    {skalViseVarselOmManuelleFlettefelter && <VarselFyllInn brevtype={brevType} />}
                     {avsnittSomSkalVises.map((rad, index) => {
                         const deloverskriftId = `deloverskrift-${rad.id}`;
                         const innholdId = `innhold-${rad.id}`;
