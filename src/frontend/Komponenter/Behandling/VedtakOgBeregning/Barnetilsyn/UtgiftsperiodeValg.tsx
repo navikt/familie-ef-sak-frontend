@@ -147,7 +147,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 const ikkeValgteBarn = barnForPeriode.filter((barn) =>
                     utgiftsperiode.barn.includes(barn.value)
                 );
-                console.log(utgiftsperiode.endretKey);
                 return (
                     <UtgiftsperiodeRad
                         key={utgiftsperiode.endretKey}
