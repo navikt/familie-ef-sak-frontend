@@ -10,7 +10,10 @@ import {
     isValid,
     parse,
     parseISO,
+    subYears,
 } from 'date-fns';
+
+export const minusÅr = (date: Date, antall: number): Date => subYears(date, antall);
 
 export const plusMåneder = (date: Date, antall: number): Date => addMonths(date, antall);
 
