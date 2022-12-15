@@ -8,7 +8,7 @@ import {
     IVedtakForOvergangsstønad,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
-import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
@@ -62,18 +62,13 @@ export const Opphør: React.FC<{
         }
     };
 
-    const håndterOpphørtVedtak = (res: Ressurs<string>) => {
-        switch (res.status) {
-            case RessursStatus.SUKSESS:
-                navigate(`/behandling/${behandlingId}/simulering`);
-                hentBehandling.rerun();
-                nullstillIkkePersisterteKomponenter();
-                break;
-            case RessursStatus.HENTER:
-            case RessursStatus.IKKE_HENTET:
-                break;
-            default:
-                settFeilmelding(res.frontendFeilmelding);
+    const håndterOpphørtVedtak = (res: RessursSuksess<string> | RessursFeilet) => {
+        if (res.status === RessursStatus.SUKSESS) {
+            navigate(`/behandling/${behandlingId}/simulering`);
+            hentBehandling.rerun();
+            nullstillIkkePersisterteKomponenter();
+        } else {
+            settFeilmelding(res.frontendFeilmelding);
         }
     };
 
