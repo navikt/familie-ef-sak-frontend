@@ -18,7 +18,7 @@ import { useToggles } from '../../../../App/context/TogglesContext';
 import { useApp } from '../../../../App/context/AppContext';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { ToggleName } from '../../../../App/context/toggles';
-import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../App/typer/ressurs';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useEffectNotInitialRender } from '../../../../App/hooks/felles/useEffectNotInitialRender';
 import { RevurderesFraOgMed } from '../Felles/RevurderesFraOgMed';
@@ -90,19 +90,14 @@ export const InnvilgeBarnetilsyn: FC<{
             axiosRequest<IvedtakForBarnetilsyn, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/${behandling.id}/historikk/${revurderesFra}`,
-            }).then((res: Ressurs<IvedtakForBarnetilsyn>) => {
+            }).then((res: RessursSuksess<IvedtakForBarnetilsyn> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     settVedtakshistorikk(
                         oppdaterVedtakMedInitPeriodeOgOpphørshulll(res.data, revurderesFra)
                     );
-                } else if (
-                    res.status === RessursStatus.FEILET ||
-                    res.status === RessursStatus.FUNKSJONELL_FEIL
-                ) {
-                    settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
                 } else {
-                    settRevurderesFraOgMedFeilmelding('Noe feilet med henting av vedtaksperioder');
+                    settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
                 }
             });
         },
