@@ -14,7 +14,12 @@ import {
     IVedtaksperiode,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursStatus,
+    RessursSuksess,
+} from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../../../App/context/AppContext';
@@ -36,6 +41,7 @@ import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEf
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 import { useHentVilkår } from '../../../../../App/hooks/useHentVilkår';
 import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
+import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -115,8 +121,8 @@ export const InnvilgeVedtak: React.FC<{
 
     const låsVedtaksperiodeRad = !!revurderesFra;
 
-    useEffect(() => {
-        if (vilkår.status === RessursStatus.SUKSESS) {
+    const yngsteBarnFødselsdato = useCallback(
+        (vilkår: RessursSuksess<IVilkår>) => {
             const terminbarnFødselsdatoer = vilkår.data.grunnlag.barnMedSamvær
                 .map((b) => b.søknadsgrunnlag)
                 .map((sb) => sb.fødselTermindato)
@@ -139,8 +145,15 @@ export const InnvilgeVedtak: React.FC<{
                     return erEtter(a, b) ? a : b;
                 });
             tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
+        },
+        [yngsteBarnDato]
+    );
+
+    useEffect(() => {
+        if (vilkår.status === RessursStatus.SUKSESS) {
+            yngsteBarnFødselsdato(vilkår);
         }
-    }, [vilkår, yngsteBarnDato]);
+    }, [vilkår, yngsteBarnFødselsdato]);
 
     useEffect(() => {
         if (!revurderesFra || !vedtakshistorikk) {
