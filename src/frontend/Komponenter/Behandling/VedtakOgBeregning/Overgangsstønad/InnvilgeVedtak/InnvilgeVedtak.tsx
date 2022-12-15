@@ -35,8 +35,7 @@ import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 import { useHentVilkår } from '../../../../../App/hooks/useHentVilkår';
-import { erEtter, erGyldigDato } from '../../../../../App/utils/dato';
-import { IVilkår } from '../../../Inngangsvilkår/vilkår';
+import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -83,8 +82,10 @@ export const InnvilgeVedtak: React.FC<{
     const [feilmelding, settFeilmelding] = useState<string>();
 
     useEffect(() => {
-        hentVilkår(behandling.id);
-    }, [behandling.id, hentVilkår]);
+        if (behandling != undefined && vilkår.status != RessursStatus.SUKSESS) {
+            hentVilkår(behandling.id);
+        }
+    }, [behandling, vilkår, hentVilkår]);
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -114,14 +115,16 @@ export const InnvilgeVedtak: React.FC<{
 
     const låsVedtaksperiodeRad = !!revurderesFra;
 
-    const yngsteBarnFødselsdato = (vilkår: Ressurs<IVilkår>): string | undefined => {
+    useEffect(() => {
         if (vilkår.status === RessursStatus.SUKSESS) {
             const terminbarnFødselsdatoer = vilkår.data.grunnlag.barnMedSamvær
                 .map((b) => b.søknadsgrunnlag)
                 .map((sb) => sb.fødselTermindato)
                 .filter(
                     (fødselTermindato): fødselTermindato is string =>
-                        !!fødselTermindato && erGyldigDato(fødselTermindato)
+                        !!fødselTermindato &&
+                        erGyldigDato(fødselTermindato) &&
+                        erEtter(fødselTermindato, minusÅr(new Date(), 1))
                 );
 
             const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
@@ -135,13 +138,8 @@ export const InnvilgeVedtak: React.FC<{
                 .reduce((a, b) => {
                     return erEtter(a, b) ? a : b;
                 });
-            return tidligsteDato;
+            tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
         }
-    };
-
-    useEffect(() => {
-        const tidligsteDato = yngsteBarnFødselsdato(vilkår);
-        tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
     }, [vilkår, yngsteBarnDato]);
 
     useEffect(() => {
