@@ -150,10 +150,10 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     useEffect(() => {
-        if (vilkår.status === RessursStatus.SUKSESS) {
+        if (vilkår.status === RessursStatus.SUKSESS && yngsteBarnDato.value == '3000-01-01') {
             yngsteBarnFødselsdato(vilkår);
         }
-    }, [vilkår, yngsteBarnFødselsdato]);
+    }, [vilkår, yngsteBarnFødselsdato, yngsteBarnDato.value]);
 
     useEffect(() => {
         if (!revurderesFra || !vedtakshistorikk) {
