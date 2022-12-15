@@ -94,8 +94,7 @@ export const validerVedtaksperioder = ({
         ) {
             vedtaksperiodeFeil = {
                 ...vedtaksperiodeFeil,
-                periodeType:
-                    'Yngste barn er over 8 før utgang av perioden. Må ha barn under 8 i hele hovedperioden. ',
+                periodeType: 'Yngste barn er over 8 før utgang av hovedperiode.',
             };
         }
 
