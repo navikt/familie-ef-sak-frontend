@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { formaterIsoDato } from '../utils/formatter';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
+import { useToggles } from '../context/TogglesContext';
+import { ToggleName } from '../context/toggles';
 
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -20,6 +22,7 @@ export const useVerdierForBrev = (
     beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
 ): { flettefeltStore: { [navn: string]: string } } => {
     const [flettefeltStore, settFlettefeltStore] = useState<{ [navn: string]: string }>({});
+    const { toggles } = useToggles();
 
     useEffect(() => {
         if (
@@ -30,21 +33,30 @@ export const useVerdierForBrev = (
             const perioder = beløpsperioder.data;
             const tilDato = formaterIsoDato(perioder[perioder.length - 1].periode.tildato);
             const fraDato = formaterIsoDato(perioder[0].periode.fradato);
+
+            const toggledeVedtaksdatoFlettefelter: { [flettefeltNavn: string]: string } = toggles[
+                ToggleName.automatiskeVedtaksdatoerBrev
+            ]
+                ? {
+                      [EBehandlingFlettefelt.tomdatoInnvilgelse]: tilDato,
+                      [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
+                      [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
+                      [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
+                      [EBehandlingFlettefelt.fomdatoInnvilgelseSkolepenger]: fraDato,
+                      [EBehandlingFlettefelt.tomdatoInnvilgelseSkolepenger]: tilDato,
+                      [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
+                      [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
+                  }
+                : {};
+
             settFlettefeltStore((prevState) => ({
                 ...prevState,
                 [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: tilDato,
-                [EBehandlingFlettefelt.tomdatoInnvilgelse]: tilDato,
                 [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: fraDato,
-                [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
-                [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
-                [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
-                [EBehandlingFlettefelt.fomdatoInnvilgelseSkolepenger]: fraDato,
-                [EBehandlingFlettefelt.tomdatoInnvilgelseSkolepenger]: tilDato,
-                [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
-                [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
+                ...toggledeVedtaksdatoFlettefelter,
             }));
         }
-    }, [beløpsperioder]);
+    }, [beløpsperioder, toggles]);
 
     return { flettefeltStore };
 };
