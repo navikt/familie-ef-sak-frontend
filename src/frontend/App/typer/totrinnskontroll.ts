@@ -12,7 +12,7 @@ export type TotrinnskontrollResponse =
       }
     | {
           status: TotrinnskontrollStatus.TOTRINNSKONTROLL_UNDERKJENT;
-          totrinnskontroll: TotrinnskontrollMedBegrunnelseOgÅrsaker;
+          totrinnskontroll: TotrinnskontrollUnderkjentResponse;
       }
     | {
           status: TotrinnskontrollStatus.KAN_FATTE_VEDTAK | TotrinnskontrollStatus.UAKTUELT;
@@ -23,9 +23,9 @@ export type TotrinnskontrollOpprettet = {
     opprettetTid: string;
 };
 
-export type TotrinnskontrollMedBegrunnelseOgÅrsaker = TotrinnskontrollOpprettet & {
+export type TotrinnskontrollUnderkjentResponse = TotrinnskontrollOpprettet & {
     begrunnelse: string;
-    årsakerUnderkjent?: ÅrsakUnderkjent[];
+    årsakerUnderkjent: ÅrsakUnderkjent[];
 };
 
 export enum ÅrsakUnderkjent {

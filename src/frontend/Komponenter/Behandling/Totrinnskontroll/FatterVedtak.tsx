@@ -50,7 +50,7 @@ const RadioMedPadding = styled(Radio)`
 interface TotrinnskontrollForm {
     godkjent: boolean;
     begrunnelse?: string;
-    årsakerUnderkjent?: ÅrsakUnderkjent[];
+    årsakerUnderkjent: ÅrsakUnderkjent[];
 }
 
 enum Totrinnsresultat {

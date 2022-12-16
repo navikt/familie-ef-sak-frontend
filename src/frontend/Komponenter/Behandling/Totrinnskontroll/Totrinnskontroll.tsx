@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import {
-    TotrinnskontrollMedBegrunnelseOgÅrsaker,
+    TotrinnskontrollUnderkjentResponse,
     TotrinnskontrollOpprettet,
     TotrinnskontrollStatus,
     årsakUnderkjentTilTekst,
@@ -129,7 +129,7 @@ const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet 
 };
 
 const TotrinnskontrollUnderkjent: React.FC<{
-    totrinnskontroll: TotrinnskontrollMedBegrunnelseOgÅrsaker;
+    totrinnskontroll: TotrinnskontrollUnderkjentResponse;
 }> = ({ totrinnskontroll }) => {
     return (
         <BorderBox>
@@ -144,7 +144,7 @@ const TotrinnskontrollUnderkjent: React.FC<{
                 <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
                 <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
-            {totrinnskontroll.årsakerUnderkjent && (
+            {totrinnskontroll.årsakerUnderkjent.length > 0 && (
                 <div>
                     <Label>Årsak til underkjennelse</Label>
                     <Detail>Manglende eller feil opplysninger om:</Detail>
