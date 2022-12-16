@@ -42,6 +42,8 @@ import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 import { useHentVilkår } from '../../../../../App/hooks/useHentVilkår';
 import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
+import { useToggles } from '../../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../../App/context/toggles';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -66,6 +68,7 @@ export const InnvilgeVedtak: React.FC<{
             : undefined;
 
     const { vilkår, hentVilkår } = useHentVilkår();
+    const { toggles } = useToggles();
 
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
@@ -150,10 +153,14 @@ export const InnvilgeVedtak: React.FC<{
     );
 
     useEffect(() => {
-        if (vilkår.status === RessursStatus.SUKSESS && yngsteBarnDato.value == '3000-01-01') {
+        if (
+            toggles[ToggleName.brukValidering8årHovedperiode] &&
+            vilkår.status === RessursStatus.SUKSESS &&
+            yngsteBarnDato.value == '3000-01-01'
+        ) {
             yngsteBarnFødselsdato(vilkår);
         }
-    }, [vilkår, yngsteBarnFødselsdato, yngsteBarnDato.value]);
+    }, [vilkår, yngsteBarnFødselsdato, yngsteBarnDato.value, toggles]);
 
     useEffect(() => {
         if (!revurderesFra || !vedtakshistorikk) {
