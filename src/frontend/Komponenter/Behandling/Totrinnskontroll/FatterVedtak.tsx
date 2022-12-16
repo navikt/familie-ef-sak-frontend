@@ -7,12 +7,23 @@ import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { EToast } from '../../../App/typer/toast';
-import { Button, Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react';
+import {
+    Button,
+    Checkbox,
+    CheckboxGroup,
+    Heading,
+    Radio,
+    RadioGroup,
+    Textarea,
+} from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
-const RadioButtonWrapper = styled.div`
+const WrapperMedMargin = styled.div`
     display: block;
-    margin: 1rem;
+    margin: 1rem 0;
 `;
 
 const SubmitButtonWrapper = styled.div`
@@ -39,6 +50,7 @@ const RadioMedPadding = styled(Radio)`
 interface TotrinnskontrollForm {
     godkjent: boolean;
     begrunnelse?: string;
+    årsakerUnderkjent: ÅrsakUnderkjent[];
 }
 
 enum Totrinnsresultat {
@@ -52,14 +64,22 @@ const FatterVedtak: React.FC<{
     settVisGodkjentModal: (vis: boolean) => void;
 }> = ({ behandlingId, settVisGodkjentModal }) => {
     const [godkjent, settGodkjent] = useState<Totrinnsresultat>(Totrinnsresultat.IKKE_VALGT);
+    const [årsakerUnderkjent, settÅrsakerUnderkjent] = useState<ÅrsakUnderkjent[]>([]);
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
     const { axiosRequest, settToast, gåTilUrl } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
+
+    const { toggles } = useToggles();
+    const skalViseStrukturerteÅrsakerUnderkjent =
+        toggles[ToggleName.strukturerteÅrakerUnderkjentTotrinnskontroll];
+
     const erUtfylt =
         godkjent === Totrinnsresultat.GODKJENT ||
-        (godkjent === Totrinnsresultat.UNDERKJENT && (begrunnelse || '').length > 0);
+        (godkjent === Totrinnsresultat.UNDERKJENT &&
+            (begrunnelse || '').length > 0 &&
+            (!skalViseStrukturerteÅrsakerUnderkjent || årsakerUnderkjent.length > 0));
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -74,6 +94,7 @@ const FatterVedtak: React.FC<{
             data: {
                 godkjent: godkjent === Totrinnsresultat.GODKJENT,
                 begrunnelse,
+                årsakerUnderkjent,
             },
         })
             .then((response) => {
@@ -104,7 +125,7 @@ const FatterVedtak: React.FC<{
                 <BodyShortSmall>
                     Kontroller opplysninger og faglige vurderinger gjort under behandlingen
                 </BodyShortSmall>
-                <RadioButtonWrapper>
+                <WrapperMedMargin>
                     <RadioGroup legend={'Beslutt vedtak'} value={godkjent} hideLegend>
                         <RadioMedPadding
                             value={Totrinnsresultat.GODKJENT}
@@ -112,6 +133,7 @@ const FatterVedtak: React.FC<{
                             onChange={() => {
                                 settGodkjent(Totrinnsresultat.GODKJENT);
                                 settBegrunnelse(undefined);
+                                settÅrsakerUnderkjent([]);
                             }}
                         >
                             Godkjenn
@@ -127,17 +149,34 @@ const FatterVedtak: React.FC<{
                             Underkjenn
                         </RadioMedPadding>
                     </RadioGroup>
-                </RadioButtonWrapper>
+                </WrapperMedMargin>
                 {godkjent === Totrinnsresultat.UNDERKJENT && (
-                    <Textarea
-                        value={begrunnelse || ''}
-                        maxLength={0}
-                        onChange={(e) => {
-                            settBegrunnelse(e.target.value);
-                        }}
-                        label={'Begrunnelse'}
-                        hideLabel
-                    />
+                    <>
+                        {skalViseStrukturerteÅrsakerUnderkjent && (
+                            <WrapperMedMargin>
+                                <CheckboxGroup
+                                    legend={'Årsak til underkjennelse'}
+                                    description={'Manglende feil eller opplysninger om:'}
+                                    value={årsakerUnderkjent}
+                                    onChange={settÅrsakerUnderkjent}
+                                >
+                                    {Object.values(ÅrsakUnderkjent).map((årsak) => (
+                                        <Checkbox value={årsak}>
+                                            {årsakUnderkjentTilTekst[årsak]}
+                                        </Checkbox>
+                                    ))}
+                                </CheckboxGroup>
+                            </WrapperMedMargin>
+                        )}
+                        <Textarea
+                            value={begrunnelse || ''}
+                            maxLength={0}
+                            onChange={(e) => {
+                                settBegrunnelse(e.target.value);
+                            }}
+                            label={'Begrunnelse'}
+                        />
+                    </>
                 )}
                 {erUtfylt && (
                     <SubmitButtonWrapper>
