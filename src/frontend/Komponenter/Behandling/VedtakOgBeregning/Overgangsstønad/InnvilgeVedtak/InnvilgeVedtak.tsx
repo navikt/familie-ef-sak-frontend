@@ -423,7 +423,7 @@ export const InnvilgeVedtak: React.FC<{
                                 disabled={laster || !!revurderesFraOgMedFeilmelding}
                                 type={'submit'}
                             >
-                                Lagre vedtak!
+                                Lagre vedtak
                             </Button>
                         </WrapperDobbelMarginTop>
                     )}
