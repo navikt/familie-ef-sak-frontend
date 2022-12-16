@@ -50,6 +50,15 @@ export const validerInnvilgetVedtakForm = ({
     };
 };
 
+const åtteÅrFremITiden = (barnDatoStreng: string) => plusMåneder(tilDato(barnDatoStreng), 96);
+
+const yngsteBarnErOver8FørUtgangAvPerioden = (
+    yngsteBarnFødselsdato: string,
+    årMånedTil: string | undefined
+) => {
+    return årMånedTil && erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato));
+};
+
 export const validerVedtaksperioder = ({
     perioder,
     inntekter,
@@ -68,17 +77,6 @@ export const validerVedtaksperioder = ({
 
     let harPeriodeFør7mndFremITiden = false;
 
-    const åtteÅrFremITiden = (barnDatoStreng: string) => {
-        return plusMåneder(tilDato(barnDatoStreng), 96);
-    };
-
-    const yngsteBarnErOver8FørUtgangAvPerioden = (
-        yngsteBarnFødselsdato: string,
-        årMånedTil: string | undefined
-    ) => {
-        return årMånedTil && erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato));
-    };
-
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
@@ -95,6 +93,16 @@ export const validerVedtaksperioder = ({
             vedtaksperiodeFeil = {
                 ...vedtaksperiodeFeil,
                 periodeType: 'Yngste barn er over 8 før utgang av hovedperiode.',
+            };
+        }
+
+        if (
+            periodeType === EPeriodetype.NY_PERIODE_FOR_NYTT_BARN &&
+            yngsteBarnErOver8FørUtgangAvPerioden(yngsteBarnDato, årMånedTil)
+        ) {
+            vedtaksperiodeFeil = {
+                ...vedtaksperiodeFeil,
+                periodeType: 'Yngste barn er over 8 før utgang av periode for nytt barn.',
             };
         }
 
