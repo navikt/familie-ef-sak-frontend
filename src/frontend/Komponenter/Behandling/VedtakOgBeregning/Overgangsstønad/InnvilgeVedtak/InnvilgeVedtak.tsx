@@ -14,12 +14,7 @@ import {
     IVedtaksperiode,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
-import {
-    byggTomRessurs,
-    Ressurs,
-    RessursStatus,
-    RessursSuksess,
-} from '../../../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../../../App/context/AppContext';
@@ -39,7 +34,6 @@ import { Button, Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
-import { useHentVilkår } from '../../../../../App/hooks/useHentVilkår';
 import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { useToggles } from '../../../../../App/context/TogglesContext';
@@ -61,13 +55,13 @@ const WrapperMarginTop = styled.div`
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtakForOvergangsstønad;
-}> = ({ behandling, lagretVedtak }) => {
+    vilkår: IVilkår;
+}> = ({ behandling, lagretVedtak, vilkår }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
             ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
 
-    const { vilkår, hentVilkår } = useHentVilkår();
     const { toggles } = useToggles();
 
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
@@ -89,12 +83,6 @@ export const InnvilgeVedtak: React.FC<{
     >(null);
 
     const [feilmelding, settFeilmelding] = useState<string>();
-
-    useEffect(() => {
-        if (behandling != undefined && vilkår.status != RessursStatus.SUKSESS) {
-            hentVilkår(behandling.id);
-        }
-    }, [behandling, vilkår, hentVilkår]);
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -124,43 +112,35 @@ export const InnvilgeVedtak: React.FC<{
 
     const låsVedtaksperiodeRad = !!revurderesFra;
 
-    const yngsteBarnFødselsdato = useCallback(
-        (vilkår: RessursSuksess<IVilkår>) => {
-            const terminbarnFødselsdatoer = vilkår.data.grunnlag.barnMedSamvær
-                .map((b) => b.søknadsgrunnlag)
-                .map((sb) => sb.fødselTermindato)
-                .filter(
-                    (fødselTermindato): fødselTermindato is string =>
-                        !!fødselTermindato &&
-                        erGyldigDato(fødselTermindato) &&
-                        erEtter(fødselTermindato, minusÅr(new Date(), 1))
-                );
+    const yngsteBarnFødselsdato = useCallback(() => {
+        const terminbarnFødselsdatoer = vilkår.grunnlag.barnMedSamvær
+            .map((b) => b.søknadsgrunnlag)
+            .map((sb) => sb.fødselTermindato)
+            .filter(
+                (fødselTermindato): fødselTermindato is string =>
+                    !!fødselTermindato &&
+                    erGyldigDato(fødselTermindato) &&
+                    erEtter(fødselTermindato, minusÅr(new Date(), 1))
+            );
 
-            const tidligsteDato = vilkår.data.grunnlag.barnMedSamvær
-                .map((b) => b.registergrunnlag)
-                .map((r) => r.fødselsdato)
-                .filter(
-                    (fødselsdato): fødselsdato is string =>
-                        !!fødselsdato && erGyldigDato(fødselsdato)
-                )
-                .concat(terminbarnFødselsdatoer)
-                .reduce((a, b) => {
-                    return erEtter(a, b) ? a : b;
-                });
-            tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
-        },
-        [yngsteBarnDato]
-    );
+        const tidligsteDato = vilkår.grunnlag.barnMedSamvær
+            .map((b) => b.registergrunnlag)
+            .map((r) => r.fødselsdato)
+            .filter(
+                (fødselsdato): fødselsdato is string => !!fødselsdato && erGyldigDato(fødselsdato)
+            )
+            .concat(terminbarnFødselsdatoer)
+            .reduce((a, b) => {
+                return erEtter(a, b) ? a : b;
+            });
+        tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
+    }, [vilkår, yngsteBarnDato]);
 
     useEffect(() => {
-        if (
-            toggles[ToggleName.brukValidering8årHovedperiode] &&
-            vilkår.status === RessursStatus.SUKSESS &&
-            yngsteBarnDato.value == '3000-01-01'
-        ) {
-            yngsteBarnFødselsdato(vilkår);
+        if (toggles[ToggleName.brukValidering8årHovedperiode]) {
+            yngsteBarnFødselsdato();
         }
-    }, [vilkår, yngsteBarnFødselsdato, yngsteBarnDato.value, toggles]);
+    }, [yngsteBarnFødselsdato, toggles]);
 
     useEffect(() => {
         if (!revurderesFra || !vedtakshistorikk) {
