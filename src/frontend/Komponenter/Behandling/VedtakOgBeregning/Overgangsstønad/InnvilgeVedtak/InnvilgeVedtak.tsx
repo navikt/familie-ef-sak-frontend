@@ -34,10 +34,10 @@ import { Button, Heading } from '@navikt/ds-react';
 import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
-import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
+import { yngsteBarnFødselsdato } from './fødselsdatoUtils';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -112,35 +112,12 @@ export const InnvilgeVedtak: React.FC<{
 
     const låsVedtaksperiodeRad = !!revurderesFra;
 
-    const yngsteBarnFødselsdato = useCallback(() => {
-        const terminbarnFødselsdatoer = vilkår.grunnlag.barnMedSamvær
-            .map((b) => b.søknadsgrunnlag)
-            .map((sb) => sb.fødselTermindato)
-            .filter(
-                (fødselTermindato): fødselTermindato is string =>
-                    !!fødselTermindato &&
-                    erGyldigDato(fødselTermindato) &&
-                    erEtter(fødselTermindato, minusÅr(new Date(), 1))
-            );
-
-        const tidligsteDato = vilkår.grunnlag.barnMedSamvær
-            .map((b) => b.registergrunnlag)
-            .map((r) => r.fødselsdato)
-            .filter(
-                (fødselsdato): fødselsdato is string => !!fødselsdato && erGyldigDato(fødselsdato)
-            )
-            .concat(terminbarnFødselsdatoer)
-            .reduce((a, b) => {
-                return erEtter(a, b) ? a : b;
-            });
-        tidligsteDato && yngsteBarnDato.setValue(tidligsteDato);
-    }, [vilkår, yngsteBarnDato]);
-
     useEffect(() => {
         if (toggles[ToggleName.brukValidering8årHovedperiode]) {
-            yngsteBarnFødselsdato();
+            const fødselsdato = yngsteBarnFødselsdato(vilkår);
+            fødselsdato && yngsteBarnDato.setValue(fødselsdato);
         }
-    }, [yngsteBarnFødselsdato, toggles]);
+    }, [toggles, yngsteBarnDato, vilkår]);
 
     useEffect(() => {
         if (!revurderesFra || !vedtakshistorikk) {
