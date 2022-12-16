@@ -149,7 +149,7 @@ export const Vedtaksform: React.FC<{
         kontantstøtteState.setValue(initKontantstøttestate(lagretInnvilgetVedtak));
         kontantstøttePeriodeState.setValue(initKontantstøtteperioder(lagretInnvilgetVedtak));
         tilleggsstønadState.setValue(initHarTilleggsstønad(lagretInnvilgetVedtak));
-        //stønadsreduksjonState.setValue();
+        stønadsreduksjonState.setValue(initSkalStønadReduseres(lagretInnvilgetVedtak));
         tilleggsstønadsperiodeState.setValue(initTillegsstønadsperioder(lagretInnvilgetVedtak));
         utgiftsperiodeState.setValue(initUtgiftsperioder(lagretInnvilgetVedtak));
         formState.setErrors((prevState) => ({
