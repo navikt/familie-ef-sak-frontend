@@ -156,7 +156,7 @@ const FatterVedtak: React.FC<{
                             <WrapperMedMargin>
                                 <CheckboxGroup
                                     legend={'Årsak til underkjennelse'}
-                                    description={'Manglende feil eller opplysninger om:'}
+                                    description={'Manglende eller feil opplysninger om:'}
                                     value={årsakerUnderkjent}
                                     onChange={settÅrsakerUnderkjent}
                                 >
