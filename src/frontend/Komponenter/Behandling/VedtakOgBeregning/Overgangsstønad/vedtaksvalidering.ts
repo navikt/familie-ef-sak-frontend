@@ -198,7 +198,7 @@ export const validerVedtaksperioder = ({
     return {
         perioder: feilIVedtaksPerioder,
         inntekter: inntektsperiodeFeil,
-        yngsteBarnDato: undefined,
+        yngsteBarnDato: undefined, // Vi bruker samme type på FormState<T> og FormErrors<T>. Vi setter yngsteBarnDato i formstate for å bruke denne i periodevalidering. Da må vi sette feil = undefined (FormError)
     };
 };
 
