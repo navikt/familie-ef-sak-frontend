@@ -11,7 +11,6 @@ import {
     parse,
     parseISO,
 } from 'date-fns';
-import { harVerdi } from './utils';
 
 export const plusMåneder = (date: Date, antall: number): Date => addMonths(date, antall);
 
@@ -81,7 +80,7 @@ export const erGyldigDato = (dato: string | Date): boolean =>
 export const tilDato = (dato: string | Date): Date =>
     typeof dato === 'string' ? parseISO(dato) : dato;
 
-export const nullableDatoTilAlder = (dato?: string | Date): number | undefined => {
+export const nullableDatoTilAlder = (dato?: string | Date | null): number | undefined => {
     return dato ? datoTilAlder(dato) : undefined;
 };
 
@@ -89,8 +88,8 @@ export const datoTilAlder = (dato: string | Date): number => {
     return differenceInYears(new Date(), tilDato(dato));
 };
 
-export const datoTilAlderEllerNull = (dato: string | Date | null | undefined) => {
-    return harVerdi(dato?.toString()) && dato ? datoTilAlder(dato) : null;
+export const årMellomDatoer = (from: string | Date, to: string | Date): number => {
+    return differenceInYears(tilDato(to), tilDato(from));
 };
 
 export type Intervall = { fra: Date; til: Date };

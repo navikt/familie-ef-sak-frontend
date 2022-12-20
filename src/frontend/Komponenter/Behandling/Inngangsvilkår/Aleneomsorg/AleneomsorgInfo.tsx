@@ -15,7 +15,7 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
 import { Tag } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
-import { utledNavnLabel } from '../utils';
+import { utledNavnOgAlder } from '../utils';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -51,7 +51,11 @@ const AleneomsorgInfo: FC<{
                         <Registergrunnlag />
                         <SmallTextLabel>Barnets navn</SmallTextLabel>
                         <SmallTextLabel>
-                            {utledNavnLabel(registergrunnlag.navn, registergrunnlag.fødselsdato)}
+                            {utledNavnOgAlder(
+                                registergrunnlag.navn,
+                                registergrunnlag.fødselsdato,
+                                registergrunnlag.dødsdato
+                            )}
                             {registergrunnlag.dødsdato && (
                                 <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                             )}

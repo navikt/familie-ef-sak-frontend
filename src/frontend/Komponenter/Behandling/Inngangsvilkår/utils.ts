@@ -7,8 +7,8 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { IBarnMedSamværRegistergrunnlag, IBarnMedSamværSøknadsgrunnlag } from './Aleneomsorg/typer';
-import { datoTilAlderEllerNull } from '../../../App/utils/dato';
-import { harVerdi, strengEllerTomStreng } from '../../../App/utils/utils';
+import { nullableDatoTilAlder, årMellomDatoer } from '../../../App/utils/dato';
+import { harVerdi } from '../../../App/utils/utils';
 
 export const hentBooleanTekst = (value: boolean): string => (value ? 'Ja' : 'Nei');
 
@@ -52,12 +52,16 @@ export const utledVilkårsgjenbruk = (
     return behandlingErRedigerbar && vilkårForRevurderingErOppfylt;
 };
 
-export const utledNavnLabel = (
+export const utledNavnOgAlder = (
     registerNavn?: string,
     registerFødselsdato?: string,
+    registerDødsdato?: string,
     søknadNavn?: string
 ) => {
-    const alder = datoTilAlderEllerNull(strengEllerTomStreng(registerFødselsdato));
+    const alder =
+        registerDødsdato && registerFødselsdato
+            ? årMellomDatoer(registerFødselsdato, registerDødsdato)
+            : nullableDatoTilAlder(registerFødselsdato);
     const formatertAlder = alder ? ' (' + alder + ')' : '';
 
     if (harVerdi(registerNavn)) return registerNavn + formatertAlder;
@@ -65,12 +69,12 @@ export const utledNavnLabel = (
     return 'Ikke født';
 };
 
-export const utledNavnLabelPåGrunnlag = (
+export const utledNavnOgAlderPåGrunnlag = (
     registergrunnlag: IBarnMedSamværRegistergrunnlag,
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag
 ) => {
-    const { navn: registerNavn, fødselsdato } = registergrunnlag;
+    const { navn: registerNavn, fødselsdato, dødsdato } = registergrunnlag;
     const { navn: søknadNavn } = søknadsgrunnlag;
 
-    return utledNavnLabel(registerNavn, fødselsdato, søknadNavn);
+    return utledNavnOgAlder(registerNavn, fødselsdato, dødsdato, søknadNavn);
 };
