@@ -10,6 +10,7 @@ import { IDokumentasjonGrunnlag } from '../vilkår';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { Label } from '@navikt/ds-react';
+import { utledNavnOgAlderPåGrunnlag } from '../utils';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -29,7 +30,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                             <>
                                 <LiteBarn />
                                 <Label size={'small'} as={'div'}>
-                                    {registergrunnlag.navn ?? søknadsgrunnlag.navn ?? 'Ikke født'}
+                                    {utledNavnOgAlderPåGrunnlag(registergrunnlag, søknadsgrunnlag)}
                                     {registergrunnlag.dødsdato && (
                                         <EtikettDød dødsdato={registergrunnlag.dødsdato} />
                                     )}
