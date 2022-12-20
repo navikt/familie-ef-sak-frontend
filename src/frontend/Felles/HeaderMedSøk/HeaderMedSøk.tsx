@@ -71,7 +71,7 @@ const lagEksterneLenker = (
             name: 'Uttrekk arbeidssøkere (P43)',
             href: '/uttrekk/arbeidssoker',
         });
-        if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
+        if (toggles[ToggleName.førstegangsbehandling]) {
             eksterneLenker.push({
                 name: 'Opprett førstegangsbehandling manuelt',
                 href: '/opprett-forstegangsbehandling',
