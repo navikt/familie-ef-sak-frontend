@@ -10,7 +10,6 @@ import {
     revurdererFørFørstePeriode,
     revurderFraInitPeriode,
 } from './revurderFraUtils';
-import { tomUtgiftsperiodeRad } from './utils';
 import React, { FC, useCallback, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
@@ -57,7 +56,7 @@ const oppdaterVedtakMedInitPeriodeOgOpphørshulll = (
     return {
         ...vedtak,
         perioder: [
-            ...revurderFraInitPeriode(vedtak, revurderesFra, tomUtgiftsperiodeRad),
+            ...revurderFraInitPeriode(vedtak, revurderesFra),
             ...vedtak.perioder.reduce(fyllHullMedOpphør, [] as IUtgiftsperiode[]),
         ],
     };

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IUtgiftsperiode, IvedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
 import { månedÅrTilDate, plusMåneder, tilÅrMåned } from '../../../../App/utils/dato';
+import { tomUtgiftsperiodeRad } from './utils';
 
 const lagMidlertidigOpphør = (fra: string, til: string): IUtgiftsperiode => ({
     årMånedFra: fra,
@@ -33,14 +34,13 @@ export const fyllHullMedOpphør = (
 /**
  * Lager en periode som legges før tidligere perioder hvis revurderes fra er før tidligere dato
  */
-export const revurderFraInitPeriode = <T>(
+export const revurderFraInitPeriode = (
     vedtakshistorikk: IvedtakForBarnetilsyn,
-    revurderesFra: string,
-    periode: (revurderesFra: string) => T
-): T[] => {
+    revurderesFra: string
+): IUtgiftsperiode[] => {
     const manglerPerioder = vedtakshistorikk.perioder.length === 0;
     const erFørFørstePeriode = revurdererFørFørstePeriode(vedtakshistorikk, revurderesFra);
-    return erFørFørstePeriode || manglerPerioder ? [periode(revurderesFra)] : [];
+    return erFørFørstePeriode || manglerPerioder ? [tomUtgiftsperiodeRad(revurderesFra)] : [];
 };
 
 export const revurdererFørFørstePeriode = (
