@@ -1,6 +1,7 @@
 import { IVilkår, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
-import { IUtgiftsperiode } from '../../../../App/typer/vedtak';
+import { IInnvilgeVedtakForBarnetilsyn, IUtgiftsperiode } from '../../../../App/typer/vedtak';
 import { v4 as uuidv4 } from 'uuid';
+import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 
 export const barnSomOppfyllerAlleVilkår = (vilkår: IVilkår) => {
     const barnSomIkkeOppfyllerVilkår = vilkår.vurderinger
@@ -24,3 +25,42 @@ export const tomUtgiftsperiodeRad = (årMånedFra?: string): IUtgiftsperiode => 
     erMidlertidigOpphør: false,
     endretKey: uuidv4(),
 });
+
+export const oppdaterVedtakMedInitPeriodeOgOpphørshulll = (
+    vedtak: IInnvilgeVedtakForBarnetilsyn | undefined,
+    revurderesFra: string
+): IInnvilgeVedtakForBarnetilsyn | undefined => {
+    if (!vedtak) {
+        return vedtak;
+    }
+    return {
+        ...vedtak,
+        perioder: [
+            ...revurderFraInitPeriode(vedtak, revurderesFra),
+            ...vedtak.perioder.reduce(fyllHullMedOpphør, [] as IUtgiftsperiode[]),
+        ],
+    };
+};
+
+export const oppdaterVedtakMedEndretKey = (
+    vedtak: IInnvilgeVedtakForBarnetilsyn | undefined
+): IInnvilgeVedtakForBarnetilsyn | undefined => {
+    if (!vedtak) {
+        return vedtak;
+    }
+    return {
+        ...vedtak,
+        perioder: vedtak.perioder.map((periode) => ({ ...periode, endretKey: uuidv4() })),
+        perioderKontantstøtte: vedtak.perioderKontantstøtte.map((periode) => ({
+            ...periode,
+            endretKey: uuidv4(),
+        })),
+        tilleggsstønad: {
+            ...vedtak.tilleggsstønad,
+            perioder: vedtak.tilleggsstønad.perioder.map((periode) => ({
+                ...periode,
+                endretKey: uuidv4(),
+            })),
+        },
+    };
+};
