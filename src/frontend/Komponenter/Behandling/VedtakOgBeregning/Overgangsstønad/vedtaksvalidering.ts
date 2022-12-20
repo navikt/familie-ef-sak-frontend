@@ -53,11 +53,12 @@ export const validerInnvilgetVedtakForm = ({
 const åtteÅrFremITiden = (barnDatoStreng: string) => plusMåneder(tilDato(barnDatoStreng), 96);
 
 const yngsteBarnErOver8FørUtgangAvPerioden = (
-    yngsteBarnFødselsdato: string,
+    yngsteBarnFødselsdato: string | undefined,
     årMånedTil: string | undefined
-) => {
-    return årMånedTil && erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato));
-};
+) =>
+    yngsteBarnFødselsdato &&
+    årMånedTil &&
+    erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato));
 
 export const validerVedtaksperioder = ({
     perioder,
