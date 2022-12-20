@@ -9,13 +9,14 @@ import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { Label } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { utledNavnLabel } from '../utils';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
 }
 
 const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
-    const { annenForelderRegister } = barn;
+    const { annenForelderRegister, fødselsdato, navn } = barn;
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -24,7 +25,7 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
             <>
                 <LiteBarn />
                 <Label size={'small'} as={'div'}>
-                    {barn.navn}
+                    {utledNavnLabel(navn, fødselsdato)}
                     {barn.dødsdato && <EtikettDød dødsdato={barn.dødsdato} />}
                 </Label>
             </>

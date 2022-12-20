@@ -29,6 +29,7 @@ export const mapTilRegistergrunnlagNyttBarn = (
         .map((barn) => ({
             navn: barn.registergrunnlag.navn,
             fødselsnummer: barn.registergrunnlag.fødselsnummer,
+            fødselsdato: barn.registergrunnlag.fødselsdato,
             annenForelderSoknad: barn.søknadsgrunnlag.forelder,
             annenForelderRegister: barn.registergrunnlag.forelder,
             ikkeOppgittAnnenForelderBegrunnelse:

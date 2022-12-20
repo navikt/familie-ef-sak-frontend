@@ -11,6 +11,7 @@ import {
     parse,
     parseISO,
 } from 'date-fns';
+import { harVerdi } from './utils';
 
 export const plusMåneder = (date: Date, antall: number): Date => addMonths(date, antall);
 
@@ -86,6 +87,10 @@ export const nullableDatoTilAlder = (dato?: string | Date): number | undefined =
 
 export const datoTilAlder = (dato: string | Date): number => {
     return differenceInYears(new Date(), tilDato(dato));
+};
+
+export const datoTilAlderEllerNull = (dato: string | Date | null | undefined) => {
+    return harVerdi(dato?.toString()) && dato ? datoTilAlder(dato) : null;
 };
 
 export type Intervall = { fra: Date; til: Date };

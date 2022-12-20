@@ -3,6 +3,7 @@ import { IAnnenForelder } from '../Aleneomsorg/typer';
 export interface RegistergrunnlagNyttBarn {
     navn?: string;
     fødselsnummer?: string;
+    fødselsdato?: string;
     annenForelderSoknad?: IAnnenForelder;
     annenForelderRegister?: IAnnenForelder;
     ikkeOppgittAnnenForelderBegrunnelse?: string;

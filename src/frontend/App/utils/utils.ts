@@ -70,6 +70,10 @@ export const slåSammenTekst = (...tekstElementer: (string | undefined)[]): stri
 export const harVerdi = (str: string | undefined | null): boolean =>
     str !== undefined && str !== '' && str !== null;
 
+export const strengEllerTomStreng = (str: string | undefined | null) => {
+    return harVerdi(str) ? str : '';
+};
+
 export const harTallverdi = (verdi: number | undefined | null): boolean =>
     verdi !== undefined && verdi !== null;
 

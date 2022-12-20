@@ -6,6 +6,9 @@ import { IVurdering, RegelIdDDokumentasjonUtdanning, VilkårType } from './vilk�
 import { Behandling } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { IBarnMedSamværRegistergrunnlag, IBarnMedSamværSøknadsgrunnlag } from './Aleneomsorg/typer';
+import { datoTilAlderEllerNull } from '../../../App/utils/dato';
+import { harVerdi, strengEllerTomStreng } from '../../../App/utils/utils';
 
 export const hentBooleanTekst = (value: boolean): string => (value ? 'Ja' : 'Nei');
 
@@ -47,4 +50,27 @@ export const utledVilkårsgjenbruk = (
         behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD;
     const vilkårForRevurderingErOppfylt = behandlingErRevurdering ? behandlingsårsakErSøknad : true;
     return behandlingErRedigerbar && vilkårForRevurderingErOppfylt;
+};
+
+export const utledNavnLabel = (
+    registerNavn?: string,
+    registerFødselsdato?: string,
+    søknadNavn?: string
+) => {
+    const alder = datoTilAlderEllerNull(strengEllerTomStreng(registerFødselsdato));
+    const formatertAlder = alder ? ' (' + alder + ')' : '';
+
+    if (harVerdi(registerNavn)) return registerNavn + formatertAlder;
+    if (harVerdi(søknadNavn)) return søknadNavn;
+    return 'Ikke født';
+};
+
+export const utledNavnLabelPåGrunnlag = (
+    registergrunnlag: IBarnMedSamværRegistergrunnlag,
+    søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag
+) => {
+    const { navn: registerNavn, fødselsdato } = registergrunnlag;
+    const { navn: søknadNavn } = søknadsgrunnlag;
+
+    return utledNavnLabel(registerNavn, fødselsdato, søknadNavn);
 };
