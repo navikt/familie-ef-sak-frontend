@@ -18,8 +18,6 @@ import {
 } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 
 const WrapperMedMargin = styled.div`
     display: block;
@@ -71,15 +69,11 @@ const FatterVedtak: React.FC<{
     const { axiosRequest, settToast, gåTilUrl } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
 
-    const { toggles } = useToggles();
-    const skalViseStrukturerteÅrsakerUnderkjent =
-        toggles[ToggleName.strukturerteÅrakerUnderkjentTotrinnskontroll];
-
     const erUtfylt =
         godkjent === Totrinnsresultat.GODKJENT ||
         (godkjent === Totrinnsresultat.UNDERKJENT &&
             (begrunnelse || '').length > 0 &&
-            (!skalViseStrukturerteÅrsakerUnderkjent || årsakerUnderkjent.length > 0));
+            årsakerUnderkjent.length > 0);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -152,22 +146,20 @@ const FatterVedtak: React.FC<{
                 </WrapperMedMargin>
                 {godkjent === Totrinnsresultat.UNDERKJENT && (
                     <>
-                        {skalViseStrukturerteÅrsakerUnderkjent && (
-                            <WrapperMedMargin>
-                                <CheckboxGroup
-                                    legend={'Årsak til underkjennelse'}
-                                    description={'Manglende eller feil opplysninger om:'}
-                                    value={årsakerUnderkjent}
-                                    onChange={settÅrsakerUnderkjent}
-                                >
-                                    {Object.values(ÅrsakUnderkjent).map((årsak) => (
-                                        <Checkbox value={årsak}>
-                                            {årsakUnderkjentTilTekst[årsak]}
-                                        </Checkbox>
-                                    ))}
-                                </CheckboxGroup>
-                            </WrapperMedMargin>
-                        )}
+                        <WrapperMedMargin>
+                            <CheckboxGroup
+                                legend={'Årsak til underkjennelse'}
+                                description={'Manglende eller feil opplysninger om:'}
+                                value={årsakerUnderkjent}
+                                onChange={settÅrsakerUnderkjent}
+                            >
+                                {Object.values(ÅrsakUnderkjent).map((årsak) => (
+                                    <Checkbox value={årsak}>
+                                        {årsakUnderkjentTilTekst[årsak]}
+                                    </Checkbox>
+                                ))}
+                            </CheckboxGroup>
+                        </WrapperMedMargin>
                         <Textarea
                             value={begrunnelse || ''}
                             maxLength={0}
