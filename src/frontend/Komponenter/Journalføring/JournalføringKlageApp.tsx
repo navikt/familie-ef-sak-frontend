@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import { erAvTypeFeil, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import Brukerinfo from './Brukerinfo';
 import DokumentVisning from './Dokumentvisning';
 import { behandlingstemaTilTekst, Stønadstype } from '../../App/typer/behandlingstema';
@@ -202,8 +202,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                             </KlageMottatt>
                         )}
                     </Fieldset>
-                    {(journalpostState.innsending.status === RessursStatus.FEILET ||
-                        journalpostState.innsending.status === RessursStatus.FUNKSJONELL_FEIL) && (
+                    {erAvTypeFeil(journalpostState.innsending) && (
                         <AlertError>{journalpostState.innsending.frontendFeilmelding}</AlertError>
                     )}
                     <FlexKnapper>

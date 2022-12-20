@@ -2,6 +2,7 @@ import {
     byggSuksessRessurs,
     byggTomRessurs,
     Ressurs,
+    RessursFeilet,
     RessursStatus,
     RessursSuksess,
 } from '../typer/ressurs';
@@ -46,7 +47,7 @@ export const useHentVedtak = (
                 url: `/familie-ef-sak/api/vedtak/${behandlingId}`,
             };
             axiosRequest<IVedtakForOvergangsstønad | null, null>(behandlingConfig).then(
-                (res: Ressurs<IVedtakForOvergangsstønad | null>) => {
+                (res: RessursSuksess<IVedtakForOvergangsstønad | null> | RessursFeilet) => {
                     if (res.status === RessursStatus.SUKSESS) {
                         if (res.data) {
                             settVedtak(res as RessursSuksess<IVedtakForOvergangsstønad>);

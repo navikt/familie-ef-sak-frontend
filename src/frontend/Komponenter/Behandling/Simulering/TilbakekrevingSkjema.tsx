@@ -3,7 +3,7 @@ import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea'
 import styled from 'styled-components';
 import { ITilbakekrevingsvalg } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Button, Radio, RadioGroup } from '@navikt/ds-react';
@@ -60,17 +60,13 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                 method: 'POST',
                 url: `familie-ef-sak/api/tilbakekreving/${behandlingId}/brev/generer`,
                 data: { varseltekst },
-            }).then((respons: Ressurs<string>) => {
+            }).then((respons: RessursSuksess<string> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
                     åpnePdfIEgenTab(
                         base64toBlob(respons.data, 'application/pdf'),
                         'Forhåndsvisning av varselbrev'
                     );
-                } else if (
-                    respons.status === RessursStatus.IKKE_TILGANG ||
-                    respons.status === RessursStatus.FEILET ||
-                    respons.status === RessursStatus.FUNKSJONELL_FEIL
-                ) {
+                } else {
                     settForhåndsvisningsFeil(respons.frontendFeilmelding);
                 }
                 settHenterBrev(false);

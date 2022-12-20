@@ -14,6 +14,7 @@ import {
     initielleAvsnittVedtakOpphørSkolepenger,
     initielleAvsnittSvartidKlage,
     initielleAvsnittForlengetSvartidKlage,
+    initielleAvsnittForlengetSvartid,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -110,6 +111,7 @@ export enum FrittståendeBrevtype {
     INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE = 'INNHENTING_AV_KARAKTERUTSKRIFT_HOVEDPERIODE',
     INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE = 'INNHENTING_AV_KARAKTERUTSKRIFT_UTVIDET_PERIODE',
     BREV_OM_SVARTID_KLAGE = 'BREV_OM_SVARTID_KLAGE',
+    BREV_OM_FORLENGET_SVARTID = 'BREV_OM_FORLENGET_SVARTID',
     BREV_OM_FORLENGET_SVARTID_KLAGE = 'BREV_OM_FORLENGET_SVARTID_KLAGE',
 }
 
@@ -146,6 +148,7 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     VEDTAK_OPPHØR_BARNETILSYN: 'Vi har stanset stønaden din til barnetilsyn',
     VEDTAK_OPPHØR_SKOLEPENGER: 'Vi har stanset stønaden din til skolepenger',
     BREV_OM_SVARTID_KLAGE: 'Vi har fått klagen din',
+    BREV_OM_FORLENGET_SVARTID: 'Saksbehandlingen vil ta lenger tid',
     BREV_OM_FORLENGET_SVARTID_KLAGE: 'Saksbehandlingen vil ta lenger tid',
 };
 
@@ -172,6 +175,7 @@ export const BrevtyperTilSelectNavn: Record<
     VEDTAK_OPPHØR_BARNETILSYN: 'Vedtak opphør',
     VEDTAK_OPPHØR_SKOLEPENGER: 'Vedtak opphør',
     BREV_OM_SVARTID_KLAGE: 'Brev om svartid - klage',
+    BREV_OM_FORLENGET_SVARTID: 'Brev om forlenget svartid',
     BREV_OM_FORLENGET_SVARTID_KLAGE: 'Brev om forlenget svartid - klage',
 };
 
@@ -217,6 +221,7 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         VEDTAK_OPPHØR_BARNETILSYN: initielleAvsnittVedtakOpphørBarnetilsyn,
         VEDTAK_OPPHØR_SKOLEPENGER: initielleAvsnittVedtakOpphørSkolepenger,
         BREV_OM_SVARTID_KLAGE: initielleAvsnittSvartidKlage,
+        BREV_OM_FORLENGET_SVARTID: initielleAvsnittForlengetSvartid,
         BREV_OM_FORLENGET_SVARTID_KLAGE: initielleAvsnittForlengetSvartidKlage,
     };
 

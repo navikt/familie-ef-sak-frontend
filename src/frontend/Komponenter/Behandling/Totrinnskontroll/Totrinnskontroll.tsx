@@ -3,9 +3,10 @@ import { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import {
-    TotrinnskontrollMedBegrunnelse,
+    TotrinnskontrollUnderkjentResponse,
     TotrinnskontrollOpprettet,
     TotrinnskontrollStatus,
+    årsakUnderkjentTilTekst,
 } from '../../../App/typer/totrinnskontroll';
 import FatterVedtak from './FatterVedtak';
 import styled from 'styled-components';
@@ -15,8 +16,9 @@ import Info from '../../../Felles/Ikoner/Info';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
-import { Heading } from '@navikt/ds-react';
+import { BodyShort, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
+import { SuccessStroke } from '@navikt/ds-icons';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -33,6 +35,20 @@ export const BorderBox = styled.div`
     > div {
         padding-top: 0.5rem;
     }
+`;
+
+const SukksessIkonMedHøyreMargin = styled(SuccessStroke)`
+    margin-right: 0.5rem;
+`;
+
+const ÅrsakUnderkjentRad = styled(BodyShort)`
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: center;
+`;
+
+const ÅrsakerUnderkjentWrapper = styled.div`
+    margin-top: 0.5rem;
 `;
 
 const Totrinnskontroll: FC = () => {
@@ -113,7 +129,7 @@ const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet 
 };
 
 const TotrinnskontrollUnderkjent: React.FC<{
-    totrinnskontroll: TotrinnskontrollMedBegrunnelse;
+    totrinnskontroll: TotrinnskontrollUnderkjentResponse;
 }> = ({ totrinnskontroll }) => {
     return (
         <BorderBox>
@@ -128,8 +144,22 @@ const TotrinnskontrollUnderkjent: React.FC<{
                 <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
                 <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
+            {totrinnskontroll.årsakerUnderkjent.length > 0 && (
+                <div>
+                    <Label>Årsak til underkjennelse</Label>
+                    <Detail>Manglende eller feil opplysninger om:</Detail>
+                    <ÅrsakerUnderkjentWrapper>
+                        {totrinnskontroll.årsakerUnderkjent.map((årsakUnderkjent) => (
+                            <ÅrsakUnderkjentRad>
+                                <SukksessIkonMedHøyreMargin />
+                                {årsakUnderkjentTilTekst[årsakUnderkjent]}
+                            </ÅrsakUnderkjentRad>
+                        ))}
+                    </ÅrsakerUnderkjentWrapper>
+                </div>
+            )}
             <div>
-                <SmallTextLabel>Begrunnelse:</SmallTextLabel>
+                <Label>Begrunnelse</Label>
                 <BreakWordNormaltekst>{totrinnskontroll.begrunnelse}</BreakWordNormaltekst>
             </div>
         </BorderBox>

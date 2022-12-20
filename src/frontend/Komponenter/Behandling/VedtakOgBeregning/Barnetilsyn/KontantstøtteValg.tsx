@@ -182,10 +182,13 @@ const KontantstøtteValg: React.FC<Props> = ({
                                                 kontantstøttePerioder.remove(index);
                                                 settValideringsFeil(
                                                     (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                        const perioder = (
+                                                        const kontantstøtteperioder = (
                                                             prevState.kontantstøtteperioder ?? []
                                                         ).filter((_, i) => i !== index);
-                                                        return { ...prevState, perioder };
+                                                        return {
+                                                            ...prevState,
+                                                            kontantstøtteperioder,
+                                                        };
                                                     }
                                                 );
                                             }}

@@ -21,7 +21,7 @@ import {
     IVedtakForOvergangsstønad,
     IVedtakType,
 } from '../../../App/typer/vedtak';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
 import { validerSanksjonereVedtakForm } from '../VedtakOgBeregning/Overgangsstønad/vedtaksvalidering';
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
@@ -130,22 +130,17 @@ const SanksjonsvedtakVisning: FC<{
     const sanksjonårsak = formState.getProps('sanksjonsårsak') as FieldState;
     const internBegrunnelse = formState.getProps('internBegrunnelse') as FieldState;
 
-    const håndterVedtaksresultat = (nesteUrl: string) => {
-        return (res: Ressurs<string>) => {
-            switch (res.status) {
-                case RessursStatus.SUKSESS:
-                    navigate(nesteUrl);
-                    hentBehandling.rerun();
-                    nullstillIkkePersisterteKomponenter();
-                    break;
-                case RessursStatus.HENTER:
-                case RessursStatus.IKKE_HENTET:
-                    break;
-                default:
-                    settFeilmelding(res.frontendFeilmelding);
+    const håndterVedtaksresultat =
+        (nesteUrl: string): ((res: RessursSuksess<string> | RessursFeilet) => void) =>
+        (res: RessursSuksess<string> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                navigate(nesteUrl);
+                hentBehandling.rerun();
+                nullstillIkkePersisterteKomponenter();
+            } else {
+                settFeilmelding(res.frontendFeilmelding);
             }
         };
-    };
 
     const lagreVedtak = (vedtaksRequest: ISanksjonereVedtakForOvergangsstønad) => {
         settLaster(true);

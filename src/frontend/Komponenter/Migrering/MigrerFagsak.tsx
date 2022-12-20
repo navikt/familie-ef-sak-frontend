@@ -4,6 +4,7 @@ import {
     byggHenterRessurs,
     byggSuksessRessurs,
     byggTomRessurs,
+    erAvTypeFeil,
     Ressurs,
     RessursStatus,
 } from '../../App/typer/ressurs';
@@ -41,9 +42,7 @@ export const visMigrertStatus = (
             {migrertStatus.status === RessursStatus.SUKSESS && (
                 <div style={{ color: 'green' }}>Fagsaken er migrert</div>
             )}
-            {(migrertStatus.status === RessursStatus.FEILET ||
-                migrertStatus.status === RessursStatus.FUNKSJONELL_FEIL ||
-                migrertStatus.status === RessursStatus.IKKE_TILGANG) && (
+            {erAvTypeFeil(migrertStatus) && (
                 <>
                     <div style={{ color: 'red' }}>
                         {migrertStatus.frontendFeilmelding || migrertStatus.melding}
