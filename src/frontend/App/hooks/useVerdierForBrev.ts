@@ -12,8 +12,6 @@ enum EBehandlingFlettefelt {
     tomdatoInnvilgelse = 'tomdatoInnvilgelse',
     fomdatoInnvilgelseBarnetilsyn = 'fomdatoInnvilgelseBarnetilsyn',
     tomdatoInnvilgelseBarnetilsyn = 'tomdatoInnvilgelseBarnetilsyn',
-    fomdatoInnvilgelseSkolepenger = 'fomdatoInnvilgelseSkolepenger',
-    tomdatoInnvilgelseSkolepenger = 'tomdatoInnvilgelseSkolepenger',
     fomdatoRevurderingBT = 'fomdatoRevurderingBT',
     tomdatoRevurderingBT = 'tomdatoRevurderingBT',
 }
@@ -42,8 +40,6 @@ export const useVerdierForBrev = (
                       [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
                       [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
                       [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
-                      [EBehandlingFlettefelt.fomdatoInnvilgelseSkolepenger]: fraDato,
-                      [EBehandlingFlettefelt.tomdatoInnvilgelseSkolepenger]: tilDato,
                       [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
                       [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
                   }
