@@ -1,10 +1,9 @@
 import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 
-export const yngsteBarnFødselsdato = (vilkår: IVilkår) => {
+export const utledYngsteBarnFødselsdato = (vilkår: IVilkår) => {
     const terminbarnFødselsdatoer = vilkår.grunnlag.barnMedSamvær
-        .map((b) => b.søknadsgrunnlag)
-        .map((sb) => sb.fødselTermindato)
+        .map((b) => b.søknadsgrunnlag.fødselTermindato)
         .filter(
             (fødselTermindato): fødselTermindato is string =>
                 !!fødselTermindato &&
@@ -13,8 +12,7 @@ export const yngsteBarnFødselsdato = (vilkår: IVilkår) => {
         );
 
     const tidligsteDato = vilkår.grunnlag.barnMedSamvær
-        .map((b) => b.registergrunnlag)
-        .map((r) => r.fødselsdato)
+        .map((b) => b.registergrunnlag.fødselsdato)
         .filter((fødselsdato): fødselsdato is string => !!fødselsdato && erGyldigDato(fødselsdato))
         .concat(terminbarnFødselsdatoer)
         .reduce((a, b) => {

@@ -37,7 +37,7 @@ import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
-import { yngsteBarnFødselsdato } from './fødselsdatoUtils';
+import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -84,6 +84,12 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
+    const sjekkToggleUtledYngsteBarnetsFødselsdato = (vilkår: IVilkår) => {
+        if (toggles[ToggleName.brukValidering8årHovedperiode]) {
+            return utledYngsteBarnFødselsdato(vilkår);
+        }
+    };
+
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
@@ -95,7 +101,7 @@ export const InnvilgeVedtak: React.FC<{
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
-            yngsteBarnDato: '3000-01-01',
+            yngsteBarnFødselsdato: sjekkToggleUtledYngsteBarnetsFødselsdato(vilkår),
         },
         validerInnvilgetVedtakForm
     );
@@ -105,19 +111,10 @@ export const InnvilgeVedtak: React.FC<{
     const periodeBegrunnelse = formState.getProps('periodeBegrunnelse') as FieldState;
     const inntektBegrunnelse = formState.getProps('inntektBegrunnelse') as FieldState;
     const typeSamordningsfradag = formState.getProps('samordningsfradragType') as FieldState;
-    const yngsteBarnDato = formState.getProps('yngsteBarnDato') as FieldState;
-
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
     const låsVedtaksperiodeRad = !!revurderesFra;
-
-    useEffect(() => {
-        if (toggles[ToggleName.brukValidering8årHovedperiode]) {
-            const fødselsdato = yngsteBarnFødselsdato(vilkår);
-            fødselsdato && yngsteBarnDato.setValue(fødselsdato);
-        }
-    }, [toggles, yngsteBarnDato, vilkår]);
 
     useEffect(() => {
         if (!revurderesFra || !vedtakshistorikk) {
@@ -277,7 +274,7 @@ export const InnvilgeVedtak: React.FC<{
             perioder: form.perioder,
             inntekter: form.inntekter,
             samordningsfradragType: skalVelgeSamordningstype ? form.samordningsfradragType : null,
-            yngsteBarnDato: '3000-01-01',
+            yngsteBarnFødselsdato: utledYngsteBarnFødselsdato(vilkår),
         };
         switch (behandling.type) {
             case Behandlingstype.FØRSTEGANGSBEHANDLING:

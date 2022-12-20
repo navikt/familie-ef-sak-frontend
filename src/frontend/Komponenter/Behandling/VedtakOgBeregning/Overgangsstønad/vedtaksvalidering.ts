@@ -23,7 +23,7 @@ export const validerInnvilgetVedtakForm = ({
     periodeBegrunnelse,
     inntektBegrunnelse,
     samordningsfradragType,
-    yngsteBarnDato,
+    yngsteBarnFødselsdato,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     const periodeBegrunnelseFeil =
         periodeBegrunnelse === '' || periodeBegrunnelse === undefined
@@ -43,7 +43,7 @@ export const validerInnvilgetVedtakForm = ({
             : undefined;
 
     return {
-        ...validerVedtaksperioder({ perioder, inntekter, yngsteBarnDato }),
+        ...validerVedtaksperioder({ perioder, inntekter, yngsteBarnFødselsdato }),
         inntektBegrunnelse: inntektBegrunnelseFeil,
         periodeBegrunnelse: periodeBegrunnelseFeil,
         samordningsfradragType: typeSamordningFeil,
@@ -62,15 +62,15 @@ const yngsteBarnErOver8FørUtgangAvPerioden = (
 export const validerVedtaksperioder = ({
     perioder,
     inntekter,
-    yngsteBarnDato,
+    yngsteBarnFødselsdato,
 }: {
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
-    yngsteBarnDato: string;
+    yngsteBarnFødselsdato: string;
 }): FormErrors<{
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
-    yngsteBarnDato: string;
+    yngsteBarnFødselsdato: string;
 }> => {
     const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
     const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
@@ -88,7 +88,7 @@ export const validerVedtaksperioder = ({
 
         if (
             periodeType === EPeriodetype.HOVEDPERIODE &&
-            yngsteBarnErOver8FørUtgangAvPerioden(yngsteBarnDato, årMånedTil)
+            yngsteBarnErOver8FørUtgangAvPerioden(yngsteBarnFødselsdato, årMånedTil)
         ) {
             vedtaksperiodeFeil = {
                 ...vedtaksperiodeFeil,
@@ -98,7 +98,7 @@ export const validerVedtaksperioder = ({
 
         if (
             periodeType === EPeriodetype.NY_PERIODE_FOR_NYTT_BARN &&
-            yngsteBarnErOver8FørUtgangAvPerioden(yngsteBarnDato, årMånedTil)
+            yngsteBarnErOver8FørUtgangAvPerioden(yngsteBarnFødselsdato, årMånedTil)
         ) {
             vedtaksperiodeFeil = {
                 ...vedtaksperiodeFeil,
@@ -198,7 +198,7 @@ export const validerVedtaksperioder = ({
     return {
         perioder: feilIVedtaksPerioder,
         inntekter: inntektsperiodeFeil,
-        yngsteBarnDato: undefined, // Vi bruker samme type på FormState<T> og FormErrors<T>. Vi setter yngsteBarnDato i formstate for å bruke denne i periodevalidering. Da må vi sette feil = undefined (FormError)
+        yngsteBarnFødselsdato: undefined, // Vi bruker samme type på FormState<T> og FormErrors<T>. Vi setter yngsteBarnDato i formstate for å bruke denne i periodevalidering. Da må vi sette feil = undefined (FormError)
     };
 };
 
