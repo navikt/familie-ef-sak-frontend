@@ -4,7 +4,7 @@ import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
 import { HistorikkElementProps, LinjeProps, StyledHistorikkElementProps } from './typer';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { ExternalLink } from '@navikt/ds-icons';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
@@ -59,14 +59,10 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
         axiosRequest<string, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/brev/${behandlingId}`,
-        }).then((respons: Ressurs<string>) => {
+        }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 åpnePdfIEgenTab(base64toBlob(respons.data, 'application/pdf'), 'Vedtaksbrev');
-            } else if (
-                respons.status === RessursStatus.IKKE_TILGANG ||
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL
-            ) {
+            } else {
                 console.error(respons.frontendFeilmelding);
             }
         });

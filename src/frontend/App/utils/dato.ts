@@ -83,12 +83,16 @@ export const erGyldigDato = (dato: string | Date): boolean =>
 export const tilDato = (dato: string | Date): Date =>
     typeof dato === 'string' ? parseISO(dato) : dato;
 
-export const nullableDatoTilAlder = (dato?: string | Date): number | undefined => {
+export const nullableDatoTilAlder = (dato?: string | Date | null): number | undefined => {
     return dato ? datoTilAlder(dato) : undefined;
 };
 
 export const datoTilAlder = (dato: string | Date): number => {
     return differenceInYears(new Date(), tilDato(dato));
+};
+
+export const årMellomDatoer = (from: string | Date, to: string | Date): number => {
+    return differenceInYears(tilDato(to), tilDato(from));
 };
 
 export type Intervall = { fra: Date; til: Date };

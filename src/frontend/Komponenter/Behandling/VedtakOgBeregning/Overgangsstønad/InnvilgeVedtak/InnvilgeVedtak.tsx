@@ -14,7 +14,13 @@ import {
     IVedtaksperiode,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
+import {
+    byggTomRessurs,
+    Ressurs,
+    RessursFeilet,
+    RessursStatus,
+    RessursSuksess,
+} from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../../../App/context/AppContext';
@@ -211,17 +217,12 @@ export const InnvilgeVedtak: React.FC<{
             axiosRequest<IVedtakshistorikk, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
-            }).then((res: Ressurs<IVedtakshistorikk>) => {
+            }).then((res: RessursSuksess<IVedtakshistorikk> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     settVedtakshistorikk(res.data);
-                } else if (
-                    res.status === RessursStatus.FEILET ||
-                    res.status === RessursStatus.FUNKSJONELL_FEIL
-                ) {
-                    settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
                 } else {
-                    settRevurderesFraOgMedFeilmelding('Noe feilet med henting av vedtaksperioder');
+                    settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
                 }
             });
         },

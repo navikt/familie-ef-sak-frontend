@@ -5,7 +5,7 @@ import { FamilieInput, FamilieSelect } from '@navikt/familie-form-elements';
 import { fnr } from '@navikt/fnrvalidator';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { BodyLong, Button, Heading } from '@navikt/ds-react';
-import { RessursStatus } from '../../../App/typer/ressurs';
+import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
@@ -51,11 +51,7 @@ const VelgPersonOgStønadstype = () => {
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             navigate(`/opprett-forstegangsbehandling/${fagsak.data.id}`);
-        } else if (
-            fagsak.status === RessursStatus.FEILET ||
-            fagsak.status === RessursStatus.FUNKSJONELL_FEIL ||
-            fagsak.status === RessursStatus.IKKE_TILGANG
-        ) {
+        } else if (erAvTypeFeil(fagsak)) {
             settFeilmelding(fagsak.frontendFeilmelding);
             settLaster(false);
         }

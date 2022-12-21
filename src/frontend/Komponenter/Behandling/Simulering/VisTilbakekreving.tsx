@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ITilbakekrevingsvalg, TilbakekrevingsvalgTilTekst } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { FileContent } from '@navikt/ds-icons';
 import { Button, Heading } from '@navikt/ds-react';
@@ -40,17 +40,13 @@ export const VisTilbakekreving: React.FC<Props> = ({
         axiosRequest<string, null>({
             method: 'GET',
             url: `familie-ef-sak/api/tilbakekreving/${behandlingId}/brev`,
-        }).then((respons: Ressurs<string>) => {
+        }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 åpnePdfIEgenTab(
                     base64toBlob(respons.data, 'application/pdf'),
                     'Forhåndsvisning av varselbrev'
                 );
-            } else if (
-                respons.status === RessursStatus.IKKE_TILGANG ||
-                respons.status === RessursStatus.FEILET ||
-                respons.status === RessursStatus.FUNKSJONELL_FEIL
-            ) {
+            } else {
                 settForhåndsvisningsFeil(respons.frontendFeilmelding);
             }
         });

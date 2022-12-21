@@ -363,7 +363,7 @@ export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     HOVEDPERIODE: 'Hovedperiode',
     MIDLERTIDIG_OPPHØR: 'Opphør/Ingen stønad',
     PERIODE_FØR_FØDSEL: 'Periode før fødsel',
-    SANKSJON: 'Sanksjon',
+    SANKSJON: 'Sanksjon 1 mnd',
     UTVIDELSE: 'Utvidelse',
     MIGRERING: 'Migrering',
     NY_PERIODE_FOR_NYTT_BARN: 'Ny periode for nytt barn',
