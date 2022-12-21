@@ -67,11 +67,10 @@ export const validerVedtaksperioder = ({
 }: {
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
-    yngsteBarnFødselsdato: string;
+    yngsteBarnFødselsdato?: string | undefined;
 }): FormErrors<{
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
-    yngsteBarnFødselsdato: string;
 }> => {
     const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
     const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
@@ -199,7 +198,6 @@ export const validerVedtaksperioder = ({
     return {
         perioder: feilIVedtaksPerioder,
         inntekter: inntektsperiodeFeil,
-        yngsteBarnFødselsdato: undefined, // Vi bruker samme type på FormState<T> og FormErrors<T>. Vi setter yngsteBarnDato i formstate for å bruke denne i periodevalidering. Da må vi sette feil = undefined (FormError)
     };
 };
 

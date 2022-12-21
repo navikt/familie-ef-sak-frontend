@@ -42,7 +42,7 @@ import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
     '_type'
->;
+> & { yngsteBarnFødselsdato?: string };
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
@@ -274,7 +274,6 @@ export const InnvilgeVedtak: React.FC<{
             perioder: form.perioder,
             inntekter: form.inntekter,
             samordningsfradragType: skalVelgeSamordningstype ? form.samordningsfradragType : null,
-            yngsteBarnFødselsdato: utledYngsteBarnFødselsdato(vilkår),
         };
         switch (behandling.type) {
             case Behandlingstype.FØRSTEGANGSBEHANDLING:

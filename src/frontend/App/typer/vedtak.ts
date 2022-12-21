@@ -83,7 +83,6 @@ export type IInnvilgeVedtakForOvergangsstønad = {
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
     samordningsfradragType?: ESamordningsfradragtype | string | undefined;
-    yngsteBarnFødselsdato: string;
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
