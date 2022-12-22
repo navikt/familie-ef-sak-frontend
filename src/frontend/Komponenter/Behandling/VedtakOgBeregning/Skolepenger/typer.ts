@@ -15,7 +15,9 @@ export interface SkolepengerProps<T> {
     skoleårErFjernet?: boolean;
 }
 
-export interface ValideringsPropsMedOppdatering<T> extends SkolepengerProps<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface ValideringsPropsMedOppdatering<T extends Record<string, any>>
+    extends SkolepengerProps<T> {
     valideringsfeil?: FormErrors<T>[];
     settValideringsFeil: (errors: FormErrors<T>[]) => void;
 }

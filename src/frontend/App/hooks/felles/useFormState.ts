@@ -22,7 +22,7 @@ export type FormErrors<T extends Record<string, any | undefined>> = {
         : FormErrors<T[P]>;
 };
 
-type Valideringsfunksjon<T> = (state: FormState<T>) => FormErrors<T>;
+type Valideringsfunksjon<T extends Record<string, any>> = (state: FormState<T>) => FormErrors<T>;
 
 export default function useFormState<T extends Record<string, unknown>>(
     initialState: FormState<T>,
