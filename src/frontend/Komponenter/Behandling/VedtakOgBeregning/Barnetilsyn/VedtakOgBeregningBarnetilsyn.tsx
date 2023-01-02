@@ -8,11 +8,10 @@ import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/ut
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Vedtaksform } from './Vedtaksform';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
 import { Opphør } from '../Overgangsstønad/Opphør/Opphør';
 import { barnSomOppfyllerAlleVilkår } from './utils';
-import { v4 as uuidv4 } from 'uuid';
+import { InnvilgeBarnetilsyn } from './InnvilgeBarnetilsyn';
 
 interface Props {
     behandling: Behandling;
@@ -26,29 +25,6 @@ const Wrapper = styled.div`
 const WrapperMarginTop = styled.div`
     margin-top: 1rem;
 `;
-
-const oppdaterVedtakMedEndretKey = (
-    vedtak: IInnvilgeVedtakForBarnetilsyn | undefined
-): IInnvilgeVedtakForBarnetilsyn | undefined => {
-    if (!vedtak) {
-        return vedtak;
-    }
-    return {
-        ...vedtak,
-        perioder: vedtak.perioder.map((periode) => ({ ...periode, endretKey: uuidv4() })),
-        perioderKontantstøtte: vedtak.perioderKontantstøtte.map((periode) => ({
-            ...periode,
-            endretKey: uuidv4(),
-        })),
-        tilleggsstønad: {
-            ...vedtak.tilleggsstønad,
-            perioder: vedtak.tilleggsstønad.perioder.map((periode) => ({
-                ...periode,
-                endretKey: uuidv4(),
-            })),
-        },
-    };
-};
 
 const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
@@ -83,11 +59,11 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                             case EBehandlingResultat.INNVILGE:
                             case EBehandlingResultat.INNVILGE_UTEN_UTBETALING:
                                 return (
-                                    <Vedtaksform
+                                    <InnvilgeBarnetilsyn
                                         behandling={behandling}
-                                        lagretVedtak={oppdaterVedtakMedEndretKey(
-                                            vedtak as IInnvilgeVedtakForBarnetilsyn | undefined // TODO: Fjern "as" når vi får på plass vedtakDto-håndtering(egen oppgave)
-                                        )}
+                                        lagretVedtak={
+                                            vedtak as IInnvilgeVedtakForBarnetilsyn | undefined
+                                        }
                                         barn={barnSomOppfyllerAlleVilkår(vilkår)}
                                         settResultatType={settResultatType}
                                     />
