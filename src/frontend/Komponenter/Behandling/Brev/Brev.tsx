@@ -10,11 +10,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
-import {
-    EAvslagÅrsak,
-    EBehandlingResultat,
-    IVedtakForOvergangsstønad,
-} from '../../../App/typer/vedtak';
+import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -40,13 +36,6 @@ interface Props {
     behandlingId: string;
 }
 
-const skalFerdigstilleUtenBeslutter = (vedtak?: IVedtakForOvergangsstønad | undefined): boolean => {
-    return (
-        !!vedtak &&
-        vedtak.resultatType === EBehandlingResultat.AVSLÅ &&
-        vedtak.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
-    );
-};
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
