@@ -80,8 +80,9 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (vedtaksresultat !== EBehandlingResultat.SANKSJONERE)
+        if (vedtaksresultat !== EBehandlingResultat.SANKSJONERE) {
             hentBeløpsperioder(vedtaksresultat);
+        }
     }, [vedtaksresultat, hentBeløpsperioder]);
 
     useEffect(() => {
