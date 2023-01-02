@@ -30,12 +30,15 @@ interface Props {
     oppdaterRevurderingsinformasjon: (revurderingsinformasjon: Revurderingsinformasjon) => void;
 }
 
+const ENDRE_ÅRSAK_REVURDERING = 'endre-årsak-revurdering';
+
 export const EndreÅrsakRevurdering: React.FC<Props> = ({
     revurderingsinformasjon: initStateRevurderingsinformasjon,
     behandling,
     oppdaterRevurderingsinformasjon,
 }) => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
@@ -84,10 +87,14 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                     settFeilmelding(res.frontendFeilmelding);
                 }
             })
-            .finally(() => settLaster(false));
+            .finally(() => {
+                nullstillIkkePersisterteKomponenter();
+                settLaster(false);
+            });
     };
 
-    const oppdaterÅrsakRevurdering = (nyeVerdier: Partial<IÅrsakRevurdering>) =>
+    const oppdaterÅrsakRevurdering = (nyeVerdier: Partial<IÅrsakRevurdering>) => {
+        settIkkePersistertKomponent(ENDRE_ÅRSAK_REVURDERING);
         settRevurderingsinformasjon((prevState) => ({
             ...prevState,
             årsakRevurdering: {
@@ -95,6 +102,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 ...nyeVerdier,
             },
         }));
+    };
 
     return (
         <Container>

@@ -17,7 +17,7 @@ import { datoTilAlder } from '../../../../App/utils/dato';
 import { Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { v4 as uuidv4 } from 'uuid';
+import { tomUtgiftsperiodeRad } from './utils';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -60,22 +60,15 @@ interface Props {
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     barn: IBarnMedSamvær[];
+    låsFraDatoFørsteRad: boolean;
 }
-
-export const tomUtgiftsperiodeRad = (): IUtgiftsperiode => ({
-    årMånedFra: '',
-    årMånedTil: '',
-    barn: [],
-    utgifter: undefined,
-    erMidlertidigOpphør: false,
-    endretKey: uuidv4(),
-});
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
     utgiftsperioder,
     valideringsfeil,
     settValideringsFeil,
     barn,
+    låsFraDatoFørsteRad,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -174,6 +167,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             }}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
+                            disabledFra={index === 0 && låsFraDatoFørsteRad}
                         />
                         {behandlingErRedigerbar ? (
                             <FamilieReactSelect
