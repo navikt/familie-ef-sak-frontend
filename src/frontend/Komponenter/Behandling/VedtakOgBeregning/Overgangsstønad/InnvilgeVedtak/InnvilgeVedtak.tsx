@@ -98,6 +98,7 @@ export const InnvilgeVedtak: React.FC<{
         if (toggles[ToggleName.brukValidering8årHovedperiode]) {
             return utledYngsteBarnFødselsdato(vilkår);
         }
+        return '';
     };
 
     const formState = useFormState<InnvilgeVedtakForm>(
