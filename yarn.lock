@@ -2898,12 +2898,12 @@
   resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/1.5.4/98dcd334e667b588d688fa39d4419ccc6def63f5#98dcd334e667b588d688fa39d4419ccc6def63f5"
   integrity sha512-G3BOMH5kD06xKdnCon1p9hQ54WBpN3Iz6kyiH6D188c/UkCqNJPjJHfokS2g5vAzcwxI/nbv2Irg5XkAxN6vXg==
 
-"@navikt/familie-backend@7.0.15-alpha.5":
-  version "7.0.15-alpha.5"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-backend/7.0.15-alpha.5/af10ffe0ae63a3ec6e60949281bb466e102f4433#af10ffe0ae63a3ec6e60949281bb466e102f4433"
-  integrity sha512-QNdNUFZLCRYO8goP/aA7hZIhQNtlZB1BZDu0H94NMTbx3VP0Y0UCd+JmpjmqldSJNTHgTXoIEaHqXaUx/IHWeQ==
+"@navikt/familie-backend@9.0.0":
+  version "9.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-backend/9.0.0/152d10ab996b1c6226c64a6d5cd815ff6fe56c54#152d10ab996b1c6226c64a6d5cd815ff6fe56c54"
+  integrity sha512-AWY8fsBuH/7rTWVNTTZoF0LOio16jjmhHE31mpl6mPqD4sWwQV88PljAtAVj8Es2zgm5BBDkAAHQzALgW7RinA==
   dependencies:
-    "@navikt/familie-logging" "^3.0.11"
+    "@navikt/familie-logging" "^5.0.0"
     "@types/connect-redis" "~0.0.19"
     "@types/cookie-parser" "^1.4.3"
     "@types/express" "^4.17.15"
@@ -3012,17 +3012,17 @@
   dependencies:
     "@navikt/familie-typer" "^5.0.5"
 
-"@navikt/familie-logging@^3.0.11":
-  version "3.0.11"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/3.0.11/d2a7c326c8cd94d1afc2117dc7bf58f42cc7423c#d2a7c326c8cd94d1afc2117dc7bf58f42cc7423c"
-  integrity sha512-/B8No2Zn63RFDoKwo18Ki+toU46kOW4KetmuTBgOGyCrSmr2fWnECLBa2bCiGwoLxsrpV0rPVAHAeRmPrJimpg==
-  dependencies:
-    winston "^3.8.1"
-
 "@navikt/familie-logging@^3.0.5":
   version "3.0.5"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/3.0.5/249c4e40bde7c78662338999a7004d65c3ba60d2#249c4e40bde7c78662338999a7004d65c3ba60d2"
   integrity sha512-stAyX97DzbDXP1k3Dt4Pv9LUG5m+3yZrT0aBcWb9kE634BtAqfqE4rhDDF1woEpqQ1Bz9sUMcW3yBhmkK1haSQ==
+  dependencies:
+    winston "^3.8.1"
+
+"@navikt/familie-logging@^5.0.0":
+  version "5.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/5.0.0/944b2415d9b067e44d0804cac3304a310da35d96#944b2415d9b067e44d0804cac3304a310da35d96"
+  integrity sha512-4LSwyqKRUynVxY65aIBaxfF/DyRGnEneXtP2LrK2KnmHWuXhfKSctLcf2nAIsLkELikSicXCE9dtIfgw4hjZ3g==
   dependencies:
     winston "^3.8.1"
 
