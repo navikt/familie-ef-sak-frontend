@@ -124,15 +124,15 @@ export const loggFeil = (
         });
 
         const response: AxiosResponse | undefined = error ? error.response : undefined;
-        if (response) {
-            withScope((scope) => {
+        withScope((scope) => {
+            if (response) {
                 scope.setExtra('nav-call-id', response.headers['nav-call-id']);
                 scope.setExtra('status text', response.statusText);
                 scope.setExtra('status', response.status);
+            }
 
-                captureException(error);
-            });
-        }
+            captureException(error);
+        });
 
         apiLoggFeil(
             `${error ? `${error}${feilmelding ? ' - ' : ''}` : ''}${
