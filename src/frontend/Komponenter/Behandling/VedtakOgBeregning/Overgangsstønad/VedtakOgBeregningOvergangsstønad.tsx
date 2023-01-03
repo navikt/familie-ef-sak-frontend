@@ -57,6 +57,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
                             lagretVedtak={vedtak}
                             alleVilkårOppfylt={alleVilkårOppfylt}
                             ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
+                            vilkår={vilkår}
                         />
                     </Wrapper>
                 );

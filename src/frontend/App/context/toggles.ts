@@ -13,5 +13,6 @@ export enum ToggleName {
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     førstegangsbehandling = 'familie.ef.sak.opprett-forstegangsbehandling',
+    brukValidering8årHovedperiode = 'familie.ef.sak.frontend-bruk-validering-8ar-hovedperiode',
     automatiskeVedtaksdatoerBrev = 'familie.ef.sak.frontend.automatiskeVedtaksdatoer',
 }
