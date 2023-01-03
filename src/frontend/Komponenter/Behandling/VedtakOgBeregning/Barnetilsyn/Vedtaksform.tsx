@@ -18,7 +18,7 @@ import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/Alert
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
-import UtgiftsperiodeValg, { tomUtgiftsperiodeRad } from './UtgiftsperiodeValg';
+import UtgiftsperiodeValg from './UtgiftsperiodeValg';
 import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
@@ -31,6 +31,7 @@ import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/Inge
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { blirNullUtbetalingPgaOverstigendeKontantstøtte } from '../Felles/utils';
+import { tomUtgiftsperiodeRad } from './utils';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -51,6 +52,51 @@ const WrapperMarginTop = styled.div`
     margin-top: 1rem;
 `;
 
+const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
+    vedtak
+        ? vedtak.perioderKontantstøtte && vedtak.perioderKontantstøtte.length > 0
+            ? ERadioValg.JA
+            : ERadioValg.NEI
+        : ERadioValg.IKKE_SATT;
+
+const initKontantstøtteperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
+    vedtak ? vedtak.perioderKontantstøtte : [tomKontantstøtteRad()];
+
+const initHarTilleggsstønad = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
+    vedtak
+        ? vedtak.tilleggsstønad.harTilleggsstønad
+            ? ERadioValg.JA
+            : ERadioValg.NEI
+        : ERadioValg.IKKE_SATT;
+
+const initSkalStønadReduseres = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
+    vedtak && vedtak.tilleggsstønad.harTilleggsstønad
+        ? vedtak.tilleggsstønad.perioder.length > 0
+            ? ERadioValg.JA
+            : ERadioValg.NEI
+        : ERadioValg.IKKE_SATT;
+
+const initTillegsstønadsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
+    vedtak ? vedtak.tilleggsstønad.perioder : [tomTilleggsstønadRad()];
+
+const initUtgiftsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
+    vedtak ? vedtak.perioder : [tomUtgiftsperiodeRad()];
+
+const initFormState = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) => ({
+    utgiftsperioder: initUtgiftsperioder(vedtak),
+    harKontantstøtte: initKontantstøttestate(vedtak),
+    kontantstøtteperioder: initKontantstøtteperioder(vedtak),
+    harTilleggsstønad: initHarTilleggsstønad(vedtak),
+    tilleggsstønadBegrunnelse: vedtak?.tilleggsstønad.begrunnelse || '',
+    skalStønadReduseres: initSkalStønadReduseres(vedtak),
+    tilleggsstønadsperioder: initTillegsstønadsperioder(vedtak),
+    begrunnelse: vedtak?.begrunnelse || '',
+});
+
+const initNullUtbetalingPgaKontantstøtte = (
+    lagretInnvilgetVedtak: IInnvilgeVedtakForBarnetilsyn | undefined
+) => lagretInnvilgetVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling;
+
 export const Vedtaksform: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IvedtakForBarnetilsyn;
@@ -65,9 +111,9 @@ export const Vedtaksform: React.FC<{
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
-    const [nullUtbetalingPgaKontantStøtte, settNullUtbetalingPgaKontantStøtte] = useState(
-        lagretInnvilgetVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
-    );
+    const [nullUtbetalingPgaKontantstøtte, settNullUtbetalingPgaKontantstøtte] = useState(
+        initNullUtbetalingPgaKontantstøtte(lagretInnvilgetVedtak)
+    ); // Trenger denne reset?
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregningsperiodeBarnetilsyn[]>()
     );
@@ -76,38 +122,10 @@ export const Vedtaksform: React.FC<{
     const navigate = useNavigate();
 
     const formState = useFormState<InnvilgeVedtakForm>(
-        {
-            utgiftsperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.perioder
-                : [tomUtgiftsperiodeRad()],
-            harKontantstøtte: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.perioderKontantstøtte &&
-                  lagretInnvilgetVedtak.perioderKontantstøtte.length > 0
-                    ? ERadioValg.JA
-                    : ERadioValg.NEI
-                : ERadioValg.IKKE_SATT,
-            kontantstøtteperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.perioderKontantstøtte
-                : [tomKontantstøtteRad()],
-            harTilleggsstønad: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.tilleggsstønad.harTilleggsstønad
-                    ? ERadioValg.JA
-                    : ERadioValg.NEI
-                : ERadioValg.IKKE_SATT,
-            tilleggsstønadBegrunnelse: lagretInnvilgetVedtak?.tilleggsstønad.begrunnelse || '',
-            skalStønadReduseres:
-                lagretInnvilgetVedtak && lagretInnvilgetVedtak.tilleggsstønad.harTilleggsstønad
-                    ? lagretInnvilgetVedtak.tilleggsstønad.perioder.length > 0
-                        ? ERadioValg.JA
-                        : ERadioValg.NEI
-                    : ERadioValg.IKKE_SATT,
-            tilleggsstønadsperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.tilleggsstønad.perioder
-                : [tomTilleggsstønadRad()],
-            begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
-        },
+        initFormState(lagretInnvilgetVedtak),
         validerInnvilgetVedtakForm
     );
+
     const utgiftsperiodeState = formState.getProps('utgiftsperioder') as ListState<IUtgiftsperiode>;
     const kontantstøtteState = formState.getProps('harKontantstøtte') as FieldState;
     const kontantstøttePeriodeState = formState.getProps(
@@ -122,6 +140,27 @@ export const Vedtaksform: React.FC<{
         'tilleggsstønadsperioder'
     ) as ListState<IPeriodeMedBeløp>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
+
+    useEffect(() => {
+        if (!lagretInnvilgetVedtak) {
+            return;
+        }
+        utgiftsperiodeState.setValue(initUtgiftsperioder(lagretInnvilgetVedtak));
+        kontantstøtteState.setValue(initKontantstøttestate(lagretInnvilgetVedtak));
+        kontantstøttePeriodeState.setValue(initKontantstøtteperioder(lagretInnvilgetVedtak));
+        tilleggsstønadState.setValue(initHarTilleggsstønad(lagretInnvilgetVedtak));
+        stønadsreduksjonState.setValue(initSkalStønadReduseres(lagretInnvilgetVedtak));
+        tilleggsstønadsperiodeState.setValue(initTillegsstønadsperioder(lagretInnvilgetVedtak));
+        utgiftsperiodeState.setValue(initUtgiftsperioder(lagretInnvilgetVedtak));
+        formState.setErrors((prevState) => ({
+            ...prevState,
+            utgiftsperioder: [],
+            tilleggsstønadsperioder: [],
+            kontantstøtteperioder: [],
+        }));
+
+        // eslint-disable-next-line
+    }, [lagretInnvilgetVedtak]);
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
@@ -172,7 +211,7 @@ export const Vedtaksform: React.FC<{
                         : null,
             },
             begrunnelse: form.begrunnelse,
-            _type: nullUtbetalingPgaKontantStøtte
+            _type: nullUtbetalingPgaKontantstøtte
                 ? IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
                 : IVedtakType.InnvilgelseBarnetilsyn,
         };
@@ -214,7 +253,7 @@ export const Vedtaksform: React.FC<{
         if (beregningsresultat.status === RessursStatus.SUKSESS) {
             const kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder =
                 blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat.data);
-            settNullUtbetalingPgaKontantStøtte(
+            settNullUtbetalingPgaKontantstøtte(
                 kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder
             );
             if (kontantstøttebeløpOverstigerUtgiftsbeløpForAllePerioder) {
@@ -235,6 +274,7 @@ export const Vedtaksform: React.FC<{
                 valideringsfeil={formState.errors.utgiftsperioder}
                 settValideringsFeil={formState.setErrors}
                 barn={barn}
+                låsFraDatoFørsteRad={!!lagretVedtak}
             />
             <div>
                 {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
