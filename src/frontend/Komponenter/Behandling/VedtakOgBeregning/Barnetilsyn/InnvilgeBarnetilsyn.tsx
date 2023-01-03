@@ -35,6 +35,7 @@ export const InnvilgeBarnetilsyn: FC<{
     const [revurderesFraOgMedFeilmelding, settRevurderesFraOgMedFeilmelding] = useState<
         string | null
     >(null);
+    const [revurderesFørFørstePeriode, settRevurderesFørFørstePeriode] = useState(false);
 
     const hentVedtakshistorikk = useCallback(
         (revurderesFra: string) => {
@@ -46,6 +47,9 @@ export const InnvilgeBarnetilsyn: FC<{
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     settVedtakshistorikk(
                         oppdaterVedtakMedInitPeriodeOgOpphørshulll(res.data, revurderesFra)
+                    );
+                    settRevurderesFørFørstePeriode(
+                        revurdererFørFørstePeriode(res.data, revurderesFra)
                     );
                 } else {
                     settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
@@ -74,10 +78,8 @@ export const InnvilgeBarnetilsyn: FC<{
                     settRevurderesFra={settRevurderesFra}
                     revurderesFra={revurderesFra}
                     feilmelding={revurderesFraOgMedFeilmelding}
-                    revurdererFørFørstePeriode={revurdererFørFørstePeriode(
-                        vedtakshistorikk,
-                        revurderesFra
-                    )}
+                    revurdererFørFørstePeriode={revurderesFørFørstePeriode}
+                    type={'BARNETILSYN'}
                 />
             )}
             {(!toggle || !behandling.forrigeBehandlingId || vedtak) && (
