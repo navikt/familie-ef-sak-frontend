@@ -36,6 +36,7 @@ export const oppdaterValideringsfeil = <
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>,
     index: number,
     property: keyof T,
+    // @ts-ignore
     formErrors: FormErrors<T2 extends Array<infer U> ? U[] : T2>
 ) => {
     settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {

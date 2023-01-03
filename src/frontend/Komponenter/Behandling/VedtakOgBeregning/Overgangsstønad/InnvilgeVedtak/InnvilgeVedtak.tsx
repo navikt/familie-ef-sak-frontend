@@ -37,9 +37,13 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
-import { RevurderesFraOgMed } from './RevurderesFraOgMed';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
-import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
+import {
+    fyllHullMedOpphør,
+    revurdererFørFørstePeriode,
+    revurderFraInitPeriode,
+} from './revurderFraUtils';
+import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
@@ -292,7 +296,10 @@ export const InnvilgeVedtak: React.FC<{
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
                         feilmelding={revurderesFraOgMedFeilmelding}
-                        vedtakshistorikk={vedtakshistorikk}
+                        revurdererFørFørstePeriode={revurdererFørFørstePeriode(
+                            vedtakshistorikk,
+                            revurderesFra
+                        )}
                     />
                 ) : null}
                 {skalViseVedtaksperiodeOgInntekt && (

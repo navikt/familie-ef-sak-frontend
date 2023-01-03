@@ -10,6 +10,8 @@ import {
 } from '../../Inngangsvilkår/vilkår';
 import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import {
+    EAvslagÅrsak,
+    EBehandlingResultat,
     IBeregningsperiodeBarnetilsyn,
     IVedtakForOvergangsstønad,
 } from '../../../../App/typer/vedtak';
@@ -173,3 +175,13 @@ export const blirNullUtbetalingPgaOverstigendeKontantstøtte = (
 export const skalViseNullstillVedtakKnapp = (
     vedtak: Ressurs<IVedtakForOvergangsstønad | undefined>
 ): boolean => vedtak.status === RessursStatus.SUKSESS && vedtak.data !== undefined;
+
+export const skalFerdigstilleUtenBeslutter = (
+    vedtak?: IVedtakForOvergangsstønad | undefined
+): boolean => {
+    return (
+        !!vedtak &&
+        vedtak.resultatType === EBehandlingResultat.AVSLÅ &&
+        vedtak.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
+    );
+};

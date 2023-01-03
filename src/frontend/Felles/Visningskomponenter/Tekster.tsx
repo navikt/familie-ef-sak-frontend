@@ -8,7 +8,7 @@ import {
     LabelProps,
 } from '@navikt/ds-react';
 import React, { forwardRef } from 'react';
-import { BodyShortProps } from '@navikt/ds-react/src/typography/BodyShort';
+import { BodyShortProps } from '@navikt/ds-react';
 
 export const BodyLongSmall = forwardRef<HTMLParagraphElement, Omit<BodyLongProps, 'size'>>(
     (props, ref) => {
