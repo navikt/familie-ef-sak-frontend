@@ -63,6 +63,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
             if (respons.status === RessursStatus.SUKSESS) {
                 åpnePdfIEgenTab(base64toBlob(respons.data, 'application/pdf'), 'Vedtaksbrev');
             } else {
+                // eslint-disable-next-line no-console
                 console.error(respons.frontendFeilmelding);
             }
         });
