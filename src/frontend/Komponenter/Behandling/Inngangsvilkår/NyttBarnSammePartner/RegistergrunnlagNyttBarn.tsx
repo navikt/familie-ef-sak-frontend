@@ -19,7 +19,6 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
     const { annenForelderRegister, fødselsdato, navn, dødsdato } = barn;
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
-    console.log(fødselsdato);
     return (
         <GridTabell>
             <>

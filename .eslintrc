@@ -34,7 +34,8 @@
         "jsx-a11y/interactive-supports-focus": "off",
         "jsx-a11y/click-events-have-key-events": "off",
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn"
+        "react-hooks/exhaustive-deps": "warn",
+        "no-console":"error"
     },
     "settings": {
         "react": {
