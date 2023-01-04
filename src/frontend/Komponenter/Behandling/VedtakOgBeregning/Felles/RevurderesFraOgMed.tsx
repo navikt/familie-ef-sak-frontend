@@ -23,7 +23,7 @@ const revurderesFørFørstePeriodeAdvarsel = (type: Type) => {
         case 'OVERGANGSSTØNAD':
             return 'Fom-datoen for denne revurderingen er før fom-datoen for tidligere vedtak. Husk å fylle ut vedtaksperiode og inntekt for den nye perioden.';
         case 'BARNETILSYN':
-            return 'Fom-datoen for denne revurderingen er før fom-datoen for tidligere vedtak.';
+            return 'Fom-datoen for denne revurderingen er før fom-datoen for tidligere vedtak. Husk å fylle ut vedtaksperiode for den nye perioden.';
     }
 };
 
