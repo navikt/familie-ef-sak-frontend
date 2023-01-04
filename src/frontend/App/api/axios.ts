@@ -153,6 +153,7 @@ export const loggFeil = (
 
 // eslint-disable-next-line
 export const slackNotify = (melding: string, kanal: string): void => {
+    // eslint-disable-next-line no-console
     console.log(`Logg til slack ${kanal} er skrudd av`, melding);
     // eslint-disable-next-line
     // preferredAxios.post(`/slack/notify/${kanal}`, {

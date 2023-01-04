@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const app = require('./mock-routes');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -33,6 +34,6 @@ const server = app.listen(port, 'localhost', function onStart(err) {
     console.info('=== mock-server startet på http://localhost:%s/', port);
 });
 
-process.on('SIGTERM', function() {
+process.on('SIGTERM', function () {
     server.close();
 });

@@ -39,6 +39,7 @@ export const useEffectDebugger = (
 
     // @ts-ignore
     if (Object.keys(changedDeps).length) {
+        // eslint-disable-next-line no-console
         console.log('[use-effect-debugger] ', changedDeps);
     }
 

@@ -18,6 +18,7 @@ const [TogglesProvider, useToggles] = createUseContext(() => {
         hentToggles()
             .then((resp: AxiosResponse<Toggles>) => settToggles(resp.data))
             .catch((err: Error) => {
+                // eslint-disable-next-line no-console
                 console.log('Kunne ikke hente toggles, ' + err.message);
             });
     }, []);
