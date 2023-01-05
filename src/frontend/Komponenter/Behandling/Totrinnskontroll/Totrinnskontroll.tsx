@@ -3,12 +3,12 @@ import { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import {
-    TotrinnskontrollUnderkjentResponse,
     TotrinnskontrollOpprettet,
     TotrinnskontrollStatus,
+    TotrinnskontrollUnderkjentResponse,
     årsakUnderkjentTilTekst,
 } from '../../../App/typer/totrinnskontroll';
-import FatterVedtak from './FatterVedtak';
+import FatterVedtak, { Totrinnsresultat } from './FatterVedtak';
 import styled from 'styled-components';
 import Advarsel from '../../../Felles/Ikoner/Advarsel';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
@@ -53,21 +53,32 @@ const ÅrsakerUnderkjentWrapper = styled.div`
 
 const Totrinnskontroll: FC = () => {
     const { gåTilUrl } = useApp();
-    const [visGodkjentModal, settVisGodkjentModal] = useState(false);
+    const [visModalTotrinnsresultat, settVisModalTotrinnsresultat] = useState<Totrinnsresultat>(
+        Totrinnsresultat.IKKE_VALGT
+    );
+
+    const lukkModal = () => settVisModalTotrinnsresultat(Totrinnsresultat.IKKE_VALGT);
 
     return (
         <>
-            <TotrinnskontrollSwitch settVisGodkjentModal={settVisGodkjentModal} />
+            <TotrinnskontrollSwitch
+                totrinnsresultat={visModalTotrinnsresultat}
+                settVisModalTotrinnsresultat={settVisModalTotrinnsresultat}
+            />
             <ModalWrapper
-                tittel={'Vedtaket er godkjent'}
-                visModal={visGodkjentModal}
-                onClose={() => settVisGodkjentModal(false)}
+                tittel={
+                    visModalTotrinnsresultat === Totrinnsresultat.GODKJENT
+                        ? 'Vedtaket er godkjent'
+                        : 'Vedtaket er underkjent'
+                }
+                visModal={visModalTotrinnsresultat !== Totrinnsresultat.IKKE_VALGT}
+                onClose={() => lukkModal()}
                 aksjonsknapper={{
                     hovedKnapp: {
                         onClick: () => gåTilUrl('/oppgavebenk'),
                         tekst: 'Til oppgavebenk',
                     },
-                    lukkKnapp: { onClick: () => settVisGodkjentModal(false), tekst: 'Lukk' },
+                    lukkKnapp: { onClick: () => lukkModal(), tekst: 'Lukk' },
                     marginTop: 4,
                 }}
             />
@@ -75,9 +86,10 @@ const Totrinnskontroll: FC = () => {
     );
 };
 
-const TotrinnskontrollSwitch: FC<{ settVisGodkjentModal: (vis: boolean) => void }> = ({
-    settVisGodkjentModal,
-}) => {
+const TotrinnskontrollSwitch: FC<{
+    totrinnsresultat: Totrinnsresultat;
+    settVisModalTotrinnsresultat: (result: Totrinnsresultat) => void;
+}> = ({ settVisModalTotrinnsresultat }) => {
     const { behandling, totrinnskontroll } = useBehandling();
 
     if (
@@ -92,7 +104,7 @@ const TotrinnskontrollSwitch: FC<{ settVisGodkjentModal: (vis: boolean) => void 
             return (
                 <FatterVedtak
                     behandlingId={behandling.data.id}
-                    settVisGodkjentModal={settVisGodkjentModal}
+                    settVisModalTotrinnsresultat={settVisModalTotrinnsresultat}
                 />
             );
         case TotrinnskontrollStatus.IKKE_AUTORISERT:

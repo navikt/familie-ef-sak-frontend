@@ -51,7 +51,7 @@ interface TotrinnskontrollForm {
     årsakerUnderkjent: ÅrsakUnderkjent[];
 }
 
-enum Totrinnsresultat {
+export enum Totrinnsresultat {
     IKKE_VALGT = 'IKKE_VALGT',
     GODKJENT = 'GODKJENT',
     UNDERKJENT = 'UNDERKJENT',
@@ -59,8 +59,8 @@ enum Totrinnsresultat {
 
 const FatterVedtak: React.FC<{
     behandlingId: string;
-    settVisGodkjentModal: (vis: boolean) => void;
-}> = ({ behandlingId, settVisGodkjentModal }) => {
+    settVisModalTotrinnsresultat: (godkjent: Totrinnsresultat) => void;
+}> = ({ behandlingId, settVisModalTotrinnsresultat }) => {
     const [godkjent, settGodkjent] = useState<Totrinnsresultat>(Totrinnsresultat.IKKE_VALGT);
     const [årsakerUnderkjent, settÅrsakerUnderkjent] = useState<ÅrsakUnderkjent[]>([]);
     const [begrunnelse, settBegrunnelse] = useState<string>();
@@ -96,11 +96,11 @@ const FatterVedtak: React.FC<{
                     if (godkjent) {
                         hentBehandlingshistorikk.rerun();
                         hentTotrinnskontroll.rerun();
-                        settVisGodkjentModal(true);
                     } else {
                         settToast(EToast.VEDTAK_UNDERKJENT);
                         gåTilUrl('/oppgavebenk');
                     }
+                    settVisModalTotrinnsresultat(godkjent);
                 } else {
                     settFeil(response.frontendFeilmeldingUtenFeilkode);
                 }
