@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const app = require('./mock-routes');
 const express = require('express');
 const path = require('path');

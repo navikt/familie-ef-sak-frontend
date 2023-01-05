@@ -28,9 +28,9 @@ export const tomUtgiftsperiodeRad = (årMånedFra?: string): IUtgiftsperiode => 
 
 export const oppdaterVedtakMedInitPeriodeOgOpphørshulll = (
     vedtak: IInnvilgeVedtakForBarnetilsyn | undefined,
-    revurderesFra: string
+    revurderesFra: string | undefined
 ): IInnvilgeVedtakForBarnetilsyn | undefined => {
-    if (!vedtak) {
+    if (!vedtak || !revurderesFra) {
         return vedtak;
     }
     return {

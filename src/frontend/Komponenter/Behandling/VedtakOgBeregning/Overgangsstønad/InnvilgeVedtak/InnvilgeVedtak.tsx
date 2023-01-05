@@ -44,11 +44,15 @@ import {
     revurderFraInitPeriode,
 } from './revurderFraUtils';
 import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
+import { IVilkår } from '../../../Inngangsvilkår/vilkår';
+import { useToggles } from '../../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../../App/context/toggles';
+import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
     '_type'
->;
+> & { yngsteBarnFødselsdato?: string };
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
@@ -61,11 +65,15 @@ const WrapperMarginTop = styled.div`
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtakForOvergangsstønad;
-}> = ({ behandling, lagretVedtak }) => {
+    vilkår: IVilkår;
+}> = ({ behandling, lagretVedtak, vilkår }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
             ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
+
+    const { toggles } = useToggles();
+
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -86,6 +94,13 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
+    const sjekkToggleUtledYngsteBarnetsFødselsdato = (vilkår: IVilkår) => {
+        if (toggles[ToggleName.brukValidering8årHovedperiode]) {
+            return utledYngsteBarnFødselsdato(vilkår);
+        }
+        return '';
+    };
+
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
@@ -97,6 +112,7 @@ export const InnvilgeVedtak: React.FC<{
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
+            yngsteBarnFødselsdato: sjekkToggleUtledYngsteBarnetsFødselsdato(vilkår),
         },
         validerInnvilgetVedtakForm
     );
@@ -106,7 +122,6 @@ export const InnvilgeVedtak: React.FC<{
     const periodeBegrunnelse = formState.getProps('periodeBegrunnelse') as FieldState;
     const inntektBegrunnelse = formState.getProps('inntektBegrunnelse') as FieldState;
     const typeSamordningsfradag = formState.getProps('samordningsfradragType') as FieldState;
-
     const inntektsperioder = inntektsperiodeState.value;
     const vedtaksperioder = vedtaksperiodeState.value;
 
@@ -286,6 +301,7 @@ export const InnvilgeVedtak: React.FC<{
                             vedtakshistorikk,
                             revurderesFra
                         )}
+                        type={'OVERGANGSSTØNAD'}
                     />
                 ) : null}
                 {skalViseVedtaksperiodeOgInntekt && (

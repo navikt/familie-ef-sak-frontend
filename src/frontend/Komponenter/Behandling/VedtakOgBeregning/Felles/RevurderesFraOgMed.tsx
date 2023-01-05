@@ -16,12 +16,24 @@ const Advarsel = styled(AlertWarning)`
     }
 `;
 
+type Type = 'OVERGANGSSTØNAD' | 'BARNETILSYN';
+
+const revurderesFørFørstePeriodeAdvarsel = (type: Type) => {
+    switch (type) {
+        case 'OVERGANGSSTØNAD':
+            return 'Fom-datoen for denne revurderingen er før fom-datoen for tidligere vedtak. Husk å fylle ut vedtaksperiode og inntekt for den nye perioden.';
+        case 'BARNETILSYN':
+            return 'Fom-datoen for denne revurderingen er før fom-datoen for tidligere vedtak. Husk å fylle ut vedtaksperiode for den nye perioden.';
+    }
+};
+
 export const RevurderesFraOgMed: React.FC<{
     settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
     revurderesFra: string | undefined;
     feilmelding: string | null;
     revurdererFørFørstePeriode: boolean;
-}> = ({ settRevurderesFra, revurderesFra, feilmelding, revurdererFørFørstePeriode }) => {
+    type: Type;
+}> = ({ settRevurderesFra, revurderesFra, feilmelding, revurdererFørFørstePeriode, type }) => {
     return (
         <WrapperMarginBottom>
             <MånedÅrVelger
@@ -37,10 +49,7 @@ export const RevurderesFraOgMed: React.FC<{
             />
             <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
             {revurdererFørFørstePeriode && (
-                <Advarsel>
-                    Fom-datoen for denne revurderingen er før fom-datoen for tidligere vedtak. Husk
-                    å fylle ut vedtaksperiode og inntekt for den nye perioden.
-                </Advarsel>
+                <Advarsel>{revurderesFørFørstePeriodeAdvarsel(type)}</Advarsel>
             )}
         </WrapperMarginBottom>
     );

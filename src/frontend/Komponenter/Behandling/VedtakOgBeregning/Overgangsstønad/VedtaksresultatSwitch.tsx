@@ -4,6 +4,7 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
 import { AvslåVedtak } from './AvslåVedtak/AvslåVedtak';
 import { Opphør } from './Opphør/Opphør';
+import { IVilkår } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
     vedtaksresultatType?: EBehandlingResultat;
@@ -11,6 +12,7 @@ interface Props {
     lagretVedtak?: IVedtakForOvergangsstønad;
     alleVilkårOppfylt: boolean;
     ikkeOppfyltVilkårEksisterer: boolean;
+    vilkår: IVilkår;
 }
 
 const VedtaksresultatSwitch: React.FC<Props> = ({
@@ -19,6 +21,7 @@ const VedtaksresultatSwitch: React.FC<Props> = ({
     lagretVedtak,
     alleVilkårOppfylt,
     ikkeOppfyltVilkårEksisterer,
+    vilkår,
 }) => {
     if (!vedtaksresultatType) return null;
     switch (vedtaksresultatType) {
@@ -32,7 +35,13 @@ const VedtaksresultatSwitch: React.FC<Props> = ({
                 />
             );
         case EBehandlingResultat.INNVILGE:
-            return <InnvilgeVedtak behandling={behandling} lagretVedtak={lagretVedtak} />;
+            return (
+                <InnvilgeVedtak
+                    behandling={behandling}
+                    lagretVedtak={lagretVedtak}
+                    vilkår={vilkår}
+                />
+            );
         case EBehandlingResultat.OPPHØRT:
             return <Opphør behandlingId={behandling.id} lagretVedtak={lagretVedtak} />;
         default:
