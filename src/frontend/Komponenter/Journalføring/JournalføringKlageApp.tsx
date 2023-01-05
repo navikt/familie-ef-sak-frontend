@@ -196,7 +196,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                                             mottattDato,
                                         }));
                                     }}
-                                    valgtDato={journalpostState.behandling?.mottattDato}
+                                    value={journalpostState.behandling?.mottattDato}
                                     erLesesvisning={!!journalResponse.journalpost.datoMottatt}
                                 />
                             </KlageMottatt>

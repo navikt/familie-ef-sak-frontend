@@ -84,7 +84,7 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({
                     onChange={(dato) => {
                         settValgtDato(dato as string);
                     }}
-                    valgtDato={valgtDato}
+                    value={valgtDato}
                     feil={valgtDato && !erGyldigDato(valgtDato) && 'Ugyldig dato'}
                     limitations={{ maxDate: new Date().toISOString() }}
                 />
