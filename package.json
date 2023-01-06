@@ -40,7 +40,7 @@
     "@navikt/familie-dokumentliste": "^7.0.0",
     "@navikt/familie-endringslogg": "^6.0.0",
     "@navikt/familie-form-elements": "^8.0.0",
-    "@navikt/familie-header": "^9.0.1-alpha.3+d23fe36",
+    "@navikt/familie-header": "^9.0.1",
     "@navikt/familie-ikoner": "^7.0.0",
     "@navikt/familie-logging": "^6.0.0",
     "@navikt/familie-typer": "^8.0.0",
