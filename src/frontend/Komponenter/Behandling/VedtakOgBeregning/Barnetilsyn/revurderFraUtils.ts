@@ -1,5 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IUtgiftsperiode, IvedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
+import {
+    EUtgiftsperiodetype,
+    IUtgiftsperiode,
+    IvedtakForBarnetilsyn,
+} from '../../../../App/typer/vedtak';
 import { månedÅrTilDate, plusMåneder, tilÅrMåned } from '../../../../App/utils/dato';
 import { tomUtgiftsperiodeRad } from './utils';
 
@@ -9,6 +13,8 @@ const lagMidlertidigOpphør = (fra: string, til: string): IUtgiftsperiode => ({
     barn: [],
     utgifter: undefined,
     erMidlertidigOpphør: true,
+    periodetype: EUtgiftsperiodetype.OPPHØR,
+    aktivitetstype: undefined,
     endretKey: uuidv4(),
 });
 /**

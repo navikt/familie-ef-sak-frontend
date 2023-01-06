@@ -104,6 +104,7 @@ export enum EUtgiftsperiodetype {
     OPPHØR = 'OPPHØR',
     SANKSJON_1_MND = 'SANKSJON_1_MND',
 }
+
 export const utgiftsperiodetypeTilTekst: Record<EUtgiftsperiodetype, string> = {
     ORDINÆR: 'Ordinær',
     OPPHØR: 'Opphør/Ingen stønad',
@@ -120,6 +121,7 @@ export const utgiftsperiodeAktivitetTilTekst: Record<EUtgiftsperiodeAktivitet, s
     FORBIGÅENDE_SYKDOM: 'Forbigående sykdom',
 };
 
+// TODO: Fjern felt "erMidlertidigOpphør" etter at dette feltet er fjernet i backend.
 export type IUtgiftsperiode = {
     årMånedFra: string;
     årMånedTil: string;

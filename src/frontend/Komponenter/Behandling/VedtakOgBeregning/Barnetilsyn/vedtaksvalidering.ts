@@ -1,6 +1,11 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import { ERadioValg, IPeriodeMedBeløp, IUtgiftsperiode } from '../../../../App/typer/vedtak';
+import {
+    ERadioValg,
+    EUtgiftsperiodetype,
+    IPeriodeMedBeløp,
+    IUtgiftsperiode,
+} from '../../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
 
 export const validerInnvilgetVedtakForm = ({
@@ -78,8 +83,7 @@ export const validerUtgiftsperioder = ({
     utgiftsperioder: IUtgiftsperiode[];
 }): FormErrors<{ utgiftsperioder: IUtgiftsperiode[] }> => {
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
-        const { periodetype, aktivitetstype, årMånedFra, årMånedTil, barn, erMidlertidigOpphør } =
-            utgiftsperiode;
+        const { periodetype, aktivitetstype, årMånedFra, årMånedTil, barn } = utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
             periodetype: undefined,
             aktivitetstype: undefined,
@@ -120,7 +124,7 @@ export const validerUtgiftsperioder = ({
             }
         }
 
-        if (barn.length < 1 && !erMidlertidigOpphør) {
+        if (barn.length < 1 && periodetype !== EUtgiftsperiodetype.OPPHØR) {
             return {
                 ...utgiftsperiodeFeil,
                 barn: ['Mangelfull utfylling - minst et barn må velges'],
