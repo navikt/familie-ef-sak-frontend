@@ -78,14 +78,25 @@ export const validerUtgiftsperioder = ({
     utgiftsperioder: IUtgiftsperiode[];
 }): FormErrors<{ utgiftsperioder: IUtgiftsperiode[] }> => {
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
-        const { årMånedFra, årMånedTil, barn, erMidlertidigOpphør } = utgiftsperiode;
+        const { periodetype, aktivitetstype, årMånedFra, årMånedTil, barn, erMidlertidigOpphør } =
+            utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
+            periodetype: undefined,
+            aktivitetstype: undefined,
             årMånedFra: undefined,
             årMånedTil: undefined,
             barn: [],
             utgifter: undefined,
             erMidlertidigOpphør: undefined,
         };
+
+        if (!periodetype) {
+            return { ...utgiftsperiodeFeil, periodetype: 'Mangler valg for periodetype' };
+        }
+
+        if (!aktivitetstype) {
+            return { ...utgiftsperiodeFeil, aktivitetstype: 'Mangler valg for aktivitetstype' };
+        }
 
         if (!årMånedTil || !årMånedFra) {
             return { ...utgiftsperiodeFeil, årMånedFra: 'Mangelfull utfylling av utgiftsperiode' };

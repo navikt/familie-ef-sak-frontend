@@ -18,14 +18,15 @@ import { Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { tomUtgiftsperiodeRad } from './utils';
+import UtgiftsperiodeSelect from './UtgiftsperiodeSelect';
+import AktivitetSelect from './AktivitetSelect';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger fraOgMedVelger barnVelger antallBarn utgifter checkbox slettknapp leggTilKnapp';
     grid-template-columns: ${(props) =>
         props.lesevisning
-            ? '10rem 10rem 18rem 2rem 4rem 4rem'
-            : '14rem 14rem 25rem 2rem 4rem 2rem 4rem 3rem'};
+            ? '8rem 8rem 10rem 10rem 18rem 2rem 4rem 4rem'
+            : '10rem 10rem 14rem 14rem 25rem 2rem 4rem 2rem 4rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
@@ -134,6 +135,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     return (
         <>
             <UtgiftsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
+                <Label>Periodetype</Label>
+                <Label>Aktivitet</Label>
                 <Label>Periode fra og med</Label>
                 <Label>Periode til og med</Label>
                 <Label>Velg barn</Label>
@@ -142,18 +145,42 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <TekstEnLinje>Ingen stønad/opphør</TekstEnLinje>
             </UtgiftsperiodeRad>
             {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { årMånedFra, årMånedTil, utgifter, erMidlertidigOpphør } = utgiftsperiode;
+                const {
+                    periodetype,
+                    aktivitetstype,
+                    årMånedFra,
+                    årMånedTil,
+                    utgifter,
+                    erMidlertidigOpphør,
+                } = utgiftsperiode;
                 const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
 
                 const barnForPeriode = barnFormatertForBarnVelger(barn);
                 const ikkeValgteBarn = barnForPeriode.filter((barn) =>
                     utgiftsperiode.barn.includes(barn.value)
                 );
+
                 return (
                     <UtgiftsperiodeRad
                         key={utgiftsperiode.endretKey}
                         lesevisning={!behandlingErRedigerbar}
                     >
+                        <UtgiftsperiodeSelect
+                            periodetype={periodetype}
+                            oppdaterUtgiftsperiodeElement={(property, value) =>
+                                oppdaterUtgiftsperiode(index, property, value)
+                            }
+                            lesevisning={!behandlingErRedigerbar}
+                            feil={valideringsfeil && valideringsfeil[index]?.periodetype}
+                        />
+                        <AktivitetSelect
+                            aktivitet={aktivitetstype}
+                            oppdaterUtgiftsperiodeElement={(property, value) =>
+                                oppdaterUtgiftsperiode(index, property, value)
+                            }
+                            lesevisning={!behandlingErRedigerbar}
+                            feil={valideringsfeil && valideringsfeil[index]?.aktivitetstype}
+                        />
                         <MånedÅrPeriode
                             årMånedFraInitiell={årMånedFra}
                             årMånedTilInitiell={årMånedTil}
