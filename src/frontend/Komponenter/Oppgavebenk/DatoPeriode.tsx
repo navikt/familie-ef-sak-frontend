@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FlexDiv } from './OppgaveFiltrering';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
 import { EnsligErrorMessage } from '../../Felles/ErrorMessage/EnsligErrorMessage';
-import { NavdsSpacing12 } from '@navikt/ds-tokens/dist/tokens';
+import { ASpacing12 } from '@navikt/ds-tokens/dist/tokens';
 
 const DatolabelStyle = styled.label`
     padding-bottom: 0.5rem;
@@ -14,7 +14,7 @@ const DatepickerWrapper = styled.div`
     margin-top: 0.5rem;
 
     .nav-datovelger__input {
-        height: ${NavdsSpacing12};
+        height: ${ASpacing12};
     }
 `;
 

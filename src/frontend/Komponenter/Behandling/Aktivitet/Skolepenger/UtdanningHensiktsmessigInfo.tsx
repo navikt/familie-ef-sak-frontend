@@ -6,10 +6,10 @@ import Dokumentasjonsvisning from './Dokumentasjonsvisning';
 import { TidligereUtdanninger } from '../Aktivitet/Utdanning';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { NavdsGlobalColorBlue300 } from '@navikt/ds-tokens/dist/tokens';
+import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 
 const BlåStrek = styled.span`
-    border-left: 2px solid ${NavdsGlobalColorBlue300};
+    border-left: 2px solid ${ABlue300};
     margin-left: 0.33rem;
 `;
 

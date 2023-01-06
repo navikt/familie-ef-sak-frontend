@@ -5,7 +5,7 @@ import { TotaltForPeriode } from './TotaltForPeriode';
 import { NestePeriode } from './NestePeriode';
 import { Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { NavdsGlobalColorGreen500, NavdsGlobalColorRed500 } from '@navikt/ds-tokens/dist/tokens';
+import { AGreen500, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 
 interface ISimuleringOversikt {
     simulering: ISimulering;
@@ -29,7 +29,7 @@ export const RadVerdi = styled.td`
 `;
 
 export const ResultatVerdi = styled(BodyShortSmall)<{ verdi: number }>`
-    color: ${(props) => (props.verdi > 0 ? NavdsGlobalColorGreen500 : NavdsGlobalColorRed500)};
+    color: ${(props) => (props.verdi > 0 ? AGreen500 : ARed500)};
 `;
 
 export const SimuleringOversiktTabell = styled.table`

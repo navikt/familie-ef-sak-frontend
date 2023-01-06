@@ -8,10 +8,7 @@ import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
 import { Steg } from '../Høyremeny/Steg';
 import Fane from './Fane';
 import { useApp } from '../../../App/context/AppContext';
-import {
-    NavdsGlobalColorWhite,
-    NavdsSemanticColorBorderMuted,
-} from '@navikt/ds-tokens/dist/tokens';
+import { AWhite, ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -24,8 +21,8 @@ const StyledFanemeny = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border-bottom: ${NavdsSemanticColorBorderMuted} solid 2px;
-    background-color: ${NavdsGlobalColorWhite};
+    border-bottom: ${ABorderDefault} solid 2px;
+    background-color: ${AWhite};
 `;
 interface Props {
     behandlingId: string;

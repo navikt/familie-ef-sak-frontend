@@ -11,11 +11,11 @@ import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { compareDesc } from 'date-fns';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
 import { Heading } from '@navikt/ds-react';
-import { NavdsGlobalColorGray800 } from '@navikt/ds-tokens/dist/tokens';
+import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
 
 const Tittel = styled.div`
     padding: 0.5rem 1rem;
-    color: ${NavdsGlobalColorGray800};
+    color: ${AGray800};
 `;
 
 type AlleDokument = {
