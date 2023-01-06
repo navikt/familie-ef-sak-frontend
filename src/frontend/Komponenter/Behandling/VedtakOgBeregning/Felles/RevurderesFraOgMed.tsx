@@ -33,9 +33,9 @@ export const RevurderesFraOgMed: React.FC<{
     settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
     revurderesFra: string | undefined;
     feilmelding: string | null;
-    revurdererFørFørstePeriode: boolean;
+    revurdererFraPeriodeUtenStønad: boolean;
     type: Type;
-}> = ({ settRevurderesFra, revurderesFra, feilmelding, revurdererFørFørstePeriode, type }) => {
+}> = ({ settRevurderesFra, revurderesFra, feilmelding, revurdererFraPeriodeUtenStønad, type }) => {
     return (
         <WrapperMarginBottom>
             <MånedÅrVelger
@@ -50,7 +50,7 @@ export const RevurderesFraOgMed: React.FC<{
                 årMånedInitiell={revurderesFra}
             />
             <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
-            {revurdererFørFørstePeriode && (
+            {revurdererFraPeriodeUtenStønad && (
                 <Advarsel>{revurderesFørFørstePeriodeAdvarsel(type)}</Advarsel>
             )}
         </WrapperMarginBottom>
