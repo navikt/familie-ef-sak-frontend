@@ -16,17 +16,17 @@ import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } fr
 import { HelpText, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
 
+const Rad = styled.div`
+    display: grid;
+    grid-template-area: beløp hjelpetekst;
+    grid-template-columns: 3rem 1.75rem;
+`;
+
+const LinjeSplitter = styled.div`
+    margin-top: 0.25rem;
+`;
+
 const historikkRad = (andel: AndelHistorikk, index: number) => {
-    const Rad = styled.div`
-        display: grid;
-        grid-template-area: beløp hjelpetekst;
-        grid-template-columns: 3rem 1.75rem;
-    `;
-
-    const LinjeSplitter = styled.div`
-        margin-top: 0.25rem;
-    `;
-
     const beløpErRedusertPgaSats = andel.andel.beløpFørFratrekkOgSatsJustering > andel.andel.sats;
     const beløpErRedusertPgaTilleggsstønad = andel.andel.tilleggsstønad > 0;
     const stønadsbeløpetErRedusert = beløpErRedusertPgaSats || beløpErRedusertPgaTilleggsstønad;
