@@ -2922,10 +2922,10 @@
     nav-frontend-typografi-style "^2.0.1"
     react-select "^5.4.0"
 
-"@navikt/familie-header@^9.0.1-alpha.3+d23fe36":
-  version "9.0.1-alpha.3"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/9.0.1-alpha.3/98998da273e1ca00a7e9d5c899c2008dc9572f95#98998da273e1ca00a7e9d5c899c2008dc9572f95"
-  integrity sha512-hferEzDfaR6xevhEdb/kkPeAeXBxzSsPVhZhe/BTMF3TSeIqMEouPRLclJHHDbaaNjPlGhJW/mYOIt7bg49ZlA==
+"@navikt/familie-header@^9.0.1":
+  version "9.0.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/9.0.1/4161b9d86b8d4aa469566e8ffd0517ab00c46c48#4161b9d86b8d4aa469566e8ffd0517ab00c46c48"
+  integrity sha512-HbXtNAw8wssosUGu0z8pPPrlAgU30cTlHJrqZ3xOMaINoHhdFtre+LmlGRIdBlVaaRpL9mO49a0W4TdkEeBmtw==
   dependencies:
     "@babel/preset-typescript" "^7.18.6"
     "@navikt/ds-css" "^2.0.x"
