@@ -7,6 +7,7 @@ interface MånedProps {
     lesevisning?: boolean;
     disabled?: boolean;
     className?: string;
+    size?: 'medium' | 'small';
 }
 
 const månedValg = [
@@ -30,6 +31,7 @@ const MånedVelger: React.FC<MånedProps> = ({
     lesevisning = false,
     disabled = false,
     className,
+    size,
 }) => {
     return (
         <FamilieSelect
@@ -44,6 +46,7 @@ const MånedVelger: React.FC<MånedProps> = ({
             disabled={disabled}
             label={'Måned'}
             hideLabel
+            size={size}
         >
             <option value="">Måned</option>
             {månedValg.map((mnd) => (

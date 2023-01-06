@@ -18,6 +18,7 @@ interface Props {
         value: string | number | undefined
     ) => void;
     lesevisning: boolean;
+    midlertidigOpphør: boolean;
     feil: OrNothing<string>;
 }
 
@@ -27,13 +28,14 @@ const valgbareAktivitetstyper = [
 ];
 
 const AktivitetSelect: React.FC<Props> = (props: Props) => {
-    const { aktivitet, oppdaterUtgiftsperiodeElement, lesevisning, feil } = props;
+    const { aktivitet, oppdaterUtgiftsperiodeElement, lesevisning, midlertidigOpphør, feil } =
+        props;
 
     return (
         <StyledSelect
             label={'Aktivitet'}
             hideLabel
-            value={aktivitet}
+            value={midlertidigOpphør ? '' : aktivitet}
             error={feil}
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(
@@ -42,7 +44,9 @@ const AktivitetSelect: React.FC<Props> = (props: Props) => {
                 );
             }}
             erLesevisning={lesevisning}
-            lesevisningVerdi={aktivitet && utgiftsperiodeAktivitetTilTekst[aktivitet]}
+            lesevisningVerdi={aktivitet ? utgiftsperiodeAktivitetTilTekst[aktivitet] : 'Ukjent'}
+            disabled={midlertidigOpphør}
+            size={'small'}
         >
             <option value="">Velg</option>
             {valgbareAktivitetstyper.map((aktivitet) => (

@@ -98,6 +98,15 @@ export const validerUtgiftsperioder = ({
             return { ...utgiftsperiodeFeil, periodetype: 'Mangler valg for periodetype' };
         }
 
+        const opphør = periodetype === EUtgiftsperiodetype.OPPHØR;
+
+        if (opphør && aktivitetstype) {
+            return {
+                ...utgiftsperiodeFeil,
+                aktivitetstype: 'Skal ikke kunne velge aktivitetstype ved opphør',
+            };
+        }
+
         if (!aktivitetstype) {
             return { ...utgiftsperiodeFeil, aktivitetstype: 'Mangler valg for aktivitetstype' };
         }
@@ -124,10 +133,17 @@ export const validerUtgiftsperioder = ({
             }
         }
 
-        if (barn.length < 1 && periodetype !== EUtgiftsperiodetype.OPPHØR) {
+        if (barn.length < 1 && !opphør) {
             return {
                 ...utgiftsperiodeFeil,
                 barn: ['Mangelfull utfylling - minst et barn må velges'],
+            };
+        }
+
+        if (barn.length > 0 && opphør) {
+            return {
+                ...utgiftsperiodeFeil,
+                barn: ['Skal ikke kunne velge barn ved opphør'],
             };
         }
 

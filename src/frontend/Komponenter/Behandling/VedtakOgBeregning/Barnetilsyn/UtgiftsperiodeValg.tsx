@@ -30,7 +30,7 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     grid-template-columns: ${(props) =>
         props.lesevisning
             ? '8rem 8rem 10rem 10rem 18rem 4rem 4rem'
-            : '10rem 10rem 14rem 14rem 25rem 2rem 4rem 4rem 3rem'};
+            : '10rem 10rem 14rem 14rem 25rem 2rem 4rem 3rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
@@ -101,6 +101,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             {
                 ...utgiftsperioder.value[index],
                 [EUtgiftsperiodeProperty.periodetype]: EUtgiftsperiodetype.OPPHØR,
+                [EUtgiftsperiodeProperty.aktivitetstype]: undefined,
                 [EUtgiftsperiodeProperty.barn]: [],
                 [EUtgiftsperiodeProperty.utgifter]: 0,
                 [EUtgiftsperiodeProperty.erMidlertidigOpphør]: true,
@@ -140,6 +141,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     utgiftsperiode.barn.includes(barn.value)
                 );
                 const midlertidigOpphør = periodetype === EUtgiftsperiodetype.OPPHØR;
+                // eslint-disable-next-line no-console
+                console.log(utgiftsperiode);
 
                 return (
                     <UtgiftsperiodeRad
@@ -160,6 +163,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 oppdaterUtgiftsperiode(index, property, value)
                             }
                             lesevisning={!behandlingErRedigerbar}
+                            midlertidigOpphør={midlertidigOpphør}
                             feil={valideringsfeil && valideringsfeil[index]?.aktivitetstype}
                         />
                         <MånedÅrPeriode
@@ -176,6 +180,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={!behandlingErRedigerbar}
                             disabledFra={index === 0 && låsFraDatoFørsteRad}
+                            size={'small'}
                         />
                         {behandlingErRedigerbar ? (
                             <FamilieReactSelect
@@ -207,11 +212,15 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     ))}
                             </ContainerMedLuftUnder>
                         )}
-                        <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
-                            utgiftsperioder.value[index].barn
-                                ? utgiftsperioder.value[index].barn?.length
-                                : 0
-                        }`}</AntallBarn>
+                        {midlertidigOpphør ? (
+                            <div />
+                        ) : (
+                            <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
+                                utgiftsperioder.value[index].barn
+                                    ? utgiftsperioder.value[index].barn?.length
+                                    : 0
+                            }`}</AntallBarn>
+                        )}
                         <StyledInput
                             onKeyPress={tilHeltall}
                             type="number"

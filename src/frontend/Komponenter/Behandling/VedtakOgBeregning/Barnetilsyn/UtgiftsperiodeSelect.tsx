@@ -43,6 +43,7 @@ const UtgiftsperiodeSelect: FC<Props> = (props: Props) => {
             }}
             erLesevisning={lesevisning}
             lesevisningVerdi={periodetype && utgiftsperiodetypeTilTekst[periodetype]}
+            size={'small'}
         >
             <option value="">Velg</option>
             {valgbarePeriodetyper.map((type) => (
