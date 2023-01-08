@@ -3012,17 +3012,17 @@
   dependencies:
     "@navikt/familie-typer" "^5.0.5"
 
-"@navikt/familie-logging@^3.0.5":
-  version "3.0.5"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/3.0.5/249c4e40bde7c78662338999a7004d65c3ba60d2#249c4e40bde7c78662338999a7004d65c3ba60d2"
-  integrity sha512-stAyX97DzbDXP1k3Dt4Pv9LUG5m+3yZrT0aBcWb9kE634BtAqfqE4rhDDF1woEpqQ1Bz9sUMcW3yBhmkK1haSQ==
-  dependencies:
-    winston "^3.8.1"
-
 "@navikt/familie-logging@^5.0.0":
   version "5.0.0"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/5.0.0/944b2415d9b067e44d0804cac3304a310da35d96#944b2415d9b067e44d0804cac3304a310da35d96"
   integrity sha512-4LSwyqKRUynVxY65aIBaxfF/DyRGnEneXtP2LrK2KnmHWuXhfKSctLcf2nAIsLkELikSicXCE9dtIfgw4hjZ3g==
+  dependencies:
+    winston "^3.8.1"
+
+"@navikt/familie-logging@^6.0.0":
+  version "6.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/6.0.0/f7e5d02fd4804328235af51c7376af0592ffbe90#f7e5d02fd4804328235af51c7376af0592ffbe90"
+  integrity sha512-Gx+i1BkxXnupRJyzT/N7cNHnoKYS716V9biArqMbL4q5w8ae5MADMsbLBFWXR/Qw74U1Sc3QI6xEHfzPASTpXQ==
   dependencies:
     winston "^3.8.1"
 
