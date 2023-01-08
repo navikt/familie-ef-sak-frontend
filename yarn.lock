@@ -2898,12 +2898,12 @@
   resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/1.5.4/98dcd334e667b588d688fa39d4419ccc6def63f5#98dcd334e667b588d688fa39d4419ccc6def63f5"
   integrity sha512-G3BOMH5kD06xKdnCon1p9hQ54WBpN3Iz6kyiH6D188c/UkCqNJPjJHfokS2g5vAzcwxI/nbv2Irg5XkAxN6vXg==
 
-"@navikt/familie-backend@9.0.0":
-  version "9.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-backend/9.0.0/152d10ab996b1c6226c64a6d5cd815ff6fe56c54#152d10ab996b1c6226c64a6d5cd815ff6fe56c54"
-  integrity sha512-AWY8fsBuH/7rTWVNTTZoF0LOio16jjmhHE31mpl6mPqD4sWwQV88PljAtAVj8Es2zgm5BBDkAAHQzALgW7RinA==
+"@navikt/familie-backend@10.0.1":
+  version "10.0.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-backend/10.0.1/876f9b418a05e2de915be24110da46275daa2771#876f9b418a05e2de915be24110da46275daa2771"
+  integrity sha512-dRfZ+YMRLDx7i49onfiUc3miiApe4cz1XnV+bVxHS5rFwfGEfgr6hiiwp8mT+bRB14ePU21nkOTFiENZ9vqEEA==
   dependencies:
-    "@navikt/familie-logging" "^5.0.0"
+    "@navikt/familie-logging" "^6.0.0"
     "@types/connect-redis" "~0.0.19"
     "@types/cookie-parser" "^1.4.3"
     "@types/express" "^4.17.15"
@@ -3019,10 +3019,10 @@
   dependencies:
     winston "^3.8.1"
 
-"@navikt/familie-logging@^5.0.0":
-  version "5.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/5.0.0/944b2415d9b067e44d0804cac3304a310da35d96#944b2415d9b067e44d0804cac3304a310da35d96"
-  integrity sha512-4LSwyqKRUynVxY65aIBaxfF/DyRGnEneXtP2LrK2KnmHWuXhfKSctLcf2nAIsLkELikSicXCE9dtIfgw4hjZ3g==
+"@navikt/familie-logging@^6.0.0":
+  version "6.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/6.0.0/f7e5d02fd4804328235af51c7376af0592ffbe90#f7e5d02fd4804328235af51c7376af0592ffbe90"
+  integrity sha512-Gx+i1BkxXnupRJyzT/N7cNHnoKYS716V9biArqMbL4q5w8ae5MADMsbLBFWXR/Qw74U1Sc3QI6xEHfzPASTpXQ==
   dependencies:
     winston "^3.8.1"
 
@@ -3484,15 +3484,6 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.51.tgz#cfd70924a25a3fd32b218e5e420e6897e1ac4f40"
   integrity sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==
 
-"@types/express-serve-static-core@^4.17.18":
-  version "4.17.28"
-  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.28.tgz#c47def9f34ec81dc6328d0b1b5303d1ec98d86b8"
-  integrity sha512-P1BJAEAW3E2DJUlkgq4tOL3RyMunoWXqbSCygWo5ZIWTjUgN1YnaXWW4VWl/oc8vs/XoYibEGBKP0uZyF4AHig==
-  dependencies:
-    "@types/node" "*"
-    "@types/qs" "*"
-    "@types/range-parser" "*"
-
 "@types/express-serve-static-core@^4.17.31":
   version "4.17.31"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.31.tgz#a1139efeab4e7323834bb0226e62ac019f474b2f"
@@ -3509,17 +3500,7 @@
   dependencies:
     "@types/express" "*"
 
-"@types/express@*":
-  version "4.17.13"
-  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.13.tgz#a76e2995728999bab51a33fabce1d705a3709034"
-  integrity sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==
-  dependencies:
-    "@types/body-parser" "*"
-    "@types/express-serve-static-core" "^4.17.18"
-    "@types/qs" "*"
-    "@types/serve-static" "*"
-
-"@types/express@^4.17.15":
+"@types/express@*", "@types/express@^4.17.15":
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.15.tgz#9290e983ec8b054b65a5abccb610411953d417ff"
   integrity sha512-Yv0k4bXGOH+8a+7bELd2PqHQsuiANB+A8a4gnQrkRWzrkKlb6KHaVvyXhqs04sVW/OWlbPyYxRgYlIXLfrufMQ==
@@ -6777,15 +6758,7 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-https-proxy-agent@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-5.0.0.tgz#e2a90542abb68a762e0a0850f6c9edadfd8506b2"
-  integrity sha512-EkYm5BcKUGiduxzSt3Eppko+PiNWNEpa4ySk9vTC6wDsQJW9rHSa+UhGNJoRYp7bz6Ht1eaRIa6QaJqO5rCFbA==
-  dependencies:
-    agent-base "6"
-    debug "4"
-
-https-proxy-agent@^5.0.1:
+https-proxy-agent@^5.0.0, https-proxy-agent@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-5.0.1.tgz#c59ef224a04fe8b754f3db0063a25ea30d0005d6"
   integrity sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==
@@ -9752,12 +9725,7 @@ slice-ansi@^5.0.0:
     ansi-styles "^6.0.0"
     is-fullwidth-code-point "^4.0.0"
 
-snyk@^1.1069.0:
-  version "1.1069.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1069.0.tgz#8d229aba5994e2dcca0ce14c7a90f6dae0d0e543"
-  integrity sha512-WPgp8oh9tHMGIKwmPh6BbNZZyhDdCN4Tbv3eqdYJfTTY347xYXsIiIqUiRAAgAS0Oo5UABNGhdGV6fsxFWSUhg==
-
-snyk@^1.1077.0:
+snyk@^1.1069.0, snyk@^1.1077.0:
   version "1.1077.0"
   resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1077.0.tgz#6ea8c6bcb69dde99d2c68d0d1e4966d8e1e8d43a"
   integrity sha512-D9FBtdPKL+RjGpj9tGW1ExevG1x7HR4LyqZ+58gV4jo9Z+gnCEooXayU5xNAafhRYXM0lZxR+mdpmwEX7YFOPA==
