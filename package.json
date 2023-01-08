@@ -37,7 +37,7 @@
     "@navikt/ds-react-internal": "^1.5.4",
     "@navikt/ds-tokens": "^1.5.4",
     "@navikt/familie-backend": "9.0.0",
-    "@navikt/familie-dokumentliste": "^4.0.5",
+    "@navikt/familie-dokumentliste": "^7.0.0",
     "@navikt/familie-endringslogg": "^3.0.9",
     "@navikt/familie-form-elements": "^6.3.7",
     "@navikt/familie-header": "^6.0.5",
