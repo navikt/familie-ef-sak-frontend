@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavdsGlobalColorPurple400 } from '@navikt/ds-tokens/dist/tokens';
+import { APurple400 } from '@navikt/ds-tokens/dist/tokens';
 
 export const VurderingLesemodusGrid = styled.div`
     display: grid;
@@ -22,7 +22,7 @@ export const SistOppdatertOgVurderingWrapper = styled.span`
 `;
 
 export const VertikalStrek = styled.span`
-    border-left: 3px solid ${NavdsGlobalColorPurple400};
+    border-left: 3px solid ${APurple400};
     margin-left: 0.55rem;
     grid-column: 1/2;
     min-height: 10rem;

@@ -9,7 +9,7 @@ import { Back, Next } from '@navikt/ds-icons';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
-import { NavdsGlobalColorBlue400 } from '@navikt/ds-tokens/dist/tokens';
+import { ABlue400 } from '@navikt/ds-tokens/dist/tokens';
 
 interface IHøyremenyProps {
     behandlingId: string;
@@ -33,7 +33,7 @@ const StyledNext = styled(Next)`
 const StyledButton = styled.button`
     position: absolute;
 
-    background-color: ${NavdsGlobalColorBlue400};
+    background-color: ${ABlue400};
 
     margin-left: -12px;
 

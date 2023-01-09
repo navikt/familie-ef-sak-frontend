@@ -13,14 +13,14 @@ import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from '../InnvilgetSkolepenger/VedtaksformSkolepenger';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
-import { NavdsSemanticColorCanvasBackground } from '@navikt/ds-tokens/dist/tokens';
+import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     margin-left: 0rem;
     padding: 1rem;
-    background-color: ${NavdsSemanticColorCanvasBackground};
+    background-color: ${ABgSubtle};
 `;
 
 const TilbakestillButton = styled(TilbakestillKnapp)`

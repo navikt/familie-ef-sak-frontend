@@ -1,5 +1,5 @@
 import { EBehandlingResultat, IvedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
-import { revurdererFørFørstePeriode } from './revurderFraUtils';
+import { revurdererFraPeriodeUtenStønad } from './revurderFraUtils';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
@@ -35,7 +35,7 @@ export const InnvilgeBarnetilsyn: FC<{
     const [revurderesFraOgMedFeilmelding, settRevurderesFraOgMedFeilmelding] = useState<
         string | null
     >(null);
-    const [revurderesFørFørstePeriode, settRevurderesFørFørstePeriode] = useState(false);
+    const [revurderesFraPeriodeUtenStønad, settRevurderesFraPeriodeUtenStønad] = useState(false);
 
     const hentVedtakshistorikk = useCallback(
         (revurderesFra: string) => {
@@ -48,8 +48,8 @@ export const InnvilgeBarnetilsyn: FC<{
                     settVedtakshistorikk(
                         oppdaterVedtakMedInitPeriodeOgOpphørshulll(res.data, revurderesFra)
                     );
-                    settRevurderesFørFørstePeriode(
-                        revurdererFørFørstePeriode(res.data, revurderesFra)
+                    settRevurderesFraPeriodeUtenStønad(
+                        revurdererFraPeriodeUtenStønad(res.data, revurderesFra)
                     );
                 } else {
                     settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
@@ -78,7 +78,7 @@ export const InnvilgeBarnetilsyn: FC<{
                     settRevurderesFra={settRevurderesFra}
                     revurderesFra={revurderesFra}
                     feilmelding={revurderesFraOgMedFeilmelding}
-                    revurdererFørFørstePeriode={revurderesFørFørstePeriode}
+                    revurdererFraPeriodeUtenStønad={revurderesFraPeriodeUtenStønad}
                     type={'BARNETILSYN'}
                 />
             )}

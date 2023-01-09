@@ -4,13 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { ISide, SideNavn } from './sider';
 import { useApp } from '../../../App/context/AppContext';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import {
-    NavdsGlobalColorBlue400,
-    NavdsGlobalColorBlue500,
-    NavdsGlobalColorGray100,
-    NavdsGlobalColorGray300,
-    NavdsSemanticColorLink,
-} from '@navikt/ds-tokens/dist/tokens';
+import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;
@@ -29,16 +23,16 @@ const StyledNavLink = styled(NavLink)`
     padding-right: 5px;
 
     :hover {
-        border-bottom: 5px solid ${NavdsGlobalColorBlue400};
+        border-bottom: 5px solid ${ABlue400};
 
         .navds-body-short {
-            color: ${NavdsSemanticColorLink};
+            color: ${ATextAction};
         }
     }
 
     &.active {
-        background-color: ${NavdsGlobalColorGray100};
-        border-bottom: 5px solid ${NavdsGlobalColorBlue500};
+        background-color: ${AGray100};
+        border-bottom: 5px solid ${ABlue500};
 
         .navds-body-short {
             font-weight: bold;
@@ -54,7 +48,7 @@ const StyledLenketekst = styled(BodyShortSmall)`
 
 const StyledTekst = styled(BodyShortSmall)`
     border-bottom: 5px solid white;
-    color: ${NavdsGlobalColorGray300};
+    color: ${AGray300};
     text-align: center;
     text-decoration: none;
     width: 100%;
