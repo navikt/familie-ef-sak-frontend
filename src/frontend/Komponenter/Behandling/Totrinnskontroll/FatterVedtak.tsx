@@ -154,7 +154,7 @@ const FatterVedtak: React.FC<{
                                 onChange={settÅrsakerUnderkjent}
                             >
                                 {Object.values(ÅrsakUnderkjent).map((årsak) => (
-                                    <Checkbox value={årsak}>
+                                    <Checkbox key={årsak} value={årsak}>
                                         {årsakUnderkjentTilTekst[årsak]}
                                     </Checkbox>
                                 ))}

@@ -31,6 +31,12 @@ const AktivitetSelect: React.FC<Props> = (props: Props) => {
     const { aktivitet, oppdaterUtgiftsperiodeElement, lesevisning, midlertidigOpphør, feil } =
         props;
 
+    const utledLesevisningVerdi = () => {
+        if (aktivitet) return utgiftsperiodeAktivitetTilTekst[aktivitet];
+        if (lesevisning && midlertidigOpphør) return '';
+        return 'Ukjent';
+    };
+
     return (
         <StyledSelect
             label={'Aktivitet'}
@@ -44,7 +50,7 @@ const AktivitetSelect: React.FC<Props> = (props: Props) => {
                 );
             }}
             erLesevisning={lesevisning}
-            lesevisningVerdi={aktivitet ? utgiftsperiodeAktivitetTilTekst[aktivitet] : 'Ukjent'}
+            lesevisningVerdi={utledLesevisningVerdi()}
             disabled={midlertidigOpphør}
             size={'small'}
         >

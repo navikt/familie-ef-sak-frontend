@@ -29,7 +29,7 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     display: grid;
     grid-template-columns: ${(props) =>
         props.lesevisning
-            ? '8rem 8rem 10rem 10rem 18rem 4rem 4rem'
+            ? '8rem 8rem 10rem 10rem 12rem 4rem 4rem'
             : '10rem 10rem 14rem 14rem 25rem 2rem 4rem 3rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
@@ -153,8 +153,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     utgiftsperiode.barn.includes(barn.value)
                 );
                 const midlertidigOpphør = periodetype === EUtgiftsperiodetype.OPPHØR;
-                // eslint-disable-next-line no-console
-                console.log(utgiftsperiode);
 
                 return (
                     <UtgiftsperiodeRad
@@ -220,7 +218,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 {barnForPeriode
                                     .filter((barn) => utgiftsperiode.barn.includes(barn.value))
                                     .map((barn) => (
-                                        <BodyShortSmall>{barn.label}</BodyShortSmall>
+                                        <BodyShortSmall key={barn.value}>
+                                            {barn.label}
+                                        </BodyShortSmall>
                                     ))}
                             </ContainerMedLuftUnder>
                         )}
@@ -233,23 +233,27 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     : 0
                             }`}</AntallBarn>
                         )}
-                        <StyledInput
-                            onKeyPress={tilHeltall}
-                            type="number"
-                            size={'small'}
-                            value={harTallverdi(utgifter) ? utgifter : ''}
-                            disabled={midlertidigOpphør}
-                            onChange={(e) => {
-                                oppdaterUtgiftsperiode(
-                                    index,
-                                    EUtgiftsperiodeProperty.utgifter,
-                                    tilTallverdi(e.target.value)
-                                );
-                            }}
-                            erLesevisning={!behandlingErRedigerbar}
-                            label={'Utgifter'}
-                            hideLabel
-                        />
+                        {midlertidigOpphør && !behandlingErRedigerbar ? (
+                            <div />
+                        ) : (
+                            <StyledInput
+                                onKeyPress={tilHeltall}
+                                type="number"
+                                size={'small'}
+                                value={harTallverdi(utgifter) ? utgifter : ''}
+                                disabled={midlertidigOpphør}
+                                onChange={(e) => {
+                                    oppdaterUtgiftsperiode(
+                                        index,
+                                        EUtgiftsperiodeProperty.utgifter,
+                                        tilTallverdi(e.target.value)
+                                    );
+                                }}
+                                erLesevisning={!behandlingErRedigerbar}
+                                label={'Utgifter'}
+                                hideLabel
+                            />
+                        )}
                         {skalViseFjernKnapp ? (
                             <FjernKnapp
                                 onClick={() => {
