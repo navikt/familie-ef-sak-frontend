@@ -8,7 +8,7 @@ import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { stønadstypeTilTekst } from '../../../../App/typer/behandlingstema';
 import { behandlingStatusTilTekst } from '../../../../App/typer/behandlingstatus';
 import { ModalWrapper } from '../../../../Felles/Modal/ModalWrapper';
-import { NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 
 const Alertstripe = styled(Alert)`
     margin: 1rem 2rem 2rem 1rem;
@@ -23,7 +23,7 @@ const ForrigeBehandlingTabell = styled.table`
 
     td,
     th {
-        border-bottom: 1px solid ${NavdsSemanticColorBorder};
+        border-bottom: 1px solid ${ABorderStrong};
         padding: 0rem 1.5rem 0rem 0rem;
         text-align: left;
     }

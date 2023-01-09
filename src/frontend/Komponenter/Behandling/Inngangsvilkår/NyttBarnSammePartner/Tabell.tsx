@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
-import { NavdsSemanticColorTextMuted } from '@navikt/ds-tokens/dist/tokens';
+import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 interface Props<T> {
     data: T[];
@@ -25,7 +25,7 @@ const StyledTable = styled.table`
 `;
 
 const IngenDataContainer = styled.div`
-    color: ${NavdsSemanticColorTextMuted};
+    color: ${ATextSubtle};
     margin-left: 1.5rem;
     margin-top: 1.5rem;
 `;

@@ -13,7 +13,7 @@ import { HenleggModal } from './Henleggelse/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
-import { NavdsSemanticColorBorderMuted } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     display: flex;
@@ -30,7 +30,7 @@ interface HøyreMenyWrapperProps {
 }
 
 const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
-    border-left: 2px solid ${NavdsSemanticColorBorderMuted};
+    border-left: 2px solid ${ABorderDefault};
 
     background-color: white;
 

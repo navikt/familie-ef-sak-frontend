@@ -8,7 +8,7 @@ import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Button, Radio, RadioGroup } from '@navikt/ds-react';
 import { FileContent } from '@navikt/ds-icons';
-import { NavdsGlobalColorRed500 } from '@navikt/ds-tokens/dist/tokens';
+import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -19,7 +19,7 @@ const ErrorTekst = styled.div`
     font-size: 1rem;
     line-height: 1.375rem;
     font-weight: 600;
-    color: ${NavdsGlobalColorRed500};
+    color: ${ARed500};
     margin-bottom: 1rem;
 `;
 

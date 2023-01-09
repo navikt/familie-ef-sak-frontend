@@ -4,12 +4,7 @@ import styled from 'styled-components';
 import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
 import SimuleringÅrvelger from './SimuleringÅrvelger';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import {
-    NavdsGlobalColorGreen500,
-    NavdsGlobalColorRed500,
-    NavdsSemanticColorBorder,
-    NavdsSemanticColorBorderMuted,
-} from '@navikt/ds-tokens/dist/tokens';
+import { AGreen500, ARed500, ABorderStrong, ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 
 const Tabell = styled.table`
     border-collapse: collapse;
@@ -17,26 +12,25 @@ const Tabell = styled.table`
 
 const ÅrHeader = styled.th`
     padding: 0.75rem;
-    border-bottom: 1px solid ${NavdsSemanticColorBorder};
+    border-bottom: 1px solid ${ABorderStrong};
 `;
 
 const BasisKolonne = styled.td`
     padding: 0.75rem;
-    border-bottom: 1px solid ${NavdsSemanticColorBorderMuted};
+    border-bottom: 1px solid ${ABorderDefault};
 `;
 
 const VerdiKolonne = styled(BasisKolonne)<{ gjelderNestePeriode: boolean }>`
     text-align: right;
-    border-left: ${(props) =>
-        props.gjelderNestePeriode && `1px dashed ${NavdsSemanticColorBorder}`};
+    border-left: ${(props) => props.gjelderNestePeriode && `1px dashed ${ABorderStrong}`};
 `;
 
 const MånedHeader = styled(VerdiKolonne)<{ gjelderNestePeriode: boolean }>`
-    border-bottom: 1px solid ${NavdsSemanticColorBorder};
+    border-bottom: 1px solid ${ABorderStrong};
 `;
 
 const ResultatVerdi = styled(BodyShortSmall)<{ verdi: number }>`
-    color: ${(props) => (props.verdi > 0 ? NavdsGlobalColorGreen500 : NavdsGlobalColorRed500)};
+    color: ${(props) => (props.verdi > 0 ? AGreen500 : ARed500)};
 `;
 
 const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
