@@ -1,7 +1,7 @@
 import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 
-export const utledYngsteBarnFødselsdato = (vilkår: IVilkår) => {
+export const utledYngsteBarnFødselsdato = (vilkår: IVilkår): string | undefined => {
     const terminbarnFødselsdatoer = vilkår.grunnlag.barnMedSamvær
         .map((b) => b.søknadsgrunnlag.fødselTermindato)
         .filter(
@@ -11,12 +11,14 @@ export const utledYngsteBarnFødselsdato = (vilkår: IVilkår) => {
                 erEtter(fødselTermindato, minusÅr(new Date(), 1))
         );
 
-    const tidligsteDato = vilkår.grunnlag.barnMedSamvær
+    const datoer = vilkår.grunnlag.barnMedSamvær
         .map((b) => b.registergrunnlag.fødselsdato)
         .filter((fødselsdato): fødselsdato is string => !!fødselsdato && erGyldigDato(fødselsdato))
-        .concat(terminbarnFødselsdatoer)
-        .reduce((a, b) => {
-            return erEtter(a, b) ? a : b;
-        });
-    return tidligsteDato;
+        .concat(terminbarnFødselsdatoer);
+    if (datoer.length === 0) {
+        return undefined;
+    }
+    return datoer.reduce((a, b) => {
+        return erEtter(a, b) ? a : b;
+    });
 };
