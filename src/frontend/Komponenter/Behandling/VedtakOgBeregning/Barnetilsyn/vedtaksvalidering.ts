@@ -107,7 +107,7 @@ export const validerUtgiftsperioder = ({
             };
         }
 
-        if (!aktivitetstype) {
+        if (!aktivitetstype && !opphør) {
             return { ...utgiftsperiodeFeil, aktivitetstype: 'Mangler valg for aktivitetstype' };
         }
 

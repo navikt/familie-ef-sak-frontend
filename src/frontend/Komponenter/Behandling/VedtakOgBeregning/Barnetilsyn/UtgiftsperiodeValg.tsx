@@ -76,6 +76,18 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             value === EUtgiftsperiodetype.OPPHØR
         ) {
             oppdaterUtgiftsperiodeDersomMidlertidigOpphør(index);
+        } else if (
+            property === EUtgiftsperiodeProperty.periodetype &&
+            value === EUtgiftsperiodetype.ORDINÆR
+        ) {
+            utgiftsperioder.update(
+                {
+                    ...utgiftsperioder.value[index],
+                    [EUtgiftsperiodeProperty.erMidlertidigOpphør]: false, // TODO: Skal fjernes når feltet er fjernet
+                    [property]: value,
+                },
+                index
+            );
         } else {
             utgiftsperioder.update(
                 {
