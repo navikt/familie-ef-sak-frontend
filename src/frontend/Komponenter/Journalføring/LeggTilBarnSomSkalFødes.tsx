@@ -82,7 +82,7 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                             id={'Termindato'}
                             label={'Termindato'}
                             onChange={(dato) => oppdaterTermindato(barn._id, dato as string)}
-                            valgtDato={barn.fødselTerminDato}
+                            value={barn.fødselTerminDato}
                             feil={
                                 barn.fødselTerminDato && !erGyldigDato(barn.fødselTerminDato)
                                     ? 'Ugyldig dato'

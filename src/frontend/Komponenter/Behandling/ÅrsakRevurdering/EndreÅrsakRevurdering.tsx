@@ -110,7 +110,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 erLesesvisning={!behandlingErRedigerbar}
                 label={'Krav mottatt'}
                 id={'krav-mottatt'}
-                valgtDato={kravMottatt || ''}
+                value={kravMottatt || ''}
                 onChange={(dato) => {
                     settRevurderingsinformasjon((prevState) => ({
                         ...prevState,
