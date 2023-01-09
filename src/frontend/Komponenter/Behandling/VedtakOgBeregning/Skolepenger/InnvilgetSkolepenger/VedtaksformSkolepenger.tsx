@@ -29,7 +29,7 @@ import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { NavdsGlobalColorRed500 } from '@navikt/ds-tokens/dist/tokens';
+import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 
 export type InnvilgeVedtakForm = {
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
@@ -41,7 +41,7 @@ const WrapperDobbelMarginTop = styled.div`
 `;
 
 export const AdvarselTekst = styled(BodyShortSmall)`
-    color: ${NavdsGlobalColorRed500};
+    color: ${ARed500};
 `;
 
 export const defaultSkoleårsperioder = (

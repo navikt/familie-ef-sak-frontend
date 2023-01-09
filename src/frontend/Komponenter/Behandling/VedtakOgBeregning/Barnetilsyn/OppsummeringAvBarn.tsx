@@ -11,16 +11,13 @@ import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import {
-    NavdsSemanticColorCanvasBackground,
-    NavdsSemanticColorBorder,
-} from '@navikt/ds-tokens/dist/tokens';
+import { ABgSubtle, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     padding: 1rem;
-    background-color: ${NavdsSemanticColorCanvasBackground};
+    background-color: ${ABgSubtle};
 `;
 
 const BoldTekst = styled(Label)`
@@ -53,7 +50,7 @@ const NedersteGridLinje = styled(GridLinje)`
 
 const BorderWrapper = styled.div`
     margin-top: 1rem;
-    border-bottom: 1px solid ${NavdsSemanticColorBorder};
+    border-bottom: 1px solid ${ABorderStrong};
     margin-bottom: 1.25rem;
 `;
 

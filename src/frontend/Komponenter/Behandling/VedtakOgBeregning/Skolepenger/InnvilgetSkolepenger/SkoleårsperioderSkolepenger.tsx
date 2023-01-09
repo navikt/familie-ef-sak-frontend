@@ -13,14 +13,14 @@ import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { NavdsSemanticColorCanvasBackground } from '@navikt/ds-tokens/dist/tokens';
+import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const Skoleårsperiode = styled.div`
     margin: 1rem;
     margin-right: 0.5rem;
     margin-left: 0rem;
     padding: 1rem;
-    background-color: ${NavdsSemanticColorCanvasBackground};
+    background-color: ${ABgSubtle};
 `;
 const ContainerMedLuftUnder = styled.div`
     margin-bottom: 1rem;

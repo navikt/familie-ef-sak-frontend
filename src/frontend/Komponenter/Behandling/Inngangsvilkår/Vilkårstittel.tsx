@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Vilkårsresultat } from './vilkår';
 import { Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { NavdsSemanticColorTextMuted } from '@navikt/ds-tokens/dist/tokens';
+import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 type VilkårtittelProps = {
     tittel: string;
@@ -21,7 +21,7 @@ const Container = styled.div`
         margin: 0 1rem 0 0.5rem;
     }
     .paragrafTittel {
-        color: ${NavdsSemanticColorTextMuted};
+        color: ${ATextSubtle};
     }
 `;
 

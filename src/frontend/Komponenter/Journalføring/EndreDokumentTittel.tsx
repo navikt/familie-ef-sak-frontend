@@ -4,11 +4,7 @@ import CreatableSelect from 'react-select/creatable';
 import { dokumentTitler } from './konstanter/dokumenttitler';
 import { CSSObjectWithLabel, StylesConfig } from 'react-select';
 import { Button } from '@navikt/ds-react';
-import {
-    NavdsGlobalColorBlue500,
-    NavdsGlobalColorBlue800,
-    NavdsSemanticColorBorder,
-} from '@navikt/ds-tokens/dist/tokens';
+import { ABlue500, ABlue800, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledKnapper = styled.div`
     display: flex;
@@ -36,17 +32,17 @@ const customStyles: StylesConfig = {
         ...defaultStyles,
         backgroundColor: '#fff',
         borderRadius: 4,
-        boxShadow: state.isFocused ? `0 0 0 3px ${NavdsGlobalColorBlue800}` : '',
-        border: `1px solid ${NavdsSemanticColorBorder}`,
+        boxShadow: state.isFocused ? `0 0 0 3px ${ABlue800}` : '',
+        border: `1px solid ${ABorderStrong}`,
     }),
     control: (defaultStyles: CSSObjectWithLabel) => ({
         ...defaultStyles,
-        borderColor: NavdsSemanticColorBorder,
+        borderColor: ABorderStrong,
         outline: 'none',
         border: 'none',
         backgroundColor: '#fff',
         ':hover': {
-            borderColor: NavdsGlobalColorBlue500,
+            borderColor: ABlue500,
         },
     }),
 };

@@ -13,7 +13,7 @@ import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 import { Button } from '@navikt/ds-react';
 import { DetailSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { NavdsGlobalColorGray900 } from '@navikt/ds-tokens/dist/tokens';
+import { AGray900 } from '@navikt/ds-tokens/dist/tokens';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
@@ -41,7 +41,7 @@ const StyledHistorikkElement = styled.li`
     .navds-body-short,
     .navds-label,
     .navds-detail {
-        color: ${NavdsGlobalColorGray900};
+        color: ${AGray900};
     }
 `;
 

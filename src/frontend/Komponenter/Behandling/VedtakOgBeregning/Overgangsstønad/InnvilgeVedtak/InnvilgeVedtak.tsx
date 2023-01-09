@@ -40,7 +40,7 @@ import { Button, Heading } from '@navikt/ds-react';
 import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import {
     fyllHullMedOpphør,
-    revurdererFørFørstePeriode,
+    revurdererFraPeriodeUtenStønad,
     revurderFraInitPeriode,
 } from './revurderFraUtils';
 import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
@@ -297,7 +297,7 @@ export const InnvilgeVedtak: React.FC<{
                         settRevurderesFra={settRevurderesFra}
                         revurderesFra={revurderesFra}
                         feilmelding={revurderesFraOgMedFeilmelding}
-                        revurdererFørFørstePeriode={revurdererFørFørstePeriode(
+                        revurdererFraPeriodeUtenStønad={revurdererFraPeriodeUtenStønad(
                             vedtakshistorikk,
                             revurderesFra
                         )}
