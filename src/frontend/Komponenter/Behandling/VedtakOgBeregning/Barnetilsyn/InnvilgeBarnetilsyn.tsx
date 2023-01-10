@@ -88,6 +88,7 @@ export const InnvilgeBarnetilsyn: FC<{
                     lagretVedtak={vedtak}
                     barn={barn}
                     settResultatType={settResultatType}
+                    låsFraDatoFørsteRad={!!revurderesFra}
                 />
             )}
         </>

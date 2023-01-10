@@ -1,15 +1,12 @@
 import { AndelHistorikk } from '../../../App/typer/tilkjentytelse';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
-import {
-    formaterIsoDatoTid,
-    formaterNullableIsoDato,
-    formaterTallMedTusenSkille,
-} from '../../../App/utils/formatter';
+import { formaterIsoDatoTid, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
 import React from 'react';
 import {
+    datoAndelHistorikk,
     etikettType,
     historikkEndring,
     HistorikkRad,
@@ -31,26 +28,30 @@ const lenketekst = (andel: AndelHistorikk) => {
 
 const historikkRad = (andel: AndelHistorikk, index: number) => {
     const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
+    const erOpphør = andel.erOpphør;
+    const visDetaljer = !erSanksjon && !erOpphør;
     return (
         <HistorikkRad type={andel.endring?.type} key={index}>
+            <td>{datoAndelHistorikk(andel)}</td>
             <td>
-                {formaterNullableIsoDato(andel.andel.stønadFra)}
-                {' - '}
-                {formaterNullableIsoDato(andel.andel.stønadTil)}
-            </td>
-            <td>
-                <Tag variant={etikettType(andel.periodeType)} size={'small'}>
-                    {periodetypeTilTekst[andel.periodeType || '']}
-                </Tag>
+                {erOpphør ? (
+                    <Tag variant={'error'} size={'small'}>
+                        Opphør
+                    </Tag>
+                ) : (
+                    <Tag variant={etikettType(andel.periodeType)} size={'small'}>
+                        {periodetypeTilTekst[andel.periodeType || '']}
+                    </Tag>
+                )}
             </td>
             <td>
                 {erSanksjon
                     ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
                     : aktivitetTilTekst[andel.aktivitet || '']}
             </td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.beløp)}</td>
+            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
+            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
+            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.beløp)}</td>
             <td>{formaterIsoDatoTid(andel.vedtakstidspunkt)}</td>
             <td>{andel.saksbehandler}</td>
             <td>
