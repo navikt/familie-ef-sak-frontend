@@ -22,7 +22,7 @@ import { Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { tomUtgiftsperiodeRad } from './utils';
-import UtgiftsperiodeSelect from './UtgiftsperiodeSelect';
+import PeriodetypeSelect from './PeriodetypeSelect';
 import AktivitetSelect from './AktivitetSelect';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
@@ -73,7 +73,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     ) => {
         if (
             property === EUtgiftsperiodeProperty.periodetype &&
-            value === EUtgiftsperiodetype.OPPHØR
+            (value === EUtgiftsperiodetype.OPPHØR || value === EUtgiftsperiodetype.SANKSJON_1_MND)
         ) {
             oppdaterUtgiftsperiodeDersomMidlertidigOpphør(index);
         } else if (
@@ -159,7 +159,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                         key={utgiftsperiode.endretKey}
                         lesevisning={!behandlingErRedigerbar}
                     >
-                        <UtgiftsperiodeSelect
+                        <PeriodetypeSelect
                             periodetype={periodetype}
                             oppdaterUtgiftsperiodeElement={(property, value) =>
                                 oppdaterUtgiftsperiode(index, property, value)
@@ -172,8 +172,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             oppdaterUtgiftsperiodeElement={(property, value) =>
                                 oppdaterUtgiftsperiode(index, property, value)
                             }
-                            lesevisning={!behandlingErRedigerbar}
-                            midlertidigOpphør={midlertidigOpphør}
+                            erLesevisning={!behandlingErRedigerbar}
+                            erMidlertidigOpphør={midlertidigOpphør}
                             feil={valideringsfeil && valideringsfeil[index]?.aktivitetstype}
                         />
                         <MånedÅrPeriode

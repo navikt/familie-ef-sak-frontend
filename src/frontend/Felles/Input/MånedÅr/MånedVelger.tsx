@@ -1,13 +1,15 @@
 import React from 'react';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 
+export type FamilieSelectSize = 'small' | 'medium';
+
 interface MånedProps {
     måned: string | undefined;
     settMåned: (måned: string) => void;
     lesevisning?: boolean;
     disabled?: boolean;
     className?: string;
-    size?: 'medium' | 'small';
+    size?: FamilieSelectSize;
 }
 
 const månedValg = [

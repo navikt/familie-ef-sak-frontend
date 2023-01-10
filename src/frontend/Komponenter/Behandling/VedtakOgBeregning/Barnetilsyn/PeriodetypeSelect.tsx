@@ -17,20 +17,20 @@ interface Props {
     periodetype: EUtgiftsperiodetype | '' | undefined;
     oppdaterUtgiftsperiodeElement: (
         property: EUtgiftsperiodeProperty,
-        value: string | number | undefined
+        value: string | undefined
     ) => void;
     lesevisning: boolean;
     feil?: string;
 }
 
-const valgbarePeriodetyper = [
-    EUtgiftsperiodetype.ORDINÆR,
-    EUtgiftsperiodetype.OPPHØR,
-    EUtgiftsperiodetype.SANKSJON_1_MND,
-];
-
-const UtgiftsperiodeSelect: FC<Props> = (props: Props) => {
-    const { periodetype, oppdaterUtgiftsperiodeElement, lesevisning, feil } = props;
+const PeriodetypeSelect: FC<Props> = ({
+    periodetype,
+    oppdaterUtgiftsperiodeElement,
+    lesevisning,
+    feil,
+}) => {
+    //TODO: Legg til sanksjon når vi støttet sanksjon for revurderinger
+    const valgbarePeriodetyper = [EUtgiftsperiodetype.ORDINÆR, EUtgiftsperiodetype.OPPHØR];
 
     return (
         <StyledSelect
@@ -55,4 +55,4 @@ const UtgiftsperiodeSelect: FC<Props> = (props: Props) => {
     );
 };
 
-export default UtgiftsperiodeSelect;
+export default PeriodetypeSelect;

@@ -15,10 +15,10 @@ interface Props {
     aktivitet: EUtgiftsperiodeAktivitet | '' | undefined;
     oppdaterUtgiftsperiodeElement: (
         property: EUtgiftsperiodeProperty,
-        value: string | number | undefined
+        value: string | undefined
     ) => void;
-    lesevisning: boolean;
-    midlertidigOpphør: boolean;
+    erLesevisning: boolean;
+    erMidlertidigOpphør: boolean;
     feil: OrNothing<string>;
 }
 
@@ -27,13 +27,16 @@ const valgbareAktivitetstyper = [
     EUtgiftsperiodeAktivitet.I_ARBEID,
 ];
 
-const AktivitetSelect: React.FC<Props> = (props: Props) => {
-    const { aktivitet, oppdaterUtgiftsperiodeElement, lesevisning, midlertidigOpphør, feil } =
-        props;
-
+const AktivitetSelect: React.FC<Props> = ({
+    aktivitet,
+    oppdaterUtgiftsperiodeElement,
+    erLesevisning,
+    erMidlertidigOpphør,
+    feil,
+}) => {
     const utledLesevisningVerdi = () => {
         if (aktivitet) return utgiftsperiodeAktivitetTilTekst[aktivitet];
-        if (lesevisning && midlertidigOpphør) return '';
+        if (erLesevisning && erMidlertidigOpphør) return '';
         return 'Ukjent';
     };
 
@@ -41,7 +44,7 @@ const AktivitetSelect: React.FC<Props> = (props: Props) => {
         <StyledSelect
             label={'Aktivitet'}
             hideLabel
-            value={midlertidigOpphør ? '' : aktivitet}
+            value={erMidlertidigOpphør ? '' : aktivitet}
             error={feil}
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(
@@ -49,9 +52,9 @@ const AktivitetSelect: React.FC<Props> = (props: Props) => {
                     e.target.value
                 );
             }}
-            erLesevisning={lesevisning}
+            erLesevisning={erLesevisning}
             lesevisningVerdi={utledLesevisningVerdi()}
-            disabled={midlertidigOpphør}
+            disabled={erMidlertidigOpphør}
             size={'small'}
         >
             <option value="">Velg</option>
