@@ -94,12 +94,10 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const sjekkToggleUtledYngsteBarnetsFødselsdato = (vilkår: IVilkår) => {
-        if (toggles[ToggleName.brukValidering8årHovedperiode]) {
-            return utledYngsteBarnFødselsdato(vilkår);
-        }
-        return '';
-    };
+    const sjekkToggleUtledYngsteBarnetsFødselsdato = (vilkår: IVilkår): string | undefined =>
+        toggles[ToggleName.brukValidering8årHovedperiode]
+            ? utledYngsteBarnFødselsdato(vilkår)
+            : undefined;
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
@@ -112,7 +110,7 @@ export const InnvilgeVedtak: React.FC<{
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
-            yngsteBarnFødselsdato: sjekkToggleUtledYngsteBarnetsFødselsdato(vilkår),
+            yngsteBarnFødselsdato: sjekkToggleUtledYngsteBarnetsFødselsdato(vilkår) || '',
         },
         validerInnvilgetVedtakForm
     );
