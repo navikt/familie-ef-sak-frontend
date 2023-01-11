@@ -16,20 +16,19 @@ import { AlertInfo, AlertWarning } from '../../Felles/Visningskomponenter/Alerts
 import { Checkbox } from '@navikt/ds-react';
 import { IHistoriskPensjon } from '../../App/typer/historiskpensjon';
 
+const FlexBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+`;
 const StyledAlertStripe = styled(AlertInfo)`
-    margin: 1rem 0;
-    max-width: 51rem;
-    .navds-alert__wrapper {
-        max-width: 51rem;
-    }
+    width: 40rem;
 `;
 
 const StyledWarningStripe = styled(AlertWarning)`
-    margin: 1rem 0;
-    max-width: 51rem;
-    .navds-alert__wrapper {
-        max-width: 51rem;
-    }
+    width: 40rem;
+    vertical-align: text-top;
 `;
 
 const InfotrygdperioderoversiktContainer = styled.div`
@@ -63,16 +62,18 @@ const InfotrygdEllerSummertePerioder: React.FC<{
 
     return (
         <>
-            <StyledAlertStripe>
-                Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP må
-                sjekkes manuelt i Infotrygd)
-            </StyledAlertStripe>
-            {historiskPensjon.harPensjonsdata && (
-                <StyledWarningStripe>
-                    Bruker har saker før desember 2008 som kan sees i{' '}
-                    <a href={historiskPensjon.webAppUrl}>PE PP - Historisk pensjon</a>
-                </StyledWarningStripe>
-            )}
+            <FlexBox>
+                <StyledAlertStripe>
+                    Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP
+                    må sjekkes manuelt i Infotrygd)
+                </StyledAlertStripe>
+                {!historiskPensjon.harPensjonsdata && (
+                    <StyledWarningStripe>
+                        Bruker har saker før desember 2008 som kan sees i{' '}
+                        <a href={historiskPensjon.webAppUrl}>PE PP - Historisk pensjon</a>
+                    </StyledWarningStripe>
+                )}
+            </FlexBox>
             <CheckboxContainer>
                 {skalViseCheckbox && (
                     <Checkbox
