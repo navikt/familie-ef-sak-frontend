@@ -67,7 +67,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{
                     Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP
                     må sjekkes manuelt i Infotrygd)
                 </StyledAlertStripe>
-                {!historiskPensjon.harPensjonsdata && (
+                {historiskPensjon.harPensjonsdata && (
                     <StyledWarningStripe>
                         Bruker har saker før desember 2008 som kan sees i{' '}
                         <a href={historiskPensjon.webAppUrl}>PE PP - Historisk pensjon</a>
