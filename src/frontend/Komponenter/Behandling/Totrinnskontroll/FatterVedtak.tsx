@@ -93,7 +93,7 @@ const FatterVedtak: React.FC<{
         })
             .then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    if (godkjent) {
+                    if (godkjent === Totrinnsresultat.GODKJENT) {
                         hentBehandlingshistorikk.rerun();
                         hentTotrinnskontroll.rerun();
                         settVisGodkjentModal(true);

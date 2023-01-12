@@ -8,13 +8,13 @@ import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStr
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 
 const Footer = styled.footer`
     width: calc(100%);
     position: fixed;
     bottom: 0;
-    background-color: ${NavdsSemanticColorBorder};
+    background-color: ${ABorderStrong};
 `;
 
 const MidtstiltInnhold = styled.div`

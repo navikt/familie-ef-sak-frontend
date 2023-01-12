@@ -5,12 +5,12 @@ import SlettSøppelkasse from '../../Felles/Ikoner/SlettSøppelkasse';
 import { BarnSomSkalFødes } from '../../App/hooks/useJournalføringState';
 import { Button, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { NavdsGlobalColorBlue300 } from '@navikt/ds-tokens/dist/tokens';
+import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { v4 as uuidv4 } from 'uuid';
 import { erGyldigDato } from '../../App/utils/dato';
 
 const Tittel = styled(Heading)`
-    color: ${NavdsGlobalColorBlue300};
+    color: ${ABlue300};
 `;
 
 const LeggTilBarnContent = styled.div`
@@ -18,7 +18,7 @@ const LeggTilBarnContent = styled.div`
 `;
 
 const InlineContent = styled.div`
-    border-left: 2px solid ${NavdsGlobalColorBlue300};
+    border-left: 2px solid ${ABlue300};
     padding-left: 1rem;
     margin-left: 1rem;
 `;
@@ -82,7 +82,7 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                             id={'Termindato'}
                             label={'Termindato'}
                             onChange={(dato) => oppdaterTermindato(barn._id, dato as string)}
-                            valgtDato={barn.fødselTerminDato}
+                            value={barn.fødselTerminDato}
                             feil={
                                 barn.fødselTerminDato && !erGyldigDato(barn.fødselTerminDato)
                                     ? 'Ugyldig dato'

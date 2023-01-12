@@ -8,7 +8,7 @@ import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import styled from 'styled-components';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
-import { NavdsSemanticColorTextMuted } from '@navikt/ds-tokens/dist/tokens';
+import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 interface StatusMenyInnholdProps {
     åpen: boolean;
@@ -19,7 +19,7 @@ interface StatusProps {
 }
 
 export const GråTekst = styled(BodyShort)`
-    color: ${NavdsSemanticColorTextMuted};
+    color: ${ATextSubtle};
 `;
 
 const StatusMenyInnhold = styled.div`
@@ -53,7 +53,7 @@ const StatusMenyInnhold = styled.div`
 `;
 
 const VisStatuserKnapp = styled(Button)`
-    color: ${NavdsSemanticColorTextMuted};
+    color: ${ATextSubtle};
 `;
 
 const VisStønadOgBehandlingstypePåLitenSkjerm = styled.div`

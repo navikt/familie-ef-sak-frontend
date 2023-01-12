@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavdsGlobalColorGray800 } from '@navikt/ds-tokens/dist/tokens';
+import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
 
 export const GridTabell = styled.div<{
     kolonner?: number;
@@ -45,7 +45,7 @@ export const GridTabell = styled.div<{
             margin-right: 1rem;
         }
         .navds-tag {
-            color: ${NavdsGlobalColorGray800};
+            color: ${AGray800};
         }
     }
 

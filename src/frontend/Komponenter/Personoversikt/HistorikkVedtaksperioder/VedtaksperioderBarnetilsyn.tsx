@@ -1,14 +1,11 @@
 import { AktivitetArbeidTilTekst, AndelHistorikk } from '../../../App/typer/tilkjentytelse';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
-import {
-    formaterIsoDatoTid,
-    formaterNullableIsoDato,
-    formaterTallMedTusenSkille,
-} from '../../../App/utils/formatter';
+import { formaterIsoDatoTid, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
 import React from 'react';
 import {
+    datoAndelHistorikk,
     etikettType,
     historikkEndring,
     HistorikkRad,
@@ -19,49 +16,50 @@ import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } fr
 import { HelpText, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
 
-const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean, index: number) => {
-    const Rad = styled.div`
-        display: grid;
-        grid-template-area: beløp hjelpetekst;
-        grid-template-columns: 3rem 1.75rem;
-    `;
+const Rad = styled.div`
+    display: grid;
+    grid-template-area: beløp hjelpetekst;
+    grid-template-columns: 3rem 1.75rem;
+`;
 
-    const LinjeSplitter = styled.div`
-        margin-top: 0.25rem;
-    `;
+const LinjeSplitter = styled.div`
+    margin-top: 0.25rem;
+`;
 
+const historikkRad = (andel: AndelHistorikk, index: number) => {
     const beløpErRedusertPgaSats = andel.andel.beløpFørFratrekkOgSatsJustering > andel.andel.sats;
     const beløpErRedusertPgaTilleggsstønad = andel.andel.tilleggsstønad > 0;
     const stønadsbeløpetErRedusert = beløpErRedusertPgaSats || beløpErRedusertPgaTilleggsstønad;
 
     const erSanksjon = andel.erSanksjon;
+    const erOpphør = andel.erOpphør;
+    const visDetaljer = !erSanksjon && !erOpphør;
     return (
         <HistorikkRad type={andel.endring?.type} key={index}>
+            <td>{datoAndelHistorikk(andel)}</td>
             <td>
-                {formaterNullableIsoDato(andel.andel.stønadFra)}
-                {' - '}
-                {formaterNullableIsoDato(andel.andel.stønadTil)}
+                {erOpphør && (
+                    <Tag variant={'error'} size={'small'}>
+                        Opphør
+                    </Tag>
+                )}
+                {erSanksjon && (
+                    <Tag variant={etikettType(EPeriodetype.SANKSJON)} size={'small'}>
+                        {periodetypeTilTekst[EPeriodetype.SANKSJON]}
+                    </Tag>
+                )}
             </td>
-            {sanksjonFinnes && (
-                <td>
-                    {erSanksjon && (
-                        <Tag variant={etikettType(EPeriodetype.SANKSJON)} size={'small'}>
-                            {periodetypeTilTekst[EPeriodetype.SANKSJON]}
-                        </Tag>
-                    )}
-                </td>
-            )}
             <td>
                 {erSanksjon
                     ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
                     : andel.aktivitetArbeid && AktivitetArbeidTilTekst[andel.aktivitetArbeid]}
             </td>
-            <td>{!erSanksjon && andel.andel.antallBarn}</td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.utgifter)}</td>
-            <td>{!erSanksjon && formaterTallMedTusenSkille(andel.andel.kontantstøtte)}</td>
+            <td>{visDetaljer && andel.andel.antallBarn}</td>
+            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.utgifter)}</td>
+            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.kontantstøtte)}</td>
             <td>
                 <Rad>
-                    {!erSanksjon && formaterTallMedTusenSkille(andel.andel.beløp)}
+                    {visDetaljer && formaterTallMedTusenSkille(andel.andel.beløp)}
                     {stønadsbeløpetErRedusert && (
                         <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
                             {utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside(
@@ -95,13 +93,12 @@ const historikkRad = (andel: AndelHistorikk, sanksjonFinnes: boolean, index: num
 };
 
 const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
-    const sanksjonFinnes = andeler.some((andel) => andel.erSanksjon);
     return (
         <HistorikkTabell className="tabell">
             <thead>
                 <tr>
                     <th>Periode (fom-tom)</th>
-                    {sanksjonFinnes && <th></th>}
+                    <th>Periodetype</th>
                     <th>Aktivitet</th>
                     <th>Antall barn</th>
                     <th>Utgifter</th>
@@ -113,9 +110,7 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                     <th>Endring</th>
                 </tr>
             </thead>
-            <tbody>
-                {andeler.map((periode, index) => historikkRad(periode, sanksjonFinnes, index))}
-            </tbody>
+            <tbody>{andeler.map((periode, index) => historikkRad(periode, index))}</tbody>
         </HistorikkTabell>
     );
 };

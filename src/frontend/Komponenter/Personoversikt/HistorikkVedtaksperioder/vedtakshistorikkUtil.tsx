@@ -1,10 +1,11 @@
 import {
     AndelEndringType,
+    AndelHistorikk,
     AndelHistorikkEndring,
     AndelHistorikkTypeTilTekst,
 } from '../../../App/typer/tilkjentytelse';
 import { Link } from 'react-router-dom';
-import { formaterIsoDatoTid } from '../../../App/utils/formatter';
+import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { EPeriodetype } from '../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
@@ -48,5 +49,14 @@ export const etikettType = (periodeType?: EPeriodetype): TagProps['variant'] => 
             return 'error';
         default:
             return 'info';
+    }
+};
+
+export const datoAndelHistorikk = (andel: AndelHistorikk) => {
+    const fra = formaterNullableIsoDato(andel.andel.stønadFra);
+    if (andel.erOpphør) {
+        return fra;
+    } else {
+        return `${fra} - ${formaterNullableIsoDato(andel.andel.stønadTil)}`;
     }
 };

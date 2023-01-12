@@ -102,7 +102,8 @@ export const Vedtaksform: React.FC<{
     lagretVedtak?: IvedtakForBarnetilsyn;
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
-}> = ({ lagretVedtak, behandling, barn, settResultatType }) => {
+    låsFraDatoFørsteRad: boolean;
+}> = ({ lagretVedtak, behandling, barn, settResultatType, låsFraDatoFørsteRad }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
@@ -273,7 +274,7 @@ export const Vedtaksform: React.FC<{
                 valideringsfeil={formState.errors.utgiftsperioder}
                 settValideringsFeil={formState.setErrors}
                 barn={barn}
-                låsFraDatoFørsteRad={!!lagretVedtak}
+                låsFraDatoFørsteRad={låsFraDatoFørsteRad}
             />
             <div>
                 {!behandlingErRedigerbar && begrunnelseState.value === '' ? (

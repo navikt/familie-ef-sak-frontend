@@ -21,7 +21,7 @@ import {
     DetailSmall,
     SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
-import { NavdsSemanticColorTextMuted } from '@navikt/ds-tokens/dist/tokens';
+import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -53,7 +53,7 @@ const StyledIkonOgTittel = styled.span`
 `;
 
 const SistOppdatertTekst = styled(DetailSmall)`
-    color: ${NavdsSemanticColorTextMuted};
+    color: ${ATextSubtle};
 `;
 
 interface Props {

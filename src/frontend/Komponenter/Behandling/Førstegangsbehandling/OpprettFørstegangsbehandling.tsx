@@ -151,7 +151,7 @@ const OpprettFørstegangsbehandling = () => {
                                     onChange={(dato) => {
                                         settKravMottattDato(dato as string);
                                     }}
-                                    valgtDato={kravMottattDato}
+                                    value={kravMottattDato}
                                     feil={
                                         kravMottattDato &&
                                         !erGyldigDato(kravMottattDato) &&

@@ -26,14 +26,14 @@ import {
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 import { Link, Tag } from '@navikt/ds-react';
 import { AlertError } from '../Visningskomponenter/Alerts';
-import { NavdsFontWeightBold, NavdsSemanticColorBorder } from '@navikt/ds-tokens/dist/tokens';
+import { AFontWeightBold, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
 const Visningsnavn = styled(BodyShortSmall)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    font-weight: ${NavdsFontWeightBold};
+    font-weight: ${AFontWeightBold};
 `;
 
 const ResponsivLenke = styled(Link)`
@@ -67,7 +67,7 @@ const TagsStorSkjerm = styled.div`
 export const PersonHeaderWrapper = styled(Sticky)`
     display: flex;
 
-    border-bottom: 1px solid ${NavdsSemanticColorBorder};
+    border-bottom: 1px solid ${ABorderStrong};
     z-index: 23;
     top: 55px;
 
