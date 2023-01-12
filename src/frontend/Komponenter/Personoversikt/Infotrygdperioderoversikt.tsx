@@ -118,9 +118,9 @@ export const Infotrygdperioderoversikt: React.FC<{
     const historiskPensjonConfig: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
-            url: `/familie-ef-sak/api/historiskpensjon/${personIdent}`,
+            url: `/familie-ef-sak/api/historiskpensjon/${fagsakPerson.id}`,
         }),
-        [personIdent]
+        [fagsakPerson]
     );
 
     const historiskPensjon = useDataHenter<IHistoriskPensjon, null>(historiskPensjonConfig);
