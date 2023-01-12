@@ -49,17 +49,17 @@ const TagsKnyttetTilBehandling = styled.div`
 `;
 
 const TagsLitenSkjerm = styled.div`
-    @media screen and (min-width: 946px) {
+    @media screen and (min-width: 990px) {
         display: none;
     }
 
-    @media screen and (max-width: 760px) {
+    @media screen and (max-width: 815px) {
         display: none;
     }
 `;
 
 const TagsStorSkjerm = styled.div`
-    @media screen and (max-width: 946px) {
+    @media screen and (max-width: 990px) {
         display: none;
     }
 `;
@@ -72,7 +72,7 @@ export const PersonHeaderWrapper = styled(Sticky)`
     top: 55px;
 
     .visittkort {
-        padding: 0 1.5rem;
+        padding-left: 1.5rem;
         border-bottom: none;
     }
 `;
@@ -87,6 +87,28 @@ const StyledHamburgermeny = styled(PersonHeaderHamburgermeny)`
 
 const ElementWrapper = styled.div`
     margin-left: 1rem;
+`;
+
+const TagsKnyttetTilPerson = styled.div`
+    display: flex;
+    gap: 1rem;
+    margin-left: 1rem;
+
+    @media screen and (max-width: 690px) {
+        display: none;
+    }
+`;
+
+const PersonTagsLitenSkjerm = styled(Tag)`
+    @media screen and (min-width: 760px) {
+        display: none;
+    }
+`;
+
+const PersonTagsStorSkjerm = styled(Tag)`
+    @media screen and (max-width: 760px) {
+        display: none;
+    }
 `;
 
 const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
@@ -169,54 +191,66 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                     </ResponsivLenke>
                 }
             >
-                {folkeregisterpersonstatus && (
-                    <ElementWrapper>
+                <TagsKnyttetTilPerson>
+                    {folkeregisterpersonstatus && (
                         <PersonStatusVarsel folkeregisterpersonstatus={folkeregisterpersonstatus} />
-                    </ElementWrapper>
-                )}
-                {adressebeskyttelse && (
-                    <ElementWrapper>
+                    )}
+                    {adressebeskyttelse && (
                         <AdressebeskyttelseVarsel adressebeskyttelse={adressebeskyttelse} />
-                    </ElementWrapper>
-                )}
-                {alder && alder < 18 && (
-                    <ElementWrapper>
-                        <Tag variant={'warning'} size={'small'}>
-                            Under 18 år
-                        </Tag>
-                    </ElementWrapper>
-                )}
-                {egenAnsatt && (
-                    <ElementWrapper>
-                        <Tag variant={'warning'} size={'small'}>
-                            Egen ansatt
-                        </Tag>
-                    </ElementWrapper>
-                )}
-                {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
-                    <ElementWrapper>
-                        <Tag variant={'warning'} size={'small'}>
-                            Fullmakt
-                        </Tag>
-                    </ElementWrapper>
-                )}
+                    )}
+                    {alder && alder < 18 && (
+                        <>
+                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
+                                Under 18 år
+                            </PersonTagsStorSkjerm>
+                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
+                                U18
+                            </PersonTagsLitenSkjerm>
+                        </>
+                    )}
+                    {egenAnsatt && (
+                        <>
+                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
+                                Egen ansatt
+                            </PersonTagsStorSkjerm>
+                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
+                                E..
+                            </PersonTagsLitenSkjerm>
+                        </>
+                    )}
+                    {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
+                        <>
+                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
+                                Fullmakt
+                            </PersonTagsStorSkjerm>
+                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
+                                F..
+                            </PersonTagsLitenSkjerm>
+                        </>
+                    )}
 
-                {vergemål.length > 0 && (
-                    <ElementWrapper>
-                        <Tag variant={'warning'} size={'small'}>
-                            Verge
-                        </Tag>
-                    </ElementWrapper>
-                )}
+                    {vergemål.length > 0 && (
+                        <>
+                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
+                                Verge
+                            </PersonTagsStorSkjerm>
+                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
+                                V..
+                            </PersonTagsLitenSkjerm>
+                        </>
+                    )}
 
-                {erMigrert && (
-                    <ElementWrapper>
-                        <Tag variant={'warning'} size={'small'}>
-                            Migrert
-                        </Tag>
-                    </ElementWrapper>
-                )}
-
+                    {erMigrert && (
+                        <>
+                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
+                                Migrert
+                            </PersonTagsStorSkjerm>
+                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
+                                M..
+                            </PersonTagsLitenSkjerm>
+                        </>
+                    )}
+                </TagsKnyttetTilPerson>
                 <TagsKnyttetTilBehandling>
                     {behandling && (
                         <ElementWrapper>
