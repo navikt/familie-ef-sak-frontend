@@ -108,14 +108,14 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
         }
     };
 
-    const opprettKlage = (behandlingId: string, mottattDato: string) => {
+    const opprettKlage = (mottattDato: string) => {
         settFeilmeldingModal('');
 
         if (!senderInnBehandling) {
             settSenderInnBehandling(true);
             axiosRequest<Ressurs<void>, { mottattDato: string }>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/klage/${behandlingId}`,
+                url: `/familie-ef-sak/api/klage/fagsak/${fagsak.id}`,
                 data: { mottattDato },
             })
                 .then((response) => {
@@ -200,11 +200,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                 </ButtonContainer>
             )}
             {valgtBehandlingstype === Behandlingstype.KLAGE && (
-                <OpprettKlage
-                    fagsak={fagsak}
-                    opprettKlage={opprettKlage}
-                    settVisModal={settVisModal}
-                />
+                <OpprettKlage opprettKlage={opprettKlage} settVisModal={settVisModal} />
             )}
             {feilmeldingModal && <AlertError>{feilmeldingModal}</AlertError>}
         </ModalWrapper>
