@@ -6,12 +6,12 @@ import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/San
 import React from 'react';
 import {
     datoAndelHistorikk,
-    etikettType,
+    etikettTypeBarnetilsyn,
     historikkEndring,
     HistorikkRad,
     HistorikkTabell,
 } from './vedtakshistorikkUtil';
-import { EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
+import { EUtgiftsperiodetype, utgiftsperiodetypeTilTekst } from '../../../App/typer/vedtak';
 import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
 import { HelpText, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
@@ -31,28 +31,35 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
     const beløpErRedusertPgaTilleggsstønad = andel.andel.tilleggsstønad > 0;
     const stønadsbeløpetErRedusert = beløpErRedusertPgaSats || beløpErRedusertPgaTilleggsstønad;
 
-    const erSanksjon = andel.erSanksjon;
-    const erOpphør = andel.erOpphør;
+    const erSanksjon = andel.periodetypeBarnetilsyn === EUtgiftsperiodetype.SANKSJON_1_MND;
+    const erOpphør = andel.periodetypeBarnetilsyn === EUtgiftsperiodetype.OPPHØR;
     const visDetaljer = !erSanksjon && !erOpphør;
+    const periodeTypeErSatt = andel.periodetypeBarnetilsyn !== undefined;
     return (
         <HistorikkRad type={andel.endring?.type} key={index}>
             <td>{datoAndelHistorikk(andel)}</td>
             <td>
-                {erOpphør && (
-                    <Tag variant={'error'} size={'small'}>
-                        Opphør
-                    </Tag>
-                )}
-                {erSanksjon && (
-                    <Tag variant={etikettType(EPeriodetype.SANKSJON)} size={'small'}>
-                        {periodetypeTilTekst[EPeriodetype.SANKSJON]}
+                {periodeTypeErSatt && (
+                    <Tag
+                        variant={etikettTypeBarnetilsyn(
+                            andel.periodetypeBarnetilsyn as EUtgiftsperiodetype
+                        )}
+                        size={'small'}
+                    >
+                        {
+                            utgiftsperiodetypeTilTekst[
+                                andel.periodetypeBarnetilsyn as EUtgiftsperiodetype
+                            ]
+                        }
                     </Tag>
                 )}
             </td>
             <td>
                 {erSanksjon
                     ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
-                    : andel.aktivitetArbeid && AktivitetArbeidTilTekst[andel.aktivitetArbeid]}
+                    : andel.aktivitetArbeid
+                    ? AktivitetArbeidTilTekst[andel.aktivitetArbeid]
+                    : 'Ukjent'}
             </td>
             <td>{visDetaljer && andel.andel.antallBarn}</td>
             <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.utgifter)}</td>

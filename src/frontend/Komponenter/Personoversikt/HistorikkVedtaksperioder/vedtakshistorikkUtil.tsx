@@ -6,7 +6,7 @@ import {
 } from '../../../App/typer/tilkjentytelse';
 import { Link } from 'react-router-dom';
 import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../../App/utils/formatter';
-import { EPeriodetype } from '../../../App/typer/vedtak';
+import { EPeriodetype, EUtgiftsperiodetype } from '../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { TagProps } from '@navikt/ds-react';
@@ -35,7 +35,7 @@ export const historikkEndring = (endring?: AndelHistorikkEndring) =>
         </Link>
     );
 
-export const etikettType = (periodeType?: EPeriodetype): TagProps['variant'] => {
+export const etikettTypeOvergangsstønad = (periodeType?: EPeriodetype): TagProps['variant'] => {
     switch (periodeType) {
         case EPeriodetype.HOVEDPERIODE:
             return 'success';
@@ -46,6 +46,18 @@ export const etikettType = (periodeType?: EPeriodetype): TagProps['variant'] => 
         case EPeriodetype.MIGRERING:
         case EPeriodetype.FORLENGELSE:
         case EPeriodetype.SANKSJON:
+            return 'error';
+        default:
+            return 'info';
+    }
+};
+
+export const etikettTypeBarnetilsyn = (periodeType: EUtgiftsperiodetype): TagProps['variant'] => {
+    switch (periodeType) {
+        case EUtgiftsperiodetype.ORDINÆR:
+            return 'success';
+        case EUtgiftsperiodetype.OPPHØR:
+        case EUtgiftsperiodetype.SANKSJON_1_MND:
             return 'error';
         default:
             return 'info';

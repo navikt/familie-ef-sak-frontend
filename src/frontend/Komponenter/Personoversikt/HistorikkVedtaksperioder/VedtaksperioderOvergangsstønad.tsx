@@ -7,7 +7,7 @@ import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/San
 import React from 'react';
 import {
     datoAndelHistorikk,
-    etikettType,
+    etikettTypeOvergangsstønad,
     historikkEndring,
     HistorikkRad,
     HistorikkTabell,
@@ -39,7 +39,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
                         Opphør
                     </Tag>
                 ) : (
-                    <Tag variant={etikettType(andel.periodeType)} size={'small'}>
+                    <Tag variant={etikettTypeOvergangsstønad(andel.periodeType)} size={'small'}>
                         {periodetypeTilTekst[andel.periodeType || '']}
                     </Tag>
                 )}
