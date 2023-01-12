@@ -44,7 +44,7 @@ interface IProps {
     hentTilbakekrevinger: Dispatch<void>;
     hentKlageBehandlinger: Dispatch<void>;
     kanStarteRevurdering: boolean;
-    kanOppretteKlagebehandling: boolean;
+    harÅpenKlage: boolean;
 }
 
 const LagBehandlingModal: React.FunctionComponent<IProps> = ({
@@ -54,7 +54,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     hentTilbakekrevinger,
     hentKlageBehandlinger,
     kanStarteRevurdering,
-    kanOppretteKlagebehandling,
+    harÅpenKlage,
 }) => {
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
@@ -147,10 +147,9 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                         tilbakekreving.
                     </Alert>
                 )}
-                {!kanOppretteKlagebehandling && (
+                {harÅpenKlage && (
                     <Alert variant={'info'}>
-                        Merk at det er ikke mulig å opprette en klagebehandling da det allerede
-                        finnes en åpen klagebehandling på fagsaken
+                        Merk at det allerede finnes en åpen klagebehandling på fagsaken
                     </Alert>
                 )}
             </Alerts>
@@ -167,7 +166,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
                     <option value={Behandlingstype.REVURDERING}>Revurdering</option>
                 )}
                 <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
-                {kanOppretteKlagebehandling && <option value={Behandlingstype.KLAGE}>Klage</option>}
+                <option value={Behandlingstype.KLAGE}>Klage</option>
             </StyledSelect>
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
                 <LagRevurdering
