@@ -15,6 +15,7 @@ import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 import { SettPåVentModal } from './SettPåVent/SettPåVentModal';
+import { InfostripeSattPåVent } from './SettPåVent/InfostripeSattPåVent';
 
 const Container = styled.div`
     display: flex;
@@ -76,6 +77,7 @@ const BehandlingContent: FC<{
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
+                    <InfostripeSattPåVent behandling={behandling} />
                     <BehandlingRoutes />
                     <HenleggModal behandling={behandling} />
                     <SettPåVentModal behandlingId={behandling.id} />
