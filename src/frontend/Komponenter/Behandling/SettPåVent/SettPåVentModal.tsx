@@ -58,7 +58,7 @@ export const SettPåVentModal: FC<{ behandlingId: string }> = ({ behandlingId })
                 },
                 lukkKnapp: { onClick: () => settVisSettPåVentModal(false), tekst: 'Avbryt' },
             }}
-            ariaLabel={'Velg årsak til henleggelse av behandlingen'}
+            ariaLabel={'Sett behandling på vent'}
         >
             Behandlingen settes på vent, men du må inntil videre huske å oppdatere oppgaven i Gosys
             i henhold til gjeldene venterutiner.
