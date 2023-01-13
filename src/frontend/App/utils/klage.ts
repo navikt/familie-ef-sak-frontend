@@ -1,8 +1,8 @@
 import { KlageBehandling, KlagebehandlingStatus } from '../typer/klage';
 
 export const harÅpenKlage = (behandlinger: KlageBehandling[]): boolean =>
-    !behandlinger.every(
+    behandlinger.some(
         (behandling: KlageBehandling) =>
-            behandling.status === KlagebehandlingStatus.FERDIGSTILT ||
-            behandling.status === KlagebehandlingStatus.VENTER
+            behandling.status !== KlagebehandlingStatus.FERDIGSTILT &&
+            behandling.status !== KlagebehandlingStatus.VENTER
     );
