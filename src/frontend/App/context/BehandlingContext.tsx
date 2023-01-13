@@ -62,6 +62,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     }, []);
 
     const [visHenleggModal, settVisHenleggModal] = useState(false);
+    const [visSettpåVentModal, settVisSettpåVentModal] = useState(false);
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
     return {
@@ -76,6 +77,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         regler,
         visHenleggModal,
         settVisHenleggModal,
+        visSettpåVentModal,
+        settVisSettpåVentModal,
         åpenHøyremeny,
         settÅpenHøyremeny,
         utestengelser,
