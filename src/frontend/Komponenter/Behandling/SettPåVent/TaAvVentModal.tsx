@@ -23,7 +23,7 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
         settVisTaAvVentModal(false);
     };
 
-    const fortsettBehandling = () => {
+    const taAvVent = () => {
         if (låsKnapp) {
             return;
         }
@@ -52,7 +52,7 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
             onClose={() => settVisTaAvVentModal(false)}
             aksjonsknapper={{
                 hovedKnapp: {
-                    onClick: () => fortsettBehandling(),
+                    onClick: () => taAvVent(),
                     tekst: 'Fortsett behandling og tilbakestill data',
                     disabled: låsKnapp,
                 },
