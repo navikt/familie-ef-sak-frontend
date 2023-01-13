@@ -6,6 +6,7 @@ export enum BehandlingStatus {
     FATTER_VEDTAK = 'FATTER_VEDTAK',
     IVERKSETTER_VEDTAK = 'IVERKSETTER_VEDTAK',
     FERDIGSTILT = 'FERDIGSTILT',
+    SATT_PÅ_VENT = 'SATT_PÅ_VENT',
 }
 
 export const behandlingStatusTilTekst: Record<BehandlingStatus, string> = {
@@ -14,6 +15,7 @@ export const behandlingStatusTilTekst: Record<BehandlingStatus, string> = {
     FATTER_VEDTAK: 'Fatter vedtak',
     IVERKSETTER_VEDTAK: 'Iverksetter vedtak',
     FERDIGSTILT: 'Ferdigstilt',
+    SATT_PÅ_VENT: 'Satt på vent',
 };
 
 export const erBehandlingRedigerbar = (behandling: Behandling): boolean =>

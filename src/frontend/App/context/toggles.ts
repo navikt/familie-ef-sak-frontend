@@ -15,4 +15,5 @@ export enum ToggleName {
     førstegangsbehandling = 'familie.ef.sak.opprett-forstegangsbehandling',
     brukValidering8årHovedperiode = 'familie.ef.sak.frontend-bruk-validering-8ar-hovedperiode',
     automatiskeVedtaksdatoerBrev = 'familie.ef.sak.frontend.automatiskeVedtaksdatoer',
+    visSettPåVentKnapp = 'familie.ef.sak.frontend.vis-sett-pa-vent-knapp',
 }
