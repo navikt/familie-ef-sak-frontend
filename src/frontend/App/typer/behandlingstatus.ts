@@ -25,3 +25,13 @@ export const erBehandlingUnderArbeid = (behandling: Behandling): boolean =>
     [BehandlingStatus.OPPRETTET, BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(
         behandling.status
     );
+
+export enum ETaAvVentStatus {
+    OK = 'OK',
+    ANNEN_BEHANDLING_MÅ_FERDIGSTILLES = 'ANNEN_BEHANDLING_MÅ_FERDIGSTILLES',
+    MÅ_NULSTILLE_VEDTAK = 'MÅ_NULSTILLE_VEDTAK',
+}
+
+export type TaAvVentStatus = {
+    status: ETaAvVentStatus;
+};

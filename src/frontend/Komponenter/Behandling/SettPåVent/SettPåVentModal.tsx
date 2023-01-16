@@ -11,7 +11,7 @@ const AlertStripe = styled(Alert)`
 `;
 
 export const SettPåVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { visSettpåVentModal, settVisSettpåVentModal, hentBehandling } = useBehandling();
+    const { visSettPåVentModal, settVisSettPåVentModal, hentBehandling } = useBehandling();
 
     const { axiosRequest } = useApp();
 
@@ -20,7 +20,7 @@ export const SettPåVentModal: FC<{ behandlingId: string }> = ({ behandlingId })
 
     const lukkModal = () => {
         settFeilmelding('');
-        settVisSettpåVentModal(false);
+        settVisSettPåVentModal(false);
     };
 
     const settPåVent = () => {
@@ -48,17 +48,17 @@ export const SettPåVentModal: FC<{ behandlingId: string }> = ({ behandlingId })
     return (
         <ModalWrapper
             tittel={'Sett behandling på vent'}
-            visModal={visSettpåVentModal}
-            onClose={() => settVisSettpåVentModal(false)}
+            visModal={visSettPåVentModal}
+            onClose={() => settVisSettPåVentModal(false)}
             aksjonsknapper={{
                 hovedKnapp: {
                     onClick: () => settPåVent(),
                     tekst: 'Sett på vent',
                     disabled: låsKnapp,
                 },
-                lukkKnapp: { onClick: () => settVisSettpåVentModal(false), tekst: 'Avbryt' },
+                lukkKnapp: { onClick: () => settVisSettPåVentModal(false), tekst: 'Avbryt' },
             }}
-            ariaLabel={'Velg årsak til henleggelse av behandlingen'}
+            ariaLabel={'Sett behandling på vent'}
         >
             Behandlingen settes på vent, men du må inntil videre huske å oppdatere oppgaven i Gosys
             i henhold til gjeldene venterutiner.

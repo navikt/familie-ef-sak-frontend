@@ -5,7 +5,7 @@ import { useToggles } from '../../App/context/TogglesContext';
 import { Hamburgermeny } from '../Hamburgermeny/Hamburgermeny';
 
 export const PersonHeaderHamburgermeny = () => {
-    const { settVisHenleggModal, settVisSettpåVentModal } = useBehandling();
+    const { settVisHenleggModal, settVisSettPåVentModal } = useBehandling();
     const { toggles } = useToggles();
 
     const skalViseSettPåVentKnapp = toggles[ToggleName.visSettPåVentKnapp];
@@ -20,7 +20,7 @@ export const PersonHeaderHamburgermeny = () => {
     if (skalViseSettPåVentKnapp) {
         menyvalg.push({
             tekst: 'Sett på vent',
-            onClick: () => settVisSettpåVentModal(true),
+            onClick: () => settVisSettPåVentModal(true),
         });
     }
 
