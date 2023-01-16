@@ -46,6 +46,7 @@ const StyledInput = styled(InputUtenSpinner)`
 `;
 
 const StyledSelect = styled(EnsligFamilieSelect)`
+    align-items: start;
     min-width: 140px;
     max-width: 200px;
 `;
