@@ -2,7 +2,11 @@ import React, { FC, useState } from 'react';
 import { Alert, Button } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { Behandling } from '../../../App/typer/fagsak';
-import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
+import {
+    BehandlingStatus,
+    ETaAvVentStatus,
+    TaAvVentStatus,
+} from '../../../App/typer/behandlingstatus';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursStatus } from '@navikt/familie-typer';
@@ -17,7 +21,7 @@ const StyledButton = styled(Button)`
 `;
 
 export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const { settVisTaAvVentModal, hentBehandling } = useBehandling();
+    const { settTaAvVentStatus, hentBehandling } = useBehandling();
     const { axiosRequest } = useApp();
 
     const [feilmelding, settFeilmelding] = useState('');
@@ -36,14 +40,16 @@ export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandli
     };
 
     const håndterFortsettBehandling = () => {
-        axiosRequest<boolean, null>({
+        axiosRequest<TaAvVentStatus, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/behandling/${behandling.id}/har-nyere-vedtak`,
-        }).then((respons: RessursFeilet | RessursSuksess<boolean>) => {
+            url: `/familie-ef-sak/api/behandling/${behandling.id}/kan-ta-av-vent`,
+        }).then((respons: RessursFeilet | RessursSuksess<TaAvVentStatus>) => {
             if (respons.status == RessursStatus.SUKSESS) {
-                respons.data ? settVisTaAvVentModal(true) : taAvVent();
+                respons.data.status === ETaAvVentStatus.OK
+                    ? taAvVent()
+                    : settTaAvVentStatus(respons.data.status);
             } else {
-                return 'Feilet';
+                settFeilmelding(respons.frontendFeilmelding);
             }
         });
     };
