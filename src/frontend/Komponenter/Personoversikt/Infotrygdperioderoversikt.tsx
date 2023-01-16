@@ -15,6 +15,7 @@ import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
 import { AlertInfo, AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
 import { Checkbox } from '@navikt/ds-react';
 import { IHistoriskPensjon } from '../../App/typer/historiskpensjon';
+import { useHentHistoriskPerson } from '../../App/hooks/useHentHistoriskPensjon';
 
 const FlexBox = styled.div`
     display: flex;
@@ -115,15 +116,8 @@ export const Infotrygdperioderoversikt: React.FC<{
     const infotrygdPerioder = useDataHenter<InfotrygdPerioderResponse, null>(
         infotrygdPerioderConfig
     );
-    const historiskPensjonConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/historiskpensjon/${fagsakPerson.id}`,
-        }),
-        [fagsakPerson]
-    );
 
-    const historiskPensjon = useDataHenter<IHistoriskPensjon, null>(historiskPensjonConfig);
+    const historiskPensjon = useHentHistoriskPerson(fagsakPerson.id);
 
     return (
         <DataViewer response={{ infotrygdPerioder, historiskPensjon }}>
