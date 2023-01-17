@@ -118,7 +118,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
             );
         case EPeriodetype.UTVIDELSE:
             return (
-                <EnsligFamilieSelect
+                <StyledFamilieSelect
                     label={'Velg aktivitet'}
                     hideLabel
                     value={aktivitet || ''}
@@ -143,7 +143,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </EnsligFamilieSelect>
+                </StyledFamilieSelect>
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
