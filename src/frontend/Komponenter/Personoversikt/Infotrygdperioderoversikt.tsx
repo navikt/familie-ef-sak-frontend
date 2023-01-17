@@ -12,10 +12,9 @@ import { Stønadstype } from '../../App/typer/behandlingstema';
 import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
 import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
-import { AlertInfo, AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
+import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 import { Checkbox } from '@navikt/ds-react';
-import { IHistoriskPensjon } from '../../App/typer/historiskpensjon';
-import { useHentHistoriskPerson } from '../../App/hooks/useHentHistoriskPensjon';
+import Historiskpensjon from './Historiskpensjon/Historiskpensjon';
 
 const FlexBox = styled.div`
     display: flex;
@@ -25,11 +24,6 @@ const FlexBox = styled.div`
 `;
 const StyledAlertStripe = styled(AlertInfo)`
     width: 40rem;
-`;
-
-const StyledWarningStripe = styled(AlertWarning)`
-    width: 40rem;
-    vertical-align: text-top;
 `;
 
 const InfotrygdperioderoversiktContainer = styled.div`
@@ -44,8 +38,8 @@ const CheckboxContainer = styled.div`
 
 const InfotrygdEllerSummertePerioder: React.FC<{
     perioder: InfotrygdPerioderResponse;
-    historiskPensjon: IHistoriskPensjon;
-}> = ({ perioder, historiskPensjon }) => {
+    fagsakId: string;
+}> = ({ perioder, fagsakId }) => {
     const [visSummert, settVisSummert] = useState<boolean>(false);
 
     const visPerioder = (stønadstype: Stønadstype, visSummert: boolean, perioder: Perioder) => {
@@ -68,12 +62,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{
                     Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP
                     må sjekkes manuelt i Infotrygd)
                 </StyledAlertStripe>
-                {historiskPensjon.harPensjonsdata && (
-                    <StyledWarningStripe>
-                        Bruker har saker før desember 2008 som kan sees i{' '}
-                        <a href={historiskPensjon.webAppUrl}>PE PP - Historisk pensjon</a>
-                    </StyledWarningStripe>
-                )}
+                <Historiskpensjon fagsakPersonId={fagsakId} />
             </FlexBox>
             <CheckboxContainer>
                 {skalViseCheckbox && (
@@ -117,15 +106,13 @@ export const Infotrygdperioderoversikt: React.FC<{
         infotrygdPerioderConfig
     );
 
-    const historiskPensjon = useHentHistoriskPerson(fagsakPerson.id);
-
     return (
-        <DataViewer response={{ infotrygdPerioder, historiskPensjon }}>
-            {({ infotrygdPerioder, historiskPensjon }) => (
+        <DataViewer response={{ infotrygdPerioder }}>
+            {({ infotrygdPerioder }) => (
                 <InfotrygdperioderoversiktContainer>
                     <InfotrygdEllerSummertePerioder
                         perioder={infotrygdPerioder}
-                        historiskPensjon={historiskPensjon}
+                        fagsakId={fagsakPerson.id}
                     />
                     <InfotrygdSaker personIdent={personIdent} />
                     <MigrerFagsak fagsakPerson={fagsakPerson} />
