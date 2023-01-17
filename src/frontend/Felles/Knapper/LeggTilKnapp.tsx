@@ -13,7 +13,6 @@ const LeggTilKnapp: React.FC<{ onClick: () => void; knappetekst?: string; ikonte
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
             icon={<AddCircle title={knappetekst ? knappetekst : ikontekst} />}
-            style={{ alignItems: 'start' }}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Button>

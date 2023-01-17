@@ -13,7 +13,6 @@ const FjernKnapp: React.FC<{
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
             icon={<Delete title={knappetekst ? knappetekst : ikontekst} />}
-            style={{ alignItems: 'start' }}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Button>

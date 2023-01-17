@@ -51,6 +51,10 @@ const StyledSelect = styled(EnsligFamilieSelect)`
     max-width: 200px;
 `;
 
+const IkonKnappWrapper = styled.div`
+    display: block;
+`;
+
 const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
     data,
     oppdater,
@@ -172,10 +176,12 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 erLesevisning={erLesevisning}
                             />
                             {skalViseFjernKnapp && (
-                                <FjernKnapp
-                                    onClick={() => fjernDelårsperiode(index)}
-                                    ikontekst={'Fjern delårsperiode'}
-                                />
+                                <IkonKnappWrapper>
+                                    <FjernKnapp
+                                        onClick={() => fjernDelårsperiode(index)}
+                                        ikontekst={'Fjern delårsperiode'}
+                                    />
+                                </IkonKnappWrapper>
                             )}
                         </SkoleårsperiodeRad>
                     </>
