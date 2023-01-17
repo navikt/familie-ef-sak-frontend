@@ -291,6 +291,14 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     </UtgiftsperiodeRad>
                 );
             })}
+            <ContainerMedLuftUnder>
+                {behandlingErRedigerbar && (
+                    <LeggTilKnapp
+                        onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad())}
+                        knappetekst="Legg til vedtaksperiode"
+                    />
+                )}
+            </ContainerMedLuftUnder>
         </>
     );
 };
