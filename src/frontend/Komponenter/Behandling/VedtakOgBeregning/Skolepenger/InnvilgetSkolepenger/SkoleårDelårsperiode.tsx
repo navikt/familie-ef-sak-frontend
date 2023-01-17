@@ -46,8 +46,13 @@ const StyledInput = styled(InputUtenSpinner)`
 `;
 
 const StyledSelect = styled(EnsligFamilieSelect)`
+    align-items: start;
     min-width: 140px;
     max-width: 200px;
+`;
+
+const IkonKnappWrapper = styled.div`
+    display: block;
 `;
 
 const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
@@ -171,10 +176,12 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                 erLesevisning={erLesevisning}
                             />
                             {skalViseFjernKnapp && (
-                                <FjernKnapp
-                                    onClick={() => fjernDelårsperiode(index)}
-                                    ikontekst={'Fjern delårsperiode'}
-                                />
+                                <IkonKnappWrapper>
+                                    <FjernKnapp
+                                        onClick={() => fjernDelårsperiode(index)}
+                                        ikontekst={'Fjern delårsperiode'}
+                                    />
+                                </IkonKnappWrapper>
                             )}
                         </SkoleårsperiodeRad>
                     </>

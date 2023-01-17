@@ -11,7 +11,7 @@ import { FagsakTittelLinje } from './FagsakTittelLinje';
 import { erAlleBehandlingerErFerdigstilt } from './utils';
 import { KlageBehandling } from '../../App/typer/klage';
 import { Button } from '@navikt/ds-react';
-import { kanOppretteBehandling } from '../../App/utils/klage';
+import { harÅpenKlage } from '../../App/utils/klage';
 
 const Knapp = styled(Button)`
     padding-left: 1.25rem;
@@ -69,9 +69,7 @@ export const FagsakOversikt: React.FC<Props> = ({
                                 hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
                                 hentKlageBehandlinger={hentKlageBehandlinger}
                                 kanStarteRevurdering={kanStarteRevurdering}
-                                kanOppretteKlagebehandling={kanOppretteBehandling(
-                                    klageBehandlinger
-                                )}
+                                harÅpenKlage={harÅpenKlage(klageBehandlinger)}
                             />
 
                             <Knapp

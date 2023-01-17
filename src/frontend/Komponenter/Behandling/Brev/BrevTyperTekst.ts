@@ -345,7 +345,7 @@ export const initielleAvsnittSvartidKlage: AvsnittMedId[] = [
         deloverskrift: '',
         innhold:
             'Vi behandler klagen din så raskt som mulig.\n' +
-            'Du kan lese mer om saksbehandlingstider på nav.no/saksbehandlingstid.',
+            'Du kan lese mer om saksbehandlingstider for saker som gjelder stønad til enslig mor eller far på nav.no/saksbehandlingstid.',
         id: uuidv4(),
     },
     {

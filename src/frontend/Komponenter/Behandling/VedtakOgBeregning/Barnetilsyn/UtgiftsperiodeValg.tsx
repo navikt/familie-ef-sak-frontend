@@ -48,6 +48,10 @@ const ContainerMedLuftUnder = styled.div`
     margin-bottom: 1rem;
 `;
 
+const IkonKnappWrapper = styled.div`
+    display: block;
+`;
+
 interface Props {
     utgiftsperioder: ListState<IUtgiftsperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
@@ -255,30 +259,34 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             />
                         )}
                         {skalViseFjernKnapp ? (
-                            <FjernKnapp
-                                onClick={() => {
-                                    utgiftsperioder.remove(index);
-                                    settValideringsFeil(
-                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                            const utgiftsperioder = (
-                                                prevState.utgiftsperioder ?? []
-                                            ).filter((_, i) => i !== index);
-                                            return { ...prevState, utgiftsperioder };
-                                        }
-                                    );
-                                }}
-                                ikontekst={'Fjern utgiftsperiode'}
-                            />
+                            <IkonKnappWrapper>
+                                <FjernKnapp
+                                    onClick={() => {
+                                        utgiftsperioder.remove(index);
+                                        settValideringsFeil(
+                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                                const utgiftsperioder = (
+                                                    prevState.utgiftsperioder ?? []
+                                                ).filter((_, i) => i !== index);
+                                                return { ...prevState, utgiftsperioder };
+                                            }
+                                        );
+                                    }}
+                                    ikontekst={'Fjern utgiftsperiode'}
+                                />
+                            </IkonKnappWrapper>
                         ) : (
                             <div />
                         )}
                         {behandlingErRedigerbar && (
-                            <Tooltip content="Legg til rad under" placement="right">
-                                <LeggTilKnapp
-                                    onClick={() => leggTilTomRadUnder(index)}
-                                    ikontekst={'Legg til ny rad'}
-                                />
-                            </Tooltip>
+                            <IkonKnappWrapper>
+                                <Tooltip content="Legg til rad under" placement="right">
+                                    <LeggTilKnapp
+                                        onClick={() => leggTilTomRadUnder(index)}
+                                        ikontekst={'Legg til ny rad'}
+                                    />
+                                </Tooltip>
+                            </IkonKnappWrapper>
                         )}
                     </UtgiftsperiodeRad>
                 );

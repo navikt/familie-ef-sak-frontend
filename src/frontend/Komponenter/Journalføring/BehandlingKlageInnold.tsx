@@ -6,9 +6,9 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { KlageBehandling, Klagebehandlinger } from '../../App/typer/klage';
 import { BehandlingKlageRequest } from '../../App/hooks/useJournalføringKlageState';
-import { Button, Checkbox, Heading } from '@navikt/ds-react';
+import { Alert, Button, Checkbox, Heading } from '@navikt/ds-react';
 import { AddCircle } from '@navikt/ds-icons';
-import { kanOppretteBehandling } from '../../App/utils/klage';
+import { harÅpenKlage } from '../../App/utils/klage';
 
 interface Props {
     settBehandling: (behandling?: BehandlingKlageRequest) => void;
@@ -56,24 +56,28 @@ const BehandlingKlageInnold: React.FC<Props> = ({
 
     const lagNyBehandlingRad = () => {
         settFeilmelding('');
-        if (behandlinger.status === RessursStatus.SUKSESS && valgtFagsak) {
-            if (kanOppretteBehandling(behandlinger.data[valgtFagsak])) {
-                settNyBehandling(true);
-            } else {
-                settFeilmelding(
-                    'Kan ikke opprette ny behandling på fagsak med en klagebehandling som ikke er ferdigstilt'
-                );
-            }
+        if (valgtFagsak) {
+            settNyBehandling(true);
         } else {
             settFeilmelding('Velg stønadstype for å opprette ny behandling');
         }
     };
+
+    const visÅpenKlageVarsel =
+        behandlinger.status === RessursStatus.SUKSESS &&
+        valgtFagsak &&
+        harÅpenKlage(behandlinger.data[valgtFagsak]);
 
     return (
         <>
             <Heading size={'medium'} level={'2'}>
                 Behandling
             </Heading>
+            {visÅpenKlageVarsel && (
+                <Alert variant={'info'}>
+                    Merk at det allerede finnes en åpen klage på denne fagsaken
+                </Alert>
+            )}
             <table className="tabell">
                 <thead>
                     <tr>
