@@ -4,6 +4,7 @@ import { Roller } from '../utils/roller';
 export interface AppEnv {
     aInntekt: string;
     gosys: string;
+    modia: string;
     roller: Roller;
 }
 
