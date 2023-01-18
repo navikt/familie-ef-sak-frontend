@@ -53,7 +53,7 @@ export interface AndelHistorikk {
     behandlingType: Behandlingstype;
     behandlingÅrsak: Behandlingsårsak;
     sanksjonsårsak?: Sanksjonsårsak;
-    erOpphør?: boolean; // TODO fjern optional når backend er merget
+    erOpphør: boolean;
 }
 
 export interface AndelHistorikkEndring {

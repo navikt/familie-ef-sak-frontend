@@ -6,6 +6,8 @@ import { SystemIkon } from '../../../Felles/Ikoner/SystemIkon';
 
 export enum Hendelse {
     OPPRETTET = 'OPPRETTET',
+    SATT_PÅ_VENT = 'SATT_PÅ_VENT',
+    TATT_AV_VENT = 'TATT_AV_VENT',
     SENDT_TIL_BESLUTTER = 'SENDT_TIL_BESLUTTER',
     VEDTAK_GODKJENT = 'VEDTAK_GODKJENT',
     VEDTAK_UNDERKJENT = 'VEDTAK_UNDERKJENT',
@@ -16,6 +18,8 @@ export enum Hendelse {
 
 export const hendelseTilHistorikkTekst: Record<Hendelse, string> = {
     OPPRETTET: 'Behandling opprettet',
+    SATT_PÅ_VENT: 'Satt på vent',
+    TATT_AV_VENT: 'Tatt av vent',
     SENDT_TIL_BESLUTTER: 'Sendt til beslutter',
     VEDTAK_GODKJENT: 'Vedtak godkjent',
     VEDTAK_UNDERKJENT: 'Vedtak underkjent',
