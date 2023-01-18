@@ -38,8 +38,8 @@ const CheckboxContainer = styled.div`
 
 const InfotrygdEllerSummertePerioder: React.FC<{
     perioder: InfotrygdPerioderResponse;
-    fagsakId: string;
-}> = ({ perioder, fagsakId }) => {
+    fagsakPersonId: string;
+}> = ({ perioder, fagsakPersonId }) => {
     const [visSummert, settVisSummert] = useState<boolean>(false);
 
     const visPerioder = (stønadstype: Stønadstype, visSummert: boolean, perioder: Perioder) => {
@@ -62,7 +62,7 @@ const InfotrygdEllerSummertePerioder: React.FC<{
                     Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP
                     må sjekkes manuelt i Infotrygd)
                 </StyledAlertStripe>
-                <Historiskpensjon fagsakPersonId={fagsakId} />
+                <Historiskpensjon fagsakPersonId={fagsakPersonId} />
             </FlexBox>
             <CheckboxContainer>
                 {skalViseCheckbox && (
@@ -112,7 +112,7 @@ export const Infotrygdperioderoversikt: React.FC<{
                 <InfotrygdperioderoversiktContainer>
                     <InfotrygdEllerSummertePerioder
                         perioder={infotrygdPerioder}
-                        fagsakId={fagsakPerson.id}
+                        fagsakPersonId={fagsakPerson.id}
                     />
                     <InfotrygdSaker personIdent={personIdent} />
                     <MigrerFagsak fagsakPerson={fagsakPerson} />
