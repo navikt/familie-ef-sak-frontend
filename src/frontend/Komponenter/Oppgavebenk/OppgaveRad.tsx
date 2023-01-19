@@ -176,7 +176,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 );
             default:
                 return (
-                    <BodyShortSmall style={{ marginLeft: '2.5rem' }}>
+                    <BodyShortSmall style={{ marginLeft: '0.75rem' }}>
                         Må håndteres i Gosys
                     </BodyShortSmall>
                 );

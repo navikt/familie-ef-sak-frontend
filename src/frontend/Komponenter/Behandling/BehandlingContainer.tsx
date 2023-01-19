@@ -14,6 +14,9 @@ import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
+import { SettPåVentModal } from './SettPåVent/SettPåVentModal';
+import { InfostripeSattPåVent } from './SettPåVent/InfostripeSattPåVent';
+import { TaAvVentModal } from './SettPåVent/TaAvVentModal';
 
 const Container = styled.div`
     display: flex;
@@ -75,8 +78,11 @@ const BehandlingContent: FC<{
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
+                    <InfostripeSattPåVent behandling={behandling} />
                     <BehandlingRoutes />
                     <HenleggModal behandling={behandling} />
+                    <SettPåVentModal behandlingId={behandling.id} />
+                    <TaAvVentModal behandlingId={behandling.id} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Høyremeny åpenHøyremeny={åpenHøyremeny} behandlingId={behandling.id} />

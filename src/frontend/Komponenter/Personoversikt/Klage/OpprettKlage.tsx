@@ -1,12 +1,8 @@
-import { BehandlingResultat, Fagsak } from '../../../App/typer/fagsak';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
-import { compareDesc } from 'date-fns';
-import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button } from '@navikt/ds-react';
-import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -31,43 +27,18 @@ const ModalKnapp = styled(Button)`
 `;
 
 interface IProps {
-    fagsak: Fagsak;
     settVisModal: (bool: boolean) => void;
-    opprettKlage: (behandlingId: string, mottattDato: string) => void;
+    opprettKlage: (mottattDato: string) => void;
 }
 
-const behandlingsresultat = [
-    BehandlingResultat.AVSLÅTT,
-    BehandlingResultat.INNVILGET,
-    BehandlingResultat.OPPHØRT,
-];
-const sisteBehandlingSomErFerdigstilt = (fagsak: Fagsak) =>
-    fagsak.behandlinger
-        .sort((a, b) => compareDesc(new Date(a.opprettet), new Date(b.opprettet)))
-        .find(
-            (behandling) =>
-                behandling.status === BehandlingStatus.FERDIGSTILT &&
-                behandlingsresultat.indexOf(behandling.resultat) > -1
-        );
-
-export const OpprettKlage: React.FunctionComponent<IProps> = ({
-    fagsak,
-    settVisModal,
-    opprettKlage,
-}) => {
+export const OpprettKlage: React.FunctionComponent<IProps> = ({ settVisModal, opprettKlage }) => {
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
-
-    const sisteFerdigstilteBehandlingen = sisteBehandlingSomErFerdigstilt(fagsak);
-
-    if (!sisteFerdigstilteBehandlingen) {
-        return <BodyShortSmall>Finnes ikke noen ferdigstilt behandling å klage på</BodyShortSmall>;
-    }
 
     const validerValgtDato = (valgtDato: string | undefined) => {
         settFeilmelding('');
         if (valgtDato && erGyldigDato(valgtDato) && erFørEllerLikDagensDato(valgtDato)) {
-            opprettKlage(sisteFerdigstilteBehandlingen.id, valgtDato);
+            opprettKlage(valgtDato);
         } else if (!valgtDato) {
             settFeilmelding('Vennligst velg en dato fra datovelgeren');
         } else {
