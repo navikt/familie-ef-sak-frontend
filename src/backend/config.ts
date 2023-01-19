@@ -16,6 +16,7 @@ interface IEnvironment {
     endringsloggProxyUrl: string;
     aInntekt: string;
     gosys: string;
+    modia: string;
     redisUrl?: string;
     roller: Roller;
 }
@@ -47,6 +48,7 @@ const Environment = (): IEnvironment => {
             brevProxyUrl: 'http://127.0.0.1:8001',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
+            modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
         };
@@ -58,6 +60,7 @@ const Environment = (): IEnvironment => {
             brevProxyUrl: '', // TODO
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
+            modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
             //Har ikke satt opp redis
@@ -70,6 +73,7 @@ const Environment = (): IEnvironment => {
             brevProxyUrl: 'http://familie-brev',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
+            modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             redisUrl: 'familie-ef-sak-frontend-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
@@ -83,6 +87,7 @@ const Environment = (): IEnvironment => {
         brevProxyUrl: 'http://familie-brev',
         aInntekt: 'https://arbeid-og-inntekt.nais.adeo.no',
         gosys: 'https://gosys.intern.nav.no/gosys',
+        modia: 'https://app.adeo.no/modiapersonoversikt',
         redisUrl: 'familie-ef-sak-frontend-redis',
         endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
         roller: rollerProd,
@@ -115,4 +120,5 @@ export const endringsloggProxyUrl = env.endringsloggProxyUrl;
 export const namespace = env.namespace;
 export const urlAInntekt = env.aInntekt;
 export const urlGosys = env.gosys;
+export const urlModia = env.modia;
 export const roller = env.roller;

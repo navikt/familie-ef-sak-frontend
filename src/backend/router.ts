@@ -1,7 +1,7 @@
 import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
 import { Request, Response, Router } from 'express';
 import path from 'path';
-import { buildPath, roller, urlAInntekt, urlGosys } from './config';
+import { buildPath, roller, urlAInntekt, urlGosys, urlModia } from './config';
 import { prometheusTellere } from './metrikker';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
@@ -10,7 +10,9 @@ export default (authClient: Client, router: Router): Router => {
         res.status(200).send({ version: process.env.APP_VERSION }).end();
     });
     router.get('/env', (_req: Request, res: Response) => {
-        res.status(200).send({ aInntekt: urlAInntekt, gosys: urlGosys, roller }).end();
+        res.status(200)
+            .send({ aInntekt: urlAInntekt, gosys: urlGosys, modia: urlModia, roller })
+            .end();
     });
 
     router.get('/error', (_req: Request, res: Response) => {
