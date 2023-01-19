@@ -16,10 +16,33 @@ enum EBehandlingFlettefelt {
     tomdatoRevurderingBT = 'tomdatoRevurderingBT',
 }
 
+enum EBehandlingValgfelt {
+    avslutningHjemmel = 'avslutningHjemmel',
+}
+
+enum EBehandlingValgmulighet {
+    vedtakInneholderSamordning = 'hjemmelM1513',
+    vedtakInneholderIkkeSamordning = 'hjemmelInnvilgetTilbakeITidM1513',
+}
+
+type Valgmulighet = {
+    valgmulighet: string;
+};
+
+type IFlettefeltStore = { [navn: string]: string };
+
+export type IValgfeltStore = {
+    [valgfeltKategori: string]: Valgmulighet;
+};
+
 export const useVerdierForBrev = (
     beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
-): { flettefeltStore: { [navn: string]: string } } => {
-    const [flettefeltStore, settFlettefeltStore] = useState<{ [navn: string]: string }>({});
+): {
+    flettefeltStore: IFlettefeltStore;
+    valgfeltStore: IValgfeltStore;
+} => {
+    const [flettefeltStore, settFlettefeltStore] = useState<IFlettefeltStore>({});
+    const [valgfeltStore, settValgfeltStore] = useState<IValgfeltStore>({});
     const { toggles } = useToggles();
 
     useEffect(() => {
@@ -31,6 +54,14 @@ export const useVerdierForBrev = (
             const perioder = beløpsperioder.data;
             const tilDato = formaterIsoDato(perioder[perioder.length - 1].periode.tildato);
             const fraDato = formaterIsoDato(perioder[0].periode.fradato);
+
+            erOvergangstønad(perioder) &&
+                settValgfeltStore({
+                    ...valgfeltStore,
+                    [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(perioder)
+                        ? { valgmulighet: EBehandlingValgmulighet.vedtakInneholderSamordning }
+                        : { valgmulighet: EBehandlingValgmulighet.vedtakInneholderIkkeSamordning },
+                });
 
             const toggledeVedtaksdatoFlettefelter: { [flettefeltNavn: string]: string } = toggles[
                 ToggleName.automatiskeVedtaksdatoerBrev
@@ -52,7 +83,27 @@ export const useVerdierForBrev = (
                 ...toggledeVedtaksdatoFlettefelter,
             }));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [beløpsperioder, toggles]);
 
-    return { flettefeltStore };
+    useEffect(() => {
+        // eslint-disable-next-line no-console
+        console.log('valgfeltstore: ', valgfeltStore);
+    }, [valgfeltStore]);
+
+    return { flettefeltStore, valgfeltStore };
+};
+
+const harSamordningsfradrag = (beløpsperioder: IBeløpsperiode[]): boolean => {
+    return beløpsperioder.some(
+        (beløpsperiode) => beløpsperiode.beregningsgrunnlag.samordningsfradrag
+    );
+};
+
+const erOvergangstønad = (
+    beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[]
+): beløpsperioder is IBeløpsperiode[] => {
+    return beløpsperioder.some(
+        (beløpsperiode) => (beløpsperiode as IBeløpsperiode).beløpFørSamordning !== undefined
+    );
 };
