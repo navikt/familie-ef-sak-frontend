@@ -5,8 +5,6 @@ import {
     TilbakekrevingBehandlingsresultatstype,
     TilbakekrevingBehandlingstype,
 } from '../../App/typer/tilbakekreving';
-import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
-import SorteringsHeader from '../Oppgavebenk/OppgaveSorteringHeader';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../App/utils/utils';
 import {
@@ -32,6 +30,8 @@ import {
 } from '../../App/typer/klage';
 import { WarningColored } from '@navikt/ds-icons';
 import { Tooltip } from '@navikt/ds-react';
+import { erString } from '../../App/utils/typeutil';
+import { compareDesc } from 'date-fns';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -67,6 +67,32 @@ interface BehandlingsoversiktTabellBehandling {
     applikasjon: BehandlingApplikasjon;
     klageinstansResultat?: KlageinstansResultat[];
 }
+
+/**
+ * Sorterer behandlinger etter vedtaksdato
+ * Hvis vedtaksdato ikke finnes på noen av behandlingene, sorteres de etter opprettet
+ * Hvis vedtaksdato ikke finnes på en av behandlingene sorteres null/undefined først
+ */
+export const sorterBehandlinger = (
+    a: BehandlingsoversiktTabellBehandling,
+    b: BehandlingsoversiktTabellBehandling
+): number => {
+    const aVedtaksdato = a.vedtaksdato;
+    const bVedtaksdato = b.vedtaksdato;
+    if (!erString(aVedtaksdato) && !erString(bVedtaksdato)) {
+        return compareDesc(new Date(a.opprettet), new Date(b.opprettet));
+    }
+    if (erString(aVedtaksdato) && erString(bVedtaksdato)) {
+        return compareDesc(new Date(aVedtaksdato), new Date(bVedtaksdato));
+    }
+    if (erString(aVedtaksdato) && !erString(bVedtaksdato)) {
+        return 1;
+    }
+    if (!erString(aVedtaksdato) && erString(bVedtaksdato)) {
+        return -1;
+    }
+    return 0;
+};
 
 export const BehandlingsoversiktTabell: React.FC<{
     behandlinger: Behandling[];
@@ -122,13 +148,8 @@ export const BehandlingsoversiktTabell: React.FC<{
 
     const alleBehandlinger = generelleBehandlinger
         .concat(generelleTilbakekrevingBehandlinger)
-        .concat(generelleKlageBehandlinger);
-
-    const { sortertListe, settSortering, sortConfig } =
-        useSorteringState<BehandlingsoversiktTabellBehandling>(alleBehandlinger, {
-            sorteringsfelt: 'opprettet',
-            rekkefolge: 'descending',
-        });
+        .concat(generelleKlageBehandlinger)
+        .sort(sorterBehandlinger);
 
     const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string => {
         return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
@@ -190,23 +211,14 @@ export const BehandlingsoversiktTabell: React.FC<{
             <thead>
                 <tr>
                     {Object.entries(TabellData).map(([felt, tekst], index) => (
-                        <SorteringsHeader
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === felt
-                                    ? sortConfig?.rekkefolge
-                                    : undefined
-                            }
-                            tekst={tekst}
-                            onClick={() =>
-                                settSortering(felt as keyof BehandlingsoversiktTabellBehandling)
-                            }
-                            key={`${index}${felt}`}
-                        />
+                        <th role="columnheader" key={`${index}${felt}`}>
+                            {tekst}
+                        </th>
                     ))}
                 </tr>
             </thead>
             <tbody>
-                {sortertListe.map((behandling) => {
+                {alleBehandlinger.map((behandling) => {
                     return (
                         <tr key={behandling.id}>
                             <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
