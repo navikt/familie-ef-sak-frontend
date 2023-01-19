@@ -9,6 +9,7 @@ import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Button, Radio, RadioGroup } from '@navikt/ds-react';
 import { FileContent } from '@navikt/ds-icons';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
+import { InfostripeTilbakekrevingsvalg } from './InfostripeTilbakekrevingsvalg';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -94,6 +95,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         endreBegrunnelse(e.target.value);
                     }}
                 />
+                <InfostripeTilbakekrevingsvalg />
                 <Radio value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL} name="tilbakekrevingRadio">
                     Opprett tilbakekreving, send varsel
                 </Radio>
