@@ -27,7 +27,7 @@ import VelgUstrukturertDokumentasjonType, {
 } from './VelgUstrukturertDokumentasjonType';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
-import { erAlleBehandlingerFerdigstilte, harValgtNyBehandling } from './journalførBehandlingUtil';
+import { harValgtNyBehandling } from './journalførBehandlingUtil';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
@@ -45,6 +45,7 @@ import JournalføringWrapper, {
 import JournalføringPdfVisning from './JournalføringPdfVisning';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
+import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
 
 const ModalKnapp = styled(Button)`
     margin-bottom: 1rem;
@@ -204,10 +205,14 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
         UstrukturertDokumentasjonType.PAPIRSØKNAD;
 
     const journalFør = () => {
+        if (fagsak.status !== RessursStatus.SUKSESS) {
+            settFeilMeldning('Henting av fagsak feilet, relast siden');
+            return;
+        }
         const feilmeldingFraValidering = validerJournalføringState(
             journalResponse,
             journalpostState,
-            erAlleBehandlingerFerdigstilte(fagsak)
+            alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak.data)
         );
         if (feilmeldingFraValidering) {
             settFeilMeldning(feilmeldingFraValidering);

@@ -6,7 +6,7 @@ import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
 import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
-import { lagAInntektLink, lagGosysLink } from '../Lenker/Lenker';
+import { lagAInntektLink, lagGosysLink, lagModiaLink } from '../Lenker/Lenker';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
@@ -53,6 +53,21 @@ const lagGosys = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem 
     };
 };
 
+const lagModia = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem => {
+    if (!personIdent) {
+        return { name: 'Modia', href: appEnv.modia, isExternal: true };
+    }
+
+    return {
+        name: 'Modia',
+        href: '#/modia',
+        onClick: async (e: React.SyntheticEvent) => {
+            e.preventDefault();
+            window.open(lagModiaLink(appEnv, personIdent));
+        },
+    };
+};
+
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
@@ -65,6 +80,7 @@ const lagEksterneLenker = (
     const eksterneLenker = [
         lagAInntekt(axiosRequest, appEnv, fagsakId, fagsakPersonId),
         lagGosys(appEnv, personIdent),
+        lagModia(appEnv, personIdent),
     ];
     if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
         eksterneLenker.push({

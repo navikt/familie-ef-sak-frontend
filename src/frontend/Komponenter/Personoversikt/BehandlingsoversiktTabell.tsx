@@ -5,8 +5,6 @@ import {
     TilbakekrevingBehandlingsresultatstype,
     TilbakekrevingBehandlingstype,
 } from '../../App/typer/tilbakekreving';
-import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
-import SorteringsHeader from '../Oppgavebenk/OppgaveSorteringHeader';
 import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { formatterEnumVerdi } from '../../App/utils/utils';
 import {
@@ -32,6 +30,7 @@ import {
 } from '../../App/typer/klage';
 import { WarningColored } from '@navikt/ds-icons';
 import { Tooltip } from '@navikt/ds-react';
+import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -122,13 +121,8 @@ export const BehandlingsoversiktTabell: React.FC<{
 
     const alleBehandlinger = generelleBehandlinger
         .concat(generelleTilbakekrevingBehandlinger)
-        .concat(generelleKlageBehandlinger);
-
-    const { sortertListe, settSortering, sortConfig } =
-        useSorteringState<BehandlingsoversiktTabellBehandling>(alleBehandlinger, {
-            sorteringsfelt: 'opprettet',
-            rekkefolge: 'descending',
-        });
+        .concat(generelleKlageBehandlinger)
+        .sort(sorterBehandlinger);
 
     const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string => {
         return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
@@ -190,23 +184,14 @@ export const BehandlingsoversiktTabell: React.FC<{
             <thead>
                 <tr>
                     {Object.entries(TabellData).map(([felt, tekst], index) => (
-                        <SorteringsHeader
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === felt
-                                    ? sortConfig?.rekkefolge
-                                    : undefined
-                            }
-                            tekst={tekst}
-                            onClick={() =>
-                                settSortering(felt as keyof BehandlingsoversiktTabellBehandling)
-                            }
-                            key={`${index}${felt}`}
-                        />
+                        <th role="columnheader" key={`${index}${felt}`}>
+                            {tekst}
+                        </th>
                     ))}
                 </tr>
             </thead>
             <tbody>
-                {sortertListe.map((behandling) => {
+                {alleBehandlinger.map((behandling) => {
                     return (
                         <tr key={behandling.id}>
                             <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
