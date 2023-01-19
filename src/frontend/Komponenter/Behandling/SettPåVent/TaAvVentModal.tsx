@@ -12,7 +12,7 @@ const AlertStripe = styled(Alert)`
 `;
 
 export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { taAvVentStatus, hentBehandling } = useBehandling();
+    const { taAvVentStatus, hentBehandling, settTaAvVentStatus } = useBehandling();
     const [visTaAvVentModal, settVisTaAvVentModal] = useState(false);
 
     const { axiosRequest } = useApp();
@@ -32,6 +32,7 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
     const lukkModal = () => {
         settFeilmelding('');
         settVisTaAvVentModal(false);
+        settTaAvVentStatus(undefined);
     };
 
     const taAvVent = () => {
@@ -65,7 +66,7 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
         <ModalWrapper
             tittel={tittel}
             visModal={visTaAvVentModal}
-            onClose={() => settVisTaAvVentModal(false)}
+            onClose={lukkModal}
             aksjonsknapper={{
                 hovedKnapp: {
                     onClick: () => taAvVent(),
@@ -75,7 +76,7 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
                         taAvVentStatus === ETaAvVentStatus.ANNEN_BEHANDLING_MÅ_FERDIGSTILLES,
                 },
                 lukkKnapp: {
-                    onClick: () => settVisTaAvVentModal(false),
+                    onClick: lukkModal,
                     tekst: 'Avbryt',
                 },
             }}
