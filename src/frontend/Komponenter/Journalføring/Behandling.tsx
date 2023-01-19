@@ -9,9 +9,9 @@ import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
 import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
-import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { Button, Checkbox, Heading } from '@navikt/ds-react';
 import { AddCircle } from '@navikt/ds-icons';
+import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
 
 interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;
@@ -66,8 +66,8 @@ const BehandlingInnold: React.FC<Props> = ({
     const lagNyBehandlingRad = () => {
         settFeilmelding('');
         if (fagsak.status === RessursStatus.SUKSESS) {
-            const kanOppretteNyBehandling = fagsak.data.behandlinger.every(
-                (behandling: Behandling) => behandling.status === BehandlingStatus.FERDIGSTILT
+            const kanOppretteNyBehandling = alleBehandlingerErFerdigstiltEllerSattPåVent(
+                fagsak.data
             );
 
             if (kanOppretteNyBehandling) {
