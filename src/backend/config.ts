@@ -48,7 +48,7 @@ const Environment = (): IEnvironment => {
             brevProxyUrl: 'http://127.0.0.1:8001',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
-            modia: 'https://app-q2.adeo.no/modiapersonoversikt',
+            modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
         };
@@ -60,7 +60,7 @@ const Environment = (): IEnvironment => {
             brevProxyUrl: '', // TODO
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
-            modia: 'https://app-q2.adeo.no/modiapersonoversikt',
+            modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
             //Har ikke satt opp redis
@@ -73,7 +73,7 @@ const Environment = (): IEnvironment => {
             brevProxyUrl: 'http://familie-brev',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
-            modia: 'https://app-q2.adeo.no/modiapersonoversikt',
+            modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             redisUrl: 'familie-ef-sak-frontend-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
