@@ -1,4 +1,4 @@
-import { AktivitetArbeidTilTekst, AndelHistorikk } from '../../../App/typer/tilkjentytelse';
+import { AndelHistorikk } from '../../../App/typer/tilkjentytelse';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
 import { formaterIsoDatoTid, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
@@ -11,7 +11,11 @@ import {
     HistorikkRad,
     HistorikkTabell,
 } from './vedtakshistorikkUtil';
-import { EUtgiftsperiodetype, utgiftsperiodetypeTilTekst } from '../../../App/typer/vedtak';
+import {
+    EUtgiftsperiodetype,
+    utgiftsperiodeAktivitetTilTekst,
+    utgiftsperiodetypeTilTekst,
+} from '../../../App/typer/vedtak';
 import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
 import { HelpText, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
@@ -35,6 +39,14 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
     const erOpphør = andel.periodetypeBarnetilsyn === EUtgiftsperiodetype.OPPHØR;
     const visDetaljer = !erSanksjon && !erOpphør;
     const periodeTypeErSatt = andel.periodetypeBarnetilsyn !== undefined;
+
+    const utledAktivitetskolonneTekst = (): string => {
+        if (erSanksjon) return sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak];
+        if (andel.aktivitetBarnetilsyn)
+            return utgiftsperiodeAktivitetTilTekst[andel.aktivitetBarnetilsyn];
+        return 'Ukjent';
+    };
+
     return (
         <HistorikkRad type={andel.endring?.type} key={index}>
             <td>{datoAndelHistorikk(andel)}</td>
@@ -54,13 +66,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
                     </Tag>
                 )}
             </td>
-            <td>
-                {erSanksjon
-                    ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
-                    : andel.aktivitetArbeid
-                    ? AktivitetArbeidTilTekst[andel.aktivitetArbeid]
-                    : 'Ukjent'}
-            </td>
+            <td>{utledAktivitetskolonneTekst()}</td>
             <td>{visDetaljer && andel.andel.antallBarn}</td>
             <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.utgifter)}</td>
             <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.kontantstøtte)}</td>
