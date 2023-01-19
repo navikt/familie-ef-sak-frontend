@@ -30,7 +30,6 @@ import {
 } from '../../App/typer/klage';
 import { WarningColored } from '@navikt/ds-icons';
 import { Tooltip } from '@navikt/ds-react';
-import { erString } from '../../App/utils/typeutil';
 import { compareDesc } from 'date-fns';
 
 const StyledTable = styled.table`
@@ -77,21 +76,13 @@ export const sorterBehandlinger = (
     a: BehandlingsoversiktTabellBehandling,
     b: BehandlingsoversiktTabellBehandling
 ): number => {
-    const aVedtaksdato = a.vedtaksdato;
-    const bVedtaksdato = b.vedtaksdato;
-    if (!erString(aVedtaksdato) && !erString(bVedtaksdato)) {
+    if (a.vedtaksdato && b.vedtaksdato) {
+        return compareDesc(new Date(a.vedtaksdato), new Date(b.vedtaksdato));
+    }
+    if (!a.vedtaksdato && !b.vedtaksdato) {
         return compareDesc(new Date(a.opprettet), new Date(b.opprettet));
     }
-    if (erString(aVedtaksdato) && erString(bVedtaksdato)) {
-        return compareDesc(new Date(aVedtaksdato), new Date(bVedtaksdato));
-    }
-    if (erString(aVedtaksdato) && !erString(bVedtaksdato)) {
-        return 1;
-    }
-    if (!erString(aVedtaksdato) && erString(bVedtaksdato)) {
-        return -1;
-    }
-    return 0;
+    return a.vedtaksdato ? 1 : -1;
 };
 
 export const BehandlingsoversiktTabell: React.FC<{
