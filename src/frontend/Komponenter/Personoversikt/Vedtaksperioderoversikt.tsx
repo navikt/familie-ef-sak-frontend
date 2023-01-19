@@ -14,7 +14,6 @@ import {
     IFagsakPerson,
     IFagsakPersonMedBehandlinger,
 } from '../../App/typer/fagsak';
-import { compareDesc } from 'date-fns';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/VedtaksperioderBarnetilsyn';
@@ -23,6 +22,7 @@ import { IVedtakForSkolepenger } from '../../App/typer/vedtak';
 import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/VedtaksperioderSkolepeger';
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import { Checkbox, Select } from '@navikt/ds-react';
+import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 
 const StyledInputs = styled.div`
     display: flex;
@@ -59,9 +59,7 @@ const filtrerBehandlinger = (fagsak: Fagsak): Behandling[] =>
     );
 
 const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>
-    filtrerBehandlinger(fagsak).sort((a, b) =>
-        compareDesc(new Date(a.opprettet), new Date(b.opprettet))
-    );
+    filtrerBehandlinger(fagsak).sort(sorterBehandlinger);
 
 interface VedtaksperioderProps {
     fagsak: Fagsak;

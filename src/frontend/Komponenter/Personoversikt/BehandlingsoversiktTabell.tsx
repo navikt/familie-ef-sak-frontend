@@ -30,7 +30,7 @@ import {
 } from '../../App/typer/klage';
 import { WarningColored } from '@navikt/ds-icons';
 import { Tooltip } from '@navikt/ds-react';
-import { compareDesc } from 'date-fns';
+import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -66,24 +66,6 @@ interface BehandlingsoversiktTabellBehandling {
     applikasjon: BehandlingApplikasjon;
     klageinstansResultat?: KlageinstansResultat[];
 }
-
-/**
- * Sorterer behandlinger etter vedtaksdato
- * Hvis vedtaksdato ikke finnes på noen av behandlingene, sorteres de etter opprettet
- * Hvis vedtaksdato ikke finnes på en av behandlingene sorteres null/undefined først
- */
-export const sorterBehandlinger = (
-    a: BehandlingsoversiktTabellBehandling,
-    b: BehandlingsoversiktTabellBehandling
-): number => {
-    if (a.vedtaksdato && b.vedtaksdato) {
-        return compareDesc(new Date(a.vedtaksdato), new Date(b.vedtaksdato));
-    }
-    if (!a.vedtaksdato && !b.vedtaksdato) {
-        return compareDesc(new Date(a.opprettet), new Date(b.opprettet));
-    }
-    return a.vedtaksdato ? 1 : -1;
-};
 
 export const BehandlingsoversiktTabell: React.FC<{
     behandlinger: Behandling[];
