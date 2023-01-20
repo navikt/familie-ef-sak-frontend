@@ -47,7 +47,6 @@ export interface AndelHistorikk {
     aktivitet?: EAktivitet;
     aktivitetBarnetilsyn?: EUtgiftsperiodeAktivitet;
     aktivitetArbeid?: AktivitetArbeid;
-    erSanksjon: boolean;
     periodeType?: EPeriodetype;
     periodetypeBarnetilsyn?: EUtgiftsperiodetype;
     behandlingType: Behandlingstype;
