@@ -186,7 +186,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             disabledFra={index === 0 && låsFraDatoFørsteRad}
                             size={'small'}
                         />
-                        {behandlingErRedigerbar && !erOpphørEllerSanksjon(periodetype) ? (
+                        {behandlingErRedigerbar && !opphørEllerSanksjon ? (
                             <FamilieReactSelect
                                 placeholder={'Velg barn'}
                                 label={''}
@@ -218,7 +218,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     ))}
                             </ContainerMedLuftUnder>
                         )}
-                        {erOpphørEllerSanksjon(periodetype) ? (
+                        {opphørEllerSanksjon ? (
                             <div />
                         ) : (
                             <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
@@ -227,7 +227,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     : 0
                             }`}</AntallBarn>
                         )}
-                        {!behandlingErRedigerbar || erOpphørEllerSanksjon(periodetype) ? (
+                        {!behandlingErRedigerbar || opphørEllerSanksjon ? (
                             <div />
                         ) : (
                             <StyledInput
