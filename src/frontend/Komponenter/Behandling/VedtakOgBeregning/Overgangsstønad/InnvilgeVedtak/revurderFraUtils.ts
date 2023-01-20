@@ -1,7 +1,7 @@
 import {
     EAktivitet,
     EPeriodetype,
-    IVedtakshistorikk,
+    IInnvilgeVedtakForOvergangsstønad,
     IVedtaksperiode,
 } from '../../../../../App/typer/vedtak';
 import { v4 as uuidv4 } from 'uuid';
@@ -38,7 +38,7 @@ export const fyllHullMedOpphør = (
  * Lager en periode som legges før tidligere perioder hvis revurderes fra er før tidligere dato
  */
 export const revurderFraInitPeriode = <T>(
-    vedtakshistorikk: IVedtakshistorikk,
+    vedtakshistorikk: IInnvilgeVedtakForOvergangsstønad,
     revurderesFra: string,
     periode: (revurderesFra: string) => T
 ): T[] => {
@@ -51,7 +51,7 @@ export const revurderFraInitPeriode = <T>(
 };
 
 export const revurdererFraPeriodeUtenStønad = (
-    vedtakshistorikk: IVedtakshistorikk | undefined,
+    vedtakshistorikk: IInnvilgeVedtakForOvergangsstønad | undefined,
     revurderesFra: string | undefined
 ): boolean => {
     const fraOgMedDato = vedtakshistorikk?.perioder[0]?.årMånedFra;
