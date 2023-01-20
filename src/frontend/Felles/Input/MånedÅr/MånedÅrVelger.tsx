@@ -15,6 +15,7 @@ interface Props {
     feilmelding?: string | null;
     lesevisning?: boolean;
     disabled?: boolean;
+    size?: 'medium' | 'small';
 }
 
 const DatolabelStyle = styled.label`
@@ -46,6 +47,7 @@ const MånedÅrVelger: React.FC<Props> = ({
     feilmelding,
     lesevisning = false,
     disabled = false,
+    size,
 }) => {
     const [år, settÅr] = useState(
         årMånedInitiell ? parseInt(årMånedInitiell.split('-')[0], 10) : undefined
@@ -75,6 +77,7 @@ const MånedÅrVelger: React.FC<Props> = ({
                     settMåned={settMåned}
                     lesevisning={lesevisning}
                     disabled={disabled}
+                    size={size}
                 />
                 <StyledÅrVelger
                     år={år}
@@ -83,6 +86,7 @@ const MånedÅrVelger: React.FC<Props> = ({
                     antallÅrFrem={antallÅrFrem}
                     lesevisning={lesevisning}
                     disabled={disabled}
+                    size={size}
                 />
             </FlexDiv>
             <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>

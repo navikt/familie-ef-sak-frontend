@@ -99,12 +99,37 @@ export type ITilleggsstønad = {
     begrunnelse?: string;
 };
 
+export enum EUtgiftsperiodetype {
+    ORDINÆR = 'ORDINÆR',
+    OPPHØR = 'OPPHØR',
+    SANKSJON_1_MND = 'SANKSJON_1_MND',
+}
+
+export const utgiftsperiodetypeTilTekst: Record<EUtgiftsperiodetype, string> = {
+    ORDINÆR: 'Ordinær',
+    OPPHØR: 'Opphør/Ingen stønad',
+    SANKSJON_1_MND: 'Sanksjon',
+};
+
+export enum EUtgiftsperiodeAktivitet {
+    I_ARBEID = 'I_ARBEID',
+    FORBIGÅENDE_SYKDOM = 'FORBIGÅENDE_SYKDOM',
+}
+
+export const utgiftsperiodeAktivitetTilTekst: Record<EUtgiftsperiodeAktivitet, string> = {
+    I_ARBEID: 'I arbeid',
+    FORBIGÅENDE_SYKDOM: 'Forbigående sykdom',
+};
+
+// TODO: Fjern felt "erMidlertidigOpphør" etter at dette feltet er fjernet i backend.
 export type IUtgiftsperiode = {
     årMånedFra: string;
     årMånedTil: string;
     barn: string[];
     utgifter: number | undefined;
     erMidlertidigOpphør: boolean | undefined;
+    periodetype: EUtgiftsperiodetype | undefined;
+    aktivitetstype: EUtgiftsperiodeAktivitet | undefined;
     endretKey?: string; // intern for re-rendring
 };
 
@@ -243,6 +268,8 @@ export enum EUtgiftsperiodeProperty {
     årMånedTil = 'årMånedTil',
     barn = 'barn',
     utgifter = 'utgifter',
+    periodetype = 'periodetype',
+    aktivitetstype = 'aktivitetstype',
     erMidlertidigOpphør = 'erMidlertidigOpphør',
 }
 
@@ -263,12 +290,6 @@ export enum ERadioValg {
     NEI = 'NEI',
     IKKE_SATT = 'IKKE_SATT',
 }
-
-export const radiovalgTilTekst: Record<ERadioValg, string> = {
-    JA: 'Ja',
-    NEI: 'Nei',
-    IKKE_SATT: 'Ikke valgt',
-};
 
 export enum EAvslagÅrsak {
     VILKÅR_IKKE_OPPFYLT = 'VILKÅR_IKKE_OPPFYLT',

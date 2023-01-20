@@ -1,5 +1,11 @@
 import { Behandlingstype } from './behandlingstype';
-import { EAktivitet, EPeriodetype, ESamordningsfradragtype } from './vedtak';
+import {
+    EAktivitet,
+    EPeriodetype,
+    ESamordningsfradragtype,
+    EUtgiftsperiodeAktivitet,
+    EUtgiftsperiodetype,
+} from './vedtak';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
 import { Behandlingsårsak } from './Behandlingsårsak';
 
@@ -39,9 +45,11 @@ export interface AndelHistorikk {
     andel: AndelMedGrunnlag;
     endring?: AndelHistorikkEndring;
     aktivitet?: EAktivitet;
+    aktivitetBarnetilsyn?: EUtgiftsperiodeAktivitet;
     aktivitetArbeid?: AktivitetArbeid;
     erSanksjon: boolean;
     periodeType?: EPeriodetype;
+    periodetypeBarnetilsyn?: EUtgiftsperiodetype;
     behandlingType: Behandlingstype;
     behandlingÅrsak: Behandlingsårsak;
     sanksjonsårsak?: Sanksjonsårsak;

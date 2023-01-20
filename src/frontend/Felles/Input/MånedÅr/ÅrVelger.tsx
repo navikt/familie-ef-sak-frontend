@@ -10,6 +10,7 @@ interface ÅrProps {
     lesevisning?: boolean;
     disabled?: boolean;
     className?: string;
+    size?: 'medium' | 'small';
 }
 
 const lagÅrOptions = (år: number | undefined, antallÅrFrem: number, antallÅrTilbake: number) => {
@@ -31,6 +32,7 @@ const Årvelger: React.FC<ÅrProps> = ({
     lesevisning = false,
     disabled = false,
     className,
+    size,
 }) => {
     const årOptions = lagÅrOptions(år, antallÅrFrem, antallÅrTilbake);
     return (
@@ -46,6 +48,7 @@ const Årvelger: React.FC<ÅrProps> = ({
             label={'År'}
             hideLabel
             className={className}
+            size={size}
         >
             <option value="">År</option>
             {årOptions}

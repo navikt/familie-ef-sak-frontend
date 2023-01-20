@@ -152,7 +152,6 @@ export const Vedtaksform: React.FC<{
         tilleggsstønadState.setValue(initHarTilleggsstønad(lagretInnvilgetVedtak));
         stønadsreduksjonState.setValue(initSkalStønadReduseres(lagretInnvilgetVedtak));
         tilleggsstønadsperiodeState.setValue(initTillegsstønadsperioder(lagretInnvilgetVedtak));
-        utgiftsperiodeState.setValue(initUtgiftsperioder(lagretInnvilgetVedtak));
         formState.setErrors((prevState) => ({
             ...prevState,
             utgiftsperioder: [],

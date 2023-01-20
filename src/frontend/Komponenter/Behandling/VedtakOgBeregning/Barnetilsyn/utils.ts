@@ -23,6 +23,8 @@ export const tomUtgiftsperiodeRad = (årMånedFra?: string): IUtgiftsperiode => 
     barn: [],
     utgifter: undefined,
     erMidlertidigOpphør: false,
+    periodetype: undefined,
+    aktivitetstype: undefined,
     endretKey: uuidv4(),
 });
 
