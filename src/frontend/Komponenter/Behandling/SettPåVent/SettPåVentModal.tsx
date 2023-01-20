@@ -61,7 +61,7 @@ export const SettPåVentModal: FC<{ behandlingId: string }> = ({ behandlingId })
             ariaLabel={'Sett behandling på vent'}
         >
             Behandlingen settes på vent, men du må inntil videre huske å oppdatere oppgaven i Gosys
-            i henhold til gjeldene venterutiner.
+            i henhold til gjeldende rutiner.
             {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
         </ModalWrapper>
     );
