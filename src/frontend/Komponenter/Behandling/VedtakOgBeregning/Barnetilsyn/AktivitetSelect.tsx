@@ -8,19 +8,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { OrNothing } from '../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
-import { BodyShort } from '@navikt/ds-react';
 import { erOpphørEllerSanksjon } from './utils';
 
 const StyledSelect = styled(EnsligFamilieSelect)`
     align-items: start;
     min-width: 140px;
     max-width: 200px;
-`;
-
-const AktivitetKolonne = styled.div<{ medPadding?: boolean }>`
-    .navds-body-short {
-        padding: ${(props) => (props.medPadding ? '0.25rem 0 0 0' : '0')};
-    }
 `;
 
 interface Props {
@@ -47,21 +40,18 @@ const AktivitetSelect: React.FC<Props> = ({
     feil,
 }) => {
     const skalIkkeVelgeAktivitet: boolean = !periodetype || erOpphørEllerSanksjon(periodetype);
-    if (skalIkkeVelgeAktivitet) {
-        return (
-            <AktivitetKolonne
-                medPadding={!erLesevisning && periodetype !== EUtgiftsperiodetype.SANKSJON_1_MND}
-            >
-                <BodyShort size={erLesevisning ? 'small' : 'medium'}>-</BodyShort>
-            </AktivitetKolonne>
-        );
-    }
+
+    const utledLesevisningVerdi = () => {
+        if (aktivitet) return utgiftsperiodeAktivitetTilTekst[aktivitet];
+        if (erLesevisning || skalIkkeVelgeAktivitet) return '';
+        return 'Ukjent';
+    };
 
     return (
         <StyledSelect
             label={'Aktivitet'}
             hideLabel
-            value={aktivitet}
+            value={skalIkkeVelgeAktivitet ? '' : aktivitet}
             error={feil}
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(
@@ -69,8 +59,8 @@ const AktivitetSelect: React.FC<Props> = ({
                     e.target.value
                 );
             }}
-            erLesevisning={erLesevisning}
-            lesevisningVerdi={aktivitet ? utgiftsperiodeAktivitetTilTekst[aktivitet] : 'Ukjent'}
+            erLesevisning={erLesevisning || skalIkkeVelgeAktivitet}
+            lesevisningVerdi={utledLesevisningVerdi()}
             size={'small'}
         >
             <option value="">Velg</option>
