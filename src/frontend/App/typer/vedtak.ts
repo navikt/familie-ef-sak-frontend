@@ -121,13 +121,11 @@ export const utgiftsperiodeAktivitetTilTekst: Record<EUtgiftsperiodeAktivitet, s
     FORBIGÅENDE_SYKDOM: 'Forbigående sykdom',
 };
 
-// TODO: Fjern felt "erMidlertidigOpphør" etter at dette feltet er fjernet i backend.
 export type IUtgiftsperiode = {
     årMånedFra: string;
     årMånedTil: string;
     barn: string[];
     utgifter: number | undefined;
-    erMidlertidigOpphør: boolean | undefined;
     periodetype: EUtgiftsperiodetype | undefined;
     aktivitetstype: EUtgiftsperiodeAktivitet | undefined;
     endretKey?: string; // intern for re-rendring
@@ -270,7 +268,6 @@ export enum EUtgiftsperiodeProperty {
     utgifter = 'utgifter',
     periodetype = 'periodetype',
     aktivitetstype = 'aktivitetstype',
-    erMidlertidigOpphør = 'erMidlertidigOpphør',
 }
 
 export enum EKontantstøttePeriodeProperty {

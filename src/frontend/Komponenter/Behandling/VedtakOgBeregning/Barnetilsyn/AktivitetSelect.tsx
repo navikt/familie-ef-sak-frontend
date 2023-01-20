@@ -1,9 +1,15 @@
-import { utgiftsperiodeAktivitetTilTekst } from '../../../../App/typer/vedtak';
+import {
+    EUtgiftsperiodeAktivitet,
+    EUtgiftsperiodeProperty,
+    EUtgiftsperiodetype,
+    utgiftsperiodeAktivitetTilTekst,
+} from '../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { OrNothing } from '../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
-import { EUtgiftsperiodeAktivitet, EUtgiftsperiodeProperty } from '../../../../App/typer/vedtak';
+import { BodyShort } from '@navikt/ds-react';
+import { erOpphørEllerSanksjon } from './utils';
 
 const StyledSelect = styled(EnsligFamilieSelect)`
     align-items: start;
@@ -11,14 +17,20 @@ const StyledSelect = styled(EnsligFamilieSelect)`
     max-width: 200px;
 `;
 
+const AktivitetKolonne = styled.div<{ medPadding?: boolean }>`
+    .navds-body-short {
+        padding: ${(props) => (props.medPadding ? '0.25rem 0 0 0' : '0')};
+    }
+`;
+
 interface Props {
+    periodetype: EUtgiftsperiodetype | undefined;
     aktivitet: EUtgiftsperiodeAktivitet | '' | undefined;
     oppdaterUtgiftsperiodeElement: (
         property: EUtgiftsperiodeProperty,
         value: string | undefined
     ) => void;
     erLesevisning: boolean;
-    erMidlertidigOpphør: boolean;
     feil: OrNothing<string>;
 }
 
@@ -28,23 +40,28 @@ const valgbareAktivitetstyper = [
 ];
 
 const AktivitetSelect: React.FC<Props> = ({
+    periodetype,
     aktivitet,
     oppdaterUtgiftsperiodeElement,
     erLesevisning,
-    erMidlertidigOpphør,
     feil,
 }) => {
-    const utledLesevisningVerdi = () => {
-        if (aktivitet) return utgiftsperiodeAktivitetTilTekst[aktivitet];
-        if (erLesevisning && erMidlertidigOpphør) return '';
-        return 'Ukjent';
-    };
+    const skalIkkeVelgeAktivitet: boolean = !periodetype || erOpphørEllerSanksjon(periodetype);
+    if (skalIkkeVelgeAktivitet) {
+        return (
+            <AktivitetKolonne
+                medPadding={!erLesevisning && periodetype !== EUtgiftsperiodetype.SANKSJON_1_MND}
+            >
+                <BodyShort size={erLesevisning ? 'small' : 'medium'}>-</BodyShort>
+            </AktivitetKolonne>
+        );
+    }
 
     return (
         <StyledSelect
             label={'Aktivitet'}
             hideLabel
-            value={erMidlertidigOpphør ? '' : aktivitet}
+            value={aktivitet}
             error={feil}
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(
@@ -53,8 +70,7 @@ const AktivitetSelect: React.FC<Props> = ({
                 );
             }}
             erLesevisning={erLesevisning}
-            lesevisningVerdi={utledLesevisningVerdi()}
-            disabled={erMidlertidigOpphør}
+            lesevisningVerdi={aktivitet ? utgiftsperiodeAktivitetTilTekst[aktivitet] : 'Ukjent'}
             size={'small'}
         >
             <option value="">Velg</option>

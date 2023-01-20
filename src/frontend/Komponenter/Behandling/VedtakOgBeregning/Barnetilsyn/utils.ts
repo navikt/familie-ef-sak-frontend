@@ -1,7 +1,15 @@
 import { IVilkår, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
-import { IInnvilgeVedtakForBarnetilsyn, IUtgiftsperiode } from '../../../../App/typer/vedtak';
+import {
+    EUtgiftsperiodetype,
+    IInnvilgeVedtakForBarnetilsyn,
+    IUtgiftsperiode,
+} from '../../../../App/typer/vedtak';
 import { v4 as uuidv4 } from 'uuid';
 import { fyllHullMedOpphør, revurderFraInitPeriode } from './revurderFraUtils';
+
+export const erOpphørEllerSanksjon = (periodetype: EUtgiftsperiodetype | undefined) =>
+    periodetype === EUtgiftsperiodetype.OPPHØR ||
+    periodetype === EUtgiftsperiodetype.SANKSJON_1_MND;
 
 export const barnSomOppfyllerAlleVilkår = (vilkår: IVilkår) => {
     const barnSomIkkeOppfyllerVilkår = vilkår.vurderinger
@@ -22,7 +30,6 @@ export const tomUtgiftsperiodeRad = (årMånedFra?: string): IUtgiftsperiode => 
     årMånedTil: '',
     barn: [],
     utgifter: undefined,
-    erMidlertidigOpphør: false,
     periodetype: undefined,
     aktivitetstype: undefined,
     endretKey: uuidv4(),
