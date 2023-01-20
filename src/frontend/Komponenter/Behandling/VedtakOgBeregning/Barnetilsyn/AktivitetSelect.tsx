@@ -51,7 +51,7 @@ const AktivitetSelect: React.FC<Props> = ({
         <StyledSelect
             label={'Aktivitet'}
             hideLabel
-            value={skalIkkeVelgeAktivitet ? '' : aktivitet}
+            value={aktivitet}
             error={feil}
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(
