@@ -20,19 +20,15 @@ enum EBehandlingValgfelt {
     avslutningHjemmel = 'avslutningHjemmel',
 }
 
-enum EBehandlingValgmulighet {
-    vedtakInneholderSamordning = 'hjemmelM1513',
-    vedtakInneholderIkkeSamordning = 'hjemmelInnvilgetTilbakeITidM1513',
+enum EValg {
+    hjemlerMedSamordning = 'hjemmelM1513',
+    hjemlerUtenSamordning = 'hjemmelInnvilgetTilbakeITidM1513',
 }
-
-type Valgmulighet = {
-    valgmulighet: string;
-};
 
 type IFlettefeltStore = { [navn: string]: string };
 
 export type IValgfeltStore = {
-    [valgfeltKategori: string]: Valgmulighet;
+    [valgfelt: string]: string;
 };
 
 export const useVerdierForBrev = (
@@ -59,8 +55,8 @@ export const useVerdierForBrev = (
                 settValgfeltStore({
                     ...valgfeltStore,
                     [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(perioder)
-                        ? { valgmulighet: EBehandlingValgmulighet.vedtakInneholderSamordning }
-                        : { valgmulighet: EBehandlingValgmulighet.vedtakInneholderIkkeSamordning },
+                        ? EValg.hjemlerMedSamordning
+                        : EValg.hjemlerUtenSamordning,
                 });
 
             const toggledeVedtaksdatoFlettefelter: { [flettefeltNavn: string]: string } = toggles[
@@ -85,11 +81,6 @@ export const useVerdierForBrev = (
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [beløpsperioder, toggles]);
-
-    useEffect(() => {
-        // eslint-disable-next-line no-console
-        console.log('valgfeltstore: ', valgfeltStore);
-    }, [valgfeltStore]);
 
     return { flettefeltStore, valgfeltStore };
 };
