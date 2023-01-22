@@ -2832,6 +2832,11 @@
   resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/2.0.11/81a3ac7f36a95602a7f173b790ebf9aa723a3c1c#81a3ac7f36a95602a7f173b790ebf9aa723a3c1c"
   integrity sha512-8XjiHb35QRHQMYo/0Xzspg2CzsGCsd2Dvn+F4vpVHzITCk/HcpCjEeQ8tiLbpb+OVbmkKY4ykSOFuitMEH4QSA==
 
+"@navikt/ds-tokens@2.1.x":
+  version "2.1.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/2.1.0/c08d048f3c76f562626e0aad644e6ae8e0fe0745#c08d048f3c76f562626e0aad644e6ae8e0fe0745"
+  integrity sha512-TyaeDOmaGKh0Ru0kogQSXyjA3LlfgeKaTa57G5301T8jgX0JDqpEFtGvqvEDTP0n4U9Mn0iYqgXZBoX70ZWhqQ==
+
 "@navikt/familie-backend@10.0.1":
   version "10.0.1"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-backend/10.0.1/876f9b418a05e2de915be24110da46275daa2771#876f9b418a05e2de915be24110da46275daa2771"
